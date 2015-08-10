@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import CounterApp from './CounterApp';
-import createCounterStore from '../store/createCounterStore';
+import ElloApp from './ElloApp'
+import createElloStore from '../store/createElloStore';
 
-const store = createCounterStore();
+const store = createElloStore();
 
 export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        {() => <CounterApp />}
+        {() => <ElloApp />}
       </Provider>
     );
   }
 }
+
