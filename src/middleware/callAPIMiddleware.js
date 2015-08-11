@@ -1,4 +1,4 @@
-function callAPIMiddleware({ dispatch, getState }) {
+export default function callAPI({ dispatch, getState }) {
   return function (next) {
     return function (action) {
       const {
@@ -25,9 +25,9 @@ function callAPIMiddleware({ dispatch, getState }) {
         throw new Error('Expected fetch to be a function.');
       }
 
-      if (!shouldCallAPI(getState())) {
-        return;
-      }
+      // if (!shouldCallAPI(getState())) {
+      //   return;
+      // }
 
       const [requestType, successType, failureType] = types;
 
@@ -48,3 +48,4 @@ function callAPIMiddleware({ dispatch, getState }) {
     };
   };
 }
+

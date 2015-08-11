@@ -3,13 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node server.js",
+    "start": "node ./webpack/dev-server.js",
+    "build": "node node_modules/webpack/bin/webpack.js -p --colors --progress --config=./webpack/prod.config.js",
     "test": "mocha --recursive --compilers js:babel/register"
   },
   "dependencies": {
-    "es6-promise": "^2.3.0",
     "react": "^0.13.3",
     "react-redux": "^0.4.0",
+    "react-router": "^1.0.0-beta3",
     "redux": "^1.0.0-rc",
     "redux-thunk": "^0.1.0",
     "whatwg-fetch": "^0.9.0"
