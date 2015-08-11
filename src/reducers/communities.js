@@ -47,7 +47,6 @@ export default function communities(state = {}, action) {
       error: action.error
     }
 
-
   default:
     return state
   }
