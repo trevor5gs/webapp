@@ -1,6 +1,6 @@
 import * as TYPE from '../constants/action_types'
 
-export function communities(state = {}, action) {
+export function userData(state = {}, action) {
   switch (action.type) {
   case TYPE.LOAD_COMMUNITIES_REQUEST:
     return {
