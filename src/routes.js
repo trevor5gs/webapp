@@ -1,10 +1,10 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router'
-import Root from './components/root'
-import Onboarding from './components/onboarding'
+import App from './containers/App'
+import Onboarding from './containers/Onboarding'
 
 export default (
-  <Route name='app' component={Root}>
+  <Route name='app' component={App}>
     <Route path='onboarding' component={Onboarding} />
     <Redirect from='/' to='onboarding' />
   </Route>

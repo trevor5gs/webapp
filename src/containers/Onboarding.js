@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { test, testAsync, loadCommunities } from '../../actions/community_actions'
 
 // This decorator allows you to filter which stores you would like to sync
 // This example subscribes to all of them
@@ -10,11 +9,11 @@ import { test, testAsync, loadCommunities } from '../../actions/community_action
 
 export default class Onboarding extends React.Component {
   render() {
-    const { message, response } = this.props.communities;
-    const users = (response && response.users && response.users.length) ? response.users : []
+    const { payload, error, meta } = this.props.communities
+    const users = (payload && payload.response && payload.response.users && payload.response.users.length) ? payload.response.users : []
     return (
       <section className='onboarding'>
-        <div>Message: { message }</div>
+        <div>Message: { payload && payload.message ? payload.message : 'Nothing' }</div>
         { users.length ? this.renderUsers(users) : '' }
       </section>
     )
