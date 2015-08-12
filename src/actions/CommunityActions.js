@@ -23,6 +23,14 @@ export function loadCommunities() {
     type: 'LOAD_COMMUNITIES',
     promise: () => fetch(`_data/communities.json`),
     payload: {}
-  };
+  }
+}
+
+export function loadAwesomePeople() {
+  return {
+    type: 'LOAD_AWESOME_PEOPLE',
+    promise: () => fetch(`_data/awesome_people.json`),
+    payload: {}
+  }
 }
 
