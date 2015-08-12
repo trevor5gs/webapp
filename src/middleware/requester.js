@@ -1,24 +1,25 @@
-export default function promiseMiddleware() {
+export function requester() {
   return next => action => {
-    const { promise, type, ...rest } = action;
+    const { payload, type } = action
+    const { endpoint, vo } = payload
 
-    if (!promise) return next(action);
+    if (!endpoint) return next(action);
 
     const SUCCESS = type + '_SUCCESS'
     const REQUEST = type + '_REQUEST'
     const FAILURE = type + '_FAILURE'
 
-    next({ ...rest, type: REQUEST })
+    next({ type: REQUEST, payload })
 
-    return promise()
+    return fetch(endpoint)
       .then(checkStatus)
       .then(parseJSON)
       .then(response => {
-        next({ ...rest, response, type: SUCCESS })
+        next({ payload: { response }, type: SUCCESS })
         return true
       })
       .catch(error => {
-        next({ ...rest, error, type: FAILURE })
+        next({ error, type: FAILURE })
         return false
       })
   }

@@ -7,11 +7,11 @@ import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import * as reducers from './reducers'
 import thunk from 'redux-thunk'
-import { logger, promiser } from './middleware'
+import { logger, requester } from './middleware'
 import routes from './routes'
 
 const history = new BrowserHistory()
-const createStoreWithMiddleware = applyMiddleware(thunk, promiser, logger)(createStore)
+const createStoreWithMiddleware = applyMiddleware(thunk, requester, logger)(createStore)
 const reducer = combineReducers(reducers)
 const store = createStoreWithMiddleware(reducer)
 

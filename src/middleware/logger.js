@@ -1,4 +1,4 @@
-export default function loggerMiddleware({ dispatch, getState }) {
+export function logger({ dispatch, getState }) {
   return next => action => {
     console.group(action.type)
     console.info('dispatch', action)
