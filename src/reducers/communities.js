@@ -1,6 +1,6 @@
-import * as TYPE from '../constants/ActionTypes'
+import * as TYPE from '../constants/action_types'
 
-export default function communities(state = {}, action) {
+export function communities(state = {}, action) {
   switch (action.type) {
   case TYPE.TEST:
   case TYPE.TEST_ASYNC:

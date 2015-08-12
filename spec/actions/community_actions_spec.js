@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import * as subject from '../../src/actions/CommunityActions'
-import * as TYPE from '../../src/constants/ActionTypes'
+import * as subject from '../../src/actions/community_actions'
+import * as TYPE from '../../src/constants/action_types'
 
 describe('actions', () => {
 
@@ -17,11 +17,15 @@ describe('actions', () => {
 
   it('#loadCommunities returns the expected action', () => {
     const action = subject.loadCommunities()
-    expect(action.types[0]).to.equal(TYPE.LOAD_COMMUNITIES_REQUEST)
-    expect(action.types[1]).to.equal(TYPE.LOAD_COMMUNITIES_SUCCESS)
-    expect(action.types[2]).to.equal(TYPE.LOAD_COMMUNITIES_FAILURE)
-    expect(action.shouldCallAPI).to.be.true
-    expect(action.callAPI).to.be.a('function')
+    expect(action.type).to.equal('LOAD_COMMUNITIES')
+    expect(action.promise).to.be.a('function')
+    expect(action.payload).to.be.empty
+  })
+
+  it('#loadAwesomePeople returns the expected action', () => {
+    const action = subject.loadAwesomePeople()
+    expect(action.type).to.equal('LOAD_AWESOME_PEOPLE')
+    expect(action.promise).to.be.a('function')
     expect(action.payload).to.be.empty
   })
 
