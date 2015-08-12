@@ -9,17 +9,24 @@ import { test, testAsync, loadCommunities } from '../../actions/CommunityActions
 })
 
 export default class Onboarding extends React.Component {
-  componentWillMount() {
-    // this.props.dispatch(loadCommunities())
-    this.props.dispatch(test("wait 1 second..."))
-    this.props.dispatch(testAsync("goodbye"))
-  }
-
   render() {
+    const { message, response } = this.props.communities;
+    const users = (response && response.users && response.users.length) ? response.users : []
     return (
       <section className='onboarding'>
-        <div>Yo: {this.props.communities.message}</div>
+        <div>Message: { message }</div>
+        { users.length ? this.renderUsers(users) : '' }
       </section>
+    )
+  }
+
+  renderUsers(users) {
+    return(
+      <ul>
+        {users.map(function(user) {
+          return <li>@{user.username}</li>
+          })}
+      </ul>
     )
   }
 }

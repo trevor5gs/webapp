@@ -5,14 +5,13 @@ import Router from 'react-router'
 import BrowserHistory from 'react-router/lib/BrowserHistory'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
 import * as reducers from './reducers'
-import logger from './middleware/logger'
-import callAPI from './middleware/callAPIMiddleware'
+import thunk from 'redux-thunk'
+import { logger, promiser } from './middleware'
 import routes from './routes'
 
 const history = new BrowserHistory()
-const createStoreWithMiddleware = applyMiddleware(thunk, callAPI, logger)(createStore)
+const createStoreWithMiddleware = applyMiddleware(thunk, promiser, logger)(createStore)
 const reducer = combineReducers(reducers)
 const store = createStoreWithMiddleware(reducer)
 
