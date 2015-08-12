@@ -10,8 +10,8 @@ import { test, testAsync, loadCommunities } from '../../actions/CommunityActions
 
 export default class Onboarding extends React.Component {
   componentWillMount() {
-    // this.props.dispatch(test("wait 1 second..."))
-    // this.props.dispatch(testAsync("goodbye"))
+    // this.props.dispatch(test('wait 1 second...'))
+    // this.props.dispatch(testAsync('goodbye'))
     this.props.dispatch(loadCommunities())
   }
 
