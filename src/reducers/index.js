@@ -1,1 +1,1 @@
-export { default as communities } from './communities'
+export * from './communities'

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
-import { test, testAsync, loadCommunities, loadAwesomePeople } from '../actions/CommunityActions'
+import { test, testAsync, loadCommunities, loadAwesomePeople } from '../actions/community_actions'
 
 @connect(state => {
   return state

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { test, testAsync, loadCommunities } from '../../actions/CommunityActions'
+import { test, testAsync, loadCommunities } from '../../actions/community_actions'
 
 // This decorator allows you to filter which stores you would like to sync
 // This example subscribes to all of them

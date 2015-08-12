@@ -1,4 +1,4 @@
-import * as TYPE from '../constants/ActionTypes'
+import * as TYPE from '../constants/action_types'
 
 export function test(message) {
   return {
