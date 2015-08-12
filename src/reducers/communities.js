@@ -2,48 +2,37 @@ import * as TYPE from '../constants/action_types'
 
 export function communities(state = {}, action) {
   switch (action.type) {
-  case TYPE.TEST:
-  case TYPE.TEST_ASYNC:
-      return {
-        ...state,
-        message : action.message,
-      }
-
   case TYPE.LOAD_COMMUNITIES_REQUEST:
     return {
       ...state,
-      message: 'Loading Communities...',
-      users: []
+      payload: { message: 'Loading Communities...' }
     }
   case TYPE.LOAD_COMMUNITIES_SUCCESS:
     return {
       ...state,
-      message: 'Communities Success!',
-      response: action.response
+      payload: { message: 'Communities Success!', response: action.payload.response }
     }
   case TYPE.LOAD_COMMUNITIES_FAILURE:
     return {
       ...state,
-      message: 'Communities Failure!',
+      payload: { message: 'Communities Failure!' },
       error: action.error
     }
 
   case TYPE.LOAD_AWESOME_PEOPLE_REQUEST:
     return {
       ...state,
-      message: 'Loading Awesome People...',
-      users: []
+      payload: { message: 'Loading Awesome People...' }
     }
   case TYPE.LOAD_AWESOME_PEOPLE_SUCCESS:
     return {
       ...state,
-      message: 'Awesome People Success!',
-      response: action.response
+      payload: { message: 'Awesome People Success!', response: action.payload.response }
     }
   case TYPE.LOAD_AWESOME_PEOPLE_FAILURE:
     return {
       ...state,
-      message: 'Awesome People Failure!',
+      payload: { message: 'Awesome People Failure!' },
       error: action.error
     }
 

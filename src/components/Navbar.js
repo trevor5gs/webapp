@@ -16,16 +16,10 @@ class Navbar extends Component {
     this.props.dispatch(loadAwesomePeople())
   }
 
-  asyncButtonWasClicked() {
-    this.props.dispatch(test('wait 1 second...'))
-    this.props.dispatch(testAsync('async fired'))
-  }
-
   render() {
     return (
       <div>
         <button onClick={() => this.communitiesButtonWasClicked() }>Load Communities</button>
-        <button onClick={() => this.asyncButtonWasClicked() }>Async message</button>
         <button onClick={() => this.awesomePeopleButtonWasClicked() }>Load Awesome People</button>
       </div>
     )
@@ -35,9 +29,7 @@ class Navbar extends Component {
 // WTF is this?
 Navbar.propTypes = {
   loadCommunities: PropTypes.func.isRequired,
-  loadAwesomePeople: PropTypes.func.isRequired,
-  test: PropTypes.func.isRequired,
-  testAsync: PropTypes.func.isRequired
+  loadAwesomePeople: PropTypes.func.isRequired
 };
 
 export default Navbar
