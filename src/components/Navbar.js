@@ -1,36 +1,19 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes, Component } from 'react'
+import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import { test, testAsync, loadCommunities, loadAwesomePeople } from '../actions/community_actions'
 
 @connect(state => {
   return state
 })
 
-class Navbar extends Component {
-
-  communitiesButtonWasClicked() {
-    this.props.dispatch(loadCommunities())
-  }
-
-  awesomePeopleButtonWasClicked() {
-    this.props.dispatch(loadAwesomePeople())
-  }
-
+export default class Navbar extends Component {
   render() {
     return (
       <div>
-        <button onClick={() => this.communitiesButtonWasClicked() }>Load Communities</button>
-        <button onClick={() => this.awesomePeopleButtonWasClicked() }>Load Awesome People</button>
+        <li><Link to="/onboarding/communities">Communities</Link></li>
+        <li><Link to="/onboarding/awesome-people">Awesome People</Link></li>
       </div>
     )
   }
 }
-
-// WTF is this?
-Navbar.propTypes = {
-  loadCommunities: PropTypes.func.isRequired,
-  loadAwesomePeople: PropTypes.func.isRequired
-};
-
-export default Navbar
 

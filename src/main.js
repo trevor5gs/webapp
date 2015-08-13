@@ -19,6 +19,6 @@ const element = (
   <Provider store={store}>
     {() => <Router history={history} routes={routes} /> }
   </Provider>
-);
+)
 React.render(element, document.body)
 
