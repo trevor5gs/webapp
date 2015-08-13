@@ -7,17 +7,19 @@ describe('actions', () => {
   it('#loadCommunities returns the expected action', () => {
     const action = subject.loadCommunities()
     expect(isFSA(action)).to.be.true
-    expect(action.type).to.equal('LOAD_COMMUNITIES')
-    expect(action.payload.endpoint).to.be.equal('_data/communities.json')
+    expect(action.type).to.equal('LOAD_STREAM')
+    expect(action.payload.endpoint).to.be.equal('/_data/communities.json')
     expect(action.payload.vo).to.be.empty
+    expect(action.meta.mappingType).to.equal('users')
   })
 
   it('#loadAwesomePeople returns the expected action', () => {
     const action = subject.loadAwesomePeople()
     expect(isFSA(action)).to.be.true
-    expect(action.type).to.equal('LOAD_AWESOME_PEOPLE')
-    expect(action.payload.endpoint).to.be.equal('_data/awesome_people.json')
+    expect(action.type).to.equal('LOAD_STREAM')
+    expect(action.payload.endpoint).to.be.equal('/_data/awesome_people.json')
     expect(action.payload.vo).to.be.empty
+    expect(action.meta.mappingType).to.equal('users')
   })
 
 })
