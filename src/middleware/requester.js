@@ -16,11 +16,11 @@ export function requester() {
       .then(parseJSON)
       .then(response => {
         payload['response'] = response
-        next({ payload, meta, type: SUCCESS })
+        next({ meta, payload, type: SUCCESS })
         return true
       })
       .catch(error => {
-        next({ error, meta, type: FAILURE })
+        next({ error, meta, payload, type: FAILURE })
         return false
       })
   }
