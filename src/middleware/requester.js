@@ -1,6 +1,6 @@
 export function requester() {
   return next => action => {
-    const { payload, type } = action
+    const { payload, type, meta } = action
     const { endpoint, vo } = payload
 
     if (!endpoint) return next(action);
@@ -9,17 +9,18 @@ export function requester() {
     const REQUEST = type + '_REQUEST'
     const FAILURE = type + '_FAILURE'
 
-    next({ type: REQUEST, payload })
+    next({ type: REQUEST, payload, meta: meta })
 
     return fetch(endpoint)
       .then(checkStatus)
       .then(parseJSON)
       .then(response => {
-        next({ payload: { response }, type: SUCCESS })
+        payload['response'] = response
+        next({ meta, payload, type: SUCCESS })
         return true
       })
       .catch(error => {
-        next({ error, type: FAILURE })
+        next({ error, meta, payload, type: FAILURE })
         return false
       })
   }

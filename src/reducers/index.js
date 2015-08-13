@@ -1,1 +1,1 @@
-export * from './communities'
+export * from './reducers'
