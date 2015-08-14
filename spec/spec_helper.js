@@ -5,11 +5,18 @@ export let expect = exp
 export function isFSA(action) {
   return (
     typeof action.type !== 'undefined' &&
-    Object.keys(action).every(isValidKey)
+    Object.keys(action).every(isValidFSAKey)
   )
 }
 
-function isValidKey(key) {
+export function hasStreamMetadata(action) {
+  return (
+    typeof action.meta !== 'undefined' &&
+    Object.keys(action.meta).every(isValidStreamMetaKey)
+  )
+}
+
+function isValidFSAKey(key) {
   const validKeys = [
     'type',
     'payload',
@@ -18,3 +25,12 @@ function isValidKey(key) {
   ]
   return validKeys.indexOf(key) > -1
 }
+
+function isValidStreamMetaKey(key) {
+  const validKeys = [
+    'mappingType',
+    'renderStream',
+  ]
+  return validKeys.indexOf(key) > -1
+}
+
