@@ -4,11 +4,11 @@ import * as TYPE from '../../src/constants/action_types'
 
 describe('actions', () => {
 
-  it('#loadCommunities returns the expected action', () => {
-    const action = subject.loadCommunities()
+  it('#loadChannels returns the expected action', () => {
+    const action = subject.loadChannels()
     expect(isFSA(action)).to.be.true
     expect(action.type).to.equal('LOAD_STREAM')
-    expect(action.payload.endpoint).to.be.equal('/_data/communities.json')
+    expect(action.payload.endpoint).to.be.equal('/_data/channels.json')
     expect(action.payload.vo).to.be.empty
     expect(action.meta.mappingType).to.equal('users')
   })

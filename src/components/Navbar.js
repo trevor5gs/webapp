@@ -5,7 +5,7 @@ export default class Navbar extends Component {
   render() {
     return (
       <div>
-        <Link to="/onboarding/communities" style={linkStyles}>Communities</Link>
+        <Link to="/onboarding/channels" style={linkStyles}>Channels</Link>
         <Link to="/onboarding/awesome-people" style={linkStyles}>Awesome People</Link>
       </div>
     )

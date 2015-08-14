@@ -25,14 +25,14 @@ const element = (
         <Route component={reduxRouteComponent(store)}>
           <Route component={App}>
             <Route path='onboarding'>
-              <Route path='communities' component={StreamView}
-                    onEnter={() => store.dispatch(Actions.loadCommunities())} />
+              <Route path='channels' component={StreamView}
+                    onEnter={() => store.dispatch(Actions.loadChannels())} />
               <Route path='awesome-people' component={StreamView}
                     onEnter={() => store.dispatch(Actions.loadAwesomePeople())} />
             </Route>
           </Route>
         </Route>
-        <Redirect from='/' to='onboarding/communities' />
+        <Redirect from='/' to='onboarding/channels' />
       </Router>
     }
   </Provider>
