@@ -1,17 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { loadCommunities, loadAwesomePeople } from '../actions/community_actions'
 
-// This decorator allows you to filter which stores you would like to sync
-// This example subscribes to all of them
-@connect(state => {
-  return state
-})
+class StreamView extends React.Component {
 
-export default class StreamView extends React.Component {
   render() {
-    // this.loadStream(this.props.route.path)
-    const { payload, error, meta } = this.props.stream
+    console.log('StreamView#render', this.props)
+    const { error, meta, payload } = this.props.stream
     if (!payload || !meta) {
       return <div/>
     }
@@ -20,19 +14,10 @@ export default class StreamView extends React.Component {
     const json = (response && response[mappingType] && response[mappingType].length) ? response[mappingType] : []
     return (
       <section className='stream-view'>
-        { json.length ? this.renderStream(json) : '' }
+        { json.length ? meta.renderStream(json) : '' }
       </section>
     )
   }
-
-  loadStream(path) {
-    console.log(path)
-    switch(path) {
-    case 'communities': this.props.dispatch(loadAwesomePeople())
-    case 'awesome-people': this.props.dispatch(loadAwesomePeople())
-    }
-  }
-
 
   renderStream(json) {
     return(
@@ -44,4 +29,14 @@ export default class StreamView extends React.Component {
     )
   }
 }
+
+// This should be a selector
+// @see: https://github.com/faassen/reselect
+function mapStateToProps(state) {
+  return {
+    stream: state.stream
+  }
+}
+
+export default connect(mapStateToProps)(StreamView)
 
