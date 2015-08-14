@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
 import { Route, Redirect } from 'react-router'
 import App from './containers/App'
 
+
 export default (
-  <Route name='app' component={App}>
+  <Route component={App}>
     <Route path='onboarding'>
       <Route path='communities'
              getComponents={(cb) => getComponents(cb, 'communities')} />
@@ -14,15 +15,17 @@ export default (
   </Route>
 )
 
+
 function getComponents(cb, path) {
   var requirements = []
   switch(path) {
     case 'communities':
       requirements.push('./containers/StreamView')
+      break
     case 'awesome-people':
       requirements.push('./containers/StreamView')
+      break
   }
-  console.log(requirements)
   require.ensure([], (require) => {
     for(var index in requirements) {
       console.log( requirements[index] )
@@ -30,3 +33,4 @@ function getComponents(cb, path) {
     }
   })
 }
+
