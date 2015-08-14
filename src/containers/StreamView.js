@@ -1,14 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { loadCommunities, loadAwesomePeople } from '../actions/community_actions'
 
 class StreamView extends React.Component {
 
   render() {
     console.log('StreamView#render', this.props)
-
-    // this.loadStream(this.props.route.path)
-    const { payload, error, meta } = this.props
+    const { error, meta, payload } = this.props.stream
     if (!payload || !meta) {
       return <div/>
     }
@@ -17,21 +14,9 @@ class StreamView extends React.Component {
     const json = (response && response[mappingType] && response[mappingType].length) ? response[mappingType] : []
     return (
       <section className='stream-view'>
-        { json.length ? this.renderStream(json) : '' }
+        { json.length ? meta.renderStream(json) : '' }
       </section>
     )
-  }
-
-  loadStream(path) {
-    console.log(path)
-    switch(path) {
-      case 'communities':
-        this.props.dispatch(loadAwesomePeople())
-        break
-      case 'awesome-people':
-        this.props.dispatch(loadAwesomePeople())
-        break
-    }
   }
 
   renderStream(json) {
@@ -47,14 +32,11 @@ class StreamView extends React.Component {
 
 // This should be a selector
 // @see: https://github.com/faassen/reselect
-// function mapStateToProps(state) {
-//   return {
-//     path: state.payload.path
-//   }
-// }
+function mapStateToProps(state) {
+  return {
+    stream: state.stream
+  }
+}
 
-// export default connect(mapStateToProps)(StreamView)
-
-// This is bad... https://github.com/gaearon/react-redux#inject-dispatch-and-every-field-in-the-global-state-slow
-export default connect(state => state)(StreamView)
+export default connect(mapStateToProps)(StreamView)
 
