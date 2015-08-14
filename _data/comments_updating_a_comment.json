@@ -1,0 +1,33 @@
+{
+    "comments": {
+        "author_id": "42",
+        "body": [
+            {
+                "data": "cfiggis no, Burt Reynolds is **MY** godking.",
+                "kind": "text"
+            }
+        ],
+        "content": [
+            {
+                "data": "<p>cfiggis no, Burt Reynolds is <strong>MY</strong> godking.</p>",
+                "kind": "text"
+            }
+        ],
+        "created_at": "2015-05-28T15:35:25.847Z",
+        "id": "61",
+        "links": {
+            "assets": [],
+            "author": {
+                "href": "/api/v2/users/42",
+                "id": "42",
+                "type": "users"
+            },
+            "parent_post": {
+                "href": "/api/v2/posts/60",
+                "id": "60",
+                "type": "posts"
+            }
+        },
+        "post_id": "60"
+    }
+}
