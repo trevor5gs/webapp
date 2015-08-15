@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 class StreamView extends React.Component {
 
   render() {
-    console.log('StreamView#render', this.props)
     const { error, meta, payload } = this.props.stream
     if (!payload || !meta) {
       return <div/>
