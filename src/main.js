@@ -40,5 +40,5 @@ const element = (
   </Provider>
 )
 
-React.render(element, document.body)
+React.render(element, document.getElementById('root'))
 
