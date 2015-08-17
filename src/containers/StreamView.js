@@ -13,7 +13,7 @@ class StreamView extends React.Component {
     const json = (response && response[mappingType] && response[mappingType].length) ? response[mappingType] : []
     return (
       <section className='stream-view'>
-        { json.length ? meta.renderStream(json) : '' }
+        { json.length ? meta.renderStream(json, payload.vo) : '' }
       </section>
     )
   }

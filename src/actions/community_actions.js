@@ -17,3 +17,17 @@ export function loadAwesomePeople() {
   }
 }
 
+export function loadProfileHeader() {
+  return {
+    type: 'STATIC_PAGE',
+    meta: { renderStream: renderFunctions.profileHeaderView }
+  }
+}
+
+export function loadProfileAvatar() {
+  return {
+    type: 'STATIC_PAGE',
+    meta: { renderStream: renderFunctions.profileAvatarView }
+  }
+}
+

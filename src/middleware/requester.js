@@ -1,6 +1,8 @@
 export function requester() {
   return next => action => {
     const { payload, type, meta } = action
+
+    if (!payload) return next(action);
     const { endpoint, vo } = payload
 
     if (!endpoint) return next(action);

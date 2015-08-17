@@ -13,6 +13,7 @@ import { requester } from './middleware'
 import * as Actions from './actions/community_actions'
 import App from './containers/App'
 import StreamView from './containers/StreamView'
+import StaticView from './containers/StaticView'
 
 const history = new BrowserHistory()
 const createStoreWithMiddleware = applyMiddleware(thunk, requester, logger)(createStore)
@@ -31,6 +32,10 @@ const element = (
                     onEnter={() => store.dispatch(Actions.loadChannels())} />
               <Route path='awesome-people' component={StreamView}
                     onEnter={() => store.dispatch(Actions.loadAwesomePeople())} />
+              <Route path='profile-header' component={StaticView}
+                    onEnter={() => store.dispatch(Actions.loadProfileHeader())} />
+              <Route path='profile-avatar' component={StaticView}
+                    onEnter={() => store.dispatch(Actions.loadProfileAvatar())} />
             </Route>
           </Route>
         </Route>

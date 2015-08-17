@@ -7,9 +7,6 @@ export default class App {
   render() {
     return (
       <div className='app'>
-        <nav className='navbar'>
-          <Navbar />
-        </nav>
         <div className='main' style={{marginTop: 30 + 'px'}}>
           {this.props.children}
         </div>
