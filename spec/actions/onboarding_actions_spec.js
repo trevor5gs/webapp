@@ -1,5 +1,5 @@
 import { expect, isFSA, hasStreamMetadata } from '../spec_helper'
-import * as subject from '../../src/actions/community_actions'
+import * as subject from '../../src/actions/onboarding_actions'
 import * as TYPE from '../../src/constants/action_types'
 
 describe('actions', () => {

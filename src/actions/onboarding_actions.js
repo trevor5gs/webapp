@@ -1,9 +1,10 @@
 import * as mappingTypes from '../constants/mapping_types'
 import * as renderFunctions from '../components/Renderables'
+import * as TYPE from '../constants/action_types'
 
 export function loadChannels() {
   return {
-    type: 'LOAD_STREAM',
+    type: TYPE.LOAD_STREAM,
     payload: { endpoint: `/_data/channels.json`, vo: {} },
     meta: { mappingType: mappingTypes.USERS, renderStream: renderFunctions.channels }
   }
@@ -11,7 +12,7 @@ export function loadChannels() {
 
 export function loadAwesomePeople() {
   return {
-    type: 'LOAD_STREAM',
+    type: TYPE.LOAD_STREAM,
     payload: { endpoint: `/_data/awesome_people.json`, vo: {} },
     meta: { mappingType: mappingTypes.USERS, renderStream: renderFunctions.simpleUserGrid }
   }
@@ -19,14 +20,14 @@ export function loadAwesomePeople() {
 
 export function loadProfileHeader() {
   return {
-    type: 'STATIC_PAGE',
+    type: TYPE.STATIC_PAGE,
     meta: { renderStream: renderFunctions.profileHeaderView }
   }
 }
 
 export function loadProfileAvatar() {
   return {
-    type: 'STATIC_PAGE',
+    type: TYPE.STATIC_PAGE,
     meta: { renderStream: renderFunctions.profileAvatarView }
   }
 }
