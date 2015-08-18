@@ -1,8 +1,11 @@
+import * as TYPE from '../../src/constants/action_types'
+
 export function requester() {
   return next => action => {
     const { payload, type, meta } = action
 
-    if (!payload) return next(action);
+    if (type != TYPE.LOAD_STREAM || !payload) return next(action);
+
     const { endpoint, vo } = payload
 
     if (!endpoint) return next(action);
