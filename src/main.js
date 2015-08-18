@@ -1,3 +1,4 @@
+import './main.sass'
 import 'babel-core/polyfill'
 
 import React from 'react';
