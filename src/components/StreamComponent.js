@@ -1,7 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-class StreamView extends React.Component {
+class StreamComponent extends React.Component {
+
+  componentWillMount() {
+    this.props.action ? this.props.dispatch(this.props.action()) : console.error('Action is required to load a stream')
+  }
 
   render() {
     const { error, meta, payload } = this.props.stream
@@ -12,7 +16,7 @@ class StreamView extends React.Component {
     const { mappingType } = meta
     const json = (response && response[mappingType] && response[mappingType].length) ? response[mappingType] : []
     return (
-      <section className='stream-view'>
+      <section className='stream-component'>
         { json.length ? meta.renderStream(json, payload.vo) : '' }
       </section>
     )
@@ -27,5 +31,5 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(StreamView)
+export default connect(mapStateToProps)(StreamComponent)
 

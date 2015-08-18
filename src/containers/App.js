@@ -1,17 +1,17 @@
 import React from 'react'
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar'
 
-// This is the root of your application.
-// React router will dynamically pass in this.props.children based on the route
-export class App {
+class App extends React.Component {
   render() {
     return (
       <div className='app'>
-        <div className='main' style={{marginTop: 30 + 'px'}}>
+        <Navbar/>
+        <main>
           {this.props.children}
-        </div>
+        </main>
       </div>
     )
   }
 }
 
+export default App

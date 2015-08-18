@@ -11,8 +11,9 @@ import { Provider } from 'react-redux'
 import * as reducers from './reducers'
 import { requester } from './middleware'
 import App from './containers/App'
-import { OnboardingApp, onboardingRoutes } from './containers/OnboardingApp'
-import { SearchApp } from './containers/SearchApp'
+import SearchView from './components/views/SearchView'
+import DiscoverView from './components/views/DiscoverView'
+import { ChannelPicker, PeoplePicker, HeaderPicker, AvatarPicker } from './components/views/OnboardingView'
 
 const history = new BrowserHistory()
 const createStoreWithMiddleware = applyMiddleware(thunk, requester, logger)(createStore)
@@ -24,16 +25,22 @@ const element = (
     {() =>
       <Router history={history}>
         <Route component={reduxRouteComponent(store)}>
-          <Route component={App}>
-            <Route path='onboarding' component={OnboardingApp} children={onboardingRoutes(store)} />
-            <Route path='search' component={SearchApp} />
+          <Route path='/' component={App}>
+            <Route path='search' component={SearchView} />
+            <Route path='discover' component={DiscoverView} />
+            <Route path='onboarding'>
+              <Route path='channels' component={ChannelPicker} />
+              <Route path='awesome-people' component={PeoplePicker} />
+              <Route path='profile-header' component={HeaderPicker} />
+              <Route path='profile-avatar' component={AvatarPicker} />
+              <Redirect from='onboarding' to='channels' />
+            </Route>
           </Route>
         </Route>
-        <Redirect from='/' to='onboarding/channels' />
       </Router>
     }
   </Provider>
 )
 
-React.render(element, document.getElementById('root'))
+React.render(element, document.body)
 
