@@ -1,0 +1,180 @@
+@mixin mono-family
+  font-family: "AtlasTypewriterRegular", "AtlasTypewriter-Regular", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace
+  font-style:   normal
+  font-weight:  400
+
+@mixin mono-italic-family
+  font-family: "AtlasTypewriterRegularItalic", "AtlasTypewriter-RegularItalic", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace
+  font-style:   italic
+  font-weight:  400
+
+@mixin mono-bold-family
+  font-family: "AtlasTypewriterMedium", "AtlasTypewriter-Medium", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace
+  font-style:   normal
+  font-weight:  500
+
+@mixin mono-bold-italic-family
+  font-family: "AtlasTypewriterMediumItalic", "AtlasTypewriter-MediumItalic", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace
+  font-style:   italic
+  font-weight:  500
+
+@mixin heading-family
+  font-family: "AtlasGroteskBold", "AtlasGrotesk-Bold", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif
+  font-style:   normal
+  font-weight:  700
+  text-rendering: optimizeLegibility
+
+@mixin heading
+  +heading-family
+  color: #231f20
+
+@mixin typeset
+  font-size: 0.75rem
+
+@mixin unstyled-list
+  margin-left: 0
+  list-style: none
+
+@mixin ellipse
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+
+// ----------------------------------------------------------------------------
+
+h1, h2, h3, h4, h5, h6
+  +mono-bold-family
+  +typeset
+  margin: 0
+
+p
+  margin: rem(15) 0
+
+p, ol, ul, dl
+  +typeset
+
+p:empty
+  display: none
+
+ol, ul, dl, dd
+  margin: 0
+
+ol, ul
+  padding: 0
+
+ol
+  margin-left: 2.2em
+
+ul
+  margin-left: 1.2em
+
+nav ul,
+nav ol
+  +unstyled-list
+
+dl
+  line-height: 2.5
+  margin-bottom: rem(30)
+
+dt
+  float: left
+  width: rem(90)
+  overflow: hidden
+  clear: left
+  text-overflow: ellipsis
+  white-space: nowrap
+
+dd
+  margin-left: rem(120)
+
+a
+  background: transparent
+  color: inherit
+  text-decoration: none
+
+a:focus,
+a:active,
+.no-touch a:hover
+  outline: 0
+
+p a,
+[contenteditable="true"] a
+  transition: color $speed ease
+  border-bottom: 1px solid
+
+p a:focus,
+p a:active,
+.no-touch p a:hover
+  color: #aaa
+
+em, i
+  +mono-italic-family
+
+strong, b
+  +mono-bold-family
+
+strong em,
+em strong,
+b i,
+i b,
+b em,
+em b,
+strong i,
+i strong
+  +mono-bold-italic-family
+
+// Webkit doesn't like our font-weight of normal
+[contenteditable="true"] b,
+[contenteditable="true"] b i,
+[contenteditable="true"] i b
+  font-weight: 600
+
+small
+  font-size: 0.875em
+
+sub, sup
+  position: relative
+  vertical-align: baseline
+  font-size: 0.75em
+  line-height: 0
+
+sup
+  top: -0.5em
+
+sub
+  bottom: -0.25em
+
+mark
+  padding: rem(6) rem(10)
+  background-color: #ffffcc
+  color: black
+  font-size: 0.75rem
+
+code, pre
+  font-family: inherit
+  background-color: #f1f1f1
+  font-size: 0.75rem
+
+code
+  display: inline-block
+  padding: rem(6) rem(10)
+
+pre
+  margin: rem(15) 0
+  padding: rem(15)
+  overflow: hidden
+  white-space: pre-wrap
+  word-wrap: break-word
+
+pre code
+  padding: 0
+  background-color: transparent
+
+hr
+  display: block
+  margin: 1em 0
+  padding: 0
+  height: 1px
+  border: 0
+  border-top: 1px solid #f1f1f1
+

@@ -1,0 +1,37 @@
+*, *:before, *:after
+  box-sizing: border-box
+  -webkit-font-smoothing: subpixel-antialiased
+
+html
+  font: normal 400 100%/1.5 "AtlasTypewriterRegular", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace
+  -ms-text-size-adjust: 100%
+  -webkit-text-size-adjust: 100%
+  text-size-adjust: 100%
+  -webkit-tap-highlight-color: rgba(0,0,0,0)
+
+
+body
+  position: relative
+  margin: 0
+  background-color: white
+  overflow-x: hidden
+
+
+::selection
+  background: black
+  color: white
+  text-shadow: none
+
+
+[hidden], .hidden, template, #templates, #probe
+  +hidden
+
+.invisible
+  +invisible
+
+[disabled], .disabled
+  cursor: default
+
+.unselectable
+  user-select: none
+

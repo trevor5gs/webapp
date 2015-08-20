@@ -1,0 +1,36 @@
+// Most of these courtesy of H5BP http://html5boilerplate.com/
+
+// Totally hidden from screen readers and browsers
+@mixin hidden
+  display: none !important
+  visibility: hidden
+
+
+// Hide visually and remove from layout (useful for the
+// checkbox hack)
+@mixin invisible
+  position: absolute
+  visibility: hidden
+  opacity: 0
+
+
+// Only visually hidden, still available to screen readers,
+// and keyboard focus states
+@mixin visuallyhidden
+  clip: rect(0 0 0 0)
+  position: absolute
+  overflow: hidden
+  width: 1px
+  height: 1px
+  margin: -1px
+  padding: 0
+  border: 0
+  &.focusable:active,
+  &.focusable:focus
+    clip: auto
+    position: static
+    overflow: visible
+    margin: 0
+    width: auto
+    height: auto
+
