@@ -1,6 +1,5 @@
 var path = require('path')
-// var webpack = require('webpack')
-var output = path.join(__dirname, '../build')
+var output = path.join(__dirname, '../assets')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
@@ -14,7 +13,7 @@ module.exports = {
   output: {
     path: output,
     filename: 'bundle.js',
-    publicPath: '/build/'
+    publicPath: '/assets/'
   },
   progress: true,
   module: {
