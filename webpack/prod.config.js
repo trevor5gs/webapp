@@ -1,5 +1,5 @@
 var path = require('path')
-var webpack = require('webpack')
+// var webpack = require('webpack')
 var output = path.join(__dirname, '../build')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 

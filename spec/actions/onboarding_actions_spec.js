@@ -1,9 +1,7 @@
 import { expect, isFSA, hasStreamMetadata } from '../spec_helper'
-import * as subject from '../../src/actions/onboarding_actions'
-import * as TYPE from '../../src/constants/action_types'
+import * as subject from '../../src/actions/onboarding'
 
 describe('actions', () => {
-
   it('#loadChannels returns the expected action', () => {
     const action = subject.loadChannels()
     expect(isFSA(action)).to.be.true
@@ -25,6 +23,5 @@ describe('actions', () => {
     expect(action.meta.mappingType).to.equal('users')
     expect(action.meta.renderStream).to.be.a('function')
   })
-
 })
 
