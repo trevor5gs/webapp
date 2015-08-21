@@ -1,16 +1,36 @@
 .Navbar
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
   height: rem(140)
-  background-color: rgba(black, 0.1)
+  padding: rem(40)
+  background-color: white
+  z-index: $z-navbar
 
-.Navbar > a
+.NavbarLinks
+  position: absolute
+  margin-top: rem(-10)
+  top: 50%
+  right: rem(40)
+
+.NavbarLinks > a
+  +sans-family
+  +sans-typeset
+  transition: color $speed2
   color: #aaa
   display: inline-block
   vertical-align: middle
+  border-bottom-width: 0
 
-.Navbar > a + a
+.NavbarLinks > a + a
   margin-left: rem(20)
 
-.Navbar > .active:not(.tmp)
+.NavbarLinks > a:not(.active):hover,
+.NavbarLinks > .active
   border-bottom: 2px solid
   color: black
+
+main
+  margin-top: rem(140)
 
