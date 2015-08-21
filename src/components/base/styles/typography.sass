@@ -2,6 +2,7 @@
 +font-face("AtlasTypewriterRegularItalic", "AtlasTypewriter-RegularItalic-Web", $weight:400, $style:italic)
 +font-face("AtlasTypewriterMedium", "AtlasTypewriter-Medium-Web", $weight:500, $style:normal)
 +font-face("AtlasTypewriterMediumItalic", "AtlasTypewriter-MediumItalic-Web", $weight:500, $style:italic)
++font-face("AtlasGroteskRegular", "AtlasGrotesk-Regular-Web", $weight:400, $style:normal)
 +font-face("AtlasGroteskBold", "AtlasGrotesk-Bold-Web", $weight:700, $style:normal)
 
 
@@ -25,11 +26,17 @@
   font-style:   italic
   font-weight:  500
 
+@mixin sans-family
+  font-family: "AtlasGroteskRegular", "AtlasGrotesk-Regular", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif
+  font-style:   normal
+  font-weight:  400
+
 @mixin heading-family
   font-family: "AtlasGroteskBold", "AtlasGrotesk-Bold", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif
   font-style:   normal
   font-weight:  700
   text-rendering: optimizeLegibility
+
 
 @mixin heading
   +heading-family
@@ -37,6 +44,9 @@
 
 @mixin typeset
   font-size: 0.75rem
+
+@mixin sans-typeset
+  font-size: 0.875rem
 
 @mixin unstyled-list
   margin-left: 0
@@ -184,4 +194,8 @@ hr
   height: 1px
   border: 0
   border-top: 1px solid #f1f1f1
+
+.heading
+  +heading
+  font-size: rem(24)
 
