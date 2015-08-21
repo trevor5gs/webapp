@@ -1,12 +1,32 @@
 .OnboardingHeader
+  position: relative
   height: rem(240)
-  background-color: white
+  padding: rem(40)
+  // background-color: white
+  background-color: rgba(black, 0.04)
 
-.OnboardingHeader > a
+.OnboardingColumn > h1
+  +heading-family
+  font-size: rem(18)
+
+.OnboardingColumn > p
+  color: #aaa
+
+.OnboardingColumn:nth-child(1)
+  margin-left: 25%
+
+.OnboardingColumn:nth-child(2)
+  position: absolute
+  margin-top: rem(-10)
+  top: 50%
+  right: rem(40)
+
+.OnboardingColumn:nth-child(2) > a
+  +typeset
   color: #aaa
   display: inline-block
   vertical-align: middle
 
-.OnboardingHeader > a + a
-  margin-left: rem(20)
+.OnboardingColumn:nth-child(2) > a + a
+  margin-left: 10px
 
