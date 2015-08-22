@@ -1,10 +1,5 @@
 import React from 'react'
-
-
-function getClassNames(props, defaultIconName = 'SVGIcon') {
-  const { className } = props
-  return className ? `${defaultIconName} ${className}` : defaultIconName
-}
+import { mergeClassNames } from '../base/utils'
 
 
 export class SVGComponent extends React.Component {
@@ -23,7 +18,7 @@ export class SVGIcon {
     return (
       <SVGComponent height="20"
                     width="20"
-                    className={getClassNames(this.props)}>
+                    className={mergeClassNames(this.props, 'SVGIcon')}>
         {this.props.children}
       </SVGComponent>
     )
@@ -36,7 +31,7 @@ export class SVGBox {
     return (
       <SVGComponent height="60"
                     width="60"
-                    className={getClassNames(this.props, 'SVGBox')}>
+                    className={mergeClassNames(this.props, 'SVGBox')}>
         {this.props.children}
       </SVGComponent>
     )

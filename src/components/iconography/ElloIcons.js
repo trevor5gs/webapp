@@ -1,5 +1,5 @@
 import React from 'react'
-import { SVGBox } from '../base/SVGComponents'
+import { SVGBox } from './SVGComponents'
 
 export class ElloMark {
   render() {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { SVGIcon } from '../base/SVGComponents'
+import { SVGIcon } from './SVGComponents'
 
 // -------------------------------------
 

@@ -1,10 +1,13 @@
-+font-face("AtlasTypewriterRegular", "AtlasTypewriter-Regular-Web", $weight:400, $style:normal)
-+font-face("AtlasTypewriterRegularItalic", "AtlasTypewriter-RegularItalic-Web", $weight:400, $style:italic)
-+font-face("AtlasTypewriterMedium", "AtlasTypewriter-Medium-Web", $weight:500, $style:normal)
-+font-face("AtlasTypewriterMediumItalic", "AtlasTypewriter-MediumItalic-Web", $weight:500, $style:italic)
-+font-face("AtlasGroteskRegular", "AtlasGrotesk-Regular-Web", $weight:400, $style:normal)
-+font-face("AtlasGroteskBold", "AtlasGrotesk-Bold-Web", $weight:700, $style:normal)
+@mixin sans-family
+  font-family: "AtlasGroteskRegular", "AtlasGrotesk-Regular", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif
+  font-style:   normal
+  font-weight:  400
 
+@mixin heading-family
+  font-family: "AtlasGroteskBold", "AtlasGrotesk-Bold", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif
+  font-style:   normal
+  font-weight:  700
+  text-rendering: optimizeLegibility
 
 @mixin mono-family
   font-family: "AtlasTypewriterRegular", "AtlasTypewriter-Regular", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace
@@ -26,27 +29,15 @@
   font-style:   italic
   font-weight:  500
 
-@mixin sans-family
-  font-family: "AtlasGroteskRegular", "AtlasGrotesk-Regular", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif
-  font-style:   normal
-  font-weight:  400
-
-@mixin heading-family
-  font-family: "AtlasGroteskBold", "AtlasGrotesk-Bold", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif
-  font-style:   normal
-  font-weight:  700
-  text-rendering: optimizeLegibility
-
-
 @mixin heading
   +heading-family
   color: #231f20
 
-@mixin typeset
-  font-size: 0.75rem
-
 @mixin sans-typeset
   font-size: 0.875rem
+
+@mixin mono-typeset
+  font-size: 0.75rem
 
 @mixin unstyled-list
   margin-left: 0
@@ -61,14 +52,14 @@
 
 h1, h2, h3, h4, h5, h6
   +mono-bold-family
-  +typeset
+  +mono-typeset
   margin: 0
 
 p
   margin: rem(15) 0
 
 p, ol, ul, dl
-  +typeset
+  +mono-typeset
 
 p:empty
   display: none
@@ -195,7 +186,29 @@ hr
   border: 0
   border-top: 1px solid #f1f1f1
 
+// -------------------------------------
+
+table
+  +mono-typeset
+  width: 100%
+  border-collapse: collapse
+  border-spacing: 0
+
+tr
+  border-bottom: 1px solid #f1f1f1
+
+td, th
+  padding: rem(6) 0 rem(5)
+  text-align: left
+
+th
+  +mono-bold-family
+  vertical-align: bottom
+
+// -------------------------------------
+
 .heading
   +heading
   font-size: rem(24)
+  line-height: 1.35
 

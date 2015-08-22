@@ -1,17 +1,11 @@
 import React from 'react'
-
-// This is duplicated code
-function getClassNames(props, baseClassName = 'Button') {
-  const { className } = props
-  return className ? `${baseClassName} ${className}` : baseClassName
-}
+import { mergeClassNames } from '../base/utils'
 
 export class Button extends React.Component {
   render() {
-    const mergedClassNames = getClassNames(this.props, this.classList())
-
+    const klasses = mergeClassNames(this.props, this.classList())
     return (
-      <button {...this.props} className={mergedClassNames} type="button">
+      <button {...this.props} className={klasses} type="button">
         {this.props.children}
       </button>
     )

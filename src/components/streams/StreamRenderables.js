@@ -1,5 +1,5 @@
 import React from 'react'
-import ChannelCard from '../people/ChannelCard'
+import ChannelCard from '../channels/ChannelCard'
 
 export function onboardingChannels(json) {
   return (
