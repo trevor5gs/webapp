@@ -1,6 +1,7 @@
 import React from 'react'
 import { SVGIcon } from '../base/SVGComponents'
 
+// -------------------------------------
 
 export class PlusIcon {
   render() {
@@ -13,14 +14,29 @@ export class PlusIcon {
       </SVGIcon>
     )
   }
-
   classList() {
     return 'PlusIcon'
   }
 }
 
-
 export class MinusIcon extends PlusIcon {
   classList() { return 'MinusIcon' }
+}
+
+// -------------------------------------
+
+export class ChevronIcon {
+  render() {
+    return (
+      <SVGIcon className={this.classList()}>
+        <g>
+          <polyline points="6,16 12,10 6,4"/>
+        </g>
+      </SVGIcon>
+    )
+  }
+  classList() {
+    return 'ChevronIcon'
+  }
 }
 

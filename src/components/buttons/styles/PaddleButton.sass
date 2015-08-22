@@ -1,0 +1,29 @@
+.PaddleButton
+  +circle(rem(60))
+  transition: background-color $speed2 $ease, border-color $speed $ease
+  background-color: rgba(black, 0.75)
+  border-color: rgba(black, 0.75)
+  > .SVGIcon g
+    stroke: white
+  &:active,
+  .no-touch &:hover
+    background-color: #ababab
+    border-color: #ababab
+
+.PaddleButton .ChevronIcon
+  margin-left: rem(5)
+
+
+// -------------------------------------
+// Layout within a Paddles container...?
+
+.Paddles
+  position: absolute
+
+.Paddles > .PaddleButton:first-child
+  transform: rotate(180deg)
+
+.Paddles > .PaddleButton + .PaddleButton
+  position: absolute
+  right: 0
+

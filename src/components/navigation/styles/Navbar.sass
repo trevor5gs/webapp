@@ -17,8 +17,8 @@
 .NavbarLinks > a
   +sans-family
   +sans-typeset
-  transition: color $speed2
-  color: #aaa
+  transition: color $speed
+  color: #ababab
   display: inline-block
   vertical-align: middle
   border-bottom-width: 0
@@ -26,11 +26,11 @@
 .NavbarLinks > a + a
   margin-left: rem(20)
 
-.NavbarLinks > a:not(.active):hover,
+.no-touch .NavbarLinks > a:not(.active):hover,
 .NavbarLinks > .active
   border-bottom: 2px solid
   color: black
 
-main
-  margin-top: rem(140)
+[data-pathname^="/onboarding"] + .Navbar
+  display: none
 

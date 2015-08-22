@@ -12,8 +12,10 @@ class OnboardingHeader extends React.Component {
           <p>{this.props.message}</p>
         </div>
         <div className="OnboardingColumn">
-          <Link to={this.props.nextPath}>Next</Link>
-          <Link to={this.props.nextPath}>Skip</Link>
+          <Link className="Button" to={this.props.nextPath}>Next</Link>
+          <p>
+            <Link to={this.props.nextPath}>Skip</Link>
+          </p>
         </div>
       </header>
     )

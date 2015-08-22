@@ -14,7 +14,7 @@ import { requester } from './middleware'
 import App from './containers/App'
 import SearchView from './components/views/SearchView'
 import DiscoverView from './components/views/DiscoverView'
-import { ChannelPicker, PeoplePicker, HeaderPicker, AvatarPicker } from './components/views/OnboardingView'
+import { ChannelPicker, PeoplePicker, HeaderPicker, AvatarPicker, BioCreator } from './components/views/OnboardingView'
 
 const history = new BrowserHistory()
 const createStoreWithMiddleware = applyMiddleware(thunk, requester, logger)(createStore)
@@ -34,6 +34,7 @@ const element = (
               <Route path="awesome-people" component={PeoplePicker} />
               <Route path="profile-header" component={HeaderPicker} />
               <Route path="profile-avatar" component={AvatarPicker} />
+              <Route path="profile-bio" component={BioCreator} />
               <Redirect from="onboarding" to="channels" />
             </Route>
           </Route>

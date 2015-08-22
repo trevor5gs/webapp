@@ -1,0 +1,131 @@
+// Todo: Move to it's own component and rename
+// Should Paddles be it's own component?
+.HeaderUploaderThingy
+  transition: background-color $speed ease, opacity $speed ease
+  // height: 100%
+  padding-bottom: 56.25%
+  background-color: rgba(black, 0.5)
+  color: white
+  text-align: center
+
+.HeaderUploaderThingy > .Button
+  +ButtonPrimary
+  min-width: rem(280)
+
+.HeaderUploaderThingy > p
+  margin-bottom: 0
+
+.HeaderUploaderThingy > p + p
+  margin-top: 0
+
+// Todo: Move to it's own component and rename
+.Avatar
+  +circle(rem(160))
+  position: relative
+  background-color: black
+
+.AvatarUploaderThingy
+  position: relative
+  color: #ababab
+
+.AvatarUploaderThingy > .Button
+  +ButtonPrimary
+  min-width: rem(280)
+
+.AvatarUploaderThingy > p
+  margin-bottom: 0
+
+.AvatarUploaderThingy > p + p
+  margin-top: 0
+
+// Todo: Move to it's own component and rename
+.BioCreatorThingy
+  position: relative
+
+
+// -------------------------------------
+
+.ChannelPicker .StreamComponent,
+.PeoplePicker .StreamComponent
+  padding: 0 rem(10)
+
+
+@media(min-width: #{em(960)})
+  .ChannelPicker .StreamComponent,
+  .PeoplePicker .StreamComponent
+    padding: 0 rem(20)
+
+
+.PeoplePicker > .Button
+  display: block
+  width: 100%
+  max-width: 640px
+  margin: 0 auto
+
+// -------------------------------------
+
+.HeaderPicker
+  // position may get removed once we define Panel since this is an extension
+  position: relative
+
+.HeaderPicker > .HeaderUploaderThingy > .Button
+  margin-top: rem(120)
+
+.HeaderPicker > .Paddles
+  top: rem(360)
+  left: rem(20)
+  right: rem(20)
+
+@media(min-width: #{em(600)})
+  .HeaderPicker > .Paddles
+    top: rem(120)
+
+@media(min-width: #{em(960)})
+  .HeaderPicker > .HeaderUploaderThingy > .Button
+    margin-top: rem(240)
+  .HeaderPicker > .Paddles
+    top: rem(240)
+    left: rem(40)
+    right: rem(40)
+
+
+
+// -------------------------------------
+.AvatarPicker > .AvatarUploaderThingy
+  padding: rem(10)
+
+.AvatarPicker > .AvatarUploaderThingy > .Avatar
+  margin-bottom: rem(10)
+
+@media(min-width: #{em(600)})
+  .AvatarPicker > .AvatarUploaderThingy > .Avatar
+    position: absolute
+    top: 0
+    left: 0
+  .AvatarPicker > .AvatarUploaderThingy
+    padding-top: rem(40)
+    padding-left: rem(200)
+    margin-left: 15%
+
+@media(min-width: #{em(960)})
+  .AvatarPicker > .AvatarUploaderThingy
+    margin-left: 25%
+
+// -------------------------------------
+
+.BioCreator > .BioCreatorThingy
+  padding: rem(10)
+
+@media(min-width: #{em(600)})
+  .BioCreator > .BioCreatorThingy > .Avatar
+    position: absolute
+    top: 0
+    left: 0
+  .BioCreator > .BioCreatorThingy
+    padding-top: rem(40)
+    padding-left: rem(200)
+    margin-left: 15%
+@media(min-width: #{em(960)})
+  .BioCreator > .BioCreatorThingy
+    margin-left: 25%
+

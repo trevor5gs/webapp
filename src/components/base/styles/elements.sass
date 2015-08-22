@@ -1,26 +1,11 @@
 @mixin max-width
   max-width: rem(780)
 
-// @mixin omni
-//   +typeset
-//   transition: background-color $speed ease
-//   padding: 0 30px
-//   background-color: black
-//   color: white
-
-// @mixin omni-before
-//   +triangle(west, rem(20), black)
-//   transition: border-color $speed ease
-//   content: ""
-//   position: absolute
-//   left: rem(-20)
-
 // @mixin loader( $width:30 )
 //   background: transparent url(asset-path("assets/loading/scroll-loading.gif")) no-repeat center center
 //   background-size: $width * 1px
 
-
-// -----------------------------------------------------------------------------
+// -------------------------------------
 
 audio, canvas, img, svg, video
   vertical-align: middle
@@ -32,6 +17,7 @@ img
 
 // if an image has a file extension, give it height: auto for responsiveness.
 // until there's a src with a file extension, we show a loading 1x1 gif, which can't have height:auto, to snap to the width/height attributes of the img tag
+
 img[src*='.']
   height: auto
 
