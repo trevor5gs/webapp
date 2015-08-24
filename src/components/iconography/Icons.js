@@ -4,12 +4,10 @@ import { SVGIcon } from './SVGComponents'
 // -------------------------------------
 
 export class PlusIcon {
-  classList() {
-    return 'PlusIcon'
-  }
+  classList = 'PlusIcon'
   render() {
     return (
-      <SVGIcon className={this.classList()}>
+      <SVGIcon className={this.classList}>
         <g>
           <line x1="4.5" y1="9.5" x2="14.5" y2="9.5"/>
           <line x1="9.5" y1="14.5" x2="9.5" y2="4.5"/>
@@ -20,7 +18,7 @@ export class PlusIcon {
 }
 
 export class MinusIcon extends PlusIcon {
-  classList() { return 'MinusIcon' }
+  classList = 'MinusIcon'
 }
 
 // -------------------------------------
