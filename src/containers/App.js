@@ -1,7 +1,10 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Navbar from '../components/navigation/Navbar'
+import Devtools from '../components/devtools/Devtools'
 
 class App extends React.Component {
+
   render() {
     const { location } = this.props
     return (
@@ -10,10 +13,12 @@ class App extends React.Component {
           {this.props.children}
         </main>
         <Navbar/>
+        <Devtools/>
       </section>
     )
   }
+
 }
 
-export default App
+export default connect()(App)
 
