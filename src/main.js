@@ -3,7 +3,7 @@ import 'babel-core/polyfill'
 
 import React from 'react'
 import thunk from 'redux-thunk'
-import logger from 'redux-logger'
+import createLogger from 'redux-logger'
 import { Router, Route, Redirect } from 'react-router'
 import BrowserHistory from 'react-router/lib/BrowserHistory'
 import { reduxRouteComponent, routerStateReducer } from 'redux-react-router'
@@ -17,6 +17,8 @@ import DiscoverView from './components/views/DiscoverView'
 import { ChannelPicker, PeoplePicker, HeaderPicker, AvatarPicker, BioCreator } from './components/views/OnboardingView'
 
 const history = new BrowserHistory()
+const logger = createLogger({ collapsed: true })
+
 const createStoreWithMiddleware = applyMiddleware(thunk, requester, logger)(createStore)
 const reducer = combineReducers({ router: routerStateReducer, ...reducers })
 const store = createStoreWithMiddleware(reducer)
