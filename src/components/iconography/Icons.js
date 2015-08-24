@@ -4,6 +4,9 @@ import { SVGIcon } from './SVGComponents'
 // -------------------------------------
 
 export class PlusIcon {
+  classList() {
+    return 'PlusIcon'
+  }
   render() {
     return (
       <SVGIcon className={this.classList()}>
@@ -14,9 +17,6 @@ export class PlusIcon {
       </SVGIcon>
     )
   }
-  classList() {
-    return 'PlusIcon'
-  }
 }
 
 export class MinusIcon extends PlusIcon {
@@ -26,6 +26,9 @@ export class MinusIcon extends PlusIcon {
 // -------------------------------------
 
 export class ChevronIcon {
+  classList() {
+    return 'ChevronIcon'
+  }
   render() {
     return (
       <SVGIcon className={this.classList()}>
@@ -34,9 +37,6 @@ export class ChevronIcon {
         </g>
       </SVGIcon>
     )
-  }
-  classList() {
-    return 'ChevronIcon'
   }
 }
 

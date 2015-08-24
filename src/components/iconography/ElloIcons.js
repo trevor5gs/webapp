@@ -2,6 +2,9 @@ import React from 'react'
 import { SVGBox } from './SVGComponents'
 
 export class ElloMark {
+  classList() {
+    return 'ElloMark'
+  }
   render() {
     return (
       <SVGBox className={this.classList()}>
@@ -11,9 +14,6 @@ export class ElloMark {
     )
   }
 
-  classList() {
-    return 'ElloMark'
-  }
 }
 
 

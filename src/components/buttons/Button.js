@@ -2,6 +2,10 @@ import React from 'react'
 import { mergeClassNames } from '../base/utils'
 
 export class Button extends React.Component {
+  classList() {
+    return 'Button'
+  }
+
   render() {
     const klasses = mergeClassNames(this.props, this.classList())
     return (
@@ -9,9 +13,6 @@ export class Button extends React.Component {
         {this.props.children}
       </button>
     )
-  }
-  classList() {
-    return 'Button'
   }
 }
 
