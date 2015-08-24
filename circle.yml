@@ -1,4 +1,4 @@
 test:
   pre:
-    - npm lint
+    - npm run lint
 
