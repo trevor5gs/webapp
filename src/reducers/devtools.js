@@ -4,7 +4,6 @@ const initialState = {
   payload: {
     horizontalGridIsVisible: false,
     verticalGridIsVisible: false,
-    blue: 'dawg',
   },
 }
 

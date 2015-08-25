@@ -37,7 +37,7 @@ class Devtools extends React.Component {
 
   renderGrid(isVisible, type) {
     return (
-      isVisible ? <div className={type}></div> : ''
+      isVisible ? <div className={type}></div> : <span/>
     )
   }
 
