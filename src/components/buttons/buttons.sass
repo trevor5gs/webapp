@@ -1,0 +1,59 @@
+@mixin button-reset
+  display: inline-block
+  vertical-align: middle
+  margin: 0
+  padding: 0
+  background: transparent
+  border: 0
+  border-radius: 0
+  color: inherit
+  font: inherit
+  text-transform: none
+  outline: 0
+
+@mixin hitarea
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  z-index: 2
+  content: ""
+  background-color: rgba(0,0,0,0)
+
+@mixin button-link
+  +mono-typeset
+  transition: color $speed
+
+@mixin button-with-hitarea
+  position: relative
+  &:before
+    +hitarea
+
+@mixin link-as-button-with-hitarea
+  display: inline-block
+  vertical-align: middle
+  +button-with-hitarea
+
+// -------------------------------------
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"]
+  cursor: pointer
+  -webkit-appearance: button
+
+button[disabled],
+html input[disabled]
+  cursor: default
+
+input::-moz-focus-inner,
+button::-moz-focus-inner
+  padding: 0
+  border: 0
+
+button
+  +button-reset
+  +button-with-hitarea
+

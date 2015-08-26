@@ -1,0 +1,44 @@
+*, *:before, *:after
+  box-sizing: border-box
+  -webkit-font-smoothing: subpixel-antialiased
+
+html
+  font: normal 400 100%/1.5 $html-fontface
+  -ms-text-size-adjust: 100%
+  -webkit-text-size-adjust: 100%
+  text-size-adjust: 100%
+  -webkit-tap-highlight-color: rgba(0,0,0,0)
+
+body
+  position: relative
+  overflow-x: hidden
+  margin: 0
+  background-color: white
+
+::selection
+  background: black
+  color: white
+  text-shadow: none
+
+audio, canvas, img, svg, video
+  vertical-align: middle
+
+audio:not([controls])
+  display: none
+  height: 0
+
+svg:not(:root)
+  overflow: hidden
+
+[hidden], template, .hidden, #probe
+  +hidden
+
+.invisible
+  +invisible
+
+[disabled], .disabled
+  cursor: default
+
+.unselectable
+  user-select: none
+

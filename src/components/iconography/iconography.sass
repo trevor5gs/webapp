@@ -1,0 +1,38 @@
+.SVGIcon g
+  fill: transparent
+  stroke: black
+  stroke-width: 1.25
+  stroke-miterlimit: 10
+
+.SVGIcon > g
+  transition: fill $speed ease $speed * 0.5, stroke $speed ease, transform $speed ease
+
+.SVGIcon > g:nth-of-type(2)
+  transition-delay: $speed, $speed * 0.5, $speed * 0.5
+
+.SVGIcon > g:nth-of-type(3)
+  transition-delay: $speed * 1.5, $speed, $speed
+
+.SVGIcon > g:nth-of-type(4)
+  transition-delay: $speed * 2, $speed, $speed
+
+.PlusIcon g,
+.MinusIcon g
+  transition-delay: $speed * 0.5, 0s, 0s
+  stroke-linecap: square
+
+.MinusIcon line:nth-of-type(2)
+  display: none
+
+// -------------------------------------
+
+.SVGBox path:nth-of-type(n+2)
+  fill: white
+
+// -------------------------------------
+
+.ElloMark
+  border-radius: rem(60)
+  display: inline-block
+  overflow: hidden
+

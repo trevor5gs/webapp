@@ -1,17 +1,24 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
+import { connect } from 'react-redux'
+import Navbar from '../components/navigation/Navbar'
+import Devtools from '../components/devtools/Devtools'
 
 class App extends React.Component {
+
   render() {
+    const { location } = this.props
     return (
-      <div className='app'>
-        <Navbar/>
-        <main>
+      <section className="App">
+        <main className="Main" data-pathname={location.pathname} role="main">
           {this.props.children}
         </main>
-      </div>
+        <Navbar/>
+        <Devtools/>
+      </section>
     )
   }
+
 }
 
-export default App
+export default connect()(App)
+

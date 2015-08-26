@@ -1,0 +1,35 @@
+@mixin ButtonBase
+  +mono-typeset
+  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease
+  height: rem(60)
+  padding: 0 rem(30)
+  border: 1px solid
+  font-size: 0.75rem
+  line-height: rem(60)
+  text-align: center
+  &[disabled]
+    pointer-events: none
+    opacity: 0.5
+
+@mixin ButtonPrimary
+  background-color: black
+  border-color: black
+  color: white
+
+// -------------------------------------
+
+a.Button
+  +link-as-button-with-hitarea
+
+.Button
+  +ButtonBase
+
+.Button
+  &:active,
+  .no-touch &:hover
+    background-color: #ababab
+    border-color: #ababab
+    color: white
+    > .SVGIcon g
+      stroke: white
+
