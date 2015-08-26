@@ -2,8 +2,11 @@ import React from 'react'
 import * as OnboardingActions from '../../actions/onboarding'
 import OnboardingHeader from '../navigation/OnboardingHeader'
 import StreamComponent from '../streams/StreamComponent'
-import { Button } from '../buttons/Button'
-import { PaddleButton } from '../buttons/PaddleButton'
+import AvatarUploader from '../uploaders/AvatarUploader'
+import HeaderUploader from '../uploaders/HeaderUploader'
+import HeaderCarousel from '../carousels/HeaderCarousel'
+import Button from '../buttons/Button'
+import BioForm from '../forms/BioForm'
 
 export class ChannelPicker extends React.Component {
   render() {
@@ -42,18 +45,8 @@ export class HeaderPicker extends React.Component {
             nextPath="/onboarding/profile-avatar"
             title="Customize your profile."
             message="Choose a header image by @username or upload your own." />
-
-        <div className="HeaderUploaderThingy">
-          <Button>Upload a header image</Button>
-          <p>Or drag & drop</p>
-          <p>Recommended image size: 2560 x 1440</p>
-        </div>
-
-        <div className="Paddles">
-          <PaddleButton />
-          <PaddleButton />
-        </div>
-
+        <HeaderUploader />
+        <HeaderCarousel />
       </div>
     )
   }
@@ -67,14 +60,7 @@ export class AvatarPicker extends React.Component {
           nextPath="/onboarding/profile-bio"
           title="Customize your profile."
           message="Choose an avatar." />
-
-        <div className="AvatarUploaderThingy">
-          <figure className="Avatar"></figure>
-          <Button>Pick an Avatar</Button>
-          <p>Or drag & drop</p>
-          <p>Recommended image size: 360 x 360</p>
-        </div>
-
+        <AvatarUploader />
       </div>
     )
   }
@@ -88,14 +74,7 @@ export class BioCreator extends React.Component {
           nextPath="/discover"
           title="Customize your profile."
           message="Fill out your bio." />
-
-        <div className="BioCreatorThingy">
-          <figure className="Avatar"></figure>
-          <p>Name</p>
-          <p>Bio</p>
-          <p>Links</p>
-        </div>
-
+        <BioForm />
       </div>
     )
   }
