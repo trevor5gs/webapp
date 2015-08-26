@@ -1,5 +1,5 @@
 import React from 'react'
-import { PaddleButton } from '../buttons/PaddleButton'
+import PaddleButton from '../buttons/PaddleButton'
 
 class HeaderCarousel extends React.Component {
   render() {

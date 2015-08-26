@@ -1,7 +1,7 @@
 import React from 'react'
 import { mergeClassNames } from '../base/utils'
 
-export class Button extends React.Component {
+class Button extends React.Component {
   getClassList() {
     return 'Button'
   }
@@ -15,4 +15,6 @@ export class Button extends React.Component {
     )
   }
 }
+
+export default Button
 

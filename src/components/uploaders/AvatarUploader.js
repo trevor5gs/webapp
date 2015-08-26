@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '../buttons/Button'
+import Button from '../buttons/Button'
 
 class AvatarUploader extends React.Component {
   render() {

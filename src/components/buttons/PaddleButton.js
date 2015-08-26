@@ -2,7 +2,7 @@ import React from 'react'
 import { mergeClassNames } from '../base/utils'
 import { ChevronIcon } from '../iconography/Icons'
 
-export class PaddleButton extends React.Component {
+class PaddleButton extends React.Component {
   getClassList() {
     return 'PaddleButton'
   }
@@ -17,3 +17,4 @@ export class PaddleButton extends React.Component {
   }
 }
 
+export default PaddleButton

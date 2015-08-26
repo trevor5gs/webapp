@@ -5,7 +5,7 @@ import StreamComponent from '../streams/StreamComponent'
 import AvatarUploader from '../uploaders/AvatarUploader'
 import HeaderUploader from '../uploaders/HeaderUploader'
 import HeaderCarousel from '../carousels/HeaderCarousel'
-import { Button } from '../buttons/Button'
+import Button from '../buttons/Button'
 import BioForm from '../forms/BioForm'
 
 export class ChannelPicker extends React.Component {
