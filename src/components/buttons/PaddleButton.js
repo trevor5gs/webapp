@@ -1,13 +1,12 @@
 import React from 'react'
-import { mergeClassNames } from '../base/utils'
+import classNames from 'classnames'
 import { ChevronIcon } from '../iconography/Icons'
 
 class PaddleButton extends React.Component {
   render() {
-    const klasses = mergeClassNames(this.props, this.props.classListName)
-
+    const klassNames = classNames(this.props.className, this.props.classListName)
     return (
-      <button {...this.props} className={klasses} type="button">
+      <button {...this.props} className={klassNames} type="button">
         <ChevronIcon/>
       </button>
     )

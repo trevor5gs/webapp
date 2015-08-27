@@ -1,5 +1,5 @@
 import React from 'react'
-import { mergeClassNames } from '../base/utils'
+import classNames from 'classnames'
 
 
 export class SVGComponent extends React.Component {
@@ -18,7 +18,7 @@ export class SVGIcon {
     return (
       <SVGComponent height="20"
                     width="20"
-                    className={mergeClassNames(this.props, 'SVGIcon')}>
+                    className={classNames(this.props.className, 'SVGIcon')}>
         {this.props.children}
       </SVGComponent>
     )
@@ -31,7 +31,7 @@ export class SVGBox {
     return (
       <SVGComponent height="60"
                     width="60"
-                    className={mergeClassNames(this.props, 'SVGBox')}>
+                    className={classNames(this.props.className, 'SVGBox')}>
         {this.props.children}
       </SVGComponent>
     )
