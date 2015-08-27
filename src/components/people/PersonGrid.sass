@@ -1,0 +1,64 @@
+.PersonGrid
+  position: relative
+  height: 440px
+  margin-top: rem(10)
+
+img.tmp-header-image
+  background-color: magenta
+  width: 320px
+  height: 170px
+
+.PersonGrid .Avatar
+  position: absolute
+  +circle(rem(120))
+  background: rgba(black, 0.1) no-repeat 50% 50%
+  background-size: cover
+  top: rem(100)
+  left: rem(20)
+
+.PersonGrid .vitals
+  margin-top: rem(60)
+  padding: rem(10)
+
+.PersonGrid .vitals dl
+  display: inline-block
+  margin-right: rem(15)
+
+.PersonGrid .vitals dt
+  width: auto
+
+.PersonGrid .vitals dd
+  color: #aaa
+  margin-left: 0
+  display: block
+  border-bottom: 1px solid
+
+@media(min-width: #{em(600)})
+  .People.as-grid
+    margin-left: rem(-20)
+  .People.as-grid .PersonGrid
+    display: inline-block
+    width: calc(50% - 20px)
+    margin-left: rem(20)
+    margin-top: rem(20)
+
+@media(min-width: #{em(960)})
+  .People.as-grid
+    margin-left: rem(-40)
+  .People.as-grid .PersonGrid
+    width: calc(33.33333% - #{rem(40)})
+    margin-top: rem(40)
+    margin-left: rem(40)
+
+@media(min-width: #{em(1320)})
+  .People.as-grid .PersonGrid
+    width: calc(25% - #{rem(40)})
+
+@media(min-width: #{em(1680)})
+  .People.as-grid .PersonGrid
+    width: calc(20% - #{rem(40)})
+
+@media(min-width: #{em(2040)})
+  .People.as-grid .PersonGrid
+    width: calc(16.66666% - #{rem(40)})
+
