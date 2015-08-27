@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./webpack/dev-server.js",
     "build": "node node_modules/webpack/bin/webpack.js -p --colors --progress --config=./webpack/prod.config.js",
-    "test": "babel-node test/**/*.js | faucet",
+    "test": "babel-node test/index.js | faucet",
     "lint": "eslint src test",
     "check": "npm run lint && npm run test"
   },
