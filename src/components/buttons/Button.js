@@ -1,19 +1,26 @@
 import React from 'react'
-import { mergeClassNames } from '../base/utils'
+import classNames from 'classnames'
 
 class Button extends React.Component {
-  getClassList() {
-    return 'Button'
-  }
-
   render() {
-    const klasses = mergeClassNames(this.props, this.getClassList())
+    const { className, classListName, children } = this.props
+    const klassNames = classNames(className, classListName)
     return (
-      <button {...this.props} className={klasses} type="button">
-        {this.props.children}
+      <button {...this.props} className={klassNames} type="button">
+        {children}
       </button>
     )
   }
+}
+
+Button.defaultProps = {
+  classListName: 'Button',
+}
+
+Button.propTypes = {
+  className: React.PropTypes.string,
+  classListName: React.PropTypes.string,
+  children: React.PropTypes.node.isRequired,
 }
 
 export default Button

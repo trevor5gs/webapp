@@ -5,7 +5,8 @@ import { connect } from 'react-redux'
 class StreamComponent extends React.Component {
 
   componentWillMount() {
-    this.props.action ? this.props.dispatch(this.props.action()) : console.error('Action is required to load a stream')
+    const { action, dispatch } = this.props
+    action ? dispatch(action()) : console.error('Action is required to load a stream')
   }
 
   render() {
@@ -30,6 +31,21 @@ function mapStateToProps(state) {
   return {
     stream: state.stream,
   }
+}
+
+StreamComponent.propTypes = {
+  className: React.PropTypes.string,
+  classListName: React.PropTypes.string,
+  children: React.PropTypes.node.isRequired,
+}
+
+StreamComponent.propTypes = {
+  action: React.PropTypes.func.isRequired,
+  dispatch: React.PropTypes.func.isRequired,
+  stream: React.PropTypes.shape({
+    meta: React.PropTypes.object,
+    payload: React.PropTypes.object,
+  }).isRequired,
 }
 
 export default connect(mapStateToProps)(StreamComponent)

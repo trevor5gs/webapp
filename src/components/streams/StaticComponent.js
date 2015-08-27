@@ -27,5 +27,11 @@ function mapStateToProps(state) {
   }
 }
 
+StaticComponent.propTypes = {
+  staticPage: React.PropTypes.shape({
+    meta: React.PropTypes.string.isRequired,
+  }),
+}
+
 export default connect(mapStateToProps)(StaticComponent)
 

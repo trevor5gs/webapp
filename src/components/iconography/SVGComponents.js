@@ -1,5 +1,5 @@
 import React from 'react'
-import { mergeClassNames } from '../base/utils'
+import classNames from 'classnames'
 
 
 export class SVGComponent extends React.Component {
@@ -12,17 +12,26 @@ export class SVGComponent extends React.Component {
   }
 }
 
+SVGComponent.propTypes = {
+  children: React.PropTypes.node.isRequired,
+}
+
 
 export class SVGIcon {
   render() {
     return (
       <SVGComponent height="20"
                     width="20"
-                    className={mergeClassNames(this.props, 'SVGIcon')}>
+                    className={classNames(this.props.className, 'SVGIcon')}>
         {this.props.children}
       </SVGComponent>
     )
   }
+}
+
+SVGIcon.propTypes = {
+  className: React.PropTypes.string.isRequired,
+  children: React.PropTypes.node.isRequired,
 }
 
 
@@ -31,10 +40,15 @@ export class SVGBox {
     return (
       <SVGComponent height="60"
                     width="60"
-                    className={mergeClassNames(this.props, 'SVGBox')}>
+                    className={classNames(this.props.className, 'SVGBox')}>
         {this.props.children}
       </SVGComponent>
     )
   }
+}
+
+SVGBox.propTypes = {
+  className: React.PropTypes.string.isRequired,
+  children: React.PropTypes.node.isRequired,
 }
 

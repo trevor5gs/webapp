@@ -1,20 +1,27 @@
 import React from 'react'
-import { mergeClassNames } from '../base/utils'
+import classNames from 'classnames'
 import { ChevronIcon } from '../iconography/Icons'
 
 class PaddleButton extends React.Component {
-  getClassList() {
-    return 'PaddleButton'
-  }
-
   render() {
-    const klasses = mergeClassNames(this.props, this.getClassList())
+    const { className, classListName } = this.props
+    const klassNames = classNames(className, classListName)
     return (
-      <button {...this.props} className={klasses} type="button">
+      <button {...this.props} className={klassNames} type="button">
         <ChevronIcon/>
       </button>
     )
   }
 }
 
+PaddleButton.defaultProps = {
+  classListName: 'PaddleButton',
+}
+
+PaddleButton.propTypes = {
+  className: React.PropTypes.string,
+  classListName: React.PropTypes.string,
+}
+
 export default PaddleButton
+

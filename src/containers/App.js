@@ -6,11 +6,12 @@ import Devtools from '../components/devtools/Devtools'
 class App extends React.Component {
 
   render() {
-    const { location } = this.props
+    const { location, children } = this.props
+    const { pathname } = location
     return (
       <section className="App">
-        <main className="Main" data-pathname={location.pathname} role="main">
-          {this.props.children}
+        <main className="Main" data-pathname={pathname} role="main">
+          {children}
         </main>
         <Navbar/>
         <Devtools/>
@@ -18,6 +19,13 @@ class App extends React.Component {
     )
   }
 
+}
+
+App.propTypes = {
+  location: React.PropTypes.shape({
+    pathname: React.PropTypes.string.isRequired,
+  }),
+  children: React.PropTypes.node.isRequired,
 }
 
 export default connect()(App)

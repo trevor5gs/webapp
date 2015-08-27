@@ -5,22 +5,16 @@ import { ElloMark } from '../iconography/ElloIcons'
 import { SHORTCUT_KEYS } from '../../constants/action_types'
 
 
-const shortcuts = {
-  [SHORTCUT_KEYS.SEARCH]: '/search',
-  [SHORTCUT_KEYS.DISCOVER]: '/discover',
-  [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/channels',
-}
-
 class Navbar extends React.Component {
   componentDidMount() {
-    Mousetrap.bind(Object.keys(shortcuts), (event, shortcut) => {
+    Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
       const { router } = this.context
-      router.transitionTo(shortcuts[shortcut])
+      router.transitionTo(this.props.shortcuts[shortcut])
     })
   }
 
   componentWillUnmount() {
-    Mousetrap.unbind(Object.keys(shortcuts))
+    Mousetrap.unbind(Object.keys(this.props.shortcuts))
   }
 
   render() {
@@ -41,6 +35,18 @@ class Navbar extends React.Component {
 
 Navbar.contextTypes = {
   router: React.PropTypes.object.isRequired,
+}
+
+Navbar.defaultProps = {
+  shortcuts: {
+    [SHORTCUT_KEYS.SEARCH]: '/search',
+    [SHORTCUT_KEYS.DISCOVER]: '/discover',
+    [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/channels',
+  },
+}
+
+Navbar.propTypes = {
+  shortcuts: React.PropTypes.object.isRequired,
 }
 
 export default Navbar
