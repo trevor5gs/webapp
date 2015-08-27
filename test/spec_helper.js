@@ -1,6 +1,4 @@
-import { expect as exp } from 'chai'
-
-export const expect = exp
+export { test } from 'tape'
 
 function isValidFSAKey(key) {
   const validKeys = [
