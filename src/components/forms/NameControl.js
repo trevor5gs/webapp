@@ -1,35 +1,14 @@
 import React from 'react'
+import classNames from 'classnames'
 
 class NameControl extends React.Component {
   constructor(props, context) {
     super(props, context)
+    const { text, hasFocus } = this.props
     this.state = {
-      text: this.props.text || '',
-      hasFocus: this.props.hasFocus || false,
+      text: text || '',
+      hasFocus: hasFocus || false,
     }
-  }
-
-  render() {
-    const classList = this.state.hasFocus ? 'FormControlGroup has-focus' : 'FormControlGroup'
-    return (
-      <div className={classList}>
-        <label className="FormControlLabel" htmlFor={this.props.id}>Name</label>
-        <input
-          className="FormControl"
-          id={this.props.id}
-          placeholder={this.props.placeholder}
-          value={this.state.text}
-          name={this.props.name}
-          tabIndex={this.props.tabIndex}
-          type="text"
-          maxLength="50"
-          autoCapitalize="off"
-          autoCorrect="off"
-          onFocus={(e) => this.handleFocus(e)}
-          onBlur={(e) => this.handleBlur(e)}
-          onChange={(e) => this.handleChange(e)} />
-      </div>
-    )
   }
 
   handleChange(e) {
@@ -44,6 +23,29 @@ class NameControl extends React.Component {
     this.setState({ hasFocus: false })
   }
 
+  render() {
+    const { id, placeholder, name, tabIndex } = this.props
+    return (
+      <div className={classNames('FormControlGroup', { hasFocus: this.state.hasFocus })}>
+        <label className="FormControlLabel" htmlFor={id}>Name</label>
+        <input
+          className="FormControl"
+          id={id}
+          placeholder={placeholder}
+          value={this.state.text}
+          name={name}
+          tabIndex={tabIndex}
+          type="text"
+          maxLength="50"
+          autoCapitalize="off"
+          autoCorrect="off"
+          onFocus={(e) => this.handleFocus(e)}
+          onBlur={(e) => this.handleBlur(e)}
+          onChange={(e) => this.handleChange(e)} />
+      </div>
+    )
+  }
+
 }
 
 
@@ -52,6 +54,15 @@ NameControl.defaultProps = {
   id: 'user_name',
   name: 'user[name]',
   tabIndex: 0,
+}
+
+NameControl.propTypes = {
+  placeholder: React.PropTypes.string,
+  tabIndex: React.PropTypes.string,
+  text: React.PropTypes.string,
+  name: React.PropTypes.string,
+  id: React.PropTypes.string,
+  hasFocus: React.PropTypes.func,
 }
 
 export default NameControl

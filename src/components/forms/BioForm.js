@@ -2,8 +2,13 @@ import React from 'react'
 import NameControl from './NameControl'
 
 class BioForm extends React.Component {
+
+  handleSubmit(e) {
+    e.preventDefault()
+    console.log('Bio Form handleSubmit', arguments)
+  }
+
   render() {
-    console.log(this.state)
     return (
       <form className="BioForm" onSubmit={this.handleSubmit} role="form" noValidate="novalidate">
         <figure className="Avatar"></figure>
@@ -13,11 +18,6 @@ class BioForm extends React.Component {
         <p>Links</p>
       </form>
     )
-  }
-
-  handleSubmit(e) {
-    e.preventDefault()
-    console.log('Bio Form handleSubmit', arguments)
   }
 
 }
