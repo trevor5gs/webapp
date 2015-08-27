@@ -23,6 +23,12 @@ class Devtools extends React.Component {
     Mousetrap.unbind(SHORTCUT_KEYS.DT_GRID_CYCLE)
   }
 
+  renderGrid(isVisible, type) {
+    return (
+      isVisible ? <div className={type}></div> : <span/>
+    )
+  }
+
   render() {
     const { payload } = this.props.devtools
     const { horizontalGridIsVisible, verticalGridIsVisible } = payload
@@ -34,13 +40,6 @@ class Devtools extends React.Component {
       </div>
     )
   }
-
-  renderGrid(isVisible, type) {
-    return (
-      isVisible ? <div className={type}></div> : <span/>
-    )
-  }
-
 }
 
 

@@ -8,14 +8,6 @@
   "rules": {
     "semi": 0,
     "react/prop-types": 0,
-    "react/no-multi-comp": 0,
-    "react/sort-comp": [1, {
-      order: [
-        'lifecycle',
-        '/^get.+$/',
-        'render',
-        'everything-else'
-      ]
-    }]
+    "react/no-multi-comp": 0
   }
 }
