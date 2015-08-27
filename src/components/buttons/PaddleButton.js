@@ -4,7 +4,8 @@ import { ChevronIcon } from '../iconography/Icons'
 
 class PaddleButton extends React.Component {
   render() {
-    const klassNames = classNames(this.props.className, this.props.classListName)
+    const { className, classListName } = this.props
+    const klassNames = classNames(className, classListName)
     return (
       <button {...this.props} className={klassNames} type="button">
         <ChevronIcon/>
@@ -15,6 +16,11 @@ class PaddleButton extends React.Component {
 
 PaddleButton.defaultProps = {
   classListName: 'PaddleButton',
+}
+
+PaddleButton.propTypes = {
+  className: React.PropTypes.string,
+  classListName: React.PropTypes.string,
 }
 
 export default PaddleButton

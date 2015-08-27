@@ -3,10 +3,11 @@ import classNames from 'classnames'
 
 class Button extends React.Component {
   render() {
-    const klassNames = classNames(this.props.className, this.props.classListName)
+    const { className, classListName, children } = this.props
+    const klassNames = classNames(className, classListName)
     return (
       <button {...this.props} className={klassNames} type="button">
-        {this.props.children}
+        {children}
       </button>
     )
   }
@@ -14,6 +15,12 @@ class Button extends React.Component {
 
 Button.defaultProps = {
   classListName: 'Button',
+}
+
+Button.propTypes = {
+  className: React.PropTypes.string,
+  classListName: React.PropTypes.string,
+  children: React.PropTypes.node.isRequired,
 }
 
 export default Button

@@ -12,6 +12,10 @@ export class SVGComponent extends React.Component {
   }
 }
 
+SVGComponent.propTypes = {
+  children: React.PropTypes.node.isRequired,
+}
+
 
 export class SVGIcon {
   render() {
@@ -25,6 +29,11 @@ export class SVGIcon {
   }
 }
 
+SVGIcon.propTypes = {
+  className: React.PropTypes.string.isRequired,
+  children: React.PropTypes.node.isRequired,
+}
+
 
 export class SVGBox {
   render() {
@@ -36,5 +45,10 @@ export class SVGBox {
       </SVGComponent>
     )
   }
+}
+
+SVGBox.propTypes = {
+  className: React.PropTypes.string.isRequired,
+  children: React.PropTypes.node.isRequired,
 }
 

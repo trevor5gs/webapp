@@ -5,8 +5,9 @@ import { SVGIcon } from './SVGComponents'
 
 export class PlusIcon {
   render() {
+    const { classListName } = this.props
     return (
-      <SVGIcon className={this.props.classListName}>
+      <SVGIcon className={classListName}>
         <g>
           <line x1="4.5" y1="9.5" x2="14.5" y2="9.5"/>
           <line x1="9.5" y1="14.5" x2="9.5" y2="4.5"/>
@@ -14,6 +15,10 @@ export class PlusIcon {
       </SVGIcon>
     )
   }
+}
+
+PlusIcon.propTypes = {
+  classListName: React.PropTypes.string.isRequired,
 }
 
 PlusIcon.defaultProps = {
@@ -34,14 +39,19 @@ MinusIcon.defaultProps = {
 
 export class ChevronIcon {
   render() {
+    const { classListName } = this.props
     return (
-      <SVGIcon className={this.props.classListName}>
+      <SVGIcon className={classListName}>
         <g>
           <polyline points="6,16 12,10 6,4"/>
         </g>
       </SVGIcon>
     )
   }
+}
+
+ChevronIcon.propTypes = {
+  classListName: React.PropTypes.string.isRequired,
 }
 
 ChevronIcon.defaultProps = {

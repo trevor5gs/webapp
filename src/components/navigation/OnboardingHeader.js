@@ -4,17 +4,18 @@ import { ElloMark } from '../iconography/ElloIcons'
 
 class OnboardingHeader extends React.Component {
   render() {
+    const { title, message, nextPath } = this.props
     return (
       <header className="OnboardingHeader">
         <div className="OnboardingColumn">
           <ElloMark />
-          <h1>{this.props.title}</h1>
-          <p>{this.props.message}</p>
+          <h1>{title}</h1>
+          <p>{message}</p>
         </div>
         <div className="OnboardingColumn">
-          <Link className="Button" to={this.props.nextPath}>Next</Link>
+          <Link className="Button" to={nextPath}>Next</Link>
           <p>
-            <Link to={this.props.nextPath}>Skip</Link>
+            <Link to={nextPath}>Skip</Link>
           </p>
         </div>
       </header>
@@ -22,5 +23,15 @@ class OnboardingHeader extends React.Component {
   }
 }
 
+OnboardingHeader.propTypes = {
+  shortcuts: React.PropTypes.object.isRequired,
+}
+
 export default OnboardingHeader
+
+OnboardingHeader.propTypes = {
+  title: React.PropTypes.string.isRequired,
+  message: React.PropTypes.string.isRequired,
+  nextPath: React.PropTypes.string.isRequired,
+}
 

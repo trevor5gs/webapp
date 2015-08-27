@@ -44,5 +44,10 @@ Navbar.defaultProps = {
     [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/channels',
   },
 }
+
+Navbar.propTypes = {
+  shortcuts: React.PropTypes.object.isRequired,
+}
+
 export default Navbar
 

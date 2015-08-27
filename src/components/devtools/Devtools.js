@@ -50,5 +50,12 @@ function mapStateToProps(state) {
   }
 }
 
+Devtools.propTypes = {
+  dispatch: React.PropTypes.func.isRequired,
+  devtools: React.PropTypes.shape({
+    payload: React.PropTypes.shape,
+  }),
+}
+
 export default connect(mapStateToProps)(Devtools)
 
