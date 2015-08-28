@@ -1,4 +1,7 @@
 export { test } from 'tape'
+import React from 'react/addons'
+
+const shallowRenderer = React.addons.TestUtils.createRenderer()
 
 function isValidFSAKey(key) {
   const validKeys = [
@@ -16,6 +19,11 @@ function isValidStreamMetaKey(key) {
     'renderStream',
   ]
   return validKeys.indexOf(key) > -1
+}
+
+export function getRenderedComponent(component, options = {}, children = null) {
+  shallowRenderer.render(React.createElement(component, options, children))
+  return shallowRenderer.getRenderOutput()
 }
 
 export function hasStreamMetadata(action) {
