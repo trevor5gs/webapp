@@ -14,11 +14,11 @@ export function onboardingChannels(json) {
 
 export function onboardingPeople(json) {
   return (
-    <ul className="People as-grid">
+    <div className="People as-grid">
       {json.map((user, i) => {
         return <PersonGrid user={user} key={i} />
       })}
-    </ul>
+    </div>
   )
 }
 

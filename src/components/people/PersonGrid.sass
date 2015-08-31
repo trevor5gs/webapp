@@ -1,64 +1,126 @@
 .PersonGrid
   position: relative
-  height: 440px
-  margin-top: rem(10)
+  height: rem(220)
+  margin-top: rem(20)
+  overflow: hidden
+  // outline: 1px dotted purple
 
 img.tmp-header-image
-  background-color: magenta
-  width: 320px
-  height: 170px
+  width: 100%
+  min-height: rem(80)
+  max-height: rem(80)
+  background-color: #e5e5e5
 
 .PersonGrid .Avatar
+  +circle(rem(80))
   position: absolute
-  +circle(rem(120))
+  top: 30px
+  left: rem(10)
   background: rgba(black, 0.1) no-repeat 50% 50%
   background-size: cover
-  top: rem(100)
-  left: rem(20)
 
-.PersonGrid .vitals
-  margin-top: rem(60)
-  padding: rem(10)
+.PersonGrid > .FollowButton
+  position: absolute
+  top: rem(22)
+  right: rem(10)
 
-.PersonGrid .vitals dl
+
+// -------------------------------------
+.PersonGrid .stats
+  padding: 0 rem(10)
+  margin-top: rem(40)
+
+.PersonGrid .stats dl
   display: inline-block
-  margin-right: rem(15)
+.PersonGrid .stats dl + dl
+  margin-left: 6%
 
-.PersonGrid .vitals dt
-  width: auto
+.PersonGrid .stats dt
+  +heading-family
 
-.PersonGrid .vitals dd
-  color: #aaa
-  margin-left: 0
+.PersonGrid .stats dd
   display: block
   border-bottom: 1px solid
+  color: #999
 
-@media(min-width: #{em(600)})
+// -------------------------------------
+.PersonGrid .vitals
+  padding: 0 rem(10)
+  margin-top: rem(10)
+
+.PersonGrid h2
+  +heading-family
+  font-size: rem(18)
+
+.PersonGrid h3
+  +mono-family
+  color: #999
+
+.PersonGrid .short-bio
+  display: none
+  height: rem(70)
+  overflow: hidden
+
+.PersonGrid .external-links
+  display: none
+  color: #999
+  margin-top: rem(4)
+.PersonGrid .external-links a
+  display: inline-block
+.PersonGrid .external-links a + a
+  margin-left: rem(10)
+
+// -------------------------------------
+
+@media(min-width: #{em(640)})
+  .PersonGrid
+    height: rem(440)
+  img.tmp-header-image
+    min-height: rem(180)
+    max-height: rem(180)
+  .PersonGrid .Avatar
+    +circle(rem(120))
+    top: rem(110)
+    left: rem(20)
+  .PersonGrid > .FollowButton
+    top: rem(200)
+  .PersonGrid .stats
+    margin-top: rem(65)
+  .PersonGrid .vitals
+    margin-top: rem(20)
+  .PersonGrid .short-bio,
+  .PersonGrid .external-links
+    display: block
+
   .People.as-grid
     margin-left: rem(-20)
   .People.as-grid .PersonGrid
     display: inline-block
-    width: calc(50% - 20px)
+    width: calc(50% - #{rem(20)})
     margin-left: rem(20)
     margin-top: rem(20)
 
 @media(min-width: #{em(960)})
+  .People.as-grid .PersonGrid
+    width: calc(33.33333% - #{rem(20)})
+
+@media(min-width: #{em(1360)})
   .People.as-grid
     margin-left: rem(-40)
   .People.as-grid .PersonGrid
-    width: calc(33.33333% - #{rem(40)})
+    width: calc(25% - #{rem(40)})
     margin-top: rem(40)
     margin-left: rem(40)
 
-@media(min-width: #{em(1320)})
-  .People.as-grid .PersonGrid
-    width: calc(25% - #{rem(40)})
-
-@media(min-width: #{em(1680)})
+@media(min-width: #{em(1720)})
   .People.as-grid .PersonGrid
     width: calc(20% - #{rem(40)})
 
-@media(min-width: #{em(2040)})
+@media(min-width: #{em(2080)})
   .People.as-grid .PersonGrid
     width: calc(16.66666% - #{rem(40)})
+
+@media(min-width: #{em(2440)})
+  .People.as-grid .PersonGrid
+    width: calc(14.28571% - #{rem(40)})
 

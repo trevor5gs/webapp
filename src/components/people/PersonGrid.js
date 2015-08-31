@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import FollowButton from '../buttons/FollowButton'
 
 class PersonGrid extends React.Component {
   render() {
@@ -10,7 +10,9 @@ class PersonGrid extends React.Component {
       <div className="PersonGrid" >
         <img className="tmp-header-image" />
         <figure className="Avatar" style={style}></figure>
-        <div className="vitals">
+        <FollowButton>Follow</FollowButton>
+
+        <div className="stats">
           <dl>
             <dt>{user.posts_count}</dt>
             <dd>Posts</dd>
@@ -29,9 +31,18 @@ class PersonGrid extends React.Component {
           </dl>
         </div>
 
-
-          <h2>{user.name}</h2>
-          <Link to="#">Follow</Link>
+        <div className="vitals">
+          <h2>@{user.username}</h2>
+          <h3>{user.name}</h3>
+          <div className="short-bio" dangerouslySetInnerHTML={{ __html: user.formatted_short_bio }} />
+          <p className="external-links">
+            {user.external_links_list.map((link, i) => {
+              return (
+                <a href={link.url} target="_blank" key={i} >{link.text}</a>
+              )
+            })}
+          </p>
+        </div>
       </div>
     )
   }
