@@ -9,7 +9,7 @@ class ChannelCard extends React.Component {
     return (
       <div className="ChannelCard" style={style}>
         <h2>{user.name}</h2>
-        <FollowButton>Follow</FollowButton>
+        <FollowButton priority={user.relationship_priority} data-user-id={user.id} />
       </div>
     )
   }

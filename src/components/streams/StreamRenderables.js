@@ -16,7 +16,7 @@ export function onboardingPeople(json) {
   return (
     <div className="People as-grid">
       {json.map((user, i) => {
-        return <PersonGrid user={user} key={i} />
+        return <PersonGrid ref={'personGrid_' + i} user={user} key={i} />
       })}
     </div>
   )

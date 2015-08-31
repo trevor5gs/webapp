@@ -10,7 +10,7 @@ class PersonGrid extends React.Component {
       <div className="PersonGrid" >
         <img className="tmp-header-image" />
         <figure className="Avatar" style={style}></figure>
-        <FollowButton>Follow</FollowButton>
+        <FollowButton ref="followButton" priority={user.relationship_priority} data-user-id={user.id} />
 
         <div className="stats">
           <dl>

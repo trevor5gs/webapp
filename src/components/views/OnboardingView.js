@@ -8,7 +8,30 @@ import HeaderCarousel from '../carousels/HeaderCarousel'
 import Button from '../buttons/Button'
 import BioForm from '../forms/BioForm'
 
-export class ChannelPicker extends React.Component {
+export class RelationshipBatchPicker extends React.Component {
+  componentDidMount() {
+    this.leaveMethod = this.routerWillLeave.bind(this)
+    this.context.router.addTransitionHook(this.leaveMethod)
+  }
+
+  routerWillLeave() {
+    const friends = React.findDOMNode(this).querySelectorAll('[data-priority="friend"]')
+    const postPayload = { user_ids: [], priority: 'friend'}
+    for (const value of friends) {
+      postPayload.user_ids.push(value.dataset.userId)
+    }
+  }
+
+  componentWillUnmount() {
+    this.context.router.removeTransitionHook(this.leaveMethod)
+  }
+}
+
+RelationshipBatchPicker.contextTypes = {
+  router: React.PropTypes.object.isRequired,
+}
+
+export class ChannelPicker extends RelationshipBatchPicker {
   render() {
     return (
       <div className="ChannelPicker Panel">
@@ -22,7 +45,16 @@ export class ChannelPicker extends React.Component {
   }
 }
 
-export class PeoplePicker extends React.Component {
+export class PeoplePicker extends RelationshipBatchPicker {
+  followAll() {
+    const personRefs = this.refs.streamComponent.refs.wrappedInstance.refs
+    for (const ref in personRefs) {
+      if (personRefs.hasOwnProperty(ref)) {
+        personRefs[ref].refs.followButton.setState({ priority: 'friend' })
+      }
+    }
+  }
+
   render() {
     return (
       <div className="PeoplePicker Panel">
@@ -30,8 +62,8 @@ export class PeoplePicker extends React.Component {
             nextPath="/onboarding/profile-header"
             title="Follow some awesome people."
             message="Ello is full of interesting and creative people committed to building a positive community." />
-        <Button>Follow All (20)</Button>
-        <StreamComponent action={OnboardingActions.loadAwesomePeople} />
+          <Button ref="followAllButton" onClick={() => this.followAll()}>Follow All (20)</Button>
+        <StreamComponent ref="streamComponent" action={OnboardingActions.loadAwesomePeople} />
       </div>
     )
   }
@@ -57,9 +89,9 @@ export class AvatarPicker extends React.Component {
     return (
       <div className="AvatarPicker Panel">
         <OnboardingHeader
-          nextPath="/onboarding/profile-bio"
-          title="Customize your profile."
-          message="Choose an avatar." />
+            nextPath="/onboarding/profile-bio"
+            title="Customize your profile."
+            message="Choose an avatar." />
         <AvatarUploader />
       </div>
     )
@@ -71,9 +103,9 @@ export class BioCreator extends React.Component {
     return (
       <div className="BioCreator Panel">
         <OnboardingHeader
-          nextPath="/discover"
-          title="Customize your profile."
-          message="Fill out your bio." />
+            nextPath="/discover"
+            title="Customize your profile."
+            message="Fill out your bio." />
         <BioForm />
       </div>
     )

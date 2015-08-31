@@ -24,14 +24,10 @@ class OnboardingHeader extends React.Component {
 }
 
 OnboardingHeader.propTypes = {
-  shortcuts: React.PropTypes.object.isRequired,
-}
-
-export default OnboardingHeader
-
-OnboardingHeader.propTypes = {
   title: React.PropTypes.string.isRequired,
   message: React.PropTypes.string.isRequired,
   nextPath: React.PropTypes.string.isRequired,
 }
+
+export default OnboardingHeader
 
