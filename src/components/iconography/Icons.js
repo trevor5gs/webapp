@@ -34,6 +34,29 @@ MinusIcon.defaultProps = {
 }
 
 
+export class MiniPlusIcon {
+  render() {
+    const { classListName } = this.props
+    return (
+      <SVGIcon className={classListName}>
+        <g>
+          <line x1="10" y1="6.5" x2="10" y2="13.5"/>
+          <line x1="13.5" y1="10" x2="6.5" y2="10"/>
+        </g>
+      </SVGIcon>
+    )
+  }
+}
+
+MiniPlusIcon.propTypes = {
+  classListName: React.PropTypes.string.isRequired,
+}
+
+MiniPlusIcon.defaultProps = {
+  classListName: 'MiniPlusIcon',
+}
+
+
 // -------------------------------------
 
 

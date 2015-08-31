@@ -1,61 +1,76 @@
 .ChannelCard
   position: relative
-  height: rem(320)
-  margin-top: rem(10)
+  height: rem(80)
   padding: rem(10)
+  margin-top: rem(1)
   background: rgba(black, 0.1) no-repeat 50% 50%
   background-size: cover
   text-align: center
-
-.ChannelCard > a
-  +mono-typeset
-  position: absolute
-  display: inline-block
-  left: rem(10)
-  right: rem(10)
-  bottom: rem(10)
-  background-color: white
-  text-align: center
-  height: rem(50)
-  line-height: rem(50)
+  &:before
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    content: ""
+    background-color: rgba(black, 0.4)
 
 .ChannelCard > h2
   position: absolute
-  top: 50%
-  left: 0
-  right: 0
-  margin-top: rem(-24)
+  top: calc(50% - #{rem(15)})
+  left: rem(10)
   +heading
   font-size: rem(24)
   color: white
 
+.ChannelCard > .FollowButton
+  position: absolute
+  top: calc(50% - #{rem(15)})
+  right: rem(10)
+  border-color: white
 
-@media(min-width: #{em(600)})
+
+@media(min-width: #{$break-2})
   .Channels
     margin-left: rem(-20)
   .Channels .ChannelCard
     display: inline-block
-    width: calc(50% - 20px)
-    margin-left: rem(20)
+    width: calc(50% - #{rem(20)})
+    height: rem(320)
     margin-top: rem(20)
+    margin-left: rem(20)
+  .ChannelCard > h2
+    right: 0
+  .ChannelCard > .FollowButton
+    top: auto
+    left: rem(10)
+    bottom: rem(10)
+    width: calc(100% - #{rem(20)})
+    height: rem(50)
+    line-height: rem(50)
+    text-align: center
 
-@media(min-width: #{em(960)})
+@media(min-width: #{$break-3})
+  .Channels .ChannelCard
+    width: calc(33.33333% - #{rem(20)})
+
+@media(min-width: #{$break-4})
   .Channels
     margin-left: rem(-40)
   .Channels .ChannelCard
-    width: calc(33.33333% - #{rem(40)})
+    width: calc(25% - #{rem(40)})
     margin-top: rem(40)
     margin-left: rem(40)
 
-@media(min-width: #{em(1320)})
-  .Channels .ChannelCard
-    width: calc(25% - #{rem(40)})
-
-@media(min-width: #{em(1680)})
+@media(min-width: #{$break-5})
   .Channels .ChannelCard
     width: calc(20% - #{rem(40)})
 
-@media(min-width: #{em(2040)})
+@media(min-width: #{$break-6})
   .Channels .ChannelCard
     width: calc(16.66666% - #{rem(40)})
+
+@media(min-width: #{$break-7})
+  .Channels .ChannelCard
+    width: calc(14.28571% - #{rem(40)})
 
