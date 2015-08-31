@@ -5,14 +5,14 @@
   max-width: 640px
   margin: 0 auto
 
-@media(min-width: #{em(640)})
+@media(min-width: #{$break-2})
   .ChannelPicker .StreamComponent,
   .PeoplePicker
     padding: 0 rem(20)
   .PeoplePicker > .Button
     width: 100%
 
-@media(min-width: #{em(1360)})
+@media(min-width: #{$break-4})
   .ChannelPicker .StreamComponent,
   .PeoplePicker
     padding: 0 rem(40)
@@ -32,11 +32,11 @@
   left: rem(20)
   right: rem(20)
 
-@media(min-width: #{em(640)})
+@media(min-width: #{$break-2})
   .HeaderPicker > .HeaderCarousel > .Paddles
     top: rem(120)
 
-@media(min-width: #{em(1360)})
+@media(min-width: #{$break-4})
   .HeaderPicker > .HeaderUploader > .Button
     margin-top: rem(240)
   .HeaderPicker > .HeaderCarousel > .Paddles
@@ -52,7 +52,7 @@
 .AvatarPicker > .AvatarUploader > .Avatar
   margin-bottom: rem(10)
 
-@media(min-width: #{em(640)})
+@media(min-width: #{$break-2})
   .AvatarPicker > .AvatarUploader > .Avatar
     position: absolute
     top: 0
@@ -62,7 +62,7 @@
     padding-left: rem(200)
     margin-left: 15%
 
-@media(min-width: #{em(1360)})
+@media(min-width: #{$break-4})
   .AvatarPicker > .AvatarUploader
     margin-left: 25%
 
@@ -71,7 +71,7 @@
 .BioCreator > .BioForm
   padding: rem(10)
 
-@media(min-width: #{em(640)})
+@media(min-width: #{$break-2})
   .BioCreator > .BioForm > .Avatar
     position: absolute
     top: 0
@@ -80,7 +80,7 @@
     padding-top: rem(40)
     padding-left: rem(200)
     margin-left: 15%
-@media(min-width: #{em(1360)})
+@media(min-width: #{$break-4})
   .BioCreator > .BioForm
     margin-left: 25%
 

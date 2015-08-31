@@ -42,7 +42,7 @@
 // MAX WIDTH!
 
 // Sends the next and skip buttons to the bottom of smaller viewports.
-@media(max-width: #{em(639)})
+@media(max-width: #{$break-2-max})
   .OnboardingColumn:nth-child(2)
     bottom: 0
     left: 0
@@ -57,7 +57,7 @@
 
 // -------------------------------------
 
-@media(min-width: #{em(640)})
+@media(min-width: #{$break-2})
   .OnboardingHeader
     position: fixed
     top: 0
@@ -74,7 +74,7 @@
   .OnboardingColumn:nth-child(1)
     width: calc(100% - #{rem(260)})
 
-@media(min-width: #{em(960)})
+@media(min-width: #{$break-3})
   .OnboardingColumn:nth-child(1)
     width: calc(50% - #{rem(20)})
     left: 15%
@@ -90,7 +90,7 @@
   .OnboardingColumn > p
     padding-left: rem(90)
 
-@media(min-width: #{em(1360)})
+@media(min-width: #{$break-4})
   .OnboardingHeader
     padding: rem(40)
     height: rem(240)
