@@ -1,0 +1,18 @@
+.FollowButton
+  +ButtonBase
+  height: rem(30)
+  line-height: rem(30)
+  padding: 0 rem(10) 0 rem(5)
+  background-color: white
+  border-color: black
+  &:active,
+  .no-touch &:hover
+    background-color: #ababab
+    border-color: #ababab
+    color: white
+    > .SVGIcon g
+      stroke: white
+
+.FollowButton > .MiniPlusIcon
+  margin-top: -2px
+

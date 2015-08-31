@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import FollowButton from '../buttons/FollowButton'
 
 class ChannelCard extends React.Component {
   render() {
@@ -7,10 +7,10 @@ class ChannelCard extends React.Component {
     const avatar = user.avatar.regular.url
     const style = { backgroundImage: `url(${avatar})` }
     return (
-      <figure className="ChannelCard" style={style}>
+      <div className="ChannelCard" style={style}>
         <h2>{user.name}</h2>
-        <Link to="#">Follow</Link>
-      </figure>
+        <FollowButton>Follow</FollowButton>
+      </div>
     )
   }
 }
