@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import { MiniPlusIcon } from '../iconography/Icons'
+import { MiniPlusIcon, MiniCheckIcon } from '../iconography/Icons'
 
 
 class FollowButton extends React.Component {
@@ -36,7 +36,7 @@ class FollowButton extends React.Component {
           type="button"
           onClick={() => this.setState({priority: 'inactive'})}
           data-priority={this.state.priority}>
-        <MiniPlusIcon />
+        <MiniCheckIcon />
         <span>Friend</span>
       </button>
     )
@@ -48,7 +48,7 @@ class FollowButton extends React.Component {
           className={klassNames}
           type="button"
           data-priority={this.state.priority}>
-        <MiniPlusIcon />
+        <MiniCheckIcon />
         <span>Noise</span>
       </button>
     )
@@ -60,7 +60,6 @@ class FollowButton extends React.Component {
           className={klassNames}
           type="button"
           data-priority={this.state.priority}>
-        <MiniPlusIcon />
         <span>Muted</span>
       </button>
     )
@@ -72,7 +71,6 @@ class FollowButton extends React.Component {
           className={klassNames}
           type="button"
           data-priority={this.state.priority}>
-        <MiniPlusIcon />
         <span>Blocked</span>
       </button>
     )
@@ -101,5 +99,4 @@ FollowButton.propTypes = {
 }
 
 export default FollowButton
-
 

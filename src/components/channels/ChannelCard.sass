@@ -28,6 +28,13 @@
   top: calc(50% - #{rem(15)})
   right: rem(10)
 
+.ChannelCard > .FollowButton[data-priority="inactive"]
+  border-color: white
+.no-touch .ChannelCard > .FollowButton[data-priority="inactive"]:hover
+  border-color: black
+.no-touch .ChannelCard > .FollowButton:not([data-priority="inactive"]):hover
+  border-color: white
+
 
 @media(min-width: #{$break-2})
   .Channels

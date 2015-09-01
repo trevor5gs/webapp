@@ -40,8 +40,8 @@ export class MiniPlusIcon {
     return (
       <SVGIcon className={classListName}>
         <g>
-          <line x1="10" y1="6.5" x2="10" y2="13.5"/>
-          <line x1="13.5" y1="10" x2="6.5" y2="10"/>
+          <line x1="10.5" x2="10.5" y1="6.5" y2="12.5"/>
+          <line x1="13.5" x2="7.5" y1="9.5" y2="9.5"/>
         </g>
       </SVGIcon>
     )
@@ -54,6 +54,29 @@ MiniPlusIcon.propTypes = {
 
 MiniPlusIcon.defaultProps = {
   classListName: 'MiniPlusIcon',
+}
+
+// -------------------------------------
+
+export class MiniCheckIcon {
+  render() {
+    const { classListName } = this.props
+    return (
+      <SVGIcon className={classListName}>
+        <g>
+          <polyline points="7,10.4 9.5,13.5 13,7.5" />
+        </g>
+      </SVGIcon>
+    )
+  }
+}
+
+MiniCheckIcon.propTypes = {
+  classListName: React.PropTypes.string.isRequired,
+}
+
+MiniCheckIcon.defaultProps = {
+  classListName: 'MiniCheckIcon',
 }
 
 

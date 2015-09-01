@@ -1,20 +1,17 @@
 .FollowButton
   +ButtonBase
+  width: rem(90)
   height: rem(30)
   line-height: rem(30)
   padding: 0 rem(10) 0 rem(5)
   background-color: white
   border-color: black
-  &:active,
   .no-touch &:hover
-    background-color: #ababab
-    border-color: #ababab
+    background-color: black
+    border-color: black
     color: white
     > .SVGIcon g
       stroke: white
-
-.FollowButton > .MiniPlusIcon
-  margin-top: -2px
 
 .FollowButton[data-priority="friend"],
 .FollowButton[data-priority="noise"]
@@ -23,4 +20,15 @@
   color: white
   > .SVGIcon g
     stroke: white
+  .no-touch &:hover
+    background-color: white
+    color: black
+    > .SVGIcon g
+      stroke: black
+
+.FollowButton > .MiniPlusIcon
+  margin-top: -2px
+
+.FollowButton > .MiniCheckIcon
+  margin-top: -4px
 
