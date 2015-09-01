@@ -8,12 +8,12 @@ class BioForm extends React.Component {
     console.log('Bio Form handleSubmit', arguments)
   }
 
+
   render() {
     return (
       <form className="BioForm" onSubmit={this.handleSubmit} role="form" noValidate="novalidate">
         <figure className="Avatar"></figure>
         <NameControl tabIndex="1"/>
-
         <p>Bio</p>
         <p>Links</p>
       </form>

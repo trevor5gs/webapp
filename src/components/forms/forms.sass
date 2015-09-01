@@ -11,75 +11,90 @@
 //   padding: 0
 //   border: 0
 
-// input,
-// textarea
-//   margin: 0
-//   color: inherit
-//   font: inherit
-//   border-radius: 0
-//   -webkit-appearance: none
-//   -moz-appearance: none
+input,
+textarea
+  margin: 0
+  color: inherit
+  font: inherit
+  border-radius: 0
+  -webkit-appearance: none
+  -moz-appearance: none
 
-// input::-ms-clear
-//   display: none
-//   width: 0
-//   height: 0
+input::-ms-clear
+  display: none
+  width: 0
+  height: 0
 
-// textarea
-//   overflow: auto
-//   resize: none
-//   height: 100%
-
-
-// input[type="search"]::-webkit-search-cancel-button,
-// input[type="search"]::-webkit-search-decoration
-//   -webkit-appearance: none
+textarea
+  overflow: auto
+  resize: none
+  height: 100%
 
 
-// input,
-// textarea
-//   &::placeholder
-//     color: #aaa
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration
+  -webkit-appearance: none
 
-// label
-//   +vertical-top
-//   +typeset
-//   color: #aaa
 
-// .form-group
+input,
+textarea
+  &::placeholder
+    color: #aaa
+
+label
+  +mono-typeset
+  display: inline-block
+  vertical-align: baseline
+  color: #aaa
+
+.FormControlGroup
+  position: relative
+  max-width: rem(400)
 //   transform: translateZ(0)
-//   position: relative
 //   margin-bottom: rem(15)
 
-// .form-actions
-//   +typeset
-//   position: relative
-// .form-actions.pushed
-//   text-align: right
 
 // // ----------------------------------------------------------------------------
 
-// %form-control
-//   +transition-control
-//   +vertical-top
-//   +typeset
-//   padding: rem(20) rem(30) rem(20) rem(15)
-//   width: 100%
-//   background-color: #e5e5e5
-//   border: 1px solid #e5e5e5
-//   color: black
-//   min-height: rem(60)
-//   &:focus
-//     background-color: #4d4d4d
-//     border-color: #4d4d4d
-//     outline: 0
-//     color: white
+
+%FormControl
+  +mono-typeset
+  transition: border-color $speed $ease, color $speed $ease, width $speed $ease
+  display: inline-block
+  vertical-align: baseline
+  width: 100%
+  background-color: transparent
+  border: 0
+  border-bottom: 1px solid #aaa
+  color: black
+  min-height: rem(40)
+  &:focus
+    border-bottom-color: black
+    outline: 0
+
+%FormControlLabel
+  transition: transform $speed2 $ease, opacity $speed2 $ease
+  position: absolute
+  top: rem(40)
+  right: 0
 
 
-// .form-control
-//   @extend %form-control
 
 // textarea.form-control
 //   min-height: rem(120)
 
+.FormControl
+  @extend %FormControl
+
+.hasValue > .FormControl
+  border-bottom-color: black
+
+
+.FormControlLabel
+  @extend %FormControlLabel
+  opacity: 0
+
+.hasFocus.hasValue > .FormControlLabel
+  opacity: 1
+  transform: translate3d(0,5px,0)
 

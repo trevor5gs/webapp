@@ -7,12 +7,14 @@ class NameControl extends React.Component {
     const { text, hasFocus } = this.props
     this.state = {
       text: text || '',
+      hasValue: text ? text.length : false,
       hasFocus: hasFocus || false,
     }
   }
 
   handleChange(e) {
-    this.setState({ text: e.target.value })
+    const val = e.target.value
+    this.setState({ text: val, hasValue: val.length })
   }
 
   handleFocus() {
@@ -25,11 +27,16 @@ class NameControl extends React.Component {
 
   render() {
     const { id, placeholder, name, tabIndex } = this.props
+    const klassNames = classNames(
+      'FormControlGroup',
+      { hasFocus: this.state.hasFocus },
+      { hasValue: this.state.hasValue },
+    )
     return (
-      <div className={classNames('FormControlGroup', { hasFocus: this.state.hasFocus })}>
+      <div className={klassNames}>
         <label className="FormControlLabel" htmlFor={id}>Name</label>
         <input
-          className="FormControl"
+          className="FormControl NameControl"
           id={id}
           placeholder={placeholder}
           value={this.state.text}
