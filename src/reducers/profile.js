@@ -10,11 +10,13 @@ export function profile(state = initialState, action) {
   switch (action.type) {
   case PROFILE.SAVE:
     return {
-      ...state,
-      error: action.error,
-      meta: action.meta,
-      payload: action.payload,
       type: action.type,
+      meta: action.meta,
+      error: action.error,
+      payload: {
+        ...state.payload,
+        ...action.payload,
+      },
     }
   default:
     return state
