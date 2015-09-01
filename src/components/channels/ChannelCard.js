@@ -1,5 +1,5 @@
 import React from 'react'
-import FollowButton from '../buttons/FollowButton'
+import RelationshipButton from '../buttons/RelationshipButton'
 
 class ChannelCard extends React.Component {
   render() {
@@ -9,7 +9,7 @@ class ChannelCard extends React.Component {
     return (
       <div className="ChannelCard" style={style}>
         <h2>{user.name}</h2>
-        <FollowButton priority={user.relationship_priority} data-user-id={user.id} />
+        <RelationshipButton priority={user.relationship_priority} data-user-id={user.id} />
       </div>
     )
   }

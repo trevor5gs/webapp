@@ -1,7 +1,11 @@
 import React from 'react'
-import FollowButton from '../buttons/FollowButton'
+import RelationshipButton from '../buttons/RelationshipButton'
 
 class PersonGrid extends React.Component {
+  setRelationshipPriority(state) {
+    this.refs.relationshipButton.setState(state)
+  }
+
   render() {
     const user = this.props.user
     const avatar = user.avatar.regular.url
@@ -10,7 +14,7 @@ class PersonGrid extends React.Component {
       <div className="PersonGrid" >
         <img className="tmp-header-image" />
         <figure className="Avatar" style={style}></figure>
-        <FollowButton ref="followButton" priority={user.relationship_priority} data-user-id={user.id} />
+        <RelationshipButton ref="relationshipButton" priority={user.relationship_priority} data-user-id={user.id} />
 
         <div className="stats">
           <dl>
