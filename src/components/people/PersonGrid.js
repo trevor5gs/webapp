@@ -54,7 +54,7 @@ class PersonGrid extends React.Component {
 
 PersonGrid.propTypes = {
   user: React.PropTypes.shape({
-  }),
+  }).isRequired,
 }
 
 export default PersonGrid

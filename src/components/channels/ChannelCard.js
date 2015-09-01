@@ -17,7 +17,7 @@ class ChannelCard extends React.Component {
 
 ChannelCard.propTypes = {
   user: React.PropTypes.shape({
-  }),
+  }).isRequired,
 }
 
 export default ChannelCard
