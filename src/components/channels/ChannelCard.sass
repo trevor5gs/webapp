@@ -23,16 +23,16 @@
   font-size: rem(24)
   color: white
 
-.ChannelCard > .FollowButton
+.ChannelCard > .RelationshipButton
   position: absolute
   top: calc(50% - #{rem(15)})
   right: rem(10)
 
-.ChannelCard > .FollowButton[data-priority="inactive"]
+.ChannelCard > .RelationshipButton[data-priority="inactive"]
   border-color: white
-.no-touch .ChannelCard > .FollowButton[data-priority="inactive"]:hover
+.no-touch .ChannelCard > .RelationshipButton[data-priority="inactive"]:hover
   border-color: black
-.no-touch .ChannelCard > .FollowButton:not([data-priority="inactive"]):hover
+.no-touch .ChannelCard > .RelationshipButton:not([data-priority="inactive"]):hover
   border-color: white
 
 
@@ -47,7 +47,7 @@
     margin-left: rem(20)
   .ChannelCard > h2
     right: 0
-  .ChannelCard > .FollowButton
+  .ChannelCard > .RelationshipButton
     top: auto
     left: rem(10)
     bottom: rem(10)

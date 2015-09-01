@@ -7,7 +7,7 @@ import HeaderUploader from '../uploaders/HeaderUploader'
 import HeaderCarousel from '../carousels/HeaderCarousel'
 import Button from '../buttons/Button'
 import BioForm from '../forms/BioForm'
-import { FollowState } from '../buttons/FollowButton'
+import { RelationshipPriority } from '../buttons/RelationshipButton'
 
 export class RelationshipBatchPicker extends React.Component {
   componentDidMount() {
@@ -51,7 +51,7 @@ export class PeoplePicker extends RelationshipBatchPicker {
     const personRefs = this.refs.streamComponent.refs.wrappedInstance.refs
     for (const ref in personRefs) {
       if (personRefs.hasOwnProperty(ref)) {
-        personRefs[ref].setFollowButtonState(FollowState.FRIEND)
+        personRefs[ref].setRelationshipPriority(RelationshipPriority.FRIEND)
       }
     }
   }

@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { MiniPlusIcon, MiniCheckIcon } from '../iconography/Icons'
 
 
-export const FollowState = {
+export const RelationshipPriority = {
   INACTIVE: { priority: 'inactive' },
   FRIEND: { priority: 'friend' },
   NOISE: { priority: 'noise' },
@@ -13,7 +13,7 @@ export const FollowState = {
   NONE: { priority: 'none' },
 }
 
-class FollowButton extends React.Component {
+class RelationshipButton extends React.Component {
   constructor(props, context) {
     super(props, context)
     const { priority } = this.props
@@ -98,15 +98,15 @@ class FollowButton extends React.Component {
   }
 }
 
-FollowButton.defaultProps = {
-  classListName: 'FollowButton',
+RelationshipButton.defaultProps = {
+  classListName: 'RelationshipButton',
 }
 
-FollowButton.propTypes = {
+RelationshipButton.propTypes = {
   className: React.PropTypes.string,
   classListName: React.PropTypes.string,
   priority: React.PropTypes.oneOf(['inactive', 'friend', 'noise', 'self', 'mute', 'block', 'none',  null]),
 }
 
-export default FollowButton
+export default RelationshipButton
 
