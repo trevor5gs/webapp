@@ -3,6 +3,16 @@ import classNames from 'classnames'
 import { MiniPlusIcon, MiniCheckIcon } from '../iconography/Icons'
 
 
+export const FollowState = {
+  INACTIVE: { priority: 'inactive' },
+  FRIEND: { priority: 'friend' },
+  NOISE: { priority: 'noise' },
+  SELF: { priority: 'self' },
+  MUTE: { priority: 'mute' },
+  BLOCK: { priority: 'block' },
+  NONE: { priority: 'none' },
+}
+
 class FollowButton extends React.Component {
   constructor(props, context) {
     super(props, context)

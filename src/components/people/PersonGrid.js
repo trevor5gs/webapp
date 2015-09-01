@@ -2,6 +2,10 @@ import React from 'react'
 import FollowButton from '../buttons/FollowButton'
 
 class PersonGrid extends React.Component {
+  setFollowButtonState(state) {
+    this.refs.followButton.setState(state)
+  }
+
   render() {
     const user = this.props.user
     const avatar = user.avatar.regular.url
