@@ -14,6 +14,7 @@ class NameControl extends React.Component {
 
   handleChange(e) {
     const val = e.target.value
+    this.props.controlWasChanged({ name: val })
     this.setState({ text: val, hasValue: val.length })
   }
 
@@ -70,6 +71,7 @@ NameControl.propTypes = {
   name: React.PropTypes.string,
   id: React.PropTypes.string,
   hasFocus: React.PropTypes.func,
+  controlWasChanged: React.PropTypes.func.isRequired,
 }
 
 export default NameControl

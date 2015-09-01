@@ -1,19 +1,26 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { saveProfile } from '../../actions/profile'
 import NameControl from './NameControl'
 
 class BioForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    console.log('Bio Form handleSubmit', arguments)
   }
 
+  handleControlChange(vo) {
+    this.props.dispatch(saveProfile(vo))
+  }
 
   render() {
+    const { payload } = this.props.profile
+    const { name } = payload
+
     return (
       <form className="BioForm" onSubmit={this.handleSubmit} role="form" noValidate="novalidate">
         <figure className="Avatar"></figure>
-        <NameControl tabIndex="1"/>
+        <NameControl tabIndex="1" text={name} controlWasChanged={this.handleControlChange.bind(this)} />
         <p>Bio</p>
         <p>Links</p>
       </form>
@@ -22,7 +29,21 @@ class BioForm extends React.Component {
 
 }
 
-export default BioForm
+// This should be a selector: @see: https://github.com/faassen/reselect
+function mapStateToProps(state) {
+  return {
+    profile: state.profile,
+  }
+}
+
+BioForm.propTypes = {
+  dispatch: React.PropTypes.func.isRequired,
+  profile: React.PropTypes.shape({
+    payload: React.PropTypes.shape,
+  }),
+}
+
+export default connect(mapStateToProps)(BioForm)
 
 
 // <form accept-charset="UTF-8" action="/api/v1/settings/profile" class="simple_form form edit_user" id="bio_form" method="post" novalidate="novalidate" role="form">

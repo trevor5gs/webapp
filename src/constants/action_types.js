@@ -16,3 +16,6 @@ export const SHORTCUT_KEYS = {
 export const DT_GRID_TOGGLE = 'DT_GRID_TOGGLE'
 export const DT_GRID_CYCLE = 'DT_GRID_CYCLE'
 
+export const PROFILE = {
+  SAVE: 'PROFILE_SAVE',
+}
