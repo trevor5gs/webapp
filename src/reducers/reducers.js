@@ -1,3 +1,4 @@
+import * as ACTION_TYPES from '../constants/action_types'
 
 export function stream(state = {}, action) {
   if (action.type.indexOf('LOAD_STREAM') === -1) {
@@ -45,10 +46,12 @@ function addModels(state, type, data) {
 }
 
 export function json(state = {}, action) {
-  if (action.type !== 'LOAD_STREAM_SUCCESS') {
-    return state
-  }
   const newState = Object.assign({}, state)
+  if (action.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
+    // clear out result since it should only be populated on success
+    newState.result = {}
+    return newState
+  }
   const { response } = action.payload
   // parse linked
   if (response.linked) {
