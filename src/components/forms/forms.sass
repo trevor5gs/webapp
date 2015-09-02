@@ -1,19 +1,7 @@
-// fieldset
-//   position: relative
-//   padding: 0
-//   margin: 0
-//   min-width: 0
-//   border: 0
-
-// legend
-//   +typeset
-//   margin: 0
-//   padding: 0
-//   border: 0
-
 input,
 textarea
   margin: 0
+  padding: 0
   color: inherit
   font: inherit
   border-radius: 0
@@ -50,16 +38,13 @@ label
 .FormControlGroup
   position: relative
   max-width: rem(400)
-//   transform: translateZ(0)
-//   margin-bottom: rem(15)
 
 
-// // ----------------------------------------------------------------------------
-
+// -------------------------------------
 
 %FormControl
   +mono-typeset
-  transition: border-color $speed $ease, color $speed $ease, width $speed $ease
+  transition: border-color $speed $ease, color $speed $ease, width $speed $ease, height $speed $ease
   display: inline-block
   vertical-align: baseline
   width: 100%
@@ -73,15 +58,11 @@ label
     outline: 0
 
 %FormControlLabel
-  transition: transform $speed2 $ease, opacity $speed2 $ease
+  transition: transform $speed2 $ease, opacity $speed2 $ease, color $speed2 $ease
   position: absolute
-  top: rem(40)
+  bottom: rem(-15)
   right: 0
 
-
-
-// textarea.form-control
-//   min-height: rem(120)
 
 .FormControl
   @extend %FormControl
@@ -89,6 +70,14 @@ label
 .hasValue > .FormControl
   border-bottom-color: black
 
+textarea.FormControl
+  min-height: 0
+  height: rem(30)
+  margin-top: rem(10)
+
+.hasValue > textarea.FormControl,
+.hasFocus > textarea.FormControl
+  height: rem(115)
 
 .FormControlLabel
   @extend %FormControlLabel
@@ -97,4 +86,18 @@ label
 .hasFocus.hasValue > .FormControlLabel
   opacity: 1
   transform: translate3d(0,5px,0)
+
+.hasExceeded.hasValue > .FormControlLabel
+  color: $danger
+
+.NameControl
+  +heading-family
+  font-size: 1rem
+
+@media(min-width: #{$break-3})
+  .hasValue > textarea.FormControl,
+  .hasFocus > textarea.FormControl
+    height: rem(85)
+
+// -------------------------------------
 

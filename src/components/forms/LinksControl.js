@@ -2,10 +2,9 @@ import React from 'react'
 import classNames from 'classnames'
 import FormControl from './FormControl'
 
-class NameControl extends FormControl {
-
+class LinksControl extends FormControl {
   handleChange(e) {
-    this.props.controlWasChanged({ name: e.target.value })
+    this.props.controlWasChanged({ externalLinks: e.target.value })
     super.handleChange(e)
   }
 
@@ -20,9 +19,9 @@ class NameControl extends FormControl {
 
     return (
       <div className={groupClassNames}>
-        <label className="FormControlLabel" htmlFor={id}>Name</label>
+        <label className="FormControlLabel" htmlFor={id}>Links</label>
         <input
-          className="FormControl NameControl"
+          className="FormControl LinksControl"
           id={id}
           name={name}
           value={text}
@@ -40,15 +39,15 @@ class NameControl extends FormControl {
   }
 }
 
-NameControl.defaultProps = {
-  placeholder: 'Name (optional)',
-  id: 'user_name',
-  name: 'user[name]',
+LinksControl.defaultProps = {
+  placeholder: 'Links (optional)',
+  id: 'user_links',
+  name: 'user[links]',
   inputType: 'text',
   tabIndex: 0,
 }
 
-NameControl.propTypes = {
+LinksControl.propTypes = {
   id: React.PropTypes.string.isRequired,
   name: React.PropTypes.string.isRequired,
   inputType: React.PropTypes.string.isRequired,
@@ -57,5 +56,5 @@ NameControl.propTypes = {
   controlWasChanged: React.PropTypes.func.isRequired,
 }
 
-export default NameControl
+export default LinksControl
 
