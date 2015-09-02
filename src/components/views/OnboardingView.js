@@ -4,7 +4,6 @@ import OnboardingHeader from '../navigation/OnboardingHeader'
 import StreamComponent from '../streams/StreamComponent'
 import AvatarUploader from '../uploaders/AvatarUploader'
 import HeaderUploader from '../uploaders/HeaderUploader'
-import HeaderCarousel from '../carousels/HeaderCarousel'
 import Button from '../buttons/Button'
 import BioForm from '../forms/BioForm'
 import { RelationshipPriority } from '../buttons/RelationshipButton'
@@ -79,7 +78,6 @@ export class HeaderPicker extends React.Component {
             title="Customize your profile."
             message="Choose a header image by @username or upload your own." />
         <HeaderUploader />
-        <HeaderCarousel />
       </div>
     )
   }

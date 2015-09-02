@@ -15,13 +15,26 @@ class BioForm extends React.Component {
     this.props.dispatch(saveProfile(vo))
   }
 
+  renderAvatar(src) {
+    if (src) {
+      const style = {
+        backgroundImage: `url(${src})`,
+        backgroundColor: 'white',
+      }
+      return <figure className="Avatar" style={style}></figure>
+    }
+    return <figure className="Avatar"></figure>
+  }
+
+
   render() {
     const { payload } = this.props.profile
-    const { name, externalLinks, shortBio } = payload
+    const { name, externalLinks, shortBio, avatar } = payload
+    const avatarSource = avatar && avatar.tmp ? avatar.tmp : null
 
     return (
       <form className="BioForm" onSubmit={this.handleSubmit} role="form" noValidate="novalidate">
-        <figure className="Avatar"></figure>
+        { this.renderAvatar(avatarSource) }
         <NameControl tabIndex="1" text={name} controlWasChanged={this.handleControlChange.bind(this)} />
         <BioControl tabIndex="2" text={shortBio} controlWasChanged={this.handleControlChange.bind(this)} />
         <LinksControl tabIndex="3" text={externalLinks} controlWasChanged={this.handleControlChange.bind(this)} />

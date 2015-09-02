@@ -18,6 +18,16 @@ export function profile(state = initialState, action) {
         ...action.payload,
       },
     }
+  case PROFILE.AVATAR_WAS_SAVED:
+    return {
+      type: action.type,
+      meta: action.meta,
+      error: action.error,
+      payload: {
+        ...state.payload,
+        ...action.payload,
+      },
+    }
   default:
     return state
   }
