@@ -9,15 +9,13 @@ class StreamComponent extends React.Component {
   }
 
   render() {
-    const { meta, payload } = this.props.stream
-    const { json, result } = this.props
+    const { json, mappingType, meta, payload, result } = this.props
+    if (!mappingType || !result || !result[mappingType]) {
+      return <div/>
+    }
     const jsonables = []
-    for (const key in result) {
-      if ({}.hasOwnProperty.call(result, key)) {
-        for (const id of result[key]) {
-          jsonables.push(json[key][id])
-        }
-      }
+    for (const id of result[mappingType]) {
+      jsonables.push(json[mappingType][id])
     }
     if (!jsonables.length || !meta) {
       return <div>Loading...</div>
@@ -36,6 +34,9 @@ function mapStateToProps(state) {
   return {
     json: state.json,
     result: state.json.result,
+    meta: state.stream.meta,
+    mappingType: state.stream.meta ? state.stream.meta.mappingType : null,
+    payload: state.stream.payload,
     stream: state.stream,
   }
 }
@@ -45,10 +46,10 @@ StreamComponent.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   json: React.PropTypes.object.isRequired,
   result: React.PropTypes.object,
-  stream: React.PropTypes.shape({
-    meta: React.PropTypes.object,
-    payload: React.PropTypes.object,
-  }).isRequired,
+  stream: React.PropTypes.object.isRequired,
+  meta: React.PropTypes.object,
+  mappingType: React.PropTypes.string,
+  payload: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(StreamComponent)

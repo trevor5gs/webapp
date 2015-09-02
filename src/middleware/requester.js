@@ -1,4 +1,5 @@
 import * as ACTION_TYPES from '../../src/constants/action_types'
+import { camelizeKeys } from 'humps'
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -33,7 +34,7 @@ export function requester() {
       .then(checkStatus)
       .then(parseJSON)
       .then(response => {
-        payload.response = response
+        payload.response = camelizeKeys(response)
         next({ meta, payload, type: SUCCESS })
         return true
       })
