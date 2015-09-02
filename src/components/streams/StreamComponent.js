@@ -3,23 +3,26 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 class StreamComponent extends React.Component {
-
   componentWillMount() {
     const { action, dispatch } = this.props
     action ? dispatch(action()) : console.error('Action is required to load a stream')
   }
 
   render() {
-    const { meta, payload } = this.props.stream
-    if (!payload || !meta) {
+    const { json, mappingType, meta, payload, result } = this.props
+    if (!mappingType || !result || !result[mappingType]) {
       return <div/>
     }
-    const { response } = payload
-    const { mappingType } = meta
-    const json = (response && response[mappingType] && response[mappingType].length) ? response[mappingType] : []
+    const jsonables = []
+    for (const id of result[mappingType]) {
+      jsonables.push(json[mappingType][id])
+    }
+    if (!jsonables.length || !meta) {
+      return <div>Loading...</div>
+    }
     return (
       <section className="StreamComponent">
-        { json.length ? meta.renderStream(json, payload.vo) : '' }
+        { meta.renderStream(jsonables, json, payload.vo) }
       </section>
     )
   }
@@ -29,23 +32,24 @@ class StreamComponent extends React.Component {
 // @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {
+    json: state.json,
+    result: state.json.result,
+    meta: state.stream.meta,
+    mappingType: state.stream.meta ? state.stream.meta.mappingType : null,
+    payload: state.stream.payload,
     stream: state.stream,
   }
 }
 
 StreamComponent.propTypes = {
-  className: React.PropTypes.string,
-  classListName: React.PropTypes.string,
-  children: React.PropTypes.node.isRequired,
-}
-
-StreamComponent.propTypes = {
   action: React.PropTypes.func.isRequired,
   dispatch: React.PropTypes.func.isRequired,
-  stream: React.PropTypes.shape({
-    meta: React.PropTypes.object,
-    payload: React.PropTypes.object,
-  }).isRequired,
+  json: React.PropTypes.object.isRequired,
+  result: React.PropTypes.object,
+  stream: React.PropTypes.object.isRequired,
+  meta: React.PropTypes.object,
+  mappingType: React.PropTypes.string,
+  payload: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(StreamComponent)

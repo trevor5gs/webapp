@@ -2,20 +2,20 @@ import React from 'react'
 import ChannelCard from '../channels/ChannelCard'
 import PersonGrid from '../people/PersonGrid'
 
-export function onboardingChannels(json) {
+export function onboardingChannels(jsonables) {
   return (
     <div className="Channels">
-      {json.map((user, i) => {
+      {jsonables.map((user, i) => {
         return <ChannelCard user={user} key={i} />
       })}
     </div>
   )
 }
 
-export function onboardingPeople(json) {
+export function onboardingPeople(jsonables) {
   return (
     <div className="People as-grid">
-      {json.map((user, i) => {
+      {jsonables.map((user, i) => {
         return <PersonGrid ref={'personGrid_' + i} user={user} key={i} />
       })}
     </div>
