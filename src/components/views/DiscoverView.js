@@ -1,9 +1,14 @@
 import React from 'react'
+import StreamComponent from '../streams/StreamComponent'
+import * as DiscoverActions from '../../actions/discover'
 
 class DiscoverView extends React.Component {
   render() {
     return (
-      <h1 className="heading">The Discover</h1>
+      <div>
+        <h1 className="heading">The Discover</h1>
+        <StreamComponent action={DiscoverActions.loadRecommended} />
+      </div>
     )
   }
 }

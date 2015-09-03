@@ -34,8 +34,15 @@ export function onboardingPeople(jsonables) {
 // }
 
 
-// export function postsAsGrid(json) {
-// }
+export function postsAsGrid(jsonables) {
+  return (
+    <div className="Discover">
+      {jsonables.map((user, i) => {
+        console.log('user ' + i, user)
+      })}
+    </div>
+  )
+}
 
 
 // export function notificationsAsList(json) {
