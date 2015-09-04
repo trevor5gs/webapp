@@ -1,7 +1,16 @@
-export { test } from 'tape'
 import React from 'react/addons'
+import ExecutionEnvironment from 'react/lib/ExecutionEnvironment'
+import jsdom from 'mocha-jsdom'
+
+export { expect as expect } from 'chai'
+export { React as React }
 
 const shallowRenderer = React.addons.TestUtils.createRenderer()
+
+export function jsdomReact() {
+  jsdom()
+  ExecutionEnvironment.canUseDOM = true
+}
 
 function isValidFSAKey(key) {
   const validKeys = [

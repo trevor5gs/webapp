@@ -1,6 +1,6 @@
 import * as ACTION_TYPES from '../constants/action_types'
 
-export function stream(state = {}, action) {
+export function stream(state = {}, action = { type: '' }) {
   if (action.type.indexOf('LOAD_STREAM') === -1) {
     return state
   }
@@ -13,7 +13,7 @@ export function stream(state = {}, action) {
   }
 }
 
-export function staticPage(state = {}, action) {
+export function staticPage(state = {}, action = { type: '' }) {
   if (action.type.indexOf('STATIC_PAGE') === -1) {
     return state
   }
@@ -45,7 +45,7 @@ function addModels(state, type, data) {
   return ids
 }
 
-export function json(state = {}, action) {
+export function json(state = {}, action = { type: '' }) {
   const newState = Object.assign({}, state)
   if (action.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
     // clear out result since it should only be populated on success
