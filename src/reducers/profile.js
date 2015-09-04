@@ -19,6 +19,7 @@ export function profile(state = initialState, action) {
       },
     }
   case PROFILE.AVATAR_WAS_SAVED:
+  case PROFILE.COVER_WAS_SAVED:
     return {
       type: action.type,
       meta: action.meta,

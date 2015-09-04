@@ -63,8 +63,6 @@ AvatarUploader.propTypes = {
   }),
 }
 
-// export default AvatarUploader
-
 // This should be a selector: @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {

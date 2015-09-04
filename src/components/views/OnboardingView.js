@@ -3,7 +3,7 @@ import * as OnboardingActions from '../../actions/onboarding'
 import OnboardingHeader from '../navigation/OnboardingHeader'
 import StreamComponent from '../streams/StreamComponent'
 import AvatarUploader from '../uploaders/AvatarUploader'
-import HeaderUploader from '../uploaders/HeaderUploader'
+import CoverUploader from '../uploaders/CoverUploader'
 import Button from '../buttons/Button'
 import BioForm from '../forms/BioForm'
 import { RelationshipPriority } from '../buttons/RelationshipButton'
@@ -69,15 +69,15 @@ export class PeoplePicker extends RelationshipBatchPicker {
   }
 }
 
-export class HeaderPicker extends React.Component {
+export class CoverPicker extends React.Component {
   render() {
     return (
-      <div className="HeaderPicker Panel">
+      <div className="CoverPicker Panel">
         <OnboardingHeader
             nextPath="/onboarding/profile-avatar"
             title="Customize your profile."
-            message="Choose a header image by @username or upload your own." />
-        <HeaderUploader />
+            message="Choose a header image." />
+        <CoverUploader />
       </div>
     )
   }

@@ -1,0 +1,30 @@
+.CoverUploader
+  transition: background-color $speed ease, opacity $speed ease
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  // padding-bottom: 56.25%
+  z-index: 0
+  text-align: center
+  color: white
+
+.CoverUploader > .Button
+  +ButtonPrimary
+  min-width: rem(280)
+
+.CoverUploader > p
+  margin-bottom: 0
+
+.CoverUploader > p + p
+  margin-top: 0
+
+
+// On-boarding
+main[data-pathname^="/onboarding"] .CoverUploader
+  top: rem(120)
+
+@media(min-width: #{$break-2})
+  main[data-pathname^="/onboarding"] .CoverUploader
+    top: rem(240)
+

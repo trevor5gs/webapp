@@ -42,7 +42,23 @@ export function saveAvatar(file) {
   }
 }
 
-export function saveWallpaper() {
+export function coverWasSaved(payload) {
+  return {
+    type: PROFILE.COVER_WAS_SAVED,
+    payload: payload,
+    meta: { },
+  }
+}
+
+// Basically the same things as saveAvatar above
+export function saveCover(file) {
+  return dispatch => {
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      dispatch(coverWasSaved({ coverImage: { tmp: reader.result }}))
+    }
+    reader.readAsDataURL(file)
+  }
 }
 
 export function deleteAccountForReal() {
