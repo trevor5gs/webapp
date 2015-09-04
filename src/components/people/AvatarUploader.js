@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { saveAvatar } from '../../actions/profile'
 import Button from '../buttons/Button'
+import Avatar from './Avatar'
 
 class AvatarUploader extends React.Component {
 
@@ -11,22 +12,10 @@ class AvatarUploader extends React.Component {
 
   handleFileBrowser(e) {
     const file = e.target.files[0]
-    if (!file.type.match(/^image/)) {
+    if (file && file.type && !file.type.match(/^image/)) {
       return
     }
     this.props.dispatch(saveAvatar(file))
-  }
-
-
-  renderAvatar(src) {
-    if (src) {
-      const style = {
-        backgroundImage: `url(${src})`,
-        backgroundColor: 'white',
-      }
-      return <figure className="Avatar" style={style}></figure>
-    }
-    return <figure className="Avatar"></figure>
   }
 
 
@@ -37,7 +26,7 @@ class AvatarUploader extends React.Component {
 
     return (
       <div className="AvatarUploader">
-        { this.renderAvatar(avatarSource) }
+        <Avatar imgSrc={avatarSource} />
         <Button
           onClick={(e) => this.triggerFileBrowser(e)}>
           Pick an Avatar

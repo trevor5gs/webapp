@@ -4,8 +4,8 @@ import RelationshipButton from '../buttons/RelationshipButton'
 class ChannelCard extends React.Component {
   render() {
     const user = this.props.user
-    const avatar = user.avatar.regular.url
-    const style = { backgroundImage: `url(${avatar})` }
+    const coverSrc = user.avatar.regular.url
+    const style = { backgroundImage: `url(${coverSrc})` }
     return (
       <div className="ChannelCard" style={style}>
         <h2>{user.name}</h2>
