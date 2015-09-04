@@ -1,4 +1,4 @@
-import { expect, getRenderedComponent } from '../spec_helper'
+import { expect, getRenderedComponent, jsdomReact } from '../spec_helper'
 import { default as subject, RelationshipPriority } from '../../src/components/buttons/RelationshipButton'
 import { MiniPlusIcon, MiniCheckIcon } from '../../src/components/iconography/Icons'
 
@@ -27,7 +27,8 @@ describe('RelationshipPriority', () => {
 })
 
 describe('RelationshipButton#render', () => {
-  xit('renders inactive by default', () => {
+  jsdomReact()
+  it('renders inactive by default', () => {
     const button = getRenderedComponent(subject, {className: 'MyRelationshipButton'})
     expect(button.type).to.equal('button')
     expect(button.props.className).to.equal('MyRelationshipButton RelationshipButton')
@@ -38,14 +39,14 @@ describe('RelationshipButton#render', () => {
     expect(span.props.children).to.equal('Follow')
   })
 
-  xit('renders inactive', () => {
+  it('renders inactive', () => {
     const button = getRenderedComponent(subject, { priority: 'inactive' })
     const [icon, span] = button.props.children
     expect(icon.type).to.equal(MiniPlusIcon)
     expect(span.props.children).to.equal('Follow')
   })
 
-  xit('renders none', () => {
+  it('renders none', () => {
     const button = getRenderedComponent(subject, { priority: 'none' })
     const [icon, span] = button.props.children
     expect(icon.type).to.equal(MiniPlusIcon)
@@ -53,7 +54,7 @@ describe('RelationshipButton#render', () => {
   })
 
   xit('renders friend', () => {
-    const button = getRenderedComponent(subject)
+    const button = getRenderedComponent(subject, { priority: 'noise' })
     button.setState(RelationshipPriority.FRIEND)
     const [icon, span] = button.props.children
     expect(icon.type).to.equal(MiniCheckIcon)

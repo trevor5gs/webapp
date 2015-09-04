@@ -5,7 +5,7 @@ import jsdom from 'mocha-jsdom'
 export { expect as expect } from 'chai'
 export { React as React }
 
-const shallowRenderer = React.addons.TestUtils.createRenderer()
+export const TestUtils = React.addons.TestUtils
 
 export function jsdomReact() {
   jsdom()
@@ -31,8 +31,13 @@ function isValidStreamMetaKey(key) {
 }
 
 export function getRenderedComponent(component, options = {}, children = null) {
+  const shallowRenderer = TestUtils.createRenderer()
   shallowRenderer.render(React.createElement(component, options, children))
   return shallowRenderer.getRenderOutput()
+}
+
+export function renderIntoDocument(component, options = {}, children = null) {
+  return TestUtils.renderIntoDocument(React.createElement(component, options, children))
 }
 
 export function hasStreamMetadata(action) {

@@ -34,7 +34,7 @@
     "eslint-config-airbnb": "*",
     "eslint-plugin-react": "*",
     "express": "^4.13.3",
-    "jsdom": "^6.3.0",
+    "jsdom": "^3.1.2",
     "mocha": "^2.3.0",
     "mocha-jsdom": "^1.0.0",
     "node-libs-browser": "^0.5.2",
