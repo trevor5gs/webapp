@@ -3,8 +3,8 @@
   top: 0
   left: 0
   right: 0
-  height: rem(140)
-  padding: rem(40)
+  height: rem(50)
+  padding: rem(30) rem(10)
   background-color: white
   z-index: $z-navbar
 
@@ -12,7 +12,7 @@
   position: absolute
   margin-top: rem(-10)
   top: 50%
-  right: rem(40)
+  right: rem(10)
 
 .NavbarLinks > a
   +sans-family
@@ -30,6 +30,27 @@
 .NavbarLinks > .active
   border-bottom: 2px solid
   color: black
+
+@media(max-width: #{$break-2-max})
+  // Hide the Ello icon..
+  .Navbar > a[href="/"]
+    display: none
+
+@media(min-width: #{$break-2})
+  .Navbar
+    height: rem(120)
+    padding-left: rem(20)
+    padding-right: rem(20)
+  .NavbarLinks
+    right: rem(20)
+
+
+@media(min-width: #{$break-4})
+  .Navbar
+    padding-left: rem(40)
+    padding-right: rem(40)
+  .NavbarLinks
+    right: rem(40)
 
 // -------------------------------------
 

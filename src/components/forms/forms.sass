@@ -1,0 +1,103 @@
+input,
+textarea
+  margin: 0
+  padding: 0
+  color: inherit
+  font: inherit
+  border-radius: 0
+  -webkit-appearance: none
+  -moz-appearance: none
+
+input::-ms-clear
+  display: none
+  width: 0
+  height: 0
+
+textarea
+  overflow: auto
+  resize: none
+  height: 100%
+
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration
+  -webkit-appearance: none
+
+
+input,
+textarea
+  &::placeholder
+    color: #aaa
+
+label
+  +mono-typeset
+  display: inline-block
+  vertical-align: baseline
+  color: #aaa
+
+.FormControlGroup
+  position: relative
+  max-width: rem(400)
+
+
+// -------------------------------------
+
+%FormControl
+  +mono-typeset
+  transition: border-color $speed $ease, color $speed $ease, width $speed $ease, height $speed $ease
+  display: inline-block
+  vertical-align: baseline
+  width: 100%
+  background-color: transparent
+  border: 0
+  border-bottom: 1px solid #aaa
+  color: black
+  min-height: rem(40)
+  &:focus
+    border-bottom-color: black
+    outline: 0
+
+%FormControlLabel
+  transition: transform $speed2 $ease, opacity $speed2 $ease, color $speed2 $ease
+  position: absolute
+  bottom: rem(-15)
+  right: 0
+
+
+.FormControl
+  @extend %FormControl
+
+.hasValue > .FormControl
+  border-bottom-color: black
+
+textarea.FormControl
+  min-height: 0
+  height: rem(30)
+  margin-top: rem(10)
+
+.hasValue > textarea.FormControl,
+.hasFocus > textarea.FormControl
+  height: rem(115)
+
+.FormControlLabel
+  @extend %FormControlLabel
+  opacity: 0
+
+.hasFocus.hasValue > .FormControlLabel
+  opacity: 1
+  transform: translate3d(0,5px,0)
+
+.hasExceeded.hasValue > .FormControlLabel
+  color: $danger
+
+.NameControl
+  +heading-family
+  font-size: 1rem
+
+@media(min-width: #{$break-3})
+  .hasValue > textarea.FormControl,
+  .hasFocus > textarea.FormControl
+    height: rem(85)
+
+// -------------------------------------
+

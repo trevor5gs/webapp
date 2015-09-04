@@ -4,87 +4,92 @@
   max-width: 640px
   margin: 0 auto
 
+// These are eventually going to be links But we'll never want them to appear
+// as links within the flow of on-boarding
 .PeoplePicker .PersonGrid .stats dd
   border-bottom: none
   pointer-events: none
 
-
 @media(min-width: #{$break-2})
-  .ChannelPicker .StreamComponent,
   .PeoplePicker
-    padding: 0 rem(20)
+    padding-top: (20)
+  .ChannelPicker .StreamComponent,
+  .PeoplePicker .StreamComponent
+    padding: 0 rem(20) rem(20)
   .PeoplePicker > .Button
     width: 100%
 
 @media(min-width: #{$break-4})
-  .ChannelPicker .StreamComponent,
   .PeoplePicker
-    padding: 0 rem(40)
-
-
-// -------------------------------------
-
-// position may get removed once we define Panel since this is an extension
-.HeaderPicker
-  position: relative
-
-.HeaderPicker > .HeaderUploader > .Button
-  margin-top: rem(120)
-
-.HeaderPicker > .HeaderCarousel > .Paddles
-  top: rem(360)
-  left: rem(20)
-  right: rem(20)
-
-@media(min-width: #{$break-2})
-  .HeaderPicker > .HeaderCarousel > .Paddles
-    top: rem(120)
-
-@media(min-width: #{$break-4})
-  .HeaderPicker > .HeaderUploader > .Button
-    margin-top: rem(240)
-  .HeaderPicker > .HeaderCarousel > .Paddles
-    top: rem(240)
-    left: rem(40)
-    right: rem(40)
+    padding-top: (40)
+  .ChannelPicker .StreamComponent,
+  .PeoplePicker .StreamComponent
+    padding: 0 rem(40) rem(40)
 
 // -------------------------------------
+// Basically identical to BioPicker
+
+.AvatarPicker
+  height: calc(100vh - 80px)
+  background-color: white
 
 .AvatarPicker > .AvatarUploader
   padding: rem(10)
 
 .AvatarPicker > .AvatarUploader > .Avatar
-  margin-bottom: rem(10)
+  margin-bottom: rem(20)
 
 @media(min-width: #{$break-2})
-  .AvatarPicker > .AvatarUploader > .Avatar
-    position: absolute
-    top: 0
-    left: 0
+  .AvatarPicker
+    height: calc(100vh - 240px)
+    margin-top: 240px
   .AvatarPicker > .AvatarUploader
-    padding-top: rem(40)
+    padding-top: rem(60)
     padding-left: rem(200)
     margin-left: 15%
+  .AvatarPicker > .AvatarUploader > .Avatar
+    position: absolute
+    top: rem(20)
+    left: 0
+    margin-bottom: 0
 
 @media(min-width: #{$break-4})
+  .AvatarPicker
+    height: calc(100vh - 320px)
+    margin-top: 320px
   .AvatarPicker > .AvatarUploader
     margin-left: 25%
 
 // -------------------------------------
+// Basically identical to AvatarPicker
 
-.BioCreator > .BioForm
+.BioPicker
+  height: calc(100vh - 80px)
+  background-color: white
+
+.BioPicker > .BioForm
   padding: rem(10)
 
+.BioPicker > .BioForm > .Avatar
+  margin-bottom: rem(20)
+
 @media(min-width: #{$break-2})
-  .BioCreator > .BioForm > .Avatar
-    position: absolute
-    top: 0
-    left: 0
-  .BioCreator > .BioForm
+  .BioPicker
+    height: calc(100vh - 240px)
+    margin-top: 240px
+  .BioPicker > .BioForm
     padding-top: rem(40)
     padding-left: rem(200)
     margin-left: 15%
+  .BioPicker > .BioForm > .Avatar
+    position: absolute
+    top: rem(20)
+    left: 0
+    margin-bottom: 0
 @media(min-width: #{$break-4})
-  .BioCreator > .BioForm
+  .BioPicker
+    height: calc(100vh - 320px)
+    margin-top: 320px
+  .BioPicker > .BioForm
     margin-left: 25%
 
