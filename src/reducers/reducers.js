@@ -47,9 +47,11 @@ function addModels(state, type, data) {
 
 export function json(state = {}, action = { type: '' }) {
   const newState = Object.assign({}, state)
-  if (action.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
+  if (action.type === ACTION_TYPES.LOAD_STREAM_REQUEST) {
     // clear out result since it should only be populated on success
     newState.result = {}
+    return newState
+  } else if (action.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
     return newState
   }
   const { response } = action.payload
