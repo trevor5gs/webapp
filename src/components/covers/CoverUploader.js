@@ -1,9 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { saveCover } from '../../actions/profile'
+import classNames from 'classnames'
 import Button from '../buttons/Button'
 
 class CoverUploader extends React.Component {
+  constructor(props, context) {
+    super(props, context)
+    this.state = {
+      hasDragOver: false,
+    }
+  }
+
   triggerFileBrowser() {
     this.refs.CoverFileBrowser.getDOMNode().click()
   }
@@ -16,9 +24,38 @@ class CoverUploader extends React.Component {
     this.props.dispatch(saveCover(file))
   }
 
+  handleDrop(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    const file = e.dataTransfer.files[0]
+    if (file && file.type && !file.type.match(/^image/)) {
+      return
+    }
+    this.setState({ hasDragOver: false })
+    this.props.dispatch(saveCover(file))
+  }
+
+  handleDragOver(e) {
+    e.preventDefault()
+    this.setState({ hasDragOver: true })
+  }
+
+  handleDragLeave(e) {
+    e.preventDefault()
+    this.setState({ hasDragOver: false })
+  }
+
   render() {
+    const klassNames = classNames(
+      'CoverUploader',
+      { hasDragOver: this.state.hasDragOver },
+    )
     return (
-      <div className="CoverUploader">
+      <div className={klassNames}
+        onDrop={(e) => this.handleDrop(e)}
+        onDragOver={(e) => this.handleDragOver(e)}
+        onDragLeave={(e) => this.handleDragLeave(e)}
+        >
         <Button
           onClick={(e) => this.triggerFileBrowser(e)}>
           Upload a header image

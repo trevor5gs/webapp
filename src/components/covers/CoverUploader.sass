@@ -1,7 +1,7 @@
 .CoverUploader
   transition: background-color $speed ease, opacity $speed ease
   position: fixed
-  top: 0
+  top: rem(120)
   left: 0
   right: 0
   // padding-bottom: 56.25%
@@ -19,11 +19,22 @@
 .CoverUploader > p + p
   margin-top: 0
 
+.CoverUploader:before
+  transition: background-color $speed ease
+  content: ''
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: transparent
+
+.hasDragOver.CoverUploader:before
+  background-color: rgba(black, 0.5)
+  z-index: -1
+
 
 // On-boarding
-main[data-pathname^="/onboarding"] .CoverUploader
-  top: rem(120)
-
 @media(min-width: #{$break-2})
   main[data-pathname^="/onboarding"] .CoverUploader
     top: rem(240)
