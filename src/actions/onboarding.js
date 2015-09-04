@@ -5,7 +5,7 @@ import * as StreamRenderables from '../components/streams/StreamRenderables'
 export function loadChannels() {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: '/test/mock/data/channels.json', vo: {} },
+    payload: { endpoint: '/data/channels.json', vo: {} },
     meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingChannels },
   }
 }
@@ -13,7 +13,7 @@ export function loadChannels() {
 export function loadAwesomePeople() {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: '/test/mock/data/awesome_people.json', vo: {} },
+    payload: { endpoint: '/data/awesome_people.json', vo: {} },
     meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingPeople },
   }
 }
