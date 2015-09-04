@@ -27,9 +27,9 @@ describe('RelationshipPriority', () => {
 })
 
 describe('#render', () => {
-  // beforeEach(() => {
-  //   jsdomReact()
-  // })
+  beforeEach(() => {
+    jsdomReact()
+  })
 
   it('renders inactive by default', () => {
     const button = getRenderedComponent(subject, {className: 'MyRelationshipButton'})
