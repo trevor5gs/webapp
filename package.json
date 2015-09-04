@@ -5,9 +5,9 @@
   "scripts": {
     "start": "node server.js",
     "build": "node node_modules/webpack/bin/webpack.js -p --colors --progress --config=./webpack/prod.config.js",
-    "test": "mocha --compilers js:babel/register test/**/*.js",
-    "lint": "eslint src test",
-    "check": "npm run lint && npm run test"
+    "test": "npm run lint && npm run spec",
+    "spec": "mocha --compilers js:babel/register test/**/*.js",
+    "lint": "eslint src test"
   },
   "dependencies": {
     "classnames": "^2.1.3",
