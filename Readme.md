@@ -20,7 +20,7 @@ npm install
 npm start
 ```
 
-The app will be served at `localhost:8080`.
+The app will be served at `localhost:6660`.
 
 The [package.json][package] file contains a few more tasks that might be
 of interest.
