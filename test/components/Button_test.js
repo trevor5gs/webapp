@@ -1,12 +1,13 @@
-// import { test, getRenderedComponent } from '../spec_helper'
-// import { default as subject } from '../../src/components/buttons/Button'
+import { expect, getRenderedComponent } from '../spec_helper'
+import { default as subject } from '../../src/components/buttons/Button'
 
-// test('#render', (assert) => {
-//   const button = getRenderedComponent(subject, {className: 'MyButton'}, 'Yo')
-//   assert.equal(button.type, 'button')
-//   assert.equal(button.props.className, 'MyButton Button')
-//   assert.equal(button.props.classListName, 'Button')
-//   assert.equal(button.props.children, 'Yo')
-//   assert.end()
-// })
+describe('Button#render', () => {
+  it('renders correctly', () => {
+    const button = getRenderedComponent(subject, {className: 'MyButton'}, 'Yo')
+    expect(button.type).to.equal('button')
+    expect(button.props.className).to.equal('MyButton Button')
+    expect(button.props.classListName).to.equal('Button')
+    expect(button.props.children).to.equal('Yo')
+  })
+})
 
