@@ -1,10 +1,8 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { saveCover } from '../../actions/profile'
 import classNames from 'classnames'
 import Button from '../buttons/Button'
 
-class CoverUploader extends React.Component {
+class Uploader extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -13,15 +11,15 @@ class CoverUploader extends React.Component {
   }
 
   triggerFileBrowser() {
-    this.refs.CoverFileBrowser.getDOMNode().click()
+    this.refs.FileBrowser.getDOMNode().click()
   }
 
   handleFileBrowser(e) {
     const file = e.target.files[0]
-    if (!file.type.match(/^image/)) {
+    if (file && file.type && !file.type.match(/^image/)) {
       return
     }
-    this.props.dispatch(saveCover(file))
+    this.props.saveAction(file)
   }
 
   handleDrop(e) {
@@ -32,7 +30,7 @@ class CoverUploader extends React.Component {
       return
     }
     this.setState({ hasDragOver: false })
-    this.props.dispatch(saveCover(file))
+    this.props.saveAction(file)
   }
 
   handleDragOver(e) {
@@ -46,10 +44,12 @@ class CoverUploader extends React.Component {
   }
 
   render() {
+    const { title, message, recommend } = this.props
     const klassNames = classNames(
-      'CoverUploader',
+      'Uploader',
       { hasDragOver: this.state.hasDragOver },
     )
+
     return (
       <div className={klassNames}
         onDrop={(e) => this.handleDrop(e)}
@@ -58,14 +58,14 @@ class CoverUploader extends React.Component {
         >
         <Button
           onClick={(e) => this.triggerFileBrowser(e)}>
-          Upload a header image
+          {title}
         </Button>
-        <p>Or drag & drop</p>
-        <p>Recommended image size: 2560 x 1440</p>
+        {message ? <p>{message}</p> : null}
+        {recommend ? <p>{recommend}</p> : null}
         <input
           className="hidden"
           onChange={(e) => this.handleFileBrowser(e)}
-          ref="CoverFileBrowser"
+          ref="FileBrowser"
           type="file"
           capture="camera"
           accept="image/*" />
@@ -74,9 +74,18 @@ class CoverUploader extends React.Component {
   }
 }
 
-CoverUploader.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
+Uploader.propTypes = {
+  title: React.PropTypes.string.isRequired,
+  message: React.PropTypes.string,
+  recommend: React.PropTypes.string,
+  saveAction: React.PropTypes.func.isRequired,
 }
 
-export default connect()(CoverUploader)
+Uploader.defaultProps = {
+  title: '',
+  message: null,
+  recommend: null,
+}
+
+export default Uploader
 

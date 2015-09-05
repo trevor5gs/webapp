@@ -4,7 +4,6 @@ import { saveProfile } from '../../actions/profile'
 import NameControl from './NameControl'
 import BioControl from './BioControl'
 import LinksControl from './LinksControl'
-import Avatar from '../people/Avatar'
 
 class BioForm extends React.Component {
 
@@ -18,20 +17,18 @@ class BioForm extends React.Component {
 
   render() {
     const { payload } = this.props.profile
-    const { name, externalLinks, shortBio, avatar } = payload
-    const avatarSource = avatar && avatar.tmp ? avatar.tmp : null
+    const { name, externalLinks, shortBio } = payload
 
     return (
       <form className="BioForm" onSubmit={this.handleSubmit} role="form" noValidate="novalidate">
-        <Avatar imgSrc={avatarSource} />
         <NameControl tabIndex="1" text={name} controlWasChanged={this.handleControlChange.bind(this)} />
         <BioControl tabIndex="2" text={shortBio} controlWasChanged={this.handleControlChange.bind(this)} />
         <LinksControl tabIndex="3" text={externalLinks} controlWasChanged={this.handleControlChange.bind(this)} />
       </form>
     )
   }
-
 }
+
 
 // This should be a selector: @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {

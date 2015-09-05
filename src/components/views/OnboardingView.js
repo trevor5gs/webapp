@@ -1,19 +1,32 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { saveCover, saveAvatar } from '../../actions/profile'
 import OnboardingHeader from '../navigation/OnboardingHeader'
 import ChannelPicker from '../pickers/ChannelPicker'
 import PeoplePicker from '../pickers/PeoplePicker'
-import CoverUploader from '../covers/CoverUploader'
-import AvatarUploader from '../people/AvatarUploader'
+import Uploader from '../uploaders/Uploader'
 import BioForm from '../forms/BioForm'
+import Avatar from '../people/Avatar'
 
 class OnboardingView extends React.Component {
 
+  getAvatarSource(profile) {
+    const { payload } = profile
+    const { avatar } = payload
+    return avatar && avatar.tmp ? avatar.tmp : null
+  }
+
   render() {
-    const { subComponentName } = this.props.route
+    const { dispatch, route, profile } = this.props
+    const { subComponentName } = route
+
     if (!subComponentName) {
       return <span/>
     }
+
     switch (subComponentName) {
+
     case 'ChannelPicker':
       return (
         <div className="ChannelPicker Panel">
@@ -43,7 +56,12 @@ class OnboardingView extends React.Component {
               nextPath="/onboarding/profile-avatar"
               title="Customize your profile."
               message="Choose a header image." />
-          <CoverUploader />
+
+          <Uploader
+            title="Upload a header image"
+            message="Or drag & drop it"
+            recommend="Recommended image size: 2560 x 1440"
+            saveAction={ bindActionCreators(saveCover, dispatch) }/>
         </div>
       )
 
@@ -54,7 +72,14 @@ class OnboardingView extends React.Component {
               nextPath="/onboarding/profile-bio"
               title="Customize your profile."
               message="Choose an avatar." />
-          <AvatarUploader />
+
+          <Avatar imgSrc={this.getAvatarSource(profile)} />
+
+          <Uploader
+            title="Pick an Avatar"
+            message="Or drag & drop it"
+            recommend="Recommended image size: 360 x 360"
+            saveAction={ bindActionCreators(saveAvatar, dispatch) }/>
         </div>
       )
 
@@ -65,6 +90,9 @@ class OnboardingView extends React.Component {
               nextPath="/discover"
               title="Customize your profile."
               message="Fill out your bio." />
+
+          <Avatar imgSrc={this.getAvatarSource(profile)} />
+
           <BioForm />
         </div>
       )
@@ -75,11 +103,22 @@ class OnboardingView extends React.Component {
   }
 }
 
+// This should be a selector: @see: https://github.com/faassen/reselect
+function mapStateToProps(state) {
+  return {
+    profile: state.profile,
+  }
+}
+
 OnboardingView.propTypes = {
+  dispatch: React.PropTypes.func.isRequired,
   route: React.PropTypes.shape({
     subComponentName: React.PropTypes.string,
   }),
+  profile: React.PropTypes.shape({
+    payload: React.PropTypes.shape,
+  }),
 }
 
-export default OnboardingView
+export default connect(mapStateToProps)(OnboardingView)
 
