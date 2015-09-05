@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import FormControl from './FormControl'
 
 class LinksControl extends FormControl {
+
   handleChange(e) {
     this.props.controlWasChanged({ externalLinks: e.target.value })
     super.handleChange(e)
