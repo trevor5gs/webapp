@@ -1,6 +1,7 @@
 /* eslint no-console: 0 */
 import React from 'react'
 import { connect } from 'react-redux'
+import { ElloMark } from '../iconography/ElloIcons'
 
 class StreamComponent extends React.Component {
   componentWillMount() {
@@ -9,7 +10,21 @@ class StreamComponent extends React.Component {
   }
 
   render() {
-    const { json, mappingType, meta, payload, result } = this.props
+    const { json, mappingType, meta, payload, result, stream } = this.props
+
+    if (stream.error) {
+      return (
+        <section className="StreamComponent hasErrored">
+          <div className="StreamErrorMessage">
+            <img src="/images/support/ello-spin.gif" alt="Ello" width="130" height="130" />
+            <p>This doesn't happen often, but it looks like something is broken. Hitting the back button and trying again might be your best bet. If that doesn't work you can <a href="http://ello.co/">head back to the homepage.</a></p>
+            <p>There might be more information on our <a href="http://status.ello.co/">status page</a>.</p>
+            <p>If all else fails you can try checking out our <a href="http://ello.threadless.com/" target="_blank">Store</a> or the <a href="https://ello.co/wtf/post/communitydirectory">Community Directory</a>.</p>
+            </div>
+        </section>
+      )
+    }
+
     if (!mappingType || !result || !result[mappingType]) {
       return <div/>
     }
@@ -18,7 +33,14 @@ class StreamComponent extends React.Component {
       jsonables.push(json[mappingType][id])
     }
     if (!jsonables.length || !meta) {
-      return <div>Loading...</div>
+      return (
+        <section className="StreamComponent isBusy">
+          <div className="StreamBusyIndicator">
+            <ElloMark />
+            <p>Loading...</p>
+          </div>
+        </section>
+      )
     }
     return (
       <section className="StreamComponent">
