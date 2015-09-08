@@ -1,5 +1,5 @@
-import { expect, getRenderedComponent } from '../spec_helper'
-import { default as subject } from '../../src/components/buttons/Button'
+import { expect, getRenderedComponent } from '../../spec_helper'
+import { default as subject } from '../../../src/components/buttons/Button'
 
 describe('Button#render', () => {
   it('renders correctly', () => {
