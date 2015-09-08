@@ -26,7 +26,7 @@ export function staticPage(state = {}, action = { type: '' }) {
   }
 }
 
-export function addModels(state, type, data) {
+function addModels(state, type, data) {
   // add state['modelType']
   if (!state[type]) { state[type] = {} }
   const ids = []

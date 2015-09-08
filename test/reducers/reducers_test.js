@@ -61,35 +61,39 @@ describe('reducers.js', () => {
   })
 
   describe('#addModels', () => {
-    it('with an array', () => {
+  })
+
+  describe('#json', () => {
+    it('stores an array', () => {
       const state = {}
       const user1 = { id: '1' }
       const user2 = { id: '2' }
-      const ids = subject.addModels(state, 'users', { users: [ user1, user2 ] })
-      expect(state.users['1']).to.deep.equal(user1)
-      expect(state.users['2']).to.deep.equal(user2)
-      expect(ids).to.deep.equal(['1', '2'])
+      const response = { users: [ user1, user2 ] }
+      const newState = subject.json(state, { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { mappingType: MAPPING_TYPES.USERS }, payload: { response: response } })
+      expect(newState.users['1']).to.deep.equal(user1)
+      expect(newState.users['2']).to.deep.equal(user2)
+      expect(newState.result.users).to.deep.equal(['1', '2'])
     })
 
-    it('with an object', () => {
+    it('stores an object', () => {
       const state = {}
       const user1 = { id: '1' }
-      const ids = subject.addModels(state, 'users', { users: user1 })
-      expect(state.users['1']).to.deep.equal(user1)
-      expect(ids).to.deep.equal(['1'])
+      const response = { users: user1 }
+      const newState = subject.json(state, { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { mappingType: MAPPING_TYPES.USERS }, payload: { response: response } })
+      expect(newState.users['1']).to.deep.equal(user1)
+      expect(newState.result.users).to.deep.equal(['1'])
     })
 
     it('merges existing properties', () => {
       const state = { users: { '1': { first: 'Foo', last: 'Blah' } } }
       const user1 = { id: '1', first: 'Bar' }
-      const ids = subject.addModels(state, 'users', { users: user1 })
-      expect(state.users['1'].first).to.equal('Bar')
-      expect(state.users['1'].last).to.equal('Blah')
-      expect(ids).to.deep.equal(['1'])
+      const response = { users: user1 }
+      const newState = subject.json(state, { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { mappingType: MAPPING_TYPES.USERS }, payload: { response: response } })
+      expect(newState.users['1'].first).to.equal('Bar')
+      expect(newState.users['1'].last).to.equal('Blah')
+      expect(newState.result.users).to.deep.equal(['1'])
     })
-  })
 
-  describe('#json', () => {
     it('resets the result object on LOAD_STREAM_REQUEST', () => {
       const state = { result: 'my result', another: 'another' }
       const newState = subject.json(state, { type: ACTION_TYPES.LOAD_STREAM_REQUEST })
