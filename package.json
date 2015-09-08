@@ -6,7 +6,7 @@
     "start": "node server.js",
     "build": "node node_modules/webpack/bin/webpack.js -p --colors --progress --config=webpack.config.js",
     "test": "npm run lint && npm run spec",
-    "spec": "mocha --compilers js:babel/register test/**/**/*.js test/**/*.js",
+    "spec": "mocha --compilers js:babel/register test/**/*.js test/**/**/*.js",
     "lint": "eslint src test"
   },
   "dependencies": {
