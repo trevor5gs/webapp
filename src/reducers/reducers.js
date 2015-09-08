@@ -26,7 +26,7 @@ export function staticPage(state = {}, action = { type: '' }) {
   }
 }
 
-function addModels(state, type, data) {
+export function addModels(state, type, data) {
   // add state['modelType']
   if (!state[type]) { state[type] = {} }
   const ids = []
@@ -52,7 +52,7 @@ export function json(state = {}, action = { type: '' }) {
     newState.result = {}
     return newState
   } else if (action.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
-    return newState
+    return state
   }
   const { response } = action.payload
   // parse linked
