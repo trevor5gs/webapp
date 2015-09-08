@@ -8,6 +8,7 @@ import PeoplePicker from '../pickers/PeoplePicker'
 import Uploader from '../uploaders/Uploader'
 import BioForm from '../forms/BioForm'
 import Avatar from '../people/Avatar'
+import Cover from '../covers/Cover'
 
 class OnboardingView extends React.Component {
 
@@ -15,6 +16,12 @@ class OnboardingView extends React.Component {
     const { payload } = profile
     const { avatar } = payload
     return avatar && avatar.tmp ? avatar.tmp : null
+  }
+
+  getCoverSource(profile) {
+    const { payload } = profile
+    const { coverImage } = payload
+    return coverImage && coverImage.tmp ? coverImage.tmp : null
   }
 
   render() {
@@ -59,9 +66,10 @@ class OnboardingView extends React.Component {
 
           <Uploader
             title="Upload a header image"
-            message="Or drag & drop it"
+            message="Or drag & drop"
             recommend="Recommended image size: 2560 x 1440"
             saveAction={ bindActionCreators(saveCover, dispatch) }/>
+          <Cover imgSrc={this.getCoverSource(profile)} />
         </div>
       )
 
@@ -74,12 +82,12 @@ class OnboardingView extends React.Component {
               message="Choose an avatar." />
 
           <Avatar imgSrc={this.getAvatarSource(profile)} />
-
           <Uploader
             title="Pick an Avatar"
             message="Or drag & drop it"
             recommend="Recommended image size: 360 x 360"
             saveAction={ bindActionCreators(saveAvatar, dispatch) }/>
+          <Cover imgSrc={this.getCoverSource(profile)} />
         </div>
       )
 
@@ -94,6 +102,7 @@ class OnboardingView extends React.Component {
           <Avatar imgSrc={this.getAvatarSource(profile)} />
 
           <BioForm />
+          <Cover imgSrc={this.getCoverSource(profile)} />
         </div>
       )
 

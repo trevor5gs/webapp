@@ -1,33 +1,19 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
 class Cover extends React.Component {
 
   render() {
-    const { payload } = this.props.profile
-    const { coverImage } = payload
-    const headerStyle = coverImage && coverImage.tmp
-      ? { backgroundImage: `url(${coverImage.tmp})`, color: 'white' }
+    const { imgSrc } = this.props
+    const style = imgSrc
+      ? { backgroundImage: `url(${imgSrc})` }
       : null
-
-    return (
-      <div className="Cover" style={headerStyle} />
-    )
+    return <div className="Cover" style={style} />
   }
 }
 
 Cover.propTypes = {
-  profile: React.PropTypes.shape({
-    payload: React.PropTypes.shape,
-  }),
+  imgSrc: React.PropTypes.string,
 }
 
-// This should be a selector: @see: https://github.com/faassen/reselect
-function mapStateToProps(state) {
-  return {
-    profile: state.profile,
-  }
-}
-
-export default connect(mapStateToProps)(Cover)
+export default Cover
 

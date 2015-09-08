@@ -9,7 +9,6 @@ class Avatar extends React.Component {
       : null
     return <figure className="Avatar" style={style}></figure>
   }
-
 }
 
 Avatar.propTypes = {

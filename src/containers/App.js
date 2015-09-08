@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Navbar from '../components/navigation/Navbar'
-import Cover from '../components/covers/Cover'
 import Devtools from '../components/devtools/Devtools'
 
 class App extends React.Component {
@@ -15,7 +14,6 @@ class App extends React.Component {
           {children}
         </main>
         <Navbar/>
-        <Cover/>
         <Devtools/>
       </section>
     )
