@@ -60,9 +60,6 @@ describe('reducers.js', () => {
     })
   })
 
-  describe('#addModels', () => {
-  })
-
   describe('#json', () => {
     it('stores an array', () => {
       const state = {}
