@@ -1,5 +1,6 @@
 import * as ACTION_TYPES from '../../src/constants/action_types'
 import { camelizeKeys } from 'humps'
+import 'isomorphic-fetch'
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
