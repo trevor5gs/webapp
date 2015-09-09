@@ -47,11 +47,15 @@ function getLinkObject(model, identifier, json) {
 export function postsAsGrid(posts, json) {
   return (
     <div className="Posts as-grid">
-      {posts.map((post, i) => {
-        console.log('post ' + i, post)
-        console.log('author ' + i, getLinkObject(post, 'author', json))
-        // console.log('author ' + i, json.users[post.authorId])
-      })}
+      <ul>
+        {posts.map((post, i) => {
+          const author = getLinkObject(post, 'author', json)
+          return <li>{`${author.username} - post ${i} token: ${post.token}`}</li>
+          // console.log('post ' + i, post)
+          // console.log('author ' + i, getLinkObject(post, 'author', json))
+          // console.log('author ' + i, json.users[post.authorId])
+        })}
+      </ul>
     </div>
   )
 }
