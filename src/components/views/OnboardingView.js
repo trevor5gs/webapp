@@ -9,6 +9,7 @@ import Uploader from '../uploaders/Uploader'
 import BioForm from '../forms/BioForm'
 import Avatar from '../people/Avatar'
 import Cover from '../covers/Cover'
+import { openAlert } from '../../actions/modals'
 
 class OnboardingView extends React.Component {
 
@@ -68,6 +69,7 @@ class OnboardingView extends React.Component {
             title="Upload a header image"
             message="Or drag & drop"
             recommend="Recommended image size: 2560 x 1440"
+            openAlert={ bindActionCreators(openAlert, dispatch) }
             saveAction={ bindActionCreators(saveCover, dispatch) }/>
           <Cover imgSrc={this.getCoverSource(profile)} />
         </div>
@@ -86,6 +88,7 @@ class OnboardingView extends React.Component {
             title="Pick an Avatar"
             message="Or drag & drop it"
             recommend="Recommended image size: 360 x 360"
+            openAlert={ bindActionCreators(openAlert, dispatch) }
             saveAction={ bindActionCreators(saveAvatar, dispatch) }/>
           <Cover imgSrc={this.getCoverSource(profile)} />
         </div>
