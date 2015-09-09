@@ -50,6 +50,7 @@ export function postsAsGrid(posts, json) {
       {posts.map((post, i) => {
         console.log('post ' + i, post)
         console.log('author ' + i, getLinkObject(post, 'author', json))
+        // console.log('author ' + i, json.users[post.authorId])
       })}
     </div>
   )
