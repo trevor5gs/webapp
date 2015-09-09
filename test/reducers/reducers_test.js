@@ -1,4 +1,4 @@
-import { expect } from '../spec_helper'
+import { expect, isValidResult } from '../spec_helper'
 import * as subject from '../../src/reducers/reducers'
 import * as ACTION_TYPES from '../../src/constants/action_types'
 import * as MAPPING_TYPES from '../../src/constants/mapping_types'
@@ -69,7 +69,9 @@ describe('reducers.js', () => {
       const newState = subject.json(state, { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { mappingType: MAPPING_TYPES.USERS }, payload: { response: response } })
       expect(newState.users['1']).to.deep.equal(user1)
       expect(newState.users['2']).to.deep.equal(user2)
-      expect(newState.result.users).to.deep.equal(['1', '2'])
+      expect(isValidResult(newState.result)).to.be.true
+      expect(newState.result.type).to.equal(MAPPING_TYPES.USERS)
+      expect(newState.result.ids).to.deep.equal(['1', '2'])
     })
 
     it('stores an object', () => {
@@ -78,7 +80,9 @@ describe('reducers.js', () => {
       const response = { users: user1 }
       const newState = subject.json(state, { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { mappingType: MAPPING_TYPES.USERS }, payload: { response: response } })
       expect(newState.users['1']).to.deep.equal(user1)
-      expect(newState.result.users).to.deep.equal(['1'])
+      expect(isValidResult(newState.result)).to.be.true
+      expect(newState.result.type).to.equal(MAPPING_TYPES.USERS)
+      expect(newState.result.ids).to.deep.equal(['1'])
     })
 
     it('merges existing properties', () => {
@@ -88,7 +92,9 @@ describe('reducers.js', () => {
       const newState = subject.json(state, { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { mappingType: MAPPING_TYPES.USERS }, payload: { response: response } })
       expect(newState.users['1'].first).to.equal('Bar')
       expect(newState.users['1'].last).to.equal('Blah')
-      expect(newState.result.users).to.deep.equal(['1'])
+      expect(isValidResult(newState.result)).to.be.true
+      expect(newState.result.type).to.equal(MAPPING_TYPES.USERS)
+      expect(newState.result.ids).to.deep.equal(['1'])
     })
 
     it('resets the result object on LOAD_STREAM_REQUEST', () => {
@@ -109,13 +115,23 @@ describe('reducers.js', () => {
       const newState = subject.json(state, { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { mappingType: MAPPING_TYPES.USERS }, payload: { response: { linked: { posts: [ { id: '1' }, { id: '2' } ] }, users: { id: '1' } } } })
       expect(newState.posts['1']).to.be.ok
       expect(newState.posts['2']).to.be.ok
-      expect(newState.result.users).to.deep.equal(['1'])
+      expect(isValidResult(newState.result)).to.be.true
+      expect(newState.result.type).to.equal(MAPPING_TYPES.USERS)
+      expect(newState.result.ids).to.deep.equal(['1'])
     })
 
     it('returns the correct result node', () => {
       const state = { result: 'my result' }
       const newState = subject.json(state, { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { mappingType: MAPPING_TYPES.POSTS }, payload: { response: { posts: [ { id: '1' }, { id: '2' } ], linked: { users: { id: '1' } } } } })
-      expect(newState.result.posts).to.deep.equal(['1', '2'])
+      expect(isValidResult(newState.result)).to.be.true
+      expect(newState.result.type).to.equal(MAPPING_TYPES.POSTS)
+      expect(newState.result.ids).to.deep.equal(['1', '2'])
+    })
+
+    it('returns the correct result node when a resultFilter is passed', () => {
+      const state = { result: 'my result' }
+      const newState = subject.json(state, { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { mappingType: MAPPING_TYPES.POSTS, resultFilter: () => {return { foo: 'bar' }} }, payload: { response: { posts: [ { id: '1' }, { id: '2' } ], linked: { users: { id: '1' } } } } })
+      expect(newState.result.foo).to.equal('bar')
     })
   })
 })

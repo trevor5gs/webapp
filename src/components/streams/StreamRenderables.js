@@ -33,11 +33,35 @@ export function onboardingPeople(jsonables) {
 // export function postsAsList(json) {
 // }
 
+function getLinkObject(model, identifier, json) {
+  const key = model.links[identifier].id
+  const collection = model.links[identifier].type
+  if (key && collection) {
+    return json[collection][key]
+  }
+  if (!id) {
+    id = model.links[identifier].type
+  }
+}
 
-// export function postsAsGrid(json) {
-// }
+export function postsAsGrid(posts, json) {
+  return (
+    <div className="Posts as-grid">
+      <ul>
+        {posts.map((post, i) => {
+          const author = getLinkObject(post, 'author', json)
+          return <li>{`${author.username} - post ${i} token: ${post.token}`}</li>
+          // console.log('post ' + i, post)
+          // console.log('author ' + i, getLinkObject(post, 'author', json))
+          // console.log('author ' + i, json.users[post.authorId])
+        })}
+      </ul>
+    </div>
+  )
+}
 
 
 // export function notificationsAsList(json) {
 // }
 
+export { getLinkObject }

@@ -7,9 +7,38 @@ export { React as React }
 
 export const TestUtils = React.addons.TestUtils
 
+// create a js document
 export function jsdomReact() {
   jsdom()
   ExecutionEnvironment.canUseDOM = true
+}
+
+// React helpers
+export function getRenderedComponent(component, options = {}, children = null) {
+  const shallowRenderer = TestUtils.createRenderer()
+  shallowRenderer.render(React.createElement(component, options, children))
+  return shallowRenderer.getRenderOutput()
+}
+
+export function renderIntoDocument(component, options = {}, children = null) {
+  return TestUtils.renderIntoDocument(React.createElement(component, options, children))
+}
+
+// object key helpers
+function isValidStreamMetaKey(key) {
+  const validKeys = [
+    'mappingType',
+    'renderStream',
+    'resultFilter',
+  ]
+  return validKeys.indexOf(key) > -1
+}
+
+export function hasStreamMetadata(action) {
+  return (
+    typeof action.meta !== 'undefined' &&
+    Object.keys(action.meta).every(isValidStreamMetaKey)
+  )
 }
 
 function isValidFSAKey(key) {
@@ -22,35 +51,25 @@ function isValidFSAKey(key) {
   return validKeys.indexOf(key) > -1
 }
 
-function isValidStreamMetaKey(key) {
-  const validKeys = [
-    'mappingType',
-    'renderStream',
-  ]
-  return validKeys.indexOf(key) > -1
-}
-
-export function getRenderedComponent(component, options = {}, children = null) {
-  const shallowRenderer = TestUtils.createRenderer()
-  shallowRenderer.render(React.createElement(component, options, children))
-  return shallowRenderer.getRenderOutput()
-}
-
-export function renderIntoDocument(component, options = {}, children = null) {
-  return TestUtils.renderIntoDocument(React.createElement(component, options, children))
-}
-
-export function hasStreamMetadata(action) {
-  return (
-    typeof action.meta !== 'undefined' &&
-    Object.keys(action.meta).every(isValidStreamMetaKey)
-  )
-}
-
 export function isFSA(action) {
   return (
     typeof action.type !== 'undefined' &&
     Object.keys(action).every(isValidFSAKey)
+  )
+}
+
+function isValidResultKey(key) {
+  const validKeys = [
+    'type',
+    'ids',
+  ]
+  return validKeys.indexOf(key) > -1
+}
+
+export function isValidResult(result) {
+  return (
+    typeof result.type !== 'undefined' &&
+    Object.keys(result).every(isValidResultKey)
   )
 }
 
