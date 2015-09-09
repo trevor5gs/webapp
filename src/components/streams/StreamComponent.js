@@ -10,8 +10,7 @@ class StreamComponent extends React.Component {
   }
 
   render() {
-    const { json, mappingType, meta, payload, result, stream } = this.props
-
+    const { json, meta, payload, result, stream } = this.props
     if (stream.error) {
       return (
         <section className="StreamComponent hasErrored">
@@ -24,13 +23,12 @@ class StreamComponent extends React.Component {
         </section>
       )
     }
-
-    if (!mappingType || !result || !result[mappingType]) {
+    if (!result || !result.type || !result.ids) {
       return <div/>
     }
     const jsonables = []
-    for (const id of result[mappingType]) {
-      jsonables.push(json[mappingType][id])
+    for (const id of result.ids) {
+      jsonables.push(json[result.type][id])
     }
     if (!jsonables.length || !meta) {
       return (
@@ -57,7 +55,6 @@ function mapStateToProps(state) {
     json: state.json,
     result: state.json.result,
     meta: state.stream.meta,
-    mappingType: state.stream.meta ? state.stream.meta.mappingType : null,
     payload: state.stream.payload,
     stream: state.stream,
   }
@@ -67,10 +64,12 @@ StreamComponent.propTypes = {
   action: React.PropTypes.func.isRequired,
   dispatch: React.PropTypes.func.isRequired,
   json: React.PropTypes.object.isRequired,
-  result: React.PropTypes.object,
+  result: React.PropTypes.shape({
+    ids: React.PropTypes.array,
+    type: React.PropTypes.string,
+  }).isRequired,
   stream: React.PropTypes.object.isRequired,
   meta: React.PropTypes.object,
-  mappingType: React.PropTypes.string,
   payload: React.PropTypes.object,
 }
 

@@ -33,12 +33,23 @@ export function onboardingPeople(jsonables) {
 // export function postsAsList(json) {
 // }
 
+function getLinkObject(model, identifier, json) {
+  const key = model.links[identifier].id
+  const collection = model.links[identifier].type
+  if (key && collection) {
+    return json[collection][key]
+  }
+  if (!id) {
+    id = model.links[identifier].type
+  }
+}
 
-export function postsAsGrid(jsonables) {
+export function postsAsGrid(posts, json) {
   return (
-    <div className="Discover">
-      {jsonables.map((user, i) => {
-        console.log('user ' + i, user)
+    <div className="Posts as-grid">
+      {posts.map((post, i) => {
+        console.log('post ' + i, post)
+        console.log('author ' + i, getLinkObject(post, 'author', json))
       })}
     </div>
   )
@@ -48,3 +59,4 @@ export function postsAsGrid(jsonables) {
 // export function notificationsAsList(json) {
 // }
 
+export { getLinkObject }
