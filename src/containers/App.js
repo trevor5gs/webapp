@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Navbar from '../components/navigation/Navbar'
+import Modal from '../components/modals/Modal'
 import Devtools from '../components/devtools/Devtools'
 
 class App extends React.Component {
@@ -14,11 +15,11 @@ class App extends React.Component {
           {children}
         </main>
         <Navbar/>
+        <Modal/>
         <Devtools/>
       </section>
     )
   }
-
 }
 
 App.propTypes = {

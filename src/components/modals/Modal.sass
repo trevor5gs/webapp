@@ -1,0 +1,73 @@
+body.modalIsActive
+  overflow: hidden
+
+body.modalIsActive .Main,
+body.modalIsActive .Navbar
+  pointer-events: none
+
+.Modal
+  pointer-events: none
+  transition: opacity $speed2 $ease, background-color $speed2 $ease
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  padding-top: rem(40)
+  z-index: $z-modal
+  opacity: 0
+  background-color: transparent
+  color: white
+
+.Modal.isActive
+  pointer-events: auto
+  opacity: 1
+  background-color: rgba(#1a1a1a, 0.8)
+  overflow-y: auto
+  -webkit-overflow-scrolling: touch
+
+.Modal.isActive.asDangerZone
+  background-color: rgba($danger, 0.95)
+
+@media(min-width: #{$break-2})
+  .Modal
+    padding-top: 0
+    display: flex
+    align-items: center
+
+// -------------------------------------
+
+.Alert
+  pointer-events: none
+  transition: transform $speed $ease, opacity $speed2 $ease, background-color $speed2 $ease
+  position: fixed
+  top: rem(30)
+  right: rem(10)
+  width: 95%
+  max-width: rem(320)
+  min-height: rem(80)
+  padding: rem(16) rem(20)
+  z-index: $z-modal
+  opacity: 0
+  background-color: transparent
+  color: white
+  transform: translate3d(100%, 0, 0)
+
+.Alert.isActive
+  pointer-events: auto
+  opacity: 1
+  background-color: black
+  transform: none
+
+.Alert p:last-of-type
+  margin-bottom: 0
+
+@media(min-width: #{$break-2})
+  .Alert
+    right: rem(20)
+    width: 100%
+
+@media(min-width: #{$break-4})
+  .Alert
+    right: rem(40)
+

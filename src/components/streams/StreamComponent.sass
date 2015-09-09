@@ -1,0 +1,44 @@
+@keyframes animateStreamIsBusy
+  from
+    transform: rotate(0deg) scale(0.6667)
+  to
+    transform: rotate(360deg) scale(0.6667)
+
+// -------------------------------------
+
+.StreamComponent.isBusy
+  text-align: center
+
+.StreamBusyIndicator
+  position: relative
+  top: rem(30)
+
+.StreamBusyIndicator .ElloMark
+  // transform: scale(0.6667)
+  animation: animateStreamIsBusy 0.3s infinite linear
+
+.StreamBusyIndicator .ElloMark + p
+  display: inline-block
+  vertical-align: middle
+  margin-left: rem(5)
+
+// -------------------------------------
+
+.StreamComponent.hasErrored
+  margin: 0 auto
+  max-width: rem(780)
+
+.StreamErrorMessage
+  position: relative
+  top: rem(30)
+
+.StreamErrorMessage > img
+  display: block
+  margin: 0 auto rem(75)
+  padding-top: rem(5)
+
+@media(max-width: #{$break-2-max})
+  .StreamErrorMessage
+    padding-left: rem(10)
+    padding-right: rem(10)
+
