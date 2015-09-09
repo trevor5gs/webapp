@@ -65,11 +65,12 @@ export function json(state = {}, action = { type: '' }) {
   }
   // parse main part of request into the state, and save result as this is the main payload
   const { mappingType, resultFilter } = action.meta
+  const ids = addModels(newState, mappingType, response)
   // set the result to the resultFilter if it exists
   if (resultFilter && typeof resultFilter === 'function') {
     newState.result = resultFilter(response[mappingType])
   } else {
-    newState.result = { type: mappingType, ids: addModels(newState, mappingType, response) }
+    newState.result = { type: mappingType, ids: ids }
   }
   return newState
 }
