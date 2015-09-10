@@ -5,29 +5,20 @@ We're working on it.
 
 ## Development Setup
 
-You'll need to have [Node][node] and [npm][npm] installed. Homebrew
-usually does the trick packaging both up.
+1. Install [nvm][nvm] which manages the [Node][node] and [npm][npm] verions
+- Install the version of [Node][node] and [npm][npm] set by [`.nvmrc`](./.nvmrc)
+- Install the packages listed in [`package.json`][package] file
+- Start up the server at [`localhost:6660`](localhost:6660) :metal:
 
 ```
-brew install node
-```
-
-Once you have the project cloned, install the package dependencies and get the
-server running:
-
-```
+curl -o- https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+nvm install
 npm install
 npm start
 ```
 
-The app will be served at `localhost:6660`.
-
 The [package.json][package] file contains a few more tasks that might be
 of interest.
-
-
-#### Future considerations:
-- Standardize on a specific Node version and use either [nvm](https://github.com/creationix/nvm) or [n](https://github.com/tj/n)
 
 
 ### ES6 & Babel
@@ -107,6 +98,7 @@ let g:syntastic_javascript_eslint_args = "--rule 'no-console: 0'"
 <!-- Markdown links -->
 [npm]: https://www.npmjs.com
 [node]: https://nodejs.
+[nvm]: https://github.com/creationix/nvm
 [babel]: https://babeljs.io
 [eslint]: http://eslint.org
 [airbnb]: https://github.com/airbnb/javascript
