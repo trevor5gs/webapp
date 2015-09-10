@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { ElloMark } from '../iconography/ElloIcons'
 
-class StreamComponent extends React.Component {
+export class StreamComponent extends React.Component {
   componentWillMount() {
     const { action, dispatch } = this.props
     action ? dispatch(action()) : console.error('Action is required to load a stream')
@@ -19,12 +19,12 @@ class StreamComponent extends React.Component {
             <p>This doesn't happen often, but it looks like something is broken. Hitting the back button and trying again might be your best bet. If that doesn't work you can <a href="http://ello.co/">head back to the homepage.</a></p>
             <p>There might be more information on our <a href="http://status.ello.co/">status page</a>.</p>
             <p>If all else fails you can try checking out our <a href="http://ello.threadless.com/" target="_blank">Store</a> or the <a href="https://ello.co/wtf/post/communitydirectory">Community Directory</a>.</p>
-            </div>
+          </div>
         </section>
       )
     }
     if (!result || !result.type || !result.ids) {
-      return <div/>
+      return <section/>
     }
     const jsonables = []
     for (const id of result.ids) {
