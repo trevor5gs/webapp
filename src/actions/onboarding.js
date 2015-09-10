@@ -5,7 +5,7 @@ import * as StreamRenderables from '../components/streams/StreamRenderables'
 export function loadChannels() {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: 'http://ello.dev:5000/api/v2/interest_categories/members?name=onboarding&per_page=20', vo: {} },
+    payload: { endpoint: 'https://ello-staging.herokuapp.com/api/v2/interest_categories/members?name=onboarding&per_page=20', vo: {} },
     meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingChannels },
   }
 }
@@ -13,7 +13,7 @@ export function loadChannels() {
 export function loadAwesomePeople() {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: 'http://ello.dev:5000/api/v2/interest_categories/members?name=all', vo: {} },
+    payload: { endpoint: 'https://ello-staging.herokuapp.com/api/v2/interest_categories/members?name=onboarding&per_page=20', vo: {} },
     meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingPeople },
   }
 }

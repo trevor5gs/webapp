@@ -35,7 +35,7 @@ export function requester() {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('ello_access_token')}`,
         'Access-Control-Allow-Origin': '*',
-      }
+      },
     })
       .then(checkStatus)
       .then(parseJSON)
