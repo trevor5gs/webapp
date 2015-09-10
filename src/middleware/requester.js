@@ -31,7 +31,12 @@ export function requester() {
 
     next({ type: REQUEST, payload, meta: meta })
 
-    return fetch(endpoint)
+    return fetch(endpoint, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('ello_access_token')}`,
+        'Access-Control-Allow-Origin': '*',
+      }
+    })
       .then(checkStatus)
       .then(parseJSON)
       .then(response => {

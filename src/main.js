@@ -45,3 +45,28 @@ const element = (
 
 React.render(element, document.getElementById('root'))
 
+
+function extractToken(hash) {
+  const match = hash.match(/access_token=(\w+)/)
+  let token = !!match && match[1]
+  if (!token) {
+    token = localStorage.getItem('ello_access_token')
+  }
+  return token
+}
+
+const token = extractToken(document.location.hash)
+console.log('token', token)
+
+if (token) {
+  console.log('we got a token')
+  localStorage.setItem('ello_access_token', token)
+} else {
+  // TODO: protocol, hostname, <port>, scope, client_id are all ENVs?
+  const url = "http://ello.dev:5000/api/oauth/authorize.html" +
+  "?response_type=token" +
+  "&scope=web_app" + 
+  "&client_id="    + "d27ce2715892fde84cb39225a71166337a9e041e466f5cbfe202104a51a59a59" +
+  "&redirect_uri=" + "http://localhost:6660/"
+  window.location.href = url
+}
