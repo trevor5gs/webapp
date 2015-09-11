@@ -33,6 +33,7 @@
     "babel-plugin-react-transform": "^1.0.2",
     "chai": "^3.2.0",
     "css-loader": "^0.17.0",
+    "error-stack-parser": "^1.2.2",
     "eslint": "*",
     "eslint-config-airbnb": "*",
     "eslint-plugin-react": "*",

@@ -1,0 +1,44 @@
+.DevAlert
+  position: fixed
+  top: 0
+  right: 0
+  left: 0
+  bottom: 0
+  z-index: $z-grid
+  background-color: rgba($danger, 0.95)
+
+.DevAlertDialog
+  position: relative
+  padding: rem(10)
+  margin: rem(10)
+  max-height: calc(100vh - #{rem(20)})
+  overflow-y: auto
+  -webkit-overflow-scrolling: touch
+  background-color: white
+
+.DevAlertDialog h2
+  +heading
+  font-size: rem(24)
+
+.DevAlertDialog li
+  margin: rem(15) rem(5)
+
+.DevAlertDialog li > span
+  display: block
+  margin-bottom: rem(5)
+
+.DevAlertDialog li > span + a
+  color: #ababab
+
+@media(min-width: #{$break-2})
+  .DevAlertDialog
+    padding: rem(20)
+    margin: rem(20)
+    max-height: calc(100vh - #{rem(40)})
+
+@media(min-width: #{$break-4})
+  .DevAlertDialog
+    padding: rem(40)
+    margin: rem(40)
+    max-height: calc(100vh - #{rem(80)})
+
