@@ -2,19 +2,19 @@ import React from 'react'
 import Mousetrap from 'mousetrap'
 import { connect } from 'react-redux'
 import { SHORTCUT_KEYS } from '../../constants/action_types'
-import { toggleDevtoolsGrid, cycleDevtoolsGrid } from '../../actions/devtools'
+import { toggleDevGrid, cycleDevGrid } from '../../actions/devtools'
 
 
-class Devtools extends React.Component {
+class DevGrid extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props
 
     Mousetrap.bind(SHORTCUT_KEYS.DT_GRID_TOGGLE, () => {
-      dispatch(toggleDevtoolsGrid())
+      dispatch(toggleDevGrid())
     })
 
     Mousetrap.bind(SHORTCUT_KEYS.DT_GRID_CYCLE, () => {
-      dispatch(cycleDevtoolsGrid())
+      dispatch(cycleDevGrid())
     })
   }
 
@@ -32,16 +32,14 @@ class Devtools extends React.Component {
   render() {
     const { payload } = this.props.devtools
     const { horizontalGridIsVisible, verticalGridIsVisible } = payload
-
     return (
-      <div className="Devtools">
+      <div className="DevGrid">
         { this.renderGrid(horizontalGridIsVisible, 'DT-horizontal-grid') }
         { this.renderGrid(verticalGridIsVisible, 'DT-vertical-grid') }
       </div>
     )
   }
 }
-
 
 // This should be a selector: @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
@@ -50,12 +48,12 @@ function mapStateToProps(state) {
   }
 }
 
-Devtools.propTypes = {
+DevGrid.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   devtools: React.PropTypes.shape({
     payload: React.PropTypes.shape,
   }),
 }
 
-export default connect(mapStateToProps)(Devtools)
+export default connect(mapStateToProps)(DevGrid)
 
