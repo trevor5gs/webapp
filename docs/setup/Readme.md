@@ -1,8 +1,11 @@
-# Development Setup
-This is the development setup stuff.
+# Setup
+Get a development environment setup, tune an editor and run some [npm][npm] tasks.
 
-* [Node.js, npm, and nvm](NodeNpmNvm.md)
-* [Babel](Babel.md)
-* [ESlint](ESlint.md)
-* [Vim](Vim.md)
+1. [Environment](Environment.md)
+* [Editors](Editors.md)
+
+:metal:
+
+<!-- Markdown links -->
+[npm]: https://www.npmjs.com
 

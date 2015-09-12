@@ -1,8 +1,12 @@
 ## Table of Contents
-Does this work?
 
-* [Node.js, npm, and nvm](/docs/setup/NodeNpmNvm.md)
-* [Babel](/docs/setup/Babel.md)
-* [ESlint](/docs/setup/ESlint.md)
-* [Vim](/docs/setup/Vim.md)
+* [Read Me](/Readme.md)
+* [Setup](/docs/setup/Readme.md)
+  * [Environment](/docs/setup/Environment.md)
+  * [Editors](/docs/setup/Editors.md)
+  * [Tasks](/docs/setup/Tasks.md)
+  * [Technologies](/docs/setup/Technologies.md)
+* [Source](/docs/src/Readme.md)
+* [Tests](/docs/test/Readme.md)
+* [Assets](/docs/assets/Readme.md)
 
