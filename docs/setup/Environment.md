@@ -12,7 +12,7 @@ npm start
 ```
 
 1. Installs [nvm][nvm] which manages [Node.js][node] and [npm][npm] verions
-- Installs the version of [Node.js][node] and [npm][npm] set by [`.nvmrc`](./.nvmrc)
+- Installs the version of [Node.js][node] and [npm][npm] set by `.nvmrc`
 - Installs the packages listed in `package.json` file
 - Starts up the server at [`localhost:6660`](localhost:6660) :metal:
 
