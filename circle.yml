@@ -1,0 +1,4 @@
+checkout:
+  post:
+    # setup application .env configuration
+    - cp env.js.sample env.js
