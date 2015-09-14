@@ -10,9 +10,11 @@ class PersonGrid extends React.Component {
   render() {
     const user = this.props.user
     const avatar = user.avatar.regular.url
+    const coverSrc = user.coverImage.hdpi.url
+    const coverStyle = { backgroundImage: `url(${coverSrc})` }
     return (
       <div className="PersonGrid" >
-        <img className="tmp-header-image" />
+        <div className="CoverImage" style={coverStyle} />
         <Avatar imgSrc={avatar} />
         <RelationshipButton ref="relationshipButton" priority={user.relationshipPriority} data-user-id={user.id} />
 

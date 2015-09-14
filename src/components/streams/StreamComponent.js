@@ -67,7 +67,7 @@ StreamComponent.propTypes = {
   result: React.PropTypes.shape({
     ids: React.PropTypes.array,
     type: React.PropTypes.string,
-  }).isRequired,
+  }),
   stream: React.PropTypes.object.isRequired,
   meta: React.PropTypes.object,
   payload: React.PropTypes.object,
