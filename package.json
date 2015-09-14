@@ -7,7 +7,10 @@
     "build": "node node_modules/webpack/bin/webpack.js -p --colors --progress --config=webpack.config.js",
     "test": "npm run lint && npm run spec",
     "spec": "mocha --compilers js:babel/register test/*.js test/**/*.js test/**/**/*.js",
-    "lint": "eslint src test"
+    "lint": "eslint src test",
+    "docs:clean": "rimraf _book",
+    "docs:build": "npm run docs:clean && gitbook build",
+    "docs:serve": "npm run docs:clean && gitbook serve"
   },
   "engines": {
     "node": "0.12.7"
@@ -38,6 +41,7 @@
     "eslint-config-airbnb": "*",
     "eslint-plugin-react": "*",
     "express": "^4.13.3",
+    "gitbook-cli": "^0.3.6",
     "jsdom": "^3.1.2",
     "mocha": "^2.3.2",
     "mocha-jsdom": "^1.0.0",
@@ -45,6 +49,7 @@
     "node-sass": "^3.3.0",
     "react-transform-catch-errors": "^0.1.1",
     "react-transform-webpack-hmr": "^0.1.3",
+    "rimraf": "^2.4.3",
     "sass-loader": "^2.0.1",
     "sinon": "^1.16.1",
     "style-loader": "^0.12.3",
