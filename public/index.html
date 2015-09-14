@@ -2,6 +2,30 @@
   <head>
     <title>Ello</title>
     <script>
+      (function() {
+        function extractToken(hash) {
+          var match = hash.match(/access_token=(\w+)/);
+          var token = !!match && match[1];
+          if (!token) {
+            token = localStorage.getItem('ello_access_token');
+          }
+          return token;
+        };
+        var token = extractToken(document.location.hash);
+        if (token) {
+          localStorage.setItem('ello_access_token', token)
+        } else {
+          // TODO: protocol, hostname, <port>, scope, client_id are all ENVs?
+          var url = 'https://ello-staging.herokuapp.com/api/oauth/authorize.html' +
+            '?response_type=token' +
+            '&scope=web_app' +
+            '&client_id='    + '***REMOVED***' +
+            '&redirect_uri=' + 'http://localhost:6660/';
+          window.location.href = url;
+        }
+      })();
+    </script>
+    <script>
       (function(){var cn="",es=document.createElement("div").style,ft=[{p:"position",v:"sticky"}],fp,fv,_i,_l;for(_i=0,_l=ft.length;_l>_i;_i++)fp=ft[_i].p,fv=ft[_i].v,es.cssText=fp+":"+["-webkit-","-moz-","-ms-","-o-",""].join(fv+";"+fp+":")+fv+";",cn+=-1!==es[fp].indexOf(fv)?" has-"+fv:" no-"+fv;var addClasses=cn.trim().split(" ");for(_i=0,_l=addClasses.length;_l>_i;_i++)document.documentElement.classList.add(cn.trim());})();
       (function(){var cl=document.documentElement.classList;cl.add('no-touch');var detectTouchScreenHandler=function(){document.removeEventListener("touchstart",detectTouchScreenHandler);cl.remove('no-touch');cl.add('has-touch');};document.addEventListener("touchstart",detectTouchScreenHandler,false);})();
     </script>
@@ -13,3 +37,4 @@
     <script src="/assets/bundle.js"></script>
   </body>
 </html>
+
