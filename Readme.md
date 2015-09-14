@@ -11,6 +11,3 @@ The web app for [ello.co](http://ello.co).
 
 :metal:
 
-## Todo: 
-- Heads up: The docs are still a WIP.
-

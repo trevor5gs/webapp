@@ -43,5 +43,8 @@ const element = (
   </Provider>
 )
 
-React.render(element, document.getElementById('root'))
+// if (__DEV__) {
+//   console.log(`Welcome to fancy pants land, debug=${ENV.debug}`);
+// }
 
+React.render(element, document.getElementById('root'))
