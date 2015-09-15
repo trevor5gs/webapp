@@ -9,36 +9,44 @@ export class StreamComponent extends React.Component {
     action ? dispatch(action()) : console.error('Action is required to load a stream')
   }
 
+  renderError() {
+    return (
+      <section className="StreamComponent hasErrored">
+        <div className="StreamErrorMessage">
+          <img src="/images/support/ello-spin.gif" alt="Ello" width="130" height="130" />
+          <p>This doesn't happen often, but it looks like something is broken. Hitting the back button and trying again might be your best bet. If that doesn't work you can <a href="http://ello.co/">head back to the homepage.</a></p>
+          <p>There might be more information on our <a href="http://status.ello.co/">status page</a>.</p>
+          <p>If all else fails you can try checking out our <a href="http://ello.threadless.com/" target="_blank">Store</a> or the <a href="https://ello.co/wtf/post/communitydirectory">Community Directory</a>.</p>
+        </div>
+      </section>
+    )
+  }
+
+  renderLoading() {
+    return (
+      <section className="StreamComponent isBusy">
+        <div className="StreamBusyIndicator">
+          <ElloMark />
+          <p>Loading...</p>
+        </div>
+      </section>
+    )
+  }
+
   render() {
     const { json, meta, payload, result, stream } = this.props
     if (stream.error) {
-      return (
-        <section className="StreamComponent hasErrored">
-          <div className="StreamErrorMessage">
-            <img src="/images/support/ello-spin.gif" alt="Ello" width="130" height="130" />
-            <p>This doesn't happen often, but it looks like something is broken. Hitting the back button and trying again might be your best bet. If that doesn't work you can <a href="http://ello.co/">head back to the homepage.</a></p>
-            <p>There might be more information on our <a href="http://status.ello.co/">status page</a>.</p>
-            <p>If all else fails you can try checking out our <a href="http://ello.threadless.com/" target="_blank">Store</a> or the <a href="https://ello.co/wtf/post/communitydirectory">Community Directory</a>.</p>
-          </div>
-        </section>
-      )
+      return this.renderError()
     }
     if (!result || !result.type || !result.ids) {
-      return <section/>
+      return this.renderLoading()
     }
     const jsonables = []
     for (const id of result.ids) {
       jsonables.push(json[result.type][id])
     }
     if (!jsonables.length || !meta) {
-      return (
-        <section className="StreamComponent isBusy">
-          <div className="StreamBusyIndicator">
-            <ElloMark />
-            <p>Loading...</p>
-          </div>
-        </section>
-      )
+      return this.renderLoading()
     }
     return (
       <section className="StreamComponent">
