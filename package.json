@@ -28,7 +28,10 @@
     "redux": "^2.0.0",
     "redux-logger": "^1.0.0",
     "redux-thunk": "^0.1.0",
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "webpack": "^1.9.11",
+    "extract-text-webpack-plugin": "^0.8.2",
+
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.0.0",
@@ -43,7 +46,6 @@
     "eslint": "*",
     "eslint-config-airbnb": "*",
     "eslint-plugin-react": "*",
-    "extract-text-webpack-plugin": "^0.8.2",
     "gitbook-cli": "^0.3.6",
     "jsdom": "^3.1.2",
     "mocha": "^2.3.2",
@@ -56,7 +58,6 @@
     "sass-loader": "^2.0.1",
     "sinon": "^1.16.1",
     "style-loader": "^0.12.3",
-    "webpack": "^1.9.11",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.0.0"
   }
