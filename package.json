@@ -30,7 +30,7 @@
     "redux-thunk": "^0.1.0",
     "express": "^4.13.3",
     "webpack": "^1.9.11",
-    "extract-text-webpack-plugin": "^0.8.2",
+    "extract-text-webpack-plugin": "^0.8.2"
 
   },
   "devDependencies": {
