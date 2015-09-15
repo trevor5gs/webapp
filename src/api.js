@@ -17,6 +17,7 @@ function getAPIPath(relPath, queryParams = {}) {
 }
 
 export const channels = getAPIPath('interest_categories/members', { name: 'onboarding', per_page: '20' })
+export const relationshipBatchPath = getAPIPath('relationships/batches')
 
 export { getAPIPath, API_VERSION, PROTOCOL, DOMAIN }
 

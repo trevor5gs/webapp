@@ -19,3 +19,15 @@ export function loadAwesomePeople() {
   }
 }
 
+export function relationshipBatchSave(ids, priority = 'friend') {
+  return {
+    type: ACTION_TYPES.POST_JSON,
+    meta: { mappingType: MAPPING_TYPES.RELATIONSHIPS },
+    payload: {
+      method: 'POST',
+      endpoint: api.relationshipBatchPath,
+      body: JSON.stringify({ user_ids: ids, priority: priority }),
+    },
+  }
+}
+
