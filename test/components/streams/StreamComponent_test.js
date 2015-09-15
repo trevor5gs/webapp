@@ -19,27 +19,31 @@ describe('StreamComponent', () => {
       })
     })
 
-    describe('Empty section', () => {
-      it('renders an empty section when no result', () => {
+    describe('StreamComponent isBusy', () => {
+      it('renders a loader when no result', () => {
         const comp = getRenderedComponent(subject, createPropsForStream({ result: null }))
         expect(comp.type).to.equal('section')
-        expect(comp.props.children).not.to.be.ok
+        expect(comp.props.className).to.equal('StreamComponent isBusy')
+        const div = comp.props.children
+        expect(div.props.className).to.equal('StreamBusyIndicator')
       })
 
-      it('renders an empty section when no result.type', () => {
+      it('renders a loader when no result.type', () => {
         const comp = getRenderedComponent(subject, createPropsForStream({ result: { type: null } }))
         expect(comp.type).to.equal('section')
-        expect(comp.props.children).not.to.be.ok
+        expect(comp.props.className).to.equal('StreamComponent isBusy')
+        const div = comp.props.children
+        expect(div.props.className).to.equal('StreamBusyIndicator')
       })
 
-      it('renders an empty section when no result.ids', () => {
+      it('renders a loader when no result.ids', () => {
         const comp = getRenderedComponent(subject, createPropsForStream({ result: { ids: null } }))
         expect(comp.type).to.equal('section')
-        expect(comp.props.children).not.to.be.ok
+        expect(comp.props.className).to.equal('StreamComponent isBusy')
+        const div = comp.props.children
+        expect(div.props.className).to.equal('StreamBusyIndicator')
       })
-    })
 
-    describe('StreamComponent isBusy', () => {
       it('renders a loader when there is no jsonables', () => {
         const comp = getRenderedComponent(subject, createPropsForStream({ meta: true }))
         expect(comp.type).to.equal('section')
