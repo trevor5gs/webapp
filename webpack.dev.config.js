@@ -20,7 +20,7 @@ module.exports = {
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'true')),
       __PRERELEASE__: JSON.stringify(JSON.parse(process.env.BUILD_PRERELEASE || 'false')),
-      ENV: require(path.join(__dirname, './env.js'))
+      ENV: require(path.join(__dirname, './env-dev.js'))
     })
   ],
   module: {
