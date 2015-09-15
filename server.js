@@ -6,11 +6,6 @@ var app = express()
 app.use(express.static('public'))
 app.use(express.static('public/assets'))
 
-// TODO We may be able to remove this with better webpack build for prod
-app.use('/__webpack_hmr', function(req, res){
-  //noop
-})
-
 app.use('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'public/index.html'))
 })
