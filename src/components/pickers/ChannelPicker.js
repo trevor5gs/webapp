@@ -12,5 +12,9 @@ class ChannelPicker extends RelationshipBatchPicker {
   }
 }
 
+ChannelPicker.propTypes = {
+  saveAction: React.PropTypes.func.isRequired,
+}
+
 export default ChannelPicker
 

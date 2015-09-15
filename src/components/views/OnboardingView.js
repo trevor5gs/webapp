@@ -1,6 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { relationshipBatchSave } from '../../actions/onboarding'
 import { saveCover, saveAvatar } from '../../actions/profile'
 import OnboardingHeader from '../navigation/OnboardingHeader'
 import ChannelPicker from '../pickers/ChannelPicker'
@@ -42,7 +43,7 @@ class OnboardingView extends React.Component {
               nextPath="/onboarding/awesome-people"
               title="What are you interested in?"
               message="Follow the Ello Communities that you find most inspiring." />
-          <ChannelPicker />
+          <ChannelPicker saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
         </div>
       )
 
@@ -53,7 +54,7 @@ class OnboardingView extends React.Component {
               nextPath="/onboarding/profile-header"
               title="Follow some awesome people."
               message="Ello is full of interesting and creative people committed to building a positive community." />
-          <PeoplePicker />
+          <PeoplePicker saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
         </div>
       )
 

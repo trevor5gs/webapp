@@ -25,5 +25,9 @@ class PeoplePicker extends RelationshipBatchPicker {
   }
 }
 
+PeoplePicker.propTypes = {
+  saveAction: React.PropTypes.func.isRequired,
+}
+
 export default PeoplePicker
 
