@@ -3,6 +3,10 @@ var path = require('path')
 var express = require('express')
 var app = express()
 
+app.use('/hello', function(req, res) {
+  res.send("yo")
+})
+
 app.use(express.static('public'))
 app.use(express.static('public/assets'))
 
