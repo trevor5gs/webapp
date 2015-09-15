@@ -1,6 +1,6 @@
 const API_VERSION = 'v2'
 const PROTOCOL = 'https'
-const DOMAIN = 'ello-staging.herokuapp.com'
+const DOMAIN = ENV.AUTH_DOMAIN
 
 function getAPIPath(relPath, queryParams = {}) {
   let path = `${PROTOCOL}://${DOMAIN}/api/${API_VERSION}/${relPath}`
@@ -19,4 +19,3 @@ function getAPIPath(relPath, queryParams = {}) {
 export const channels = getAPIPath('interest_categories/members', { name: 'onboarding', per_page: '20' })
 
 export { getAPIPath, API_VERSION, PROTOCOL, DOMAIN }
-

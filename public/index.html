@@ -16,11 +16,11 @@
           localStorage.setItem('ello_access_token', token)
         } else {
           // TODO: protocol, hostname, <port>, scope, client_id are all ENVs?
-          var url = 'https://ello-staging.herokuapp.com/api/oauth/authorize.html' +
+          var url = ENV.AUTH_DOMAIN + '/api/oauth/authorize.html' +
             '?response_type=token' +
             '&scope=web_app' +
-            '&client_id='    + '***REMOVED***' +
-            '&redirect_uri=' + 'http://localhost:6660/';
+            '&client_id='    + ENV.AUTH_CLIENT_ID +
+            '&redirect_uri=' + ENV.AUTH_REDIRECT_URI;
           window.location.href = url;
         }
       })();
@@ -37,4 +37,3 @@
     <script src="/assets/bundle.js"></script>
   </body>
 </html>
-
