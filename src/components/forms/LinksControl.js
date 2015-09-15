@@ -5,7 +5,7 @@ import FormControl from './FormControl'
 class LinksControl extends FormControl {
 
   handleChange(e) {
-    this.props.controlWasChanged({ externalLinks: e.target.value })
+    this.props.controlWasChanged({ external_links: e.target.value })
     super.handleChange(e)
   }
 
