@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "postinstall":"node run build",
+    "postinstall":"npm run build",
     "build": "node node_modules/webpack/bin/webpack.js -p --colors --progress --config=webpack.prod.config.js",
     "dev": "node dev-server.js",
     "docs:build": "npm run docs:clean && gitbook build",
