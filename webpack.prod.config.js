@@ -4,9 +4,8 @@ var webpack = require('webpack')
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-  devtool: 'eval',
+  devtool: 'sourcemap',
   entry: [
-    'webpack-hot-middleware/client',
     './src/main'
   ],
   output: {
@@ -15,7 +14,6 @@ module.exports = {
     publicPath: '/assets/'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'true')),
@@ -33,7 +31,6 @@ module.exports = {
     },
     {
       test: /\.sass$/,
-      // loader: ExtractTextPlugin.extract('style-loader', 'style!css!autoprefixer!sass?indentedSyntax')
       loader: ExtractTextPlugin.extract(
           'css?sourceMap!sass?sourceMap!autoprefixer!sass?indentedSyntax'
       )
