@@ -1,6 +1,13 @@
-// import * as MAPPING_TYPES from '../constants/mapping_types'
 import { PROFILE } from '../constants/action_types'
+import * as api from '../api'
 
+export function loadProfile() {
+  return {
+    type: PROFILE.LOAD,
+    meta: {},
+    payload: { endpoint: api.profilePath },
+  }
+}
 
 export function validateUsername() {
 }
@@ -8,11 +15,15 @@ export function validateUsername() {
 export function validateEmail() {
 }
 
-export function saveProfile(payload) {
+export function saveProfile(users) {
   return {
     type: PROFILE.SAVE,
-    payload: payload,
-    meta: { },
+    meta: {},
+    payload: {
+      method: 'PATCH',
+      endpoint: api.profilePath,
+      body: JSON.stringify(users),
+    },
   }
 }
 
@@ -22,8 +33,8 @@ export function savePreferences() {
 export function avatarWasSaved(payload) {
   return {
     type: PROFILE.AVATAR_WAS_SAVED,
+    meta: {},
     payload: payload,
-    meta: { },
   }
 }
 
@@ -45,8 +56,8 @@ export function saveAvatar(file) {
 export function coverWasSaved(payload) {
   return {
     type: PROFILE.COVER_WAS_SAVED,
+    meta: {},
     payload: payload,
-    meta: { },
   }
 }
 

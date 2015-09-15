@@ -2,7 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { relationshipBatchSave } from '../../actions/onboarding'
-import { saveCover, saveAvatar } from '../../actions/profile'
+import { saveCover, saveAvatar, loadProfile } from '../../actions/profile'
 import OnboardingHeader from '../navigation/OnboardingHeader'
 import ChannelPicker from '../pickers/ChannelPicker'
 import PeoplePicker from '../pickers/PeoplePicker'
@@ -13,6 +13,10 @@ import Cover from '../covers/Cover'
 import { openAlert } from '../../actions/modals'
 
 class OnboardingView extends React.Component {
+
+  componentWillMount() {
+    this.props.dispatch(loadProfile())
+  }
 
   getAvatarSource(profile) {
     const { payload } = profile

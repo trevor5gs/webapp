@@ -38,19 +38,23 @@ export function requester() {
   return next => action => {
     const { payload, type, meta } = action
 
+    // This is problematic... :(
     if ((type !== ACTION_TYPES.LOAD_STREAM &&
          type !== ACTION_TYPES.POST_JSON &&
+         type !== ACTION_TYPES.PROFILE.LOAD &&
+         type !== ACTION_TYPES.PROFILE.SAVE &&
          type !== ACTION_TYPES.POST_FORM
         ) || !payload) {
       return next(action)
     }
 
+
     const { endpoint, method, body } = payload
 
     if (!endpoint) return next(action);
 
-    const SUCCESS = type + '_SUCCESS'
     const REQUEST = type + '_REQUEST'
+    const SUCCESS = type + '_SUCCESS'
     const FAILURE = type + '_FAILURE'
 
     // dispatch the start of the request
@@ -59,7 +63,7 @@ export function requester() {
     return fetch(endpoint, {
       method: method || 'GET',
       body: body || null,
-      headers: (method) ? getPostJsonHeader() : getGetHeader(),
+      headers: (!method) ? getGetHeader() : getPostJsonHeader(),
     })
       .then(checkStatus)
       .then(parseJSON)
