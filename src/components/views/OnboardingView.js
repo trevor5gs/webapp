@@ -7,7 +7,7 @@ import OnboardingHeader from '../navigation/OnboardingHeader'
 import ChannelPicker from '../pickers/ChannelPicker'
 import PeoplePicker from '../pickers/PeoplePicker'
 import Uploader from '../uploaders/Uploader'
-import BioForm from '../forms/BioForm'
+import InfoForm from '../forms/InfoForm'
 import Avatar from '../people/Avatar'
 import Cover from '../covers/Cover'
 import { openAlert } from '../../actions/modals'
@@ -105,7 +105,7 @@ class OnboardingView extends React.Component {
 
           <Avatar imgSrc={this.getAvatarSource(profile)} />
 
-          <BioForm />
+          <InfoForm />
           <Cover imgSrc={this.getCoverSource(profile)} />
         </div>
       )

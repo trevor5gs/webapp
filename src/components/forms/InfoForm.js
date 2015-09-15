@@ -4,23 +4,33 @@ import { saveProfile } from '../../actions/profile'
 import NameControl from './NameControl'
 import BioControl from './BioControl'
 import LinksControl from './LinksControl'
+import { debounce } from '../base/lib'
 
-class BioForm extends React.Component {
+class InfoForm extends React.Component {
+
+  componentWillMount() {
+    this.saveForm = debounce(this.saveForm, 500)
+  }
+
+  saveForm(vo) {
+    this.props.dispatch(saveProfile(vo))
+  }
 
   handleSubmit(e) {
     e.preventDefault()
   }
 
   handleControlChange(vo) {
-    this.props.dispatch(saveProfile(vo))
+    this.saveForm(vo)
   }
 
   render() {
     const { payload } = this.props.profile
-    const { name, externalLinks, shortBio } = payload
+    const { name, externalLinksList, shortBio } = payload
+    const externalLinks = externalLinksList ? externalLinksList.map((link) => { return link.text }) : ''
 
     return (
-      <form className="BioForm" onSubmit={this.handleSubmit} role="form" noValidate="novalidate">
+      <form className="InfoForm" onSubmit={this.handleSubmit} role="form" noValidate="novalidate">
         <NameControl tabIndex="1" text={name} controlWasChanged={this.handleControlChange.bind(this)} />
         <BioControl tabIndex="2" text={shortBio} controlWasChanged={this.handleControlChange.bind(this)} />
         <LinksControl tabIndex="3" text={externalLinks} controlWasChanged={this.handleControlChange.bind(this)} />
@@ -37,12 +47,12 @@ function mapStateToProps(state) {
   }
 }
 
-BioForm.propTypes = {
+InfoForm.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   profile: React.PropTypes.shape({
     payload: React.PropTypes.shape,
   }),
 }
 
-export default connect(mapStateToProps)(BioForm)
+export default connect(mapStateToProps)(InfoForm)
 
