@@ -14,7 +14,7 @@ export function loadChannels() {
 export function loadAwesomePeople() {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.channels, vo: {} },
+    payload: { endpoint: api.awesomePeoplePath, vo: {} },
     meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingPeople },
   }
 }
