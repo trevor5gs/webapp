@@ -2,6 +2,24 @@ import * as ACTION_TYPES from '../../src/constants/action_types'
 import { camelizeKeys } from 'humps'
 import 'isomorphic-fetch'
 
+function getAuthToken() {
+  return {
+    'Authorization': `Bearer ${localStorage.getItem('ello_access_token')}`,
+  }
+}
+
+function getPostJsonHeader() {
+  return {
+    ...getAuthToken(),
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  }
+}
+
+function getGetHeader() {
+  return getAuthToken()
+}
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response
@@ -12,30 +30,40 @@ function checkStatus(response) {
 }
 
 function parseJSON(response) {
-  return response.json()
+  // 200 means we have a body otherwise it's a 200+ with an empty body
+  return (response.status === 200) ? response.json() : response
 }
 
 export function requester() {
   return next => action => {
     const { payload, type, meta } = action
 
-    if (type !== ACTION_TYPES.LOAD_STREAM || !payload) return next(action);
+    // This is problematic... :(
+    if ((type !== ACTION_TYPES.LOAD_STREAM &&
+         type !== ACTION_TYPES.POST_JSON &&
+         type !== ACTION_TYPES.PROFILE.LOAD &&
+         type !== ACTION_TYPES.PROFILE.SAVE &&
+         type !== ACTION_TYPES.POST_FORM
+        ) || !payload) {
+      return next(action)
+    }
 
-    const { endpoint } = payload
+
+    const { endpoint, method, body } = payload
 
     if (!endpoint) return next(action);
 
-    const SUCCESS = type + '_SUCCESS'
     const REQUEST = type + '_REQUEST'
+    const SUCCESS = type + '_SUCCESS'
     const FAILURE = type + '_FAILURE'
 
+    // dispatch the start of the request
     next({ type: REQUEST, payload, meta: meta })
 
     return fetch(endpoint, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('ello_access_token')}`,
-        'Access-Control-Allow-Origin': '*',
-      },
+      method: method || 'GET',
+      body: body || null,
+      headers: (!method) ? getGetHeader() : getPostJsonHeader(),
     })
       .then(checkStatus)
       .then(parseJSON)

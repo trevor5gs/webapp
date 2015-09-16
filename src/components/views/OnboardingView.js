@@ -1,28 +1,39 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { saveCover, saveAvatar } from '../../actions/profile'
+import { relationshipBatchSave } from '../../actions/onboarding'
+import { saveCover, saveAvatar, loadProfile } from '../../actions/profile'
 import OnboardingHeader from '../navigation/OnboardingHeader'
 import ChannelPicker from '../pickers/ChannelPicker'
 import PeoplePicker from '../pickers/PeoplePicker'
 import Uploader from '../uploaders/Uploader'
-import BioForm from '../forms/BioForm'
+import InfoForm from '../forms/InfoForm'
 import Avatar from '../people/Avatar'
 import Cover from '../covers/Cover'
 import { openAlert } from '../../actions/modals'
 
 class OnboardingView extends React.Component {
 
+  componentWillMount() {
+    this.props.dispatch(loadProfile())
+  }
+
   getAvatarSource(profile) {
     const { payload } = profile
-    const { avatar } = payload
-    return avatar && avatar.tmp ? avatar.tmp : null
+    const { avatar, tmpAvatar } = payload
+    if (tmpAvatar) {
+      return tmpAvatar
+    }
+    return avatar ? avatar.regular.url : null
   }
 
   getCoverSource(profile) {
     const { payload } = profile
-    const { coverImage } = payload
-    return coverImage && coverImage.tmp ? coverImage.tmp : null
+    const { coverImage, tmpCover } = payload
+    if (tmpCover) {
+      return tmpCover
+    }
+    return coverImage ? coverImage.optimized.url : null
   }
 
   render() {
@@ -42,7 +53,7 @@ class OnboardingView extends React.Component {
               nextPath="/onboarding/awesome-people"
               title="What are you interested in?"
               message="Follow the Ello Communities that you find most inspiring." />
-          <ChannelPicker />
+          <ChannelPicker saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
         </div>
       )
 
@@ -53,7 +64,7 @@ class OnboardingView extends React.Component {
               nextPath="/onboarding/profile-header"
               title="Follow some awesome people."
               message="Ello is full of interesting and creative people committed to building a positive community." />
-          <PeoplePicker />
+          <PeoplePicker saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
         </div>
       )
 
@@ -104,7 +115,7 @@ class OnboardingView extends React.Component {
 
           <Avatar imgSrc={this.getAvatarSource(profile)} />
 
-          <BioForm />
+          <InfoForm />
           <Cover imgSrc={this.getCoverSource(profile)} />
         </div>
       )

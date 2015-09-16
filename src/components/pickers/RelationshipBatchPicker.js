@@ -8,10 +8,15 @@ class RelationshipBatchPicker extends React.Component {
 
   routerWillLeave() {
     const friends = React.findDOMNode(this).querySelectorAll('[data-priority="friend"]')
-    const postPayload = { user_ids: [], priority: 'friend'}
+    const userIds = []
+
     for (const value of friends) {
-      postPayload.user_ids.push(value.dataset.userId)
+      userIds.push(value.dataset.userId)
     }
+    if (!userIds.length) {
+      return
+    }
+    this.props.saveAction(userIds, 'friend')
   }
 
   componentWillUnmount() {
@@ -21,6 +26,10 @@ class RelationshipBatchPicker extends React.Component {
 
 RelationshipBatchPicker.contextTypes = {
   router: React.PropTypes.object.isRequired,
+}
+
+RelationshipBatchPicker.propTypes = {
+  saveAction: React.PropTypes.func.isRequired,
 }
 
 export default RelationshipBatchPicker

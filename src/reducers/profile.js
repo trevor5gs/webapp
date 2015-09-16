@@ -8,18 +8,24 @@ const initialState = {
 
 export function profile(state = initialState, action) {
   switch (action.type) {
-  case PROFILE.SAVE:
+  case PROFILE.LOAD_REQUEST:
+  case PROFILE.LOAD_SUCCESS:
+  case PROFILE.SAVE_REQUEST:
+  case PROFILE.SAVE_SUCCESS:
+    const response = action.payload.response ? action.payload.response : {}
     return {
       type: action.type,
       meta: action.meta,
       error: action.error,
       payload: {
         ...state.payload,
-        ...action.payload,
+        ...response.linked,
+        ...response.users,
       },
     }
-  case PROFILE.AVATAR_WAS_SAVED:
-  case PROFILE.COVER_WAS_SAVED:
+
+  case PROFILE.TMP_AVATAR_CREATED:
+  case PROFILE.TMP_COVER_CREATED:
     return {
       type: action.type,
       meta: action.meta,

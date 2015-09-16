@@ -5,7 +5,7 @@ import FormControl from './FormControl'
 class BioControl extends FormControl {
 
   handleChange(e) {
-    this.props.controlWasChanged({ shortBio: e.target.value })
+    this.props.controlWasChanged({ short_bio: e.target.value })
     super.handleChange(e)
   }
 
