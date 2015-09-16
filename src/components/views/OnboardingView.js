@@ -20,14 +20,20 @@ class OnboardingView extends React.Component {
 
   getAvatarSource(profile) {
     const { payload } = profile
-    const { avatar } = payload
-    return avatar && avatar.tmp ? avatar.tmp : null
+    const { avatar, tmpAvatar } = payload
+    if (tmpAvatar) {
+      return tmpAvatar
+    }
+    return avatar ? avatar.regular.url : null
   }
 
   getCoverSource(profile) {
     const { payload } = profile
-    const { coverImage } = payload
-    return coverImage && coverImage.tmp ? coverImage.tmp : null
+    const { coverImage, tmpCover } = payload
+    if (tmpCover) {
+      return tmpCover
+    }
+    return coverImage ? coverImage.optimized.url : null
   }
 
   render() {

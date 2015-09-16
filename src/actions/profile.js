@@ -9,12 +9,6 @@ export function loadProfile() {
   }
 }
 
-export function validateUsername() {
-}
-
-export function validateEmail() {
-}
-
 export function saveProfile(users) {
   return {
     type: PROFILE.SAVE,
@@ -30,34 +24,49 @@ export function saveProfile(users) {
 export function savePreferences() {
 }
 
-export function avatarWasSaved(payload) {
+export function validateUsername() {
+}
+
+export function validateEmail() {
+}
+
+export function uploadAsset(type, file) {
   return {
-    type: PROFILE.AVATAR_WAS_SAVED,
+    type: type,
     meta: {},
-    payload: payload,
+    payload: {
+      endpoint: api.profilePath,
+      file: file,
+    },
   }
 }
 
-// Base64 encode the avatar for immediate feedback. This will eventually need
-// to send the asset to S3 and update the API from this action as well. Not
-// sure if it's best to branch here or create a chain of them? Regardless it
-// should null out the tmp property to remove that big ass string once we have
-// image data returned from the API/S3.
+export function temporaryAvatarCreated(b64Asset) {
+  return {
+    type: PROFILE.TMP_AVATAR_CREATED,
+    meta: {},
+    payload: { tmpAvatar: b64Asset},
+  }
+}
+
+export function temporaryCoverCreated(b64Asset) {
+  return {
+    type: PROFILE.TMP_COVER_CREATED,
+    meta: {},
+    payload: { tmpCover: b64Asset},
+  }
+}
+
+// There are 2 branches here. One to Base64 encode the asset for immediate
+// feedback. The other sends it off to S3 and friends.
 export function saveAvatar(file) {
   return dispatch => {
     const reader = new FileReader()
     reader.onloadend = () => {
-      dispatch(avatarWasSaved({ avatar: { tmp: reader.result }}))
+      dispatch(temporaryAvatarCreated(reader.result))
     }
+    dispatch(uploadAsset(PROFILE.SAVE_AVATAR, file))
     reader.readAsDataURL(file)
-  }
-}
-
-export function coverWasSaved(payload) {
-  return {
-    type: PROFILE.COVER_WAS_SAVED,
-    meta: {},
-    payload: payload,
   }
 }
 
@@ -66,8 +75,9 @@ export function saveCover(file) {
   return dispatch => {
     const reader = new FileReader()
     reader.onloadend = () => {
-      dispatch(coverWasSaved({ coverImage: { tmp: reader.result }}))
+      dispatch(temporaryCoverCreated(reader.result))
     }
+    dispatch(uploadAsset(PROFILE.SAVE_COVER, file))
     reader.readAsDataURL(file)
   }
 }

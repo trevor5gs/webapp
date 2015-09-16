@@ -24,8 +24,8 @@ export function profile(state = initialState, action) {
       },
     }
 
-  case PROFILE.AVATAR_WAS_SAVED:
-  case PROFILE.COVER_WAS_SAVED:
+  case PROFILE.TMP_AVATAR_CREATED:
+  case PROFILE.TMP_COVER_CREATED:
     return {
       type: action.type,
       meta: action.meta,
