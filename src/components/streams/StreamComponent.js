@@ -27,7 +27,6 @@ export class StreamComponent extends React.Component {
       <section className="StreamComponent isBusy">
         <div className="StreamBusyIndicator">
           <ElloMark />
-          <p>Loading...</p>
         </div>
       </section>
     )
