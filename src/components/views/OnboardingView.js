@@ -105,16 +105,15 @@ class OnboardingView extends React.Component {
         </div>
       )
 
-    case 'BioPicker':
+    case 'InfoPicker':
       return (
-        <div className="BioPicker Panel">
+        <div className="InfoPicker Panel">
           <OnboardingHeader
               nextPath="/discover"
               title="Customize your profile."
               message="Fill out your bio." />
 
           <Avatar imgSrc={this.getAvatarSource(profile)} />
-
           <InfoForm />
           <Cover imgSrc={this.getCoverSource(profile)} />
         </div>

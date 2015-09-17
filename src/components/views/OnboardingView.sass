@@ -66,12 +66,12 @@ main[data-pathname^="/onboarding"]
 // -------------------------------------
 
 .AvatarPicker,
-.BioPicker
+.InfoPicker
   height: calc(100vh - 80px)
   background-color: white
 
 .AvatarPicker > .Avatar,
-.BioPicker > .Avatar
+.InfoPicker > .Avatar
   +circle(rem(160))
   margin-bottom: rem(20)
 
@@ -80,16 +80,16 @@ main[data-pathname^="/onboarding"]
   padding: rem(10)
   color: #aaa
 
-.BioPicker > .InfoForm
+.InfoPicker > .InfoForm
   padding: rem(10)
 
 @media(min-width: #{$break-2})
   .AvatarPicker,
-  .BioPicker
+  .InfoPicker
     height: calc(100vh - 240px)
     margin-top: 240px
   .AvatarPicker > .Avatar,
-  .BioPicker > .Avatar
+  .InfoPicker > .Avatar
     position: absolute
     top: rem(20)
     left: 0
@@ -99,19 +99,19 @@ main[data-pathname^="/onboarding"]
     padding-top: rem(60)
     padding-left: rem(200)
     margin-left: 15%
-  .BioPicker > .InfoForm
+  .InfoPicker > .InfoForm
     padding-top: rem(40)
     padding-left: rem(200)
     margin-left: 15%
 
 @media(min-width: #{$break-4})
   .AvatarPicker,
-  .BioPicker
+  .InfoPicker
     height: calc(100vh - 320px)
     margin-top: 320px
   .AvatarPicker > .Avatar,
   .AvatarPicker > .Uploader,
-  .BioPicker > .Avatar,
-  .BioPicker > .InfoForm
+  .InfoPicker > .Avatar,
+  .InfoPicker > .InfoForm
     margin-left: 25%
 

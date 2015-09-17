@@ -34,7 +34,7 @@ const element = (
             <Route path="awesome-people" component={OnboardingView} subComponentName="PeoplePicker" />
             <Route path="profile-header" component={OnboardingView} subComponentName="CoverPicker" />
             <Route path="profile-avatar" component={OnboardingView} subComponentName="AvatarPicker" />
-            <Route path="profile-bio" component={OnboardingView} subComponentName="BioPicker" />
+            <Route path="profile-bio" component={OnboardingView} subComponentName="InfoPicker" />
             <Redirect from="onboarding" to="channels" />
           </Route>
         </Route>
