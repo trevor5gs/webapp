@@ -6,7 +6,7 @@
     "clean" : "rm -f public/index.html public/assets/*.js public/assets/*.css",
     "postinstall": "npm run build",
     "build": "node node_modules/webpack/bin/webpack.js -p --colors --progress --config=webpack.prod.config.js",
-    "dev": "node dev-server.js",
+    "dev": "node dev/dev-server.js",
     "docs:build": "npm run docs:clean && gitbook build",
     "docs:clean": "rimraf _book",
     "docs:serve": "npm run docs:clean && gitbook serve",
