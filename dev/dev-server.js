@@ -13,13 +13,14 @@ app.use(require('webpack-dev-middleware')(compiler, {
 }))
 app.use(require('webpack-hot-middleware')(compiler))
 
+// Assets
+app.use(express.static('public/assets'))
+
 // Main entry for app
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'dev.html'))
 })
 
-// Assets
-app.use(express.static('public/assets'))
 
 // Catchall for any requests like /onboarding
 app.get('*', function(req, res) {
