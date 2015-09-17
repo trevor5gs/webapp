@@ -39,7 +39,7 @@ class Navbar extends React.Component {
         <div className="NavbarLinks">
           <Link to="/discover">Discover</Link>
           <Link to="/search">Search</Link>
-          <Link to="/onboarding/channels">Onboarding</Link>
+          <Link to="/onboarding/communities">Onboarding</Link>
         </div>
       </nav>
     )
@@ -60,7 +60,7 @@ Navbar.defaultProps = {
   shortcuts: {
     [SHORTCUT_KEYS.SEARCH]: '/search',
     [SHORTCUT_KEYS.DISCOVER]: '/discover',
-    [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/channels',
+    [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/communities',
   },
 }
 

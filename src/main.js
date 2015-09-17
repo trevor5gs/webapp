@@ -30,12 +30,12 @@ const element = (
           <Route path="search" component={SearchView} />
           <Route path="discover" component={DiscoverView} />
           <Route path="onboarding">
-            <Route path="channels" component={OnboardingView} subComponentName="ChannelPicker" />
+            <Route path="communities" component={OnboardingView} subComponentName="CommunityPicker" />
             <Route path="awesome-people" component={OnboardingView} subComponentName="PeoplePicker" />
             <Route path="profile-header" component={OnboardingView} subComponentName="CoverPicker" />
             <Route path="profile-avatar" component={OnboardingView} subComponentName="AvatarPicker" />
             <Route path="profile-bio" component={OnboardingView} subComponentName="InfoPicker" />
-            <Redirect from="onboarding" to="channels" />
+            <Redirect from="onboarding" to="communities" />
           </Route>
         </Route>
       </Router>

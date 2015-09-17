@@ -5,7 +5,7 @@ import { relationshipBatchSave } from '../../actions/onboarding'
 import { saveCover, saveAvatar, loadProfile } from '../../actions/profile'
 import { trackEvent, trackPageView } from '../../actions/tracking'
 import OnboardingHeader from '../navigation/OnboardingHeader'
-import ChannelPicker from '../pickers/ChannelPicker'
+import CommunityPicker from '../pickers/CommunityPicker'
 import PeoplePicker from '../pickers/PeoplePicker'
 import Uploader from '../uploaders/Uploader'
 import InfoForm from '../forms/InfoForm'
@@ -49,14 +49,14 @@ class OnboardingView extends React.Component {
 
     switch (subComponentName) {
 
-    case 'ChannelPicker':
+    case 'CommunityPicker':
       return (
-        <div className="ChannelPicker Panel">
+        <div className="CommunityPicker Panel">
           <OnboardingHeader
               nextPath="/onboarding/awesome-people"
               title="What are you interested in?"
               message="Follow the Ello Communities that you find most inspiring." />
-          <ChannelPicker saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
+          <CommunityPicker saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
         </div>
       )
 

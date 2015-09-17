@@ -3,21 +3,21 @@ import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
 import * as api from '../api'
 
-let cachedChannel
+let cachedCommunity
 let cachedPeople
 
-export function loadChannels() {
-  if (cachedChannel) {
-    cachedChannel.payload.endpoint = null
-    return cachedChannel
+export function loadCommunities() {
+  if (cachedCommunity) {
+    cachedCommunity.payload.endpoint = null
+    return cachedCommunity
   }
   const cache =  {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.channels, vo: {} },
-    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingChannels },
+    payload: { endpoint: api.communitiesPath, vo: {} },
+    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingCommunities },
   }
 
-  cachedChannel = {
+  cachedCommunity = {
     ...cache,
     ...{ type: ACTION_TYPES.LOAD_STREAM_SUCCESS },
   }

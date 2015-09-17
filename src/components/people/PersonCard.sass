@@ -1,4 +1,4 @@
-.ChannelCard
+.PersonCard
   position: relative
   height: rem(80)
   padding: rem(10)
@@ -15,7 +15,7 @@
     content: ""
     background-color: rgba(black, 0.4)
 
-.ChannelCard > h2
+.PersonCard > h2
   position: absolute
   top: calc(50% - #{rem(15)})
   left: rem(10)
@@ -23,31 +23,31 @@
   font-size: rem(24)
   color: white
 
-.ChannelCard > .RelationshipButton
+.PersonCard > .RelationshipButton
   position: absolute
   top: calc(50% - #{rem(15)})
   right: rem(10)
 
-.ChannelCard > .RelationshipButton[data-priority="inactive"]
+.PersonCard > .RelationshipButton[data-priority="inactive"]
   border-color: white
-.no-touch .ChannelCard > .RelationshipButton[data-priority="inactive"]:hover
+.no-touch .PersonCard > .RelationshipButton[data-priority="inactive"]:hover
   border-color: black
-.no-touch .ChannelCard > .RelationshipButton:not([data-priority="inactive"]):hover
+.no-touch .PersonCard > .RelationshipButton:not([data-priority="inactive"]):hover
   border-color: white
 
 
 @media(min-width: #{$break-2})
-  .Channels
+  .Cards
     margin-left: rem(-20)
-  .Channels .ChannelCard
+  .Cards .PersonCard
     display: inline-block
     width: calc(50% - #{rem(20)})
     height: rem(320)
     margin-top: rem(20)
     margin-left: rem(20)
-  .ChannelCard > h2
+  .PersonCard > h2
     right: 0
-  .ChannelCard > .RelationshipButton
+  .PersonCard > .RelationshipButton
     top: auto
     left: rem(10)
     bottom: rem(10)
@@ -57,26 +57,26 @@
     text-align: center
 
 @media(min-width: #{$break-3})
-  .Channels .ChannelCard
+  .Cards .PersonCard
     width: calc(33.33333% - #{rem(20)})
 
 @media(min-width: #{$break-4})
-  .Channels
+  .Cards
     margin-left: rem(-40)
-  .Channels .ChannelCard
+  .Cards .PersonCard
     width: calc(25% - #{rem(40)})
     margin-top: rem(40)
     margin-left: rem(40)
 
 @media(min-width: #{$break-5})
-  .Channels .ChannelCard
+  .Cards .PersonCard
     width: calc(20% - #{rem(40)})
 
 @media(min-width: #{$break-6})
-  .Channels .ChannelCard
+  .Cards .PersonCard
     width: calc(16.66666% - #{rem(40)})
 
 @media(min-width: #{$break-7})
-  .Channels .ChannelCard
+  .Cards .PersonCard
     width: calc(14.28571% - #{rem(40)})
 
