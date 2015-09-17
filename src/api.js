@@ -1,6 +1,6 @@
 const API_VERSION = 'v2'
 const PROTOCOL = 'https'
-const DOMAIN = 'ello-staging.herokuapp.com'
+const DOMAIN = (typeof ENV !== 'undefined') ? ENV.AUTH_DOMAIN : 'ello-staging.herokuapp.com'
 
 function getAPIPath(relPath, queryParams = {}) {
   let path = `${PROTOCOL}://${DOMAIN}/api/${API_VERSION}/${relPath}`
@@ -23,4 +23,3 @@ export const profilePath = getAPIPath('profile')
 export const s3CredentialsPath = getAPIPath('assets/credentials')
 
 export { getAPIPath, API_VERSION, PROTOCOL, DOMAIN }
-

@@ -44,7 +44,7 @@ const element = (
 )
 
 // if (__DEV__) {
-//   console.log(`Welcome to fancy pants land, debug=${ENV.debug}`);
+//   console.log(`Welcome to fancy pants land, debug=${ENV.AUTH_CLIENT_ID}`);
 // }
 
 React.render(element, document.getElementById('root'))
