@@ -2,16 +2,19 @@
 var path = require('path')
 var webpack = require('webpack')
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  devtool: 'eval',
-  entry: [
-    './src/main'
-  ],
+  entry: {
+    main: './src/main',
+    auth: './src/auth'
+  },
   output: {
     path: path.join(__dirname, 'public/assets'),
-    filename: 'bundle.js',
-    publicPath: '/assets/'
+    filename: "[name].entry.js",
+    chunkFilename: "[id].chunk.js",
+    hash: true,
+    publicPath: '/assets/',
   },
   plugins: [
     new webpack.NoErrorsPlugin(),
@@ -20,7 +23,18 @@ module.exports = {
       __PRERELEASE__: JSON.stringify(JSON.parse(process.env.BUILD_PRERELEASE || 'false')),
       ENV: require(path.join(__dirname, './env.js'))
     }),
-    new ExtractTextPlugin("bundle.css")
+    new ExtractTextPlugin("bundle.css"),
+    new webpack.optimize.CommonsChunkPlugin("commons.js"),
+    new HtmlWebpackPlugin({
+      filename: '../index.html',
+      chunks: ['commons.js', 'auth', 'main'],
+      template: 'public/template.html',
+      hash:true,
+      inject: 'body',
+    }),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(true)
   ],
   module: {
     loaders: [{
@@ -32,7 +46,7 @@ module.exports = {
     {
       test: /\.sass$/,
       loader: ExtractTextPlugin.extract(
-          'css?sourceMap!sass?sourceMap!autoprefixer!sass?indentedSyntax'
+          'css!sass!autoprefixer!sass?indentedSyntax'
       )
     }]
   }
