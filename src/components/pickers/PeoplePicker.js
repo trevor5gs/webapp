@@ -6,6 +6,15 @@ import { RelationshipPriority } from '../buttons/RelationshipButton'
 import Button from '../buttons/Button'
 
 class PeoplePicker extends RelationshipBatchPicker {
+  componentDidMount() {
+    super.componentDidMount()
+    this.props.tracking.trackPageView()
+  }
+
+  trackEvent(event, options) {
+    return this.props.tracking.trackEvent(event, options)
+  }
+
   followAll() {
     const personRefs = this.refs.streamComponent.refs.wrappedInstance.refs
     for (const ref in personRefs) {
@@ -13,6 +22,7 @@ class PeoplePicker extends RelationshipBatchPicker {
         personRefs[ref].setRelationshipPriority(RelationshipPriority.FRIEND)
       }
     }
+    this.trackEvent('follow-all-20-button-clicked')
   }
 
   render() {
@@ -27,6 +37,10 @@ class PeoplePicker extends RelationshipBatchPicker {
 
 PeoplePicker.propTypes = {
   saveAction: React.PropTypes.func.isRequired,
+  tracking: React.PropTypes.shape({
+    trackEvent: React.PropTypes.func.isRequired,
+    trackPageView: React.PropTypes.func.isRequired,
+  }),
 }
 
 export default PeoplePicker

@@ -9,7 +9,7 @@ import BrowserHistory from 'react-router/lib/BrowserHistory'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import * as reducers from './reducers'
-import { uploader, requester } from './middleware'
+import { analytics, uploader, requester } from './middleware'
 import App from './containers/App'
 import SearchView from './components/views/SearchView'
 import DiscoverView from './components/views/DiscoverView'
@@ -18,7 +18,7 @@ import OnboardingView from './components/views/OnboardingView'
 const history = new BrowserHistory()
 const logger = createLogger({ collapsed: true })
 
-const createStoreWithMiddleware = applyMiddleware(thunk, uploader, requester, logger)(createStore)
+const createStoreWithMiddleware = applyMiddleware(thunk, uploader, requester, analytics, logger)(createStore)
 const reducer = combineReducers(reducers)
 const store = createStoreWithMiddleware(reducer)
 

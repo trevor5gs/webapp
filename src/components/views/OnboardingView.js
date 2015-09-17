@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { relationshipBatchSave } from '../../actions/onboarding'
 import { saveCover, saveAvatar, loadProfile } from '../../actions/profile'
+import { trackEvent, trackPageView } from '../../actions/tracking'
 import OnboardingHeader from '../navigation/OnboardingHeader'
 import ChannelPicker from '../pickers/ChannelPicker'
 import PeoplePicker from '../pickers/PeoplePicker'
@@ -44,6 +45,8 @@ class OnboardingView extends React.Component {
       return <span/>
     }
 
+    const tracking = bindActionCreators({ trackEvent, trackPageView }, dispatch)
+
     switch (subComponentName) {
 
     case 'ChannelPicker':
@@ -64,7 +67,9 @@ class OnboardingView extends React.Component {
               nextPath="/onboarding/profile-header"
               title="Follow some awesome people."
               message="Ello is full of interesting and creative people committed to building a positive community." />
-          <PeoplePicker saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
+          <PeoplePicker
+            tracking={ tracking }
+            saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
         </div>
       )
 
