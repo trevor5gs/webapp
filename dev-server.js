@@ -12,10 +12,13 @@ app.use(require('webpack-dev-middleware')(compiler, {
 }))
 
 app.use(require('webpack-hot-middleware')(compiler))
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'dev.html'))
+})
 app.use(express.static('public/assets'))
 
 app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'public/index.html'))
+  res.sendFile(path.join(__dirname, 'dev.html'))
 })
 
 app.listen(6660, 'localhost', function(err) {
