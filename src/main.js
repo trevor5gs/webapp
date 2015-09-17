@@ -11,8 +11,6 @@ import { Provider } from 'react-redux'
 import * as reducers from './reducers'
 import { analytics, uploader, requester } from './middleware'
 import App from './containers/App'
-import SearchView from './components/views/SearchView'
-import DiscoverView from './components/views/DiscoverView'
 import OnboardingView from './components/views/OnboardingView'
 
 const history = new BrowserHistory()
@@ -27,8 +25,6 @@ const element = (
     {() =>
       <Router history={history}>
         <Route path="/" component={App}>
-          <Route path="search" component={SearchView} />
-          <Route path="discover" component={DiscoverView} />
           <Route path="onboarding">
             <Route path="communities" component={OnboardingView} subComponentName="CommunityPicker" />
             <Route path="awesome-people" component={OnboardingView} subComponentName="PeoplePicker" />
