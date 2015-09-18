@@ -12,7 +12,9 @@ class PeoplePicker extends RelationshipBatchPicker {
 
   componentDidUpdate() {
     if (this.props.shouldAutoFollow) {
-      this.followAll()
+      requestAnimationFrame(() => {
+        this.followAll()
+      })
     }
   }
 
@@ -23,7 +25,7 @@ class PeoplePicker extends RelationshipBatchPicker {
   isFollowingAll() {
     const personRefs = this.refs.streamComponent.refs.wrappedInstance.refs
     const friendEls = React.findDOMNode(this).querySelectorAll('[data-priority="friend"]')
-    return Object.keys(personRefs).length === friendEls.length
+    return Object.keys(personRefs).length === friendEls.length && friendEls > 0
   }
 
   followAll() {
