@@ -13,6 +13,19 @@ main[data-pathname^="/onboarding"]
   width: 95%
   max-width: 640px
   margin: 0 auto
+.PeoplePicker > .Button
+
+.PeoplePicker.isFollowingAll > .Button
+  background-color: black
+  border-color: black
+  color: white
+
+.PeoplePicker > .Button > span + span
+  display: none
+.PeoplePicker.isFollowingAll > .Button > span
+  display: none
+.PeoplePicker.isFollowingAll > .Button > span + span
+  display: inline
 
 // These are eventually going to be links But we'll never want them to appear
 // as links within the flow of on-boarding
