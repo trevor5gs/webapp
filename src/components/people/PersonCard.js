@@ -9,7 +9,7 @@ class PersonCard extends React.Component {
     return (
       <div className="PersonCard" style={style}>
         <h2>{user.name}</h2>
-        <RelationshipButton priority={user.relationship_priority} data-user-id={user.id} />
+        <RelationshipButton priority={user.relationshipPriority} data-user-id={user.id} />
       </div>
     )
   }
