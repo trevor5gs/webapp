@@ -22,4 +22,12 @@ window.checkAuth = () => {
   }
 }
 
+window.resetAuth = () => {
+  const token = localStorage.getItem('ello_access_token');
+  if (token) {
+    localStorage.removeItem('ello_access_token');
+    window.checkAuth()
+  }
+}
+
 window.checkAuth()

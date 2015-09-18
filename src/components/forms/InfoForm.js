@@ -26,9 +26,12 @@ class InfoForm extends React.Component {
 
   render() {
     const { payload } = this.props.profile
-    const { name, externalLinksList, shortBio } = payload
+    const { name, externalLinksList, shortBio, username } = payload
     const externalLinks = externalLinksList ? externalLinksList.map((link) => { return link.text }) : ''
 
+    if (!username) {
+      return <div />
+    }
     return (
       <form className="InfoForm" onSubmit={this.handleSubmit} role="form" noValidate="novalidate">
         <NameControl tabIndex="1" text={name} controlWasChanged={this.handleControlChange.bind(this)} />

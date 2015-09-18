@@ -3,14 +3,16 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { relationshipBatchSave } from '../../actions/onboarding'
 import { saveCover, saveAvatar, loadProfile } from '../../actions/profile'
+import { trackEvent, trackPageView } from '../../actions/tracking'
+import { openAlert } from '../../actions/modals'
+import * as ACTION_TYPES from '../../constants/action_types'
 import OnboardingHeader from '../navigation/OnboardingHeader'
-import ChannelPicker from '../pickers/ChannelPicker'
+import CommunityPicker from '../pickers/CommunityPicker'
 import PeoplePicker from '../pickers/PeoplePicker'
 import Uploader from '../uploaders/Uploader'
 import InfoForm from '../forms/InfoForm'
 import Avatar from '../people/Avatar'
 import Cover from '../covers/Cover'
-import { openAlert } from '../../actions/modals'
 
 class OnboardingView extends React.Component {
 
@@ -37,23 +39,25 @@ class OnboardingView extends React.Component {
   }
 
   render() {
-    const { dispatch, route, profile } = this.props
+    const { dispatch, route, profile, stream } = this.props
     const { subComponentName } = route
 
     if (!subComponentName) {
       return <span/>
     }
 
+    const tracking = bindActionCreators({ trackEvent, trackPageView }, dispatch)
+
     switch (subComponentName) {
 
-    case 'ChannelPicker':
+    case 'CommunityPicker':
       return (
-        <div className="ChannelPicker Panel">
+        <div className="CommunityPicker Panel">
           <OnboardingHeader
               nextPath="/onboarding/awesome-people"
               title="What are you interested in?"
               message="Follow the Ello Communities that you find most inspiring." />
-          <ChannelPicker saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
+          <CommunityPicker saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
         </div>
       )
 
@@ -64,7 +68,10 @@ class OnboardingView extends React.Component {
               nextPath="/onboarding/profile-header"
               title="Follow some awesome people."
               message="Ello is full of interesting and creative people committed to building a positive community." />
-          <PeoplePicker saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
+          <PeoplePicker
+            shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
+            tracking={ tracking }
+            saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
         </div>
       )
 
@@ -105,16 +112,15 @@ class OnboardingView extends React.Component {
         </div>
       )
 
-    case 'BioPicker':
+    case 'InfoPicker':
       return (
-        <div className="BioPicker Panel">
+        <div className="InfoPicker Panel">
           <OnboardingHeader
-              nextPath="/discover"
+              nextPath="/onboarding/communities"
               title="Customize your profile."
               message="Fill out your bio." />
 
           <Avatar imgSrc={this.getAvatarSource(profile)} />
-
           <InfoForm />
           <Cover imgSrc={this.getCoverSource(profile)} />
         </div>
@@ -130,6 +136,7 @@ class OnboardingView extends React.Component {
 function mapStateToProps(state) {
   return {
     profile: state.profile,
+    stream: state.stream,
   }
 }
 
@@ -141,6 +148,7 @@ OnboardingView.propTypes = {
   profile: React.PropTypes.shape({
     payload: React.PropTypes.shape,
   }),
+  stream: React.PropTypes.shape,
 }
 
 export default connect(mapStateToProps)(OnboardingView)

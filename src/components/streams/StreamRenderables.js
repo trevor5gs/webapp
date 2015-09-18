@@ -1,12 +1,12 @@
 import React from 'react'
-import ChannelCard from '../channels/ChannelCard'
+import PersonCard from '../people/PersonCard'
 import PersonGrid from '../people/PersonGrid'
 
-export function onboardingChannels(jsonables) {
+export function onboardingCommunities(jsonables) {
   return (
-    <div className="Channels">
+    <div className="Cards">
       {jsonables.map((user, i) => {
-        return <ChannelCard user={user} key={i} />
+        return <PersonCard user={user} key={i} />
       })}
     </div>
   )

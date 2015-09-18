@@ -48,7 +48,6 @@ export function requester() {
       return next(action)
     }
 
-
     const { endpoint, method, body } = payload
 
     if (!endpoint) return next(action);
@@ -73,6 +72,9 @@ export function requester() {
         return true
       })
       .catch(error => {
+        if (error.response.status === 401) {
+          window.resetAuth()
+        }
         next({ error, meta, payload, type: FAILURE })
         return false
       })

@@ -13,6 +13,19 @@ main[data-pathname^="/onboarding"]
   width: 95%
   max-width: 640px
   margin: 0 auto
+.PeoplePicker > .Button
+
+.PeoplePicker.isFollowingAll > .Button
+  background-color: black
+  border-color: black
+  color: white
+
+.PeoplePicker > .Button > span + span
+  display: none
+.PeoplePicker.isFollowingAll > .Button > span
+  display: none
+.PeoplePicker.isFollowingAll > .Button > span + span
+  display: inline
 
 // These are eventually going to be links But we'll never want them to appear
 // as links within the flow of on-boarding
@@ -23,14 +36,14 @@ main[data-pathname^="/onboarding"]
 @media(min-width: #{$break-2})
   .PeoplePicker
     padding-top: (20)
-  .ChannelPicker .StreamComponent,
+  .CommunityPicker .StreamComponent,
   .PeoplePicker .StreamComponent
     padding: 0 rem(20) rem(20)
   .PeoplePicker > .Button
     width: 100%
 
 @media(min-width: #{$break-4})
-  .ChannelPicker .StreamComponent,
+  .CommunityPicker .StreamComponent,
   .PeoplePicker .StreamComponent
     padding: 0 rem(40) rem(40)
 
@@ -66,12 +79,12 @@ main[data-pathname^="/onboarding"]
 // -------------------------------------
 
 .AvatarPicker,
-.BioPicker
+.InfoPicker
   height: calc(100vh - 80px)
   background-color: white
 
 .AvatarPicker > .Avatar,
-.BioPicker > .Avatar
+.InfoPicker > .Avatar
   +circle(rem(160))
   margin-bottom: rem(20)
 
@@ -80,16 +93,16 @@ main[data-pathname^="/onboarding"]
   padding: rem(10)
   color: #aaa
 
-.BioPicker > .InfoForm
+.InfoPicker > .InfoForm
   padding: rem(10)
 
 @media(min-width: #{$break-2})
   .AvatarPicker,
-  .BioPicker
+  .InfoPicker
     height: calc(100vh - 240px)
     margin-top: 240px
   .AvatarPicker > .Avatar,
-  .BioPicker > .Avatar
+  .InfoPicker > .Avatar
     position: absolute
     top: rem(20)
     left: 0
@@ -99,19 +112,19 @@ main[data-pathname^="/onboarding"]
     padding-top: rem(60)
     padding-left: rem(200)
     margin-left: 15%
-  .BioPicker > .InfoForm
+  .InfoPicker > .InfoForm
     padding-top: rem(40)
     padding-left: rem(200)
     margin-left: 15%
 
 @media(min-width: #{$break-4})
   .AvatarPicker,
-  .BioPicker
+  .InfoPicker
     height: calc(100vh - 320px)
     margin-top: 320px
   .AvatarPicker > .Avatar,
   .AvatarPicker > .Uploader,
-  .BioPicker > .Avatar,
-  .BioPicker > .InfoForm
+  .InfoPicker > .Avatar,
+  .InfoPicker > .InfoForm
     margin-left: 25%
 

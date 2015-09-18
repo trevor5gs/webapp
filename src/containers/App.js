@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Navbar from '../components/navigation/Navbar'
 import Modal from '../components/modals/Modal'
 import DevGrid from '../components/devtools/DevGrid'
 
@@ -14,7 +13,6 @@ class App extends React.Component {
         <main className="Main" data-pathname={pathname} role="main">
           {children}
         </main>
-        <Navbar/>
         <Modal/>
         <DevGrid/>
       </section>
