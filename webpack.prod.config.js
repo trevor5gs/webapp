@@ -24,10 +24,10 @@ module.exports = {
       ENV: require(path.join(__dirname, './env.js'))
     }),
     new ExtractTextPlugin("bundle.css"),
-    new webpack.optimize.CommonsChunkPlugin("commons.js"),
+    new webpack.optimize.CommonsChunkPlugin("commons"),
     new HtmlWebpackPlugin({
       filename: '../index.html',
-      chunks: ['commons.js', 'auth', 'main'],
+      chunks: ['commons', 'auth', 'main'],
       template: 'public/template.html',
       hash:true,
       inject: 'body',
