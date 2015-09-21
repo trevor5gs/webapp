@@ -16,8 +16,8 @@ function getAPIPath(relPath, queryParams = {}) {
   return path
 }
 
-export const communitiesPath = getAPIPath('interest_categories/members', { name: 'onboarding', per_page: '20' })
-export const awesomePeoplePath = getAPIPath('discover/users/onboarding', { per_page: '20' })
+export const communitiesPath = getAPIPath('interest_categories/members', { name: 'onboarding', per_page: '25' })
+export const awesomePeoplePath = getAPIPath('discover/users/onboarding', { per_page: '25' })
 export const relationshipBatchPath = getAPIPath('relationships/batches')
 export const profilePath = getAPIPath('profile')
 export const s3CredentialsPath = getAPIPath('assets/credentials')
