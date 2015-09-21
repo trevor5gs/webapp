@@ -3,7 +3,7 @@ import { StreamComponent as subject } from '../../../src/components/streams/Stre
 
 function createPropsForStream(props = {}) {
   const defaultProps = { stream: { error: false }, action: () => {}, dispatch: () => {}, json: {}, result: { type: 'posts', ids: [] } }
-  return Object.assign(defaultProps, props)
+  return { ...defaultProps, ...props }
 }
 
 describe('StreamComponent', () => {

@@ -1,10 +1,15 @@
 import React from 'react'
+import classNames from 'classnames'
 import { Link } from 'react-router'
 import { ElloMark } from '../iconography/ElloIcons'
 
 class OnboardingHeader extends React.Component {
   render() {
-    const { title, message, nextPath } = this.props
+    const { title, message, nextPath, relationshipMap } = this.props
+    const nextButtonClassnames = classNames(
+      'Button',
+      { isDisabled: relationshipMap.following.length > 0 ? false : true },
+    )
     return (
       <header className="OnboardingHeader">
         <div className="OnboardingColumn">
@@ -13,7 +18,7 @@ class OnboardingHeader extends React.Component {
           <p>{message}</p>
         </div>
         <div className="OnboardingColumn">
-          <Link className="Button" to={nextPath}>Next</Link>
+          <Link className={nextButtonClassnames} to={nextPath}>Next</Link>
           <p>
             <Link to={nextPath}>Skip</Link>
           </p>
@@ -27,6 +32,7 @@ OnboardingHeader.propTypes = {
   title: React.PropTypes.string.isRequired,
   message: React.PropTypes.string.isRequired,
   nextPath: React.PropTypes.string.isRequired,
+  relationshipMap: React.PropTypes.any.isRequired,
 }
 
 export default OnboardingHeader

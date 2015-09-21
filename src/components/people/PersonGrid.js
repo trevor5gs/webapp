@@ -1,10 +1,18 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { updateRelationship } from '../../actions/relationships'
 import RelationshipButton from '../buttons/RelationshipButton'
 import Avatar from './Avatar'
+
 
 class PersonGrid extends React.Component {
   setRelationshipPriority(state) {
     this.refs.relationshipButton.setState(state)
+  }
+
+  handleRelationshipUpdate(vo) {
+    const { userId, priority, existing } = vo
+    this.props.dispatch(updateRelationship(userId, priority, existing))
   }
 
   render() {
@@ -16,7 +24,11 @@ class PersonGrid extends React.Component {
       <div className="PersonGrid" >
         <div className="CoverImage" style={coverStyle} />
         <Avatar imgSrc={avatar} />
-        <RelationshipButton ref="relationshipButton" priority={user.relationshipPriority} data-user-id={user.id} />
+        <RelationshipButton
+          ref="relationshipButton"
+          userId={user.id}
+          priority={user.relationshipPriority}
+          buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
 
         <div className="stats">
           <dl>
@@ -55,9 +67,10 @@ class PersonGrid extends React.Component {
 }
 
 PersonGrid.propTypes = {
+  dispatch: React.PropTypes.func.isRequired,
   user: React.PropTypes.shape({
   }).isRequired,
 }
 
-export default PersonGrid
+export default connect()(PersonGrid)
 

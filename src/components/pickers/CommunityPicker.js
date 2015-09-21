@@ -5,9 +5,10 @@ import RelationshipBatchPicker from './RelationshipBatchPicker'
 
 // TODO: Inject the action from the creator component?
 class CommunityPicker extends RelationshipBatchPicker {
+
   render() {
     return (
-      <StreamComponent action={loadCommunities} />
+      <StreamComponent ref="streamComponent" action={loadCommunities} />
     )
   }
 }

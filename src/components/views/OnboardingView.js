@@ -38,6 +38,28 @@ class OnboardingView extends React.Component {
     return coverImage ? coverImage.optimized.url : null
   }
 
+  getRelationshipMap() {
+    const { json } = this.props
+    const { result } = json
+    const relationshipMap = { following: [], inactive: [] }
+    if (!result || !result.type || !result.ids) {
+      return relationshipMap
+    }
+    for (const id of result.ids) {
+      const model = json[result.type][id]
+      switch (model.relationshipPriority) {
+      case 'friend':
+      case 'noise':
+        relationshipMap.following.push(model)
+        break
+      default:
+        relationshipMap.inactive.push(model)
+        break
+      }
+    }
+    return relationshipMap
+  }
+
   render() {
     const { dispatch, route, profile, stream } = this.props
     const { subComponentName } = route
@@ -47,29 +69,33 @@ class OnboardingView extends React.Component {
     }
 
     const tracking = bindActionCreators({ trackEvent, trackPageView }, dispatch)
-
     switch (subComponentName) {
 
     case 'CommunityPicker':
       return (
         <div className="CommunityPicker Panel">
           <OnboardingHeader
-              nextPath="/onboarding/awesome-people"
-              title="What are you interested in?"
-              message="Follow the Ello Communities that you find most inspiring." />
-          <CommunityPicker saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
+            relationshipMap={this.getRelationshipMap()}
+            nextPath="/onboarding/awesome-people"
+            title="What are you interested in?"
+            message="Follow the Ello Communities that you find most inspiring." />
+          <CommunityPicker
+            saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
         </div>
       )
 
     case 'PeoplePicker':
+      const rm = this.getRelationshipMap()
       return (
         <div className="PeoplePicker Panel">
           <OnboardingHeader
-              nextPath="/onboarding/profile-header"
-              title="Follow some awesome people."
-              message="Ello is full of interesting and creative people committed to building a positive community." />
+            nextPath="/onboarding/profile-header"
+            title="Follow some awesome people."
+            relationshipMap={rm}
+            message="Ello is full of interesting and creative people committed to building a positive community." />
           <PeoplePicker
             shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
+            relationshipMap={rm}
             tracking={ tracking }
             saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
         </div>
@@ -137,6 +163,7 @@ function mapStateToProps(state) {
   return {
     profile: state.profile,
     stream: state.stream,
+    json: state.json,
   }
 }
 
@@ -149,6 +176,7 @@ OnboardingView.propTypes = {
     payload: React.PropTypes.shape,
   }),
   stream: React.PropTypes.shape,
+  json: React.PropTypes.shape,
 }
 
 export default connect(mapStateToProps)(OnboardingView)

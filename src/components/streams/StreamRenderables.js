@@ -6,7 +6,7 @@ export function onboardingCommunities(jsonables) {
   return (
     <div className="Cards">
       {jsonables.map((user, i) => {
-        return <PersonCard user={user} key={i} />
+        return <PersonCard ref={'personCard_' + i} user={user} key={i} />
       })}
     </div>
   )

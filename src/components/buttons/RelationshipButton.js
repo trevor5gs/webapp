@@ -22,12 +22,21 @@ class RelationshipButton extends React.Component {
     }
   }
 
+  updatePriority(priority) {
+    const { buttonWasClicked, userId } = this.props
+    if (buttonWasClicked) {
+      buttonWasClicked({ userId, priority, existing: this.state.priority })
+    }
+    // Render the state change instantly
+    this.setState({ priority: priority })
+  }
+
   renderAsInactive(klassNames) {
     return (
       <button {...this.props}
           className={klassNames}
           type="button"
-          onClick={() => this.setState({priority: 'friend'})}
+          onClick={() => this.updatePriority('friend')}
           data-priority={this.state.priority}>
         <MiniPlusIcon />
         <span>Follow</span>
@@ -44,7 +53,7 @@ class RelationshipButton extends React.Component {
       <button {...this.props}
           className={klassNames}
           type="button"
-          onClick={() => this.setState({priority: 'inactive'})}
+          onClick={() => this.updatePriority('inactive')}
           data-priority={this.state.priority}>
         <MiniCheckIcon />
         <span>Friend</span>
@@ -105,6 +114,8 @@ RelationshipButton.defaultProps = {
 RelationshipButton.propTypes = {
   className: React.PropTypes.string,
   classListName: React.PropTypes.string,
+  userId: React.PropTypes.string,
+  buttonWasClicked: React.PropTypes.func,
   priority: React.PropTypes.oneOf(['inactive', 'friend', 'noise', 'self', 'mute', 'block', 'none',  null]),
 }
 
