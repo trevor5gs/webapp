@@ -7,7 +7,7 @@ describe('api.js', () => {
   })
 
   it('.awesomePeoplePath', () => {
-    expect(api.awesomePeoplePath).to.equal('https://ello-staging.herokuapp.com/api/v2/discover/users/onboarding?per_page=20')
+    expect(api.awesomePeoplePath).to.equal('https://ello-staging.herokuapp.com/api/v2/discover/users/onboarding?per_page=25')
   })
 
   it('.relationshipBatchPath', () => {
