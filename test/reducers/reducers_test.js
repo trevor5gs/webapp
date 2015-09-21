@@ -133,5 +133,38 @@ describe('reducers.js', () => {
       const newState = subject.json(state, { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { mappingType: MAPPING_TYPES.POSTS, resultFilter: () => {return { foo: 'bar' }} }, payload: { response: { posts: [ { id: '1' }, { id: '2' } ], linked: { users: { id: '1' } } } } })
       expect(newState.result.foo).to.equal('bar')
     })
+
+    describe('relationship updates', () => {
+      it('creates a deep copy of the object', () => {
+        const state = { users: { '1': { id: '1' } }}
+        const action = {
+          type: ACTION_TYPES.RELATIONSHIPS.UPDATE,
+          meta: {
+            mappingType: MAPPING_TYPES.USERS,
+          },
+          payload: {
+            userId: '1',
+          },
+        }
+        const newState = subject.json(state, action)
+        expect(state.users['1']).not.to.equal(newState.users['1'])
+      })
+
+      it('adds the relationshipPriority to the user on update', () => {
+        const state = { users: { '1': { id: '1' } }}
+        const action = {
+          type: ACTION_TYPES.RELATIONSHIPS.UPDATE,
+          meta: {
+            mappingType: MAPPING_TYPES.USERS,
+          },
+          payload: {
+            userId: '1',
+            relationshipPriority: 'friend',
+          },
+        }
+        const newState = subject.json(state, action)
+        expect(newState.users['1'].relationshipPriority).not.equal('friend')
+      })
+    })
   })
 })

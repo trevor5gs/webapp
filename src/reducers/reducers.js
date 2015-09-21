@@ -26,6 +26,14 @@ export function staticPage(state = {}, action = { type: '' }) {
   }
 }
 
+function mergeModel(state, type, params) {
+  if (params.id) {
+    const newType = { ...state[type] }
+    newType[params.id] = { ...newType[params.id], ...params }
+    state[type] = newType
+  }
+}
+
 function addModels(state, type, data) {
   // add state['modelType']
   if (!state[type]) { state[type] = {} }
@@ -33,21 +41,28 @@ function addModels(state, type, data) {
   if (data[type] && data[type].length) {
     // add arrays of models to state['modelType']['id']
     data[type].map((model) => {
-      state[type][model.id] = Object.assign(state[type][model.id] || {}, model)
+      mergeModel(state, type, model)
       ids.push(model.id)
     })
   } else if (data[type] && typeof data[type] === 'object') {
     // add single model objects to state['modelType']['id']
     const model = data[type]
-    state[type][model.id] = Object.assign(state[type][model.id] || {}, model)
+    mergeModel(state, type, model)
     ids.push(model.id)
   }
   return ids
 }
 
 export function json(state = {}, action = { type: '' }) {
-  const newState = Object.assign({}, state)
-  if (action.type === ACTION_TYPES.LOAD_STREAM_REQUEST) {
+  const newState = { ...state }
+  if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE) {
+    const { userId, priority } = action.payload
+    const { mappingType } = action.meta
+    // TODO: update this user's followerCount +1
+    // TODO: update the current user's followingCount +1 (this might happen in the profile reducer)
+    mergeModel(newState, mappingType, { id: userId, relationshipPriority: priority })
+    return newState
+  } else if (action.type === ACTION_TYPES.LOAD_STREAM_REQUEST) {
     // clear out result since it should only be populated on success
     newState.result = {}
     return newState
