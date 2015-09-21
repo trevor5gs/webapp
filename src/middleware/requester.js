@@ -62,7 +62,7 @@ export function requester() {
     return fetch(endpoint, {
       method: method || 'GET',
       body: body || null,
-      headers: (!method) ? getGetHeader() : getPostJsonHeader(),
+      headers: (!method || method === 'GET') ? getGetHeader() : getPostJsonHeader(),
     })
       .then(checkStatus)
       .then(parseJSON)
