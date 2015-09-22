@@ -1,8 +1,9 @@
 /*eslint-disable */
 var path = require('path')
 var webpack = require('webpack')
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var jade = require('jade')
 
 module.exports = {
   entry: {
@@ -11,8 +12,8 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'public/assets'),
-    filename: "[name].entry.js",
-    chunkFilename: "[id].chunk.js",
+    filename: '[name].entry.js',
+    chunkFilename: '[id].chunk.js',
     hash: true,
     publicPath: '/assets/',
   },
@@ -23,12 +24,12 @@ module.exports = {
       __PRERELEASE__: JSON.stringify(JSON.parse(process.env.BUILD_PRERELEASE || 'false')),
       ENV: require(path.join(__dirname, './env.js'))
     }),
-    new ExtractTextPlugin("bundle.css"),
-    new webpack.optimize.CommonsChunkPlugin("commons"),
+    new ExtractTextPlugin('bundle.css'),
+    new webpack.optimize.CommonsChunkPlugin('commons'),
     new HtmlWebpackPlugin({
       filename: '../index.html',
       chunks: ['commons', 'auth', 'main'],
-      templateContent: 'public/template.jade',
+      templateContent: jade.renderFile('public/template.jade', { pretty: true }),
       hash:true,
       inject: 'body',
     }),
