@@ -14,7 +14,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
 app.use(require('webpack-hot-middleware')(compiler))
 
 // Assets
-app.use(express.static('public/assets'))
+app.use(express.static('public/static'))
 
 // Main entry for app
 app.get('/*', function(req, res) {
