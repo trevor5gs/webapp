@@ -28,7 +28,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: '../index.html',
       chunks: ['commons', 'auth', 'main'],
-      template: 'public/template.html',
+      templateContent: 'public/template.jade',
       hash:true,
       inject: 'body',
     }),
