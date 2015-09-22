@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { relationshipBatchSave } from '../../actions/onboarding'
 import { saveCover, saveAvatar, loadProfile } from '../../actions/profile'
-import { trackEvent, trackPageView } from '../../actions/tracking'
 import { openAlert } from '../../actions/modals'
 import * as ACTION_TYPES from '../../constants/action_types'
 import OnboardingHeader from '../navigation/OnboardingHeader'
@@ -68,9 +67,7 @@ class OnboardingView extends React.Component {
       return <span/>
     }
 
-    const tracking = bindActionCreators({ trackEvent, trackPageView }, dispatch)
     switch (subComponentName) {
-
     case 'CommunityPicker':
       return (
         <div className="CommunityPicker Panel">
@@ -97,8 +94,7 @@ class OnboardingView extends React.Component {
             message="Ello is full of interesting and creative people committed to building a positive community." />
           <PeoplePicker
             shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
-            relationshipMap={rm}
-            tracking={ tracking } />
+            relationshipMap={rm} />
         </div>
       )
 
