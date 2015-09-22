@@ -1,8 +1,31 @@
-import { TRACK } from '../../src/constants/action_types'
+import { TRACK, PROFILE } from '../../src/constants/action_types'
 
 export function analytics() {
   return next => action => {
     const { payload, type } = action
+
+    if (type === PROFILE.LOAD_SUCCESS && window) {
+      const { gaUniqueId, createdAt, allowsAnalytics } = action.payload.response.users
+
+      // Setup Segment tracking
+      if (window.analytics && allowsAnalytics) {
+        window.analytics.load(ENV.SEGMENT_WRITE_KEY)
+        window.analytics.identify(gaUniqueId, {
+          createdAt: createdAt,
+          createdAtGa: createdAt,
+          uiVersion: ENV.SEGMENT_UI_VERSION,
+        })
+        window.analytics.page()
+      }
+      // Setup GA tracking
+      if (window.ga && allowsAnalytics) {
+        window.ga('create', ENV.GA_ACCOUNT_ID, { 'userId': gaUniqueId })
+        window.ga('set', 'dimension1', createdAt)
+        window.ga('set', 'anonymizeIp', true)
+        window.ga('set', 'dimension2', ENV.SEGMENT_UI_VERSION)
+        window.ga('send', 'pageview')
+      }
+    }
 
     if ((type !== TRACK.EVENT && type !== TRACK.PAGE_VIEW) || !payload || !window) {
       return next(action)
@@ -34,4 +57,3 @@ export function analytics() {
     return next(action)
   }
 }
-

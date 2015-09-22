@@ -3,12 +3,17 @@ import { connect } from 'react-redux'
 import Modal from '../components/modals/Modal'
 import DevGrid from '../components/devtools/DevGrid'
 import { trackPageView } from '../actions/tracking'
+import { loadProfile } from '../actions/profile'
 
 
 class App extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.lastLocation = ''
+  }
+
+  componentWillMount() {
+    this.props.dispatch(loadProfile())
   }
 
   componentDidUpdate() {
