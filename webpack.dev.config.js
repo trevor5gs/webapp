@@ -11,9 +11,9 @@ module.exports = {
     main: './src/main'
   },
   output: {
-    path: path.join(__dirname, 'public/assets'),
+    path: path.join(__dirname, 'public/static'),
     filename: '[name].entry.js',
-    publicPath: '/assets/'
+    publicPath: '/static/'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
