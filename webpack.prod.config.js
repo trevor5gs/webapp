@@ -11,11 +11,11 @@ module.exports = {
     auth: './src/auth'
   },
   output: {
-    path: path.join(__dirname, 'public/assets'),
+    path: path.join(__dirname, 'public/static'),
     filename: '[name].entry.js',
     chunkFilename: '[id].chunk.js',
     hash: true,
-    publicPath: '/assets/',
+    publicPath: '/static/',
   },
   plugins: [
     new webpack.NoErrorsPlugin(),

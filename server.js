@@ -8,7 +8,7 @@ app.use('/hello', function(req, res) {
 })
 
 app.use(express.static('public'))
-app.use(express.static('public/assets'))
+app.use('/static', express.static('public/static'))
 
 app.use('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'public/index.html'))
