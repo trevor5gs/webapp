@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Ello</title>
@@ -5,8 +6,7 @@
       (function(){var cn="",es=document.createElement("div").style,ft=[{p:"position",v:"sticky"}],fp,fv,_i,_l;for(_i=0,_l=ft.length;_l>_i;_i++)fp=ft[_i].p,fv=ft[_i].v,es.cssText=fp+":"+["-webkit-","-moz-","-ms-","-o-",""].join(fv+";"+fp+":")+fv+";",cn+=-1!==es[fp].indexOf(fv)?" has-"+fv:" no-"+fv;var addClasses=cn.trim().split(" ");for(_i=0,_l=addClasses.length;_l>_i;_i++)document.documentElement.classList.add(cn.trim());})();
       (function(){var cl=document.documentElement.classList;cl.add('no-touch');var detectTouchScreenHandler=function(){document.removeEventListener("touchstart",detectTouchScreenHandler);cl.remove('no-touch');cl.add('has-touch');};document.addEventListener("touchstart",detectTouchScreenHandler,false);})();
     </script>
-    <link rel="mask-icon" href="ello-icon.svg" color="black" />
-    <link rel="stylesheet" type="text/css" href="/assets/bundle.css" />
+    <link rel="mask-icon" href="ello-icon.svg" color="black">
   </head>
   <body>
     <div id="root"></div>
