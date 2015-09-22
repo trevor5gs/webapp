@@ -23,10 +23,6 @@ class PeoplePicker extends React.Component {
     }
   }
 
-  trackEvent(event, options) {
-    return this.props.tracking.trackEvent(event, options)
-  }
-
   followAll() {
     const { inactive } = this.props.relationshipMap
     const personRefs = this.refs.streamComponent.refs.wrappedInstance.refs
@@ -78,10 +74,6 @@ PeoplePicker.defaultProps = {
 PeoplePicker.propTypes = {
   shouldAutoFollow: React.PropTypes.any,
   relationshipMap: React.PropTypes.any.isRequired,
-  tracking: React.PropTypes.shape({
-    trackEvent: React.PropTypes.func.isRequired,
-    trackPageView: React.PropTypes.func.isRequired,
-  }),
 }
 
 export default PeoplePicker

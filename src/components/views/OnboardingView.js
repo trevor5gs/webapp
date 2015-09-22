@@ -2,8 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { relationshipBatchSave } from '../../actions/onboarding'
-import { saveCover, saveAvatar, loadProfile } from '../../actions/profile'
-import { trackEvent, trackPageView } from '../../actions/tracking'
+import { saveCover, saveAvatar } from '../../actions/profile'
 import { openAlert } from '../../actions/modals'
 import * as ACTION_TYPES from '../../constants/action_types'
 import OnboardingHeader from '../navigation/OnboardingHeader'
@@ -15,10 +14,6 @@ import Avatar from '../people/Avatar'
 import Cover from '../covers/Cover'
 
 class OnboardingView extends React.Component {
-
-  componentWillMount() {
-    this.props.dispatch(loadProfile())
-  }
 
   getAvatarSource(profile) {
     const { payload } = profile
@@ -68,15 +63,14 @@ class OnboardingView extends React.Component {
       return <span/>
     }
 
-    const tracking = bindActionCreators({ trackEvent, trackPageView }, dispatch)
     switch (subComponentName) {
-
     case 'CommunityPicker':
       return (
         <div className="CommunityPicker Panel">
           <OnboardingHeader
             relationshipMap={this.getRelationshipMap()}
             nextPath="/onboarding/awesome-people"
+            trackingLabel="community-picker"
             batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
             lockNext
             title="What are you interested in?"
@@ -92,13 +86,13 @@ class OnboardingView extends React.Component {
           <OnboardingHeader
             relationshipMap={rm}
             nextPath="/onboarding/profile-header"
+            trackingLabel="people-picker"
             batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
             title="Follow some awesome people."
             message="Ello is full of interesting and creative people committed to building a positive community." />
           <PeoplePicker
             shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
-            relationshipMap={rm}
-            tracking={ tracking } />
+            relationshipMap={rm} />
         </div>
       )
 
@@ -107,6 +101,7 @@ class OnboardingView extends React.Component {
         <div className="CoverPicker Panel">
           <OnboardingHeader
               nextPath="/onboarding/profile-avatar"
+              trackingLabel="cover-picker"
               title="Customize your profile."
               message="Choose a header image." />
 
@@ -125,6 +120,7 @@ class OnboardingView extends React.Component {
         <div className="AvatarPicker Panel">
           <OnboardingHeader
               nextPath="/onboarding/profile-bio"
+              trackingLabel="avatar-picker"
               title="Customize your profile."
               message="Choose an avatar." />
 
@@ -144,6 +140,7 @@ class OnboardingView extends React.Component {
         <div className="InfoPicker Panel">
           <OnboardingHeader
               nextPath="/friends"
+              trackingLabel="info-picker"
               title="Customize your profile."
               message="Fill out your bio." />
 
