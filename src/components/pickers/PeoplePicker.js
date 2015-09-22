@@ -2,11 +2,10 @@ import React from 'react'
 import classNames from 'classnames'
 import { loadAwesomePeople } from '../../actions/onboarding'
 import StreamComponent from '../streams/StreamComponent'
-import RelationshipBatchPicker from './RelationshipBatchPicker'
 import Button from '../buttons/Button'
 import { RelationshipPriority }  from '../buttons/RelationshipButton'
 
-class PeoplePicker extends RelationshipBatchPicker {
+class PeoplePicker extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -78,7 +77,6 @@ PeoplePicker.defaultProps = {
 
 PeoplePicker.propTypes = {
   shouldAutoFollow: React.PropTypes.any,
-  saveAction: React.PropTypes.func.isRequired,
   relationshipMap: React.PropTypes.any.isRequired,
   tracking: React.PropTypes.shape({
     trackEvent: React.PropTypes.func.isRequired,

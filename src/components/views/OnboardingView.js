@@ -77,10 +77,11 @@ class OnboardingView extends React.Component {
           <OnboardingHeader
             relationshipMap={this.getRelationshipMap()}
             nextPath="/onboarding/awesome-people"
+            batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
+            lockNext
             title="What are you interested in?"
             message="Follow the Ello Communities that you find most inspiring." />
-          <CommunityPicker
-            saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
+          <CommunityPicker />
         </div>
       )
 
@@ -89,15 +90,15 @@ class OnboardingView extends React.Component {
       return (
         <div className="PeoplePicker Panel">
           <OnboardingHeader
-            nextPath="/onboarding/profile-header"
-            title="Follow some awesome people."
             relationshipMap={rm}
+            nextPath="/onboarding/profile-header"
+            batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
+            title="Follow some awesome people."
             message="Ello is full of interesting and creative people committed to building a positive community." />
           <PeoplePicker
             shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
             relationshipMap={rm}
-            tracking={ tracking }
-            saveAction={ bindActionCreators(relationshipBatchSave, dispatch) }/>
+            tracking={ tracking } />
         </div>
       )
 
