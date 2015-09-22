@@ -143,7 +143,7 @@ class OnboardingView extends React.Component {
       return (
         <div className="InfoPicker Panel">
           <OnboardingHeader
-              nextPath="/onboarding/communities"
+              nextPath="/friends"
               title="Customize your profile."
               message="Fill out your bio." />
 
