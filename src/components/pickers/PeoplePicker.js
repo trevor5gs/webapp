@@ -17,8 +17,10 @@ class PeoplePicker extends RelationshipBatchPicker {
   componentDidUpdate() {
     const { shouldAutoFollow, relationshipMap } = this.props
     if (!this.state.hasAutoFollowed && shouldAutoFollow && relationshipMap.inactive.length > 0) {
-      this.followAll()
       this.setState({ hasAutoFollowed: true })
+      requestAnimationFrame(() => {
+        this.followAll()
+      })
     }
   }
 
