@@ -5,13 +5,14 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   devtool: 'sourcemap',
-  entry: [
-    'webpack-hot-middleware/client',
-    './src/main'
-  ],
+  entry: {
+    auth: './src/auth',
+    hotness: 'webpack-hot-middleware/client',
+    main: './src/main'
+  },
   output: {
     path: path.join(__dirname, 'public/assets'),
-    filename: 'bundle.js',
+    filename: '[name].entry.js',
     publicPath: '/assets/'
   },
   plugins: [
