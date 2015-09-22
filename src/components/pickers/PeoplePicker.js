@@ -1,11 +1,9 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { loadAwesomePeople } from '../../actions/onboarding'
 import StreamComponent from '../streams/StreamComponent'
 import Button from '../buttons/Button'
 import { RelationshipPriority }  from '../buttons/RelationshipButton'
-import { trackPageView, trackEvent } from '../../actions/tracking'
 
 class PeoplePicker extends React.Component {
   constructor(props, context) {
@@ -13,10 +11,6 @@ class PeoplePicker extends React.Component {
     this.state = {
       hasAutoFollowed: false,
     }
-  }
-
-  componentDidMount() {
-    this.props.dispatch(trackPageView())
   }
 
   componentDidUpdate() {
@@ -40,7 +34,6 @@ class PeoplePicker extends React.Component {
         relationshipButton.updatePriority(relationship.priority)
       }
     }
-    this.props.dispatch(trackEvent(`set-${relationship.priority}-all-button-clicked`))
   }
 
   isFollowingAll() {
@@ -80,9 +73,8 @@ PeoplePicker.defaultProps = {
 
 PeoplePicker.propTypes = {
   shouldAutoFollow: React.PropTypes.any,
-  dispatch: React.PropTypes.func.isRequired,
   relationshipMap: React.PropTypes.any.isRequired,
 }
 
-export default connect()(PeoplePicker)
+export default PeoplePicker
 

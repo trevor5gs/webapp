@@ -10,4 +10,3 @@ The web app for [ello.co](http://ello.co).
 * [Assets](/docs/assets/Readme.md)
 
 :metal:
-

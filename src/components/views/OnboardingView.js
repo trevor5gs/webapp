@@ -74,6 +74,7 @@ class OnboardingView extends React.Component {
           <OnboardingHeader
             relationshipMap={this.getRelationshipMap()}
             nextPath="/onboarding/awesome-people"
+            trackingLabel="community-picker"
             batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
             lockNext
             title="What are you interested in?"
@@ -89,6 +90,7 @@ class OnboardingView extends React.Component {
           <OnboardingHeader
             relationshipMap={rm}
             nextPath="/onboarding/profile-header"
+            trackingLabel="people-picker"
             batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
             title="Follow some awesome people."
             message="Ello is full of interesting and creative people committed to building a positive community." />
@@ -103,6 +105,7 @@ class OnboardingView extends React.Component {
         <div className="CoverPicker Panel">
           <OnboardingHeader
               nextPath="/onboarding/profile-avatar"
+              trackingLabel="cover-picker"
               title="Customize your profile."
               message="Choose a header image." />
 
@@ -121,6 +124,7 @@ class OnboardingView extends React.Component {
         <div className="AvatarPicker Panel">
           <OnboardingHeader
               nextPath="/onboarding/profile-bio"
+              trackingLabel="avatar-picker"
               title="Customize your profile."
               message="Choose an avatar." />
 
@@ -140,6 +144,7 @@ class OnboardingView extends React.Component {
         <div className="InfoPicker Panel">
           <OnboardingHeader
               nextPath="/friends"
+              trackingLabel="info-picker"
               title="Customize your profile."
               message="Fill out your bio." />
 
