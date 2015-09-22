@@ -23,6 +23,9 @@ window.checkAuth = () => {
       '&scope=web_app' +
       '&client_id='    + ENV.AUTH_CLIENT_ID +
       '&redirect_uri=' + ENV.AUTH_REDIRECT_URI;
+
+    console.out(ENV.AUTH_REDIRECT_URI);
+    
     window.location.href = url;
   }
 }
