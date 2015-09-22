@@ -18,6 +18,7 @@ window.checkAuth = () => {
     localStorage.setItem('ello_access_token', token)
   } else {
     console.log("ENV.AUTH_REDIRECT_URI: ", ENV.AUTH_REDIRECT_URI);
+    console.log("ENV.AUTH_DOMAIN: ", ENV.AUTH_DOMAIN);
     // TODO: protocol, hostname, <port>, scope, client_id are all ENVs?
     const url = 'https://' + ENV.AUTH_DOMAIN + '/api/oauth/authorize.html' +
       '?response_type=token' +
