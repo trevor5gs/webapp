@@ -2,8 +2,22 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Modal from '../components/modals/Modal'
 import DevGrid from '../components/devtools/DevGrid'
+import { trackPageView } from '../actions/tracking'
+
 
 class App extends React.Component {
+  constructor(props, context) {
+    super(props, context)
+    this.lastLocation = ''
+  }
+
+  componentDidUpdate() {
+    const { location, dispatch } = this.props
+    if (location.pathname !== this.lastLocation) {
+      this.lastLocation = location.pathname
+      dispatch(trackPageView())
+    }
+  }
 
   render() {
     const { location, children } = this.props
@@ -20,7 +34,12 @@ class App extends React.Component {
   }
 }
 
+App.defaultProps = {
+  lastLocation: '',
+}
+
 App.propTypes = {
+  dispatch: React.PropTypes.func.isRequired,
   location: React.PropTypes.shape({
     pathname: React.PropTypes.string.isRequired,
   }),

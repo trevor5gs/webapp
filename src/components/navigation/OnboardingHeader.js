@@ -18,9 +18,9 @@ class OnboardingHeader extends React.Component {
     return 'Button'
   }
 
-
   nextWasClicked() {
     const { dispatch, batchSave, relationshipMap, trackingLabel } = this.props
+
 
     dispatch(trackEvent(`completed-${trackingLabel}`))
 
