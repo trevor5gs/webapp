@@ -9,6 +9,8 @@ window.extractToken = (hash) => {
 
 window.checkAuth = () => {
   const token = extractToken(document.location.hash);
+  window.history.replaceState(window.history.state, document.title, window.location.pathname)
+  document.location.hash = '' // this is a fallback for IE < 10
   if (token) {
     localStorage.setItem('ello_access_token', token)
   } else {
