@@ -25,13 +25,13 @@ const element = (
     {() =>
       <Router history={history}>
         <Route path="/" component={App}>
+          <Redirect from="onboarding" to="/onboarding/communities" />
           <Route path="onboarding">
             <Route path="communities" component={OnboardingView} subComponentName="CommunityPicker" />
             <Route path="awesome-people" component={OnboardingView} subComponentName="PeoplePicker" />
             <Route path="profile-header" component={OnboardingView} subComponentName="CoverPicker" />
             <Route path="profile-avatar" component={OnboardingView} subComponentName="AvatarPicker" />
             <Route path="profile-bio" component={OnboardingView} subComponentName="InfoPicker" />
-            <Redirect from="onboarding" to="communities" />
           </Route>
         </Route>
       </Router>
