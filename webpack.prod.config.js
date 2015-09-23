@@ -8,7 +8,7 @@ var jade = require('jade')
 module.exports = {
   entry: {
     main: './src/main',
-    auth: './src/auth'
+    auth: './src/networking/auth'
   },
   output: {
     path: path.join(__dirname, 'public/static'),

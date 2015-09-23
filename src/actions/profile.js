@@ -1,5 +1,5 @@
 import { PROFILE } from '../constants/action_types'
-import * as api from '../api'
+import * as api from '../networking/api'
 
 export function loadProfile() {
   return {

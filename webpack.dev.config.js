@@ -6,7 +6,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
   devtool: 'sourcemap',
   entry: {
-    auth: './src/auth',
+    auth: './src/networking/auth',
     hotness: 'webpack-hot-middleware/client',
     main: './src/main'
   },

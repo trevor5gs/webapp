@@ -1,7 +1,7 @@
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
-import * as api from '../api'
+import * as api from '../networking/api'
 
 let cachedCommunity
 let cachedPeople

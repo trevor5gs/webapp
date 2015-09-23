@@ -1,6 +1,6 @@
 import * as ACTION_TYPES from '../../src/constants/action_types'
 import { camelizeKeys } from 'humps'
-import { s3CredentialsPath } from '../api'
+import { s3CredentialsPath } from '../networking/api'
 import 'isomorphic-fetch'
 
 function checkStatus(response) {
