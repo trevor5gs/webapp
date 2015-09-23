@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Modal from '../components/modals/Modal'
 import DevGrid from '../components/devtools/DevGrid'
+import Analytics from '../components/analytics/Analytics'
 import { trackPageView } from '../actions/tracking'
 import { loadProfile } from '../actions/profile'
 
@@ -34,6 +35,7 @@ class App extends React.Component {
         </main>
         <Modal/>
         <DevGrid/>
+        <Analytics/>
       </section>
     )
   }
