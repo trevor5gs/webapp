@@ -11,7 +11,8 @@
     "docs:serve": "npm run docs:clean && gitbook serve",
     "lint": "eslint src test",
     "spec": "mocha --compilers js:babel/register test/*.js test/**/*.js test/**/**/*.js",
-    "start": "npm run build && node server.js",
+    "start": "node server.js",
+    "postinstall": "npm run build",
     "test": "npm run lint && npm run spec"
   },
   "engines": {
