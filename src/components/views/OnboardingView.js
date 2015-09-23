@@ -139,7 +139,8 @@ class OnboardingView extends React.Component {
       return (
         <div className="InfoPicker Panel">
           <OnboardingHeader
-              nextPath="/friends"
+              redirection
+              nextPath="http://ello.co"
               trackingLabel="info-picker"
               title="Customize your profile."
               message="Fill out your bio." />

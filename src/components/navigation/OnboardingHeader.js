@@ -18,11 +18,16 @@ class OnboardingHeader extends React.Component {
     return 'Button'
   }
 
-  nextWasClicked() {
-    const { dispatch, batchSave, relationshipMap, trackingLabel } = this.props
+  nextWasClicked(e) {
+    const { dispatch, batchSave, relationshipMap, trackingLabel, redirection, nextPath } = this.props
 
 
     dispatch(trackEvent(`completed-${trackingLabel}`))
+
+    if (redirection) {
+      e.preventDefault()
+      window.location = nextPath
+    }
 
     // Save any relationships created...
     if (!batchSave && !relationshipMap) {
@@ -58,9 +63,13 @@ class OnboardingHeader extends React.Component {
   }
 
 
-  skipWasClicked() {
-    const { dispatch, trackingLabel } = this.props
+  skipWasClicked(e) {
+    const { dispatch, trackingLabel, nextPath, redirection } = this.props
     dispatch(trackEvent(`skipped-${trackingLabel}`))
+    if (redirection) {
+      e.preventDefault()
+      window.location = nextPath
+    }
   }
 
 
@@ -74,9 +83,9 @@ class OnboardingHeader extends React.Component {
           <p>{message}</p>
         </div>
         <div className="OnboardingColumn">
-          <Link className={this.getButtonClassNames()} to={nextPath} onClick={() => {this.nextWasClicked()}}>Next</Link>
+          <Link className={this.getButtonClassNames()} to={nextPath} onClick={(e) => {this.nextWasClicked(e)}}>Next</Link>
           <p>
-            <Link to={nextPath} onClick={() => {this.skipWasClicked()}}>Skip</Link>
+            <Link to={nextPath} onClick={(e) => {this.skipWasClicked(e)}}>Skip</Link>
           </p>
         </div>
       </header>
@@ -93,6 +102,7 @@ OnboardingHeader.propTypes = {
   relationshipMap: React.PropTypes.object,
   batchSave: React.PropTypes.func,
   lockNext: React.PropTypes.any,
+  redirection: React.PropTypes.any,
 }
 
 export default connect()(OnboardingHeader)
