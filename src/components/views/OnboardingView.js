@@ -21,7 +21,7 @@ class OnboardingView extends React.Component {
     if (tmpAvatar) {
       return tmpAvatar
     }
-    return avatar ? avatar.regular.url : null
+    return avatar ? avatar.large.url : null
   }
 
   getCoverSource(profile) {
