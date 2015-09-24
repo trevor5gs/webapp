@@ -1,6 +1,6 @@
+/*eslint-disable */
 import React from 'react'
 import { connect } from 'react-redux'
-import { trackPageView } from '../../actions/tracking'
 import { PROFILE } from '../../constants/action_types'
 
 function addTrackingSnippet(src) {
@@ -12,46 +12,15 @@ function addTrackingSnippet(src) {
   s.parentNode.insertBefore(script, s)
 }
 
-export function addSegment() {
-  const analytics = window.analytics = window.analytics || []
-  analytics.invoked = !0
-  analytics.methods = ['identify', 'track', 'page']
-  analytics.factory = (t) => {
-    return () => {
-      const e = Array.prototype.slice.call(arguments)
-      e.unshift(t)
-      analytics.push(e)
-      return analytics
+export function addSegment(uid, createdAt) {
+  !function(){const analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){const e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(let t=0;t<analytics.methods.length;t++){const e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){const e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";const n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};
+    analytics.SNIPPET_VERSION="3.0.1";
+    analytics.load(ENV.SEGMENT_WRITE_KEY);
+    if (uid) {
+      analytics.identify(uid, { createdAt: createdAt, ui_version: ENV.UI_VERSION });
     }
-  }
-  for (let t = 0; t < analytics.methods.length; t++) {
-    const e = analytics.methods[t]
-    analytics[e] = analytics.factory(e)
-  }
-  const src = (document.location.protocol === 'https:' ? 'https://' : 'http://') + 'cdn.segment.com/analytics.js/v1/' + ENV.SEGMENT_WRITE_KEY + '/analytics.min.js'
-  addTrackingSnippet(src)
-}
-
-export function identifyForSegment(uid, createdAt) {
-  window.analytics.identify(uid, {
-    createdAt: createdAt,
-    uiVersion: ENV.UI_VERSION,
-  })
-}
-
-export function addGoogleAnalytics() {
-  window.GoogleAnalyticsObject = 'ga'
-  window.ga = window.ga || () => { (window.ga.q = window.ga.q || []).push(arguments) }
-  window.ga.l = 1 * new Date()
-  addTrackingSnippet('//www.google-analytics.com/analytics.js')
-}
-
-export function identifyForGoogle(uid, createdAt) {
-  const ga = window.ga
-  ga('create', ENV.GA_ACCOUNT_ID, { 'userId': uid })
-  ga('set', 'anonymizeIp', true)
-  ga('set', 'dimension1', createdAt)
-  ga('set', 'dimension2', ENV.UI_VERSION)
+    analytics.page()
+    }}();
 }
 
 export function doesAllowTracking() {
@@ -75,26 +44,21 @@ class Analytics extends React.Component {
     const { profile } = this.props
     if (profile.type === PROFILE.LOAD_SUCCESS) {
       this.profileDidLoad()
+      this.hasLoadedTracking = true
     } else if (profile.type === PROFILE.LOAD_FAILURE) {
       this.profileDidFail()
     }
-    this.props.dispatch(trackPageView())
-    this.hasLoadedTracking = true
   }
 
   profileDidLoad() {
     const { gaUniqueId, createdAt, allowsAnalytics } = this.props.profile.payload
     if (allowsAnalytics) {
-      addGoogleAnalytics()
-      addSegment()
-      identifyForGoogle(gaUniqueId, createdAt)
-      identifyForSegment(gaUniqueId, createdAt)
+      addSegment(gaUniqueId, createdAt)
     }
   }
 
   profileDidFail() {
     if (doesAllowTracking()) {
-      addGoogleAnalytics()
       addSegment()
     }
   }
