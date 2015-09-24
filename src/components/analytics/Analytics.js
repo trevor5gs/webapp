@@ -68,6 +68,20 @@ class Analytics extends React.Component {
     this.hasLoadedTracking = false
   }
 
+  componentDidUpdate() {
+    if (this.hasLoadedTracking) {
+      return
+    }
+    const { profile } = this.props
+    if (profile.type === PROFILE.LOAD_SUCCESS) {
+      this.profileDidLoad()
+    } else if (profile.type === PROFILE.LOAD_FAILURE) {
+      this.profileDidFail()
+    }
+    this.props.dispatch(trackPageView())
+    this.hasLoadedTracking = true
+  }
+
   profileDidLoad() {
     const { gaUniqueId, createdAt, allowsAnalytics } = this.props.profile.payload
     if (allowsAnalytics) {
@@ -75,31 +89,17 @@ class Analytics extends React.Component {
       addSegment()
       identifyForGoogle(gaUniqueId, createdAt)
       identifyForSegment(gaUniqueId, createdAt)
-      this.props.dispatch(trackPageView())
     }
-    this.hasLoadedTracking = true
   }
 
   profileDidFail() {
     if (doesAllowTracking()) {
       addGoogleAnalytics()
       addSegment()
-      this.props.dispatch(trackPageView())
     }
-    this.hasLoadedTracking = true
   }
 
   render() {
-    if (this.hasLoadedTracking) {
-      return null
-    }
-    const { profile } = this.props
-
-    if (profile.type === PROFILE.LOAD_SUCCESS) {
-      this.profileDidLoad()
-    } else if (profile.type === PROFILE.LOAD_FAILURE) {
-      this.profileDidFail()
-    }
     return null
   }
 }
