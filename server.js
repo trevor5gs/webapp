@@ -5,7 +5,6 @@ var express = require('express')
 var app = express()
 
 app.use('/hello', function(req, res) {
-  console.log('you have been pinged');
   res.send("yo")
 })
 
