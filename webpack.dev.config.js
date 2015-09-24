@@ -7,8 +7,7 @@ module.exports = {
   devtool: 'sourcemap',
   entry: {
     auth: './src/networking/auth',
-    hotness: 'webpack-hot-middleware/client',
-    main: './src/main'
+    main: [ './src/main', 'webpack-hot-middleware/client' ]
   },
   output: {
     path: path.join(__dirname, 'public/static'),
