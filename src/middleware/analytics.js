@@ -12,7 +12,7 @@ export function analytics() {
     if (type === TRACK.EVENT) {
       const { label, options } = payload
       if (window.analytics) {
-        window.analytics.track(event, options)
+        window.analytics.track(label, options)
       }
       if (window.ga) {
         window.ga('send', 'event', 'Ello', label)
