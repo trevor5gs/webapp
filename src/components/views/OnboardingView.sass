@@ -62,12 +62,13 @@ main[data-pathname^="/onboarding"]
 .CoverPicker > .Uploader:before
   transition: background-color $speed ease
   content: ''
-  position: absolute
+  position: fixed
   top: 0
   left: 0
   right: 0
   bottom: 0
   background-color: transparent
+  background-color: rgba(black, 0.1)
 .CoverPicker > .hasDragOver.Uploader:before
   background-color: rgba(black, 0.5)
   z-index: -1
