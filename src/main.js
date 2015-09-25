@@ -14,7 +14,6 @@ import App from './containers/App'
 
 const history = new BrowserHistory()
 const logger = createLogger({ collapsed: true })
-
 const createStoreWithMiddleware = applyMiddleware(thunk, uploader, requester, analytics, logger)(createStore)
 const reducer = combineReducers(reducers)
 const store = createStoreWithMiddleware(reducer)
