@@ -8,6 +8,14 @@ main[data-pathname^="/onboarding"]
 
 // -------------------------------------
 
+@media(max-width: #{$break-2-max})
+  .CommunityPicker,
+  .PeoplePicker,
+  .AvatarPicker,
+  .CoverPicker,
+  .InfoPicker
+    min-height: calc(100vh - 90px)
+
 .PeoplePicker > .Button
   display: block
   width: 95%
@@ -87,6 +95,7 @@ main[data-pathname^="/onboarding"]
 .InfoPicker > .Avatar
   +circle(rem(160))
   margin-bottom: rem(20)
+  margin-left: rem(10)
 
 .AvatarPicker > .Uploader
   position: relative
