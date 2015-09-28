@@ -10,3 +10,17 @@
   background: #999 no-repeat 50% 50%
   background-size: cover
 
+.Cover.isModifiable:before
+  transition: background-color $speed ease
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(black, 0.1)
+  z-index: 2
+  content: ""
+
+.hasDragOver + .Cover.isModifiable:before
+  background-color: rgba(black, 0.4)
+

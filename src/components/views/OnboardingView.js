@@ -111,7 +111,9 @@ class OnboardingView extends React.Component {
             recommend="Recommended image size: 2560 x 1440"
             openAlert={ bindActionCreators(openAlert, dispatch) }
             saveAction={ bindActionCreators(saveCover, dispatch) }/>
-          <Cover imgSrc={this.getCoverSource(profile)} />
+          <Cover
+            isModifiable
+            imgSrc={this.getCoverSource(profile)} />
         </div>
       )
 
@@ -124,14 +126,15 @@ class OnboardingView extends React.Component {
               title="Customize your profile."
               message="Choose an avatar." />
 
-          <Avatar imgSrc={this.getAvatarSource(profile)} />
           <Uploader
             title="Pick an Avatar"
             message="Or drag & drop it"
             recommend="Recommended image size: 360 x 360"
             openAlert={ bindActionCreators(openAlert, dispatch) }
             saveAction={ bindActionCreators(saveAvatar, dispatch) }/>
-          <Cover imgSrc={this.getCoverSource(profile)} />
+          <Avatar imgSrc={this.getAvatarSource(profile)} />
+          <Cover
+            imgSrc={this.getCoverSource(profile)} />
         </div>
       )
 
@@ -147,7 +150,8 @@ class OnboardingView extends React.Component {
 
           <Avatar imgSrc={this.getAvatarSource(profile)} />
           <InfoForm />
-          <Cover imgSrc={this.getCoverSource(profile)} />
+          <Cover
+            imgSrc={this.getCoverSource(profile)} />
         </div>
       )
 
