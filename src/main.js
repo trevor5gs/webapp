@@ -20,8 +20,8 @@ const store = createStoreWithMiddleware(reducer)
 function createRedirect(from, to) {
   return {
     path: from,
-    onEnter(nextState, transition) {
-      transition.to(to)
+    onEnter(nextState, replaceState) {
+      replaceState(nextState, to)
     },
   }
 }
