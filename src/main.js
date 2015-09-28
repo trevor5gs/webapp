@@ -31,6 +31,7 @@ const rootRoute = {
   component: App,
   childRoutes: [
     createRedirect('onboarding', '/onboarding/communities'),
+    require('./routes/Discover'),
     require('./routes/onboarding'),
   ],
 }
