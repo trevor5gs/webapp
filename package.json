@@ -50,7 +50,7 @@
   "devDependencies": {
     "babel-plugin-react-transform": "^1.1.0",
     "chai": "^3.3.0",
-    "eslint": "*",
+    "eslint": "^1.5.1",
     "eslint-config-airbnb": "*",
     "eslint-plugin-react": "*",
     "gitbook-cli": "^0.3.6",
