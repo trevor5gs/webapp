@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { updateRelationship } from '../../actions/relationships'
-import RelationshipButton from '../buttons/RelationshipButton'
+import RelationshipImageButton from '../buttons/RelationshipImageButton'
 
 class PersonCard extends React.Component {
   handleRelationshipUpdate(vo) {
@@ -14,14 +14,14 @@ class PersonCard extends React.Component {
     const coverSrc = user.coverImage.hdpi.url
     const style = { backgroundImage: `url(${coverSrc})` }
     return (
-      <div className="PersonCard" style={style}>
-        <h2>@{user.username}</h2>
-        <RelationshipButton
-          ref="relationshipButton"
-          userId={user.id}
-          priority={user.relationshipPriority}
-          buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
-      </div>
+      <RelationshipImageButton
+        className="PersonCard"
+        ref="relationshipImageButton"
+        style={style}
+        label={'@' + user.username}
+        userId={user.id}
+        priority={user.relationshipPriority}
+        buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
     )
   }
 }
