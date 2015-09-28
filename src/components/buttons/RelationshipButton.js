@@ -116,7 +116,7 @@ RelationshipButton.propTypes = {
   classListName: React.PropTypes.string,
   userId: React.PropTypes.string,
   buttonWasClicked: React.PropTypes.func,
-  priority: React.PropTypes.oneOf(['inactive', 'friend', 'noise', 'self', 'mute', 'block', 'none',  null]),
+  priority: React.PropTypes.oneOf(['inactive', 'friend', 'noise', 'self', 'mute', 'block', 'none', null]),
 }
 
 export default RelationshipButton

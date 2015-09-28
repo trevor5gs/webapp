@@ -11,7 +11,7 @@ export function loadCommunities() {
     cachedCommunity.payload.endpoint = null
     return cachedCommunity
   }
-  const cache =  {
+  const cache = {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.communitiesPath, vo: {} },
     meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingCommunities },

@@ -8,7 +8,7 @@ window.extractToken = (hash) => {
 }
 
 window.checkAuth = () => {
-  const token = extractToken(document.location.hash);
+  const token = window.extractToken(document.location.hash);
   if (window.history && window.history.replaceState) {
     window.history.replaceState(window.history.state, document.title, window.location.pathname)
   } else {
@@ -20,7 +20,7 @@ window.checkAuth = () => {
     const url = 'https://' + ENV.AUTH_DOMAIN + '/api/oauth/authorize.html' +
       '?response_type=token' +
       '&scope=web_app' +
-      '&client_id='    + ENV.AUTH_CLIENT_ID +
+      '&client_id=' + ENV.AUTH_CLIENT_ID +
       '&redirect_uri=' + ENV.AUTH_REDIRECT_URI;
 
     window.location.href = url;

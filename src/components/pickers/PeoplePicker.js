@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { loadAwesomePeople } from '../../actions/onboarding'
 import StreamComponent from '../streams/StreamComponent'
 import Button from '../buttons/Button'
-import { RelationshipPriority }  from '../buttons/RelationshipButton'
+import { RelationshipPriority } from '../buttons/RelationshipButton'
 
 class PeoplePicker extends React.Component {
   constructor(props, context) {
@@ -48,7 +48,7 @@ class PeoplePicker extends React.Component {
     if (followingLength === 0 && inactiveLength === 0) {
       return ''
     } else if (followingLength === 0) {
-      return 'Follow All (' +  inactiveLength + ')'
+      return 'Follow All (' + inactiveLength + ')'
     // } else if (followingLength > 0 && inactiveLength > 0) {
     //   return 'Follow Remaining (' +  inactiveLength + ')'
     }
