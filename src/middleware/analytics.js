@@ -17,7 +17,7 @@ export function analytics() {
       if (window.ga) {
         window.ga('send', 'event', 'Ello', label)
       }
-      return next({ payload: { label, options  }, type: action.type })
+      return next({ payload: { label, options }, type: action.type })
     }
 
     // Track Page Views

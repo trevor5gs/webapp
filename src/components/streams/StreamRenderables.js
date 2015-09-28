@@ -39,9 +39,6 @@ function getLinkObject(model, identifier, json) {
   if (key && collection) {
     return json[collection][key]
   }
-  if (!id) {
-    id = model.links[identifier].type
-  }
 }
 
 export function postsAsGrid(posts, json) {

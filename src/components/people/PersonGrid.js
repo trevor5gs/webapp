@@ -54,11 +54,11 @@ class PersonGrid extends React.Component {
           <h3>{user.name}</h3>
           <div className="short-bio" dangerouslySetInnerHTML={{ __html: user.formattedShortBio }} />
           <p className="external-links">
-            {user.externalLinksList.map((link, i) => {
-              return (
-                <a href={link.url} target="_blank" key={i} >{link.text}</a>
-              )
-            })}
+           {user.externalLinksList.map((link, i) => {
+             return (
+               <a href={link.url} target="_blank" key={i} >{link.text}</a>
+             )
+           })}
           </p>
         </div>
       </div>
