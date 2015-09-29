@@ -1,32 +1,34 @@
 import React from 'react'
 import Avatar from '../people/Avatar'
+import ImageRegion from './regions/ImageRegion'
+import PostTools from './PostTools'
 
 class PostGrid extends React.Component {
 
-  textRegion(content) {
-    console.log('text', content)
-    return <div dangerouslySetInnerHTML={{__html: content}} />
+  textRegion(key, content) {
+    return (
+      <div key={key}
+        className="TextRegion"
+        dangerouslySetInnerHTML={{__html: content}} />
+    )
   }
 
-  imageRegion(content, links) {
-    const { assets } = this.props
-    const asset = assets[links.assets].attachment
-    console.log('asset', asset)
-    const size = window.innerWidth > 375 ? 'hdpi' : 'mdpi'
-    return <img
-      alt={asset[size].url}
-      height={asset[size].metadata.height}
-      src={asset[size].url}
-      width={asset[size].metadata.width} />
+  imageRegion(key, content, links) {
+    return (
+      <ImageRegion key={key}
+        assets={this.props.assets}
+        content={content}
+        links={links} />
+    )
   }
 
-  embedRegion(content) {
-    console.log('embed', content)
+  embedRegion(key, content) {
+    // console.log('embed', content)
     return content
   }
 
-  repostRegion(content) {
-    console.log('repost', content)
+  repostRegion(key, content) {
+    // console.log('repost', content)
     return content
   }
 
@@ -34,13 +36,21 @@ class PostGrid extends React.Component {
     const { post, author } = this.props
     const avatar = author.avatar.regular.url
     return (
-      <div className="PostGrid" >
-        <Avatar imgSrc={avatar} />
-        <div>@{author.username}</div>
-        {post.content.map((region, i) => {
-          console.log('region', region)
-          return this[`${region.kind}Region`](region.data, region.links)
-        })}
+      <div className="PostGrid">
+        <header>
+          <Avatar imgSrc={avatar} />
+          <div className="vitals">
+            <a className="username" name="username" href={`/${author.username}`}>{`@${author.username}`}</a>
+          </div>
+        </header>
+        <section className="post-summary">
+          {post.summary.map((region, i) => {
+            return this[`${region.kind}Region`](i, region.data, region.links)
+          })}
+        </section>
+        <section className="post-tools">
+          <PostTools post={post} />
+        </section>
       </div>
     )
   }

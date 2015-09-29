@@ -41,36 +41,21 @@ function getLinkArray(model, identifier, json) {
   }
 }
 
-export function userDetail(users, json) {
-  const author = users[0]
-  const posts = getLinkArray(users[0], 'posts', json)
-  return (
-    <div className="UserDetail as-grid">
-      {onboardingPeople(users, json)}
-      {postsAsGrid(posts, json, author)}
-    </div>
-  )
-}
-
-function textRegionRender(region) {
-  return region.data
-}
-
 export function postsAsGrid(posts, json, user) {
   return (
     <div className="Posts as-grid">
-      <ul>
-        {posts.map((post, i) => {
-          return <PostGrid ref={'postGrid_' + i} post={post} author={user || getLinkObject(post, 'author', json)} assets={json.assets} key={i} />
-        })}
-      </ul>
+      {posts.map((post, i) => {
+        return <PostGrid ref={'postGrid_' + i} post={post} author={user || getLinkObject(post, 'author', json)} assets={json.assets} key={i} />
+      })}
     </div>
   )
 }
 
+export function userDetail(users, json) {
+  const author = users[0]
+  const posts = getLinkArray(users[0], 'posts', json)
+  return postsAsGrid(posts, json, author)
+}
 
+export { getLinkObject, getLinkArray }
 
-// export function notificationsAsList(json) {
-// }
-
-export { getLinkObject }

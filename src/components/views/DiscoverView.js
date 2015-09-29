@@ -5,8 +5,7 @@ import * as DiscoverActions from '../../actions/discover'
 class DiscoverView extends React.Component {
   render() {
     return (
-      <div>
-        <h1 className="heading">The Discover</h1>
+      <div className="DiscoverView Panel">
         <StreamComponent action={DiscoverActions.loadRecommended} />
       </div>
     )

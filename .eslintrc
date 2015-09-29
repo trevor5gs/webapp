@@ -15,6 +15,7 @@
     "no-debugger": 2,
     "no-alert": 2,
     "id-length": [2, { "properties": "never", "exceptions": ["c", "e", "h", "i", "r", "v", "w", "x", "y"] }],
-    "no-unused-expressions": [2, { "allowTernary": true }]
+    "no-unused-expressions": [2, { "allowTernary": true }],
+    "no-extend-native": [2, {"exceptions": ["Date"]}]
   }
 }

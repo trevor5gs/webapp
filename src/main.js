@@ -11,6 +11,10 @@ import { Provider } from 'react-redux'
 import * as reducers from './reducers'
 import { analytics, uploader, requester } from './middleware'
 import App from './containers/App'
+import { updateStrings } from './util/time_ago_in_words'
+
+// this is for post timestamps and adds methods to Date
+updateStrings({})
 
 const logger = createLogger({ collapsed: true })
 const createStoreWithMiddleware = applyMiddleware(thunk, uploader, requester, analytics, logger)(createStore)
@@ -31,7 +35,7 @@ const rootRoute = {
   component: App,
   childRoutes: [
     createRedirect('onboarding', '/onboarding/communities'),
-    require('./routes/Discover'),
+    require('./routes/discover'),
     require('./routes/onboarding'),
   ],
 }
