@@ -16,15 +16,18 @@ main[data-pathname^="/onboarding"]
 
 // -------------------------------------
 
+.CommunityPicker .Cards,
 .PeoplePicker .People
   margin-top: rem(20)
 
+.CommunityPicker > .Button,
 .PeoplePicker > .Button
   display: block
   width: 95%
   max-width: rem(640)
   margin: 0 auto
 
+.CommunityPicker.isFollowingAll > .Button,
 .PeoplePicker.isFollowingAll > .Button
   background-color: black
   border-color: black
@@ -45,11 +48,13 @@ main[data-pathname^="/onboarding"]
   pointer-events: none
 
 @media(min-width: #{$break-2})
+  .CommunityPicker,
   .PeoplePicker
     padding-top: rem(20)
   .CommunityPicker .StreamComponent,
   .PeoplePicker .StreamComponent
     padding: 0 rem(20) rem(20)
+  .CommunityPicker > .Button,
   .PeoplePicker > .Button
     width: 100%
 

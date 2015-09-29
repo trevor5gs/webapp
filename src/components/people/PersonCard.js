@@ -14,14 +14,15 @@ class PersonCard extends React.Component {
     const coverSrc = user.coverImage.hdpi.url
     const style = { backgroundImage: `url(${coverSrc})` }
     return (
-      <RelationshipImageButton
-        className="PersonCard"
-        ref="relationshipImageButton"
-        style={style}
-        label={'@' + user.username}
-        userId={user.id}
-        priority={user.relationshipPriority}
-        buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
+      <div className="PersonCard" >
+        <RelationshipImageButton
+          ref="relationshipButton"
+          style={style}
+          label={'@' + user.username}
+          userId={user.id}
+          priority={user.relationshipPriority}
+          buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
+      </div>
     )
   }
 }

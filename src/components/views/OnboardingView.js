@@ -56,6 +56,7 @@ class OnboardingView extends React.Component {
   }
 
   render() {
+    let rm
     const { dispatch, route, profile, stream } = this.props
     const { subComponentName } = route
 
@@ -63,8 +64,10 @@ class OnboardingView extends React.Component {
       return <span/>
     }
 
+
     switch (subComponentName) {
     case 'CommunityPicker':
+      rm = this.getRelationshipMap()
       return (
         <div className="CommunityPicker Panel">
           <OnboardingHeader
@@ -75,12 +78,14 @@ class OnboardingView extends React.Component {
             lockNext
             title="What are you interested in?"
             message="Follow the Ello Communities that you find most inspiring." />
-          <CommunityPicker />
+          <CommunityPicker
+            shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
+            relationshipMap={rm} />
         </div>
       )
 
     case 'PeoplePicker':
-      const rm = this.getRelationshipMap()
+      rm = this.getRelationshipMap()
       return (
         <div className="PeoplePicker Panel">
           <OnboardingHeader
