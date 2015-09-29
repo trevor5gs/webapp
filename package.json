@@ -16,7 +16,7 @@
     "test": "npm run lint && NODE_ENV=test npm run spec"
   },
   "engines": {
-    "node": "0.12.7"
+    "node": "4.1.1"
   },
   "dependencies": {
     "autoprefixer-loader": "^3.0.0",
