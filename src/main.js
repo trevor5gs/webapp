@@ -44,4 +44,3 @@ const element = (
 )
 
 React.render(element, document.getElementById('root'))
-
