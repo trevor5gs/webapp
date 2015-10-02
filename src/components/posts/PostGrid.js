@@ -33,7 +33,7 @@ class PostGrid extends React.Component {
   }
 
   render() {
-    const { post, author } = this.props
+    const { post, author, repostAuthor, repostSource } = this.props
     const avatar = author.avatar.regular.url
     return (
       <div className="PostGrid">
@@ -49,7 +49,7 @@ class PostGrid extends React.Component {
           })}
         </section>
         <section className="post-tools">
-          <PostTools post={post} />
+          <PostTools author={author} post={post} />
         </section>
       </div>
     )
@@ -57,12 +57,11 @@ class PostGrid extends React.Component {
 }
 
 PostGrid.propTypes = {
-  post: React.PropTypes.shape({
-  }).isRequired,
-  author: React.PropTypes.shape({
-  }).isRequired,
-  assets: React.PropTypes.shape({
-  }).isRequired,
+  assets: React.PropTypes.object.isRequired,
+  author: React.PropTypes.object.isRequired,
+  post: React.PropTypes.object.isRequired,
+  repostAuthor: React.PropTypes.object,
+  repostSource: React.PropTypes.object,
 }
 
 export default PostGrid
