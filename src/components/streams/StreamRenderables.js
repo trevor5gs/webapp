@@ -2,6 +2,7 @@ import React from 'react'
 import PersonCard from '../people/PersonCard'
 import PersonGrid from '../people/PersonGrid'
 import PostGrid from '../posts/PostGrid'
+import { getLinkObject, getLinkArray } from '../../util/json_helper'
 
 export function onboardingCommunities(users) {
   return (
@@ -23,29 +24,20 @@ export function onboardingPeople(users) {
   )
 }
 
-function getLinkObject(model, identifier, json) {
-  const key = model.links[identifier].id || model.links[identifier]
-  const collection = model.links[identifier].type || identifier
-  if (key && json[collection]) {
-    return json[collection][key]
-  }
-}
-
-function getLinkArray(model, identifier, json) {
-  const keys = model.links[identifier].ids || model.links[identifier]
-  const collection = model.links[identifier].type || identifier
-  if (keys.length && json[collection]) {
-    return keys.map((key) => {
-      return json[collection][key]
-    })
-  }
-}
-
 export function postsAsGrid(posts, json, user) {
   return (
     <div className="Posts as-grid">
       {posts.map((post, i) => {
-        return <PostGrid ref={'postGrid_' + i} post={post} author={user || getLinkObject(post, 'author', json)} assets={json.assets} key={i} />
+        return (
+          <PostGrid
+            assets={json.assets}
+            author={user || getLinkObject(post, 'author', json)}
+            key={i}
+            post={post}
+            ref={'postGrid_' + i}
+            repostAuthor={user || getLinkObject(post, 'repostAuthor', json)}
+            repostSource={getLinkObject(post, 'repostedSource', json)} />
+        )
       })}
     </div>
   )
