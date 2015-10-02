@@ -48,8 +48,9 @@ class PostTools extends React.Component {
 }
 
 PostTools.propTypes = {
-  post: React.PropTypes.shape({
-  }).isRequired,
+  author: React.PropTypes.object.isRequired,
+  currentUser: React.PropTypes.object.isRequired,
+  post: React.PropTypes.object.isRequired,
 }
 
 export default PostTools
