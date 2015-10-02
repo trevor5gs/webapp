@@ -3,7 +3,7 @@ import React from 'react'
 class ImageRegion extends React.Component {
 
   renderAttachment() {
-    const { content, key } = this.props
+    const { content } = this.props
     let size = 'optimized'
     if (!this.attachment[size].metadata.type.match('gif')) {
       size = window.innerWidth > 375 ? 'hdpi' : 'mdpi'
@@ -12,18 +12,16 @@ class ImageRegion extends React.Component {
       <img className="ImageRegion"
         alt={content.alt}
         height={this.attachment[size].metadata.height}
-        key={key}
         src={this.attachment[size].url}
         width={this.attachment[size].metadata.width} />
     )
   }
 
   renderContent() {
-    const { content, key } = this.props
+    const { content } = this.props
     return (
       <img className="ImageRegion"
         alt={content.alt}
-        key={key}
         src={content.url} />
     )
   }
@@ -39,9 +37,8 @@ class ImageRegion extends React.Component {
 }
 
 ImageRegion.propTypes = {
-  assets: React.PropTypes.object,
+  assets: React.PropTypes.object.isRequired,
   content: React.PropTypes.object.isRequired,
-  key: React.PropTypes.number.isRequired,
   links: React.PropTypes.object,
 }
 
