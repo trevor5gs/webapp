@@ -43,5 +43,3 @@ export function userDetail(users, json) {
   return postsAsGrid(posts, json)
 }
 
-export { getLinkObject, getLinkArray }
-
