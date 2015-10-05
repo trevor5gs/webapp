@@ -1,4 +1,4 @@
-/*eslint-disable */
+/* eslint-disable */
 import React from 'react'
 import { connect } from 'react-redux'
 import { PROFILE } from '../../constants/action_types'

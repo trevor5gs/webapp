@@ -9,6 +9,24 @@ export class StreamComponent extends React.Component {
     action ? dispatch(action()) : console.error('Action is required to load a stream')
   }
 
+  componentDidMount() {
+    if (window.embetter) {
+      window.embetter.reloadPlayers()
+    }
+  }
+
+  componentDidUpdate() {
+    if (window.embetter) {
+      window.embetter.reloadPlayers()
+    }
+  }
+
+  componentWillUnmount() {
+    if (window.embetter) {
+      window.embetter.stopPlayers()
+    }
+  }
+
   renderError() {
     return (
       <section className="StreamComponent hasErrored">

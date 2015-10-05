@@ -11,10 +11,39 @@ import { Provider } from 'react-redux'
 import * as reducers from './reducers'
 import { analytics, uploader, requester } from './middleware'
 import App from './containers/App'
-import { updateStrings } from './util/time_ago_in_words'
 
-// this is for post timestamps and adds methods to Date
-updateStrings({})
+import './util/time_ago_in_words'
+import './vendor/embetter'
+
+// TODO: move this somewhere else?
+window.embetter.activeServices = [
+  window.embetter.services.youtube,
+  window.embetter.services.vimeo,
+  window.embetter.services.soundcloud,
+  window.embetter.services.dailymotion,
+  window.embetter.services.mixcloud,
+  window.embetter.services.codepen,
+  window.embetter.services.bandcamp,
+  window.embetter.services.ustream,
+]
+window.embetter.reloadPlayers = (el = document.body) => {
+  window.embetter.utils.disposeDetachedPlayers()
+  window.embetter.utils.initMediaPlayers(el, window.embetter.activeServices)
+}
+window.embetter.stopPlayers = (el = document.body) => {
+  window.embetter.utils.unembedPlayers(el)
+  window.embetter.utils.disposeDetachedPlayers()
+}
+window.embetter.removePlayers = (el = document.body) => {
+  window.embetter.stopPlayers(el)
+  for (const ready of el.querySelectorAll('.embetter-ready')) {
+    ready.classList.remove('embetter-ready')
+  }
+  for (const statix of el.querySelectorAll('.embetter-static')) {
+    statix.classList.remove('embetter-static')
+  }
+}
+window.embetter.reloadPlayers()
 
 const logger = createLogger({ collapsed: true })
 const createStoreWithMiddleware = applyMiddleware(thunk, uploader, requester, analytics, logger)(createStore)

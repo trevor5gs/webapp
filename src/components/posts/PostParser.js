@@ -48,8 +48,16 @@ function imageRegion(region, key) {
   )
 }
 
-function embedRegion() {
-  // console.log('embed', region, key)
+function embedRegion(region, key) {
+  const data = {}
+  data[`data-${region.data.service}-id`] = region.data.id
+  return (
+    <div className="embetter" {...data} key={key}>
+      <a href={region.data.url}>
+        <img src={region.data.thumbnailLargeUrl} />
+      </a>
+    </div>
+  )
 }
 
 function regionItems(content) {
