@@ -2,7 +2,7 @@ import React from 'react'
 import PersonCard from '../people/PersonCard'
 import PersonGrid from '../people/PersonGrid'
 import { parsePost } from '../posts/PostParser'
-import { getLinkObject, getLinkArray } from '../../util/json_helper'
+import { getLinkArray } from '../../util/json_helper'
 
 export function onboardingCommunities(users) {
   return (
