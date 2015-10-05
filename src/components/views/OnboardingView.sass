@@ -6,8 +6,6 @@ main[data-pathname^="/onboarding"]
     margin-top: rem(120)
     padding-bottom: 0
 
-// -------------------------------------
-
 @media(max-width: #{$break-2-max})
   .CommunityPicker,
   .PeoplePicker,
@@ -16,12 +14,20 @@ main[data-pathname^="/onboarding"]
   .InfoPicker
     min-height: calc(100vh - 90px)
 
+// -------------------------------------
+
+.CommunityPicker .Cards,
+.PeoplePicker .People
+  margin-top: rem(20)
+
+.CommunityPicker > .Button,
 .PeoplePicker > .Button
   display: block
   width: 95%
-  max-width: 640px
+  max-width: rem(640)
   margin: 0 auto
 
+.CommunityPicker.isFollowingAll > .Button,
 .PeoplePicker.isFollowingAll > .Button
   background-color: black
   border-color: black
@@ -42,11 +48,13 @@ main[data-pathname^="/onboarding"]
   pointer-events: none
 
 @media(min-width: #{$break-2})
+  .CommunityPicker,
   .PeoplePicker
     padding-top: rem(20)
   .CommunityPicker .StreamComponent,
   .PeoplePicker .StreamComponent
     padding: 0 rem(20) rem(20)
+  .CommunityPicker > .Button,
   .PeoplePicker > .Button
     width: 100%
 
@@ -76,9 +84,6 @@ main[data-pathname^="/onboarding"]
   right: 0
   padding-bottom: 56.25%
   background-color: transparent
-.CoverPicker > .hasDragOver.Uploader:before
-  background-color: rgba(black, 0.5)
-  z-index: -1
 
 @media(min-width: #{$break-2})
   .CoverPicker > .Uploader
@@ -96,6 +101,7 @@ main[data-pathname^="/onboarding"]
   +circle(rem(160))
   margin-bottom: rem(20)
   margin-left: rem(10)
+  pointer-events: none
 
 .AvatarPicker > .Uploader
   position: relative

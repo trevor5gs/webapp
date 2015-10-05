@@ -20,8 +20,8 @@ const store = createStoreWithMiddleware(reducer)
 function createRedirect(from, to) {
   return {
     path: from,
-    onEnter(nextState, transition) {
-      transition.to(to)
+    onEnter(nextState, replaceState) {
+      replaceState(nextState, to)
     },
   }
 }
@@ -31,7 +31,7 @@ const rootRoute = {
   component: App,
   childRoutes: [
     createRedirect('onboarding', '/onboarding/communities'),
-    require('./routes/Onboarding'),
+    require('./routes/onboarding'),
   ],
 }
 
@@ -44,4 +44,3 @@ const element = (
 )
 
 React.render(element, document.getElementById('root'))
-
