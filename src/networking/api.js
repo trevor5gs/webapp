@@ -25,6 +25,7 @@ export const awesomePeoplePath = getAPIPath('discover/users/onboarding', { per_p
 export const communitiesPath = getAPIPath('interest_categories/members', { name: 'onboarding', per_page: '25' })
 export const relationshipBatchPath = getAPIPath('relationships/batches')
 // Discover
-export const discoverRecommended = getAPIPath('users/~todd', { per_page: '25' })
+export const discoverRecommended = getAPIPath('users/~lucian', { post_count: '40' })
+export const friendStream = getAPIPath('streams/friend', { per_page: '40' })
 
 export { API_VERSION, getAPIPath }

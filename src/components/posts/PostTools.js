@@ -8,7 +8,7 @@ class PostTools extends React.Component {
     if (!post) { return null }
     const createdAtDate = new Date(post.createdAt)
     return (
-      <div className="PostTools">
+      <section className="PostTools">
         <span className="eye-tools pill">
           <a href="">
             <EyeIcon />
@@ -41,7 +41,7 @@ class PostTools extends React.Component {
             <ShareIcon />
           </a>
         </span>
-      </div>
+      </section>
     )
   }
 
