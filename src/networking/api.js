@@ -28,4 +28,9 @@ export const relationshipBatchPath = getAPIPath('relationships/batches')
 export const discoverRecommended = getAPIPath('users/~lucian', { post_count: '40' })
 export const friendStream = getAPIPath('streams/friend', { per_page: '40' })
 
+// Comments
+export function commentsForPost(post) {
+  return getAPIPath(`posts/${post.id}/comments`, { per_page: 20 })
+}
+
 export { API_VERSION, getAPIPath }
