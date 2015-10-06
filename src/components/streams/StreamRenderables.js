@@ -25,11 +25,12 @@ export function onboardingPeople(users) {
 }
 
 export function postsAsGrid(posts, json) {
+  console.log('postsAsGrid', posts)
   return (
-    <div className="Posts as-grid">
+    <div className="Posts as-grid" key="postsAsGrid">
       {posts.map((post, i) => {
         return (
-          <div ref={'post_' + post.id} key={i} className="PostGrid">
+          <div ref={`postAsGrid_${i}_${post.id}`} key={`postAsGrid_${i}_${post.id}`} className="PostGrid">
             {parsePost(post, json)}
           </div>
         )
@@ -39,7 +40,19 @@ export function postsAsGrid(posts, json) {
 }
 
 export function userDetail(users, json) {
+  console.log('userDetail', users)
   const posts = getLinkArray(users[0], 'posts', json)
   return postsAsGrid(posts, json)
+}
+
+export function postDetail(posts, json) {
+  const post = posts[0]
+  const comments = getLinkArray(post, 'comments', json)
+  console.log('postDetail', post, comments)
+  return (
+    <div ref={`postDetail_${i}_${post.id}`} key={`postDetail_${i}_${post.id}`} className="PostList">
+      {parsePost(post, json)}
+    </div>
+  )
 }
 

@@ -1,22 +1,23 @@
 import React from 'react'
+import { Link } from 'react-router'
 import { EyeIcon, BubbleIcon, HeartIcon, RepostIcon, ShareIcon } from '../iconography/Icons'
 
 class PostTools extends React.Component {
 
   render() {
-    const { post } = this.props
+    const { author, post } = this.props
     if (!post) { return null }
-    const createdAtDate = new Date(post.createdAt)
+    const queryParams = { postId: post.id }
     return (
       <section className="PostTools">
         <span className="eye-tools pill">
-          <a href="">
+          <Link to={`/${author.username}/post/${post.token}`}>
             <EyeIcon />
             {post.viewsCount}
-          </a>
+          </Link>
         </span>
         <span className="post-time-ago">
-          {createdAtDate.timeAgoInWords()}
+          {new Date(post.createdAt).timeAgoInWords()}
         </span>
         <span className="bubble-tools">
           <a href="">

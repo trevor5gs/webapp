@@ -66,6 +66,7 @@ const rootRoute = {
     createRedirect('onboarding', '/onboarding/communities'),
     require('./routes/discover'),
     require('./routes/onboarding'),
+    require('./routes/post_detail'),
   ],
 }
 

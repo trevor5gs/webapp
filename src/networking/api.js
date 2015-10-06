@@ -33,4 +33,11 @@ export function commentsForPost(post) {
   return getAPIPath(`posts/${post.id}/comments`, { per_page: 20 })
 }
 
+export function postDetail(idOrToken) {
+  if (parseInt(idOrToken) > 0) {
+    return getAPIPath(`posts/${idOrToken}`, { comment_count: 20 })
+  }
+  return getAPIPath(`posts/~${idOrToken}`, { comment_count: 20 })
+}
+
 export { API_VERSION, getAPIPath }
