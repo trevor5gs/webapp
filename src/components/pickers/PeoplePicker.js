@@ -13,7 +13,7 @@ class PeoplePicker extends Picker {
         <Button ref="followAllButton" onClick={() => this.followAll()}>
           <span>{this.renderBigButtonText()}</span>
         </Button>
-        <StreamComponent ref="streamComponent" action={loadAwesomePeople} />
+        <StreamComponent ref="streamComponent" action={loadAwesomePeople()} />
       </div>
     )
   }

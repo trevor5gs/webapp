@@ -6,7 +6,7 @@ import { ElloMark } from '../iconography/ElloIcons'
 export class StreamComponent extends React.Component {
   componentWillMount() {
     const { action, dispatch } = this.props
-    action ? dispatch(action()) : console.error('Action is required to load a stream')
+    action ? dispatch(action) : console.error('Action is required to load a stream')
   }
 
   componentDidMount() {
