@@ -6,7 +6,6 @@ class PostTools extends React.Component {
 
   getToolCells() {
     const { author, currentUser, post } = this.props
-    const isOwnPost = author.id === currentUser.id
     const cells = []
     cells.push(
       <span className="eye-tools pill" key={`eye_${post.id}`}>
@@ -60,9 +59,10 @@ class PostTools extends React.Component {
         </span>
       )
     }
-    if (isOwnPost) {
-      // add edit/delete items
-    }
+    // const isOwnPost = author.id === currentUser.id
+    // if (isOwnPost) {
+    //   // add edit/delete items
+    // }
     return cells
   }
 
