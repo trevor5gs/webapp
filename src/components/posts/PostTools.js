@@ -59,10 +59,10 @@ class PostTools extends React.Component {
         </span>
       )
     }
-    // const isOwnPost = author.id === currentUser.id
-    // if (isOwnPost) {
-    //   // add edit/delete items
-    // }
+    let isOwnPost = author.id === currentUser.id
+    if (isOwnPost) {
+      isOwnPost = !isOwnPost
+    }
     return cells
   }
 
