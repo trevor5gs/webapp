@@ -7,9 +7,9 @@ import { RepostIcon } from '../iconography/Icons'
 
 let models = {}
 
-function header(author) {
+function header(post, author) {
   return (
-    <header className="PostHeader">
+    <header className="PostHeader" key={`postHeader_${post.id}`}>
       <Avatar imgSrc={author.avatar.regular.url} />
       <div className="vitals">
         <a className="username" name="username" href={`/${author.username}`}>{`@${author.username}`}</a>
@@ -18,9 +18,9 @@ function header(author) {
   )
 }
 
-function repostHeader(repostAuthor, repostSource, repostedBy) {
+function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   return (
-    <header className="RepostHeader">
+    <header className="RepostHeader" key={`postHeader_${post.id}`}>
       <div className="vitals">
         <a className="reposted-by" href={`/${repostedBy.username}`}>
           <RepostIcon />
@@ -64,28 +64,28 @@ function regionItems(content) {
   return content.map((region, i) => {
     switch (region.kind) {
     case 'text':
-      return textRegion(region, i)
+      return textRegion(region, `textRegion_${i}`)
     case 'image':
-      return imageRegion(region, i)
+      return imageRegion(region, `imageRegion_${i}`)
     case 'embed':
-      return embedRegion(region, i)
+      return embedRegion(region, `embedRegion_${i}`)
     default:
       throw new Error(`UNKNOWN REGION: ${region.kind}`)
     }
   })
 }
 
-function footer(post, author) {
-  return <PostTools author={author} post={post} />
+function footer(post, author, currentUser) {
+  return <PostTools author={author} post={post} currentUser={currentUser} key={`postTools_${post.id}`} />
 }
 
-export function parsePost(post, json, gridLayout = true) {
+export function parsePost(post, json, currentUser, gridLayout = true) {
   models = json
   const author = json.users[post.authorId]
   const cells = []
   if (post.repostContent && post.repostContent.length) {
     // TODO: pass repostAuthor and repostSource to this
-    cells.push(repostHeader(null, null, author))
+    cells.push(repostHeader(post, null, null, author))
     // this is weird, but the post summary is
     // actually the repost summary on reposts
     if (gridLayout) {
@@ -97,11 +97,11 @@ export function parsePost(post, json, gridLayout = true) {
       }
     }
   } else {
-    cells.push(header(author))
+    cells.push(header(post, author))
     const content = gridLayout ? post.summary : post.content
     cells.push(regionItems(content))
   }
-  cells.push(footer(post, author))
+  cells.push(footer(post, author, currentUser))
   models = {}
   return cells
 }

@@ -8,7 +8,6 @@ export class StreamComponent extends React.Component {
   componentWillMount() {
     const { action, dispatch, initModel, json } = this.props
     if (!this.findModel(json, initModel)) {
-      console.log('dispatch action')
       action ? dispatch(action) : console.error('Action is required to load a stream')
     }
   }
@@ -62,7 +61,9 @@ export class StreamComponent extends React.Component {
   }
 
   render() {
-    const { initModel, json, meta, payload, result, stream } = this.props
+    const { action, currentUser, initModel, json, result, stream } = this.props
+    const { meta, payload } = action
+
     if (stream.error) {
       return this.renderError()
     }
@@ -70,10 +71,8 @@ export class StreamComponent extends React.Component {
     const model = this.findModel(json, initModel)
     if (model) {
       jsonables.push(model)
-      console.log('found a model')
     } else if (!result || !result.type || !result.ids) {
       return this.renderLoading()
-      console.log('no model or result')
     } else {
       for (const id of result.ids) {
         jsonables.push(json[result.type][id])
@@ -81,12 +80,10 @@ export class StreamComponent extends React.Component {
     }
     if (!jsonables.length || !meta) {
       return this.renderLoading()
-      console.log('no jsonables or meta')
     }
-    console.log('StreamComponent.render', jsonables)
     return (
-      <section className="StreamComponent">
-        { meta.renderStream(jsonables, json, payload.vo) }
+      <section className="StreamComponent" key={JSON.stringify(result)}>
+        { meta.renderStream(jsonables, json, currentUser, payload.vo) }
       </section>
     )
   }
@@ -97,9 +94,8 @@ export class StreamComponent extends React.Component {
 function mapStateToProps(state) {
   return {
     json: state.json,
+    currentUser: state.profile.payload,
     result: state.json.result,
-    meta: state.stream.meta,
-    payload: state.stream.payload,
     stream: state.stream,
   }
 }
@@ -108,9 +104,8 @@ StreamComponent.propTypes = {
   action: React.PropTypes.object.isRequired,
   dispatch: React.PropTypes.func.isRequired,
   json: React.PropTypes.object.isRequired,
-  meta: React.PropTypes.object,
   initModel: React.PropTypes.object,
-  payload: React.PropTypes.object,
+  currentUser: React.PropTypes.object,
   result: React.PropTypes.shape({
     ids: React.PropTypes.array,
     type: React.PropTypes.string,

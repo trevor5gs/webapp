@@ -34,7 +34,7 @@ export function commentsForPost(post) {
 }
 
 export function postDetail(idOrToken) {
-  if (parseInt(idOrToken) > 0) {
+  if (parseInt(idOrToken, 10) > 0) {
     return getAPIPath(`posts/${idOrToken}`, { comment_count: 20 })
   }
   return getAPIPath(`posts/~${idOrToken}`, { comment_count: 20 })

@@ -4,44 +4,74 @@ import { EyeIcon, BubbleIcon, HeartIcon, RepostIcon, ShareIcon } from '../iconog
 
 class PostTools extends React.Component {
 
-  render() {
-    const { author, post } = this.props
-    if (!post) { return null }
-    const queryParams = { postId: post.id }
-    return (
-      <section className="PostTools">
-        <span className="eye-tools pill">
-          <Link to={`/${author.username}/post/${post.token}`}>
-            <EyeIcon />
-            {post.viewsCount}
-          </Link>
-        </span>
-        <span className="post-time-ago">
-          {new Date(post.createdAt).timeAgoInWords()}
-        </span>
-        <span className="bubble-tools">
+  getToolCells() {
+    const { author, currentUser, post } = this.props
+    const isOwnPost = author.id === currentUser.id
+    const cells = []
+    cells.push(
+      <span className="eye-tools pill" key={`eye_${post.id}`}>
+        <Link to={`/${author.username}/post/${post.token}`}>
+          <EyeIcon />
+          {post.viewsCount}
+        </Link>
+      </span>
+    )
+    cells.push(
+      <span className="post-time-ago" key={`timeAgo_${post.id}`}>
+        {new Date(post.createdAt).timeAgoInWords()}
+      </span>
+    )
+    if (author.hasCommentingEnabled) {
+      cells.push(
+        <span className="bubble-tools" key={`bubble_${post.id}`}>
           <a href="">
             <BubbleIcon />
             {post.commentsCount}
           </a>
         </span>
-        <span className="heart-tools">
+      )
+    }
+    if (author.hasLovesEnabled) {
+      cells.push(
+        <span className="heart-tools" key={`heart_${post.id}`}>
           <a href="">
             <HeartIcon />
             {post.lovesCount}
           </a>
         </span>
-        <span className="repost-tools">
+      )
+    }
+    if (author.hasRepostingEnabled) {
+      cells.push(
+        <span className="repost-tools" key={`repost_${post.id}`}>
           <a href="">
             <RepostIcon />
             {post.repostsCount}
           </a>
         </span>
-        <span className="share-tools">
+      )
+    }
+    if (author.hasSharingEnabled) {
+      cells.push(
+        <span className="share-tools" key={`share_${post.id}`}>
           <a href="">
             <ShareIcon />
           </a>
         </span>
+      )
+    }
+    if (isOwnPost) {
+      // add edit/delete items
+    }
+    return cells
+  }
+
+  render() {
+    const { post } = this.props
+    if (!post) { return null }
+    return (
+      <section className="PostTools">
+        {this.getToolCells()}
       </section>
     )
   }

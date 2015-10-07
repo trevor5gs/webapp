@@ -2,7 +2,7 @@ import { expect, getRenderedComponent, sinon } from '../../spec_helper'
 import { StreamComponent as subject } from '../../../src/components/streams/StreamComponent'
 
 function createPropsForStream(props = {}) {
-  const defaultProps = { stream: { error: false }, action: () => {}, dispatch: () => {}, json: {}, result: { type: 'posts', ids: [] } }
+  const defaultProps = { stream: { error: false }, action: {}, dispatch: () => {}, json: {}, result: { type: 'posts', ids: [] }, currentUser: { id: 'currentUser' } }
   return { ...defaultProps, ...props }
 }
 
@@ -64,11 +64,13 @@ describe('StreamComponent', () => {
     describe('StreamComponent', () => {
       it('renders the stream', () => {
         const props = createPropsForStream({
-          payload: {
-            vo: 'what',
-          },
-          meta: {
-            renderStream: () => {},
+          action: {
+            payload: {
+              vo: 'what',
+            },
+            meta: {
+              renderStream: () => {},
+            },
           },
           json: {
             posts: {
@@ -80,11 +82,11 @@ describe('StreamComponent', () => {
             ids: ['1'],
           },
         })
-        const renderSpy = sinon.spy(props.meta, 'renderStream')
+        const renderSpy = sinon.spy(props.action.meta, 'renderStream')
         const comp = getRenderedComponent(subject, props)
         expect(comp.type).to.equal('section')
         expect(comp.props.className).to.equal('StreamComponent')
-        expect(renderSpy.calledWith([{ id: '1' }], { posts: { '1': { id: '1' } } }, 'what')).to.be.true
+        expect(renderSpy.calledWith([{ id: '1' }], { posts: { '1': { id: '1' } } }, { id: 'currentUser' }, 'what')).to.be.true
       })
     })
   })
