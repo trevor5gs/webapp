@@ -6,7 +6,8 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { Router } from 'react-router'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
-import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { compose, createStore, applyMiddleware, combineReducers } from 'redux'
+import { reduxReactRouter, routerStateReducer, ReduxRouter } from 'redux-router'
 import { Provider } from 'react-redux'
 import * as reducers from './reducers'
 import { analytics, uploader, requester } from './middleware'
@@ -45,11 +46,6 @@ window.embetter.removePlayers = (el = document.body) => {
 }
 window.embetter.reloadPlayers()
 
-const logger = createLogger({ collapsed: true })
-const createStoreWithMiddleware = applyMiddleware(thunk, uploader, requester, analytics, logger)(createStore)
-const reducer = combineReducers(reducers)
-const store = createStoreWithMiddleware(reducer)
-
 function createRedirect(from, to) {
   return {
     path: from,
@@ -70,10 +66,27 @@ const rootRoute = {
   ],
 }
 
+const logger = createLogger({ collapsed: true })
+function reducer(state = {}, action) {
+  return {
+    json: reducers.json(state.json, action, state.router),
+    devtools: reducers.devtools(state.devtools, action),
+    modals: reducers.modals(state.modals, action),
+    profile: reducers.profile(state.profile, action),
+    router: routerStateReducer(state.router, action),
+    stream: reducers.stream(state.stream, action),
+    staticPage: reducers.staticPage(state.staticPage, action),
+  }
+}
+const store = compose(
+  applyMiddleware(thunk, uploader, requester, analytics, logger),
+  reduxReactRouter({routes: rootRoute, createHistory: createBrowserHistory})
+)(createStore)(reducer)
+
 const element = (
   <Provider store={store}>
     {() =>
-      <Router history={createBrowserHistory()} routes={rootRoute} />
+      <ReduxRouter />
     }
   </Provider>
 )

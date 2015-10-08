@@ -62,10 +62,6 @@ export function json(state = {}, action = { type: '' }) {
     // TODO: update the current user's followingCount +1 (this might happen in the profile reducer)
     mergeModel(newState, mappingType, { id: userId, relationshipPriority: priority })
     return newState
-  } else if (action.type === ACTION_TYPES.LOAD_STREAM_REQUEST) {
-    // clear out result since it should only be populated on success
-    newState.result = {}
-    return newState
   } else if (action.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
     return state
   }
@@ -81,12 +77,14 @@ export function json(state = {}, action = { type: '' }) {
   // parse main part of request into the state, and save result as this is the main payload
   const { mappingType, resultFilter } = action.meta
   const ids = addModels(newState, mappingType, response)
+  let result
   // set the result to the resultFilter if it exists
   if (resultFilter && typeof resultFilter === 'function') {
-    newState.result = resultFilter(response[mappingType])
+    result = resultFilter(response[mappingType])
   } else {
-    newState.result = { type: mappingType, ids: ids }
+    result = { type: mappingType, ids: ids }
   }
+  newState.pages[router.location.pathname] = result
   return newState
 }
 

@@ -61,9 +61,9 @@ export class StreamComponent extends React.Component {
   }
 
   render() {
-    const { action, currentUser, initModel, json, result, stream } = this.props
+    const { action, currentUser, initModel, json, router, stream } = this.props
     const { meta, payload } = action
-
+    const result = json.pages[router.location.pathname]
     if (stream.error) {
       return this.renderError()
     }
@@ -82,7 +82,7 @@ export class StreamComponent extends React.Component {
       return this.renderLoading()
     }
     return (
-      <section className="StreamComponent" key={JSON.stringify(result)}>
+      <section className="StreamComponent">
         { meta.renderStream(jsonables, json, currentUser, payload.vo) }
       </section>
     )
@@ -95,7 +95,7 @@ function mapStateToProps(state) {
   return {
     json: state.json,
     currentUser: state.profile.payload,
-    result: state.json.result,
+    router: state.router,
     stream: state.stream,
   }
 }
@@ -106,10 +106,7 @@ StreamComponent.propTypes = {
   json: React.PropTypes.object.isRequired,
   initModel: React.PropTypes.object,
   currentUser: React.PropTypes.object,
-  result: React.PropTypes.shape({
-    ids: React.PropTypes.array,
-    type: React.PropTypes.string,
-  }),
+  router: React.PropTypes.object.isRequired,
   stream: React.PropTypes.object.isRequired,
 }
 
