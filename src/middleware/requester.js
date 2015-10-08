@@ -59,11 +59,16 @@ export function requester() {
     // dispatch the start of the request
     next({ type: REQUEST, payload, meta: meta })
 
-    return fetch(endpoint, {
+    const options = {
       method: method || 'GET',
-      body: body || null,
       headers: (!method || method === 'GET') ? getGetHeader() : getPostJsonHeader(),
-    })
+    }
+
+    if (options.method !== 'GET' && options.method !== 'HEAD') {
+      options.body = body || null
+    }
+
+    return fetch(endpoint, options)
       .then(checkStatus)
       .then(parseJSON)
       .then(response => {
