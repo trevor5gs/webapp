@@ -2,7 +2,7 @@ import { expect, getRenderedComponent, sinon } from '../../spec_helper'
 import { StreamComponent as subject } from '../../../src/components/streams/StreamComponent'
 
 function createPropsForStream(props = {}) {
-  const defaultProps = { stream: { error: false }, action: {}, dispatch: () => {}, json: {}, result: { type: 'posts', ids: [] }, currentUser: { id: 'currentUser' } }
+  const defaultProps = { stream: { error: false }, action: {}, dispatch: () => {}, json: {}, result: { type: 'posts', ids: [] }, router: { location: { pathname: 'what' } }, currentUser: { id: 'currentUser' } }
   return { ...defaultProps, ...props }
 }
 

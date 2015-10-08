@@ -53,7 +53,7 @@ function addModels(state, type, data) {
   return ids
 }
 
-export function json(state = {}, action = { type: '' }) {
+export function json(state = {}, action = { type: '' }, router) {
   const newState = { ...state }
   if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE) {
     const { userId, priority } = action.payload
