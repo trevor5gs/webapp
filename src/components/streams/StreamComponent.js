@@ -63,7 +63,7 @@ export class StreamComponent extends React.Component {
   render() {
     const { action, currentUser, initModel, json, router, stream } = this.props
     const { meta, payload } = action
-    const result = json.pages[router.location.pathname]
+    const result = json.pages ? json.pages[router.location.pathname] : null
     if (stream.error) {
       return this.renderError()
     }
