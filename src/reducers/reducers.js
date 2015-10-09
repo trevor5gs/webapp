@@ -84,6 +84,7 @@ export function json(state = {}, action = { type: '' }, router) {
   } else {
     result = { type: mappingType, ids: ids }
   }
+  if (!newState.pages) { newState.pages = {} }
   newState.pages[router.location.pathname] = result
   return newState
 }
