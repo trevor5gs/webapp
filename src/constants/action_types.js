@@ -2,7 +2,6 @@ export const LOAD_STREAM = 'LOAD_STREAM'
 export const LOAD_STREAM_REQUEST = 'LOAD_STREAM_REQUEST'
 export const LOAD_STREAM_SUCCESS = 'LOAD_STREAM_SUCCESS'
 export const LOAD_STREAM_FAILURE = 'LOAD_STREAM_FAILURE'
-export const STATIC_PAGE = 'STATIC_PAGE'
 
 // Should these be `POST.JSON, POST.FORM` instead?
 export const POST_JSON = 'POST_JSON'

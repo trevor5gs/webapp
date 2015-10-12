@@ -10,7 +10,7 @@ import CommunityPicker from '../pickers/CommunityPicker'
 import PeoplePicker from '../pickers/PeoplePicker'
 import Uploader from '../uploaders/Uploader'
 import InfoForm from '../forms/InfoForm'
-import Avatar from '../people/Avatar'
+import Avatar from '../users/Avatar'
 import Cover from '../covers/Cover'
 
 class OnboardingView extends React.Component {

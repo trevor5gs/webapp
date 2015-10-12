@@ -5,7 +5,7 @@ import RelationshipButton from '../buttons/RelationshipButton'
 import Avatar from './Avatar'
 
 
-class PersonGrid extends React.Component {
+class UserGrid extends React.Component {
   setRelationshipPriority(state) {
     this.refs.relationshipButton.setState(state)
   }
@@ -21,7 +21,7 @@ class PersonGrid extends React.Component {
     const coverSrc = user.coverImage.hdpi.url
     const coverStyle = { backgroundImage: `url(${coverSrc})` }
     return (
-      <div className="PersonGrid" >
+      <div className="UserGrid" >
         <div className="CoverImage" style={coverStyle} />
         <Avatar imgSrc={avatar} />
         <RelationshipButton
@@ -66,11 +66,11 @@ class PersonGrid extends React.Component {
   }
 }
 
-PersonGrid.propTypes = {
+UserGrid.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   user: React.PropTypes.shape({
   }).isRequired,
 }
 
-export default connect()(PersonGrid)
+export default connect()(UserGrid)
 

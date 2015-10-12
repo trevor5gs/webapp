@@ -1,6 +1,6 @@
 import React from 'react'
-import PersonCard from '../people/PersonCard'
-import PersonGrid from '../people/PersonGrid'
+import UserCard from '../users/UserCard'
+import UserGrid from '../users/UserGrid'
 import { parsePost } from '../posts/PostParser'
 import { getLinkArray } from '../base/json_helper'
 
@@ -8,7 +8,7 @@ export function onboardingCommunities(users) {
   return (
     <div className="Cards">
       {users.map((user, i) => {
-        return <PersonCard ref={'personCard_' + i} user={user} key={i} />
+        return <UserCard ref={'userCard_' + i} user={user} key={i} />
       })}
     </div>
   )
@@ -16,9 +16,9 @@ export function onboardingCommunities(users) {
 
 export function onboardingPeople(users) {
   return (
-    <div className="People as-grid">
+    <div className="Users as-grid">
       {users.map((user, i) => {
-        return <PersonGrid ref={'personGrid_' + i} user={user} key={i} />
+        return <UserGrid ref={'userGrid_' + i} user={user} key={i} />
       })}
     </div>
   )
