@@ -17,7 +17,7 @@ SVGComponent.propTypes = {
 }
 
 
-export class SVGIcon {
+export class SVGIcon extends React.Component {
   render() {
     return (
       <SVGComponent height="20"
@@ -35,7 +35,7 @@ SVGIcon.propTypes = {
 }
 
 
-export class SVGBox {
+export class SVGBox extends React.Component {
   render() {
     return (
       <SVGComponent height="60"

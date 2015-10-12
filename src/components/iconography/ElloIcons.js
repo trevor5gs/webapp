@@ -1,7 +1,7 @@
 import React from 'react'
 import { SVGBox } from './SVGComponents'
 
-export class ElloMark {
+export class ElloMark extends React.Component {
   render() {
     const { classListName } = this.props
     return (

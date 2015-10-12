@@ -50,9 +50,7 @@ function mapStateToProps(state) {
 
 DevGrid.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
-  devtools: React.PropTypes.shape({
-    payload: React.PropTypes.shape,
-  }),
+  devtools: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(DevGrid)

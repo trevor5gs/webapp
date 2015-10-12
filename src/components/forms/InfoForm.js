@@ -52,9 +52,7 @@ function mapStateToProps(state) {
 
 InfoForm.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
-  profile: React.PropTypes.shape({
-    payload: React.PropTypes.shape,
-  }),
+  profile: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(InfoForm)

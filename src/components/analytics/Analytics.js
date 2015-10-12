@@ -78,7 +78,7 @@ function mapStateToProps(state) {
 
 Analytics.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
-  profile: React.PropTypes.shape,
+  profile: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(Analytics)

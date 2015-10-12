@@ -99,9 +99,7 @@ Modal.propTypes = {
   wrapperClasses: React.PropTypes.string,
   isActive: React.PropTypes.func,
   dispatch: React.PropTypes.func.isRequired,
-  modals: React.PropTypes.shape({
-    payload: React.PropTypes.shape,
-  }),
+  modals: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(Modal)
