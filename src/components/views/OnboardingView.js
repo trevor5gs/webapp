@@ -178,15 +178,11 @@ function mapStateToProps(state) {
 
 OnboardingView.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
-  route: React.PropTypes.shape({
-    subComponentName: React.PropTypes.string,
-  }),
-  profile: React.PropTypes.shape({
-    payload: React.PropTypes.shape,
-  }),
+  route: React.PropTypes.object,
+  profile: React.PropTypes.object,
   router: React.PropTypes.object,
-  stream: React.PropTypes.shape,
-  json: React.PropTypes.shape,
+  stream: React.PropTypes.object,
+  json: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(OnboardingView)

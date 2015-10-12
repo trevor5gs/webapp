@@ -2,6 +2,7 @@ import './main.sass'
 import 'babel-core/polyfill'
 
 import React from 'react'
+import ReactDOM from 'react-dom'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
@@ -84,10 +85,8 @@ const store = compose(
 
 const element = (
   <Provider store={store}>
-    {() =>
-      <ReduxRouter />
-    }
+    <ReduxRouter />
   </Provider>
 )
 
-React.render(element, document.getElementById('root'))
+ReactDOM.render(element, document.getElementById('root'))

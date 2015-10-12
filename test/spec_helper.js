@@ -1,5 +1,4 @@
 import React from 'react/addons'
-import ExecutionEnvironment from 'react/lib/ExecutionEnvironment'
 import jsdom from 'mocha-jsdom'
 
 export { expect as expect } from 'chai'
@@ -11,7 +10,6 @@ export const TestUtils = React.addons.TestUtils
 // create a js document
 export function jsdomReact() {
   jsdom()
-  ExecutionEnvironment.canUseDOM = true
 }
 
 // React helpers

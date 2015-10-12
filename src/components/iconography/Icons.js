@@ -3,7 +3,7 @@ import { SVGIcon } from './SVGComponents'
 
 // -------------------------------------
 
-export class PlusIcon {
+export class PlusIcon extends React.Component {
   render() {
     const { classListName } = this.props
     return (
@@ -34,7 +34,7 @@ MinusIcon.defaultProps = {
 }
 
 
-export class MiniPlusIcon {
+export class MiniPlusIcon extends React.Component {
   render() {
     const { classListName } = this.props
     return (
@@ -58,7 +58,7 @@ MiniPlusIcon.defaultProps = {
 
 // -------------------------------------
 
-export class MiniCheckIcon {
+export class MiniCheckIcon extends React.Component {
   render() {
     const { classListName } = this.props
     return (
@@ -81,7 +81,7 @@ MiniCheckIcon.defaultProps = {
 
 // -------------------------------------
 
-export class ChevronIcon {
+export class ChevronIcon extends React.Component {
   render() {
     const { classListName } = this.props
     return (
@@ -104,7 +104,7 @@ ChevronIcon.defaultProps = {
 
 // -------------------------------------
 
-export class EyeIcon {
+export class EyeIcon extends React.Component {
   render() {
     const { classListName } = this.props
     return (
@@ -129,7 +129,7 @@ EyeIcon.defaultProps = {
 
 // -------------------------------------
 
-export class BubbleIcon {
+export class BubbleIcon extends React.Component {
   render() {
     const { classListName } = this.props
     return (
@@ -156,7 +156,7 @@ BubbleIcon.defaultProps = {
 
 // -------------------------------------
 
-export class HeartIcon {
+export class HeartIcon extends React.Component {
   render() {
     const { classListName } = this.props
     return (
@@ -179,7 +179,7 @@ HeartIcon.defaultProps = {
 
 // -------------------------------------
 
-export class RepostIcon {
+export class RepostIcon extends React.Component {
   render() {
     const { classListName } = this.props
     return (
@@ -207,7 +207,7 @@ RepostIcon.defaultProps = {
 
 // -------------------------------------
 
-export class ShareIcon {
+export class ShareIcon extends React.Component {
   render() {
     const { classListName } = this.props
     return (
