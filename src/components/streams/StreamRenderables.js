@@ -1,64 +1,55 @@
 import React from 'react'
 import PersonCard from '../people/PersonCard'
 import PersonGrid from '../people/PersonGrid'
+import { parsePost } from '../posts/PostParser'
+import { getLinkArray } from '../../util/json_helper'
 
-export function onboardingCommunities(jsonables) {
+export function onboardingCommunities(users) {
   return (
     <div className="Cards">
-      {jsonables.map((user, i) => {
+      {users.map((user, i) => {
         return <PersonCard ref={'personCard_' + i} user={user} key={i} />
       })}
     </div>
   )
 }
 
-export function onboardingPeople(jsonables) {
+export function onboardingPeople(users) {
   return (
     <div className="People as-grid">
-      {jsonables.map((user, i) => {
+      {users.map((user, i) => {
         return <PersonGrid ref={'personGrid_' + i} user={user} key={i} />
       })}
     </div>
   )
 }
 
-// export function peopleAsList(json) {
-// }
-
-
-// export function peopleAsGrid(json) {
-// }
-
-
-// export function postsAsList(json) {
-// }
-
-function getLinkObject(model, identifier, json) {
-  const key = model.links[identifier].id
-  const collection = model.links[identifier].type
-  if (key && collection) {
-    return json[collection][key]
-  }
-}
-
-export function postsAsGrid(posts, json) {
+export function postsAsGrid(posts, json, currentUser) {
   return (
     <div className="Posts as-grid">
-      <ul>
-        {posts.map((post, i) => {
-          const author = getLinkObject(post, 'author', json)
-          return <li>{`${author.username} - post ${i} token: ${post.token}`}</li>
-          // console.log('post ' + i, post)
-          // console.log('author ' + i, getLinkObject(post, 'author', json))
-          // console.log('author ' + i, json.users[post.authorId])
-        })}
-      </ul>
+      {posts.map((post) => {
+        return (
+          <div ref={`postGrid_${post.id}`} key={post.id} className="PostGrid">
+            {parsePost(post, json, currentUser)}
+          </div>
+        )
+      })}
     </div>
   )
 }
 
+export function userDetail(users, json, currentUser) {
+  const posts = getLinkArray(users[0], 'posts', json)
+  return postsAsGrid(posts, json, currentUser)
+}
 
-// export function notificationsAsList(json) {
-// }
+export function postDetail(posts, json, currentUser) {
+  const post = posts[0]
+  // const comments = getLinkArray(post, 'comments', json)
+  return (
+    <div ref={`postList_${post.id}`} key={post.id} className="PostList">
+      {parsePost(post, json, currentUser)}
+    </div>
+  )
+}
 
-export { getLinkObject }

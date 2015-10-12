@@ -1,0 +1,57 @@
+.PostGrid
+  position: relative
+  margin-top: rem(20)
+  overflow: hidden
+  vertical-align: top
+
+.PostGrid header
+  position: relative
+  padding-bottom: rem(20)
+  background-color: white
+
+.PostGrid .Avatar
+  +circle(rem(40))
+  position: absolute
+
+.PostGrid .vitals
+  margin-left: rem(60)
+  padding-top: rem(12)
+
+.PostGrid .ImageRegion
+  margin: rem(10) 0
+  display: block
+
+
+@media(min-width: #{$break-2})
+  .Posts.as-grid
+    margin-left: rem(-20)
+  .Posts.as-grid .PostGrid
+    display: inline-block
+    width: calc(50% - #{rem(20)})
+    margin-left: rem(20)
+    margin-top: rem(20)
+
+@media(min-width: #{$break-3})
+  .Posts.as-grid .PostGrid
+    width: calc(33.33333% - #{rem(20)})
+
+@media(min-width: #{$break-4})
+  .Posts.as-grid
+    margin-left: rem(-40)
+  .Posts.as-grid .PostGrid
+    width: calc(25% - #{rem(40)})
+    margin-top: rem(40)
+    margin-left: rem(40)
+
+@media(min-width: #{$break-5})
+  .Posts.as-grid .PostGrid
+    width: calc(20% - #{rem(40)})
+
+@media(min-width: #{$break-6})
+  .Posts.as-grid .PostGrid
+    width: calc(16.66666% - #{rem(40)})
+
+@media(min-width: #{$break-7})
+  .Posts.as-grid .PostGrid
+    width: calc(14.28571% - #{rem(40)})
+

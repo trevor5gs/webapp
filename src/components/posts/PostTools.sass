@@ -1,0 +1,61 @@
+.PostTools
+  font-size: rem(12)
+  color: #aaa
+  padding-top: rem(5)
+
+.PostTools > span
+  display: inline-block
+  height: rem(22)
+  padding: rem(1) rem(5)
+
+.PostTools > span:not(:first-child)
+  margin-left: rem(12)
+
+.PostTools > span.pill
+  border-radius: rem(11)
+  background-color: #eee
+  color: #535353
+
+.PostTools > span.pill .SVGIcon g
+  stroke: #535353
+.PostTools > span.pill .EyeIcon > circle
+  transition-delay: $speed * 0.5
+  stroke: #535353
+  fill: #535353
+
+.PostTools .SVGIcon g
+  stroke: #aaa
+
+.BubbleIcon g,
+.RepostIcon g,
+.ShareIcon polyline,
+  stroke-linejoin: round
+
+.BubbleIcon g:nth-child(2)
+  fill: black
+  stroke: black
+  display: none
+
+.EyeIcon > circle
+  transition: fill $speed ease
+  stroke: transparent
+  fill: #aaa
+
+.EyeIcon
+  margin-right: rem(5)
+
+// Hover styles
+
+.no-touch a:hover .BubbleIcon g,
+.no-touch a:hover .HeartIcon g
+  fill: black
+
+.no-touch a:hover .EyeIcon > circle
+  transition-delay: $speed * 0.5
+  stroke: black
+  fill: black
+
+.no-touch a:hover .ShareIcon g:nth-of-type(2),
+.no-touch button:hover .ShareIcon g:nth-of-type(2)
+  transform: translate3d(0,-1px,0)
+

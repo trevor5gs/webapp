@@ -34,8 +34,8 @@ class OnboardingView extends React.Component {
   }
 
   getRelationshipMap() {
-    const { json } = this.props
-    const { result } = json
+    const { json, router } = this.props
+    const result = json.pages ? json.pages[router.location.pathname] : null
     const relationshipMap = { following: [], inactive: [] }
     if (!result || !result.type || !result.ids) {
       return relationshipMap
@@ -170,6 +170,7 @@ class OnboardingView extends React.Component {
 function mapStateToProps(state) {
   return {
     profile: state.profile,
+    router: state.router,
     stream: state.stream,
     json: state.json,
   }
@@ -183,6 +184,7 @@ OnboardingView.propTypes = {
   profile: React.PropTypes.shape({
     payload: React.PropTypes.shape,
   }),
+  router: React.PropTypes.object,
   stream: React.PropTypes.shape,
   json: React.PropTypes.shape,
 }

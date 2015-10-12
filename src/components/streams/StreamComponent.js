@@ -2,11 +2,39 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { ElloMark } from '../iconography/ElloIcons'
+import { findBy } from '../../util/json_helper'
 
 export class StreamComponent extends React.Component {
   componentWillMount() {
-    const { action, dispatch } = this.props
-    action ? dispatch(action()) : console.error('Action is required to load a stream')
+    const { action, dispatch, initModel, json } = this.props
+    if (!this.findModel(json, initModel)) {
+      action ? dispatch(action) : console.error('Action is required to load a stream')
+    }
+  }
+
+  componentDidMount() {
+    if (window.embetter) {
+      window.embetter.reloadPlayers()
+    }
+  }
+
+  componentDidUpdate() {
+    if (window.embetter) {
+      window.embetter.reloadPlayers()
+    }
+  }
+
+  componentWillUnmount() {
+    if (window.embetter) {
+      window.embetter.stopPlayers()
+    }
+  }
+
+  findModel(json, initModel) {
+    if (!initModel || !initModel.findObj || !initModel.collection) {
+      return null
+    }
+    return findBy(initModel.findObj, initModel.collection, json)
   }
 
   renderError() {
@@ -33,23 +61,29 @@ export class StreamComponent extends React.Component {
   }
 
   render() {
-    const { json, meta, payload, result, stream } = this.props
+    const { action, currentUser, initModel, json, router, stream } = this.props
+    const { meta, payload } = action
+    const result = json.pages ? json.pages[router.location.pathname] : null
     if (stream.error) {
       return this.renderError()
     }
-    if (!result || !result.type || !result.ids) {
-      return this.renderLoading()
-    }
     const jsonables = []
-    for (const id of result.ids) {
-      jsonables.push(json[result.type][id])
+    const model = this.findModel(json, initModel)
+    if (model) {
+      jsonables.push(model)
+    } else if (!result || !result.type || !result.ids) {
+      return this.renderLoading()
+    } else {
+      for (const id of result.ids) {
+        jsonables.push(json[result.type][id])
+      }
     }
     if (!jsonables.length || !meta) {
       return this.renderLoading()
     }
     return (
       <section className="StreamComponent">
-        { meta.renderStream(jsonables, json, payload.vo) }
+        { meta.renderStream(jsonables, json, currentUser, payload.vo) }
       </section>
     )
   }
@@ -60,24 +94,20 @@ export class StreamComponent extends React.Component {
 function mapStateToProps(state) {
   return {
     json: state.json,
-    result: state.json.result,
-    meta: state.stream.meta,
-    payload: state.stream.payload,
+    currentUser: state.profile.payload,
+    router: state.router,
     stream: state.stream,
   }
 }
 
 StreamComponent.propTypes = {
-  action: React.PropTypes.func.isRequired,
+  action: React.PropTypes.object.isRequired,
   dispatch: React.PropTypes.func.isRequired,
   json: React.PropTypes.object.isRequired,
-  result: React.PropTypes.shape({
-    ids: React.PropTypes.array,
-    type: React.PropTypes.string,
-  }),
+  initModel: React.PropTypes.object,
+  currentUser: React.PropTypes.object,
+  router: React.PropTypes.object.isRequired,
   stream: React.PropTypes.object.isRequired,
-  meta: React.PropTypes.object,
-  payload: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(StreamComponent)

@@ -4,9 +4,11 @@ import * as MAPPING_TYPES from '../../constants/mapping_types'
 // { type: posts, ids: [1, 2, 3] }
 export function mostRecentPostsFromUsers(users) {
   const result = { type: MAPPING_TYPES.POSTS, ids: [] }
-  result.ids = users.map((user) => {
-    return user.links.mostRecentPost.id
-  })
+  for (const user of users) {
+    if (user.links.mostRecentPost) {
+      result.ids.push(user.links.mostRecentPost.id)
+    }
+  }
   return result
 }
 
