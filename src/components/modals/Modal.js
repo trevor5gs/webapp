@@ -12,9 +12,7 @@ function getComponentKind(modals) {
 class Modal extends React.Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      isActive: this.props.isActive || false,
-    }
+    this.isActive = this.props.isActive || false
   }
 
   componentDidMount() {
@@ -31,19 +29,18 @@ class Modal extends React.Component {
       if (getComponentKind(modals) === 'Modal') {
         document.body.classList.remove('modalIsActive')
       }
-      this.setState({ isActive: false })
+      this.isActive = false
     }
   }
 
   componentDidUpdate() {
     const { modals } = this.props
     const payload = modals.payload
-    const isActive = this.state.isActive
-    if (!isActive && payload) {
+    if (!this.isActive && payload) {
       if (getComponentKind(modals) === 'Modal') {
         document.body.classList.add('modalIsActive')
       }
-      this.setState({ isActive: true })
+      this.isActive = true
     }
   }
 
@@ -54,7 +51,7 @@ class Modal extends React.Component {
   // Don't set state here or the delay, the action needs to do it
   close() {
     const { modals, dispatch } = this.props
-    if (this.state.isActive) {
+    if (this.isActive) {
       dispatch(getComponentKind(modals) === 'Modal' ? closeModal() : closeAlert())
     }
   }
@@ -67,11 +64,10 @@ class Modal extends React.Component {
 
   render() {
     const { modals } = this.props
-    const isActive = this.state.isActive
     const groupClassNames = classNames(
       getComponentKind(modals),
       (modals.meta && modals.meta.wrapperClasses) ? modals.meta.wrapperClasses : '',
-      { isActive: isActive },
+      { isActive: this.isActive },
     )
 
     if (modals.payload) {

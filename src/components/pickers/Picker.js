@@ -4,17 +4,13 @@ import { RelationshipPriority } from '../buttons/RelationshipButton'
 class Picker extends React.Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      hasAutoFollowed: false,
-    }
+    this.hasAutoFollowed = false
   }
 
-  // TODO: We shouldn't be calling setState here (or really at all)
-  // It's a bit of rabbit hole to get the behavior we need.
   componentDidUpdate() {
     const { shouldAutoFollow, relationshipMap } = this.props
-    if (!this.state.hasAutoFollowed && shouldAutoFollow && relationshipMap.inactive.length > 0) {
-      this.setState({ hasAutoFollowed: true })
+    if (!this.hasAutoFollowed && shouldAutoFollow && relationshipMap.inactive.length > 0) {
+      this.hasAutoFollowed = true
       requestAnimationFrame(() => {
         this.followAll()
       })
