@@ -2,7 +2,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { ElloMark } from '../iconography/ElloIcons'
-import { findBy } from '../../util/json_helper'
+import { findBy } from '../base/json_helper'
 
 export class StreamComponent extends React.Component {
   componentWillMount() {

@@ -13,8 +13,8 @@ import * as reducers from './reducers'
 import { analytics, uploader, requester } from './middleware'
 import App from './containers/App'
 
-import './util/time_ago_in_words'
 import './vendor/embetter'
+import './vendor/time_ago_in_words'
 
 // TODO: move this somewhere else?
 window.embetter.activeServices = [
@@ -75,7 +75,6 @@ function reducer(state = {}, action) {
     profile: reducers.profile(state.profile, action),
     router: routerStateReducer(state.router, action),
     stream: reducers.stream(state.stream, action),
-    staticPage: reducers.staticPage(state.staticPage, action),
   }
 }
 const store = compose(

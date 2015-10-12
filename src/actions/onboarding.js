@@ -4,7 +4,7 @@ import * as StreamRenderables from '../components/streams/StreamRenderables'
 import * as api from '../networking/api'
 
 let cachedCommunity
-let cachedPeople
+let cachedUsers
 
 export function loadCommunities() {
   if (cachedCommunity) {
@@ -26,9 +26,9 @@ export function loadCommunities() {
 
 
 export function loadAwesomePeople() {
-  if (cachedPeople) {
-    cachedPeople.payload.endpoint = null
-    return cachedPeople
+  if (cachedUsers) {
+    cachedUsers.payload.endpoint = null
+    return cachedUsers
   }
   const cache = {
     type: ACTION_TYPES.LOAD_STREAM,
@@ -36,7 +36,7 @@ export function loadAwesomePeople() {
     meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingPeople },
   }
 
-  cachedPeople = {
+  cachedUsers = {
     ...cache,
     ...{ type: ACTION_TYPES.LOAD_STREAM_SUCCESS },
   }

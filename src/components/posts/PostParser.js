@@ -1,5 +1,5 @@
 import React from 'react'
-import Avatar from '../people/Avatar'
+import Avatar from '../users/Avatar'
 import ImageRegion from './regions/ImageRegion'
 import PostTools from './PostTools'
 import { RepostIcon } from '../iconography/Icons'

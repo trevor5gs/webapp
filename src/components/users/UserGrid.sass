@@ -1,128 +1,128 @@
-.PersonGrid
+.UserGrid
   position: relative
   height: rem(220)
   margin-top: rem(20)
   overflow: hidden
   // outline: 1px dotted purple
 
-.PersonGrid .CoverImage
+.UserGrid .CoverImage
   width: 100%
   min-height: rem(80)
   max-height: rem(80)
   background: #e5e5e5 no-repeat 50% 50%
   background-size: cover
 
-.PersonGrid .Avatar
+.UserGrid .Avatar
   +circle(rem(80))
   position: absolute
   top: 30px
   left: rem(10)
 
-.PersonGrid > .RelationshipButton
+.UserGrid > .RelationshipButton
   position: absolute
   top: rem(22)
   right: rem(10)
 
 
 // -------------------------------------
-.PersonGrid .stats
+.UserGrid .stats
   padding: 0 rem(10)
   margin-top: rem(40)
 
-.PersonGrid .stats dl
+.UserGrid .stats dl
   display: inline-block
-.PersonGrid .stats dl + dl
+.UserGrid .stats dl + dl
   margin-left: 6%
 
-.PersonGrid .stats dt
+.UserGrid .stats dt
   +heading-family
 
-.PersonGrid .stats dd
+.UserGrid .stats dd
   display: block
   border-bottom: 1px solid
   color: #999
 
 // -------------------------------------
-.PersonGrid .vitals
+.UserGrid .vitals
   padding: 0 rem(10)
   margin-top: rem(10)
 
-.PersonGrid h2
+.UserGrid h2
   +heading-family
   font-size: rem(18)
 
-.PersonGrid h3
+.UserGrid h3
   +mono-family
   color: #999
 
-.PersonGrid .short-bio
+.UserGrid .short-bio
   display: none
   height: rem(70)
   overflow: hidden
 
-.PersonGrid .external-links
+.UserGrid .external-links
   display: none
   color: #999
   margin-top: rem(4)
-.PersonGrid .external-links a
+.UserGrid .external-links a
   display: inline-block
-.no-touch .PersonGrid .external-links a:hover
+.no-touch .UserGrid .external-links a:hover
   color: black
 
-.PersonGrid .external-links a + a
+.UserGrid .external-links a + a
   margin-left: rem(10)
 
 // -------------------------------------
 
 @media(min-width: #{$break-2})
-  .PersonGrid
+  .UserGrid
     height: rem(440)
-  .PersonGrid .CoverImage
+  .UserGrid .CoverImage
     min-height: rem(180)
     max-height: rem(180)
-  .PersonGrid .Avatar
+  .UserGrid .Avatar
     +circle(rem(120))
     top: rem(110)
     left: rem(20)
-  .PersonGrid > .RelationshipButton
+  .UserGrid > .RelationshipButton
     top: rem(200)
-  .PersonGrid .stats
+  .UserGrid .stats
     margin-top: rem(65)
-  .PersonGrid .vitals
+  .UserGrid .vitals
     margin-top: rem(20)
-  .PersonGrid .short-bio,
-  .PersonGrid .external-links
+  .UserGrid .short-bio,
+  .UserGrid .external-links
     display: block
 
-  .People.as-grid
+  .Users.as-grid
     margin-left: rem(-20)
-  .People.as-grid .PersonGrid
+  .Users.as-grid .UserGrid
     display: inline-block
     width: calc(50% - #{rem(20)})
     margin-left: rem(20)
     margin-top: rem(20)
 
 @media(min-width: #{$break-3})
-  .People.as-grid .PersonGrid
+  .Users.as-grid .UserGrid
     width: calc(33.33333% - #{rem(20)})
 
 @media(min-width: #{$break-4})
-  .People.as-grid
+  .Users.as-grid
     margin-left: rem(-40)
-  .People.as-grid .PersonGrid
+  .Users.as-grid .UserGrid
     width: calc(25% - #{rem(40)})
     margin-top: rem(40)
     margin-left: rem(40)
 
 @media(min-width: #{$break-5})
-  .People.as-grid .PersonGrid
+  .Users.as-grid .UserGrid
     width: calc(20% - #{rem(40)})
 
 @media(min-width: #{$break-6})
-  .People.as-grid .PersonGrid
+  .Users.as-grid .UserGrid
     width: calc(16.66666% - #{rem(40)})
 
 @media(min-width: #{$break-7})
-  .People.as-grid .PersonGrid
+  .Users.as-grid .UserGrid
     width: calc(14.28571% - #{rem(40)})
 

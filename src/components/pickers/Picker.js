@@ -19,12 +19,12 @@ class Picker extends React.Component {
 
   followAll() {
     const { inactive } = this.props.relationshipMap
-    const personRefs = this.refs.streamComponent.refs.wrappedInstance.refs
+    const userRefs = this.refs.streamComponent.refs.wrappedInstance.refs
     const relationship = inactive.length === 0 ? RelationshipPriority.INACTIVE : RelationshipPriority.FRIEND
-    for (const propName in personRefs) {
-      if (personRefs.hasOwnProperty(propName)) {
-        const personContainer = personRefs[propName].refs.wrappedInstance
-        const relationshipButton = personContainer.refs.relationshipButton
+    for (const propName in userRefs) {
+      if (userRefs.hasOwnProperty(propName)) {
+        const userContainer = userRefs[propName].refs.wrappedInstance
+        const relationshipButton = userContainer.refs.relationshipButton
         relationshipButton.updatePriority(relationship.priority)
       }
     }
