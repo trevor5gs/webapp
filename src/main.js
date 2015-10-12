@@ -75,7 +75,6 @@ function reducer(state = {}, action) {
     profile: reducers.profile(state.profile, action),
     router: routerStateReducer(state.router, action),
     stream: reducers.stream(state.stream, action),
-    staticPage: reducers.staticPage(state.staticPage, action),
   }
 }
 const store = compose(
