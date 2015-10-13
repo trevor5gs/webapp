@@ -26,24 +26,25 @@ export const communitiesPath = getAPIPath('interest_categories/members', { name:
 export const relationshipBatchPath = getAPIPath('relationships/batches')
 // Discover
 export const discoverRecommended = getAPIPath('users/~lucian', { post_count: '40' })
+// Streams
 export const friendStream = getAPIPath('streams/friend', { per_page: '40' })
-
-// Comments
-export function commentsForPost(post) {
-  return getAPIPath(`posts/${post.id}/comments`, { per_page: 20 })
-}
-
+// Posts
 export function postDetail(idOrToken) {
   if (parseInt(idOrToken, 10) > 0) {
     return getAPIPath(`posts/${idOrToken}`, { comment_count: 20 })
   }
   return getAPIPath(`posts/~${idOrToken}`, { comment_count: 20 })
 }
-
+// Comments
+export function commentsForPost(post) {
+  return getAPIPath(`posts/${post.id}/comments`, { per_page: 20 })
+}
+// Users
 export function userDetail(idOrUsername) {
   if (parseInt(idOrUsername, 10) > 0) {
     return getAPIPath(`users/${idOrUsername}`, { post_count: 20 })
   }
   return getAPIPath(`users/~${idOrUsername}`, { post_count: 20 })
 }
+
 export { API_VERSION, getAPIPath }

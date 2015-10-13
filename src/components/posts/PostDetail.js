@@ -7,11 +7,12 @@ class PostDetail extends React.Component {
   render() {
     const { params } = this.props
     return (
-      <div className="PostDetail Panel">
+      <section className="PostDetail Panel">
         <StreamComponent
+          ref="streamComponent"
           action={loadPostDetail(params.token)}
           initModel={{ collection: MAPPING_TYPES.POSTS, findObj: { token: params.token } }} />
-      </div>
+      </section>
     )
   }
 }

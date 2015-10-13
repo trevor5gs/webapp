@@ -4,6 +4,7 @@ import jsdom from 'mocha-jsdom'
 export { expect as expect } from 'chai'
 export { React as React }
 export sinon from 'sinon'
+export { clearJSON, json, stub } from './stubs'
 
 export const TestUtils = React.addons.TestUtils
 

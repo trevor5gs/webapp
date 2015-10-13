@@ -7,11 +7,12 @@ class UserDetail extends React.Component {
   render() {
     const { params } = this.props
     return (
-      <div className="UserDetail Panel">
+      <section className="UserDetail Panel">
         <StreamComponent
+          ref="streamComponent"
           action={loadUserDetail(params.username)}
           initModel={{ collection: MAPPING_TYPES.POSTS, findObj: { token: params.username } }} />
-      </div>
+      </section>
     )
   }
 }
