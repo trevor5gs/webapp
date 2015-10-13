@@ -12,6 +12,7 @@ import { Provider } from 'react-redux'
 import * as reducers from './reducers'
 import { analytics, uploader, requester } from './middleware'
 import App from './containers/App'
+import { persistStore, autoRehydrate } from 'redux-persist'
 
 import './vendor/embetter'
 import './vendor/time_ago_in_words'
@@ -78,6 +79,7 @@ function reducer(state = {}, action) {
   }
 }
 const store = compose(
+  autoRehydrate(),
   applyMiddleware(thunk, uploader, requester, analytics, logger),
   reduxReactRouter({routes: rootRoute, createHistory: createBrowserHistory})
 )(createStore)(reducer)
@@ -88,4 +90,6 @@ const element = (
   </Provider>
 )
 
-ReactDOM.render(element, document.getElementById('root'))
+persistStore(store, { blacklist: ['router'] }, () => {
+  ReactDOM.render(element, document.getElementById('root'))
+})
