@@ -1,17 +1,27 @@
-import { PROFILE } from '../constants/action_types'
+import * as ACTION_TYPES from '../constants/action_types'
+import * as MAPPING_TYPES from '../constants/mapping_types'
+import * as StreamRenderables from '../components/streams/StreamRenderables'
 import * as api from '../networking/api'
 
 export function loadProfile() {
   return {
-    type: PROFILE.LOAD,
+    type: ACTION_TYPES.PROFILE.LOAD,
     meta: {},
     payload: { endpoint: api.profilePath },
   }
 }
 
+export function loadUserDetail(username) {
+  return {
+    type: ACTION_TYPES.LOAD_STREAM,
+    payload: { endpoint: api.userDetail(username), vo: {} },
+    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.userDetail },
+  }
+}
+
 export function saveProfile(users) {
   return {
-    type: PROFILE.SAVE,
+    type: ACTION_TYPES.PROFILE.SAVE,
     meta: {},
     payload: {
       method: 'PATCH',
@@ -43,7 +53,7 @@ export function uploadAsset(type, file) {
 
 export function temporaryAvatarCreated(b64Asset) {
   return {
-    type: PROFILE.TMP_AVATAR_CREATED,
+    type: ACTION_TYPES.PROFILE.TMP_AVATAR_CREATED,
     meta: {},
     payload: { tmpAvatar: b64Asset},
   }
@@ -51,7 +61,7 @@ export function temporaryAvatarCreated(b64Asset) {
 
 export function temporaryCoverCreated(b64Asset) {
   return {
-    type: PROFILE.TMP_COVER_CREATED,
+    type: ACTION_TYPES.PROFILE.TMP_COVER_CREATED,
     meta: {},
     payload: { tmpCover: b64Asset},
   }
@@ -65,7 +75,7 @@ export function saveAvatar(file) {
     reader.onloadend = () => {
       dispatch(temporaryAvatarCreated(reader.result))
     }
-    dispatch(uploadAsset(PROFILE.SAVE_AVATAR, file))
+    dispatch(uploadAsset(ACTION_TYPES.PROFILE.SAVE_AVATAR, file))
     reader.readAsDataURL(file)
   }
 }
@@ -77,7 +87,7 @@ export function saveCover(file) {
     reader.onloadend = () => {
       dispatch(temporaryCoverCreated(reader.result))
     }
-    dispatch(uploadAsset(PROFILE.SAVE_COVER, file))
+    dispatch(uploadAsset(ACTION_TYPES.PROFILE.SAVE_COVER, file))
     reader.readAsDataURL(file)
   }
 }

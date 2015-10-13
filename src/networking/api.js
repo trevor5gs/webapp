@@ -40,4 +40,10 @@ export function postDetail(idOrToken) {
   return getAPIPath(`posts/~${idOrToken}`, { comment_count: 20 })
 }
 
+export function userDetail(idOrUsername) {
+  if (parseInt(idOrUsername, 10) > 0) {
+    return getAPIPath(`users/${idOrUsername}`, { post_count: 20 })
+  }
+  return getAPIPath(`users/~${idOrUsername}`, { post_count: 20 })
+}
 export { API_VERSION, getAPIPath }
