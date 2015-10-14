@@ -8,7 +8,7 @@ export function loadRecommended() {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.discoverRecommended, vo: {} },
-    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.userDetail },
+    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.discoverUsers },
   }
 }
 

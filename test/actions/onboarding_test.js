@@ -1,7 +1,7 @@
 import { expect, isFSA, hasStreamMetadata } from '../spec_helper'
 import * as subject from '../../src/actions/onboarding'
 
-describe('onboarding_actions.js', () => {
+describe('onboarding.js', () => {
   describe('#loadCommunities', () => {
     it('returns the expected action', () => {
       const action = subject.loadCommunities()

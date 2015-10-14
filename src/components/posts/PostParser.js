@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 import Avatar from '../users/Avatar'
 import ImageRegion from './regions/ImageRegion'
 import PostTools from './PostTools'
@@ -9,12 +10,14 @@ let models = {}
 
 function header(post, author) {
   return (
-    <header className="PostHeader" key={`postHeader_${post.id}`}>
-      <Avatar imgSrc={author.avatar.regular.url} />
-      <div className="vitals">
-        <a className="username" name="username" href={`/${author.username}`}>{`@${author.username}`}</a>
-      </div>
-    </header>
+    <Link to={`/${author.username}`} key={`postHeader_${post.id}`}>
+      <header className="PostHeader">
+        <Avatar imgSrc={author.avatar.regular.url} />
+        <div className="vitals">
+          <span className="username" name="username">{`@${author.username}`}</span>
+        </div>
+      </header>
+    </Link>
   )
 }
 
