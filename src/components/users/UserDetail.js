@@ -1,6 +1,6 @@
 import React from 'react'
 import StreamComponent from '../streams/StreamComponent'
-import { loadUserDetail } from '../../actions/profile'
+import { loadUserDetail } from '../../actions/user'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 
 class UserDetail extends React.Component {
