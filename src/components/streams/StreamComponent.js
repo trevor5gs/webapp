@@ -6,10 +6,8 @@ import { findBy } from '../base/json_helper'
 
 export class StreamComponent extends React.Component {
   componentWillMount() {
-    const { action, dispatch, initModel, json } = this.props
-    if (!this.findModel(json, initModel)) {
-      action ? dispatch(action) : console.error('Action is required to load a stream')
-    }
+    const { action, dispatch } = this.props
+    action ? dispatch(action) : console.error('Action is required to load a stream')
   }
 
   componentDidMount() {

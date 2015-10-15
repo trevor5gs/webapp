@@ -70,10 +70,13 @@ export function userDetail(users, json, currentUser) {
 
 export function postDetail(posts, json, currentUser) {
   const post = posts[0]
-  // const comments = getLinkArray(post, 'comments', json)
+  const comments = getLinkArray(post, 'comments', json) || []
   return (
     <div ref={`postList_${post.id}`} key={post.id} className="PostList">
       {parsePost(post, json, currentUser)}
+      {comments.map((comment) => {
+        return parsePost(comment, json, currentUser, false)
+      })}
     </div>
   )
 }
