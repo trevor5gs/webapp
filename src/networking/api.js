@@ -17,34 +17,61 @@ function getAPIPath(relPath, queryParams = {}) {
 }
 
 // Assets
-export const s3CredentialsPath = getAPIPath('assets/credentials')
+export const s3CredentialsPath = {
+  path: getAPIPath('assets/credentials'),
+}
 // Current User Profile
-export const profilePath = getAPIPath('profile')
+export const profilePath = {
+  path: getAPIPath('profile'),
+}
 // Onboarding
-export const awesomePeoplePath = getAPIPath('discover/users/onboarding', { per_page: '25' })
-export const communitiesPath = getAPIPath('interest_categories/members', { name: 'onboarding', per_page: '25' })
-export const relationshipBatchPath = getAPIPath('relationships/batches')
+export const awesomePeoplePath = {
+  path: getAPIPath('discover/users/onboarding', { per_page: '25' }),
+}
+export const communitiesPath = {
+  path: getAPIPath('interest_categories/members', { name: 'onboarding', per_page: '25' })
+}
+export const relationshipBatchPath = {
+  path: getAPIPath('relationships/batches')
+}
 // Discover
-export const discoverRecommended = getAPIPath('users/~lucian', { post_count: '40' })
+export const discoverRecommended = {
+  path: getAPIPath('users/~lucian', { post_count: '40' }),
+  pagingPath: 'posts',
+}
 // Streams
-export const friendStream = getAPIPath('streams/friend', { per_page: '40' })
+export const friendStream = {
+  path: getAPIPath('streams/friend', { per_page: '40' }),
+}
 // Posts
 export function postDetail(idOrToken) {
+  let path = ''
   if (parseInt(idOrToken, 10) > 0) {
-    return getAPIPath(`posts/${idOrToken}`, { comment_count: 20 })
+    path = getAPIPath(`posts/${idOrToken}`, { comment_count: 20 })
   }
-  return getAPIPath(`posts/~${idOrToken}`, { comment_count: 20 })
+  path = getAPIPath(`posts/~${idOrToken}`, { comment_count: 20 })
+  return {
+    path: path,
+    pagingPath: 'comments',
+  }
 }
 // Comments
 export function commentsForPost(post) {
-  return getAPIPath(`posts/${post.id}/comments`, { per_page: 20 })
+  return {
+    path: getAPIPath(`posts/${post.id}/comments`, { per_page: 20 })
+  }
 }
 // Users
 export function userDetail(idOrUsername) {
+  let path = ''
   if (parseInt(idOrUsername, 10) > 0) {
-    return getAPIPath(`users/${idOrUsername}`, { post_count: 20 })
+    path = getAPIPath(`users/${idOrUsername}`, { post_count: 20 })
   }
-  return getAPIPath(`users/~${idOrUsername}`, { post_count: 20 })
+  path = getAPIPath(`users/~${idOrUsername}`, { post_count: 20 })
+  return {
+    path: path,
+    pagingPath: 'posts',
+  }
 }
 
 export { API_VERSION, getAPIPath }

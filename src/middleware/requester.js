@@ -2,6 +2,8 @@ import * as ACTION_TYPES from '../../src/constants/action_types'
 import { camelizeKeys } from 'humps'
 import 'isomorphic-fetch'
 
+let linkPagination = {}
+
 function getAuthToken() {
   return {
     'Authorization': `Bearer ${localStorage.getItem('ello_access_token')}`,
@@ -21,7 +23,7 @@ function getGetHeader() {
 }
 
 function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.ok) {
     return response
   }
   const error = new Error(response.statusText)
@@ -30,7 +32,7 @@ function checkStatus(response) {
 }
 
 function parseJSON(response) {
-  // 200 means we have a body otherwise it's a 200+ with an empty body
+  linkPagination = response.headers.get('Link')
   return (response.status === 200) ? response.json() : response
 }
 
@@ -43,7 +45,9 @@ export function requester() {
          type !== ACTION_TYPES.POST_JSON &&
          type !== ACTION_TYPES.PROFILE.LOAD &&
          type !== ACTION_TYPES.PROFILE.SAVE &&
-         type !== ACTION_TYPES.POST_FORM
+         type !== ACTION_TYPES.POST_FORM &&
+         type !== ACTION_TYPES.LOAD_NEXT_CONTENT &&
+         type !== ACTION_TYPES.LOAD_PREV_CONTENT
         ) || !payload) {
       return next(action)
     }
@@ -68,11 +72,19 @@ export function requester() {
       options.body = body || null
     }
 
-    return fetch(endpoint, options)
+    return fetch(endpoint.path, options)
       .then(checkStatus)
       .then(parseJSON)
       .then(response => {
         payload.response = camelizeKeys(response)
+        let pagination = {}
+        if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
+          pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
+        } else {
+          // TODO: parse link to pagination stuff
+          pagination = linkPagination
+        }
+        payload.pagination = pagination
         next({ meta, payload, type: SUCCESS })
         return true
       })

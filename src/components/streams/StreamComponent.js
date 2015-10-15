@@ -3,6 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { ElloMark } from '../iconography/ElloIcons'
 import { findBy } from '../base/json_helper'
+import * as ACTION_TYPES from '../../constants/action_types'
 
 export class StreamComponent extends React.Component {
   componentWillMount() {
@@ -14,6 +15,7 @@ export class StreamComponent extends React.Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
+    window.addEventListener('scroll', this.windowWasScrolled.bind(this))
   }
 
   componentDidUpdate() {
@@ -26,6 +28,7 @@ export class StreamComponent extends React.Component {
     if (window.embetter) {
       window.embetter.stopPlayers()
     }
+    window.removeEventListener('scroll', this.windowWasScrolled.bind(this))
   }
 
   findModel(json, initModel) {
@@ -34,6 +37,54 @@ export class StreamComponent extends React.Component {
     }
     return findBy(initModel.findObj, initModel.collection, json)
   }
+
+  getScrollY() {
+    return Math.ceil(window.pageYOffset)
+  }
+
+  getScrollHeight() {
+    return Math.max(document.body.scrollHeight, document.body.offsetHeight)
+  }
+
+  getScrollBottom() {
+    return Math.round(this.getScrollHeight() - window.innerHeight)
+  }
+
+  checkScrollPosition() {
+    const scrollY = this.getScrollY()
+    const scrollBottom = this.getScrollBottom()
+    if (scrollY == 0) {
+      console.log('scroll top')
+    } else if (Math.abs(scrollY - scrollBottom) < 5) {
+      console.log('scroll bottom')
+      this.loadPage('next')
+    }
+  }
+
+  loadPage(rel) {
+    const { action, dispatch, json, router } = this.props
+    const result = json.pages ? json.pages[router.location.pathname] : null
+    const { pagination } = result
+    if (pagination.totalPagesRemaining === 0) { return }
+    dispatch(
+      {
+        type: ACTION_TYPES.LOAD_NEXT_CONTENT,
+        payload: { endpoint: { path: pagination[rel] } },
+        meta: { mappingType: action.payload.endpoint.pagingPath || action.meta.mappingType },
+      }
+    )
+  }
+
+  windowWasScrolled(e) {
+    if (!this.ticking) {
+      requestAnimationFrame(() => {
+        this.checkScrollPosition()
+        this.ticking = false
+      })
+      this.ticking = true
+    }
+  }
+
 
   renderError() {
     return (
@@ -66,6 +117,7 @@ export class StreamComponent extends React.Component {
       return this.renderError()
     }
     const jsonables = []
+    const nextJsonables = []
     const model = this.findModel(json, initModel)
     if (model) {
       jsonables.push(model)
@@ -75,13 +127,18 @@ export class StreamComponent extends React.Component {
       for (const id of result.ids) {
         jsonables.push(json[result.type][id])
       }
+      if (result.next) {
+        for (const nextId of result.next.ids) {
+          nextJsonables.push(json[result.next.type][nextId])
+        }
+      }
     }
     if (!jsonables.length || !meta) {
       return this.renderLoading()
     }
     return (
       <section className="StreamComponent">
-        { meta.renderStream(jsonables, json, currentUser, payload.vo) }
+        { meta.renderStream(jsonables, json, currentUser, nextJsonables, payload.vo) }
       </section>
     )
   }

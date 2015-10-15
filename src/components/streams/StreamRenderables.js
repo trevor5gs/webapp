@@ -57,13 +57,14 @@ export function discoverUsers(users, json, currentUser) {
   return postsAsGrid(posts, json, currentUser)
 }
 
-export function userDetail(users, json, currentUser) {
+export function userDetail(users, json, currentUser, nextPosts) {
   const user = users[0]
   const posts = getLinkArray(user, 'posts', json)
   return (
     <div className="UserDetail">
       <UserGrid ref={'userGrid_' + user.id} user={user} key={user.id} />
       {postsAsList(posts, json, currentUser)}
+      {postsAsList(nextPosts, json, currentUser)}
     </div>
   )
 }

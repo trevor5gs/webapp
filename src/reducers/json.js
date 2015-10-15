@@ -36,8 +36,14 @@ export function json(state = {}, action = { type: '' }, router) {
     // TODO: update the current user's followingCount +1 (this might happen in the profile reducer)
     mergeModel(newState, mappingType, { id: userId, relationshipPriority: priority })
     return newState
-  } else if (action.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
-    return state
+  } else {
+    switch (action.type) {
+      case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
+      case ACTION_TYPES.LOAD_STREAM_SUCCESS:
+        break
+      default:
+        return state
+    }
   }
   const { response } = action.payload
   // parse linked
@@ -58,8 +64,22 @@ export function json(state = {}, action = { type: '' }, router) {
   } else {
     result = { type: mappingType, ids: ids }
   }
+  result.pagination = action.payload.pagination
   if (!newState.pages) { newState.pages = {} }
-  newState.pages[router.location.pathname] = result
+  if (action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
+    // TODO: the result object needs to be stored somewhere
+    const existingResult = newState.pages[router.location.pathname]
+    console.log('existingResult', existingResult)
+    if (existingResult) {
+      if (!existingResult.next) {
+        existingResult.next = result
+      } else {
+        existingResult.next.ids.concat(result.ids)
+      }
+    }
+  } else {
+    newState.pages[router.location.pathname] = result
+  }
   return newState
 }
 
