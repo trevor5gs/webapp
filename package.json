@@ -33,6 +33,7 @@
     "humps": "^1.0.0",
     "isomorphic-fetch": "^2.1.1",
     "jade": "^1.11.0",
+    "lodash.uniq": "^3.2.2",
     "mousetrap": "^1.5.3",
     "newrelic": "^1.22.1",
     "node-libs-browser": "^0.5.3",

@@ -96,6 +96,7 @@ class RelationshipButton extends React.Component {
   }
 
   renderAsSelf() {
+    return null
   }
 
   render() {

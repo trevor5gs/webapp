@@ -6,7 +6,7 @@ class DiscoverView extends React.Component {
   render() {
     return (
       <div className="DiscoverView Panel">
-        <StreamComponent action={DiscoverActions.loadRecommended()} />
+        <StreamComponent action={DiscoverActions.loadFriends()} />
       </div>
     )
   }

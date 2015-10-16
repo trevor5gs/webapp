@@ -10,8 +10,8 @@ class UserDetail extends React.Component {
       <section className="UserDetail Panel">
         <StreamComponent
           ref="streamComponent"
-          action={loadUserDetail(params.username)}
-          initModel={{ collection: MAPPING_TYPES.POSTS, findObj: { token: params.username } }} />
+          action={loadUserDetail(`~${params.username}`)}
+          initModel={{ collection: MAPPING_TYPES.USERS, findObj: { username: params.username } }} />
       </section>
     )
   }
