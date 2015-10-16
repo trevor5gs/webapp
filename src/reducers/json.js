@@ -38,6 +38,7 @@ export function json(state = {}, action = { type: '' }, router) {
     mergeModel(newState, mappingType, { id: userId, relationshipPriority: priority })
     return newState
   }
+  // whitelist actions
   switch (action.type) {
   case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
   case ACTION_TYPES.LOAD_STREAM_SUCCESS:
@@ -68,8 +69,8 @@ export function json(state = {}, action = { type: '' }, router) {
   if (!newState.pages) { newState.pages = {} }
   if (action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
     const existingResult = newState.pages[router.location.pathname]
-    existingResult.pagination = result.pagination
     if (existingResult) {
+      existingResult.pagination = result.pagination
       if (!existingResult.next) {
         existingResult.next = result
       } else {

@@ -62,6 +62,7 @@ function isValidResultKey(key) {
   const validKeys = [
     'type',
     'ids',
+    'pagination',
   ]
   return validKeys.indexOf(key) > -1
 }
