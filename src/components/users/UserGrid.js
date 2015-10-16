@@ -17,7 +17,7 @@ class UserGrid extends React.Component {
 
   render() {
     const user = this.props.user
-    const avatar = user.avatar.regular.url
+    const avatar = user.avatar ? user.avatar.regular.url : ''
     const coverSrc = user.coverImage ? user.coverImage.hdpi.url : ''
     const coverStyle = { backgroundImage: `url(${coverSrc})` }
     let externalLinks = []

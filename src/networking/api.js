@@ -45,14 +45,8 @@ export const friendStream = {
 }
 // Posts
 export function postDetail(idOrToken) {
-  let path = ''
-  if (parseInt(idOrToken, 10) > 0) {
-    path = getAPIPath(`posts/${idOrToken}`, { comment_count: 20 })
-  } else {
-    path = getAPIPath(`posts/~${idOrToken}`, { comment_count: 20 })
-  }
   return {
-    path: path,
+    path: getAPIPath(`posts/${idOrToken}`, { comment_count: 20 }),
     pagingPath: 'comments',
   }
 }
@@ -64,14 +58,8 @@ export function commentsForPost(post) {
 }
 // Users
 export function userDetail(idOrUsername) {
-  let path = ''
-  if (parseInt(idOrUsername, 10) > 0) {
-    path = getAPIPath(`users/${idOrUsername}`, { post_count: 20 })
-  } else {
-    path = getAPIPath(`users/~${idOrUsername}`, { post_count: 20 })
-  }
   return {
-    path: path,
+    path: getAPIPath(`users/${idOrUsername}`, { post_count: 20 }),
     pagingPath: 'posts',
   }
 }
