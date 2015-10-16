@@ -29,10 +29,10 @@ export const awesomePeoplePath = {
   path: getAPIPath('discover/users/onboarding', { per_page: '25' }),
 }
 export const communitiesPath = {
-  path: getAPIPath('interest_categories/members', { name: 'onboarding', per_page: '25' })
+  path: getAPIPath('interest_categories/members', { name: 'onboarding', per_page: '25' }),
 }
 export const relationshipBatchPath = {
-  path: getAPIPath('relationships/batches')
+  path: getAPIPath('relationships/batches'),
 }
 // Discover
 export const discoverRecommended = {
@@ -58,7 +58,7 @@ export function postDetail(idOrToken) {
 // Comments
 export function commentsForPost(post) {
   return {
-    path: getAPIPath(`posts/${post.id}/comments`, { per_page: 20 })
+    path: getAPIPath(`posts/${post.id}/comments`, { per_page: 20 }),
   }
 }
 // Users

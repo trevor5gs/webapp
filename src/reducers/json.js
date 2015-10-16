@@ -1,4 +1,5 @@
 import * as ACTION_TYPES from '../constants/action_types'
+import uniq from 'lodash.uniq'
 
 function mergeModel(state, type, params) {
   if (params.id) {
@@ -36,14 +37,13 @@ export function json(state = {}, action = { type: '' }, router) {
     // TODO: update the current user's followingCount +1 (this might happen in the profile reducer)
     mergeModel(newState, mappingType, { id: userId, relationshipPriority: priority })
     return newState
-  } else {
-    switch (action.type) {
-      case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
-      case ACTION_TYPES.LOAD_STREAM_SUCCESS:
-        break
-      default:
-        return state
-    }
+  }
+  switch (action.type) {
+  case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
+  case ACTION_TYPES.LOAD_STREAM_SUCCESS:
+    break
+  default:
+    return state
   }
   const { response } = action.payload
   // parse linked
@@ -67,14 +67,13 @@ export function json(state = {}, action = { type: '' }, router) {
   result.pagination = action.payload.pagination
   if (!newState.pages) { newState.pages = {} }
   if (action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
-    // TODO: the result object needs to be stored somewhere
     const existingResult = newState.pages[router.location.pathname]
-    console.log('existingResult', existingResult)
+    existingResult.pagination = result.pagination
     if (existingResult) {
       if (!existingResult.next) {
         existingResult.next = result
       } else {
-        existingResult.next.ids.concat(result.ids)
+        existingResult.next.ids = uniq(existingResult.next.ids.concat(result.ids))
       }
     }
   } else {

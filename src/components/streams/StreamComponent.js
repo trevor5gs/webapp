@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { ElloMark } from '../iconography/ElloIcons'
 import { findBy } from '../base/json_helper'
 import * as ACTION_TYPES from '../../constants/action_types'
+import { addScrollObject, removeScrollObject } from '../scroll/ScrollComponent'
 
 export class StreamComponent extends React.Component {
   componentWillMount() {
@@ -15,7 +16,7 @@ export class StreamComponent extends React.Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    window.addEventListener('scroll', this.windowWasScrolled.bind(this))
+    addScrollObject(this)
   }
 
   componentDidUpdate() {
@@ -28,37 +29,11 @@ export class StreamComponent extends React.Component {
     if (window.embetter) {
       window.embetter.stopPlayers()
     }
-    window.removeEventListener('scroll', this.windowWasScrolled.bind(this))
+    removeScrollObject(this)
   }
 
-  findModel(json, initModel) {
-    if (!initModel || !initModel.findObj || !initModel.collection) {
-      return null
-    }
-    return findBy(initModel.findObj, initModel.collection, json)
-  }
-
-  getScrollY() {
-    return Math.ceil(window.pageYOffset)
-  }
-
-  getScrollHeight() {
-    return Math.max(document.body.scrollHeight, document.body.offsetHeight)
-  }
-
-  getScrollBottom() {
-    return Math.round(this.getScrollHeight() - window.innerHeight)
-  }
-
-  checkScrollPosition() {
-    const scrollY = this.getScrollY()
-    const scrollBottom = this.getScrollBottom()
-    if (scrollY == 0) {
-      console.log('scroll top')
-    } else if (Math.abs(scrollY - scrollBottom) < 5) {
-      console.log('scroll bottom')
-      this.loadPage('next')
-    }
+  onScrollBottom() {
+    this.loadPage('next')
   }
 
   loadPage(rel) {
@@ -70,21 +45,17 @@ export class StreamComponent extends React.Component {
       {
         type: ACTION_TYPES.LOAD_NEXT_CONTENT,
         payload: { endpoint: { path: pagination[rel] } },
-        meta: { mappingType: action.payload.endpoint.pagingPath || action.meta.mappingType },
+        meta: { mappingType: action.payload.endpoint.pagingPath || action.meta.mappingType, resultFilter: action.meta.resultFilter },
       }
     )
   }
 
-  windowWasScrolled(e) {
-    if (!this.ticking) {
-      requestAnimationFrame(() => {
-        this.checkScrollPosition()
-        this.ticking = false
-      })
-      this.ticking = true
+  findModel(json, initModel) {
+    if (!initModel || !initModel.findObj || !initModel.collection) {
+      return null
     }
+    return findBy(initModel.findObj, initModel.collection, json)
   }
-
 
   renderError() {
     return (
@@ -116,29 +87,34 @@ export class StreamComponent extends React.Component {
     if (stream.error) {
       return this.renderError()
     }
-    const jsonables = []
-    const nextJsonables = []
+    const renderObj = { jsonables: [], collection: []}
     const model = this.findModel(json, initModel)
     if (model) {
-      jsonables.push(model)
+      renderObj.jsonables.push(model)
     } else if (!result || !result.type || !result.ids) {
       return this.renderLoading()
     } else {
       for (const id of result.ids) {
-        jsonables.push(json[result.type][id])
+        renderObj.jsonables.push(json[result.type][id])
       }
       if (result.next) {
-        for (const nextId of result.next.ids) {
-          nextJsonables.push(json[result.next.type][nextId])
+        if (action.payload.endpoint.pagingPath) {
+          for (const nextId of result.next.ids) {
+            renderObj.collection.push(json[result.next.type][nextId])
+          }
+        } else {
+          for (const nextId of result.next.ids) {
+            renderObj.jsonables.push(json[result.next.type][nextId])
+          }
         }
       }
     }
-    if (!jsonables.length || !meta) {
+    if (!renderObj.jsonables.length || !meta) {
       return this.renderLoading()
     }
     return (
       <section className="StreamComponent">
-        { meta.renderStream(jsonables, json, currentUser, nextJsonables, payload.vo) }
+        { meta.renderStream(renderObj, json, currentUser, payload.vo) }
       </section>
     )
   }

@@ -31,8 +31,33 @@ function checkStatus(response) {
   throw error
 }
 
+function parseLink(linksHeader) {
+  if (!linksHeader) { return { next: {}, prev: {}, first: {}, last: {} } }
+  const result = {}
+  const entries = linksHeader.split(',')
+  // compile regular expressions ahead of time for efficiency
+  const relsRegExp = /\brel="?([^"]+)"?\s*;?/
+  const keysRegExp = /(\b[0-9a-z\.-]+\b)/g
+  const sourceRegExp = /^<(.*)>/
+  for (let entry of entries) {
+    entry = entry.trim()
+    const rels = relsRegExp.exec(entry)
+    if (rels) {
+      const keys = rels[1].match(keysRegExp)
+      const source = sourceRegExp.exec(entry)[1]
+      for (const key of keys) {
+        result[key] = source
+      }
+    }
+  }
+  return result
+}
+
 function parseJSON(response) {
-  linkPagination = response.headers.get('Link')
+  linkPagination = parseLink(response.headers.get('Link'))
+  linkPagination.totalCount = parseInt(response.headers.get('X-Total-Count'), 10)
+  linkPagination.totalPages = parseInt(response.headers.get('X-Total-Pages'), 10)
+  linkPagination.totalPagesRemaining = parseInt(response.headers.get('X-Total-Pages-Remaining'), 10)
   return (response.status === 200) ? response.json() : response
 }
 
@@ -77,14 +102,11 @@ export function requester() {
       .then(parseJSON)
       .then(response => {
         payload.response = camelizeKeys(response)
-        let pagination = {}
         if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
-          pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
+          payload.pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
         } else {
-          // TODO: parse link to pagination stuff
-          pagination = linkPagination
+          payload.pagination = linkPagination
         }
-        payload.pagination = pagination
         next({ meta, payload, type: SUCCESS })
         return true
       })
