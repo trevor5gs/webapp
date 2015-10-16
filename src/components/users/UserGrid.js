@@ -18,8 +18,16 @@ class UserGrid extends React.Component {
   render() {
     const user = this.props.user
     const avatar = user.avatar.regular.url
-    const coverSrc = user.coverImage.hdpi.url
+    const coverSrc = user.coverImage ? user.coverImage.hdpi.url : ''
     const coverStyle = { backgroundImage: `url(${coverSrc})` }
+    let externalLinks = []
+    if (user.externalLinksList) {
+      externalLinks = user.externalLinksList.map((link, i) => {
+        return (
+          <a href={link.url} target="_blank" key={i} >{link.text}</a>
+        )
+      })
+    }
     return (
       <div className="UserGrid" >
         <div className="CoverImage" style={coverStyle} />
@@ -54,11 +62,7 @@ class UserGrid extends React.Component {
           <h3>{user.name}</h3>
           <div className="short-bio" dangerouslySetInnerHTML={{ __html: user.formattedShortBio }} />
           <p className="external-links">
-           {user.externalLinksList.map((link, i) => {
-             return (
-               <a href={link.url} target="_blank" key={i} >{link.text}</a>
-             )
-           })}
+            {externalLinks}
           </p>
         </div>
       </div>

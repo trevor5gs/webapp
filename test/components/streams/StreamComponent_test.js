@@ -83,7 +83,7 @@ describe('StreamComponent', () => {
         const comp = getRenderedComponent(subject, props)
         expect(comp.type).to.equal('section')
         expect(comp.props.className).to.equal('StreamComponent')
-        expect(renderSpy.calledWith({ jsonables: [{ id: '1' }], collection: [] }, { pages: { what: { type: 'posts', ids: ['1'] } }, posts: { '1': { id: '1' } } }, { id: 'currentUser' }, 'what')).to.be.true
+        expect(renderSpy.calledWith({ data: [{ id: '1' }], nestedData: [] }, { pages: { what: { type: 'posts', ids: ['1'] } }, posts: { '1': { id: '1' } } }, { id: 'currentUser' }, 'what')).to.be.true
       })
     })
   })

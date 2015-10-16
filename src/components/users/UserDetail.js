@@ -11,7 +11,7 @@ class UserDetail extends React.Component {
         <StreamComponent
           ref="streamComponent"
           action={loadUserDetail(params.username)}
-          initModel={{ collection: MAPPING_TYPES.POSTS, findObj: { token: params.username } }} />
+          initModel={{ collection: MAPPING_TYPES.USERS, findObj: { username: params.username } }} />
       </section>
     )
   }

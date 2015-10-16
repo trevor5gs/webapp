@@ -87,29 +87,24 @@ export class StreamComponent extends React.Component {
     if (stream.error) {
       return this.renderError()
     }
-    const renderObj = { jsonables: [], collection: []}
+    const renderObj = { data: [], nestedData: [] }
     const model = this.findModel(json, initModel)
-    if (model) {
-      renderObj.jsonables.push(model)
+    if (model && !result) {
+      renderObj.data.push(model)
     } else if (!result || !result.type || !result.ids) {
       return this.renderLoading()
     } else {
       for (const id of result.ids) {
-        renderObj.jsonables.push(json[result.type][id])
+        renderObj.data.push(json[result.type][id])
       }
       if (result.next) {
-        if (action.payload.endpoint.pagingPath) {
-          for (const nextId of result.next.ids) {
-            renderObj.collection.push(json[result.next.type][nextId])
-          }
-        } else {
-          for (const nextId of result.next.ids) {
-            renderObj.jsonables.push(json[result.next.type][nextId])
-          }
+        const dataProp = payload.endpoint.pagingPath ? 'nestedData' : 'data'
+        for (const nextId of result.next.ids) {
+          renderObj[dataProp].push(json[result.next.type][nextId])
         }
       }
     }
-    if (!renderObj.jsonables.length || !meta) {
+    if (!renderObj.data.length || !meta) {
       return this.renderLoading()
     }
     return (

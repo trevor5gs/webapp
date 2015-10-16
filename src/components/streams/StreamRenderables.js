@@ -4,30 +4,30 @@ import UserGrid from '../users/UserGrid'
 import { parsePost } from '../posts/PostParser'
 import { getLinkArray } from '../base/json_helper'
 
-export function onboardingCommunities(renderObj) {
+export function onboardingCommunities(users) {
   return (
     <div className="Cards">
-      {renderObj.jsonables.map((user, i) => {
+      {users.data.map((user, i) => {
         return <UserCard ref={'userCard_' + i} user={user} key={i} />
       })}
     </div>
   )
 }
 
-export function onboardingPeople(renderObj) {
+export function onboardingPeople(users) {
   return (
     <div className="Users as-grid">
-      {renderObj.jsonables.map((user, i) => {
+      {users.data.map((user, i) => {
         return <UserGrid ref={'userGrid_' + i} user={user} key={i} />
       })}
     </div>
   )
 }
 
-export function postsAsGrid(renderObj, json, currentUser) {
+export function postsAsGrid(posts, json, currentUser) {
   return (
     <div className="Posts as-grid">
-      {renderObj.jsonables.map((post) => {
+      {posts.data.map((post) => {
         return (
           <div ref={`postGrid_${post.id}`} key={post.id} className="PostGrid">
             {parsePost(post, json, currentUser)}
@@ -38,10 +38,10 @@ export function postsAsGrid(renderObj, json, currentUser) {
   )
 }
 
-export function postsAsList(renderObj, json, currentUser) {
+export function postsAsList(posts, json, currentUser) {
   return (
     <div className="Posts as-list">
-      {renderObj.jsonables.map((post) => {
+      {posts.data.map((post) => {
         return (
           <div ref={`postList_${post.id}`} key={post.id} className="PostList">
             {parsePost(post, json, currentUser)}
@@ -52,32 +52,38 @@ export function postsAsList(renderObj, json, currentUser) {
   )
 }
 
-export function discoverUsers(renderObj, json, currentUser) {
-  const posts = getLinkArray(renderObj.jsonables[0], 'posts', json)
+export function discoverUsers(users, json, currentUser) {
+  const posts = getLinkArray(users.data[0], 'posts', json)
   return postsAsGrid(posts, json, currentUser)
 }
 
-export function userDetail(renderObj, json, currentUser) {
-  const user = renderObj.jsonables[0]
-  let posts = getLinkArray(user, 'posts', json)
-  posts = posts.concat(renderObj.collection)
+export function userDetail(users, json, currentUser) {
+  const user = users.data[0]
+  let posts = getLinkArray(user, 'posts', json) || []
+  posts = posts.concat(users.nestedData)
   return (
     <div className="UserDetail">
       <UserGrid ref={'userGrid_' + user.id} user={user} key={user.id} />
-      {postsAsList(posts, json, currentUser)}
+      {postsAsList({data: posts, nestedData: []}, json, currentUser)}
     </div>
   )
 }
 
-export function postDetail(renderObj, json, currentUser) {
-  const post = renderObj.jsonables[0]
+export function postDetail(posts, json, currentUser) {
+  const post = posts.data[0]
   let comments = getLinkArray(post, 'comments', json) || []
-  comments = comments.concat(renderObj.collection)
+  comments = comments.concat(posts.nestedData)
   return (
-    <div ref={`postList_${post.id}`} key={post.id} className="PostList">
-      {parsePost(post, json, currentUser)}
+    <div className="PostDetail">
+      <div ref={`postList_${post.id}`} key={post.id} className="PostList">
+        {parsePost(post, json, currentUser)}
+      </div>
       {comments.map((comment) => {
-        return parsePost(comment, json, currentUser, false)
+        return (
+          <div ref={`commentList_${comment.id}`} key={comment.id} className="CommentList">
+            {parsePost(comment, json, currentUser, false)}
+          </div>
+        )
       })}
     </div>
   )
