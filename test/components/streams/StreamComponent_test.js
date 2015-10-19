@@ -1,5 +1,6 @@
 import { expect, getRenderedComponent, sinon } from '../../spec_helper'
 import { StreamComponent as subject } from '../../../src/components/streams/StreamComponent'
+import * as MAPPING_TYPES from '../../../src/constants/mapping_types'
 
 function createPropsForStream(props = {}) {
   const defaultProps = { stream: { error: false }, action: {}, dispatch: () => {}, json: { pages: { what: {} } }, result: { type: 'posts', ids: [] }, router: { location: { pathname: 'what' } }, currentUser: { id: 'currentUser' } }
@@ -10,7 +11,7 @@ describe('StreamComponent', () => {
   describe('#render', () => {
     describe('StreamComponent hasErrored', () => {
       it('renders errors', () => {
-        const comp = getRenderedComponent(subject, createPropsForStream({ stream: { error: true } }))
+        const comp = getRenderedComponent(subject, createPropsForStream({ stream: { error: true }, action: { meta: {} } }))
         expect(comp.props.className).to.equal('StreamComponent hasErrored')
         expect(comp.type).to.equal('section')
         const div = comp.props.children
@@ -70,6 +71,7 @@ describe('StreamComponent', () => {
             },
             meta: {
               renderStream: () => {},
+              mappingType: MAPPING_TYPES.POSTS,
             },
           },
           json: {

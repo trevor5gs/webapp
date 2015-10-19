@@ -81,7 +81,7 @@ export function uploader() {
     next({ type: REQUEST, payload, meta: meta })
 
     function fetchCredentials() {
-      return fetch(s3CredentialsPath, {
+      return fetch(s3CredentialsPath(), {
         method: 'GET',
         headers: getCredentialsHeader(),
       })
