@@ -64,6 +64,7 @@ const rootRoute = {
     require('./routes/discover'),
     require('./routes/onboarding'),
     require('./routes/post_detail'),
+    require('./routes/search'),
     require('./routes/user_detail'),
   ],
 }

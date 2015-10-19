@@ -1,4 +1,3 @@
-/* eslint no-console: 0 */
 import React from 'react'
 import { connect } from 'react-redux'
 import { ElloMark } from '../iconography/ElloIcons'
@@ -7,9 +6,14 @@ import * as ACTION_TYPES from '../../constants/action_types'
 import { addScrollObject, removeScrollObject } from '../scroll/ScrollComponent'
 
 export class StreamComponent extends React.Component {
+  constructor(props, context) {
+    super(props, context)
+    this.state = { action: this.props.action }
+  }
+
   componentWillMount() {
-    const { action, dispatch } = this.props
-    action ? dispatch(action) : console.error('Action is required to load a stream')
+    const { action } = this.state
+    if (action) { this.props.dispatch(action) }
   }
 
   componentDidMount() {
@@ -36,11 +40,17 @@ export class StreamComponent extends React.Component {
     this.loadPage('next')
   }
 
+  setAction(action) {
+    this.setState({action: action})
+    this.props.dispatch(action)
+  }
+
   loadPage(rel) {
-    const { action, dispatch, json, router } = this.props
+    const { dispatch, json, router } = this.props
+    const { action } = this.state
     const result = json.pages ? json.pages[router.location.pathname] : null
     const { pagination } = result
-    if (pagination.totalPagesRemaining === 0) { return }
+    if (pagination.totalPagesRemaining === 0 || !action) { return }
     dispatch(
       {
         type: ACTION_TYPES.LOAD_NEXT_CONTENT,
@@ -81,7 +91,9 @@ export class StreamComponent extends React.Component {
   }
 
   render() {
-    const { action, currentUser, initModel, json, router, stream } = this.props
+    const { currentUser, initModel, json, router, stream } = this.props
+    const { action } = this.state
+    if (!action) { return null }
     const { meta, payload } = action
     const result = json.pages ? json.pages[router.location.pathname] : null
     if (stream.error) {
@@ -93,7 +105,7 @@ export class StreamComponent extends React.Component {
       renderObj.data.push(model)
     } else if (!result || !result.type || !result.ids) {
       return this.renderLoading()
-    } else {
+    } else if (result.type === meta.mappingType) {
       for (const id of result.ids) {
         renderObj.data.push(json[result.type][id])
       }
@@ -127,7 +139,7 @@ function mapStateToProps(state) {
 }
 
 StreamComponent.propTypes = {
-  action: React.PropTypes.object.isRequired,
+  action: React.PropTypes.object,
   dispatch: React.PropTypes.func.isRequired,
   json: React.PropTypes.object.isRequired,
   initModel: React.PropTypes.object,

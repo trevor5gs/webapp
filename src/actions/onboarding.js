@@ -13,7 +13,7 @@ export function loadCommunities() {
   }
   const cache = {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.communitiesPath, vo: {} },
+    payload: { endpoint: api.communitiesPath(), vo: {} },
     meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingCommunities },
   }
 
@@ -32,7 +32,7 @@ export function loadAwesomePeople() {
   }
   const cache = {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.awesomePeoplePath, vo: {} },
+    payload: { endpoint: api.awesomePeoplePath(), vo: {} },
     meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingPeople },
   }
 
@@ -49,7 +49,7 @@ export function relationshipBatchSave(ids, priority = 'friend') {
     meta: { mappingType: MAPPING_TYPES.RELATIONSHIPS },
     payload: {
       method: 'POST',
-      endpoint: api.relationshipBatchPath,
+      endpoint: api.relationshipBatchPath(),
       body: JSON.stringify({ user_ids: ids, priority: priority }),
     },
   }

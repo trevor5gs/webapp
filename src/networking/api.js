@@ -1,6 +1,7 @@
 const API_VERSION = 'v2'
 const PROTOCOL = 'https'
 const DOMAIN = (typeof ENV !== 'undefined') ? ENV.AUTH_DOMAIN : 'ello-staging.herokuapp.com'
+const PER_PAGE = 20
 
 function getAPIPath(relPath, queryParams = {}) {
   let path = `${PROTOCOL}://${DOMAIN}/api/${API_VERSION}/${relPath}`
@@ -17,51 +18,93 @@ function getAPIPath(relPath, queryParams = {}) {
 }
 
 // Assets
-export const s3CredentialsPath = {
-  path: getAPIPath('assets/credentials'),
+export function s3CredentialsPath() {
+  return {
+    path: getAPIPath('assets/credentials'),
+  }
 }
 // Current User Profile
-export const profilePath = {
-  path: getAPIPath('profile'),
+export function profilePath() {
+  return {
+    path: getAPIPath('profile'),
+  }
 }
 // Onboarding
-export const awesomePeoplePath = {
-  path: getAPIPath('discover/users/onboarding', { per_page: '25' }),
+export function awesomePeoplePath() {
+  const params = { per_page: PER_PAGE }
+  return {
+    path: getAPIPath('discover/users/onboarding', params),
+    params,
+  }
 }
-export const communitiesPath = {
-  path: getAPIPath('interest_categories/members', { name: 'onboarding', per_page: '25' }),
+export function communitiesPath() {
+  const params = { name: 'onboarding', per_page: PER_PAGE }
+  return {
+    path: getAPIPath('interest_categories/members', params),
+    params,
+  }
 }
-export const relationshipBatchPath = {
-  path: getAPIPath('relationships/batches'),
+export function relationshipBatchPath() {
+  return {
+    path: getAPIPath('relationships/batches'),
+  }
 }
 // Discover
-export const discoverRecommended = {
-  path: getAPIPath('users/~lucian', { post_count: '40' }),
-  pagingPath: 'posts',
+export function discoverRecommended() {
+  const params = { post_count: PER_PAGE }
+  return {
+    path: getAPIPath('users/~lucian', params),
+    pagingPath: 'posts',
+    params,
+  }
 }
 // Streams
-export const friendStream = {
-  path: getAPIPath('streams/friend', { per_page: '40' }),
+export function friendStream() {
+  const params = { per_page: PER_PAGE }
+  return {
+    path: getAPIPath('streams/friend', params),
+    params,
+  }
 }
 // Posts
 export function postDetail(idOrToken) {
+  const params = { comment_count: PER_PAGE }
   return {
-    path: getAPIPath(`posts/${idOrToken}`, { comment_count: 20 }),
+    path: getAPIPath(`posts/${idOrToken}`, params),
     pagingPath: 'comments',
+    params,
   }
 }
 // Comments
 export function commentsForPost(post) {
+  const params = { per_page: PER_PAGE }
   return {
-    path: getAPIPath(`posts/${post.id}/comments`, { per_page: 20 }),
+    path: getAPIPath(`posts/${post.id}/comments`, params),
+    params,
   }
 }
 // Users
 export function userDetail(idOrUsername) {
+  const params = { post_count: PER_PAGE }
   return {
-    path: getAPIPath(`users/${idOrUsername}`, { post_count: 20 }),
+    path: getAPIPath(`users/${idOrUsername}`, params),
     pagingPath: 'posts',
+    params,
+  }
+}
+// Search
+export function searchPosts(params) {
+  return {
+    path: getAPIPath('posts', params),
+    params,
+  }
+}
+export function searchUsers(params) {
+  return {
+    path: getAPIPath('users', params),
+    params,
   }
 }
 
-export { API_VERSION, getAPIPath }
+export { API_VERSION, getAPIPath, PER_PAGE }
+

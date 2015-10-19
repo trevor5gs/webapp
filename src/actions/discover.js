@@ -7,7 +7,7 @@ import * as api from '../networking/api'
 export function loadRecommended() {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.discoverRecommended, vo: {} },
+    payload: { endpoint: api.discoverRecommended(), vo: {} },
     meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.discoverUsers },
   }
 }
@@ -15,7 +15,7 @@ export function loadRecommended() {
 export function loadFriends() {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.friendStream, vo: {} },
+    payload: { endpoint: api.friendStream(), vo: {} },
     meta: { mappingType: MAPPING_TYPES.ACTIVITIES, renderStream: StreamRenderables.postsAsGrid, resultFilter: StreamFilters.postsFromActivities },
   }
 }

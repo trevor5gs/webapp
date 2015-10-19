@@ -5,7 +5,7 @@ export function loadProfile() {
   return {
     type: PROFILE.LOAD,
     meta: {},
-    payload: { endpoint: api.profilePath },
+    payload: { endpoint: api.profilePath() },
   }
 }
 
@@ -15,7 +15,7 @@ export function saveProfile(users) {
     meta: {},
     payload: {
       method: 'PATCH',
-      endpoint: api.profilePath,
+      endpoint: api.profilePath(),
       body: JSON.stringify(users),
     },
   }
@@ -35,7 +35,7 @@ export function uploadAsset(type, file) {
     type: type,
     meta: {},
     payload: {
-      endpoint: api.profilePath,
+      endpoint: api.profilePath(),
       file: file,
     },
   }
