@@ -90,11 +90,20 @@ export class StreamComponent extends React.Component {
     )
   }
 
+  renderZeroState() {
+    return (
+      <div>NO RESULTS</div>
+    )
+  }
+
   render() {
     const { currentUser, initModel, json, router, stream } = this.props
     const { action } = this.state
     if (!action) { return null }
     const { meta, payload } = action
+    if (stream.type === ACTION_TYPES.LOAD_STREAM_REQUEST || !meta) {
+      return this.renderLoading()
+    }
     const result = json.pages ? json.pages[router.location.pathname] : null
     if (stream.error) {
       return this.renderError()
@@ -116,8 +125,8 @@ export class StreamComponent extends React.Component {
         }
       }
     }
-    if (!renderObj.data.length || !meta) {
-      return this.renderLoading()
+    if (!renderObj.data.length) {
+      return this.renderZeroState()
     }
     return (
       <section className="StreamComponent">

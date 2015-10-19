@@ -11,7 +11,7 @@ describe('StreamComponent', () => {
   describe('#render', () => {
     describe('StreamComponent hasErrored', () => {
       it('renders errors', () => {
-        const comp = getRenderedComponent(subject, createPropsForStream({ stream: { error: true } }))
+        const comp = getRenderedComponent(subject, createPropsForStream({ stream: { error: true }, action: { meta: {} } }))
         expect(comp.props.className).to.equal('StreamComponent hasErrored')
         expect(comp.type).to.equal('section')
         const div = comp.props.children
