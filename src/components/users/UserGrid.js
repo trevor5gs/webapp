@@ -76,5 +76,5 @@ UserGrid.propTypes = {
   }).isRequired,
 }
 
-export default connect()(UserGrid)
+export default connect(null, null, null, { withRef: true })(UserGrid)
 
