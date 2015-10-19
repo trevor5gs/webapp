@@ -9,6 +9,7 @@ import { RepostIcon } from '../iconography/Icons'
 let models = {}
 
 function header(post, author) {
+  if (!post || !author) { return null }
   return (
     <Link to={`/${author.username}`} key={`postHeader_${post.id}`}>
       <header className="PostHeader">
@@ -22,6 +23,7 @@ function header(post, author) {
 }
 
 function repostHeader(post, repostAuthor, repostSource, repostedBy) {
+  if (!post || !repostedBy) { return null }
   return (
     <header className="RepostHeader" key={`postHeader_${post.id}`}>
       <div className="vitals">
