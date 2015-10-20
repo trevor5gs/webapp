@@ -38,8 +38,11 @@
 .NavbarLinks > a + a
   margin-left: rem(20)
 
-.no-touch .NavbarLinks > a:not(.active):hover,
-.NavbarLinks > .active
+.no-touch .NavbarLinks > a:hover,
+[data-pathname^="/following"] + .Navbar .NavbarLinks > a[href^="/following"],
+[data-pathname^="/starred"] + .Navbar .NavbarLinks > a[href^="/starred"],
+[data-pathname^="/discover"] + .Navbar .NavbarLinks > a[href^="/discover"],
+[data-pathname^="/search"] + .Navbar .NavbarLinks > a[href^="/search"]
   border-bottom: 2px solid
   color: black
 
