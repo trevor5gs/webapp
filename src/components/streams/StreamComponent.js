@@ -157,5 +157,5 @@ StreamComponent.propTypes = {
   stream: React.PropTypes.object.isRequired,
 }
 
-export default connect(mapStateToProps)(StreamComponent)
+export default connect(mapStateToProps, null, null, { withRef: true })(StreamComponent)
 

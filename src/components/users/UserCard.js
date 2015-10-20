@@ -33,5 +33,5 @@ UserCard.propTypes = {
   }).isRequired,
 }
 
-export default connect()(UserCard)
+export default connect(null, null, null, { withRef: true })(UserCard)
 
