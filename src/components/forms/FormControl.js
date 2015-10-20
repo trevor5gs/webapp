@@ -5,9 +5,9 @@ class FormControl extends React.Component {
     super(props, context)
     const { text, hasFocus } = this.props
     this.state = {
-      text: text || '',
-      hasValue: text ? text.length : false,
-      hasFocus: hasFocus || false,
+      text: text,
+      hasValue: text.length,
+      hasFocus: hasFocus,
     }
   }
 
@@ -26,5 +26,14 @@ class FormControl extends React.Component {
   }
 }
 
+FormControl.defaultProps = {
+  hasFocus: false,
+  text: '',
+}
+
+FormControl.propTypes = {
+  hasFocus: React.PropTypes.bool,
+  text: React.PropTypes.string,
+}
 export default FormControl
 
