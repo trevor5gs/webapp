@@ -101,9 +101,6 @@ export class StreamComponent extends React.Component {
     const { action } = this.state
     if (!action) { return null }
     const { meta, payload } = action
-    if (stream.type === ACTION_TYPES.LOAD_STREAM_REQUEST || !meta) {
-      return this.renderLoading()
-    }
     const result = json.pages ? json.pages[router.location.pathname] : null
     if (stream.error) {
       return this.renderError()
@@ -126,6 +123,9 @@ export class StreamComponent extends React.Component {
       }
     }
     if (!renderObj.data.length) {
+      if (stream.type === ACTION_TYPES.LOAD_STREAM_REQUEST || !meta) {
+        return this.renderLoading()
+      }
       return this.renderZeroState()
     }
     return (
