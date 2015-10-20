@@ -23,12 +23,16 @@ describe('api.js', () => {
   })
 
   it('#discoverRecommended', () => {
-    expect(api.discoverRecommended().path).to.match(/\/users/)
-    expect(api.discoverRecommended().pagingPath).to.equal('posts')
+    expect(api.discoverRecommended().path).to.match(/\/discover\/users\/recommended\?/)
+    expect(api.discoverRecommended().params.include_recent_posts).to.be.true
   })
 
   it('#friendStream', () => {
     expect(api.friendStream().path).to.match(/\/streams\/friend\?/)
+  })
+
+  it('#noiseStream', () => {
+    expect(api.noiseStream().path).to.match(/\/streams\/noise\?/)
   })
 
   it('#postDetail', () => {

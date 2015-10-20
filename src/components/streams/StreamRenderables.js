@@ -52,11 +52,6 @@ export function postsAsList(posts, json, currentUser) {
   )
 }
 
-export function discoverUsers(users, json, currentUser) {
-  const posts = getLinkArray(users.data[0], 'posts', json)
-  return postsAsGrid(posts, json, currentUser)
-}
-
 export function userDetail(users, json, currentUser) {
   const user = users.data[0]
   let posts = getLinkArray(user, 'posts', json) || []

@@ -51,10 +51,9 @@ export function relationshipBatchPath() {
 }
 // Discover
 export function discoverRecommended() {
-  const params = { post_count: PER_PAGE }
+  const params = { per_page: PER_PAGE, include_recent_posts: true, seed: new Date().getTime() }
   return {
-    path: getAPIPath('users/~lucian', params),
-    pagingPath: 'posts',
+    path: getAPIPath('discover/users/recommended', params),
     params,
   }
 }
@@ -63,6 +62,13 @@ export function friendStream() {
   const params = { per_page: PER_PAGE }
   return {
     path: getAPIPath('streams/friend', params),
+    params,
+  }
+}
+export function noiseStream() {
+  const params = { per_page: PER_PAGE }
+  return {
+    path: getAPIPath('streams/noise', params),
     params,
   }
 }

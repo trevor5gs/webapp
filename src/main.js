@@ -62,9 +62,11 @@ const rootRoute = {
   childRoutes: [
     createRedirect('onboarding', '/onboarding/communities'),
     require('./routes/discover'),
+    require('./routes/following'),
     require('./routes/onboarding'),
     require('./routes/post_detail'),
     require('./routes/search'),
+    require('./routes/starred'),
     require('./routes/user_detail'),
   ],
 }
