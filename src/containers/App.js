@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Modal from '../components/modals/Modal'
+import Navbar from '../components/navigation/Navbar'
 import DevGrid from '../components/devtools/DevGrid'
 import Analytics from '../components/analytics/Analytics'
 import { trackPageView } from '../actions/tracking'
@@ -33,6 +34,7 @@ class App extends React.Component {
         <main className="Main" data-pathname={pathname} role="main">
           {children}
         </main>
+        <Navbar/>
         <Modal/>
         <DevGrid/>
         <Analytics/>

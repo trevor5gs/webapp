@@ -1,17 +1,29 @@
 .Navbar
-  position: fixed
+  transition: transform $speed ease
+  position: absolute
   top: 0
   left: 0
   right: 0
-  height: rem(50)
-  padding: rem(30) rem(10)
-  background-color: white
   z-index: $z-navbar
+  height: rem(80)
+  padding: rem(20) rem(10)
+  background-color: rgba(lightblue, 0.95)
+  background-color: white
+
+.Navbar.asFixed
+  position: fixed
+  transform: translate3d(0, -100%, 0)
+
+.Navbar.asFixed.asDocked
+  transform: none
+
+.Navbar.skipTransition
+  transition: none !important
 
 .NavbarLinks
   position: absolute
-  margin-top: rem(-10)
   top: 50%
+  margin-top: rem(-12)
   right: rem(10)
 
 .NavbarLinks > a
@@ -26,19 +38,20 @@
 .NavbarLinks > a + a
   margin-left: rem(20)
 
-.no-touch .NavbarLinks > a:not(.active):hover,
-.NavbarLinks > .active
+.no-touch .NavbarLinks > a:hover,
+[data-pathname^="/following"] + .Navbar .NavbarLinks > a[href^="/following"],
+[data-pathname^="/starred"] + .Navbar .NavbarLinks > a[href^="/starred"],
+[data-pathname^="/discover"] + .Navbar .NavbarLinks > a[href^="/discover"],
+[data-pathname^="/search"] + .Navbar .NavbarLinks > a[href^="/search"]
   border-bottom: 2px solid
   color: black
 
 @media(max-width: #{$break-2-max})
-  // Hide the Ello icon..
-  .Navbar > a[href="/"]
+  .NavbarMark
     display: none
 
 @media(min-width: #{$break-2})
   .Navbar
-    height: rem(120)
     padding-left: rem(20)
     padding-right: rem(20)
   .NavbarLinks
