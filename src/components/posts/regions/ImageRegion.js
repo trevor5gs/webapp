@@ -2,10 +2,18 @@ import React from 'react'
 
 class ImageRegion extends React.Component {
 
+  isGif() {
+    const optimized = this.attachment.optimized
+    if (optimized && optimized.metadata) {
+      return optimized.metadata.type === 'image/gif'
+    }
+    return false
+  }
+
   renderAttachment() {
     const { content } = this.props
     let size = 'optimized'
-    if (!this.attachment[size].metadata.type.match('gif')) {
+    if (!this.isGif()) {
       size = window.innerWidth > 375 ? 'hdpi' : 'mdpi'
     }
     return (
