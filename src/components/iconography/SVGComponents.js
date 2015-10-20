@@ -38,8 +38,8 @@ SVGIcon.propTypes = {
 export class SVGBox extends React.Component {
   render() {
     return (
-      <SVGComponent height="60"
-                    width="60"
+      <SVGComponent height="40"
+                    width="40"
                     className={classNames(this.props.className, 'SVGBox')}>
         {this.props.children}
       </SVGComponent>
