@@ -57,7 +57,6 @@ class SearchView extends React.Component {
 }
 
 SearchView.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
   terms: React.PropTypes.string,
   type: React.PropTypes.string,
 }
