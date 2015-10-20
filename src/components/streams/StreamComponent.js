@@ -114,7 +114,7 @@ export class StreamComponent extends React.Component {
       renderObj.data.push(model)
     } else if (!result || !result.type || !result.ids) {
       return this.renderLoading()
-    } else if (result.type === meta.mappingType) {
+    } else if (result.type === meta.mappingType || (meta.resultFilter && result.type !== meta.mappingType)) {
       for (const id of result.ids) {
         renderObj.data.push(json[result.type][id])
       }
