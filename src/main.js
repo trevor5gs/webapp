@@ -56,20 +56,23 @@ function createRedirect(from, to) {
   }
 }
 
-const rootRoute = {
-  path: '/',
-  component: App,
-  childRoutes: [
-    createRedirect('onboarding', '/onboarding/communities'),
-    require('./routes/discover'),
-    require('./routes/following'),
-    require('./routes/onboarding'),
-    require('./routes/post_detail'),
-    require('./routes/search'),
-    require('./routes/starred'),
-    require('./routes/user_detail'),
-  ],
-}
+const routes = [
+  createRedirect('/', '/following'),
+  {
+    path: '/',
+    component: App,
+    childRoutes: [
+      createRedirect('onboarding', '/onboarding/communities'),
+      require('./routes/discover'),
+      require('./routes/following'),
+      require('./routes/onboarding'),
+      require('./routes/post_detail'),
+      require('./routes/search'),
+      require('./routes/starred'),
+      require('./routes/user_detail'),
+    ],
+  },
+]
 
 const logger = createLogger({ collapsed: true })
 function reducer(state = {}, action) {
@@ -85,7 +88,7 @@ function reducer(state = {}, action) {
 const store = compose(
   autoRehydrate(),
   applyMiddleware(thunk, uploader, requester, analytics, logger),
-  reduxReactRouter({routes: rootRoute, createHistory: createBrowserHistory})
+  reduxReactRouter({routes: routes, createHistory: createBrowserHistory})
 )(createStore)(reducer)
 
 const element = (
