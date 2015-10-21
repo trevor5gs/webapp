@@ -1,10 +1,12 @@
 const scrollObjects = []
 let ticking = false
+let lastScrollY = null
+let lastScrollDirection = null
 
-function callMethod(method) {
+function callMethod(method, scrollProperties) {
   for (const obj of scrollObjects) {
     if (obj[method]) {
-      obj[method]()
+      obj[method](scrollProperties)
     }
   }
 }
@@ -17,24 +19,69 @@ function getScrollHeight() {
   return Math.max(document.body.scrollHeight, document.body.offsetHeight)
 }
 
-function getScrollBottom() {
-  return Math.round(getScrollHeight() - window.innerHeight)
+function getScrollBottom(scrollHeight = getScrollHeight()) {
+  return Math.round(scrollHeight - window.innerHeight)
 }
 
-function checkScrollPosition() {
+function getScrollDirection(scrollY = getScrollY()) {
+  return (scrollY > lastScrollY) ? 'down' : 'up'
+}
+
+// This is handy, but we're not using it anywhere at the moment
+function getScrollPercent(bottom, top, val) {
+  let bottomRange = bottom
+  let topRange = top
+  let valueInRange = val
+  topRange += -bottomRange
+  valueInRange += -bottomRange
+  bottomRange += -bottomRange
+  return Math.round((valueInRange / (topRange - bottomRange) * 100))
+}
+
+function getScrollProperties() {
   const scrollY = getScrollY()
-  const scrollBottom = getScrollBottom()
-  if (scrollY === 0) {
-    callMethod('onScrollTop')
-  } else if (Math.abs(scrollY - scrollBottom) < 5) {
-    callMethod('onScrollBottom')
+  const scrollHeight = getScrollHeight()
+  const scrollBottom = getScrollBottom(scrollHeight)
+  return {
+    scrollY: scrollY,
+    scrollHeight: scrollHeight,
+    scrollBottom: scrollBottom,
+    scrollPercent: getScrollPercent(0, scrollBottom, scrollY),
+    scrollDirection: getScrollDirection(scrollY),
   }
+}
+
+function getScrollAction(scrollProperties) {
+  const { scrollY, scrollBottom, scrollDirection } = scrollProperties
+  if (scrollY === 0) {
+    return 'onScrollTop'
+  } else if (Math.abs(scrollY - scrollBottom) < 5) {
+    return 'onScrollBottom'
+  } else if (scrollY < 0) {
+    return 'onScrollPull'
+  } else if (scrollY > scrollBottom) {
+    return 'onScrollPush'
+  } else if (scrollDirection !== lastScrollDirection) {
+    return 'onScrollDirectionChange'
+  }
+  return null
+}
+
+function scrolled() {
+  const scrollProperties = getScrollProperties()
+  const scrollAction = getScrollAction(scrollProperties)
+  callMethod('onScroll', scrollProperties)
+  if (scrollAction) {
+    callMethod(scrollAction, scrollProperties)
+  }
+  lastScrollY = scrollProperties.scrollY
+  lastScrollDirection = scrollProperties.scrollDirection
 }
 
 function windowWasScrolled() {
   if (!ticking) {
     requestAnimationFrame(() => {
-      checkScrollPosition()
+      scrolled()
       ticking = false
     })
     ticking = true
@@ -59,3 +106,4 @@ export function removeScrollObject(obj) {
     window.removeEventListener('scroll', windowWasScrolled)
   }
 }
+

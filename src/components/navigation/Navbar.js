@@ -8,11 +8,13 @@ import { SHORTCUT_KEYS } from '../../constants/action_types'
 import { openModal, closeModal } from '../../actions/modals'
 import Avatar from '../users/Avatar'
 import HelpDialog from '../dialogs/HelpDialog'
+import { addScrollObject, removeScrollObject } from '../scroll/ScrollComponent'
 
 
 class Navbar extends React.Component {
   constructor(props, context) {
     super(props, context)
+    this.scrollYAtDirectionChange = null
     this.state = {
       asFixed: false,
       asDocked: false,
@@ -21,10 +23,6 @@ class Navbar extends React.Component {
   }
 
   componentDidMount() {
-    this.ticking = false
-    this.lastScrollY = this.getScrollY()
-    this.lastScrollDirection = (this.lastScrollY > 600) ? 'down' : 'up'
-
     Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
       const { router } = this.context
       router.transitionTo(this.props.shortcuts[shortcut])
@@ -37,55 +35,49 @@ class Navbar extends React.Component {
       }
       return dispatch(openModal(<HelpDialog/>))
     })
-
-    window.addEventListener('scroll', this.windowDidScroll.bind(this))
+    addScrollObject(this)
   }
 
   componentWillUnmount() {
     Mousetrap.unbind(Object.keys(this.props.shortcuts))
     Mousetrap.unbind(SHORTCUT_KEYS.HELP)
-    window.removeEventListener('scroll', this.windowDidScroll)
+    removeScrollObject(this)
   }
 
-  getScrollY() {
-    return Math.ceil(window.pageYOffset)
-  }
-
-  updateNavbarPosition() {
-    const scrollY = this.getScrollY()
-    const distance = Math.abs(scrollY - this.lastScrollY)
-    const direction = (scrollY > this.lastScrollY) ? 'down' : 'up'
-
-    if (scrollY <= 0 && this.state.asFixed) {
+  onScrollTop() {
+    if (this.state.asFixed) {
       this.setState({ asFixed: false, asDocked: false, skipTransition: false })
-      return
     }
+  }
 
+  onScrollDirectionChange(scrollProperties) {
+    const { scrollY } = scrollProperties
+    if (scrollY >= 600) {
+      this.scrollYAtDirectionChange = scrollY
+    }
+  }
+
+  onScroll(scrollProperties) {
+    const { scrollY, scrollDirection } = scrollProperties
     if (scrollY >= 600 && !this.state.asFixed) {
-      this.setState({ asFixed: true })
-      this.setState({ skipTransition: true })
+      this.setState({ asFixed: true, skipTransition: true })
     } else if (this.state.skipTransition) {
       this.setState({ skipTransition: false })
     }
 
-    if (scrollY < 600 || distance < 50 || scrollY === this.lastScrollY) {
-      return
+    // After a scroll direction has changed we start tracking the distance it
+    // has travelled. Once it reaches passes the distance, trigger the current
+    // docked state and invalidate the change since it just set it's state.
+    // Allows a slight delay in the change so it's not so jerky.
+    if (scrollY >= 600 && this.scrollYAtDirectionChange && this.state.asFixed) {
+      const distance = Math.abs(scrollY - this.scrollYAtDirectionChange)
+      if (distance > 50 ) {
+        this.setState({ asDocked: scrollDirection === 'up' })
+        this.scrollYAtDirectionChange = null
+      }
     }
-
-    if (direction !== this.lastScrollDirection) {
-      this.setState({ asDocked: direction === 'up' && this.state.asFixed })
-    }
-    this.lastScrollY = scrollY
-    this.lastScrollDirection = direction
   }
 
-  windowDidScroll() {
-    if (!this.ticking) {
-      requestAnimationFrame(() => {
-        this.updateNavbarPosition()
-        this.ticking = false
-      })
-      this.ticking = true
 
   renderProfileAvatar(profile) {
     const { payload } = profile
