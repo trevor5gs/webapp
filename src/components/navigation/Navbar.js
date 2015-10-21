@@ -6,6 +6,7 @@ import { Link } from 'react-router'
 import { ElloMark } from '../iconography/ElloIcons'
 import { SHORTCUT_KEYS } from '../../constants/action_types'
 import { openModal, closeModal } from '../../actions/modals'
+import Avatar from '../users/Avatar'
 import HelpDialog from '../dialogs/HelpDialog'
 
 
@@ -15,6 +16,7 @@ class Navbar extends React.Component {
     this.state = {
       asFixed: false,
       asDocked: false,
+      skipTransition: false,
     }
   }
 
@@ -84,22 +86,40 @@ class Navbar extends React.Component {
         this.ticking = false
       })
       this.ticking = true
+
+  renderProfileAvatar(profile) {
+    const { payload } = profile
+    const { avatar, username} = payload
+    if (avatar && username) {
+      return (
+        <Link className="NavbarProfile" to={`/${username}`}>
+          <Avatar imgSrc={avatar.regular.url} />
+        </Link>
+      )
     }
+    return (
+      <span className="NavbarProfile">
+        <Avatar/>
+      </span>
+    )
   }
 
 
   render() {
+    const { profile } = this.props
     const klassNames = classNames(
       'Navbar',
       { asFixed: this.state.asFixed },
       { asDocked: this.state.asDocked },
       { skipTransition: this.state.skipTransition },
     )
+
     return (
       <nav className={klassNames} role="navigation">
         <Link className="NavbarMark" to="/">
           <ElloMark />
         </Link>
+        <h2>Be Inspired.</h2>
         <div className="NavbarLinks">
           <Link to="/following">Following</Link>
           <Link to="/starred">Starred</Link>
@@ -107,6 +127,7 @@ class Navbar extends React.Component {
           <Link to="/search">Search</Link>
           <Link to="/onboarding/communities">Onboarding</Link>
         </div>
+        { this.renderProfileAvatar(profile) }
       </nav>
     )
   }
@@ -116,6 +137,7 @@ class Navbar extends React.Component {
 function mapStateToProps(state) {
   return {
     modals: state.modals,
+    profile: state.profile,
   }
 }
 Navbar.contextTypes = {
@@ -134,6 +156,7 @@ Navbar.propTypes = {
   shortcuts: React.PropTypes.object.isRequired,
   dispatch: React.PropTypes.func.isRequired,
   modals: React.PropTypes.object,
+  profile: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(Navbar)

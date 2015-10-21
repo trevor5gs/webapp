@@ -24,7 +24,7 @@
   position: absolute
   top: 50%
   margin-top: rem(-12)
-  right: rem(10)
+  right: rem(70)
 
 .NavbarLinks > a
   +sans-family
@@ -38,6 +38,16 @@
 .NavbarLinks > a + a
   margin-left: rem(20)
 
+.NavbarProfile
+  position: absolute
+  top: rem(20)
+  right: rem(10)
+  z-index: 3
+
+.NavbarProfile .Avatar
+  +circle(rem(40))
+  overflow: hidden
+
 .no-touch .NavbarLinks > a:hover,
 [data-pathname^="/following"] + .Navbar .NavbarLinks > a[href^="/following"],
 [data-pathname^="/starred"] + .Navbar .NavbarLinks > a[href^="/starred"],
@@ -45,6 +55,12 @@
 [data-pathname^="/search"] + .Navbar .NavbarLinks > a[href^="/search"]
   border-bottom: 2px solid
   color: black
+
+.NavbarMark + h2
+  +heading-family
+  font-size: rem(18)
+  display: inline-block
+  margin-left: rem(20)
 
 @media(max-width: #{$break-2-max})
   .NavbarMark
@@ -54,16 +70,19 @@
   .Navbar
     padding-left: rem(20)
     padding-right: rem(20)
-  .NavbarLinks
+  .NavbarProfile
     right: rem(20)
-
+  .NavbarLinks
+    right: rem(80)
 
 @media(min-width: #{$break-4})
   .Navbar
     padding-left: rem(40)
     padding-right: rem(40)
-  .NavbarLinks
+  .NavbarProfile
     right: rem(40)
+  .NavbarLinks
+    right: rem(100)
 
 // -------------------------------------
 
