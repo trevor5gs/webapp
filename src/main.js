@@ -15,37 +15,20 @@ import App from './containers/App'
 import { persistStore, autoRehydrate } from 'redux-persist'
 
 import './vendor/embetter'
+import './vendor/embetter_initializer'
 import './vendor/time_ago_in_words'
 
-// TODO: move this somewhere else?
-window.embetter.activeServices = [
-  window.embetter.services.youtube,
-  window.embetter.services.vimeo,
-  window.embetter.services.soundcloud,
-  window.embetter.services.dailymotion,
-  window.embetter.services.mixcloud,
-  window.embetter.services.codepen,
-  window.embetter.services.bandcamp,
-  window.embetter.services.ustream,
-]
-window.embetter.reloadPlayers = (el = document.body) => {
-  window.embetter.utils.disposeDetachedPlayers()
-  window.embetter.utils.initMediaPlayers(el, window.embetter.activeServices)
-}
-window.embetter.stopPlayers = (el = document.body) => {
-  window.embetter.utils.unembedPlayers(el)
-  window.embetter.utils.disposeDetachedPlayers()
-}
-window.embetter.removePlayers = (el = document.body) => {
-  window.embetter.stopPlayers(el)
-  for (const ready of el.querySelectorAll('.embetter-ready')) {
-    ready.classList.remove('embetter-ready')
+// check and update current version and
+// only kill off the persisted reducers
+if (ENV.APP_VERSION) {
+  const curVersion = localStorage.getItem('ello_webapp_version')
+  if (curVersion && ENV.APP_VERSION && curVersion !== ENV.APP_VERSION) {
+    for (const item of ['devtools', 'json', 'modals', 'profile', 'stream']) {
+      localStorage.removeItem(`reduxPersist:${item}`)
+    }
   }
-  for (const statix of el.querySelectorAll('.embetter-static')) {
-    statix.classList.remove('embetter-static')
-  }
+  localStorage.setItem('ello_webapp_version', ENV.APP_VERSION)
 }
-window.embetter.reloadPlayers()
 
 function createRedirect(from, to) {
   return {
