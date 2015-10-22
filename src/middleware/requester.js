@@ -67,12 +67,17 @@ export function requester() {
 
     // This is problematic... :(
     if ((type !== ACTION_TYPES.LOAD_STREAM &&
+         type !== ACTION_TYPES.LOAD_NEXT_CONTENT &&
+         type !== ACTION_TYPES.LOAD_PREV_CONTENT &&
+         type !== ACTION_TYPES.POST.COMMENT &&
+         type !== ACTION_TYPES.POST.DELETE &&
+         type !== ACTION_TYPES.POST.EDIT &&
+         type !== ACTION_TYPES.POST.LOVE &&
+         type !== ACTION_TYPES.POST.REPOST &&
+         type !== ACTION_TYPES.POST_FORM &&
          type !== ACTION_TYPES.POST_JSON &&
          type !== ACTION_TYPES.PROFILE.LOAD &&
-         type !== ACTION_TYPES.PROFILE.SAVE &&
-         type !== ACTION_TYPES.POST_FORM &&
-         type !== ACTION_TYPES.LOAD_NEXT_CONTENT &&
-         type !== ACTION_TYPES.LOAD_PREV_CONTENT
+         type !== ACTION_TYPES.PROFILE.SAVE
         ) || !payload) {
       return next(action)
     }

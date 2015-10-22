@@ -11,3 +11,18 @@ export function loadPostDetail(token) {
   }
 }
 
+export function lovePost(post) {
+  return {
+    type: ACTION_TYPES.POST.LOVE,
+    payload: { endpoint: api.lovePost(post), method: 'POST', model: post },
+    meta: { mappingType: MAPPING_TYPES.LOVES },
+  }
+}
+
+export function unlovePost(post) {
+  return {
+    type: ACTION_TYPES.POST.LOVE,
+    payload: { endpoint: api.unlovePost(post), method: 'DELETE', model: post },
+    meta: {},
+  }
+}

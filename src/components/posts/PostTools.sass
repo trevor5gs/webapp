@@ -3,22 +3,34 @@
   color: #aaa
   padding-top: rem(5)
 
-.PostTools > span
+.PostTools > span,
+.PostTools > a > span
   display: inline-block
   height: rem(22)
   padding: rem(1) rem(5)
 
-.PostTools > span:not(:first-child)
+.PostTools > span:not(:first-child),
+.PostTools > a > span:not(:first-child)
+  margin-left: rem(12)
+  display: inline-block
+  height: rem(22)
+  padding: rem(1) rem(5)
+
+.PostTools > span:not(:first-child),
+.PostTools > a > span:not(:first-child)
   margin-left: rem(12)
 
-.PostTools > span.pill
+.PostTools > span.pill,
+.PostTools > a > span.pill
   border-radius: rem(11)
   background-color: #eee
   color: #535353
 
-.PostTools > span.pill .SVGIcon g
+.PostTools > span.pill .SVGIcon g,
+.PostTools > a > span.pill .SVGIcon g
   stroke: #535353
-.PostTools > span.pill .EyeIcon > circle
+.PostTools > span.pill .EyeIcon > circle,
+.PostTools > a > span.pill .EyeIcon > circle
   transition-delay: $speed * 0.5
   stroke: #535353
   fill: #535353
@@ -47,10 +59,17 @@
 // Hover styles
 
 .no-touch a:hover .BubbleIcon g,
-.no-touch a:hover .HeartIcon g
+.no-touch button:hover .BubbleIcon g,
+.no-touch a:hover .HeartIcon g,
+.no-touch button:hover .HeartIcon g
   fill: black
 
-.no-touch a:hover .EyeIcon > circle
+button.active .HeartIcon g
+  fill: red
+  stroke: red
+
+.no-touch a:hover .EyeIcon > circle,
+.no-touch button:hover .EyeIcon > circle
   transition-delay: $speed * 0.5
   stroke: black
   fill: black

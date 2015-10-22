@@ -1,4 +1,5 @@
 import * as ACTION_TYPES from '../constants/action_types'
+import * as MAPPING_TYPES from '../constants/mapping_types'
 import uniq from 'lodash.uniq'
 
 function mergeModel(state, type, params) {
@@ -28,6 +29,36 @@ function addModels(state, type, data) {
   return ids
 }
 
+function updatePostLoves(state, newState, action) {
+  const { method, model } = action.payload
+  let delta = 0
+  let loved = false
+  switch (action.type) {
+  case ACTION_TYPES.POST.LOVE_REQUEST:
+    if (method === 'DELETE') {
+      delta = -1
+      loved = false
+    } else {
+      delta = 1
+      loved = true
+    }
+    break
+  case ACTION_TYPES.POST.LOVE_FAILURE:
+    if (method === 'POST') {
+      delta = -1
+      loved = false
+    } else {
+      delta = 1
+      loved = true
+    }
+    break
+  default:
+    return state
+  }
+  mergeModel(newState, MAPPING_TYPES.POSTS, { id: model.id, lovesCount: parseInt(model.lovesCount, 10) + delta, loved: loved })
+  return newState
+}
+
 export function json(state = {}, action = { type: '' }, router) {
   const newState = { ...state }
   if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE) {
@@ -37,6 +68,8 @@ export function json(state = {}, action = { type: '' }, router) {
     // TODO: update the current user's followingCount +1 (this might happen in the profile reducer)
     mergeModel(newState, mappingType, { id: userId, relationshipPriority: priority })
     return newState
+  } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {
+    return updatePostLoves(state, newState, action)
   }
   // whitelist actions
   switch (action.type) {
@@ -47,6 +80,7 @@ export function json(state = {}, action = { type: '' }, router) {
     return state
   }
   const { response } = action.payload
+  if (!response) { return state }
   // parse linked
   if (response.linked) {
     for (const linkedType in response.linked) {
