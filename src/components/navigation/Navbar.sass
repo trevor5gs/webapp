@@ -1,5 +1,5 @@
 .Navbar
-  transition: transform $speed ease
+  transition: transform $speed ease, visibility $speed
   position: absolute
   top: 0
   left: 0
@@ -7,15 +7,16 @@
   z-index: $z-navbar
   height: rem(80)
   padding: rem(20) rem(10)
-  background-color: rgba(lightblue, 0.95)
+  // background-color: rgba(lightblue, 0.95)
   background-color: white
 
 .Navbar.asFixed
   position: fixed
-  transform: translate3d(0, -100%, 0)
 
-.Navbar.asFixed.asDocked
-  transform: none
+.Navbar.asFixed.asHidden
+  transform: translate3d(0, -100%, 0)
+  transition-delay: 0s $speed
+  visibility: hidden
 
 .Navbar.skipTransition
   transition: none !important
