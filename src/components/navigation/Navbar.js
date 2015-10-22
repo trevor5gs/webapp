@@ -17,7 +17,7 @@ class Navbar extends React.Component {
     this.scrollYAtDirectionChange = null
     this.state = {
       asFixed: false,
-      asDocked: false,
+      asHidden: false,
       skipTransition: false,
     }
   }
@@ -44,9 +44,10 @@ class Navbar extends React.Component {
     removeScrollObject(this)
   }
 
+
   onScrollTop() {
     if (this.state.asFixed) {
-      this.setState({ asFixed: false, asDocked: false, skipTransition: false })
+      this.setState({ asFixed: false, asHidden: false, skipTransition: false })
     }
   }
 
@@ -59,20 +60,21 @@ class Navbar extends React.Component {
 
   onScroll(scrollProperties) {
     const { scrollY, scrollDirection } = scrollProperties
+
+    // Going from absolute to fixed positioning
     if (scrollY >= 600 && !this.state.asFixed) {
-      this.setState({ asFixed: true, skipTransition: true })
+      this.setState({ asFixed: true, asHidden: true, skipTransition: true })
     } else if (this.state.skipTransition) {
       this.setState({ skipTransition: false })
     }
 
-    // After a scroll direction has changed we start tracking the distance it
-    // has travelled. Once it reaches passes the distance, trigger the current
-    // docked state and invalidate the change since it just set it's state.
-    // Allows a slight delay in the change so it's not so jerky.
-    if (scrollY >= 600 && this.scrollYAtDirectionChange && this.state.asFixed) {
+    // Scroll just changed directions so it's about to either be shown or hidden
+    if (scrollY >= 600 && this.scrollYAtDirectionChange) {
       const distance = Math.abs(scrollY - this.scrollYAtDirectionChange)
-      if (distance > 50 ) {
-        this.setState({ asDocked: scrollDirection === 'up' })
+      const delay = scrollDirection === 'down' ? 20 : 80
+
+      if (distance >= delay ) {
+        this.setState({ asHidden: scrollDirection === 'down' })
         this.scrollYAtDirectionChange = null
       }
     }
@@ -102,7 +104,7 @@ class Navbar extends React.Component {
     const klassNames = classNames(
       'Navbar',
       { asFixed: this.state.asFixed },
-      { asDocked: this.state.asDocked },
+      { asHidden: this.state.asHidden },
       { skipTransition: this.state.skipTransition },
     )
 
