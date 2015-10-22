@@ -4,6 +4,7 @@ import Avatar from '../users/Avatar'
 import ImageRegion from './regions/ImageRegion'
 import PostTools from './PostTools'
 import { RepostIcon } from '../iconography/Icons'
+import { getLinkObject } from '../base/json_helper'
 
 
 let models = {}
@@ -11,14 +12,14 @@ let models = {}
 function header(post, author) {
   if (!post || !author) { return null }
   return (
-    <Link to={`/${author.username}`} key={`postHeader_${post.id}`}>
-      <header className="PostHeader">
+    <header className="PostHeader" key={`postHeader_${post.id}`}>
+      <Link to={`/${author.username}`}>
         <Avatar imgSrc={author.avatar.regular.url} />
-        <div className="vitals">
-          <span className="username" name="username">{`@${author.username}`}</span>
-        </div>
-      </header>
-    </Link>
+      </Link>
+      <div className="vitals">
+        <Link to={`/${author.username}`}>{`@${author.username}`}</Link>
+      </div>
+    </header>
   )
 }
 
@@ -26,11 +27,19 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   if (!post || !repostedBy) { return null }
   return (
     <header className="RepostHeader" key={`postHeader_${post.id}`}>
+      <Link to={`/${repostAuthor.username}`}>
+        <Avatar imgSrc={repostAuthor.avatar.regular.url} />
+      </Link>
       <div className="vitals">
-        <a className="reposted-by" href={`/${repostedBy.username}`}>
-          <RepostIcon />
-          {` by ${repostedBy.username}`}
-        </a>
+        <div>
+          <Link to={`/${repostAuthor.username}`}>{`@${repostAuthor.username}`}</Link>
+        </div>
+        <div>
+          <Link className="reposted-by" to={`/${repostedBy.username}`}>
+            <RepostIcon />
+            {` by ${repostedBy.username}`}
+          </Link>
+        </div>
       </div>
     </header>
   )
@@ -90,7 +99,7 @@ export function parsePost(post, json, currentUser, gridLayout = true) {
   const cells = []
   if (post.repostContent && post.repostContent.length) {
     // TODO: pass repostAuthor and repostSource to this
-    cells.push(repostHeader(post, null, null, author))
+    cells.push(repostHeader(post, getLinkObject(post, 'repostAuthor', json), getLinkObject(post, 'repostedSource', json), author))
     // this is weird, but the post summary is
     // actually the repost summary on reposts
     if (gridLayout) {

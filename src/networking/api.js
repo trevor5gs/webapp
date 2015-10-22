@@ -81,6 +81,16 @@ export function postDetail(idOrToken) {
     params,
   }
 }
+export function lovePost(post) {
+  return {
+    path: getAPIPath(`posts/${post.id}/loves`),
+  }
+}
+export function unlovePost(post) {
+  return {
+    path: getAPIPath(`posts/${post.id}/love`),
+  }
+}
 // Comments
 export function commentsForPost(post) {
   const params = { per_page: PER_PAGE }
