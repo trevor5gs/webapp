@@ -1,7 +1,9 @@
-import UserDetail from '../../components/users/UserDetail'
-
 export default {
   path: ':username',
-  component: UserDetail,
+  getComponents(location, cb) {
+    require.ensure([], (require) => {
+      cb(null, require('../../components/views/UserDetailView'))
+    })
+  },
 }
 
