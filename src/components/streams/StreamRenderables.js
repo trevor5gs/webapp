@@ -72,7 +72,7 @@ export function postDetail(posts, json, currentUser) {
   return (
     <div className="PostDetail">
       <div ref={`postList_${post.id}`} key={post.id} className="PostList">
-        {parsePost(post, json, currentUser)}
+        {parsePost(post, json, currentUser, false)}
       </div>
       {comments.map((comment) => {
         return (
