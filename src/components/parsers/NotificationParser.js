@@ -22,6 +22,7 @@ const NOTIFICATION_KIND = {
 
 let models = {}
 
+// HELPERS
 function userTextLink(user) {
   if (!user) { return null }
   return (
@@ -41,8 +42,14 @@ function postTextLink(post, text = 'post') {
   )
 }
 
+function timestamp(createdAt) {
+  return (
+    <div>{new Date(createdAt).timeAgoInWords()}</div>
+  )
+}
+
 // COMMENTS
-function commentNotification(comment) {
+function commentNotification(comment, createdAt) {
   if (!comment) { return null }
   const author = getLinkObject(comment, 'author', models)
   const parentPost = getLinkObject(comment, 'parentPost', models)
@@ -53,11 +60,12 @@ function commentNotification(comment) {
       {` commented on your `}
       {postTextLink(parentPost)}
       .
+      {timestamp(createdAt)}
     </div>
   )
 }
 
-function commentMentionNotification(comment) {
+function commentMentionNotification(comment, createdAt) {
   if (!comment) { return null }
   const author = getLinkObject(comment, 'author', models)
   const parentPost = getLinkObject(comment, 'parentPost', models)
@@ -68,11 +76,12 @@ function commentMentionNotification(comment) {
       {` mentioned you in a `}
       {postTextLink(parentPost, 'comment')}
       .
+      {timestamp(createdAt)}
     </div>
   )
 }
 
-function commentOnOriginalPostNotification(comment) {
+function commentOnOriginalPostNotification(comment, createdAt) {
   if (!comment) { return null }
   const author = getLinkObject(comment, 'author', models)
   const repost = getLinkObject(comment, 'parentPost', models)
@@ -89,11 +98,12 @@ function commentOnOriginalPostNotification(comment) {
       {` of your `}
       {postTextLink(repostedSource)}
       .
+      {timestamp(createdAt)}
     </div>
   )
 }
 
-function commentOnRepostNotification(comment) {
+function commentOnRepostNotification(comment, createdAt) {
   if (!comment) { return null }
   const author = getLinkObject(comment, 'author', models)
   const repost = getLinkObject(comment, 'parentPost', models)
@@ -104,24 +114,26 @@ function commentOnRepostNotification(comment) {
       {` commented on your `}
       {postTextLink(repost, 'repost')}
       .
+      {timestamp(createdAt)}
     </div>
   )
 }
 
 // INVITATIONS
-function invitationAcceptedNotification(user) {
+function invitationAcceptedNotification(user, createdAt) {
   if (!user) { return null }
   return (
     <div key={`invitationAcceptedNotification_${user.id}`}>
       <Avatar imgSrc={user.avatar.regular.url} path={`/${user.username}`} />
       {userTextLink(user)}
       {` accepted your invitation.`}
+      {timestamp(createdAt)}
     </div>
   )
 }
 
 // LOVES
-function loveNotification(love) {
+function loveNotification(love, createdAt) {
   if (!love) { return null }
   const user = getLinkObject(love, 'user', models)
   const post = getLinkObject(love, 'post', models)
@@ -132,11 +144,12 @@ function loveNotification(love) {
       {` loved your `}
       {postTextLink(post)}
       .
+      {timestamp(createdAt)}
     </div>
   )
 }
 
-function loveOnRepostNotification(love) {
+function loveOnRepostNotification(love, createdAt) {
   if (!love) { return null }
   const user = getLinkObject(love, 'user', models)
   const repost = getLinkObject(love, 'post', models)
@@ -147,11 +160,12 @@ function loveOnRepostNotification(love) {
       {` loved your `}
       {postTextLink(repost, 'repost')}
       .
+      {timestamp(createdAt)}
     </div>
   )
 }
 
-function loveOnOriginalPostNotification(love) {
+function loveOnOriginalPostNotification(love, createdAt) {
   if (!love) { return null }
   const user = getLinkObject(love, 'user', models)
   const repost = getLinkObject(love, 'post', models)
@@ -168,12 +182,13 @@ function loveOnOriginalPostNotification(love) {
       {` of your `}
       {postTextLink(repostedSource)}
       .
+      {timestamp(createdAt)}
     </div>
   )
 }
 
 // MENTIONS
-function postMentionNotification(post) {
+function postMentionNotification(post, createdAt) {
   if (!post) { return null }
   const author = getLinkObject(post, 'author', models)
   return (
@@ -183,23 +198,25 @@ function postMentionNotification(post) {
       {` mentioned you in a `}
       {postTextLink(post)}
       .
+      {timestamp(createdAt)}
     </div>
   )
 }
 
 // RELATIONSHIPS
-function newFollowerPost(user) {
+function newFollowerPost(user, createdAt) {
   if (!user) { return null }
   return (
     <div key={`newFollowerPost_${user.id}`}>
       <Avatar imgSrc={user.avatar.regular.url} path={`/${user.username}`} />
       {userTextLink(user)}
       {` started following you.`}
+      {timestamp(createdAt)}
     </div>
   )
 }
 
-function newFollowedUserPost(user) {
+function newFollowedUserPost(user, createdAt) {
   if (!user) { return null }
   return (
     <div key={`newFollowedUserPost_${user.id}`}>
@@ -207,12 +224,13 @@ function newFollowedUserPost(user) {
       {`You started following `}
       {userTextLink(user)}
       .
+      {timestamp(createdAt)}
     </div>
   )
 }
 
 // REPOSTS
-function repostNotification(post) {
+function repostNotification(post, createdAt) {
   if (!post) { return null }
   const author = getLinkObject(post, 'author', models)
   return (
@@ -222,6 +240,7 @@ function repostNotification(post) {
       {` reposted your `}
       {postTextLink(post)}
       .
+      {timestamp(createdAt)}
     </div>
   )
 }
@@ -231,43 +250,44 @@ export function parseNotification(notification, json) {
   if (!notification) { return null }
   models = json
   const cells = []
+  const createdAt = notification.createdAt
   const subject = getLinkObject(notification, `subject`, json)
   switch (notification.kind) {
   case NOTIFICATION_KIND.COMMENT:
-    cells.push(commentNotification(subject))
+    cells.push(commentNotification(subject, createdAt))
     break
   case NOTIFICATION_KIND.COMMENT_MENTION:
-    cells.push(commentMentionNotification(subject))
+    cells.push(commentMentionNotification(subject, createdAt))
     break
   case NOTIFICATION_KIND.COMMENT_ORIGINAL:
-    cells.push(commentOnOriginalPostNotification(subject))
+    cells.push(commentOnOriginalPostNotification(subject, createdAt))
     break
   case NOTIFICATION_KIND.COMMENT_REPOST:
-    cells.push(commentOnRepostNotification(subject))
+    cells.push(commentOnRepostNotification(subject, createdAt))
     break
   case NOTIFICATION_KIND.INVITATION_ACCEPTED:
-    cells.push(invitationAcceptedNotification(subject))
+    cells.push(invitationAcceptedNotification(subject, createdAt))
     break
   case NOTIFICATION_KIND.LOVE:
-    cells.push(loveNotification(subject))
+    cells.push(loveNotification(subject, createdAt))
     break
   case NOTIFICATION_KIND.LOVE_ORIGINAL:
-    cells.push(loveOnOriginalPostNotification(subject))
+    cells.push(loveOnOriginalPostNotification(subject, createdAt))
     break
   case NOTIFICATION_KIND.LOVE_REPOST:
-    cells.push(loveOnRepostNotification(subject))
+    cells.push(loveOnRepostNotification(subject, createdAt))
     break
   case NOTIFICATION_KIND.NEW_FOLLOWER:
-    cells.push(newFollowerPost(subject))
+    cells.push(newFollowerPost(subject, createdAt))
     break
   case NOTIFICATION_KIND.NEW_FOLLOWED_USER:
-    cells.push(newFollowedUserPost(subject))
+    cells.push(newFollowedUserPost(subject, createdAt))
     break
   case NOTIFICATION_KIND.POST_MENTION:
-    cells.push(postMentionNotification(subject))
+    cells.push(postMentionNotification(subject, createdAt))
     break
   case NOTIFICATION_KIND.REPOST:
-    cells.push(repostNotification(subject))
+    cells.push(repostNotification(subject, createdAt))
     break
   case NOTIFICATION_KIND.WELCOME:
     return <div>Welcome to Ello!</div>
