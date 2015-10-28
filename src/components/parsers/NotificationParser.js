@@ -50,9 +50,11 @@ function timestamp(createdAt) {
 
 // COMMENTS
 function commentNotification(comment, createdAt) {
+  // TODO: investigate why these are undefined sometimes
   if (!comment) { return null }
   const author = getLinkObject(comment, 'author', models)
   const parentPost = getLinkObject(comment, 'parentPost', models)
+  if (!author || !parentPost) { return null }
   return (
     <div key={`commentNotification_${comment.id}`}>
       <Avatar imgSrc={author.avatar.regular.url} path={`/${author.username}`} />
@@ -69,6 +71,7 @@ function commentMentionNotification(comment, createdAt) {
   if (!comment) { return null }
   const author = getLinkObject(comment, 'author', models)
   const parentPost = getLinkObject(comment, 'parentPost', models)
+  if (!author || !parentPost) { return null }
   return (
     <div key={`commentMentionNotification_${comment.id}`}>
       <Avatar imgSrc={author.avatar.regular.url} path={`/${author.username}`} />
@@ -87,6 +90,7 @@ function commentOnOriginalPostNotification(comment, createdAt) {
   const repost = getLinkObject(comment, 'parentPost', models)
   const repostAuthor = getLinkObject(repost, 'author', models)
   const repostedSource = getLinkObject(repost, 'repostedSource', models)
+  if (!author || !repost || !repostAuthor || !repostedSource) { return null }
   return (
     <div key={`commentOnOriginalPostNotification_${comment.id}`}>
       <Avatar imgSrc={author.avatar.regular.url} path={`/${author.username}`} />
@@ -107,6 +111,7 @@ function commentOnRepostNotification(comment, createdAt) {
   if (!comment) { return null }
   const author = getLinkObject(comment, 'author', models)
   const repost = getLinkObject(comment, 'parentPost', models)
+  if (!author || !repost) { return null }
   return (
     <div key={`commentOnRepostNotification_${comment.id}`}>
       <Avatar imgSrc={author.avatar.regular.url} path={`/${author.username}`} />
@@ -137,6 +142,7 @@ function loveNotification(love, createdAt) {
   if (!love) { return null }
   const user = getLinkObject(love, 'user', models)
   const post = getLinkObject(love, 'post', models)
+  if (!user || !post) { return null }
   return (
     <div key={`loveNotification_${user.id}_${post.id}`}>
       <Avatar imgSrc={user.avatar.regular.url} path={`/${user.username}`} />
@@ -153,6 +159,7 @@ function loveOnRepostNotification(love, createdAt) {
   if (!love) { return null }
   const user = getLinkObject(love, 'user', models)
   const repost = getLinkObject(love, 'post', models)
+  if (!user || !repost) { return null }
   return (
     <div key={`loveOnRepostNotification_${user.id}_${repost.id}`}>
       <Avatar imgSrc={user.avatar.regular.url} path={`/${user.username}`} />
@@ -171,6 +178,7 @@ function loveOnOriginalPostNotification(love, createdAt) {
   const repost = getLinkObject(love, 'post', models)
   const repostAuthor = getLinkObject(repost, 'author', models)
   const repostedSource = getLinkObject(repost, 'repostedSource', models)
+  if (!user || !repost || !repostAuthor || !repostedSource) { return null }
   return (
     <div key={`loveOnOriginalPostNotification_${user.id}_${repost.id}`}>
       <Avatar imgSrc={user.avatar.regular.url} path={`/${user.username}`} />
@@ -191,6 +199,7 @@ function loveOnOriginalPostNotification(love, createdAt) {
 function postMentionNotification(post, createdAt) {
   if (!post) { return null }
   const author = getLinkObject(post, 'author', models)
+  if (!author) { return null }
   return (
     <div key={`postMentionNotification_${post.id}`}>
       <Avatar imgSrc={author.avatar.regular.url} path={`/${author.username}`} />
@@ -233,6 +242,7 @@ function newFollowedUserPost(user, createdAt) {
 function repostNotification(post, createdAt) {
   if (!post) { return null }
   const author = getLinkObject(post, 'author', models)
+  if (!author) { return null }
   return (
     <div key={`repostNotification_${post.id}`}>
       <Avatar imgSrc={author.avatar.regular.url} path={`/${author.username}`} />

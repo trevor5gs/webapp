@@ -86,3 +86,4 @@ const element = (
 persistStore(store, { blacklist: ['router'] }, () => {
   ReactDOM.render(element, document.getElementById('root'))
 })
+
