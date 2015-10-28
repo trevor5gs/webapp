@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router'
 import Avatar from '../users/Avatar'
-import ImageRegion from './regions/ImageRegion'
-import PostTools from './PostTools'
+import ImageRegion from '../posts/regions/ImageRegion'
+import PostTools from '../posts/PostTools'
 import { RepostIcon } from '../iconography/Icons'
 import { getLinkObject } from '../base/json_helper'
+import * as MAPPING_TYPES from '../../constants/mapping_types'
 
 
 let models = {}
@@ -90,15 +91,16 @@ function regionItems(content) {
 }
 
 function footer(post, author, currentUser) {
+  if (!author) { return null }
   return <PostTools author={author} post={post} currentUser={currentUser} key={`postTools_${post.id}`} />
 }
 
 export function parsePost(post, json, currentUser, gridLayout = true) {
+  if (!post) { return null }
   models = json
-  const author = json.users[post.authorId]
+  const author = json[MAPPING_TYPES.USERS][post.authorId]
   const cells = []
   if (post.repostContent && post.repostContent.length) {
-    // TODO: pass repostAuthor and repostSource to this
     cells.push(repostHeader(post, getLinkObject(post, 'repostAuthor', json), getLinkObject(post, 'repostedSource', json), author))
     // this is weird, but the post summary is
     // actually the repost summary on reposts

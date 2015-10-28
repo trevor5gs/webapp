@@ -11,16 +11,16 @@ class PostTools extends React.Component {
     const { author, currentUser, post } = this.props
     const cells = []
     cells.push(
-      <Link to={`/${author.username}/post/${post.token}`}>
-        <span className="eye-tools pill" key={`eye_${post.id}`}>
+      <Link to={`/${author.username}/post/${post.token}`} key={`eye_${post.id}`}>
+        <span className="eye-tools pill">
           <EyeIcon />
           {post.viewsCount}
         </span>
       </Link>
     )
     cells.push(
-      <Link to={`/${author.username}/post/${post.token}`}>
-        <span className="post-time-ago" key={`timeAgo_${post.id}`}>
+      <Link to={`/${author.username}/post/${post.token}`} key={`timeAgo_${post.id}`}>
+        <span className="post-time-ago">
           {new Date(post.createdAt).timeAgoInWords()}
         </span>
       </Link>

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { ElloMark } from '../iconography/ElloIcons'
 import { findBy } from '../base/json_helper'
 import * as ACTION_TYPES from '../../constants/action_types'
+import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { addScrollObject, removeScrollObject } from '../scroll/ScrollComponent'
 
 export class StreamComponent extends React.Component {
@@ -111,6 +112,11 @@ export class StreamComponent extends React.Component {
       renderObj.data.push(model)
     } else if (!result || !result.type || !result.ids) {
       return this.renderLoading()
+    } else if (result.type === MAPPING_TYPES.NOTIFICATIONS) {
+      renderObj.data = renderObj.data.concat(result.ids)
+      if (result.next) {
+        renderObj.data = renderObj.data.concat(result.next.ids)
+      }
     } else if (result.type === meta.mappingType || (meta.resultFilter && result.type !== meta.mappingType)) {
       for (const id of result.ids) {
         renderObj.data.push(json[result.type][id])

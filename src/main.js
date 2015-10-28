@@ -13,10 +13,12 @@ import * as reducers from './reducers'
 import { analytics, uploader, requester } from './middleware'
 import App from './containers/App'
 import { persistStore, autoRehydrate } from 'redux-persist'
+import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 
 import './vendor/embetter'
 import './vendor/embetter_initializer'
-import './vendor/time_ago_in_words'
+
+updateTimeAgoStrings({about: ''})
 
 // check and update current version and
 // only kill off the persisted reducers
@@ -47,6 +49,7 @@ const routes = [
     childRoutes: [
       require('./routes/discover'),
       require('./routes/following'),
+      require('./routes/notifications'),
       createRedirect('onboarding', '/onboarding/communities'),
       require('./routes/onboarding'),
       require('./routes/post_detail'),
