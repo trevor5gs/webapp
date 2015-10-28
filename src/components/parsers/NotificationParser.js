@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import Avatar from '../users/Avatar'
 import { getLinkObject } from '../base/json_helper'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
+import { parseSummary } from './PostParser'
 
 const NOTIFICATION_KIND = {
   COMMENT: 'comment_notification',
@@ -62,6 +63,7 @@ function commentNotification(comment, createdAt) {
       {` commented on your `}
       {postTextLink(parentPost)}
       .
+      {parseSummary(parentPost, models, 'text')}
       {timestamp(createdAt)}
     </div>
   )
@@ -79,6 +81,7 @@ function commentMentionNotification(comment, createdAt) {
       {` mentioned you in a `}
       {postTextLink(parentPost, 'comment')}
       .
+      {parseSummary(parentPost, models, 'text')}
       {timestamp(createdAt)}
     </div>
   )
@@ -102,6 +105,7 @@ function commentOnOriginalPostNotification(comment, createdAt) {
       {` of your `}
       {postTextLink(repostedSource)}
       .
+      {parseSummary(repost, models, 'text')}
       {timestamp(createdAt)}
     </div>
   )
@@ -119,6 +123,7 @@ function commentOnRepostNotification(comment, createdAt) {
       {` commented on your `}
       {postTextLink(repost, 'repost')}
       .
+      {parseSummary(repost, models, 'text')}
       {timestamp(createdAt)}
     </div>
   )
@@ -207,6 +212,7 @@ function postMentionNotification(post, createdAt) {
       {` mentioned you in a `}
       {postTextLink(post)}
       .
+      {parseSummary(post, models, 'text')}
       {timestamp(createdAt)}
     </div>
   )
@@ -250,6 +256,7 @@ function repostNotification(post, createdAt) {
       {` reposted your `}
       {postTextLink(post)}
       .
+      {parseSummary(post, models, 'text')}
       {timestamp(createdAt)}
     </div>
   )

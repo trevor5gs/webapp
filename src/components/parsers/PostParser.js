@@ -75,15 +75,24 @@ function embedRegion(region, key) {
   )
 }
 
-function regionItems(content) {
+function regionItems(content, only = null) {
   return content.map((region, i) => {
     switch (region.kind) {
     case 'text':
-      return textRegion(region, `textRegion_${i}`)
+      if (!only || only === region.kind) {
+        return textRegion(region, `textRegion_${i}`)
+      }
+      break
     case 'image':
-      return imageRegion(region, `imageRegion_${i}`)
+      if (!only || only === region.kind) {
+        return imageRegion(region, `imageRegion_${i}`)
+      }
+      break
     case 'embed':
-      return embedRegion(region, `embedRegion_${i}`)
+      if (!only || only === region.kind) {
+        return embedRegion(region, `embedRegion_${i}`)
+      }
+      break
     default:
       throw new Error(`UNKNOWN REGION: ${region.kind}`)
     }
@@ -121,4 +130,11 @@ export function parsePost(post, json, currentUser, gridLayout = true) {
   models = {}
   return cells
 }
+
+export function parseSummary(post, json, only = null) {
+  models = json
+  return regionItems(post.summary, only)
+}
+
+export { parseSummary }
 
