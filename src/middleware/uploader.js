@@ -104,7 +104,7 @@ export function uploader() {
 
     function saveLocationToApi() {
       const vo = (type === ACTION_TYPES.PROFILE.SAVE_AVATAR) ? { remote_avatar_url: assetUrl } : { remote_cover_image_url: assetUrl }
-      return fetch(endpoint, {
+      return fetch(endpoint.path, {
         method: 'PATCH',
         headers: getCredentialsHeader(),
         body: JSON.stringify(vo),
