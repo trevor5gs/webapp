@@ -58,4 +58,3 @@ SearchControl.propTypes = {
 
 export default SearchControl
 
-
