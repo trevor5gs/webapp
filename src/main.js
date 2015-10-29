@@ -14,22 +14,25 @@ import { analytics, uploader, requester } from './middleware'
 import App from './containers/App'
 import { persistStore, autoRehydrate } from 'redux-persist'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
+import localforage from 'localforage'
 
 import './vendor/embetter'
 import './vendor/embetter_initializer'
+
+const storage = localforage.createInstance({ name: 'ello-webapp' })
 
 updateTimeAgoStrings({about: ''})
 
 // check and update current version and
 // only kill off the persisted reducers
 if (ENV.APP_VERSION) {
-  const curVersion = localStorage.getItem('ello_webapp_version')
+  const curVersion = storage.getItem('APP_VERSION')
   if (curVersion && ENV.APP_VERSION && curVersion !== ENV.APP_VERSION) {
     for (const item of ['devtools', 'json', 'modals', 'profile', 'stream']) {
-      localStorage.removeItem(`reduxPersist:${item}`)
+      storage.removeItem(`reduxPersist:${item}`)
     }
   }
-  localStorage.setItem('ello_webapp_version', ENV.APP_VERSION)
+  storage.setItem('APP_VERSION', ENV.APP_VERSION)
 }
 
 function createRedirect(from, to) {
@@ -83,7 +86,7 @@ const element = (
   </Provider>
 )
 
-persistStore(store, { blacklist: ['router'] }, () => {
+persistStore(store, { storage, blacklist: ['router'] }, () => {
   ReactDOM.render(element, document.getElementById('root'))
 })
 
