@@ -22,3 +22,6 @@ export function postsFromActivities(activities) {
   return result
 }
 
+export function notificationsFromActivities(activities) {
+  return { type: MAPPING_TYPES.NOTIFICATIONS, ids: activities }
+}

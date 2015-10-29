@@ -1,7 +1,8 @@
 import React from 'react'
 import UserCard from '../users/UserCard'
 import UserGrid from '../users/UserGrid'
-import { parsePost } from '../posts/PostParser'
+import { parseNotification } from '../parsers/NotificationParser'
+import { parsePost } from '../parsers/PostParser'
 import { getLinkArray } from '../base/json_helper'
 
 export function onboardingCommunities(users) {
@@ -71,7 +72,7 @@ export function postDetail(posts, json, currentUser) {
   return (
     <div className="PostDetail">
       <div ref={`postList_${post.id}`} key={post.id} className="PostList">
-        {parsePost(post, json, currentUser)}
+        {parsePost(post, json, currentUser, false)}
       </div>
       {comments.map((comment) => {
         return (
@@ -79,6 +80,16 @@ export function postDetail(posts, json, currentUser) {
             {parsePost(comment, json, currentUser, false)}
           </div>
         )
+      })}
+    </div>
+  )
+}
+
+export function notificationList(notifications, json, currentUser) {
+  return (
+    <div className="Notifications">
+      {notifications.data.map((notification) => {
+        return parseNotification(notification, json, currentUser)
       })}
     </div>
   )

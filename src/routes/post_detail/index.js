@@ -1,7 +1,9 @@
-import PostDetail from '../../components/posts/PostDetail'
-
 export default {
   path: ':username/post/:token',
-  component: PostDetail,
+  getComponents(location, cb) {
+    require.ensure([], (require) => {
+      cb(null, require('../../components/views/PostDetailView'))
+    })
+  },
 }
 

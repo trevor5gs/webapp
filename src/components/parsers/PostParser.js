@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router'
 import Avatar from '../users/Avatar'
-import ImageRegion from './regions/ImageRegion'
-import PostTools from './PostTools'
+import ImageRegion from '../posts/regions/ImageRegion'
+import PostTools from '../posts/PostTools'
 import { RepostIcon } from '../iconography/Icons'
 import { getLinkObject } from '../base/json_helper'
+import * as MAPPING_TYPES from '../../constants/mapping_types'
 
 
 let models = {}
@@ -74,31 +75,34 @@ function embedRegion(region, key) {
   )
 }
 
-function regionItems(content) {
+function regionItems(content, only = null) {
   return content.map((region, i) => {
-    switch (region.kind) {
-    case 'text':
-      return textRegion(region, `textRegion_${i}`)
-    case 'image':
-      return imageRegion(region, `imageRegion_${i}`)
-    case 'embed':
-      return embedRegion(region, `embedRegion_${i}`)
-    default:
-      throw new Error(`UNKNOWN REGION: ${region.kind}`)
+    if (!only || only === region.kind) {
+      switch (region.kind) {
+      case 'text':
+        return textRegion(region, `textRegion_${i}`)
+      case 'image':
+        return imageRegion(region, `imageRegion_${i}`)
+      case 'embed':
+        return embedRegion(region, `embedRegion_${i}`)
+      default:
+        throw new Error(`UNKNOWN REGION: ${region.kind}`)
+      }
     }
   })
 }
 
 function footer(post, author, currentUser) {
+  if (!author) { return null }
   return <PostTools author={author} post={post} currentUser={currentUser} key={`postTools_${post.id}`} />
 }
 
 export function parsePost(post, json, currentUser, gridLayout = true) {
+  if (!post) { return null }
   models = json
-  const author = json.users[post.authorId]
+  const author = json[MAPPING_TYPES.USERS][post.authorId]
   const cells = []
   if (post.repostContent && post.repostContent.length) {
-    // TODO: pass repostAuthor and repostSource to this
     cells.push(repostHeader(post, getLinkObject(post, 'repostAuthor', json), getLinkObject(post, 'repostedSource', json), author))
     // this is weird, but the post summary is
     // actually the repost summary on reposts
@@ -118,5 +122,10 @@ export function parsePost(post, json, currentUser, gridLayout = true) {
   cells.push(footer(post, author, currentUser))
   models = {}
   return cells
+}
+
+export function parseSummary(post, json, only = null) {
+  models = json
+  return regionItems(post.summary, only)
 }
 

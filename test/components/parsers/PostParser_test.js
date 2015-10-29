@@ -1,5 +1,5 @@
 import { expect, json, stub } from '../../spec_helper'
-import { parsePost } from '../../../src/components/posts/PostParser'
+import { parsePost } from '../../../src/components/parsers/PostParser'
 
 describe('PostParser', () => {
   it('#render', () => {

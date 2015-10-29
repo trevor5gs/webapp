@@ -3,11 +3,11 @@ import StreamComponent from '../streams/StreamComponent'
 import { loadPostDetail } from '../../actions/posts'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 
-class PostDetail extends React.Component {
+class PostDetailView extends React.Component {
   render() {
     const { params } = this.props
     return (
-      <section className="PostDetail Panel">
+      <section className="PostDetailView Panel">
         <StreamComponent
           ref="streamComponent"
           action={loadPostDetail(`~${params.token}`)}
@@ -17,11 +17,11 @@ class PostDetail extends React.Component {
   }
 }
 
-PostDetail.propTypes = {
+PostDetailView.propTypes = {
   params: React.PropTypes.shape({
     token: React.PropTypes.string.isRequired,
   }).isRequired,
 }
 
-export default PostDetail
+export default PostDetailView
 

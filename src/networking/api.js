@@ -121,6 +121,14 @@ export function searchUsers(params) {
     params,
   }
 }
+// Notifications
+export function notifications(params = {}) {
+  const newParams = { per_page: PER_PAGE, ...params }
+  return {
+    path: getAPIPath('notifications', newParams),
+    newParams,
+  }
+}
 
 export { API_VERSION, getAPIPath, PER_PAGE }
 

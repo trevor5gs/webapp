@@ -9,6 +9,7 @@ export const ERROR = 'error'
 export const ERRORS = 'errors'
 export const LOVES = 'loves'
 export const NO_CONTENT = '204'
+export const NOTIFICATIONS = 'notifications' /* this is only used internally */
 export const POSTS = 'posts'
 export const RELATIONSHIPS = 'relationships'
 export const USERS = 'users'

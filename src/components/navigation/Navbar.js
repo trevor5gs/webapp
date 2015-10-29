@@ -117,6 +117,7 @@ class Navbar extends React.Component {
         <div className="NavbarLinks">
           <Link to="/following">Following</Link>
           <Link to="/starred">Starred</Link>
+          <Link to="/notifications">Notifications</Link>
           <Link to="/discover">Discover</Link>
           <Link to="/search">Search</Link>
           <Link to="/onboarding/communities">Onboarding</Link>
@@ -132,10 +133,8 @@ function mapStateToProps(state) {
   return {
     modals: state.modals,
     profile: state.profile,
+    router: state.router,
   }
-}
-Navbar.contextTypes = {
-  router: React.PropTypes.object.isRequired,
 }
 
 Navbar.defaultProps = {
@@ -151,6 +150,7 @@ Navbar.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   modals: React.PropTypes.object,
   profile: React.PropTypes.object,
+  router: React.PropTypes.object.isRequired,
 }
 
 export default connect(mapStateToProps)(Navbar)
