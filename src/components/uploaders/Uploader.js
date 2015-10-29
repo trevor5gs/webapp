@@ -12,7 +12,7 @@ class Uploader extends React.Component {
   }
 
   triggerFileBrowser() {
-    this.refs.FileBrowser.getDOMNode().click()
+    this.refs.FileBrowser.click()
   }
 
   isLegitimateFileType(file) {

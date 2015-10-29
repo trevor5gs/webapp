@@ -12,7 +12,7 @@ class BioControl extends FormControl {
   render() {
     const { id, name, inputType, tabIndex, placeholder } = this.props
     const { hasFocus, hasValue, text } = this.state
-    const len = text.length
+    const len = text ? text.length : 0
     const label = len > 192 ? `Bio ${len}` : 'Bio'
     const groupClassNames = classNames(
       'FormControlGroup',

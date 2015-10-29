@@ -6,7 +6,7 @@ class FormControl extends React.Component {
     const { text, hasFocus } = this.props
     this.state = {
       text: text,
-      hasValue: text.length,
+      hasValue: text && text.length,
       hasFocus: hasFocus,
     }
   }
