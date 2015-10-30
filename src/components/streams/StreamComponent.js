@@ -61,7 +61,7 @@ export class StreamComponent extends React.Component {
     if (action && action.meta && action.meta.resultKey) { return }
     const result = json.pages ? json.pages[router.location.pathname] : null
     const { pagination } = result
-    if (!pagination[rel] || parseInt(pagination.totalPagesRemaining, 10) === 0 || !action) { return }
+    if (!pagination[rel] || Number(pagination.totalPagesRemaining) === 0 || !action) { return }
     dispatch(
       {
         type: ACTION_TYPES.LOAD_NEXT_CONTENT,

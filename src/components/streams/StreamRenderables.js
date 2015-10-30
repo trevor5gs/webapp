@@ -74,10 +74,10 @@ export function postDetail(posts, json, currentUser) {
   let comments = getLinkArray(post, 'comments', json) || []
   comments = comments.concat(posts.nestedData)
   const avatarDrawers = []
-  if (parseInt(post.lovesCount, 10) > 0) {
+  if (Number(post.lovesCount) > 0) {
     avatarDrawers.push(<UserAvatars endpoint={api.postLovers(post)} icon={<HeartIcon />} key="lovers" resultKey="lovers" />)
   }
-  if (parseInt(post.repostsCount, 10) > 0) {
+  if (Number(post.repostsCount) > 0) {
     avatarDrawers.push(<UserAvatars endpoint={api.postReposters(post)} icon={<RepostIcon />} key="reposters" resultKey="reposters" />)
   }
   return (

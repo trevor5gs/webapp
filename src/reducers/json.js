@@ -55,7 +55,7 @@ function updatePostLoves(state, newState, action) {
   default:
     return state
   }
-  mergeModel(newState, MAPPING_TYPES.POSTS, { id: model.id, lovesCount: parseInt(model.lovesCount, 10) + delta, loved: loved })
+  mergeModel(newState, MAPPING_TYPES.POSTS, { id: model.id, lovesCount: Number(model.lovesCount) + delta, loved: loved })
   return newState
 }
 
