@@ -32,7 +32,7 @@ function checkStatus(response) {
 }
 
 function parseLink(linksHeader) {
-  if (!linksHeader) { return { next: {}, prev: {}, first: {}, last: {} } }
+  if (!linksHeader) { return {} }
   const result = {}
   const entries = linksHeader.split(',')
   // compile regular expressions ahead of time for efficiency

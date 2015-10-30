@@ -90,7 +90,7 @@ export function json(state = {}, action = { type: '' }, router) {
     }
   }
   // parse main part of request into the state, and save result as this is the main payload
-  const { mappingType, resultFilter } = action.meta
+  const { mappingType, resultFilter, resultKey } = action.meta
   let result
   // set the result to the resultFilter if it exists
   if (resultFilter && typeof resultFilter === 'function') {
@@ -111,7 +111,11 @@ export function json(state = {}, action = { type: '' }, router) {
       }
     }
   } else {
-    newState.pages[router.location.pathname] = result
+    if (resultKey) {
+      newState.pages[`${router.location.pathname}_${resultKey}`] = result
+    } else {
+      newState.pages[router.location.pathname] = result
+    }
   }
   return newState
 }

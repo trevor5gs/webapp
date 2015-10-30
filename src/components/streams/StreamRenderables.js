@@ -1,9 +1,13 @@
 import React from 'react'
+import Avatar from '../users/Avatar'
+import UserAvatars from '../users/UserAvatars'
 import UserCard from '../users/UserCard'
 import UserGrid from '../users/UserGrid'
 import { parseNotification } from '../parsers/NotificationParser'
 import { parsePost } from '../parsers/PostParser'
 import { getLinkArray } from '../base/json_helper'
+import * as api from '../../networking/api'
+import { HeartIcon, RepostIcon } from '../iconography/Icons'
 
 export function onboardingCommunities(users) {
   return (
@@ -69,11 +73,19 @@ export function postDetail(posts, json, currentUser) {
   const post = posts.data[0]
   let comments = getLinkArray(post, 'comments', json) || []
   comments = comments.concat(posts.nestedData)
+  const avatarDrawers = []
+  if (parseInt(post.lovesCount, 10) > 0) {
+    avatarDrawers.push(<UserAvatars endpoint={api.postLovers(post)} icon={<HeartIcon />} key="lovers" resultKey="lovers" />)
+  }
+  if (parseInt(post.repostsCount, 10) > 0) {
+    avatarDrawers.push(<UserAvatars endpoint={api.postReposters(post)} icon={<RepostIcon />} key="reposters" resultKey="reposters" />)
+  }
   return (
     <div className="PostDetail">
       <div ref={`postList_${post.id}`} key={post.id} className="PostList">
         {parsePost(post, json, currentUser, false)}
       </div>
+      {avatarDrawers}
       {comments.map((comment) => {
         return (
           <div ref={`commentList_${comment.id}`} key={comment.id} className="CommentList">
@@ -92,6 +104,14 @@ export function notificationList(notifications, json, currentUser) {
         return parseNotification(notification, json, currentUser)
       })}
     </div>
+  )
+}
+
+export function userAvatars(users) {
+  return (
+    users.data.map((user) => {
+      return <Avatar imgSrc={user.avatar ? user.avatar.regular.url : ''} path={`/${user.username}`} key={`userAvatar_${user.id}`}/>
+    })
   )
 }
 

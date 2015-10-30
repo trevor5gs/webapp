@@ -24,6 +24,13 @@ export class StreamComponent extends React.Component {
     addScrollObject(this)
   }
 
+  // this prevents nested stream components from clobbering parents
+  shouldComponentUpdate() {
+    const { action } = this.state
+    const { stream } = this.props
+    return action.payload.endpoint === stream.payload.endpoint
+  }
+
   componentDidUpdate() {
     if (window.embetter) {
       window.embetter.reloadPlayers()
@@ -49,9 +56,12 @@ export class StreamComponent extends React.Component {
   loadPage(rel) {
     const { dispatch, json, router } = this.props
     const { action } = this.state
+    // resultKey lets us know that this is a nested stream component
+    // and should not load pages ie: lovers, reposters
+    if (action && action.meta && action.meta.resultKey) { return }
     const result = json.pages ? json.pages[router.location.pathname] : null
     const { pagination } = result
-    if (pagination.totalPagesRemaining === 0 || !action) { return }
+    if (!pagination[rel] || parseInt(pagination.totalPagesRemaining, 10) === 0 || !action) { return }
     dispatch(
       {
         type: ACTION_TYPES.LOAD_NEXT_CONTENT,
@@ -102,7 +112,14 @@ export class StreamComponent extends React.Component {
     const { action } = this.state
     if (!action) { return null }
     const { meta, payload } = action
-    const result = json.pages ? json.pages[router.location.pathname] : null
+    let result = null
+    if (json.pages) {
+      if (meta && meta.resultKey) {
+        result = json.pages[`${router.location.pathname}_${meta.resultKey}`]
+      } else {
+        result = json.pages[router.location.pathname]
+      }
+    }
     if (stream.error) {
       return this.renderError()
     }
