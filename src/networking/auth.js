@@ -1,5 +1,5 @@
 window.extractToken = (hash) => {
-  const match = hash.match(/access_token=(\w+)/);
+  const match = hash.match(/access_token=([^&]+)/);
   let token = !!match && match[1];
   if (!token) {
     token = localStorage.getItem('ello_access_token');
