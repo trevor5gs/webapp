@@ -148,7 +148,7 @@ class OnboardingView extends React.Component {
         <div className="InfoPicker Panel">
           <OnboardingHeader
               redirection
-              nextPath="http://ello.co"
+              nextPath={ENV.REDIRECT_URI}
               trackingLabel="info-picker"
               title="Customize your profile."
               message="Fill out your bio." />
@@ -186,4 +186,3 @@ OnboardingView.propTypes = {
 }
 
 export default connect(mapStateToProps)(OnboardingView)
-
