@@ -55,7 +55,7 @@ function updatePostLoves(state, newState, action) {
   default:
     return state
   }
-  mergeModel(newState, MAPPING_TYPES.POSTS, { id: model.id, lovesCount: parseInt(model.lovesCount, 10) + delta, loved: loved })
+  mergeModel(newState, MAPPING_TYPES.POSTS, { id: model.id, lovesCount: Number(model.lovesCount) + delta, loved: loved })
   return newState
 }
 
@@ -68,7 +68,7 @@ export function json(state = {}, action = { type: '' }, router) {
     // TODO: update the current user's followingCount +1 (this might happen in the profile reducer)
     mergeModel(newState, mappingType, { id: userId, relationshipPriority: priority })
     return newState
-  } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {
+  } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_SUCCESS || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {
     return updatePostLoves(state, newState, action)
   }
   // whitelist actions
@@ -90,7 +90,7 @@ export function json(state = {}, action = { type: '' }, router) {
     }
   }
   // parse main part of request into the state, and save result as this is the main payload
-  const { mappingType, resultFilter } = action.meta
+  const { mappingType, resultFilter, resultKey } = action.meta
   let result
   // set the result to the resultFilter if it exists
   if (resultFilter && typeof resultFilter === 'function') {
@@ -111,7 +111,11 @@ export function json(state = {}, action = { type: '' }, router) {
       }
     }
   } else {
-    newState.pages[router.location.pathname] = result
+    if (resultKey) {
+      newState.pages[`${router.location.pathname}_${resultKey}`] = result
+    } else {
+      newState.pages[router.location.pathname] = result
+    }
   }
   return newState
 }

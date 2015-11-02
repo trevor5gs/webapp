@@ -11,3 +11,11 @@ export function loadUserDetail(username) {
   }
 }
 
+export function loadUserAvatars(endpoint, resultKey) {
+  return {
+    type: ACTION_TYPES.LOAD_STREAM,
+    payload: { endpoint: endpoint, vo: {} },
+    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.userAvatars, resultKey },
+  }
+}
+

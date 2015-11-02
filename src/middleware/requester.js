@@ -32,7 +32,7 @@ function checkStatus(response) {
 }
 
 function parseLink(linksHeader) {
-  if (!linksHeader) { return { next: {}, prev: {}, first: {}, last: {} } }
+  if (!linksHeader) { return {} }
   const result = {}
   const entries = linksHeader.split(',')
   // compile regular expressions ahead of time for efficiency
@@ -55,9 +55,9 @@ function parseLink(linksHeader) {
 
 function parseJSON(response) {
   linkPagination = parseLink(response.headers.get('Link'))
-  linkPagination.totalCount = parseInt(response.headers.get('X-Total-Count'), 10)
-  linkPagination.totalPages = parseInt(response.headers.get('X-Total-Pages'), 10)
-  linkPagination.totalPagesRemaining = parseInt(response.headers.get('X-Total-Pages-Remaining'), 10)
+  linkPagination.totalCount = Number(response.headers.get('X-Total-Count'))
+  linkPagination.totalPages = Number(response.headers.get('X-Total-Pages'))
+  linkPagination.totalPagesRemaining = Number(response.headers.get('X-Total-Pages-Remaining'))
   return (response.status === 200) ? response.json() : response
 }
 

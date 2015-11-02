@@ -91,6 +91,20 @@ export function unlovePost(post) {
     path: getAPIPath(`posts/${post.id}/love`),
   }
 }
+export function postLovers(post) {
+  const params = { per_page: 10 }
+  return {
+    path: getAPIPath(`posts/${post.id}/lovers`),
+    params,
+  }
+}
+export function postReposters(post) {
+  const params = { per_page: 10 }
+  return {
+    path: getAPIPath(`posts/${post.id}/reposters`),
+    params,
+  }
+}
 // Comments
 export function commentsForPost(post) {
   const params = { per_page: PER_PAGE }
