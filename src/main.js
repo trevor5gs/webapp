@@ -58,6 +58,7 @@ const routes = [
       require('./routes/post_detail'),
       require('./routes/search'),
       require('./routes/starred'),
+      require('./routes/staff'),
       require('./routes/user_detail'),
     ],
   },

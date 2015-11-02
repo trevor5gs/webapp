@@ -35,9 +35,10 @@
   margin-left: 6%
 
 .UserGrid .stats dt
-  +heading-family
+  +sans-bold-family
 
 .UserGrid .stats dd
+  +monospace
   display: block
   border-bottom: 1px solid
   color: #999
@@ -48,19 +49,23 @@
   margin-top: rem(10)
 
 .UserGrid h2
-  +heading-family
+  +sans-bold-family
   font-size: rem(18)
 
 .UserGrid h3
-  +mono-family
+  +monospace
   color: #999
 
 .UserGrid .short-bio
+  +monospace
   display: none
   height: rem(70)
   overflow: hidden
+.UserGrid .short-bio > *
+  +monospace-typeset
 
 .UserGrid .external-links
+  +monospace
   display: none
   color: #999
   margin-top: rem(4)
@@ -98,6 +103,7 @@
     margin-left: rem(-20)
   .Users.as-grid .UserGrid
     display: inline-block
+    vertical-align: top
     width: calc(50% - #{rem(20)})
     margin-left: rem(20)
     margin-top: rem(20)
