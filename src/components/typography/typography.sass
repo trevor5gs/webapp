@@ -1,4 +1,4 @@
-@mixin mono-family
+@mixin monospace-family
   font-family: "AtlasTypewriterRegular", "AtlasTypewriter-Regular", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace
   font-style:   normal
   font-weight:  400
@@ -23,7 +23,7 @@
   font-style:   italic
   font-weight:  700
 
-@mixin mono-typeset
+@mixin monospace-typeset
   font-size: 0.75rem
 
 @mixin sans-typeset
@@ -41,8 +41,8 @@
   +sans-typeset
 
 @mixin monospace
-  +mono-family
-  +mono-typeset
+  +monospace-family
+  +monospace-typeset
 
 @mixin unstyled-list
   margin-left: 0
@@ -161,9 +161,8 @@ mark
   font-size: 0.75rem
 
 code, pre
-  +mono-family
+  +monospace
   background-color: #f1f1f1
-  font-size: 0.75rem
 
 code
   display: inline-block

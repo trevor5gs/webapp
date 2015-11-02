@@ -11,7 +11,7 @@ class StaffView extends React.Component {
     }
   }
 
-  renderMonoFamily() {
+  renderMonospaceFamily() {
     return (
       <div>
         <p className="monospace">AtlasTypewriterRegular</p>
@@ -19,7 +19,7 @@ class StaffView extends React.Component {
         <p className="monospace">{this.typeSpecimen.uppercase}</p>
         <p className="monospace">{this.typeSpecimen.numbers}</p>
         <p className="monospace">{this.typeSpecimen.characters}</p>
-        <p><code>+mono-family</code></p>
+        <p><code>+monospace-family</code></p>
       </div>
     )
   }
@@ -85,7 +85,7 @@ class StaffView extends React.Component {
         }}
         >
         <h1>StaffView</h1>
-        {this.renderMonoFamily()}
+        {this.renderMonospaceFamily()}
         <hr/>
         {this.renderSansFamily()}
         <hr/>
