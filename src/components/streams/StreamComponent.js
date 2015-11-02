@@ -29,7 +29,9 @@ export class StreamComponent extends React.Component {
     const { action } = this.state
     const { stream } = this.props
     // return true for post tools actions
-    if (stream.type.indexOf('POST.') === 0) {
+    if (!action || !action.payload || !stream || !stream.payload) {
+      return false
+    } else if (stream.type && stream.type.indexOf('POST.') === 0) {
       return true
     }
     return action.payload.endpoint === stream.payload.endpoint
