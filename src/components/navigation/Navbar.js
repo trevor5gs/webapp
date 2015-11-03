@@ -9,6 +9,7 @@ import { openModal, closeModal } from '../../actions/modals'
 import Avatar from '../users/Avatar'
 import HelpDialog from '../dialogs/HelpDialog'
 import { addScrollObject, removeScrollObject } from '../scroll/ScrollComponent'
+import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../iconography/Icons'
 
 
 class Navbar extends React.Component {
@@ -113,14 +114,28 @@ class Navbar extends React.Component {
         <Link className="NavbarMark" to="/">
           <ElloMark />
         </Link>
-        <h2>Be Inspired.</h2>
+        <h2 className="NavbarLabel">Ello</h2>
         <div className="NavbarLinks">
-          <Link to="/following">Following</Link>
-          <Link to="/starred">Starred</Link>
-          <Link to="/notifications">Notifications</Link>
-          <Link to="/discover">Discover</Link>
-          <Link to="/search">Search</Link>
-          <Link to="/onboarding/communities">Onboarding</Link>
+          <Link className="NavbarLink" to="/following">
+            <CircleIcon />
+            <span className="NavbarLinkLabel">Following</span>
+          </Link>
+          <Link className="NavbarLink" to="/starred">
+            <StarIcon />
+            <span className="NavbarLinkLabel">Starred</span>
+          </Link>
+          <Link className="NavbarLink" to="/discover">
+            <SparklesIcon />
+            <span className="NavbarLinkLabel">Discover</span>
+          </Link>
+          <Link className="NavbarLink" to="/notifications">
+            <BoltIcon />
+            <span className="NavbarLinkLabel">Notifications</span>
+          </Link>
+          <Link className="NavbarLink" to="/search">
+            <SearchIcon />
+            <span className="NavbarLinkLabel">Search</span>
+          </Link>
         </div>
         { this.renderProfileAvatar(profile) }
       </nav>

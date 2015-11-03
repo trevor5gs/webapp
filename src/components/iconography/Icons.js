@@ -232,3 +232,133 @@ ShareIcon.defaultProps = {
   classListName: 'ShareIcon',
 }
 
+
+// -------------------------------------
+
+export class StarIcon extends React.Component {
+  render() {
+    const { classListName } = this.props
+    return (
+      <SVGIcon className={classListName}>
+        <g>
+          <polygon points="10,14 13.7,16 13,11.7 16,8.6 11.9,8 10,4 8.1,8 4,8.6 7,11.7 6.3,16 "/>
+        </g>
+      </SVGIcon>
+    )
+  }
+}
+
+StarIcon.propTypes = {
+  classListName: React.PropTypes.string.isRequired,
+}
+
+StarIcon.defaultProps = {
+  classListName: 'StarIcon',
+}
+
+// -------------------------------------
+
+export class SearchIcon extends React.Component {
+  render() {
+    const { classListName } = this.props
+    return (
+      <SVGIcon className={classListName}>
+        <g>
+          <circle cx="8.5" cy="8.5" r="5.5" />
+        </g>
+        <g>
+          <path d="M12.5 12.5l4.5 4.55.5" />
+        </g>
+      </SVGIcon>
+    )
+  }
+}
+
+SearchIcon.propTypes = {
+  classListName: React.PropTypes.string.isRequired,
+}
+
+SearchIcon.defaultProps = {
+  classListName: 'SearchIcon',
+}
+
+// -------------------------------------
+
+export class SparklesIcon extends React.Component {
+  render() {
+    const { classListName } = this.props
+    return (
+      <SVGIcon className={classListName}>
+        <g>
+          <path d="M10,7c-2.8,0-5,2.2-5,5c0-2.8-2.2-5-5-5c2.8,0,5-2.2,5-5 C5,4.8,7.2,7,10,7z" />
+        </g>
+        <g>
+          <path d="M15,14.5c-1.9,0-3.5,1.6-3.5,3.5c0-1.9-1.6-3.5-3.5-3.5 c1.9,0,3.5-1.6,3.5-3.5C11.5,12.9,13.1,14.5,15,14.5z" />
+        </g>
+        <g>
+          <path d="M19,4.5c-1.9,0-3.5,1.6-3.5,3.5c0-1.9-1.6-3.5-3.5-3.5 c1.9,0,3.5-1.6,3.5-3.5C15.5,2.9,17.1,4.5,19,4.5z" />
+        </g>
+      </SVGIcon>
+
+    )
+  }
+}
+
+SparklesIcon.propTypes = {
+  classListName: React.PropTypes.string.isRequired,
+}
+
+SparklesIcon.defaultProps = {
+  classListName: 'SparklesIcon',
+}
+
+// -------------------------------------
+
+export class BoltIcon extends React.Component {
+  render() {
+    const { classListName } = this.props
+    return (
+      <SVGIcon className={classListName}>
+        <g>
+          <polygon points="14,7.4 9,7.4 9,1 4,11.6 9,11.6 9,18" />
+        </g>
+        <g>
+        </g>
+      </SVGIcon>
+    )
+  }
+}
+
+BoltIcon.propTypes = {
+  classListName: React.PropTypes.string.isRequired,
+}
+
+BoltIcon.defaultProps = {
+  classListName: 'BoltIcon',
+}
+
+// -------------------------------------
+
+export class CircleIcon extends React.Component {
+  render() {
+    const { classListName } = this.props
+    return (
+      <SVGIcon className={classListName}>
+        <g>
+          <circle cx="11" cy="11" r="5" />
+        </g>
+        <g>
+        </g>
+      </SVGIcon>
+    )
+  }
+}
+
+CircleIcon.propTypes = {
+  classListName: React.PropTypes.string.isRequired,
+}
+
+CircleIcon.defaultProps = {
+  classListName: 'CircleIcon',
+}
+

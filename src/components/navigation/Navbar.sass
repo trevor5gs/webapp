@@ -5,9 +5,9 @@
   left: 0
   right: 0
   z-index: $z-navbar
-  height: rem(80)
+  height: rem(100)
   padding: rem(20) rem(10)
-  // background-color: rgba(lightblue, 0.95)
+  // background-color: rgba(purple, 0.95)
   background-color: white
 
 .Navbar.asFixed
@@ -23,57 +23,51 @@
 
 .NavbarLinks
   position: absolute
-  top: 50%
-  margin-top: rem(-12)
-  right: rem(70)
+  bottom: rem(10)
+  left: rem(10)
+  white-space: nowrap
 
-.NavbarLinks > a
-  +sans-typeset
-  transition: color $speed
-  color: #aaa
-  display: inline-block
-  vertical-align: middle
-  border-bottom-width: 0
-
-.NavbarLinks > a + a
+.NavbarLinks > .NavbarLink + .NavbarLink
   margin-left: rem(20)
 
 .NavbarProfile
   position: absolute
-  top: rem(20)
-  right: rem(10)
+  top: rem(10)
+  left: rem(10)
   z-index: 3
 
-.NavbarProfile .Avatar
-  +circle(rem(40))
-  overflow: hidden
+.NavbarMark
+  display: none
 
-.no-touch .NavbarLinks > a:hover,
-[data-pathname^="/following"] + .Navbar .NavbarLinks > a[href^="/following"],
-[data-pathname^="/starred"] + .Navbar .NavbarLinks > a[href^="/starred"],
-[data-pathname^="/discover"] + .Navbar .NavbarLinks > a[href^="/discover"],
-[data-pathname^="/search"] + .Navbar .NavbarLinks > a[href^="/search"]
-  border-bottom: 2px solid
-  color: black
-
-.NavbarMark + h2
+.NavbarMark + .NavbarLabel
+  +sans-family
   font-size: rem(18)
+  display: none
+  position: relative
+  top: rem(2)
   line-height: 1
-  display: inline-block
   margin-left: rem(20)
 
-@media(max-width: #{$break-2-max})
-  .NavbarMark
-    display: none
 
+// Only desktop
 @media(min-width: #{$break-2})
   .Navbar
     padding-left: rem(20)
     padding-right: rem(20)
+    height: rem(80)
+  .NavbarMark,
+  .NavbarMark + .NavbarLabel
+    display: inline-block
   .NavbarProfile
+    top: rem(20)
+    left: auto
     right: rem(20)
   .NavbarLinks
+    top: 50%
+    left: auto
     right: rem(80)
+    bottom: auto
+    margin-top: rem(-20)
 
 @media(min-width: #{$break-4})
   .Navbar
