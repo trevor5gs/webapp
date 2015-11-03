@@ -2,14 +2,14 @@ import React from 'react'
 import classNames from 'classnames'
 import Mousetrap from 'mousetrap'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
-import { ElloMark } from '../iconography/ElloIcons'
 import { SHORTCUT_KEYS } from '../../constants/action_types'
-import { openModal, closeModal } from '../../actions/modals'
-import Avatar from '../users/Avatar'
+import NavbarLabel from './NavbarLabel'
+import NavbarLink from './NavbarLink'
+import NavbarMark from './NavbarMark'
+import NavbarProfile from './NavbarProfile'
 import HelpDialog from '../dialogs/HelpDialog'
+import { openModal, closeModal } from '../../actions/modals'
 import { addScrollObject, removeScrollObject } from '../scroll/ScrollComponent'
-import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../iconography/Icons'
 
 
 class Navbar extends React.Component {
@@ -82,24 +82,6 @@ class Navbar extends React.Component {
   }
 
 
-  renderProfileAvatar(profile) {
-    const { payload } = profile
-    const { avatar, username} = payload
-    if (avatar && username) {
-      return (
-        <Link className="NavbarProfile" to={`/${username}`}>
-          <Avatar imgSrc={avatar.regular.url} />
-        </Link>
-      )
-    }
-    return (
-      <span className="NavbarProfile">
-        <Avatar/>
-      </span>
-    )
-  }
-
-
   render() {
     const { profile } = this.props
     const klassNames = classNames(
@@ -111,33 +93,16 @@ class Navbar extends React.Component {
 
     return (
       <nav className={klassNames} role="navigation">
-        <Link className="NavbarMark" to="/">
-          <ElloMark />
-        </Link>
-        <h2 className="NavbarLabel">Ello</h2>
+        <NavbarMark />
+        <NavbarLabel />
         <div className="NavbarLinks">
-          <Link className="NavbarLink" to="/following">
-            <CircleIcon />
-            <span className="NavbarLinkLabel">Following</span>
-          </Link>
-          <Link className="NavbarLink" to="/starred">
-            <StarIcon />
-            <span className="NavbarLinkLabel">Starred</span>
-          </Link>
-          <Link className="NavbarLink" to="/discover">
-            <SparklesIcon />
-            <span className="NavbarLinkLabel">Discover</span>
-          </Link>
-          <Link className="NavbarLink" to="/notifications">
-            <BoltIcon />
-            <span className="NavbarLinkLabel">Notifications</span>
-          </Link>
-          <Link className="NavbarLink" to="/search">
-            <SearchIcon />
-            <span className="NavbarLinkLabel">Search</span>
-          </Link>
+          <NavbarLink to="/following" label="Following" icon="CircleIcon" />
+          <NavbarLink to="/starred" label="Starred" icon="StarIcon" />
+          <NavbarLink to="/discover" label="Discover" icon="SparklesIcon" />
+          <NavbarLink to="/notifications" label="Notifications" icon="BoltIcon" />
+          <NavbarLink to="/search" label="Search" icon="SearchIcon" />
         </div>
-        { this.renderProfileAvatar(profile) }
+          <NavbarProfile { ...profile.payload } />
       </nav>
     )
   }
