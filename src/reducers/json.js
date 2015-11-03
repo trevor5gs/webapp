@@ -91,12 +91,13 @@ export function json(state = {}, action = { type: '' }, router) {
   }
   // parse main part of request into the state, and save result as this is the main payload
   const { mappingType, resultFilter, resultKey } = action.meta
+  const ids = addModels(newState, mappingType, response)
   let result
   // set the result to the resultFilter if it exists
   if (resultFilter && typeof resultFilter === 'function') {
     result = resultFilter(response[mappingType])
   } else {
-    result = { type: mappingType, ids: addModels(newState, mappingType, response) }
+    result = { type: mappingType, ids: ids }
   }
   result.pagination = action.payload.pagination
   if (!newState.pages) { newState.pages = {} }
