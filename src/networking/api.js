@@ -57,6 +57,13 @@ export function discoverRecommended() {
     params,
   }
 }
+export function discoverUsers(type = 'recommended') {
+  const params = { per_page: PER_PAGE, include_recent_posts: true, seed: new Date().getTime() }
+  return {
+    path: getAPIPath(`discover/users/${type}`, params),
+    params,
+  }
+}
 // Streams
 export function friendStream() {
   const params = { per_page: PER_PAGE }
