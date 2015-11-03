@@ -1,26 +1,30 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { ElloMark } from '../iconography/ElloIcons'
+import { ElloMark, ElloRainbowMark } from '../iconography/ElloIcons'
 
 
 class NavbarMark extends React.Component {
 
-  render() {
-    // const { ENV.LOGOMARK, username} = this.props
+  renderMark() {
+    switch (ENV.LOGO_MARK) {
+    case 'rainbow':
+      return <ElloRainbowMark />
+    case 'none':
+      return null
+    case 'normal':
+    default:
+      return <ElloMark />
+    }
+  }
 
+  render() {
     return (
       <Link className="NavbarMark" to="/">
-        <ElloMark />
+        { this.renderMark() }
       </Link>
     )
   }
 }
 
-NavbarMark.propTypes = {
-  avatar: React.PropTypes.object,
-  username: React.PropTypes.string,
-}
-
 export default NavbarMark
-
 
