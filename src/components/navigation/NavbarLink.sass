@@ -1,0 +1,102 @@
+.NavbarLink
+  +sans-typeset
+  +button-with-hitarea
+  transition: width $speed $ease, color $speed ease
+  display: inline-block
+  vertical-align: middle
+  height: rem(40)
+  line-height: rem(40)
+  overflow: hidden
+  color: #aaa
+  white-space: nowrap
+
+.NavbarLink > .SVGIcon
+  margin-top: -5px
+  g
+    stroke: #aaa
+
+.NavbarLinkLabel
+  position: relative
+  display: inline-block
+  vertical-align: middle
+  &:after
+    content: ''
+    transition: width $speed $ease, background-color $speed ease
+    position: absolute
+    width: 0
+    left: 0
+    bottom: rem(8)
+    height: rem(2)
+    background-color: transparent
+
+// ------------------------------------
+
+// Active and hover states
+[data-pathname^="/following"] + .Navbar .NavbarLink[href^="/following"],
+[data-pathname^="/starred"] + .Navbar .NavbarLink[href^="/starred"],
+[data-pathname^="/discover"] + .Navbar .NavbarLink[href^="/discover"],
+[data-pathname^="/notifications"] + .Navbar .NavbarLink[href^="/notifications"],
+[data-pathname^="/search"] + .Navbar .NavbarLink[href^="/search"],
+.NavbarLink:active,
+.NavbarLink.active,
+.no-touch .NavbarLink:hover
+  > .NavbarLinkLabel
+    color: black
+    &:after
+      width: 100%
+      background-color: black
+  > .SVGIcon:not(.SearchIcon) g
+    fill: black
+    stroke: black
+
+// ------------------------------------
+
+// Modes
+
+// Hide the icons for these guys
+.Navbar .NavbarLink[href^="/following"] > .SVGIcon,
+.Navbar .NavbarLink[href^="/starred"] > .SVGIcon,
+.Navbar .NavbarLink[href^="/discover"] > .SVGIcon
+  transition: width $speed $ease, opacity $speed ease
+  width: 0
+  opacity: 0
+
+@media(min-width: #{rem(375)})
+  // Show the star a little early
+  .Navbar .NavbarLink[href^="/starred"] > .SVGIcon
+    width: rem(20)
+    opacity: 1
+
+@media(min-width: #{$break-2})
+  // Show the icon on rollover for desktop
+  .no-touch .Navbar .NavbarLink[href^="/following"]:hover > .SVGIcon,
+  .no-touch .Navbar .NavbarLink[href^="/discover"]:hover > .SVGIcon
+    transition-delay: 0.5s
+    width: rem(20)
+    opacity: 1
+  .no-touch .Navbar .NavbarLink[href^="/discover"]:hover > .SVGIcon > g
+    transition-delay: 0.5s + ($speed * 0.5)
+  .no-touch .Navbar .NavbarLink[href^="/discover"]:hover > .SVGIcon > g:nth-of-type(2)
+    transition-delay: 0.5s + ($speed * 1)
+  .no-touch .Navbar .NavbarLink[href^="/discover"]:hover > .SVGIcon > g:nth-of-type(3)
+    transition-delay: 0.5s + ($speed * 1.5)
+
+// -----------------
+
+// Only show the icon for these guys
+.Navbar .NavbarLink[href^="/notifications"],
+.Navbar .NavbarLink[href^="/search"]
+  width: rem(20)
+
+@media(min-width: #{$break-2})
+  // Show the label on rollover for desktop
+  .no-touch .Navbar .NavbarLink[href^="/notifications"]:hover,
+  .no-touch .Navbar .NavbarLink[href^="/search"]:hover
+    transition-delay: 0.5s
+    > .NavbarLinkLabel:after
+      transition-delay: 0.5s + ($speed * 0.5)
+  .no-touch .Navbar .NavbarLink[href^="/notifications"]:hover
+    width: rem(110)
+  .no-touch .Navbar .NavbarLink[href^="/search"]:hover
+    width: rem(72)
+

@@ -25,6 +25,13 @@
   transition-delay: $speed * 0.5, 0s, 0s
   stroke-linecap: square
 
+.StarIcon g,
+.SearchIcon g
+  stroke-linejoin: round
+
+.BoltIcon g
+  stroke-linejoin: bevel
+
 .MinusIcon line:nth-of-type(2)
   display: none
 
@@ -35,7 +42,8 @@
 
 // -------------------------------------
 
-.ElloMark
+.ElloMark,
+.ElloRainbowMark
   border-radius: rem(40)
   display: inline-block
   overflow: hidden
