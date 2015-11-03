@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router'
 import { ElloMark, ElloRainbowMark } from '../iconography/ElloIcons'
 
-
 class NavbarMark extends React.Component {
 
   renderMark() {

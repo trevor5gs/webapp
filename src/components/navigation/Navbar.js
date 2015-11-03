@@ -7,6 +7,7 @@ import NavbarLabel from './NavbarLabel'
 import NavbarLink from './NavbarLink'
 import NavbarMark from './NavbarMark'
 import NavbarProfile from './NavbarProfile'
+import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../iconography/Icons'
 import HelpDialog from '../dialogs/HelpDialog'
 import { openModal, closeModal } from '../../actions/modals'
 import { addScrollObject, removeScrollObject } from '../scroll/ScrollComponent'
@@ -96,11 +97,11 @@ class Navbar extends React.Component {
         <NavbarMark />
         <NavbarLabel />
         <div className="NavbarLinks">
-          <NavbarLink to="/following" label="Following" icon="CircleIcon" />
-          <NavbarLink to="/starred" label="Starred" icon="StarIcon" />
-          <NavbarLink to="/discover" label="Discover" icon="SparklesIcon" />
-          <NavbarLink to="/notifications" label="Notifications" icon="BoltIcon" />
-          <NavbarLink to="/search" label="Search" icon="SearchIcon" />
+          <NavbarLink to="/following" label="Following" icon={ <CircleIcon/> } />
+          <NavbarLink to="/starred" label="Starred" icon={ <StarIcon/> } />
+          <NavbarLink to="/discover" label="Discover" icon={ <SparklesIcon/> } />
+          <NavbarLink to="/notifications" label="Notifications" icon={ <BoltIcon/> } />
+          <NavbarLink to="/search" label="Search" icon={ <SearchIcon/> } />
         </div>
           <NavbarProfile { ...profile.payload } />
       </nav>
