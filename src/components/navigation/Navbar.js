@@ -55,6 +55,7 @@ class Navbar extends React.Component {
 
   onScrollDirectionChange(scrollProperties) {
     const { scrollY } = scrollProperties
+
     if (scrollY >= 600) {
       this.scrollYAtDirectionChange = scrollY
     }
@@ -66,8 +67,6 @@ class Navbar extends React.Component {
     // Going from absolute to fixed positioning
     if (scrollY >= 600 && !this.state.asFixed) {
       this.setState({ asFixed: true, asHidden: true, skipTransition: true })
-    } else if (this.state.skipTransition) {
-      this.setState({ skipTransition: false })
     }
 
     // Scroll just changed directions so it's about to either be shown or hidden
@@ -76,7 +75,7 @@ class Navbar extends React.Component {
       const delay = scrollDirection === 'down' ? 20 : 80
 
       if (distance >= delay ) {
-        this.setState({ asHidden: scrollDirection === 'down' })
+        this.setState({ asHidden: scrollDirection === 'down', skipTransition: false })
         this.scrollYAtDirectionChange = null
       }
     }
