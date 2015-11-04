@@ -4,6 +4,18 @@
   to
     transform: rotate(360deg)
 
+.StreamComponent
+  padding: rem(10)
+
+@media(min-width: #{$break-2})
+  .StreamComponent
+    padding: rem(20)
+
+@media(min-width: #{$break-4})
+  .StreamComponent
+    padding-left: rem(40)
+    padding-right: rem(40)
+
 // -------------------------------------
 
 .StreamComponent.isBusy
@@ -40,8 +52,4 @@
   .StreamErrorMessage
     padding-left: rem(10)
     padding-right: rem(10)
-
-@media(min-width: #{$break-2})
-  .Panel .StreamComponent
-    padding: rem(20)
 
