@@ -1,27 +1,45 @@
-.PostGrid
+.Post
   position: relative
-  margin-top: rem(20)
   overflow: hidden
-  vertical-align: top
+  margin-bottom: rem(20)
 
 .PostHeader
   +monospace
   position: relative
-  padding-bottom: rem(20)
-  background-color: white
+  height: rem(80)
+  padding-top: rem(20)
+  // background-color: lightblue
 
 .PostHeader .Avatar
   +circle(rem(40))
   position: absolute
+  top: rem(20)
 
 .PostHeader .vitals
   margin-left: rem(60)
   padding-top: rem(12)
 
-.PostGrid .ImageRegion
-  margin: rem(10) 0
+.PostBody
+  // background-color: lightyellow
+
+.Region + .Region
+  margin-top: rem(10)
+
+.TextRegion
+  max-width: rem(780)
+
+.ImageRegion
   display: block
 
+// Get rid of the first and last elements top and bottom margins
+.PostBody > .TextRegion > *:first-of-type,
+.PostBody > .ImageRegion:first-child > *:first-of-type,
+.PostBody > .EmbedRegion:first-child > *:first-of-type
+  margin-top: 0
+.PostBody > .TextRegion > *:last-of-type,
+.PostBody > .ImageRegion:last-child > *:last-of-type,
+.PostBody > .EmbedRegion:last-child > *:last-of-type
+  margin-bottom: 0
 
 @media(min-width: #{$break-2})
   .Posts.asGrid
