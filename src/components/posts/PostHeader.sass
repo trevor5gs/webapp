@@ -1,0 +1,27 @@
+.RepostHeader,
+.PostHeader
+  +monospace
+  position: relative
+  height: rem(80)
+  padding-top: rem(20)
+  // background-color: lightblue
+
+.RepostHeader .Avatar,
+.PostHeader .Avatar
+  +circle(rem(30))
+  position: absolute
+  top: rem(20)
+
+.PostHeader .Vitals
+  margin-left: rem(60)
+  padding-top: rem(12)
+
+.RepostHeader .Vitals
+  margin-left: rem(60)
+  line-height: rem(20)
+
+@media(min-width: #{$break-2})
+  .RepostHeader .Avatar,
+  .PostHeader .Avatar
+    +circle(rem(40))
+

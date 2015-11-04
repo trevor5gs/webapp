@@ -17,7 +17,7 @@ function header(post, author) {
       <Link to={`/${author.username}`}>
         <Avatar imgSrc={author.avatar.regular.url} />
       </Link>
-      <div className="vitals">
+      <div className="Vitals">
         <Link to={`/${author.username}`}>{`@${author.username}`}</Link>
       </div>
     </header>
@@ -31,12 +31,12 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
       <Link to={`/${repostAuthor.username}`}>
         <Avatar imgSrc={repostAuthor.avatar.regular.url} />
       </Link>
-      <div className="vitals">
+      <div className="Vitals">
         <div>
           <Link to={`/${repostAuthor.username}`}>{`@${repostAuthor.username}`}</Link>
         </div>
         <div>
-          <Link className="reposted-by" to={`/${repostedBy.username}`}>
+          <Link to={`/${repostedBy.username}`}>
             <RepostIcon />
             {` by ${repostedBy.username}`}
           </Link>
