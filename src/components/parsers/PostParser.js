@@ -13,7 +13,7 @@ let models = {}
 function header(post, author) {
   if (!post || !author) { return null }
   return (
-    <header className="PostHeader" key={`postHeader_${post.id}`}>
+    <header className="PostHeader" key={`PostHeader_${post.id}`}>
       <Link to={`/${author.username}`}>
         <Avatar imgSrc={author.avatar.regular.url} />
       </Link>
@@ -27,7 +27,7 @@ function header(post, author) {
 function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   if (!post || !repostedBy) { return null }
   return (
-    <header className="RepostHeader" key={`postHeader_${post.id}`}>
+    <header className="RepostHeader" key={`PostHeader_${post.id}`}>
       <Link to={`/${repostAuthor.username}`}>
         <Avatar imgSrc={repostAuthor.avatar.regular.url} />
       </Link>
@@ -80,11 +80,11 @@ function regionItems(content, only = null) {
     if (!only || only === region.kind) {
       switch (region.kind) {
       case 'text':
-        return textRegion(region, `textRegion_${i}`)
+        return textRegion(region, `TextRegion_${i}`)
       case 'image':
-        return imageRegion(region, `imageRegion_${i}`)
+        return imageRegion(region, `ImageRegion_${i}`)
       case 'embed':
-        return embedRegion(region, `embedRegion_${i}`)
+        return embedRegion(region, `EmbedRegion_${i}`)
       default:
         throw new Error(`UNKNOWN REGION: ${region.kind}`)
       }
