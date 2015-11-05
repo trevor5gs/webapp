@@ -1,82 +1,89 @@
 .PostTools
   +monospace
-  color: #aaa
-  height: rem(63)
+  height: rem(60)
   padding-top: rem(20)
+  white-space: nowrap
   // background-color: lightgreen
 
-.PostTools > span,
-.PostTools > a > span
+.PostTool
+  position: relative
   display: inline-block
-  height: rem(22)
-  padding: rem(1) rem(5)
+  height: rem(20)
+  line-height: rem(20)
 
-.PostTools > span:not(:first-child),
-.PostTools > a > span:not(:first-child)
-  margin-left: rem(12)
+.ViewsTool
+  height: rem(22)
+  line-height: rem(22)
+
+.PostTool + .PostTool
+  margin-left: rem(3)
+
+.PostTool > button,
+.PostTool > a
+  color: #aaa
+  transition: color $speed ease
+  padding-left: rem(10)
+  padding-right: rem(10)
+
+.PostTool > a
   display: inline-block
-  height: rem(22)
-  padding: rem(1) rem(5)
+  vertical-align: middle
 
-.PostTools > span:not(:first-child),
-.PostTools > a > span:not(:first-child)
-  margin-left: rem(12)
-
-.PostTools > span.pill,
-.PostTools > a > span.pill
+.ViewsTool > a
+  padding-left: rem(11)
+  padding-right: rem(11)
   border-radius: rem(11)
-  background-color: #eee
+  background-color: #e8e8e8
   color: #535353
-
-.PostTools > span.pill .SVGIcon g,
-.PostTools > a > span.pill .SVGIcon g
+.ViewsTool .SVGIcon > g
   stroke: #535353
-.PostTools > span.pill .EyeIcon > circle,
-.PostTools > a > span.pill .EyeIcon > circle
-  transition-delay: $speed * 0.5
-  stroke: #535353
+.ViewsTool .EyeIcon > circle
   fill: #535353
 
-.PostTools .SVGIcon g
-  stroke: #aaa
+.TimeAgoTool > a
+  padding-left: rem(15)
+  padding-right: rem(15)
 
-.BubbleIcon g,
-.RepostIcon g,
-.ShareIcon polyline,
-  stroke-linejoin: round
-
-.BubbleIcon g:nth-child(2)
-  fill: black
-  stroke: black
-  display: none
-
-.EyeIcon > circle
-  transition: fill $speed ease
-  stroke: transparent
-  fill: #aaa
-
-.EyeIcon
-  margin-right: rem(5)
-
-// Hover styles
-
-.no-touch a:hover .BubbleIcon g,
-.no-touch button:hover .BubbleIcon g,
-.no-touch a:hover .HeartIcon g,
-.no-touch button:hover .HeartIcon g
-  fill: black
-
-button.active .HeartIcon g
+.LoveTool > button.active .HeartIcon > g
   fill: red
   stroke: red
 
-.no-touch a:hover .EyeIcon > circle,
-.no-touch button:hover .EyeIcon > circle
-  transition-delay: $speed * 0.5
-  stroke: black
-  fill: black
+.PostTool .EyeIcon,
+.PostTool .BubbleIcon,
+.PostTool .HeartIcon
+  margin-top: rem(-2)
 
-.no-touch a:hover .ShareIcon g:nth-of-type(2),
-.no-touch button:hover .ShareIcon g:nth-of-type(2)
-  transform: translate3d(0,-1px,0)
+.PostTool .RepostIcon,
+.PostTool .PencilIcon,
+.PostTool .ShareIcon
+  margin-top: rem(-4)
+
+.PostTool .XBoxIcon
+  padding-left: rem(1)
+
+.PostToolValue[data-count='0']
+  display: none
+
+.PostTool .SVGIcon + .PostToolValue
+  margin-left: rem(2)
+.ViewsTool .SVGIcon + .PostToolValue
+  margin-left: rem(5)
+
+
+@media(min-width: #{$break-2})
+  .no-touch .PostTools .PostTool.shy
+    transition: opacity $speed ease
+    opacity: 0
+  .no-touch .PostTools:hover .PostTool.shy
+    opacity: 1
+  .no-touch .PostTool a:hover,
+  .no-touch .PostTool button:hover
+    color: black
+  .no-touch .ViewsTool a:hover
+    background-color: #ccc
+  .no-touch .LoveTool button.active:hover > .HeartIcon > g
+    stroke: #ff9999
+    fill: #ff9999
+  .no-touch .ViewsTool .Hint
+    left: 0
 

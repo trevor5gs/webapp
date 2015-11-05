@@ -232,6 +232,84 @@ ShareIcon.defaultProps = {
   classListName: 'ShareIcon',
 }
 
+// -------------------------------------
+
+export class FlagIcon extends React.Component {
+  render() {
+    const { classListName } = this.props
+    return (
+      <SVGIcon className={classListName}>
+        <g>
+          <line x1="5" y1="3.7" x2="5" y2="16.8" />
+        </g>
+        <g>
+          <path d="M15,10.2 c0,0-2.9,1.1-5,0s-5,0-5,0V3.7c0,0,2.9-1.1,5,0s5,0,5,0V10.2z" />
+        </g>
+      </SVGIcon>
+    )
+  }
+}
+
+FlagIcon.propTypes = {
+  classListName: React.PropTypes.string.isRequired,
+}
+
+FlagIcon.defaultProps = {
+  classListName: 'FlagIcon',
+}
+
+// -------------------------------------
+
+export class PencilIcon extends React.Component {
+  render() {
+    const { classListName } = this.props
+    return (
+      <SVGIcon className={classListName}>
+        <g>
+          <polygon points="12.6,4 16,7.3 7.4,15.9 4,15.9 4,12.5" />
+        </g>
+        <g>
+          <line x1="10.2" y1="6.4" x2="13.6" y2="9.7" />
+        </g>
+      </SVGIcon>
+    )
+  }
+}
+
+PencilIcon.propTypes = {
+  classListName: React.PropTypes.string.isRequired,
+}
+
+PencilIcon.defaultProps = {
+  classListName: 'PencilIcon',
+}
+
+// -------------------------------------
+
+export class XBoxIcon extends React.Component {
+  render() {
+    const { classListName } = this.props
+    return (
+      <SVGIcon className={classListName}>
+        <g>
+          <rect x="3.5" y="3.5" width="12" height="12" />
+        </g>
+        <g>
+          <line x1="12" y1="7" x2="7" y2="12" />
+          <line x1="12" y1="12" x2="7" y2="7" />
+        </g>
+      </SVGIcon>
+    )
+  }
+}
+
+XBoxIcon.propTypes = {
+  classListName: React.PropTypes.string.isRequired,
+}
+
+XBoxIcon.defaultProps = {
+  classListName: 'XBoxIcon',
+}
 
 // -------------------------------------
 
@@ -267,7 +345,7 @@ export class SearchIcon extends React.Component {
           <circle cx="8.5" cy="8.5" r="5.5" />
         </g>
         <g>
-          <path d="M12.5 12.5l4.5 4.55.5" />
+          <path d="M12.5 12.5l4.5 4.5" />
         </g>
       </SVGIcon>
     )

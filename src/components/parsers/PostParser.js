@@ -49,7 +49,7 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
 function textRegion(region, key) {
   return (
     <div key={key}
-      className="Region TextRegion"
+      className="TextRegion"
       dangerouslySetInnerHTML={{__html: region.data}} />
   )
 }
@@ -92,9 +92,9 @@ function regionItems(content, only = null) {
   })
 }
 
-function body(content) {
+function body(content, id) {
   return (
-    <div className="PostBody">
+    <div className="PostBody" key={`PostBody_${id}`}>
       {regionItems(content)}
     </div>
   )
@@ -103,7 +103,7 @@ function body(content) {
 
 function footer(post, author, currentUser) {
   if (!author) { return null }
-  return <PostTools author={author} post={post} currentUser={currentUser} key={`postTools_${post.id}`} />
+  return <PostTools author={author} post={post} currentUser={currentUser} key={`PostTools_${post.id}`} />
 }
 
 export function parsePost(post, json, currentUser, gridLayout = true) {
@@ -116,17 +116,17 @@ export function parsePost(post, json, currentUser, gridLayout = true) {
     // this is weird, but the post summary is
     // actually the repost summary on reposts
     if (gridLayout) {
-      cells.push(body(post.summary))
+      cells.push(body(post.summary, post.id))
     } else {
       cells.push(regionItems(post.repostContent))
       if (post.content && post.content.length) {
-        cells.push(body(post.content))
+        cells.push(body(post.content, post.id))
       }
     }
   } else {
     cells.push(header(post, author))
     const content = gridLayout ? post.summary : post.content
-    cells.push(body(content))
+    cells.push(body(content, post.id))
   }
   cells.push(footer(post, author, currentUser))
   models = {}

@@ -2,71 +2,102 @@ import React from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { EyeIcon, BubbleIcon, HeartIcon, RepostIcon, ShareIcon } from '../iconography/Icons'
+import Hint from '../hints/Hint'
+import { EyeIcon, BubbleIcon, HeartIcon, RepostIcon, ShareIcon, PencilIcon, XBoxIcon, FlagIcon } from '../iconography/Icons'
 import * as PostActions from '../../actions/posts'
 
 class PostTools extends React.Component {
 
   getToolCells() {
     const { author, currentUser, post } = this.props
+    const isOwnPost = currentUser && author.id === currentUser.id
     const cells = []
     cells.push(
-      <Link to={`/${author.username}/post/${post.token}`} key={`eye_${post.id}`}>
-        <span className="eye-tools pill">
+      <span className="PostTool ViewsTool" key={`ViewsTool_${post.id}`}>
+        <Link to={`/${author.username}/post/${post.token}`}>
           <EyeIcon />
-          {post.viewsCount}
-        </span>
-      </Link>
+          <span className="PostToolValue">{post.viewsCount}</span>
+          <Hint>Views</Hint>
+        </Link>
+      </span>
     )
     cells.push(
-      <Link to={`/${author.username}/post/${post.token}`} key={`timeAgo_${post.id}`}>
-        <span className="post-time-ago">
-          {new Date(post.createdAt).timeAgoInWords()}
-        </span>
-      </Link>
+      <span className="PostTool TimeAgoTool" key={`TimeAgoTool_${post.id}`}>
+        <Link to={`/${author.username}/post/${post.token}`}>
+          <span className="PostToolValue">{new Date(post.createdAt).timeAgoInWords()}</span>
+          <Hint>Visit</Hint>
+        </Link>
+      </span>
     )
     if (author.hasCommentingEnabled) {
       cells.push(
-        <span className="bubble-tools" key={`bubble_${post.id}`}>
+        <span className="PostTool CommentTool" key={`CommentTool_${post.id}`}>
           <button>
             <BubbleIcon />
-            {post.commentsCount}
+            <span className="PostToolValue" data-count={post.commentsCount} >{post.commentsCount}</span>
+            <Hint>Comment</Hint>
           </button>
         </span>
       )
     }
     if (author.hasLovesEnabled) {
       cells.push(
-        <span className="heart-tools" key={`heart_${post.id}`}>
+        <span className="PostTool LoveTool" key={`LoveTool_${post.id}`}>
           <button className={classNames({ active: post.loved })} onClick={ this.lovePost.bind(this) }>
             <HeartIcon />
-            {post.lovesCount}
+            <span className="PostToolValue" data-count={post.lovesCount}>{post.lovesCount}</span>
+            <Hint>Love</Hint>
           </button>
         </span>
       )
     }
     if (author.hasRepostingEnabled) {
       cells.push(
-        <span className="repost-tools" key={`repost_${post.id}`}>
+        <span className="PostTool RepostTool" key={`RepostTool_${post.id}`}>
           <button>
             <RepostIcon />
-            {post.repostsCount}
+            <span className="PostToolValue" data-count={post.repostsCount}>{post.repostsCount}</span>
+            <Hint>Repost</Hint>
           </button>
         </span>
       )
     }
     if (author.hasSharingEnabled) {
       cells.push(
-        <span className="share-tools" key={`share_${post.id}`}>
+        <span className="PostTool ShareTool" key={`ShareTool_${post.id}`}>
           <button>
             <ShareIcon />
+            <Hint>Share</Hint>
           </button>
         </span>
       )
     }
-    let isOwnPost = author.id === currentUser.id
     if (isOwnPost) {
-      isOwnPost = !isOwnPost
+      cells.push(
+        <span className="PostTool EditTool shy" key={`EditTool_${post.id}`}>
+          <button>
+            <PencilIcon />
+            <Hint>Edit</Hint>
+          </button>
+        </span>
+      )
+      cells.push(
+        <span className="PostTool DeleteTool shy" key={`DeleteTool_${post.id}`}>
+          <button>
+            <XBoxIcon />
+            <Hint>Delete</Hint>
+          </button>
+        </span>
+      )
+    } else {
+      cells.push(
+        <span className="PostTool FlagTool shy" key={`FlagTool_${post.id}`}>
+          <button>
+            <FlagIcon />
+            <Hint>Flag</Hint>
+          </button>
+        </span>
+      )
     }
     return cells
   }
@@ -84,12 +115,11 @@ class PostTools extends React.Component {
     const { post } = this.props
     if (!post) { return null }
     return (
-      <section className="PostTools">
+      <footer className="PostTools">
         {this.getToolCells()}
-      </section>
+      </footer>
     )
   }
-
 }
 
 PostTools.propTypes = {
