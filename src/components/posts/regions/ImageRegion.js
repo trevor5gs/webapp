@@ -17,7 +17,7 @@ class ImageRegion extends React.Component {
       size = window.innerWidth > 375 ? 'hdpi' : 'mdpi'
     }
     return (
-      <img className="Region ImageRegion"
+      <img className="ImageRegion"
         alt={content.alt}
         height={this.attachment[size].metadata.height}
         src={this.attachment[size].url}
@@ -28,7 +28,7 @@ class ImageRegion extends React.Component {
   renderContent() {
     const { content } = this.props
     return (
-      <img className="Region ImageRegion"
+      <img className="ImageRegion"
         alt={content.alt}
         src={content.url} />
     )
