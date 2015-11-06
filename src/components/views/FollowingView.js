@@ -12,5 +12,9 @@ class FollowingView extends React.Component {
   }
 }
 
+FollowingView.preRender = (store) => {
+  return store.dispatch(StreamActions.loadFriends())
+}
+
 export default FollowingView
 

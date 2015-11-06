@@ -186,3 +186,4 @@ OnboardingView.propTypes = {
 }
 
 export default connect(mapStateToProps)(OnboardingView)
+

@@ -11,10 +11,11 @@ class ImageRegion extends React.Component {
   }
 
   renderAttachment() {
+    // TODO: use srcset for loading images
     const { content } = this.props
     let size = 'optimized'
     if (!this.isGif()) {
-      size = window.innerWidth > 375 ? 'hdpi' : 'mdpi'
+      size = 'hdpi' // window && window.innerWidth > 375 ? 'hdpi' : 'mdpi'
     }
     return (
       <img className="ImageRegion"

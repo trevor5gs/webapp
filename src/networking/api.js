@@ -1,6 +1,6 @@
 const API_VERSION = 'v2'
 const PROTOCOL = 'https'
-const DOMAIN = (typeof ENV !== 'undefined') ? ENV.AUTH_DOMAIN : 'ello-staging.herokuapp.com'
+const DOMAIN = (typeof ENV !== 'undefined') ? ENV.AUTH_DOMAIN : 'ello-staging3.herokuapp.com'
 const PER_PAGE = 20
 
 function getAPIPath(relPath, queryParams = {}) {

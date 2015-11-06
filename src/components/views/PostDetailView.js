@@ -23,5 +23,9 @@ PostDetailView.propTypes = {
   }).isRequired,
 }
 
+PostDetailView.preRender = (store, routerState) => {
+  return store.dispatch(loadPostDetail(`~${routerState.params.type}`))
+}
+
 export default PostDetailView
 

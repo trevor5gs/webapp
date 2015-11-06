@@ -10,9 +10,9 @@ const CATEGORIES = [
 export default {
   path: 'notifications(/:category)',
   getComponents(location, cb) {
-    require.ensure([], (require) => {
-      cb(null, require('../../components/views/NotificationsView'))
-    })
+    // require.ensure([], (require) => {
+    cb(null, require('../../components/views/NotificationsView'))
+    // })
   },
   onEnter(nextState, replaceState) {
     const category = nextState.params.category
