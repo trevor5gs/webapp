@@ -4,6 +4,7 @@ import Mousetrap from 'mousetrap'
 import { connect } from 'react-redux'
 import { SHORTCUT_KEYS } from '../../constants/action_types'
 import NavbarLabel from './NavbarLabel'
+import NavbarOmniButton from './NavbarOmniButton'
 import NavbarLink from './NavbarLink'
 import NavbarMark from './NavbarMark'
 import NavbarProfile from './NavbarProfile'
@@ -46,7 +47,6 @@ class Navbar extends React.Component {
     removeScrollObject(this)
   }
 
-
   onScrollTop() {
     if (this.state.asFixed) {
       this.setState({ asFixed: false, asHidden: false, skipTransition: false })
@@ -87,9 +87,12 @@ class Navbar extends React.Component {
     }
   }
 
+  omniButtonWasClicked() {
+  }
 
   render() {
     const { profile } = this.props
+    const showLabel = false
     const klassNames = classNames(
       'Navbar',
       { asFixed: this.state.asFixed },
@@ -100,7 +103,7 @@ class Navbar extends React.Component {
     return (
       <nav className={klassNames} role="navigation">
         <NavbarMark />
-        <NavbarLabel />
+        { showLabel ? <NavbarLabel /> : <NavbarOmniButton callback={this.omniButtonWasClicked.bind(this)} />}
         <div className="NavbarLinks">
           <NavbarLink to="/following" label="Following" icon={ <CircleIcon/> } />
           <NavbarLink to="/starred" label="Starred" icon={ <StarIcon/> } />

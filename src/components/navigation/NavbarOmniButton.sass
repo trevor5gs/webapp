@@ -1,0 +1,32 @@
+.NavbarOmniButton
+  +sanserif
+  transition: background-color $speed ease
+  position: absolute
+  top: rem(10)
+  left: rem(60)
+  height: rem(30)
+  line-height: rem(30)
+  border-radius: rem(15)
+  padding: 0 rem(15) 0 rem(10)
+  background-color: black
+  color: white
+
+.NavbarOmniButton .SVGIcon
+  margin-right: rem(5)
+
+.NavbarOmniButton .SVGIcon g
+  stroke: white
+
+@media(min-width: #{$break-2})
+  .NavbarOmniButton
+    top: rem(20)
+    left: rem(80)
+    height: rem(40)
+    line-height: rem(40)
+    border-radius: rem(20)
+    width: rem(100)
+  .no-touch .NavbarOmniButton:hover
+    background-color: #666
+  .no-touch .NavbarOmniButton:hover .SVGIcon g
+    stroke: white
+
