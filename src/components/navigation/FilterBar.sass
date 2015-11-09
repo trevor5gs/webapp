@@ -1,18 +1,18 @@
 .FilterBar
-  +sans-typeset
   color: #aaa
+  padding: 0 rem(10)
+  padding: rem(20) rem(10) 0
 
 // FilterText
 .FilterBar.FilterText
-  font-size: rem(24)
-  padding: rem(30)
+  font-size: rem(18)
 
 .FilterBar.FilterText > a + a
-  margin-left: rem(30)
+  margin-left: rem(20)
 
 .FilterBar.FilterText > a.active
-  border-bottom: 2px solid black
   color: black
+  border-bottom: 2px solid black
 
 .no-touch .FilterBar.FilterText > a:hover
   color: black
@@ -49,4 +49,20 @@
 .no-touch .FilterBar.FilterIcon > a:hover .BubbleIcon g,
 .no-touch .FilterBar.FilterIcon > a:hover .HeartIcon g
   fill: white
+
+
+@media(min-width: #{$break-2})
+  .FilterBar
+    padding: rem(40) rem(20) rem(20)
+  .FilterBar.FilterText
+    font-size: rem(24)
+    padding-bottom: rem(5)
+  .FilterBar.FilterText > a + a
+    margin-left: rem(30)
+
+
+@media(min-width: #{$break-4})
+  .FilterBar
+    padding-left: rem(40)
+    padding-right: rem(40)
 
