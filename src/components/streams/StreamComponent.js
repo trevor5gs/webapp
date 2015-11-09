@@ -31,10 +31,11 @@ export class StreamComponent extends React.Component {
     // return true for post tools actions
     if (!action || !action.payload || !stream || !stream.payload) {
       return false
+    } else if (stream.type && (stream.type.indexOf('LOAD_STREAM') === 0 || stream.type.indexOf('LOAD_NEXT') === 0)) {
+      return action.payload.endpoint === stream.payload.endpoint
     } else if (stream.type && stream.type.indexOf('POST.') === 0) {
       return true
     }
-    return action.payload.endpoint === stream.payload.endpoint
   }
 
   componentDidUpdate() {
