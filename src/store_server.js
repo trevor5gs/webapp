@@ -1,4 +1,5 @@
 import thunk from 'redux-thunk'
+import createHistory from 'history/lib/createHistory'
 import { compose, createStore, applyMiddleware } from 'redux'
 import { routerStateReducer } from 'redux-router'
 import { reduxReactRouter } from 'redux-router/server'
@@ -19,7 +20,7 @@ function reducer(state = {}, action) {
 
 const store = compose(
   applyMiddleware(thunk, uploader, requester, analytics),
-  reduxReactRouter({ routes: routes })
+  reduxReactRouter({ routes: routes, createHistory: createHistory })
 )(createStore)(reducer)
 
 export default store
