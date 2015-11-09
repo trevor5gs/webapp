@@ -7,7 +7,7 @@ import { parseNotification } from '../parsers/NotificationParser'
 import { parsePost } from '../parsers/PostParser'
 import { getLinkArray } from '../base/json_helper'
 import * as api from '../../networking/api'
-import { HeartIcon, RepostIcon } from '../iconography/Icons'
+import { HeartIcon, RepostIcon, BubbleIcon } from '../iconography/Icons'
 
 export function onboardingCommunities(users) {
   return (
@@ -84,15 +84,18 @@ export function postDetail(posts, json, currentUser) {
     <div className="PostDetail Posts asList">
       <div ref={`postList_${post.id}`} key={post.id} className="Post PostList">
         {parsePost(post, json, currentUser, false)}
+        {avatarDrawers}
+        <section className="Comments">
+          <BubbleIcon/>
+          {comments.map((comment) => {
+            return (
+              <div ref={`commentList_${comment.id}`} key={comment.id} className="CommentList">
+                {parsePost(comment, json, currentUser, false)}
+              </div>
+            )
+          })}
+        </section>
       </div>
-      {avatarDrawers}
-      {comments.map((comment) => {
-        return (
-          <div ref={`commentList_${comment.id}`} key={comment.id} className="CommentList">
-            {parsePost(comment, json, currentUser, false)}
-          </div>
-        )
-      })}
     </div>
   )
 }

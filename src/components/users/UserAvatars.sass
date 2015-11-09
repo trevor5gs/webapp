@@ -1,5 +1,23 @@
+.UserAvatars
+  position: relative
+  padding-left: rem(20)
+  background-color: lightslategrey
+.UserAvatars + .UserAvatars
+  background-color: lightsalmon
+
+.UserAvatars > .SVGIcon
+  position: absolute
+  top: rem(15)
+  left: 0
+
 .UserAvatars .Avatar
-  +circle(rem(40))
+  +circle(rem(30))
   display: inline-block
   margin-right: rem(10)
+
+@media(min-width: #{$break-2})
+  .UserAvatars > .SVGIcon
+    top: rem(30)
+  .UserAvatars .Avatar
+    +circle(rem(40))
 
