@@ -32,10 +32,10 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
         <Avatar imgSrc={repostAuthor.avatar.regular.url} />
       </Link>
       <div className="Vitals">
-        <div>
+        <div className="RepostAuthor">
           <Link to={`/${repostAuthor.username}`}>{`@${repostAuthor.username}`}</Link>
         </div>
-        <div>
+        <div className="RepostReposter">
           <Link to={`/${repostedBy.username}`}>
             <RepostIcon />
             {` by ${repostedBy.username}`}
