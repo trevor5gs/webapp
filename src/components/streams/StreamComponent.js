@@ -18,7 +18,7 @@ export class StreamComponent extends React.Component {
   }
 
   componentDidMount() {
-    if (window && window.embetter) {
+    if (window.embetter) {
       window.embetter.reloadPlayers()
     }
     addScrollObject(this)
@@ -38,13 +38,13 @@ export class StreamComponent extends React.Component {
   }
 
   componentDidUpdate() {
-    if (window && window.embetter) {
+    if (window.embetter) {
       window.embetter.reloadPlayers()
     }
   }
 
   componentWillUnmount() {
-    if (window && window.embetter) {
+    if (window.embetter) {
       window.embetter.stopPlayers()
     }
     removeScrollObject(this)

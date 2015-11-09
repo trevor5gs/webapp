@@ -24,7 +24,7 @@ class OnboardingHeader extends React.Component {
 
     dispatch(trackEvent(`completed-${trackingLabel}`))
 
-    if (window && redirection) {
+    if (redirection) {
       e.preventDefault()
       window.location = nextPath
     }
@@ -66,7 +66,7 @@ class OnboardingHeader extends React.Component {
   skipWasClicked(e) {
     const { dispatch, trackingLabel, nextPath, redirection } = this.props
     dispatch(trackEvent(`skipped-${trackingLabel}`))
-    if (window && redirection) {
+    if (redirection) {
       e.preventDefault()
       window.location = nextPath
     }
