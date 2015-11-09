@@ -10,6 +10,7 @@ import * as reducers from './reducers'
 
 const logger = createLogger({ collapsed: true })
 function reducer(state = {}, action) {
+  if (!state && window.__INITIAL_STATE__) { return window.__INITIAL_STATE__ }
   return {
     json: reducers.json(state.json, action, state.router),
     devtools: reducers.devtools(state.devtools, action),
