@@ -7,7 +7,7 @@ let linkPagination = {}
 function getAuthToken() {
   // const storage = window ? window.localStorage : { getItem: () => {} }
   return {
-    'Authorization': `Bearer 8eb9bfee1654040978e1b80ae1af5af0e40778919e72fd2301f0f5b6f606f1df`,
+    'Authorization': `Bearer 725b0dbcc69fa4dbe937dd010ce7ea57a36f27a9fbe76b59cbdd4f68dd03a306`,
   }
 }
 
@@ -24,7 +24,7 @@ function getGetHeader() {
 }
 
 function checkStatus(response) {
-  console.log('checkStatus', response.statusText)
+  // console.log('checkStatus', response.statusText)
   if (response.ok) {
     return response
   }
@@ -104,7 +104,7 @@ export function requester() {
       options.body = body || null
     }
 
-    console.log('fetch path: ', endpoint.path)
+    // console.log('fetch path: ', endpoint.path)
     return fetch(endpoint.path, options)
       .then(checkStatus)
       .then(parseJSON)
