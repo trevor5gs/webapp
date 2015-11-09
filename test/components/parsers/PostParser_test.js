@@ -6,7 +6,6 @@ describe('PostParser', () => {
     const post = stub('post', { authorId: '42' })
     stub('user', { id: '42', username: 'forty_two' })
     const cells = parsePost(post, json)
-    console.log(cells)
 
     expect(cells.length).to.equal(3)
 
