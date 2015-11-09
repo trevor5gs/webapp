@@ -118,7 +118,7 @@ export function parsePost(post, json, currentUser, gridLayout = true) {
     if (gridLayout) {
       cells.push(body(post.summary, post.id))
     } else {
-      cells.push(regionItems(post.repostContent))
+      cells.push(body(post.repostContent))
       if (post.content && post.content.length) {
         cells.push(body(post.content, post.id))
       }
