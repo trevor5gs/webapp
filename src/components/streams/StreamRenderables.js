@@ -45,7 +45,7 @@ export function postsAsGrid(posts, json, currentUser) {
 
 export function postsAsList(posts, json, currentUser) {
   return (
-    <div className="Posts as-list">
+    <div className="Posts asList">
       {posts.data.map((post) => {
         return (
           <div ref={`postList_${post.id}`} key={post.id} className="Post PostList">
@@ -81,7 +81,7 @@ export function postDetail(posts, json, currentUser) {
     avatarDrawers.push(<UserAvatars endpoint={api.postReposters(post)} icon={<RepostIcon />} key="reposters" resultKey="reposters" />)
   }
   return (
-    <div className="PostDetail">
+    <div className="PostDetail Posts asList">
       <div ref={`postList_${post.id}`} key={post.id} className="Post PostList">
         {parsePost(post, json, currentUser, false)}
       </div>

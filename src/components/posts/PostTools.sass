@@ -1,8 +1,20 @@
+@mixin showTool
+  opacity: 1
+  pointer-events: auto
+
+@mixin hideTool
+  opacity: 0
+  pointer-events: none
+
+// -------------------------------------
+
 .PostTools
   +monospace
+  transition: transform $speed $ease
   height: rem(60)
   padding-top: rem(20)
   white-space: nowrap
+  position: relative
   // background-color: lightgreen
 
 .PostTool
@@ -10,10 +22,6 @@
   display: inline-block
   height: rem(20)
   line-height: rem(20)
-
-.ViewsTool
-  height: rem(22)
-  line-height: rem(22)
 
 .PostTool + .PostTool
   margin-left: rem(3)
@@ -29,6 +37,10 @@
   display: inline-block
   vertical-align: middle
 
+.ViewsTool
+  height: rem(22)
+  line-height: rem(22)
+
 .ViewsTool > a
   padding-left: rem(11)
   padding-right: rem(11)
@@ -39,6 +51,7 @@
   stroke: #535353
 .ViewsTool .EyeIcon > circle
   fill: #535353
+
 
 .TimeAgoTool > a
   padding-left: rem(15)
@@ -66,24 +79,86 @@
 
 .PostTool .SVGIcon + .PostToolValue
   margin-left: rem(2)
+
 .ViewsTool .SVGIcon + .PostToolValue
   margin-left: rem(5)
 
+.MoreTool
+  transition: transform $speed $ease
+  position: absolute
+  z-index: 2
+
+.Posts.asList .MoreTool
+  right: -7px
+
+.Posts.asGrid .MoreTool
+  left: 270px
+
+.MoreTool button
+  padding-right: 0
+
+.ShyTool
+  transition: opacity $speed ease
+  +hideTool
+
+.PostTools.isMoreToolActive
+  transform: translate3d(rem(-120), 0, 0)
+
+.PostTools.isMoreToolActive .MoreTool
+  transform: translate3d(rem(120), 0, 0)
+
+.PostTools.isMoreToolActive .MoreTool .SVGIcon g
+  stroke: #535353
+
+.PostTools.isMoreToolActive .ShyTool
+  +showTool
+
+
+// MAX width for hiding MOBILE in a GRID.
+@media(max-width: #{em(449)})
+  .Posts.asGrid .ShareTool
+    display: none
+@media(max-width: #{em(549)})
+  .Posts.asGrid .CommentTool
+    margin-left: -10px
+  .Posts.asGrid .ViewsTool
+    display: none
+
+
+
+
+@media(min-width: #{em(375)})
+  .PostTools.isMoreToolActive
+    transform: translate3d(rem(-70), 0, 0)
+  .PostTools.isMoreToolActive .MoreTool
+    transform: translate3d(rem(70), 0, 0)
+  .Post.asList .TimeAgoTool.ShyTool
+    +showTool
+
+@media(min-width: #{em(450)})
+  .Posts .MoreTool,
+  .Posts.asGrid .ShyTool
+    display: none
+  .PostTools.isMoreToolActive,
+  .PostTools.isMoreToolActive .MoreTool
+    transform: none
+  .Posts.asList .ShyTool
+    +showTool
+
 
 @media(min-width: #{$break-2})
-  .no-touch .PostTools .PostTool.shy
-    transition: opacity $speed ease
-    opacity: 0
-  .no-touch .PostTools:hover .PostTool.shy
-    opacity: 1
+  .no-touch .Post.asList .ShyTool
+    +hideTool
+  .no-touch .Posts.asList .PostTools:hover .ShyTool
+    +showTool
   .no-touch .PostTool a:hover,
   .no-touch .PostTool button:hover
     color: black
   .no-touch .ViewsTool a:hover
     background-color: #ccc
+  .no-touch .LoveTool button.active:hover
+    color: #aaa
   .no-touch .LoveTool button.active:hover > .HeartIcon > g
     stroke: #ff9999
     fill: #ff9999
-  .no-touch .ViewsTool .Hint
-    left: 0
 
