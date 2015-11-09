@@ -28,7 +28,7 @@ updateTimeAgoStrings({about: ''})
 if (ENV.APP_VERSION) {
   const curVersion = storage.getItem('APP_VERSION')
   if (curVersion && ENV.APP_VERSION && curVersion !== ENV.APP_VERSION) {
-    for (const item of ['devtools', 'json', 'modals', 'profile', 'stream']) {
+    for (const item of ['json', 'profile', 'stream']) {
       storage.removeItem(`reduxPersist:${item}`)
     }
   }
@@ -87,7 +87,7 @@ const element = (
   </Provider>
 )
 
-persistStore(store, { storage, blacklist: ['router'] }, () => {
+persistStore(store, { storage, blacklist: ['router', 'modals', 'devtools'] }, () => {
   ReactDOM.render(element, document.getElementById('root'))
 })
 
