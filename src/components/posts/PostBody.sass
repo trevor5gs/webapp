@@ -1,0 +1,28 @@
+.TextRegion
+  max-width: rem(780)
+
+.ImageRegion
+  display: block
+
+.ImageRegion + .ImageRegion,
+.ImageRegion + .EmbedRegion,
+.EmbedRegion + .ImageRegion,
+.EmbedRegion + .EmbedRegion
+  margin-top: rem(10)
+
+.TextRegion + .TextRegion,
+.TextRegion + .ImageRegion,
+.TextRegion + .EmbedRegion,
+.ImageRegion + .TextRegion,
+.EmbedRegion + .TextRegion
+  margin-top: rem(30)
+
+// TextRegion always get's rid of the first and last child's margin.
+// Image and Embed Regions only remove margins for the first and/or last block.
+.PostBody > .TextRegion > *:first-of-type,
+.PostBody > .Region:first-child > *:first-of-type
+  margin-top: 0
+.PostBody > .TextRegion > *:last-of-type,
+.PostBody > .Region:last-child > *:last-of-type
+  margin-bottom: 0
+

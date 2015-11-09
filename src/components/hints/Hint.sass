@@ -1,0 +1,39 @@
+.Hint
+  display: none
+  pointer-events: none
+  transition: opacity $speed ease, visibility 0s ease $speed
+  position: absolute
+  top: rem(-25)
+  // left: calc(-50% + 10px)
+  left: 0
+  height: rem(22)
+  line-height: rem(22)
+  padding: 0 rem(11)
+  border-radius: rem(11)
+  white-space: nowrap
+  visibility: hidden
+  opacity: 0
+  background-color: black
+  color: white
+
+@media(min-width: #{$break-2})
+  .no-touch .Hint
+    display: inline-block
+
+  // .no-touch .Hint:before
+  //   +triangle(south, black, rem(14))
+  //   width: 0
+  //   height: 0
+  //   content: ''
+  //   position: absolute
+  //   bottom: rem(-14)
+  //   left: calc(50% - #{rem(7)})
+  //   z-index: 1
+
+  .no-touch button:hover .Hint,
+  .no-touch a:hover .Hint
+    transition-delay: 0.5s, 0s
+    transition-duration: $speed2, 0s
+    visibility: visible
+    opacity: 1
+

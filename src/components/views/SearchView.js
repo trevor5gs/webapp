@@ -1,7 +1,6 @@
 import React from 'react'
 import StreamComponent from '../streams/StreamComponent'
 import * as SearchActions from '../../actions/search'
-import Button from '../buttons/Button'
 import SearchControl from '../forms/SearchControl'
 import { debounce } from '../base/lib'
 import classNames from 'classnames'
@@ -44,11 +43,14 @@ class SearchView extends React.Component {
     const { type } = this.state
     return (
       <div className="SearchView Panel">
-        <div style={{ padding: '20px' }}>
+        <div className="SearchBar">
           <SearchControl text="" controlWasChanged={this.handleControlChange.bind(this)} />
-          <div style={{ height: '20px' }} />
-          <Button className={classNames({ active: type === 'posts' })} style={{ marginRight: '10px' }} children="Posts" onClick={() => { this.handleControlChange({ type: 'posts' }) }} />
-          <Button className={classNames({ active: type === 'users' })} children="Users" onClick={() => { this.handleControlChange({ type: 'users' }) }} />
+          <button className={classNames('SearchFilter', { active: type === 'posts' })} onClick={() => { this.handleControlChange({ type: 'posts' }) }} >
+            Posts
+          </button>
+          <button className={classNames('SearchFilter', { active: type === 'users' })} onClick={() => { this.handleControlChange({ type: 'users' }) }} >
+            People
+          </button>
         </div>
         <StreamComponent ref="streamComponent" />
       </div>

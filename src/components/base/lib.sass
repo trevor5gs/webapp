@@ -52,6 +52,21 @@ $context-px: 16 !default
   +shape($width, $height, $_radii)
 
 
+@mixin triangle($direction, $color:black, $size:1.25rem)
+  border-color: transparent
+  border-style: solid
+  border-width: $size * 0.5
+  @if ($direction == up) or ($direction == north)
+    border-bottom-color: $color
+  @if ($direction == south) or ($direction == down)
+    border-top-color: $color
+  @if ($direction == east) or ($direction == right)
+    border-left-color: $color
+  @if ($direction == west) or ($direction == left)
+    border-right-color: $color
+  width: 0
+  height: 0
+
 // -------------------------------------
 // Visibility
 

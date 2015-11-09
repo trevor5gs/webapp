@@ -1,0 +1,51 @@
+.PostHeader,
+.RepostHeader
+  +monospace
+  position: relative
+  height: rem(60)
+
+.PostHeader .Avatar,
+.RepostHeader .Avatar
+  position: absolute
+  +circle(rem(30))
+  top: rem(15)
+
+.PostHeader .Vitals,
+.RepostHeader .Vitals
+  position: relative
+  margin-left: rem(40)
+
+.PostHeader .Vitals
+  line-height: rem(60)
+
+.RepostHeader .Vitals
+  top: rem(10)
+  line-height: rem(20)
+
+.RepostAuthor,
+.RepostReposter,
+.PostHeader .Vitals
+  padding-right: rem(30)
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+
+@media(min-width: #{$break-2})
+  .PostHeader,
+  .RepostHeader
+    height: rem(80)
+  .PostHeader .Avatar,
+  .RepostHeader .Avatar
+    +circle(rem(40))
+    top: rem(20)
+  .PostHeader .Vitals
+    margin-left: rem(60)
+    line-height: rem(80)
+  .RepostHeader .Vitals
+    margin-left: rem(60)
+    top: rem(20)
+  .RepostAuthor,
+  .RepostReposter,
+  .PostHeader .Vitals
+    padding-right: rem(40)
+

@@ -13,11 +13,11 @@ let models = {}
 function header(post, author) {
   if (!post || !author) { return null }
   return (
-    <header className="PostHeader" key={`postHeader_${post.id}`}>
+    <header className="PostHeader" key={`PostHeader_${post.id}`}>
       <Link to={`/${author.username}`}>
         <Avatar imgSrc={author.avatar.regular.url} />
       </Link>
-      <div className="vitals">
+      <div className="Vitals">
         <Link to={`/${author.username}`}>{`@${author.username}`}</Link>
       </div>
     </header>
@@ -27,16 +27,16 @@ function header(post, author) {
 function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   if (!post || !repostedBy) { return null }
   return (
-    <header className="RepostHeader" key={`postHeader_${post.id}`}>
+    <header className="RepostHeader" key={`PostHeader_${post.id}`}>
       <Link to={`/${repostAuthor.username}`}>
         <Avatar imgSrc={repostAuthor.avatar.regular.url} />
       </Link>
-      <div className="vitals">
-        <div>
+      <div className="Vitals">
+        <div className="RepostAuthor">
           <Link to={`/${repostAuthor.username}`}>{`@${repostAuthor.username}`}</Link>
         </div>
-        <div>
-          <Link className="reposted-by" to={`/${repostedBy.username}`}>
+        <div className="RepostReposter">
+          <Link to={`/${repostedBy.username}`}>
             <RepostIcon />
             {` by ${repostedBy.username}`}
           </Link>
@@ -80,11 +80,11 @@ function regionItems(content, only = null) {
     if (!only || only === region.kind) {
       switch (region.kind) {
       case 'text':
-        return textRegion(region, `textRegion_${i}`)
+        return textRegion(region, `TextRegion_${i}`)
       case 'image':
-        return imageRegion(region, `imageRegion_${i}`)
+        return imageRegion(region, `ImageRegion_${i}`)
       case 'embed':
-        return embedRegion(region, `embedRegion_${i}`)
+        return embedRegion(region, `EmbedRegion_${i}`)
       default:
         throw new Error(`UNKNOWN REGION: ${region.kind}`)
       }
@@ -92,9 +92,18 @@ function regionItems(content, only = null) {
   })
 }
 
+function body(content, id) {
+  return (
+    <div className="PostBody" key={`PostBody_${id}`}>
+      {regionItems(content)}
+    </div>
+  )
+}
+
+
 function footer(post, author, currentUser) {
   if (!author) { return null }
-  return <PostTools author={author} post={post} currentUser={currentUser} key={`postTools_${post.id}`} />
+  return <PostTools author={author} post={post} currentUser={currentUser} key={`PostTools_${post.id}`} />
 }
 
 export function parsePost(post, json, currentUser, gridLayout = true) {
@@ -107,17 +116,17 @@ export function parsePost(post, json, currentUser, gridLayout = true) {
     // this is weird, but the post summary is
     // actually the repost summary on reposts
     if (gridLayout) {
-      cells.push(regionItems(post.summary))
+      cells.push(body(post.summary, post.id))
     } else {
-      cells.push(regionItems(post.repostContent))
+      cells.push(body(post.repostContent))
       if (post.content && post.content.length) {
-        cells.push(regionItems(post.content))
+        cells.push(body(post.content, post.id))
       }
     }
   } else {
     cells.push(header(post, author))
     const content = gridLayout ? post.summary : post.content
-    cells.push(regionItems(content))
+    cells.push(body(content, post.id))
   }
   cells.push(footer(post, author, currentUser))
   models = {}

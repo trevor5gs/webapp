@@ -1,80 +1,163 @@
+@mixin showTool
+  opacity: 1
+  pointer-events: auto
+
+@mixin hideTool
+  opacity: 0
+  pointer-events: none
+
+// -------------------------------------
+
 .PostTools
   +monospace
+  transition: transform $speed $ease
+  height: rem(60)
+  padding-top: rem(20)
+  white-space: nowrap
+  position: relative
+
+.PostTool
+  position: relative
+  display: inline-block
+  height: rem(20)
+  line-height: rem(20)
+
+.PostTool + .PostTool
+  margin-left: rem(3)
+
+.PostTool > button,
+.PostTool > a
   color: #aaa
-  padding-top: rem(5)
+  transition: color $speed ease
+  padding-left: rem(10)
+  padding-right: rem(10)
 
-.PostTools > span,
-.PostTools > a > span
+.PostTool > a
   display: inline-block
+  vertical-align: middle
+
+.ViewsTool
   height: rem(22)
-  padding: rem(1) rem(5)
+  line-height: rem(22)
 
-.PostTools > span:not(:first-child),
-.PostTools > a > span:not(:first-child)
-  margin-left: rem(12)
-  display: inline-block
-  height: rem(22)
-  padding: rem(1) rem(5)
-
-.PostTools > span:not(:first-child),
-.PostTools > a > span:not(:first-child)
-  margin-left: rem(12)
-
-.PostTools > span.pill,
-.PostTools > a > span.pill
+.ViewsTool > a
+  padding-left: rem(11)
+  padding-right: rem(11)
   border-radius: rem(11)
-  background-color: #eee
+  background-color: #e8e8e8
   color: #535353
-
-.PostTools > span.pill .SVGIcon g,
-.PostTools > a > span.pill .SVGIcon g
+.ViewsTool .SVGIcon > g
   stroke: #535353
-.PostTools > span.pill .EyeIcon > circle,
-.PostTools > a > span.pill .EyeIcon > circle
-  transition-delay: $speed * 0.5
-  stroke: #535353
+.ViewsTool .EyeIcon > circle
   fill: #535353
 
-.PostTools .SVGIcon g
-  stroke: #aaa
 
-.BubbleIcon g,
-.RepostIcon g,
-.ShareIcon polyline,
-  stroke-linejoin: round
+.TimeAgoTool > a
+  padding-left: rem(15)
+  padding-right: rem(15)
 
-.BubbleIcon g:nth-child(2)
-  fill: black
-  stroke: black
-  display: none
-
-.EyeIcon > circle
-  transition: fill $speed ease
-  stroke: transparent
-  fill: #aaa
-
-.EyeIcon
-  margin-right: rem(5)
-
-// Hover styles
-
-.no-touch a:hover .BubbleIcon g,
-.no-touch button:hover .BubbleIcon g,
-.no-touch a:hover .HeartIcon g,
-.no-touch button:hover .HeartIcon g
-  fill: black
-
-button.active .HeartIcon g
+.LoveTool > button.active .HeartIcon > g
   fill: red
   stroke: red
 
-.no-touch a:hover .EyeIcon > circle,
-.no-touch button:hover .EyeIcon > circle
-  transition-delay: $speed * 0.5
-  stroke: black
-  fill: black
+.PostTool .EyeIcon,
+.PostTool .BubbleIcon,
+.PostTool .HeartIcon
+  margin-top: rem(-2)
 
-.no-touch a:hover .ShareIcon g:nth-of-type(2),
-.no-touch button:hover .ShareIcon g:nth-of-type(2)
-  transform: translate3d(0,-1px,0)
+.PostTool .RepostIcon,
+.PostTool .PencilIcon,
+.PostTool .ShareIcon
+  margin-top: rem(-4)
+
+.PostTool .XBoxIcon
+  padding-left: rem(1)
+
+.PostToolValue[data-count='0']
+  display: none
+
+.PostTool .SVGIcon + .PostToolValue
+  margin-left: rem(2)
+
+.ViewsTool .SVGIcon + .PostToolValue
+  margin-left: rem(5)
+
+.MoreTool
+  transition: transform $speed $ease
+  position: absolute
+  z-index: 2
+
+.Posts.asList .MoreTool
+  right: -7px
+
+.Posts.asGrid .MoreTool
+  left: 270px
+
+.MoreTool button
+  padding-right: 0
+
+.ShyTool
+  transition: opacity $speed ease
+  +hideTool
+
+.PostTools.isMoreToolActive
+  transform: translate3d(rem(-120), 0, 0)
+
+.PostTools.isMoreToolActive .MoreTool
+  transform: translate3d(rem(120), 0, 0)
+
+.PostTools.isMoreToolActive .MoreTool .SVGIcon g
+  stroke: #535353
+
+.PostTools.isMoreToolActive .ShyTool
+  +showTool
+
+
+// MAX width for hiding MOBILE in a GRID.
+@media(max-width: #{em(449)})
+  .Posts.asGrid .ShareTool
+    display: none
+@media(max-width: #{em(549)})
+  .Posts.asGrid .CommentTool
+    margin-left: -10px
+  .Posts.asGrid .ViewsTool
+    display: none
+
+
+
+
+@media(min-width: #{em(375)})
+  .PostTools.isMoreToolActive
+    transform: translate3d(rem(-70), 0, 0)
+  .PostTools.isMoreToolActive .MoreTool
+    transform: translate3d(rem(70), 0, 0)
+  .Post.asList .TimeAgoTool.ShyTool
+    +showTool
+
+@media(min-width: #{em(450)})
+  .Posts .MoreTool,
+  .Posts.asGrid .ShyTool
+    display: none
+  .PostTools.isMoreToolActive,
+  .PostTools.isMoreToolActive .MoreTool
+    transform: none
+  .Posts.asList .ShyTool
+    +showTool
+
+
+@media(min-width: #{$break-2})
+  .no-touch .Posts.asList .ShyTool
+    +hideTool
+  .no-touch .Posts.asList .PostTools:hover .ShyTool
+    +showTool
+  .no-touch .PostTool a:hover,
+  .no-touch .PostTool button:hover
+    color: black
+  .no-touch .ViewsTool a:hover
+    background-color: #ccc
+  .no-touch .LoveTool button.active:hover
+    color: #aaa
+  .no-touch .LoveTool button.active:hover > .HeartIcon > g
+    stroke: #ff9999
+    fill: #ff9999
 

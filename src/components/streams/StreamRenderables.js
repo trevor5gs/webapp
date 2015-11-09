@@ -7,7 +7,7 @@ import { parseNotification } from '../parsers/NotificationParser'
 import { parsePost } from '../parsers/PostParser'
 import { getLinkArray } from '../base/json_helper'
 import * as api from '../../networking/api'
-import { HeartIcon, RepostIcon } from '../iconography/Icons'
+import { HeartIcon, RepostIcon, BubbleIcon } from '../iconography/Icons'
 
 export function onboardingCommunities(users) {
   return (
@@ -21,7 +21,7 @@ export function onboardingCommunities(users) {
 
 export function onboardingPeople(users) {
   return (
-    <div className="Users as-grid">
+    <div className="Users asGrid">
       {users.data.map((user, i) => {
         return <UserGrid ref={'userGrid_' + i} user={user} key={i} />
       })}
@@ -31,10 +31,10 @@ export function onboardingPeople(users) {
 
 export function postsAsGrid(posts, json, currentUser) {
   return (
-    <div className="Posts as-grid">
+    <div className="Posts asGrid">
       {posts.data.map((post) => {
         return (
-          <div ref={`postGrid_${post.id}`} key={post.id} className="PostGrid">
+          <div ref={`postGrid_${post.id}`} key={post.id} className="Post PostGrid">
             {parsePost(post, json, currentUser)}
           </div>
         )
@@ -45,10 +45,10 @@ export function postsAsGrid(posts, json, currentUser) {
 
 export function postsAsList(posts, json, currentUser) {
   return (
-    <div className="Posts as-list">
+    <div className="Posts asList">
       {posts.data.map((post) => {
         return (
-          <div ref={`postList_${post.id}`} key={post.id} className="PostList">
+          <div ref={`postList_${post.id}`} key={post.id} className="Post PostList">
             {parsePost(post, json, currentUser)}
           </div>
         )
@@ -81,18 +81,21 @@ export function postDetail(posts, json, currentUser) {
     avatarDrawers.push(<UserAvatars endpoint={api.postReposters(post)} icon={<RepostIcon />} key="reposters" resultKey="reposters" />)
   }
   return (
-    <div className="PostDetail">
-      <div ref={`postList_${post.id}`} key={post.id} className="PostList">
+    <div className="PostDetail Posts asList">
+      <div ref={`postList_${post.id}`} key={post.id} className="Post PostList">
         {parsePost(post, json, currentUser, false)}
+        {avatarDrawers}
+        <section className="Comments">
+          <BubbleIcon/>
+          {comments.map((comment) => {
+            return (
+              <div ref={`commentList_${comment.id}`} key={comment.id} className="CommentList">
+                {parsePost(comment, json, currentUser, false)}
+              </div>
+            )
+          })}
+        </section>
       </div>
-      {avatarDrawers}
-      {comments.map((comment) => {
-        return (
-          <div ref={`commentList_${comment.id}`} key={comment.id} className="CommentList">
-            {parsePost(comment, json, currentUser, false)}
-          </div>
-        )
-      })}
     </div>
   )
 }
