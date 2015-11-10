@@ -31,11 +31,10 @@ export class StreamComponent extends React.Component {
     // return true for post tools actions
     if (!action || !action.payload || !stream || !stream.payload) {
       return false
-    } else if (stream.type && (stream.type.indexOf('LOAD_STREAM') === 0 || stream.type.indexOf('LOAD_NEXT') === 0)) {
-      return action.payload.endpoint === stream.payload.endpoint
     } else if (stream.type && stream.type.indexOf('POST.') === 0) {
       return true
     }
+    return action.payload.endpoint === stream.payload.endpoint
   }
 
   componentDidUpdate() {
@@ -68,7 +67,7 @@ export class StreamComponent extends React.Component {
     if (action && action.meta && action.meta.resultKey) { return }
     const result = json.pages ? json.pages[router.location.pathname] : null
     const { pagination } = result
-    if (!pagination[rel] || Number(pagination.totalPagesRemaining) === 0 || !action) { return }
+    if (!pagination[rel] || parseInt(pagination.totalPagesRemaining, 10) === 0 || !action) { return }
     dispatch(
       {
         type: ACTION_TYPES.LOAD_NEXT_CONTENT,
