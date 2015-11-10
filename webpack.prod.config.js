@@ -8,7 +8,6 @@ var jade = require('jade')
 module.exports = {
   entry: {
     main: './src/main',
-    auth: './src/networking/auth'
   },
   output: {
     path: path.join(__dirname, 'public/static'),
@@ -26,7 +25,7 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin('commons'),
     new HtmlWebpackPlugin({
       filename: '../index.html',
-      chunks: ['commons', 'auth', 'main'],
+      chunks: ['commons', 'main'],
       templateContent: jade.renderFile('public/template.jade', { pretty: true }),
       hash:true,
       inject: 'body',

@@ -12,6 +12,9 @@ function getRoute(path, subComponentName) {
 
 export default {
   path: 'onboarding',
+  onEnter() {
+    require('../../networking/auth')
+  },
   getChildRoutes(location, cb) {
     require.ensure([], () => {
       cb(null, [
