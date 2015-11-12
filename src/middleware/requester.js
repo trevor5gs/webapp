@@ -116,7 +116,7 @@ export function requester() {
         return true
       })
       .catch(error => {
-        if (error.response.status === 401) {
+        if (error.response.status === 401 && typeof window.resetAuth === 'function') {
           window.resetAuth()
         }
         next({ error, meta, payload, type: FAILURE })
