@@ -1,8 +1,6 @@
 const TYPES = [
-  'random',
   'recent',
   'recommended',
-  'related',
   'trending',
 ]
 

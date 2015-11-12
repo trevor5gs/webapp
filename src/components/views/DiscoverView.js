@@ -4,15 +4,23 @@ import StreamComponent from '../streams/StreamComponent'
 import * as DiscoverActions from '../../actions/discover'
 
 class DiscoverView extends React.Component {
+
+  componentWillReceiveProps(nextProps) {
+    if (this.refs.streamComponent) {
+      const action = DiscoverActions.loadDiscoverUsers(nextProps.params.type)
+      this.refs.streamComponent.refs.wrappedInstance.setAction(action)
+    }
+  }
+
   render() {
     const links = []
-    links.push({ to: '/discover', children: 'Featured' })
-    links.push({ to: '/discover/random', children: 'Random' })
-    links.push({ to: '/discover/related', children: 'Related' })
+    links.push({ to: '/discover', children: 'Recommended' })
+    links.push({ to: '/discover/trending', children: 'Trending' })
+    links.push({ to: '/discover/recent', children: 'Recent' })
     return (
       <div className="DiscoverView Panel">
         <FilterBar type="text" links={links} />
-        <StreamComponent action={DiscoverActions.loadDiscoverUsers(this.props.params.type)} />
+        <StreamComponent ref="streamComponent" action={DiscoverActions.loadDiscoverUsers(this.props.params.type)} />
       </div>
     )
   }
