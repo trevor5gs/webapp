@@ -9,5 +9,5 @@ The web app for [ello.co](http://ello.co).
 * [Tests](/docs/test/Readme.md)
 * [Assets](/docs/assets/Readme.md)
 
-:metal:
+:metal: :metal:
 
