@@ -2,9 +2,6 @@ function getRoute(path, subComponentName) {
   return {
     path: path,
     subComponentName: subComponentName,
-    onEnter() {
-      require('../../networking/auth')
-    },
     getComponents(location, cb) {
       // require.ensure([], (require) => {
       cb(null, require('../../components/views/OnboardingView'))
