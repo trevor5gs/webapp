@@ -23,13 +23,13 @@ module.exports = {
     }),
     new ExtractTextPlugin('bundle.css'),
     new webpack.optimize.CommonsChunkPlugin('commons'),
-    // new HtmlWebpackPlugin({
-    //   filename: '../index.html',
-    //   chunks: ['commons', 'main'],
-    //   templateContent: jade.renderFile('public/template.jade', { pretty: true }),
-    //   hash:true,
-    //   inject: 'body',
-    // }),
+    new HtmlWebpackPlugin({
+      filename: '../index.html',
+      chunks: ['commons', 'main'],
+      templateContent: jade.renderFile('public/template.jade', { pretty: true }),
+      hash:true,
+      inject: 'body',
+    }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(true)
@@ -37,9 +37,9 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.js$/,
-      loaders: ['babel'],
+      loader: 'babel',
       include: path.join(__dirname, 'src'),
-      exclude: /node_modules/
+      exclude: /node_modules/,
     },
     {
       test: /\.sass$/,
