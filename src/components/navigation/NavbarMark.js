@@ -5,7 +5,7 @@ import { ElloMark, ElloRainbowMark, ElloDonutMark } from '../iconography/ElloIco
 class NavbarMark extends React.Component {
 
   renderMark() {
-    switch (true) {
+    switch (ENV.LOGO_MARK) {
     case 'rainbow':
       return <ElloRainbowMark />
     case 'donut':
