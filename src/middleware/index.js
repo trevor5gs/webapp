@@ -1,4 +1,4 @@
-export * from './uploader'
-export * from './requester'
-export * from './analytics'
+export { analytics } from './analytics'
+export { requester } from './requester'
+export { uploader } from './uploader'
 
