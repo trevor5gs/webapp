@@ -1,6 +1,5 @@
 import * as ACTION_TYPES from '../../src/constants/action_types'
 import { camelizeKeys } from 'humps'
-import 'isomorphic-fetch'
 import { resetAuth } from '../networking/auth'
 
 let linkPagination = {}

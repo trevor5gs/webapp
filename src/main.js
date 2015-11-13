@@ -1,5 +1,6 @@
 import './main.sass'
 import 'babel-core/polyfill'
+import 'isomorphic-fetch'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
