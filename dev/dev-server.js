@@ -1,15 +1,14 @@
-/* eslint-disable */
-var path = require('path')
-var express = require('express')
-var webpack = require('webpack')
-var config = require('../webpack.dev.config')
-var app = express()
-var compiler = webpack(config)
+const path = require('path')
+const express = require('express')
+const webpack = require('webpack')
+const config = require('../webpack.dev.config')
+const app = express()
+const compiler = webpack(config)
 
 // Development Middleware
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
-  publicPath: config.output.publicPath
+  publicPath: config.output.publicPath,
 }))
 app.use(require('webpack-hot-middleware')(compiler))
 
@@ -18,17 +17,17 @@ app.use(express.static('public'))
 app.use('/static', express.static('public/static'))
 
 // Main entry for app
-app.get('/*', function(req, res) {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dev.html'))
 })
 
 
 // Catchall for any requests like /onboarding
-app.get('*', function(req, res) {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dev.html'))
 })
 
-app.listen(6660, 'localhost', function(err) {
+app.listen(6660, 'localhost', (err) => {
   if (err) {
     console.log(err)
     return

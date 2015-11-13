@@ -1,20 +1,30 @@
-// import 'newrelic'
+import * as ENV from './env'
+import 'newrelic'
 import express from 'express'
+import path from 'path'
+import fs from 'fs'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match } from 'redux-router/server'
-import store from './src/store_server'
 import { ReduxRouter } from 'redux-router'
 import { Provider } from 'react-redux'
-import * as ENV from './env'
-
-// need to import anything that would be used in rendering
+import store from './src/store_server'
+import { setDomain } from './src/networking/api'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
-updateTimeAgoStrings({about: ''})
-
 import 'isomorphic-fetch'
 
+setDomain(ENV.AUTH_DOMAIN.replace(/"/g, ''))
+updateTimeAgoStrings({about: ''})
+
 const app = express()
+let indexStr = ''
+
+// grab out the index.html string first thing
+fs.readFile(path.join(__dirname, './public/index.html'), 'utf-8', (err, data) => {
+  if (!err) {
+    indexStr = data
+  }
+})
 
 // Assets
 app.use(express.static('public'))
@@ -26,29 +36,7 @@ function preRender(routerState) {
   return Promise.all(promises)
 }
 
-// template to render full page
-function renderFullPage(html, initialState) {
-  return `
-    <!doctype html>
-    <html>
-      <head>
-        <title>Ello | Be inspired.</title>
-        <link href="/static/bundle.css" rel="stylesheet"></link>
-      </head>
-      <body>
-        <div id="root">${html}</div>
-        <script>
-          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
-        </script>
-        <script src="/static/commons.entry.js"></script>
-        // <script src="/static/auth.entry.js"></script>
-        <script src="/static/main.entry.js"></script>
-      </body>
-    </html>
-    `
-}
-
-app.use((req, res) => {
+function renderFromServer(req, res) {
   store.dispatch(match(req.url, (error, redirectLocation, routerState) => {
     if (error) {
       console.log('error', error)
@@ -56,7 +44,6 @@ app.use((req, res) => {
     if (redirectLocation) {
       console.log('handle redirect')
     }
-    console.log('routerState', routerState)
     if (!routerState) { return }
     preRender(routerState).then(() => {
       const InitialComponent = (
@@ -64,15 +51,31 @@ app.use((req, res) => {
           <ReduxRouter />
         </Provider>
       )
-      // need to do this to get the fetches to kick off
       const componentHTML = renderToString(InitialComponent)
-      res.send(renderFullPage(componentHTML, store.getState()))
+      const state = store.getState()
+      // by default the components in the router are null
+      // so to get around that we'll delete them see:
+      // https://github.com/rackt/redux-router/issues/60
+      delete state.router
+      const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
+      indexStr = indexStr.replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
+      res.send(indexStr)
     }).catch((err) => {
       // this will give you a js error like:
       // `window is not defined`
       console.log('ERROR', err)
     })
   }))
+}
+
+app.use((req, res) => {
+  if (req.url.match(/\/somethingloggedout/)) {
+    // will need to get client credentials using
+    // the client id and secret to set as auth for logged out
+    renderFromServer(req, res)
+  } else {
+    res.send(indexStr)
+  }
 })
 
 const port = ENV.PORT || 6660
