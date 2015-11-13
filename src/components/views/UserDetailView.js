@@ -23,5 +23,9 @@ UserDetailView.propTypes = {
   }).isRequired,
 }
 
+UserDetailView.preRender = (store, routerState) => {
+  return store.dispatch(loadUserDetail(`~${routerState.params.username}`))
+}
+
 export default UserDetailView
 

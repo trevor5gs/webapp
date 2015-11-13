@@ -1,7 +1,7 @@
 import React from 'react'
 import FilterBar from '../navigation/FilterBar'
 import StreamComponent from '../streams/StreamComponent'
-import * as NotificationActions from '../../actions/notifications'
+import { loadNotifications } from '../../actions/notifications'
 import { BubbleIcon, HeartIcon, RepostIcon } from '../iconography/Icons'
 
 class NotificationsView extends React.Component {
@@ -21,7 +21,7 @@ class NotificationsView extends React.Component {
     return (
       <div className="NotificationsView Panel">
         <FilterBar type="icon" links={links} />
-        <StreamComponent action={NotificationActions.loadNotifications(params)} />
+        <StreamComponent action={loadNotifications(params)} />
       </div>
     )
   }
@@ -31,6 +31,15 @@ NotificationsView.propTypes = {
   params: React.PropTypes.shape({
     category: React.PropTypes.string,
   }),
+}
+
+NotificationsView.preRender = (store, routerState) => {
+  const { category } = routerState.params
+  const params = {}
+  if (category) {
+    params.category = category
+  }
+  return store.dispatch(loadNotifications(params))
 }
 
 export default NotificationsView

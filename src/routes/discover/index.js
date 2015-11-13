@@ -7,9 +7,9 @@ const TYPES = [
 export default {
   path: 'discover(/:type)',
   getComponents(location, cb) {
-    require.ensure([], (require) => {
-      cb(null, require('../../components/views/DiscoverView'))
-    })
+    // require.ensure([], (require) => {
+    cb(null, require('../../components/views/DiscoverView'))
+    // })
   },
   onEnter(nextState, replaceState) {
     const type = nextState.params.type

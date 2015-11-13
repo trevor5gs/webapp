@@ -1,24 +1,20 @@
-/*eslint-disable */
-require('newrelic')
-var path = require('path')
-var express = require('express')
-var app = express()
+import 'newrelic'
 
-app.use('/hello', function(req, res) {
-  res.send("yo")
-})
+const path = require('path')
+const express = require('express')
+const app = express()
 
 app.use(express.static('public'))
 app.use('/static', express.static('public/static'))
 
-app.use('*', function(req, res) {
+app.use('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'))
 })
-var port = process.env.PORT || 6660;
-app.listen(port, function(err) {
+const port = process.env.PORT || 6660
+app.listen(port, (err) => {
   if (err) {
     console.log(err)
     return
   }
-  console.log('Listening at http://localhost:'+port)
+  console.log('Listening at http://localhost:' + port)
 })

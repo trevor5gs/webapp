@@ -1,27 +1,27 @@
 import React from 'react'
-import Mousetrap from 'mousetrap'
+// import Mousetrap from 'mousetrap'
 import { connect } from 'react-redux'
-import { SHORTCUT_KEYS } from '../../constants/action_types'
-import { toggleDevGrid, cycleDevGrid } from '../../actions/devtools'
+// import { SHORTCUT_KEYS } from '../../constants/action_types'
+// import { toggleDevGrid, cycleDevGrid } from '../../actions/devtools'
 
 
 class DevGrid extends React.Component {
-  componentDidMount() {
-    const { dispatch } = this.props
+  // componentDidMount() {
+  //   const { dispatch } = this.props
 
-    Mousetrap.bind(SHORTCUT_KEYS.DT_GRID_TOGGLE, () => {
-      dispatch(toggleDevGrid())
-    })
+  //   Mousetrap.bind(SHORTCUT_KEYS.DT_GRID_TOGGLE, () => {
+  //     dispatch(toggleDevGrid())
+  //   })
 
-    Mousetrap.bind(SHORTCUT_KEYS.DT_GRID_CYCLE, () => {
-      dispatch(cycleDevGrid())
-    })
-  }
+  //   Mousetrap.bind(SHORTCUT_KEYS.DT_GRID_CYCLE, () => {
+  //     dispatch(cycleDevGrid())
+  //   })
+  // }
 
-  componentWillUnmount() {
-    Mousetrap.unbind(SHORTCUT_KEYS.DT_GRID_TOGGLE)
-    Mousetrap.unbind(SHORTCUT_KEYS.DT_GRID_CYCLE)
-  }
+  // componentWillUnmount() {
+  //   Mousetrap.unbind(SHORTCUT_KEYS.DT_GRID_TOGGLE)
+  //   Mousetrap.unbind(SHORTCUT_KEYS.DT_GRID_CYCLE)
+  // }
 
   renderGrid(isVisible, type) {
     return (

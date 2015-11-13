@@ -1,8 +1,8 @@
 import React from 'react'
-import Mousetrap from 'mousetrap'
+// import Mousetrap from 'mousetrap'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import { SHORTCUT_KEYS } from '../../constants/action_types'
+// import { SHORTCUT_KEYS } from '../../constants/action_types'
 import { closeModal, closeAlert } from '../../actions/modals'
 
 function getComponentKind(modals) {
@@ -15,11 +15,11 @@ class Modal extends React.Component {
     this.isActive = this.props.isActive || false
   }
 
-  componentDidMount() {
-    Mousetrap.bind(SHORTCUT_KEYS.ESC, () => {
-      this.close()
-    })
-  }
+  // componentDidMount() {
+  //   Mousetrap.bind(SHORTCUT_KEYS.ESC, () => {
+  //     this.close()
+  //   })
+  // }
 
   componentWillReceiveProps(nextProps) {
     const { modals } = this.props
@@ -44,9 +44,9 @@ class Modal extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    Mousetrap.unbind(SHORTCUT_KEYS.ESC)
-  }
+  // componentWillUnmount() {
+  //   Mousetrap.unbind(SHORTCUT_KEYS.ESC)
+  // }
 
   // Don't set state here or the delay, the action needs to do it
   close() {

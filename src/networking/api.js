@@ -1,6 +1,7 @@
 const API_VERSION = 'v2'
 const PROTOCOL = 'https'
-const DOMAIN = (typeof ENV !== 'undefined') ? ENV.AUTH_DOMAIN : 'ello-staging.herokuapp.com'
+// need to set this server side for initial api requests
+let DOMAIN = (typeof ENV !== 'undefined') ? ENV.AUTH_DOMAIN : 'ello-stage.herokuapp.com'
 const PER_PAGE = 20
 
 function getAPIPath(relPath, queryParams = {}) {
@@ -149,6 +150,12 @@ export function notifications(params = {}) {
     path: getAPIPath('notifications', newParams),
     newParams,
   }
+}
+
+// this is only used server side since the initial
+// page loads don't have access to ENV
+export function setDomain(domain) {
+  DOMAIN = domain
 }
 
 export { API_VERSION, getAPIPath, PER_PAGE }

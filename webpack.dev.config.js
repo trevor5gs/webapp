@@ -1,4 +1,4 @@
-/*eslint-disable */
+/* eslint-disable */
 var path = require('path')
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -25,9 +25,9 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.js$/,
-      loaders: ['babel'],
+      loader: 'babel',
       include: path.join(__dirname, 'src'),
-      exclude: /node_modules/
+      exclude: /node_modules/,
     },
     {
       test: /\.sass$/,

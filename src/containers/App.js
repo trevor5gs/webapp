@@ -7,7 +7,6 @@ import Analytics from '../components/analytics/Analytics'
 import { trackPageView } from '../actions/tracking'
 import { loadProfile } from '../actions/profile'
 
-
 class App extends React.Component {
   constructor(props, context) {
     super(props, context)
@@ -53,6 +52,10 @@ App.propTypes = {
     pathname: React.PropTypes.string.isRequired,
   }),
   children: React.PropTypes.node.isRequired,
+}
+
+App.preRender = (store) => {
+  return store.dispatch(loadProfile())
 }
 
 export default connect()(App)

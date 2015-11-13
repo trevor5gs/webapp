@@ -12,8 +12,15 @@ import Uploader from '../uploaders/Uploader'
 import InfoForm from '../forms/InfoForm'
 import Avatar from '../users/Avatar'
 import Cover from '../covers/Cover'
+import { checkAuth } from '../../networking/auth'
 
 class OnboardingView extends React.Component {
+  constructor(props, context) {
+    super(props, context)
+    // check auth
+    const { accessToken, dispatch, router } = props
+    checkAuth(dispatch, accessToken, router.location)
+  }
 
   getAvatarSource(profile) {
     const { payload } = profile
@@ -169,20 +176,23 @@ class OnboardingView extends React.Component {
 // This should be a selector: @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {
+    accessToken: state.accessToken.token,
+    json: state.json,
     profile: state.profile,
     router: state.router,
     stream: state.stream,
-    json: state.json,
   }
 }
 
 OnboardingView.propTypes = {
+  accessToken: React.PropTypes.string,
   dispatch: React.PropTypes.func.isRequired,
-  route: React.PropTypes.object,
+  json: React.PropTypes.object,
   profile: React.PropTypes.object,
+  route: React.PropTypes.object,
   router: React.PropTypes.object,
   stream: React.PropTypes.object,
-  json: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(OnboardingView)
+

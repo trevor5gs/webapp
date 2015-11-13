@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import Mousetrap from 'mousetrap'
+// import Mousetrap from 'mousetrap'
 import { connect } from 'react-redux'
 import { SHORTCUT_KEYS } from '../../constants/action_types'
 import NavbarLabel from './NavbarLabel'
@@ -9,8 +9,8 @@ import NavbarLink from './NavbarLink'
 import NavbarMark from './NavbarMark'
 import NavbarProfile from './NavbarProfile'
 import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../iconography/Icons'
-import HelpDialog from '../dialogs/HelpDialog'
-import { openModal, closeModal } from '../../actions/modals'
+// import HelpDialog from '../dialogs/HelpDialog'
+// import { openModal, closeModal } from '../../actions/modals'
 import { addScrollObject, removeScrollObject } from '../scroll/ScrollComponent'
 
 
@@ -26,24 +26,24 @@ class Navbar extends React.Component {
   }
 
   componentDidMount() {
-    Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
-      const { router } = this.context
-      router.transitionTo(this.props.shortcuts[shortcut])
-    })
+    // Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
+    //   const { router } = this.context
+    //   router.transitionTo(this.props.shortcuts[shortcut])
+    // })
 
-    Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
-      const { dispatch, modals } = this.props
-      if (modals.payload) {
-        return dispatch(closeModal())
-      }
-      return dispatch(openModal(<HelpDialog/>))
-    })
+    // Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
+    //   const { dispatch, modals } = this.props
+    //   if (modals.payload) {
+    //     return dispatch(closeModal())
+    //   }
+    //   return dispatch(openModal(<HelpDialog/>))
+    // })
     addScrollObject(this)
   }
 
   componentWillUnmount() {
-    Mousetrap.unbind(Object.keys(this.props.shortcuts))
-    Mousetrap.unbind(SHORTCUT_KEYS.HELP)
+    // Mousetrap.unbind(Object.keys(this.props.shortcuts))
+    // Mousetrap.unbind(SHORTCUT_KEYS.HELP)
     removeScrollObject(this)
   }
 

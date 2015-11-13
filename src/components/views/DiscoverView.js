@@ -32,5 +32,9 @@ DiscoverView.propTypes = {
   }),
 }
 
+DiscoverView.preRender = (store, routerState) => {
+  return store.dispatch(DiscoverActions.loadDiscoverUsers(routerState.params.type))
+}
+
 export default DiscoverView
 
