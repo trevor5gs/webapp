@@ -1,4 +1,3 @@
-import * as ENV from './env'
 import 'newrelic'
 import express from 'express'
 import path from 'path'
@@ -13,7 +12,7 @@ import { setDomain } from './src/networking/api'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
 import 'isomorphic-fetch'
 
-setDomain(ENV.AUTH_DOMAIN.replace(/"/g, ''))
+setDomain(process.env.AUTH_DOMAIN.replace(/"/g, ''))
 updateTimeAgoStrings({about: ''})
 
 const app = express()
@@ -78,7 +77,7 @@ app.use((req, res) => {
   }
 })
 
-const port = ENV.PORT || 6660
+const port = process.env.PORT || 6660
 app.listen(port, (err) => {
   if (err) {
     console.log(err)
