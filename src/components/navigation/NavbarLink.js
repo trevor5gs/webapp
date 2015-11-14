@@ -7,7 +7,7 @@ class NavbarLink extends React.Component {
   render() {
     const { to, label, icon } = this.props
     return (
-      <Link to={to} className="NavbarLink">
+      <Link activeClassName="active" to={to} className="NavbarLink">
         { icon }
         <span className="NavbarLinkLabel">{label}</span>
       </Link>
