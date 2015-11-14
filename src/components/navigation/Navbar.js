@@ -86,7 +86,7 @@ class Navbar extends React.Component {
 
   render() {
     const { profile } = this.props
-    const showLabel = false
+    const showLabel = true
     const klassNames = classNames(
       'Navbar',
       { asFixed: this.state.asFixed },
