@@ -1,8 +1,9 @@
 import React from 'react'
-// import Mousetrap from 'mousetrap'
+import ReactDOM from 'react-dom'
+import Mousetrap from 'mousetrap'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-// import { SHORTCUT_KEYS } from '../../constants/action_types'
+import { SHORTCUT_KEYS, MODALS, ALERTS } from '../../constants/action_types'
 import { closeModal, closeAlert } from '../../actions/modals'
 
 function getComponentKind(modals) {
@@ -10,72 +11,53 @@ function getComponentKind(modals) {
 }
 
 class Modal extends React.Component {
-  constructor(props, context) {
-    super(props, context)
-    this.isActive = this.props.isActive || false
-  }
-
-  // componentDidMount() {
-  //   Mousetrap.bind(SHORTCUT_KEYS.ESC, () => {
-  //     this.close()
-  //   })
-  // }
-
-  componentWillReceiveProps(nextProps) {
-    const { modals } = this.props
-    const payload = modals.payload
-    const nextPayload = nextProps.modals.payload
-    if (payload !== nextPayload) {
-      if (getComponentKind(modals) === 'Modal') {
-        document.body.classList.remove('modalIsActive')
-      }
-      this.isActive = false
-    }
+  componentDidMount() {
+    Mousetrap.bind(SHORTCUT_KEYS.ESC, () => {
+      this.close()
+    })
   }
 
   componentDidUpdate() {
     const { modals } = this.props
-    const payload = modals.payload
-    if (!this.isActive && payload) {
-      if (getComponentKind(modals) === 'Modal') {
-        document.body.classList.add('modalIsActive')
-      }
-      this.isActive = true
+    const { type } = modals
+    const body = ReactDOM.findDOMNode(document.body)
+    if (type === MODALS.OPEN) {
+      body.classList.add('modalIsActive')
+    } else if (type === MODALS.CLOSE) {
+      body.classList.remove('modalIsActive')
     }
   }
 
-  // componentWillUnmount() {
-  //   Mousetrap.unbind(SHORTCUT_KEYS.ESC)
-  // }
+  componentWillUnmount() {
+    Mousetrap.unbind(SHORTCUT_KEYS.ESC)
+  }
 
   // Don't set state here or the delay, the action needs to do it
   close() {
     const { modals, dispatch } = this.props
-    if (this.isActive) {
-      dispatch(getComponentKind(modals) === 'Modal' ? closeModal() : closeAlert())
-    }
+    dispatch(getComponentKind(modals) === 'Modal' ? closeModal() : closeAlert())
   }
 
   handleModalTrigger(e) {
-    if (e.target.classList.contains('Modal') || e.target.classList.contains('Alert')) {
+    const classList = e.target.classList
+    if (classList.contains('Modal') || classList.contains('Alert') || classList.contains('CloseModal')) {
       return this.close()
     }
   }
 
   render() {
     const { modals } = this.props
+    const { type, payload, meta } = modals
     const groupClassNames = classNames(
       getComponentKind(modals),
-      (modals.meta && modals.meta.wrapperClasses) ? modals.meta.wrapperClasses : '',
-      { isActive: this.isActive },
+      (meta && meta.wrapperClasses) ? meta.wrapperClasses : '',
     )
-
-    if (modals.payload) {
+    if (type === MODALS.OPEN || type === ALERTS.OPEN) {
       return (
         <div
-          className={groupClassNames}
+          className={ `${groupClassNames} isActive` }
           onClick={(e) => this.handleModalTrigger(e)}>
-          { modals.payload }
+          { payload }
         </div>
       )
     }
