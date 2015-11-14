@@ -116,7 +116,7 @@
 @media(max-width: #{em(449)})
   .Posts.asGrid .ShareTool
     display: none
-@media(max-width: #{em(549)})
+@media(max-width: #{$break-2-max})
   .Posts.asGrid .CommentTool
     margin-left: -10px
   .Posts.asGrid .ViewsTool
@@ -128,7 +128,7 @@
     transform: translate3d(rem(-70), 0, 0)
   .PostTools.isMoreToolActive .MoreTool
     transform: translate3d(rem(70), 0, 0)
-  .Post.asList .TimeAgoTool.ShyTool
+  .Posts.asList .TimeAgoTool.ShyTool
     +showTool
 
 @media(min-width: #{em(450)})
@@ -156,4 +156,6 @@
   .no-touch .LoveTool button.active:hover > .HeartIcon > g
     stroke: #ff9999
     fill: #ff9999
-
+  // .Posts.asGrid .TimeAgoTool.ShyTool
+  //   display: inline-block
+  //   +showTool
