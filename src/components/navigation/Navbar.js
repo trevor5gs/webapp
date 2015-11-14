@@ -53,12 +53,6 @@ class Navbar extends React.Component {
     }
   }
 
-  onScrollBottom() {
-    if (this.state.asFixed) {
-      this.setState({ asFixed: true, asHidden: false, skipTransition: false })
-    }
-  }
-
   onScrollDirectionChange(scrollProperties) {
     const { scrollY } = scrollProperties
 
