@@ -35,7 +35,7 @@ const element = (
   </Provider>
 )
 
-persistStore(store, { storage, blacklist: ['router', 'modals', 'devtools'] }, () => {
+persistStore(store, { storage, blacklist: ['router', 'modals'] }, () => {
   ReactDOM.render(element, document.getElementById('root'))
 })
 

@@ -68,10 +68,6 @@ export const ALERTS = {
   CLOSE: 'ALERT_CLOSE',
 }
 
-export const DT_GRID_TOGGLE = 'DT_GRID_TOGGLE'
-export const DT_GRID_CYCLE = 'DT_GRID_CYCLE'
-
-
 export const PROFILE = {
   LOAD: 'PROFILE_LOAD',
   LOAD_REQUEST: 'PROFILE_LOAD_REQUEST',
