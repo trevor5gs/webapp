@@ -1,13 +1,13 @@
 import React from 'react'
-import StreamComponent from '../streams/StreamComponent'
-import { loadUserDetail } from '../../actions/user'
-import * as MAPPING_TYPES from '../../constants/mapping_types'
+import StreamComponent from '../components/streams/StreamComponent'
+import { loadUserDetail } from '../actions/user'
+import * as MAPPING_TYPES from '../constants/mapping_types'
 
-class UserDetailView extends React.Component {
+class UserDetail extends React.Component {
   render() {
     const { params } = this.props
     return (
-      <section className="UserDetailView Panel">
+      <section className="UserDetail Panel">
         <StreamComponent
           ref="streamComponent"
           action={loadUserDetail(`~${params.username}`)}
@@ -17,15 +17,15 @@ class UserDetailView extends React.Component {
   }
 }
 
-UserDetailView.propTypes = {
+UserDetail.propTypes = {
   params: React.PropTypes.shape({
     username: React.PropTypes.string.isRequired,
   }).isRequired,
 }
 
-UserDetailView.preRender = (store, routerState) => {
+UserDetail.preRender = (store, routerState) => {
   return store.dispatch(loadUserDetail(`~${routerState.params.username}`))
 }
 
-export default UserDetailView
+export default UserDetail
 

@@ -1,13 +1,13 @@
 import React from 'react'
-import StreamComponent from '../streams/StreamComponent'
-import { loadPostDetail } from '../../actions/posts'
-import * as MAPPING_TYPES from '../../constants/mapping_types'
+import StreamComponent from '../components/streams/StreamComponent'
+import { loadPostDetail } from '../actions/posts'
+import * as MAPPING_TYPES from '../constants/mapping_types'
 
-class PostDetailView extends React.Component {
+class PostDetail extends React.Component {
   render() {
     const { params } = this.props
     return (
-      <section className="PostDetailView Panel">
+      <section className="PostDetail Panel">
         <StreamComponent
           ref="streamComponent"
           action={loadPostDetail(`~${params.token}`)}
@@ -17,15 +17,15 @@ class PostDetailView extends React.Component {
   }
 }
 
-PostDetailView.propTypes = {
+PostDetail.propTypes = {
   params: React.PropTypes.shape({
     token: React.PropTypes.string.isRequired,
   }).isRequired,
 }
 
-PostDetailView.preRender = (store, routerState) => {
+PostDetail.preRender = (store, routerState) => {
   return store.dispatch(loadPostDetail(`~${routerState.params.type}`))
 }
 
-export default PostDetailView
+export default PostDetail
 

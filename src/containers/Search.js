@@ -1,11 +1,11 @@
 import React from 'react'
-import StreamComponent from '../streams/StreamComponent'
-import * as SearchActions from '../../actions/search'
-import SearchControl from '../forms/SearchControl'
-import { debounce } from '../base/lib'
 import classNames from 'classnames'
+import StreamComponent from '../components/streams/StreamComponent'
+import SearchControl from '../components/forms/SearchControl'
+import { debounce } from '../components/base/lib'
+import * as SearchActions from '../actions/search'
 
-class SearchView extends React.Component {
+class Search extends React.Component {
   constructor(props, context) {
     super(props, context)
     const { terms, type } = this.props
@@ -42,7 +42,7 @@ class SearchView extends React.Component {
   render() {
     const { type } = this.state
     return (
-      <div className="SearchView Panel">
+      <section className="Search Panel">
         <div className="SearchBar">
           <SearchControl text="" controlWasChanged={this.handleControlChange.bind(this)} />
           <button className={classNames('SearchFilter', { active: type === 'posts' })} onClick={() => { this.handleControlChange({ type: 'posts' }) }} >
@@ -53,15 +53,15 @@ class SearchView extends React.Component {
           </button>
         </div>
         <StreamComponent ref="streamComponent" />
-      </div>
+      </section>
     )
   }
 }
 
-SearchView.propTypes = {
+Search.propTypes = {
   terms: React.PropTypes.string,
   type: React.PropTypes.string,
 }
 
-export default SearchView
+export default Search
 

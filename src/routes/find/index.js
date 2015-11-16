@@ -1,8 +1,8 @@
 export default {
-  path: 'staff',
+  path: 'find',
   getComponents(location, cb) {
     // require.ensure([], (require) => {
-    cb(null, require('../../containers/Staff'))
+    cb(null, require('../../containers/Search'))
     // })
   },
 }

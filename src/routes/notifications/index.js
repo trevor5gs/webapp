@@ -11,7 +11,7 @@ export default {
   path: 'notifications(/:category)',
   getComponents(location, cb) {
     // require.ensure([], (require) => {
-    cb(null, require('../../components/views/NotificationsView'))
+    cb(null, require('../../containers/Notifications'))
     // })
   },
   onEnter(nextState, replaceState) {

@@ -59,4 +59,3 @@ App.preRender = (store) => {
 }
 
 export default connect()(App)
-

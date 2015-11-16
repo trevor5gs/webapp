@@ -1,20 +1,20 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { relationshipBatchSave } from '../../actions/onboarding'
-import { saveCover, saveAvatar } from '../../actions/profile'
-import { openAlert } from '../../actions/modals'
-import * as ACTION_TYPES from '../../constants/action_types'
-import OnboardingHeader from '../navigation/OnboardingHeader'
-import CommunityPicker from '../pickers/CommunityPicker'
-import PeoplePicker from '../pickers/PeoplePicker'
-import Uploader from '../uploaders/Uploader'
-import InfoForm from '../forms/InfoForm'
-import Avatar from '../users/Avatar'
-import Cover from '../covers/Cover'
-import { checkAuth } from '../../networking/auth'
+import OnboardingHeader from '../components/navigation/OnboardingHeader'
+import CommunityPicker from '../components/pickers/CommunityPicker'
+import PeoplePicker from '../components/pickers/PeoplePicker'
+import Uploader from '../components/uploaders/Uploader'
+import InfoForm from '../components/forms/InfoForm'
+import Avatar from '../components/users/Avatar'
+import Cover from '../components/covers/Cover'
+import { relationshipBatchSave } from '../actions/onboarding'
+import { saveCover, saveAvatar } from '../actions/profile'
+import { openAlert } from '../actions/modals'
+import * as ACTION_TYPES from '../constants/action_types'
+import { checkAuth } from '../networking/auth'
 
-class OnboardingView extends React.Component {
+class Onboarding extends React.Component {
   constructor(props, context) {
     super(props, context)
     // check auth
@@ -68,7 +68,7 @@ class OnboardingView extends React.Component {
     const { subComponentName } = route
 
     if (!subComponentName) {
-      return <span/>
+      return null
     }
 
 
@@ -76,7 +76,7 @@ class OnboardingView extends React.Component {
     case 'CommunityPicker':
       rm = this.getRelationshipMap()
       return (
-        <div className="CommunityPicker Panel">
+        <section className="CommunityPicker Panel">
           <OnboardingHeader
             relationshipMap={this.getRelationshipMap()}
             nextPath="/onboarding/awesome-people"
@@ -88,13 +88,13 @@ class OnboardingView extends React.Component {
           <CommunityPicker
             shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
             relationshipMap={rm} />
-        </div>
+        </section>
       )
 
     case 'PeoplePicker':
       rm = this.getRelationshipMap()
       return (
-        <div className="PeoplePicker Panel">
+        <section className="PeoplePicker Panel">
           <OnboardingHeader
             relationshipMap={rm}
             nextPath="/onboarding/profile-header"
@@ -105,12 +105,12 @@ class OnboardingView extends React.Component {
           <PeoplePicker
             shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
             relationshipMap={rm} />
-        </div>
+        </section>
       )
 
     case 'CoverPicker':
       return (
-        <div className="CoverPicker Panel">
+        <section className="CoverPicker Panel">
           <OnboardingHeader
               nextPath="/onboarding/profile-avatar"
               trackingLabel="cover-picker"
@@ -126,12 +126,12 @@ class OnboardingView extends React.Component {
           <Cover
             isModifiable
             imgSrc={this.getCoverSource(profile)} />
-        </div>
+        </section>
       )
 
     case 'AvatarPicker':
       return (
-        <div className="AvatarPicker Panel">
+        <section className="AvatarPicker Panel">
           <OnboardingHeader
               nextPath="/onboarding/profile-bio"
               trackingLabel="avatar-picker"
@@ -147,12 +147,12 @@ class OnboardingView extends React.Component {
           <Avatar imgSrc={this.getAvatarSource(profile)} />
           <Cover
             imgSrc={this.getCoverSource(profile)} />
-        </div>
+        </section>
       )
 
     case 'InfoPicker':
       return (
-        <div className="InfoPicker Panel">
+        <section className="InfoPicker Panel">
           <OnboardingHeader
               redirection
               nextPath={ENV.REDIRECT_URI}
@@ -164,11 +164,11 @@ class OnboardingView extends React.Component {
           <InfoForm />
           <Cover
             imgSrc={this.getCoverSource(profile)} />
-        </div>
+        </section>
       )
 
     default:
-      return <span/>
+      return null
     }
   }
 }
@@ -184,7 +184,7 @@ function mapStateToProps(state) {
   }
 }
 
-OnboardingView.propTypes = {
+Onboarding.propTypes = {
   accessToken: React.PropTypes.string,
   dispatch: React.PropTypes.func.isRequired,
   json: React.PropTypes.object,
@@ -194,5 +194,5 @@ OnboardingView.propTypes = {
   stream: React.PropTypes.object,
 }
 
-export default connect(mapStateToProps)(OnboardingView)
+export default connect(mapStateToProps)(Onboarding)
 
