@@ -38,6 +38,6 @@ export function resetAuth(dispatch, oldToken, location) {
       type: ACTION_TYPES.ACCESS_TOKEN.DELETE,
     })
   }
-  checkAuth(dispatch, oldToken, location)
+  checkAuth(dispatch, null, location)
 }
 

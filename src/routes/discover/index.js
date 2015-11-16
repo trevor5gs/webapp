@@ -8,7 +8,7 @@ export default {
   path: 'discover(/:type)',
   getComponents(location, cb) {
     // require.ensure([], (require) => {
-    cb(null, require('../../components/views/DiscoverView'))
+    cb(null, require('../../containers/Discover'))
     // })
   },
   onEnter(nextState, replaceState) {

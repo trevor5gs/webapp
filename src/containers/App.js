@@ -18,19 +18,18 @@ class App extends React.Component {
   }
 
   componentDidUpdate() {
-    const { location, dispatch } = this.props
-    if (location.pathname !== this.lastLocation) {
-      this.lastLocation = location.pathname
+    const { path, dispatch } = this.props
+    if (path !== this.lastLocation) {
+      this.lastLocation = path
       dispatch(trackPageView())
     }
   }
 
   render() {
-    const { location, children } = this.props
-    const { pathname } = location
+    const { children, path } = this.props
     return (
       <section className="App">
-        <main className="Main" data-pathname={pathname} role="main">
+        <main className="Main" data-pathname={path} role="main">
           {children}
         </main>
         <Navbar/>
@@ -48,9 +47,7 @@ App.defaultProps = {
 
 App.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
-  location: React.PropTypes.shape({
-    pathname: React.PropTypes.string.isRequired,
-  }),
+  path: React.PropTypes.string.isRequired,
   children: React.PropTypes.node.isRequired,
 }
 

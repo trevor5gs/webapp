@@ -1,10 +1,11 @@
 import React from 'react'
-import FilterBar from '../navigation/FilterBar'
-import StreamComponent from '../streams/StreamComponent'
-import { loadNotifications } from '../../actions/notifications'
-import { BubbleIcon, HeartIcon, RepostIcon } from '../iconography/Icons'
+import App from './App'
+import FilterBar from '../components/navigation/FilterBar'
+import StreamComponent from '../components/streams/StreamComponent'
+import { BubbleIcon, HeartIcon, RepostIcon } from '../components/iconography/Icons'
+import { loadNotifications } from '../actions/notifications'
 
-class NotificationsView extends React.Component {
+class Notifications extends React.Component {
   render() {
     const { category } = this.props.params
     const params = {}
@@ -19,21 +20,23 @@ class NotificationsView extends React.Component {
     links.push({ to: '/notifications/reposts', children: <RepostIcon /> })
     links.push({ to: '/notifications/relationships', children: 'Relationships' })
     return (
-      <div className="NotificationsView Panel">
-        <FilterBar type="icon" links={links} />
-        <StreamComponent action={loadNotifications(params)} />
-      </div>
+      <App path="/notifications">
+        <section className="Notifications Panel">
+          <FilterBar type="icon" links={links} />
+          <StreamComponent action={loadNotifications(params)} />
+        </section>
+      </App>
     )
   }
 }
 
-NotificationsView.propTypes = {
+Notifications.propTypes = {
   params: React.PropTypes.shape({
     category: React.PropTypes.string,
   }),
 }
 
-NotificationsView.preRender = (store, routerState) => {
+Notifications.preRender = (store, routerState) => {
   const { category } = routerState.params
   const params = {}
   if (category) {
@@ -42,5 +45,5 @@ NotificationsView.preRender = (store, routerState) => {
   return store.dispatch(loadNotifications(params))
 }
 
-export default NotificationsView
+export default Notifications
 

@@ -1,4 +1,4 @@
-import App from '../containers/App'
+import Discover from '../containers/Discover'
 
 function createRedirect(from, to) {
   return {
@@ -10,10 +10,9 @@ function createRedirect(from, to) {
 }
 
 const routes = [
-  createRedirect('/', '/following'),
   {
     path: '/',
-    component: App,
+    component: Discover,
     childRoutes: [
       require('./discover'),
       require('./following'),
