@@ -53,12 +53,6 @@ class Navbar extends React.Component {
     }
   }
 
-  onScrollBottom() {
-    if (this.state.asFixed) {
-      this.setState({ asFixed: true, asHidden: false, skipTransition: false })
-    }
-  }
-
   onScrollDirectionChange(scrollProperties) {
     const { scrollY } = scrollProperties
 
@@ -92,7 +86,7 @@ class Navbar extends React.Component {
 
   render() {
     const { profile } = this.props
-    const showLabel = false
+    const showLabel = true
     const klassNames = classNames(
       'Navbar',
       { asFixed: this.state.asFixed },

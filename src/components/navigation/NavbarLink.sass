@@ -32,13 +32,9 @@
 // -------------------------------------
 
 // Active and hover states
-[data-pathname^="/following"] + .Navbar .NavbarLink[href^="/following"],
-[data-pathname^="/starred"] + .Navbar .NavbarLink[href^="/starred"],
 [data-pathname^="/discover"] + .Navbar .NavbarLink[href^="/discover"],
-[data-pathname^="/notifications"] + .Navbar .NavbarLink[href^="/notifications"],
-[data-pathname^="/search"] + .Navbar .NavbarLink[href^="/search"],
-.NavbarLink:active,
 .NavbarLink.active,
+.NavbarLink:active,
 .no-touch .NavbarLink:hover
   > .NavbarLinkLabel
     color: black
@@ -57,7 +53,7 @@
 .Navbar .NavbarLink[href^="/following"] > .SVGIcon,
 .Navbar .NavbarLink[href^="/starred"] > .SVGIcon,
 .Navbar .NavbarLink[href^="/discover"] > .SVGIcon
-  transition: width $speed $ease, opacity $speed ease
+  transition: width $speed $ease, opacity $speed ease, transform $speed $ease
   width: 0
   opacity: 0
 
@@ -74,6 +70,29 @@
     transition-delay: 0.5s
     width: rem(20)
     opacity: 1
+
+  // Following animation
+  .no-touch .Navbar .NavbarLink[href^="/following"] > .SVGIcon
+    transform: scale(0.5)
+    transform-origin: rem(11.5)
+    transition-delay: $speed, $speed, 0s
+  .no-touch .Navbar .NavbarLink[href^="/following"]:hover > .SVGIcon
+    transition-delay: 0.5s, 0.5s, (0.5s + $speed)
+    transform: none
+  .no-touch .Navbar .NavbarLink[href^="/following"] > .SVGIcon g
+    transition-delay: 0s
+  .no-touch .Navbar .NavbarLink[href^="/following"]:hover > .SVGIcon g
+    transition-delay: 0.5s + $speed
+
+  // Starred animation
+  .no-touch .Navbar .NavbarLink[href^="/starred"] > .SVGIcon
+    transform-origin: center center
+    transition-duration: $speed, $speed, $speed2
+  .no-touch .Navbar .NavbarLink[href^="/starred"]:hover > .SVGIcon
+    transition-delay: 0.5s, 0.5s, (0.5s + $speed)
+    transform: rotate(360deg)
+
+  // Discover animation
   .no-touch .Navbar .NavbarLink[href^="/discover"]:hover > .SVGIcon > g
     transition-delay: 0.5s + ($speed * 0.5)
   .no-touch .Navbar .NavbarLink[href^="/discover"]:hover > .SVGIcon > g:nth-of-type(2)

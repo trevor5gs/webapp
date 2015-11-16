@@ -4,16 +4,6 @@ figure
 img
   +monospace
   max-width: 100%
-  border: 0
-
-// if an image has a file extension, give it height: auto for responsiveness.
-// until there's a src with a file extension, we show a loading 1x1 gif, which can't have height:auto, to snap to the width/height attributes of the img tag
-
-img[src*='.']
   height: auto
-
-// if an image hasn't loaded yet, we show a base64-encoded 1x1px clear gif, with a loading gif background
-// img[src*='1x1']
-//   background: transparent url(asset-path('assets/loading/scroll-loading.gif')) center center no-repeat
-//   background-size: 30px 30px
+  border: 0
 

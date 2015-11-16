@@ -38,3 +38,46 @@
   .HelpDialog
     min-width: rem(400)
 
+// -------------------------------------
+
+.ShareDialog
+  max-width: rem(290)
+  background-color: white
+  color: black
+
+.ShareControl
+  +monospace
+  transition: background-color $speed ease, border-color $speed ease
+  display: inline-block
+  vertical-align: baseline
+  width: 100%
+  padding: rem(20)
+  background-color: black
+  border: 1px solid black
+  color: white
+.ShareControl:focus
+  background-color: #666
+  border-color: #666
+  outline: 0
+
+.ShareLinks
+  margin-left: rem(-10)
+  display: flex
+  flex-wrap: wrap
+
+.ShareLink
+  position: relative
+  display: inline-block
+  margin-top: rem(10)
+  margin-left: rem(10)
+  // &:before
+  //   +hitarea
+  // temporary
+  width: 60px
+  height: 60px
+  background-color: black
+
+@media(min-width: #{$break-2})
+  .ShareDialog
+    max-width: rem(610)
+

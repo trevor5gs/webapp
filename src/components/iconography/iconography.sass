@@ -84,10 +84,34 @@ button.active .HeartIcon > g
 
 // -------------------------------------
 
+.SVGBox path:nth-of-type(1)
+  transition: fill $speed ease
+
 .SVGBox path:nth-of-type(n+2)
   fill: white
 
+.SVGBox path:nth-of-type(1)
+  transition: fill $speed ease
+
 // -------------------------------------
+
+.SVGShareBox path:nth-of-type(1)
+  transition: fill $speed ease
+
+.SVGShareBox path:nth-of-type(n+2),
+.SVGShareBox polygon,
+.SVGShareBox rect
+  fill: white
+
+.SVGShareBox.RedditIcon > *,
+.SVGShareBox.RedditIcon > path:nth-of-type(n+3)
+  fill: black
+
+.no-touch button:hover > .SVGShareBox path:nth-of-type(1),
+.no-touch button:hover > .SVGShareBox.RedditIcon circle
+  fill: #666
+
+// ----------------------------------------------------------------------------
 
 .ElloMark,
 .ElloDonutMark,

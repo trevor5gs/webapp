@@ -51,7 +51,6 @@
 .ViewsTool .EyeIcon > circle
   fill: #535353
 
-
 .TimeAgoTool > a
   padding-left: rem(15)
   padding-right: rem(15)
@@ -117,13 +116,11 @@
 @media(max-width: #{em(449)})
   .Posts.asGrid .ShareTool
     display: none
-@media(max-width: #{em(549)})
+@media(max-width: #{$break-2-max})
   .Posts.asGrid .CommentTool
     margin-left: -10px
   .Posts.asGrid .ViewsTool
     display: none
-
-
 
 
 @media(min-width: #{em(375)})
@@ -131,7 +128,7 @@
     transform: translate3d(rem(-70), 0, 0)
   .PostTools.isMoreToolActive .MoreTool
     transform: translate3d(rem(70), 0, 0)
-  .Post.asList .TimeAgoTool.ShyTool
+  .Posts.asList .TimeAgoTool.ShyTool
     +showTool
 
 @media(min-width: #{em(450)})
@@ -143,7 +140,6 @@
     transform: none
   .Posts.asList .ShyTool
     +showTool
-
 
 @media(min-width: #{$break-2})
   .no-touch .Posts.asList .ShyTool
@@ -160,4 +156,6 @@
   .no-touch .LoveTool button.active:hover > .HeartIcon > g
     stroke: #ff9999
     fill: #ff9999
-
+  // .Posts.asGrid .TimeAgoTool.ShyTool
+  //   display: inline-block
+  //   +showTool

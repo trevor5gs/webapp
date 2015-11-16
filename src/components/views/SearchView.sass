@@ -12,13 +12,32 @@
   color: #aaa
   font-size: rem(18)
   margin-top: rem(20)
+  transition: color $speed ease
+  position: relative
+  display: inline-block
+  height: rem(30)
+  line-height: rem(30)
+  overflow: hidden
+  &:after
+    content: ''
+    transition: width $speed $ease, background-color $speed ease
+    position: absolute
+    width: 0
+    left: 0
+    bottom: 0
+    height: rem(2)
+    background-color: transparent
+
+.SearchFilter.active,
+.SearchFilter:active,
+.no-touch .SearchFilter:hover
+  color: black
+  &:after
+    width: 100%
+    background-color: black
 
 .SearchFilter + .SearchFilter
   margin-left: rem(20)
-
-.SearchFilter.active
-  border-bottom: 2px solid black
-  color: black
 
 @media(min-width: #{$break-2})
   .SearchBar

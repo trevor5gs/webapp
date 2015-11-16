@@ -3,6 +3,8 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import Hint from '../hints/Hint'
+import { openModal } from '../../actions/modals'
+import ShareDialog from '../dialogs/ShareDialog'
 import { EyeIcon, BubbleIcon, HeartIcon, RepostIcon, ShareIcon, PencilIcon, XBoxIcon, FlagIcon, ChevronIcon } from '../iconography/Icons'
 import * as PostActions from '../../actions/posts'
 
@@ -63,7 +65,7 @@ class PostTools extends React.Component {
     if (author.hasSharingEnabled) {
       cells.push(
         <span className="PostTool ShareTool" key={`ShareTool_${post.id}`}>
-          <button>
+          <button onClick={ this.sharePost.bind(this) }>
             <ShareIcon />
             <Hint>Share</Hint>
           </button>
@@ -127,6 +129,11 @@ class PostTools extends React.Component {
     } else {
       dispatch(PostActions.lovePost(post))
     }
+  }
+
+  sharePost() {
+    const { dispatch, post } = this.props
+    dispatch(openModal(<ShareDialog postUrl={ post.token }/>))
   }
 
   render() {

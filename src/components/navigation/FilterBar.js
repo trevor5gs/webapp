@@ -10,7 +10,7 @@ class FilterBar extends React.Component {
     return (
       <div className={classNames({ FilterBar: true, FilterText: type === 'text', FilterIcon: type === 'icon' })}>
         {links.map((item) => {
-          return <Link className={classNames({ active: item.to === router.location.pathname })} to={item.to} key={item.to}>{item.children}</Link>
+          return <Link className={classNames('FilterLink', { active: item.to === router.location.pathname })} to={item.to} key={item.to}>{item.children}</Link>
         })}
       </div>
     )

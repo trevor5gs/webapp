@@ -1,0 +1,39 @@
+@keyframes animatePaginatorSpinner
+  from
+    transform: rotate(0deg) scale(0.5)
+  to
+    transform: rotate(360deg) scale(0.5)
+
+.Paginator
+  +monospace
+  transition: transform $speed $ease, height $speed $ease, background-color $speed $ease
+  transform: translate3d(0,100%,0)
+  position: absolute
+  left: 0
+  right: 0
+  bottom: 0
+  height: 0
+  overflow: hidden
+  text-align: center
+  background-color: transparent
+  color: #aaa
+
+.Paginator.isBusy
+  transform: translate3d(0,0,0)
+  background-color: white
+  height: rem(40)
+  line-height: rem(40)
+
+.Paginator .ElloMark
+  transform: scale(0)
+
+.Paginator.isBusy .ElloMark
+  transform: scale(0.5)
+  animation: animatePaginatorSpinner 0.3s infinite linear
+
+// Position to the right for Lovers/Reposter drawers
+.UserAvatars .Paginator
+  transform: translate3d(0,0,0)
+  left: auto
+  height: auto
+
