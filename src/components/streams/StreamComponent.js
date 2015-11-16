@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import Paginator from './Paginator'
 import { ElloMark } from '../iconography/ElloIcons'
 import { findBy } from '../base/json_helper'
 import * as ACTION_TYPES from '../../constants/action_types'
@@ -109,7 +110,9 @@ export class StreamComponent extends React.Component {
 
   renderZeroState() {
     return (
-      <div>NO RESULTS</div>
+      <section className="StreamComponent">
+        <p>NO RESULTS</p>
+      </section>
     )
   }
 
@@ -160,6 +163,7 @@ export class StreamComponent extends React.Component {
     return (
       <section className="StreamComponent">
         { meta.renderStream(renderObj, json, currentUser, payload.vo) }
+        <Paginator />
       </section>
     )
   }
