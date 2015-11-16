@@ -3,28 +3,68 @@
   padding: 0 rem(10)
   padding: rem(20) rem(10) 0
 
-// FilterText
-.FilterBar.FilterText
+@media(min-width: #{$break-2})
+  .FilterBar
+    padding: rem(40) rem(20) rem(20)
+
+
+@media(min-width: #{$break-4})
+  .FilterBar
+    padding-left: rem(40)
+    padding-right: rem(40)
+
+// -------------------------------------
+
+.FilterText
   font-size: rem(18)
 
-.FilterBar.FilterText > a + a
+.FilterText > .FilterLink
+  transition: color $speed ease
+  position: relative
+  display: inline-block
+  height: rem(40)
+  line-height: rem(40)
+  overflow: hidden
+  white-space: nowrap
+  &:after
+    content: ''
+    transition: width $speed $ease, background-color $speed ease
+    position: absolute
+    width: 0
+    left: 0
+    bottom: 0
+    height: rem(2)
+    background-color: transparent
+
+.FilterText > .FilterLink.active,
+.FilterText > .FilterLink:active,
+.no-touch .FilterText > .FilterLink:hover
+  color: black
+  &:after
+    width: 100%
+    background-color: black
+
+
+.FilterText > .FilterLink + .FilterLink
   margin-left: rem(20)
 
-.FilterBar.FilterText > a.active
-  color: black
-  border-bottom: 2px solid black
+@media(min-width: #{$break-2})
+  .FilterText
+    font-size: rem(24)
+    padding-bottom: rem(5)
+  .FilterText > .FilterLink + .FilterLink
+    margin-left: rem(30)
 
-.no-touch .FilterBar.FilterText > a:hover
-  color: black
 
-// FilterIcon
-.FilterBar.FilterIcon g
+// -------------------------------------
+
+.FilterIcon g
   stroke: #aaa
 
-.FilterBar.FilterIcon
+.FilterIcon
   font-size: rem(12)
 
-.FilterBar.FilterIcon > a
+.FilterIcon > .FilterLink
   background-color: #e5e5e5
   display: inline-block
   padding-top: rem(6)
@@ -32,37 +72,21 @@
   height: rem(30)
   width: (100%/6)
 
-.FilterBar.FilterIcon > a + a
+.FilterIcon > .FilterLink + .FilterLink
   border-left: 1px solid white
 
-.FilterBar.FilterIcon > a.active,
-.no-touch .FilterBar.FilterIcon > a:hover
+.FilterIcon > .FilterLink.active,
+.no-touch .FilterIcon > .FilterLink:hover
   background-color: black
   color: white
 
-.FilterBar.FilterIcon > a.active g,
-.no-touch .FilterBar.FilterIcon > a:hover g
+.FilterIcon > a.active g,
+.no-touch .FilterIcon > .FilterLink:hover g
   stroke: white
 
-.FilterBar.FilterIcon > a.active .BubbleIcon g,
-.FilterBar.FilterIcon > a.active .HeartIcon g,
-.no-touch .FilterBar.FilterIcon > a:hover .BubbleIcon g,
-.no-touch .FilterBar.FilterIcon > a:hover .HeartIcon g
+.FilterIcon > a.active .BubbleIcon g,
+.FilterIcon > a.active .HeartIcon g,
+.no-touch .FilterIcon > .FilterLink:hover .BubbleIcon g,
+.no-touch .FilterIcon > .FilterLink:hover .HeartIcon g
   fill: white
-
-
-@media(min-width: #{$break-2})
-  .FilterBar
-    padding: rem(40) rem(20) rem(20)
-  .FilterBar.FilterText
-    font-size: rem(24)
-    padding-bottom: rem(5)
-  .FilterBar.FilterText > a + a
-    margin-left: rem(30)
-
-
-@media(min-width: #{$break-4})
-  .FilterBar
-    padding-left: rem(40)
-    padding-right: rem(40)
 
