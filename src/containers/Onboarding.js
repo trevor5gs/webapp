@@ -1,5 +1,4 @@
 import React from 'react'
-import App from './App'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import OnboardingHeader from '../components/navigation/OnboardingHeader'
@@ -69,7 +68,7 @@ class Onboarding extends React.Component {
     const { subComponentName } = route
 
     if (!subComponentName) {
-      return <App><span/></App>
+      return null
     }
 
 
@@ -77,109 +76,99 @@ class Onboarding extends React.Component {
     case 'CommunityPicker':
       rm = this.getRelationshipMap()
       return (
-        <App path="/onboarding/communities">
-          <section className="CommunityPicker Panel">
-            <OnboardingHeader
-              relationshipMap={this.getRelationshipMap()}
-              nextPath="/onboarding/awesome-people"
-              trackingLabel="community-picker"
-              batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
-              lockNext
-              title="What are you interested in?"
-              message="Follow the Ello Communities that you find most inspiring." />
-            <CommunityPicker
-              shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
-              relationshipMap={rm} />
-          </section>
-        </App>
+        <section className="CommunityPicker Panel">
+          <OnboardingHeader
+            relationshipMap={this.getRelationshipMap()}
+            nextPath="/onboarding/awesome-people"
+            trackingLabel="community-picker"
+            batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
+            lockNext
+            title="What are you interested in?"
+            message="Follow the Ello Communities that you find most inspiring." />
+          <CommunityPicker
+            shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
+            relationshipMap={rm} />
+        </section>
       )
 
     case 'PeoplePicker':
       rm = this.getRelationshipMap()
       return (
-        <App path="/onboarding/awesome-people">
-          <section className="PeoplePicker Panel">
-            <OnboardingHeader
-              relationshipMap={rm}
-              nextPath="/onboarding/profile-header"
-              trackingLabel="people-picker"
-              batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
-              title="Follow some awesome people."
-              message="Ello is full of interesting and creative people committed to building a positive community." />
-            <PeoplePicker
-              shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
-              relationshipMap={rm} />
-          </section>
-        </App>
+        <section className="PeoplePicker Panel">
+          <OnboardingHeader
+            relationshipMap={rm}
+            nextPath="/onboarding/profile-header"
+            trackingLabel="people-picker"
+            batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
+            title="Follow some awesome people."
+            message="Ello is full of interesting and creative people committed to building a positive community." />
+          <PeoplePicker
+            shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
+            relationshipMap={rm} />
+        </section>
       )
 
     case 'CoverPicker':
       return (
-        <App path="/onboarding/profile-header">
-          <section className="CoverPicker Panel">
-            <OnboardingHeader
-                nextPath="/onboarding/profile-avatar"
-                trackingLabel="cover-picker"
-                title="Customize your profile."
-                message="Choose a header image." />
+        <section className="CoverPicker Panel">
+          <OnboardingHeader
+              nextPath="/onboarding/profile-avatar"
+              trackingLabel="cover-picker"
+              title="Customize your profile."
+              message="Choose a header image." />
 
-            <Uploader
-              title="Upload a header image"
-              message="Or drag & drop"
-              recommend="Recommended image size: 2560 x 1440"
-              openAlert={ bindActionCreators(openAlert, dispatch) }
-              saveAction={ bindActionCreators(saveCover, dispatch) }/>
-            <Cover
-              isModifiable
-              imgSrc={this.getCoverSource(profile)} />
-          </section>
-        </App>
+          <Uploader
+            title="Upload a header image"
+            message="Or drag & drop"
+            recommend="Recommended image size: 2560 x 1440"
+            openAlert={ bindActionCreators(openAlert, dispatch) }
+            saveAction={ bindActionCreators(saveCover, dispatch) }/>
+          <Cover
+            isModifiable
+            imgSrc={this.getCoverSource(profile)} />
+        </section>
       )
 
     case 'AvatarPicker':
       return (
-        <App path="/onboarding/profile-avatar">
-          <section className="AvatarPicker Panel">
-            <OnboardingHeader
-                nextPath="/onboarding/profile-bio"
-                trackingLabel="avatar-picker"
-                title="Customize your profile."
-                message="Choose an avatar." />
+        <section className="AvatarPicker Panel">
+          <OnboardingHeader
+              nextPath="/onboarding/profile-bio"
+              trackingLabel="avatar-picker"
+              title="Customize your profile."
+              message="Choose an avatar." />
 
-            <Uploader
-              title="Pick an Avatar"
-              message="Or drag & drop it"
-              recommend="Recommended image size: 360 x 360"
-              openAlert={ bindActionCreators(openAlert, dispatch) }
-              saveAction={ bindActionCreators(saveAvatar, dispatch) }/>
-            <Avatar imgSrc={this.getAvatarSource(profile)} />
-            <Cover
-              imgSrc={this.getCoverSource(profile)} />
-          </section>
-        </App>
+          <Uploader
+            title="Pick an Avatar"
+            message="Or drag & drop it"
+            recommend="Recommended image size: 360 x 360"
+            openAlert={ bindActionCreators(openAlert, dispatch) }
+            saveAction={ bindActionCreators(saveAvatar, dispatch) }/>
+          <Avatar imgSrc={this.getAvatarSource(profile)} />
+          <Cover
+            imgSrc={this.getCoverSource(profile)} />
+        </section>
       )
 
     case 'InfoPicker':
       return (
-        <App path="/onboarding/profile-bio">
-          <section className="InfoPicker Panel">
-            <OnboardingHeader
-                redirection
-                nextPath={ENV.REDIRECT_URI}
-                trackingLabel="info-picker"
-                title="Customize your profile."
-                message="Fill out your bio." />
+        <section className="InfoPicker Panel">
+          <OnboardingHeader
+              redirection
+              nextPath={ENV.REDIRECT_URI}
+              trackingLabel="info-picker"
+              title="Customize your profile."
+              message="Fill out your bio." />
 
-            <Avatar imgSrc={this.getAvatarSource(profile)} />
-            <InfoForm />
-            <Cover
-              imgSrc={this.getCoverSource(profile)} />
-          </section>
-        </App>
+          <Avatar imgSrc={this.getAvatarSource(profile)} />
+          <InfoForm />
+          <Cover
+            imgSrc={this.getCoverSource(profile)} />
+        </section>
       )
 
     default:
-      return <App><span/></App>
+      return null
     }
   }
 }

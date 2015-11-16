@@ -1,5 +1,4 @@
 import React from 'react'
-import App from './App'
 import FilterBar from '../components/navigation/FilterBar'
 import StreamComponent from '../components/streams/StreamComponent'
 import { BubbleIcon, HeartIcon, RepostIcon } from '../components/iconography/Icons'
@@ -20,12 +19,10 @@ class Notifications extends React.Component {
     links.push({ to: '/notifications/reposts', children: <RepostIcon /> })
     links.push({ to: '/notifications/relationships', children: 'Relationships' })
     return (
-      <App path="/notifications">
-        <section className="Notifications Panel">
-          <FilterBar type="icon" links={links} />
-          <StreamComponent action={loadNotifications(params)} />
-        </section>
-      </App>
+      <section className="Notifications Panel">
+        <FilterBar type="icon" links={links} />
+        <StreamComponent action={loadNotifications(params)} />
+      </section>
     )
   }
 }

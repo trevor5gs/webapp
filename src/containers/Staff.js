@@ -1,5 +1,4 @@
 import React from 'react'
-import App from './App'
 
 class Staff extends React.Component {
   constructor(props, context) {
@@ -79,30 +78,28 @@ class Staff extends React.Component {
 
   render() {
     return (
-      <App>
-        <section
-          className="Staff Panel"
-          style={{
-            paddingLeft: '20px',
-          }}
-          >
-          <h1>StaffView</h1>
-          {this.renderMonospaceFamily()}
-          <hr/>
-          {this.renderSansFamily()}
-          <hr/>
-          {this.renderSansBoldFamily()}
-          <hr/>
-          {this.renderSansItalicFamily()}
-          <hr/>
-          {this.renderSansBoldItalicFamily()}
-          <hr/>
-          <h2 className="heading">Heading & Copy</h2>
-          <p>The Budnitz Bicycles Model No.1 Titanium is made out of just 93 quality parts (we’re not counting spokes). This simple design is one of the reasons that our bicycles require so little maintanance, and have such an incredibly smooth ride.</p>
-          <p>We’re excited to offer our ultimate urban assault vehicle with a honey-leather Brooks saddle, matching grips, and German-designed 2.35-inch Super Moto tires. All 2014 versions of our Model No.3 will now fit these amazing oversized slick racing tires — guaranteed to terrorize the neighborhood, in both comfort and style</p>
-          <p><span>Inline textual elements:</span> <small>small</small> <em>em</em> <strong>strong</strong> <sub>sub</sub> <sup>sup</sup> <code>code</code> <a href="#">link</a></p>
-        </section>
-      </App>
+      <section
+        className="Staff Panel"
+        style={{
+          paddingLeft: '20px',
+        }}
+        >
+        <h1>StaffView</h1>
+        {this.renderMonospaceFamily()}
+        <hr/>
+        {this.renderSansFamily()}
+        <hr/>
+        {this.renderSansBoldFamily()}
+        <hr/>
+        {this.renderSansItalicFamily()}
+        <hr/>
+        {this.renderSansBoldItalicFamily()}
+        <hr/>
+        <h2 className="heading">Heading & Copy</h2>
+        <p>The Budnitz Bicycles Model No.1 Titanium is made out of just 93 quality parts (we’re not counting spokes). This simple design is one of the reasons that our bicycles require so little maintanance, and have such an incredibly smooth ride.</p>
+        <p>We’re excited to offer our ultimate urban assault vehicle with a honey-leather Brooks saddle, matching grips, and German-designed 2.35-inch Super Moto tires. All 2014 versions of our Model No.3 will now fit these amazing oversized slick racing tires — guaranteed to terrorize the neighborhood, in both comfort and style</p>
+        <p><span>Inline textual elements:</span> <small>small</small> <em>em</em> <strong>strong</strong> <sub>sub</sub> <sup>sup</sup> <code>code</code> <a href="#">link</a></p>
+      </section>
     )
   }
 }

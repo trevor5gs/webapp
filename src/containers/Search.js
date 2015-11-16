@@ -1,6 +1,5 @@
 import React from 'react'
 import classNames from 'classnames'
-import App from './App'
 import StreamComponent from '../components/streams/StreamComponent'
 import SearchControl from '../components/forms/SearchControl'
 import { debounce } from '../components/base/lib'
@@ -43,20 +42,18 @@ class Search extends React.Component {
   render() {
     const { type } = this.state
     return (
-      <App>
-        <section className="Search Panel">
-          <div className="SearchBar">
-            <SearchControl text="" controlWasChanged={this.handleControlChange.bind(this)} />
-            <button className={classNames('SearchFilter', { active: type === 'posts' })} onClick={() => { this.handleControlChange({ type: 'posts' }) }} >
-              Posts
-            </button>
-            <button className={classNames('SearchFilter', { active: type === 'users' })} onClick={() => { this.handleControlChange({ type: 'users' }) }} >
-              People
-            </button>
-          </div>
-          <StreamComponent ref="streamComponent" />
-        </section>
-      </App>
+      <section className="Search Panel">
+        <div className="SearchBar">
+          <SearchControl text="" controlWasChanged={this.handleControlChange.bind(this)} />
+          <button className={classNames('SearchFilter', { active: type === 'posts' })} onClick={() => { this.handleControlChange({ type: 'posts' }) }} >
+            Posts
+          </button>
+          <button className={classNames('SearchFilter', { active: type === 'users' })} onClick={() => { this.handleControlChange({ type: 'users' }) }} >
+            People
+          </button>
+        </div>
+        <StreamComponent ref="streamComponent" />
+      </section>
     )
   }
 }

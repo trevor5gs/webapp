@@ -1,5 +1,4 @@
 import React from 'react'
-import App from './App'
 import FilterBar from '../components/navigation/FilterBar'
 import StreamComponent from '../components/streams/StreamComponent'
 import { loadDiscoverUsers } from '../actions/discover'
@@ -20,12 +19,10 @@ class Discover extends React.Component {
     links.push({ to: '/discover/recent', children: 'Recent' })
     const type = this.props.params.type
     return (
-      <App path={ `/discover/${type}` }>
-        <section className="Discover Panel">
-          <FilterBar type="text" links={links} />
-          <StreamComponent ref="streamComponent" action={loadDiscoverUsers(type)} />
-        </section>
-      </App>
+      <section className="Discover Panel">
+        <FilterBar type="text" links={links} />
+        <StreamComponent ref="streamComponent" action={loadDiscoverUsers(type)} />
+      </section>
     )
   }
 }
