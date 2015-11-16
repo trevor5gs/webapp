@@ -10,20 +10,44 @@ class ImageRegion extends React.Component {
     return false
   }
 
-  renderAttachment() {
-    // TODO: use srcset for loading images
+  renderGif() {
     const { content } = this.props
-    let size = 'optimized'
-    if (!this.isGif()) {
-      size = 'hdpi' // window && window.innerWidth > 375 ? 'hdpi' : 'mdpi'
-    }
     return (
       <img className="ImageRegion"
         alt={content.alt}
-        height={this.attachment[size].metadata.height}
-        src={this.attachment[size].url}
-        width={this.attachment[size].metadata.width} />
+        height={this.attachment.optimized.metadata.height}
+        src={this.attachment.optimized.url}
+        width={this.attachment.optimized.metadata.width} />
     )
+  }
+
+  renderImage() {
+    const { content, isGridLayout } = this.props
+    const sizes = []
+    if (isGridLayout) {
+      sizes.push(this.attachment.mdpi.url + ' 375w')
+      sizes.push(this.attachment.hdpi.url + ' 1920w')
+    } else {
+      sizes.push(this.attachment.mdpi.url + ' 180w')
+      sizes.push(this.attachment.hdpi.url + ' 750w')
+      sizes.push(this.attachment.xhdpi.url + ' 1500w')
+      sizes.push(this.attachment.optimized.url + ' 1920w')
+    }
+    const srcset = sizes.join(', ')
+    return (
+      <img className="ImageRegion"
+        alt={content.alt}
+        height={this.attachment.hdpi.metadata.height}
+        src={this.attachment.hdpi.url}
+        srcSet={srcset} />
+    )
+  }
+
+  renderAttachment() {
+    if (this.isGif()) {
+      return this.renderGif()
+    }
+    return this.renderImage()
   }
 
   renderContent() {
@@ -48,6 +72,7 @@ class ImageRegion extends React.Component {
 ImageRegion.propTypes = {
   assets: React.PropTypes.object.isRequired,
   content: React.PropTypes.object.isRequired,
+  isGridLayout: React.PropTypes.bool.isRequired,
   links: React.PropTypes.object,
 }
 

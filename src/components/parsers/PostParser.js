@@ -54,11 +54,12 @@ function textRegion(region, key) {
   )
 }
 
-function imageRegion(region, key) {
+function imageRegion(region, key, isGridLayout) {
   return (
     <ImageRegion key={key}
       assets={models.assets}
       content={region.data}
+      isGridLayout={isGridLayout}
       links={region.links} />
   )
 }
@@ -75,14 +76,14 @@ function embedRegion(region, key) {
   )
 }
 
-function regionItems(content, only = null) {
+function regionItems(content, only = null, isGridLayout) {
   return content.map((region, i) => {
     if (!only || only === region.kind) {
       switch (region.kind) {
       case 'text':
         return textRegion(region, `TextRegion_${i}`)
       case 'image':
-        return imageRegion(region, `ImageRegion_${i}`)
+        return imageRegion(region, `ImageRegion_${i}`, isGridLayout)
       case 'embed':
         return embedRegion(region, `EmbedRegion_${i}`)
       default:
@@ -92,10 +93,10 @@ function regionItems(content, only = null) {
   })
 }
 
-function body(content, id) {
+function body(content, id, isGridLayout) {
   return (
     <div className="PostBody" key={`PostBody_${id}`}>
-      {regionItems(content)}
+      {regionItems(content, null, isGridLayout)}
     </div>
   )
 }
@@ -106,7 +107,7 @@ function footer(post, author, currentUser) {
   return <PostTools author={author} post={post} currentUser={currentUser} key={`PostTools_${post.id}`} />
 }
 
-export function parsePost(post, json, currentUser, gridLayout = true) {
+export function parsePost(post, json, currentUser, isGridLayout = true) {
   if (!post) { return null }
   models = json
   const author = json[MAPPING_TYPES.USERS][post.authorId]
@@ -115,18 +116,18 @@ export function parsePost(post, json, currentUser, gridLayout = true) {
     cells.push(repostHeader(post, getLinkObject(post, 'repostAuthor', json), getLinkObject(post, 'repostedSource', json), author))
     // this is weird, but the post summary is
     // actually the repost summary on reposts
-    if (gridLayout) {
-      cells.push(body(post.summary, post.id))
+    if (isGridLayout) {
+      cells.push(body(post.summary, post.id, isGridLayout))
     } else {
-      cells.push(body(post.repostContent))
+      cells.push(body(post.repostContent, post.id, isGridLayout))
       if (post.content && post.content.length) {
-        cells.push(body(post.content, post.id))
+        cells.push(body(post.content, post.id, isGridLayout))
       }
     }
   } else {
     cells.push(header(post, author))
-    const content = gridLayout ? post.summary : post.content
-    cells.push(body(content, post.id))
+    const content = isGridLayout ? post.summary : post.content
+    cells.push(body(content, post.id, isGridLayout))
   }
   cells.push(footer(post, author, currentUser))
   models = {}
@@ -135,6 +136,6 @@ export function parsePost(post, json, currentUser, gridLayout = true) {
 
 export function parseSummary(post, json, only = null) {
   models = json
-  return regionItems(post.summary, only)
+  return regionItems(post.summary, only, false)
 }
 
