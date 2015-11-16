@@ -17,6 +17,7 @@ const routes = [
     indexRoute: { component: Discover },
     childRoutes: [
       require('./discover'),
+      require('./find'),
       require('./following'),
       require('./notifications'),
       createRedirect('onboarding', '/onboarding/communities'),
