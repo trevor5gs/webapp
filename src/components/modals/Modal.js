@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom'
 import Mousetrap from 'mousetrap'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import { SHORTCUT_KEYS, MODALS, ALERTS } from '../../constants/action_types'
+import { SHORTCUT_KEYS } from '../../constants/gui_types'
+import { MODALS, ALERTS } from '../../constants/action_types'
 import { closeModal, closeAlert } from '../../actions/modals'
 
 function getComponentKind(modals) {

@@ -48,16 +48,6 @@ export const POST = {
   REPOST_FAILURE: 'POST.REPOST_FAILURE',
 }
 
-export const SHORTCUT_KEYS = {
-  HELP: '?',
-  ESC: 'esc',
-  SEARCH: 'g s',
-  DISCOVER: 'g d',
-  ONBOARDING: 'g 0',
-  DT_GRID_TOGGLE: 'g `',
-  DT_GRID_CYCLE: 'g ~',
-}
-
 export const MODALS = {
   OPEN: 'MODAL_OPEN',
   CLOSE: 'MODAL_CLOSE',

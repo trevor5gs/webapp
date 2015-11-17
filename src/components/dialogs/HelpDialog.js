@@ -1,5 +1,5 @@
 import React from 'react'
-import { SHORTCUT_KEYS } from '../../constants/action_types'
+import { SHORTCUT_KEYS } from '../../constants/gui_types'
 
 class HelpDialog extends React.Component {
   render() {
