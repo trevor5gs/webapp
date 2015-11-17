@@ -11,7 +11,7 @@ import NavbarProfile from './NavbarProfile'
 import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
 // import HelpDialog from '../dialogs/HelpDialog'
 // import { openModal, closeModal } from '../../actions/modal'
-import { addScrollObject, removeScrollObject } from '../scroll/ScrollComponent'
+import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 
 
 class Navbar extends React.Component {
