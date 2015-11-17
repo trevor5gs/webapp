@@ -4,7 +4,7 @@ const initialState = {
   isActive: false,
 }
 
-export function modals(state = initialState, action) {
+export function modal(state = initialState, action) {
   switch (action.type) {
 
   case MODAL.OPEN:
