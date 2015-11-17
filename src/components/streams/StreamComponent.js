@@ -25,6 +25,13 @@ export class StreamComponent extends React.Component {
     addScrollObject(this)
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { action, stream } = nextProps
+    if (this.refs.paginator && stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS && (action.payload.endpoint === stream.payload.endpoint || action.meta.resultKey)) {
+      this.refs.paginator.setLoading(false)
+    }
+  }
+
   // this prevents nested stream components from clobbering parents
   shouldComponentUpdate() {
     const { action } = this.state
@@ -32,7 +39,7 @@ export class StreamComponent extends React.Component {
     // return true for post tools actions
     if (!action || !action.payload || !stream || !stream.payload) {
       return false
-    } else if (stream.type && stream.type.indexOf('POST.') === 0) {
+    } else if (stream.type && (stream.type.indexOf('POST.') === 0 || stream.type.indexOf('LOAD_NEXT_CONTENT') === 0)) {
       return true
     }
     return action.payload.endpoint === stream.payload.endpoint
@@ -55,6 +62,10 @@ export class StreamComponent extends React.Component {
     this.loadPage('next')
   }
 
+  onLoadNextPage() {
+    this.loadPage('next')
+  }
+
   setAction(action) {
     this.setState({action: action})
     this.props.dispatch(action)
@@ -63,17 +74,30 @@ export class StreamComponent extends React.Component {
   loadPage(rel) {
     const { dispatch, json, router } = this.props
     const { action } = this.state
-    // resultKey lets us know that this is a nested stream component
-    // and should not load pages ie: lovers, reposters
-    if (action && action.meta && action.meta.resultKey) { return }
-    const result = json.pages ? json.pages[router.location.pathname] : null
+    const { meta } = action
+    let result = null
+    if (json.pages) {
+      if (meta && meta.resultKey) {
+        result = json.pages[`${router.location.pathname}_${meta.resultKey}`]
+      } else {
+        result = json.pages[router.location.pathname]
+      }
+    }
+    if (!result) { return }
     const { pagination } = result
     if (!pagination[rel] || parseInt(pagination.totalPagesRemaining, 10) === 0 || !action) { return }
+    this.refs.paginator.setLoading(true)
     dispatch(
       {
         type: ACTION_TYPES.LOAD_NEXT_CONTENT,
-        payload: { endpoint: { path: pagination[rel] } },
-        meta: { mappingType: action.payload.endpoint.pagingPath || action.meta.mappingType, resultFilter: action.meta.resultFilter },
+        payload: {
+          endpoint: { path: pagination[rel] },
+        },
+        meta: {
+          mappingType: action.payload.endpoint.pagingPath || meta.mappingType,
+          resultFilter: meta.resultFilter,
+          resultKey: meta.resultKey,
+        },
       }
     )
   }
@@ -163,7 +187,12 @@ export class StreamComponent extends React.Component {
     return (
       <section className="StreamComponent">
         { meta.renderStream(renderObj, json, currentUser, payload.vo) }
-        <Paginator />
+        <Paginator
+          delegate={this}
+          hasShowMoreButton={typeof meta.resultKey !== 'undefined'}
+          key={`${meta.resultKey || 'stream'}Paginator`}
+          pagination={result.pagination}
+          ref="paginator" />
       </section>
     )
   }

@@ -101,22 +101,19 @@ export function json(state = {}, action = { type: '' }, router) {
   }
   result.pagination = action.payload.pagination
   if (!newState.pages) { newState.pages = {} }
-  if (action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
-    const existingResult = newState.pages[router.location.pathname]
-    if (existingResult) {
-      existingResult.pagination = result.pagination
-      if (!existingResult.next) {
-        existingResult.next = result
-      } else {
-        existingResult.next.ids = uniq(existingResult.next.ids.concat(result.ids))
-      }
-    }
-  } else {
-    if (resultKey) {
-      newState.pages[`${router.location.pathname}_${resultKey}`] = result
+  const resultPath = resultKey ? `${router.location.pathname}_${resultKey}` : router.location.pathname
+  let existingResult = newState.pages[resultPath]
+  if (existingResult && action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
+    existingResult.pagination = result.pagination
+    if (existingResult.next) {
+      existingResult.next.ids = uniq(existingResult.next.ids.concat(result.ids))
     } else {
-      newState.pages[router.location.pathname] = result
+      existingResult.next = result
     }
+  } else if (existingResult) {
+    existingResult = { ...existingResult, ...result }
+  } else {
+    newState.pages[resultPath] = result
   }
   return newState
 }

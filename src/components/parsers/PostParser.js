@@ -119,7 +119,7 @@ export function parsePost(post, json, currentUser, isGridLayout = true) {
     if (isGridLayout) {
       cells.push(body(post.summary, post.id, isGridLayout))
     } else {
-      cells.push(body(post.repostContent, post.id, isGridLayout))
+      cells.push(body(post.repostContent, `repost_${post.id}`, isGridLayout))
       if (post.content && post.content.length) {
         cells.push(body(post.content, post.id, isGridLayout))
       }

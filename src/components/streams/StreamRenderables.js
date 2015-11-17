@@ -75,10 +75,10 @@ export function postDetail(posts, json, currentUser) {
   comments = comments.concat(posts.nestedData)
   const avatarDrawers = []
   if (Number(post.lovesCount) > 0) {
-    avatarDrawers.push(<UserAvatars endpoint={api.postLovers(post)} icon={<HeartIcon />} key="lovers" resultKey="lovers" />)
+    avatarDrawers.push(<UserAvatars endpoint={api.postLovers(post)} icon={<HeartIcon />} key={`lovers_${post.id}`} resultKey="lovers" />)
   }
   if (Number(post.repostsCount) > 0) {
-    avatarDrawers.push(<UserAvatars endpoint={api.postReposters(post)} icon={<RepostIcon />} key="reposters" resultKey="reposters" />)
+    avatarDrawers.push(<UserAvatars endpoint={api.postReposters(post)} icon={<RepostIcon />} key={`reposters_${post.id}`} resultKey="reposters" />)
   }
   return (
     <div className="PostDetail Posts asList">

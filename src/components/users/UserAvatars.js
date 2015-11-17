@@ -3,14 +3,25 @@ import StreamComponent from '../streams/StreamComponent'
 import { loadUserAvatars } from '../../actions/user'
 
 class UserAvatars extends React.Component {
+  componentWillReceiveProps(nextProps) {
+    if (this.refs.streamComponent) {
+      this.refs.streamComponent.refs.wrappedInstance.setAction(this.getAction(nextProps))
+    }
+  }
+
+  getAction(props) {
+    const { endpoint, resultKey } = props
+    return loadUserAvatars(endpoint, resultKey)
+  }
+
   render() {
-    const { endpoint, icon, resultKey } = this.props
+    const { icon } = this.props
     return (
       <section className="UserAvatars">
         {icon}
         <StreamComponent
           ref="streamComponent"
-          action={loadUserAvatars(endpoint, resultKey)} />
+          action={this.getAction(this.props)} />
       </section>
     )
   }
