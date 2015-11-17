@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Modal from '../components/modals/Modal'
-import Navbar from '../components/navigation/Navbar'
+import Navbar from '../components/navbar/Navbar'
 import DevTools from '../components/devtools/DevTools'
 import Analytics from '../components/analytics/Analytics'
 import { trackPageView } from '../actions/tracking'

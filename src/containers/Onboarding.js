@@ -1,7 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import OnboardingHeader from '../components/navigation/OnboardingHeader'
+import OnboardingHeader from '../components/onboarding/OnboardingHeader'
 import CommunityPicker from '../components/pickers/CommunityPicker'
 import PeoplePicker from '../components/pickers/PeoplePicker'
 import Uploader from '../components/uploaders/Uploader'
