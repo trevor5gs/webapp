@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { Link } from 'react-router'
-import { ElloMark } from '../iconography/ElloIcons'
+import { ElloMark } from '../interface/ElloIcons'
 import { trackEvent } from '../../actions/tracking'
 
 class OnboardingHeader extends React.Component {

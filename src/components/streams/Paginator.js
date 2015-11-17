@@ -1,5 +1,5 @@
 import React from 'react'
-import { ElloMark } from '../iconography/ElloIcons'
+import { ElloMark } from '../interface/ElloIcons'
 
 class Paginator extends React.Component {
   constructor(props, context) {

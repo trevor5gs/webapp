@@ -4,7 +4,7 @@ import { saveProfile } from '../../actions/profile'
 import NameControl from './NameControl'
 import BioControl from './BioControl'
 import LinksControl from './LinksControl'
-import { debounce } from '../base/lib'
+import debounce from 'lodash.debounce'
 
 class InfoForm extends React.Component {
 

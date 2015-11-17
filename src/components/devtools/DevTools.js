@@ -1,6 +1,6 @@
 import React from 'react'
 import Mousetrap from 'mousetrap'
-import { SHORTCUT_KEYS } from '../../constants/action_types'
+import { SHORTCUT_KEYS } from '../../constants/gui_types'
 
 
 class DevTools extends React.Component {

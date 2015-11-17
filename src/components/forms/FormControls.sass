@@ -1,0 +1,66 @@
+.FormControlGroup
+  position: relative
+  max-width: rem(400)
+
+%FormControl
+  +sans-typeset
+  transition: border-color $speed $ease, color $speed $ease, width $speed $ease, height $speed $ease
+  display: inline-block
+  vertical-align: baseline
+  width: 100%
+  min-height: rem(40)
+  background-color: transparent
+  border: 0
+  border-bottom: 1px solid #aaa
+  color: black
+  &:focus
+    border-bottom-color: black
+    outline: 0
+  &::placeholder
+    color: #aaa
+
+%FormControlLabel
+  +sans-typeset
+  transition: transform $speed2 $ease, opacity $speed2 $ease, color $speed2 $ease
+  display: inline-block
+  vertical-align: baseline
+  position: absolute
+  bottom: rem(-15)
+  right: 0
+  color: #aaa
+
+.FormControl
+  @extend %FormControl
+
+.hasValue > .FormControl
+  border-bottom-color: black
+
+textarea.FormControl
+  min-height: 0
+  height: rem(30)
+  margin-top: rem(10)
+
+.hasValue > textarea.FormControl,
+.hasFocus > textarea.FormControl
+  height: rem(115)
+
+.FormControlLabel
+  @extend %FormControlLabel
+  opacity: 0
+
+.hasFocus.hasValue > .FormControlLabel
+  opacity: 1
+  transform: translate3d(0,rem(10),0)
+
+.hasExceeded.hasValue > .FormControlLabel
+  color: $danger
+
+.NameControl
+  +sans-bold-family
+  font-size: 1rem
+
+@media(min-width: #{$break-3})
+  .hasValue > textarea.FormControl,
+  .hasFocus > textarea.FormControl
+    height: rem(85)
+

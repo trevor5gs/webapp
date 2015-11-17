@@ -1,5 +1,5 @@
 export { accessToken } from './access_token'
 export { json } from './json'
-export { modals } from './modals'
+export { modal } from './modal'
 export { profile } from './profile'
 export { stream } from './stream'

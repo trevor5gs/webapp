@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import Avatar from '../users/Avatar'
 import ImageRegion from '../posts/regions/ImageRegion'
 import PostTools from '../posts/PostTools'
-import { RepostIcon } from '../iconography/Icons'
+import { RepostIcon } from '../posts/PostIcons'
 import { getLinkObject } from '../base/json_helper'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 

@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom'
 import Mousetrap from 'mousetrap'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import { SHORTCUT_KEYS, MODALS, ALERTS } from '../../constants/action_types'
+import { SHORTCUT_KEYS } from '../../constants/gui_types'
+import { MODAL, ALERT } from '../../constants/action_types'
 import { closeModal, closeAlert } from '../../actions/modals'
 
-function getComponentKind(modals) {
-  return (modals.meta && modals.meta.kind) ? modals.meta.kind : 'Modal'
+function getComponentKind(modal) {
+  return (modal.meta && modal.meta.kind) ? modal.meta.kind : 'Modal'
 }
 
 class Modal extends React.Component {
@@ -18,12 +19,12 @@ class Modal extends React.Component {
   }
 
   componentDidUpdate() {
-    const { modals } = this.props
-    const { type } = modals
+    const { modal } = this.props
+    const { type } = modal
     const body = ReactDOM.findDOMNode(document.body)
-    if (type === MODALS.OPEN) {
+    if (type === MODAL.OPEN) {
       body.classList.add('modalIsActive')
-    } else if (type === MODALS.CLOSE) {
+    } else if (type === MODAL.CLOSE) {
       body.classList.remove('modalIsActive')
     }
   }
@@ -34,8 +35,8 @@ class Modal extends React.Component {
 
   // Don't set state here or the delay, the action needs to do it
   close() {
-    const { modals, dispatch } = this.props
-    dispatch(getComponentKind(modals) === 'Modal' ? closeModal() : closeAlert())
+    const { modal, dispatch } = this.props
+    dispatch(getComponentKind(modal) === 'Modal' ? closeModal() : closeAlert())
   }
 
   handleModalTrigger(e) {
@@ -46,13 +47,13 @@ class Modal extends React.Component {
   }
 
   render() {
-    const { modals } = this.props
-    const { type, payload, meta } = modals
+    const { modal } = this.props
+    const { type, payload, meta } = modal
     const groupClassNames = classNames(
-      getComponentKind(modals),
+      getComponentKind(modal),
       (meta && meta.wrapperClasses) ? meta.wrapperClasses : '',
     )
-    if (type === MODALS.OPEN || type === ALERTS.OPEN) {
+    if (type === MODAL.OPEN || type === ALERT.OPEN) {
       return (
         <div
           className={ `${groupClassNames} isActive` }
@@ -69,7 +70,7 @@ class Modal extends React.Component {
 // This should be a selector: @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {
-    modals: state.modals,
+    modal: state.modal,
   }
 }
 
@@ -77,7 +78,7 @@ Modal.propTypes = {
   wrapperClasses: React.PropTypes.string,
   isActive: React.PropTypes.func,
   dispatch: React.PropTypes.func.isRequired,
-  modals: React.PropTypes.object,
+  modal: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(Modal)

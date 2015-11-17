@@ -11,7 +11,7 @@ function reducer(state, action) {
   return {
     accessToken: reducers.accessToken(state.accessToken, action),
     json: reducers.json(state.json, action, state.router),
-    modals: reducers.modals(state.modals, action),
+    modal: reducers.modal(state.modal, action),
     profile: reducers.profile(state.profile, action),
     router: routerStateReducer(state.router, action),
     stream: reducers.stream(state.stream, action),

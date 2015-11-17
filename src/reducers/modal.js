@@ -1,16 +1,16 @@
-import { MODALS, ALERTS } from '../constants/action_types'
+import { MODAL, ALERT } from '../constants/action_types'
 
 const initialState = {
   isActive: false,
 }
 
-export function modals(state = initialState, action) {
+export function modal(state = initialState, action) {
   switch (action.type) {
 
-  case MODALS.OPEN:
-  case MODALS.CLOSE:
-  case ALERTS.OPEN:
-  case ALERTS.CLOSE:
+  case MODAL.OPEN:
+  case MODAL.CLOSE:
+  case ALERT.OPEN:
+  case ALERT.CLOSE:
     return {
       type: action.type,
       error: action.error,

@@ -1,5 +1,5 @@
 import React from 'react'
-import { PencilIcon } from '../iconography/Icons'
+import { PencilIcon } from '../navbar/NavbarIcons'
 
 class NavbarOmniButton extends React.Component {
 

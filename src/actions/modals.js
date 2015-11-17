@@ -1,8 +1,8 @@
-import { MODALS, ALERTS } from '../constants/action_types'
+import { MODAL, ALERT } from '../constants/action_types'
 
 export function openModal(component, wrapperClasses = '') {
   return {
-    type: MODALS.OPEN,
+    type: MODAL.OPEN,
     meta: {
       kind: 'Modal',
       wrapperClasses: wrapperClasses,
@@ -13,14 +13,14 @@ export function openModal(component, wrapperClasses = '') {
 
 export function closeModal() {
   return {
-    type: MODALS.CLOSE,
+    type: MODAL.CLOSE,
     payload: null,
   }
 }
 
 export function openAlert(component, wrapperClasses = '') {
   return {
-    type: ALERTS.OPEN,
+    type: ALERT.OPEN,
     meta: {
       kind: 'Alert',
       wrapperClasses: wrapperClasses,
@@ -31,7 +31,7 @@ export function openAlert(component, wrapperClasses = '') {
 
 export function closeAlert() {
   return {
-    type: ALERTS.CLOSE,
+    type: ALERT.CLOSE,
     payload: null,
   }
 }

@@ -2,16 +2,16 @@ import React from 'react'
 import classNames from 'classnames'
 // import Mousetrap from 'mousetrap'
 import { connect } from 'react-redux'
-import { SHORTCUT_KEYS } from '../../constants/action_types'
+import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import NavbarLabel from './NavbarLabel'
 import NavbarOmniButton from './NavbarOmniButton'
 import NavbarLink from './NavbarLink'
 import NavbarMark from './NavbarMark'
 import NavbarProfile from './NavbarProfile'
-import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../iconography/Icons'
+import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
 // import HelpDialog from '../dialogs/HelpDialog'
-// import { openModal, closeModal } from '../../actions/modals'
-import { addScrollObject, removeScrollObject } from '../scroll/ScrollComponent'
+// import { openModal, closeModal } from '../../actions/modal'
+import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 
 
 class Navbar extends React.Component {
@@ -32,8 +32,8 @@ class Navbar extends React.Component {
     // })
 
     // Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
-    //   const { dispatch, modals } = this.props
-    //   if (modals.payload) {
+    //   const { dispatch, modal } = this.props
+    //   if (modal.payload) {
     //     return dispatch(closeModal())
     //   }
     //   return dispatch(openModal(<HelpDialog/>))
@@ -114,7 +114,7 @@ class Navbar extends React.Component {
 // This should be a selector: @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {
-    modals: state.modals,
+    modal: state.modal,
     profile: state.profile,
     router: state.router,
   }
@@ -131,7 +131,7 @@ Navbar.defaultProps = {
 Navbar.propTypes = {
   shortcuts: React.PropTypes.object.isRequired,
   dispatch: React.PropTypes.func.isRequired,
-  modals: React.PropTypes.object,
+  modal: React.PropTypes.object,
   profile: React.PropTypes.object,
   router: React.PropTypes.object.isRequired,
 }

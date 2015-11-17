@@ -7,7 +7,7 @@ import { parseNotification } from '../parsers/NotificationParser'
 import { parsePost } from '../parsers/PostParser'
 import { getLinkArray } from '../base/json_helper'
 import * as api from '../../networking/api'
-import { HeartIcon, RepostIcon, BubbleIcon } from '../iconography/Icons'
+import { BubbleIcon, HeartIcon, RepostIcon } from '../posts/PostIcons'
 
 export function onboardingCommunities(users) {
   return (

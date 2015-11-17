@@ -1,13 +1,14 @@
 import React from 'react'
 import {
-  MailIcon,
   FacebookIcon,
-  TwitterIcon,
-  PinterestIcon,
   GooglePlusIcon,
-  TumblrIcon,
+  LinkedInIcon,
+  MailIcon,
+  PinterestIcon,
   RedditIcon,
-  LinkedInIcon } from '../iconography/ShareIcons'
+  TumblrIcon,
+  TwitterIcon,
+} from './ShareDialogIcons'
 
 class ShareDialog extends React.Component {
   render() {

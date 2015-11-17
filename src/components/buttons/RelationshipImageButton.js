@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import RelationshipButton from './RelationshipButton'
-import { MiniPlusIcon, MiniCheckIcon } from '../iconography/Icons'
+import { MiniPlusIcon, MiniCheckIcon } from '../users/UserIcons'
 
 
 class RelationshipImageButton extends RelationshipButton {
