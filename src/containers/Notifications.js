@@ -1,7 +1,7 @@
 import React from 'react'
 import FilterBar from '../components/filters/FilterBar'
 import StreamComponent from '../components/streams/StreamComponent'
-import { BubbleIcon, HeartIcon, RepostIcon } from '../components/iconography/Icons'
+import { BubbleIcon, HeartIcon, RepostIcon } from '../components/posts/PostIcons'
 import { loadNotifications } from '../actions/notifications'
 
 class Notifications extends React.Component {

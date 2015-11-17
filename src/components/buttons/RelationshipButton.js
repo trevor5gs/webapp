@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import { MiniPlusIcon, MiniCheckIcon } from '../iconography/Icons'
+import { MiniPlusIcon, MiniCheckIcon } from '../users/UserIcons'
 
 
 export const RelationshipPriority = {

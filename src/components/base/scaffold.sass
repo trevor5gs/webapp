@@ -20,17 +20,7 @@ body
   color: white
   text-shadow: none
 
-audio, canvas, img, svg, video
-  vertical-align: middle
-
-audio:not([controls])
-  display: none
-  height: 0
-
-svg:not(:root)
-  overflow: hidden
-
-[hidden], template, .hidden, #probe
+[hidden], template, .hidden
   +hidden
 
 .invisible
@@ -41,12 +31,4 @@ svg:not(:root)
 
 .unselectable
   user-select: none
-
-// This should probably be moved out to each view controller
-.Panel
-  padding-top: rem(100)
-
-@media(min-width: #{$break-2})
-  .Panel
-    padding-top: rem(80)
 

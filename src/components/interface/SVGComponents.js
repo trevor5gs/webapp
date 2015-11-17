@@ -58,19 +58,19 @@ SVGBox.propTypes = {
 
 // -------------------------------------
 
-export class SVGShareBox extends React.Component {
+export class SVGBoxMedium extends React.Component {
   render() {
     return (
       <SVGComponent height="60"
                     width="60"
-                    className={classNames(this.props.className, 'SVGShareBox')}>
+                    className={classNames(this.props.className, 'SVGBox')}>
         {this.props.children}
       </SVGComponent>
     )
   }
 }
 
-SVGShareBox.propTypes = {
+SVGBoxMedium.propTypes = {
   className: React.PropTypes.string.isRequired,
   children: React.PropTypes.node.isRequired,
 }

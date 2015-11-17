@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { ElloMark, ElloRainbowMark, ElloDonutMark } from '../iconography/ElloIcons'
+import { ElloMark, ElloRainbowMark, ElloDonutMark } from '../interface/ElloIcons'
 
 class NavbarMark extends React.Component {
 

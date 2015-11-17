@@ -1,8 +1,3 @@
-@mixin monospace-family
-  font-family: "AtlasTypewriterRegular", "AtlasTypewriter-Regular", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace
-  font-style:   normal
-  font-weight:  400
-
 @mixin sans-family
   font-family: "AtlasGroteskRegular", "AtlasGrotesk-Regular", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif
   font-style:   normal
@@ -23,13 +18,18 @@
   font-style:   italic
   font-weight:  700
 
-// -------------------------------------
+@mixin monospace-family
+  font-family: "AtlasTypewriterRegular", "AtlasTypewriter-Regular", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace
+  font-style:   normal
+  font-weight:  400
 
-@mixin monospace-typeset
-  font-size: 0.75rem
+// -------------------------------------
 
 @mixin sans-typeset
   font-size: 0.875rem
+
+@mixin monospace-typeset
+  font-size: 0.75rem
 
 @mixin heading
   +sans-bold-family
@@ -191,28 +191,11 @@ hr
 
 // -------------------------------------
 
-table
-  +sans-typeset
-  width: 100%
-  border-collapse: collapse
-  border-spacing: 0
-
-tr
-  border-bottom: 1px solid #f1f1f1
-
-td, th
-  padding: rem(5) 0
-  text-align: left
-
-th
-  +sans-bold-family
-  vertical-align: bottom
+.sanserif
+  +sanserif
 
 .heading
   +heading
-
-.sanserif
-  +sanserif
 
 .monospace
   +monospace

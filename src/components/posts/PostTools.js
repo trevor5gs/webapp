@@ -5,8 +5,18 @@ import { Link } from 'react-router'
 import Hint from '../hints/Hint'
 import { openModal } from '../../actions/modals'
 import ShareDialog from '../dialogs/ShareDialog'
-import { EyeIcon, BubbleIcon, HeartIcon, RepostIcon, ShareIcon, PencilIcon, XBoxIcon, FlagIcon, ChevronIcon } from '../iconography/Icons'
 import * as PostActions from '../../actions/posts'
+import {
+  BubbleIcon,
+  ChevronIcon,
+  EyeIcon,
+  FlagIcon,
+  HeartIcon,
+  PencilIcon,
+  RepostIcon,
+  ShareIcon,
+  XBoxIcon,
+} from './PostIcons'
 
 class PostTools extends React.Component {
   constructor(props, context) {

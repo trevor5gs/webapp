@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Paginator from './Paginator'
-import { ElloMark } from '../iconography/ElloIcons'
+import { ElloMark } from '../interface/ElloIcons'
 import { findBy } from '../base/json_helper'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
