@@ -4,7 +4,7 @@ import Mousetrap from 'mousetrap'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
-import { MODALS, ALERTS } from '../../constants/action_types'
+import { MODAL, ALERT } from '../../constants/action_types'
 import { closeModal, closeAlert } from '../../actions/modals'
 
 function getComponentKind(modals) {
@@ -22,9 +22,9 @@ class Modal extends React.Component {
     const { modals } = this.props
     const { type } = modals
     const body = ReactDOM.findDOMNode(document.body)
-    if (type === MODALS.OPEN) {
+    if (type === MODAL.OPEN) {
       body.classList.add('modalIsActive')
-    } else if (type === MODALS.CLOSE) {
+    } else if (type === MODAL.CLOSE) {
       body.classList.remove('modalIsActive')
     }
   }
@@ -53,7 +53,7 @@ class Modal extends React.Component {
       getComponentKind(modals),
       (meta && meta.wrapperClasses) ? meta.wrapperClasses : '',
     )
-    if (type === MODALS.OPEN || type === ALERTS.OPEN) {
+    if (type === MODAL.OPEN || type === ALERT.OPEN) {
       return (
         <div
           className={ `${groupClassNames} isActive` }
