@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import StreamComponent from '../components/streams/StreamComponent'
 import SearchControl from '../components/forms/SearchControl'
-import { debounce } from '../components/base/lib'
+import debounce from 'lodash.debounce'
 import * as SearchActions from '../actions/search'
 
 class Search extends React.Component {
