@@ -10,17 +10,36 @@
   background: #999 no-repeat 50% 50%
   background-size: cover
 
-.Cover.isModifiable:before
+.CoverImage
+  position: relative
+  display: block
+  width: 100%
+  height: rem(80)
+  background: #999 no-repeat 50% 50%
+  background-size: cover
+
+.Cover:before,
+.CoverImage:before
   transition: background-color $speed ease
   position: absolute
   top: 0
   left: 0
   right: 0
   bottom: 0
-  background-color: rgba(black, 0.1)
+  background-color: transparent
   z-index: 2
   content: ""
 
+.Cover.isModifiable:before
+  background-color: rgba(black, 0.1)
+
 .hasDragOver + .Cover.isModifiable:before
   background-color: rgba(black, 0.4)
+
+@media(min-width: #{$break-2})
+  .CoverImage
+    height: rem(180)
+  .no-touch button.CoverImage:hover:before,
+  .no-touch a.CoverImage:hover:before
+    background-color: rgba(white, 0.4)
 
