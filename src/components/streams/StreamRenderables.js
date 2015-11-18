@@ -3,6 +3,7 @@ import Avatar from '../users/Avatar'
 import UserAvatars from '../users/UserAvatars'
 import UserCard from '../users/UserCard'
 import UserGrid from '../users/UserGrid'
+import UserList from '../users/UserList'
 import { parseNotification } from '../parsers/NotificationParser'
 import { parsePost } from '../parsers/PostParser'
 import { getLinkArray } from '../base/json_helper'
@@ -63,7 +64,7 @@ export function userDetail(users, json, currentUser) {
   posts = posts.concat(users.nestedData)
   return (
     <div className="UserDetail">
-      <UserGrid ref={'userGrid_' + user.id} user={user} key={user.id} />
+      <UserList ref={'UserList_' + user.id} user={user} key={user.id} />
       {postsAsList({data: posts, nestedData: []}, json, currentUser)}
     </div>
   )
