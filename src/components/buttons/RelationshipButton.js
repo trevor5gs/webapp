@@ -4,13 +4,13 @@ import { MiniPlusIcon, MiniCheckIcon } from '../users/UserIcons'
 
 
 export const RelationshipPriority = {
-  INACTIVE: { priority: 'inactive' },
-  FRIEND: { priority: 'friend' },
-  NOISE: { priority: 'noise' },
-  SELF: { priority: 'self' },
-  MUTE: { priority: 'mute' },
-  BLOCK: { priority: 'block' },
-  NONE: { priority: 'none' },
+  INACTIVE: 'inactive',
+  FRIEND: 'friend',
+  NOISE: 'noise',
+  SELF: 'self',
+  MUTE: 'mute',
+  BLOCK: 'block',
+  NONE: 'none',
 }
 
 class RelationshipButton extends React.Component {
@@ -18,7 +18,7 @@ class RelationshipButton extends React.Component {
     super(props, context)
     const { priority } = this.props
     this.state = {
-      priority: priority || 'inactive',
+      priority: priority || RelationshipPriority.INACTIVE,
     }
   }
 
@@ -53,7 +53,7 @@ class RelationshipButton extends React.Component {
       <button {...this.props}
           className={klassNames}
           type="button"
-          onClick={() => this.updatePriority('inactive')}
+          onClick={() => this.updatePriority(RelationshipPriority.INACTIVE)}
           data-priority={this.state.priority}>
         <MiniCheckIcon />
         <span>Friend</span>
@@ -117,7 +117,16 @@ RelationshipButton.propTypes = {
   classListName: React.PropTypes.string,
   userId: React.PropTypes.string,
   buttonWasClicked: React.PropTypes.func,
-  priority: React.PropTypes.oneOf(['inactive', 'friend', 'noise', 'self', 'mute', 'block', 'none', null]),
+  priority: React.PropTypes.oneOf([
+    RelationshipPriority.INACTIVE,
+    RelationshipPriority.FRIEND,
+    RelationshipPriority.NOISE,
+    RelationshipPriority.SELF,
+    RelationshipPriority.MUTE,
+    RelationshipPriority.BLOCK,
+    RelationshipPriority.NONE,
+    null,
+  ]),
 }
 
 export default RelationshipButton

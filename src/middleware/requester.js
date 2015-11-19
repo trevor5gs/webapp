@@ -2,7 +2,6 @@ import * as ACTION_TYPES from '../../src/constants/action_types'
 import { camelizeKeys } from 'humps'
 import { resetAuth } from '../networking/auth'
 
-let linkPagination = {}
 
 function getAuthToken(accessToken) {
   return {
@@ -53,14 +52,6 @@ function parseLink(linksHeader) {
   return result
 }
 
-function parseJSON(response) {
-  linkPagination = parseLink(response.headers.get('Link'))
-  linkPagination.totalCount = parseInt(response.headers.get('X-Total-Count'), 10)
-  linkPagination.totalPages = parseInt(response.headers.get('X-Total-Pages'), 10)
-  linkPagination.totalPagesRemaining = parseInt(response.headers.get('X-Total-Pages-Remaining'), 10)
-  return (response.status === 200) ? response.json() : response
-}
-
 export const requester = store => next => action => {
   const { payload, type, meta } = action
 
@@ -105,16 +96,31 @@ export const requester = store => next => action => {
 
   return fetch(endpoint.path, options)
     .then(checkStatus)
-    .then(parseJSON)
     .then(response => {
-      payload.response = camelizeKeys(response)
-      if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
-        payload.pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
+      if (response.status === 200) {
+        response.json().then((json) => {
+          payload.response = camelizeKeys(json)
+          if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
+            payload.pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
+          } else {
+            const linkPagination = parseLink(response.headers.get('Link'))
+            linkPagination.totalCount = parseInt(response.headers.get('X-Total-Count'), 10)
+            linkPagination.totalPages = parseInt(response.headers.get('X-Total-Pages'), 10)
+            linkPagination.totalPagesRemaining = parseInt(response.headers.get('X-Total-Pages-Remaining'), 10)
+            payload.pagination = linkPagination
+          }
+          next({ meta, payload, type: SUCCESS })
+          return true
+        })
+      } else if (response.ok) {
+        // TODO: handle a 204 properly so that we know to stop paging
+        next(action)
+        return true
       } else {
-        payload.pagination = linkPagination
+        // TODO: is this what should be happening here?
+        next(action)
+        return true
       }
-      next({ meta, payload, type: SUCCESS })
-      return true
     })
     .catch(error => {
       if (error.response.status === 401) {

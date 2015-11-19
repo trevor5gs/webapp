@@ -8,7 +8,12 @@ export function loadNotifications(params = {}) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.notifications(params), vo: {} },
-    meta: { mappingType: MAPPING_TYPES.ACTIVITIES, renderStream: StreamRenderables.notificationList, resultFilter: StreamFilters.notificationsFromActivities },
+    meta: {
+      isInitialLoad: true,
+      mappingType: MAPPING_TYPES.ACTIVITIES,
+      renderStream: StreamRenderables.notificationList,
+      resultFilter: StreamFilters.notificationsFromActivities,
+    },
   }
 }
 

@@ -25,7 +25,7 @@ class Picker extends React.Component {
       if (userRefs.hasOwnProperty(propName)) {
         const userContainer = userRefs[propName].refs.wrappedInstance
         const relationshipButton = userContainer.refs.relationshipButton
-        relationshipButton.updatePriority(relationship.priority)
+        relationshipButton.updatePriority(relationship)
       }
     }
   }

@@ -7,7 +7,11 @@ export function loadPostDetail(token) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.postDetail(token), vo: {} },
-    meta: { mappingType: MAPPING_TYPES.POSTS, renderStream: StreamRenderables.postDetail },
+    meta: {
+      isInitialLoad: true,
+      mappingType: MAPPING_TYPES.POSTS,
+      renderStream: StreamRenderables.postDetail,
+    },
   }
 }
 

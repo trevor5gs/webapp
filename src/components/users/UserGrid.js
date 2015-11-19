@@ -6,10 +6,6 @@ import Avatar from './Avatar'
 
 
 class UserGrid extends React.Component {
-  setRelationshipPriority(state) {
-    this.refs.relationshipButton.setState(state)
-  }
-
   handleRelationshipUpdate(vo) {
     const { userId, priority, existing } = vo
     this.props.dispatch(updateRelationship(userId, priority, existing))

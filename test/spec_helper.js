@@ -27,9 +27,11 @@ export function renderIntoDocument(component, options = {}, children = null) {
 // object key helpers
 function isValidStreamMetaKey(key) {
   const validKeys = [
+    'isInitialLoad',
     'mappingType',
     'renderStream',
     'resultFilter',
+    'resultKey',
   ]
   return validKeys.indexOf(key) > -1
 }
