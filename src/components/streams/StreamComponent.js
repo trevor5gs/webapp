@@ -191,7 +191,7 @@ export class StreamComponent extends React.Component {
           delegate={this}
           hasShowMoreButton={typeof meta.resultKey !== 'undefined'}
           key={`${meta.resultKey || 'stream'}Paginator`}
-          pagination={result.pagination}
+          pagination={result ? result.pagination : {}}
           ref="paginator" />
       </section>
     )
