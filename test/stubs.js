@@ -122,3 +122,4 @@ export function stub(model, properties) {
 }
 
 export { clearJSON, json, stubPost, stubTextRegion, stubUser }
+

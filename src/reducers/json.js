@@ -1,6 +1,11 @@
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import uniq from 'lodash.uniq'
+import { RelationshipPriority } from '../components/buttons/RelationshipButton'
+
+// adding methods and accessing them from this object
+// allows the unit tests to stub methods in this module
+const methods = {}
 
 function mergeModel(state, type, params) {
   if (params.id) {
@@ -8,6 +13,9 @@ function mergeModel(state, type, params) {
     newType[params.id] = { ...newType[params.id], ...params }
     state[type] = newType
   }
+}
+methods.mergeModel = (state, type, params) => {
+  return mergeModel(state, type, params)
 }
 
 function addModels(state, type, data) {
@@ -17,16 +25,41 @@ function addModels(state, type, data) {
   if (data[type] && data[type].length) {
     // add arrays of models to state['modelType']['id']
     data[type].map((model) => {
-      mergeModel(state, type, model)
+      methods.mergeModel(state, type, model)
       ids.push(model.id)
     })
   } else if (data[type] && typeof data[type] === 'object') {
     // add single model objects to state['modelType']['id']
     const model = data[type]
-    mergeModel(state, type, model)
+    methods.mergeModel(state, type, model)
     ids.push(model.id)
   }
   return ids
+}
+methods.addModels = (state, type, data) => {
+  return addModels(state, type, data)
+}
+
+function updateRelationship(newState, action) {
+  const { userId, priority } = action.payload
+  const { mappingType } = action.meta
+  let followersCount = parseInt(newState[mappingType][userId].followersCount, 10)
+  switch (priority) {
+  case RelationshipPriority.FRIEND:
+  case RelationshipPriority.NOISE:
+    followersCount += 1
+    break
+  default:
+    followersCount -= 1
+    break
+  }
+  // TODO: update the current user's followingCount +1 (this might happen in the profile reducer)
+  // TODO: if the priority changes to MUTE or BLOCK we should remove this user from the store
+  methods.mergeModel(newState, mappingType, { id: userId, relationshipPriority: priority, followersCount })
+  return newState
+}
+methods.updateRelationship = (newState, action) => {
+  return updateRelationship(newState, action)
 }
 
 function updatePostLoves(state, newState, action) {
@@ -55,21 +88,71 @@ function updatePostLoves(state, newState, action) {
   default:
     return state
   }
-  mergeModel(newState, MAPPING_TYPES.POSTS, { id: model.id, lovesCount: Number(model.lovesCount) + delta, loved: loved })
+  methods.mergeModel(newState, MAPPING_TYPES.POSTS, { id: model.id, lovesCount: Number(model.lovesCount) + delta, loved: loved })
   return newState
 }
+methods.updatePostLoves = (state, newState, action) => {
+  return updatePostLoves(state, newState, action)
+}
 
-export function json(state = {}, action = { type: '' }, router) {
+// parses the 'linked' node of the JSON
+// api responses into the json store
+function parseLinked(linked, newState) {
+  if (!linked) { return }
+  for (const linkedType in linked) {
+    if ({}.hasOwnProperty.call(linked, linkedType)) {
+      methods.addModels(newState, linkedType, linked)
+    }
+  }
+}
+methods.parseLinked = (linked, newState) => {
+  return parseLinked(linked, newState)
+}
+
+// parse main part of request into the state and
+// pull out the ids as this is the main payload
+function getResult(response, newState, action) {
+  const { mappingType, resultFilter } = action.meta
+  const ids = methods.addModels(newState, mappingType, response)
+  // set the result to the resultFilter if it exists
+  const result = (typeof resultFilter === 'function') ? resultFilter(response[mappingType]) : { type: mappingType, ids: ids }
+  result.pagination = action.payload.pagination
+  return result
+}
+methods.getResult = (response, newState, action) => {
+  return getResult(response, newState, action)
+}
+
+function updateResult(response, newState, action, router) {
+  if (!newState.pages) { newState.pages = {} }
+  const result = methods.getResult(response, newState, action)
+  const { resultKey } = action.meta
+  const resultPath = resultKey ? `${router.location.pathname}_${resultKey}` : router.location.pathname
+  const existingResult = newState.pages[resultPath]
+  if (existingResult && action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
+    existingResult.pagination = result.pagination
+    delete result.pagination
+    if (existingResult.next) {
+      existingResult.next.ids = uniq(existingResult.next.ids.concat(result.ids))
+    } else {
+      existingResult.next = result
+    }
+  } else if (existingResult) {
+    newState.pages[resultPath] = { ...existingResult, ...result }
+  } else {
+    newState.pages[resultPath] = result
+  }
+}
+methods.updateResult = (response, newState, action, router) => {
+  return updateResult(response, newState, action, router)
+}
+
+export default function json(state = {}, action = { type: '' }, router) {
   const newState = { ...state }
   if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE) {
-    const { userId, priority } = action.payload
-    const { mappingType } = action.meta
-    // TODO: update this user's followerCount +1
-    // TODO: update the current user's followingCount +1 (this might happen in the profile reducer)
-    mergeModel(newState, mappingType, { id: userId, relationshipPriority: priority })
-    return newState
+    return methods.updateRelationship(newState, action)
   } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_SUCCESS || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {
-    return updatePostLoves(state, newState, action)
+    return methods.updatePostLoves(state, newState, action)
   }
   // whitelist actions
   switch (action.type) {
@@ -81,40 +164,13 @@ export function json(state = {}, action = { type: '' }, router) {
   }
   const { response } = action.payload
   if (!response) { return state }
-  // parse linked
-  if (response.linked) {
-    for (const linkedType in response.linked) {
-      if ({}.hasOwnProperty.call(response.linked, linkedType)) {
-        addModels(newState, linkedType, response.linked)
-      }
-    }
-  }
-  // parse main part of request into the state, and save result as this is the main payload
-  const { mappingType, resultFilter, resultKey } = action.meta
-  const ids = addModels(newState, mappingType, response)
-  let result
-  // set the result to the resultFilter if it exists
-  if (resultFilter && typeof resultFilter === 'function') {
-    result = resultFilter(response[mappingType])
-  } else {
-    result = { type: mappingType, ids: ids }
-  }
-  result.pagination = action.payload.pagination
-  if (!newState.pages) { newState.pages = {} }
-  const resultPath = resultKey ? `${router.location.pathname}_${resultKey}` : router.location.pathname
-  let existingResult = newState.pages[resultPath]
-  if (existingResult && action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
-    existingResult.pagination = result.pagination
-    if (existingResult.next) {
-      existingResult.next.ids = uniq(existingResult.next.ids.concat(result.ids))
-    } else {
-      existingResult.next = result
-    }
-  } else if (existingResult) {
-    existingResult = { ...existingResult, ...result }
-  } else {
-    newState.pages[resultPath] = result
-  }
+  // parse the linked part of the response into the state
+  methods.parseLinked(response.linked, newState)
+  // parse main part of response into the state
+  // and update the paging information
+  methods.updateResult(response, newState, action, router)
   return newState
 }
+
+export { json, methods }
 
