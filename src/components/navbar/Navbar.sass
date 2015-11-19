@@ -11,13 +11,15 @@
 
 .Navbar.asFixed
   position: fixed
+.Navbar.asLocked
+  position: fixed
 
 .Navbar.asFixed.asHidden
   transform: translate3d(0, -100%, 0)
   transition-delay: 0s $speed
   visibility: hidden
 
-.Navbar.skipTransition
+.Navbar.skipTransition:not(.asLocked)
   transition: none !important
 
 .NavbarLinks

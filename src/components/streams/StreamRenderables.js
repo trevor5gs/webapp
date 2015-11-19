@@ -4,6 +4,7 @@ import UserAvatars from '../users/UserAvatars'
 import UserCard from '../users/UserCard'
 import UserGrid from '../users/UserGrid'
 import UserList from '../users/UserList'
+import Cover from '../covers/Cover'
 import { parseNotification } from '../parsers/NotificationParser'
 import { parsePost } from '../parsers/PostParser'
 import { getLinkArray } from '../base/json_helper'
@@ -61,9 +62,11 @@ export function postsAsList(posts, json, currentUser) {
 export function userDetail(users, json, currentUser) {
   const user = users.data[0]
   let posts = getLinkArray(user, 'posts', json) || []
+  const coverSrc = user.coverImage ? user.coverImage.optimized.url : ''
   posts = posts.concat(users.nestedData)
   return (
-    <div className="UserDetail">
+    <div className="UserDetails">
+      <Cover imgSrc={coverSrc} />
       <UserList ref={'UserList_' + user.id} user={user} key={user.id} />
       {postsAsList({data: posts, nestedData: []}, json, currentUser)}
     </div>
@@ -82,7 +85,7 @@ export function postDetail(posts, json, currentUser) {
     avatarDrawers.push(<UserAvatars endpoint={api.postReposters(post)} icon={<RepostIcon />} key={`reposters_${post.id}`} resultKey="reposters" />)
   }
   return (
-    <div className="PostDetail Posts asList">
+    <div className="PostDetails Posts asList">
       <div ref={`postList_${post.id}`} key={post.id} className="Post PostList">
         {parsePost(post, json, currentUser, false)}
         {avatarDrawers}
