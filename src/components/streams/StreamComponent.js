@@ -26,7 +26,8 @@ export class StreamComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { action, stream } = nextProps
+    const { action } = this.state
+    const { stream } = nextProps
     if (this.refs.paginator && stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS && (action.payload.endpoint === stream.payload.endpoint || action.meta.resultKey)) {
       this.refs.paginator.setLoading(false)
     }
@@ -59,7 +60,7 @@ export class StreamComponent extends React.Component {
   }
 
   onScrollBottom() {
-    this.loadPage('next')
+    this.loadPage('next', true)
   }
 
   onLoadNextPage() {
@@ -71,7 +72,7 @@ export class StreamComponent extends React.Component {
     this.props.dispatch(action)
   }
 
-  loadPage(rel) {
+  loadPage(rel, scrolled = false) {
     const { dispatch, json, router } = this.props
     const { action } = this.state
     const { meta } = action
@@ -84,22 +85,19 @@ export class StreamComponent extends React.Component {
       }
     }
     if (!result) { return }
+    if (scrolled && meta && meta.resultKey) { return }
     const { pagination } = result
     if (!pagination[rel] || parseInt(pagination.totalPagesRemaining, 10) === 0 || !action) { return }
     this.refs.paginator.setLoading(true)
-    dispatch(
-      {
-        type: ACTION_TYPES.LOAD_NEXT_CONTENT,
-        payload: {
-          endpoint: { path: pagination[rel] },
-        },
-        meta: {
-          mappingType: action.payload.endpoint.pagingPath || meta.mappingType,
-          resultFilter: meta.resultFilter,
-          resultKey: meta.resultKey,
-        },
-      }
-    )
+    const infiniteAction = {
+      ...action,
+      type: ACTION_TYPES.LOAD_NEXT_CONTENT,
+      payload: {
+        endpoint: { path: pagination[rel] },
+      },
+    }
+    this.setState({action: infiniteAction})
+    dispatch(infiniteAction)
   }
 
   findModel(json, initModel) {
