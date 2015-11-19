@@ -26,9 +26,9 @@ export class StreamComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { action } = this.state
     const { stream } = nextProps
-    if (this.refs.paginator && stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS && (action.payload.endpoint === stream.payload.endpoint || action.meta.resultKey)) {
+    // TODO: make this work for nested stream components separately of others on the page
+    if (this.refs.paginator && stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.refs.paginator.setLoading(false)
     }
   }
@@ -36,14 +36,24 @@ export class StreamComponent extends React.Component {
   // this prevents nested stream components from clobbering parents
   shouldComponentUpdate() {
     const { action } = this.state
-    const { stream } = this.props
-    // return true for post tools actions
+    const { router, stream } = this.props
+    const pathArr = router.location.pathname.split('/')
+    // ie: lovers as a resultKey for the endpoint for post lovers
+    // TODO: potentially whitelist the actions that we would want to render on
     if (!action || !action.payload || !stream || !stream.payload) {
       return false
     } else if (stream.type && (stream.type.indexOf('POST.') === 0 || stream.type.indexOf('LOAD_NEXT_CONTENT') === 0)) {
       return true
+    } else if (action.payload.endpoint === stream.payload.endpoint) {
+      return true
+    } else if (stream.meta && stream.meta.resultKey && stream.payload.endpoint.path.match(stream.meta.resultKey)) {
+      // if we are a nested stream component and the resultKey
+      return true
+    } else if (stream.payload.endpoint && stream.payload.endpoint.path && stream.payload.endpoint.path.match(pathArr[pathArr.length - 1])) {
+      // is used to match the endpoint required to load it
+      return true
     }
-    return action.payload.endpoint === stream.payload.endpoint
+    return false
   }
 
   componentDidUpdate() {
@@ -95,8 +105,12 @@ export class StreamComponent extends React.Component {
       payload: {
         endpoint: { path: pagination[rel] },
       },
+      meta: {
+        mappingType: action.payload.endpoint.pagingPath || meta.mappingType,
+        resultFilter: meta.resultFilter,
+        resultKey: meta.resultKey,
+      },
     }
-    this.setState({action: infiniteAction})
     dispatch(infiniteAction)
   }
 
@@ -167,12 +181,16 @@ export class StreamComponent extends React.Component {
       }
     } else if (result.type === meta.mappingType || (meta.resultFilter && result.type !== meta.mappingType)) {
       for (const id of result.ids) {
-        renderObj.data.push(json[result.type][id])
+        if (json[result.type][id]) {
+          renderObj.data.push(json[result.type][id])
+        }
       }
       if (result.next) {
         const dataProp = payload.endpoint.pagingPath ? 'nestedData' : 'data'
         for (const nextId of result.next.ids) {
-          renderObj[dataProp].push(json[result.next.type][nextId])
+          if (json[result.next.type][nextId]) {
+            renderObj[dataProp].push(json[result.next.type][nextId])
+          }
         }
       }
     }

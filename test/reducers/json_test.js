@@ -267,14 +267,13 @@ describe('json reducer', () => {
         expect(json.pages.sweetness.next).to.be.undefined
         expect(json.pages.sweetness.pagination).to.equal('cool')
         subject.methods.updateResult({}, json, action, router)
-        expect(json.pages.sweetness.next).to.deep.equal({ ids: ['2', '3', '4'] })
+        expect(json.pages.sweetness.next).to.equal(result)
         expect(json.pages.sweetness.pagination).to.equal('sweet')
       })
 
       it('updates the next property of result when it exists', () => {
         json.pages = { sweetness: { next: { ids: ['1', '2'] }, pagination: 'cool' } }
-        const result = { pagination: 'sweet', ids: ['2', '3', '4'] }
-        sinon.stub(subject.methods, 'getResult', () => { return result })
+        sinon.stub(subject.methods, 'getResult', () => { return { pagination: 'sweet', ids: ['2', '3', '4'] } })
         const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: {} }
         const router = { location: { pathname: 'sweetness' } }
         expect(json.pages.sweetness.next).to.deep.equal({ ids: ['1', '2'] })
@@ -293,7 +292,7 @@ describe('json reducer', () => {
         expect(json.pages.sweetness_yo.next).to.be.undefined
         expect(json.pages.sweetness_yo.pagination).to.equal('cool')
         subject.methods.updateResult({}, json, action, router)
-        expect(json.pages.sweetness_yo.next).to.deep.equal({ ids: ['2', '3', '4'] })
+        expect(json.pages.sweetness_yo.next).to.deep.equal({ ids: ['2', '3', '4'], pagination: 'sweet' })
         expect(json.pages.sweetness_yo.pagination).to.equal('sweet')
       })
     })

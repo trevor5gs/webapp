@@ -1,6 +1,5 @@
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
-import cloneDeep from 'lodash.clonedeep'
 import uniq from 'lodash.uniq'
 import { RelationshipPriority } from '../components/buttons/RelationshipButton'
 
@@ -10,7 +9,7 @@ const methods = {}
 
 function mergeModel(state, type, params) {
   if (params.id) {
-    const newType = cloneDeep(state[type])
+    const newType = { ...state[type] }
     newType[params.id] = { ...newType[params.id], ...params }
     state[type] = newType
   }
@@ -132,7 +131,6 @@ function updateResult(response, newState, action, router) {
   const existingResult = newState.pages[resultPath]
   if (existingResult && action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
     existingResult.pagination = result.pagination
-    delete result.pagination
     if (existingResult.next) {
       existingResult.next.ids = uniq(existingResult.next.ids.concat(result.ids))
     } else {
@@ -149,7 +147,7 @@ methods.updateResult = (response, newState, action, router) => {
 }
 
 export default function json(state = {}, action = { type: '' }, router) {
-  const newState = cloneDeep(state)
+  const newState = { ...state }
   if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE) {
     return methods.updateRelationship(newState, action)
   } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_SUCCESS || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {

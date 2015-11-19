@@ -31,6 +31,7 @@ function isValidStreamMetaKey(key) {
     'mappingType',
     'renderStream',
     'resultFilter',
+    'resultKey',
   ]
   return validKeys.indexOf(key) > -1
 }
