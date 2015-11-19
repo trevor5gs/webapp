@@ -51,11 +51,11 @@ class Navbar extends React.Component {
     this.setState({ asLocked: !isWhitelisted })
   }
 
-  componentDidUpdate() {
-    if (this.state.asLocked) {
-      window.scrollTo(0, this.state.offset - 120)
-    }
-  }
+  // componentDidUpdate() {
+  //   if (this.state.asLocked) {
+  //     window.scrollTo(0, this.state.offset - 120)
+  //   }
+  // }
 
 
   componentWillUnmount() {
