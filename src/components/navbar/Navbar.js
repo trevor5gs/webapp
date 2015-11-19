@@ -12,6 +12,7 @@ import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../nav
 // import HelpDialog from '../dialogs/HelpDialog'
 // import { openModal, closeModal } from '../../actions/modal'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
+import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 
 
 class Navbar extends React.Component {
@@ -40,6 +41,7 @@ class Navbar extends React.Component {
     //   }
     //   return dispatch(openModal(<HelpDialog/>))
     // })
+    addResizeObject(this)
     addScrollObject(this)
   }
 
@@ -61,9 +63,14 @@ class Navbar extends React.Component {
   componentWillUnmount() {
     // Mousetrap.unbind(Object.keys(this.props.shortcuts))
     // Mousetrap.unbind(SHORTCUT_KEYS.HELP)
+    removeResizeObject(this)
     removeScrollObject(this)
   }
 
+  onResize(resizeProperties) {
+    const { coverOffset } = resizeProperties
+    this.setState({ offset: coverOffset })
+  }
 
   onScrollTop() {
     if (this.state.asFixed) {
