@@ -127,7 +127,7 @@ methods.getResult = (response, newState, action) => {
 function updateResult(response, newState, action, router) {
   if (!newState.pages) { newState.pages = {} }
   const result = methods.getResult(response, newState, action)
-  const { resultKey } = action.meta
+  const { isInitialLoad, resultKey } = action.meta
   const resultPath = resultKey ? `${router.location.pathname}_${resultKey}` : router.location.pathname
   const existingResult = newState.pages[resultPath]
   if (existingResult && action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
@@ -139,7 +139,7 @@ function updateResult(response, newState, action, router) {
       existingResult.next = result
     }
   } else if (existingResult) {
-    newState.pages[resultPath] = { ...existingResult, ...result }
+    newState.pages[resultPath] = isInitialLoad ? { ...result, ...existingResult } : { ...existingResult, ...result }
   } else {
     newState.pages[resultPath] = result
   }

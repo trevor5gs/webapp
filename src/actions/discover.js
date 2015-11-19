@@ -8,7 +8,12 @@ export function loadDiscoverUsers(type) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.discoverUsers(type) },
-    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.postsAsGrid, resultFilter: StreamFilters.mostRecentPostsFromUsers },
+    meta: {
+      isInitialLoad: true,
+      mappingType: MAPPING_TYPES.USERS,
+      renderStream: StreamRenderables.postsAsGrid,
+      resultFilter: StreamFilters.mostRecentPostsFromUsers,
+    },
   }
 }
 

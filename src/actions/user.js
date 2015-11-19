@@ -7,7 +7,11 @@ export function loadUserDetail(username) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.userDetail(username), vo: {} },
-    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.userDetail },
+    meta: {
+      isInitialLoad: true,
+      mappingType: MAPPING_TYPES.USERS,
+      renderStream: StreamRenderables.userDetail,
+    },
   }
 }
 
@@ -15,7 +19,12 @@ export function loadUserAvatars(endpoint, resultKey) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: endpoint, vo: {} },
-    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.userAvatars, resultKey },
+    meta: {
+      isInitialLoad: true,
+      mappingType: MAPPING_TYPES.USERS,
+      renderStream: StreamRenderables.userAvatars,
+      resultKey,
+    },
   }
 }
 
