@@ -62,11 +62,10 @@ export function postsAsList(posts, json, currentUser) {
 export function userDetail(users, json, currentUser) {
   const user = users.data[0]
   let posts = getLinkArray(user, 'posts', json) || []
-  const coverSrc = user.coverImage ? user.coverImage.optimized.url : ''
   posts = posts.concat(users.nestedData)
   return (
     <div className="UserDetails">
-      <Cover imgSrc={coverSrc} />
+      <Cover coverImage={user.coverImage} />
       <UserList ref={'UserList_' + user.id} user={user} key={user.id} />
       {postsAsList({data: posts, nestedData: []}, json, currentUser)}
     </div>
