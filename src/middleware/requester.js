@@ -2,6 +2,8 @@ import * as ACTION_TYPES from '../../src/constants/action_types'
 import { camelizeKeys } from 'humps'
 import { resetAuth } from '../networking/auth'
 
+const runningFetches = {}
+
 
 function getAuthToken(accessToken) {
   return {
@@ -76,6 +78,9 @@ export const requester = store => next => action => {
 
   if (!endpoint) return next(action);
 
+  if (runningFetches[endpoint.path]) { return next(action) }
+  runningFetches[endpoint.path] = true
+
   const REQUEST = type + '_REQUEST'
   const SUCCESS = type + '_SUCCESS'
   const FAILURE = type + '_FAILURE'
@@ -97,6 +102,7 @@ export const requester = store => next => action => {
   return fetch(endpoint.path, options)
     .then(checkStatus)
     .then(response => {
+      delete runningFetches[response.url]
       if (response.status === 200) {
         response.json().then((json) => {
           payload.response = camelizeKeys(json)
@@ -126,8 +132,11 @@ export const requester = store => next => action => {
       if (error.response.status === 401) {
         resetAuth(store.dispatch, accessToken, state.router.location)
       }
+      delete runningFetches[error.response.url]
       next({ error, meta, payload, type: FAILURE })
       return false
     })
 }
+
+export { runningFetches }
 

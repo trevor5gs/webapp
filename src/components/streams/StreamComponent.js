@@ -6,6 +6,7 @@ import { findBy } from '../base/json_helper'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
+import { runningFetches } from '../../middleware/requester'
 
 export class StreamComponent extends React.Component {
   constructor(props, context) {
@@ -38,7 +39,6 @@ export class StreamComponent extends React.Component {
     const { action } = this.state
     const { router, stream } = this.props
     const pathArr = router.location.pathname.split('/')
-    // ie: lovers as a resultKey for the endpoint for post lovers
     // TODO: potentially whitelist the actions that we would want to render on
     if (!action || !action.payload || !stream || !stream.payload) {
       return false
@@ -48,6 +48,7 @@ export class StreamComponent extends React.Component {
       return true
     } else if (stream.meta && stream.meta.resultKey && stream.payload.endpoint.path.match(stream.meta.resultKey)) {
       // if we are a nested stream component and the resultKey
+      // ie: lovers as a resultKey for the endpoint for post lovers
       return true
     } else if (stream.payload.endpoint && stream.payload.endpoint.path && stream.payload.endpoint.path.match(pathArr[pathArr.length - 1])) {
       // is used to match the endpoint required to load it
@@ -98,6 +99,7 @@ export class StreamComponent extends React.Component {
     if (scrolled && meta && meta.resultKey) { return }
     const { pagination } = result
     if (!pagination[rel] || parseInt(pagination.totalPagesRemaining, 10) === 0 || !action) { return }
+    if (runningFetches[pagination[rel]]) { return }
     this.refs.paginator.setLoading(true)
     const infiniteAction = {
       ...action,
