@@ -8,10 +8,6 @@ import { UserNames, UserStats, UserInfo } from './UserVitals'
 
 
 class UserList extends React.Component {
-  setRelationshipPriority(state) {
-    this.refs.relationshipButton.setState(state)
-  }
-
   handleRelationshipUpdate(vo) {
     const { userId, priority, existing } = vo
     this.props.dispatch(updateRelationship(userId, priority, existing))
