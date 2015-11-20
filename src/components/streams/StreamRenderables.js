@@ -51,7 +51,7 @@ export function postsAsList(posts, json, currentUser) {
       {posts.data.map((post) => {
         return (
           <div ref={`postList_${post.id}`} key={post.id} className="Post PostList">
-            {parsePost(post, json, currentUser)}
+            {parsePost(post, json, currentUser, false)}
           </div>
         )
       })}
