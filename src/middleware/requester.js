@@ -132,6 +132,7 @@ export const requester = store => next => action => {
       if (error.response.status === 401) {
         resetAuth(store.dispatch, accessToken, state.router.location)
       }
+      delete runningFetches[error.response.url]
       next({ error, meta, payload, type: FAILURE })
       return false
     })
