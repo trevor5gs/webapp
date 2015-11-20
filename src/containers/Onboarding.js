@@ -37,7 +37,7 @@ class Onboarding extends React.Component {
     if (tmpCover) {
       return tmpCover
     }
-    return coverImage ? coverImage.optimized.url : null
+    return coverImage ? coverImage : null
   }
 
   getRelationshipMap() {
@@ -125,7 +125,7 @@ class Onboarding extends React.Component {
             saveAction={ bindActionCreators(saveCover, dispatch) }/>
           <Cover
             isModifiable
-            imgSrc={this.getCoverSource(profile)} />
+            coverImage={this.getCoverSource(profile)} />
         </section>
       )
 
@@ -146,7 +146,7 @@ class Onboarding extends React.Component {
             saveAction={ bindActionCreators(saveAvatar, dispatch) }/>
           <Avatar imgSrc={this.getAvatarSource(profile)} />
           <Cover
-            imgSrc={this.getCoverSource(profile)} />
+            coverImage={this.getCoverSource(profile)} />
         </section>
       )
 
@@ -163,7 +163,7 @@ class Onboarding extends React.Component {
           <Avatar imgSrc={this.getAvatarSource(profile)} />
           <InfoForm />
           <Cover
-            imgSrc={this.getCoverSource(profile)} />
+            coverImage={this.getCoverSource(profile)} />
         </section>
       )
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 import classNames from 'classnames'
 import { MiniPlusIcon, MiniCheckIcon } from '../users/UserIcons'
 
@@ -95,8 +96,16 @@ class RelationshipButton extends React.Component {
     )
   }
 
-  renderAsSelf() {
-    return null
+  renderAsSelf(klassNames) {
+    return (
+      <Link {...this.props}
+          className={klassNames}
+          to="/settings"
+          data-priority={this.state.priority}>
+        <MiniPlusIcon />
+        <span>Edit Profile</span>
+      </Link>
+    )
   }
 
   render() {

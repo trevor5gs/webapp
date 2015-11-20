@@ -12,6 +12,7 @@ import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../nav
 // import HelpDialog from '../dialogs/HelpDialog'
 // import { openModal, closeModal } from '../../actions/modal'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
+import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 
 
 class Navbar extends React.Component {
@@ -19,9 +20,11 @@ class Navbar extends React.Component {
     super(props, context)
     this.scrollYAtDirectionChange = null
     this.state = {
+      asLocked: false,
       asFixed: false,
       asHidden: false,
       skipTransition: false,
+      offset: Math.round((window.innerWidth * 0.5625) - 120),
     }
   }
 
@@ -38,13 +41,35 @@ class Navbar extends React.Component {
     //   }
     //   return dispatch(openModal(<HelpDialog/>))
     // })
+    addResizeObject(this)
     addScrollObject(this)
   }
+
+  componentWillReceiveProps(nextProps) {
+    const { router } = nextProps
+    const pathnames = router.location.pathname.split('/').slice(1)
+    const whitelist = ['', 'discover', 'following', 'starred', 'notifications', 'search', 'invitations', 'onboarding', 'staff', 'find']
+    const isWhitelisted = (whitelist.indexOf(pathnames[0]) >= 0 || pathnames[1] === 'post')
+    this.setState({ asLocked: !isWhitelisted })
+  }
+
+  // componentDidUpdate() {
+  //   if (this.state.asLocked) {
+  //     window.scrollTo(0, this.state.offset - 120)
+  //   }
+  // }
+
 
   componentWillUnmount() {
     // Mousetrap.unbind(Object.keys(this.props.shortcuts))
     // Mousetrap.unbind(SHORTCUT_KEYS.HELP)
+    removeResizeObject(this)
     removeScrollObject(this)
+  }
+
+  onResize(resizeProperties) {
+    const { coverOffset } = resizeProperties
+    this.setState({ offset: coverOffset - 120 })
   }
 
   onScrollTop() {
@@ -55,22 +80,24 @@ class Navbar extends React.Component {
 
   onScrollDirectionChange(scrollProperties) {
     const { scrollY } = scrollProperties
+    const { offset } = this.state
 
-    if (scrollY >= 600) {
+    if (scrollY >= offset) {
       this.scrollYAtDirectionChange = scrollY
     }
   }
 
   onScroll(scrollProperties) {
     const { scrollY, scrollDirection } = scrollProperties
+    const { offset } = this.state
 
     // Going from absolute to fixed positioning
-    if (scrollY >= 600 && !this.state.asFixed) {
+    if (scrollY >= offset && !this.state.asFixed) {
       this.setState({ asFixed: true, asHidden: true, skipTransition: true })
     }
 
     // Scroll just changed directions so it's about to either be shown or hidden
-    if (scrollY >= 600 && this.scrollYAtDirectionChange) {
+    if (scrollY >= offset && this.scrollYAtDirectionChange) {
       const distance = Math.abs(scrollY - this.scrollYAtDirectionChange)
       const delay = scrollDirection === 'down' ? 20 : 80
 
@@ -89,6 +116,7 @@ class Navbar extends React.Component {
     const showLabel = true
     const klassNames = classNames(
       'Navbar',
+      { asLocked: this.state.asLocked },
       { asFixed: this.state.asFixed },
       { asHidden: this.state.asHidden },
       { skipTransition: this.state.skipTransition },

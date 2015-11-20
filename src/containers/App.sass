@@ -1,7 +1,48 @@
 .Panel
   padding-top: rem(100)
+  background-color: white
+
+.Panel.UserDetail
+  padding-top: 0
+  margin-top: 56.25%
 
 @media(min-width: #{$break-2})
   .Panel
     padding-top: rem(80)
+  .Panel.UserDetail
+    padding-top: 0
+
+// A probe into CSS used by the ResizeComponent
+#root:after
+  +hidden
+  position: absolute
+  width: 0
+  height: 0
+  content: 'mobile'
+  z-index: 2
+
+@media(min-width: #{$break-2})
+  #root:after
+    content: 'desktop'
+    z-index: 2
+
+@media(min-width: #{$break-3})
+  #root:after
+    z-index: 3
+
+@media(min-width: #{$break-4})
+  #root:after
+    z-index: 4
+
+@media(min-width: #{$break-5})
+  #root:after
+    z-index: 5
+
+@media(min-width: #{$break-6})
+  #root:after
+    z-index: 6
+
+@media(min-width: #{$break-7})
+  #root:after
+    z-index: 7
 

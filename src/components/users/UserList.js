@@ -7,7 +7,11 @@ import RelationshipButton from '../buttons/RelationshipButton'
 import { UserNames, UserStats, UserInfo } from './UserVitals'
 
 
-class UserGrid extends React.Component {
+class UserList extends React.Component {
+  setRelationshipPriority(state) {
+    this.refs.relationshipButton.setState(state)
+  }
+
   handleRelationshipUpdate(vo) {
     const { userId, priority, existing } = vo
     this.props.dispatch(updateRelationship(userId, priority, existing))
@@ -15,13 +19,10 @@ class UserGrid extends React.Component {
 
   render() {
     const user = this.props.user
-    const avatar = user.avatar ? user.avatar.regular.url : ''
-    const coverSrc = user.coverImage ? user.coverImage.hdpi.url : ''
-    const coverStyle = { backgroundImage: `url(${coverSrc})` }
+    const avatar = user.avatar ? user.avatar.large.url : ''
     const userPath = `/${user.username}`
     return (
-      <div className="UserGrid" >
-        <Link to={userPath} className="CoverImage" style={coverStyle} />
+      <div className="UserList" >
         <Link to={userPath} className="AvatarLink" >
           <Avatar imgSrc={avatar} />
         </Link>
@@ -30,19 +31,19 @@ class UserGrid extends React.Component {
           userId={user.id}
           priority={user.relationshipPriority}
           buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
-        <UserStats user={user} />
         <UserNames user={user} />
+        <UserStats user={user} />
         <UserInfo user={user} />
       </div>
     )
   }
 }
 
-UserGrid.propTypes = {
+UserList.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   user: React.PropTypes.shape({
   }).isRequired,
 }
 
-export default connect(null, null, null, { withRef: true })(UserGrid)
+export default connect(null, null, null, { withRef: true })(UserList)
 
