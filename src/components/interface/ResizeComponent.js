@@ -56,10 +56,10 @@ function windowWasResized() {
 export function addResizeObject(obj) {
   if (resizeObjects.indexOf(obj) === -1) {
     resizeObjects.push(obj)
+    windowWasResized()
   }
   if (resizeObjects.length === 1) {
     window.addEventListener('resize', debounce(windowWasResized, 100))
-    windowWasResized()
   }
 }
 
