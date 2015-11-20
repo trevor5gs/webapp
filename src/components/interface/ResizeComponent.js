@@ -2,7 +2,6 @@ import debounce from 'lodash.debounce'
 
 const resizeObjects = []
 let ticking = false
-const probeElement = document.getElementById('root')
 
 function callMethod(method, resizeProperties) {
   for (const obj of resizeObjects) {
@@ -19,6 +18,7 @@ function callMethod(method, resizeProperties) {
 // }
 
 function getProbeProperties() {
+  const probeElement = document.getElementById('root')
   const styles = window.getComputedStyle(probeElement, ':after')
   const viewportSetting = styles.getPropertyValue('content')
   const gridColumnCount = parseInt(styles.getPropertyValue('z-index'), 10)
