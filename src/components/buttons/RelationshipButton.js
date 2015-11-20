@@ -37,7 +37,7 @@ class RelationshipButton extends React.Component {
       <button {...this.props}
           className={klassNames}
           type="button"
-          onClick={() => this.updatePriority('friend')}
+          onClick={() => this.updatePriority(RelationshipPriority.FRIEND)}
           data-priority={this.state.priority}>
         <MiniPlusIcon />
         <span>Follow</span>
@@ -57,7 +57,7 @@ class RelationshipButton extends React.Component {
           onClick={() => this.updatePriority(RelationshipPriority.INACTIVE)}
           data-priority={this.state.priority}>
         <MiniCheckIcon />
-        <span>Friend</span>
+        <span>Following</span>
       </button>
     )
   }
@@ -69,7 +69,7 @@ class RelationshipButton extends React.Component {
           type="button"
           data-priority={this.state.priority}>
         <MiniCheckIcon />
-        <span>Noise</span>
+        <span>Starred</span>
       </button>
     )
   }

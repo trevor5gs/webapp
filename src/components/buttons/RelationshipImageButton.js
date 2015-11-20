@@ -35,7 +35,7 @@ class RelationshipImageButton extends RelationshipButton {
         <span>{label}</span>
         <span>
             <MiniCheckIcon />
-            <span>Friend</span>
+            <span>Following</span>
         </span>
       </button>
     )
@@ -50,7 +50,7 @@ class RelationshipImageButton extends RelationshipButton {
         <span>{label}</span>
         <span>
           <MiniCheckIcon />
-          <span>Noise</span>
+          <span>Starred</span>
         </span>
       </button>
     )
