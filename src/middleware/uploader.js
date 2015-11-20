@@ -49,84 +49,83 @@ function getUploadData(key, credentials, file) {
   return data
 }
 
-function getCredentialsHeader() {
+function getCredentialsHeader(accessToken) {
   return {
-    'Authorization': `Bearer ${localStorage.getItem('ello_access_token')}`,
+    'Authorization': `Bearer ${accessToken}`,
     'Accept': 'application/json',
     'Content-Type': 'application/json',
   }
 }
 
-export function uploader() {
-  return next => action => {
-    const { payload, type, meta } = action
+export const uploader = store => next => action => {
+  const { payload, type, meta } = action
 
-    // This is problematic... :(
-    if ((type !== ACTION_TYPES.PROFILE.SAVE_AVATAR &&
-         type !== ACTION_TYPES.PROFILE.SAVE_COVER
-        ) || !payload) {
-      return next(action)
-    }
-
-    const { endpoint, file } = payload
-
-    if (!endpoint) return next(action);
-
-    let assetUrl
-    const REQUEST = type + '_REQUEST'
-    const SUCCESS = type + '_SUCCESS'
-    const FAILURE = type + '_FAILURE'
-
-    // dispatch the start of the request
-    next({ type: REQUEST, payload, meta: meta })
-
-    function fetchCredentials() {
-      return fetch(s3CredentialsPath().path, {
-        method: 'GET',
-        headers: getCredentialsHeader(),
-      })
-        .then(checkStatus)
-        .then(parseJSON)
-    }
-
-    function postAsset(response) {
-      const { credentials } = response
-      const filename = getFilename(file.type)
-      const key = getFileKey(credentials.prefix, filename)
-      assetUrl = getAssetUrl(credentials.endpoint, key)
-
-      return fetch(credentials.endpoint, {
-        method: 'POST',
-        body: getUploadData(key, credentials, file),
-      })
-        .then(checkStatus)
-    }
-
-    function saveLocationToApi() {
-      const vo = (type === ACTION_TYPES.PROFILE.SAVE_AVATAR) ? { remote_avatar_url: assetUrl } : { remote_cover_image_url: assetUrl }
-      return fetch(endpoint.path, {
-        method: 'PATCH',
-        headers: getCredentialsHeader(),
-        body: JSON.stringify(vo),
-      })
-        .then(checkStatus)
-        .then(parseJSON)
-    }
-
-    return (
-      fetchCredentials()
-      .then(postAsset)
-      .then(saveLocationToApi)
-      .then(response => {
-        payload.response = camelizeKeys(response)
-        next({ meta, payload, type: SUCCESS })
-        return true
-      })
-      .catch(error => {
-        next({ error, meta, payload, type: FAILURE })
-        return false
-      })
-    )
+  // This is problematic... :(
+  if ((type !== ACTION_TYPES.PROFILE.SAVE_AVATAR &&
+        type !== ACTION_TYPES.PROFILE.SAVE_COVER
+      ) || !payload) {
+    return next(action)
   }
+
+  const { endpoint, file } = payload
+
+  if (!endpoint) return next(action);
+
+  let assetUrl
+  const REQUEST = type + '_REQUEST'
+  const SUCCESS = type + '_SUCCESS'
+  const FAILURE = type + '_FAILURE'
+
+  // dispatch the start of the request
+  next({ type: REQUEST, payload, meta: meta })
+  const state = store.getState()
+  const accessToken = state.accessToken.token
+  function fetchCredentials() {
+    return fetch(s3CredentialsPath().path, {
+      method: 'GET',
+      headers: getCredentialsHeader(accessToken),
+    })
+      .then(checkStatus)
+      .then(parseJSON)
+  }
+
+  function postAsset(response) {
+    const { credentials } = response
+    const filename = getFilename(file.type)
+    const key = getFileKey(credentials.prefix, filename)
+    assetUrl = getAssetUrl(credentials.endpoint, key)
+
+    return fetch(credentials.endpoint, {
+      method: 'POST',
+      body: getUploadData(key, credentials, file),
+    })
+      .then(checkStatus)
+  }
+
+  function saveLocationToApi() {
+    const vo = (type === ACTION_TYPES.PROFILE.SAVE_AVATAR) ? { remote_avatar_url: assetUrl } : { remote_cover_image_url: assetUrl }
+    return fetch(endpoint.path, {
+      method: 'PATCH',
+      headers: getCredentialsHeader(accessToken),
+      body: JSON.stringify(vo),
+    })
+      .then(checkStatus)
+      .then(parseJSON)
+  }
+
+  return (
+    fetchCredentials()
+    .then(postAsset)
+    .then(saveLocationToApi)
+    .then(response => {
+      payload.response = camelizeKeys(response)
+      next({ meta, payload, type: SUCCESS })
+      return true
+    })
+    .catch(error => {
+      next({ error, meta, payload, type: FAILURE })
+      return false
+    })
+  )
 }
 

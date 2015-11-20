@@ -63,14 +63,14 @@ describe('RelationshipButton', () => {
       const button = getRenderedComponent(subject, { priority: RelationshipPriority.FRIEND })
       const [icon, span] = button.props.children
       expect(icon.type).to.equal(MiniCheckIcon)
-      expect(span.props.children).to.equal('Friend')
+      expect(span.props.children).to.equal('Following')
     })
 
     it('renders noise', () => {
       const button = getRenderedComponent(subject, { priority: RelationshipPriority.NOISE })
       const [icon, span] = button.props.children
       expect(icon.type).to.equal(MiniCheckIcon)
-      expect(span.props.children).to.equal('Noise')
+      expect(span.props.children).to.equal('Starred')
     })
 
     it('renders mute', () => {
