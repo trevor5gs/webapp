@@ -24,7 +24,7 @@ class Navbar extends React.Component {
       asFixed: false,
       asHidden: false,
       skipTransition: false,
-      offset: Math.round((window.innerWidth * 0.5625)),
+      offset: Math.round((window.innerWidth * 0.5625) - 120),
     }
   }
 
@@ -69,7 +69,7 @@ class Navbar extends React.Component {
 
   onResize(resizeProperties) {
     const { coverOffset } = resizeProperties
-    this.setState({ offset: coverOffset })
+    this.setState({ offset: coverOffset - 120 })
   }
 
   onScrollTop() {
