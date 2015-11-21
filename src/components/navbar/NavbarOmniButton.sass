@@ -14,7 +14,13 @@
 .NavbarOmniButton .SVGIcon
   margin-right: rem(5)
 
+.no-touch .NavbarOmniButton:hover
+  background-color: #666
+
 .NavbarOmniButton .SVGIcon g
+  stroke: white
+
+.no-touch .NavbarOmniButton:hover .SVGIcon g
   stroke: white
 
 @media(min-width: #{$break-2})
@@ -25,8 +31,3 @@
     line-height: rem(40)
     border-radius: rem(20)
     width: rem(100)
-  .no-touch .NavbarOmniButton:hover
-    background-color: #666
-  .no-touch .NavbarOmniButton:hover .SVGIcon g
-    stroke: white
-

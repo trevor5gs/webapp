@@ -30,6 +30,15 @@
   white-space: nowrap
   text-overflow: ellipsis
 
+.no-touch .PostHeader a,
+.no-touch .RepostHeader a
+  transition: color $speed ease
+
+.no-touch .PostHeader a:hover,
+.no-touch .RepostHeader a:hover
+  color: #999
+
+
 @media(min-width: #{$break-2})
   .PostHeader,
   .RepostHeader
@@ -48,10 +57,4 @@
   .RepostReposter,
   .PostHeader .Vitals
     padding-right: rem(40)
-
-  .no-touch .PostHeader .Vitals a:hover
-    transition: color $speed ease
-  .no-touch .PostHeader .Vitals a:hover,
-  .no-touch .RepostHeader .Vitals a:hover
-    color: #999
 

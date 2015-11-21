@@ -36,6 +36,11 @@
   display: inline-block
   vertical-align: middle
 
+.no-touch .PostTool a:hover,
+.no-touch .PostTool button:hover
+  color: black
+
+
 .ViewsTool
   height: rem(22)
   line-height: rem(22)
@@ -46,6 +51,8 @@
   border-radius: rem(11)
   background-color: #e8e8e8
   color: #535353
+.no-touch .ViewsTool a:hover
+  background-color: #ccc
 .ViewsTool .SVGIcon > g
   stroke: #535353
 .ViewsTool .EyeIcon > circle
@@ -58,6 +65,11 @@
 .LoveTool > button.active .HeartIcon > g
   fill: red
   stroke: red
+.no-touch .LoveTool > button.active:hover
+  color: #aaa
+.no-touch .LoveTool > button.active:hover > .HeartIcon > g
+  stroke: #ff9999
+  fill: #ff9999
 
 .PostTool .EyeIcon,
 .PostTool .BubbleIcon,
@@ -123,6 +135,7 @@
     display: none
 
 
+// MIN width
 @media(min-width: #{em(375)})
   .PostTools.isMoreToolActive
     transform: translate3d(rem(-70), 0, 0)
@@ -146,16 +159,6 @@
     +hideTool
   .no-touch .Posts.asList .PostTools:hover .ShyTool
     +showTool
-  .no-touch .PostTool a:hover,
-  .no-touch .PostTool button:hover
-    color: black
-  .no-touch .ViewsTool a:hover
-    background-color: #ccc
-  .no-touch .LoveTool button.active:hover
-    color: #aaa
-  .no-touch .LoveTool button.active:hover > .HeartIcon > g
-    stroke: #ff9999
-    fill: #ff9999
   // .Posts.asGrid .TimeAgoTool.ShyTool
   //   display: inline-block
   //   +showTool
