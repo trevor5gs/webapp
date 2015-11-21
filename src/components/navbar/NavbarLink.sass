@@ -12,111 +12,36 @@
 
 .NavbarLink > .SVGIcon
   margin-top: -5px
-  g
-    stroke: #aaa
 
 .NavbarLinkLabel
   position: relative
   display: inline-block
   vertical-align: middle
-  &:after
-    content: ''
-    transition: width $speed $ease, background-color $speed ease
-    position: absolute
-    width: 0
-    left: 0
-    bottom: rem(8)
-    height: rem(2)
-    background-color: transparent
 
-// -------------------------------------
-
-// Active and hover states
-[data-pathname^="/discover"] + .Navbar .NavbarLink[href^="/discover"],
-.NavbarLink.active,
-.NavbarLink:active,
-.no-touch .NavbarLink:hover
-  > .NavbarLinkLabel
-    color: black
-    &:after
-      width: 100%
-      background-color: black
-  > .SVGIcon:not(.SearchIcon) g
-    fill: black
-    stroke: black
-
-
-// -----------------
-// Modes
-
-// Hide the icons for these guys
-.Navbar .NavbarLink[href^="/following"] > .SVGIcon,
-.Navbar .NavbarLink[href^="/starred"] > .SVGIcon,
-.Navbar .NavbarLink[href^="/discover"] > .SVGIcon
-  transition: width $speed $ease, opacity $speed ease, transform $speed $ease
+.NavbarLinkLabel:after
+  content: ''
+  transition: width $speed $ease, background-color $speed ease
+  position: absolute
   width: 0
-  opacity: 0
-
-
-// Only show the icon for these guys
-.Navbar .NavbarLink[href^="/notifications"],
-.Navbar .NavbarLink[href^="/search"]
-  width: rem(20)
-
+  left: 0
+  bottom: rem(8)
+  height: rem(2)
+  background-color: transparent
 
 // -------------------------------------
+// Active and hover states
+// @see NavbarIcons for icon animations and coloring
 
-@media(min-width: #{em(375)})
-  // Show the star a little early
-  .Navbar .NavbarLink[href^="/starred"] > .SVGIcon
-    width: rem(20)
-    opacity: 1
+[data-pathname^="/discover"] + .Navbar .NavbarLink[href^="/discover"] > .NavbarLinkLabel,
+.NavbarLink.active > .NavbarLinkLabel,
+.NavbarLink:active > .NavbarLinkLabel,
+.no-touch .NavbarLink:hover > .NavbarLinkLabel
+  color: black
 
-@media(min-width: #{$break-2})
-  // Show the icon on rollover for desktop
-  .no-touch .Navbar .NavbarLink[href^="/following"]:hover > .SVGIcon,
-  .no-touch .Navbar .NavbarLink[href^="/discover"]:hover > .SVGIcon
-    transition-delay: 0.5s
-    width: rem(20)
-    opacity: 1
-
-  // Following animation
-  .no-touch .Navbar .NavbarLink[href^="/following"] > .SVGIcon
-    transform: scale(0.5)
-    transform-origin: rem(11.5)
-    transition-delay: $speed, $speed, 0s
-  .no-touch .Navbar .NavbarLink[href^="/following"]:hover > .SVGIcon
-    transition-delay: 0.5s, 0.5s, (0.5s + $speed)
-    transform: none
-  .no-touch .Navbar .NavbarLink[href^="/following"] > .SVGIcon g
-    transition-delay: 0s
-  .no-touch .Navbar .NavbarLink[href^="/following"]:hover > .SVGIcon g
-    transition-delay: 0.5s + $speed
-
-  // Starred animation
-  .no-touch .Navbar .NavbarLink[href^="/starred"] > .SVGIcon
-    transform-origin: center center
-    transition-duration: $speed, $speed, $speed2
-  .no-touch .Navbar .NavbarLink[href^="/starred"]:hover > .SVGIcon
-    transition-delay: 0.5s, 0.5s, (0.5s + $speed)
-    transform: rotate(360deg)
-
-  // Discover animation
-  .no-touch .Navbar .NavbarLink[href^="/discover"]:hover > .SVGIcon > g
-    transition-delay: 0.5s + ($speed * 0.5)
-  .no-touch .Navbar .NavbarLink[href^="/discover"]:hover > .SVGIcon > g:nth-of-type(2)
-    transition-delay: 0.5s + ($speed * 1)
-  .no-touch .Navbar .NavbarLink[href^="/discover"]:hover > .SVGIcon > g:nth-of-type(3)
-    transition-delay: 0.5s + ($speed * 1.5)
-
-  // Show the label on rollover for desktop
-  .no-touch .Navbar .NavbarLink[href^="/notifications"]:hover,
-  .no-touch .Navbar .NavbarLink[href^="/search"]:hover
-    transition-delay: 0.5s
-    > .NavbarLinkLabel:after
-      transition-delay: 0.5s + ($speed * 0.5)
-  .no-touch .Navbar .NavbarLink[href^="/notifications"]:hover
-    width: rem(110)
-  .no-touch .Navbar .NavbarLink[href^="/search"]:hover
-    width: rem(72)
+[data-pathname^="/discover"] + .Navbar .NavbarLink[href^="/discover"] > .NavbarLinkLabel:after,
+.NavbarLink.active > .NavbarLinkLabel:after,
+.NavbarLink:active > .NavbarLinkLabel:after,
+.no-touch .NavbarLink:hover > .NavbarLinkLabel:after
+  width: 100%
+  background-color: black
 
