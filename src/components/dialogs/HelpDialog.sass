@@ -1,0 +1,23 @@
+.HelpDialog
+  max-width: rem(400)
+  background-color: white
+  color: black
+
+.HelpDialog h2
+  +heading
+  line-height: 1
+  padding-left: rem(50)
+
+.HelpDialog > p
+  position: relative
+  padding-left: rem(50)
+  margin-bottom: 0
+
+.HelpDialog .ShortcutLabel
+  position: absolute
+  left: 0
+
+@media(min-width: #{$break-2})
+  .HelpDialog
+    min-width: rem(400)
+
