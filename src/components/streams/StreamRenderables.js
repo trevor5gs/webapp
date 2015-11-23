@@ -11,7 +11,7 @@ import { getLinkArray } from '../base/json_helper'
 import * as api from '../../networking/api'
 import { BubbleIcon, HeartIcon, RepostIcon } from '../posts/PostIcons'
 
-export function onboardingCommunities(users) {
+export function usersAsCards(users) {
   return (
     <div className="Cards">
       {users.data.map((user, i) => {
@@ -21,7 +21,7 @@ export function onboardingCommunities(users) {
   )
 }
 
-export function onboardingPeople(users) {
+export function usersAsGrid(users) {
   return (
     <div className="Users asGrid">
       {users.data.map((user, i) => {

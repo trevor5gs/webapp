@@ -14,7 +14,7 @@ export function loadCommunities() {
   const cache = {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.communitiesPath(), vo: {} },
-    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingCommunities },
+    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.usersAsCards },
   }
 
   cachedCommunity = {
@@ -33,7 +33,7 @@ export function loadAwesomePeople() {
   const cache = {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.awesomePeoplePath(), vo: {} },
-    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.onboardingPeople },
+    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.usersAsGrid },
   }
 
   cachedUsers = {
