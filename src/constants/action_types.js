@@ -48,6 +48,11 @@ export const POST = {
   REPOST_FAILURE: 'POST.REPOST_FAILURE',
 }
 
+export const SEARCH = {
+  CLEAR: 'SEARCH.CLEAR',
+  SAVE: 'SEARCH.SAVE',
+}
+
 export const MODAL = {
   OPEN: 'MODAL.OPEN',
   CLOSE: 'MODAL.CLOSE',

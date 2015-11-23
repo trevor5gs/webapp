@@ -1,34 +1,40 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import classNames from 'classnames'
 import StreamComponent from '../components/streams/StreamComponent'
 import SearchControl from '../components/forms/SearchControl'
 import debounce from 'lodash.debounce'
 import * as SearchActions from '../actions/search'
+import * as ACTION_TYPES from '../constants/action_types'
 
 class Search extends React.Component {
   constructor(props, context) {
     super(props, context)
-    const { terms, type } = this.props
-    this.state = {
-      terms: terms || '',
-      type: type || 'posts',
-    }
+    this.state = this.props.search
   }
 
   componentWillMount() {
     this.search = debounce(this.search, 500)
   }
 
-  search() {
+  getAction() {
     const { terms, type } = this.state
-    let action = null
-    if (terms.length > 1) {
+    if (terms && terms.length > 1) {
       if (type === 'users') {
-        action = SearchActions.searchForUsers(terms)
-      } else {
-        action = SearchActions.searchForPosts(terms)
+        return SearchActions.searchForUsers(terms)
       }
+      return SearchActions.searchForPosts(terms)
     }
+    return null
+  }
+
+  search() {
+    const { dispatch } = this.props
+    dispatch({
+      type: ACTION_TYPES.SEARCH.SAVE,
+      payload: this.state,
+    })
+    const action = this.getAction()
     if (action) {
       this.refs.streamComponent.refs.wrappedInstance.setAction(action)
     }
@@ -40,11 +46,11 @@ class Search extends React.Component {
   }
 
   render() {
-    const { type } = this.state
+    const { terms, type } = this.state
     return (
       <section className="Search Panel">
         <div className="SearchBar">
-          <SearchControl text="" controlWasChanged={this.handleControlChange.bind(this)} />
+          <SearchControl text={terms} controlWasChanged={this.handleControlChange.bind(this)} />
           <button className={classNames('SearchFilter', { active: type === 'posts' })} onClick={() => { this.handleControlChange({ type: 'posts' }) }} >
             Posts
           </button>
@@ -52,16 +58,22 @@ class Search extends React.Component {
             People
           </button>
         </div>
-        <StreamComponent ref="streamComponent" />
+        <StreamComponent ref="streamComponent" action={this.getAction()} />
       </section>
     )
   }
 }
 
-Search.propTypes = {
-  terms: React.PropTypes.string,
-  type: React.PropTypes.string,
+function mapStateToProps(state) {
+  return {
+    search: state.search,
+  }
 }
 
-export default Search
+Search.propTypes = {
+  dispatch: React.PropTypes.func.isRequired,
+  search: React.PropTypes.object.isRequired,
+}
+
+export default connect(mapStateToProps)(Search)
 

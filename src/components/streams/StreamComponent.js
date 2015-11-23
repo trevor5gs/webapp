@@ -39,6 +39,7 @@ export class StreamComponent extends React.Component {
     const { action } = this.state
     const { router, stream } = this.props
     const pathArr = router.location.pathname.split('/')
+    const path = pathArr[pathArr.length - 1]
     // TODO: potentially whitelist the actions that we would want to render on
     if (!action || !action.payload || !stream || !stream.payload) {
       return false
@@ -50,8 +51,11 @@ export class StreamComponent extends React.Component {
       // if we are a nested stream component and the resultKey
       // ie: lovers as a resultKey for the endpoint for post lovers
       return true
-    } else if (stream.payload.endpoint && stream.payload.endpoint.path && stream.payload.endpoint.path.match(pathArr[pathArr.length - 1])) {
+    } else if (stream.payload.endpoint && stream.payload.endpoint.path && stream.payload.endpoint.path.match(path)) {
       // is used to match the endpoint required to load it
+      return true
+    } else if (path === 'search' || path === 'find') {
+      // TODO: figure out why search is weird
       return true
     }
     return false

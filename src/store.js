@@ -16,6 +16,7 @@ function reducer(state, action) {
     modal: reducers.modal(state.modal, action),
     profile: reducers.profile(state.profile, action),
     router: routerStateReducer(state.router, action),
+    search: reducers.search(state.search, action),
     stream: reducers.stream(state.stream, action),
   }
 }
