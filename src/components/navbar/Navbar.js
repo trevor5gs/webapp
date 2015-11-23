@@ -13,6 +13,7 @@ import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../nav
 // import { openModal, closeModal } from '../../actions/modal'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
+import * as ACTION_TYPES from '../../constants/action_types'
 
 
 class Navbar extends React.Component {
@@ -111,6 +112,11 @@ class Navbar extends React.Component {
   omniButtonWasClicked() {
   }
 
+  searchWasClicked() {
+    const { dispatch } = this.props
+    dispatch({ type: ACTION_TYPES.SEARCH.CLEAR })
+  }
+
   render() {
     const { profile } = this.props
     const showLabel = true
@@ -131,7 +137,7 @@ class Navbar extends React.Component {
           <NavbarLink to="/starred" label="Starred" icon={ <StarIcon/> } />
           <NavbarLink to="/discover" label="Discover" icon={ <SparklesIcon/> } />
           <NavbarLink to="/notifications" label="Notifications" icon={ <BoltIcon/> } />
-          <NavbarLink to="/search" label="Search" icon={ <SearchIcon/> } />
+          <NavbarLink to="/search" label="Search" onClick={this.searchWasClicked.bind(this)} icon={ <SearchIcon/> } />
         </div>
           <NavbarProfile { ...profile.payload } />
       </nav>
