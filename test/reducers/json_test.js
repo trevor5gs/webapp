@@ -176,6 +176,14 @@ describe('json reducer', () => {
     })
   })
 
+  // TODO: test this better
+  describe('#addNewIdsToResult', () => {
+    it('returns the original state if no result', () => {
+      const state = { yo: 'yo', mama: 'mama' }
+      expect(subject.methods.addNewIdsToResult(state, json, { location: { pathname: '' } })).to.equal(state)
+    })
+  })
+
   describe('#parseLinked', () => {
     it('does nothing if linked is not defined', () => {
       expect(subject.methods.parseLinked()).to.be.undefined
@@ -218,6 +226,7 @@ describe('json reducer', () => {
     })
   })
 
+  // TODO: test the isInitialLoad piece of this more
   describe('#updateResult', () => {
     afterEach(() => {
       subject.methods.getResult.restore()
@@ -236,8 +245,8 @@ describe('json reducer', () => {
       })
 
       it('updates the result when it exists', () => {
-        json.pages = { sweetness: { next: { ids: ['1', '2'] } } }
-        const result = { pagination: 'sweet' }
+        json.pages = { sweetness: { ids: ['1', '2'], next: { ids: ['1', '2'] } } }
+        const result = { pagination: 'sweet', ids: ['3'] }
         sinon.stub(subject.methods, 'getResult', () => { return result })
         const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
         const router = { location: { pathname: 'sweetness' } }

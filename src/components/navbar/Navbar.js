@@ -7,6 +7,7 @@ import NavbarLabel from './NavbarLabel'
 import NavbarOmniButton from './NavbarOmniButton'
 import NavbarLink from './NavbarLink'
 import NavbarMark from './NavbarMark'
+import NavbarMorePostsButton from './NavbarMorePostsButton'
 import NavbarProfile from './NavbarProfile'
 import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
 // import HelpDialog from '../dialogs/HelpDialog'
@@ -117,8 +118,15 @@ class Navbar extends React.Component {
     dispatch({ type: ACTION_TYPES.SEARCH.CLEAR })
   }
 
+  loadMorePostsWasClicked() {
+    const { dispatch } = this.props
+    dispatch({
+      type: ACTION_TYPES.ADD_NEW_IDS_TO_RESULT,
+    })
+  }
+
   render() {
-    const { profile } = this.props
+    const { json, profile, router } = this.props
     const showLabel = true
     const klassNames = classNames(
       'Navbar',
@@ -128,10 +136,14 @@ class Navbar extends React.Component {
       { skipTransition: this.state.skipTransition },
     )
 
+    const result = json.pages[router.location.pathname] || null
+    const hasLoadMoreButton = result && result.newIds
+
     return (
       <nav className={klassNames} role="navigation">
         <NavbarMark />
         { showLabel ? <NavbarLabel /> : <NavbarOmniButton callback={this.omniButtonWasClicked.bind(this)} />}
+        { hasLoadMoreButton ? <NavbarMorePostsButton callback={this.loadMorePostsWasClicked.bind(this)} /> : null }
         <div className="NavbarLinks">
           <NavbarLink to="/following" label="Following" icon={ <CircleIcon/> } />
           <NavbarLink to="/starred" label="Starred" icon={ <StarIcon/> } />
@@ -148,6 +160,7 @@ class Navbar extends React.Component {
 // This should be a selector: @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {
+    json: state.json,
     modal: state.modal,
     profile: state.profile,
     router: state.router,
@@ -163,11 +176,12 @@ Navbar.defaultProps = {
 }
 
 Navbar.propTypes = {
-  shortcuts: React.PropTypes.object.isRequired,
   dispatch: React.PropTypes.func.isRequired,
+  json: React.PropTypes.object.isRequired,
   modal: React.PropTypes.object,
   profile: React.PropTypes.object,
   router: React.PropTypes.object.isRequired,
+  shortcuts: React.PropTypes.object.isRequired,
 }
 
 export default connect(mapStateToProps)(Navbar)
