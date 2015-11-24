@@ -58,7 +58,7 @@ export function discoverRecommended() {
     params,
   }
 }
-export function discoverUsers(type = 'recommended') {
+export function discoverUsers(type) {
   const params = { per_page: PER_PAGE, include_recent_posts: true, seed: new Date().getTime() }
   return {
     path: getAPIPath(`discover/users/${type}`, params),

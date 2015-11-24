@@ -12,7 +12,7 @@ class Discover extends React.Component {
     links.push({ to: '/discover/recent', children: 'Recent' })
     // links.push({ to: '/discover/communities', children: 'Communities' })
     // links.push({ to: '/discover/featured-users', children: 'Featured Users' })
-    const type = this.props.params.type
+    const type = this.props.params.type || 'recommended'
     let action = loadDiscoverUsers(type)
     if (type === 'communities') {
       action = loadCommunities()
