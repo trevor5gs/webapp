@@ -96,6 +96,7 @@ methods.updatePostLoves = (state, newState, action) => {
 }
 
 function addNewIdsToResult(state, newState, router) {
+  if (!newState.pages) { newState.pages = {} }
   const result = newState.pages[router.location.pathname]
   if (!result || !result.newIds) { return state }
   result.ids = result.newIds.concat(result.ids)
@@ -135,6 +136,7 @@ methods.getResult = (response, newState, action) => {
 }
 
 function updateResult(response, newState, action, router) {
+  if (!newState.pages) { newState.pages = {} }
   const result = methods.getResult(response, newState, action)
   const { isInitialLoad, resultKey } = action.meta
   const resultPath = resultKey ? `${router.location.pathname}_${resultKey}` : router.location.pathname
@@ -154,8 +156,6 @@ function updateResult(response, newState, action, router) {
       } else {
         newState.pages[resultPath] = isInitialLoad ? { ...result, ...existingResult } : { ...existingResult, ...result }
       }
-    } else {
-      // we have more content
     }
   } else {
     newState.pages[resultPath] = result
@@ -167,7 +167,6 @@ methods.updateResult = (response, newState, action, router) => {
 
 export default function json(state = {}, action = { type: '' }, router) {
   const newState = { ...state }
-  if (!newState.pages) { newState.pages = {} }
   if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE) {
     return methods.updateRelationship(newState, action)
   } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_SUCCESS || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {
