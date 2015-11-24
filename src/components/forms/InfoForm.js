@@ -9,7 +9,7 @@ import debounce from 'lodash.debounce'
 class InfoForm extends React.Component {
 
   componentWillMount() {
-    this.saveForm = debounce(this.saveForm, 500)
+    this.saveForm = debounce(this.saveForm, 300)
   }
 
   saveForm(vo) {

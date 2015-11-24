@@ -14,7 +14,7 @@ class Search extends React.Component {
   }
 
   componentWillMount() {
-    this.search = debounce(this.search, 500)
+    this.search = debounce(this.search, 300)
   }
 
   getAction() {
