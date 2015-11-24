@@ -95,6 +95,17 @@ methods.updatePostLoves = (state, newState, action) => {
   return updatePostLoves(state, newState, action)
 }
 
+function addNewIdsToResult(state, newState, router) {
+  const result = newState.pages[router.location.pathname]
+  if (!result || !result.newIds) { return state }
+  result.ids = result.newIds.concat(result.ids)
+  delete result.newIds
+  return newState
+}
+methods.addNewIdsToResult = (state, newState, router) => {
+  return addNewIdsToResult(state, newState, router)
+}
+
 // parses the 'linked' node of the JSON
 // api responses into the json store
 function parseLinked(linked, newState) {
@@ -124,7 +135,6 @@ methods.getResult = (response, newState, action) => {
 }
 
 function updateResult(response, newState, action, router) {
-  if (!newState.pages) { newState.pages = {} }
   const result = methods.getResult(response, newState, action)
   const { isInitialLoad, resultKey } = action.meta
   const resultPath = resultKey ? `${router.location.pathname}_${resultKey}` : router.location.pathname
@@ -137,7 +147,16 @@ function updateResult(response, newState, action, router) {
       existingResult.next = result
     }
   } else if (existingResult) {
-    newState.pages[resultPath] = isInitialLoad ? { ...result, ...existingResult } : { ...existingResult, ...result }
+    if (existingResult.ids[0] !== result.ids[0]) {
+      const existingIndex = result.ids.indexOf(existingResult.ids[0])
+      if (!resultKey && existingIndex > 0) {
+        existingResult.newIds = result.ids.slice(0, existingIndex)
+      } else {
+        newState.pages[resultPath] = isInitialLoad ? { ...result, ...existingResult } : { ...existingResult, ...result }
+      }
+    } else {
+      // we have more content
+    }
   } else {
     newState.pages[resultPath] = result
   }
@@ -148,10 +167,13 @@ methods.updateResult = (response, newState, action, router) => {
 
 export default function json(state = {}, action = { type: '' }, router) {
   const newState = { ...state }
+  if (!newState.pages) { newState.pages = {} }
   if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE) {
     return methods.updateRelationship(newState, action)
   } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_SUCCESS || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {
     return methods.updatePostLoves(state, newState, action)
+  } else if (action.type === ACTION_TYPES.ADD_NEW_IDS_TO_RESULT) {
+    return methods.addNewIdsToResult(state, newState, router)
   }
   // whitelist actions
   switch (action.type) {
