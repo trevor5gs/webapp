@@ -1,12 +1,20 @@
 .OnboardingHeader
   +sans-typeset
+  height: rem(150)
   padding: rem(10)
+  margin-bottom: rem(30)
   background-color: white
 
+.OnboardingColumn
+  width: 100%
+
+.OnboardingColumn:nth-child(1)
+  height: rem(70)
 .OnboardingColumn:nth-child(2)
-  position: absolute
-  right: rem(10)
-  text-align: right
+  display: flex
+  flex-direction: row
+  height: rem(40)
+  margin-top: rem(15)
 
 .OnboardingColumn > .ElloMark
   display: none
@@ -17,97 +25,73 @@
 
 .OnboardingColumn > p
   color: #aaa
+  max-width: rem(600)
+  margin: 0
 
-.OnboardingColumn > .Button
-  width: rem(210)
-  height: rem(50)
-  line-height: rem(50)
+.OnboardingNextButton
+  width: 100%
+  height: rem(40)
+  line-height: rem(40)
   background-color: #e5e5e5
   border-color: #e5e5e5
   color: #666
-.OnboardingColumn > .Button.isDisabled
+  order: 2
+.OnboardingNextButton.isDisabled
   pointer-events: none
   background-color: #f1f1f1
   color: #ccc
 
-.OnboardingColumn:nth-child(2) > p
-  margin: rem(10) 0 0
-
-.OnboardingColumn:nth-child(2) > p > a
+.OnboardingSkipButton
   transition: color $speed
   display: inline-block
+  width: rem(80)
+  height: rem(40)
+  line-height: rem(40)
   border: 0
   color: #aaa
+  text-align: left
+  order: 1
   &:hover
     color: #666
 
-// -------------------------------------
-// MAX WIDTH!
-
-// Sends the next and skip buttons to the bottom of smaller viewports.
-@media(max-width: #{$break-2-max})
-  .OnboardingHeader
-    padding: 0
-  .OnboardingColumn
-    z-index: 2
-    background-color: white
-  .OnboardingColumn:nth-child(1)
-    position: relative
-    padding: rem(10)
-  .OnboardingColumn:nth-child(2)
-    bottom: 0
-    left: 0
-    right: 0
-    padding: rem(10) rem(10) 0 0
-  .OnboardingColumn:nth-child(2) > p > a
-    position: absolute
-    top: rem(27)
-    left: rem(10)
-
-// -------------------------------------
 
 @media(min-width: #{$break-2})
   .OnboardingHeader
+    display: flex
     position: fixed
     top: 0
     left: 0
     right: 0
-    height: rem(120)
+    height: rem(110)
     padding: rem(20)
+    margin-bottom: 0
     z-index: $z-navbar
-  .OnboardingColumn
-    position: absolute
-    top: 50%
-    margin-top: rem(-30)
-    max-width: rem(600)
-  .OnboardingColumn:nth-child(1)
-    width: calc(100% - #{rem(260)})
+  .OnboardingColumn:nth-child(2)
+    flex-direction: column
+    align-items: flex-end
+    height: rem(70)
+    margin-top: 0
+    order: 1
+  .OnboardingNextButton
+    max-width: rem(280)
+  .OnboardingSkipButton
+    height: rem(30)
+    line-height: rem(30)
+    margin: 0
+    text-align: right
+    order: 2
 
 @media(min-width: #{$break-3})
   .OnboardingColumn:nth-child(1)
-    width: calc(50% - #{rem(20)})
-    left: 15%
-  .OnboardingColumn:nth-child(2)
-    width: 35%
-    right: rem(20)
-  .OnboardingColumn > .Button
-    width: rem(280)
+    padding-left: 15%
   .OnboardingColumn > .ElloMark
     position: absolute
     display: inline-block
-    transform: scale(1.5)
-    transform-origin: top left
   .OnboardingColumn > h1,
   .OnboardingColumn > p
-    padding-left: rem(90)
+    padding-left: rem(60)
 
 @media(min-width: #{$break-4})
   .OnboardingHeader
-    padding: rem(40)
-  .OnboardingColumn:nth-child(1)
-    left: 25%
-    width: 50%
-  .OnboardingColumn:nth-child(2)
-    right: rem(40)
-    width: 25%
+    padding: rem(20) rem(40)
 
