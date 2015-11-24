@@ -20,7 +20,7 @@ export function searchForUsers(terms) {
     payload: { endpoint: api.searchUsers({ terms: terms, per_page: api.PER_PAGE }) },
     meta: {
       mappingType: MAPPING_TYPES.USERS,
-      renderStream: StreamRenderables.onboardingPeople,
+      renderStream: StreamRenderables.usersAsGrid,
     },
   }
 }
