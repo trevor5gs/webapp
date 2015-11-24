@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { updateRelationship } from '../../actions/relationships'
 import Avatar from './Avatar'
+import CoverImage from '../covers/CoverImage'
 import RelationshipButton from '../buttons/RelationshipButton'
 import { UserNames, UserStats, UserInfo } from './UserVitals'
 
@@ -16,12 +17,10 @@ class UserGrid extends React.Component {
   render() {
     const user = this.props.user
     const avatar = user.avatar ? user.avatar.regular.url : ''
-    const coverSrc = user.coverImage ? user.coverImage.hdpi.url : ''
-    const coverStyle = { backgroundImage: `url(${coverSrc})` }
     const userPath = `/${user.username}`
     return (
       <div className="UserGrid" >
-        <Link to={userPath} className="CoverImage" style={coverStyle} />
+        <CoverImage path={userPath} coverImage={user.coverImage} />
         <Link to={userPath} className="AvatarLink" >
           <Avatar imgSrc={avatar} />
         </Link>

@@ -1,11 +1,95 @@
-.BoltIcon > g
+.Navbar .BoltIcon > g
   stroke-linejoin: bevel
 
-.NavbarOmniButton .PencilIcon > g
+.Navbar .SearchIcon > g,
+.Navbar .StarIcon > g
+  stroke-linejoin: round
+
+.Navbar .PencilIcon > g
   transition-delay: $speed * 0.5, 0s, 0s
   stroke-linecap: square
 
-.SearchIcon > g,
-.StarIcon > g
-  stroke-linejoin: round
+
+// -------------------------------------
+// NavbarLink
+
+.NavbarLink > .SVGIcon g
+  stroke: #aaa
+
+[data-pathname="/"] + .Navbar .NavbarLink[href^="/discover"] > .SVGIcon g,
+[data-pathname^="/discover"] + .Navbar .NavbarLink[href^="/discover"] > .SVGIcon g,
+.NavbarLink.active > .SVGIcon:not(.SearchIcon) g,
+.NavbarLink:active > .SVGIcon:not(.SearchIcon) g,
+.no-touch .NavbarLink:hover > .SVGIcon:not(.SearchIcon) g
+  fill: black
+  stroke: black
+
+// Label only (icon is hidden)
+.NavbarLink[href^="/following"] > .SVGIcon,
+.NavbarLink[href^="/starred"] > .SVGIcon,
+.NavbarLink[href^="/discover"] > .SVGIcon
+  transition: width $speed $ease, opacity $speed ease, transform $speed $ease
+  width: 0
+  opacity: 0
+
+// Icon only (label is hidden)
+.NavbarLink[href^="/notifications"],
+.NavbarLink[href^="/search"]
+  width: rem(20)
+
+// Show the icon and label when we have enough room for Starred
+@media(min-width: #{em(375)})
+  .NavbarLink[href^="/starred"] > .SVGIcon
+    width: rem(20)
+    opacity: 1
+
+// Animations once we have room
+@media(min-width: #{$break-2})
+  // Show the icon on rollover for desktop
+  .no-touch .NavbarLink[href^="/following"]:hover > .SVGIcon,
+  .no-touch .NavbarLink[href^="/discover"]:hover > .SVGIcon
+    transition-delay: 0.5s
+    width: rem(20)
+    opacity: 1
+
+  // Show the label on rollover for desktop
+  .no-touch .NavbarLink[href^="/notifications"]:hover,
+  .no-touch .NavbarLink[href^="/search"]:hover
+    transition-delay: 0.5s
+  .no-touch .NavbarLink[href^="/notifications"]:hover
+    width: rem(110)
+  .no-touch .NavbarLink[href^="/search"]:hover
+    width: rem(72)
+  .no-touch .NavbarLink[href^="/notifications"]:hover > .NavbarLinkLabel:after,
+  .no-touch .NavbarLink[href^="/search"]:hover > .NavbarLinkLabel:after,
+    transition-delay: 0.5s + ($speed * 0.5)
+
+  // Following animation
+  .no-touch .NavbarLink[href^="/following"] > .SVGIcon
+    transform: scale(0.5)
+    transform-origin: rem(11.5)
+    transition-delay: $speed, $speed, 0s
+  .no-touch .NavbarLink[href^="/following"]:hover > .SVGIcon
+    transition-delay: 0.5s, 0.5s, (0.5s + $speed)
+    transform: none
+  .no-touch .NavbarLink[href^="/following"] > .SVGIcon g
+    transition-delay: 0s
+  .no-touch .NavbarLink[href^="/following"]:hover > .SVGIcon g
+    transition-delay: 0.5s + $speed
+
+  // Starred animation
+  .no-touch .NavbarLink[href^="/starred"] > .SVGIcon
+    transform-origin: center center
+    transition-duration: $speed, $speed, $speed2
+  .no-touch .NavbarLink[href^="/starred"]:hover > .SVGIcon
+    transition-delay: 0.5s, 0.5s, (0.5s + $speed)
+    transform: rotate(360deg)
+
+  // Discover animation
+  .no-touch .NavbarLink[href^="/discover"]:hover > .SVGIcon > g
+    transition-delay: 0.5s + ($speed * 0.5)
+  .no-touch .NavbarLink[href^="/discover"]:hover > .SVGIcon > g:nth-of-type(2)
+    transition-delay: 0.5s + ($speed * 1)
+  .no-touch .NavbarLink[href^="/discover"]:hover > .SVGIcon > g:nth-of-type(3)
+    transition-delay: 0.5s + ($speed * 1.5)
 

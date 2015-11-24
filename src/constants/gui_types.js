@@ -6,5 +6,6 @@ export const SHORTCUT_KEYS = {
   ONBOARDING: 'g 0',
   DT_GRID_TOGGLE: 'g `',
   DT_GRID_CYCLE: 'g ~',
+  DT_CONTAINER_TOGGLE: 'g |',
 }
 

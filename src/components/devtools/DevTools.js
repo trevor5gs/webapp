@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 
@@ -18,6 +19,10 @@ class DevTools extends React.Component {
 
     Mousetrap.bind(SHORTCUT_KEYS.DT_GRID_CYCLE, () => {
       this.nextGridForCycle()
+    })
+
+    Mousetrap.bind(SHORTCUT_KEYS.DT_CONTAINER_TOGGLE, () => {
+      this.toggleContainerColors()
     })
   }
 
@@ -54,6 +59,11 @@ class DevTools extends React.Component {
       return this.setState({ isHorizontalGridVisible: true, isVerticalGridVisible: false })
     }
     return { isHorizontalGridVisible: isHorizontalGridVisible, isVerticalGridVisible: isVerticalGridVisible }
+  }
+
+
+  toggleContainerColors() {
+    ReactDOM.findDOMNode(document.body).classList.toggle('highlightContainers')
   }
 
 

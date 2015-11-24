@@ -36,6 +36,7 @@
     height: rem(2)
     background-color: transparent
 
+[data-pathname="/"] .FilterLink[href="/discover"],
 .FilterText > .FilterLink.active,
 .FilterText > .FilterLink:active,
 .no-touch .FilterText > .FilterLink:hover
@@ -89,4 +90,7 @@
 .no-touch .FilterIcon > .FilterLink:hover .BubbleIcon g,
 .no-touch .FilterIcon > .FilterLink:hover .HeartIcon g
   fill: white
+
+.FilterIcon .BubbleIcon > g:nth-child(2)
+  display: none
 

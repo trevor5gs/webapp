@@ -12,10 +12,11 @@ class OnboardingHeader extends React.Component {
     if (lockNext && relationshipMap) {
       return classNames(
       'Button',
+      'OnboardingNextButton',
       { isDisabled: relationshipMap && relationshipMap.following.length > 0 ? false : true },
       )
     }
-    return 'Button'
+    return classNames('Button', 'OnboardingNextButton')
   }
 
   nextWasClicked(e) {
@@ -84,9 +85,7 @@ class OnboardingHeader extends React.Component {
         </div>
         <div className="OnboardingColumn">
           <Link className={this.getButtonClassNames()} to={nextPath} onClick={(e) => {this.nextWasClicked(e)}}>Next</Link>
-          <p>
-            <Link to={nextPath} onClick={(e) => {this.skipWasClicked(e)}}>Skip</Link>
-          </p>
+          <Link className="OnboardingSkipButton" to={nextPath} onClick={(e) => {this.skipWasClicked(e)}}>Skip</Link>
         </div>
       </header>
     )

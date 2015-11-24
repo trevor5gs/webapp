@@ -5,11 +5,6 @@
   overflow: hidden
   // outline: 1px dotted purple
 
-.UserGrid > .CoverImage
-  display: block
-  width: 100%
-  height: rem(80)
-
 .UserGrid > .AvatarLink
   +circle(rem(80))
   position: absolute
@@ -42,20 +37,17 @@
   display: none
 
 .UserGrid > .UserInfo > .UserShortBio
-  height: rem(70)
+  height: rem(68)
   overflow: hidden
 
 .UserGrid > .UserInfo > .UserExternalLinks
-  margin-top: rem(10)
+  margin-top: rem(12)
 
 // -------------------------------------
 
 @media(min-width: #{$break-2})
   .UserGrid
     height: rem(440)
-
-  .UserGrid > .CoverImage
-    height: rem(180)
 
   .UserGrid > .AvatarLink
     +circle(rem(120))

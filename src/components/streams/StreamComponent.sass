@@ -1,8 +1,8 @@
 @keyframes animateStreamIsBusy
   from
-    transform: rotate(0deg)
+    transform: rotate(0deg) scale(0.5)
   to
-    transform: rotate(360deg)
+    transform: rotate(360deg) scale(0.5)
 
 .StreamComponent
   padding: rem(10)
@@ -26,6 +26,7 @@
   top: rem(20)
 
 .StreamBusyIndicator .ElloMark
+  transform: scale(0.5)
   animation: animateStreamIsBusy 0.3s infinite linear
 
 .StreamBusyIndicator .ElloMark + p

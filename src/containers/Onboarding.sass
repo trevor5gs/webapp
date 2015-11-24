@@ -1,18 +1,10 @@
-main[data-pathname^="/onboarding"]
-  padding-bottom: rem(80)
+main[data-pathname^="/onboarding"] .Panel
+  padding-top: 0
 
 @media(min-width: #{$break-2})
   main[data-pathname^="/onboarding"]
-    margin-top: rem(120)
+    margin-top: rem(160)
     padding-bottom: 0
-
-@media(max-width: #{$break-2-max})
-  .CommunityPicker,
-  .PeoplePicker,
-  .AvatarPicker,
-  .CoverPicker,
-  .InfoPicker
-    min-height: calc(100vh - 90px)
 
 // -------------------------------------
 
@@ -53,83 +45,96 @@ main[data-pathname^="/onboarding"]
     padding: 0 rem(40) rem(40)
 
 // -------------------------------------
+
+.CoverPicker > .Cover,
+.AvatarPicker > .Cover,
+.InfoPicker > .Cover
+  top: rem(150)
+
 .CoverPicker > .Uploader
   position: fixed
-  top: rem(120)
+  top: rem(150)
   left: 0
   right: 0
+  padding-top: rem(20)
   z-index: 0
   text-align: center
   color: white
-  // padding-bottom: 56.25%
 
 // These styles should eventually be applied to Cover
 .CoverPicker > .Uploader:before
   transition: background-color $speed ease
   content: ''
-  position: fixed
+  position: absolute
   top: 0
   left: 0
   right: 0
   padding-bottom: 56.25%
   background-color: transparent
 
+
 @media(min-width: #{$break-2})
+  .CoverPicker > .Cover,
+  .AvatarPicker > .Cover,
+  .InfoPicker > .Cover
+    top: rem(110)
   .CoverPicker > .Uploader
-    top: rem(240)
+    top: rem(320)
+    padding-top: rem(40)
 
 // -------------------------------------
 
 .AvatarPicker,
 .InfoPicker
-  padding-top: 0
-  height: calc(100vh - 80px)
+  background-color: transparent
+
+.AvatarPickerBody,
+.InfoPickerBody
+  min-height: calc(100vh - #{rem(270)})
+  padding: rem(10)
+  margin-top: rem(110)
   background-color: white
 
-.AvatarPicker > .Avatar,
-.InfoPicker > .Avatar
+
+.AvatarPickerBody > .Avatar,
+.InfoPickerBody > .Avatar
   +circle(rem(160))
-  margin-bottom: rem(20)
-  margin-left: rem(10)
+  margin-top: rem(-90)
   pointer-events: none
 
-.AvatarPicker > .Uploader
+.AvatarPickerBody > .Uploader
   position: relative
   padding: rem(10)
   color: #aaa
 
-.InfoPicker > .InfoForm
-  padding: rem(10)
+.InfoPickerBody > .InfoForm
+  padding: 0 rem(10)
 
 @media(min-width: #{$break-2})
-  .AvatarPicker,
-  .InfoPicker
-    height: calc(100vh - 240px)
-    margin-top: 240px
-  .AvatarPicker > .Avatar,
-  .InfoPicker > .Avatar
+  .AvatarPickerBody,
+  .InfoPickerBody
+    min-height: calc(100vh - #{rem(320)})
+    margin-top: rem(320)
+  .AvatarPickerBody > .Avatar,
+  .InfoPickerBody > .Avatar
     position: absolute
     top: rem(20)
     left: 0
-    margin-bottom: 0
+    margin-top: 0
     margin-left: 15%
-  .AvatarPicker > .Uploader
+  .AvatarPickerBody > .Uploader
     padding-top: rem(60)
     padding-left: rem(200)
     margin-left: 15%
-  .InfoPicker > .InfoForm
+  .InfoPickerBody > .InfoForm
     padding-top: rem(40)
     padding-left: rem(200)
     margin-left: 15%
 
 @media(min-width: #{$break-4})
-  .AvatarPicker,
-  .InfoPicker
-    height: calc(100vh - 320px)
-    margin-top: 320px
-  .AvatarPicker > .Avatar,
-  .AvatarPicker > .Uploader,
-  .InfoPicker > .Avatar,
-  .InfoPicker > .InfoForm
+  .AvatarPickerBody > .Avatar,
+  .AvatarPickerBody > .Uploader,
+  .InfoPickerBody > .Avatar,
+  .InfoPickerBody > .InfoForm
     margin-left: 25%
 

@@ -38,9 +38,9 @@ export function postsAsGrid(posts, json, currentUser) {
     <div className="Posts asGrid">
       {posts.data.map((post) => {
         return (
-          <div ref={`postGrid_${post.id}`} key={post.id} className="Post PostGrid">
+          <article ref={`postGrid_${post.id}`} key={post.id} className="Post PostGrid">
             {parsePost(post, json, currentUser)}
-          </div>
+          </article>
         )
       })}
     </div>
@@ -52,9 +52,9 @@ export function postsAsList(posts, json, currentUser) {
     <div className="Posts asList">
       {posts.data.map((post) => {
         return (
-          <div ref={`postList_${post.id}`} key={post.id} className="Post PostList">
+          <article ref={`postList_${post.id}`} key={post.id} className="Post PostList">
             {parsePost(post, json, currentUser, false)}
-          </div>
+          </article>
         )
       })}
     </div>
@@ -87,7 +87,7 @@ export function postDetail(posts, json, currentUser) {
   }
   return (
     <div className="PostDetails Posts asList">
-      <div ref={`postList_${post.id}`} key={post.id} className="Post PostList">
+      <article ref={`postList_${post.id}`} key={post.id} className="Post PostList">
         {parsePost(post, json, currentUser, false)}
         {avatarDrawers}
         <section className="Comments">
@@ -100,7 +100,7 @@ export function postDetail(posts, json, currentUser) {
             )
           })}
         </section>
-      </div>
+      </article>
     </div>
   )
 }

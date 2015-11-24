@@ -10,25 +10,33 @@
   +circle(rem(30))
   top: rem(15)
 
-.PostHeader .Vitals,
-.RepostHeader .Vitals
+.PostHeaderVitals,
+.RepostHeaderVitals
   position: relative
   margin-left: rem(40)
 
-.PostHeader .Vitals
+.PostHeaderVitals
   line-height: rem(60)
 
-.RepostHeader .Vitals
+.RepostHeaderVitals
   top: rem(10)
   line-height: rem(20)
 
 .RepostAuthor,
 .RepostReposter,
-.PostHeader .Vitals
+.PostHeaderVitals
   padding-right: rem(30)
   overflow: hidden
   white-space: nowrap
   text-overflow: ellipsis
+
+.no-touch .PostHeader a,
+.no-touch .RepostHeader a
+  transition: color $speed ease
+
+.no-touch .PostHeader a:hover,
+.no-touch .RepostHeader a:hover
+  color: #999
 
 @media(min-width: #{$break-2})
   .PostHeader,
@@ -38,20 +46,14 @@
   .RepostHeader .Avatar
     +circle(rem(40))
     top: rem(20)
-  .PostHeader .Vitals
+  .PostHeaderVitals
     margin-left: rem(60)
     line-height: rem(80)
-  .RepostHeader .Vitals
+  .RepostHeaderVitals
     margin-left: rem(60)
     top: rem(20)
   .RepostAuthor,
   .RepostReposter,
-  .PostHeader .Vitals
+  .PostHeaderVitals
     padding-right: rem(40)
-
-  .no-touch .PostHeader .Vitals a:hover
-    transition: color $speed ease
-  .no-touch .PostHeader .Vitals a:hover,
-  .no-touch .RepostHeader .Vitals a:hover
-    color: #999
 
