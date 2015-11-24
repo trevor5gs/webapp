@@ -1,5 +1,5 @@
 import App from '../containers/App'
-import Discover from '../containers/Discover'
+import LoggedOutDiscover from '../containers/LoggedOutDiscover'
 
 function createRedirect(from, to) {
   return {
@@ -14,7 +14,8 @@ const routes = [
   {
     path: '/',
     component: App,
-    indexRoute: { component: Discover },
+    indexRoute: { component: LoggedOutDiscover },
+    // order matters, so less specific routes should go at the bottom
     childRoutes: [
       require('./discover'),
       require('./find'),
@@ -26,6 +27,14 @@ const routes = [
       require('./search'),
       require('./starred'),
       require('./staff'),
+      {
+        path: '/recent',
+        component: LoggedOutDiscover,
+      },
+      {
+        path: '/trending',
+        component: LoggedOutDiscover,
+      },
       require('./user_detail'),
     ],
   },

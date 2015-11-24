@@ -11,6 +11,8 @@ import { getLinkArray } from '../base/json_helper'
 import * as api from '../../networking/api'
 import { BubbleIcon, HeartIcon, RepostIcon } from '../posts/PostIcons'
 
+// TODO: convert these into react components (@see UserVitals)
+// to hopefully get better errors out of rendering streams
 export function usersAsCards(users) {
   return (
     <div className="Cards">
