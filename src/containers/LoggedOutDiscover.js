@@ -1,4 +1,6 @@
 import React from 'react'
+import Banderole from '../components/covers/Banderole'
+import { BANDEROLES } from '../constants/gui_types'
 import FilterBar from '../components/filters/FilterBar'
 import StreamComponent from '../components/streams/StreamComponent'
 import { loadDiscoverUsers } from '../actions/discover'
@@ -16,6 +18,7 @@ class LoggedOutDiscover extends React.Component {
     const type = pathArr[1].length ? pathArr[1] : 'recommended'
     return (
       <section className="LoggedOutDiscover Panel" key={`discover_${type}`}>
+        <Banderole userlist={ BANDEROLES } />
         <FilterBar type="text" links={links} />
         <StreamComponent ref="streamComponent" action={loadDiscoverUsers(type)} />
       </section>

@@ -1,0 +1,72 @@
+.Banderole
+  position: relative
+  display: block
+  width: 100%
+  height: rem(240)
+  background: #999 no-repeat 50% 50%
+  background-size: cover
+  color: white
+
+
+.BanderoleCaption
+  +sanserif
+  position: relative
+  top: 50%
+  left: rem(10)
+  transform: translateY(-50%)
+  max-width: rem(540)
+
+.BanderoleCaption > h1
+  +sans-family
+  font-size: rem(18)
+
+.BanderoleCaption > a
+  transition: color $speed
+  margin-top: rem(20)
+
+.BanderoleCaption > a,
+.BanderoleCreditsAuthor > .BanderoleCreditsAuthorName
+  display: inline-block
+  border-bottom: 1px solid
+.no-touch .BanderoleCaption a:hover,
+.no-touch .BanderoleCreditsAuthor:hover
+  color: #ccc
+
+.BanderoleCredits
+  +monospace
+  position: absolute
+  bottom: rem(10)
+  right: rem(10)
+
+.BanderoleCreditsAuthor
+  transition: color $speed
+  display: inline-block
+  margin-right: rem(15)
+  color: white
+.BanderoleCreditsAuthor > .BanderoleCreditsAuthorName
+  margin-left: rem(8)
+
+.BanderoleCredits .Avatar
+  +circle(rem(30))
+  display: inline-block
+  vertical-align: middle
+
+@media(min-width: #{$break-2})
+  .Banderole
+    height: rem(380)
+  .BanderoleCaption
+    left: rem(20)
+  .BanderoleCaption > h1
+    font-size: rem(36)
+  .BanderoleCredits
+    bottom: rem(20)
+    right: rem(20)
+  .BanderoleCredits .Avatar
+    +circle(rem(40))
+
+@media(min-width: #{$break-4})
+  .BanderoleCaption
+    left: rem(40)
+  .BanderoleCredits
+    right: rem(40)
+
