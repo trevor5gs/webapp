@@ -21,7 +21,7 @@ class CoverImage extends React.Component {
   }
 
   render() {
-    const { coverImage, path } = this.props
+    const { coverImage, to } = this.props
     const klassNames = classNames(
       'CoverImage',
     )
@@ -30,8 +30,8 @@ class CoverImage extends React.Component {
       : null
 
     return (
-      path
-        ? <Link to={path} className={klassNames} style={style} />
+      to
+        ? <Link to={to} className={klassNames} style={style} />
         : <figure className={klassNames} style={style} />
     )
   }
@@ -40,7 +40,7 @@ class CoverImage extends React.Component {
 
 CoverImage.propTypes = {
   coverImage: React.PropTypes.any,
-  path: React.PropTypes.string,
+  to: React.PropTypes.string,
 }
 
 export default CoverImage

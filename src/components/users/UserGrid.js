@@ -18,7 +18,7 @@ class UserGrid extends React.Component {
     const userPath = `/${user.username}`
     return (
       <div className="UserGrid" >
-        <CoverImage path={userPath} coverImage={user.coverImage} />
+        <CoverImage to={userPath} coverImage={user.coverImage} />
         <Avatar to={userPath} sources={user.avatar} />
         <RelationshipButton
           ref="relationshipButton"
