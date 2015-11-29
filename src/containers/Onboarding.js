@@ -139,13 +139,15 @@ class Onboarding extends React.Component {
               message="Choose an avatar." />
 
           <div className="AvatarPickerBody" >
-            <Avatar imgSrc={this.getAvatarSource(profile)} />
             <Uploader
               title="Pick an Avatar"
               message="Or drag & drop it"
               recommend="Recommended image size: 360 x 360"
               openAlert={ bindActionCreators(openAlert, dispatch) }
               saveAction={ bindActionCreators(saveAvatar, dispatch) }/>
+            <Avatar
+              isModifiable
+              sources={this.getAvatarSource(profile)} />
           </div>
           <Cover
             coverImage={this.getCoverSource(profile)} />
@@ -163,7 +165,7 @@ class Onboarding extends React.Component {
               message="Fill out your bio." />
 
           <div className="InfoPickerBody" >
-            <Avatar imgSrc={this.getAvatarSource(profile)} />
+            <Avatar sources={this.getAvatarSource(profile)} />
             <InfoForm />
           </div>
           <Cover

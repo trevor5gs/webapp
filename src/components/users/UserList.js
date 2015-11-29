@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import { updateRelationship } from '../../actions/relationships'
 import Avatar from './Avatar'
 import RelationshipButton from '../buttons/RelationshipButton'
@@ -15,13 +14,10 @@ class UserList extends React.Component {
 
   render() {
     const user = this.props.user
-    const avatar = user.avatar ? user.avatar.large.url : ''
     const userPath = `/${user.username}`
     return (
       <div className="UserList" >
-        <Link to={userPath} className="AvatarLink" >
-          <Avatar imgSrc={avatar} />
-        </Link>
+        <Avatar to={userPath} sources={user.avatar} size="large" />
         <RelationshipButton
           ref="relationshipButton"
           userId={user.id}

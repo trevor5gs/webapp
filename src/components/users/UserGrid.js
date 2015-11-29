@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import { updateRelationship } from '../../actions/relationships'
 import Avatar from './Avatar'
 import CoverImage from '../covers/CoverImage'
@@ -16,14 +15,11 @@ class UserGrid extends React.Component {
 
   render() {
     const user = this.props.user
-    const avatar = user.avatar ? user.avatar.regular.url : ''
     const userPath = `/${user.username}`
     return (
       <div className="UserGrid" >
         <CoverImage path={userPath} coverImage={user.coverImage} />
-        <Link to={userPath} className="AvatarLink" >
-          <Avatar imgSrc={avatar} />
-        </Link>
+        <Avatar to={userPath} sources={user.avatar} />
         <RelationshipButton
           ref="relationshipButton"
           userId={user.id}

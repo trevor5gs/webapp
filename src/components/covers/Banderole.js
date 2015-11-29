@@ -51,7 +51,6 @@ class Banderole extends React.Component {
     const { currentUser, imageSize } = this.state
     if (!currentUser) { return null }
     const { username, avatar, coverImage, caption } = currentUser
-    const avatarSrc = avatar.regular.url
     const coverSrc = coverImage[imageSize].url
 
     const klassNames = classNames('Banderole')
@@ -63,13 +62,11 @@ class Banderole extends React.Component {
           { caption }
           <Link to="https://ello.co/wtf/about/what-is-ello/" target="_blank">Learn More</Link>
         </div>
-        <div className="BanderoleCredits">
-          <Link className="BanderoleCreditsAuthor" to={`/${username}`}>
-            <span>Posted by</span>
-            <span className="BanderoleCreditsAuthorName">@{username}</span>
-          </Link>
-          <Avatar path={`/${username}`} imgSrc={avatarSrc} />
-        </div>
+        <Link className="BanderoleCredits" to={`/${username}`}>
+          <span className="BanderoleCreditsBy">Posted by</span>
+          <span className="BanderoleCreditsAuthor">@{username}</span>
+          <Avatar sources={avatar} />
+        </Link>
       </div>
     )
   }

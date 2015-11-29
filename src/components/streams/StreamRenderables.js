@@ -118,7 +118,7 @@ export function notificationList(notifications, json, currentUser) {
 export function userAvatars(users) {
   return (
     users.data.map((user) => {
-      return <Avatar imgSrc={user.avatar ? user.avatar.regular.url : ''} path={`/${user.username}`} key={`userAvatar_${user.id}`}/>
+      return <Avatar to={`/${user.username}`} sources={user.avatar} key={`userAvatar_${user.id}`} />
     })
   )
 }
