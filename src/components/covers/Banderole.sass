@@ -7,6 +7,7 @@
   background-size: cover
   color: white
 
+
 .BanderoleCaption
   +sanserif
   position: relative
@@ -21,13 +22,12 @@
 
 .BanderoleCaption > a
   transition: color $speed
-  margin-top: rem(20)
-
-.BanderoleCaption > a
   display: inline-block
+  margin-top: rem(20)
   border-bottom: 1px solid
 .no-touch .BanderoleCaption a:hover
   color: #ccc
+
 
 .BanderoleCredits
   +monospace
@@ -41,8 +41,9 @@
 
 .BanderoleCreditsAuthor
   display: inline-block
-  border-bottom: 1px solid
   margin: 0 rem(10)
+  border-bottom: 1px solid
+
 
 @media(min-width: #{$break-2})
   .Banderole
