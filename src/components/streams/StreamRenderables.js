@@ -1,7 +1,7 @@
 import React from 'react'
-import Avatar from '../users/Avatar'
-import UserAvatars from '../users/UserAvatars'
 import UserCard from '../users/UserCard'
+import UserAvatar from '../users/UserAvatar'
+import UserAvatars from '../users/UserAvatars'
 import UserGrid from '../users/UserGrid'
 import UserList from '../users/UserList'
 import Cover from '../covers/Cover'
@@ -118,7 +118,7 @@ export function notificationList(notifications, json, currentUser) {
 export function userAvatars(users) {
   return (
     users.data.map((user) => {
-      return <Avatar to={`/${user.username}`} sources={user.avatar} key={`userAvatar_${user.id}`} />
+      return <UserAvatar user={user} key={`userAvatar_${user.id}`}/>
     })
   )
 }
