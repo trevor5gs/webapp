@@ -1,43 +1,44 @@
 import { expect, getRenderedComponent } from '../../spec_helper'
-import { default as subject, RelationshipPriority } from '../../../src/components/buttons/RelationshipButton'
-import { MiniCheckIcon, MiniPlusIcon } from '../../../src/components/users/UserIcons'
+import { RELATIONSHIP_PRIORITY } from '../../../src/constants/relationship_types'
+import { default as subject } from '../../../src/components/relationships/RelationshipButton'
+import { MiniCheckIcon, MiniPlusIcon } from '../../../src/components/relationships/RelationshipIcons'
 
 describe('RelationshipButton', () => {
-  describe('::RelationshipPriority', () => {
+  describe('::RELATIONSHIP_PRIORITY', () => {
     it('INACTIVE', () => {
-      expect(RelationshipPriority.INACTIVE).to.equal('inactive')
+      expect(RELATIONSHIP_PRIORITY.INACTIVE).to.equal('inactive')
     })
 
     it('FRIEND', () => {
-      expect(RelationshipPriority.FRIEND).to.equal('friend')
+      expect(RELATIONSHIP_PRIORITY.FRIEND).to.equal('friend')
     })
 
     it('NOISE', () => {
-      expect(RelationshipPriority.NOISE).to.equal('noise')
+      expect(RELATIONSHIP_PRIORITY.NOISE).to.equal('noise')
     })
 
     it('SELF', () => {
-      expect(RelationshipPriority.SELF).to.equal('self')
+      expect(RELATIONSHIP_PRIORITY.SELF).to.equal('self')
     })
 
     it('MUTE', () => {
-      expect(RelationshipPriority.MUTE).to.equal('mute')
+      expect(RELATIONSHIP_PRIORITY.MUTE).to.equal('mute')
     })
 
     it('BLOCK', () => {
-      expect(RelationshipPriority.BLOCK).to.equal('block')
+      expect(RELATIONSHIP_PRIORITY.BLOCK).to.equal('block')
     })
 
     it('NONE', () => {
-      expect(RelationshipPriority.NONE).to.equal('none')
+      expect(RELATIONSHIP_PRIORITY.NONE).to.equal('none')
     })
   })
 
   describe('#render', () => {
     it('renders inactive by default', () => {
-      const button = getRenderedComponent(subject, {className: 'MyRelationshipButton'})
+      const button = getRenderedComponent(subject)
       expect(button.type).to.equal('button')
-      expect(button.props.className).to.equal('MyRelationshipButton RelationshipButton')
+      expect(button.props.className).to.equal('RelationshipButton')
       expect(button.props.onClick).to.be.a('function')
       expect(button.props['data-priority']).to.equal('inactive')
       const [icon, span] = button.props.children
@@ -46,41 +47,41 @@ describe('RelationshipButton', () => {
     })
 
     it('renders inactive', () => {
-      const button = getRenderedComponent(subject, { priority: RelationshipPriority.INACTIVE })
+      const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.INACTIVE })
       const [icon, span] = button.props.children
       expect(icon.type).to.equal(MiniPlusIcon)
       expect(span.props.children).to.equal('Follow')
     })
 
     it('renders none', () => {
-      const button = getRenderedComponent(subject, { priority: RelationshipPriority.NONE })
+      const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.NONE })
       const [icon, span] = button.props.children
       expect(icon.type).to.equal(MiniPlusIcon)
       expect(span.props.children).to.equal('Follow')
     })
 
     it('renders friend', () => {
-      const button = getRenderedComponent(subject, { priority: RelationshipPriority.FRIEND })
+      const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.FRIEND })
       const [icon, span] = button.props.children
       expect(icon.type).to.equal(MiniCheckIcon)
       expect(span.props.children).to.equal('Following')
     })
 
     it('renders noise', () => {
-      const button = getRenderedComponent(subject, { priority: RelationshipPriority.NOISE })
+      const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.NOISE })
       const [icon, span] = button.props.children
       expect(icon.type).to.equal(MiniCheckIcon)
       expect(span.props.children).to.equal('Starred')
     })
 
     it('renders mute', () => {
-      const button = getRenderedComponent(subject, { priority: RelationshipPriority.MUTE })
+      const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.MUTE })
       const span = button.props.children
       expect(span.props.children).to.equal('Muted')
     })
 
     it('renders block', () => {
-      const button = getRenderedComponent(subject, { priority: RelationshipPriority.BLOCK })
+      const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.BLOCK })
       const span = button.props.children
       expect(span.props.children).to.equal('Blocked')
     })

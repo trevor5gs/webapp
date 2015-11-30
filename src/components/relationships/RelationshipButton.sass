@@ -1,0 +1,38 @@
+.RelationshipButton
+  +sanserif
+  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease
+  width: rem(110)
+  height: rem(30)
+  line-height: rem(30)
+  padding: 0 rem(10) 0 rem(5)
+  background-color: white
+  border: 1px solid black
+  text-align: center
+.RelationshipButton > .SVGIcon g
+  stroke: black
+
+.no-touch .RelationshipButton:hover
+  background-color: #666
+  border-color: #666
+  color: white
+.no-touch .RelationshipButton:hover > .SVGIcon g
+  stroke: white
+
+.RelationshipButton[data-priority="friend"],
+.RelationshipButton[data-priority="noise"]
+  background-color: black
+  border-color: black
+  color: white
+.RelationshipButton[data-priority="friend"] > .SVGIcon g,
+.RelationshipButton[data-priority="noise"] > .SVGIcon g
+  stroke: white
+
+.RelationshipButton[data-priority="self"]
+  width: auto
+
+.RelationshipButton > .MiniPlusIcon
+  margin-top: -2px
+
+.RelationshipButton > .MiniCheckIcon
+  margin-top: -4px
+

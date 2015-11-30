@@ -2,7 +2,7 @@ import { expect, stub, isValidResult, json, clearJSON, sinon } from '../spec_hel
 import * as subject from '../../src/reducers/json'
 import * as ACTION_TYPES from '../../src/constants/action_types'
 import * as MAPPING_TYPES from '../../src/constants/mapping_types'
-import { RelationshipPriority } from '../../src/components/buttons/RelationshipButton'
+import { RELATIONSHIP_PRIORITY } from '../../src/constants/relationship_types'
 
 function stubJSONStore() {
   // add some users
@@ -93,7 +93,7 @@ describe('json reducer', () => {
 
   describe('#updateRelationship', () => {
     it('updates relationship properly with friend or noise', () => {
-      const relationships = [RelationshipPriority.FRIEND, RelationshipPriority.NOISE]
+      const relationships = [RELATIONSHIP_PRIORITY.FRIEND, RELATIONSHIP_PRIORITY.NOISE]
       for (const priority of relationships) {
         stubJSONStore()
         createRelationshipTest(priority)
@@ -103,11 +103,11 @@ describe('json reducer', () => {
 
     it('updates relationship to inactive, self, mute, block, or none', () => {
       const relationships = [
-        RelationshipPriority.INACTIVE,
-        RelationshipPriority.SELF,
-        RelationshipPriority.MUTE,
-        RelationshipPriority.BLOCK,
-        RelationshipPriority.NONE,
+        RELATIONSHIP_PRIORITY.INACTIVE,
+        RELATIONSHIP_PRIORITY.SELF,
+        RELATIONSHIP_PRIORITY.MUTE,
+        RELATIONSHIP_PRIORITY.BLOCK,
+        RELATIONSHIP_PRIORITY.NONE,
       ]
       for (const priority of relationships) {
         stubJSONStore()
