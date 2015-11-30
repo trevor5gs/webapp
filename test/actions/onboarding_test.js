@@ -9,8 +9,10 @@ describe('onboarding.js', () => {
       expect(hasStreamMetadata(action)).to.be.true
       expect(action.type).to.equal('LOAD_STREAM')
       expect(action.payload.vo).to.be.empty
+      expect(action.meta.defaultMode).to.equal('grid')
       expect(action.meta.mappingType).to.equal('users')
-      expect(action.meta.renderStream).to.be.a('function')
+      expect(action.meta.renderStream.asList).to.be.a('function')
+      expect(action.meta.renderStream.asGrid).to.be.a('function')
     })
   })
 
@@ -21,8 +23,10 @@ describe('onboarding.js', () => {
       expect(hasStreamMetadata(action)).to.be.true
       expect(action.type).to.equal('LOAD_STREAM')
       expect(action.payload.vo).to.be.empty
+      expect(action.meta.defaultMode).to.equal('grid')
       expect(action.meta.mappingType).to.equal('users')
-      expect(action.meta.renderStream).to.be.a('function')
+      expect(action.meta.renderStream.asList).to.be.a('function')
+      expect(action.meta.renderStream.asGrid).to.be.a('function')
     })
   })
 })
