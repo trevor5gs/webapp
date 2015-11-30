@@ -1,5 +1,5 @@
 import React from 'react'
-import { RelationshipPriority } from '../buttons/RelationshipButton'
+import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 
 class Picker extends React.Component {
   constructor(props, context) {
@@ -20,7 +20,7 @@ class Picker extends React.Component {
   followAll() {
     const { inactive } = this.props.relationshipMap
     const userRefs = this.refs.streamComponent.refs.wrappedInstance.refs
-    const relationship = inactive.length === 0 ? RelationshipPriority.INACTIVE : RelationshipPriority.FRIEND
+    const relationship = inactive.length === 0 ? RELATIONSHIP_PRIORITY.INACTIVE : RELATIONSHIP_PRIORITY.FRIEND
     for (const propName in userRefs) {
       if (userRefs.hasOwnProperty(propName)) {
         const userContainer = userRefs[propName].refs.wrappedInstance

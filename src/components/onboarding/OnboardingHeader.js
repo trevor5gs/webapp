@@ -11,12 +11,11 @@ class OnboardingHeader extends React.Component {
     const { lockNext, relationshipMap } = this.props
     if (lockNext && relationshipMap) {
       return classNames(
-      'Button',
       'OnboardingNextButton',
       { isDisabled: relationshipMap && relationshipMap.following.length > 0 ? false : true },
       )
     }
-    return classNames('Button', 'OnboardingNextButton')
+    return classNames('OnboardingNextButton')
   }
 
   nextWasClicked(e) {

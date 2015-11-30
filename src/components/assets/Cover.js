@@ -9,7 +9,7 @@ class Cover extends React.Component {
     super(props, context)
     this.state = {
       asHidden: false,
-      imageSize: 'optimized',
+      imageSize: 'hdpi',
       offset: Math.round((window.innerWidth * 0.5625)),
     }
   }
@@ -25,9 +25,8 @@ class Cover extends React.Component {
   }
 
   onResize(resizeProperties) {
-    const { coverOffset, windowWidth } = resizeProperties
-    const size = this.getImageSize(windowWidth)
-    this.setState({ offset: coverOffset, imageSize: size })
+    const { coverOffset, coverImageSize } = resizeProperties
+    this.setState({ offset: coverOffset, imageSize: coverImageSize })
   }
 
   onScroll(scrollProperties) {
@@ -38,15 +37,6 @@ class Cover extends React.Component {
     } else if (scrollY < offset && asHidden) {
       return this.setState({ asHidden: false })
     }
-  }
-
-  getImageSize(windowWidth) {
-    if (windowWidth < 1500) {
-      return 'hdpi'
-    } else if (windowWidth >= 1500 && windowWidth < 1920) {
-      return 'xhdpi'
-    }
-    return 'optimized'
   }
 
   getImageSource(coverImage) {

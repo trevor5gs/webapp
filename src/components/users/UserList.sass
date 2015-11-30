@@ -6,16 +6,13 @@
   overflow: hidden
   // outline: 1px dotted purple
 
-.UserList .Avatar
-  width: 100%
-  height: 100%
-
-.UserList > .AvatarLink
-  +circle(rem(120))
+.UserList > .Avatar
   position: absolute
   top: 0
   right: 0
   z-index: 3
+  width: rem(120)
+  height: rem(120)
   overflow: hidden
 
 .UserList > .RelationshipButton
@@ -35,10 +32,12 @@
   .UserList
     margin-top: rem(20)
 
-  .UserList > .AvatarLink
+  .UserList > .Avatar
     +circle(rem(180))
     left: 0
     right: auto
+    width: rem(180)
+    height: rem(180)
 
   .UserList > .RelationshipButton
     left: auto

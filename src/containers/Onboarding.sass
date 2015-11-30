@@ -12,31 +12,19 @@ main[data-pathname^="/onboarding"] .Panel
 .PeoplePicker .Users
   margin-top: rem(20)
 
-.CommunityPicker > .Button,
-.PeoplePicker > .Button
+.CommunityPicker > .PickerButton,
+.PeoplePicker > .PickerButton
   display: block
   width: 95%
   max-width: rem(640)
   margin: 0 auto
 
-.CommunityPicker.isFollowingAll > .Button,
-.PeoplePicker.isFollowingAll > .Button
-  background-color: black
-  border-color: black
-  color: white
-  .no-touch &:hover
-    background-color: #666
-    border-color: #666
-    color: white
-    > .SVGIcon g
-      stroke: white
-
 @media(min-width: #{$break-2})
   .CommunityPicker,
   .PeoplePicker
     padding-top: rem(20)
-  .CommunityPicker > .Button,
-  .PeoplePicker > .Button
+  .CommunityPicker > .PickerButton,
+  .PeoplePicker > .PickerButton
     width: 100%
 
 @media(min-width: #{$break-4})

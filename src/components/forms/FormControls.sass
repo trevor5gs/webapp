@@ -2,7 +2,7 @@
   position: relative
   max-width: rem(400)
 
-%FormControl
+.FormControl
   +sans-typeset
   transition: border-color $speed $ease, color $speed $ease, width $speed $ease, height $speed $ease
   display: inline-block
@@ -19,19 +19,6 @@
   &::placeholder
     color: #aaa
 
-%FormControlLabel
-  +sans-typeset
-  transition: transform $speed2 $ease, opacity $speed2 $ease, color $speed2 $ease
-  display: inline-block
-  vertical-align: baseline
-  position: absolute
-  bottom: rem(-15)
-  right: 0
-  color: #aaa
-
-.FormControl
-  @extend %FormControl
-
 .hasValue > .FormControl
   border-bottom-color: black
 
@@ -44,8 +31,21 @@ textarea.FormControl
 .hasFocus > textarea.FormControl
   height: rem(115)
 
+@media(min-width: #{$break-3})
+  .hasValue > textarea.FormControl,
+  .hasFocus > textarea.FormControl
+    height: rem(85)
+
+
 .FormControlLabel
-  @extend %FormControlLabel
+  +sans-typeset
+  transition: transform $speed2 $ease, opacity $speed2 $ease, color $speed2 $ease
+  display: inline-block
+  vertical-align: baseline
+  position: absolute
+  bottom: rem(-15)
+  right: 0
+  color: #aaa
   opacity: 0
 
 .hasFocus.hasValue > .FormControlLabel
@@ -58,9 +58,4 @@ textarea.FormControl
 .NameControl
   +sans-bold-family
   font-size: 1rem
-
-@media(min-width: #{$break-3})
-  .hasValue > textarea.FormControl,
-  .hasFocus > textarea.FormControl
-    height: rem(85)
 

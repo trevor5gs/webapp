@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import Avatar from '../users/Avatar'
+import Avatar from '../assets/Avatar'
 import { getLinkObject } from '../base/json_helper'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { parseSummary } from './PostParser'
@@ -58,7 +58,7 @@ function commentNotification(comment, createdAt) {
   if (!author || !parentPost) { return null }
   return (
     <div key={`commentNotification_${comment.id}`}>
-      <Avatar imgSrc={author.avatar.regular.url} path={`/${author.username}`} />
+      <Avatar to={`/${author.username}`} sources={author.avatar} />
       {userTextLink(author)}
       {` commented on your `}
       {postTextLink(parentPost)}
@@ -76,7 +76,7 @@ function commentMentionNotification(comment, createdAt) {
   if (!author || !parentPost) { return null }
   return (
     <div key={`commentMentionNotification_${comment.id}`}>
-      <Avatar imgSrc={author.avatar.regular.url} path={`/${author.username}`} />
+      <Avatar to={`/${author.username}`} sources={author.avatar} />
       {userTextLink(author)}
       {` mentioned you in a `}
       {postTextLink(parentPost, 'comment')}
@@ -96,7 +96,7 @@ function commentOnOriginalPostNotification(comment, createdAt) {
   if (!author || !repost || !repostAuthor || !repostedSource) { return null }
   return (
     <div key={`commentOnOriginalPostNotification_${comment.id}`}>
-      <Avatar imgSrc={author.avatar.regular.url} path={`/${author.username}`} />
+      <Avatar to={`/${author.username}`} sources={author.avatar} />
       {userTextLink(author)}
       {` commented on `}
       {userTextLink(repostAuthor)}
@@ -118,7 +118,7 @@ function commentOnRepostNotification(comment, createdAt) {
   if (!author || !repost) { return null }
   return (
     <div key={`commentOnRepostNotification_${comment.id}`}>
-      <Avatar imgSrc={author.avatar.regular.url} path={`/${author.username}`} />
+      <Avatar to={`/${author.username}`} sources={author.avatar} />
       {userTextLink(author)}
       {` commented on your `}
       {postTextLink(repost, 'repost')}
@@ -134,7 +134,7 @@ function invitationAcceptedNotification(user, createdAt) {
   if (!user) { return null }
   return (
     <div key={`invitationAcceptedNotification_${user.id}`}>
-      <Avatar imgSrc={user.avatar.regular.url} path={`/${user.username}`} />
+      <Avatar to={`/${user.username}`} sources={user.avatar} />
       {userTextLink(user)}
       {` accepted your invitation.`}
       {timestamp(createdAt)}
@@ -150,7 +150,7 @@ function loveNotification(love, createdAt) {
   if (!user || !post) { return null }
   return (
     <div key={`loveNotification_${user.id}_${post.id}`}>
-      <Avatar imgSrc={user.avatar.regular.url} path={`/${user.username}`} />
+      <Avatar to={`/${user.username}`} sources={user.avatar} />
       {userTextLink(user)}
       {` loved your `}
       {postTextLink(post)}
@@ -167,7 +167,7 @@ function loveOnRepostNotification(love, createdAt) {
   if (!user || !repost) { return null }
   return (
     <div key={`loveOnRepostNotification_${user.id}_${repost.id}`}>
-      <Avatar imgSrc={user.avatar.regular.url} path={`/${user.username}`} />
+      <Avatar to={`/${user.username}`} sources={user.avatar} />
       {userTextLink(user)}
       {` loved your `}
       {postTextLink(repost, 'repost')}
@@ -186,7 +186,7 @@ function loveOnOriginalPostNotification(love, createdAt) {
   if (!user || !repost || !repostAuthor || !repostedSource) { return null }
   return (
     <div key={`loveOnOriginalPostNotification_${user.id}_${repost.id}`}>
-      <Avatar imgSrc={user.avatar.regular.url} path={`/${user.username}`} />
+      <Avatar to={`/${user.username}`} sources={user.avatar} />
       {userTextLink(user)}
       {` loved `}
       {userTextLink(repostAuthor)}
@@ -207,7 +207,7 @@ function postMentionNotification(post, createdAt) {
   if (!author) { return null }
   return (
     <div key={`postMentionNotification_${post.id}`}>
-      <Avatar imgSrc={author.avatar.regular.url} path={`/${author.username}`} />
+      <Avatar to={`/${author.username}`} sources={author.avatar} />
       {userTextLink(author)}
       {` mentioned you in a `}
       {postTextLink(post)}
@@ -223,7 +223,7 @@ function newFollowerPost(user, createdAt) {
   if (!user) { return null }
   return (
     <div key={`newFollowerPost_${user.id}`}>
-      <Avatar imgSrc={user.avatar.regular.url} path={`/${user.username}`} />
+      <Avatar to={`/${user.username}`} sources={user.avatar} />
       {userTextLink(user)}
       {` started following you.`}
       {timestamp(createdAt)}
@@ -235,7 +235,7 @@ function newFollowedUserPost(user, createdAt) {
   if (!user) { return null }
   return (
     <div key={`newFollowedUserPost_${user.id}`}>
-      <Avatar imgSrc={user.avatar.regular.url} path={`/${user.username}`} />
+      <Avatar to={`/${user.username}`} sources={user.avatar} />
       {`You started following `}
       {userTextLink(user)}
       .
@@ -251,7 +251,7 @@ function repostNotification(post, createdAt) {
   if (!author) { return null }
   return (
     <div key={`repostNotification_${post.id}`}>
-      <Avatar imgSrc={author.avatar.regular.url} path={`/${author.username}`} />
+      <Avatar to={`/${author.username}`} sources={author.avatar} />
       {userTextLink(author)}
       {` reposted your `}
       {postTextLink(post)}

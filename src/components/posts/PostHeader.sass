@@ -4,56 +4,53 @@
   position: relative
   height: rem(60)
 
-.PostHeader .Avatar,
-.RepostHeader .Avatar
-  position: absolute
-  +circle(rem(30))
-  top: rem(15)
-
-.PostHeaderVitals,
-.RepostHeaderVitals
+.PostHeaderAuthor,
+.RepostHeaderAuthor,
+.RepostHeaderReposter
   position: relative
-  margin-left: rem(40)
-
-.PostHeaderVitals
-  line-height: rem(60)
-
-.RepostHeaderVitals
-  top: rem(10)
-  line-height: rem(20)
-
-.RepostAuthor,
-.RepostReposter,
-.PostHeaderVitals
-  padding-right: rem(30)
   overflow: hidden
   white-space: nowrap
   text-overflow: ellipsis
 
-.no-touch .PostHeader a,
-.no-touch .RepostHeader a
-  transition: color $speed ease
+.PostHeaderAuthor
+  padding-left: rem(40)
+  line-height: rem(60)
 
-.no-touch .PostHeader a:hover,
-.no-touch .RepostHeader a:hover
+.RepostHeaderAuthor
+  padding-left: rem(40)
+  line-height: rem(45)
+
+.RepostHeaderReposter
+  margin-top: rem(-12)
+  margin-left: rem(40)
+  line-height: rem(15)
+
+.PostHeader .Avatar,
+.RepostHeader .Avatar
+  position: absolute
+  top: rem(15)
+  left: 0
+
+.no-touch .PostHeaderLink
+  transition: color $speed ease
+.no-touch .PostHeaderLink:hover
   color: #999
 
 @media(min-width: #{$break-2})
   .PostHeader,
   .RepostHeader
     height: rem(80)
+  .PostHeaderAuthor
+    padding-left: rem(60)
+    line-height: rem(80)
+  .RepostHeaderAuthor
+    padding-left: rem(60)
+    line-height: rem(60)
+  .RepostHeaderReposter
+    margin-top: rem(-20)
+    margin-left: rem(60)
+    line-height: rem(20)
   .PostHeader .Avatar,
   .RepostHeader .Avatar
-    +circle(rem(40))
     top: rem(20)
-  .PostHeaderVitals
-    margin-left: rem(60)
-    line-height: rem(80)
-  .RepostHeaderVitals
-    margin-left: rem(60)
-    top: rem(20)
-  .RepostAuthor,
-  .RepostReposter,
-  .PostHeaderVitals
-    padding-right: rem(40)
 

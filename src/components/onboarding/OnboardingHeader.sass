@@ -29,13 +29,21 @@
   margin: 0
 
 .OnboardingNextButton
+  +sanserif
+  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease
   width: 100%
   height: rem(40)
   line-height: rem(40)
+  padding: 0 rem(30)
   background-color: #e5e5e5
-  border-color: #e5e5e5
+  border: 1px solid #e5e5e5
   color: #666
+  text-align: center
   order: 2
+.no-touch .OnboardingNextButton:hover
+  background-color: #666
+  border-color: #666
+  color: white
 .OnboardingNextButton.isDisabled
   pointer-events: none
   background-color: #f1f1f1

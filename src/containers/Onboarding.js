@@ -6,8 +6,8 @@ import CommunityPicker from '../components/pickers/CommunityPicker'
 import PeoplePicker from '../components/pickers/PeoplePicker'
 import Uploader from '../components/uploaders/Uploader'
 import InfoForm from '../components/forms/InfoForm'
-import Avatar from '../components/users/Avatar'
-import Cover from '../components/covers/Cover'
+import Avatar from '../components/assets/Avatar'
+import Cover from '../components/assets/Cover'
 import { relationshipBatchSave } from '../actions/onboarding'
 import { saveCover, saveAvatar } from '../actions/profile'
 import { openAlert } from '../actions/modals'
@@ -139,13 +139,15 @@ class Onboarding extends React.Component {
               message="Choose an avatar." />
 
           <div className="AvatarPickerBody" >
-            <Avatar imgSrc={this.getAvatarSource(profile)} />
             <Uploader
               title="Pick an Avatar"
               message="Or drag & drop it"
               recommend="Recommended image size: 360 x 360"
               openAlert={ bindActionCreators(openAlert, dispatch) }
               saveAction={ bindActionCreators(saveAvatar, dispatch) }/>
+            <Avatar
+              isModifiable
+              sources={this.getAvatarSource(profile)} />
           </div>
           <Cover
             coverImage={this.getCoverSource(profile)} />
@@ -163,7 +165,7 @@ class Onboarding extends React.Component {
               message="Fill out your bio." />
 
           <div className="InfoPickerBody" >
-            <Avatar imgSrc={this.getAvatarSource(profile)} />
+            <Avatar sources={this.getAvatarSource(profile)} />
             <InfoForm />
           </div>
           <Cover

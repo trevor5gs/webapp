@@ -2,6 +2,7 @@ import debounce from 'lodash.debounce'
 
 const resizeObjects = []
 let ticking = false
+let hasListeners = false
 
 function callMethod(method, resizeProperties) {
   for (const obj of resizeObjects) {
@@ -11,11 +12,16 @@ function callMethod(method, resizeProperties) {
   }
 }
 
-// function getOptimalImageSize(windowWidth = window.innerWidth) {
-//   return reduce([1920, 1500, 750, 375, 180], (prev, curr) => {
-//     return curr > windowWidth ? curr : prev
-//   })
-// }
+// This is very rudimentary. needs things like 1x, 2x calculating the set
+// Used for background images in Cover and Banderoles
+function getCoverImageSize(windowWidth) {
+  if (windowWidth < 1500) {
+    return 'hdpi'
+  } else if (windowWidth >= 1500 && windowWidth < 1920) {
+    return 'xhdpi'
+  }
+  return 'optimized'
+}
 
 function getProbeProperties() {
   const probeElement = document.getElementById('root')
@@ -33,6 +39,7 @@ function getResizeProperties() {
     windowWidth: wiw,
     windowHeight: window.innerHeight,
     coverOffset: Math.round((wiw * 0.5625)),
+    coverImageSize: getCoverImageSize(wiw),
     viewportSetting: probe.viewportSetting,
     gridColumnCount: probe.gridColumnCount,
   }
@@ -58,7 +65,8 @@ export function addResizeObject(obj) {
     resizeObjects.push(obj)
     windowWasResized()
   }
-  if (resizeObjects.length === 1) {
+  if (resizeObjects.length === 1 && !hasListeners) {
+    hasListeners = true
     window.addEventListener('resize', debounce(windowWasResized, 100))
   }
 }
@@ -69,6 +77,7 @@ export function removeResizeObject(obj) {
     resizeObjects.splice(index, 1)
   }
   if (resizeObjects.length === 0) {
+    hasListeners = false
     window.removeEventListener('resize')
   }
 }

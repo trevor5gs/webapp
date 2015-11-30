@@ -1,7 +1,7 @@
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import uniq from 'lodash.uniq'
-import { RelationshipPriority } from '../components/buttons/RelationshipButton'
+import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
 
 // adding methods and accessing them from this object
 // allows the unit tests to stub methods in this module
@@ -45,8 +45,8 @@ function updateRelationship(newState, action) {
   const { mappingType } = action.meta
   let followersCount = parseInt(newState[mappingType][userId].followersCount, 10)
   switch (priority) {
-  case RelationshipPriority.FRIEND:
-  case RelationshipPriority.NOISE:
+  case RELATIONSHIP_PRIORITY.FRIEND:
+  case RELATIONSHIP_PRIORITY.NOISE:
     followersCount += 1
     break
   default:

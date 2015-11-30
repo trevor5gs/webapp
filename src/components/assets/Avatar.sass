@@ -1,0 +1,44 @@
+.Avatar
+  position: relative
+  display: inline-block
+  vertical-align: middle
+  width: rem(30)
+  height: rem(30)
+  border-radius: 50%
+  overflow: hidden
+  background: #e5e5e5 no-repeat 50% 50%
+  background-image: url("/static/images/support/throbber.gif")
+  background-size: cover
+
+.AvatarImage
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+
+.Avatar:before
+  transition: background-color $speed ease
+  content: ''
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  z-index: 2
+  background-color: transparent
+
+.no-touch a.Avatar:hover:before,
+.no-touch a:hover > .Avatar:before,
+.no-touch button.Avatar:hover:before,
+.no-touch button:hover > .Avatar:before
+  background-color: rgba(white, 0.4)
+
+.hasDragOver + .Avatar.isModifiable:before
+  background-color: rgba(black, 0.4)
+
+@media(min-width: #{$break-2})
+  .Avatar
+    width: rem(40)
+    height: rem(40)
+

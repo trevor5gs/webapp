@@ -1,8 +1,9 @@
 .SearchBar
   padding: rem(20) rem(10) rem(10)
+  max-width: rem(680)
 
 .Search .FormControlGroup
-  max-width: rem(680)
+  max-width: none
 
 .Search .SearchControl
   +sans-bold-family
@@ -42,6 +43,7 @@
 @media(min-width: #{$break-2})
   .SearchBar
     padding: rem(40) rem(20) rem(10)
+    margin: 0 auto
   .SearchFilter + .SearchFilter
     margin-left: rem(30)
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import classNames from 'classnames'
-import Button from '../buttons/Button'
 import Dialog from '../dialogs/Dialog'
 
 class Uploader extends React.Component {
@@ -62,15 +61,17 @@ class Uploader extends React.Component {
     )
 
     return (
-      <div className={klassNames}
+      <div
+        className={klassNames}
         onDrop={(e) => this.handleDrop(e)}
         onDragOver={(e) => this.handleDragOver(e)}
         onDragLeave={(e) => this.handleDragLeave(e)}
         >
-        <Button
+        <button
+          className="UploaderButton"
           onClick={(e) => this.triggerFileBrowser(e)}>
           {title}
-        </Button>
+        </button>
         {message ? <p>{message}</p> : null}
         {recommend ? <p>{recommend}</p> : null}
         <input

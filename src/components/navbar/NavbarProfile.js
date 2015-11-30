@@ -1,6 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
-import Avatar from '../users/Avatar'
+import Avatar from '../assets/Avatar'
 
 
 class NavbarProfile extends React.Component {
@@ -9,9 +8,9 @@ class NavbarProfile extends React.Component {
     const { avatar, username} = this.props
     if (avatar && username) {
       return (
-        <Link className="NavbarProfile" to={`/${username}`}>
-          <Avatar imgSrc={avatar.regular.url} />
-        </Link>
+        <span className="NavbarProfile">
+          <Avatar to={`/${username}`} sources={avatar} />
+        </span>
       )
     }
     return (

@@ -2,6 +2,7 @@ const scrollObjects = []
 let ticking = false
 let lastScrollY = null
 let lastScrollDirection = null
+let hasListeners = false
 
 function callMethod(method, scrollProperties) {
   for (const obj of scrollObjects) {
@@ -92,7 +93,8 @@ export function addScrollObject(obj) {
   if (scrollObjects.indexOf(obj) === -1) {
     scrollObjects.push(obj)
   }
-  if (scrollObjects.length === 1) {
+  if (scrollObjects.length === 1 && !hasListeners) {
+    hasListeners = true
     window.addEventListener('scroll', windowWasScrolled)
   }
 }
@@ -103,6 +105,7 @@ export function removeScrollObject(obj) {
     scrollObjects.splice(index, 1)
   }
   if (scrollObjects.length === 0) {
+    hasListeners = false
     window.removeEventListener('scroll', windowWasScrolled)
   }
 }

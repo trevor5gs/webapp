@@ -22,34 +22,29 @@
 
 .BanderoleCaption > a
   transition: color $speed
-  margin-top: rem(20)
-
-.BanderoleCaption > a,
-.BanderoleCreditsAuthor > .BanderoleCreditsAuthorName
   display: inline-block
+  margin-top: rem(20)
   border-bottom: 1px solid
-.no-touch .BanderoleCaption a:hover,
-.no-touch .BanderoleCreditsAuthor:hover
+.no-touch .BanderoleCaption a:hover
   color: #ccc
+
 
 .BanderoleCredits
   +monospace
+  transition: color $speed
   position: absolute
   bottom: rem(10)
   right: rem(10)
+  color: white
+.no-touch .BanderoleCredits:hover
+  color: #ccc
 
 .BanderoleCreditsAuthor
-  transition: color $speed
   display: inline-block
+  margin-left: rem(10)
   margin-right: rem(15)
-  color: white
-.BanderoleCreditsAuthor > .BanderoleCreditsAuthorName
-  margin-left: rem(8)
+  border-bottom: 1px solid
 
-.BanderoleCredits .Avatar
-  +circle(rem(30))
-  display: inline-block
-  vertical-align: middle
 
 @media(min-width: #{$break-2})
   .Banderole
@@ -61,8 +56,6 @@
   .BanderoleCredits
     bottom: rem(20)
     right: rem(20)
-  .BanderoleCredits .Avatar
-    +circle(rem(40))
 
 @media(min-width: #{$break-4})
   .BanderoleCaption

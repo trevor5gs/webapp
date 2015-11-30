@@ -78,7 +78,7 @@ $ease-in-out-back:     cubic-bezier(0.680, -0.550, 0.265, 1.550) !default
   +shape($size, $size, $border-radii)
 
 @mixin circle($size:2.5rem)
-  +shape($size, $size, $size)
+  +shape($size, $size, 50%)
 
 @mixin oval($width:2.5rem, $height:1.25rem)
   $_radii: #{$height} / #{$height * 0.5}

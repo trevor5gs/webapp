@@ -1,10 +1,10 @@
 import React from 'react'
-import Avatar from '../users/Avatar'
-import UserAvatars from '../users/UserAvatars'
 import UserCard from '../users/UserCard'
+import UserAvatar from '../users/UserAvatar'
+import UserAvatars from '../users/UserAvatars'
 import UserGrid from '../users/UserGrid'
 import UserList from '../users/UserList'
-import Cover from '../covers/Cover'
+import Cover from '../assets/Cover'
 import { parseNotification } from '../parsers/NotificationParser'
 import { parsePost } from '../parsers/PostParser'
 import { getLinkArray } from '../base/json_helper'
@@ -118,7 +118,7 @@ export function notificationList(notifications, json, currentUser) {
 export function userAvatars(users) {
   return (
     users.data.map((user) => {
-      return <Avatar imgSrc={user.avatar ? user.avatar.regular.url : ''} path={`/${user.username}`} key={`userAvatar_${user.id}`}/>
+      return <UserAvatar user={user} key={`userAvatar_${user.id}`}/>
     })
   )
 }

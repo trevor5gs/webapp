@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import Avatar from '../users/Avatar'
+import Avatar from '../assets/Avatar'
 import ImageRegion from '../posts/regions/ImageRegion'
 import PostTools from '../posts/PostTools'
 import { RepostIcon } from '../posts/PostIcons'
@@ -14,11 +14,11 @@ function header(post, author) {
   if (!post || !author) { return null }
   return (
     <header className="PostHeader" key={`PostHeader_${post.id}`}>
-      <Link to={`/${author.username}`}>
-        <Avatar imgSrc={author.avatar.regular.url} />
-      </Link>
-      <div className="PostHeaderVitals">
-        <Link to={`/${author.username}`}>{`@${author.username}`}</Link>
+      <div className="PostHeaderAuthor">
+        <Link className="PostHeaderLink" to={`/${author.username}`}>
+          <Avatar sources={author.avatar} />
+          <span>{`@${author.username}`}</span>
+        </Link>
       </div>
     </header>
   )
@@ -28,23 +28,22 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   if (!post || !repostedBy) { return null }
   return (
     <header className="RepostHeader" key={`RepostHeader_${post.id}`}>
-      <Link to={`/${repostAuthor.username}`}>
-        <Avatar imgSrc={repostAuthor.avatar.regular.url} />
-      </Link>
-      <div className="RepostHeaderVitals">
-        <div className="RepostAuthor">
-          <Link to={`/${repostAuthor.username}`}>{`@${repostAuthor.username}`}</Link>
-        </div>
-        <div className="RepostReposter">
-          <Link to={`/${repostedBy.username}`}>
-            <RepostIcon />
-            {` by ${repostedBy.username}`}
-          </Link>
-        </div>
+      <div className="RepostHeaderAuthor">
+        <Link className="PostHeaderLink" to={`/${repostAuthor.username}`}>
+          <Avatar sources={repostAuthor.avatar} />
+          <span>{`@${repostAuthor.username}`}</span>
+        </Link>
+      </div>
+      <div className="RepostHeaderReposter">
+        <Link className="PostHeaderLink" to={`/${repostedBy.username}`}>
+          <RepostIcon />
+          {` by @${repostedBy.username}`}
+        </Link>
       </div>
     </header>
   )
 }
+
 
 function textRegion(region, key) {
   return (

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import Avatar from '../users/Avatar'
+import Avatar from '../assets/Avatar'
 import classNames from 'classnames'
 import random from 'lodash.random'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
@@ -14,14 +14,14 @@ class Banderole extends React.Component {
     super(props, context)
     this.state = {
       imageSize: 'hdpi',
-      currentUser: null,
+      featuredUser: null,
     }
   }
 
   componentWillMount() {
     const { userlist } = this.props
     const index = random(0, userlist.length - 1)
-    this.setState({ currentUser: userlist[index] })
+    this.setState({ featuredUser: userlist[index] })
   }
 
   componentDidMount() {
@@ -33,25 +33,14 @@ class Banderole extends React.Component {
   }
 
   onResize(resizeProperties) {
-    const { windowWidth } = resizeProperties
-    const size = this.getImageSize(windowWidth)
-    this.setState({ imageSize: size })
-  }
-
-  getImageSize(windowWidth) {
-    if (windowWidth < 1500) {
-      return 'hdpi'
-    } else if (windowWidth >= 1500 && windowWidth < 1920) {
-      return 'xhdpi'
-    }
-    return 'optimized'
+    const { coverImageSize } = resizeProperties
+    this.setState({ imageSize: coverImageSize })
   }
 
   render() {
-    const { currentUser, imageSize } = this.state
-    if (!currentUser) { return null }
-    const { username, avatar, coverImage, caption } = currentUser
-    const avatarSrc = avatar.regular.url
+    const { featuredUser, imageSize } = this.state
+    if (!featuredUser) { return null }
+    const { username, avatar, coverImage, caption } = featuredUser
     const coverSrc = coverImage[imageSize].url
 
     const klassNames = classNames('Banderole')
@@ -63,13 +52,11 @@ class Banderole extends React.Component {
           { caption }
           <Link to="https://ello.co/wtf/about/what-is-ello/" target="_blank">Learn More</Link>
         </div>
-        <div className="BanderoleCredits">
-          <Link className="BanderoleCreditsAuthor" to={`/${username}`}>
-            <span>Posted by</span>
-            <span className="BanderoleCreditsAuthorName">@{username}</span>
-          </Link>
-          <Avatar path={`/${username}`} imgSrc={avatarSrc} />
-        </div>
+        <Link className="BanderoleCredits" to={`/${username}`}>
+          <span className="BanderoleCreditsBy">Posted by</span>
+          <span className="BanderoleCreditsAuthor">@{username}</span>
+          <Avatar sources={avatar} />
+        </Link>
       </div>
     )
   }
