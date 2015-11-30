@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { updateRelationship } from '../../actions/relationships'
-import Avatar from './Avatar'
-import CoverImage from '../covers/CoverImage'
+import Avatar from '../assets/Avatar'
+import CoverImage from '../assets/CoverImage'
 import RelationshipButton from '../relationships/RelationshipButton'
 import { UserNames, UserStats, UserInfo } from './UserVitals'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import Avatar from '../users/Avatar'
+import Avatar from '../assets/Avatar'
 import classNames from 'classnames'
 import random from 'lodash.random'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'

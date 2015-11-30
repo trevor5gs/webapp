@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import Avatar from '../users/Avatar'
+import Avatar from '../assets/Avatar'
 import ImageRegion from '../posts/regions/ImageRegion'
 import PostTools from '../posts/PostTools'
 import { RepostIcon } from '../posts/PostIcons'

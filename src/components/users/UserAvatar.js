@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import Avatar from '../users/Avatar'
+import Avatar from '../assets/Avatar'
 import Hint from '../hints/Hint'
 
 class UserAvatar extends React.Component {

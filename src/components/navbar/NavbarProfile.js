@@ -1,5 +1,5 @@
 import React from 'react'
-import Avatar from '../users/Avatar'
+import Avatar from '../assets/Avatar'
 
 
 class NavbarProfile extends React.Component {

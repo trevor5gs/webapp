@@ -6,7 +6,7 @@ import SearchControl from '../components/forms/SearchControl'
 import debounce from 'lodash.debounce'
 import * as SearchActions from '../actions/search'
 import * as ACTION_TYPES from '../constants/action_types'
-import Banderole from '../components/covers/Banderole'
+import Banderole from '../components/assets/Banderole'
 import { BANDEROLES } from '../constants/gui_types'
 
 class Find extends React.Component {

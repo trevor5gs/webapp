@@ -1,5 +1,5 @@
 import React from 'react'
-import Banderole from '../components/covers/Banderole'
+import Banderole from '../components/assets/Banderole'
 import { BANDEROLES } from '../constants/gui_types'
 import FilterBar from '../components/filters/FilterBar'
 import StreamComponent from '../components/streams/StreamComponent'
