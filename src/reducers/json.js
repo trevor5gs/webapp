@@ -108,6 +108,17 @@ methods.addNewIdsToResult = (state, newState, router) => {
   return addNewIdsToResult(state, newState, router)
 }
 
+function setLayoutMode(action, state, newState, router) {
+  if (!newState.pages) { newState.pages = {} }
+  const result = newState.pages[router.location.pathname]
+  if (!result || (result && result.mode === action.payload.mode)) { return state }
+  result.mode = action.payload.mode
+  return newState
+}
+methods.setLayoutMode = (action, state, newState, router) => {
+  return setLayoutMode(action, state, newState, router)
+}
+
 // parses the 'linked' node of the JSON
 // api responses into the json store
 function parseLinked(linked, newState) {
@@ -136,6 +147,7 @@ methods.getResult = (response, newState, action) => {
   return getResult(response, newState, action)
 }
 
+// TODO: need to test the existingResult conditional logic!!!!
 function updateResult(response, newState, action, router) {
   if (!newState.pages) { newState.pages = {} }
   const result = methods.getResult(response, newState, action)
@@ -163,11 +175,16 @@ function updateResult(response, newState, action, router) {
       // for pagination at which point we would want to check against the seed
       // and reset the result if the previous seed didn't match the new one
       // to avoid duplicate results
-      newState.pages[resultPath] = result
+      newState.pages[resultPath] = { ...existingResult, ...result }
     }
-  } else if (existingResult && resultKey) {
-    // this keeps the pagination correct on a refresh for the lovers/reposters
-    newState.pages[resultPath] = { ...result, ...existingResult }
+  } else if (existingResult) {
+    if (resultKey) {
+      // this keeps the pagination correct on a refresh for the lovers/reposters
+      // should probably be resetting the results here, but the more button breaks
+      newState.pages[resultPath] = { ...result, ...existingResult }
+    } else {
+      newState.pages[resultPath] = { ...existingResult, ...result }
+    }
   } else {
     newState.pages[resultPath] = result
   }
@@ -184,6 +201,8 @@ export default function json(state = {}, action = { type: '' }, router) {
     return methods.updatePostLoves(state, newState, action)
   } else if (action.type === ACTION_TYPES.ADD_NEW_IDS_TO_RESULT) {
     return methods.addNewIdsToResult(state, newState, router)
+  } else if (action.type === ACTION_TYPES.SET_LAYOUT_MODE) {
+    return methods.setLayoutMode(action, state, newState, router)
   }
   // whitelist actions
   switch (action.type) {

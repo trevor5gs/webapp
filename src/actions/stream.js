@@ -9,8 +9,12 @@ export function loadFriends() {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.friendStream(), vo: {} },
     meta: {
+      defaultMode: 'grid',
       mappingType: MAPPING_TYPES.ACTIVITIES,
-      renderStream: StreamRenderables.postsAsGrid,
+      renderStream: {
+        asList: StreamRenderables.postsAsList,
+        asGrid: StreamRenderables.postsAsGrid,
+      },
       resultFilter: StreamFilters.postsFromActivities,
     },
   }
@@ -21,8 +25,12 @@ export function loadNoise() {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.noiseStream(), vo: {} },
     meta: {
+      defaultMode: 'list',
       mappingType: MAPPING_TYPES.ACTIVITIES,
-      renderStream: StreamRenderables.postsAsList,
+      renderStream: {
+        asList: StreamRenderables.postsAsList,
+        asGrid: StreamRenderables.postsAsGrid,
+      },
       resultFilter: StreamFilters.postsFromActivities,
     },
   }

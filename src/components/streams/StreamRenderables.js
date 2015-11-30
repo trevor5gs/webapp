@@ -1,4 +1,5 @@
 import React from 'react'
+import PostsAsGrid from '../posts/PostsAsGrid'
 import UserCard from '../users/UserCard'
 import UserAvatar from '../users/UserAvatar'
 import UserAvatars from '../users/UserAvatars'
@@ -33,18 +34,18 @@ export function usersAsGrid(users) {
   )
 }
 
-export function postsAsGrid(posts, json, currentUser) {
+export function usersAsList(users) {
   return (
-    <div className="Posts asGrid">
-      {posts.data.map((post) => {
-        return (
-          <article ref={`postGrid_${post.id}`} key={post.id} className="Post PostGrid">
-            {parsePost(post, json, currentUser)}
-          </article>
-        )
+    <div className="Users asList">
+      {users.data.map((user, i) => {
+        return <UserList ref={'userList_' + i} user={user} key={i} />
       })}
     </div>
   )
+}
+
+export function postsAsGrid(posts, json, currentUser, gridColumnCount) {
+  return <PostsAsGrid posts={posts} json={json} currentUser={currentUser} gridColumnCount={gridColumnCount} />
 }
 
 export function postsAsList(posts, json, currentUser) {

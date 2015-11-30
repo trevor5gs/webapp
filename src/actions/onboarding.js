@@ -14,7 +14,14 @@ export function loadCommunities() {
   const cache = {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.communitiesPath(), vo: {} },
-    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.usersAsCards },
+    meta: {
+      defaultMode: 'grid',
+      mappingType: MAPPING_TYPES.USERS,
+      renderStream: {
+        asList: StreamRenderables.usersAsCards,
+        asGrid: StreamRenderables.usersAsCards,
+      },
+    },
   }
 
   cachedCommunity = {
@@ -33,7 +40,14 @@ export function loadAwesomePeople() {
   const cache = {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.awesomePeoplePath(), vo: {} },
-    meta: { mappingType: MAPPING_TYPES.USERS, renderStream: StreamRenderables.usersAsGrid },
+    meta: {
+      defaultMode: 'grid',
+      mappingType: MAPPING_TYPES.USERS,
+      renderStream: {
+        asList: StreamRenderables.usersAsList,
+        asGrid: StreamRenderables.usersAsGrid,
+      },
+    },
   }
 
   cachedUsers = {

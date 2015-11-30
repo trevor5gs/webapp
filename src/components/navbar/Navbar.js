@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-// import Mousetrap from 'mousetrap'
+import Mousetrap from 'mousetrap'
 import { connect } from 'react-redux'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import NavbarLabel from './NavbarLabel'
@@ -10,8 +10,8 @@ import NavbarMark from './NavbarMark'
 import NavbarMorePostsButton from './NavbarMorePostsButton'
 import NavbarProfile from './NavbarProfile'
 import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
-// import HelpDialog from '../dialogs/HelpDialog'
-// import { openModal, closeModal } from '../../actions/modal'
+import HelpDialog from '../dialogs/HelpDialog'
+import { openModal, closeModal } from '../../actions/modals'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import * as ACTION_TYPES from '../../constants/action_types'
@@ -31,18 +31,33 @@ class Navbar extends React.Component {
   }
 
   componentDidMount() {
-    // Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
-    //   const { router } = this.context
-    //   router.transitionTo(this.props.shortcuts[shortcut])
-    // })
+    Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
+      const { router } = this.context
+      router.transitionTo(this.props.shortcuts[shortcut])
+    })
 
-    // Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
-    //   const { dispatch, modal } = this.props
-    //   if (modal.payload) {
-    //     return dispatch(closeModal())
-    //   }
-    //   return dispatch(openModal(<HelpDialog/>))
-    // })
+    Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
+      const { dispatch, modal } = this.props
+      if (modal.payload) {
+        return dispatch(closeModal())
+      }
+      return dispatch(openModal(<HelpDialog/>))
+    })
+
+    Mousetrap.bind(SHORTCUT_KEYS.TOGGLE_LAYOUT, () => {
+      const { dispatch, json, router } = this.props
+      let result = null
+      if (json.pages) {
+        result = json.pages[router.location.pathname]
+      }
+      if (result && result.mode) {
+        const newMode = result.mode === 'grid' ? 'list' : 'grid'
+        dispatch({
+          type: ACTION_TYPES.SET_LAYOUT_MODE,
+          payload: { mode: newMode },
+        })
+      }
+    })
     addResizeObject(this)
     addScrollObject(this)
   }
@@ -63,8 +78,8 @@ class Navbar extends React.Component {
 
 
   componentWillUnmount() {
-    // Mousetrap.unbind(Object.keys(this.props.shortcuts))
-    // Mousetrap.unbind(SHORTCUT_KEYS.HELP)
+    Mousetrap.unbind(Object.keys(this.props.shortcuts))
+    Mousetrap.unbind(SHORTCUT_KEYS.HELP)
     removeResizeObject(this)
     removeScrollObject(this)
   }

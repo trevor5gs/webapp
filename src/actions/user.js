@@ -8,8 +8,12 @@ export function loadUserDetail(username) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.userDetail(username), vo: {} },
     meta: {
+      defaultMode: 'list',
       mappingType: MAPPING_TYPES.USERS,
-      renderStream: StreamRenderables.userDetail,
+      renderStream: {
+        asList: StreamRenderables.userDetail,
+        asGrid: StreamRenderables.userDetail,
+      },
     },
   }
 }
@@ -19,8 +23,12 @@ export function loadUserAvatars(endpoint, resultKey) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: endpoint, vo: {} },
     meta: {
+      defaultMode: 'grid',
       mappingType: MAPPING_TYPES.USERS,
-      renderStream: StreamRenderables.userAvatars,
+      renderStream: {
+        asList: StreamRenderables.userAvatars,
+        asGrid: StreamRenderables.userAvatars,
+      },
       resultKey,
     },
   }

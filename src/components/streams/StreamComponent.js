@@ -6,12 +6,13 @@ import { findBy } from '../base/json_helper'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
+import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import { runningFetches } from '../../middleware/requester'
 
 export class StreamComponent extends React.Component {
   constructor(props, context) {
     super(props, context)
-    this.state = { action: this.props.action }
+    this.state = { action: this.props.action, defaultMode: null }
   }
 
   componentWillMount() {
@@ -24,10 +25,24 @@ export class StreamComponent extends React.Component {
       window.embetter.reloadPlayers()
     }
     addScrollObject(this)
+    addResizeObject(this)
   }
 
   componentWillReceiveProps(nextProps) {
-    const { stream } = nextProps
+    const { dispatch, json, router, stream } = nextProps
+    const { action } = this.state
+    if (!action) { return null }
+    const { meta } = action
+    let result = null
+    if (json.pages) {
+      result = json.pages[router.location.pathname]
+    }
+    if (result && !result.mode) {
+      dispatch({
+        type: ACTION_TYPES.SET_LAYOUT_MODE,
+        payload: { mode: meta.defaultMode },
+      })
+    }
     // TODO: make this work for nested stream components separately of others on the page
     if (this.refs.paginator && stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.refs.paginator.setLoading(false)
@@ -73,10 +88,15 @@ export class StreamComponent extends React.Component {
       window.embetter.stopPlayers()
     }
     removeScrollObject(this)
+    removeResizeObject(this)
   }
 
   onScrollBottom() {
     this.loadPage('next', true)
+  }
+
+  onResize(resizeProps) {
+    this.setState(resizeProps)
   }
 
   onLoadNextPage() {
@@ -165,13 +185,15 @@ export class StreamComponent extends React.Component {
     if (!action) { return null }
     const { meta, payload } = action
     let result = null
+    let resultPath = router.location.pathname
     if (json.pages) {
       if (meta && meta.resultKey) {
-        result = json.pages[`${router.location.pathname}_${meta.resultKey}`]
-      } else {
-        result = json.pages[router.location.pathname]
+        resultPath = `${router.location.pathname}_${meta.resultKey}`
       }
+      result = json.pages[resultPath]
     }
+    // set the mode
+
     if (stream.error) {
       return this.renderError()
     }
@@ -207,9 +229,11 @@ export class StreamComponent extends React.Component {
       }
       return this.renderZeroState()
     }
+    const resultMode = result && result.mode ? result.mode : meta.defaultMode
+    const renderMethod = resultMode === 'grid' ? 'asGrid' : 'asList'
     return (
       <section className="StreamComponent">
-        { meta.renderStream(renderObj, json, currentUser, payload.vo) }
+        { meta.renderStream[renderMethod](renderObj, json, currentUser, this.state.gridColumnCount) }
         <Paginator
           delegate={this}
           hasShowMoreButton={typeof meta.resultKey !== 'undefined'}

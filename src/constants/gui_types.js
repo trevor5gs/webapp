@@ -1,6 +1,7 @@
 import React from 'react'
 
 export const SHORTCUT_KEYS = {
+  TOGGLE_LAYOUT: '=',
   HELP: '?',
   ESC: 'esc',
   SEARCH: 'g s',

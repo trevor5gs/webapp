@@ -9,8 +9,12 @@ export function loadNotifications(params = {}) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.notifications(params), vo: {} },
     meta: {
+      defaultMode: 'list',
       mappingType: MAPPING_TYPES.ACTIVITIES,
-      renderStream: StreamRenderables.notificationList,
+      renderStream: {
+        asList: StreamRenderables.notificationList,
+        asGrid: StreamRenderables.notificationList,
+      },
       resultFilter: StreamFilters.notificationsFromActivities,
     },
   }
