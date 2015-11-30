@@ -8,7 +8,6 @@ export function loadUserDetail(username) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.userDetail(username), vo: {} },
     meta: {
-      isInitialLoad: true,
       mappingType: MAPPING_TYPES.USERS,
       renderStream: StreamRenderables.userDetail,
     },
@@ -20,7 +19,6 @@ export function loadUserAvatars(endpoint, resultKey) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: endpoint, vo: {} },
     meta: {
-      isInitialLoad: true,
       mappingType: MAPPING_TYPES.USERS,
       renderStream: StreamRenderables.userAvatars,
       resultKey,

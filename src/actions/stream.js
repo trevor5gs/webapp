@@ -9,7 +9,6 @@ export function loadFriends() {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.friendStream(), vo: {} },
     meta: {
-      isInitialLoad: true,
       mappingType: MAPPING_TYPES.ACTIVITIES,
       renderStream: StreamRenderables.postsAsGrid,
       resultFilter: StreamFilters.postsFromActivities,
@@ -22,7 +21,6 @@ export function loadNoise() {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.noiseStream(), vo: {} },
     meta: {
-      isInitialLoad: true,
       mappingType: MAPPING_TYPES.ACTIVITIES,
       renderStream: StreamRenderables.postsAsList,
       resultFilter: StreamFilters.postsFromActivities,
