@@ -2,6 +2,7 @@ import debounce from 'lodash.debounce'
 
 const resizeObjects = []
 let ticking = false
+let hasListeners = false
 
 function callMethod(method, resizeProperties) {
   for (const obj of resizeObjects) {
@@ -64,7 +65,8 @@ export function addResizeObject(obj) {
     resizeObjects.push(obj)
     windowWasResized()
   }
-  if (resizeObjects.length === 1) {
+  if (resizeObjects.length === 1 && !hasListeners) {
+    hasListeners = true
     window.addEventListener('resize', debounce(windowWasResized, 100))
   }
 }
@@ -75,6 +77,7 @@ export function removeResizeObject(obj) {
     resizeObjects.splice(index, 1)
   }
   if (resizeObjects.length === 0) {
+    hasListeners = false
     window.removeEventListener('resize')
   }
 }
