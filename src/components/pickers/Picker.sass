@@ -1,25 +1,24 @@
-.UploaderButton
+.PickerButton
   +sanserif
   transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease
-  min-width: rem(280)
   height: rem(60)
   line-height: rem(60)
   padding: 0 rem(30)
-  background-color: black
-  border: 1px solid black
-  color: white
+  border: 1px solid
   text-align: center
+.PickerButton[disabled]
+  pointer-events: none
+  opacity: 0.5
 
-.no-touch .UploaderButton:hover
+.isFollowingAll > .PickerButton
+  background-color: black
+  border-color: black
+  color: white
+
+.no-touch .PickerButton:hover
   background-color: #666
   border-color: #666
   color: white
-.no-touch .UploaderButton:hover > .SVGIcon g
+.no-touch .PickerButton:hover > .SVGIcon g
   stroke: white
-
-.Uploader > p
-  margin-bottom: 0
-
-.Uploader > p + p
-  margin-top: 0
 
