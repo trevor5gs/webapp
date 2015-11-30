@@ -6,6 +6,7 @@ import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
 // adding methods and accessing them from this object
 // allows the unit tests to stub methods in this module
 const methods = {}
+let hasLoadedFirstStream = false
 
 function mergeModel(state, type, params) {
   if (params.id) {
@@ -138,7 +139,7 @@ methods.getResult = (response, newState, action) => {
 function updateResult(response, newState, action, router) {
   if (!newState.pages) { newState.pages = {} }
   const result = methods.getResult(response, newState, action)
-  const { isInitialLoad, resultKey } = action.meta
+  const { resultKey } = action.meta
   const resultPath = resultKey ? `${router.location.pathname}_${resultKey}` : router.location.pathname
   const existingResult = newState.pages[resultPath]
   if (existingResult && action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
@@ -148,15 +149,25 @@ function updateResult(response, newState, action, router) {
     } else {
       existingResult.next = result
     }
-  } else if (existingResult) {
-    if (existingResult.ids[0] !== result.ids[0]) {
-      const existingIndex = result.ids.indexOf(existingResult.ids[0])
-      if (!resultKey && existingIndex > 0) {
-        existingResult.newIds = result.ids.slice(0, existingIndex)
-      } else {
-        newState.pages[resultPath] = isInitialLoad ? { ...result, ...existingResult } : { ...existingResult, ...result }
-      }
+  } else if (existingResult && existingResult.ids[0] !== result.ids[0]) {
+    const existingIndex = result.ids.indexOf(existingResult.ids[0])
+    // only do this for top level streams, nested ones like lovers/reposters
+    // should just update with the new results
+    if (hasLoadedFirstStream && !resultKey && existingIndex > 0) {
+      existingResult.newIds = result.ids.slice(0, existingIndex)
+    } else {
+      // this condition should only happen if there was an existingResult
+      // and the new result is more than one page away from the existingResult
+      // resetting the result would clear out any of the 'old' pages in next
+      // this could break down if the results were random and needed a seed
+      // for pagination at which point we would want to check against the seed
+      // and reset the result if the previous seed didn't match the new one
+      // to avoid duplicate results
+      newState.pages[resultPath] = result
     }
+  } else if (existingResult && resultKey) {
+    // this keeps the pagination correct on a refresh for the lovers/reposters
+    newState.pages[resultPath] = { ...result, ...existingResult }
   } else {
     newState.pages[resultPath] = result
   }
@@ -189,6 +200,7 @@ export default function json(state = {}, action = { type: '' }, router) {
   // parse main part of response into the state
   // and update the paging information
   methods.updateResult(response, newState, action, router)
+  hasLoadedFirstStream = true
   return newState
 }
 

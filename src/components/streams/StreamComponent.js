@@ -41,6 +41,7 @@ export class StreamComponent extends React.Component {
     const pathArr = router.location.pathname.split('/')
     const path = pathArr[pathArr.length - 1]
     // TODO: potentially whitelist the actions that we would want to render on
+    // TODO: test this!
     if (!action || !action.payload || !stream || !stream.payload) {
       return false
     } else if (stream.type && (stream.type.indexOf('POST.') === 0 || stream.type.indexOf('LOAD_NEXT_CONTENT') === 0)) {

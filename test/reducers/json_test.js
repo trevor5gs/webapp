@@ -176,11 +176,23 @@ describe('json reducer', () => {
     })
   })
 
-  // TODO: test this better
   describe('#addNewIdsToResult', () => {
     it('returns the original state if no result', () => {
       const state = { yo: 'yo', mama: 'mama' }
       expect(subject.methods.addNewIdsToResult(state, json, { location: { pathname: '' } })).to.equal(state)
+    })
+
+    it('returns the original state if no result.newIds', () => {
+      const state = { yo: 'yo', mama: 'mama' }
+      json.pages = { sweetpath: { } }
+      expect(subject.methods.addNewIdsToResult(state, json, { location: { pathname: 'sweetpath' } })).to.equal(state)
+    })
+
+    it('concats the existing result ids to the newIds and deletes the old newIds', () => {
+      json.pages = { sweetpath: { newIds: ['1', '2', '3'], ids: ['10', '20', '30']} }
+      subject.methods.addNewIdsToResult({}, json, { location: { pathname: 'sweetpath' } })
+      expect(json.pages.sweetpath.newIds).to.be.undefined
+      expect(json.pages.sweetpath.ids).to.deep.equal(['1', '2', '3', '10', '20', '30'])
     })
   })
 
@@ -244,14 +256,33 @@ describe('json reducer', () => {
         expect(json.pages.sweetness).to.equal(result)
       })
 
-      it('updates the result when it exists', () => {
-        json.pages = { sweetness: { ids: ['1', '2'], next: { ids: ['1', '2'] } } }
-        const result = { pagination: 'sweet', ids: ['3'] }
+      context('with an existingResult and existingResult.ids[0] !== result.ids[0]', () => {
+        it('adds newIds if hasLoadedFirstStream && it is not a nested result && the index is greater than 0', () => {
+          const result = { pagination: 'sweet' }
+          sinon.stub(subject.methods, 'getResult', () => { return result })
+          // json.pages = { sweetness: { ids: ['1', '2'], next: { ids: ['1', '2'] } } }
+          // const result = { pagination: 'sweet', ids: ['3'] }
+          // sinon.stub(subject.methods, 'getResult', () => { return result })
+          // const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
+          // const router = { location: { pathname: 'sweetness' } }
+          // subject.methods.updateResult({}, json, action, router)
+          // expect(json.pages.sweetness).to.deep.equal({ next: { ids: ['1', '2'] }, ...result })
+        })
+
+        it('overrides the existing result if the above condition is not met', () => {
+          const result = { pagination: 'sweet' }
+          sinon.stub(subject.methods, 'getResult', () => { return result })
+        })
+      })
+
+      it('overlays the result with the existingResult when existingResult and resultKey', () => {
+        const result = { pagination: 'sweet' }
         sinon.stub(subject.methods, 'getResult', () => { return result })
-        const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
-        const router = { location: { pathname: 'sweetness' } }
-        subject.methods.updateResult({}, json, action, router)
-        expect(json.pages.sweetness).to.deep.equal({ next: { ids: ['1', '2'] }, ...result })
+      })
+
+      it('resets the result', () => {
+        const result = { pagination: 'sweet' }
+        sinon.stub(subject.methods, 'getResult', () => { return result })
       })
 
       it('uses the resultKey to update the storage location within json.pages', () => {
