@@ -66,11 +66,9 @@ describe('StreamComponent', () => {
       it('renders the stream', () => {
         const props = createPropsForStream({
           action: {
-            payload: {
-              vo: 'what',
-            },
             meta: {
-              renderStream: () => {},
+              defaultMode: 'list',
+              renderStream: { asList: () => {}, asGrid: () => {} },
               mappingType: MAPPING_TYPES.POSTS,
             },
           },
@@ -81,11 +79,11 @@ describe('StreamComponent', () => {
             },
           },
         })
-        const renderSpy = sinon.spy(props.action.meta, 'renderStream')
+        const renderSpy = sinon.spy(props.action.meta.renderStream, 'asList')
         const comp = getRenderedComponent(subject, props)
         expect(comp.type).to.equal('section')
         expect(comp.props.className).to.equal('StreamComponent')
-        expect(renderSpy.calledWith({ data: [{ id: '1' }], nestedData: [] }, { pages: { what: { type: 'posts', ids: ['1'] } }, posts: { '1': { id: '1' } } }, { id: 'currentUser' }, 'what')).to.be.true
+        expect(renderSpy.calledWith({ data: [{ id: '1' }], nestedData: [] }, { pages: { what: { type: 'posts', ids: ['1'] } }, posts: { '1': { id: '1' } } }, { id: 'currentUser' }, undefined)).to.be.true
       })
     })
   })

@@ -8,8 +8,12 @@ export function loadPostDetail(token) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.postDetail(token), vo: {} },
     meta: {
+      defaultMode: 'list',
       mappingType: MAPPING_TYPES.POSTS,
-      renderStream: StreamRenderables.postDetail,
+      renderStream: {
+        asList: StreamRenderables.postDetail,
+        asGrid: StreamRenderables.postDetail,
+      },
     },
   }
 }

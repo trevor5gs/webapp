@@ -11,8 +11,10 @@ describe('posts.js', () => {
       expect(action.payload.endpoint.path).to.contain('/posts/~my_sweet_token')
       expect(action.payload.endpoint.pagingPath).to.equal('comments')
       expect(action.payload.vo).to.be.empty
+      expect(action.meta.defaultMode).to.equal('list')
       expect(action.meta.mappingType).to.equal('posts')
-      expect(action.meta.renderStream).to.be.a('function')
+      expect(action.meta.renderStream.asList).to.be.a('function')
+      expect(action.meta.renderStream.asGrid).to.be.a('function')
     })
   })
 })

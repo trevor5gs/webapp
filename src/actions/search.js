@@ -8,8 +8,12 @@ export function searchForPosts(terms) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.searchPosts({ terms: terms, per_page: api.PER_PAGE }) },
     meta: {
+      defaultMode: 'grid',
       mappingType: MAPPING_TYPES.POSTS,
-      renderStream: StreamRenderables.postsAsGrid,
+      renderStream: {
+        asList: StreamRenderables.postsAsList,
+        asGrid: StreamRenderables.postsAsGrid,
+      },
     },
   }
 }
@@ -19,8 +23,12 @@ export function searchForUsers(terms) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.searchUsers({ terms: terms, per_page: api.PER_PAGE }) },
     meta: {
+      defaultMode: 'grid',
       mappingType: MAPPING_TYPES.USERS,
-      renderStream: StreamRenderables.usersAsGrid,
+      renderStream: {
+        asList: StreamRenderables.usersAsList,
+        asGrid: StreamRenderables.usersAsGrid,
+      },
     },
   }
 }
