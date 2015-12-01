@@ -10,6 +10,7 @@ import { addResizeObject, removeResizeObject } from '../interface/ResizeComponen
 import { runningFetches } from '../../middleware/requester'
 
 export class StreamComponent extends React.Component {
+
   constructor(props, context) {
     super(props, context)
     this.state = { action: this.props.action, defaultMode: null }
@@ -96,6 +97,7 @@ export class StreamComponent extends React.Component {
   }
 
   onResize(resizeProps) {
+    window.columnWidth = resizeProps.columnWidth
     this.setState(resizeProps)
   }
 
@@ -107,6 +109,8 @@ export class StreamComponent extends React.Component {
     this.setState({action: action})
     this.props.dispatch(action)
   }
+
+  static columnWidth = null
 
   loadPage(rel, scrolled = false) {
     const { dispatch, json, router } = this.props

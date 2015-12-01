@@ -1,4 +1,5 @@
 import React from 'react'
+import StreamComponent from '../../streams/StreamComponent'
 
 class ImageRegion extends React.Component {
 
@@ -33,11 +34,19 @@ class ImageRegion extends React.Component {
       sizes.push(this.attachment.xhdpi.url + ' 1500w')
       sizes.push(this.attachment.optimized.url + ' 1920w')
     }
+    let height = parseInt(this.attachment.optimized.metadata.height, 10)
+    const width = parseInt(this.attachment.optimized.metadata.width, 10)
+
+    const ratio = width / height
+    height = Math.round(window.columnWidth / ratio)
+
+
     const srcset = sizes.join(', ')
     return (
       <img className="ImageRegion"
         alt={content.alt}
-        height={this.attachment.hdpi.metadata.height}
+        height={height}
+        width={window.columnWidth}
         src={this.attachment.hdpi.url}
         srcSet={srcset} />
     )

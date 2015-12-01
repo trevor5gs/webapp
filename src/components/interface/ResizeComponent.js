@@ -35,13 +35,17 @@ function getProbeProperties() {
 function getResizeProperties() {
   const wiw = window.innerWidth
   const probe = getProbeProperties()
+  const gridColumnCount = probe.gridColumnCount
+  const columnWidth = Math.round((wiw - ((gridColumnCount + 1) * 20)) / gridColumnCount)
+
   return {
     windowWidth: wiw,
     windowHeight: window.innerHeight,
     coverOffset: Math.round((wiw * 0.5625)),
     coverImageSize: getCoverImageSize(wiw),
     viewportSetting: probe.viewportSetting,
-    gridColumnCount: probe.gridColumnCount,
+    gridColumnCount: gridColumnCount,
+    columnWidth: columnWidth,
   }
 }
 
