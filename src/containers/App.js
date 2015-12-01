@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import Modal from '../components/modals/Modal'
 import Navbar from '../components/navbar/Navbar'
@@ -30,6 +31,7 @@ class App extends React.Component {
     const { pathname } = location
     return (
       <section className="App">
+        <Helmet title="Be inspired." titleTemplate="Ello | %s" />
         <main className="Main" data-pathname={pathname} role="main">
           {children}
         </main>

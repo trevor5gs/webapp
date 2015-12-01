@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 import StreamComponent from '../components/streams/StreamComponent'
 import { loadUserDetail } from '../actions/user'
 import * as MAPPING_TYPES from '../constants/mapping_types'
@@ -8,6 +9,7 @@ class UserDetail extends React.Component {
     const { params } = this.props
     return (
       <section className="UserDetail Panel">
+        <Helmet title={`${params.username}`} />
         <StreamComponent
           ref="streamComponent"
           action={loadUserDetail(`~${params.username}`)}
