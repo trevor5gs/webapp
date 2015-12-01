@@ -1,5 +1,5 @@
 import './main.sass'
-import 'babel-core/polyfill'
+import 'babel-polyfill'
 import 'isomorphic-fetch'
 
 import React from 'react'
