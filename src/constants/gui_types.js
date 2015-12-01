@@ -63,3 +63,15 @@ export const BANDEROLES = [
   },
 ]
 
+// These get set by the ResizeComponent
+export const GUI = {
+  innerWidth: null,
+  innerHeight: null,
+  columnWidth: null,
+  contentWidth: null,
+  coverOffset: null,
+  coverImageSize: null,
+  viewportSetting: null,
+  gridColumnCount: null,
+}
+
