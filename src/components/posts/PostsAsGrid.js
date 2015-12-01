@@ -9,10 +9,10 @@ class PostsAsGrid extends React.Component {
     gridColumnCount: React.PropTypes.number,
   }
 
-  renderColumn(posts) {
+  renderColumn(posts, index) {
     const { json, currentUser } = this.props
     return (
-      <div className="Column">
+      <div className="Column" key={`column_${index}`}>
         {posts.map((post) => {
           return (
             <article ref={`postGrid_${post.id}`} key={post.id} className="Post PostGrid">
@@ -38,8 +38,8 @@ class PostsAsGrid extends React.Component {
     }
     return (
       <div className="Posts asGrid">
-        {columns.map((column) => {
-          return this.renderColumn(column)
+        {columns.map((column, index) => {
+          return this.renderColumn(column, index)
         })}
       </div>
     )
