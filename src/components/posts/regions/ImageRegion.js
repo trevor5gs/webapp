@@ -28,7 +28,7 @@ class ImageRegion extends React.Component {
 
   // use the lowest of the size constraints to ensure we don't go askew, go
   // below 1:1 pixel density, or go above the desired grid cell height
-  calculateImageDimensions() {
+  getImageDimensions() {
     const metadata = this.getAttachmentMetadata()
     if (!metadata) { return metadata }
     const { isGridLayout } = this.props
@@ -45,6 +45,20 @@ class ImageRegion extends React.Component {
     }
   }
 
+  getImageSourceSet() {
+    const { isGridLayout } = this.props
+    const images = []
+    if (isGridLayout) {
+      images.push(this.attachment.mdpi.url + ' 375w')
+      images.push(this.attachment.hdpi.url + ' 1920w')
+    } else {
+      images.push(this.attachment.mdpi.url + ' 180w')
+      images.push(this.attachment.hdpi.url + ' 750w')
+      images.push(this.attachment.xhdpi.url + ' 1500w')
+      images.push(this.attachment.optimized.url + ' 1920w')
+    }
+    return images.join(', ')
+  }
 
   isGif() {
     const optimized = this.attachment.optimized
@@ -56,7 +70,7 @@ class ImageRegion extends React.Component {
 
   renderGif() {
     const { content } = this.props
-    const dimensions = this.calculateImageDimensions()
+    const dimensions = this.getImageDimensions()
     return (
       <img className="ImageRegion"
         alt={content.alt}
@@ -67,19 +81,9 @@ class ImageRegion extends React.Component {
   }
 
   renderImage() {
-    const { content, isGridLayout } = this.props
-    const sizes = []
-    if (isGridLayout) {
-      sizes.push(this.attachment.mdpi.url + ' 375w')
-      sizes.push(this.attachment.hdpi.url + ' 1920w')
-    } else {
-      sizes.push(this.attachment.mdpi.url + ' 180w')
-      sizes.push(this.attachment.hdpi.url + ' 750w')
-      sizes.push(this.attachment.xhdpi.url + ' 1500w')
-      sizes.push(this.attachment.optimized.url + ' 1920w')
-    }
-    const srcset = sizes.join(', ')
-    const dimensions = this.calculateImageDimensions()
+    const { content } = this.props
+    const srcset = this.getImageSourceSet()
+    const dimensions = this.getImageDimensions()
     return (
       <img className="ImageRegion"
         alt={content.alt}
