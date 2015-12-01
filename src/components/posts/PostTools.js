@@ -142,8 +142,8 @@ class PostTools extends React.Component {
   }
 
   sharePost() {
-    const { dispatch, post } = this.props
-    dispatch(openModal(<ShareDialog postUrl={ post.token }/>))
+    const { author, dispatch, post } = this.props
+    dispatch(openModal(<ShareDialog author={author} post={post}/>))
   }
 
   render() {
