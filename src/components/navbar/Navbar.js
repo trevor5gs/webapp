@@ -160,9 +160,9 @@ class Navbar extends React.Component {
         { showLabel ? <NavbarLabel /> : <NavbarOmniButton callback={this.omniButtonWasClicked.bind(this)} />}
         { hasLoadMoreButton ? <NavbarMorePostsButton callback={this.loadMorePostsWasClicked.bind(this)} /> : null }
         <div className="NavbarLinks">
+          <NavbarLink to="/discover" label="Discover" icon={ <SparklesIcon/> } />
           <NavbarLink to="/following" label="Following" icon={ <CircleIcon/> } />
           <NavbarLink to="/starred" label="Starred" icon={ <StarIcon/> } />
-          <NavbarLink to="/discover" label="Discover" icon={ <SparklesIcon/> } />
           <NavbarLink to="/notifications" label="Notifications" icon={ <BoltIcon/> } />
           <NavbarLink to="/search" label="Search" onClick={this.searchWasClicked.bind(this)} icon={ <SearchIcon/> } />
         </div>
