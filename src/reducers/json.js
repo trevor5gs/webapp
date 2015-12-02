@@ -152,7 +152,10 @@ function updateResult(response, newState, action, router) {
   if (!newState.pages) { newState.pages = {} }
   const result = methods.getResult(response, newState, action)
   const { resultKey } = action.meta
-  const resultPath = resultKey ? `${router.location.pathname}_${resultKey}` : router.location.pathname
+  // the action payload pathname comes from before the fetch so that
+  // we can be sure that the result is being assigned to the proper page
+  const pathname = action.payload && action.payload.pathname ? action.payload.pathname : router.location.pathname
+  const resultPath = resultKey ? `${pathname}_${resultKey}` : pathname
   const existingResult = newState.pages[resultPath]
   if (existingResult && action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
     existingResult.pagination = result.pagination
