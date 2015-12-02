@@ -1,6 +1,7 @@
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
+import useSimpleScroll from 'scroll-behavior/lib/useSimpleScroll'
 import { compose, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
 import { reduxReactRouter, routerStateReducer } from 'redux-router'
@@ -23,7 +24,7 @@ function reducer(state, action) {
 const store = compose(
   autoRehydrate(),
   applyMiddleware(thunk, uploader, requester, analytics, logger),
-  reduxReactRouter({routes: routes, createHistory: createBrowserHistory})
+  reduxReactRouter({routes: routes, createHistory: useSimpleScroll(createBrowserHistory)})
 )(createStore)(reducer, window.__INITIAL_STATE__ || {})
 
 export default store
