@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import Mousetrap from 'mousetrap'
-import { replaceState } from 'redux-router'
+import { pushState } from 'redux-router'
 import { connect } from 'react-redux'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import NavbarLabel from './NavbarLabel'
@@ -34,7 +34,7 @@ class Navbar extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props
     Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
-      dispatch(replaceState(window.history.state, this.props.shortcuts[shortcut]))
+      dispatch(pushState(window.history.state, this.props.shortcuts[shortcut]))
     })
 
     Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
