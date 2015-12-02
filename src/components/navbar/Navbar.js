@@ -188,6 +188,7 @@ Navbar.defaultProps = {
   shortcuts: {
     [SHORTCUT_KEYS.SEARCH]: '/search',
     [SHORTCUT_KEYS.DISCOVER]: '/discover',
+    [SHORTCUT_KEYS.FOLLOWING]: '/following',
     [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/communities',
   },
 }
