@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import Mousetrap from 'mousetrap'
+import { replaceState } from 'redux-router'
 import { connect } from 'react-redux'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import NavbarLabel from './NavbarLabel'
@@ -31,13 +32,13 @@ class Navbar extends React.Component {
   }
 
   componentDidMount() {
+    const { dispatch } = this.props
     Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
-      const { router } = this.context
-      router.transitionTo(this.props.shortcuts[shortcut])
+      dispatch(replaceState(window.history.state, this.props.shortcuts[shortcut]))
     })
 
     Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
-      const { dispatch, modal } = this.props
+      const { modal } = this.props
       if (modal.payload) {
         return dispatch(closeModal())
       }
@@ -45,7 +46,7 @@ class Navbar extends React.Component {
     })
 
     Mousetrap.bind(SHORTCUT_KEYS.TOGGLE_LAYOUT, () => {
-      const { dispatch, json, router } = this.props
+      const { json, router } = this.props
       let result = null
       if (json.pages) {
         result = json.pages[router.location.pathname]
