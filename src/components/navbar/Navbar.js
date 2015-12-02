@@ -153,7 +153,7 @@ class Navbar extends React.Component {
       { skipTransition: this.state.skipTransition },
     )
 
-    const result = json.pages[router.location.pathname] || null
+    const result = json.pages && router ? json.pages[router.location.pathname] : null
     const hasLoadMoreButton = result && result.newIds
 
     return (
