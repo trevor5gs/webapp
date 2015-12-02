@@ -20,9 +20,9 @@ export const BANDEROLES = [
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2548434/ello-regular-a2174f7b.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/cover_image/2548434/ello-hdpi-b0996edd.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/cover_image/2548434/ello-xhdpi-b0996edd.jpg' },
-      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/cover_image/2548434/ello-optimized-b0996edd.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/cover_image/2548434/ello-hdpi-abda0669.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/cover_image/2548434/ello-xhdpi-abda0669.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/cover_image/2548434/ello-optimized-abda0669.jpg' },
     },
   },
   {
