@@ -81,6 +81,7 @@ class Navbar extends React.Component {
   componentWillUnmount() {
     Mousetrap.unbind(Object.keys(this.props.shortcuts))
     Mousetrap.unbind(SHORTCUT_KEYS.HELP)
+    Mousetrap.unbind(SHORTCUT_KEYS.TOGGLE_LAYOUT)
     removeResizeObject(this)
     removeScrollObject(this)
   }
