@@ -13,7 +13,7 @@ export class StreamComponent extends React.Component {
 
   constructor(props, context) {
     super(props, context)
-    this.state = { action: this.props.action, defaultMode: null }
+    this.state = { action: this.props.action }
   }
 
   componentWillMount() {
