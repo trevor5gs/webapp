@@ -181,13 +181,9 @@ function updateResult(response, newState, action, router) {
       newState.pages[resultPath] = { ...existingResult, ...result }
     }
   } else if (existingResult) {
-    if (resultKey) {
-      // this keeps the pagination correct on a refresh for the lovers/reposters
-      // should probably be resetting the results here, but the more button breaks
-      newState.pages[resultPath] = { ...result, ...existingResult }
-    } else {
-      newState.pages[resultPath] = { ...existingResult, ...result }
-    }
+    // this keeps the pagination correct on a refresh
+    // should probably be resetting the results here, but the more button breaks
+    newState.pages[resultPath] = { ...result, ...existingResult }
   } else {
     newState.pages[resultPath] = result
   }
