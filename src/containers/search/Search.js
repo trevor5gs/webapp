@@ -1,15 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import StreamComponent from '../components/streams/StreamComponent'
-import SearchControl from '../components/forms/SearchControl'
+import StreamComponent from '../../components/streams/StreamComponent'
+import SearchControl from '../../components/forms/SearchControl'
 import debounce from 'lodash.debounce'
-import * as SearchActions from '../actions/search'
-import * as ACTION_TYPES from '../constants/action_types'
-import Banderole from '../components/assets/Banderole'
-import { BANDEROLES } from '../constants/gui_types'
+import * as SearchActions from '../../actions/search'
+import * as ACTION_TYPES from '../../constants/action_types'
 
-class Find extends React.Component {
+class Search extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = this.props.search
@@ -59,7 +57,6 @@ class Find extends React.Component {
     const { terms, type } = this.state
     return (
       <section className="Search Panel">
-        <Banderole userlist={ BANDEROLES } />
         <div className="SearchBar">
           <SearchControl text={terms} controlWasChanged={this.handleControlChange.bind(this)} />
           <button className={classNames('SearchFilter', { active: type === 'posts' })} onClick={() => { this.handleControlChange({ type: 'posts' }) }} >
@@ -81,7 +78,7 @@ function mapStateToProps(state) {
   }
 }
 
-Find.propTypes = {
+Search.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
   location: React.PropTypes.shape({
     query: React.PropTypes.shape({
@@ -92,5 +89,5 @@ Find.propTypes = {
   search: React.PropTypes.object.isRequired,
 }
 
-export default connect(mapStateToProps)(Find)
+export default connect(mapStateToProps)(Search)
 

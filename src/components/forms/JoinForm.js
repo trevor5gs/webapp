@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import NameControl from './NameControl'
 import EmailControl from './EmailControl'
+import PasswordControl from './PasswordControl'
 import debounce from 'lodash.debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 // import { requestInvite, validateEmail } from '../../actions/profile'
 
-class SignUpForm extends Component {
+class JoinForm extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
   }
@@ -15,6 +17,8 @@ class SignUpForm extends Component {
     this.state = {
       emailStatus: STATUS.INDETERMINATE,
       emailSuggestion: null,
+      passwordStatus: STATUS.INDETERMINATE,
+      showPasswordSuggestion: true,
     }
   }
 
@@ -43,11 +47,24 @@ class SignUpForm extends Component {
     if (!vo.email.length && emailStatus !== STATUS.INDETERMINATE) {
       return this.setState({ emailStatus: STATUS.INDETERMINATE, emailSuggestion: null })
     }
+
     if (emailStatus !== STATUS.REQUEST) {
       this.setState({ emailStatus: STATUS.REQUEST, emailSuggestion: null })
     }
     // console.log('validateEmail', vo)
     // this.props.dispatch(validateEmail(vo))
+  }
+
+  validatePassword(vo) {
+    const { passwordStatus } = this.state
+    if (!vo.password.length && passwordStatus !== STATUS.INDETERMINATE) {
+      return this.setState({ passwordStatus: STATUS.INDETERMINATE, showPasswordSuggestion: false })
+    }
+
+    const status = (/^.{8,128}$/).test(vo.password) ? STATUS.SUCCESS : STATUS.FAILURE
+    if (passwordStatus !== status) {
+      this.setState({ passwordStatus: status, showPasswordSuggestion: status !== STATUS.SUCCESS })
+    }
   }
 
   handleSubmit(e) {
@@ -57,16 +74,23 @@ class SignUpForm extends Component {
     // this.props.dispatch(requestInvite(vo))
   }
 
+  handleControlChange(vo) {
+    return vo
+    // console.log('handleControlChange', vo)
+  }
+
   render() {
-    const { emailStatus, emailSuggestion } = this.state
+    const { emailStatus, emailSuggestion, passwordStatus, showPasswordSuggestion } = this.state
     return (
-      <form id="SignUpForm" className="Dialog AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
+      <form id="JoinForm" className="Dialog AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
+        <NameControl tabIndex="1" text="Name!" controlWasChanged={this.handleControlChange.bind(this)} />
         <EmailControl tabIndex="2" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.validateEmail.bind(this)} />
-        <button className="AuthenticationButton">Sign up</button>
+        <PasswordControl tabIndex="3" status={passwordStatus} showSuggestion={showPasswordSuggestion} controlWasChanged={this.validatePassword.bind(this)} />
+        <button className="AuthenticationButton">Create Account</button>
       </form>
     )
   }
 }
 
-export default connect()(SignUpForm)
+export default connect()(JoinForm)
 

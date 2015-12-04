@@ -1,17 +1,17 @@
 export default [
   {
-    path: 'search',
+    path: 'following',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/search/Search'))
+      cb(null, require('../../containers/streams/Following'))
       // })
     },
   },
   {
-    path: 'find',
+    path: 'starred',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/search/Find'))
+      cb(null, require('../../containers/streams/Starred'))
       // })
     },
   },

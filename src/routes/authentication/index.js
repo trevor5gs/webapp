@@ -1,18 +1,19 @@
 export default [
   {
-    path: 'search',
+    path: 'enter',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/search/Search'))
+      cb(null, require('../../containers/authentication/SignIn'))
       // })
     },
   },
   {
-    path: 'find',
+    path: 'join',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/search/Find'))
+      cb(null, require('../../containers/authentication/Join'))
       // })
     },
   },
 ]
+
