@@ -83,6 +83,12 @@ function mapStateToProps(state) {
 
 Find.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
+  location: React.PropTypes.shape({
+    query: React.PropTypes.shape({
+      terms: React.PropTypes.string,
+      type: React.PropTypes.string,
+    }).isRequired,
+  }).isRequired,
   search: React.PropTypes.object.isRequired,
 }
 
