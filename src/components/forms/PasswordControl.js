@@ -52,13 +52,13 @@ class PasswordControl extends React.Component {
   mapStatusToClass() {
     const { status } = this.props
     switch (status) {
-    case STATUS.FAILURE:
-      return 'isFailing'
-    case STATUS.SUCCESS:
-      return 'isSucceeding'
-    case STATUS.INDETERMINATE:
-    default:
-      return 'isIndeterminate'
+      case STATUS.FAILURE:
+        return 'isFailing'
+      case STATUS.SUCCESS:
+        return 'isSucceeding'
+      case STATUS.INDETERMINATE:
+      default:
+        return 'isIndeterminate'
     }
   }
 
