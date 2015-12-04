@@ -1,6 +1,6 @@
 import React from 'react'
-import StreamComponent from '../components/streams/StreamComponent'
-import { loadFriends } from '../actions/stream'
+import StreamComponent from '../../components/streams/StreamComponent'
+import { loadFriends } from '../../actions/stream'
 
 class Following extends React.Component {
   render() {

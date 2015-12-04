@@ -1,7 +1,7 @@
 import React from 'react'
-import FilterBar from '../components/filters/FilterBar'
-import StreamComponent from '../components/streams/StreamComponent'
-import { loadDiscoverUsers, loadCommunities, loadFeaturedUsers } from '../actions/discover'
+import FilterBar from '../../components/filters/FilterBar'
+import StreamComponent from '../../components/streams/StreamComponent'
+import { loadDiscoverUsers, loadCommunities, loadFeaturedUsers } from '../../actions/discover'
 
 class Discover extends React.Component {
 

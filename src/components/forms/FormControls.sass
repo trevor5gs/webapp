@@ -4,7 +4,7 @@
 
 .FormControl
   +sans-typeset
-  transition: border-color $speed $ease, color $speed $ease, width $speed $ease, height $speed $ease
+  transition: border-color $speed $ease, background-color $speed $ease, color $speed $ease, width $speed $ease, height $speed $ease
   display: inline-block
   vertical-align: baseline
   width: 100%
@@ -14,13 +14,15 @@
   border-bottom: 1px solid #aaa
   color: black
   &:focus
-    border-bottom-color: black
+    border-color: black
     outline: 0
   &::placeholder
     color: #aaa
 
 .hasValue > .FormControl
-  border-bottom-color: black
+  border-color: black
+.isFailing > .FormControl
+  border-color: $danger
 
 textarea.FormControl
   min-height: 0
@@ -36,6 +38,7 @@ textarea.FormControl
   .hasFocus > textarea.FormControl
     height: rem(85)
 
+// -------------------------------------
 
 .FormControlLabel
   +sans-typeset
@@ -48,14 +51,67 @@ textarea.FormControl
   color: #aaa
   opacity: 0
 
+.isFailing > .FormControlLabel,
 .hasFocus.hasValue > .FormControlLabel
   opacity: 1
   transform: translate3d(0,rem(10),0)
 
+.isFailing > .FormControlLabel
+  color: $danger !important
+
 .hasExceeded.hasValue > .FormControlLabel
   color: $danger
 
-.NameControl
-  +sans-bold-family
-  font-size: 1rem
+// -------------------------------------
+
+.FormFeedback
+  transition: height $speed $ease
+  overflow: hidden
+  height: 0
+  margin: 0
+
+.FormFeedback > span:first-of-type
+  display: inline-block
+  margin-top: rem(10)
+
+.isFailing > .FormFeedbackError,
+.hasFocus.hasSuggestions > .FormFeedbackSuggestions
+  height: rem(60)
+
+
+@media(min-width: #{$break-2})
+  .FormFeedback
+    position: absolute
+    top: 0
+    left: rem(330)
+    width: rem(280)
+  .FormFeedback > span:first-of-type
+    margin-top: 0
+  .isFailing > .FormFeedbackError
+    height: rem(60)
+  .isFailing.hasFocus.hasSuggestions > .FormFeedbackError
+    height: 0
+
+// -------------------------------------
+
+.FormStatus
+  transition: opacity $speed2
+  position: absolute
+  top: rem(15)
+  right: rem(10)
+.FormStatus:empty
+  opacity: 0
+
+.FormStatus > .SVGIcon > g
+  stroke-width: 2
+
+.FormStatus > .RequestIcon > g
+  fill: #aaa
+
+.FormStatus > .SuccessIcon > g
+  stroke-linejoin: bevel
+  stroke: $success
+
+.FormStatus > .FailureIcon > g
+  stroke: $danger
 

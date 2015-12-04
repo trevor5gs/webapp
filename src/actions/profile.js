@@ -27,7 +27,29 @@ export function savePreferences() {
 export function validateUsername() {
 }
 
-export function validateEmail() {
+export function requestInvite(vo) {
+  const body = { email: [vo.email] }
+  return {
+    type: PROFILE.VALIDATE_EMAIL,
+    meta: {},
+    payload: {
+      method: 'POST',
+      body: JSON.stringify(body),
+      endpoint: api.invite(),
+    },
+  }
+}
+
+export function validateEmail(vo) {
+  return {
+    type: PROFILE.VALIDATE_EMAIL,
+    meta: {},
+    payload: {
+      method: 'POST',
+      body: JSON.stringify(vo),
+      endpoint: api.availability(vo),
+    },
+  }
 }
 
 export function uploadAsset(type, file) {

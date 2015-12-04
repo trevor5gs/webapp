@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import Hint from '../hints/Hint'
 import { openModal } from '../../actions/modals'
 import ShareDialog from '../dialogs/ShareDialog'
+import SignUpForm from '../forms/SignUpForm'
 import * as PostActions from '../../actions/posts'
 import {
   BubbleIcon,
@@ -64,7 +65,7 @@ class PostTools extends React.Component {
     if (author.hasRepostingEnabled) {
       cells.push(
         <span className="PostTool RepostTool" key={`RepostTool_${post.id}`}>
-          <button>
+          <button onClick={ this.signUp.bind(this) }>
             <RepostIcon />
             <span className="PostToolValue" data-count={post.repostsCount}>{post.repostsCount}</span>
             <Hint>Repost</Hint>
@@ -144,6 +145,11 @@ class PostTools extends React.Component {
   sharePost() {
     const { author, dispatch, post } = this.props
     dispatch(openModal(<ShareDialog author={author} post={post}/>))
+  }
+
+  signUp() {
+    const { dispatch } = this.props
+    dispatch(openModal(<SignUpForm />))
   }
 
   render() {

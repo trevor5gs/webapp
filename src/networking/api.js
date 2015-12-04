@@ -152,6 +152,20 @@ export function notifications(params = {}) {
   }
 }
 
+// AVAILABILITY
+export function availability(vo) {
+  return {
+    path: getAPIPath('availability', vo),
+  }
+}
+
+// INVITE
+export function invite() {
+  return {
+    path: getAPIPath('invitations'),
+  }
+}
+
 // this is only used server side since the initial
 // page loads don't have access to ENV
 export function setDomain(domain) {

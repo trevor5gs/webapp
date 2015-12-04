@@ -1,8 +1,8 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import StreamComponent from '../components/streams/StreamComponent'
-import { loadPostDetail } from '../actions/posts'
-import * as MAPPING_TYPES from '../constants/mapping_types'
+import StreamComponent from '../../components/streams/StreamComponent'
+import { loadPostDetail } from '../../actions/posts'
+import * as MAPPING_TYPES from '../../constants/mapping_types'
 
 class PostDetail extends React.Component {
   render() {
