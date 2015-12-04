@@ -6,7 +6,7 @@ import * as api from '../networking/api'
 export function searchForPosts(terms) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.searchPosts({ terms: terms, per_page: api.PER_PAGE }) },
+    payload: { endpoint: api.searchPosts({ terms: window.encodeURIComponent(terms), per_page: api.PER_PAGE }) },
     meta: {
       defaultMode: 'grid',
       mappingType: MAPPING_TYPES.POSTS,
@@ -21,7 +21,7 @@ export function searchForPosts(terms) {
 export function searchForUsers(terms) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.searchUsers({ terms: terms, per_page: api.PER_PAGE }) },
+    payload: { endpoint: api.searchUsers({ terms: window.encodeURIComponent(terms), per_page: api.PER_PAGE }) },
     meta: {
       defaultMode: 'grid',
       mappingType: MAPPING_TYPES.USERS,
