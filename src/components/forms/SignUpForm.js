@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import NameControl from './NameControl'
 import EmailControl from './EmailControl'
+import PasswordControl from './PasswordControl'
 import debounce from 'lodash.debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 // import { requestInvite, validateEmail } from '../../actions/profile'
@@ -10,14 +11,17 @@ class SignUpForm extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      emailStatus: STATUS.FAILURE,
+      emailStatus: STATUS.INDETERMINATE,
       emailSuggestion: null,
+      passwordStatus: STATUS.INDETERMINATE,
+      showPasswordSuggestion: true,
     }
   }
 
   componentWillMount() {
-    this.validateEmailForm = debounce(this.validateEmailForm, 500)
+    this.validateEmail = debounce(this.validateEmail, 500)
   }
+
 
   // Todo: Needs to be wired up still
   onValidateEmailResponse(json) {
@@ -35,15 +39,31 @@ class SignUpForm extends React.Component {
     }
   }
 
-  validateEmailForm(vo) {
+  validateEmail(vo) {
     const { emailStatus } = this.state
-    if (emailStatus !== 'isValidating') {
-      this.setState({ emailStatus: 'isValidating', emailSuggestion: null })
+
+    if (!vo.email.length && emailStatus !== STATUS.INDETERMINATE) {
+      return this.setState({ emailStatus: STATUS.INDETERMINATE, emailSuggestion: null })
+    }
+
+    if (emailStatus !== STATUS.REQUEST) {
+      this.setState({ emailStatus: STATUS.REQUEST, emailSuggestion: null })
     }
     console.log('validateEmail', vo)
     // this.props.dispatch(validateEmail(vo))
   }
 
+  validatePassword(vo) {
+    const { passwordStatus } = this.state
+    if (!vo.password.length && passwordStatus !== STATUS.INDETERMINATE) {
+      return this.setState({ passwordStatus: STATUS.INDETERMINATE, showPasswordSuggestion: false })
+    }
+
+    const status = (/^.{8,128}$/).test(vo.password) ? STATUS.SUCCESS : STATUS.FAILURE
+    if (passwordStatus !== status) {
+      this.setState({ passwordStatus: status, showPasswordSuggestion: status !== STATUS.SUCCESS })
+    }
+  }
 
   handleSubmit(e) {
     e.preventDefault()
@@ -57,11 +77,12 @@ class SignUpForm extends React.Component {
   }
 
   render() {
-    const { emailStatus, emailSuggestion } = this.state
+    const { emailStatus, emailSuggestion, passwordStatus, showPasswordSuggestion } = this.state
     return (
       <form id="SignUpForm" className="Dialog AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
         <NameControl tabIndex="1" text="Name!" controlWasChanged={this.handleControlChange.bind(this)} />
-        <EmailControl tabIndex="2" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.validateEmailForm.bind(this)} />
+        <EmailControl tabIndex="2" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.validateEmail.bind(this)} />
+        <PasswordControl tabIndex="3" status={passwordStatus} showSuggestion={showPasswordSuggestion} controlWasChanged={this.validatePassword.bind(this)} />
         <button className="AuthenticationButton">Create Account</button>
       </form>
     )

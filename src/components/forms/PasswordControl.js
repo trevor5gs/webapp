@@ -1,9 +1,9 @@
 import React from 'react'
 import classNames from 'classnames'
-import { RequestIcon, SuccessIcon, FailureIcon } from './FormIcons'
+import { SuccessIcon, FailureIcon } from './FormIcons'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 
-class EmailControl extends React.Component {
+class PasswordControl extends React.Component {
 
   static propTypes = {
     controlWasChanged: React.PropTypes.func.isRequired,
@@ -13,16 +13,16 @@ class EmailControl extends React.Component {
     tabIndex: React.PropTypes.string.isRequired,
     text: React.PropTypes.string,
     status: React.PropTypes.string,
-    suggestions: React.PropTypes.string,
+    showSuggestion: React.PropTypes.any,
   }
 
   static defaultProps = {
-    id: 'user_email',
-    name: 'user[email]',
-    placeholder: 'Email',
+    id: 'user_password',
+    name: 'user[password]',
+    placeholder: 'Password',
     tabIndex: 0,
     status: STATUS.INDETERMINATE,
-    suggestions: null,
+    showSuggestion: true,
   }
 
   constructor(props, context) {
@@ -46,14 +46,12 @@ class EmailControl extends React.Component {
   handleChange(e) {
     const val = e.target.value
     this.setState({ text: val, hasValue: val.length })
-    this.props.controlWasChanged({ email: e.target.value })
+    this.props.controlWasChanged({ password: e.target.value })
   }
 
   mapStatusToClass() {
     const { status } = this.props
     switch (status) {
-    case STATUS.REQUEST:
-      return 'isValidating'
     case STATUS.FAILURE:
       return 'isFailing'
     case STATUS.SUCCESS:
@@ -69,16 +67,15 @@ class EmailControl extends React.Component {
   renderError() {
     return (
       <p className="FormFeedback FormFeedbackError">
-        <span>That email is invalid.<br/>Please try again.</span>
+        <span>Password must contain at least 8 characters.</span>
       </p>
     )
   }
 
   renderSuggestions() {
-    const { suggestions } = this.props
     return (
       <p className="FormFeedback FormFeedbackSuggestions">
-        <span>Did you mean<br/>{suggestions}?</span>
+        <span>At least 8 characters.</span>
       </p>
     )
   }
@@ -86,9 +83,7 @@ class EmailControl extends React.Component {
   renderStatus() {
     const { status } = this.props
     let icon = null
-    if (status === STATUS.REQUEST) {
-      icon = <RequestIcon/>
-    } else if (status === STATUS.FAILURE) {
+    if (status === STATUS.FAILURE) {
       icon = <FailureIcon/>
     } else if (status === STATUS.SUCCESS) {
       icon = <SuccessIcon/>
@@ -101,25 +96,25 @@ class EmailControl extends React.Component {
   }
 
   render() {
-    const { id, name, tabIndex, placeholder, suggestions } = this.props
+    const { id, name, tabIndex, placeholder, showSuggestion } = this.props
     const { hasFocus, hasValue, text } = this.state
     const groupClassNames = classNames(
       'FormControlGroup',
       this.mapStatusToClass(),
       { hasFocus: hasFocus },
       { hasValue: hasValue },
-      { hasSuggestions: suggestions && suggestions.length },
+      { hasSuggestions: showSuggestion },
     )
 
     return (
       <div className={groupClassNames}>
-        <label className="FormControlLabel" htmlFor={id}>Email</label>
+        <label className="FormControlLabel" htmlFor={id}>Password</label>
         <input
-          className="FormControl EmailControl"
+          className="FormControl PasswordControl"
           id={id}
           name={name}
           value={text}
-          type="email"
+          type="password"
           tabIndex={tabIndex}
           placeholder={placeholder}
           autoCapitalize="off"
@@ -135,5 +130,5 @@ class EmailControl extends React.Component {
   }
 }
 
-export default EmailControl
+export default PasswordControl
 
