@@ -11,6 +11,14 @@ class Search extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = this.props.search
+    const terms = props.location.query.terms
+    const type = props.location.query.type
+    if (terms) {
+      this.state.terms = terms
+    }
+    if (type && (type === 'users' || type === 'posts')) {
+      this.state.type = type
+    }
   }
 
   componentWillMount() {
@@ -72,6 +80,12 @@ function mapStateToProps(state) {
 
 Search.propTypes = {
   dispatch: React.PropTypes.func.isRequired,
+  location: React.PropTypes.shape({
+    query: React.PropTypes.shape({
+      terms: React.PropTypes.string,
+      type: React.PropTypes.string,
+    }).isRequired,
+  }).isRequired,
   search: React.PropTypes.object.isRequired,
 }
 
