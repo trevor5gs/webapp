@@ -6,15 +6,15 @@ class NavbarMark extends React.Component {
 
   renderMark() {
     switch (ENV.LOGO_MARK) {
-    case 'rainbow':
-      return <ElloRainbowMark />
-    case 'donut':
-      return <ElloDonutMark />
-    case 'none':
-      return null
-    case 'normal':
-    default:
-      return <ElloMark />
+      case 'rainbow':
+        return <ElloRainbowMark />
+      case 'donut':
+        return <ElloDonutMark />
+      case 'none':
+        return null
+      case 'normal':
+      default:
+        return <ElloMark />
     }
   }
 

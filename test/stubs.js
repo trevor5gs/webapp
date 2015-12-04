@@ -112,12 +112,12 @@ function stubPost(properties) {
 
 export function stub(model, properties) {
   switch (model.toLowerCase()) {
-  case 'post':
-    return stubPost(properties)
-  case 'user':
-    return stubUser(properties)
-  default:
-    return null
+    case 'post':
+      return stubPost(properties)
+    case 'user':
+      return stubUser(properties)
+    default:
+      return null
   }
 }
 

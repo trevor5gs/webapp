@@ -105,7 +105,7 @@ export class StreamComponent extends React.Component {
   }
 
   setAction(action) {
-    this.setState({action: action})
+    this.setState({ action: action })
     this.props.dispatch(action)
   }
 

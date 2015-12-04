@@ -189,7 +189,7 @@ describe('json reducer', () => {
     })
 
     it('concats the existing result ids to the newIds and deletes the old newIds', () => {
-      json.pages = { sweetpath: { newIds: ['1', '2', '3'], ids: ['10', '20', '30']} }
+      json.pages = { sweetpath: { newIds: ['1', '2', '3'], ids: ['10', '20', '30'] } }
       subject.methods.addNewIdsToResult({}, json, { location: { pathname: 'sweetpath' } })
       expect(json.pages.sweetpath.newIds).to.be.undefined
       expect(json.pages.sweetpath.ids).to.deep.equal(['1', '2', '3', '10', '20', '30'])
@@ -203,8 +203,8 @@ describe('json reducer', () => {
 
     it('parses linked node', () => {
       const linked = {}
-      linked.assets = [ { id: 'sup' }, { id: 'dawg' } ]
-      linked.users = [ { id: 'yo', username: 'yo' }, { id: 'mama', username: 'mama' } ]
+      linked.assets = [{ id: 'sup' }, { id: 'dawg' }]
+      linked.users = [{ id: 'yo', username: 'yo' }, { id: 'mama', username: 'mama' }]
       expect(json.assets).to.be.undefined
       expect(json.users.yo).to.be.undefined
       expect(json.users.mama).to.be.undefined
@@ -218,7 +218,7 @@ describe('json reducer', () => {
 
   describe('#getResult', () => {
     it('returns the filtered result if a #resultFilter is specified', () => {
-      const response = { users: [ { id: 'yo', username: 'yo' }, { id: 'mama', username: 'mama' } ] }
+      const response = { users: [{ id: 'yo', username: 'yo' }, { id: 'mama', username: 'mama' }] }
       const action = { meta: {} }
       action.meta.mappingType = MAPPING_TYPES.USERS
       action.payload = { pagination: '' }
@@ -228,7 +228,7 @@ describe('json reducer', () => {
     })
 
     it('returns the correct result', () => {
-      const response = { users: [ { id: 'yo', username: 'yo' }, { id: 'mama', username: 'mama' } ] }
+      const response = { users: [{ id: 'yo', username: 'yo' }, { id: 'mama', username: 'mama' }] }
       const action = { meta: {} }
       action.meta.mappingType = MAPPING_TYPES.USERS
       action.payload = { pagination: '' }

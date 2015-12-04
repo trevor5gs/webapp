@@ -15,4 +15,3 @@ Hint.propTypes = {
 
 export default Hint
 
-

@@ -120,7 +120,7 @@ class Navbar extends React.Component {
       const distance = Math.abs(scrollY - this.scrollYAtDirectionChange)
       const delay = scrollDirection === 'down' ? 20 : 80
 
-      if (distance >= delay ) {
+      if (distance >= delay) {
         this.setState({ asHidden: scrollDirection === 'down', skipTransition: false })
         this.scrollYAtDirectionChange = null
       }

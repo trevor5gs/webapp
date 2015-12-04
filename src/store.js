@@ -24,7 +24,7 @@ function reducer(state, action) {
 const store = compose(
   autoRehydrate(),
   applyMiddleware(thunk, uploader, requester, analytics, logger),
-  reduxReactRouter({routes: routes, createHistory: useSimpleScroll(createBrowserHistory)})
+  reduxReactRouter({ routes: routes, createHistory: useSimpleScroll(createBrowserHistory) })
 )(createStore)(reducer, window.__INITIAL_STATE__ || {})
 
 export default store

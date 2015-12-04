@@ -50,13 +50,13 @@ class Onboarding extends React.Component {
     for (const id of result.ids) {
       const model = json[result.type][id]
       switch (model.relationshipPriority) {
-      case 'friend':
-      case 'noise':
-        relationshipMap.following.push(model)
-        break
-      default:
-        relationshipMap.inactive.push(model)
-        break
+        case 'friend':
+        case 'noise':
+          relationshipMap.following.push(model)
+          break
+        default:
+          relationshipMap.inactive.push(model)
+          break
       }
     }
     return relationshipMap
@@ -73,108 +73,108 @@ class Onboarding extends React.Component {
 
 
     switch (subComponentName) {
-    case 'CommunityPicker':
-      rm = this.getRelationshipMap()
-      return (
-        <section className="CommunityPicker Panel">
-          <OnboardingHeader
-            relationshipMap={this.getRelationshipMap()}
-            nextPath="/onboarding/awesome-people"
-            trackingLabel="community-picker"
-            batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
-            lockNext
-            title="What are you interested in?"
-            message="Follow the Ello Communities that you find most inspiring." />
-          <CommunityPicker
-            shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
-            relationshipMap={rm} />
-        </section>
-      )
+      case 'CommunityPicker':
+        rm = this.getRelationshipMap()
+        return (
+          <section className="CommunityPicker Panel">
+            <OnboardingHeader
+              relationshipMap={this.getRelationshipMap()}
+              nextPath="/onboarding/awesome-people"
+              trackingLabel="community-picker"
+              batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
+              lockNext
+              title="What are you interested in?"
+              message="Follow the Ello Communities that you find most inspiring." />
+            <CommunityPicker
+              shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
+              relationshipMap={rm} />
+          </section>
+        )
 
-    case 'PeoplePicker':
-      rm = this.getRelationshipMap()
-      return (
-        <section className="PeoplePicker Panel">
-          <OnboardingHeader
-            relationshipMap={rm}
-            nextPath="/onboarding/profile-header"
-            trackingLabel="people-picker"
-            batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
-            title="Follow some awesome people."
-            message="Ello is full of interesting and creative people committed to building a positive community." />
-          <PeoplePicker
-            shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
-            relationshipMap={rm} />
-        </section>
-      )
+      case 'PeoplePicker':
+        rm = this.getRelationshipMap()
+        return (
+          <section className="PeoplePicker Panel">
+            <OnboardingHeader
+              relationshipMap={rm}
+              nextPath="/onboarding/profile-header"
+              trackingLabel="people-picker"
+              batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
+              title="Follow some awesome people."
+              message="Ello is full of interesting and creative people committed to building a positive community." />
+            <PeoplePicker
+              shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
+              relationshipMap={rm} />
+          </section>
+        )
 
-    case 'CoverPicker':
-      return (
-        <section className="CoverPicker Panel">
-          <OnboardingHeader
-              nextPath="/onboarding/profile-avatar"
-              trackingLabel="cover-picker"
-              title="Customize your profile."
-              message="Choose a header image." />
+      case 'CoverPicker':
+        return (
+          <section className="CoverPicker Panel">
+            <OnboardingHeader
+                nextPath="/onboarding/profile-avatar"
+                trackingLabel="cover-picker"
+                title="Customize your profile."
+                message="Choose a header image." />
 
-          <Uploader
-            title="Upload a header image"
-            message="Or drag & drop"
-            recommend="Recommended image size: 2560 x 1440"
-            openAlert={ bindActionCreators(openAlert, dispatch) }
-            saveAction={ bindActionCreators(saveCover, dispatch) }/>
-          <Cover
-            isModifiable
-            coverImage={this.getCoverSource(profile)} />
-        </section>
-      )
-
-    case 'AvatarPicker':
-      return (
-        <section className="AvatarPicker Panel">
-          <OnboardingHeader
-              nextPath="/onboarding/profile-bio"
-              trackingLabel="avatar-picker"
-              title="Customize your profile."
-              message="Choose an avatar." />
-
-          <div className="AvatarPickerBody" >
             <Uploader
-              title="Pick an Avatar"
-              message="Or drag & drop it"
-              recommend="Recommended image size: 360 x 360"
+              title="Upload a header image"
+              message="Or drag & drop"
+              recommend="Recommended image size: 2560 x 1440"
               openAlert={ bindActionCreators(openAlert, dispatch) }
-              saveAction={ bindActionCreators(saveAvatar, dispatch) }/>
-            <Avatar
+              saveAction={ bindActionCreators(saveCover, dispatch) }/>
+            <Cover
               isModifiable
-              sources={this.getAvatarSource(profile)} />
-          </div>
-          <Cover
-            coverImage={this.getCoverSource(profile)} />
-        </section>
-      )
+              coverImage={this.getCoverSource(profile)} />
+          </section>
+        )
 
-    case 'InfoPicker':
-      return (
-        <section className="InfoPicker Panel">
-          <OnboardingHeader
-              redirection
-              nextPath={ENV.REDIRECT_URI}
-              trackingLabel="info-picker"
-              title="Customize your profile."
-              message="Fill out your bio." />
+      case 'AvatarPicker':
+        return (
+          <section className="AvatarPicker Panel">
+            <OnboardingHeader
+                nextPath="/onboarding/profile-bio"
+                trackingLabel="avatar-picker"
+                title="Customize your profile."
+                message="Choose an avatar." />
 
-          <div className="InfoPickerBody" >
-            <Avatar sources={this.getAvatarSource(profile)} />
-            <InfoForm />
-          </div>
-          <Cover
-            coverImage={this.getCoverSource(profile)} />
-        </section>
-      )
+            <div className="AvatarPickerBody" >
+              <Uploader
+                title="Pick an Avatar"
+                message="Or drag & drop it"
+                recommend="Recommended image size: 360 x 360"
+                openAlert={ bindActionCreators(openAlert, dispatch) }
+                saveAction={ bindActionCreators(saveAvatar, dispatch) }/>
+              <Avatar
+                isModifiable
+                sources={this.getAvatarSource(profile)} />
+            </div>
+            <Cover
+              coverImage={this.getCoverSource(profile)} />
+          </section>
+        )
 
-    default:
-      return null
+      case 'InfoPicker':
+        return (
+          <section className="InfoPicker Panel">
+            <OnboardingHeader
+                redirection
+                nextPath={ENV.REDIRECT_URI}
+                trackingLabel="info-picker"
+                title="Customize your profile."
+                message="Fill out your bio." />
+
+            <div className="InfoPickerBody" >
+              <Avatar sources={this.getAvatarSource(profile)} />
+              <InfoForm />
+            </div>
+            <Cover
+              coverImage={this.getCoverSource(profile)} />
+          </section>
+        )
+
+      default:
+        return null
     }
   }
 }

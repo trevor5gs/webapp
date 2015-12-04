@@ -5,7 +5,7 @@ import Avatar from '../assets/Avatar'
 class NavbarProfile extends React.Component {
 
   render() {
-    const { avatar, username} = this.props
+    const { avatar, username } = this.props
     if (avatar && username) {
       return (
         <span className="NavbarProfile">

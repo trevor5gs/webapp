@@ -8,7 +8,7 @@ class PeoplePicker extends Picker {
 
   render() {
     return (
-      <div className={classNames('PeoplePicker', 'Panel', {isFollowingAll: this.isFollowingAll()})}>
+      <div className={classNames('PeoplePicker', 'Panel', { isFollowingAll: this.isFollowingAll() })}>
         <button className="PickerButton" ref="followAllButton" onClick={() => this.followAll()}>
           <span>{this.renderBigButtonText()}</span>
         </button>

@@ -70,7 +70,7 @@ export function userDetail(users, json, currentUser) {
     <div className="UserDetails">
       <Cover coverImage={user.coverImage} />
       <UserList ref={'UserList_' + user.id} user={user} key={user.id} />
-      {postsAsList({data: posts, nestedData: []}, json, currentUser)}
+      {postsAsList({ data: posts, nestedData: [] }, json, currentUser)}
     </div>
   )
 }

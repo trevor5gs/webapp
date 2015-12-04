@@ -49,7 +49,7 @@ function textRegion(region, key) {
   return (
     <div key={key}
       className="TextRegion"
-      dangerouslySetInnerHTML={{__html: region.data}} />
+      dangerouslySetInnerHTML={{ __html: region.data }} />
   )
 }
 
@@ -79,14 +79,14 @@ function regionItems(content, only = null, isGridLayout) {
   return content.map((region, i) => {
     if (!only || only === region.kind) {
       switch (region.kind) {
-      case 'text':
-        return textRegion(region, `TextRegion_${i}`)
-      case 'image':
-        return imageRegion(region, `ImageRegion_${i}`, isGridLayout)
-      case 'embed':
-        return embedRegion(region, `EmbedRegion_${i}`)
-      default:
-        throw new Error(`UNKNOWN REGION: ${region.kind}`)
+        case 'text':
+          return textRegion(region, `TextRegion_${i}`)
+        case 'image':
+          return imageRegion(region, `ImageRegion_${i}`, isGridLayout)
+        case 'embed':
+          return embedRegion(region, `EmbedRegion_${i}`)
+        default:
+          throw new Error(`UNKNOWN REGION: ${region.kind}`)
       }
     }
   })

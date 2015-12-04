@@ -49,8 +49,8 @@ describe('api.js', () => {
 
 
   it('#commentsForPost', () => {
-    expect(api.commentsForPost({id: 'suck_it'}).path).to.match(/\/posts\/suck_it\/comments\?/)
-    expect(api.commentsForPost({id: 'suck_it'}).pagingPath).to.be.undefined
+    expect(api.commentsForPost({ id: 'what' }).path).to.match(/\/posts\/what\/comments\?/)
+    expect(api.commentsForPost({ id: 'what' }).pagingPath).to.be.undefined
   })
 
   it('#userDetail', () => {

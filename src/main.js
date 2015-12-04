@@ -15,7 +15,7 @@ import * as ACTION_TYPES from './constants/action_types'
 import './vendor/embetter'
 import './vendor/embetter_initializer'
 
-updateTimeAgoStrings({about: ''})
+updateTimeAgoStrings({ about: '' })
 
 const element = (
   <Provider store={store}>

@@ -8,7 +8,7 @@ class CommunityPicker extends Picker {
 
   render() {
     return (
-      <div className={classNames('CommunityPicker', 'Panel', {isFollowingAll: this.isFollowingAll()})}>
+      <div className={classNames('CommunityPicker', 'Panel', { isFollowingAll: this.isFollowingAll() })}>
         <button className="PickerButton" ref="followAllButton" onClick={() => this.followAll()}>
           <span>{this.renderBigButtonText()}</span>
         </button>

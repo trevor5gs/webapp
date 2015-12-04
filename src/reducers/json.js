@@ -46,13 +46,13 @@ function updateRelationship(newState, action) {
   const { mappingType } = action.meta
   let followersCount = parseInt(newState[mappingType][userId].followersCount, 10)
   switch (priority) {
-  case RELATIONSHIP_PRIORITY.FRIEND:
-  case RELATIONSHIP_PRIORITY.NOISE:
-    followersCount += 1
-    break
-  default:
-    followersCount -= 1
-    break
+    case RELATIONSHIP_PRIORITY.FRIEND:
+    case RELATIONSHIP_PRIORITY.NOISE:
+      followersCount += 1
+      break
+    default:
+      followersCount -= 1
+      break
   }
   // TODO: update the current user's followingCount +1 (this might happen in the profile reducer)
   // TODO: if the priority changes to MUTE or BLOCK we should remove this user from the store
@@ -68,26 +68,26 @@ function updatePostLoves(state, newState, action) {
   let delta = 0
   let loved = false
   switch (action.type) {
-  case ACTION_TYPES.POST.LOVE_REQUEST:
-    if (method === 'DELETE') {
-      delta = -1
-      loved = false
-    } else {
-      delta = 1
-      loved = true
-    }
-    break
-  case ACTION_TYPES.POST.LOVE_FAILURE:
-    if (method === 'POST') {
-      delta = -1
-      loved = false
-    } else {
-      delta = 1
-      loved = true
-    }
-    break
-  default:
-    return state
+    case ACTION_TYPES.POST.LOVE_REQUEST:
+      if (method === 'DELETE') {
+        delta = -1
+        loved = false
+      } else {
+        delta = 1
+        loved = true
+      }
+      break
+    case ACTION_TYPES.POST.LOVE_FAILURE:
+      if (method === 'POST') {
+        delta = -1
+        loved = false
+      } else {
+        delta = 1
+        loved = true
+      }
+      break
+    default:
+      return state
   }
   methods.mergeModel(newState, MAPPING_TYPES.POSTS, { id: model.id, lovesCount: Number(model.lovesCount) + delta, loved: loved })
   return newState
@@ -205,11 +205,11 @@ export default function json(state = {}, action = { type: '' }, router) {
   }
   // whitelist actions
   switch (action.type) {
-  case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
-  case ACTION_TYPES.LOAD_STREAM_SUCCESS:
-    break
-  default:
-    return state
+    case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
+    case ACTION_TYPES.LOAD_STREAM_SUCCESS:
+      break
+    default:
+      return state
   }
   const { response } = action.payload
   if (!response) { return state }

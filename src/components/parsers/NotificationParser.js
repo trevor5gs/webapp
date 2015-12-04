@@ -270,46 +270,46 @@ export function parseNotification(notification, json) {
   const createdAt = notification.createdAt
   const subject = getLinkObject(notification, `subject`, json)
   switch (notification.kind) {
-  case NOTIFICATION_KIND.COMMENT:
-    cells.push(commentNotification(subject, createdAt))
-    break
-  case NOTIFICATION_KIND.COMMENT_MENTION:
-    cells.push(commentMentionNotification(subject, createdAt))
-    break
-  case NOTIFICATION_KIND.COMMENT_ORIGINAL:
-    cells.push(commentOnOriginalPostNotification(subject, createdAt))
-    break
-  case NOTIFICATION_KIND.COMMENT_REPOST:
-    cells.push(commentOnRepostNotification(subject, createdAt))
-    break
-  case NOTIFICATION_KIND.INVITATION_ACCEPTED:
-    cells.push(invitationAcceptedNotification(subject, createdAt))
-    break
-  case NOTIFICATION_KIND.LOVE:
-    cells.push(loveNotification(subject, createdAt))
-    break
-  case NOTIFICATION_KIND.LOVE_ORIGINAL:
-    cells.push(loveOnOriginalPostNotification(subject, createdAt))
-    break
-  case NOTIFICATION_KIND.LOVE_REPOST:
-    cells.push(loveOnRepostNotification(subject, createdAt))
-    break
-  case NOTIFICATION_KIND.NEW_FOLLOWER:
-    cells.push(newFollowerPost(subject, createdAt))
-    break
-  case NOTIFICATION_KIND.NEW_FOLLOWED_USER:
-    cells.push(newFollowedUserPost(subject, createdAt))
-    break
-  case NOTIFICATION_KIND.POST_MENTION:
-    cells.push(postMentionNotification(subject, createdAt))
-    break
-  case NOTIFICATION_KIND.REPOST:
-    cells.push(repostNotification(subject, createdAt))
-    break
-  case NOTIFICATION_KIND.WELCOME:
-    return <div>Welcome to Ello!</div>
-  default:
-    return null
+    case NOTIFICATION_KIND.COMMENT:
+      cells.push(commentNotification(subject, createdAt))
+      break
+    case NOTIFICATION_KIND.COMMENT_MENTION:
+      cells.push(commentMentionNotification(subject, createdAt))
+      break
+    case NOTIFICATION_KIND.COMMENT_ORIGINAL:
+      cells.push(commentOnOriginalPostNotification(subject, createdAt))
+      break
+    case NOTIFICATION_KIND.COMMENT_REPOST:
+      cells.push(commentOnRepostNotification(subject, createdAt))
+      break
+    case NOTIFICATION_KIND.INVITATION_ACCEPTED:
+      cells.push(invitationAcceptedNotification(subject, createdAt))
+      break
+    case NOTIFICATION_KIND.LOVE:
+      cells.push(loveNotification(subject, createdAt))
+      break
+    case NOTIFICATION_KIND.LOVE_ORIGINAL:
+      cells.push(loveOnOriginalPostNotification(subject, createdAt))
+      break
+    case NOTIFICATION_KIND.LOVE_REPOST:
+      cells.push(loveOnRepostNotification(subject, createdAt))
+      break
+    case NOTIFICATION_KIND.NEW_FOLLOWER:
+      cells.push(newFollowerPost(subject, createdAt))
+      break
+    case NOTIFICATION_KIND.NEW_FOLLOWED_USER:
+      cells.push(newFollowedUserPost(subject, createdAt))
+      break
+    case NOTIFICATION_KIND.POST_MENTION:
+      cells.push(postMentionNotification(subject, createdAt))
+      break
+    case NOTIFICATION_KIND.REPOST:
+      cells.push(repostNotification(subject, createdAt))
+      break
+    case NOTIFICATION_KIND.WELCOME:
+      return <div>Welcome to Ello!</div>
+    default:
+      return null
   }
   return cells
 }

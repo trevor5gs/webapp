@@ -70,23 +70,23 @@ class ShareDialog extends React.Component {
 
   getUrl(type) {
     switch (type) {
-    case SHARE_TYPES.FACEBOOK:
-      return `https://www.facebook.com/sharer/sharer.php?u=${this.postLinkSafe}`
-    case SHARE_TYPES.GOOGLE_PLUS:
-      return `https://plus.google.com/share?url=${this.postLinkSafe}`
-    case SHARE_TYPES.LINKEDIN:
-      return `http://www.linkedin.com/shareArticle?mini=true&url=${this.postLinkSafe}&title=${this.summarySafe}`
-    case SHARE_TYPES.PINTEREST:
-      return `http://pinterest.com/pin/create/button/?url=${this.postLinkSafe}&description=${this.summarySafe}&media=${this.image}`
-    case SHARE_TYPES.REDDIT:
-      return `http://reddit.com/submit?url=${this.postLinkSafe}&title=${this.summarySafe}`
-    case SHARE_TYPES.TUMBLR:
-      return `http://www.tumblr.com/share/link?url=${this.postLinkSafe}&name=${this.summarySafe}`
-    case SHARE_TYPES.TWITTER:
-      return `https://twitter.com/intent/tweet?url=${this.postLinkSafe}&text=${this.tweetSummarySafe}`
-    case SHARE_TYPES.EMAIL:
-    default:
-      return `mailto:?subject=${this.emailSubjectSafe}&body=${this.emailBodySafe}`
+      case SHARE_TYPES.FACEBOOK:
+        return `https://www.facebook.com/sharer/sharer.php?u=${this.postLinkSafe}`
+      case SHARE_TYPES.GOOGLE_PLUS:
+        return `https://plus.google.com/share?url=${this.postLinkSafe}`
+      case SHARE_TYPES.LINKEDIN:
+        return `http://www.linkedin.com/shareArticle?mini=true&url=${this.postLinkSafe}&title=${this.summarySafe}`
+      case SHARE_TYPES.PINTEREST:
+        return `http://pinterest.com/pin/create/button/?url=${this.postLinkSafe}&description=${this.summarySafe}&media=${this.image}`
+      case SHARE_TYPES.REDDIT:
+        return `http://reddit.com/submit?url=${this.postLinkSafe}&title=${this.summarySafe}`
+      case SHARE_TYPES.TUMBLR:
+        return `http://www.tumblr.com/share/link?url=${this.postLinkSafe}&name=${this.summarySafe}`
+      case SHARE_TYPES.TWITTER:
+        return `https://twitter.com/intent/tweet?url=${this.postLinkSafe}&text=${this.tweetSummarySafe}`
+      case SHARE_TYPES.EMAIL:
+      default:
+        return `mailto:?subject=${this.emailSubjectSafe}&body=${this.emailBodySafe}`
     }
   }
 
