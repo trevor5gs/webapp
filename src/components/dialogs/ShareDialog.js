@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import {
   FacebookIcon,
   GooglePlusIcon,
@@ -30,7 +30,12 @@ SHARE_DIMENSIONS[SHARE_TYPES.REDDIT] = { width: 540, height: 420 }
 SHARE_DIMENSIONS[SHARE_TYPES.TUMBLR] = { width: 450, height: 430 }
 SHARE_DIMENSIONS[SHARE_TYPES.TWITTER] = { width: 520, height: 250 }
 
-class ShareDialog extends React.Component {
+class ShareDialog extends Component {
+  static propTypes = {
+    author: PropTypes.object.isRequired,
+    post: PropTypes.object.isRequired,
+  }
+
   constructor(props, context) {
     super(props, context)
     const { author, post } = this.props
@@ -123,11 +128,6 @@ class ShareDialog extends React.Component {
       </div>
     )
   }
-}
-
-ShareDialog.propTypes = {
-  author: React.PropTypes.object.isRequired,
-  post: React.PropTypes.object.isRequired,
 }
 
 export default ShareDialog

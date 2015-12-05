@@ -1,9 +1,14 @@
-import React from 'react'
-import classNames from 'classnames'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import classNames from 'classnames'
 
-class FilterBar extends React.Component {
+class FilterBar extends Component {
+  static propTypes = {
+    links: PropTypes.array,
+    router: PropTypes.object.isRequired,
+    type: PropTypes.string,
+  }
 
   render() {
     const { links, router, type } = this.props
@@ -17,17 +22,11 @@ class FilterBar extends React.Component {
   }
 }
 
-// This should be a selector: @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {
     router: state.router,
   }
 }
 
-FilterBar.propTypes = {
-  links: React.PropTypes.array,
-  router: React.PropTypes.object.isRequired,
-  type: React.PropTypes.string,
-}
-
 export default connect(mapStateToProps)(FilterBar)
+

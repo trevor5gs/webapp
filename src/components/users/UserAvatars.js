@@ -1,8 +1,14 @@
-import React from 'react'
-import StreamComponent from '../streams/StreamComponent'
+import React, { Component, PropTypes } from 'react'
 import { loadUserAvatars } from '../../actions/user'
+import StreamComponent from '../streams/StreamComponent'
 
-class UserAvatars extends React.Component {
+class UserAvatars extends Component {
+  static propTypes = {
+    endpoint: PropTypes.object.isRequired,
+    icon: PropTypes.element.isRequired,
+    resultKey: PropTypes.string.isRequired,
+  }
+
   render() {
     const { endpoint, icon, resultKey } = this.props
     return (
@@ -14,12 +20,6 @@ class UserAvatars extends React.Component {
       </section>
     )
   }
-}
-
-UserAvatars.propTypes = {
-  endpoint: React.PropTypes.object.isRequired,
-  icon: React.PropTypes.element.isRequired,
-  resultKey: React.PropTypes.string.isRequired,
 }
 
 export default UserAvatars

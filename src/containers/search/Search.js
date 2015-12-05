@@ -1,13 +1,24 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import StreamComponent from '../../components/streams/StreamComponent'
-import SearchControl from '../../components/forms/SearchControl'
 import debounce from 'lodash.debounce'
-import * as SearchActions from '../../actions/search'
 import * as ACTION_TYPES from '../../constants/action_types'
+import * as SearchActions from '../../actions/search'
+import SearchControl from '../../components/forms/SearchControl'
+import StreamComponent from '../../components/streams/StreamComponent'
 
-class Search extends React.Component {
+class Search extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    location: PropTypes.shape({
+      query: PropTypes.shape({
+        terms: PropTypes.string,
+        type: PropTypes.string,
+      }).isRequired,
+    }).isRequired,
+    search: PropTypes.object.isRequired,
+  }
+
   constructor(props, context) {
     super(props, context)
     this.state = this.props.search
@@ -76,17 +87,6 @@ function mapStateToProps(state) {
   return {
     search: state.search,
   }
-}
-
-Search.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  location: React.PropTypes.shape({
-    query: React.PropTypes.shape({
-      terms: React.PropTypes.string,
-      type: React.PropTypes.string,
-    }).isRequired,
-  }).isRequired,
-  search: React.PropTypes.object.isRequired,
 }
 
 export default connect(mapStateToProps)(Search)

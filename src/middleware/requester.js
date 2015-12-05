@@ -1,9 +1,8 @@
-import * as ACTION_TYPES from '../../src/constants/action_types'
 import { camelizeKeys } from 'humps'
+import * as ACTION_TYPES from '../constants/action_types'
 import { resetAuth } from '../networking/auth'
 
 const runningFetches = {}
-
 
 function getAuthToken(accessToken) {
   return {

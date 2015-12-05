@@ -1,14 +1,26 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
+import { loadProfile } from '../actions/profile'
+import { trackPageView } from '../actions/tracking'
+import Analytics from '../components/analytics/Analytics'
+import DevTools from '../components/devtools/DevTools'
 import Modal from '../components/modals/Modal'
 import Navbar from '../components/navbar/Navbar'
-import DevTools from '../components/devtools/DevTools'
-import Analytics from '../components/analytics/Analytics'
-import { trackPageView } from '../actions/tracking'
-import { loadProfile } from '../actions/profile'
 
-class App extends React.Component {
+class App extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+    }),
+    children: PropTypes.node.isRequired,
+  }
+
+  static defaultProps = {
+    lastLocation: '',
+  }
+
   constructor(props, context) {
     super(props, context)
     this.lastLocation = ''
@@ -44,20 +56,9 @@ class App extends React.Component {
   }
 }
 
-App.defaultProps = {
-  lastLocation: '',
-}
-
-App.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  location: React.PropTypes.shape({
-    pathname: React.PropTypes.string.isRequired,
-  }),
-  children: React.PropTypes.node.isRequired,
-}
-
 App.preRender = (store) => {
   return store.dispatch(loadProfile())
 }
 
 export default connect()(App)
+

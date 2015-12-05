@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { updateRelationship } from '../../actions/relationships'
 import Avatar from '../assets/Avatar'
 import CoverImage from '../assets/CoverImage'
 import RelationshipButton from '../relationships/RelationshipButton'
-import { UserNames, UserStats, UserInfo } from './UserVitals'
+import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
 
+class UserGrid extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    user: PropTypes.shape({
+    }).isRequired,
+  }
 
-class UserGrid extends React.Component {
   handleRelationshipUpdate(vo) {
     const { userId, priority, existing } = vo
     this.props.dispatch(updateRelationship(userId, priority, existing))
@@ -31,12 +36,6 @@ class UserGrid extends React.Component {
       </div>
     )
   }
-}
-
-UserGrid.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  user: React.PropTypes.shape({
-  }).isRequired,
 }
 
 export default connect(null, null, null, { withRef: true })(UserGrid)

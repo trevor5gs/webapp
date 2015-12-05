@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
-import { MiniPlusIcon, MiniCheckIcon } from '../relationships/RelationshipIcons'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
+import { MiniPlusIcon, MiniCheckIcon } from '../relationships/RelationshipIcons'
 
+class RelationshipButton extends Component {
+  static propTypes = {
+    buttonWasClicked: PropTypes.func,
+    priority: PropTypes.oneOf([
+      RELATIONSHIP_PRIORITY.INACTIVE,
+      RELATIONSHIP_PRIORITY.FRIEND,
+      RELATIONSHIP_PRIORITY.NOISE,
+      RELATIONSHIP_PRIORITY.SELF,
+      RELATIONSHIP_PRIORITY.MUTE,
+      RELATIONSHIP_PRIORITY.BLOCK,
+      RELATIONSHIP_PRIORITY.NONE,
+      null,
+    ]),
+    userId: PropTypes.string,
+  }
 
-class RelationshipButton extends React.Component {
   constructor(props, context) {
     super(props, context)
     const { priority } = this.props
@@ -94,21 +108,6 @@ class RelationshipButton extends React.Component {
     const fn = priority ? `renderAs${priority.charAt(0).toUpperCase() + priority.slice(1)}` : 'renderAsInactive'
     return this[fn]()
   }
-}
-
-RelationshipButton.propTypes = {
-  userId: React.PropTypes.string,
-  buttonWasClicked: React.PropTypes.func,
-  priority: React.PropTypes.oneOf([
-    RELATIONSHIP_PRIORITY.INACTIVE,
-    RELATIONSHIP_PRIORITY.FRIEND,
-    RELATIONSHIP_PRIORITY.NOISE,
-    RELATIONSHIP_PRIORITY.SELF,
-    RELATIONSHIP_PRIORITY.MUTE,
-    RELATIONSHIP_PRIORITY.BLOCK,
-    RELATIONSHIP_PRIORITY.NONE,
-    null,
-  ]),
 }
 
 export default RelationshipButton

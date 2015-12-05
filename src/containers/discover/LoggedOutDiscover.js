@@ -1,11 +1,16 @@
-import React from 'react'
-import Banderole from '../../components/assets/Banderole'
+import React, { Component, PropTypes } from 'react'
 import { BANDEROLES } from '../../constants/gui_types'
+import { loadDiscoverUsers } from '../../actions/discover'
+import Banderole from '../../components/assets/Banderole'
 import FilterBar from '../../components/filters/FilterBar'
 import StreamComponent from '../../components/streams/StreamComponent'
-import { loadDiscoverUsers } from '../../actions/discover'
 
-class LoggedOutDiscover extends React.Component {
+class LoggedOutDiscover extends Component {
+  static propTypes = {
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }),
+  }
 
   render() {
     const links = []
@@ -24,12 +29,6 @@ class LoggedOutDiscover extends React.Component {
       </section>
     )
   }
-}
-
-LoggedOutDiscover.propTypes = {
-  location: React.PropTypes.shape({
-    pathname: React.PropTypes.string,
-  }),
 }
 
 LoggedOutDiscover.preRender = (store, routerState) => {

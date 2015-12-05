@@ -1,11 +1,10 @@
 import React from 'react'
-import Picker from './Picker'
 import classNames from 'classnames'
 import { loadAwesomePeople } from '../../actions/onboarding'
 import StreamComponent from '../streams/StreamComponent'
+import Picker from '../pickers/Picker'
 
 class PeoplePicker extends Picker {
-
   render() {
     return (
       <div className={classNames('PeoplePicker', 'Panel', { isFollowingAll: this.isFollowingAll() })}>

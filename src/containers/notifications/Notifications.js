@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
+import { loadNotifications } from '../../actions/notifications'
 import FilterBar from '../../components/filters/FilterBar'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { BubbleIcon, HeartIcon, RepostIcon } from '../../components/posts/PostIcons'
-import { loadNotifications } from '../../actions/notifications'
 
-class Notifications extends React.Component {
+class Notifications extends Component {
+  static propTypes = {
+    params: PropTypes.shape({
+      category: PropTypes.string,
+    }),
+  }
+
   render() {
     const { category } = this.props.params
     const params = {}
@@ -25,12 +31,6 @@ class Notifications extends React.Component {
       </section>
     )
   }
-}
-
-Notifications.propTypes = {
-  params: React.PropTypes.shape({
-    category: React.PropTypes.string,
-  }),
 }
 
 Notifications.preRender = (store, routerState) => {

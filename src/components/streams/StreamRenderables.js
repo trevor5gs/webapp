@@ -1,16 +1,16 @@
 import React from 'react'
+import * as api from '../../networking/api'
+import { getLinkArray } from '../base/json_helper'
+import { parsePost } from '../parsers/PostParser'
+import { parseNotification } from '../parsers/NotificationParser'
+import Cover from '../assets/Cover'
 import PostsAsGrid from '../posts/PostsAsGrid'
-import UserCard from '../users/UserCard'
+import { BubbleIcon, HeartIcon, RepostIcon } from '../posts/PostIcons'
 import UserAvatar from '../users/UserAvatar'
 import UserAvatars from '../users/UserAvatars'
+import UserCard from '../users/UserCard'
 import UserGrid from '../users/UserGrid'
 import UserList from '../users/UserList'
-import Cover from '../assets/Cover'
-import { parseNotification } from '../parsers/NotificationParser'
-import { parsePost } from '../parsers/PostParser'
-import { getLinkArray } from '../base/json_helper'
-import * as api from '../../networking/api'
-import { BubbleIcon, HeartIcon, RepostIcon } from '../posts/PostIcons'
 
 // TODO: convert these into react components (@see UserVitals)
 // to hopefully get better errors out of rendering streams

@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import classNames from 'classnames'
-import FormControl from './FormControl'
+import FormControl from '../forms/FormControl'
 
 class NameControl extends FormControl {
+  static propTypes = {
+    controlWasChanged: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    inputType: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    placeholder: PropTypes.string.isRequired,
+    tabIndex: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    id: 'user_name',
+    inputType: 'text',
+    name: 'user[name]',
+    placeholder: 'Name (optional)',
+    tabIndex: 0,
+  }
 
   handleChange(e) {
     this.props.controlWasChanged({ name: e.target.value })
@@ -38,23 +54,6 @@ class NameControl extends FormControl {
       </div>
     )
   }
-}
-
-NameControl.defaultProps = {
-  placeholder: 'Name (optional)',
-  id: 'user_name',
-  name: 'user[name]',
-  inputType: 'text',
-  tabIndex: 0,
-}
-
-NameControl.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  name: React.PropTypes.string.isRequired,
-  inputType: React.PropTypes.string.isRequired,
-  tabIndex: React.PropTypes.string.isRequired,
-  placeholder: React.PropTypes.string.isRequired,
-  controlWasChanged: React.PropTypes.func.isRequired,
 }
 
 export default NameControl

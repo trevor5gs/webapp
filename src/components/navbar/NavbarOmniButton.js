@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { PencilIcon } from '../navbar/NavbarIcons'
 
-class NavbarOmniButton extends React.Component {
+class NavbarOmniButton extends Component {
+  static propTypes = {
+    callback: PropTypes.func.isRequired,
+  }
 
   render() {
     const { callback } = this.props
@@ -12,10 +15,6 @@ class NavbarOmniButton extends React.Component {
       </button>
     )
   }
-}
-
-NavbarOmniButton.propTypes = {
-  callback: React.PropTypes.func.isRequired,
 }
 
 export default NavbarOmniButton

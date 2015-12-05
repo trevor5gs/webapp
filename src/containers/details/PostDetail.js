@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import Helmet from 'react-helmet'
-import StreamComponent from '../../components/streams/StreamComponent'
-import { loadPostDetail } from '../../actions/posts'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
+import { loadPostDetail } from '../../actions/posts'
+import StreamComponent from '../../components/streams/StreamComponent'
 
-class PostDetail extends React.Component {
+class PostDetail extends Component {
+  static propTypes = {
+    params: PropTypes.shape({
+      token: PropTypes.string.isRequired,
+    }).isRequired,
+  }
+
   render() {
     const { params } = this.props
     return (
@@ -17,12 +23,6 @@ class PostDetail extends React.Component {
       </section>
     )
   }
-}
-
-PostDetail.propTypes = {
-  params: React.PropTypes.shape({
-    token: React.PropTypes.string.isRequired,
-  }).isRequired,
 }
 
 PostDetail.preRender = (store, routerState) => {

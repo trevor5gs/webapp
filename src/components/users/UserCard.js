@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { updateRelationship } from '../../actions/relationships'
 import RelationshipImageButton from '../relationships/RelationshipImageButton'
 
-class UserCard extends React.Component {
+class UserCard extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    user: PropTypes.shape({
+    }).isRequired,
+  }
+
   handleRelationshipUpdate(vo) {
     const { userId, priority, existing } = vo
     this.props.dispatch(updateRelationship(userId, priority, existing))
@@ -23,12 +29,6 @@ class UserCard extends React.Component {
       </div>
     )
   }
-}
-
-UserCard.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  user: React.PropTypes.shape({
-  }).isRequired,
 }
 
 export default connect(null, null, null, { withRef: true })(UserCard)

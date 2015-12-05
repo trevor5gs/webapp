@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import classNames from 'classnames'
-import FormControl from './FormControl'
+import FormControl from '../forms/FormControl'
 
 class SearchControl extends FormControl {
+  static propTypes = {
+    controlWasChanged: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    inputType: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    placeholder: PropTypes.string.isRequired,
+    tabIndex: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    id: 'search_field',
+    inputType: 'text',
+    name: 'terms',
+    placeholder: 'Search',
+    tabIndex: '0',
+  }
 
   handleChange(e) {
     this.props.controlWasChanged({ terms: e.target.value })
@@ -37,23 +53,6 @@ class SearchControl extends FormControl {
       </div>
     )
   }
-}
-
-SearchControl.defaultProps = {
-  placeholder: 'Search',
-  id: 'search_field',
-  name: 'terms',
-  inputType: 'text',
-  tabIndex: '0',
-}
-
-SearchControl.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  name: React.PropTypes.string.isRequired,
-  inputType: React.PropTypes.string.isRequired,
-  tabIndex: React.PropTypes.string.isRequired,
-  placeholder: React.PropTypes.string.isRequired,
-  controlWasChanged: React.PropTypes.func.isRequired,
 }
 
 export default SearchControl

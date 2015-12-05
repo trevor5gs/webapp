@@ -11,7 +11,6 @@ class FormControl extends React.Component {
     }
   }
 
-
   handleChange(e) {
     const val = e.target.value
     this.setState({ text: val, hasValue: val.length })
@@ -35,5 +34,6 @@ FormControl.propTypes = {
   hasFocus: React.PropTypes.bool,
   text: React.PropTypes.string,
 }
+
 export default FormControl
 

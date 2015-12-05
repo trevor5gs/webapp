@@ -1,33 +1,50 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { pushState } from 'redux-router'
 import classNames from 'classnames'
 import Mousetrap from 'mousetrap'
-import { pushState } from 'redux-router'
-import { connect } from 'react-redux'
+import * as ACTION_TYPES from '../../constants/action_types'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
-import NavbarLabel from './NavbarLabel'
-import NavbarOmniButton from './NavbarOmniButton'
-import NavbarLink from './NavbarLink'
-import NavbarMark from './NavbarMark'
-import NavbarMorePostsButton from './NavbarMorePostsButton'
-import NavbarProfile from './NavbarProfile'
-import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
-import HelpDialog from '../dialogs/HelpDialog'
 import { openModal, closeModal } from '../../actions/modals'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
-import * as ACTION_TYPES from '../../constants/action_types'
+import HelpDialog from '../dialogs/HelpDialog'
+import NavbarLabel from '../navbar/NavbarLabel'
+import NavbarLink from '../navbar/NavbarLink'
+import NavbarMark from '../navbar/NavbarMark'
+import NavbarMorePostsButton from '../navbar/NavbarMorePostsButton'
+import NavbarOmniButton from '../navbar/NavbarOmniButton'
+import NavbarProfile from '../navbar/NavbarProfile'
+import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
 
+class Navbar extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    json: PropTypes.object.isRequired,
+    modal: PropTypes.object,
+    profile: PropTypes.object,
+    router: PropTypes.object.isRequired,
+    shortcuts: PropTypes.object.isRequired,
+  }
 
-class Navbar extends React.Component {
+  static defaultProps = {
+    shortcuts: {
+      [SHORTCUT_KEYS.SEARCH]: '/search',
+      [SHORTCUT_KEYS.DISCOVER]: '/discover',
+      [SHORTCUT_KEYS.FOLLOWING]: '/following',
+      [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/communities',
+    },
+  }
+
   constructor(props, context) {
     super(props, context)
     this.scrollYAtDirectionChange = null
     this.state = {
-      asLocked: false,
       asFixed: false,
       asHidden: false,
-      skipTransition: false,
+      asLocked: false,
       offset: Math.round((window.innerWidth * 0.5625) - 120),
+      skipTransition: false,
     }
   }
 
@@ -76,7 +93,6 @@ class Navbar extends React.Component {
   //     window.scrollTo(0, this.state.offset - 120)
   //   }
   // }
-
 
   componentWillUnmount() {
     Mousetrap.unbind(Object.keys(this.props.shortcuts))
@@ -174,7 +190,6 @@ class Navbar extends React.Component {
   }
 }
 
-// This should be a selector: @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {
     json: state.json,
@@ -182,24 +197,6 @@ function mapStateToProps(state) {
     profile: state.profile,
     router: state.router,
   }
-}
-
-Navbar.defaultProps = {
-  shortcuts: {
-    [SHORTCUT_KEYS.SEARCH]: '/search',
-    [SHORTCUT_KEYS.DISCOVER]: '/discover',
-    [SHORTCUT_KEYS.FOLLOWING]: '/following',
-    [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/communities',
-  },
-}
-
-Navbar.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  json: React.PropTypes.object.isRequired,
-  modal: React.PropTypes.object,
-  profile: React.PropTypes.object,
-  router: React.PropTypes.object.isRequired,
-  shortcuts: React.PropTypes.object.isRequired,
 }
 
 export default connect(mapStateToProps)(Navbar)

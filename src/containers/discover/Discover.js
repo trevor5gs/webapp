@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
+import { loadDiscoverUsers, loadCommunities, loadFeaturedUsers } from '../../actions/discover'
 import FilterBar from '../../components/filters/FilterBar'
 import StreamComponent from '../../components/streams/StreamComponent'
-import { loadDiscoverUsers, loadCommunities, loadFeaturedUsers } from '../../actions/discover'
 
-class Discover extends React.Component {
+class Discover extends Component {
+  static propTypes = {
+    params: PropTypes.shape({
+      type: PropTypes.string,
+    }),
+  }
 
   render() {
     const links = []
@@ -26,12 +31,6 @@ class Discover extends React.Component {
       </section>
     )
   }
-}
-
-Discover.propTypes = {
-  params: React.PropTypes.shape({
-    type: React.PropTypes.string,
-  }),
 }
 
 Discover.preRender = (store, routerState) => {

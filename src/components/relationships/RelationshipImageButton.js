@@ -1,8 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
-import RelationshipButton from './RelationshipButton'
+import RelationshipButton from '../relationships/RelationshipButton'
 import { MiniPlusIcon } from '../relationships/RelationshipIcons'
-
 
 class RelationshipImageButton extends RelationshipButton {
 

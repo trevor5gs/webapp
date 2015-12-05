@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import classNames from 'classnames'
 import { Link } from 'react-router'
-import { ElloMark } from '../interface/ElloIcons'
+import classNames from 'classnames'
 import { trackEvent } from '../../actions/tracking'
+import { ElloMark } from '../interface/ElloIcons'
 
-class OnboardingHeader extends React.Component {
+class OnboardingHeader extends Component {
+  static propTypes = {
+    batchSave: PropTypes.func,
+    dispatch: PropTypes.func.isRequired,
+    lockNext: PropTypes.bool,
+    message: PropTypes.string.isRequired,
+    nextPath: PropTypes.string.isRequired,
+    redirection: PropTypes.bool,
+    relationshipMap: PropTypes.object,
+    title: PropTypes.string.isRequired,
+    trackingLabel: PropTypes.string.isRequired,
+  }
 
   getButtonClassNames() {
     const { lockNext, relationshipMap } = this.props
@@ -20,8 +31,6 @@ class OnboardingHeader extends React.Component {
 
   nextWasClicked(e) {
     const { dispatch, batchSave, relationshipMap, trackingLabel, redirection, nextPath } = this.props
-
-
     dispatch(trackEvent(`completed-${trackingLabel}`))
 
     if (redirection) {
@@ -62,7 +71,6 @@ class OnboardingHeader extends React.Component {
     }
   }
 
-
   skipWasClicked(e) {
     const { dispatch, trackingLabel, nextPath, redirection } = this.props
     dispatch(trackEvent(`skipped-${trackingLabel}`))
@@ -71,7 +79,6 @@ class OnboardingHeader extends React.Component {
       window.location = nextPath
     }
   }
-
 
   render() {
     const { title, message, nextPath } = this.props
@@ -89,18 +96,6 @@ class OnboardingHeader extends React.Component {
       </header>
     )
   }
-}
-
-OnboardingHeader.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  trackingLabel: React.PropTypes.string.isRequired,
-  title: React.PropTypes.string.isRequired,
-  message: React.PropTypes.string.isRequired,
-  nextPath: React.PropTypes.string.isRequired,
-  relationshipMap: React.PropTypes.object,
-  batchSave: React.PropTypes.func,
-  lockNext: React.PropTypes.any,
-  redirection: React.PropTypes.any,
 }
 
 export default connect()(OnboardingHeader)

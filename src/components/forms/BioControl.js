@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 import FormControl from './FormControl'
 
 class BioControl extends FormControl {
+  static propTypes = {
+    controlWasChanged: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    inputType: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    placeholder: PropTypes.string.isRequired,
+    tabIndex: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    id: 'user_unsanitized_short_bio',
+    inputType: 'text',
+    name: 'user[unsanitized_short_bio]',
+    placeholder: 'Bio (optional)',
+    tabIndex: 0,
+  }
 
   handleChange(e) {
     this.props.controlWasChanged({ unsanitized_short_bio: e.target.value })
@@ -40,23 +56,6 @@ class BioControl extends FormControl {
       </div>
     )
   }
-}
-
-BioControl.defaultProps = {
-  placeholder: 'Bio (optional)',
-  id: 'user_unsanitized_short_bio',
-  name: 'user[unsanitized_short_bio]',
-  inputType: 'text',
-  tabIndex: 0,
-}
-
-BioControl.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  name: React.PropTypes.string.isRequired,
-  inputType: React.PropTypes.string.isRequired,
-  tabIndex: React.PropTypes.string.isRequired,
-  placeholder: React.PropTypes.string.isRequired,
-  controlWasChanged: React.PropTypes.func.isRequired,
 }
 
 export default BioControl

@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { SVGIcon } from '../interface/SVGComponents'
 
-export class MiniPlusIcon extends React.Component {
+export class MiniPlusIcon extends Component {
   render() {
     return (
       <SVGIcon className="MiniPlusIcon">
@@ -14,7 +14,7 @@ export class MiniPlusIcon extends React.Component {
   }
 }
 
-export class MiniCheckIcon extends React.Component {
+export class MiniCheckIcon extends Component {
   render() {
     return (
       <SVGIcon className="MiniCheckIcon">

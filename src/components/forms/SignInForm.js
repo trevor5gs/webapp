@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import EmailControl from './EmailControl'
-import PasswordControl from './PasswordControl'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 // import { requestInvite, validateEmail } from '../../actions/profile'
+import EmailControl from '../forms/EmailControl'
+import PasswordControl from '../forms/PasswordControl'
 
 class SignIn extends Component {
   static propTypes = {

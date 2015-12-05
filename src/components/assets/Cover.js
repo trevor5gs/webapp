@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 
-class Cover extends React.Component {
+class Cover extends Component {
+  static propTypes = {
+    coverImage: PropTypes.any,
+    isModifiable: PropTypes.bool,
+  }
 
   constructor(props, context) {
     super(props, context)
@@ -61,11 +65,6 @@ class Cover extends React.Component {
       : null
     return <div className={klassNames} style={style} />
   }
-}
-
-Cover.propTypes = {
-  coverImage: React.PropTypes.any,
-  isModifiable: React.PropTypes.any,
 }
 
 export default Cover

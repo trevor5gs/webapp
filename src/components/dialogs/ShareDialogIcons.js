@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { SVGBoxMedium } from '../interface/SVGComponents'
 
-export class FacebookIcon extends React.Component {
+export class FacebookIcon extends Component {
   render() {
     return (
       <SVGBoxMedium className="FacebookIcon">
@@ -12,7 +12,7 @@ export class FacebookIcon extends React.Component {
   }
 }
 
-export class GooglePlusIcon extends React.Component {
+export class GooglePlusIcon extends Component {
   render() {
     return (
       <SVGBoxMedium className="GooglePlusIcon">
@@ -23,7 +23,7 @@ export class GooglePlusIcon extends React.Component {
   }
 }
 
-export class LinkedInIcon extends React.Component {
+export class LinkedInIcon extends Component {
   render() {
     return (
       <SVGBoxMedium className="LinkedInIcon">
@@ -34,7 +34,7 @@ export class LinkedInIcon extends React.Component {
   }
 }
 
-export class MailIcon extends React.Component {
+export class MailIcon extends Component {
   render() {
     return (
       <SVGBoxMedium className="MailIcon">
@@ -48,7 +48,7 @@ export class MailIcon extends React.Component {
   }
 }
 
-export class PinterestIcon extends React.Component {
+export class PinterestIcon extends Component {
   render() {
     return (
       <SVGBoxMedium className="PinterestIcon">
@@ -59,7 +59,7 @@ export class PinterestIcon extends React.Component {
   }
 }
 
-export class RedditIcon extends React.Component {
+export class RedditIcon extends Component {
   render() {
     return (
       <SVGBoxMedium className="RedditIcon">
@@ -73,7 +73,7 @@ export class RedditIcon extends React.Component {
   }
 }
 
-export class TumblrIcon extends React.Component {
+export class TumblrIcon extends Component {
   render() {
     return (
       <SVGBoxMedium className="TumblrIcon">
@@ -84,7 +84,7 @@ export class TumblrIcon extends React.Component {
   }
 }
 
-export class TwitterIcon extends React.Component {
+export class TwitterIcon extends Component {
   render() {
     return (
       <SVGBoxMedium className="TwitterIcon">

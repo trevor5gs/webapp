@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router'
-import Avatar from '../assets/Avatar'
 import { getLinkObject } from '../base/json_helper'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
-import { parseSummary } from './PostParser'
+import Avatar from '../assets/Avatar'
+import { parseSummary } from '../parsers/PostParser'
 
 const NOTIFICATION_KIND = {
   COMMENT: 'comment_notification',

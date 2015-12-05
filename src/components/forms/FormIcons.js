@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { SVGIcon } from '../interface/SVGComponents'
 
-export class RequestIcon extends React.Component {
+export class RequestIcon extends Component {
   render() {
     return (
       <SVGIcon className="RequestIcon">
@@ -13,7 +13,7 @@ export class RequestIcon extends React.Component {
   }
 }
 
-export class SuccessIcon extends React.Component {
+export class SuccessIcon extends Component {
   render() {
     return (
       <SVGIcon className="SuccessIcon">
@@ -25,7 +25,7 @@ export class SuccessIcon extends React.Component {
   }
 }
 
-export class FailureIcon extends React.Component {
+export class FailureIcon extends Component {
   render() {
     return (
       <SVGIcon className="FailureIcon">

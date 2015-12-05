@@ -1,8 +1,13 @@
-import React from 'react'
-import classNames from 'classnames'
+import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
+import classNames from 'classnames'
 
-class CoverImage extends React.Component {
+class CoverImage extends Component {
+  static propTypes = {
+    coverImage: PropTypes.any,
+    to: PropTypes.string,
+  }
+
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -35,12 +40,6 @@ class CoverImage extends React.Component {
         : <figure className={klassNames} style={style} />
     )
   }
-
-}
-
-CoverImage.propTypes = {
-  coverImage: React.PropTypes.any,
-  to: React.PropTypes.string,
 }
 
 export default CoverImage

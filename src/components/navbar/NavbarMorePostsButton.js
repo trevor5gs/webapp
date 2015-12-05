@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 
-class NavbarMorePostsButton extends React.Component {
+class NavbarMorePostsButton extends Component {
+  static propTypes = {
+    callback: PropTypes.func,
+  }
 
   render() {
     const { callback } = this.props
@@ -10,10 +13,6 @@ class NavbarMorePostsButton extends React.Component {
       </button>
     )
   }
-}
-
-NavbarMorePostsButton.propTypes = {
-  callback: React.PropTypes.func,
 }
 
 export default NavbarMorePostsButton

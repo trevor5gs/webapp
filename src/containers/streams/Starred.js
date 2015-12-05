@@ -1,8 +1,8 @@
-import React from 'react'
-import StreamComponent from '../../components/streams/StreamComponent'
+import React, { Component } from 'react'
 import { loadNoise } from '../../actions/stream'
+import StreamComponent from '../../components/streams/StreamComponent'
 
-class Starred extends React.Component {
+class Starred extends Component {
 
   render() {
     return (

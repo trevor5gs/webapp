@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import * as ACTION_TYPES from '../../constants/action_types'
+import { openAlert } from '../../actions/modals'
+import { relationshipBatchSave } from '../../actions/onboarding'
+import { saveCover, saveAvatar } from '../../actions/profile'
+import { checkAuth } from '../../networking/auth'
 import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
 import CommunityPicker from '../../components/pickers/CommunityPicker'
 import PeoplePicker from '../../components/pickers/PeoplePicker'
@@ -8,13 +13,18 @@ import Uploader from '../../components/uploaders/Uploader'
 import InfoForm from '../../components/forms/InfoForm'
 import Avatar from '../../components/assets/Avatar'
 import Cover from '../../components/assets/Cover'
-import { relationshipBatchSave } from '../../actions/onboarding'
-import { saveCover, saveAvatar } from '../../actions/profile'
-import { openAlert } from '../../actions/modals'
-import * as ACTION_TYPES from '../../constants/action_types'
-import { checkAuth } from '../../networking/auth'
 
-class Onboarding extends React.Component {
+class Onboarding extends Component {
+  static propTypes = {
+    accessToken: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
+    json: PropTypes.object,
+    profile: PropTypes.object,
+    route: PropTypes.object,
+    router: PropTypes.object,
+    stream: PropTypes.object,
+  }
+
   constructor(props, context) {
     super(props, context)
     // check auth
@@ -179,7 +189,6 @@ class Onboarding extends React.Component {
   }
 }
 
-// This should be a selector: @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {
     accessToken: state.accessToken.token,
@@ -188,16 +197,6 @@ function mapStateToProps(state) {
     router: state.router,
     stream: state.stream,
   }
-}
-
-Onboarding.propTypes = {
-  accessToken: React.PropTypes.string,
-  dispatch: React.PropTypes.func.isRequired,
-  json: React.PropTypes.object,
-  profile: React.PropTypes.object,
-  route: React.PropTypes.object,
-  router: React.PropTypes.object,
-  stream: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(Onboarding)

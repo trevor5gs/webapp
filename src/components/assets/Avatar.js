@@ -1,18 +1,18 @@
-import React from 'react'
-import classNames from 'classnames'
+import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
+import classNames from 'classnames'
 
-class Avatar extends React.Component {
+class Avatar extends Component {
   static propTypes = {
-    sources: React.PropTypes.any,
-    size: React.PropTypes.string,
-    to: React.PropTypes.string,
-    isModifiable: React.PropTypes.any,
+    isModifiable: PropTypes.bool,
+    size: PropTypes.string,
+    sources: PropTypes.any,
+    to: PropTypes.string,
   }
 
   static defaultProps = {
-    size: 'regular',
     isModifiable: false,
+    size: 'regular',
   }
 
   getAvatarSource() {
@@ -32,7 +32,6 @@ class Avatar extends React.Component {
       'Avatar',
       { isModifiable: isModifiable },
     )
-
     if (to) {
       return (
         <Link to={to} className={klassNames}>

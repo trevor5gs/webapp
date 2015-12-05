@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-export class UserNames extends React.Component {
+export class UserNames extends Component {
   static propTypes = {
-    user: React.PropTypes.shape({}).isRequired,
+    user: PropTypes.shape({}).isRequired,
   }
 
   render() {
@@ -20,9 +20,9 @@ export class UserNames extends React.Component {
   }
 }
 
-export class UserStats extends React.Component {
+export class UserStats extends Component {
   static propTypes = {
-    user: React.PropTypes.shape({}).isRequired,
+    user: PropTypes.shape({}).isRequired,
   }
 
   render() {
@@ -59,9 +59,9 @@ export class UserStats extends React.Component {
   }
 }
 
-export class UserInfo extends React.Component {
+export class UserInfo extends Component {
   static propTypes = {
-    user: React.PropTypes.shape({}).isRequired,
+    user: PropTypes.shape({}).isRequired,
   }
 
   render() {

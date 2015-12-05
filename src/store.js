@@ -28,3 +28,4 @@ const store = compose(
 )(createStore)(reducer, window.__INITIAL_STATE__ || {})
 
 export default store
+

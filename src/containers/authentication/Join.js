@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import JoinForm from '../../components/forms/JoinForm'
 
 class Join extends Component {
-
   render() {
     return (
       <section className="Authentication Panel">
@@ -11,7 +10,6 @@ class Join extends Component {
       </section>
     )
   }
-
 }
 
 export default Join

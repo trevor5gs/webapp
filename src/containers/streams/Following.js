@@ -1,8 +1,8 @@
-import React from 'react'
-import StreamComponent from '../../components/streams/StreamComponent'
+import React, { Component } from 'react'
 import { loadFriends } from '../../actions/stream'
+import StreamComponent from '../../components/streams/StreamComponent'
 
-class Following extends React.Component {
+class Following extends Component {
   render() {
     return (
       <section className="Following Panel">

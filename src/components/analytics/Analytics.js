@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { PROFILE } from '../../constants/action_types'
 
@@ -34,7 +34,12 @@ export function doesAllowTracking() {
           false : true
 }
 
-class Analytics extends React.Component {
+class Analytics extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    profile: PropTypes.object,
+  }
+
   constructor(props, context) {
     super(props, context)
     this.hasLoadedTracking = false
@@ -71,17 +76,10 @@ class Analytics extends React.Component {
   }
 }
 
-// This should be a selector
-// @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {
     profile: state.profile,
   }
-}
-
-Analytics.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  profile: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(Analytics)

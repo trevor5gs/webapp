@@ -1,7 +1,7 @@
-import * as ACTION_TYPES from '../../src/constants/action_types'
-import { camelizeKeys } from 'humps'
-import { s3CredentialsPath } from '../networking/api'
 import 'isomorphic-fetch'
+import { camelizeKeys } from 'humps'
+import * as ACTION_TYPES from '../constants/action_types'
+import { s3CredentialsPath } from '../networking/api'
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {

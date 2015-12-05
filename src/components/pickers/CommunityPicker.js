@@ -1,11 +1,10 @@
 import React from 'react'
-import Picker from './Picker'
 import classNames from 'classnames'
 import { loadCommunities } from '../../actions/onboarding'
 import StreamComponent from '../streams/StreamComponent'
+import Picker from '../pickers/Picker'
 
 class CommunityPicker extends Picker {
-
   render() {
     return (
       <div className={classNames('CommunityPicker', 'Panel', { isFollowingAll: this.isFollowingAll() })}>

@@ -1,8 +1,8 @@
-const scrollObjects = []
-let ticking = false
-let lastScrollY = null
-let lastScrollDirection = null
 let hasListeners = false
+let lastScrollDirection = null
+let lastScrollY = null
+let ticking = false
+const scrollObjects = []
 
 function callMethod(method, scrollProperties) {
   for (const obj of scrollObjects) {

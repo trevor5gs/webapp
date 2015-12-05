@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 
-class AssetErrorDialog extends React.Component {
+class AssetErrorDialog extends Component {
+  static propTypes = {
+    assetType: PropTypes.string,
+  }
+
   render() {
     const assetType = this.props.assetType
     const mailto = `mailto:support@ello.co?subject=${assetType} upload failed`
@@ -12,10 +16,6 @@ class AssetErrorDialog extends React.Component {
       </div>
     )
   }
-}
-
-AssetErrorDialog.propTypes = {
-  assetType: React.PropTypes.string,
 }
 
 export default AssetErrorDialog

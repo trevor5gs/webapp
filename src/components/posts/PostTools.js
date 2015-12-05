@@ -1,12 +1,12 @@
-import React from 'react'
-import classNames from 'classnames'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import Hint from '../hints/Hint'
+import classNames from 'classnames'
 import { openModal } from '../../actions/modals'
-import ShareDialog from '../dialogs/ShareDialog'
-import SignUpForm from '../forms/SignUpForm'
 import * as PostActions from '../../actions/posts'
+import ShareDialog from '../dialogs/ShareDialog'
+import Hint from '../hints/Hint'
+import SignUpForm from '../forms/SignUpForm'
 import {
   BubbleIcon,
   ChevronIcon,
@@ -17,9 +17,16 @@ import {
   RepostIcon,
   ShareIcon,
   XBoxIcon,
-} from './PostIcons'
+} from '../posts/PostIcons'
 
-class PostTools extends React.Component {
+class PostTools extends Component {
+  static propTypes = {
+    author: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    post: PropTypes.object.isRequired,
+  }
+
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -165,13 +172,6 @@ class PostTools extends React.Component {
       </footer>
     )
   }
-}
-
-PostTools.propTypes = {
-  author: React.PropTypes.object.isRequired,
-  currentUser: React.PropTypes.object.isRequired,
-  dispatch: React.PropTypes.func.isRequired,
-  post: React.PropTypes.object.isRequired,
 }
 
 export default connect()(PostTools)

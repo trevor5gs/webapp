@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import classNames from 'classnames'
-import FormControl from './FormControl'
+import FormControl from '../forms/FormControl'
 
 class LinksControl extends FormControl {
+  static propTypes = {
+    controlWasChanged: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    inputType: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    placeholder: PropTypes.string.isRequired,
+    tabIndex: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    id: 'user_links',
+    inputType: 'text',
+    name: 'user[links]',
+    placeholder: 'Links (optional)',
+    tabIndex: 0,
+  }
 
   handleChange(e) {
     this.props.controlWasChanged({ external_links: e.target.value })
@@ -38,23 +54,6 @@ class LinksControl extends FormControl {
       </div>
     )
   }
-}
-
-LinksControl.defaultProps = {
-  placeholder: 'Links (optional)',
-  id: 'user_links',
-  name: 'user[links]',
-  inputType: 'text',
-  tabIndex: 0,
-}
-
-LinksControl.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  name: React.PropTypes.string.isRequired,
-  inputType: React.PropTypes.string.isRequired,
-  tabIndex: React.PropTypes.string.isRequired,
-  placeholder: React.PropTypes.string.isRequired,
-  controlWasChanged: React.PropTypes.func.isRequired,
 }
 
 export default LinksControl

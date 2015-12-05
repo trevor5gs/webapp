@@ -1,9 +1,8 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { ElloMark, ElloRainbowMark, ElloDonutMark } from '../interface/ElloIcons'
 
-class NavbarMark extends React.Component {
-
+class NavbarMark extends Component {
   renderMark() {
     switch (ENV.LOGO_MARK) {
       case 'rainbow':

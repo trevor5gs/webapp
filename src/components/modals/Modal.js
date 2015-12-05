@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import Mousetrap from 'mousetrap'
 import classNames from 'classnames'
@@ -11,7 +11,14 @@ function getComponentKind(modal) {
   return (modal.meta && modal.meta.kind) ? modal.meta.kind : 'Modal'
 }
 
-class Modal extends React.Component {
+class Modal extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    isActive: PropTypes.func,
+    modal: PropTypes.object,
+    wrapperClasses: PropTypes.string,
+  }
+
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => {
       this.close()
@@ -66,19 +73,10 @@ class Modal extends React.Component {
   }
 }
 
-
-// This should be a selector: @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {
     modal: state.modal,
   }
-}
-
-Modal.propTypes = {
-  wrapperClasses: React.PropTypes.string,
-  isActive: React.PropTypes.func,
-  dispatch: React.PropTypes.func.isRequired,
-  modal: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(Modal)

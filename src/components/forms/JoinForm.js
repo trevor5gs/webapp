@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import NameControl from './NameControl'
-import EmailControl from './EmailControl'
-import PasswordControl from './PasswordControl'
 import debounce from 'lodash.debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 // import { requestInvite, validateEmail } from '../../actions/profile'
+import EmailControl from '../forms/EmailControl'
+import PasswordControl from '../forms/PasswordControl'
+import NameControl from '../forms/NameControl'
 
 class JoinForm extends Component {
   static propTypes = {

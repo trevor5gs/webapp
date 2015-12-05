@@ -1,4 +1,4 @@
-import { TRACK } from '../../src/constants/action_types'
+import { TRACK } from '..//constants/action_types'
 
 export function analytics() {
   return next => action => {

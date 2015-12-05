@@ -1,8 +1,22 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import Dialog from '../dialogs/Dialog'
 
-class Uploader extends React.Component {
+class Uploader extends Component {
+  static propTypes = {
+    message: PropTypes.string,
+    openAlert: PropTypes.func.isRequired,
+    recommend: PropTypes.string,
+    saveAction: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    message: null,
+    recommend: null,
+    title: '',
+  }
+
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -84,20 +98,6 @@ class Uploader extends React.Component {
       </div>
     )
   }
-}
-
-Uploader.propTypes = {
-  title: React.PropTypes.string.isRequired,
-  message: React.PropTypes.string,
-  recommend: React.PropTypes.string,
-  saveAction: React.PropTypes.func.isRequired,
-  openAlert: React.PropTypes.func.isRequired,
-}
-
-Uploader.defaultProps = {
-  title: '',
-  message: null,
-  recommend: null,
 }
 
 export default Uploader

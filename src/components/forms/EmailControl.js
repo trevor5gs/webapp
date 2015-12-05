@@ -1,28 +1,27 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { RequestIcon, SuccessIcon, FailureIcon } from './FormIcons'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
+import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
-class EmailControl extends React.Component {
-
+class EmailControl extends Component {
   static propTypes = {
-    controlWasChanged: React.PropTypes.func.isRequired,
-    id: React.PropTypes.string.isRequired,
-    name: React.PropTypes.string.isRequired,
-    placeholder: React.PropTypes.string.isRequired,
-    tabIndex: React.PropTypes.string.isRequired,
-    text: React.PropTypes.string,
-    status: React.PropTypes.string,
-    suggestions: React.PropTypes.string,
+    controlWasChanged: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    placeholder: PropTypes.string.isRequired,
+    status: PropTypes.string,
+    suggestions: PropTypes.string,
+    tabIndex: PropTypes.string.isRequired,
+    text: PropTypes.string,
   }
 
   static defaultProps = {
     id: 'user_email',
     name: 'user[email]',
     placeholder: 'Email',
-    tabIndex: 0,
     status: STATUS.INDETERMINATE,
     suggestions: null,
+    tabIndex: 0,
   }
 
   constructor(props, context) {

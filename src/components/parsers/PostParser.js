@@ -1,12 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router'
+import * as MAPPING_TYPES from '../../constants/mapping_types'
+import { getLinkObject } from '../base/json_helper'
 import Avatar from '../assets/Avatar'
 import ImageRegion from '../posts/regions/ImageRegion'
 import PostTools from '../posts/PostTools'
 import { RepostIcon } from '../posts/PostIcons'
-import { getLinkObject } from '../base/json_helper'
-import * as MAPPING_TYPES from '../../constants/mapping_types'
-
 
 let models = {}
 
@@ -43,7 +42,6 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
     </header>
   )
 }
-
 
 function textRegion(region, key) {
   return (
@@ -99,7 +97,6 @@ function body(content, id, isGridLayout) {
     </div>
   )
 }
-
 
 function footer(post, author, currentUser) {
   if (!author) { return null }

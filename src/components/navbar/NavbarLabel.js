@@ -1,17 +1,16 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 
-class NavbarLabel extends React.Component {
+class NavbarLabel extends Component {
+  static propTypes = {
+    avatar: PropTypes.object,
+    username: PropTypes.string,
+  }
 
   render() {
     return (
       <h2 className="NavbarLabel">Ello</h2>
     )
   }
-}
-
-NavbarLabel.propTypes = {
-  avatar: React.PropTypes.object,
-  username: React.PropTypes.string,
 }
 
 export default NavbarLabel

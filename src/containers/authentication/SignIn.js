@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import SignInForm from '../../components/forms/SignInForm'
 
 class SignIn extends Component {
-
   render() {
     return (
       <section className="Authentication Panel">
@@ -11,7 +10,6 @@ class SignIn extends Component {
       </section>
     )
   }
-
 }
 
 export default SignIn

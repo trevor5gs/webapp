@@ -25,3 +25,4 @@ const store = compose(
 )(createStore)(reducer, {})
 
 export default store
+

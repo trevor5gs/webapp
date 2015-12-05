@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { SVGIcon } from '../interface/SVGComponents'
 
-export class BubbleIcon extends React.Component {
+export class BubbleIcon extends Component {
   render() {
     return (
       <SVGIcon className="BubbleIcon">
@@ -17,7 +17,7 @@ export class BubbleIcon extends React.Component {
   }
 }
 
-export class ChevronIcon extends React.Component {
+export class ChevronIcon extends Component {
   render() {
     return (
       <SVGIcon className="ChevronIcon">
@@ -29,7 +29,7 @@ export class ChevronIcon extends React.Component {
   }
 }
 
-export class EyeIcon extends React.Component {
+export class EyeIcon extends Component {
   render() {
     return (
       <SVGIcon className="EyeIcon">
@@ -43,7 +43,7 @@ export class EyeIcon extends React.Component {
   }
 }
 
-export class FlagIcon extends React.Component {
+export class FlagIcon extends Component {
   render() {
     return (
       <SVGIcon className="FlagIcon">
@@ -58,7 +58,7 @@ export class FlagIcon extends React.Component {
   }
 }
 
-export class HeartIcon extends React.Component {
+export class HeartIcon extends Component {
   render() {
     return (
       <SVGIcon className="HeartIcon">
@@ -70,7 +70,7 @@ export class HeartIcon extends React.Component {
   }
 }
 
-export class PencilIcon extends React.Component {
+export class PencilIcon extends Component {
   render() {
     return (
       <SVGIcon className="PencilIcon">
@@ -85,7 +85,7 @@ export class PencilIcon extends React.Component {
   }
 }
 
-export class RepostIcon extends React.Component {
+export class RepostIcon extends Component {
   render() {
     return (
       <SVGIcon className="RepostIcon">
@@ -102,7 +102,7 @@ export class RepostIcon extends React.Component {
   }
 }
 
-export class ShareIcon extends React.Component {
+export class ShareIcon extends Component {
   render() {
     return (
       <SVGIcon className="ShareIcon">
@@ -118,7 +118,7 @@ export class ShareIcon extends React.Component {
   }
 }
 
-export class XBoxIcon extends React.Component {
+export class XBoxIcon extends Component {
   render() {
     return (
       <SVGIcon className="XBoxIcon">

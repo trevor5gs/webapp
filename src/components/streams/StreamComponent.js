@@ -1,15 +1,24 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import Paginator from './Paginator'
-import { ElloMark } from '../interface/ElloIcons'
-import { findBy } from '../base/json_helper'
+import { runningFetches } from '../../middleware/requester'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
+import { findBy } from '../base/json_helper'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
-import { runningFetches } from '../../middleware/requester'
+import { ElloMark } from '../interface/ElloIcons'
+import Paginator from '../streams/Paginator'
 
-export class StreamComponent extends React.Component {
+export class StreamComponent extends Component {
+  static propTypes = {
+    action: PropTypes.object,
+    currentUser: PropTypes.object,
+    dispatch: PropTypes.func.isRequired,
+    initModel: PropTypes.object,
+    json: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
+    stream: PropTypes.object.isRequired,
+  }
 
   constructor(props, context) {
     super(props, context)
@@ -246,25 +255,13 @@ export class StreamComponent extends React.Component {
   }
 }
 
-// This should be a selector
-// @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {
-    json: state.json,
     currentUser: state.profile.payload,
+    json: state.json,
     router: state.router,
     stream: state.stream,
   }
-}
-
-StreamComponent.propTypes = {
-  action: React.PropTypes.object,
-  dispatch: React.PropTypes.func.isRequired,
-  json: React.PropTypes.object.isRequired,
-  initModel: React.PropTypes.object,
-  currentUser: React.PropTypes.object,
-  router: React.PropTypes.object.isRequired,
-  stream: React.PropTypes.object.isRequired,
 }
 
 export default connect(mapStateToProps, null, null, { withRef: true })(StreamComponent)

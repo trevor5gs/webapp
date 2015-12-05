@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import Helmet from 'react-helmet'
-import StreamComponent from '../../components/streams/StreamComponent'
-import { loadUserDetail } from '../../actions/user'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
+import { loadUserDetail } from '../../actions/user'
+import StreamComponent from '../../components/streams/StreamComponent'
 
-class UserDetail extends React.Component {
+class UserDetail extends Component {
+  static propTypes = {
+    params: PropTypes.shape({
+      username: PropTypes.string.isRequired,
+    }).isRequired,
+  }
+
   render() {
     const { params } = this.props
     return (
@@ -17,12 +23,6 @@ class UserDetail extends React.Component {
       </section>
     )
   }
-}
-
-UserDetail.propTypes = {
-  params: React.PropTypes.shape({
-    username: React.PropTypes.string.isRequired,
-  }).isRequired,
 }
 
 UserDetail.preRender = (store, routerState) => {

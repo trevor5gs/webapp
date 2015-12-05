@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { GUI } from '../../../constants/gui_types'
 
-class ImageRegion extends React.Component {
+class ImageRegion extends Component {
+  static propTypes = {
+    assets: PropTypes.object.isRequired,
+    content: PropTypes.object.isRequired,
+    isGridLayout: PropTypes.bool.isRequired,
+    links: PropTypes.object,
+  }
 
   getAttachmentMetadata() {
     const { optimized, xhdpi, hdpi } = this.attachment
@@ -118,13 +124,6 @@ class ImageRegion extends React.Component {
     }
     return this.renderContent()
   }
-}
-
-ImageRegion.propTypes = {
-  assets: React.PropTypes.object.isRequired,
-  content: React.PropTypes.object.isRequired,
-  isGridLayout: React.PropTypes.bool.isRequired,
-  links: React.PropTypes.object,
 }
 
 export default ImageRegion

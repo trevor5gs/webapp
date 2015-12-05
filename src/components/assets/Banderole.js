@@ -1,20 +1,20 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
-import Avatar from '../assets/Avatar'
 import classNames from 'classnames'
 import random from 'lodash.random'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
+import Avatar from '../assets/Avatar'
 
-class Banderole extends React.Component {
+class Banderole extends Component {
   static propTypes = {
-    userlist: React.PropTypes.array.isRequired,
+    userlist: PropTypes.array.isRequired,
   }
 
   constructor(props, context) {
     super(props, context)
     this.state = {
-      imageSize: 'hdpi',
       featuredUser: null,
+      imageSize: 'hdpi',
     }
   }
 

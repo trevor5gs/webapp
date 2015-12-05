@@ -24,8 +24,6 @@ export function saveProfile(users) {
 export function savePreferences() {
 }
 
-export function validateUsername() {
-}
 
 export function requestInvite(vo) {
   const body = { email: [vo.email] }
@@ -40,6 +38,8 @@ export function requestInvite(vo) {
   }
 }
 
+export function validateUsername() {
+}
 export function validateEmail(vo) {
   return {
     type: PROFILE.VALIDATE_EMAIL,

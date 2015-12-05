@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 
-class HelpDialog extends React.Component {
+class HelpDialog extends Component {
   render() {
     return (
       <div className="Dialog HelpDialog">

@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { saveProfile } from '../../actions/profile'
-import NameControl from './NameControl'
-import BioControl from './BioControl'
-import LinksControl from './LinksControl'
 import debounce from 'lodash.debounce'
+import { saveProfile } from '../../actions/profile'
+import BioControl from '../forms/BioControl'
+import NameControl from '../forms/NameControl'
+import LinksControl from '../forms/LinksControl'
 
-class InfoForm extends React.Component {
+class InfoForm extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    profile: PropTypes.object,
+  }
 
   componentWillMount() {
     this.saveForm = debounce(this.saveForm, 300)
@@ -42,17 +46,10 @@ class InfoForm extends React.Component {
   }
 }
 
-
-// This should be a selector: @see: https://github.com/faassen/reselect
 function mapStateToProps(state) {
   return {
     profile: state.profile,
   }
-}
-
-InfoForm.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  profile: React.PropTypes.object,
 }
 
 export default connect(mapStateToProps)(InfoForm)

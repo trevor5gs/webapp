@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 
-class Dialog extends React.Component {
+class Dialog extends Component {
+  static propTypes = {
+    body: PropTypes.string,
+    title: PropTypes.string,
+  }
+
   render() {
     return (
       <div className="Dialog">
@@ -9,11 +14,6 @@ class Dialog extends React.Component {
       </div>
     )
   }
-}
-
-Dialog.propTypes = {
-  title: React.PropTypes.string,
-  body: React.PropTypes.string,
 }
 
 export default Dialog

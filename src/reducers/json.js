@@ -1,6 +1,6 @@
+import uniq from 'lodash.uniq'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
-import uniq from 'lodash.uniq'
 import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
 
 // adding methods and accessing them from this object

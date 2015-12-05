@@ -1,28 +1,27 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { SuccessIcon, FailureIcon } from './FormIcons'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
+import { SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
-class PasswordControl extends React.Component {
-
+class PasswordControl extends Component {
   static propTypes = {
-    controlWasChanged: React.PropTypes.func.isRequired,
-    id: React.PropTypes.string.isRequired,
-    name: React.PropTypes.string.isRequired,
-    placeholder: React.PropTypes.string.isRequired,
-    tabIndex: React.PropTypes.string.isRequired,
-    text: React.PropTypes.string,
-    status: React.PropTypes.string,
-    showSuggestion: React.PropTypes.any,
+    controlWasChanged: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    placeholder: PropTypes.string.isRequired,
+    showSuggestion: PropTypes.bool,
+    status: PropTypes.string,
+    tabIndex: PropTypes.string.isRequired,
+    text: PropTypes.string,
   }
 
   static defaultProps = {
     id: 'user_password',
     name: 'user[password]',
     placeholder: 'Password',
-    tabIndex: 0,
-    status: STATUS.INDETERMINATE,
     showSuggestion: true,
+    status: STATUS.INDETERMINATE,
+    tabIndex: 0,
   }
 
   constructor(props, context) {
