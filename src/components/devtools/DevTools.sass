@@ -1,20 +1,21 @@
 .DT-vertical-grid,
 .DT-horizontal-grid
+  pointer-events: none
   position: fixed
   top: 0
+  bottom: 0
   left: 0
   right: 0
-  bottom: 0
-  background: transparent 0 0 repeat
   z-index: $z-grid
   opacity: 0.15
-  pointer-events: none
+  background: transparent 0 0 repeat
 
 .DT-vertical-grid
   background-image: url("/static/images/devtools/grid-vertical.svg")
 .DT-horizontal-grid
   background-image: url("/static/images/devtools/grid-horizontal.svg")
 
+// -------------------------------------
 // Background Colors
 
 .highlightContainers

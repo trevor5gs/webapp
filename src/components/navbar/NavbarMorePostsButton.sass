@@ -1,53 +1,53 @@
-.more-btn
+.NavbarMorePostsButton
   transition: background-color $speed ease, border-color $speed ease, color $speed ease, opacity $speed2 ease
   position: relative
-  padding: 0 rem(15)
-  height: rem(40)
-  line-height: rem(40)
-  border-radius: 20px
-  border: 1px solid
-  font-size: 0.75rem
-  text-align: left
-  background-color: #aaa
-  border-color: #aaa
-  color: white
-  white-space: nowrap
   width: rem(40)
+  height: rem(40)
   margin-left: rem(20)
+  padding: 0 rem(15)
+  font-size: 0.75rem
+  line-height: rem(40)
+  text-align: left
+  white-space: nowrap
+  background-color: #aaa
+  border: 1px solid #aaa
+  border-radius: rem(20)
+  color: white
   .no-touch &:hover
     background-color: #e5e5e5
     border-color: #e5e5e5
     color: #666
   &:before
     +hitarea
-.more-btn .svg-icon
+.NavbarMorePostsButton .svg-icon
   margin-top: rem(-5)
-  margin-right: rem(10)
   margin-left: rem(-5)
-.more-btn g
+  margin-right: rem(10)
+.NavbarMorePostsButton g
   stroke: white
-.more-btn span
+.NavbarMorePostsButton span
   vertical-align: middle
   margin-top: rem(-3)
 
-.Navbar .more-btn
+.Navbar .NavbarMorePostsButton
   pointer-events: auto
   position: absolute
   top: rem(21)
   z-index: 20
 
 @media(min-width: #{em(800)})
-  .Navbar .more-btn
+  .Navbar .NavbarMorePostsButton
     width: auto
-  .Navbar .more-btn .svg-icon
+  .Navbar .NavbarMorePostsButton .svg-icon
     margin-left: 0
-  .Navbar .more-btn span
+  .Navbar .NavbarMorePostsButton span
     display: inline-block
 
 // @media(max-width: #{$max-break-c})
-//   .Navbar .more-btn
+//   .Navbar .NavbarMorePostsButton
 //     +circle(rem(30))
-//     right: 110px
+//     right: rem(110)
 //     padding: 0 rem(9)
-//   .more-btn .svg-icon
+//   .NavbarMorePostsButton .svg-icon
 //     margin-top: rem(-14)
+

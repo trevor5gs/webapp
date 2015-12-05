@@ -1,10 +1,10 @@
 @mixin showTool
-  opacity: 1
   pointer-events: auto
+  opacity: 1
 
 @mixin hideTool
-  opacity: 0
   pointer-events: none
+  opacity: 0
 
 // -------------------------------------
 // @see PostIcons for icon animations and coloring
@@ -12,14 +12,14 @@
 .PostTools
   +monospace
   transition: transform $speed $ease
+  position: relative
   height: rem(60)
   padding-top: rem(20)
   white-space: nowrap
-  position: relative
 
 .PostTool
-  position: relative
   display: inline-block
+  position: relative
   height: rem(20)
   line-height: rem(20)
 
@@ -28,10 +28,10 @@
 
 .PostTool > a,
 .PostTool > button
-  color: #aaa
   transition: color $speed ease
   padding-left: rem(10)
   padding-right: rem(10)
+  color: #aaa
 
 .PostTool > a
   display: inline-block
@@ -50,8 +50,8 @@
   transition: color $speed ease, background-color $speed ease
   padding-left: rem(11)
   padding-right: rem(11)
-  border-radius: rem(11)
   background-color: #e8e8e8
+  border-radius: rem(11)
   color: #535353
 .no-touch .ViewsTool a:hover
   background-color: #ccc
@@ -87,9 +87,9 @@
   position: absolute
   z-index: 2
 .Posts.asList .MoreTool
-  right: -7px
+  right: rem(-7)
 .Posts.asGrid .MoreTool
-  left: 270px
+  left: rem(270)
 .MoreTool > button
   padding-right: 0
 
@@ -118,7 +118,7 @@
     display: none
 @media(max-width: #{$break-2-max})
   .Posts.asGrid .CommentTool
-    margin-left: -10px
+    margin-left: rem(-10)
   .Posts.asGrid .ViewsTool
     display: none
 

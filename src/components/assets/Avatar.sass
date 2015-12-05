@@ -2,29 +2,29 @@
   position: relative
   display: inline-block
   vertical-align: middle
+  overflow: hidden
   width: rem(30)
   height: rem(30)
-  border-radius: 50%
-  overflow: hidden
   background: rgba(black, 0.1) no-repeat 50% 50%
   background-image: url("/static/images/support/throbber.gif")
   background-size: cover
+  border-radius: 50%
 
 .AvatarImage
   position: absolute
   top: 0
+  bottom: 0
   left: 0
   right: 0
-  bottom: 0
 
 .Avatar:before
-  transition: background-color $speed ease
   content: ''
+  transition: background-color $speed ease
   position: absolute
   top: 0
+  bottom: 0
   left: 0
   right: 0
-  bottom: 0
   z-index: 2
   background-color: transparent
 

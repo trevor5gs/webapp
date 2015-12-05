@@ -1,8 +1,8 @@
 .OnboardingHeader
   +sans-typeset
   height: rem(150)
-  padding: rem(10)
   margin-bottom: rem(30)
+  padding: rem(10)
   background-color: white
 
 .OnboardingColumn
@@ -24,22 +24,22 @@
   font-size: rem(18)
 
 .OnboardingColumn > p
-  color: #aaa
   max-width: rem(600)
   margin: 0
+  color: #aaa
 
 .OnboardingNextButton
   +sanserif
   transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease
+  order: 2
   width: 100%
   height: rem(40)
-  line-height: rem(40)
   padding: 0 rem(30)
+  line-height: rem(40)
+  text-align: center
   background-color: #e5e5e5
   border: 1px solid #e5e5e5
   color: #666
-  text-align: center
-  order: 2
 .no-touch .OnboardingNextButton:hover
   background-color: #666
   border-color: #666
@@ -52,13 +52,13 @@
 .OnboardingSkipButton
   transition: color $speed
   display: inline-block
+  order: 1
   width: rem(80)
   height: rem(40)
   line-height: rem(40)
+  text-align: left
   border: 0
   color: #aaa
-  text-align: left
-  order: 1
   &:hover
     color: #666
 
@@ -70,24 +70,24 @@
     top: 0
     left: 0
     right: 0
-    height: rem(110)
-    padding: rem(20)
-    margin-bottom: 0
     z-index: $z-navbar
+    height: rem(110)
+    margin-bottom: 0
+    padding: rem(20)
   .OnboardingColumn:nth-child(2)
     flex-direction: column
     align-items: flex-end
+    order: 1
     height: rem(70)
     margin-top: 0
-    order: 1
   .OnboardingNextButton
     max-width: rem(280)
   .OnboardingSkipButton
-    height: rem(30)
-    line-height: rem(30)
-    margin: 0
-    text-align: right
     order: 2
+    height: rem(30)
+    margin: 0
+    line-height: rem(30)
+    text-align: right
 
 @media(min-width: #{$break-3})
   .OnboardingColumn:nth-child(1)

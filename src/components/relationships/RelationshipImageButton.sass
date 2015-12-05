@@ -1,17 +1,17 @@
 .RelationshipImageButton
   display: block
   width: 100%
-  min-height: rem(80)
   height: 100%
-  padding: rem(10)
+  min-height: rem(80)
   margin-top: rem(1)
+  padding: rem(10)
+  text-align: center
   background: rgba(black, 0.1) no-repeat 50% 50%
   background-size: cover
-  text-align: center
 .RelationshipImageButton:before
   transition: background-color $speed $ease
-  background-color: rgba(black, 0.4)
   z-index: 1
+  background-color: rgba(black, 0.4)
 .RelationshipImageButtonUsername
   +heading
   +ellipse
@@ -23,8 +23,8 @@
   color: white
 
 .RelationshipImageButtonLabels
-  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease
   +sans-typeset
+  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease
   display: inline-block
   vertical-align: middle
   position: absolute
@@ -33,8 +33,8 @@
   z-index: 2
   width: rem(110)
   height: rem(30)
-  line-height: rem(30)
   padding: 0 rem(10) 0 rem(5)
+  line-height: rem(30)
   background-color: white
   border: 1px solid white
 
@@ -60,10 +60,10 @@
   stroke: white
 
 .RelationshipImageButtonLabels > .MiniPlusIcon
-  margin-top: -2px
+  margin-top: rem(-2)
 
 .RelationshipImageButtonLabels > .MiniCheckIcon
-  margin-top: -4px
+  margin-top: rem(-4)
 
 
 @media(min-width: #{$break-2})
@@ -71,8 +71,8 @@
     right: rem(10)
   .RelationshipImageButtonLabels
     top: auto
-    left: rem(10)
     bottom: rem(10)
+    left: rem(10)
     width: calc(100% - #{rem(20)})
     height: rem(50)
     line-height: rem(50)

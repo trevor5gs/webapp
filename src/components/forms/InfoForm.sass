@@ -12,11 +12,11 @@
   margin-bottom: rem(10)
 
 .AuthenticationForm .FormControl
+  height: rem(60)
+  padding: 0 rem(10)
   background-color: #d8d8d8
   border: 1px solid #d8d8d8
-  padding: 0 rem(10)
   color: black
-  height: rem(60)
   &:focus
     background-color: white
     border-color: white
@@ -28,12 +28,11 @@
 .AuthenticationForm .isFailing > .FormControl
   border-color: $danger
 
-
 .AuthenticationForm .FormControlLabel
   font-size: rem(11)
   top: rem(20)
-  left: rem(11)
   bottom: auto
+  left: rem(11)
   right: auto
 
 .AuthenticationForm .isFailing > .FormControlLabel,
@@ -45,12 +44,12 @@
   transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease
   width: 100%
   height: rem(60)
-  line-height: rem(60)
   padding: 0 rem(30)
+  line-height: rem(60)
+  text-align: center
   background-color: black
   border: 1px solid black
   color: white
-  text-align: center
 .no-touch .AuthenticationButton:hover
   background-color: #666
   border-color: #666

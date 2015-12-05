@@ -6,9 +6,9 @@
 
 // The bubble loading state has some extra parts.
 .Post .BubbleIcon > g:nth-child(2)
+  display: none
   fill: black
   stroke: black
-  display: none
 
 .Post .PencilIcon > g,
 .Post .XBoxIcon > g
@@ -33,12 +33,12 @@
   stroke: #535353
 .ViewsTool .EyeIcon > circle
   transition: fill $speed ease, stroke $speed ease
-  stroke: transparent
   fill: #535353
+  stroke: transparent
 .no-touch .ViewsTool > a:hover > .EyeIcon > circle
   transition-delay: $speed2, 0s
-  stroke: black
   fill: black
+  stroke: black
 
 .no-touch .FlagTool > button:hover > .FlagIcon > g:nth-of-type(2)
   fill: black

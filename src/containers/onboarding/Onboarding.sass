@@ -44,15 +44,15 @@ main[data-pathname^="/onboarding"] .Panel
   top: rem(150)
   left: 0
   right: 0
-  padding-top: rem(20)
   z-index: 0
+  padding-top: rem(20)
   text-align: center
   color: white
 
 // These styles should eventually be applied to Cover
 .CoverPicker > .Uploader:before
-  transition: background-color $speed ease
   content: ''
+  transition: background-color $speed ease
   position: absolute
   top: 0
   left: 0
@@ -79,16 +79,16 @@ main[data-pathname^="/onboarding"] .Panel
 .AvatarPickerBody,
 .InfoPickerBody
   min-height: calc(100vh - #{rem(270)})
-  padding: rem(10)
   margin-top: rem(110)
+  padding: rem(10)
   background-color: white
 
 
 .AvatarPickerBody > .Avatar,
 .InfoPickerBody > .Avatar
   +circle(rem(160))
-  margin-top: rem(-90)
   pointer-events: none
+  margin-top: rem(-90)
 
 .AvatarPickerBody > .Uploader
   position: relative
@@ -111,13 +111,13 @@ main[data-pathname^="/onboarding"] .Panel
     margin-top: 0
     margin-left: 15%
   .AvatarPickerBody > .Uploader
+    margin-left: 15%
     padding-top: rem(60)
     padding-left: rem(200)
-    margin-left: 15%
   .InfoPickerBody > .InfoForm
+    margin-left: 15%
     padding-top: rem(40)
     padding-left: rem(200)
-    margin-left: 15%
 
 @media(min-width: #{$break-4})
   .AvatarPickerBody > .Avatar,

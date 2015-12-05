@@ -8,21 +8,21 @@
   +monospace
   transition: transform $speed $ease, height $speed $ease, background-color $speed $ease
   transform: translate3d(0,100%,0)
+  overflow: hidden
   position: absolute
+  bottom: 0
   left: 0
   right: 0
-  bottom: 0
   height: 0
-  overflow: hidden
   text-align: center
   background-color: transparent
   color: #aaa
 
 .Paginator.isBusy
   transform: translate3d(0,0,0)
-  background-color: white
   height: rem(40)
   line-height: rem(40)
+  background-color: white
 
 .Paginator .ElloMark
   transform: scale(0)

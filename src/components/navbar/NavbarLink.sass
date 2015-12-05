@@ -4,14 +4,14 @@
   transition: width $speed $ease, color $speed ease
   display: inline-block
   vertical-align: middle
+  overflow: hidden
   height: rem(40)
   line-height: rem(40)
-  overflow: hidden
-  color: #aaa
   white-space: nowrap
+  color: #aaa
 
 .NavbarLink > .SVGIcon
-  margin-top: -5px
+  margin-top: rem(-5)
 
 .NavbarLinkLabel
   position: relative
@@ -22,9 +22,9 @@
   content: ''
   transition: width $speed $ease, background-color $speed ease
   position: absolute
-  width: 0
-  left: 0
   bottom: rem(8)
+  left: 0
+  width: 0
   height: rem(2)
   background-color: transparent
 
@@ -44,6 +44,6 @@
 .NavbarLink.active > .NavbarLinkLabel:after,
 .NavbarLink:active > .NavbarLinkLabel:after,
 .no-touch .NavbarLink:hover > .NavbarLinkLabel:after
-  width: 100%
   background-color: black
+  width: 100%
 

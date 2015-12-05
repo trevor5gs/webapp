@@ -1,19 +1,19 @@
 .Hint
-  display: none
   pointer-events: none
+  display: none
   transition: opacity $speed ease, visibility 0s ease $speed
   position: absolute
   top: rem(-25)
   // left: calc(-50% + 10px)
   left: 0
   height: rem(22)
-  line-height: rem(22)
   padding: 0 rem(11)
-  border-radius: rem(11)
-  white-space: nowrap
   visibility: hidden
   opacity: 0
+  line-height: rem(22)
+  white-space: nowrap
   background-color: black
+  border-radius: rem(11)
   color: white
 
 .no-touch .Hint
@@ -29,8 +29,8 @@
 
 .no-touch a:hover > .Hint,
 .no-touch button:hover > .Hint
-  transition-delay: 0.5s, 0s
   transition-duration: $speed2, 0s
+  transition-delay: 0.5s, 0s
   visibility: visible
   opacity: 1
 

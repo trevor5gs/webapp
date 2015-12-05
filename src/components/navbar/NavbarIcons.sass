@@ -9,7 +9,6 @@
   transition-delay: $speed * 0.5, 0s, 0s
   stroke-linecap: square
 
-
 // -------------------------------------
 // NavbarLink
 
@@ -36,6 +35,7 @@
 .NavbarLink[href^="/notifications"],
 .NavbarLink[href^="/search"]
   width: rem(20)
+
 
 // Show the icon and label when we have enough room for Starred
 @media(min-width: #{em(375)})
@@ -67,8 +67,8 @@
   // Following animation
   .no-touch .NavbarLink[href^="/following"] > .SVGIcon
     transform: scale(0.5)
-    transform-origin: rem(11.5)
     transition-delay: $speed, $speed, 0s
+    transform-origin: rem(11.5)
   .no-touch .NavbarLink[href^="/following"]:hover > .SVGIcon
     transition-delay: 0.5s, 0.5s, (0.5s + $speed)
     transform: none

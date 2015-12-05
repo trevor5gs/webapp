@@ -8,7 +8,7 @@ class NavbarMorePostsButton extends Component {
   render() {
     const { callback } = this.props
     return (
-      <button onClick={callback} className="more-btn" name="prependPosts">
+      <button onClick={callback} className="NavbarMorePostsButton">
         <span>More Posts</span>
       </button>
     )

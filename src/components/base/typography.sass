@@ -1,25 +1,25 @@
 @mixin sans-family
-  font-family: "AtlasGroteskRegular", "AtlasGrotesk-Regular", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif
+  font-family: 'AtlasGroteskRegular', 'AtlasGrotesk-Regular', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Arial', sans-serif
   font-style:   normal
   font-weight:  400
 
 @mixin sans-italic-family
-  font-family: "AtlasGroteskRegular", "AtlasGrotesk-Regular", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif
+  font-family: 'AtlasGroteskRegular', 'AtlasGrotesk-Regular', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Arial', sans-serif
   font-style:   italic
   font-weight:  400
 
 @mixin sans-bold-family
-  font-family: "AtlasGroteskBold", "AtlasGrotesk-Bold", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif
+  font-family: 'AtlasGroteskBold', 'AtlasGrotesk-Bold', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Arial', sans-serif
   font-style:   normal
   font-weight:  700
 
 @mixin sans-bold-italic-family
-  font-family: "AtlasGroteskBold", "AtlasGrotesk-Bold", "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", sans-serif
+  font-family: 'AtlasGroteskBold', 'AtlasGrotesk-Bold', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Arial', sans-serif
   font-style:   italic
   font-weight:  700
 
 @mixin monospace-family
-  font-family: "AtlasTypewriterRegular", "AtlasTypewriter-Regular", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace
+  font-family: 'AtlasTypewriterRegular', 'AtlasTypewriter-Regular', 'Andale Mono', 'Consolas', 'Lucida Console', 'Menlo', 'Luxi Mono', monospace
   font-style:   normal
   font-weight:  400
 
@@ -88,7 +88,8 @@ nav ol
   +unstyled-list
 
 // -------------------------------------
-// Huh?.. copied from the Rails app
+// Huh?.. copied from the Mothership
+// Todo: Set logical defaults
 // dl
   line-height: 2.5
   margin-bottom: rem(30)
@@ -158,9 +159,9 @@ sub
 
 mark
   padding: rem(2) rem(5)
+  font-size: 0.75rem
   background-color: #ffffcc
   color: black
-  font-size: 0.75rem
 
 code, pre
   +monospace
@@ -171,9 +172,9 @@ code
   padding: rem(2) rem(5)
 
 pre
+  overflow: hidden
   margin: rem(15) 0
   padding: rem(15)
-  overflow: hidden
   white-space: pre-wrap
   word-wrap: break-word
 
@@ -183,9 +184,9 @@ pre code
 
 hr
   display: block
+  height: 1px
   margin: rem(15) 0
   padding: 0
-  height: 1px
   border: 0
   border-top: 1px solid #f1f1f1
 

@@ -1,12 +1,10 @@
 .FilterBar
-  color: #aaa
-  padding: 0 rem(10)
   padding: rem(20) rem(10) 0
+  color: #aaa
 
 @media(min-width: #{$break-2})
   .FilterBar
     padding: rem(40) rem(20) rem(20)
-
 
 @media(min-width: #{$break-4})
   .FilterBar
@@ -21,18 +19,18 @@
 .FilterText > .FilterLink
   transition: color $speed ease
   position: relative
+  overflow: hidden
   display: inline-block
   height: rem(40)
   line-height: rem(40)
-  overflow: hidden
   white-space: nowrap
   &:after
     content: ''
     transition: width $speed $ease, background-color $speed ease
     position: absolute
-    width: 0
-    left: 0
     bottom: 0
+    left: 0
+    width: 0
     height: rem(2)
     background-color: transparent
 
@@ -45,17 +43,15 @@
     width: 100%
     background-color: black
 
-
 .FilterText > .FilterLink + .FilterLink
   margin-left: rem(20)
 
 @media(min-width: #{$break-2})
   .FilterText
-    font-size: rem(24)
     padding-bottom: rem(5)
+    font-size: rem(24)
   .FilterText > .FilterLink + .FilterLink
     margin-left: rem(30)
-
 
 // -------------------------------------
 
@@ -66,12 +62,12 @@
   font-size: rem(12)
 
 .FilterIcon > .FilterLink
-  background-color: #e5e5e5
   display: inline-block
   padding-top: rem(6)
-  text-align: center
+  width: (100% / 6)
   height: rem(30)
-  width: (100%/6)
+  text-align: center
+  background-color: #e5e5e5
 
 .FilterIcon > .FilterLink + .FilterLink
   border-left: 1px solid white

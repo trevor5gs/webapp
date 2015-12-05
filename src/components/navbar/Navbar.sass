@@ -1,3 +1,8 @@
+[data-pathname^="/onboarding"] + .Navbar
+  display: none
+
+// -------------------------------------
+
 .Navbar
   transition: transform 150ms ease, visibility 150ms
   position: absolute
@@ -9,8 +14,7 @@
   padding: rem(20) rem(10)
   background-color: white
 
-.Navbar.asFixed
-  position: fixed
+.Navbar.asFixed,
 .Navbar.asLocked
   position: fixed
 
@@ -46,25 +50,24 @@
   top: rem(2)
   margin-left: rem(20)
 
-// Only desktop
+
 @media(min-width: #{$break-2})
   .Navbar
+    height: rem(80)
     padding-left: rem(20)
     padding-right: rem(20)
-    height: rem(80)
   .NavbarMark,
   .NavbarMark + .NavbarLabel
     display: inline-block
-
   .NavbarProfile
     top: rem(20)
     left: auto
     right: rem(20)
   .NavbarLinks
     top: 50%
+    bottom: auto
     left: auto
     right: rem(80)
-    bottom: auto
     margin-top: rem(-20)
 
 @media(min-width: #{$break-4})
@@ -75,9 +78,4 @@
     right: rem(40)
   .NavbarLinks
     right: rem(100)
-
-// -------------------------------------
-
-[data-pathname^="/onboarding"] + .Navbar
-  display: none
 

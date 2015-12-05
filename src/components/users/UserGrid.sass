@@ -1,18 +1,18 @@
 .UserGrid
+  overflow: hidden
   position: relative
   height: rem(220)
   margin-top: rem(20)
-  overflow: hidden
   // outline: 1px dotted purple
 
 .UserGrid > .Avatar
+  overflow: hidden
   position: absolute
   top: rem(30)
   left: rem(10)
   z-index: 3
   width: rem(80)
   height: rem(80)
-  overflow: hidden
 
 .UserGrid > .RelationshipButton
   position: absolute
@@ -34,13 +34,12 @@
   display: none
 
 .UserGrid > .UserInfo > .UserShortBio
-  height: rem(68)
   overflow: hidden
+  height: rem(68)
 
 .UserGrid > .UserInfo > .UserExternalLinks
   margin-top: rem(12)
 
-// -------------------------------------
 
 @media(min-width: #{$break-2})
   .UserGrid
@@ -69,8 +68,8 @@
     display: inline-block
     vertical-align: top
     width: calc(50% - #{rem(20)})
-    margin-left: rem(20)
     margin-top: rem(20)
+    margin-left: rem(20)
 
 @media(min-width: #{$break-3})
   .UserGrid
