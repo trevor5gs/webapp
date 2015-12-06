@@ -1,0 +1,32 @@
+.FormDialog
+  // width: rem(320)
+  margin: 0 auto
+
+.FormDialog > h1
+  +sans-family
+  margin-bottom: rem(70)
+  font-size: rem(24)
+  line-height: 1
+
+.FormDialog > p
+  +monospace
+  margin-top: rem(70)
+  color: #aaa
+
+.FormDialog a:focus,
+.FormDialog a:active,
+.no-touch .FormDialog a:hover
+  color: white
+
+.ForgotPasswordLink
+  +sans-typeset
+  transition: color $speed
+  display: inline-block
+  margin-top: rem(15)
+  color: #aaa
+
+@media(min-width: #{$break-2})
+  .FormDialog
+    width: rem(320)
+    margin: auto
+

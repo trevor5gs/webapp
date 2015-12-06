@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import debounce from 'lodash.debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 // import { requestInvite, validateEmail } from '../../actions/profile'
+import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 import PasswordControl from '../forms/PasswordControl'
 import NameControl from '../forms/NameControl'
 
-class JoinForm extends Component {
+class RegistrationForm extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
   }
@@ -82,15 +83,15 @@ class JoinForm extends Component {
   render() {
     const { emailStatus, emailSuggestion, passwordStatus, showPasswordSuggestion } = this.state
     return (
-      <form id="JoinForm" className="Dialog AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
-        <NameControl tabIndex="1" text="Name!" controlWasChanged={this.handleControlChange.bind(this)} />
+      <form id="RegistrationForm" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
+        <NameControl tabIndex="1" text="@username" controlWasChanged={this.handleControlChange.bind(this)} />
         <EmailControl tabIndex="2" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.validateEmail.bind(this)} />
         <PasswordControl tabIndex="3" status={passwordStatus} showSuggestion={showPasswordSuggestion} controlWasChanged={this.validatePassword.bind(this)} />
-        <button className="AuthenticationButton">Create Account</button>
+        <FormButton>Create Account</FormButton>
       </form>
     )
   }
 }
 
-export default connect()(JoinForm)
+export default connect()(RegistrationForm)
 

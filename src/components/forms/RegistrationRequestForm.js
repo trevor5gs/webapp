@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import debounce from 'lodash.debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 // import { requestInvite, validateEmail } from '../../actions/profile'
+import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 
-class SignUpForm extends Component {
+class RegistrationRequestForm extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
   }
@@ -60,13 +61,13 @@ class SignUpForm extends Component {
   render() {
     const { emailStatus, emailSuggestion } = this.state
     return (
-      <form id="SignUpForm" className="Dialog AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
+      <form id="RegistrationRequestForm" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
         <EmailControl tabIndex="2" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.validateEmail.bind(this)} />
-        <button className="AuthenticationButton">Sign up</button>
+        <FormButton>Sign up</FormButton>
       </form>
     )
   }
 }
 
-export default connect()(SignUpForm)
+export default connect()(RegistrationRequestForm)
 

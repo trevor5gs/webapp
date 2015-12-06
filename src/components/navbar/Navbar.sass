@@ -1,10 +1,5 @@
-[data-pathname^="/onboarding"] + .Navbar
-  display: none
-
-// -------------------------------------
-
 .Navbar
-  transition: transform 150ms ease, visibility 150ms
+  transition: transform 150ms ease, visibility 150ms, background-color 150ms ease
   position: absolute
   top: 0
   left: 0
@@ -14,13 +9,19 @@
   padding: rem(20) rem(10)
   background-color: white
 
+[data-pathname^="/onboarding"] + .Navbar
+  display: none
+[data-pathname="/enter"] + .Navbar,
+[data-pathname="/join"] + .Navbar
+  background-color: transparent
+
 .Navbar.asFixed,
 .Navbar.asLocked
   position: fixed
 
 .Navbar.asFixed.asHidden
   transform: translate3d(0, -100%, 0)
-  transition-delay: 0s $speed
+  transition-delay: 0s $speed 0s
   visibility: hidden
 
 .Navbar.skipTransition:not(.asLocked)
