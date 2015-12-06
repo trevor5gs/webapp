@@ -67,7 +67,7 @@ class EmailControl extends Component {
   // components. This would have to happen after all animations though.
   renderError() {
     return (
-      <p className="FormFeedback FormFeedbackError">
+      <p className="FormControlFeedback FormControlFeedbackError">
         <span>That email is invalid.<br/>Please try again.</span>
       </p>
     )
@@ -76,7 +76,7 @@ class EmailControl extends Component {
   renderSuggestions() {
     const { suggestions } = this.props
     return (
-      <p className="FormFeedback FormFeedbackSuggestions">
+      <p className="FormControlFeedback FormControlFeedbackSuggestions">
         <span>Did you mean<br/>{suggestions}?</span>
       </p>
     )
@@ -93,7 +93,7 @@ class EmailControl extends Component {
       icon = <SuccessIcon/>
     }
     return (
-      <div className="FormStatus">
+      <div className="FormControlStatus">
         {icon}
       </div>
     )

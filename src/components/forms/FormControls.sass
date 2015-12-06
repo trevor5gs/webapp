@@ -64,54 +64,54 @@ textarea.FormControl
 
 // -------------------------------------
 
-.FormFeedback
+.FormControlFeedback
   transition: height $speed $ease
   overflow: hidden
   height: 0
   margin: 0
 
-.FormFeedback > span:first-of-type
+.FormControlFeedback > span:first-of-type
   display: inline-block
   margin-top: rem(10)
 
-.isFailing > .FormFeedbackError,
-.hasFocus.hasSuggestions > .FormFeedbackSuggestions
+.isFailing > .FormControlFeedbackError,
+.hasFocus.hasSuggestions > .FormControlFeedbackSuggestions
   height: rem(60)
 
 
 @media(min-width: #{$break-2})
-  .FormFeedback
+  .FormControlFeedback
     position: absolute
     top: 0
     left: rem(330)
     width: rem(280)
-  .FormFeedback > span:first-of-type
+  .FormControlFeedback > span:first-of-type
     margin-top: 0
-  .isFailing > .FormFeedbackError
+  .isFailing > .FormControlFeedbackError
     height: rem(60)
-  .isFailing.hasFocus.hasSuggestions > .FormFeedbackError
+  .isFailing.hasFocus.hasSuggestions > .FormControlFeedbackError
     height: 0
 
 // -------------------------------------
 
-.FormStatus
+.FormControlStatus
   transition: opacity $speed2
   position: absolute
   top: rem(15)
   right: rem(10)
-.FormStatus:empty
+.FormControlStatus:empty
   opacity: 0
 
-.FormStatus > .SVGIcon > g
+.FormControlStatus > .SVGIcon > g
   stroke-width: 2
 
-.FormStatus > .RequestIcon > g
+.FormControlStatus > .RequestIcon > g
   fill: #aaa
 
-.FormStatus > .SuccessIcon > g
+.FormControlStatus > .SuccessIcon > g
   stroke-linejoin: bevel
   stroke: $success
 
-.FormStatus > .FailureIcon > g
+.FormControlStatus > .FailureIcon > g
   stroke: $danger
 
