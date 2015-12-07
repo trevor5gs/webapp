@@ -13,7 +13,7 @@ import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_
 import 'isomorphic-fetch'
 
 setDomain(process.env.AUTH_DOMAIN.replace(/"/g, ''))
-updateTimeAgoStrings({about: ''})
+updateTimeAgoStrings({ about: '' })
 
 const app = express()
 let indexStr = ''
@@ -52,6 +52,7 @@ function renderFromServer(req, res) {
       )
       const componentHTML = renderToString(InitialComponent)
       const state = store.getState()
+      state.authentication.isLoggedIn = false
       // by default the components in the router are null
       // so to get around that we'll delete them see:
       // https://github.com/rackt/redux-router/issues/60

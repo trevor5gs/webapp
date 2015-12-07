@@ -10,6 +10,7 @@ import * as reducers from './reducers'
 function reducer(state, action) {
   return {
     accessToken: reducers.accessToken(state.accessToken, action),
+    authentication: reducers.authentication(state.authentication, action),
     json: reducers.json(state.json, action, state.router),
     modal: reducers.modal(state.modal, action),
     profile: reducers.profile(state.profile, action),

@@ -9,6 +9,7 @@ import { openModal, closeModal } from '../../actions/modals'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import HelpDialog from '../dialogs/HelpDialog'
+import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import NavbarLabel from '../navbar/NavbarLabel'
 import NavbarLink from '../navbar/NavbarLink'
 import NavbarMark from '../navbar/NavbarMark'
@@ -20,6 +21,7 @@ import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../nav
 class Navbar extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     json: PropTypes.object.isRequired,
     modal: PropTypes.any,
     profile: PropTypes.object,
@@ -158,40 +160,69 @@ class Navbar extends Component {
     })
   }
 
+  launchSignUpModal(e) {
+    const { dispatch } = this.props
+    e.preventDefault()
+    return dispatch(openModal(<RegistrationRequestDialog />))
+  }
+
+  renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
+    const { profile } = this.props
+    return (
+      <nav className={klassNames} role="navigation">
+        <NavbarMark />
+        <NavbarOmniButton callback={this.omniButtonWasClicked.bind(this)} />
+        { hasLoadMoreButton ? <NavbarMorePostsButton callback={this.loadMorePostsWasClicked.bind(this)} /> : null }
+        <div className="NavbarLinks">
+          <NavbarLink to="/discover" label="Discover" modifiers="LabelOnly" pathname={pathname} icon={ <SparklesIcon/> } />
+          <NavbarLink to="/following" label="Following" modifiers="LabelOnly" pathname={pathname} icon={ <CircleIcon/> } />
+          <NavbarLink to="/starred" label="Starred" modifiers="" pathname={pathname} icon={ <StarIcon/> } />
+          <NavbarLink to="/notifications" label="Notifications" modifiers="IconOnly" pathname={pathname} icon={ <BoltIcon/> } />
+          <NavbarLink to="/search" label="Search" modifiers="IconOnly" pathname={pathname} onClick={this.searchWasClicked.bind(this)} icon={ <SearchIcon/> } />
+        </div>
+        <NavbarProfile { ...profile.payload } />
+      </nav>
+    )
+  }
+
+  renderLoggedOutNavbar(klassNames, hasLoadMoreButton, pathname) {
+    return (
+      <nav className={klassNames} role="navigation">
+        <NavbarMark />
+        <NavbarLabel />
+        { hasLoadMoreButton ? <NavbarMorePostsButton callback={this.loadMorePostsWasClicked.bind(this)} /> : null }
+        <div className="NavbarLinks">
+          <NavbarLink to="/" label="Discover" modifiers="LabelOnly" pathname={pathname} icon={ <SparklesIcon/> } />
+          <NavbarLink to="/find" label="Search" modifiers="IconOnly" pathname={pathname} onClick={this.searchWasClicked.bind(this)} icon={ <SearchIcon/> } />
+          <NavbarLink to="/enter" label="Log in" modifiers="LabelOnly" pathname={pathname} />
+          <NavbarLink to="/signup" label="Sign up" modifiers="LabelOnly" pathname={pathname} onClick={this.launchSignUpModal.bind(this)} />
+        </div>
+      </nav>
+    )
+  }
+
   render() {
-    const { json, profile, router } = this.props
-    const showLabel = true
+    const { isLoggedIn, json, router } = this.props
     const klassNames = classNames(
       'Navbar',
+      { isLoggedIn: isLoggedIn },
+      { isLoggedOut: !isLoggedIn },
       { asLocked: this.state.asLocked },
       { asFixed: this.state.asFixed },
       { asHidden: this.state.asHidden },
       { skipTransition: this.state.skipTransition },
     )
-
+    const pathname = router && router.location ? router.location.pathname : ''
     const result = json.pages && router ? json.pages[router.location.pathname] : null
     const hasLoadMoreButton = result && result.newIds
 
-    return (
-      <nav className={klassNames} role="navigation">
-        <NavbarMark />
-        { showLabel ? <NavbarLabel /> : <NavbarOmniButton callback={this.omniButtonWasClicked.bind(this)} />}
-        { hasLoadMoreButton ? <NavbarMorePostsButton callback={this.loadMorePostsWasClicked.bind(this)} /> : null }
-        <div className="NavbarLinks">
-          <NavbarLink to="/discover" label="Discover" icon={ <SparklesIcon/> } />
-          <NavbarLink to="/following" label="Following" icon={ <CircleIcon/> } />
-          <NavbarLink to="/starred" label="Starred" icon={ <StarIcon/> } />
-          <NavbarLink to="/notifications" label="Notifications" icon={ <BoltIcon/> } />
-          <NavbarLink to="/search" label="Search" onClick={this.searchWasClicked.bind(this)} icon={ <SearchIcon/> } />
-        </div>
-          <NavbarProfile { ...profile.payload } />
-      </nav>
-    )
+    return isLoggedIn ? this.renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) : this.renderLoggedOutNavbar(klassNames, hasLoadMoreButton, pathname)
   }
 }
 
 function mapStateToProps(state) {
   return {
+    isLoggedIn: state.authentication.isLoggedIn,
     json: state.json,
     modal: state.modal,
     profile: state.profile,
