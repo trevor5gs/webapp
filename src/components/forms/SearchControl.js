@@ -40,7 +40,7 @@ class SearchControl extends Component {
   handleChange(e) {
     const val = e.target.value
     this.setState({ text: val, hasValue: val.length })
-    this.props.controlWasChanged({ terms: e.target.value })
+    this.props.controlWasChanged({ terms: val })
   }
 
   render() {

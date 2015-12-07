@@ -40,7 +40,7 @@ class LinksControl extends Component {
   handleChange(e) {
     const val = e.target.value
     this.setState({ text: val, hasValue: val.length })
-    this.props.controlWasChanged({ external_links: e.target.value })
+    this.props.controlWasChanged({ external_links: val })
   }
 
   render() {

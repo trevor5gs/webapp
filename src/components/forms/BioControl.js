@@ -40,7 +40,7 @@ class BioControl extends Component {
   handleChange(e) {
     const val = e.target.value
     this.setState({ text: val, hasValue: val.length })
-    this.props.controlWasChanged({ unsanitized_short_bio: e.target.value })
+    this.props.controlWasChanged({ unsanitized_short_bio: val })
   }
 
   render() {

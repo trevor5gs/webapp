@@ -40,7 +40,7 @@ class NameControl extends Component {
   handleChange(e) {
     const val = e.target.value
     this.setState({ text: val, hasValue: val.length })
-    this.props.controlWasChanged({ name: e.target.value })
+    this.props.controlWasChanged({ name: val })
   }
 
   render() {
