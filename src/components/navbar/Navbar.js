@@ -21,7 +21,7 @@ class Navbar extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     json: PropTypes.object.isRequired,
-    modal: PropTypes.object,
+    modal: PropTypes.any,
     profile: PropTypes.object,
     router: PropTypes.object.isRequired,
     shortcuts: PropTypes.object.isRequired,

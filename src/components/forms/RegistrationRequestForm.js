@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import debounce from 'lodash.debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 // import { requestInvite, validateEmail } from '../../actions/profile'
+import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 
-class SignUpForm extends Component {
+class RegistrationRequestForm extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
   }
@@ -19,7 +20,7 @@ class SignUpForm extends Component {
   }
 
   componentWillMount() {
-    this.validateEmail = debounce(this.validateEmail, 500)
+    this.handleEmailControlChanged = debounce(this.handleEmailControlChanged, 500)
   }
 
   // Todo: Needs to be wired up still
@@ -38,7 +39,7 @@ class SignUpForm extends Component {
     }
   }
 
-  validateEmail(vo) {
+  handleEmailControlChanged(vo) {
     const { emailStatus } = this.state
     if (!vo.email.length && emailStatus !== STATUS.INDETERMINATE) {
       return this.setState({ emailStatus: STATUS.INDETERMINATE, emailSuggestion: null })
@@ -46,7 +47,6 @@ class SignUpForm extends Component {
     if (emailStatus !== STATUS.REQUEST) {
       this.setState({ emailStatus: STATUS.REQUEST, emailSuggestion: null })
     }
-    // console.log('validateEmail', vo)
     // this.props.dispatch(validateEmail(vo))
   }
 
@@ -59,14 +59,15 @@ class SignUpForm extends Component {
 
   render() {
     const { emailStatus, emailSuggestion } = this.state
+    const isFormValid = emailStatus === STATUS.SUCCESS
     return (
-      <form id="SignUpForm" className="Dialog AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
-        <EmailControl tabIndex="2" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.validateEmail.bind(this)} />
-        <button className="AuthenticationButton">Sign up</button>
+      <form id="RegistrationRequestForm" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
+        <EmailControl tabIndex="1" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.handleEmailControlChanged.bind(this)} />
+        <FormButton tabIndex="2" disabled={!isFormValid}>Sign up</FormButton>
       </form>
     )
   }
 }
 
-export default connect()(SignUpForm)
+export default connect()(RegistrationRequestForm)
 

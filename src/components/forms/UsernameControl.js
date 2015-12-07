@@ -3,23 +3,27 @@ import classNames from 'classnames'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
-class EmailControl extends Component {
+class UsernameControl extends Component {
   static propTypes = {
     controlWasChanged: PropTypes.func.isRequired,
+    failureType: PropTypes.string,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     status: PropTypes.string,
-    suggestions: PropTypes.string,
+    showAdvice: PropTypes.bool,
+    suggestions: PropTypes.array,
     tabIndex: PropTypes.string.isRequired,
     text: PropTypes.string,
   }
 
   static defaultProps = {
-    id: 'user_email',
-    name: 'user[email]',
-    placeholder: 'Enter your email',
+    failureType: null,
+    id: 'user_username',
+    name: 'user[username]',
+    placeholder: 'Username',
     status: STATUS.INDETERMINATE,
+    showAdvice: true,
     suggestions: null,
     tabIndex: 0,
   }
@@ -45,7 +49,13 @@ class EmailControl extends Component {
   handleChange(e) {
     const val = e.target.value
     this.setState({ text: val, hasValue: val.length })
-    this.props.controlWasChanged({ email: e.target.value })
+    this.props.controlWasChanged({ username: val })
+  }
+
+  handleUsernameSuggestionClick(e) {
+    const val = e.target.title
+    this.setState({ text: val, hasValue: val.length })
+    this.props.controlWasChanged({ username: val })
   }
 
   mapStatusToClass() {
@@ -63,21 +73,52 @@ class EmailControl extends Component {
     }
   }
 
-  // Todo: Eventually this and renderSuggestions should return null or empty
-  // components. This would have to happen after all animations though.
+  renderInvalidCharacterError() {
+    return <span>Username contains invalid characters. Letters, numbers, underscores & dashes only. No spaces.</span>
+  }
+
+  renderAlreadyExistsError() {
+    return <span>Username already exists. Please try a new one. You can change your username at any time.</span>
+  }
+
   renderError() {
+    const { failureType } = this.props
+    let message = null
+    if (failureType === 'client') {
+      message = this.renderInvalidCharacterError()
+    } else if (failureType === 'server') {
+      message = this.renderAlreadyExistsError()
+    }
     return (
       <p className="FormControlFeedback FormControlFeedbackError">
-        <span>That email is invalid.<br/>Please try again.</span>
+        {message}
       </p>
     )
   }
 
-  renderSuggestions() {
-    const { suggestions } = this.props
+  renderAdvice() {
     return (
       <p className="FormControlFeedback FormControlFeedbackSuggestions">
-        <span>Did you mean<br/>{suggestions}?</span>
+        <span>You can change your username at any time. Letters, numbers, underscores & dashes only. No spaces.</span>
+      </p>
+    )
+  }
+
+  renderSuggestionList() {
+    const { suggestions } = this.props
+    if (suggestions && suggestions.length) {
+      return (
+        <div className="FormControlSuggestionList">
+          <p>Here are some available usernames &mdash;</p>
+          {suggestions.map((suggestion, i) => {
+            return <button title={suggestion} onClick={this.handleUsernameSuggestionClick.bind(this)} key={'suggestion_' + i}>{suggestion}</button>
+          })}
+        </div>
+      )
+    }
+    return (
+      <p className="FormControlSuggestionList">
+        <span></span>
       </p>
     )
   }
@@ -100,39 +141,42 @@ class EmailControl extends Component {
   }
 
   render() {
-    const { id, name, tabIndex, placeholder, suggestions } = this.props
+    const { id, name, tabIndex, placeholder, suggestions, showAdvice } = this.props
     const { hasFocus, hasValue, text } = this.state
     const groupClassNames = classNames(
       'FormControlGroup',
       this.mapStatusToClass(),
       { hasFocus: hasFocus },
       { hasValue: hasValue },
-      { hasSuggestions: suggestions && suggestions.length },
+      { showAdvice: showAdvice },
+      { showSuggestionList: suggestions && suggestions.length },
     )
 
     return (
       <div className={groupClassNames}>
-        <label className="FormControlLabel" htmlFor={id}>Email</label>
+        <label className="FormControlLabel" htmlFor={id}>Username</label>
         <input
-          className="FormControl EmailControl"
+          className="FormControl UsernameControl"
           id={id}
           name={name}
           value={text}
-          type="email"
+          type="text"
           tabIndex={tabIndex}
           placeholder={placeholder}
+          maxLength="50"
           autoCapitalize="off"
           autoCorrect="off"
           onFocus={(e) => this.handleFocus(e)}
           onBlur={(e) => this.handleBlur(e)}
           onChange={(e) => this.handleChange(e)} />
         { this.renderError() }
-        { this.renderSuggestions() }
+        { this.renderAdvice() }
+        { this.renderSuggestionList() }
         { this.renderStatus() }
       </div>
     )
   }
 }
 
-export default EmailControl
+export default UsernameControl
 

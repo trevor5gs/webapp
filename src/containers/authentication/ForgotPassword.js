@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 import random from 'lodash.random'
 import { BANDEROLES } from '../../constants/gui_types'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
-import NewSessionForm from '../../components/forms/NewSessionForm'
+import ForgotPasswordForm from '../../components/forms/ForgotPasswordForm'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
-class SignIn extends Component {
+class ForgotPassword extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -26,9 +25,8 @@ class SignIn extends Component {
     return (
       <section className="Authentication Panel">
         <div className="FormDialog">
-          <h1>:e: Welcome back.</h1>
-          <NewSessionForm/>
-          <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
+          <h1>:e: Shit happens.</h1>
+          <ForgotPasswordForm/>
         </div>
         <AppleStoreLink/>
         <Credits user={featuredUser} />
@@ -38,5 +36,5 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn
+export default ForgotPassword
 

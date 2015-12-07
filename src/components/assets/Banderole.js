@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import classNames from 'classnames'
 import random from 'lodash.random'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
-import Avatar from '../assets/Avatar'
+import Credits from '../assets/Credits'
 
 class Banderole extends Component {
   static propTypes = {
@@ -40,7 +40,7 @@ class Banderole extends Component {
   render() {
     const { featuredUser, imageSize } = this.state
     if (!featuredUser) { return null }
-    const { username, avatar, coverImage, caption } = featuredUser
+    const { coverImage, caption } = featuredUser
     const coverSrc = coverImage[imageSize].url
 
     const klassNames = classNames('Banderole')
@@ -52,11 +52,7 @@ class Banderole extends Component {
           { caption }
           <Link to="https://ello.co/wtf/about/what-is-ello/" target="_blank">Learn More</Link>
         </div>
-        <Link className="BanderoleCredits" to={`/${username}`}>
-          <span className="BanderoleCreditsBy">Posted by</span>
-          <span className="BanderoleCreditsAuthor">@{username}</span>
-          <Avatar sources={avatar} />
-        </Link>
+        <Credits user={featuredUser} />
       </div>
     )
   }

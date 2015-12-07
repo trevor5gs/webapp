@@ -7,6 +7,11 @@ class Cover extends Component {
   static propTypes = {
     coverImage: PropTypes.any,
     isModifiable: PropTypes.bool,
+    modifiers: PropTypes.string,
+  }
+
+  static defaultProps = {
+    modifiers: '',
   }
 
   constructor(props, context) {
@@ -54,9 +59,10 @@ class Cover extends Component {
   }
 
   render() {
-    const { coverImage, isModifiable } = this.props
+    const { coverImage, isModifiable, modifiers } = this.props
     const klassNames = classNames(
       'Cover',
+      modifiers,
       { asHidden: this.state.asHidden },
       { isModifiable: isModifiable },
     )

@@ -1,32 +1,50 @@
-import React, { PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import FormControl from '../forms/FormControl'
 
-class LinksControl extends FormControl {
+class LinksControl extends Component {
   static propTypes = {
     controlWasChanged: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
-    inputType: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     tabIndex: PropTypes.string.isRequired,
+    text: PropTypes.string,
   }
 
   static defaultProps = {
     id: 'user_links',
-    inputType: 'text',
     name: 'user[links]',
     placeholder: 'Links (optional)',
-    tabIndex: 0,
+    tabIndex: '0',
+    text: '',
+  }
+
+  constructor(props, context) {
+    super(props, context)
+    const { text } = this.props
+    this.state = {
+      text: text,
+      hasValue: text && text.length,
+      hasFocus: false,
+    }
+  }
+
+  handleFocus() {
+    this.setState({ hasFocus: true })
+  }
+
+  handleBlur() {
+    this.setState({ hasFocus: false })
   }
 
   handleChange(e) {
-    this.props.controlWasChanged({ external_links: e.target.value })
-    super.handleChange(e)
+    const val = e.target.value
+    this.setState({ text: val, hasValue: val.length })
+    this.props.controlWasChanged({ external_links: val })
   }
 
   render() {
-    const { id, name, inputType, tabIndex, placeholder } = this.props
+    const { id, name, tabIndex, placeholder } = this.props
     const { hasFocus, hasValue, text } = this.state
     const groupClassNames = classNames(
       'FormControlGroup',
@@ -42,7 +60,7 @@ class LinksControl extends FormControl {
           id={id}
           name={name}
           value={text}
-          type={inputType}
+          type="text"
           tabIndex={tabIndex}
           placeholder={placeholder}
           maxLength="50"

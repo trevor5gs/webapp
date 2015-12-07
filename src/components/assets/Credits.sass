@@ -1,0 +1,26 @@
+.Credits
+  +monospace
+  transition: color $speed
+  position: absolute
+  bottom: rem(10)
+  right: rem(10)
+  color: white
+.no-touch .Credits:hover
+  color: #ccc
+
+.CreditsAuthor
+  display: inline-block
+  margin-left: rem(10)
+  margin-right: rem(15)
+  border-bottom: 1px solid
+
+
+@media(min-width: #{$break-2})
+  .Credits
+    bottom: rem(20)
+    right: rem(20)
+
+@media(min-width: #{$break-4})
+  .Credits
+    right: rem(40)
+

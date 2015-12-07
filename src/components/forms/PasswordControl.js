@@ -18,7 +18,7 @@ class PasswordControl extends Component {
   static defaultProps = {
     id: 'user_password',
     name: 'user[password]',
-    placeholder: 'Password',
+    placeholder: 'Enter your password',
     showSuggestion: true,
     status: STATUS.INDETERMINATE,
     tabIndex: 0,
@@ -65,7 +65,7 @@ class PasswordControl extends Component {
   // components. This would have to happen after all animations though.
   renderError() {
     return (
-      <p className="FormFeedback FormFeedbackError">
+      <p className="FormControlFeedback FormControlFeedbackError">
         <span>Password must contain at least 8 characters.</span>
       </p>
     )
@@ -73,7 +73,7 @@ class PasswordControl extends Component {
 
   renderSuggestions() {
     return (
-      <p className="FormFeedback FormFeedbackSuggestions">
+      <p className="FormControlFeedback FormControlFeedbackSuggestions">
         <span>At least 8 characters.</span>
       </p>
     )
@@ -88,7 +88,7 @@ class PasswordControl extends Component {
       icon = <SuccessIcon/>
     }
     return (
-      <div className="FormStatus">
+      <div className="FormControlStatus">
         {icon}
       </div>
     )

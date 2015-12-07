@@ -2,6 +2,11 @@
   position: relative
   max-width: rem(400)
 
+.AuthenticationForm .FormControlGroup
+  margin-bottom: rem(10)
+
+// -------------------------------------
+
 .FormControl
   +sans-typeset
   transition: border-color $speed $ease, background-color $speed $ease, color $speed $ease, width $speed $ease, height $speed $ease
@@ -19,9 +24,25 @@
   &::placeholder
     color: #aaa
 
+.AuthenticationForm .FormControl
+  height: rem(60)
+  padding: 0 rem(10)
+  background-color: #d8d8d8
+  border: 1px solid #d8d8d8
+  color: black
+  &:focus
+    background-color: white
+    border-color: white
+
 .hasValue > .FormControl
   border-color: black
-.isFailing > .FormControl
+
+.AuthenticationForm .hasValue > .FormControl
+  background-color: white
+  border-color: white
+
+.isFailing > .FormControl,
+.AuthenticationForm .isFailing > .FormControl
   border-color: $danger
 
 textarea.FormControl
@@ -32,6 +53,7 @@ textarea.FormControl
 .hasValue > textarea.FormControl,
 .hasFocus > textarea.FormControl
   height: rem(115)
+
 
 @media(min-width: #{$break-3})
   .hasValue > textarea.FormControl,
@@ -51,10 +73,22 @@ textarea.FormControl
   opacity: 0
   color: #aaa
 
+.AuthenticationForm .FormControlLabel
+  font-size: rem(11)
+  top: rem(20)
+  bottom: auto
+  left: rem(11)
+  right: auto
+
+
 .isFailing > .FormControlLabel,
 .hasFocus.hasValue > .FormControlLabel
   transform: translate3d(0,rem(10),0)
   opacity: 1
+
+.AuthenticationForm .isFailing > .FormControlLabel,
+.AuthenticationForm .hasFocus.hasValue > .FormControlLabel
+  transform: translate3d(0,rem(-17),0)
 
 .isFailing > .FormControlLabel
   color: $danger !important
@@ -64,54 +98,86 @@ textarea.FormControl
 
 // -------------------------------------
 
-.FormFeedback
+.FormControlFeedback
   transition: height $speed $ease
   overflow: hidden
   height: 0
   margin: 0
 
-.FormFeedback > span:first-of-type
+.FormControlFeedback > span:first-of-type
   display: inline-block
   margin-top: rem(10)
 
-.isFailing > .FormFeedbackError,
-.hasFocus.hasSuggestions > .FormFeedbackSuggestions
-  height: rem(60)
+.isFailing > .FormControlFeedbackError,
+.hasFocus.hasSuggestions > .FormControlFeedbackSuggestions,
+.hasFocus.showAdvice > .FormControlFeedbackSuggestions
+  height: rem(80)
 
 
 @media(min-width: #{$break-2})
-  .FormFeedback
+  .FormControlFeedback
     position: absolute
     top: 0
     left: rem(330)
     width: rem(280)
-  .FormFeedback > span:first-of-type
+  .FormControlFeedback > span:first-of-type
     margin-top: 0
-  .isFailing > .FormFeedbackError
+  .isFailing > .FormControlFeedbackError
     height: rem(60)
-  .isFailing.hasFocus.hasSuggestions > .FormFeedbackError
+  .isFailing.hasFocus.hasSuggestions > .FormControlFeedbackError
     height: 0
 
 // -------------------------------------
 
-.FormStatus
+.FormControlSuggestionList
+  transition: height $speed $ease
+  overflow: hidden
+  height: 0
+  margin: 0
+.showSuggestionList > .FormControlSuggestionList
+  height: rem(75)
+
+.FormControlSuggestionList > p
+  margin: rem(5) 0 0
+
+.FormControlSuggestionList > button
+  +sans-typeset
+  transition: color $speed
+  margin-right: rem(10)
+  border-bottom: 1px solid
+
+.no-touch .FormControlSuggestionList > button:hover
+  color: #aaa
+
+.FormControlSuggestionList > button:after
+  content: ','
+
+.FormControlSuggestionList > button:last-of-type
+  margin-right: 0
+
+.FormControlSuggestionList > button:last-of-type:after
+  content: ''
+
+// -------------------------------------
+
+.FormControlStatus
   transition: opacity $speed2
   position: absolute
   top: rem(15)
   right: rem(10)
-.FormStatus:empty
+.FormControlStatus:empty
   opacity: 0
 
-.FormStatus > .SVGIcon > g
+.FormControlStatus > .SVGIcon > g
   stroke-width: 2
 
-.FormStatus > .RequestIcon > g
+.FormControlStatus > .RequestIcon > g
   fill: #aaa
 
-.FormStatus > .SuccessIcon > g
+.FormControlStatus > .SuccessIcon > g
   stroke-linejoin: bevel
   stroke: $success
 
-.FormStatus > .FailureIcon > g
+.FormControlStatus > .FailureIcon > g
   stroke: $danger
 

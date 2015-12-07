@@ -4,9 +4,9 @@ import { Link } from 'react-router'
 import classNames from 'classnames'
 import { openModal } from '../../actions/modals'
 import * as PostActions from '../../actions/posts'
+import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import ShareDialog from '../dialogs/ShareDialog'
 import Hint from '../hints/Hint'
-import SignUpForm from '../forms/SignUpForm'
 import {
   BubbleIcon,
   ChevronIcon,
@@ -156,7 +156,7 @@ class PostTools extends Component {
 
   signUp() {
     const { dispatch } = this.props
-    dispatch(openModal(<SignUpForm />))
+    dispatch(openModal(<RegistrationRequestDialog />))
   }
 
   render() {

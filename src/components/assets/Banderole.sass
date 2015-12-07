@@ -27,22 +27,6 @@
 .no-touch .BanderoleCaption a:hover
   color: #ccc
 
-.BanderoleCredits
-  +monospace
-  transition: color $speed
-  position: absolute
-  bottom: rem(10)
-  right: rem(10)
-  color: white
-.no-touch .BanderoleCredits:hover
-  color: #ccc
-
-.BanderoleCreditsAuthor
-  display: inline-block
-  margin-left: rem(10)
-  margin-right: rem(15)
-  border-bottom: 1px solid
-
 
 @media(min-width: #{$break-2})
   .Banderole
@@ -51,13 +35,7 @@
     left: rem(20)
   .BanderoleCaption > h1
     font-size: rem(36)
-  .BanderoleCredits
-    bottom: rem(20)
-    right: rem(20)
-
 @media(min-width: #{$break-4})
   .BanderoleCaption
     left: rem(40)
-  .BanderoleCredits
-    right: rem(40)
 
