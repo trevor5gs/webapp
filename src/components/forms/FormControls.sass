@@ -109,7 +109,8 @@ textarea.FormControl
   margin-top: rem(10)
 
 .isFailing > .FormControlFeedbackError,
-.hasFocus.hasSuggestions > .FormControlFeedbackSuggestions
+.hasFocus.hasSuggestions > .FormControlFeedbackSuggestions,
+.hasFocus.showAdvice > .FormControlFeedbackSuggestions
   height: rem(60)
 
 
@@ -125,6 +126,37 @@ textarea.FormControl
     height: rem(60)
   .isFailing.hasFocus.hasSuggestions > .FormControlFeedbackError
     height: 0
+
+// -------------------------------------
+
+.FormControlSuggestionList
+  transition: height $speed $ease
+  overflow: hidden
+  height: 0
+  margin: 0
+.showSuggestionList > .FormControlSuggestionList
+  height: rem(75)
+
+.FormControlSuggestionList > p
+  margin: rem(5) 0 0
+
+.FormControlSuggestionList > button
+  +sans-typeset
+  transition: color $speed
+  margin-right: rem(10)
+  border-bottom: 1px solid
+
+.no-touch .FormControlSuggestionList > button:hover
+  color: #aaa
+
+.FormControlSuggestionList > button:after
+  content: ','
+
+.FormControlSuggestionList > button:last-of-type
+  margin-right: 0
+
+.FormControlSuggestionList > button:last-of-type:after
+  content: ''
 
 // -------------------------------------
 

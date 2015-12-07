@@ -6,7 +6,7 @@ import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 import PasswordControl from '../forms/PasswordControl'
-import NameControl from '../forms/NameControl'
+import UsernameControl from '../forms/UsernameControl'
 
 class RegistrationForm extends Component {
   static propTypes = {
@@ -20,11 +20,30 @@ class RegistrationForm extends Component {
       emailSuggestion: null,
       passwordStatus: STATUS.INDETERMINATE,
       showPasswordSuggestion: true,
+      showUsernameAdvice: true,
+      usernameFailureType: null,
+      usernameSuggestions: null,
+      usernameStatus: STATUS.INDETERMINATE,
     }
   }
 
   componentWillMount() {
-    this.validateEmail = debounce(this.validateEmail, 500)
+    this.handleEmailControlChanged = debounce(this.handleEmailControlChanged, 500)
+  }
+
+  onValidateUsernameResponse(json) {
+    const { availability } = json
+    const { usernameStatus } = this.state
+    if (!availability && usernameStatus !== STATUS.FAILURE) {
+      return this.setState({ usernameStatus: STATUS.FAILURE, usernameFailureType: 'server' })
+    }
+    const { username, suggestions } = availability
+    const suggestionList = suggestions.username && suggestions.username.length ? suggestions.username : null
+    if (username && usernameStatus !== STATUS.SUCCESS) {
+      return this.setState({ usernameStatus: STATUS.SUCCESS, usernameFailureType: null, showUsernameAdvice: false, usernameSuggestions: suggestionList })
+    } else if (!username && usernameStatus !== STATUS.FAILURE) {
+      return this.setState({ usernameStatus: STATUS.FAILURE, usernameFailureType: 'server', showUsernameAdvice: false, usernameSuggestions: suggestionList })
+    }
   }
 
   // Todo: Needs to be wired up still
@@ -43,20 +62,33 @@ class RegistrationForm extends Component {
     }
   }
 
-  validateEmail(vo) {
+  handleUsernameControlChanged(vo) {
+    const { usernameStatus } = this.state
+    if (!vo.username.length && usernameStatus !== STATUS.INDETERMINATE) {
+      return this.setState({ usernameStatus: STATUS.INDETERMINATE, usernameFailureType: null, showUsernameAdvice: true, usernameSuggestions: null })
+    }
+    // Check for proper characters first
+    if (!(/^[a-zA-Z0-9\-_]+$/).test(vo.username)) {
+      return this.setState({ usernameStatus: STATUS.FAILURE, usernameFailureType: 'client', showUsernameAdvice: false, usernameSuggestions: null })
+    }
+    if (usernameStatus !== STATUS.REQUEST) {
+      this.setState({ usernameStatus: STATUS.REQUEST, usernameFailureType: null, showUsernameAdvice: true, usernameSuggestions: null })
+    }
+    // this.props.dispatch(validateUsername(vo))
+  }
+
+  handleEmailControlChanged(vo) {
     const { emailStatus } = this.state
     if (!vo.email.length && emailStatus !== STATUS.INDETERMINATE) {
       return this.setState({ emailStatus: STATUS.INDETERMINATE, emailSuggestion: null })
     }
-
     if (emailStatus !== STATUS.REQUEST) {
       this.setState({ emailStatus: STATUS.REQUEST, emailSuggestion: null })
     }
-    // console.log('validateEmail', vo)
     // this.props.dispatch(validateEmail(vo))
   }
 
-  validatePassword(vo) {
+  handlePasswordControlChanged(vo) {
     const { passwordStatus } = this.state
     if (!vo.password.length && passwordStatus !== STATUS.INDETERMINATE) {
       return this.setState({ passwordStatus: STATUS.INDETERMINATE, showPasswordSuggestion: false })
@@ -75,19 +107,14 @@ class RegistrationForm extends Component {
     // this.props.dispatch(requestInvite(vo))
   }
 
-  handleControlChange(vo) {
-    return vo
-    // console.log('handleControlChange', vo)
-  }
-
   render() {
-    const { emailStatus, emailSuggestion, passwordStatus, showPasswordSuggestion } = this.state
-    const isFormValid = emailStatus === STATUS.SUCCESS && passwordStatus === STATUS.SUCCESS
+    const { usernameStatus, usernameFailureType, showUsernameAdvice, usernameSuggestions, emailStatus, emailSuggestion, passwordStatus, showPasswordSuggestion } = this.state
+    const isFormValid = usernameStatus === STATUS.SUCCESS && emailStatus === STATUS.SUCCESS && passwordStatus === STATUS.SUCCESS
     return (
       <form id="RegistrationForm" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
-        <NameControl tabIndex="1" text="@username" controlWasChanged={this.handleControlChange.bind(this)} />
-        <EmailControl tabIndex="2" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.validateEmail.bind(this)} />
-        <PasswordControl tabIndex="3" status={passwordStatus} showSuggestion={showPasswordSuggestion} controlWasChanged={this.validatePassword.bind(this)} />
+        <UsernameControl tabIndex="1" text="" status={usernameStatus} failureType={usernameFailureType} showAdvice={showUsernameAdvice} suggestions={usernameSuggestions} controlWasChanged={this.handleUsernameControlChanged.bind(this)} />
+        <EmailControl tabIndex="2" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.handleEmailControlChanged.bind(this)} />
+        <PasswordControl tabIndex="3" status={passwordStatus} showSuggestion={showPasswordSuggestion} controlWasChanged={this.handlePasswordControlChanged.bind(this)} />
         <FormButton tabIndex="4" disabled={!isFormValid}>Create Account</FormButton>
       </form>
     )

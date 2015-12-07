@@ -20,7 +20,7 @@ class RegistrationRequestForm extends Component {
   }
 
   componentWillMount() {
-    this.validateEmail = debounce(this.validateEmail, 500)
+    this.handleEmailControlChanged = debounce(this.handleEmailControlChanged, 500)
   }
 
   // Todo: Needs to be wired up still
@@ -39,7 +39,7 @@ class RegistrationRequestForm extends Component {
     }
   }
 
-  validateEmail(vo) {
+  handleEmailControlChanged(vo) {
     const { emailStatus } = this.state
     if (!vo.email.length && emailStatus !== STATUS.INDETERMINATE) {
       return this.setState({ emailStatus: STATUS.INDETERMINATE, emailSuggestion: null })
@@ -47,7 +47,6 @@ class RegistrationRequestForm extends Component {
     if (emailStatus !== STATUS.REQUEST) {
       this.setState({ emailStatus: STATUS.REQUEST, emailSuggestion: null })
     }
-    // console.log('validateEmail', vo)
     // this.props.dispatch(validateEmail(vo))
   }
 
@@ -63,7 +62,7 @@ class RegistrationRequestForm extends Component {
     const isFormValid = emailStatus === STATUS.SUCCESS
     return (
       <form id="RegistrationRequestForm" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
-        <EmailControl tabIndex="1" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.validateEmail.bind(this)} />
+        <EmailControl tabIndex="1" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.handleEmailControlChanged.bind(this)} />
         <FormButton tabIndex="2" disabled={!isFormValid}>Sign up</FormButton>
       </form>
     )
