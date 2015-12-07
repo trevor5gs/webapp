@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import random from 'lodash.random'
 import { BANDEROLES } from '../../constants/gui_types'
-import AppleStoreLink from '../../components/support/AppleStoreLink'
+import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
 import NewSessionForm from '../../components/forms/NewSessionForm'
+import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class SignIn extends Component {
   constructor(props, context) {
@@ -31,6 +32,7 @@ class SignIn extends Component {
         </div>
         <AppleStoreLink/>
         <Credits user={featuredUser} />
+        <Cover coverImage={featuredUser.coverImage} modifiers="asFullScreen" />
       </section>
     )
   }

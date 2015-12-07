@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import random from 'lodash.random'
 import { BANDEROLES } from '../../constants/gui_types'
-import AppleStoreLink from '../../components/support/AppleStoreLink'
+import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
 import RegistrationForm from '../../components/forms/RegistrationForm'
+import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class Join extends Component {
   constructor(props, context) {
@@ -32,6 +33,7 @@ class Join extends Component {
         </div>
         <AppleStoreLink/>
         <Credits user={featuredUser} />
+        <Cover coverImage={featuredUser.coverImage} modifiers="asFullScreen" />
       </section>
     )
   }
