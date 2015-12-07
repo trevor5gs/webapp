@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { pushState } from 'redux-router'
 import classNames from 'classnames'
 import { openModal } from '../../actions/modals'
 import * as PostActions from '../../actions/posts'
@@ -24,6 +25,7 @@ class PostTools extends Component {
     author: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     post: PropTypes.object.isRequired,
   }
 
@@ -35,7 +37,7 @@ class PostTools extends Component {
   }
 
   getToolCells() {
-    const { author, currentUser, post } = this.props
+    const { author, currentUser, isLoggedIn, post } = this.props
     const isOwnPost = currentUser && author.id === currentUser.id
     const cells = []
     cells.push(
@@ -50,7 +52,7 @@ class PostTools extends Component {
     if (author.hasCommentingEnabled) {
       cells.push(
         <span className="PostTool CommentTool" key={`CommentTool_${post.id}`}>
-          <button>
+          <button onClick={ this.toggleComments.bind(this) }>
             <BubbleIcon />
             <span className="PostToolValue" data-count={post.commentsCount} >{post.commentsCount}</span>
             <Hint>Comment</Hint>
@@ -98,32 +100,34 @@ class PostTools extends Component {
         </Link>
       </span>
     )
-    if (isOwnPost) {
-      cells.push(
-        <span className="PostTool EditTool ShyTool" key={`EditTool_${post.id}`}>
-          <button>
-            <PencilIcon />
-            <Hint>Edit</Hint>
-          </button>
-        </span>
-      )
-      cells.push(
-        <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${post.id}`}>
-          <button>
-            <XBoxIcon />
-            <Hint>Delete</Hint>
-          </button>
-        </span>
-      )
-    } else {
-      cells.push(
-        <span className="PostTool FlagTool ShyTool" key={`FlagTool_${post.id}`}>
-          <button>
-            <FlagIcon />
-            <Hint>Flag</Hint>
-          </button>
-        </span>
-      )
+    if (isLoggedIn) {
+      if (isOwnPost) {
+        cells.push(
+          <span className="PostTool EditTool ShyTool" key={`EditTool_${post.id}`}>
+            <button>
+              <PencilIcon />
+              <Hint>Edit</Hint>
+            </button>
+          </span>
+        )
+        cells.push(
+          <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${post.id}`}>
+            <button>
+              <XBoxIcon />
+              <Hint>Delete</Hint>
+            </button>
+          </span>
+        )
+      } else {
+        cells.push(
+          <span className="PostTool FlagTool ShyTool" key={`FlagTool_${post.id}`}>
+            <button>
+              <FlagIcon />
+              <Hint>Flag</Hint>
+            </button>
+          </span>
+        )
+      }
     }
     cells.push(
       <span className={"PostTool MoreTool"} key={`MoreTool_${post.id}`}>
@@ -140,8 +144,18 @@ class PostTools extends Component {
     this.setState({ isMoreToolActive: !this.state.isMoreToolActive })
   }
 
+  toggleComments() {
+    const { author, dispatch, isLoggedIn, post } = this.props
+    if (!isLoggedIn) {
+      dispatch(pushState(window.history.state, `/${author.username}/post/${post.token}`))
+    }
+  }
+
   lovePost() {
-    const { dispatch, post } = this.props
+    const { dispatch, isLoggedIn, post } = this.props
+    if (!isLoggedIn) {
+      return dispatch(openModal(<RegistrationRequestDialog />))
+    }
     if (post.loved) {
       dispatch(PostActions.unlovePost(post))
     } else {
@@ -174,5 +188,13 @@ class PostTools extends Component {
   }
 }
 
-export default connect()(PostTools)
+
+function mapStateToProps(state) {
+  return {
+    isLoggedIn: state.authentication.isLoggedIn,
+  }
+}
+
+
+export default connect(mapStateToProps)(PostTools)
 
