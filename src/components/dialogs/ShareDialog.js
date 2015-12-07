@@ -39,7 +39,7 @@ class ShareDialog extends Component {
   constructor(props, context) {
     super(props, context)
     const { author, post } = this.props
-    const postLink = `${window.location.protocol}//${window.location.host}/${author.username}/post/${post.token}`
+    this.postLink = `${window.location.protocol}//${window.location.host}/${author.username}/post/${post.token}`
     let summary = 'Check out this post on Ello'
     // email string, since we can fit more text content
     const emailSubject = `${summary}, via @${author.username}`
@@ -59,14 +59,14 @@ class ShareDialog extends Component {
     }
     // truncate the tweet summary to be <= 140
     let tweetSummary = summary
-    if (tweetSummary.length + postLink.length > 139) {
-      tweetSummary = tweetSummary.substr(0, 139 - postLink.length)
+    if (tweetSummary.length + this.postLink.length > 139) {
+      tweetSummary = tweetSummary.substr(0, 139 - this.postLink.length)
       const summaryArr = tweetSummary.split(' ')
       summaryArr.pop()
       tweetSummary = summaryArr.join(' ')
     }
     // create "safe" versions of what we need to use
-    this.postLinkSafe = window.encodeURIComponent(postLink)
+    this.postLinkSafe = window.encodeURIComponent(this.postLink)
     this.summarySafe = window.encodeURIComponent(summary)
     this.tweetSummarySafe = window.encodeURIComponent(tweetSummary)
     this.emailSubjectSafe = window.encodeURIComponent(emailSubject)
