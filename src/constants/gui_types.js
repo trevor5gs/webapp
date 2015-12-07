@@ -76,10 +76,9 @@ export const BANDEROLES = [
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/13304/ello-regular-64f26a2e.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/cover_image/13304/ello-hdpi-63f6600c.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/cover_image/13304/ello-xhdpi-63f6600c.jpg' },
-      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/cover_image/13304/ello-optimized-63f6600c.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/cover_image/13304/ello-hdpi-9973a046.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/cover_image/13304/ello-xhdpi-9973a046.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/cover_image/13304/ello-optimized-9973a046.jpg' },
     },
   },
 ]
-
