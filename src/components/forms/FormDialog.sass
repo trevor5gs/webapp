@@ -1,16 +1,16 @@
 .FormDialog
-  // width: rem(320)
+  width: rem(300)
   margin: 0 auto
 
 .FormDialog > h1
   +sans-family
-  margin-bottom: rem(70)
+  margin-bottom: rem(20)
   font-size: rem(24)
   line-height: 1
 
 .FormDialog > p
   +monospace
-  margin-top: rem(70)
+  margin-top: rem(20)
   color: #aaa
 
 .FormDialog a:focus,
@@ -25,8 +25,16 @@
   margin-top: rem(15)
   color: #aaa
 
-@media(min-width: #{$break-2})
+
+@media(min-width: #{em(350)})
   .FormDialog
     width: rem(320)
+
+@media(min-width: #{$break-2})
+  .FormDialog
     margin: auto
+  .FormDialog > h1
+    margin-bottom: rem(70)
+  .FormDialog > p
+    margin-top: rem(70)
 
