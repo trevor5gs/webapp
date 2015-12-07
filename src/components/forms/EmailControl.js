@@ -18,7 +18,7 @@ class EmailControl extends Component {
   static defaultProps = {
     id: 'user_email',
     name: 'user[email]',
-    placeholder: 'Email',
+    placeholder: 'Enter your email',
     status: STATUS.INDETERMINATE,
     suggestions: null,
     tabIndex: 0,

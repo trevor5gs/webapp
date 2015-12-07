@@ -35,8 +35,8 @@ class NewSessionForm extends Component {
     const { emailStatus, passwordStatus } = this.state
     return (
       <form id="NewSessionForm" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
-        <EmailControl tabIndex="1" text="" placeholder="Enter Email" status={emailStatus} controlWasChanged={this.handleControlChange.bind(this)} />
-        <PasswordControl tabIndex="2" placeholder="Enter Password" status={passwordStatus} controlWasChanged={this.handleControlChange.bind(this)} />
+        <EmailControl tabIndex="1" text="" status={emailStatus} controlWasChanged={this.handleControlChange.bind(this)} />
+        <PasswordControl tabIndex="2" status={passwordStatus} controlWasChanged={this.handleControlChange.bind(this)} />
         <FormButton tabIndex="3">Enter Ello</FormButton>
       </form>
     )

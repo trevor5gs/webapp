@@ -18,7 +18,7 @@ class PasswordControl extends Component {
   static defaultProps = {
     id: 'user_password',
     name: 'user[password]',
-    placeholder: 'Password',
+    placeholder: 'Enter your password',
     showSuggestion: true,
     status: STATUS.INDETERMINATE,
     tabIndex: 0,
