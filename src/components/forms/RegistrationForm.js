@@ -82,12 +82,13 @@ class RegistrationForm extends Component {
 
   render() {
     const { emailStatus, emailSuggestion, passwordStatus, showPasswordSuggestion } = this.state
+    const isFormValid = emailStatus === STATUS.SUCCESS && passwordStatus === STATUS.SUCCESS
     return (
       <form id="RegistrationForm" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
         <NameControl tabIndex="1" text="@username" controlWasChanged={this.handleControlChange.bind(this)} />
         <EmailControl tabIndex="2" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.validateEmail.bind(this)} />
         <PasswordControl tabIndex="3" status={passwordStatus} showSuggestion={showPasswordSuggestion} controlWasChanged={this.validatePassword.bind(this)} />
-        <FormButton>Create Account</FormButton>
+        <FormButton tabIndex="4" disabled={!isFormValid}>Create Account</FormButton>
       </form>
     )
   }

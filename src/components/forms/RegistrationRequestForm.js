@@ -60,10 +60,11 @@ class RegistrationRequestForm extends Component {
 
   render() {
     const { emailStatus, emailSuggestion } = this.state
+    const isFormValid = emailStatus === STATUS.SUCCESS
     return (
       <form id="RegistrationRequestForm" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
-        <EmailControl tabIndex="2" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.validateEmail.bind(this)} />
-        <FormButton>Sign up</FormButton>
+        <EmailControl tabIndex="1" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.validateEmail.bind(this)} />
+        <FormButton tabIndex="2" disabled={!isFormValid}>Sign up</FormButton>
       </form>
     )
   }

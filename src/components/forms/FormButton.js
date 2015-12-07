@@ -7,7 +7,7 @@ class FormButton extends Component {
 
   render() {
     return (
-      <button className="FormButton">
+      <button className="FormButton" {...this.props}>
         { this.props.children }
       </button>
     )

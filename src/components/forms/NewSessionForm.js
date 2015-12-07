@@ -37,7 +37,7 @@ class NewSessionForm extends Component {
       <form id="NewSessionForm" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
         <EmailControl tabIndex="1" text="" placeholder="Enter Email" status={emailStatus} controlWasChanged={this.handleControlChange.bind(this)} />
         <PasswordControl tabIndex="2" placeholder="Enter Password" status={passwordStatus} controlWasChanged={this.handleControlChange.bind(this)} />
-        <FormButton>Enter Ello</FormButton>
+        <FormButton tabIndex="3">Enter Ello</FormButton>
       </form>
     )
   }
