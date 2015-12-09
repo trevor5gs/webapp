@@ -1,9 +1,9 @@
 .RelationshipButton
   +sanserif
-  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease
+  transition: background-color $speed $ease, border-color $speed $ease, border-radius $speed $ease, color $speed $ease, width $speed $ease
   width: rem(110)
   height: rem(30)
-  padding: 0 rem(10) 0 rem(5)
+  padding: 0 rem(10) 0 rem(4)
   line-height: rem(30)
   text-align: center
   background-color: white
@@ -16,6 +16,7 @@
   background-color: #666
   border-color: #666
   color: white
+  width: rem(110)
 .no-touch .RelationshipButton:hover > .SVGIcon g
   stroke: white
 
@@ -36,4 +37,12 @@
 
 .RelationshipButton > .MiniCheckIcon
   margin-top: rem(-4)
+
+
+.RelationshipButton.asCompact
+  width: rem(30)
+  border-radius: rem(30)
+  overflow: hidden
+  white-space: nowrap
+  border-color: #666
 

@@ -36,6 +36,15 @@
 .no-touch .PostHeaderLink:hover
   color: #999
 
+.PostHeader > .RelationshipButton
+  position: absolute
+  top: 0
+  right: 0
+  width: rem(30)
+  border-radius: rem(30)
+  overflow: hidden
+  white-space: nowrap
+
 @media(min-width: #{$break-2})
   .PostHeader,
   .RepostHeader
@@ -53,4 +62,7 @@
   .PostHeader .Avatar,
   .RepostHeader .Avatar
     top: rem(20)
+
+  .PostHeader > .RelationshipButton
+    top: rem(25)
 

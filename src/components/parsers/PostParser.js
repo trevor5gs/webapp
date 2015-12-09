@@ -6,6 +6,7 @@ import Avatar from '../assets/Avatar'
 import ImageRegion from '../posts/regions/ImageRegion'
 import PostTools from '../posts/PostTools'
 import { RepostIcon } from '../posts/PostIcons'
+import RelationshipButton from '../relationships/RelationshipButton'
 
 let models = {}
 
@@ -19,8 +20,13 @@ function header(post, author) {
           <span>{`@${author.username}`}</span>
         </Link>
       </div>
+      <RelationshipButton
+        ref="relationshipButton"
+        userId={author.id}
+        priority={author.relationshipPriority} />
     </header>
   )
+          // buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
 }
 
 function repostHeader(post, repostAuthor, repostSource, repostedBy) {
