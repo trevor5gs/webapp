@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
-// import { requestInvite, validateEmail } from '../../actions/profile'
 import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 import PasswordControl from '../forms/PasswordControl'

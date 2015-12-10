@@ -3,6 +3,10 @@ import * as ACTION_TYPES from '../constants/action_types'
 import { resetAuth } from '../networking/auth'
 
 const runningFetches = {}
+const defaultHeaders = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
+}
 
 function getAuthToken(accessToken) {
   return {
@@ -12,9 +16,8 @@ function getAuthToken(accessToken) {
 
 function getPostJsonHeader(accessToken) {
   return {
+    ...defaultHeaders,
     ...getAuthToken(accessToken),
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
   }
 }
 
@@ -23,6 +26,7 @@ function getGetHeader(accessToken) {
 }
 
 function checkStatus(response) {
+  console.log('checkStatus', response.ok, response.statusText)
   if (response.ok) {
     return response
   }
@@ -60,6 +64,7 @@ export const requester = store => next => action => {
   if ((type !== ACTION_TYPES.LOAD_STREAM &&
         type !== ACTION_TYPES.LOAD_NEXT_CONTENT &&
         type !== ACTION_TYPES.LOAD_PREV_CONTENT &&
+        type !== ACTION_TYPES.AUTHENTICATION.CLIENT &&
         type !== ACTION_TYPES.POST.COMMENT &&
         type !== ACTION_TYPES.POST.DELETE &&
         type !== ACTION_TYPES.POST.EDIT &&
@@ -74,6 +79,8 @@ export const requester = store => next => action => {
     return next(action)
   }
 
+  // TODO: I think the body should actually come
+  // from the endpoint instead of the payload
   const { endpoint, method, body } = payload
 
   if (!endpoint) return next(action);
@@ -89,16 +96,26 @@ export const requester = store => next => action => {
   next({ type: REQUEST, payload, meta: meta })
 
   const state = store.getState()
-  const accessToken = state.accessToken.token
-  const options = {
-    method: method || 'GET',
-    headers: (!method || method === 'GET') ? getGetHeader(accessToken) : getPostJsonHeader(accessToken),
+  // const accessToken = state.accessToken.token
+  const options = { method: method || 'GET' }
+  const authentication = state.authentication
+  const accessToken = authentication.accessToken
+  if (type === ACTION_TYPES.AUTHENTICATION.CLIENT) {
+    options.headers = defaultHeaders
+  } else if(!method || method === 'GET') {
+    options.headers = getGetHeader(accessToken)
+  } else {
+    options.headers = getPostJsonHeader(accessToken)
   }
 
   if (options.method !== 'GET' && options.method !== 'HEAD') {
     options.body = body || null
+    if (options.body && typeof options.body !== 'string') {
+      options.body = JSON.stringify(options.body)
+    }
   }
 
+  console.log('fetch', endpoint.path, options)
   return fetch(endpoint.path, options)
     .then(checkStatus)
     .then(response => {
@@ -118,6 +135,7 @@ export const requester = store => next => action => {
             payload.pagination = linkPagination
           }
           next({ meta, payload, type: SUCCESS })
+          console.log('fetch done', payload)
           return true
         })
       } else if (response.ok) {

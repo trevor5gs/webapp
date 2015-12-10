@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import debounce from 'lodash.debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
-// import { requestInvite, validateEmail } from '../../actions/profile'
+import { /* requestInvite,*/ checkAvailability } from '../../actions/profile'
 import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 import PasswordControl from '../forms/PasswordControl'
@@ -74,7 +74,7 @@ class RegistrationForm extends Component {
     if (usernameStatus !== STATUS.REQUEST) {
       this.setState({ usernameStatus: STATUS.REQUEST, usernameFailureType: null, showUsernameAdvice: true, usernameSuggestions: null })
     }
-    // this.props.dispatch(validateUsername(vo))
+    this.props.dispatch(checkAvailability(vo))
   }
 
   handleEmailControlChanged(vo) {
@@ -85,7 +85,7 @@ class RegistrationForm extends Component {
     if (emailStatus !== STATUS.REQUEST) {
       this.setState({ emailStatus: STATUS.REQUEST, emailSuggestion: null })
     }
-    // this.props.dispatch(validateEmail(vo))
+    this.props.dispatch(checkAvailability(vo))
   }
 
   handlePasswordControlChanged(vo) {

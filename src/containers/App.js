@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
+import { getClientCredentials } from '../actions/authentication'
 import { loadProfile } from '../actions/profile'
 import { trackPageView } from '../actions/tracking'
 import Analytics from '../components/analytics/Analytics'
@@ -27,7 +28,13 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(loadProfile())
+    const { authentication, dispatch } = this.props
+    if (authentication && authentication.isLoggedIn) {
+      dispatch(loadProfile())
+    } else {
+      console.log('get client credentials')
+      dispatch(getClientCredentials())
+    }
   }
 
   componentDidUpdate() {
@@ -57,8 +64,19 @@ class App extends Component {
 }
 
 App.preRender = (store) => {
-  return store.dispatch(loadProfile())
+  const state = store.getState()
+  if (state && state.authentication && state.authentication.isLoggedIn) {
+    return store.dispatch(loadProfile())
+  } else {
+    return store.dispatch(getClientCredentials())
+  }
 }
 
-export default connect()(App)
+function mapStateToProps(state) {
+  return {
+    authentication: state.authentication,
+  }
+}
+
+export default connect(mapStateToProps)(App)
 

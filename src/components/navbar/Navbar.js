@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { pushState } from 'redux-router'
 import classNames from 'classnames'
-import Mousetrap from 'mousetrap'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { openModal, closeModal } from '../../actions/modals'
@@ -17,6 +16,7 @@ import NavbarMorePostsButton from '../navbar/NavbarMorePostsButton'
 import NavbarOmniButton from '../navbar/NavbarOmniButton'
 import NavbarProfile from '../navbar/NavbarProfile'
 import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
+import Mousetrap from '../../vendor/mousetrap'
 
 class Navbar extends Component {
   static propTypes = {
@@ -45,7 +45,6 @@ class Navbar extends Component {
       asFixed: false,
       asHidden: false,
       asLocked: false,
-      offset: Math.round((window.innerWidth * 0.5625) - 120),
       skipTransition: false,
     }
   }

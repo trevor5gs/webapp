@@ -24,30 +24,14 @@ export function saveProfile(users) {
 export function savePreferences() {
 }
 
-
-export function requestInvite(vo) {
-  const body = { email: [vo.email] }
-  return {
-    type: PROFILE.VALIDATE_EMAIL,
-    meta: {},
-    payload: {
-      method: 'POST',
-      body: JSON.stringify(body),
-      endpoint: api.invite(),
-    },
-  }
-}
-
-export function validateUsername() {
-}
-export function validateEmail(vo) {
+export function checkAvailability(vo) {
   return {
     type: PROFILE.VALIDATE_EMAIL,
     meta: {},
     payload: {
       method: 'POST',
       body: JSON.stringify(vo),
-      endpoint: api.availability(vo),
+      endpoint: api.availability(),
     },
   }
 }

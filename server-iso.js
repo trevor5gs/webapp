@@ -1,4 +1,7 @@
 import 'newrelic'
+import 'babel-core/polyfill'
+import 'isomorphic-fetch'
+
 import express from 'express'
 import path from 'path'
 import fs from 'fs'
@@ -8,22 +11,22 @@ import { match } from 'redux-router/server'
 import { ReduxRouter } from 'redux-router'
 import { Provider } from 'react-redux'
 import store from './src/store_server'
-import { setDomain } from './src/networking/api'
+import { clientAccessToken } from './src/networking/api'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
-import 'isomorphic-fetch'
+import * as ENV from './env'
 
-setDomain(process.env.AUTH_DOMAIN.replace(/"/g, ''))
 updateTimeAgoStrings({ about: '' })
 
 const app = express()
-let indexStr = ''
 
+let indexStr = ''
 // grab out the index.html string first thing
 fs.readFile(path.join(__dirname, './public/index.html'), 'utf-8', (err, data) => {
   if (!err) {
     indexStr = data
   }
 })
+
 
 // Assets
 app.use(express.static('public'))
@@ -53,6 +56,7 @@ function renderFromServer(req, res) {
       const componentHTML = renderToString(InitialComponent)
       const state = store.getState()
       state.authentication.isLoggedIn = false
+      console.log('AUTHENTICATION', state.authentication)
       // by default the components in the router are null
       // so to get around that we'll delete them see:
       // https://github.com/rackt/redux-router/issues/60
@@ -69,16 +73,14 @@ function renderFromServer(req, res) {
 }
 
 app.use((req, res) => {
-  if (req.url.match(/\/somethingloggedout/)) {
-    // will need to get client credentials using
-    // the client id and secret to set as auth for logged out
+  if (req.url.match(/\/join$/)) {
     renderFromServer(req, res)
   } else {
     res.send(indexStr)
   }
 })
 
-const port = process.env.PORT || 6660
+const port = ENV.PORT || 6660
 app.listen(port, (err) => {
   if (err) {
     console.log(err)

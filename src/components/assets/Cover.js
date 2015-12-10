@@ -16,11 +16,7 @@ class Cover extends Component {
 
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      asHidden: false,
-      imageSize: 'hdpi',
-      offset: Math.round((window.innerWidth * 0.5625)),
-    }
+    this.state = { asHidden: false }
   }
 
   componentDidMount() {
