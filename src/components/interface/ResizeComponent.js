@@ -72,6 +72,8 @@ function windowWasResized() {
   }
 }
 
+const resizeFunc = debounce(windowWasResized, 100)
+
 export function addResizeObject(obj) {
   if (resizeObjects.indexOf(obj) === -1) {
     resizeObjects.push(obj)
@@ -79,7 +81,7 @@ export function addResizeObject(obj) {
   }
   if (resizeObjects.length === 1 && !hasListeners) {
     hasListeners = true
-    window.addEventListener('resize', debounce(windowWasResized, 100))
+    window.addEventListener('resize', resizeFunc)
   }
 }
 
@@ -90,7 +92,7 @@ export function removeResizeObject(obj) {
   }
   if (resizeObjects.length === 0) {
     hasListeners = false
-    window.removeEventListener('resize')
+    window.removeEventListener('resize', resizeFunc)
   }
 }
 
