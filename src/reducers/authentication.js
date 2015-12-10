@@ -9,14 +9,13 @@ const initialState = {
 }
 
 export function authentication(state = initialState, action) {
-  const { response } = action.payload
   switch (action.type) {
     case ACTION_TYPES.AUTHENTICATION.CLIENT_SUCCESS:
-      return { ...state, ...response, isLoggedIn: false }
+      return { ...state, ...action.payload.response, isLoggedIn: false }
     case ACTION_TYPES.AUTHENTICATION.LOGOUT:
       return { ...initialState }
     case ACTION_TYPES.AUTHENTICATION.USER_SUCCESS:
-      return { ...state, ...response, isLoggedIn: false }
+      return { ...state, ...action.payload.response, isLoggedIn: false }
     default:
       return state
   }
