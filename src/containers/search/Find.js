@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import classNames from 'classnames'
 import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
-import { BANDEROLES } from '../../constants/gui_types'
+import { SIGNED_OUT_PROMOTIONS } from '../../constants/promotion_types'
 import * as SearchActions from '../../actions/search'
 import Banderole from '../../components/assets/Banderole'
 import SearchControl from '../../components/forms/SearchControl'
@@ -70,7 +70,7 @@ class Find extends Component {
     const { terms, type } = this.state
     return (
       <section className="Search Panel">
-        <Banderole userlist={ BANDEROLES } />
+        <Banderole userlist={ SIGNED_OUT_PROMOTIONS } />
         <div className="SearchBar">
           <SearchControl text={terms} controlWasChanged={this.handleControlChange.bind(this)} />
           <button className={classNames('SearchFilter', { active: type === 'posts' })} onClick={() => { this.handleControlChange({ type: 'posts' }) }} >
