@@ -11,11 +11,12 @@ import Navbar from '../components/navbar/Navbar'
 
 class App extends Component {
   static propTypes = {
+    authentication: PropTypes.object.isRequired,
+    children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
     }),
-    children: PropTypes.node.isRequired,
   }
 
   static defaultProps = {
@@ -32,7 +33,7 @@ class App extends Component {
     if (authentication && authentication.isLoggedIn) {
       dispatch(loadProfile())
     } else {
-      console.log('get client credentials')
+      // console.log('get client credentials')
       dispatch(getClientCredentials())
     }
   }
@@ -67,9 +68,8 @@ App.preRender = (store) => {
   const state = store.getState()
   if (state && state.authentication && state.authentication.isLoggedIn) {
     return store.dispatch(loadProfile())
-  } else {
-    return store.dispatch(getClientCredentials())
   }
+  return store.dispatch(getClientCredentials())
 }
 
 function mapStateToProps(state) {

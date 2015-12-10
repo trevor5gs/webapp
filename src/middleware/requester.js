@@ -26,7 +26,7 @@ function getGetHeader(accessToken) {
 }
 
 function checkStatus(response) {
-  console.log('checkStatus', response.ok, response.statusText)
+  // console.log('checkStatus', response.ok, response.statusText)
   if (response.ok) {
     return response
   }
@@ -102,7 +102,7 @@ export const requester = store => next => action => {
   const accessToken = authentication.accessToken
   if (type === ACTION_TYPES.AUTHENTICATION.CLIENT) {
     options.headers = defaultHeaders
-  } else if(!method || method === 'GET') {
+  } else if (!method || method === 'GET') {
     options.headers = getGetHeader(accessToken)
   } else {
     options.headers = getPostJsonHeader(accessToken)
@@ -115,7 +115,7 @@ export const requester = store => next => action => {
     }
   }
 
-  console.log('fetch', endpoint.path, options)
+  // console.log('fetch', endpoint.path, options)
   return fetch(endpoint.path, options)
     .then(checkStatus)
     .then(response => {
@@ -135,7 +135,7 @@ export const requester = store => next => action => {
             payload.pagination = linkPagination
           }
           next({ meta, payload, type: SUCCESS })
-          console.log('fetch done', payload)
+          // console.log('fetch done', payload)
           return true
         })
       } else if (response.ok) {

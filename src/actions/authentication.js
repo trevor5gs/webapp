@@ -2,7 +2,7 @@ import * as ACTION_TYPES from '../constants/action_types'
 import * as api from '../networking/api'
 import * as ENV from '../../env'
 
-export function getClientCredentials(type) {
+export function getClientCredentials() {
   return {
     type: ACTION_TYPES.AUTHENTICATION.CLIENT,
     payload: {
