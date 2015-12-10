@@ -23,9 +23,14 @@ class RegistrationRequestForm extends Component {
     this.handleEmailControlChanged = debounce(this.handleEmailControlChanged, 500)
   }
 
-  // Todo: Needs to be wired up still
-  onValidateEmailResponse(json) {
-    const { availability } = json
+  componentWillReceiveProps(nextProps) {
+    const { availability } = nextProps
+    if (availability.hasOwnProperty('email')) {
+      this.onValidateEmailResponse(availability)
+    }
+  }
+
+  onValidateEmailResponse(availability) {
     const { emailStatus } = this.state
     if (!availability && emailStatus !== STATUS.FAILURE) {
       return this.setState({ emailStatus: STATUS.FAILURE, emailSuggestion: null })
@@ -69,5 +74,11 @@ class RegistrationRequestForm extends Component {
   }
 }
 
-export default connect()(RegistrationRequestForm)
+function mapStateToProps(state) {
+  return {
+    availability: state.profile.availability,
+  }
+}
+
+export default connect(mapStateToProps)(RegistrationRequestForm)
 

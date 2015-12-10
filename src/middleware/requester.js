@@ -74,7 +74,7 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.POST_JSON &&
         type !== ACTION_TYPES.PROFILE.LOAD &&
         type !== ACTION_TYPES.PROFILE.SAVE &&
-        type !== ACTION_TYPES.PROFILE.VALIDATE_EMAIL
+        type !== ACTION_TYPES.PROFILE.AVAILABILITY
       ) || !payload) {
     return next(action)
   }
@@ -96,10 +96,8 @@ export const requester = store => next => action => {
   next({ type: REQUEST, payload, meta: meta })
 
   const state = store.getState()
-  // const accessToken = state.accessToken.token
   const options = { method: method || 'GET' }
-  const authentication = state.authentication
-  const accessToken = authentication.accessToken
+  const { accessToken } = state.authentication
   if (type === ACTION_TYPES.AUTHENTICATION.CLIENT) {
     options.headers = defaultHeaders
   } else if (!method || method === 'GET') {
@@ -150,7 +148,7 @@ export const requester = store => next => action => {
     })
     .catch(error => {
       delete runningFetches[error.response.url]
-      if (error.response.status === 401) {
+      if (error.response.status === 401 || (accessToken && error.response.status === 403)) {
         resetAuth(store.dispatch, accessToken, state.router.location)
       }
       next({ error, meta, payload, type: FAILURE })

@@ -191,7 +191,7 @@ class Onboarding extends Component {
 
 function mapStateToProps(state) {
   return {
-    accessToken: state.accessToken.token,
+    accessToken: state.authentication.accessToken,
     json: state.json,
     profile: state.profile,
     router: state.router,

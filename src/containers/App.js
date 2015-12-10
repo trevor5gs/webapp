@@ -33,7 +33,6 @@ class App extends Component {
     if (authentication && authentication.isLoggedIn) {
       dispatch(loadProfile())
     } else {
-      // console.log('get client credentials')
       dispatch(getClientCredentials())
     }
   }

@@ -18,8 +18,15 @@ export function checkAuth(dispatch, oldToken, location) {
   }
   if (token) {
     dispatch({
-      type: ACTION_TYPES.ACCESS_TOKEN.SAVE,
-      payload: token,
+      type: ACTION_TYPES.AUTHENTICATION.USER_SUCCESS,
+      payload: {
+        response: {
+          accessToken: token,
+          tokenType: 'onboarding_auth',
+          expiresIn: 7200,
+          createdAt: new Date(),
+        },
+      },
     })
   } else {
     const url = 'https://' + ENV.AUTH_DOMAIN + '/api/oauth/authorize.html' +
@@ -35,7 +42,7 @@ export function checkAuth(dispatch, oldToken, location) {
 export function resetAuth(dispatch, oldToken, location) {
   if (oldToken) {
     dispatch({
-      type: ACTION_TYPES.ACCESS_TOKEN.DELETE,
+      type: ACTION_TYPES.AUTHENTICATION.LOGOUT,
     })
   }
   checkAuth(dispatch, null, location)

@@ -26,7 +26,7 @@ export function savePreferences() {
 
 export function checkAvailability(vo) {
   return {
-    type: PROFILE.VALIDATE_EMAIL,
+    type: PROFILE.AVAILABILITY,
     meta: {},
     payload: {
       method: 'POST',

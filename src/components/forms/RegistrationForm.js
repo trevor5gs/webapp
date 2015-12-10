@@ -29,26 +29,20 @@ class RegistrationForm extends Component {
 
   componentWillMount() {
     this.handleEmailControlChanged = debounce(this.handleEmailControlChanged, 500)
+    this.handleUsernameControlChanged = debounce(this.handleUsernameControlChanged, 500)
   }
 
-  onValidateUsernameResponse(json) {
-    const { availability } = json
-    const { usernameStatus } = this.state
-    if (!availability && usernameStatus !== STATUS.FAILURE) {
-      return this.setState({ usernameStatus: STATUS.FAILURE, usernameFailureType: 'server' })
+  componentWillReceiveProps(nextProps) {
+    const { availability } = nextProps
+    if (availability.hasOwnProperty('email')) {
+      this.onValidateEmailResponse(availability)
     }
-    const { username, suggestions } = availability
-    const suggestionList = suggestions.username && suggestions.username.length ? suggestions.username : null
-    if (username && usernameStatus !== STATUS.SUCCESS) {
-      return this.setState({ usernameStatus: STATUS.SUCCESS, usernameFailureType: null, showUsernameAdvice: false, usernameSuggestions: suggestionList })
-    } else if (!username && usernameStatus !== STATUS.FAILURE) {
-      return this.setState({ usernameStatus: STATUS.FAILURE, usernameFailureType: 'server', showUsernameAdvice: false, usernameSuggestions: suggestionList })
+    if (availability.hasOwnProperty('username')) {
+      this.onValidateUsernameResponse(availability)
     }
   }
 
-  // Todo: Needs to be wired up still
-  onValidateEmailResponse(json) {
-    const { availability } = json
+  onValidateEmailResponse(availability) {
     const { emailStatus } = this.state
     if (!availability && emailStatus !== STATUS.FAILURE) {
       return this.setState({ emailStatus: STATUS.FAILURE, emailSuggestion: null })
@@ -59,6 +53,20 @@ class RegistrationForm extends Component {
       return this.setState({ emailStatus: STATUS.SUCCESS, emailSuggestion: emailFullSuggestion })
     } else if (!email && emailStatus !== STATUS.FAILURE) {
       return this.setState({ emailStatus: STATUS.FAILURE, emailSuggestion: emailFullSuggestion })
+    }
+  }
+
+  onValidateUsernameResponse(availability) {
+    const { usernameStatus } = this.state
+    if (!availability && usernameStatus !== STATUS.FAILURE) {
+      return this.setState({ usernameStatus: STATUS.FAILURE, usernameFailureType: 'server' })
+    }
+    const { username, suggestions } = availability
+    const suggestionList = suggestions.username && suggestions.username.length ? suggestions.username : null
+    if (username && usernameStatus !== STATUS.SUCCESS) {
+      return this.setState({ usernameStatus: STATUS.SUCCESS, usernameFailureType: null, showUsernameAdvice: false, usernameSuggestions: suggestionList })
+    } else if (!username && usernameStatus !== STATUS.FAILURE) {
+      return this.setState({ usernameStatus: STATUS.FAILURE, usernameFailureType: 'server', showUsernameAdvice: false, usernameSuggestions: suggestionList })
     }
   }
 
@@ -121,5 +129,11 @@ class RegistrationForm extends Component {
   }
 }
 
-export default connect()(RegistrationForm)
+function mapStateToProps(state) {
+  return {
+    availability: state.profile.availability,
+  }
+}
+
+export default connect(mapStateToProps)(RegistrationForm)
 
