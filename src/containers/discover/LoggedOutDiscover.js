@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { BANDEROLES } from '../../constants/gui_types'
+import { SIGNED_OUT_PROMOTIONS } from '../../constants/promotion_types'
 import { loadDiscoverUsers } from '../../actions/discover'
 import Banderole from '../../components/assets/Banderole'
 import FilterBar from '../../components/filters/FilterBar'
@@ -17,13 +17,11 @@ class LoggedOutDiscover extends Component {
     links.push({ to: '/', children: 'Recommended' })
     links.push({ to: '/trending', children: 'Trending' })
     links.push({ to: '/recent', children: 'Recent' })
-    // links.push({ to: '/discover/communities', children: 'Communities' })
-    // links.push({ to: '/discover/featured-users', children: 'Featured Users' })
     const pathArr = this.props.location.pathname.split('/')
     const type = pathArr[1].length ? pathArr[1] : 'recommended'
     return (
       <section className="LoggedOutDiscover Panel" key={`discover_${type}`}>
-        <Banderole userlist={ BANDEROLES } />
+        <Banderole userlist={ SIGNED_OUT_PROMOTIONS } />
         <FilterBar type="text" links={links} />
         <StreamComponent ref="streamComponent" action={loadDiscoverUsers(type)} />
       </section>

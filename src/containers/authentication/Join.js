@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import random from 'lodash.random'
-import { BANDEROLES } from '../../constants/gui_types'
+import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotion_types'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
 import RegistrationForm from '../../components/forms/RegistrationForm'
@@ -15,7 +15,7 @@ class Join extends Component {
   }
 
   componentWillMount() {
-    const userlist = BANDEROLES // Just for now :)
+    const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
     this.setState({ featuredUser: userlist[index] })
   }
