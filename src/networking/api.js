@@ -29,12 +29,14 @@ export function s3CredentialsPath() {
   }
 }
 // Authentication
-// TODO: I think methods should be moved into the endpoint
-// and default to 'GET' as well as the body being in here
-export function clientAccessToken() {
+export function accessTokens() {
   return {
     path: `${basePath()}/oauth/token`,
-    method: 'POST',
+  }
+}
+export function forgotPassword() {
+  return {
+    path: getAPIPath('forgot-password')
   }
 }
 // Current User Profile

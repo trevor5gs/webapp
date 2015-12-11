@@ -65,6 +65,8 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.LOAD_NEXT_CONTENT &&
         type !== ACTION_TYPES.LOAD_PREV_CONTENT &&
         type !== ACTION_TYPES.AUTHENTICATION.CLIENT &&
+        type !== ACTION_TYPES.AUTHENTICATION.FORGOT_PASSWORD &&
+        type !== ACTION_TYPES.AUTHENTICATION.USER &&
         type !== ACTION_TYPES.POST.COMMENT &&
         type !== ACTION_TYPES.POST.DELETE &&
         type !== ACTION_TYPES.POST.EDIT &&
@@ -98,7 +100,7 @@ export const requester = store => next => action => {
   const state = store.getState()
   const options = { method: method || 'GET' }
   const { accessToken } = state.authentication
-  if (type === ACTION_TYPES.AUTHENTICATION.CLIENT) {
+  if (type === ACTION_TYPES.AUTHENTICATION.CLIENT || type === ACTION_TYPES.AUTHENTICATION.USER) {
     options.headers = defaultHeaders
   } else if (!method || method === 'GET') {
     options.headers = getGetHeader(accessToken)
@@ -148,7 +150,7 @@ export const requester = store => next => action => {
     })
     .catch(error => {
       delete runningFetches[error.response.url]
-      if (error.response.status === 401 || (accessToken && error.response.status === 403)) {
+      if ((error.response.status === 401 && type !== ACTION_TYPES.AUTHENTICATION.USER) || (accessToken && error.response.status === 403)) {
         resetAuth(store.dispatch, accessToken, state.router.location)
       }
       next({ error, meta, payload, type: FAILURE })

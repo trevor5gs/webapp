@@ -15,7 +15,7 @@ export function authentication(state = initialState, action) {
     case ACTION_TYPES.AUTHENTICATION.LOGOUT:
       return { ...initialState }
     case ACTION_TYPES.AUTHENTICATION.USER_SUCCESS:
-      return { ...state, ...action.payload.response, isLoggedIn: false }
+      return { ...state, ...action.payload.response, isLoggedIn: true }
     default:
       return state
   }

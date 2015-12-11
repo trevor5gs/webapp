@@ -5,7 +5,7 @@ import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class EmailControl extends Component {
   static propTypes = {
-    controlWasChanged: PropTypes.func.isRequired,
+    controlWasChanged: PropTypes.func,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
@@ -45,7 +45,9 @@ class EmailControl extends Component {
   handleChange(e) {
     const val = e.target.value
     this.setState({ text: val, hasValue: val.length })
-    this.props.controlWasChanged({ email: e.target.value })
+    if (typeof this.props.controlWasChanged === 'function') {
+      this.props.controlWasChanged({ email: e.target.value })
+    }
   }
 
   mapStatusToClass() {
@@ -121,6 +123,7 @@ class EmailControl extends Component {
           type="email"
           tabIndex={tabIndex}
           placeholder={placeholder}
+          ref="input"
           autoCapitalize="off"
           autoCorrect="off"
           onFocus={(e) => this.handleFocus(e)}
