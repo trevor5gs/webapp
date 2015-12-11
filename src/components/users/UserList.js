@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { updateRelationship } from '../../actions/relationships'
 import Avatar from '../assets/Avatar'
 import RelationshipButton from '../relationships/RelationshipButton'
+import StarshipButton from '../relationships/StarshipButton'
 import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
 
 class UserList extends Component {
@@ -25,6 +26,10 @@ class UserList extends Component {
         <Avatar to={userPath} sources={user.avatar} size="large" />
         <RelationshipButton
           ref="relationshipButton"
+          userId={user.id}
+          priority={user.relationshipPriority}
+          buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
+        <StarshipButton
           userId={user.id}
           priority={user.relationshipPriority}
           buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />

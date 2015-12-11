@@ -4,6 +4,7 @@ import { updateRelationship } from '../../actions/relationships'
 import Avatar from '../assets/Avatar'
 import CoverImage from '../assets/CoverImage'
 import RelationshipButton from '../relationships/RelationshipButton'
+import StarshipButton from '../relationships/StarshipButton'
 import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
 
 class UserGrid extends Component {
@@ -27,6 +28,10 @@ class UserGrid extends Component {
         <Avatar to={userPath} sources={user.avatar} />
         <RelationshipButton
           ref="relationshipButton"
+          userId={user.id}
+          priority={user.relationshipPriority}
+          buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
+        <StarshipButton
           userId={user.id}
           priority={user.relationshipPriority}
           buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
