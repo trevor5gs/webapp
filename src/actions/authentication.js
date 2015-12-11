@@ -43,7 +43,7 @@ export function sendForgotPasswordRequest(email) {
       body: {
         email: email,
       },
-    }
+    },
   }
 }
 

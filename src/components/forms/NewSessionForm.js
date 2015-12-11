@@ -22,7 +22,6 @@ class NewSessionForm extends Component {
   handleSubmit(e) {
     e.preventDefault()
     const { dispatch } = this.props
-    console.log(this.refs.emailControl.refs.input.value, this.refs.passwordControl.refs.input.value)
     dispatch(getUserCredentials(this.refs.emailControl.refs.input.value, this.refs.passwordControl.refs.input.value))
   }
 

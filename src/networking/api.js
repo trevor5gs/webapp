@@ -36,7 +36,7 @@ export function accessTokens() {
 }
 export function forgotPassword() {
   return {
-    path: getAPIPath('forgot-password')
+    path: getAPIPath('forgot-password'),
   }
 }
 // Current User Profile
