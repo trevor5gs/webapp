@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { replaceState } from 'redux-router'
 import classNames from 'classnames'
 import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as SearchActions from '../../actions/search'
+import { updateQueryParams } from '../../components/base/uri_helper'
 import SearchControl from '../../components/forms/SearchControl'
 import StreamComponent from '../../components/streams/StreamComponent'
 
@@ -29,11 +31,15 @@ class Search extends Component {
     }
     if (type && (type === 'users' || type === 'posts')) {
       this.state.type = type
+    } else {
+      this.state.type = 'posts'
     }
+    this.updateLocation({ ...this.state })
   }
 
   componentWillMount() {
     this.search = debounce(this.search, 300)
+    this.updateLocation = debounce(this.updateLocation, 300)
   }
 
   getAction() {
@@ -59,9 +65,19 @@ class Search extends Component {
     }
   }
 
+  updateLocation(vo) {
+    const { dispatch } = this.props
+    if (vo.type && vo.type === 'posts') {
+      vo.type = null
+    }
+    const uri = document.location.pathname + updateQueryParams(vo)
+    dispatch(replaceState(window.history.state, uri))
+  }
+
   handleControlChange(vo) {
     this.setState(vo)
     this.search()
+    this.updateLocation(vo)
   }
 
   render() {
