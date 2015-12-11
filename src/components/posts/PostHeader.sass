@@ -36,14 +36,38 @@
 .no-touch .PostHeaderLink:hover
   color: #999
 
-.PostHeader > .RelationshipButton
-  position: absolute
-  top: 0
-  right: 0
-  width: rem(30)
-  border-radius: rem(30)
-  overflow: hidden
-  white-space: nowrap
+
+@media(max-width: #{$break-2-max})
+  // Relationship layout: Mobile grid (Label skin)
+  .PostGrid .PostHeaderAuthor
+    line-height: rem(45)
+  .PostGrid .PostHeaderRelations
+    position: absolute
+    top: rem(25)
+    left: rem(40)
+  .PostGrid .PostHeaderRelations > .RelationshipButton
+    +RelationshipButtonAsLabel
+  .PostGrid .RepostHeader
+    margin-bottom: rem(30)
+  .PostGrid .RepostHeaderReposter
+    margin: rem(10) 0 0
+
+  // Relationship layout: Mobile list (Compact skin)
+  .PostList .PostHeaderAuthor,
+  .PostList .RepostHeaderAuthor,
+  .PostList .RepostHeaderReposter
+    padding-right: rem(70)
+  .PostList .PostHeaderRelations
+    position: absolute
+    top: 0
+    right: 0
+    bottom: 0
+    padding-top: rem(15)
+  .PostList .PostHeaderRelations > .RelationshipButton
+    +RelationshipButtonAsCompact
+  .PostList .PostHeaderRelations > .StarshipButton .SVGIcon
+    transform: translateX(rem(7))
+
 
 @media(min-width: #{$break-2})
   .PostHeader,
@@ -63,6 +87,33 @@
   .RepostHeader .Avatar
     top: rem(20)
 
-  .PostHeader > .RelationshipButton
-    top: rem(25)
+  // Relationship layout: Desktop grid (Compact skin)
+  .PostGrid .PostHeaderAuthor,
+  .PostGrid .RepostHeaderAuthor,
+  .PostGrid .RepostHeaderReposter
+    padding-right: rem(70)
+  .PostGrid .PostHeaderRelations
+    position: absolute
+    top: 0
+    right: 0
+    bottom: 0
+    padding-top: rem(25)
+  .PostGrid .PostHeaderRelations > .RelationshipButton
+    +RelationshipButtonAsCompact
+  .PostGrid .PostHeaderRelations > .StarshipButton .SVGIcon
+    transform: translateX(rem(7))
+
+  // Relationship layout: Desktop list (Label skin)
+  .PostList .PostHeaderAuthor
+    line-height: rem(60)
+  .PostList .PostHeaderRelations
+    position: absolute
+    top: rem(40)
+    left: rem(60)
+  .PostList .PostHeaderRelations > .RelationshipButton
+    +RelationshipButtonAsLabel
+  .PostList .RepostHeader
+    margin-bottom: rem(30)
+  .PostList .RepostHeaderReposter
+    margin: rem(10) 0 0
 

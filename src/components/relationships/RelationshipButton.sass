@@ -4,8 +4,10 @@
   width: rem(110)
   height: rem(30)
   padding: 0 rem(10) 0 rem(4)
+  overflow: hidden
   line-height: rem(30)
   text-align: center
+  white-space: nowrap
   background-color: white
   border: 1px solid black
   border-radius: rem(15)
@@ -16,7 +18,6 @@
   background-color: #666
   border-color: #666
   color: white
-  width: rem(110)
 .no-touch .RelationshipButton:hover > .SVGIcon g
   stroke: white
 
@@ -39,10 +40,58 @@
   margin-top: rem(-4)
 
 
-.RelationshipButton.asCompact
+// -------------------------------------
+// Typically mixed into a post header
+
+@mixin RelationshipButtonAsCompact
   width: rem(30)
-  border-radius: rem(30)
-  overflow: hidden
-  white-space: nowrap
+  background-color: white
   border-color: #666
+  border-radius: rem(30)
+  color: rgba(white, 0)
+  > .SVGIcon g
+    stroke: #666
+  .no-touch &:hover
+    width: rem(110)
+    background-color: #666
+    border-color: #666
+    color: white
+  .no-touch &:hover > .SVGIcon g
+    stroke: white
+  &[data-priority="friend"],
+  &[data-priority="noise"]
+    background-color: white
+    border-color: #666
+    color: rgba(white, 0)
+  &[data-priority="friend"] > .SVGIcon g,
+  &[data-priority="noise"] > .SVGIcon g
+    stroke: #666
+  &[data-priority="self"]
+    display: none
+
+
+@mixin RelationshipButtonAsLabel
+  width: auto
+  background-color: transparent
+  border: 0
+  border-radius: 0
+  color: #666
+  padding: 0
+  text-align: left
+  position: relative
+  > .SVGIcon
+    transition: width $speed $ease
+    width: 0
+  .no-touch &:hover
+    width: auto
+    background-color: transparent
+    border: 0
+    border-radius: 0
+    color: black
+  .no-touch &:hover > .SVGIcon
+    width: rem(20)
+  .no-touch &:hover > .SVGIcon g
+    stroke: black
+  + .StarshipButton
+    margin-top: rem(-2)
 

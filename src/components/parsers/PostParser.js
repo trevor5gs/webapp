@@ -7,9 +7,11 @@ import ImageRegion from '../posts/regions/ImageRegion'
 import PostTools from '../posts/PostTools'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationshipButton from '../relationships/RelationshipButton'
+import StarshipButton from '../relationships/StarshipButton'
 
 let models = {}
 
+          // buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
 function header(post, author) {
   if (!post || !author) { return null }
   return (
@@ -20,13 +22,16 @@ function header(post, author) {
           <span>{`@${author.username}`}</span>
         </Link>
       </div>
-      <RelationshipButton
-        ref="relationshipButton"
-        userId={author.id}
-        priority={author.relationshipPriority} />
+      <div className="PostHeaderRelations">
+        <RelationshipButton
+          userId={author.id}
+          priority={author.relationshipPriority} />
+        <StarshipButton
+          userId={author.id}
+          priority={author.relationshipPriority} />
+      </div>
     </header>
   )
-          // buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
 }
 
 function repostHeader(post, repostAuthor, repostSource, repostedBy) {
@@ -44,6 +49,14 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
           <RepostIcon />
           {` by @${repostedBy.username}`}
         </Link>
+      </div>
+      <div className="PostHeaderRelations">
+        <RelationshipButton
+          userId={repostAuthor.id}
+          priority={repostAuthor.relationshipPriority} />
+        <StarshipButton
+          userId={repostAuthor.id}
+          priority={repostAuthor.relationshipPriority} />
       </div>
     </header>
   )
