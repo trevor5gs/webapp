@@ -12,6 +12,7 @@ export function getClientCredentials() {
         client_id: ENV.AUTH_CLIENT_ID.replace(/"/g, ''),
         client_secret: ENV.AUTH_CLIENT_SECRET.replace(/"/g, ''),
         grant_type: 'client_credentials',
+        scope: 'public',
       },
     },
   }

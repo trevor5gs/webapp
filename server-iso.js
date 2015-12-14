@@ -11,7 +11,6 @@ import { match } from 'redux-router/server'
 import { ReduxRouter } from 'redux-router'
 import { Provider } from 'react-redux'
 import store from './src/store_server'
-import { clientAccessToken } from './src/networking/api'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
 import * as ENV from './env'
 
@@ -72,15 +71,30 @@ function renderFromServer(req, res) {
   }))
 }
 
+const loggedOutPaths = {
+  find: /\/find$/,
+  root: /\/$/,
+  recent: /\/recent$/,
+  trending: /\/trending$/,
+}
+
 app.use((req, res) => {
-  if (req.url.match(/\/join$/)) {
+  let isLoggedOutPath = false
+  for (const re in loggedOutPaths) {
+    if (req.url.match(loggedOutPaths[re])) {
+      isLoggedOutPath = true
+      break
+    }
+  }
+  console.log('url', req.url, isLoggedOutPath)
+  if (isLoggedOutPath) {
     renderFromServer(req, res)
   } else {
     res.send(indexStr)
   }
 })
 
-const port = ENV.PORT || 6660
+const port = process.env.PORT || 6660
 app.listen(port, (err) => {
   if (err) {
     console.log(err)
