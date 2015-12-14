@@ -41,11 +41,11 @@
   // Relationship layout: Mobile grid (Label skin)
   .PostGrid .PostHeaderAuthor
     line-height: rem(45)
-  .PostGrid .PostHeaderRelations
+  .PostGrid .RelationsGroup
     position: absolute
     top: rem(25)
     left: rem(40)
-  .PostGrid .PostHeaderRelations > .RelationshipButton
+  .PostGrid .RelationsGroup > .RelationshipButton
     +RelationshipButtonAsLabel
   .PostGrid .RepostHeader
     margin-bottom: rem(30)
@@ -57,15 +57,15 @@
   .PostList .RepostHeaderAuthor,
   .PostList .RepostHeaderReposter
     padding-right: rem(70)
-  .PostList .PostHeaderRelations
+  .PostList .RelationsGroup
     position: absolute
     top: 0
     right: 0
     bottom: 0
     padding-top: rem(15)
-  .PostList .PostHeaderRelations > .RelationshipButton
+  .PostList .RelationsGroup > .RelationshipButton
     +RelationshipButtonAsCompact
-  .PostList .PostHeaderRelations > .StarshipButton .SVGIcon
+  .PostList .RelationsGroup > .StarshipButton .SVGIcon
     transform: translateX(rem(7))
 
 
@@ -92,25 +92,25 @@
   .PostGrid .RepostHeaderAuthor,
   .PostGrid .RepostHeaderReposter
     padding-right: rem(70)
-  .PostGrid .PostHeaderRelations
+  .PostGrid .RelationsGroup
     position: absolute
     top: 0
     right: 0
     bottom: 0
     padding-top: rem(25)
-  .PostGrid .PostHeaderRelations > .RelationshipButton
+  .PostGrid .RelationsGroup > .RelationshipButton
     +RelationshipButtonAsCompact
-  .PostGrid .PostHeaderRelations > .StarshipButton .SVGIcon
+  .PostGrid .RelationsGroup > .StarshipButton .SVGIcon
     transform: translateX(rem(7))
 
   // Relationship layout: Desktop list (Label skin)
   .PostList .PostHeaderAuthor
     line-height: rem(60)
-  .PostList .PostHeaderRelations
+  .PostList .RelationsGroup
     position: absolute
     top: rem(40)
     left: rem(60)
-  .PostList .PostHeaderRelations > .RelationshipButton
+  .PostList .RelationsGroup > .RelationshipButton
     +RelationshipButtonAsLabel
   .PostList .RepostHeader
     margin-bottom: rem(30)

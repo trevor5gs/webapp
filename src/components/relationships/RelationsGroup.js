@@ -3,14 +3,17 @@ import { connect } from 'react-redux'
 import { openModal } from '../../actions/modals'
 import { updateRelationship } from '../../actions/relationships'
 import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
-import RelationshipImageButton from '../relationships/RelationshipImageButton'
+import RelationshipButton from '../relationships/RelationshipButton'
+import StarshipButton from '../relationships/StarshipButton'
 
-class UserCard extends Component {
+class RelationsGroup extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     pathname: PropTypes.string,
     user: PropTypes.shape({
+      id: PropTypes.string,
+      priority: PropTypes.string,
     }).isRequired,
   }
 
@@ -38,15 +41,19 @@ class UserCard extends Component {
                      this.handleRelationshipUpdate.bind(this) :
                      this.handleLaunchSignUpModal.bind(this)
     return (
-      <div className="UserCard" >
-        <RelationshipImageButton
+      <div className="RelationsGroup" >
+        <RelationshipButton
           buttonWasClicked={callback}
-          coverSrc={user.coverImage.hdpi.url}
           isLoggedIn={isLoggedIn}
           priority={user.relationshipPriority}
-          ref="RelationshipImageButton"
-          userId={user.id}
-          username={'@' + user.username} />
+          ref="RelationshipButton"
+          userId={user.id} />
+        <StarshipButton
+          buttonWasClicked={callback}
+          isLoggedIn={isLoggedIn}
+          priority={user.relationshipPriority}
+          ref="StarshipButton"
+          userId={user.id} />
       </div>
     )
   }
@@ -59,5 +66,5 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, null, null, { withRef: true })(UserCard)
+export default connect(mapStateToProps, null, null, { withRef: true })(RelationsGroup)
 

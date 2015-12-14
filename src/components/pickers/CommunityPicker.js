@@ -5,6 +5,14 @@ import StreamComponent from '../streams/StreamComponent'
 import Picker from '../pickers/Picker'
 
 class CommunityPicker extends Picker {
+  getRelationshipButton(refs) {
+    const userContainer = refs.wrappedInstance
+    if (userContainer) {
+      return userContainer.refs.RelationshipImageButton
+    }
+    return null
+  }
+
   render() {
     return (
       <div className={classNames('CommunityPicker', 'Panel', { isFollowingAll: this.isFollowingAll() })}>

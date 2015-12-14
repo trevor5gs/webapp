@@ -1,21 +1,12 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { updateRelationship } from '../../actions/relationships'
 import Avatar from '../assets/Avatar'
-import RelationshipButton from '../relationships/RelationshipButton'
-import StarshipButton from '../relationships/StarshipButton'
+import RelationsGroup from '../relationships/RelationsGroup'
 import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
 
 class UserList extends Component {
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     user: PropTypes.shape({
     }).isRequired,
-  }
-
-  handleRelationshipUpdate(vo) {
-    const { userId, priority, existing } = vo
-    this.props.dispatch(updateRelationship(userId, priority, existing))
   }
 
   render() {
@@ -24,15 +15,7 @@ class UserList extends Component {
     return (
       <div className="UserList" >
         <Avatar to={userPath} sources={user.avatar} size="large" />
-        <RelationshipButton
-          ref="relationshipButton"
-          userId={user.id}
-          priority={user.relationshipPriority}
-          buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
-        <StarshipButton
-          userId={user.id}
-          priority={user.relationshipPriority}
-          buttonWasClicked={this.handleRelationshipUpdate.bind(this)} />
+        <RelationsGroup user={user} />
         <UserNames user={user} />
         <UserStats user={user} />
         <UserInfo user={user} />
@@ -41,5 +24,5 @@ class UserList extends Component {
   }
 }
 
-export default connect(null, null, null, { withRef: true })(UserList)
+export default UserList
 

@@ -6,6 +6,7 @@ import { MiniPlusIcon, MiniCheckIcon } from '../relationships/RelationshipIcons'
 class RelationshipButton extends Component {
   static propTypes = {
     buttonWasClicked: PropTypes.func,
+    isLoggedIn: PropTypes.bool.isRequired,
     priority: PropTypes.oneOf([
       RELATIONSHIP_PRIORITY.INACTIVE,
       RELATIONSHIP_PRIORITY.FRIEND,
@@ -28,12 +29,13 @@ class RelationshipButton extends Component {
   }
 
   updatePriority(priority) {
-    const { buttonWasClicked, userId } = this.props
+    const { buttonWasClicked, isLoggedIn, userId } = this.props
+    if (isLoggedIn) {
+      this.setState({ priority: priority })
+    }
     if (buttonWasClicked) {
       buttonWasClicked({ userId, priority, existing: this.state.priority })
     }
-    // Render the state change instantly
-    this.setState({ priority: priority })
   }
 
   renderAsToggleButton(label, nextPriority, icon = null) {
