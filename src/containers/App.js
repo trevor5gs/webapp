@@ -26,7 +26,7 @@ class App extends Component {
     this.lastLocation = ''
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(loadProfile())
   }
 
