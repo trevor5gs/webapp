@@ -1,20 +1,15 @@
 .Navbar
-  transition: transform 150ms ease, visibility 150ms, background-color 150ms ease
+  transition: transform 150ms ease, visibility 150ms, background-color 150ms ease, height 150ms ease
   position: absolute
   top: 0
   left: 0
   right: 0
   z-index: $z-navbar
-  height: rem(100)
-  padding: rem(20) rem(10)
+  padding: rem(10)
   background-color: white
 
 [data-pathname^="/onboarding"] + .Navbar
   display: none
-// [data-pathname="/forgot-password"] + .Navbar,
-// [data-pathname="/enter"] + .Navbar,
-// [data-pathname="/join"] + .Navbar
-//   background-color: transparent
 
 .Navbar.asFixed,
 .Navbar.asLocked
@@ -28,11 +23,35 @@
 .Navbar.skipTransition:not(.asLocked)
   transition: none !important
 
+.isLoggedIn .Navbar
+  height: rem(80)
+
+.isLoggedOut .Navbar
+  height: rem(50)
+
+.isLoggedIn .NavbarMark
+  display: none
+
+.isLoggedOut .NavbarMark
+  display: inline-block
+
+.NavbarMark + .NavbarLabel
+  display: none
+  position: relative
+  top: rem(2)
+  margin-left: rem(20)
+
 .NavbarLinks
   position: absolute
-  bottom: rem(12)
-  left: rem(10)
   white-space: nowrap
+
+.isLoggedIn .NavbarLinks
+  bottom: 0
+  left: rem(10)
+
+.isLoggedOut .NavbarLinks
+  top: rem(7)
+  right: rem(10)
 
 .NavbarLinks > .NavbarLink + .NavbarLink
   margin-left: rem(20)
@@ -43,45 +62,39 @@
   left: rem(10)
   z-index: 3
 
-.NavbarMark
-  display: none
-
-.NavbarMark + .NavbarLabel
-  display: none
-  position: relative
-  top: rem(2)
-  margin-left: rem(20)
-
 
 @media(min-width: #{$break-2})
   .Navbar
+    padding: rem(20)
+  .isLoggedOut .Navbar
     height: rem(80)
-    padding-left: rem(20)
-    padding-right: rem(20)
-  .NavbarMark,
+  .isLoggedIn .NavbarMark
+    display: inline-block
   .NavbarMark + .NavbarLabel
     display: inline-block
+  .isLoggedIn .NavbarLinks,
+  .isLoggedOut .NavbarLinks
+    top: 50%
+    bottom: auto
+    margin-top: rem(-20)
+  .isLoggedIn .NavbarLinks
+    left: auto
+    right: rem(80)
+  .isLoggedOut .NavbarLinks
+    right: rem(20)
   .NavbarProfile
     top: rem(20)
     left: auto
-    right: rem(20)
-  .NavbarLinks
-    top: 50%
-    bottom: auto
-    left: auto
-    right: rem(80)
-    margin-top: rem(-20)
-  .Navbar.isLoggedOut .NavbarLinks
     right: rem(20)
 
 @media(min-width: #{$break-4})
   .Navbar
     padding-left: rem(40)
     padding-right: rem(40)
-  .NavbarProfile
-    right: rem(40)
-  .NavbarLinks
+  .isLoggedIn .NavbarLinks
     right: rem(100)
-  .Navbar.isLoggedOut .NavbarLinks
+  .isLoggedOut .NavbarLinks
+    right: rem(40)
+  .NavbarProfile
     right: rem(40)
 

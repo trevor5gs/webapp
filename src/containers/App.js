@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import Helmet from 'react-helmet'
+import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { loadProfile } from '../actions/profile'
 import { trackPageView } from '../actions/tracking'
@@ -43,10 +44,16 @@ class App extends Component {
   }
 
   render() {
-    const { location, children } = this.props
+    const { location, children, authentication } = this.props
+    const { isLoggedIn } = authentication
     const { pathname } = location
+    const appClasses = classNames(
+      'App',
+      { isLoggedIn: isLoggedIn },
+      { isLoggedOut: !isLoggedIn },
+    )
     return (
-      <section className="App">
+      <section className={appClasses}>
         <Helmet title="Be inspired." titleTemplate="Ello | %s" />
         <main className="Main" data-pathname={pathname} role="main">
           {children}

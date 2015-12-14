@@ -1,55 +1,51 @@
 .NavbarMorePostsButton
+  +sanserif
   transition: background-color $speed ease, border-color $speed ease, color $speed ease, opacity $speed2 ease
-  position: relative
-  width: rem(40)
-  height: rem(40)
-  margin-left: rem(20)
-  padding: 0 rem(15)
-  font-size: 0.75rem
-  line-height: rem(40)
-  text-align: left
+  position: absolute
+  top: rem(10)
+  left: rem(50)
+  width: rem(30)
+  height: rem(30)
+  line-height: rem(30)
   white-space: nowrap
   background-color: #aaa
   border: 1px solid #aaa
-  border-radius: rem(20)
+  border-radius: 50%
   color: white
-  .no-touch &:hover
-    background-color: #e5e5e5
-    border-color: #e5e5e5
-    color: #666
-  &:before
-    +hitarea
-.NavbarMorePostsButton .svg-icon
-  margin-top: rem(-5)
-  margin-left: rem(-5)
-  margin-right: rem(10)
-.NavbarMorePostsButton g
+
+.isLoggedIn .NavbarMorePostsButton
+  left: rem(160)
+.isLoggedOut .NavbarMorePostsButton
+  left: rem(50)
+
+.NavbarMorePostsButton > .ArrowIcon
+  transform: rotate(270deg)
+  margin-top: rem(-2)
+.NavbarMorePostsButton > .ArrowIcon > g
   stroke: white
+
 .NavbarMorePostsButton span
+  display: none
   vertical-align: middle
-  margin-top: rem(-3)
 
-.Navbar .NavbarMorePostsButton
-  pointer-events: auto
-  position: absolute
-  top: rem(21)
-  z-index: 20
+.no-touch .NavbarMorePostsButton:hover
+  background-color: #e5e5e5
+  border-color: #e5e5e5
+  color: #666
 
-@media(min-width: #{em(800)})
-  .Navbar .NavbarMorePostsButton
+
+@media(min-width: #{$break-2})
+  .NavbarMorePostsButton
+    top: rem(20)
     width: auto
-  .Navbar .NavbarMorePostsButton .svg-icon
-    margin-left: 0
-  .Navbar .NavbarMorePostsButton span
-    display: inline-block
+    height: rem(40)
+    padding: 0 rem(20) 0 rem(15)
+    line-height: rem(40)
+    border-radius: rem(20)
   .isLoggedIn .NavbarMorePostsButton
-    left: rem(180)
-
-// @media(max-width: #{$max-break-c})
-//   .Navbar .NavbarMorePostsButton
-//     +circle(rem(30))
-//     right: rem(110)
-//     padding: 0 rem(9)
-//   .NavbarMorePostsButton .svg-icon
-//     margin-top: rem(-14)
+    left: rem(200)
+  .isLoggedOut .NavbarMorePostsButton
+    left: rem(120)
+  .NavbarMorePostsButton span
+    display: inline-block
 

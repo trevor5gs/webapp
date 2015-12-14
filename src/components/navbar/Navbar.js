@@ -204,8 +204,6 @@ class Navbar extends Component {
     const { isLoggedIn, json, router } = this.props
     const klassNames = classNames(
       'Navbar',
-      { isLoggedIn: isLoggedIn },
-      { isLoggedOut: !isLoggedIn },
       { asLocked: this.state.asLocked },
       { asFixed: this.state.asFixed },
       { asHidden: this.state.asHidden },
