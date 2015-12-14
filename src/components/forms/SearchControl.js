@@ -65,6 +65,7 @@ class SearchControl extends Component {
           placeholder={placeholder}
           autoCapitalize="off"
           autoCorrect="off"
+          autoComplete="off"
           onFocus={(e) => this.handleFocus(e)}
           onBlur={(e) => this.handleBlur(e)}
           onChange={(e) => this.handleChange(e)} />
