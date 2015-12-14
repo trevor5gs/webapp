@@ -37,7 +37,7 @@ if (ENV.APP_VERSION) {
   storage.getItem('APP_VERSION')
     .then((curVersion) => {
       if (curVersion && curVersion !== ENV.APP_VERSION) {
-        persistor.purge(['json', 'profile', 'search', 'stream'])
+        persistor.purge(['accessToken', 'json', 'profile', 'search', 'stream'])
       }
       storage.setItem('APP_VERSION', ENV.APP_VERSION)
     })
