@@ -32,11 +32,17 @@ function getProbeProperties() {
   return { viewportSetting, gridColumnCount }
 }
 
+
+// Todo: Externalize padding out to the probe so I don't have to do things like
+// I'm about to do next :point_down:
+
+/* eslint-disable no-nested-ternary */
 function setResizeProperties() {
   const wiw = window.innerWidth
   const probe = getProbeProperties()
   const gridColumnCount = parseInt(probe.gridColumnCount, 10)
-  const padding = gridColumnCount >= 4 ? 40 : 20
+  const viewportSetting = probe.viewportSetting
+  const padding = viewportSetting === 'mobile' ? 10 : (gridColumnCount >= 4 ? 40 : 20)
   const columnWidth = Math.round((wiw - ((gridColumnCount + 1) * padding)) / gridColumnCount)
   const contentWidth = Math.round(wiw - (padding * 2))
 
@@ -44,7 +50,7 @@ function setResizeProperties() {
   GUI.innerHeight = window.innerHeight
   GUI.coverOffset = Math.round((wiw * 0.5625))
   GUI.coverImageSize = getCoverImageSize(wiw)
-  GUI.viewportSetting = probe.viewportSetting
+  GUI.viewportSetting = viewportSetting
   GUI.gridColumnCount = gridColumnCount
   GUI.columnWidth = columnWidth
   GUI.contentWidth = contentWidth

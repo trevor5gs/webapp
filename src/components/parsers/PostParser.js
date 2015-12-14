@@ -6,6 +6,7 @@ import Avatar from '../assets/Avatar'
 import ImageRegion from '../posts/regions/ImageRegion'
 import PostTools from '../posts/PostTools'
 import { RepostIcon } from '../posts/PostIcons'
+import RelationsGroup from '../relationships/RelationsGroup'
 
 let models = {}
 
@@ -19,6 +20,7 @@ function header(post, author) {
           <span>{`@${author.username}`}</span>
         </Link>
       </div>
+      <RelationsGroup user={author} />
     </header>
   )
 }
@@ -39,6 +41,7 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
           {` by @${repostedBy.username}`}
         </Link>
       </div>
+      <RelationsGroup user={repostAuthor} />
     </header>
   )
 }

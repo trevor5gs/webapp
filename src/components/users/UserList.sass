@@ -15,10 +15,15 @@
   width: rem(120)
   height: rem(120)
 
-.UserList > .RelationshipButton
+.UserList > .RelationsGroup > .RelationshipButton
   position: absolute
   top: 0
   left: 0
+
+.UserList > .RelationsGroup > .StarshipButton
+  position: absolute
+  top: 0
+  left: rem(120)
 
 .UserList > .UserNames
   width: calc(100% - #{rem(120)})
@@ -39,12 +44,15 @@
     width: rem(180)
     height: rem(180)
 
-  .UserList > .RelationshipButton
+  .UserList > .RelationsGroup > .RelationshipButton
+    left: auto
+    right: rem(35)
+  .UserList > .RelationsGroup > .StarshipButton
     left: auto
     right: 0
 
   .UserList > .UserNames
-    width: calc(100% - #{rem(320)})
+    width: calc(100% - #{rem(370)})
     margin-top: 0
     margin-left: rem(220)
 
