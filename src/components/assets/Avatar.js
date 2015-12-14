@@ -27,7 +27,8 @@ class Avatar extends Component {
 
   render() {
     const { to, isModifiable } = this.props
-    const src = this.getAvatarSource()
+    const style = { backgroundImage: `url(${this.getAvatarSource()})` }
+    // const style = null
     const klassNames = classNames(
       'Avatar',
       { isModifiable: isModifiable },
@@ -35,13 +36,13 @@ class Avatar extends Component {
     if (to) {
       return (
         <Link to={to} className={klassNames}>
-          <img className="AvatarImage" src={src}></img>
+          <figure className="AvatarImage" style={style}></figure>
         </Link>
       )
     }
     return (
       <span className={klassNames}>
-        <img className="AvatarImage" src={src}></img>
+        <figure className="AvatarImage" style={style}></figure>
       </span>
     )
   }
