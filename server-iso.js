@@ -12,7 +12,6 @@ import { ReduxRouter } from 'redux-router'
 import { Provider } from 'react-redux'
 import store from './src/store_server'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
-import * as ENV from './env'
 
 updateTimeAgoStrings({ about: '' })
 
@@ -56,10 +55,6 @@ function renderFromServer(req, res) {
       const state = store.getState()
       state.authentication.isLoggedIn = false
       console.log('AUTHENTICATION', state.authentication)
-      // by default the components in the router are null
-      // so to get around that we'll delete them see:
-      // https://github.com/rackt/redux-router/issues/60
-      delete state.router
       const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
       indexStr = indexStr.replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
       res.send(indexStr)
