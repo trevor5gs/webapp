@@ -69,7 +69,10 @@ class Find extends Component {
 
   updateLocation(vo) {
     const { dispatch } = this.props
-    if (vo.type && vo.type === 'posts') {
+    if (typeof vo.terms === 'string' && vo.terms.length < 2) {
+      vo.terms = null
+    }
+    if (typeof vo.type === 'string' && vo.type === 'posts') {
       vo.type = null
     }
     const uri = document.location.pathname + updateQueryParams(vo)
