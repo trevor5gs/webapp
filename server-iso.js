@@ -1,6 +1,7 @@
-// load env vars first
-import dotenv from 'dotenv'
-dotenv.load()
+// load env vars first in test
+if (process.env.NODE_ENV === 'test') {
+  require('dotenv').load()
+}
 
 import 'newrelic'
 import 'babel-core/polyfill'
