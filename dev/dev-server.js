@@ -4,6 +4,9 @@ const webpack = require('webpack')
 const config = require('../webpack.dev.config')
 const app = express()
 const compiler = webpack(config)
+const addOauthRoute = require('../oauth')
+
+addOauthRoute(app)
 
 // Development Middleware
 app.use(require('webpack-dev-middleware')(compiler, {
