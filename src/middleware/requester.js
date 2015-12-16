@@ -26,7 +26,6 @@ function getGetHeader(accessToken) {
 }
 
 function checkStatus(response) {
-  // console.log('checkStatus', response.ok, response.statusText)
   if (response.ok) {
     return response
   }
@@ -64,7 +63,6 @@ export const requester = store => next => action => {
   if ((type !== ACTION_TYPES.LOAD_STREAM &&
         type !== ACTION_TYPES.LOAD_NEXT_CONTENT &&
         type !== ACTION_TYPES.LOAD_PREV_CONTENT &&
-        type !== ACTION_TYPES.AUTHENTICATION.CLIENT &&
         type !== ACTION_TYPES.AUTHENTICATION.FORGOT_PASSWORD &&
         type !== ACTION_TYPES.AUTHENTICATION.USER &&
         type !== ACTION_TYPES.POST.COMMENT &&
@@ -95,19 +93,25 @@ export const requester = store => next => action => {
   const FAILURE = type + '_FAILURE'
 
   // dispatch the start of the request
-  next({ type: REQUEST, payload, meta: meta })
+  next({ type: REQUEST, payload, meta })
 
   const state = store.getState()
-  const options = { method: method || 'GET' }
-  const { accessToken } = state.authentication
-  if (type === ACTION_TYPES.AUTHENTICATION.CLIENT || type === ACTION_TYPES.AUTHENTICATION.USER) {
-    options.headers = defaultHeaders
-  } else if (!method || method === 'GET') {
-    options.headers = getGetHeader(accessToken)
-  } else {
-    options.headers = getPostJsonHeader(accessToken)
+  function fetchCredentials() {
+    if (state.authorization && state.authorization.accessToken) {
+      return new Promise((resolve) => {
+        resolve(state.authorization.accessToken)
+      })
+    }
+    return fetch(`${document.location.protocol}//${document.location.host}/token`)
+      .then((response) => {
+        return response.ok ? response.json() : response
+      })
+      .catch(() => {
+        return fetchCredentials()
+      })
   }
 
+  const options = { method: method || 'GET' }
   if (options.method !== 'GET' && options.method !== 'HEAD') {
     options.body = body || null
     if (options.body && typeof options.body !== 'string') {
@@ -115,47 +119,53 @@ export const requester = store => next => action => {
     }
   }
 
-  // console.log('fetch', endpoint.path, options)
-  return fetch(endpoint.path, options)
-    .then(checkStatus)
-    .then(response => {
-      delete runningFetches[response.url]
-      if (response.status === 200) {
-        response.json().then((json) => {
-          payload.response = camelizeKeys(json)
-          // this allows us to set the proper result in the json reducer
-          payload.pathname = state.router.location.pathname
-          if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
-            payload.pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
-          } else {
-            const linkPagination = parseLink(response.headers.get('Link'))
-            linkPagination.totalCount = parseInt(response.headers.get('X-Total-Count'), 10)
-            linkPagination.totalPages = parseInt(response.headers.get('X-Total-Pages'), 10)
-            linkPagination.totalPagesRemaining = parseInt(response.headers.get('X-Total-Pages-Remaining'), 10)
-            payload.pagination = linkPagination
-          }
-          next({ meta, payload, type: SUCCESS })
-          // console.log('fetch done', payload)
-          return true
-        })
-      } else if (response.ok) {
-        // TODO: handle a 204 properly so that we know to stop paging
-        next(action)
-        return true
-      } else {
-        // TODO: is this what should be happening here?
-        next(action)
-        return true
-      }
-    })
-    .catch(error => {
-      delete runningFetches[error.response.url]
-      if ((error.response.status === 401 && type !== ACTION_TYPES.AUTHENTICATION.USER) || (accessToken && error.response.status === 403)) {
-        resetAuth(store.dispatch, accessToken, state.router.location)
-      }
-      next({ error, meta, payload, type: FAILURE })
-      return false
-    })
+  return (
+    fetchCredentials()
+      .then((tokenJson) => {
+        const accessToken = tokenJson.token.access_token
+        options.headers = !method || method === 'GET' ? getGetHeader(accessToken) : getPostJsonHeader(accessToken)
+        fetch(endpoint.path, options)
+            .then(checkStatus)
+            .then(response => {
+              delete runningFetches[response.url]
+              if (response.status === 200) {
+                response.json().then((json) => {
+                  payload.response = camelizeKeys(json)
+                  // this allows us to set the proper result in the json reducer
+                  payload.pathname = state.router.location.pathname
+                  if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
+                    payload.pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
+                  } else {
+                    const linkPagination = parseLink(response.headers.get('Link'))
+                    linkPagination.totalCount = parseInt(response.headers.get('X-Total-Count'), 10)
+                    linkPagination.totalPages = parseInt(response.headers.get('X-Total-Pages'), 10)
+                    linkPagination.totalPagesRemaining = parseInt(response.headers.get('X-Total-Pages-Remaining'), 10)
+                    payload.pagination = linkPagination
+                  }
+                  next({ meta, payload, type: SUCCESS })
+                  console.log('fetch done', endpoint.path)
+                  return true
+                })
+              } else if (response.ok) {
+                // TODO: handle a 204 properly so that we know to stop paging
+                next(action)
+                return true
+              } else {
+                // TODO: is this what should be happening here?
+                next(action)
+                return true
+              }
+            })
+            .catch(error => {
+              delete runningFetches[error.response.url]
+              if (error.response.status === 401 && state.authorization && state.authorization.accessToken) {
+                resetAuth(store.dispatch, state.authorization.accessToken, state.router.location)
+              }
+              next({ error, meta, payload, type: FAILURE })
+              return false
+            })
+      })
+  )
 }
 
 export { runningFetches }
