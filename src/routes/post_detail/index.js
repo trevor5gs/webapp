@@ -5,5 +5,11 @@ export default {
     cb(null, require('../../containers/details/PostDetail'))
     // })
   },
+  onEnter(nextState, replaceState, callback) {
+    if (callback) {
+      const redirectPath = ENV.REDIRECT_URI + nextState.location.pathname
+      document.location.href = redirectPath
+    }
+  },
 }
 
