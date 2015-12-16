@@ -10,8 +10,6 @@ const initialState = {
 
 export function authentication(state = initialState, action) {
   switch (action.type) {
-    case ACTION_TYPES.AUTHENTICATION.CLIENT_SUCCESS:
-      return { ...state, ...action.payload.response, isLoggedIn: false }
     case ACTION_TYPES.AUTHENTICATION.LOGOUT:
       return { ...initialState }
     case ACTION_TYPES.AUTHENTICATION.USER_SUCCESS:
