@@ -6,7 +6,7 @@ class RegistrationRequestDialog extends Component {
   render() {
     return (
       <div className="FormDialog">
-        <h1>:e: Be inspired.</h1>
+        <h1><img src="/static/images/support/muscle.png" width="32" height="32" alt="muscle" /> Be inspired.</h1>
         <RegistrationRequestForm/>
         <AppleStoreLink/>
       </div>
