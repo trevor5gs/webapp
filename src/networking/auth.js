@@ -39,12 +39,7 @@ export function checkAuth(dispatch, oldToken, location) {
   }
 }
 
-export function resetAuth(dispatch, oldToken, location) {
-  if (oldToken) {
-    dispatch({
-      type: ACTION_TYPES.AUTHENTICATION.LOGOUT,
-    })
-  }
+export function resetAuth(dispatch, location) {
   checkAuth(dispatch, null, location)
 }
 

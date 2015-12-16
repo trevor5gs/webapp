@@ -157,8 +157,8 @@ export const requester = store => next => action => {
             })
             .catch(error => {
               delete runningFetches[error.response.url]
-              if (error.response.status === 401 && state.authorization && state.authorization.accessToken) {
-                resetAuth(store.dispatch, state.authorization.accessToken, state.router.location)
+              if ((error.response.status === 401 || error.response.status === 403) && state.router.location.pathname.indexOf('/onboarding') === 0) {
+                resetAuth(store.dispatch, state.router.location)
               }
               next({ error, meta, payload, type: FAILURE })
               return false
