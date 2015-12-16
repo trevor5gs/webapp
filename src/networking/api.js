@@ -66,15 +66,8 @@ export function relationshipBatchPath() {
   }
 }
 // Discover
-export function discoverRecommended() {
-  const params = { per_page: PER_PAGE, include_recent_posts: true, seed: new Date().getTime() }
-  return {
-    path: getAPIPath('discover/users/recommended', params),
-    params,
-  }
-}
 export function discoverUsers(type) {
-  const params = { per_page: PER_PAGE, include_recent_posts: true, seed: new Date().getTime() }
+  const params = { per_page: PER_PAGE, include_recent_posts: true }
   return {
     path: getAPIPath(`discover/users/${type}`, params),
     params,
