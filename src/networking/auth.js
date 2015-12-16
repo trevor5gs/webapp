@@ -24,7 +24,7 @@ export function checkAuth(dispatch, oldToken, location) {
   } else {
     const url = 'https://' + ENV.AUTH_DOMAIN + '/api/oauth/authorize.html' +
       '?response_type=token' +
-      '&scope=public' +
+      '&scope=web_app+public' +
       '&client_id=' + ENV.AUTH_CLIENT_ID +
       '&redirect_uri=' + ENV.AUTH_REDIRECT_URI
 
