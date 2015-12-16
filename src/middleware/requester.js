@@ -143,7 +143,6 @@ export const requester = store => next => action => {
                     payload.pagination = linkPagination
                   }
                   next({ meta, payload, type: SUCCESS })
-                  console.log('fetch done', endpoint.path)
                   return true
                 })
               } else if (response.ok) {
