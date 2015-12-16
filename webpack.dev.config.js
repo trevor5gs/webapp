@@ -3,6 +3,9 @@ var path = require('path')
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+// load env vars first
+require('dotenv').load()
+
 module.exports = {
   devtool: 'sourcemap',
   entry: {

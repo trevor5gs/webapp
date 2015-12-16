@@ -5,6 +5,9 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var jade = require('jade')
 
+// load env vars first
+require('dotenv').load()
+
 module.exports = {
   entry: {
     main: './src/main',
@@ -18,9 +21,6 @@ module.exports = {
   },
   plugins: [
     new webpack.NoErrorsPlugin(),
-    new webpack.DefinePlugin({
-      ENV: require(path.join(__dirname, './env.js'))
-    }),
     new ExtractTextPlugin('bundle.css'),
     new webpack.optimize.CommonsChunkPlugin('commons'),
     new HtmlWebpackPlugin({
