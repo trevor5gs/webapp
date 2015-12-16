@@ -18,7 +18,7 @@ export default function addOauthRoute(app) {
 
   // Initialize the OAuth2 Library
   const oauth2 = require('simple-oauth2')(credentials)
-  const tokenConfig = {}
+  const tokenConfig = { scope: 'public' }
   let token = null
 
   // Get the access token object for the client
