@@ -56,7 +56,7 @@ export const AUTHENTICATION_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321396/ello-optimized-40f68070.jpg' },
     },
   },
-    {
+  {
     username: 'dchen',
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/460661/ello-regular-9176f093.png' },
@@ -67,7 +67,7 @@ export const AUTHENTICATION_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321422/ello-optimized-b2696841.jpg' },
     },
   },
-    {
+  {
     username: 'build',
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/5087/ello-regular-9faf1585.png' },
@@ -78,7 +78,7 @@ export const AUTHENTICATION_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321367/ello-optimized-6855b7a2.jpg' },
     },
   },
-    {
+  {
     username: 'theswede',
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2096715/ello-regular-f50f38c7.png' },
@@ -89,7 +89,7 @@ export const AUTHENTICATION_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321374/ello-optimized-33831a51.jpg' },
     },
   },
-    {
+  {
     username: 'noises',
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/42321/ello-regular-f076ab82.png' },
@@ -100,7 +100,7 @@ export const AUTHENTICATION_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321380/ello-optimized-5b283575.jpg' },
     },
   },
-    {
+  {
     username: 'topodesigns',
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/13304/ello-regular-64f26a2e.png' },
@@ -111,7 +111,7 @@ export const AUTHENTICATION_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321362/ello-optimized-3d0bcbd4.jpg' },
     },
   },
-    {
+  {
     username: 'alpinemodern',
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/39/ello-regular-dd01e483.png' },
@@ -122,7 +122,7 @@ export const AUTHENTICATION_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321359/ello-optimized-bf54998d.jpgg' },
     },
   },
-    {
+  {
     username: 'staffansundstrom',
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2281011/ello-regular-5b10c9d5.png' },
@@ -133,7 +133,7 @@ export const AUTHENTICATION_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321357/ello-optimized-ee7480d0.jpg' },
     },
   },
-    {
+  {
     username: 'madebykaran',
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/927037/ello-regular-fde2514a.png' },
@@ -144,7 +144,7 @@ export const AUTHENTICATION_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321350/ello-optimized-4a0cc327.jpg' },
     },
   },
-    {
+  {
     username: 'daniel_triendl',
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/993721/ello-regular-6cac5f11.png' },
@@ -155,7 +155,7 @@ export const AUTHENTICATION_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321344/ello-optimized-424ffadc.jpg' },
     },
   },
-    {
+  {
     username: 'king_rah',
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2275486/ello-regular-b8e3f2b9.png' },
@@ -231,7 +231,7 @@ export const SIGNED_OUT_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321396/ello-optimized-40f68070.jpg' },
     },
   },
-    {
+  {
     username: 'dchen',
     caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
     avatar: {
@@ -243,7 +243,7 @@ export const SIGNED_OUT_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321422/ello-optimized-b2696841.jpg' },
     },
   },
-    {
+  {
     username: 'build',
     caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
     avatar: {
@@ -255,7 +255,7 @@ export const SIGNED_OUT_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321367/ello-optimized-6855b7a2.jpg' },
     },
   },
-    {
+  {
     username: 'theswede',
     caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
     avatar: {
@@ -267,7 +267,7 @@ export const SIGNED_OUT_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321374/ello-optimized-33831a51.jpg' },
     },
   },
-    {
+  {
     username: 'noises',
     caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
     avatar: {
@@ -279,7 +279,7 @@ export const SIGNED_OUT_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321380/ello-optimized-5b283575.jpg' },
     },
   },
-    {
+  {
     username: 'topodesigns',
     caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
     avatar: {
@@ -291,7 +291,7 @@ export const SIGNED_OUT_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321362/ello-optimized-3d0bcbd4.jpg' },
     },
   },
-    {
+  {
     username: 'alpinemodern',
     caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
     avatar: {
@@ -303,7 +303,7 @@ export const SIGNED_OUT_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321359/ello-optimized-bf54998d.jpgg' },
     },
   },
-    {
+  {
     username: 'staffansundstrom',
     caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
     avatar: {
@@ -315,7 +315,7 @@ export const SIGNED_OUT_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321357/ello-optimized-ee7480d0.jpg' },
     },
   },
-    {
+  {
     username: 'madebykaran',
     caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
     avatar: {
@@ -327,7 +327,7 @@ export const SIGNED_OUT_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321350/ello-optimized-4a0cc327.jpg' },
     },
   },
-    {
+  {
     username: 'daniel_triendl',
     caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
     avatar: {
@@ -339,7 +339,7 @@ export const SIGNED_OUT_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321344/ello-optimized-424ffadc.jpg' },
     },
   },
-    {
+  {
     username: 'king_rah',
     caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
     avatar: {
