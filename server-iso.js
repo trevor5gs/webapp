@@ -54,6 +54,7 @@ let token = null
 oauth2.client
   .getToken(tokenConfig)
   .then((result) => {
+    console.log('result client', result)
     if (result.errors) {
       console.log('Unable to get access token', result)
       process.exit(1)
@@ -68,6 +69,7 @@ oauth2.client
 app.get('/token', (req, res) => {
   if (token.expired()) {
     token.refresh().then((result) => {
+      console.log('result token', result)
       if (result.errors) {
         console.log('Access Token error', result)
         res.status(401).send(result.errors)
