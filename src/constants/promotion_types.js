@@ -106,8 +106,8 @@ export const AUTHENTICATION_PROMOTIONS = [
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/13304/ello-regular-64f26a2e.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321362/ello-xhdpi-3d0bcbd4.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321362/ello-hdpi-3d0bcbd4.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321362/ello-hdpi-3d0bcbd4.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321362/ello-xhdpi-3d0bcbd4.jpg' },
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321362/ello-optimized-3d0bcbd4.jpg' },
     },
   },
@@ -139,8 +139,8 @@ export const AUTHENTICATION_PROMOTIONS = [
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/927037/ello-regular-fde2514a.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321350/ello-xhdpi-4a0cc327.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321350/ello-hdpi-4a0cc327.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321350/ello-hdpi-4a0cc327.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321350/ello-xhdpi-4a0cc327.jpg' },
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321350/ello-optimized-4a0cc327.jpg' },
     },
   },
@@ -286,8 +286,8 @@ export const SIGNED_OUT_PROMOTIONS = [
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/13304/ello-regular-64f26a2e.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321362/ello-xhdpi-3d0bcbd4.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321362/ello-hdpi-3d0bcbd4.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321362/ello-hdpi-3d0bcbd4.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321362/ello-xhdpi-3d0bcbd4.jpg' },
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321362/ello-optimized-3d0bcbd4.jpg' },
     },
   },
@@ -322,8 +322,8 @@ export const SIGNED_OUT_PROMOTIONS = [
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/927037/ello-regular-fde2514a.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321350/ello-xhdpi-4a0cc327.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321350/ello-hdpi-4a0cc327.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321350/ello-hdpi-4a0cc327.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321350/ello-xhdpi-4a0cc327.jpg' },
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321350/ello-optimized-4a0cc327.jpg' },
     },
   },
