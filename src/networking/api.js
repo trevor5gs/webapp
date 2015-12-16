@@ -1,11 +1,10 @@
 import * as ENV from '../../env'
 
 const API_VERSION = 'v2'
-const PROTOCOL = 'https'
 const DOMAIN = ENV.AUTH_DOMAIN.replace(/"/g, '')
 const PER_PAGE = 20
 const basePath = () => {
-  return `${PROTOCOL}://${DOMAIN}/api`
+  return `${DOMAIN}/api`
 }
 
 function getAPIPath(relPath, queryParams = {}) {

@@ -29,7 +29,7 @@ export function checkAuth(dispatch, oldToken, location) {
       },
     })
   } else {
-    const url = 'https://' + ENV.AUTH_DOMAIN + '/api/oauth/authorize.html' +
+    const url = ENV.AUTH_DOMAIN + '/api/oauth/authorize.html' +
       '?response_type=token' +
       '&scope=web_app+public' +
       '&client_id=' + ENV.AUTH_CLIENT_ID +
