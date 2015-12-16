@@ -45,6 +45,8 @@ const credentials = {
   },
 }
 
+console.log('credentials', credentials)
+
 // Initialize the OAuth2 Library
 const oauth2 = require('simple-oauth2')(credentials)
 const tokenConfig = {}
@@ -55,7 +57,7 @@ oauth2.client
   .getToken(tokenConfig)
   .then((result) => {
     console.log('result client', result)
-    if (result.errors) {
+    if (result && result.errors) {
       console.log('Unable to get access token', result)
       process.exit(1)
     }
