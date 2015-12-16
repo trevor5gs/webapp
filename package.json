@@ -12,7 +12,6 @@
     "lint": "eslint src test",
     "spec": "NODE_ENV=test mocha --compilers js:babel/register test/*.js test/**/*.js test/**/**/*.js",
     "start": "NODE_ENV=production babel-node server-iso.js",
-    "start:iso:test": "DEBUG=express:* NODE_ENV=test babel-node server-iso.js",
     "start:old": "NODE_ENV=production babel-node server.js",
     "postinstall": "npm run build",
     "test": "npm run lint && NODE_ENV=test npm run spec"
