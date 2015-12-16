@@ -1,3 +1,5 @@
+require('dotenv').load()
+
 import React from 'react/addons'
 import jsdom from 'mocha-jsdom'
 

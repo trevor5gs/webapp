@@ -13,6 +13,7 @@ import Uploader from '../../components/uploaders/Uploader'
 import InfoForm from '../../components/forms/InfoForm'
 import Avatar from '../../components/assets/Avatar'
 import Cover from '../../components/assets/Cover'
+import * as ENV from '../../../env'
 
 class Onboarding extends Component {
   static propTypes = {

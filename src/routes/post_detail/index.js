@@ -1,3 +1,5 @@
+import * as ENV from '../../../env'
+
 export default {
   path: ':username/post/:token',
   getComponents(location, cb) {
