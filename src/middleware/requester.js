@@ -97,9 +97,9 @@ export const requester = store => next => action => {
 
   const state = store.getState()
   function fetchCredentials() {
-    if (state.authorization && state.authorization.accessToken) {
+    if (state.authentication && state.authentication.accessToken) {
       return new Promise((resolve) => {
-        resolve(state.authorization.accessToken)
+        resolve({ token: { access_token: state.authentication.accessToken } })
       })
     }
     return fetch(`${document.location.protocol}//${document.location.host}/token`)
@@ -121,8 +121,8 @@ export const requester = store => next => action => {
 
   return (
     fetchCredentials()
-      .then((tokenJson) => {
-        const accessToken = tokenJson.token.access_token
+      .then((tokenJSON) => {
+        const accessToken = tokenJSON.token.access_token
         options.headers = !method || method === 'GET' ? getGetHeader(accessToken) : getPostJsonHeader(accessToken)
         fetch(endpoint.path, options)
             .then(checkStatus)
