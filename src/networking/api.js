@@ -1,11 +1,11 @@
 const API_VERSION = 'v2'
-const PROTOCOL = 'https'
-// need to set this server side for initial api requests
-let DOMAIN = (typeof ENV !== 'undefined') ? ENV.AUTH_DOMAIN : 'ello-stage.herokuapp.com'
 const PER_PAGE = 20
+const basePath = () => {
+  return `${ENV.AUTH_DOMAIN}/api`
+}
 
 function getAPIPath(relPath, queryParams = {}) {
-  let path = `${PROTOCOL}://${DOMAIN}/api/${API_VERSION}/${relPath}`
+  let path = `${basePath()}/${API_VERSION}/${relPath}`
   const queryArr = []
   for (const param in queryParams) {
     if (queryParams.hasOwnProperty(param)) {
@@ -22,6 +22,17 @@ function getAPIPath(relPath, queryParams = {}) {
 export function s3CredentialsPath() {
   return {
     path: getAPIPath('assets/credentials'),
+  }
+}
+// Authentication
+export function accessTokens() {
+  return {
+    path: `${basePath()}/oauth/token`,
+  }
+}
+export function forgotPassword() {
+  return {
+    path: getAPIPath('forgot-password'),
   }
 }
 // Current User Profile
@@ -51,15 +62,8 @@ export function relationshipBatchPath() {
   }
 }
 // Discover
-export function discoverRecommended() {
-  const params = { per_page: PER_PAGE, include_recent_posts: true, seed: new Date().getTime() }
-  return {
-    path: getAPIPath('discover/users/recommended', params),
-    params,
-  }
-}
 export function discoverUsers(type) {
-  const params = { per_page: PER_PAGE, include_recent_posts: true, seed: new Date().getTime() }
+  const params = { per_page: PER_PAGE, include_recent_posts: true }
   return {
     path: getAPIPath(`discover/users/${type}`, params),
     params,
@@ -153,9 +157,9 @@ export function notifications(params = {}) {
 }
 
 // AVAILABILITY
-export function availability(vo) {
+export function availability() {
   return {
-    path: getAPIPath('availability', vo),
+    path: getAPIPath('availability'),
   }
 }
 
@@ -164,12 +168,6 @@ export function invite() {
   return {
     path: getAPIPath('invitations'),
   }
-}
-
-// this is only used server side since the initial
-// page loads don't have access to ENV
-export function setDomain(domain) {
-  DOMAIN = domain
 }
 
 export { API_VERSION, getAPIPath, PER_PAGE }

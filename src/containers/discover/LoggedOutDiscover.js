@@ -30,7 +30,9 @@ class LoggedOutDiscover extends Component {
 }
 
 LoggedOutDiscover.preRender = (store, routerState) => {
-  return store.dispatch(loadDiscoverUsers(routerState.params.type))
+  const pathArr = routerState.location.pathname.split('/')
+  const type = pathArr[1].length ? pathArr[1] : 'recommended'
+  return store.dispatch(loadDiscoverUsers(type))
 }
 
 export default LoggedOutDiscover

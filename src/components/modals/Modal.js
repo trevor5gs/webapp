@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import Mousetrap from 'mousetrap'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { MODAL, ALERT } from '../../constants/action_types'
 import { closeModal, closeAlert } from '../../actions/modals'
+import Mousetrap from '../../vendor/mousetrap'
 
 function getComponentKind(modal) {
   return (modal.meta && modal.meta.kind) ? modal.meta.kind : 'Modal'

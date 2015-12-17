@@ -1,3 +1,8 @@
+// set global ENV for testing since
+// webpack doesn't inject it here
+require('dotenv').load()
+global.ENV = JSON.stringify(require('../env'))
+
 import React from 'react/addons'
 import jsdom from 'mocha-jsdom'
 

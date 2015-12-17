@@ -26,12 +26,6 @@ describe('api.js', () => {
     expect(api.relationshipBatchPath().path).to.match(/\/relationships\/batches$/)
   })
 
-  it('#discoverRecommended', () => {
-    expect(api.discoverRecommended().path).to.match(/\/discover\/users\/recommended\?/)
-    expect(api.discoverRecommended().params.include_recent_posts).to.be.true
-    expect(api.discoverRecommended().pagingPath).to.be.undefined
-  })
-
   it('#friendStream', () => {
     expect(api.friendStream().path).to.match(/\/streams\/friend\?/)
     expect(api.friendStream().pagingPath).to.be.undefined

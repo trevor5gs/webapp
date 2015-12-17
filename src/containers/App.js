@@ -10,11 +10,12 @@ import Navbar from '../components/navbar/Navbar'
 
 class App extends Component {
   static propTypes = {
+    authentication: PropTypes.object.isRequired,
+    children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
     }),
-    children: PropTypes.node.isRequired,
   }
 
   static defaultProps = {
@@ -27,7 +28,10 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(loadProfile())
+    const { authentication, dispatch } = this.props
+    if (authentication && authentication.isLoggedIn) {
+      dispatch(loadProfile())
+    }
   }
 
   componentDidUpdate() {
@@ -57,8 +61,17 @@ class App extends Component {
 }
 
 App.preRender = (store) => {
-  return store.dispatch(loadProfile())
+  const state = store.getState()
+  if (state.authentication && state.authentication.isLoggedIn) {
+    return store.dispatch(loadProfile())
+  }
 }
 
-export default connect()(App)
+function mapStateToProps(state) {
+  return {
+    authentication: state.authentication,
+  }
+}
+
+export default connect(mapStateToProps)(App)
 

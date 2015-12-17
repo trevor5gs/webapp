@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
-// import { requestInvite, validateEmail } from '../../actions/profile'
+import { getUserCredentials } from '../../actions/authentication'
 import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 import PasswordControl from '../forms/PasswordControl'
@@ -21,22 +21,16 @@ class NewSessionForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    // console.log('submit', e)
-    // const vo = { email: 'ryan.e.boyajian+4567@gmail.com' }
-    // this.props.dispatch(requestInvite(vo))
-  }
-
-  handleControlChange(vo) {
-    return vo
-    // console.log('handleControlChange', vo)
+    const { dispatch } = this.props
+    dispatch(getUserCredentials(this.refs.emailControl.refs.input.value, this.refs.passwordControl.refs.input.value))
   }
 
   render() {
     const { emailStatus, passwordStatus } = this.state
     return (
       <form id="NewSessionForm" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
-        <EmailControl tabIndex="1" text="" status={emailStatus} controlWasChanged={this.handleControlChange.bind(this)} />
-        <PasswordControl tabIndex="2" status={passwordStatus} controlWasChanged={this.handleControlChange.bind(this)} />
+        <EmailControl ref="emailControl" tabIndex="1" text="" status={emailStatus} />
+        <PasswordControl ref="passwordControl" tabIndex="2" status={passwordStatus} />
         <FormButton tabIndex="3">Enter Ello</FormButton>
       </form>
     )

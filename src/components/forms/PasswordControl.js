@@ -5,7 +5,7 @@ import { SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class PasswordControl extends Component {
   static propTypes = {
-    controlWasChanged: PropTypes.func.isRequired,
+    controlWasChanged: PropTypes.func,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
@@ -45,7 +45,9 @@ class PasswordControl extends Component {
   handleChange(e) {
     const val = e.target.value
     this.setState({ text: val, hasValue: val.length })
-    this.props.controlWasChanged({ password: e.target.value })
+    if (typeof this.props.controlWasChanged === 'function') {
+      this.props.controlWasChanged({ password: e.target.value })
+    }
   }
 
   mapStatusToClass() {
@@ -116,6 +118,7 @@ class PasswordControl extends Component {
           type="password"
           tabIndex={tabIndex}
           placeholder={placeholder}
+          ref="input"
           autoCapitalize="off"
           autoCorrect="off"
           onFocus={(e) => this.handleFocus(e)}

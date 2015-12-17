@@ -1,4 +1,3 @@
-export { accessToken } from './access_token'
 export { authentication } from './authentication'
 export { json } from './json'
 export { modal } from './modal'

@@ -3,6 +3,10 @@ import * as ACTION_TYPES from '../constants/action_types'
 import { resetAuth } from '../networking/auth'
 
 const runningFetches = {}
+const defaultHeaders = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
+}
 
 function getAuthToken(accessToken) {
   return {
@@ -12,9 +16,8 @@ function getAuthToken(accessToken) {
 
 function getPostJsonHeader(accessToken) {
   return {
+    ...defaultHeaders,
     ...getAuthToken(accessToken),
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
   }
 }
 
@@ -60,6 +63,8 @@ export const requester = store => next => action => {
   if ((type !== ACTION_TYPES.LOAD_STREAM &&
         type !== ACTION_TYPES.LOAD_NEXT_CONTENT &&
         type !== ACTION_TYPES.LOAD_PREV_CONTENT &&
+        type !== ACTION_TYPES.AUTHENTICATION.FORGOT_PASSWORD &&
+        type !== ACTION_TYPES.AUTHENTICATION.USER &&
         type !== ACTION_TYPES.POST.COMMENT &&
         type !== ACTION_TYPES.POST.DELETE &&
         type !== ACTION_TYPES.POST.EDIT &&
@@ -69,11 +74,13 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.POST_JSON &&
         type !== ACTION_TYPES.PROFILE.LOAD &&
         type !== ACTION_TYPES.PROFILE.SAVE &&
-        type !== ACTION_TYPES.PROFILE.VALIDATE_EMAIL
+        type !== ACTION_TYPES.PROFILE.AVAILABILITY
       ) || !payload) {
     return next(action)
   }
 
+  // TODO: I think the body should actually come
+  // from the endpoint instead of the payload
   const { endpoint, method, body } = payload
 
   if (!endpoint) return next(action);
@@ -86,58 +93,78 @@ export const requester = store => next => action => {
   const FAILURE = type + '_FAILURE'
 
   // dispatch the start of the request
-  next({ type: REQUEST, payload, meta: meta })
+  next({ type: REQUEST, payload, meta })
 
   const state = store.getState()
-  const accessToken = state.accessToken.token
-  const options = {
-    method: method || 'GET',
-    headers: (!method || method === 'GET') ? getGetHeader(accessToken) : getPostJsonHeader(accessToken),
+  function fetchCredentials() {
+    if (state.authentication && state.authentication.accessToken) {
+      return new Promise((resolve) => {
+        resolve({ token: { access_token: state.authentication.accessToken } })
+      })
+    }
+    return fetch(`${document.location.protocol}//${document.location.host}/token`)
+      .then((response) => {
+        return response.ok ? response.json() : response
+      })
+      .catch(() => {
+        return fetchCredentials()
+      })
   }
 
+  const options = { method: method || 'GET' }
   if (options.method !== 'GET' && options.method !== 'HEAD') {
     options.body = body || null
+    if (options.body && typeof options.body !== 'string') {
+      options.body = JSON.stringify(options.body)
+    }
   }
 
-  return fetch(endpoint.path, options)
-    .then(checkStatus)
-    .then(response => {
-      delete runningFetches[response.url]
-      if (response.status === 200) {
-        response.json().then((json) => {
-          payload.response = camelizeKeys(json)
-          // this allows us to set the proper result in the json reducer
-          payload.pathname = state.router.location.pathname
-          if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
-            payload.pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
-          } else {
-            const linkPagination = parseLink(response.headers.get('Link'))
-            linkPagination.totalCount = parseInt(response.headers.get('X-Total-Count'), 10)
-            linkPagination.totalPages = parseInt(response.headers.get('X-Total-Pages'), 10)
-            linkPagination.totalPagesRemaining = parseInt(response.headers.get('X-Total-Pages-Remaining'), 10)
-            payload.pagination = linkPagination
-          }
-          next({ meta, payload, type: SUCCESS })
-          return true
-        })
-      } else if (response.ok) {
-        // TODO: handle a 204 properly so that we know to stop paging
-        next(action)
-        return true
-      } else {
-        // TODO: is this what should be happening here?
-        next(action)
-        return true
-      }
-    })
-    .catch(error => {
-      delete runningFetches[error.response.url]
-      if (error.response.status === 401) {
-        resetAuth(store.dispatch, accessToken, state.router.location)
-      }
-      next({ error, meta, payload, type: FAILURE })
-      return false
-    })
+  return (
+    fetchCredentials()
+      .then((tokenJSON) => {
+        const accessToken = tokenJSON.token.access_token
+        options.headers = !method || method === 'GET' ? getGetHeader(accessToken) : getPostJsonHeader(accessToken)
+        fetch(endpoint.path, options)
+            .then(checkStatus)
+            .then(response => {
+              delete runningFetches[response.url]
+              if (response.status === 200) {
+                response.json().then((json) => {
+                  payload.response = camelizeKeys(json)
+                  // this allows us to set the proper result in the json reducer
+                  payload.pathname = state.router.location.pathname
+                  if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
+                    payload.pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
+                  } else {
+                    const linkPagination = parseLink(response.headers.get('Link'))
+                    linkPagination.totalCount = parseInt(response.headers.get('X-Total-Count'), 10)
+                    linkPagination.totalPages = parseInt(response.headers.get('X-Total-Pages'), 10)
+                    linkPagination.totalPagesRemaining = parseInt(response.headers.get('X-Total-Pages-Remaining'), 10)
+                    payload.pagination = linkPagination
+                  }
+                  next({ meta, payload, type: SUCCESS })
+                  return true
+                })
+              } else if (response.ok) {
+                // TODO: handle a 204 properly so that we know to stop paging
+                next(action)
+                return true
+              } else {
+                // TODO: is this what should be happening here?
+                next(action)
+                return true
+              }
+            })
+            .catch(error => {
+              delete runningFetches[error.response.url]
+              if ((error.response.status === 401 || error.response.status === 403) && state.router.location.pathname.indexOf('/onboarding') === 0) {
+                resetAuth(store.dispatch, state.router.location)
+              }
+              next({ error, meta, payload, type: FAILURE })
+              return false
+            })
+      })
+  )
 }
 
 export { runningFetches }

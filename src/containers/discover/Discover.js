@@ -34,7 +34,7 @@ class Discover extends Component {
 }
 
 Discover.preRender = (store, routerState) => {
-  return store.dispatch(loadDiscoverUsers(routerState.params.type))
+  return store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
 }
 
 export default Discover

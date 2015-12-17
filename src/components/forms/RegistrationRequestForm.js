@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import debounce from 'lodash.debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
-// import { requestInvite, validateEmail } from '../../actions/profile'
+import { /* requestInvite,*/ checkAvailability } from '../../actions/profile'
 import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 
@@ -23,9 +23,14 @@ class RegistrationRequestForm extends Component {
     this.handleEmailControlChanged = debounce(this.handleEmailControlChanged, 500)
   }
 
-  // Todo: Needs to be wired up still
-  onValidateEmailResponse(json) {
-    const { availability } = json
+  componentWillReceiveProps(nextProps) {
+    const { availability } = nextProps
+    if (availability.hasOwnProperty('email')) {
+      this.onValidateEmailResponse(availability)
+    }
+  }
+
+  onValidateEmailResponse(availability) {
     const { emailStatus } = this.state
     if (!availability && emailStatus !== STATUS.FAILURE) {
       return this.setState({ emailStatus: STATUS.FAILURE, emailSuggestion: null })
@@ -47,7 +52,7 @@ class RegistrationRequestForm extends Component {
     if (emailStatus !== STATUS.REQUEST) {
       this.setState({ emailStatus: STATUS.REQUEST, emailSuggestion: null })
     }
-    // this.props.dispatch(validateEmail(vo))
+    this.props.dispatch(checkAvailability(vo))
   }
 
   handleSubmit(e) {
@@ -69,5 +74,11 @@ class RegistrationRequestForm extends Component {
   }
 }
 
-export default connect()(RegistrationRequestForm)
+function mapStateToProps(state) {
+  return {
+    availability: state.profile.availability,
+  }
+}
+
+export default connect(mapStateToProps)(RegistrationRequestForm)
 

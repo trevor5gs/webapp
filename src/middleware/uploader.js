@@ -79,7 +79,7 @@ export const uploader = store => next => action => {
   // dispatch the start of the request
   next({ type: REQUEST, payload, meta: meta })
   const state = store.getState()
-  const accessToken = state.accessToken.token
+  const { accessToken } = state.authentication
   function fetchCredentials() {
     return fetch(s3CredentialsPath().path, {
       method: 'GET',
