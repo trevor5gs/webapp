@@ -4,7 +4,9 @@ var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 // load env vars first
-require('dotenv').load()
+var dotenv = require('dotenv')
+dotenv.config({ silent: process.env.NODE_ENV === 'production' })
+dotenv.load()
 
 module.exports = {
   devtool: 'sourcemap',

@@ -1,5 +1,7 @@
-// load env vars first in test
-require('dotenv').load()
+// load env vars first
+const dotenv = require('dotenv')
+dotenv.config({ silent: process.env.NODE_ENV === 'production' })
+dotenv.load()
 
 export default function addOauthRoute(app) {
   // Auth token
