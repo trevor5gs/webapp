@@ -91,6 +91,8 @@
 .ShareTool.asPill
   height: rem(22)
   line-height: rem(22)
+
+.PostGrid .ShareTool.asPill
   position: absolute
   top: rem(19)
   right: 0
@@ -105,6 +107,10 @@
 .no-touch .ShareTool.asPill >  button:hover
   background-color: #ccc
 
+.ShareTool.asPill .ShareIcon
+  transform: scale(0.8)
+  transform-origin: left center
+
 @media(min-width: #{em(560)})
   .ShareTool.asPill >  button > .Hint
     display: inline-block
@@ -115,7 +121,6 @@
     background-color: transparent
     border-radius: none
     color: #535353
-    margin-left: rem(5)
 
 .no-touch .ShareTool.asPill >  button:hover > .Hint
   color: black
