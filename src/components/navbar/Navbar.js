@@ -159,6 +159,11 @@ class Navbar extends Component {
     })
   }
 
+  logInWasClicked(e) {
+    e.preventDefault()
+    document.location.href = ENV.REDIRECT_URI + e.target.pathname
+  }
+
   launchSignUpModal(e) {
     const { dispatch } = this.props
     e.preventDefault()
@@ -170,14 +175,14 @@ class Navbar extends Component {
     return (
       <nav className={klassNames} role="navigation">
         <NavbarMark />
-        <NavbarOmniButton callback={this.omniButtonWasClicked.bind(this)} />
-        { hasLoadMoreButton ? <NavbarMorePostsButton callback={this.loadMorePostsWasClicked.bind(this)} /> : null }
+        <NavbarOmniButton callback={::this.omniButtonWasClicked} />
+        { hasLoadMoreButton ? <NavbarMorePostsButton callback={::this.loadMorePostsWasClicked} /> : null }
         <div className="NavbarLinks">
           <NavbarLink to="/discover" label="Discover" modifiers="LabelOnly" pathname={pathname} icon={ <SparklesIcon/> } />
           <NavbarLink to="/following" label="Following" modifiers="LabelOnly" pathname={pathname} icon={ <CircleIcon/> } />
           <NavbarLink to="/starred" label="Starred" modifiers="" pathname={pathname} icon={ <StarIcon/> } />
           <NavbarLink to="/notifications" label="Notifications" modifiers="IconOnly" pathname={pathname} icon={ <BoltIcon/> } />
-          <NavbarLink to="/search" label="Search" modifiers="IconOnly" pathname={pathname} onClick={this.searchWasClicked.bind(this)} icon={ <SearchIcon/> } />
+          <NavbarLink to="/search" label="Search" modifiers="IconOnly" pathname={pathname} onClick={::this.searchWasClicked} icon={ <SearchIcon/> } />
         </div>
         <NavbarProfile { ...profile.payload } />
       </nav>
@@ -189,12 +194,12 @@ class Navbar extends Component {
       <nav className={klassNames} role="navigation">
         <NavbarMark />
         <NavbarLabel />
-        { hasLoadMoreButton ? <NavbarMorePostsButton callback={this.loadMorePostsWasClicked.bind(this)} /> : null }
+        { hasLoadMoreButton ? <NavbarMorePostsButton callback={::this.loadMorePostsWasClicked} /> : null }
         <div className="NavbarLinks">
           <NavbarLink to="/" label="Discover" modifiers="LabelOnly" pathname={pathname} icon={ <SparklesIcon/> } />
-          <NavbarLink to="/find" label="Search" modifiers="IconOnly" pathname={pathname} onClick={this.searchWasClicked.bind(this)} icon={ <SearchIcon/> } />
-          <NavbarLink to="/enter" label="Log in" modifiers="LabelOnly" pathname={pathname} />
-          <NavbarLink to="/signup" label="Sign up" modifiers="LabelOnly" pathname={pathname} onClick={this.launchSignUpModal.bind(this)} />
+          <NavbarLink to="/find" label="Search" modifiers="IconOnly" pathname={pathname} onClick={::this.searchWasClicked} icon={ <SearchIcon/> } />
+          <NavbarLink to="/enter" label="Log in" modifiers="LabelOnly" pathname={pathname} onClick={::this.logInWasClicked}/>
+          <NavbarLink to="/signup" label="Sign up" modifiers="LabelOnly" pathname={pathname} onClick={::this.launchSignUpModal} />
         </div>
       </nav>
     )
