@@ -37,19 +37,19 @@ export class UserStats extends Component {
           </Link>
         </dl>
         <dl>
-          <Link className="UserStatsLink" activeClassName="active" to={`${userPath}/following`}>
+          <Link className="UserStatsLink asDisabled" activeClassName="active" to={`${userPath}/following`}>
             <dt>{user.followingCount}</dt>
             <dd>Following</dd>
           </Link>
         </dl>
         <dl>
-          <Link className="UserStatsLink" activeClassName="active" to={`${userPath}/followers`}>
+          <Link className="UserStatsLink asDisabled" activeClassName="active" to={`${userPath}/followers`}>
             <dt>{user.followersCount}</dt>
             <dd>Followers</dd>
           </Link>
         </dl>
         <dl>
-          <Link className="UserStatsLink" activeClassName="active" to={`${userPath}/loves`}>
+          <Link className="UserStatsLink asDisabled" activeClassName="active" to={`${userPath}/loves`}>
             <dt>{user.lovesCount}</dt>
             <dd>Loves</dd>
           </Link>
