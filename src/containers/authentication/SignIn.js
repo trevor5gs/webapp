@@ -32,7 +32,7 @@ class SignIn extends Component {
         </div>
         <AppleStoreLink/>
         <Credits user={featuredUser} />
-        <Cover coverImage={featuredUser.coverImage} modifiers="asFullScreen" />
+        <Cover coverImage={featuredUser.coverImage} modifiers="asFullScreen withOverlay" />
       </section>
     )
   }
