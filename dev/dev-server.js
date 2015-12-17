@@ -1,5 +1,3 @@
-require('dotenv').load()
-
 const path = require('path')
 const express = require('express')
 const webpack = require('webpack')

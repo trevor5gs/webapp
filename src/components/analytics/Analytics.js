@@ -2,7 +2,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { PROFILE } from '../../constants/action_types'
-import * as ENV from '../../../env'
 
 function addTrackingSnippet(src) {
   const script = document.createElement('script')

@@ -1,5 +1,4 @@
 import * as ACTION_TYPES from '../constants/action_types'
-import * as ENV from '../../env'
 
 function extractToken(hash, oldToken) {
   const match = hash.match(/access_token=([^&]+)/)

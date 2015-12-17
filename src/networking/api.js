@@ -1,10 +1,7 @@
-import * as ENV from '../../env'
-
 const API_VERSION = 'v2'
-const DOMAIN = ENV.AUTH_DOMAIN
 const PER_PAGE = 20
 const basePath = () => {
-  return `${DOMAIN}/api`
+  return `${ENV.AUTH_DOMAIN}/api`
 }
 
 function getAPIPath(relPath, queryParams = {}) {

@@ -1,5 +1,3 @@
-import * as ENV from '../../../env'
-
 export default {
   path: ':username',
   getComponents(location, cb) {

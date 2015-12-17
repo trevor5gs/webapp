@@ -11,7 +11,6 @@ import { persistStore } from 'redux-persist'
 import localforage from 'localforage'
 import store from './store'
 import * as ACTION_TYPES from './constants/action_types'
-import * as ENV from '../env'
 
 import './vendor/embetter'
 import './vendor/embetter_initializer'

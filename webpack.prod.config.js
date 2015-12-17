@@ -21,6 +21,9 @@ module.exports = {
   },
   plugins: [
     new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({
+      ENV: JSON.stringify(require(path.join(__dirname, './env.js')))
+    }),
     new ExtractTextPlugin('bundle.css'),
     new webpack.optimize.CommonsChunkPlugin('commons'),
     new HtmlWebpackPlugin({

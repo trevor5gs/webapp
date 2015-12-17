@@ -8,7 +8,6 @@ import { reduxReactRouter, routerStateReducer } from 'redux-router'
 import { analytics, uploader, requester } from './middleware'
 import routes from './routes'
 import * as reducers from './reducers'
-import * as ENV from '../env'
 
 const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
 function reducer(state, action) {
