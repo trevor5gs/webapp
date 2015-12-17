@@ -29,15 +29,24 @@
   fill: #ff9999
   stroke: #ff9999
 
-.ViewsTool .EyeIcon > g
-  stroke: #535353
 .ViewsTool .EyeIcon > circle
   transition: fill $speed ease, stroke $speed ease
-  fill: #535353
+  fill: #aaa
   stroke: transparent
 .no-touch .ViewsTool > a:hover > .EyeIcon > circle
-  transition-delay: $speed2, 0s
+  transition-delay: $speed, 0s
   fill: black
+  stroke: black
+
+.ViewsTool.asPill .EyeIcon > g
+  stroke: #535353
+.ViewsTool.asPill .EyeIcon > circle
+  fill: #535353
+
+.ShareTool.asPill > button > .ShareIcon > g
+  stroke: #535353
+
+.no-touch .ShareTool.asPill >  button:hover > .ShareIcon > g
   stroke: black
 
 .no-touch .FlagTool > button:hover > .FlagIcon > g:nth-of-type(2)

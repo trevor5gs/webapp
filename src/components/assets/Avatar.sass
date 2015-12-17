@@ -1,21 +1,47 @@
+@keyframes animateAvatarThrobber
+  0%
+    transform: scale(1)
+  50%
+    transform: scale(0.75)
+  100%
+    transform: scale(1)
+
 .Avatar
+  transition: transform $speed $ease
   position: relative
   display: inline-block
   vertical-align: middle
   overflow: hidden
   width: rem(30)
   height: rem(30)
-  background: rgba(black, 0.1) no-repeat 50% 50%
-  background-image: url("/static/images/support/throbber.gif")
+  background: transparent no-repeat 50% 50%
   background-size: cover
   border-radius: 50%
 
+.Avatar.isRequesting
+  animation: animateAvatarThrobber 2s infinite linear
+
+.Avatar.isPending,
+.Avatar.isRequesting
+  background-color: rgba(black, 0.1)
+
+.Avatar.isFailing
+  background-color: $danger
+
 .AvatarImage
+  transition: opacity $speed2
   position: absolute
   top: 0
   bottom: 0
   left: 0
   right: 0
+  background: transparent no-repeat 50% 50%
+  background-size: cover
+  border-radius: 50%
+
+.isPending > .AvatarImage,
+.isRequesting > .AvatarImage
+  opacity: 0
 
 .Avatar:before
   content: ''
@@ -36,6 +62,7 @@
 
 .hasDragOver + .Avatar.isModifiable:before
   background-color: rgba(black, 0.4)
+
 
 @media(min-width: #{$break-2})
   .Avatar

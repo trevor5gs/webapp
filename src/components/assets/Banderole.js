@@ -5,6 +5,13 @@ import random from 'lodash.random'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import Credits from '../assets/Credits'
 
+const STATUS = {
+  PENDING: 'isPending',
+  REQUEST: 'isRequesting',
+  SUCCESS: null,
+  FAILURE: 'isFailing',
+}
+
 class Banderole extends Component {
   static propTypes = {
     userlist: PropTypes.array.isRequired,
@@ -15,21 +22,26 @@ class Banderole extends Component {
     this.state = {
       featuredUser: null,
       imageSize: 'hdpi',
+      status: STATUS.PENDING,
     }
   }
 
   componentWillMount() {
     const { userlist } = this.props
     const index = random(0, userlist.length - 1)
-    this.setState({ featuredUser: userlist[index] })
+    this.setState({ featuredUser: userlist[index], status: STATUS.REQUEST })
   }
 
   componentDidMount() {
     addResizeObject(this)
+    if (this.state.status === STATUS.REQUEST) {
+      this.createLoader()
+    }
   }
 
   componentWillUnmount() {
     removeResizeObject(this)
+    this.disposeLoader()
   }
 
   onResize(resizeProperties) {
@@ -37,17 +49,53 @@ class Banderole extends Component {
     this.setState({ imageSize: coverImageSize })
   }
 
-  render() {
+  getCoverSource() {
     const { featuredUser, imageSize } = this.state
     if (!featuredUser) { return null }
-    const { coverImage, caption } = featuredUser
-    const coverSrc = coverImage[imageSize].url
+    const { coverImage } = featuredUser
+    return coverImage[imageSize].url
+  }
 
-    const klassNames = classNames('Banderole')
-    const style = coverImage ? { backgroundImage: `url(${coverSrc})` } : null
+  createLoader() {
+    const src = this.getCoverSource()
+    this.disposeLoader()
+    if (src) {
+      this.img = new Image()
+      this.img.onload = ::this.loadDidSucceed
+      this.img.onerror = ::this.loadDidFail
+      this.img.src = src
+    }
+  }
+
+  disposeLoader() {
+    if (this.img) {
+      this.img.onload = null
+      this.img.onerror = null
+      this.img = null
+    }
+  }
+
+  loadDidSucceed() {
+    this.disposeLoader()
+    this.setState({ status: STATUS.SUCCESS })
+  }
+
+  loadDidFail() {
+    this.disposeLoader()
+    this.setState({ status: STATUS.FAILURE })
+  }
+
+  render() {
+    const { featuredUser, status } = this.state
+    if (!featuredUser) { return null }
+    const { caption } = featuredUser
+    const src = this.getCoverSource()
+    const klassNames = classNames('Banderole', status)
+    const style = src ? { backgroundImage: `url(${src})` } : null
 
     return (
-      <div className={klassNames} style={style}>
+      <div className={klassNames}>
+        <figure className="BanderoleImage" style={style} />
         <div className="BanderoleCaption">
           { caption }
           <Link to="https://ello.co/wtf/about/what-is-ello/" target="_blank">Learn More</Link>

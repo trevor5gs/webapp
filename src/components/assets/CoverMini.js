@@ -9,24 +9,22 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
-class Avatar extends Component {
+class CoverMini extends Component {
   static propTypes = {
-    isModifiable: PropTypes.bool,
-    size: PropTypes.string,
-    sources: PropTypes.any,
+    coverImage: PropTypes.any,
     to: PropTypes.string,
-  }
-
-  static defaultProps = {
-    isModifiable: false,
-    size: 'regular',
   }
 
   constructor(props, context) {
     super(props, context)
     this.state = {
-      status: this.getAvatarSource() ? STATUS.REQUEST : STATUS.PENDING,
+      imageSize: 'hdpi',
+      status: STATUS.PENDING,
     }
+  }
+
+  componentWillMount() {
+    this.setState({ status: STATUS.REQUEST })
   }
 
   componentDidMount() {
@@ -36,8 +34,8 @@ class Avatar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const thisSource = this.getAvatarSource()
-    const nextSource = this.getAvatarSource(nextProps)
+    const thisSource = this.getCoverSource()
+    const nextSource = this.getCoverSource(nextProps)
     if (thisSource !== nextSource) {
       this.setState({
         status: nextSource ? STATUS.REQUEST : STATUS.PENDING,
@@ -55,28 +53,19 @@ class Avatar extends Component {
     this.disposeLoader()
   }
 
-  getClassNames() {
-    const { isModifiable } = this.props
-    const { status } = this.state
-    return classNames(
-      'Avatar',
-      status,
-      { isModifiable: isModifiable },
-    )
-  }
-
-  getAvatarSource(props = this.props) {
-    const { sources, size } = props
-    if (!sources) {
+  getCoverSource(props = this.props) {
+    const { coverImage } = props
+    if (!coverImage) {
       return ''
-    } else if (typeof sources === 'string') {
-      return sources
+    } else if (typeof coverImage === 'string') {
+      return coverImage
     }
-    return sources[size] ? sources[size].url : null
+    const { imageSize } = this.state
+    return coverImage[imageSize] ? coverImage[imageSize].url : null
   }
 
   createLoader() {
-    const src = this.getAvatarSource()
+    const src = this.getCoverSource()
     this.disposeLoader()
     if (src) {
       this.img = new Image()
@@ -106,18 +95,20 @@ class Avatar extends Component {
 
   render() {
     const { to } = this.props
-    const src = this.getAvatarSource()
-    const klassNames = this.getClassNames()
+    const { status } = this.state
+    const src = this.getCoverSource()
+    const klassNames = classNames('CoverMini', status)
+    const style = src ? { backgroundImage: `url(${src})` } : null
 
     return to ?
       <Link to={to} className={klassNames}>
-        <img className="AvatarImage" src={src} />
+        <figure className="CoverMiniImage" style={style} />
       </Link> :
       <span className={klassNames}>
-        <img className="AvatarImage" src={src} />
+        <figure className="CoverMiniImage" style={style} />
       </span>
   }
 }
 
-export default Avatar
+export default CoverMini
 

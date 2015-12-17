@@ -43,17 +43,21 @@
 
 // Specific tools
 .ViewsTool
+  margin-left: rem(-10)
+.ViewsTool.asPill
+  margin-left: 0
   height: rem(22)
   line-height: rem(22)
 
-.ViewsTool > a
+.ViewsTool.asPill > a
   transition: color $speed ease, background-color $speed ease
   padding-left: rem(11)
   padding-right: rem(11)
   background-color: #e8e8e8
   border-radius: rem(11)
   color: #535353
-.no-touch .ViewsTool a:hover
+
+.no-touch .ViewsTool.asPill a:hover
   background-color: #ccc
 
 .no-touch .LoveTool > button.active:hover
@@ -68,9 +72,11 @@
 .PostTool .HeartIcon
   margin-top: rem(-2)
 
-.PostTool .RepostIcon,
-.PostTool .PencilIcon,
 .PostTool .ShareIcon
+  margin-top: rem(-2)
+
+.PostTool .RepostIcon,
+.PostTool .PencilIcon
   margin-top: rem(-4)
 
 .PostTool .XBoxIcon
@@ -81,6 +87,45 @@
 
 .ViewsTool .SVGIcon + .PostToolValue
   margin-left: rem(5)
+
+.ShareTool.asPill
+  height: rem(22)
+  line-height: rem(22)
+
+.PostGrid .ShareTool.asPill
+  position: absolute
+  top: rem(19)
+  right: 0
+
+.ShareTool.asPill > button
+  transition: color $speed ease, background-color $speed ease
+  background-color: #e8e8e8
+  padding-left: rem(11)
+  padding-right: rem(11)
+  border-radius: rem(11)
+
+.no-touch .ShareTool.asPill >  button:hover
+  background-color: #ccc
+
+.ShareTool.asPill .ShareIcon
+  transform: scale(0.8)
+  transform-origin: left center
+
+@media(min-width: #{em(560)})
+  .ShareTool.asPill >  button > .Hint
+    display: inline-block
+    position: static
+    padding: 0
+    visibility: visible
+    opacity: 1
+    background-color: transparent
+    border-radius: none
+    color: #535353
+
+.no-touch .ShareTool.asPill >  button:hover > .Hint
+  color: black
+  transition-duration: $speed
+  transition-delay: 0s
 
 .MoreTool
   transition: transform $speed $ease

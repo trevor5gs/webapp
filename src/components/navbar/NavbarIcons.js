@@ -85,3 +85,18 @@ export class StarIcon extends Component {
   }
 }
 
+export class ArrowIcon extends Component {
+  render() {
+    return (
+      <SVGIcon className="ArrowIcon">
+        <g>
+          <line x1="14.5" y1="10" x2="4.5" y2="10"/>
+        </g>
+        <g>
+          <polyline points="10,5.5 14.5,10 10,14.5" />
+        </g>
+      </SVGIcon>
+    )
+  }
+}
+

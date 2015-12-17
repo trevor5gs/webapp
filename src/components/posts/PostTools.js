@@ -41,7 +41,7 @@ class PostTools extends Component {
     const isOwnPost = currentUser && author.id === currentUser.id
     const cells = []
     cells.push(
-      <span className="PostTool ViewsTool" key={`ViewsTool_${post.id}`}>
+      <span className={classNames('PostTool', 'ViewsTool', { asPill: isLoggedIn })} key={`ViewsTool_${post.id}`}>
         <Link to={`/${author.username}/post/${post.token}`}>
           <EyeIcon />
           <span className="PostToolValue">{post.viewsCount}</span>
@@ -84,7 +84,7 @@ class PostTools extends Component {
     }
     if (author.hasSharingEnabled) {
       cells.push(
-        <span className="PostTool ShareTool" key={`ShareTool_${post.id}`}>
+        <span className={classNames('PostTool', 'ShareTool', { asPill: !isLoggedIn })} key={`ShareTool_${post.id}`}>
           <button onClick={ this.sharePost.bind(this) }>
             <ShareIcon />
             <Hint>Share</Hint>

@@ -25,7 +25,7 @@ class Join extends Component {
     return (
       <section className="Authentication Panel">
         <div className="FormDialog">
-          <h1>:e: Be inspired today.</h1>
+          <h1><img src="/static/images/support/muscle.png" width="32" height="32" alt="muscle" /> Be inspired.</h1>
           <RegistrationForm/>
           <p className="AuthenticationTermsCopy">
             By clicking Create Account you are agreeing to our <a href="https://ello.co/wtf/post/policies">Terms</a>.
@@ -33,7 +33,7 @@ class Join extends Component {
         </div>
         <AppleStoreLink/>
         <Credits user={featuredUser} />
-        <Cover coverImage={featuredUser.coverImage} modifiers="asFullScreen" />
+        <Cover coverImage={featuredUser.coverImage} modifiers="asFullScreen withOverlay" />
       </section>
     )
   }
