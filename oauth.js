@@ -30,7 +30,7 @@ export default function addOauthRoute(app) {
       token = oauth2.accessToken.create(result)
     })
     .catch((error) => {
-      console.log('Access Token error', error.message)
+      console.log('Access Token error getToken', error.message)
       process.exit(1)
     })
 
@@ -38,14 +38,14 @@ export default function addOauthRoute(app) {
     if (token.expired()) {
       token.refresh().then((result) => {
         if (result.errors) {
-          console.log('Access Token error', result)
+          console.log('Access Token error token', result)
           res.status(401).send(result.errors)
         } else {
           token = result
           res.status(200).send(token)
         }
       }).catch((error) => {
-        console.log('Access Token error', error.message)
+        console.log('Access Token error catch token', error.message)
         res.status(401).send()
       })
     } else {
