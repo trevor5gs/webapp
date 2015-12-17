@@ -6,9 +6,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var jade = require('jade')
 
 // load env vars first
-var dotenv = require('dotenv')
-dotenv.config({ silent: process.env.NODE_ENV === 'production' })
-dotenv.load()
+require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
 
 module.exports = {
   entry: {

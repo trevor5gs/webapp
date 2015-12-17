@@ -1,7 +1,5 @@
 // load env vars first
-const dotenv = require('dotenv')
-dotenv.config({ silent: process.env.NODE_ENV === 'production' })
-dotenv.load()
+require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
 
 export default function addOauthRoute(app) {
   // Auth token
