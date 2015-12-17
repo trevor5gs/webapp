@@ -32,7 +32,7 @@ class ImageRegion extends Component {
     }
   }
 
-  // use the lowest of the size constraints to ensure we don't go askew, go
+  // Use the lowest of the size constraints to ensure we don't go askew, go
   // below 1:1 pixel density, or go above the desired grid cell height
   getImageDimensions() {
     const metadata = this.getAttachmentMetadata()

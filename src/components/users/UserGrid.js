@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import Avatar from '../assets/Avatar'
-import CoverImage from '../assets/CoverImage'
+import CoverMini from '../assets/CoverMini'
 import RelationsGroup from '../relationships/RelationsGroup'
 import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
 
@@ -15,7 +15,7 @@ class UserGrid extends Component {
     const userPath = `/${user.username}`
     return (
       <div className="UserGrid" >
-        <CoverImage to={userPath} coverImage={user.coverImage} />
+        <CoverMini to={userPath} coverImage={user.coverImage} />
         <Avatar to={userPath} sources={user.avatar} />
         <RelationsGroup user={user} ref="RelationsGroup" />
         <UserStats user={user} />

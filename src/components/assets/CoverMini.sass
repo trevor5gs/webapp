@@ -1,0 +1,55 @@
+@keyframes animateCoverMiniThrobber
+  0%
+    background-color: rgba(black, 0.1)
+  50%
+    background-color: rgba(purple, 0.1)
+  100%
+    background-color: rgba(black, 0.1)
+
+.CoverMini
+  display: block
+  position: relative
+  width: 100%
+  height: rem(80)
+  background: rgba(black, 0.1) no-repeat 50% 50%
+  background-size: cover
+
+.CoverMini.isRequesting
+  animation: animateCoverMiniThrobber 2s infinite linear
+
+.CoverMini.isFailing
+  background-color: $danger
+
+.CoverMiniImage
+  transition: opacity $speed2
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  background: transparent no-repeat 50% 50%
+  background-size: cover
+
+.isRequesting > .CoverMiniImage
+  opacity: 0
+
+.CoverMini:before
+  content: ''
+  transition: background-color $speed ease
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  z-index: 2
+  background-color: transparent
+
+.no-touch button.CoverMini:hover:before,
+.no-touch a.CoverMini:hover:before
+  background-color: rgba(white, 0.4)
+
+
+@media(min-width: #{$break-2})
+  .CoverMini
+    height: rem(180)
+
