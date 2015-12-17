@@ -63,6 +63,12 @@ class Navbar extends Component {
       return dispatch(openModal(<HelpDialog/>))
     })
 
+    // TODO: probably need to handle this a bit better
+    Mousetrap.bind(SHORTCUT_KEYS.LOGOUT, () => {
+      dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
+      dispatch(pushState(window.history.state, '/'))
+    })
+
     Mousetrap.bind(SHORTCUT_KEYS.TOGGLE_LAYOUT, () => {
       const { json, router } = this.props
       let result = null

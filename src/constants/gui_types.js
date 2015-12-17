@@ -17,6 +17,7 @@ export const SHORTCUT_KEYS = {
   SEARCH: 'g s',
   DISCOVER: 'g d',
   FOLLOWING: 'g f',
+  LOGOUT: 'g l',
   ONBOARDING: 'g 0',
   DT_GRID_TOGGLE: 'g `',
   DT_GRID_CYCLE: 'g ~',
