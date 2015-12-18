@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { loadProfile } from '../actions/profile'
 import { trackPageView } from '../actions/tracking'
+import * as ACTION_TYPES from '../constants/action_types'
 import Analytics from '../components/analytics/Analytics'
 import DevTools from '../components/devtools/DevTools'
 import Modal from '../components/modals/Modal'
@@ -26,11 +27,20 @@ class App extends Component {
   constructor(props, context) {
     super(props, context)
     this.lastLocation = ''
+    // need to clear out the authentication for the case of
+    // when you are on ello.co and go to /onboarding (logging in)
+    // then logging out of the mothership wouldn't clear out the
+    // authentication here and would show you the wrong navbar
+    // and the links would be wrong for user/post detail pages
+    const { dispatch, location } = this.props
+    if (location.pathname === '/') {
+      dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
+    }
   }
 
   componentDidMount() {
-    const { authentication, dispatch } = this.props
-    if (authentication && authentication.isLoggedIn) {
+    const { authentication, dispatch, location } = this.props
+    if (authentication && authentication.isLoggedIn && location.pathname !== '/') {
       dispatch(loadProfile())
     }
   }
