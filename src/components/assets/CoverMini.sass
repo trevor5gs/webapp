@@ -1,11 +1,3 @@
-@keyframes animateCoverMiniThrobber
-  0%
-    background-color: rgba(black, 0.1)
-  50%
-    background-color: rgba(purple, 0.1)
-  100%
-    background-color: rgba(black, 0.1)
-
 .CoverMini
   display: block
   position: relative
@@ -15,7 +7,7 @@
   background-size: cover
 
 .CoverMini.isRequesting
-  animation: animateCoverMiniThrobber 2s infinite linear
+  animation: animateLavaLamp 3s infinite linear
 
 .CoverMini.isFailing
   background-color: $danger

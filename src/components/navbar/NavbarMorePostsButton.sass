@@ -39,15 +39,24 @@
 @media(min-width: #{$break-2})
   .NavbarMorePostsButton
     top: rem(20)
-    width: auto
+    width: rem(40)
     height: rem(40)
-    padding: 0 rem(20) 0 rem(15)
     line-height: rem(40)
-    border-radius: rem(20)
   .isLoggedIn .NavbarMorePostsButton
     left: rem(200)
   .isLoggedOut .NavbarMorePostsButton
     left: rem(120)
+
+@media(min-width: #{$break-3})
+  .NavbarMorePostsButton
+    width: rem(140)
+    padding: 0 rem(20) 0 rem(15)
+    border-radius: rem(20)
   .NavbarMorePostsButton span
     display: inline-block
 
+@media(min-width: #{$break-4})
+  .isLoggedIn .NavbarMorePostsButton
+    left: rem(220)
+  .isLoggedOut .NavbarMorePostsButton
+    left: rem(140)

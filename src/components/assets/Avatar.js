@@ -108,13 +108,14 @@ class Avatar extends Component {
     const { to } = this.props
     const src = this.getAvatarSource()
     const klassNames = this.getClassNames()
+    const style = src ? { backgroundImage: `url(${src})` } : null
 
     return to ?
       <Link to={to} className={klassNames}>
-        <img className="AvatarImage" src={src} />
+        <div className="AvatarImage" style={style} />
       </Link> :
       <span className={klassNames}>
-        <img className="AvatarImage" src={src} />
+        <div className="AvatarImage" style={style} />
       </span>
   }
 }

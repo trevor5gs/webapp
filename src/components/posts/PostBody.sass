@@ -1,10 +1,11 @@
 .TextRegion
   max-width: rem(780)
 
+.TextRegion.asHotRegion
+  cursor: pointer
+
 .ImageRegion
   display: block
-  background-color: rgba(black, 0.1)
-  color: rgba(black, 0)
 
 .ImageRegion + .ImageRegion,
 .ImageRegion + .EmbedRegion,
@@ -17,14 +18,20 @@
 .TextRegion + .EmbedRegion,
 .ImageRegion + .TextRegion,
 .EmbedRegion + .TextRegion
-  margin-top: rem(30)
+  margin-top: rem(20)
 
-// TextRegion always get's rid of the first and last child's margin.
-// Image and Embed Regions only remove margins for the first and/or last block.
-.PostBody > .TextRegion > *:first-of-type,
-.PostBody > .Region:first-child > *:first-of-type
+// Always get's rid of the first and last child's margin and protect against
+// potentially nested elements
+.RegionContent > *:first-of-type,
+.RegionContent:first-child > *:first-of-type
   margin-top: 0
-.PostBody > .TextRegion > *:last-of-type,
-.PostBody > .Region:last-child > *:last-of-type
+
+.RegionContent > *:last-of-type,
+.RegionContent:last-child > *:last-of-type
   margin-bottom: 0
+
+.ImageAttachment
+  display: block
+  background-color: rgba(black, 0.1)
+  color: rgba(black, 0)
 
