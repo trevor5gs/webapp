@@ -1,4 +1,9 @@
-import store from '../../store'
+let store = null
+if (typeof window === 'undefined') {
+  store = require('../../store_server')
+} else {
+  store = require('../../store')
+}
 
 export default {
   path: ':username/post/:token',
