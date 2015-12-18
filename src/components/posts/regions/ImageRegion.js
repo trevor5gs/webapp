@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
 import { GUI } from '../../../constants/gui_types'
 
 class ImageRegion extends Component {
@@ -7,6 +8,7 @@ class ImageRegion extends Component {
     content: PropTypes.object.isRequired,
     isGridLayout: PropTypes.bool.isRequired,
     links: PropTypes.object,
+    postDetailPath: PropTypes.string,
   }
 
   getAttachmentMetadata() {
@@ -40,7 +42,7 @@ class ImageRegion extends Component {
     const { isGridLayout } = this.props
     const { height, ratio } = metadata
     const columnWidth = isGridLayout ? GUI.columnWidth : GUI.contentWidth
-    const maxCellHeight = isGridLayout ? 620 : 7500
+    const maxCellHeight = isGridLayout ? 1200 : 7500
     const widthConstrainedRelativeHeight = Math.round(columnWidth * (1 / ratio))
     const hv = Math.min(widthConstrainedRelativeHeight, height, maxCellHeight)
     const wv = Math.round(hv * ratio)
@@ -78,7 +80,8 @@ class ImageRegion extends Component {
     const { content } = this.props
     const dimensions = this.getImageDimensions()
     return (
-      <img className="ImageRegion"
+      <img
+        className="RegionContent ImageAttachment"
         alt={content.alt}
         width={dimensions.width}
         height={dimensions.height}
@@ -91,7 +94,8 @@ class ImageRegion extends Component {
     const srcset = this.getImageSourceSet()
     const dimensions = this.getImageDimensions()
     return (
-      <img className="ImageRegion"
+      <img
+        className="RegionContent ImageAttachment"
         alt={content.alt}
         width={dimensions.width}
         height={dimensions.height}
@@ -101,26 +105,44 @@ class ImageRegion extends Component {
   }
 
   renderAttachment() {
-    if (this.isGif()) {
-      return this.renderGif()
-    }
+    // if (this.isGif()) {
+    //   return this.renderGif()
+    // }
     return this.renderImage()
   }
 
   renderContent() {
     const { content } = this.props
     return (
-      <img className="ImageRegion"
+      <img
+        className="RegionContent ImageAttachment"
         alt={content.alt}
         src={content.url} />
     )
   }
 
+  renderAttachmentAsLink() {
+    const { postDetailPath } = this.props
+    return (
+      <Link to={postDetailPath} className="ImageRegion">
+        {this.renderAttachment()}
+      </Link>
+    )
+  }
+
+  renderAttachmentAsStatic() {
+    return (
+      <div className="ImageRegion">
+        {this.renderAttachment()}
+      </div>
+    )
+  }
+
   render() {
-    const { assets, links } = this.props
+    const { assets, isGridLayout, links, postDetailPath } = this.props
     if (links && links.assets && assets[links.assets] && assets[links.assets].attachment) {
       this.attachment = assets[links.assets].attachment
-      return this.renderAttachment()
+      return isGridLayout && postDetailPath ? this.renderAttachmentAsLink() : this.renderAttachmentAsStatic()
     }
     return this.renderContent()
   }
