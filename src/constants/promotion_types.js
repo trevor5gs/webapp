@@ -57,14 +57,14 @@ export const AUTHENTICATION_PROMOTIONS = [
     },
   },
   {
-    username: 'dchen',
+    username: 'andyleeuk',
     avatar: {
-      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/460661/ello-regular-9176f093.png' },
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/449718/ello-regular-4ac7d5fd.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321422/ello-hdpi-b2696841.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321422/ello-xhdpi-b2696841.jpg' },
-      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321422/ello-optimized-b2696841.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331762/ello-hdpi-88967f2f.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331762/ello-xhdpi-88967f2f.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331762/ello-optimized-88967f2f.jpg' },
     },
   },
   {
@@ -166,6 +166,61 @@ export const AUTHENTICATION_PROMOTIONS = [
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-optimized-f9fdfdad.jpg' },
     },
   },
+  {
+    username: 'king_rah',
+    avatar: {
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2275486/ello-regular-b8e3f2b9.png' },
+    },
+    coverImage: {
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-hdpi-f9fdfdad.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-xhdpi-f9fdfdad.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-optimized-f9fdfdad.jpg' },
+    },
+  },
+  {
+    username: 'king_rah',
+    avatar: {
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2275486/ello-regular-b8e3f2b9.png' },
+    },
+    coverImage: {
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-hdpi-f9fdfdad.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-xhdpi-f9fdfdad.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-optimized-f9fdfdad.jpg' },
+    },
+  },
+  {
+    username: 'king_rah',
+    avatar: {
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2275486/ello-regular-b8e3f2b9.png' },
+    },
+    coverImage: {
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-hdpi-f9fdfdad.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-xhdpi-f9fdfdad.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-optimized-f9fdfdad.jpg' },
+    },
+  },
+  {
+    username: 'king_rah',
+    avatar: {
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2275486/ello-regular-b8e3f2b9.png' },
+    },
+    coverImage: {
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-hdpi-f9fdfdad.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-xhdpi-f9fdfdad.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-optimized-f9fdfdad.jpg' },
+    },
+  },
+  {
+    username: 'king_rah',
+    avatar: {
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2275486/ello-regular-b8e3f2b9.png' },
+    },
+    coverImage: {
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-hdpi-f9fdfdad.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-xhdpi-f9fdfdad.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-optimized-f9fdfdad.jpg' },
+    },
+  },
 ]
 
 // -------------------------------------
@@ -232,15 +287,15 @@ export const SIGNED_OUT_PROMOTIONS = [
     },
   },
   {
-    username: 'dchen',
+    username: 'andyleeuk',
     caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
     avatar: {
-      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/460661/ello-regular-9176f093.png' },
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/449718/ello-regular-4ac7d5fd.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321422/ello-hdpi-b2696841.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321422/ello-xhdpi-b2696841.jpg' },
-      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321422/ello-optimized-b2696841.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331762/ello-hdpi-88967f2f.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331762/ello-xhdpi-88967f2f.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331762/ello-optimized-88967f2f.jpg' },
     },
   },
   {
