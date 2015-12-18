@@ -202,6 +202,20 @@ export default function json(state = {}, action = { type: '' }, router) {
     return methods.addNewIdsToResult(state, newState, router)
   } else if (action.type === ACTION_TYPES.SET_LAYOUT_MODE) {
     return methods.setLayoutMode(action, state, newState, router)
+  } else if (action.type === ACTION_TYPES.LOAD_STREAM_REQUEST && action.payload.endpoint.path.indexOf('terms=') > -1) {
+    // clear out the search results to get the loader to show on new search
+    // TODO: probably should move this to a method to make testing easier
+    const { resultKey } = action.meta
+    const pathname = action.payload && action.payload.pathname ? action.payload.pathname : router.location.pathname
+    const resultPath = resultKey ? `${pathname}_${resultKey}` : pathname
+    const existingResult = newState.pages[resultPath]
+    if (existingResult) {
+      existingResult.ids = []
+      if (existingResult.next) {
+        existingResult.next.ids = []
+      }
+    }
+    return newState
   }
   // whitelist actions
   switch (action.type) {
