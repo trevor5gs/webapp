@@ -156,58 +156,58 @@ export const AUTHENTICATION_PROMOTIONS = [
     },
   },
   {
-    username: 'king_rah',
+    username: 'thomaswoodson',
     avatar: {
-      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2275486/ello-regular-b8e3f2b9.png' },
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/76/ello-regular-aa008586.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-hdpi-f9fdfdad.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-xhdpi-f9fdfdad.jpg' },
-      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-optimized-f9fdfdad.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331661/ello-hdpi-e3f8d2b0.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331661/ello-xhdpi-e3f8d2b0.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331661/ello-optimized-e3f8d2b0.jpg' },
     },
   },
   {
-    username: 'king_rah',
+    username: 'rvcmedia',
     avatar: {
-      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2275486/ello-regular-b8e3f2b9.png' },
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2724572/ello-regular-43d4de88.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-hdpi-f9fdfdad.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-xhdpi-f9fdfdad.jpg' },
-      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-optimized-f9fdfdad.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331669/ello-hdpi-eaea10bc.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331669/ello-xhdpi-eaea10bc.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331669/ello-optimized-eaea10bc.jpg' },
     },
   },
   {
-    username: 'king_rah',
+    username: 'velvetspectrum',
     avatar: {
-      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2275486/ello-regular-b8e3f2b9.png' },
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/930194/ello-regular-0c164258.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-hdpi-f9fdfdad.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-xhdpi-f9fdfdad.jpg' },
-      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-optimized-f9fdfdad.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331676/ello-hdpi-4a182df5.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331676/ello-xhdpi-4a182df5.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331676/ello-optimized-4a182df5.jpg' },
     },
   },
   {
-    username: 'king_rah',
+    username: 'sawdust',
     avatar: {
-      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2275486/ello-regular-b8e3f2b9.png' },
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/10863/ello-regular-db8ecded.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-hdpi-f9fdfdad.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-xhdpi-f9fdfdad.jpg' },
-      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-optimized-f9fdfdad.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-optimized-552edb6c.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-optimized-552edb6c.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-optimized-552edb6c.jpg' },
     },
   },
   {
-    username: 'king_rah',
+    username: 'tsaccenti',
     avatar: {
-      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2275486/ello-regular-b8e3f2b9.png' },
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/173800/ello-regular-5ad9ea30.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-hdpi-f9fdfdad.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-xhdpi-f9fdfdad.jpg' },
-      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3304416/ello-optimized-f9fdfdad.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331614/ello-hdpi-75e8826f.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331614/ello-xhdpi-75e8826f.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331614/ello-optimized-75e8826f.jpg' },
     },
   },
   {
@@ -392,6 +392,66 @@ export const SIGNED_OUT_PROMOTIONS = [
       hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321344/ello-hdpi-424ffadc.jpg' },
       xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321344/ello-xhdpi-424ffadc.jpg' },
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3321344/ello-optimized-424ffadc.jpg' },
+    },
+  },
+  {
+    username: 'thomaswoodson',
+    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    avatar: {
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/76/ello-regular-aa008586.png' },
+    },
+    coverImage: {
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331661/ello-hdpi-e3f8d2b0.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331661/ello-xhdpi-e3f8d2b0.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331661/ello-optimized-e3f8d2b0.jpg' },
+    },
+  },
+  {
+    username: 'rvcmedia',
+    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    avatar: {
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2724572/ello-regular-43d4de88.png' },
+    },
+    coverImage: {
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331669/ello-hdpi-eaea10bc.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331669/ello-xhdpi-eaea10bc.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331669/ello-optimized-eaea10bc.jpg' },
+    },
+  },
+  {
+    username: 'velvetspectrum',
+    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    avatar: {
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/930194/ello-regular-0c164258.png' },
+    },
+    coverImage: {
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331676/ello-hdpi-4a182df5.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331676/ello-xhdpi-4a182df5.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331676/ello-optimized-4a182df5.jpg' },
+    },
+  },
+  {
+    username: 'sawdust',
+    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    avatar: {
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/10863/ello-regular-db8ecded.png' },
+    },
+    coverImage: {
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-optimized-552edb6c.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-optimized-552edb6c.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-optimized-552edb6c.jpg' },
+    },
+  },
+  {
+    username: 'tsaccenti',
+    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    avatar: {
+      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/173800/ello-regular-5ad9ea30.png' },
+    },
+    coverImage: {
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331614/ello-hdpi-75e8826f.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331614/ello-xhdpi-75e8826f.jpg' },
+      optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331614/ello-optimized-75e8826f.jpg' },
     },
   },
   {
