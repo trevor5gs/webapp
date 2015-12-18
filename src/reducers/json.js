@@ -168,7 +168,7 @@ function updateResult(response, newState, action, router) {
     const existingIndex = result.ids.indexOf(existingResult.ids[0])
     // only do this for top level streams, nested ones like lovers/reposters
     // should just update with the new results
-    if (hasLoadedFirstStream && !resultKey && existingIndex > 0) {
+    if (hasLoadedFirstStream && !resultKey && existingIndex > 0 && !pathname.match(/\/(find|search)/)) {
       existingResult.newIds = result.ids.slice(0, existingIndex)
     } else {
       // this condition should only happen if there was an existingResult
