@@ -1,3 +1,10 @@
+let store = null
+if (typeof window === 'undefined') {
+  store = require('../../store_server')
+} else {
+  store = require('../../store')
+}
+
 export default {
   path: ':username',
   getComponents(location, cb) {
@@ -6,9 +13,11 @@ export default {
     // })
   },
   onEnter(nextState, replaceState, callback) {
-    if (callback) {
-      const redirectPath = ENV.REDIRECT_URI + nextState.location.pathname
-      document.location.href = redirectPath
+    const state = store ? store.getState() : null
+    if (state && state.authentication && state.authentication.isLoggedIn) {
+      callback()
+    } else {
+      document.location.href = ENV.REDIRECT_URI + nextState.location.pathname
     }
   },
 }

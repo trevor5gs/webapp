@@ -14,6 +14,9 @@ import store from './src/store_server'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
 import addOauthRoute from './oauth'
 
+// load env vars first
+require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
+global.ENV = require('./env')
 updateTimeAgoStrings({ about: '' })
 
 const app = express()
