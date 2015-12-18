@@ -36,18 +36,33 @@ export default function addOauthRoute(app) {
 
   app.get('/token', (req, res) => {
     if (token.expired()) {
-      token.refresh().then((result) => {
-        if (result.errors) {
-          console.log('Access Token error token', result)
-          res.status(401).send(result.errors)
-        } else {
-          token = result
+      oauth2.client
+        .getToken(tokenConfig)
+        .then((result) => {
+          if (result.errors) {
+            console.log('Unable to get access token', result)
+            process.exit(1)
+          }
+          token = oauth2.accessToken.create(result)
           res.status(200).send(token)
-        }
-      }).catch((error) => {
-        console.log('Access Token error catch token', error.message)
-        res.status(401).send()
-      })
+        })
+        .catch((error) => {
+          console.log('Access Token error getToken', error.message)
+          process.exit(1)
+        })
+      // we don't have a refresh token for client credentials
+      // token.refresh().then((result) => {
+      //   if (result.errors) {
+      //     console.log('Access Token error token', result)
+      //     res.status(401).send(result.errors)
+      //   } else {
+      //     token = result
+      //     res.status(200).send(token)
+      //   }
+      // }).catch((error) => {
+      //   console.log('Access Token error catch token', error.message)
+      //   res.status(401).send()
+      // })
     } else {
       res.status(200).send(token)
     }
