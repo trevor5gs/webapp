@@ -74,7 +74,8 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.POST_JSON &&
         type !== ACTION_TYPES.PROFILE.LOAD &&
         type !== ACTION_TYPES.PROFILE.SAVE &&
-        type !== ACTION_TYPES.PROFILE.AVAILABILITY
+        type !== ACTION_TYPES.PROFILE.AVAILABILITY &&
+        type !== ACTION_TYPES.PROFILE.REQUEST_INVITE
       ) || !payload) {
     return next(action)
   }

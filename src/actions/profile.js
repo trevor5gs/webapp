@@ -36,6 +36,18 @@ export function checkAvailability(vo) {
   }
 }
 
+export function requestInvite(email) {
+  return {
+    type: PROFILE.REQUEST_INVITE,
+    meta: {},
+    payload: {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+      endpoint: api.invite(),
+    },
+  }
+}
+
 export function uploadAsset(type, file) {
   return {
     type: type,
