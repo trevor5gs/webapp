@@ -16,8 +16,9 @@ describe('PostParser', () => {
     const body = cells[1]
 
     const textRegion = body.props.children[0]
-    expect(textRegion.props.className).to.equal('TextRegion')
     expect(textRegion.key).to.equal('TextRegion_0')
+    expect(textRegion.props.content).to.contain('Text Region')
+    expect(textRegion.props.postDetailPath).to.equal('/forty_two/post/token')
 
     const footer = cells[2]
     expect(footer.props.author.username).to.equal('forty_two')
