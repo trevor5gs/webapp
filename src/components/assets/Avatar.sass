@@ -35,6 +35,10 @@
 .isRequesting > .AvatarImage
   opacity: 0
 
+.PostHeader .isPending > .AvatarImage,
+.PostHeader .isRequesting > .AvatarImage
+  opacity: 1
+
 .Avatar:before
   content: ''
   transition: background-color $speed ease
