@@ -34,7 +34,7 @@ export default function addOauthRoute(app) {
       process.exit(1)
     })
 
-  app.get('/token', (req, res) => {
+  app.get('/api/webapp-token', (req, res) => {
     if (token.expired()) {
       oauth2.client
         .getToken(tokenConfig)
