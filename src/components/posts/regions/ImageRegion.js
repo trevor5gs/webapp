@@ -105,9 +105,9 @@ class ImageRegion extends Component {
   }
 
   renderAttachment() {
-    // if (this.isGif()) {
-    //   return this.renderGif()
-    // }
+    if (this.isGif()) {
+      return this.renderGif()
+    }
     return this.renderImage()
   }
 
