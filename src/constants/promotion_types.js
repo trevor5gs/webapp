@@ -194,8 +194,8 @@ export const AUTHENTICATION_PROMOTIONS = [
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/10863/ello-regular-db8ecded.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-optimized-552edb6c.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-optimized-552edb6c.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-hdpi-552edb6c.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-xhdpi-552edb6c.jpg' },
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-optimized-552edb6c.jpg' },
     },
   },
@@ -437,8 +437,8 @@ export const SIGNED_OUT_PROMOTIONS = [
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/10863/ello-regular-db8ecded.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-optimized-552edb6c.jpg' },
-      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-optimized-552edb6c.jpg' },
+      hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-hdpi-552edb6c.jpg' },
+      xhdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-xhdpi-552edb6c.jpg' },
       optimized: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3331692/ello-optimized-552edb6c.jpg' },
     },
   },
