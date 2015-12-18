@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import debounce from 'lodash.debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
-import { /* requestInvite,*/ checkAvailability } from '../../actions/profile'
+import { requestInvite/* , checkAvailability */ } from '../../actions/profile'
 import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 
@@ -25,7 +25,7 @@ class RegistrationRequestForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
-    if (availability.hasOwnProperty('email')) {
+    if (availability && availability.hasOwnProperty('email')) {
       this.onValidateEmailResponse(availability)
     }
   }
@@ -52,25 +52,34 @@ class RegistrationRequestForm extends Component {
     if (emailStatus !== STATUS.REQUEST) {
       this.setState({ emailStatus: STATUS.REQUEST, emailSuggestion: null })
     }
-    this.props.dispatch(checkAvailability(vo))
+    // this.props.dispatch(checkAvailability(vo))
+    // TODO: this is temporary until availability endpoints are public
+    if (vo.email.match(/(.+)@(.+)\.([a-z]{2,})/)) {
+      this.setState({ emailStatus: STATUS.SUCCESS, emailSuggestion: null })
+    } else {
+      this.setState({ emailStatus: STATUS.FAILURE, emailSuggestion: null })
+    }
   }
 
   handleSubmit(e) {
     e.preventDefault()
-    // console.log('submit', e)
-    // const vo = { email: 'ryan.e.boyajian+4567@gmail.com' }
-    // this.props.dispatch(requestInvite(vo))
+    const { emailStatus } = this.state
+    if (emailStatus === STATUS.SUCCESS) {
+      this.props.dispatch(requestInvite(this.refs.emailControl.refs.input.value))
+      this.setState({ emailStatus: STATUS.SUBMITTED, emailSuggestion: null })
+    }
   }
 
   render() {
     const { emailStatus, emailSuggestion } = this.state
     const isFormValid = emailStatus === STATUS.SUCCESS
-    return (
-      <form id="RegistrationRequestForm" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
-        <EmailControl tabIndex="1" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.handleEmailControlChanged.bind(this)} />
+    const wasSubmitted = emailStatus === STATUS.SUBMITTED
+    return wasSubmitted ?
+      <div>Please check your email to join Ello.</div> :
+      <form id="RegistrationRequestForm" className="AuthenticationForm" onSubmit={::this.handleSubmit} role="form" noValidate="novalidate">
+        <EmailControl ref="emailControl" tabIndex="1" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={::this.handleEmailControlChanged} />
         <FormButton tabIndex="2" disabled={!isFormValid}>Sign up</FormButton>
       </form>
-    )
   }
 }
 
