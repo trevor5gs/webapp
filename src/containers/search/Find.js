@@ -91,7 +91,7 @@ class Find extends Component {
       <section className="Search Panel">
         <Banderole userlist={ SIGNED_OUT_PROMOTIONS } />
         <div className="SearchBar">
-          <SearchControl text={terms} controlWasChanged={this.handleControlChange.bind(this)} />
+          <SearchControl text={terms} controlWasChanged={::this.handleControlChange} />
           <button className={classNames('SearchFilter', { active: type === 'posts' })} onClick={() => { this.handleControlChange({ type: 'posts' }) }} >
             Posts
           </button>

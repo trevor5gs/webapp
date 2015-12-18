@@ -88,7 +88,7 @@ class Search extends Component {
     return (
       <section className="Search Panel">
         <div className="SearchBar">
-          <SearchControl text={terms} controlWasChanged={this.handleControlChange.bind(this)} />
+          <SearchControl text={terms} controlWasChanged={::this.handleControlChange} />
           <button className={classNames('SearchFilter', { active: type === 'posts' })} onClick={() => { this.handleControlChange({ type: 'posts' }) }} >
             Posts
           </button>

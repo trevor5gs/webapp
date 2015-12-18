@@ -202,8 +202,6 @@ export class StreamComponent extends Component {
       }
       result = json.pages[resultPath]
     }
-    // set the mode
-
     if (stream.error) {
       return this.renderError()
     }
