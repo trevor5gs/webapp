@@ -102,7 +102,8 @@ export const requester = store => next => action => {
         resolve({ token: { access_token: state.authentication.accessToken } })
       })
     }
-    return fetch(`${document.location.protocol}//${document.location.host}/token`)
+    const tokenPath = (typeof window === 'undefined') ? `http://localhost:${ENV.PORT}/token` : `${document.location.protocol}//${document.location.host}/token`
+    return fetch(tokenPath)
       .then((response) => {
         return response.ok ? response.json() : response
       })
