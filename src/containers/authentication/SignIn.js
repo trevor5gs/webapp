@@ -1,13 +1,19 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import random from 'lodash.random'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotion_types'
+import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
 import NewSessionForm from '../../components/forms/NewSessionForm'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class SignIn extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  }
+
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -21,6 +27,11 @@ class SignIn extends Component {
     this.setState({ featuredUser: userlist[index] })
   }
 
+  creditsTrackingEvent() {
+    const { dispatch } = this.props
+    dispatch(trackEvent('authentication-credits-clicked'))
+  }
+
   render() {
     const { featuredUser } = this.state
     return (
@@ -31,12 +42,12 @@ class SignIn extends Component {
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>
         <AppleStoreLink/>
-        <Credits user={featuredUser} />
+        <Credits clickAction={::this.creditsTrackingEvent} user={featuredUser} />
         <Cover coverImage={featuredUser.coverImage} modifiers="asFullScreen withOverlay" />
       </section>
     )
   }
 }
 
-export default SignIn
+export default connect()(SignIn)
 
