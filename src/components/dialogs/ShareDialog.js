@@ -34,6 +34,7 @@ class ShareDialog extends Component {
   static propTypes = {
     author: PropTypes.object.isRequired,
     post: PropTypes.object.isRequired,
+    trackEvent: PropTypes.func,
   }
 
   constructor(props, context) {
@@ -97,12 +98,16 @@ class ShareDialog extends Component {
 
   popShareWindow(type) {
     const url = this.getUrl(type)
+    const { trackEvent } = this.props
     if (url.indexOf('mailto') === 0) {
       document.location.href = url
     } else {
       const width = SHARE_DIMENSIONS[type].width || 700
       const height = SHARE_DIMENSIONS[type].height || 450
       window.open(url, 'sharewindow', `width=${width}, height=${height}, left=${window.innerWidth / 2 - width / 2}, top=${window.innerHeight / 2 - height / 2}, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0`)
+    }
+    if (trackEvent) {
+      trackEvent(`share-to-${type}`)
     }
   }
 

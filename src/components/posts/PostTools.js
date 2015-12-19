@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { pushState } from 'redux-router'
@@ -166,7 +167,12 @@ class PostTools extends Component {
 
   sharePost() {
     const { author, dispatch, post } = this.props
-    dispatch(openModal(<ShareDialog author={author} post={post}/>))
+    dispatch(openModal(<ShareDialog
+                       author={author}
+                       post={post}
+                       trackEvent={bindActionCreators(trackEvent, dispatch)}
+                       />))
+    return dispatch(trackEvent('open-share-dialog'))
   }
 
   signUp() {
