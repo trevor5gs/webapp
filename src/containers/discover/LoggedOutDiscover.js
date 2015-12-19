@@ -1,15 +1,23 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { SIGNED_OUT_PROMOTIONS } from '../../constants/promotion_types'
 import { loadDiscoverUsers } from '../../actions/discover'
+import { trackEvent } from '../../actions/tracking'
 import Banderole from '../../components/assets/Banderole'
 import FilterBar from '../../components/filters/FilterBar'
 import StreamComponent from '../../components/streams/StreamComponent'
 
 class LoggedOutDiscover extends Component {
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }),
+  }
+
+  creditsTrackingEvent() {
+    const { dispatch } = this.props
+    dispatch(trackEvent(`banderole-credits-clicked`))
   }
 
   render() {
@@ -21,7 +29,10 @@ class LoggedOutDiscover extends Component {
     const type = pathArr[1].length ? pathArr[1] : 'recommended'
     return (
       <section className="LoggedOutDiscover Panel" key={`discover_${type}`}>
-        <Banderole userlist={ SIGNED_OUT_PROMOTIONS } />
+        <Banderole
+          creditsClickAction={ ::this.creditsTrackingEvent }
+          userlist={ SIGNED_OUT_PROMOTIONS }
+        />
         <FilterBar type="text" links={links} />
         <StreamComponent ref="streamComponent" action={loadDiscoverUsers(type)} />
       </section>
@@ -35,5 +46,5 @@ LoggedOutDiscover.preRender = (store, routerState) => {
   return store.dispatch(loadDiscoverUsers(type))
 }
 
-export default LoggedOutDiscover
+export default connect()(LoggedOutDiscover)
 
