@@ -5,6 +5,7 @@ import { pushState } from 'redux-router'
 import classNames from 'classnames'
 import { openModal } from '../../actions/modals'
 import * as PostActions from '../../actions/posts'
+import { trackEvent } from '../../actions/tracking'
 import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import ShareDialog from '../dialogs/ShareDialog'
 import Hint from '../hints/Hint'
@@ -154,7 +155,7 @@ class PostTools extends Component {
   lovePost() {
     const { dispatch, isLoggedIn, post } = this.props
     if (!isLoggedIn) {
-      return dispatch(openModal(<RegistrationRequestDialog />))
+      return this.signUp()
     }
     if (post.loved) {
       dispatch(PostActions.unlovePost(post))
@@ -171,6 +172,7 @@ class PostTools extends Component {
   signUp() {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />))
+    return dispatch(trackEvent('open-registration-request-post-tools'))
   }
 
   render() {
