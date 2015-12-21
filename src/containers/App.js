@@ -25,6 +25,12 @@ class App extends Component {
   }
 
   constructor(props, context) {
+    const loggedOutPaths = {
+      find: /^\/find/,
+      root: /^\/explore/,
+      recent: /^\/explore\/recent/,
+      trending: /^\/explore\/trending/,
+    }
     super(props, context)
     this.lastLocation = ''
     // need to clear out the authentication for the case of
@@ -33,7 +39,14 @@ class App extends Component {
     // authentication here and would show you the wrong navbar
     // and the links would be wrong for user/post detail pages
     const { dispatch, location } = this.props
-    if (location.pathname === '/') {
+    let isLoggedOutPath = false
+    for (const re in loggedOutPaths) {
+      if (location.pathname.match(loggedOutPaths[re])) {
+        isLoggedOutPath = true
+        break
+      }
+    }
+    if (isLoggedOutPath) {
       dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
     }
   }
