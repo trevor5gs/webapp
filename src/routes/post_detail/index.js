@@ -1,10 +1,3 @@
-let store = null
-if (typeof window === 'undefined') {
-  store = require('../../store_server')
-} else {
-  store = require('../../store')
-}
-
 export default {
   path: ':username/post/:token',
   getComponents(location, cb) {
@@ -13,10 +6,7 @@ export default {
     // })
   },
   onEnter(nextState, replaceState, callback) {
-    const state = store ? store.getState() : null
-    if (state && state.authentication && state.authentication.isLoggedIn) {
-      callback()
-    } else {
+    if (callback) {
       document.location.href = ENV.REDIRECT_URI + nextState.location.pathname
     }
   },
