@@ -202,7 +202,7 @@ class Navbar extends Component {
         <NavbarLabel />
         { hasLoadMoreButton ? <NavbarMorePostsButton callback={::this.loadMorePostsWasClicked} /> : null }
         <div className="NavbarLinks">
-          <NavbarLink to="/" label="Discover" modifiers="LabelOnly" pathname={pathname} icon={ <SparklesIcon/> } />
+          <NavbarLink to="/explore" label="Discover" modifiers="LabelOnly" pathname={pathname} icon={ <SparklesIcon/> } />
           <NavbarLink to="/find" label="Search" modifiers="IconOnly" pathname={pathname} onClick={::this.searchWasClicked} icon={ <SearchIcon/> } />
           <NavbarLink to="/enter" label="Log in" modifiers="LabelOnly" pathname={pathname} onClick={::this.logInWasClicked}/>
           <NavbarLink to="/signup" label="Sign up" modifiers="LabelOnly" pathname={pathname} onClick={::this.launchSignUpModal} />

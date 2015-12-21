@@ -13,6 +13,9 @@ class LoggedOutDiscover extends Component {
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }),
+    params: PropTypes.shape({
+      type: PropTypes.string,
+    }),
   }
 
   creditsTrackingEvent() {
@@ -22,11 +25,10 @@ class LoggedOutDiscover extends Component {
 
   render() {
     const links = []
-    links.push({ to: '/', children: 'Recommended' })
-    links.push({ to: '/trending', children: 'Trending' })
-    links.push({ to: '/recent', children: 'Recent' })
-    const pathArr = this.props.location.pathname.split('/')
-    const type = pathArr[1].length ? pathArr[1] : 'recommended'
+    links.push({ to: '/explore', children: 'Recommended' })
+    links.push({ to: '/explore/trending', children: 'Trending' })
+    links.push({ to: '/explore/recent', children: 'Recent' })
+    const type = this.props.params.type || 'recommended'
     return (
       <section className="LoggedOutDiscover Panel" key={`discover_${type}`}>
         <Banderole
@@ -41,9 +43,7 @@ class LoggedOutDiscover extends Component {
 }
 
 LoggedOutDiscover.preRender = (store, routerState) => {
-  const pathArr = routerState.location.pathname.split('/')
-  const type = pathArr[1].length ? pathArr[1] : 'recommended'
-  return store.dispatch(loadDiscoverUsers(type))
+  return store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
 }
 
 export default connect()(LoggedOutDiscover)
