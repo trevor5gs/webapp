@@ -57,7 +57,7 @@ function renderFromServer(req, res) {
       )
       const componentHTML = renderToString(InitialComponent)
       const state = store.getState()
-      state.authentication.isLoggedIn = false
+      state.authentication = { isLoggedIn: false }
       const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
       indexStr = indexStr.replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
       res.send(indexStr)
