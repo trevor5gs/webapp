@@ -23,19 +23,18 @@ export default [
     },
   },
   {
-    path: '/recent',
+    path: 'explore(/:type)',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
       cb(null, require('../../containers/discover/LoggedOutDiscover'))
       // })
     },
-  },
-  {
-    path: '/trending',
-    getComponents(location, cb) {
-      // require.ensure([], (require) => {
-      cb(null, require('../../containers/discover/LoggedOutDiscover'))
-      // })
+    onEnter(nextState, replaceState) {
+      const type = nextState.params.type
+      // redirect back to /explore if type is unrecognized
+      if (type && TYPES.indexOf(type) === -1) {
+        replaceState(nextState, '/explore')
+      }
     },
   },
 ]

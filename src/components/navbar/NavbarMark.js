@@ -19,7 +19,7 @@ class NavbarMark extends Component {
 
   render() {
     return (
-      <Link className="NavbarMark" to="/">
+      <Link className="NavbarMark" to="/explore">
         { this.renderMark() }
       </Link>
     )
