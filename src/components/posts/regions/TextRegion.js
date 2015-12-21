@@ -12,6 +12,13 @@ class TextRegion extends Component {
 
   handleGridRegionClick(e) {
     const { MoreButton } = this.refs
+    if (e.target.classList.contains('hashtag-link')) {
+      e.preventDefault()
+      const href = e.target.getAttribute('data-href').replace(/^\/search/, '/find')
+      const link = document.createElement('a')
+      link.href = href
+      return link.click()
+    }
     if (e.target.nodeName !== 'A') {
       e.preventDefault()
       return ReactDOM.findDOMNode(MoreButton).click()
