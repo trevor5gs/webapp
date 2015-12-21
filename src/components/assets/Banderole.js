@@ -14,6 +14,7 @@ const STATUS = {
 
 class Banderole extends Component {
   static propTypes = {
+    creditsClickAction: PropTypes.func,
     userlist: PropTypes.array.isRequired,
   }
 
@@ -87,6 +88,7 @@ class Banderole extends Component {
 
   render() {
     const { featuredUser, status } = this.state
+    const { creditsClickAction } = this.props
     if (!featuredUser) { return null }
     const { caption } = featuredUser
     const src = this.getCoverSource()
@@ -100,7 +102,7 @@ class Banderole extends Component {
           { caption }
           <Link to="https://ello.co/wtf/about/what-is-ello/" target="_blank">Learn More</Link>
         </div>
-        <Credits user={featuredUser} />
+        <Credits clickAction={creditsClickAction} user={featuredUser} />
       </div>
     )
   }

@@ -6,6 +6,7 @@ import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { SIGNED_OUT_PROMOTIONS } from '../../constants/promotion_types'
 import * as SearchActions from '../../actions/search'
+import { trackEvent } from '../../actions/tracking'
 import { updateQueryParams } from '../../components/base/uri_helper'
 import Banderole from '../../components/assets/Banderole'
 import SearchControl from '../../components/forms/SearchControl'
@@ -57,13 +58,16 @@ class Find extends Component {
 
   search() {
     const { dispatch } = this.props
+    const { type } = this.state
     dispatch({
       type: ACTION_TYPES.SEARCH.SAVE,
       payload: this.state,
     })
     const action = this.getAction()
     if (action) {
+      const label = type === 'users' ? 'people' : 'posts'
       this.refs.streamComponent.refs.wrappedInstance.setAction(action)
+      dispatch(trackEvent(`search-logged-out-${label}`))
     }
   }
 
@@ -85,11 +89,19 @@ class Find extends Component {
     this.updateLocation(vo)
   }
 
+  creditsTrackingEvent() {
+    const { dispatch } = this.props
+    dispatch(trackEvent(`banderole-credits-clicked`))
+  }
+
   render() {
     const { terms, type } = this.state
     return (
       <section className="Search Panel">
-        <Banderole userlist={ SIGNED_OUT_PROMOTIONS } />
+        <Banderole
+          creditsClickAction={ ::this.creditsTrackingEvent }
+          userlist={ SIGNED_OUT_PROMOTIONS }
+        />
         <div className="SearchBar">
           <SearchControl text={terms} controlWasChanged={::this.handleControlChange} />
           <button className={classNames('SearchFilter', { active: type === 'posts' })} onClick={() => { this.handleControlChange({ type: 'posts' }) }} >

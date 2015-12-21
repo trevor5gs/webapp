@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { pushState } from 'redux-router'
 import classNames from 'classnames'
 import { openModal } from '../../actions/modals'
 import * as PostActions from '../../actions/posts'
+import { trackEvent } from '../../actions/tracking'
 import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import ShareDialog from '../dialogs/ShareDialog'
 import Hint from '../hints/Hint'
@@ -154,7 +156,7 @@ class PostTools extends Component {
   lovePost() {
     const { dispatch, isLoggedIn, post } = this.props
     if (!isLoggedIn) {
-      return dispatch(openModal(<RegistrationRequestDialog />))
+      return this.signUp()
     }
     if (post.loved) {
       dispatch(PostActions.unlovePost(post))
@@ -165,12 +167,18 @@ class PostTools extends Component {
 
   sharePost() {
     const { author, dispatch, post } = this.props
-    dispatch(openModal(<ShareDialog author={author} post={post}/>))
+    dispatch(openModal(<ShareDialog
+                       author={author}
+                       post={post}
+                       trackEvent={bindActionCreators(trackEvent, dispatch)}
+                       />))
+    return dispatch(trackEvent('open-share-dialog'))
   }
 
   signUp() {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />))
+    return dispatch(trackEvent('open-registration-request-post-tools'))
   }
 
   render() {

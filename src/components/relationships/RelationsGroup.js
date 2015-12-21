@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { openModal } from '../../actions/modals'
 import { updateRelationship } from '../../actions/relationships'
+import { trackEvent } from '../../actions/tracking'
 import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import RelationshipButton from '../relationships/RelationshipButton'
 import StarshipButton from '../relationships/StarshipButton'
@@ -32,7 +33,8 @@ class RelationsGroup extends Component {
 
   handleLaunchSignUpModal() {
     const { dispatch } = this.props
-    return dispatch(openModal(<RegistrationRequestDialog />))
+    dispatch(openModal(<RegistrationRequestDialog />))
+    return dispatch(trackEvent('open-registration-request-follow-button'))
   }
 
   render() {

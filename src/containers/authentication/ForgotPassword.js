@@ -1,12 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import random from 'lodash.random'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotion_types'
+import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
 import ForgotPasswordForm from '../../components/forms/ForgotPasswordForm'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class ForgotPassword extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  }
+
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -20,6 +26,11 @@ class ForgotPassword extends Component {
     this.setState({ featuredUser: userlist[index] })
   }
 
+  creditsTrackingEvent() {
+    const { dispatch } = this.props
+    dispatch(trackEvent('authentication-credits-clicked'))
+  }
+
   render() {
     const { featuredUser } = this.state
     return (
@@ -29,12 +40,12 @@ class ForgotPassword extends Component {
           <ForgotPasswordForm/>
         </div>
         <AppleStoreLink/>
-        <Credits user={featuredUser} />
+        <Credits clickAction={::this.creditsTrackingEvent} user={featuredUser} />
         <Cover coverImage={featuredUser.coverImage} modifiers="asFullScreen" />
       </section>
     )
   }
 }
 
-export default ForgotPassword
+export default connect()(ForgotPassword)
 
