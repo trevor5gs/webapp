@@ -1,9 +1,6 @@
 .TextRegion
   max-width: rem(780)
 
-.TextRegion.asHotRegion
-  cursor: pointer
-
 .ImageRegion
   display: block
 
@@ -20,6 +17,9 @@
 .EmbedRegion + .TextRegion
   margin-top: rem(20)
 
+.asHotRegion
+  cursor: pointer
+
 // Always get's rid of the first and last child's margin and protect against
 // potentially nested elements
 .RegionContent > *:first-of-type,
@@ -35,11 +35,12 @@
   background-color: rgba(black, 0.1)
   color: rgba(black, 0)
 
+// Todo: We should be able to rip this out when we convert your fake `span`
+// elements over to links
 .TextRegion .hashtag-link
   transition: color $speed
   text-decoration: underline
   cursor: pointer
-
 .no-touch .TextRegion .hashtag-link:hover
   color: #aaa
 

@@ -122,22 +122,24 @@ export function parsePost(post, json, currentUser, isGridLayout = true) {
   models = json
   const author = json[MAPPING_TYPES.USERS][post.authorId]
   const cells = []
+  const postDetailPath = getPostDetailPath(author, post)
+
   if (post.repostContent && post.repostContent.length) {
     cells.push(repostHeader(post, getLinkObject(post, 'repostAuthor', json), getLinkObject(post, 'repostedSource', json), author))
     // this is weird, but the post summary is
     // actually the repost summary on reposts
     if (isGridLayout) {
-      cells.push(body(post.summary, post.id, isGridLayout))
+      cells.push(body(post.summary, post.id, isGridLayout, postDetailPath))
     } else {
-      cells.push(body(post.repostContent, `repost_${post.id}`, isGridLayout))
+      cells.push(body(post.repostContent, `repost_${post.id}`, isGridLayout, postDetailPath))
       if (post.content && post.content.length) {
-        cells.push(body(post.content, post.id, isGridLayout))
+        cells.push(body(post.content, post.id, isGridLayout, postDetailPath))
       }
     }
   } else {
     cells.push(header(post, author))
     const content = isGridLayout ? post.summary : post.content
-    cells.push(body(content, post.id, isGridLayout, getPostDetailPath(author, post)))
+    cells.push(body(content, post.id, isGridLayout, postDetailPath))
   }
   cells.push(footer(post, author, currentUser))
   models = {}
