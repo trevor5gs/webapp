@@ -37,12 +37,23 @@ export function doesAllowTracking() {
 class Analytics extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     profile: PropTypes.object,
   }
 
   constructor(props, context) {
     super(props, context)
     this.hasLoadedTracking = false
+  }
+
+  componentDidMount() {
+    const { isLoggedIn } = this.props
+    if (this.hasLoadedTracking) {
+      return
+    }
+    if (!isLoggedIn && doesAllowTracking()) {
+      return addSegment()
+    }
   }
 
   componentDidUpdate() {
@@ -66,7 +77,7 @@ class Analytics extends Component {
   }
 
   profileDidFail() {
-    if (doesAllowTracking()) {
+    if (doesAllowTracking() && !this.hasLoadedTracking) {
       addSegment()
     }
   }
