@@ -79,8 +79,10 @@ class Find extends Component {
     if (typeof vo.type === 'string' && vo.type === 'posts') {
       vo.type = null
     }
-    const uri = document.location.pathname + updateQueryParams(vo)
-    dispatch(replaceState(window.history.state, uri))
+    if (typeof document !== 'undefined') {
+      const uri = document.location.pathname + updateQueryParams(vo)
+      dispatch(replaceState(window.history.state, uri))
+    }
   }
 
   handleControlChange(vo) {
