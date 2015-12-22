@@ -89,16 +89,18 @@ class ImageRegion extends Component {
   }
 
   getImageSourceSet() {
-    const { isGridLayout } = this.props
+    const { assets, isGridLayout, links } = this.props
     const images = []
-    if (isGridLayout) {
-      images.push(this.attachment.mdpi.url + ' 375w')
-      images.push(this.attachment.hdpi.url + ' 1920w')
-    } else {
-      images.push(this.attachment.mdpi.url + ' 180w')
-      images.push(this.attachment.hdpi.url + ' 750w')
-      images.push(this.attachment.xhdpi.url + ' 1500w')
-      images.push(this.attachment.optimized.url + ' 1920w')
+    if (links && links.assets && assets[links.assets] && assets[links.assets].attachment) {
+      if (isGridLayout) {
+        images.push(this.attachment.mdpi.url + ' 375w')
+        images.push(this.attachment.hdpi.url + ' 1920w')
+      } else {
+        images.push(this.attachment.mdpi.url + ' 180w')
+        images.push(this.attachment.hdpi.url + ' 750w')
+        images.push(this.attachment.xhdpi.url + ' 1500w')
+        images.push(this.attachment.optimized.url + ' 1920w')
+      }
     }
     return images.join(', ')
   }
