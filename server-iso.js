@@ -70,7 +70,7 @@ function renderFromServer(req, res) {
 }
 
 const loggedOutPaths = {
-  find: /^\/find/,
+  find: /^\/find$/,
   root: /^\/explore/,
   recent: /^\/explore\/recent/,
   trending: /^\/explore\/trending/,
