@@ -77,7 +77,7 @@ class Analytics extends Component {
   }
 
   profileDidFail() {
-    if (doesAllowTracking()) {
+    if (doesAllowTracking() && !this.hasLoadedTracking) {
       addSegment()
     }
   }
