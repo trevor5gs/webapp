@@ -84,7 +84,7 @@ class App extends Component {
         <Navbar/>
         <Modal/>
         <DevTools/>
-        <Analytics/>
+        <Analytics isLoggedIn={isLoggedIn}/>
       </section>
     )
   }
