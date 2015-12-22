@@ -228,7 +228,7 @@ export const AUTHENTICATION_PROMOTIONS = [
 export const SIGNED_OUT_PROMOTIONS = [
   {
     username: 'machineast',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Empower creativity. Fuel your imagination.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2618373/ello-regular-073e099f.png' },
     },
@@ -240,7 +240,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'emesekiss',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Empower creativity. Fuel your imagination.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2165515/ello-regular-7caabb3c.png' },
     },
@@ -252,7 +252,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'rainbowunicornstudio',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Empower creativity. Fuel your imagination.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2705849/ello-regular-2a6f3a2c.png' },
     },
@@ -264,7 +264,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'doweljones',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Empower creativity. Fuel your imagination.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2389373/ello-regular-a6f0a462.png' },
     },
@@ -276,7 +276,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'chrisburkard',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Join a community of creators, thinkers, and dreamers sharing inspiration.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/938634/ello-regular-f15c11f9.png' },
     },
@@ -288,7 +288,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'andyleeuk',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Join a community of creators, thinkers, and dreamers sharing inspiration.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/449718/ello-regular-4ac7d5fd.png' },
     },
@@ -300,7 +300,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'build',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Join a community of creators, thinkers, and dreamers sharing inspiration.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/5087/ello-regular-9faf1585.png' },
     },
@@ -312,7 +312,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'theswede',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Join a community of creators, thinkers, and dreamers sharing inspiration.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2096715/ello-regular-f50f38c7.png' },
     },
@@ -324,7 +324,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'noises',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Join a worldwide community dedicated to positivity, creativity, and perpetual inspiration.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/42321/ello-regular-f076ab82.png' },
     },
@@ -336,7 +336,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'topodesigns',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Join a worldwide community dedicated to positivity, creativity, and perpetual inspiration.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/13304/ello-regular-64f26a2e.png' },
     },
@@ -348,7 +348,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'alpinemodern',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Join a worldwide community dedicated to positivity, creativity, and perpetual inspiration.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/39/ello-regular-dd01e483.png' },
     },
@@ -360,7 +360,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'staffansundstrom',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Join a worldwide community dedicated to positivity, creativity, and perpetual inspiration.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2281011/ello-regular-5b10c9d5.png' },
     },
@@ -372,7 +372,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'madebykaran',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Create & share inspiration. Explore and post differently.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/927037/ello-regular-fde2514a.png' },
     },
@@ -384,7 +384,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'daniel_triendl',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Create & share inspiration. Explore and post differently.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/993721/ello-regular-6cac5f11.png' },
     },
@@ -396,7 +396,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'thomaswoodson',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Create & share inspiration. Explore and post differently.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/76/ello-regular-aa008586.png' },
     },
@@ -408,7 +408,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'rvcmedia',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Create & share inspiration. Explore and post differently.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2724572/ello-regular-43d4de88.png' },
     },
@@ -420,7 +420,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'velvetspectrum',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Explore and post differently than you do anywhere else.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/930194/ello-regular-0c164258.png' },
     },
@@ -432,7 +432,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'sawdust',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Explore and post differently than you do anywhere else.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/10863/ello-regular-db8ecded.png' },
     },
@@ -444,7 +444,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'tsaccenti',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Explore and post differently than you do anywhere else.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/173800/ello-regular-5ad9ea30.png' },
     },
@@ -456,7 +456,7 @@ export const SIGNED_OUT_PROMOTIONS = [
   },
   {
     username: 'king_rah',
-    caption: <h1>Create and share inspiration. Explore and post differently than you do anywhere else.</h1>,
+    caption: <h1>Explore and post differently than you do anywhere else.</h1>,
     avatar: {
       regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/2275486/ello-regular-b8e3f2b9.png' },
     },
