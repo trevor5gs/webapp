@@ -173,7 +173,7 @@ class Navbar extends Component {
   launchSignUpModal(e) {
     const { dispatch } = this.props
     e.preventDefault()
-    return dispatch(openModal(<RegistrationRequestDialog />))
+    return dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
   }
 
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {

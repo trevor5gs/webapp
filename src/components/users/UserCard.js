@@ -29,7 +29,7 @@ class UserCard extends Component {
 
   handleLaunchSignUpModal() {
     const { dispatch } = this.props
-    return dispatch(openModal(<RegistrationRequestDialog />))
+    return dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
   }
 
   render() {

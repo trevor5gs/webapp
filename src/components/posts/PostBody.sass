@@ -2,7 +2,11 @@
   max-width: rem(780)
 
 .ImageRegion
+  display: inline-block
+.ImageRegion:after
+  content: ''
   display: block
+
 
 .ImageRegion + .ImageRegion,
 .ImageRegion + .EmbedRegion,
@@ -30,10 +34,20 @@
 .RegionContent:last-child > *:last-of-type
   margin-bottom: 0
 
-.ImageAttachment
-  display: block
+.ImageRegion
   background-color: rgba(black, 0.1)
   color: rgba(black, 0)
+
+.ImageRegion.isFailing
+  background-color: $danger
+
+.ImageAttachment
+  transition: opacity $speed2
+  display: block
+
+.isPending > .ImageAttachment,
+.isRequesting > .ImageAttachment
+  opacity: 0
 
 // Todo: We should be able to rip this out when we convert your fake `span`
 // elements over to links
