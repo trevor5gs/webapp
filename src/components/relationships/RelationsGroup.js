@@ -33,7 +33,7 @@ class RelationsGroup extends Component {
 
   handleLaunchSignUpModal() {
     const { dispatch } = this.props
-    dispatch(openModal(<RegistrationRequestDialog />))
+    dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
     return dispatch(trackEvent('open-registration-request-follow-button'))
   }
 

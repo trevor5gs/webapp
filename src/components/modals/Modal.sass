@@ -1,8 +1,7 @@
 body.modalIsActive
   overflow: hidden
 
-body.modalIsActive .Main,
-body.modalIsActive .Navbar
+body.modalIsActive .Main
   pointer-events: none
 
 .Modal
@@ -28,6 +27,9 @@ body.modalIsActive .Navbar
 
 .Modal.isActive.asDangerZone
   background-color: rgba($danger, 0.95)
+
+.Modal.asDecapitated
+  z-index: $z-navbar - 5
 
 @media(min-width: #{$break-2})
   .Modal
