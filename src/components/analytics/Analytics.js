@@ -64,7 +64,6 @@ class Analytics extends Component {
     const { profile } = this.props
     if (profile.type === PROFILE.LOAD_SUCCESS) {
       this.profileDidLoad()
-      this.hasLoadedTracking = true
     } else if (profile.type === PROFILE.LOAD_FAILURE) {
       this.profileDidFail()
     }
@@ -73,12 +72,14 @@ class Analytics extends Component {
   profileDidLoad() {
     const { gaUniqueId, createdAt, allowsAnalytics } = this.props.profile.payload
     if (allowsAnalytics) {
+      this.hasLoadedTracking = true
       addSegment(gaUniqueId, createdAt)
     }
   }
 
   profileDidFail() {
     if (doesAllowTracking() && !this.hasLoadedTracking) {
+      this.hasLoadedTracking = true
       addSegment()
     }
   }
