@@ -60,6 +60,7 @@
     "scroll-behavior": "^0.3.0",
     "simple-oauth2": "^0.3.0",
     "style-loader": "^0.13.0",
+    "throng": "^1.0.1",
     "webpack": "^1.12.9"
   },
   "devDependencies": {

@@ -3,6 +3,7 @@ import 'babel-core/polyfill'
 import 'isomorphic-fetch'
 
 import express from 'express'
+import throng from 'throng'
 import path from 'path'
 import fs from 'fs'
 import React from 'react'
@@ -93,11 +94,18 @@ app.use((req, res) => {
 })
 
 const port = process.env.PORT || 6660
-app.listen(port, (err) => {
-  if (err) {
-    console.log(err)
-    return
-  }
-  console.log('Listening at http://localhost:' + port)
-})
+const WORKERS = process.env.WEB_CONCURRENCY || 1;
+const start = () => {
+  app.listen(port, (err) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+    console.log('Listening at http://localhost:' + port)
+  })
+}
 
+throng(start, {
+  workers: WORKERS,
+  lifetime: Infinity
+});
