@@ -20,7 +20,6 @@ export function addSegment(uid, createdAt) {
       if (uid) {
         analytics.identify(uid, { createdAt: createdAt, ui_version: ENV.UI_VERSION });
       }
-      analytics.page()
       }}();
   }
 }
