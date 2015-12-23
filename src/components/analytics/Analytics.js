@@ -52,6 +52,7 @@ class Analytics extends Component {
       return
     }
     if (!isLoggedIn && doesAllowTracking()) {
+      this.hasLoadedTracking = true
       return addSegment()
     }
   }
