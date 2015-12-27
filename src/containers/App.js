@@ -7,6 +7,7 @@ import { trackPageView } from '../actions/tracking'
 import * as ACTION_TYPES from '../constants/action_types'
 import Analytics from '../components/analytics/Analytics'
 import DevTools from '../components/devtools/DevTools'
+import Footer from '../components/footer/Footer'
 import Modal from '../components/modals/Modal'
 import Navbar from '../components/navbar/Navbar'
 
@@ -82,6 +83,7 @@ class App extends Component {
           {children}
         </main>
         <Navbar/>
+        <Footer/>
         <Modal/>
         <DevTools/>
         <Analytics isLoggedIn={isLoggedIn}/>
