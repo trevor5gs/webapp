@@ -62,7 +62,7 @@ export function postsAsList(posts, json, currentUser) {
   )
 }
 
-export function userDetail(users, json, currentUser) {
+export function userDetail(users, json, currentUser, gridColumnCount) {
   const user = users.data[0]
   let posts = getLinkArray(user, 'posts', json) || []
   posts = posts.concat(users.nestedData)
@@ -70,9 +70,20 @@ export function userDetail(users, json, currentUser) {
     <div className="UserDetails">
       <Cover coverImage={user.coverImage} />
       <UserList ref={'UserList_' + user.id} user={user} key={user.id} />
-      {postsAsList({ data: posts, nestedData: [] }, json, currentUser)}
+      {gridColumnCount ?
+        postsAsGrid({ data: posts, nestedData: [] }, json, currentUser, gridColumnCount) :
+        postsAsList({ data: posts, nestedData: [] }, json, currentUser)
+      }
     </div>
   )
+}
+
+export function userDetailAsGrid(users, json, currentUser, gridColumnCount) {
+  return userDetail(users, json, currentUser, gridColumnCount)
+}
+
+export function userDetailAsList(users, json, currentUser) {
+  return userDetail(users, json, currentUser)
 }
 
 export function postDetail(posts, json, currentUser) {
