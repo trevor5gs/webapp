@@ -5,6 +5,7 @@ import 'isomorphic-fetch'
 import express from 'express'
 import morgan from 'morgan'
 import throng from 'throng'
+import librato from 'librato-node'
 import path from 'path'
 import fs from 'fs'
 import React from 'react'
@@ -25,6 +26,12 @@ const app = express()
 
 // Log requests with Morgan
 app.use(morgan('combined'))
+
+// Send stats to Librato
+librato.configure({ email: process.env.LIBRATO_EMAIL,
+                    token: process.env.LIBRATO_TOKEN })
+librato.start()
+app.use(librato.middleware())
 
 let indexStr = ''
 // grab out the index.html string first thing
