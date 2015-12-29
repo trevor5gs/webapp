@@ -3,6 +3,7 @@ import 'babel-core/polyfill'
 import 'isomorphic-fetch'
 
 import express from 'express'
+import morgan from 'morgan'
 import throng from 'throng'
 import path from 'path'
 import fs from 'fs'
@@ -21,6 +22,10 @@ global.ENV = require('./env')
 updateTimeAgoStrings({ about: '' })
 
 const app = express()
+
+// Log requests with Morgan
+app.use(morgan('combined'))
+
 let indexStr = ''
 // grab out the index.html string first thing
 fs.readFile(path.join(__dirname, './public/index.html'), 'utf-8', (err, data) => {
@@ -29,6 +34,7 @@ fs.readFile(path.join(__dirname, './public/index.html'), 'utf-8', (err, data) =>
   }
 })
 
+// Wire up OAuth route
 addOauthRoute(app)
 
 // Assets
