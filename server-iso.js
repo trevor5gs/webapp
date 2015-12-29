@@ -3,7 +3,9 @@ import 'babel-core/polyfill'
 import 'isomorphic-fetch'
 
 import express from 'express'
+import morgan from 'morgan'
 import throng from 'throng'
+import librato from 'librato-node'
 import path from 'path'
 import fs from 'fs'
 import React from 'react'
@@ -21,6 +23,16 @@ global.ENV = require('./env')
 updateTimeAgoStrings({ about: '' })
 
 const app = express()
+
+// Log requests with Morgan
+app.use(morgan('combined'))
+
+// Send stats to Librato
+librato.configure({ email: process.env.LIBRATO_EMAIL,
+                    token: process.env.LIBRATO_TOKEN })
+librato.start()
+app.use(librato.middleware())
+
 let indexStr = ''
 // grab out the index.html string first thing
 fs.readFile(path.join(__dirname, './public/index.html'), 'utf-8', (err, data) => {
@@ -29,6 +41,7 @@ fs.readFile(path.join(__dirname, './public/index.html'), 'utf-8', (err, data) =>
   }
 })
 
+// Wire up OAuth route
 addOauthRoute(app)
 
 // Assets
