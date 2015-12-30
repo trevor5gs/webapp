@@ -4,8 +4,8 @@ import { SIGNED_OUT_PROMOTIONS } from '../../constants/promotion_types'
 import { loadDiscoverUsers } from '../../actions/discover'
 import { trackEvent } from '../../actions/tracking'
 import Banderole from '../../components/assets/Banderole'
-import FilterBar from '../../components/filters/FilterBar'
 import StreamComponent from '../../components/streams/StreamComponent'
+import PageTabs from '../../components/tabs/PageTabs'
 
 class LoggedOutDiscover extends Component {
   static propTypes = {
@@ -24,19 +24,21 @@ class LoggedOutDiscover extends Component {
   }
 
   render() {
-    const links = []
-    links.push({ to: '/explore', children: 'Recommended' })
-    links.push({ to: '/explore/trending', children: 'Trending' })
-    links.push({ to: '/explore/recent', children: 'Recent' })
-    const type = this.props.params.type || 'recommended'
+    const { params, location } = this.props
+    const type = params.type || 'recommended'
+    const tabs = [
+      { to: '/explore', children: 'Recommended' },
+      { to: '/explore/trending', children: 'Trending' },
+      { to: '/explore/recent', children: 'Recent' },
+    ]
     return (
       <section className="LoggedOutDiscover Panel" key={`discover_${type}`}>
         <Banderole
           creditsClickAction={ ::this.creditsTrackingEvent }
           userlist={ SIGNED_OUT_PROMOTIONS }
         />
-        <FilterBar type="text" links={links} />
-        <StreamComponent ref="streamComponent" action={loadDiscoverUsers(type)} />
+        <PageTabs tabs={ tabs } pathname={ location.pathname } />
+        <StreamComponent action={loadDiscoverUsers(type)} ref="streamComponent" />
       </section>
     )
   }
