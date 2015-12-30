@@ -1,15 +1,10 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 
-class Hint extends Component {
-  static propTypes = {
-    children: PropTypes.string,
-  }
+const Hint = ({ children }) =>
+  <span className="Hint">{children}</span>
 
-  render() {
-    return (
-      <span className="Hint">{this.props.children}</span>
-    )
-  }
+Hint.propTypes = {
+  children: PropTypes.string,
 }
 
 export default Hint
