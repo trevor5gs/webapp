@@ -26,7 +26,7 @@ class ForgotPassword extends Component {
   render() {
     const { emailStatus } = this.state
     return (
-      <form id="ForgotPassword" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
+      <form id="ForgotPassword" className="AuthenticationForm" onSubmit={::this.handleSubmit} role="form" noValidate="novalidate">
         <EmailControl ref="emailControl" tabIndex="1" text="" status={emailStatus} />
         <FormButton tabIndex="2">Reset password</FormButton>
       </form>

@@ -38,9 +38,9 @@ class InfoForm extends Component {
     }
     return (
       <form className="InfoForm" onSubmit={this.handleSubmit} role="form" noValidate="novalidate">
-        <NameControl tabIndex="1" text={name} controlWasChanged={this.handleControlChange.bind(this)} />
-        <BioControl tabIndex="2" text={shortBio} controlWasChanged={this.handleControlChange.bind(this)} />
-        <LinksControl tabIndex="3" text={externalLinks} controlWasChanged={this.handleControlChange.bind(this)} />
+        <NameControl tabIndex="1" text={name} controlWasChanged={::this.handleControlChange} />
+        <BioControl tabIndex="2" text={shortBio} controlWasChanged={::this.handleControlChange} />
+        <LinksControl tabIndex="3" text={externalLinks} controlWasChanged={::this.handleControlChange} />
       </form>
     )
   }

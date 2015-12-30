@@ -111,7 +111,7 @@ class UsernameControl extends Component {
         <div className="FormControlSuggestionList">
           <p>Here are some available usernames &mdash;</p>
           {suggestions.map((suggestion, i) => {
-            return <button title={suggestion} onClick={this.handleUsernameSuggestionClick.bind(this)} key={'suggestion_' + i}>{suggestion}</button>
+            return <button title={suggestion} onClick={::this.handleUsernameSuggestionClick} key={'suggestion_' + i}>{suggestion}</button>
           })}
         </div>
       )
