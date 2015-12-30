@@ -1,0 +1,42 @@
+.TextTab
+  transition: color $speed ease
+  display: inline-block
+  overflow: hidden
+  position: relative
+  height: rem(30)
+  font-size: rem(18)
+  line-height: rem(30)
+  white-space: nowrap
+  color: #aaa
+
+.TextTab:after
+  content: ''
+  transition: width $speed $ease, background-color $speed ease
+  position: absolute
+  bottom: 0
+  left: 0
+  width: 0
+  height: rem(2)
+  background-color: transparent
+
+.TextTab.active,
+.TextTab:active,
+.no-touch .TextTab:hover
+  color: black
+  &:after
+    width: 100%
+    background-color: black
+
+.TextTab + .TextTab
+  margin-left: rem(20)
+
+
+@media(min-width: #{$break-2})
+  .TextTab + .TextTab
+    margin-left: rem(30)
+
+  .TextTab.PageTab
+    height: rem(40)
+    line-height: rem(40)
+    font-size: rem(24)
+

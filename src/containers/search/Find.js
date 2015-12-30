@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { replaceState } from 'redux-router'
-import classNames from 'classnames'
 import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { SIGNED_OUT_PROMOTIONS } from '../../constants/promotion_types'
@@ -11,6 +10,7 @@ import { updateQueryParams } from '../../components/base/uri_helper'
 import Banderole from '../../components/assets/Banderole'
 import SearchControl from '../../components/forms/SearchControl'
 import StreamComponent from '../../components/streams/StreamComponent'
+import SearchTabs from '../../components/tabs/SearchTabs'
 
 class Find extends Component {
   static propTypes = {
@@ -98,6 +98,10 @@ class Find extends Component {
 
   render() {
     const { terms, type } = this.state
+    const tabs = [
+      { type: 'posts', children: 'Posts' },
+      { type: 'users', children: 'People' },
+    ]
     return (
       <section className="Search Panel">
         <Banderole
@@ -105,13 +109,15 @@ class Find extends Component {
           userlist={ SIGNED_OUT_PROMOTIONS }
         />
         <div className="SearchBar">
-          <SearchControl text={terms} controlWasChanged={::this.handleControlChange} />
-          <button className={classNames('SearchFilter', { active: type === 'posts' })} onClick={() => { this.handleControlChange({ type: 'posts' }) }} >
-            Posts
-          </button>
-          <button className={classNames('SearchFilter', { active: type === 'users' })} onClick={() => { this.handleControlChange({ type: 'users' }) }} >
-            People
-          </button>
+          <SearchControl
+            controlWasChanged={ ::this.handleControlChange }
+            text={ terms }
+          />
+          <SearchTabs
+            onTabClick={ ::this.handleControlChange }
+            tabs={ tabs }
+            type={ type }
+          />
         </div>
         <StreamComponent ref="streamComponent" action={this.getAction()} />
       </section>
