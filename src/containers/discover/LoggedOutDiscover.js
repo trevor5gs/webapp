@@ -5,7 +5,7 @@ import { loadDiscoverUsers } from '../../actions/discover'
 import { trackEvent } from '../../actions/tracking'
 import Banderole from '../../components/assets/Banderole'
 import StreamComponent from '../../components/streams/StreamComponent'
-import PageTabs from '../../components/tabs/PageTabs'
+import TabListLinks from '../../components/tabs/TabListLinks'
 
 class LoggedOutDiscover extends Component {
   static propTypes = {
@@ -37,7 +37,12 @@ class LoggedOutDiscover extends Component {
           creditsClickAction={ ::this.creditsTrackingEvent }
           userlist={ SIGNED_OUT_PROMOTIONS }
         />
-        <PageTabs tabs={ tabs } pathname={ location.pathname } />
+        <TabListLinks
+          activePath={location.pathname}
+          className="LabelTabList"
+          tabClasses="LabelTab"
+          tabs={tabs}
+        />
         <StreamComponent action={loadDiscoverUsers(type)} ref="streamComponent" />
       </section>
     )

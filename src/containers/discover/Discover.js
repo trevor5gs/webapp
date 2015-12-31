@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { loadDiscoverUsers, loadCommunities, loadFeaturedUsers } from '../../actions/discover'
 import StreamComponent from '../../components/streams/StreamComponent'
-import PageTabs from '../../components/tabs/PageTabs'
+import TabListLinks from '../../components/tabs/TabListLinks'
 
 class Discover extends Component {
   static propTypes = {
@@ -32,7 +32,12 @@ class Discover extends Component {
     ]
     return (
       <section className="Discover Panel" key={`discover_${type}`}>
-        <PageTabs tabs={ tabs } pathname={ location.pathname } />
+        <TabListLinks
+          activePath={location.pathname}
+          className="LabelTabList"
+          tabClasses="LabelTab"
+          tabs={tabs}
+        />
         <StreamComponent action={action} ref="streamComponent" />
       </section>
     )

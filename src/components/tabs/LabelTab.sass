@@ -1,4 +1,4 @@
-.TextTab
+.LabelTab
   transition: color $speed ease
   display: inline-block
   overflow: hidden
@@ -9,7 +9,7 @@
   white-space: nowrap
   color: #aaa
 
-.TextTab:after
+.LabelTab:after
   content: ''
   transition: width $speed $ease, background-color $speed ease
   position: absolute
@@ -19,23 +19,23 @@
   height: rem(2)
   background-color: transparent
 
-.TextTab.active,
-.TextTab:active,
-.no-touch .TextTab:hover
+.LabelTab.active,
+.LabelTab:active,
+.no-touch .LabelTab:hover
   color: black
   &:after
     width: 100%
     background-color: black
 
-.TextTab + .TextTab
+.LabelTab + .LabelTab
   margin-left: rem(20)
 
 
 @media(min-width: #{$break-2})
-  .TextTab + .TextTab
+  .LabelTab + .LabelTab
     margin-left: rem(30)
 
-  .TextTab.PageTab
+  .LabelTab.TabLink
     height: rem(40)
     line-height: rem(40)
     font-size: rem(24)

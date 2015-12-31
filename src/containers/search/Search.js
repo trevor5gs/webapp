@@ -7,7 +7,7 @@ import * as SearchActions from '../../actions/search'
 import { updateQueryParams } from '../../components/base/uri_helper'
 import SearchControl from '../../components/forms/SearchControl'
 import StreamComponent from '../../components/streams/StreamComponent'
-import SearchTabs from '../../components/tabs/SearchTabs'
+import TabListButtons from '../../components/tabs/TabListButtons'
 
 class Search extends Component {
   static propTypes = {
@@ -96,10 +96,12 @@ class Search extends Component {
             controlWasChanged={ ::this.handleControlChange }
             text={ terms }
           />
-          <SearchTabs
+          <TabListButtons
+            activeType={ type }
+            className="SearchTabList"
             onTabClick={ ::this.handleControlChange }
+            tabClasses="LabelTab"
             tabs={ tabs }
-            type={ type }
           />
         </div>
         <StreamComponent action={ this.getAction() } ref="streamComponent" />
