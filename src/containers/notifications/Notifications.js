@@ -1,32 +1,42 @@
 import React, { Component, PropTypes } from 'react'
 import { loadNotifications } from '../../actions/notifications'
-import FilterBar from '../../components/filters/FilterBar'
 import StreamComponent from '../../components/streams/StreamComponent'
-import { BubbleIcon, HeartIcon, RepostIcon } from '../../components/posts/PostIcons'
+import { BubbleIcon, HeartIcon, RepostIcon, RelationshipIcon } from '../../components/notifications/NotificationIcons'
+import TabListLinks from '../../components/tabs/TabListLinks'
 
 class Notifications extends Component {
   static propTypes = {
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }),
     params: PropTypes.shape({
       category: PropTypes.string,
     }),
   }
 
   render() {
+    const { pathname } = this.props.location
     const { category } = this.props.params
     const params = {}
     if (category) {
       params.category = category
     }
-    const links = []
-    links.push({ to: '/notifications', children: 'All' })
-    links.push({ to: '/notifications/comments', children: <BubbleIcon /> })
-    links.push({ to: '/notifications/loves', children: <HeartIcon /> })
-    links.push({ to: '/notifications/mentions', children: '@' })
-    links.push({ to: '/notifications/reposts', children: <RepostIcon /> })
-    links.push({ to: '/notifications/relationships', children: 'Relationships' })
+    const tabs = [
+      { to: '/notifications', children: 'All' },
+      { to: '/notifications/comments', children: <BubbleIcon /> },
+      { to: '/notifications/loves', children: <HeartIcon /> },
+      { to: '/notifications/mentions', children: '@' },
+      { to: '/notifications/reposts', children: <RepostIcon /> },
+      { to: '/notifications/relationships', children: <RelationshipIcon /> },
+    ]
     return (
       <section className="Notifications Panel">
-        <FilterBar type="icon" links={links} />
+        <TabListLinks
+          activePath={pathname}
+          className="IconTabList"
+          tabClasses="IconTab"
+          tabs={tabs}
+        />
         <StreamComponent action={loadNotifications(params)} />
       </section>
     )
