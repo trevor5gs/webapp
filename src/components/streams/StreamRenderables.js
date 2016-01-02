@@ -10,6 +10,7 @@ import UserAvatar from '../users/UserAvatar'
 import UserAvatars from '../users/UserAvatars'
 import UserCard from '../users/UserCard'
 import UserGrid from '../users/UserGrid'
+import UserInvitee from '../users/UserInvitee'
 import UserList from '../users/UserList'
 
 // TODO: convert these into react components (@see UserVitals)
@@ -39,6 +40,26 @@ export function usersAsList(users) {
     <div className="Users asList">
       {users.data.map((user, i) => {
         return <UserList ref={'userList_' + i} user={user} key={i} />
+      })}
+    </div>
+  )
+}
+
+export function usersAsInviteeList(users) {
+  return (
+    <div className="Users asInviteeList">
+      {users.data.map((user, i) => {
+        return <UserInvitee ref={'userInvitee_' + i} user={user} key={i} />
+      })}
+    </div>
+  )
+}
+
+export function usersAsInviteeGrid(users) {
+  return (
+    <div className="Users asInviteeGrid">
+      {users.data.map((user, i) => {
+        return <UserInvitee className="UserInviteeGrid" ref={'userInvitee_' + i} user={user} key={i} />
       })}
     </div>
   )
