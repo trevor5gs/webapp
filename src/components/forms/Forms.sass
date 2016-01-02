@@ -5,6 +5,19 @@
   position: relative
   max-width: rem(400)
 
+.InvitationForm
+  max-width: rem(440)
+
+
+@media(min-width: #{$break-2})
+  .InvitationForm .FormControlFeedback
+    left: rem(450)
+    width: rem(150)
+
+@media(min-width: #{$break-3})
+  .InvitationForm .FormControlFeedback
+    width: rem(250)
+
 .InfoForm .NameControl
   +sans-bold-family
   font-size: 1rem
