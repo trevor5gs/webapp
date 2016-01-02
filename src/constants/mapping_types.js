@@ -13,4 +13,5 @@ export const NOTIFICATIONS = 'notifications' /* this is only used internally */
 export const POSTS = 'posts'
 export const RELATIONSHIPS = 'relationships'
 export const USERS = 'users'
+export const INVITATIONS = 'invitations'
 
