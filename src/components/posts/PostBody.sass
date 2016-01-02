@@ -52,8 +52,9 @@
 // Todo: We should be able to rip this out when we convert your fake `span`
 // elements over to links
 .TextRegion .hashtag-link
-  transition: color $speed
-  text-decoration: underline
+  transition: color $speed ease
+  display: inline-block
+  border-bottom: 1px solid
   cursor: pointer
 .no-touch .TextRegion .hashtag-link:hover
   color: #aaa
