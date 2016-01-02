@@ -29,8 +29,8 @@ class NewSessionForm extends Component {
     const { emailStatus, passwordStatus } = this.state
     return (
       <form id="NewSessionForm" className="AuthenticationForm" onSubmit={::this.handleSubmit} role="form" noValidate="novalidate">
-        <EmailControl ref="emailControl" tabIndex="1" text="" status={emailStatus} />
-        <PasswordControl ref="passwordControl" tabIndex="2" status={passwordStatus} />
+        <EmailControl ref="emailControl" tabIndex="1" text="" status={emailStatus} classModifiers="asBoxControl" />
+        <PasswordControl ref="passwordControl" tabIndex="2" status={passwordStatus} classModifiers="asBoxControl" />
         <FormButton tabIndex="3">Enter Ello</FormButton>
       </form>
     )

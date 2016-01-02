@@ -3,6 +3,7 @@ import classNames from 'classnames'
 
 class LinksControl extends Component {
   static propTypes = {
+    classModifiers: PropTypes.string,
     controlWasChanged: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -12,6 +13,7 @@ class LinksControl extends Component {
   }
 
   static defaultProps = {
+    classModifiers: '',
     id: 'user_links',
     name: 'user[links]',
     placeholder: 'Links (optional)',
@@ -44,19 +46,29 @@ class LinksControl extends Component {
   }
 
   render() {
-    const { id, name, tabIndex, placeholder } = this.props
+    const { classModifiers, id, name, tabIndex, placeholder } = this.props
     const { hasFocus, hasValue, text } = this.state
     const groupClassNames = classNames(
       'FormControlGroup',
+      classModifiers,
       { hasFocus: hasFocus },
       { hasValue: hasValue },
+    )
+    const labelClassNames = classNames(
+      'FormControlLabel',
+      classModifiers,
+    )
+    const controlClassNames = classNames(
+      'FormControl',
+      'LinksControl',
+      classModifiers,
     )
 
     return (
       <div className={groupClassNames}>
-        <label className="FormControlLabel" htmlFor={id}>Links</label>
+        <label className={labelClassNames} htmlFor={id}>Links</label>
         <input
-          className="FormControl LinksControl"
+          className={controlClassNames}
           id={id}
           name={name}
           value={text}
