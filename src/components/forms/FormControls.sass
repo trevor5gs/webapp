@@ -53,19 +53,24 @@
 .isFailing > .FormControl.asBoxControl.onWhite
   border-color: $danger
 
-textarea.FormControl
+textarea.FormControl:not(.asBoxControl)
   height: rem(30)
   min-height: 0
   margin-top: rem(10)
 
-.hasValue > textarea.FormControl,
-.hasFocus > textarea.FormControl
+textarea.FormControl.asBoxControl
+  height: rem(120)
+  padding-top: rem(20)
+  padding-bottom: rem(20)
+  margin-bottom: rem(-5)
+
+.hasValue > textarea.FormControl:not(.asBoxControl),
+.hasFocus > textarea.FormControl:not(.asBoxControl)
   height: rem(115)
 
-
 @media(min-width: #{$break-3})
-  .hasValue > textarea.FormControl,
-  .hasFocus > textarea.FormControl
+  .hasValue > textarea.FormControl:not(.asBoxControl),
+  .hasFocus > textarea.FormControl:not(.asBoxControl)
     height: rem(85)
 
 // -------------------------------------

@@ -21,6 +21,7 @@ const routes = [
       ...require('./discover'),
       ...require('./streams'),
       require('./notifications'),
+      ...require('./settings'),
       ...require('./invitations'),
       createRedirect('onboarding', '/onboarding/communities'),
       require('./onboarding'),

@@ -23,7 +23,7 @@ class UsernameControl extends Component {
     failureType: null,
     id: 'user_username',
     name: 'user[username]',
-    placeholder: 'Username',
+    placeholder: 'Enter your username',
     showAdvice: true,
     status: STATUS.INDETERMINATE,
     suggestions: null,
