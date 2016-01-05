@@ -1,0 +1,24 @@
+.FooterLink
+  +monospace
+  display: inline-block
+  vertical-align: middle
+  border-bottom: 0
+
+.FooterLink > span
+  transition: width $speed $ease
+  display: inline-block
+  vertical-align: middle
+  overflow: hidden
+  white-space: nowrap
+
+.FooterLink > .SVGIcon + span
+  width: 0
+  margin-left: rem(5)
+
+.no-touch .FooterLink:hover
+  color: black
+
+// Only setup for `Get the app` link
+.no-touch .FooterLink:hover > .SVGIcon + span
+  width: rem(90)
+

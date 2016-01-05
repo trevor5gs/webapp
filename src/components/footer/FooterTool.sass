@@ -1,0 +1,25 @@
+.FooterTool
+  +monospace
+  text-align: left
+
+.FooterTool > span
+  transition: width $speed $ease, color $speed
+  display: inline-block
+  vertical-align: middle
+  overflow: hidden
+  width: 0
+  margin-left: rem(5)
+  white-space: nowrap
+
+.FooterTool.LayoutTool > .SVGIcon
+  margin-top: rem(-2)
+
+.no-touch .FooterTool:hover
+  color: black
+
+.no-touch .FooterTool.TopTool:hover > span
+  width: rem(30)
+
+.no-touch .FooterTool.LayoutTool:hover > span
+  width: rem(80)
+
