@@ -109,6 +109,9 @@ class Navbar extends Component {
   }
 
   componentDidUpdate() {
+    if (typeof window === 'undefined') {
+      return
+    }
     const { asLocked, isPageChangeUpdate, offset } = this.state
     if (isPageChangeUpdate && asLocked) {
       window.scrollTo(0, offset - 120)

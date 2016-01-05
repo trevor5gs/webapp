@@ -40,9 +40,10 @@ class Footer extends Component {
   }
 
   scrollToTop() {
-    if (window) {
-      window.scrollTo(0, 0)
+    if (typeof window === 'undefined') {
+      return
     }
+    window.scrollTo(0, 0)
   }
 
   toggleLayoutMode() {
