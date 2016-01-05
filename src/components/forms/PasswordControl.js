@@ -5,6 +5,7 @@ import { SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class PasswordControl extends Component {
   static propTypes = {
+    classModifiers: PropTypes.string,
     controlWasChanged: PropTypes.func,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -16,6 +17,7 @@ class PasswordControl extends Component {
   }
 
   static defaultProps = {
+    classModifiers: '',
     id: 'user_password',
     name: 'user[password]',
     placeholder: 'Enter your password',
@@ -97,21 +99,31 @@ class PasswordControl extends Component {
   }
 
   render() {
-    const { id, name, tabIndex, placeholder, showSuggestion } = this.props
+    const { classModifiers, id, name, tabIndex, placeholder, showSuggestion } = this.props
     const { hasFocus, hasValue, text } = this.state
     const groupClassNames = classNames(
       'FormControlGroup',
+      classModifiers,
       this.mapStatusToClass(),
       { hasFocus: hasFocus },
       { hasValue: hasValue },
       { hasSuggestions: showSuggestion },
     )
+    const labelClassNames = classNames(
+      'FormControlLabel',
+      classModifiers,
+    )
+    const controlClassNames = classNames(
+      'FormControl',
+      'PasswordControl',
+      classModifiers,
+    )
 
     return (
       <div className={groupClassNames}>
-        <label className="FormControlLabel" htmlFor={id}>Password</label>
+        <label className={labelClassNames} htmlFor={id}>Password</label>
         <input
-          className="FormControl PasswordControl"
+          className={controlClassNames}
           id={id}
           name={name}
           value={text}

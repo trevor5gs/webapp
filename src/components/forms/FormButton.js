@@ -1,17 +1,12 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 
-class FormButton extends Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-  }
+const FormButton = ({ children, ...rest }) =>
+  <button className="FormButton" {...rest}>
+    { children }
+  </button>
 
-  render() {
-    return (
-      <button className="FormButton" {...this.props}>
-        { this.props.children }
-      </button>
-    )
-  }
+FormButton.propTypes = {
+  children: PropTypes.node.isRequired,
 }
 
 export default FormButton

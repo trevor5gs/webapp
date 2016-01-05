@@ -1,19 +1,14 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 
-class Dialog extends Component {
-  static propTypes = {
-    body: PropTypes.string,
-    title: PropTypes.string,
-  }
+const Dialog = ({ body, title }) =>
+  <div className="Dialog">
+    <h2>{title}</h2>
+    <p>{body}</p>
+  </div>
 
-  render() {
-    return (
-      <div className="Dialog">
-        <h2>{this.props.title}</h2>
-        <p>{this.props.body}</p>
-      </div>
-    )
-  }
+Dialog.propTypes = {
+  body: PropTypes.string,
+  title: PropTypes.string,
 }
 
 export default Dialog

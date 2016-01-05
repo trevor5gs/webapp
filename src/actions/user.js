@@ -11,8 +11,8 @@ export function loadUserDetail(username) {
       defaultMode: 'list',
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
-        asList: StreamRenderables.userDetail,
-        asGrid: StreamRenderables.userDetail,
+        asList: StreamRenderables.userDetailAsList,
+        asGrid: StreamRenderables.userDetailAsGrid,
       },
     },
   }

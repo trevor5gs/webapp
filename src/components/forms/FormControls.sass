@@ -1,8 +1,7 @@
 .FormControlGroup
   position: relative
-  max-width: rem(400)
 
-.AuthenticationForm .FormControlGroup
+.FormControlGroup.asBoxControl
   margin-bottom: rem(10)
 
 // -------------------------------------
@@ -24,40 +23,54 @@
   &::placeholder
     color: #aaa
 
-.AuthenticationForm .FormControl
+.FormControl.asBoxControl
   height: rem(60)
   padding: 0 rem(10)
   background-color: #d8d8d8
   border: 1px solid #d8d8d8
   color: black
-  &:focus
-    background-color: white
-    border-color: white
+.FormControl.asBoxControl:focus
+  background-color: white
+  border-color: white
+.FormControl.asBoxControl.onWhite:focus
+  background-color: #666
+  border-color: #666
+  color: white
 
 .hasValue > .FormControl
   border-color: black
 
-.AuthenticationForm .hasValue > .FormControl
+.hasValue > .FormControl.asBoxControl
   background-color: white
   border-color: white
+.hasValue > .FormControl.asBoxControl.onWhite
+  background-color: #666
+  border-color: #666
+  color: white
 
 .isFailing > .FormControl,
-.AuthenticationForm .isFailing > .FormControl
+.isFailing > .FormControl.asBoxControl,
+.isFailing > .FormControl.asBoxControl.onWhite
   border-color: $danger
 
-textarea.FormControl
+textarea.FormControl:not(.asBoxControl)
   height: rem(30)
   min-height: 0
   margin-top: rem(10)
 
-.hasValue > textarea.FormControl,
-.hasFocus > textarea.FormControl
+textarea.FormControl.asBoxControl
+  height: rem(120)
+  padding-top: rem(20)
+  padding-bottom: rem(20)
+  margin-bottom: rem(-5)
+
+.hasValue > textarea.FormControl:not(.asBoxControl),
+.hasFocus > textarea.FormControl:not(.asBoxControl)
   height: rem(115)
 
-
 @media(min-width: #{$break-3})
-  .hasValue > textarea.FormControl,
-  .hasFocus > textarea.FormControl
+  .hasValue > textarea.FormControl:not(.asBoxControl),
+  .hasFocus > textarea.FormControl:not(.asBoxControl)
     height: rem(85)
 
 // -------------------------------------
@@ -73,21 +86,20 @@ textarea.FormControl
   opacity: 0
   color: #aaa
 
-.AuthenticationForm .FormControlLabel
+.FormControlLabel.asBoxControl
   font-size: rem(11)
   top: rem(20)
   bottom: auto
   left: rem(11)
   right: auto
 
-
 .isFailing > .FormControlLabel,
 .hasFocus.hasValue > .FormControlLabel
   transform: translate3d(0,rem(10),0)
   opacity: 1
 
-.AuthenticationForm .isFailing > .FormControlLabel,
-.AuthenticationForm .hasFocus.hasValue > .FormControlLabel
+.isFailing > .FormControlLabel.asBoxControl,
+.hasFocus.hasValue > .FormControlLabel.asBoxControl
   transform: translate3d(0,rem(-17),0)
 
 .isFailing > .FormControlLabel

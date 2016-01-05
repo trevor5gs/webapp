@@ -1,20 +1,14 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import { ArrowIcon } from '../navbar/NavbarIcons'
 
-class NavbarMorePostsButton extends Component {
-  static propTypes = {
-    callback: PropTypes.func,
-  }
+const NavbarMorePostsButton = ({ callback }) =>
+  <button onClick={callback} className="NavbarMorePostsButton">
+    <ArrowIcon/>
+    <span>More Posts</span>
+  </button>
 
-  render() {
-    const { callback } = this.props
-    return (
-      <button onClick={callback} className="NavbarMorePostsButton">
-        <ArrowIcon/>
-        <span>More Posts</span>
-      </button>
-    )
-  }
+NavbarMorePostsButton.propTypes = {
+  callback: PropTypes.func,
 }
 
 export default NavbarMorePostsButton

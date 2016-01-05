@@ -5,6 +5,7 @@ import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class EmailControl extends Component {
   static propTypes = {
+    classModifiers: PropTypes.string,
     controlWasChanged: PropTypes.func,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -16,6 +17,7 @@ class EmailControl extends Component {
   }
 
   static defaultProps = {
+    classModifiers: '',
     id: 'user_email',
     name: 'user[email]',
     placeholder: 'Enter your email',
@@ -102,21 +104,31 @@ class EmailControl extends Component {
   }
 
   render() {
-    const { id, name, tabIndex, placeholder, suggestions } = this.props
+    const { classModifiers, id, name, tabIndex, placeholder, suggestions } = this.props
     const { hasFocus, hasValue, text } = this.state
     const groupClassNames = classNames(
       'FormControlGroup',
+      classModifiers,
       this.mapStatusToClass(),
       { hasFocus: hasFocus },
       { hasValue: hasValue },
       { hasSuggestions: suggestions && suggestions.length },
     )
+    const labelClassNames = classNames(
+      'FormControlLabel',
+      classModifiers,
+    )
+    const controlClassNames = classNames(
+      'FormControl',
+      'EmailControl',
+      classModifiers,
+    )
 
     return (
       <div className={groupClassNames}>
-        <label className="FormControlLabel" htmlFor={id}>Email</label>
+        <label className={labelClassNames} htmlFor={id}>Email</label>
         <input
-          className="FormControl EmailControl"
+          className={controlClassNames}
           id={id}
           name={name}
           value={text}

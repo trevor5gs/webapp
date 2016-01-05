@@ -40,7 +40,7 @@ class Paginator extends Component {
     const { isPaginationLoading, message } = this.state
     const { hasShowMoreButton } = this.props
     const classes = isPaginationLoading ? 'Paginator isBusy' : 'Paginator'
-    const messageArea = hasShowMoreButton ? <button onClick={ this.loadMore.bind(this) }>{ message }</button> : <span>{ message }</span>
+    const messageArea = hasShowMoreButton ? <button onClick={ ::this.loadMore }>{ message }</button> : <span>{ message }</span>
     return (
       <div className={ classes }>
         <ElloMark />

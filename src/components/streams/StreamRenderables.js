@@ -10,6 +10,7 @@ import UserAvatar from '../users/UserAvatar'
 import UserAvatars from '../users/UserAvatars'
 import UserCard from '../users/UserCard'
 import UserGrid from '../users/UserGrid'
+import UserInvitee from '../users/UserInvitee'
 import UserList from '../users/UserList'
 
 // TODO: convert these into react components (@see UserVitals)
@@ -44,6 +45,26 @@ export function usersAsList(users) {
   )
 }
 
+export function usersAsInviteeList(users) {
+  return (
+    <div className="Users asInviteeList">
+      {users.data.map((user, i) => {
+        return <UserInvitee ref={'userInvitee_' + i} user={user} key={i} />
+      })}
+    </div>
+  )
+}
+
+export function usersAsInviteeGrid(users) {
+  return (
+    <div className="Users asInviteeGrid">
+      {users.data.map((user, i) => {
+        return <UserInvitee className="UserInviteeGrid" ref={'userInvitee_' + i} user={user} key={i} />
+      })}
+    </div>
+  )
+}
+
 export function postsAsGrid(posts, json, currentUser, gridColumnCount) {
   return <PostsAsGrid posts={posts} json={json} currentUser={currentUser} gridColumnCount={gridColumnCount} />
 }
@@ -62,7 +83,7 @@ export function postsAsList(posts, json, currentUser) {
   )
 }
 
-export function userDetail(users, json, currentUser) {
+export function userDetail(users, json, currentUser, gridColumnCount) {
   const user = users.data[0]
   let posts = getLinkArray(user, 'posts', json) || []
   posts = posts.concat(users.nestedData)
@@ -70,9 +91,20 @@ export function userDetail(users, json, currentUser) {
     <div className="UserDetails">
       <Cover coverImage={user.coverImage} />
       <UserList ref={'UserList_' + user.id} user={user} key={user.id} />
-      {postsAsList({ data: posts, nestedData: [] }, json, currentUser)}
+      {gridColumnCount ?
+        postsAsGrid({ data: posts, nestedData: [] }, json, currentUser, gridColumnCount) :
+        postsAsList({ data: posts, nestedData: [] }, json, currentUser)
+      }
     </div>
   )
+}
+
+export function userDetailAsGrid(users, json, currentUser, gridColumnCount) {
+  return userDetail(users, json, currentUser, gridColumnCount)
+}
+
+export function userDetailAsList(users, json, currentUser) {
+  return userDetail(users, json, currentUser)
 }
 
 export function postDetail(posts, json, currentUser) {

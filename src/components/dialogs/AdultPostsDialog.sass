@@ -1,0 +1,46 @@
+.AdultPostsDialog
+  max-width: rem(480)
+  background-color: white
+  color: black
+
+.AdultPostsDialog > p:first-of-type
+  margin-top: 0
+
+.AdultPostsFakeToggle
+  position: relative
+  height: rem(40)
+  margin-top: rem(20)
+  margin-bottom: rem(40)
+
+.AdultPostsFakeToggle > p
+  position: absolute
+  top: 0
+  left: rem(60)
+  color: #999
+  cursor: default
+
+.AdultPostsFakeToggleLink
+  display: inline-block
+  border-bottom: 1px solid #999
+
+.AdultPostsDialogButton
+  +sans-typeset
+  transition: background-color $speed ease, border-color $speed ease
+  display: block
+  width: 100%
+  height: rem(60)
+  line-height: rem(60)
+  text-align: center
+  background-color: black
+  border: 1px solid black
+  color: white
+
+.no-touch .AdultPostsDialogButton:hover
+  background-color: #666
+  border-color: #666
+
+
+@media(min-width: #{$break-2})
+  .AdultPostsDialog
+    min-width: rem(480)
+

@@ -56,10 +56,11 @@ class Avatar extends Component {
   }
 
   getClassNames() {
-    const { isModifiable } = this.props
+    const { isModifiable, size } = this.props
     const { status } = this.state
     return classNames(
       'Avatar',
+       size !== 'regular' ? size : null,
       status,
       { isModifiable: isModifiable },
     )

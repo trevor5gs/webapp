@@ -5,6 +5,7 @@ import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class UsernameControl extends Component {
   static propTypes = {
+    classModifiers: PropTypes.string,
     controlWasChanged: PropTypes.func.isRequired,
     failureType: PropTypes.string,
     id: PropTypes.string.isRequired,
@@ -18,12 +19,13 @@ class UsernameControl extends Component {
   }
 
   static defaultProps = {
+    classModifiers: '',
     failureType: null,
     id: 'user_username',
     name: 'user[username]',
-    placeholder: 'Username',
-    status: STATUS.INDETERMINATE,
+    placeholder: 'Enter your username',
     showAdvice: true,
+    status: STATUS.INDETERMINATE,
     suggestions: null,
     tabIndex: 0,
   }
@@ -111,7 +113,7 @@ class UsernameControl extends Component {
         <div className="FormControlSuggestionList">
           <p>Here are some available usernames &mdash;</p>
           {suggestions.map((suggestion, i) => {
-            return <button title={suggestion} onClick={this.handleUsernameSuggestionClick.bind(this)} key={'suggestion_' + i}>{suggestion}</button>
+            return <button title={suggestion} onClick={::this.handleUsernameSuggestionClick} key={'suggestion_' + i}>{suggestion}</button>
           })}
         </div>
       )
@@ -141,22 +143,32 @@ class UsernameControl extends Component {
   }
 
   render() {
-    const { id, name, tabIndex, placeholder, suggestions, showAdvice } = this.props
+    const { classModifiers, id, name, tabIndex, placeholder, suggestions, showAdvice } = this.props
     const { hasFocus, hasValue, text } = this.state
     const groupClassNames = classNames(
       'FormControlGroup',
+      classModifiers,
       this.mapStatusToClass(),
       { hasFocus: hasFocus },
       { hasValue: hasValue },
       { showAdvice: showAdvice },
       { showSuggestionList: suggestions && suggestions.length },
     )
+    const labelClassNames = classNames(
+      'FormControlLabel',
+      classModifiers,
+    )
+    const controlClassNames = classNames(
+      'FormControl',
+      'UsernameControl',
+      classModifiers,
+    )
 
     return (
       <div className={groupClassNames}>
-        <label className="FormControlLabel" htmlFor={id}>Username</label>
+        <label className={labelClassNames} htmlFor={id}>Username</label>
         <input
-          className="FormControl UsernameControl"
+          className={controlClassNames}
           id={id}
           name={name}
           value={text}

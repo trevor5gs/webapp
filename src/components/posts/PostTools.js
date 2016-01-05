@@ -4,9 +4,10 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { pushState } from 'redux-router'
 import classNames from 'classnames'
-import { openModal } from '../../actions/modals'
+import { openModal, closeModal } from '../../actions/modals'
 import * as PostActions from '../../actions/posts'
 import { trackEvent } from '../../actions/tracking'
+import ConfirmDialog from '../dialogs/ConfirmDialog'
 import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import ShareDialog from '../dialogs/ShareDialog'
 import Hint from '../hints/Hint'
@@ -54,7 +55,7 @@ class PostTools extends Component {
     if (author.hasCommentingEnabled) {
       cells.push(
         <span className="PostTool CommentTool" key={`CommentTool_${post.id}`}>
-          <button onClick={ this.toggleComments.bind(this) }>
+          <button onClick={ ::this.toggleComments }>
             <BubbleIcon />
             <span className="PostToolValue" data-count={post.commentsCount} >{post.commentsCount}</span>
             <Hint>Comment</Hint>
@@ -65,7 +66,7 @@ class PostTools extends Component {
     if (author.hasLovesEnabled) {
       cells.push(
         <span className="PostTool LoveTool" key={`LoveTool_${post.id}`}>
-          <button className={classNames({ active: post.loved })} onClick={ this.lovePost.bind(this) }>
+          <button className={classNames({ active: post.loved })} onClick={ ::this.lovePost }>
             <HeartIcon />
             <span className="PostToolValue" data-count={post.lovesCount}>{post.lovesCount}</span>
             <Hint>Love</Hint>
@@ -76,7 +77,7 @@ class PostTools extends Component {
     if (author.hasRepostingEnabled) {
       cells.push(
         <span className="PostTool RepostTool" key={`RepostTool_${post.id}`}>
-          <button onClick={ this.signUp.bind(this) }>
+          <button onClick={ ::this.signUp }>
             <RepostIcon />
             <span className="PostToolValue" data-count={post.repostsCount}>{post.repostsCount}</span>
             <Hint>Repost</Hint>
@@ -87,7 +88,7 @@ class PostTools extends Component {
     if (author.hasSharingEnabled) {
       cells.push(
         <span className={classNames('PostTool', 'ShareTool', { asPill: !isLoggedIn })} key={`ShareTool_${post.id}`}>
-          <button onClick={ this.sharePost.bind(this) }>
+          <button onClick={ ::this.sharePost }>
             <ShareIcon />
             <Hint>Share</Hint>
           </button>
@@ -114,7 +115,7 @@ class PostTools extends Component {
         )
         cells.push(
           <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${post.id}`}>
-            <button>
+            <button onClick={ ::this.deletePost }>
               <XBoxIcon />
               <Hint>Delete</Hint>
             </button>
@@ -133,13 +134,18 @@ class PostTools extends Component {
     }
     cells.push(
       <span className={"PostTool MoreTool"} key={`MoreTool_${post.id}`}>
-        <button onClick={ this.toggleActiveMoreTool.bind(this) }>
+        <button onClick={ ::this.toggleActiveMoreTool }>
           <ChevronIcon />
           <Hint>More</Hint>
         </button>
       </span>
     )
     return cells
+  }
+
+  closeModal() {
+    const { dispatch } = this.props
+    dispatch(closeModal())
   }
 
   toggleActiveMoreTool() {
@@ -181,6 +187,22 @@ class PostTools extends Component {
     return dispatch(trackEvent('open-registration-request-post-tools'))
   }
 
+  deletePost() {
+    const { dispatch } = this.props
+    dispatch(openModal(
+      <ConfirmDialog
+        title="Delete Post?"
+        onConfirm={ ::this.deletePostConfirmed }
+        onRejected={ ::this.closeModal }
+      />))
+  }
+
+  deletePostConfirmed() {
+    // const { post } = this.props
+    // console.log('delete post', post.id)
+    this.closeModal()
+  }
+
   render() {
     const { post } = this.props
     if (!post) { return null }
@@ -202,7 +224,6 @@ function mapStateToProps(state) {
     isLoggedIn: state.authentication.isLoggedIn,
   }
 }
-
 
 export default connect(mapStateToProps)(PostTools)
 

@@ -119,10 +119,10 @@ class RegistrationForm extends Component {
     const { usernameStatus, usernameFailureType, showUsernameAdvice, usernameSuggestions, emailStatus, emailSuggestion, passwordStatus, showPasswordSuggestion } = this.state
     const isFormValid = usernameStatus === STATUS.SUCCESS && emailStatus === STATUS.SUCCESS && passwordStatus === STATUS.SUCCESS
     return (
-      <form id="RegistrationForm" className="AuthenticationForm" onSubmit={this.handleSubmit.bind(this)} role="form" noValidate="novalidate">
-        <EmailControl tabIndex="1" text="" placeholder="Enter your email" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={this.handleEmailControlChanged.bind(this)} />
-        <UsernameControl tabIndex="2" text="" placeholder="Create your username" status={usernameStatus} failureType={usernameFailureType} showAdvice={showUsernameAdvice} suggestions={usernameSuggestions} controlWasChanged={this.handleUsernameControlChanged.bind(this)} />
-        <PasswordControl tabIndex="3" placeholder="Set your password" status={passwordStatus} showSuggestion={showPasswordSuggestion} controlWasChanged={this.handlePasswordControlChanged.bind(this)} />
+      <form id="RegistrationForm" className="AuthenticationForm" onSubmit={::this.handleSubmit} role="form" noValidate="novalidate">
+        <EmailControl tabIndex="1" text="" placeholder="Enter your email" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={::this.handleEmailControlChanged} classModifiers="asBoxControl" />
+        <UsernameControl tabIndex="2" text="" placeholder="Create your username" status={usernameStatus} failureType={usernameFailureType} showAdvice={showUsernameAdvice} suggestions={usernameSuggestions} controlWasChanged={::this.handleUsernameControlChanged} classModifiers="asBoxControl" />
+        <PasswordControl tabIndex="3" placeholder="Set your password" status={passwordStatus} showSuggestion={showPasswordSuggestion} controlWasChanged={::this.handlePasswordControlChanged} classModifiers="asBoxControl" />
         <FormButton tabIndex="4" disabled={!isFormValid}>Create Account</FormButton>
       </form>
     )

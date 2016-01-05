@@ -1,0 +1,41 @@
+.LabelTab
+  transition: color $speed ease
+  overflow: hidden
+  position: relative
+  height: rem(30)
+  font-size: rem(18)
+  line-height: rem(30)
+  white-space: nowrap
+  color: #aaa
+
+.LabelTab:after
+  content: ''
+  transition: width $speed $ease, background-color $speed ease
+  position: absolute
+  bottom: 0
+  left: 0
+  width: 0
+  height: rem(2)
+  background-color: transparent
+
+.LabelTab.active,
+.LabelTab:active,
+.no-touch .LabelTab:hover
+  color: black
+  &:after
+    width: 100%
+    background-color: black
+
+.LabelTab + .LabelTab
+  margin-left: rem(20)
+
+
+@media(min-width: #{$break-2})
+  .LabelTab + .LabelTab
+    margin-left: rem(30)
+
+  .LabelTab.TabLink
+    height: rem(40)
+    font-size: rem(24)
+    line-height: rem(40)
+

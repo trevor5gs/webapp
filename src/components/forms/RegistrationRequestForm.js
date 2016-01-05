@@ -77,7 +77,7 @@ class RegistrationRequestForm extends Component {
     return wasSubmitted ?
       <div>Please check your email to join Ello.</div> :
       <form id="RegistrationRequestForm" className="AuthenticationForm" onSubmit={::this.handleSubmit} role="form" noValidate="novalidate">
-        <EmailControl ref="emailControl" tabIndex="1" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={::this.handleEmailControlChanged} />
+        <EmailControl ref="emailControl" tabIndex="1" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={::this.handleEmailControlChanged} classModifiers="asBoxControl" />
         <FormButton tabIndex="2" disabled={!isFormValid}>Sign up</FormButton>
       </form>
   }

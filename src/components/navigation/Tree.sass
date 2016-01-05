@@ -1,0 +1,36 @@
+.TreeButton
+  +sans-bold-family
+  position: relative
+  font-size: rem(18)
+  white-space: nowrap
+  height: rem(40)
+  padding-left: rem(40)
+  vertical-align: top
+
+.TreeIcon
+  transition: transform $speed $ease
+  position: absolute
+  top: rem(10)
+  left: 0
+
+.TreeIcon g
+  stroke: black
+
+.TreeButton.isCollapsed .TreeIcon
+  transform: rotate(90deg)
+
+.TreeButton.isCollapsed .TreeIcon g
+  stroke: #aaa
+
+// -------------------------------------
+
+.TreePanel
+  overflow: hidden
+  padding-left: rem(40)
+
+.TreeButton.isCollapsed + .TreePanel
+  height: 0
+
+.TreePanel > p:first-child
+  margin-top: 0
+

@@ -41,6 +41,7 @@ class Navbar extends Component {
   constructor(props, context) {
     super(props, context)
     this.scrollYAtDirectionChange = null
+    this.currentPath = null
     this.state = {
       asFixed: false,
       asHidden: false,
@@ -90,16 +91,29 @@ class Navbar extends Component {
   componentWillReceiveProps(nextProps) {
     const { router } = nextProps
     const pathnames = router.location.pathname.split('/').slice(1)
-    const whitelist = ['', 'discover', 'following', 'starred', 'notifications', 'search', 'invitations', 'onboarding', 'staff', 'find']
+    const whitelist = ['', 'discover', 'following', 'starred', 'notifications', 'search', 'invitations', 'onboarding', 'staff', 'find', 'explore']
     const isWhitelisted = (whitelist.indexOf(pathnames[0]) >= 0 || pathnames[1] === 'post')
-    this.setState({ asLocked: !isWhitelisted })
+    const isPageChangeUpdate = pathnames[0] !== this.currentPath
+    if (isPageChangeUpdate) {
+      this.currentPath = pathnames[0]
+      this.setState({
+        asFixed: false,
+        asHidden: false,
+        asLocked: !isWhitelisted,
+        isPageChangeUpdate: true,
+        skipTransition: false,
+      })
+    } else {
+      this.setState({ asLocked: !isWhitelisted, isPageChangeUpdate: false })
+    }
   }
 
-  // componentDidUpdate() {
-  //   if (this.state.asLocked) {
-  //     window.scrollTo(0, this.state.offset - 120)
-  //   }
-  // }
+  componentDidUpdate() {
+    const { asLocked, isPageChangeUpdate, offset } = this.state
+    if (isPageChangeUpdate && asLocked) {
+      window.scrollTo(0, offset - 120)
+    }
+  }
 
   componentWillUnmount() {
     Mousetrap.unbind(Object.keys(this.props.shortcuts))
@@ -111,7 +125,7 @@ class Navbar extends Component {
 
   onResize(resizeProperties) {
     const { coverOffset } = resizeProperties
-    this.setState({ offset: coverOffset - 120 })
+    this.setState({ offset: coverOffset - 80 })
   }
 
   onScrollTop() {

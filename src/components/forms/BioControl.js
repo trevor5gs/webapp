@@ -3,6 +3,7 @@ import classNames from 'classnames'
 
 class BioControl extends Component {
   static propTypes = {
+    classModifiers: PropTypes.string,
     controlWasChanged: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -12,6 +13,7 @@ class BioControl extends Component {
   }
 
   static defaultProps = {
+    classModifiers: '',
     id: 'user_unsanitized_short_bio',
     name: 'user[unsanitized_short_bio]',
     placeholder: 'Bio (optional)',
@@ -44,22 +46,32 @@ class BioControl extends Component {
   }
 
   render() {
-    const { id, name, tabIndex, placeholder } = this.props
+    const { classModifiers, id, name, tabIndex, placeholder } = this.props
     const { hasFocus, hasValue, text } = this.state
     const len = text ? text.length : 0
     const label = len > 192 ? `Bio ${len}` : 'Bio'
     const groupClassNames = classNames(
       'FormControlGroup',
+      classModifiers,
       { hasFocus: hasFocus },
       { hasValue: hasValue },
       { hasExceeded: len > 192 },
     )
+    const labelClassNames = classNames(
+      'FormControlLabel',
+      classModifiers,
+    )
+    const controlClassNames = classNames(
+      'FormControl',
+      'BioControl',
+      classModifiers,
+    )
 
     return (
       <div className={groupClassNames}>
-        <label className="FormControlLabel" htmlFor={id}>{label}</label>
+        <label className={labelClassNames} htmlFor={id}>{label}</label>
         <textarea
-          className="FormControl BioControl"
+          className={controlClassNames}
           id={id}
           name={name}
           value={text}
@@ -70,7 +82,8 @@ class BioControl extends Component {
           autoCorrect="off"
           onFocus={(e) => this.handleFocus(e)}
           onBlur={(e) => this.handleBlur(e)}
-          onChange={(e) => this.handleChange(e)} />
+          onChange={(e) => this.handleChange(e)}
+        />
       </div>
     )
   }

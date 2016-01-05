@@ -36,7 +36,7 @@ class ForgotPassword extends Component {
     return (
       <section className="Authentication Panel">
         <div className="FormDialog">
-          <h1>:e: Shit happens.</h1>
+          <h1><img src="/static/images/support/hot_shit.png" width="32" height="32" alt="hot shit" /> Shit happens.</h1>
           <ForgotPasswordForm/>
         </div>
         <AppleStoreLink/>

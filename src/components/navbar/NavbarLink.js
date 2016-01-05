@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 
-
 class NavbarLink extends Component {
   static propTypes = {
     icon: PropTypes.element,

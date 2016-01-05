@@ -1,33 +1,44 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { loadDiscoverUsers, loadCommunities, loadFeaturedUsers } from '../../actions/discover'
-import FilterBar from '../../components/filters/FilterBar'
 import StreamComponent from '../../components/streams/StreamComponent'
+import TabListLinks from '../../components/tabs/TabListLinks'
 
 class Discover extends Component {
   static propTypes = {
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }),
     params: PropTypes.shape({
       type: PropTypes.string,
     }),
   }
 
   render() {
-    const links = []
-    links.push({ to: '/discover', children: 'Recommended' })
-    links.push({ to: '/discover/trending', children: 'Trending' })
-    links.push({ to: '/discover/recent', children: 'Recent' })
-    // links.push({ to: '/discover/communities', children: 'Communities' })
-    // links.push({ to: '/discover/featured-users', children: 'Featured Users' })
-    const type = this.props.params.type || 'recommended'
+    const { params, location } = this.props
+    const type = params.type || 'recommended'
     let action = loadDiscoverUsers(type)
     if (type === 'communities') {
       action = loadCommunities()
     } else if (type === 'featured-users') {
       action = loadFeaturedUsers()
     }
+    const tabs = [
+      { to: '/discover', children: 'Recommended' },
+      { to: '/discover/trending', children: 'Trending' },
+      { to: '/discover/recent', children: 'Recent' },
+      // { to: '/discover/communities', children: 'Communities' },
+      // { to: '/discover/featured-users', children: 'Featured Users' },
+    ]
     return (
       <section className="Discover Panel" key={`discover_${type}`}>
-        <FilterBar type="text" links={links} />
-        <StreamComponent ref="streamComponent" action={action} />
+        <TabListLinks
+          activePath={location.pathname}
+          className="LabelTabList"
+          tabClasses="LabelTab"
+          tabs={tabs}
+        />
+        <StreamComponent action={action} ref="streamComponent" />
       </section>
     )
   }
@@ -37,5 +48,5 @@ Discover.preRender = (store, routerState) => {
   return store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
 }
 
-export default Discover
+export default connect()(Discover)
 

@@ -1,30 +1,25 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router'
 import { ElloMark, ElloRainbowMark, ElloDonutMark } from '../interface/ElloIcons'
 
-class NavbarMark extends Component {
-  renderMark() {
-    switch (ENV.LOGO_MARK) {
-      case 'rainbow':
-        return <ElloRainbowMark />
-      case 'donut':
-        return <ElloDonutMark />
-      case 'none':
-        return null
-      case 'normal':
-      default:
-        return <ElloMark />
-    }
-  }
-
-  render() {
-    return (
-      <Link className="NavbarMark" to="/explore">
-        { this.renderMark() }
-      </Link>
-    )
+function getLogoMarkFromEnvironment() {
+  switch (ENV.LOGO_MARK) {
+    case 'rainbow':
+      return <ElloRainbowMark />
+    case 'donut':
+      return <ElloDonutMark />
+    case 'none':
+      return null
+    case 'normal':
+    default:
+      return <ElloMark />
   }
 }
+
+const NavbarMark = () =>
+  <Link className="NavbarMark" to="/explore">
+    { getLogoMarkFromEnvironment() }
+  </Link>
 
 export default NavbarMark
 

@@ -1,5 +1,5 @@
 # Ello Web Application
-<img src="docs/ello-icon.png" width="60" height="60" />
+<img src="docs/ello-icon.png" width="40" height="40" />
 
 The web app for [ello.co](http://ello.co).
 
