@@ -62,7 +62,7 @@ class Avatar extends Component {
       'Avatar',
        size !== 'regular' ? size : null,
       status,
-      { isModifiable: isModifiable },
+      { isModifiable },
     )
   }
 

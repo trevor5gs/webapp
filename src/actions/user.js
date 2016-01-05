@@ -21,7 +21,7 @@ export function loadUserDetail(username) {
 export function loadUserAvatars(endpoint, resultKey) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: endpoint, vo: {} },
+    payload: { endpoint, vo: {} },
     meta: {
       defaultMode: 'grid',
       mappingType: MAPPING_TYPES.USERS,

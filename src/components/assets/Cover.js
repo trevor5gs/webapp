@@ -86,8 +86,8 @@ class Cover extends Component {
       'Cover',
       status,
       modifiers,
-      { asHidden: asHidden },
-      { isModifiable: isModifiable },
+      { asHidden },
+      { isModifiable },
     )
   }
 

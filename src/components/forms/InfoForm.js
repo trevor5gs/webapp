@@ -31,8 +31,10 @@ class InfoForm extends Component {
   render() {
     const { payload } = this.props.profile
     const { name, externalLinksList, shortBio, username } = payload
-    const externalLinks = externalLinksList ? externalLinksList.map((link) => { return link.text }) : []
-    const externalLinksValue = externalLinks.join(', ')
+    const externalLinks = externalLinksList ?
+      externalLinksList.map((link) => { return link.text }) :
+      []
+    const links = externalLinks.join(', ')
 
     if (!username) {
       return <div />
@@ -41,7 +43,7 @@ class InfoForm extends Component {
       <form className="InfoForm" onSubmit={this.handleSubmit} role="form" noValidate="novalidate">
         <NameControl tabIndex="1" text={name} controlWasChanged={::this.handleControlChange} />
         <BioControl tabIndex="2" text={shortBio} controlWasChanged={::this.handleControlChange} />
-        <LinksControl tabIndex="3" text={externalLinksValue} controlWasChanged={::this.handleControlChange} />
+        <LinksControl tabIndex="3" text={links} controlWasChanged={::this.handleControlChange} />
       </form>
     )
   }

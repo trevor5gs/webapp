@@ -30,7 +30,7 @@ class EmailControl extends Component {
     super(props, context)
     const { text } = this.props
     this.state = {
-      text: text,
+      text,
       hasValue: text && text.length,
       hasFocus: false,
     }
@@ -110,8 +110,8 @@ class EmailControl extends Component {
       'FormControlGroup',
       classModifiers,
       this.mapStatusToClass(),
-      { hasFocus: hasFocus },
-      { hasValue: hasValue },
+      { hasFocus },
+      { hasValue },
       { hasSuggestions: suggestions && suggestions.length },
     )
     const labelClassNames = classNames(
@@ -138,9 +138,10 @@ class EmailControl extends Component {
           ref="input"
           autoCapitalize="off"
           autoCorrect="off"
-          onFocus={(e) => this.handleFocus(e)}
-          onBlur={(e) => this.handleBlur(e)}
-          onChange={(e) => this.handleChange(e)} />
+          onBlur={::this.handleBlur}
+          onChange={::this.handleChange}
+          onFocus={::this.handleFocus}
+        />
         { this.renderError() }
         { this.renderSuggestions() }
         { this.renderStatus() }

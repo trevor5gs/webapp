@@ -25,7 +25,7 @@ class NameControl extends Component {
     super(props, context)
     const { text } = this.props
     this.state = {
-      text: text,
+      text,
       hasValue: text && text.length,
       hasFocus: false,
     }
@@ -51,8 +51,8 @@ class NameControl extends Component {
     const groupClassNames = classNames(
       'FormControlGroup',
       classModifiers,
-      { hasFocus: hasFocus },
-      { hasValue: hasValue },
+      { hasFocus },
+      { hasValue },
     )
     const labelClassNames = classNames(
       'FormControlLabel',
@@ -78,9 +78,10 @@ class NameControl extends Component {
           maxLength="50"
           autoCapitalize="off"
           autoCorrect="off"
-          onFocus={(e) => this.handleFocus(e)}
-          onBlur={(e) => this.handleBlur(e)}
-          onChange={(e) => this.handleChange(e)} />
+          onFocus={::this.handleFocus}
+          onBlur={::this.handleBlur}
+          onChange={::this.handleChange}
+        />
       </div>
     )
   }
