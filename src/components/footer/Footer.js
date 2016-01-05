@@ -21,7 +21,10 @@ class Footer extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    if (typeof window === 'undefined') {
+      return
+    }
     this.setState({ isAndroid: !(navigator.userAgent.match(/Android/i) === null) })
   }
 
