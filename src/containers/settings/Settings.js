@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
+import { openModal, closeModal } from '../../actions/modals'
+import AdultPostsDialog from '../../components/dialogs/AdultPostsDialog'
 import BioControl from '../../components/forms/BioControl'
 import EmailControl from '../../components/forms/EmailControl'
 import LinksControl from '../../components/forms/LinksControl'
@@ -14,8 +16,10 @@ import Avatar from '../../components/assets/Avatar'
 import Cover from '../../components/assets/Cover'
 import TreeButton from '../../components/navigation/TreeButton'
 
+
 class Settings extends Component {
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
     profile: PropTypes.object,
   }
 
@@ -58,6 +62,21 @@ class Settings extends Component {
   }
 
   handlePreferenceChange() {
+  }
+
+  closeModal() {
+    const { dispatch } = this.props
+    dispatch(closeModal())
+  }
+
+  launchAdultPostsPrompt() {
+    const { dispatch, profile } = this.props
+    dispatch(openModal(
+      <AdultPostsDialog
+      onConfirm={ ::this.closeModal }
+      user={ profile }
+      />
+    ))
   }
 
   render() {
@@ -119,6 +138,7 @@ class Settings extends Component {
           <p className="SettingsLinks">
             <Link to="/">View Profile</Link>
             <Link to="/onboarding">Launch On-boarding</Link>
+            <button onClick={::this.launchAdultPostsPrompt}>Launch NSFW Modal</button>
           </p>
 
           <div className="SettingsPreferences">

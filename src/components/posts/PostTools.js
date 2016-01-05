@@ -4,9 +4,10 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { pushState } from 'redux-router'
 import classNames from 'classnames'
-import { openModal } from '../../actions/modals'
+import { openModal, closeModal } from '../../actions/modals'
 import * as PostActions from '../../actions/posts'
 import { trackEvent } from '../../actions/tracking'
+import ConfirmDialog from '../dialogs/ConfirmDialog'
 import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import ShareDialog from '../dialogs/ShareDialog'
 import Hint from '../hints/Hint'
@@ -114,7 +115,7 @@ class PostTools extends Component {
         )
         cells.push(
           <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${post.id}`}>
-            <button>
+            <button onClick={ ::this.deletePost }>
               <XBoxIcon />
               <Hint>Delete</Hint>
             </button>
@@ -140,6 +141,11 @@ class PostTools extends Component {
       </span>
     )
     return cells
+  }
+
+  closeModal() {
+    const { dispatch } = this.props
+    dispatch(closeModal())
   }
 
   toggleActiveMoreTool() {
@@ -179,6 +185,22 @@ class PostTools extends Component {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
     return dispatch(trackEvent('open-registration-request-post-tools'))
+  }
+
+  deletePost() {
+    const { dispatch } = this.props
+    dispatch(openModal(
+      <ConfirmDialog
+        title="Delete Post?"
+        onConfirm={ ::this.deletePostConfirmed }
+        onRejected={ ::this.closeModal }
+      />))
+  }
+
+  deletePostConfirmed() {
+    // const { post } = this.props
+    // console.log('delete post', post.id)
+    this.closeModal()
   }
 
   render() {
