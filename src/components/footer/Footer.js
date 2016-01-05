@@ -53,7 +53,7 @@ class Footer extends Component {
         <div className="FooterLinks">
           <FooterLabel label="Beta 2.2"/>
           <FooterLink className="asLabel" href="/wtf" label="WTF"/>
-          { isAndroid ? null : <FooterLink href="/appstore.com/ello/ello" label="Get the app" icon={ <PhoneIcon/> }/> }
+          { isAndroid ? null : <FooterLink href="http://appstore.com/ello/ello" label="Get the app" icon={ <PhoneIcon/> }/> }
         </div>
 
         <div className="FooterTools">
