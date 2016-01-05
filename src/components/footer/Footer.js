@@ -21,7 +21,7 @@ class Footer extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({ isAndroid: !(navigator.userAgent.match(/Android/i) === null) })
   }
 
