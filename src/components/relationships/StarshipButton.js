@@ -14,7 +14,6 @@ class StarshipButton extends Component {
 
   updatePriority(e) {
     const nextPriority = e.target.dataset.nextPriority
-    console.log('priority', nextPriority)
     const { buttonWasClicked, isLoggedIn, userId } = this.props
     if (isLoggedIn) {
       this.setState({ priority: nextPriority })
