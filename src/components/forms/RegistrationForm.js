@@ -9,9 +9,6 @@ import PasswordControl from '../forms/PasswordControl'
 import UsernameControl from '../forms/UsernameControl'
 
 class RegistrationForm extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -198,6 +195,10 @@ class RegistrationForm extends Component {
       </form>
     )
   }
+}
+
+RegistrationForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

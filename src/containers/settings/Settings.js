@@ -18,10 +18,6 @@ import TreeButton from '../../components/navigation/TreeButton'
 
 
 class Settings extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    profile: PropTypes.object,
-  }
 
   getAvatarSource() {
     const { profile } = this.props
@@ -361,6 +357,11 @@ class Settings extends Component {
 // Settings.preRender = (store) => {
 //   return store.dispatch(loadInvitedUsers())
 // }
+
+Settings.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  profile: PropTypes.object,
+}
 
 function mapStateToProps(state) {
   return {

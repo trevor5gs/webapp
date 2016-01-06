@@ -19,24 +19,6 @@ import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../nav
 import Mousetrap from '../../vendor/mousetrap'
 
 class Navbar extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
-    json: PropTypes.object.isRequired,
-    modal: PropTypes.any,
-    profile: PropTypes.object,
-    router: PropTypes.object.isRequired,
-    shortcuts: PropTypes.object.isRequired,
-  }
-
-  static defaultProps = {
-    shortcuts: {
-      [SHORTCUT_KEYS.SEARCH]: '/search',
-      [SHORTCUT_KEYS.DISCOVER]: '/discover',
-      [SHORTCUT_KEYS.FOLLOWING]: '/following',
-      [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/communities',
-    },
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -321,6 +303,25 @@ class Navbar extends Component {
       this.renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) :
       this.renderLoggedOutNavbar(klassNames, hasLoadMoreButton, pathname)
   }
+}
+
+Navbar.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  json: PropTypes.object.isRequired,
+  modal: PropTypes.any,
+  profile: PropTypes.object,
+  router: PropTypes.object.isRequired,
+  shortcuts: PropTypes.object.isRequired,
+}
+
+Navbar.defaultProps = {
+  shortcuts: {
+    [SHORTCUT_KEYS.SEARCH]: '/search',
+    [SHORTCUT_KEYS.DISCOVER]: '/discover',
+    [SHORTCUT_KEYS.FOLLOWING]: '/following',
+    [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/communities',
+  },
 }
 
 function mapStateToProps(state) {

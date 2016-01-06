@@ -4,12 +4,6 @@ import { pushPath } from 'redux-simple-router'
 import classNames from 'classnames'
 
 class TextRegion extends Component {
-  static propTypes = {
-    content: PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    isGridLayout: PropTypes.bool.isRequired,
-    postDetailPath: PropTypes.string,
-  }
 
   handleRegionClick(e) {
     const { dispatch, isGridLayout, postDetailPath } = this.props
@@ -50,6 +44,13 @@ class TextRegion extends Component {
       </div>
     )
   }
+}
+
+TextRegion.propTypes = {
+  content: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  isGridLayout: PropTypes.bool.isRequired,
+  postDetailPath: PropTypes.string,
 }
 
 export default connect()(TextRegion)

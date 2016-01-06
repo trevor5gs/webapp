@@ -8,15 +8,6 @@ import RelationshipButton from '../relationships/RelationshipButton'
 import StarshipButton from '../relationships/StarshipButton'
 
 class RelationsGroup extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
-    pathname: PropTypes.string,
-    user: PropTypes.shape({
-      id: PropTypes.string,
-      priority: PropTypes.string,
-    }).isRequired,
-  }
 
   handleRelationshipUpdate(vo) {
     const { userId, priority, existing } = vo
@@ -68,6 +59,16 @@ function mapStateToProps(state) {
     isLoggedIn: state.authentication.isLoggedIn,
     pathname: state.router.path,
   }
+}
+
+RelationsGroup.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  pathname: PropTypes.string,
+  user: PropTypes.shape({
+    id: PropTypes.string,
+    priority: PropTypes.string,
+  }).isRequired,
 }
 
 export default connect(mapStateToProps, null, null, { withRef: true })(RelationsGroup)

@@ -5,10 +5,6 @@ import Avatar from '../assets/Avatar'
 import RelationsGroup from '../relationships/RelationsGroup'
 
 class UserInvitee extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    user: PropTypes.shape({}).isRequired,
-  }
 
   renderMailtoUserHeader(user) {
     const { email } = user
@@ -69,6 +65,11 @@ class UserInvitee extends Component {
     // return user.username ? this.renderAccepted(user) : this.renderPending(user)
     return user.username ? this.renderAccepted(user) : this.renderReInvite(user)
   }
+}
+
+UserInvitee.propTypes = {
+  className: PropTypes.string,
+  user: PropTypes.shape({}).isRequired,
 }
 
 export default UserInvitee

@@ -8,13 +8,6 @@ import StreamComponent from '../../components/streams/StreamComponent'
 import TabListLinks from '../../components/tabs/TabListLinks'
 
 class LoggedOutDiscover extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    pathname: PropTypes.string.isRequired,
-    params: PropTypes.shape({
-      type: PropTypes.string,
-    }),
-  }
 
   creditsTrackingEvent() {
     const { dispatch } = this.props
@@ -49,6 +42,14 @@ class LoggedOutDiscover extends Component {
 
 LoggedOutDiscover.preRender = (store, routerState) => {
   return store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
+}
+
+LoggedOutDiscover.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  pathname: PropTypes.string.isRequired,
+  params: PropTypes.shape({
+    type: PropTypes.string,
+  }),
 }
 
 function mapStateToProps(state) {

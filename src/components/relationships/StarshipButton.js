@@ -3,21 +3,6 @@ import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { StarIcon } from '../relationships/RelationshipIcons'
 
 class StarshipButton extends Component {
-  static propTypes = {
-    buttonWasClicked: PropTypes.func,
-    isLoggedIn: PropTypes.bool.isRequired,
-    priority: PropTypes.oneOf([
-      RELATIONSHIP_PRIORITY.INACTIVE,
-      RELATIONSHIP_PRIORITY.FRIEND,
-      RELATIONSHIP_PRIORITY.NOISE,
-      RELATIONSHIP_PRIORITY.SELF,
-      RELATIONSHIP_PRIORITY.MUTE,
-      RELATIONSHIP_PRIORITY.BLOCK,
-      RELATIONSHIP_PRIORITY.NONE,
-      null,
-    ]),
-    userId: PropTypes.string,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -60,6 +45,22 @@ class StarshipButton extends Component {
     const { priority } = this.state
     return priority === RELATIONSHIP_PRIORITY.SELF ? null : this.renderStar()
   }
+}
+
+StarshipButton.propTypes = {
+  buttonWasClicked: PropTypes.func,
+  isLoggedIn: PropTypes.bool.isRequired,
+  priority: PropTypes.oneOf([
+    RELATIONSHIP_PRIORITY.INACTIVE,
+    RELATIONSHIP_PRIORITY.FRIEND,
+    RELATIONSHIP_PRIORITY.NOISE,
+    RELATIONSHIP_PRIORITY.SELF,
+    RELATIONSHIP_PRIORITY.MUTE,
+    RELATIONSHIP_PRIORITY.BLOCK,
+    RELATIONSHIP_PRIORITY.NONE,
+    null,
+  ]),
+  userId: PropTypes.string,
 }
 
 export default StarshipButton

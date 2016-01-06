@@ -6,9 +6,6 @@ import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 
 class ForgotPassword extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -44,6 +41,10 @@ class ForgotPassword extends Component {
       </form>
     )
   }
+}
+
+ForgotPassword.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(ForgotPassword)

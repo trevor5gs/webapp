@@ -7,10 +7,6 @@ import BatchEmailControl from '../forms/BatchEmailControl'
 import FormButton from '../forms/FormButton'
 
 class InvitationForm extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    dispatch: PropTypes.func.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -57,6 +53,11 @@ class InvitationForm extends Component {
       </form>
     )
   }
+}
+
+InvitationForm.propTypes = {
+  className: PropTypes.string,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(InvitationForm)

@@ -10,17 +10,6 @@ const STATUS = {
 }
 
 class Avatar extends Component {
-  static propTypes = {
-    isModifiable: PropTypes.bool,
-    size: PropTypes.string,
-    sources: PropTypes.any,
-    to: PropTypes.string,
-  }
-
-  static defaultProps = {
-    isModifiable: false,
-    size: 'regular',
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -119,6 +108,18 @@ class Avatar extends Component {
         <div className="AvatarImage" style={style} />
       </span>
   }
+}
+
+Avatar.propTypes = {
+  isModifiable: PropTypes.bool,
+  size: PropTypes.string,
+  sources: PropTypes.any,
+  to: PropTypes.string,
+}
+
+Avatar.defaultProps = {
+  isModifiable: false,
+  size: 'regular',
 }
 
 export default Avatar

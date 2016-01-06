@@ -3,26 +3,6 @@ import classNames from 'classnames'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 
 class BatchEmailControl extends Component {
-  static propTypes = {
-    classModifiers: PropTypes.string,
-    controlWasChanged: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    status: PropTypes.string,
-    tabIndex: PropTypes.string.isRequired,
-    text: PropTypes.string,
-  }
-
-  static defaultProps = {
-    classModifiers: '',
-    id: 'invitations_email',
-    name: 'invitations[email]',
-    placeholder: 'Enter email addresses',
-    status: STATUS.INDETERMINATE,
-    tabIndex: '0',
-    text: '',
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -112,6 +92,27 @@ class BatchEmailControl extends Component {
       </div>
     )
   }
+}
+
+BatchEmailControl.propTypes = {
+  classModifiers: PropTypes.string,
+  controlWasChanged: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  status: PropTypes.string,
+  tabIndex: PropTypes.string.isRequired,
+  text: PropTypes.string,
+}
+
+BatchEmailControl.defaultProps = {
+  classModifiers: '',
+  id: 'invitations_email',
+  name: 'invitations[email]',
+  placeholder: 'Enter email addresses',
+  status: STATUS.INDETERMINATE,
+  tabIndex: '0',
+  text: '',
 }
 
 export default BatchEmailControl

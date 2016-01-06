@@ -2,24 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 
 class BioControl extends Component {
-  static propTypes = {
-    classModifiers: PropTypes.string,
-    controlWasChanged: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    tabIndex: PropTypes.string.isRequired,
-    text: PropTypes.string,
-  }
-
-  static defaultProps = {
-    classModifiers: '',
-    id: 'user_unsanitized_short_bio',
-    name: 'user[unsanitized_short_bio]',
-    placeholder: 'Bio (optional)',
-    tabIndex: '0',
-    text: '',
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -87,6 +69,25 @@ class BioControl extends Component {
       </div>
     )
   }
+}
+
+BioControl.propTypes = {
+  classModifiers: PropTypes.string,
+  controlWasChanged: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  tabIndex: PropTypes.string.isRequired,
+  text: PropTypes.string,
+}
+
+BioControl.defaultProps = {
+  classModifiers: '',
+  id: 'user_unsanitized_short_bio',
+  name: 'user[unsanitized_short_bio]',
+  placeholder: 'Bio (optional)',
+  tabIndex: '0',
+  text: '',
 }
 
 export default BioControl

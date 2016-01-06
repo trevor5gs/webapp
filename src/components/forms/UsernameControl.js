@@ -4,31 +4,6 @@ import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class UsernameControl extends Component {
-  static propTypes = {
-    classModifiers: PropTypes.string,
-    controlWasChanged: PropTypes.func.isRequired,
-    failureType: PropTypes.string,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    status: PropTypes.string,
-    showAdvice: PropTypes.bool,
-    suggestions: PropTypes.array,
-    tabIndex: PropTypes.string.isRequired,
-    text: PropTypes.string,
-  }
-
-  static defaultProps = {
-    classModifiers: '',
-    failureType: null,
-    id: 'user_username',
-    name: 'user[username]',
-    placeholder: 'Enter your username',
-    showAdvice: true,
-    status: STATUS.INDETERMINATE,
-    suggestions: null,
-    tabIndex: 0,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -210,6 +185,32 @@ class UsernameControl extends Component {
       </div>
     )
   }
+}
+
+UsernameControl.propTypes = {
+  classModifiers: PropTypes.string,
+  controlWasChanged: PropTypes.func.isRequired,
+  failureType: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  status: PropTypes.string,
+  showAdvice: PropTypes.bool,
+  suggestions: PropTypes.array,
+  tabIndex: PropTypes.string.isRequired,
+  text: PropTypes.string,
+}
+
+UsernameControl.defaultProps = {
+  classModifiers: '',
+  failureType: null,
+  id: 'user_username',
+  name: 'user[username]',
+  placeholder: 'Enter your username',
+  showAdvice: true,
+  status: STATUS.INDETERMINATE,
+  suggestions: null,
+  tabIndex: 0,
 }
 
 export default UsernameControl

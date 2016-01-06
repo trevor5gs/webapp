@@ -8,11 +8,6 @@ import FooterLink from '../footer/FooterLink'
 import FooterTool from '../footer/FooterTool'
 
 class Footer extends Component {
-  static propTypes = {
-    json: PropTypes.object,
-    router: PropTypes.object,
-  }
-
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -84,6 +79,11 @@ class Footer extends Component {
       </footer>
     )
   }
+}
+
+Footer.propTypes = {
+  json: PropTypes.object,
+  router: PropTypes.object,
 }
 
 function mapStateToProps(state) {

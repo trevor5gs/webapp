@@ -12,16 +12,6 @@ import Modal from '../components/modals/Modal'
 import Navbar from '../components/navbar/Navbar'
 
 class App extends Component {
-  static propTypes = {
-    authentication: PropTypes.object.isRequired,
-    children: PropTypes.node.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    pathname: PropTypes.string.isRequired,
-  }
-
-  static defaultProps = {
-    lastLocation: '',
-  }
 
   constructor(props, context) {
     const loggedOutPaths = {
@@ -98,6 +88,17 @@ App.preRender = (store) => {
   if (state.authentication && state.authentication.isLoggedIn) {
     return store.dispatch(loadProfile())
   }
+}
+
+App.propTypes = {
+  authentication: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  pathname: PropTypes.string.isRequired,
+}
+
+App.defaultProps = {
+  lastLocation: '',
 }
 
 function mapStateToProps(state) {

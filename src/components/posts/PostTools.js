@@ -24,13 +24,6 @@ import {
 } from '../posts/PostIcons'
 
 class PostTools extends Component {
-  static propTypes = {
-    author: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
-    post: PropTypes.object.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -236,6 +229,14 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
   }
+}
+
+PostTools.propTypes = {
+  author: PropTypes.object.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  post: PropTypes.object.isRequired,
 }
 
 export default connect(mapStateToProps)(PostTools)

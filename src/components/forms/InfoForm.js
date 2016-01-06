@@ -7,10 +7,6 @@ import NameControl from '../forms/NameControl'
 import LinksControl from '../forms/LinksControl'
 
 class InfoForm extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    profile: PropTypes.object,
-  }
 
   componentWillMount() {
     this.saveForm = debounce(this.saveForm, 300)
@@ -53,6 +49,11 @@ function mapStateToProps(state) {
   return {
     profile: state.profile,
   }
+}
+
+InfoForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  profile: PropTypes.object,
 }
 
 export default connect(mapStateToProps)(InfoForm)

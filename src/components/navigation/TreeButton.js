@@ -14,16 +14,6 @@ const TreeIcon = () =>
 
 
 class TreeButton extends Component {
-  static propTypes = {
-    children: PropTypes.string.isRequired,
-    className: PropTypes.string,
-    isCollapsed: PropTypes.bool,
-    onClick: PropTypes.func,
-  }
-
-  static defaultProps = {
-    isCollapsed: true,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -56,6 +46,17 @@ class TreeButton extends Component {
       </button>
     )
   }
+}
+
+TreeButton.propTypes = {
+  children: PropTypes.string.isRequired,
+  className: PropTypes.string,
+  isCollapsed: PropTypes.bool,
+  onClick: PropTypes.func,
+}
+
+TreeButton.defaultProps = {
+  isCollapsed: true,
 }
 
 export default TreeButton

@@ -10,9 +10,6 @@ import RegistrationForm from '../../components/forms/RegistrationForm'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class Join extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -52,6 +49,10 @@ class Join extends Component {
       </section>
     )
   }
+}
+
+Join.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(Join)

@@ -16,15 +16,6 @@ import Avatar from '../../components/assets/Avatar'
 import Cover from '../../components/assets/Cover'
 
 class Onboarding extends Component {
-  static propTypes = {
-    accessToken: PropTypes.string,
-    dispatch: PropTypes.func.isRequired,
-    json: PropTypes.object,
-    profile: PropTypes.object,
-    route: PropTypes.object,
-    router: PropTypes.object,
-    stream: PropTypes.object,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -203,6 +194,16 @@ class Onboarding extends Component {
         return null
     }
   }
+}
+
+Onboarding.propTypes = {
+  accessToken: PropTypes.string,
+  dispatch: PropTypes.func.isRequired,
+  json: PropTypes.object,
+  profile: PropTypes.object,
+  route: PropTypes.object,
+  router: PropTypes.object,
+  stream: PropTypes.object,
 }
 
 function mapStateToProps(state) {

@@ -2,10 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import Avatar from '../assets/Avatar'
 
 class NavbarProfile extends Component {
-  static propTypes = {
-    avatar: PropTypes.object,
-    username: PropTypes.string,
-  }
 
   render() {
     const { avatar, username } = this.props
@@ -22,6 +18,11 @@ class NavbarProfile extends Component {
       </span>
     )
   }
+}
+
+NavbarProfile.propTypes = {
+  avatar: PropTypes.object,
+  username: PropTypes.string,
 }
 
 export default NavbarProfile

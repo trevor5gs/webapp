@@ -9,9 +9,6 @@ import ForgotPasswordForm from '../../components/forms/ForgotPasswordForm'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class ForgotPassword extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -48,6 +45,10 @@ class ForgotPassword extends Component {
       </section>
     )
   }
+}
+
+ForgotPassword.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(ForgotPassword)

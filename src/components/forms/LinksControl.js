@@ -2,24 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 
 class LinksControl extends Component {
-  static propTypes = {
-    classModifiers: PropTypes.string,
-    controlWasChanged: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    tabIndex: PropTypes.string.isRequired,
-    text: PropTypes.string,
-  }
-
-  static defaultProps = {
-    classModifiers: '',
-    id: 'user_links',
-    name: 'user[links]',
-    placeholder: 'Links (optional)',
-    tabIndex: '0',
-    text: '',
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -85,6 +67,25 @@ class LinksControl extends Component {
       </div>
     )
   }
+}
+
+LinksControl.propTypes = {
+  classModifiers: PropTypes.string,
+  controlWasChanged: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  tabIndex: PropTypes.string.isRequired,
+  text: PropTypes.string,
+}
+
+LinksControl.defaultProps = {
+  classModifiers: '',
+  id: 'user_links',
+  name: 'user[links]',
+  placeholder: 'Links (optional)',
+  tabIndex: '0',
+  text: '',
 }
 
 export default LinksControl

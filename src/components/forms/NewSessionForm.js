@@ -7,9 +7,6 @@ import EmailControl from '../forms/EmailControl'
 import PasswordControl from '../forms/PasswordControl'
 
 class NewSessionForm extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -53,6 +50,10 @@ class NewSessionForm extends Component {
       </form>
     )
   }
+}
+
+NewSessionForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(NewSessionForm)

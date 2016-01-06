@@ -2,11 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { ElloMark } from '../interface/ElloIcons'
 
 class Paginator extends Component {
-  static propTypes = {
-    delegate: PropTypes.object,
-    hasShowMoreButton: PropTypes.bool,
-    pagination: PropTypes.object,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -52,6 +47,12 @@ class Paginator extends Component {
       </div>
     )
   }
+}
+
+Paginator.propTypes = {
+  delegate: PropTypes.object,
+  hasShowMoreButton: PropTypes.bool,
+  pagination: PropTypes.object,
 }
 
 export default Paginator

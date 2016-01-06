@@ -7,9 +7,6 @@ import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 
 class RegistrationRequestForm extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -99,6 +96,10 @@ class RegistrationRequestForm extends Component {
         <FormButton tabIndex="2" disabled={!isFormValid}>Sign up</FormButton>
       </form>
   }
+}
+
+RegistrationRequestForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

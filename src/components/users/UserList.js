@@ -4,10 +4,6 @@ import RelationsGroup from '../relationships/RelationsGroup'
 import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
 
 class UserList extends Component {
-  static propTypes = {
-    user: PropTypes.shape({
-    }).isRequired,
-  }
 
   render() {
     const user = this.props.user
@@ -22,6 +18,11 @@ class UserList extends Component {
       </div>
     )
   }
+}
+
+UserList.propTypes = {
+  user: PropTypes.shape({
+  }).isRequired,
 }
 
 export default UserList

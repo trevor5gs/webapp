@@ -2,13 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 
 class ToggleControl extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    id: PropTypes.string.isRequired,
-    isChecked: PropTypes.bool,
-    isDisabled: PropTypes.bool,
-    onChange: PropTypes.func,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -58,6 +51,14 @@ class ToggleControl extends Component {
     )
   }
 
+}
+
+ToggleControl.propTypes = {
+  className: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  isChecked: PropTypes.bool,
+  isDisabled: PropTypes.bool,
+  onChange: PropTypes.func,
 }
 
 export default ToggleControl

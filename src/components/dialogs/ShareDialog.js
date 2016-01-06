@@ -32,11 +32,6 @@ SHARE_DIMENSIONS[SHARE_TYPES.TUMBLR] = { width: 450, height: 430 }
 SHARE_DIMENSIONS[SHARE_TYPES.TWITTER] = { width: 520, height: 250 }
 
 class ShareDialog extends Component {
-  static propTypes = {
-    author: PropTypes.object.isRequired,
-    post: PropTypes.object.isRequired,
-    trackEvent: PropTypes.func,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -99,7 +94,6 @@ class ShareDialog extends Component {
 
   popShareWindow(e) {
     const type = e.target.dataset.type
-    console.log('type', type)
     const url = this.getUrl(type)
     const { trackEvent } = this.props
     if (url.indexOf('mailto') === 0) {
@@ -141,6 +135,12 @@ class ShareDialog extends Component {
       </div>
     )
   }
+}
+
+ShareDialog.propTypes = {
+  author: PropTypes.object.isRequired,
+  post: PropTypes.object.isRequired,
+  trackEvent: PropTypes.func,
 }
 
 export default ShareDialog

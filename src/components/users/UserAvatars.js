@@ -3,11 +3,6 @@ import { loadUserAvatars } from '../../actions/user'
 import StreamComponent from '../streams/StreamComponent'
 
 class UserAvatars extends Component {
-  static propTypes = {
-    endpoint: PropTypes.object.isRequired,
-    icon: PropTypes.element.isRequired,
-    resultKey: PropTypes.string.isRequired,
-  }
 
   render() {
     const { endpoint, icon, resultKey } = this.props
@@ -21,6 +16,12 @@ class UserAvatars extends Component {
       </section>
     )
   }
+}
+
+UserAvatars.propTypes = {
+  endpoint: PropTypes.object.isRequired,
+  icon: PropTypes.element.isRequired,
+  resultKey: PropTypes.string.isRequired,
 }
 
 export default UserAvatars

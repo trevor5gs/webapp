@@ -4,27 +4,6 @@ import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class PasswordControl extends Component {
-  static propTypes = {
-    classModifiers: PropTypes.string,
-    controlWasChanged: PropTypes.func,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    showSuggestion: PropTypes.bool,
-    status: PropTypes.string,
-    tabIndex: PropTypes.string.isRequired,
-    text: PropTypes.string,
-  }
-
-  static defaultProps = {
-    classModifiers: '',
-    id: 'user_password',
-    name: 'user[password]',
-    placeholder: 'Enter your password',
-    showSuggestion: true,
-    status: STATUS.INDETERMINATE,
-    tabIndex: 0,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -143,6 +122,28 @@ class PasswordControl extends Component {
       </div>
     )
   }
+}
+
+PasswordControl.propTypes = {
+  classModifiers: PropTypes.string,
+  controlWasChanged: PropTypes.func,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  showSuggestion: PropTypes.bool,
+  status: PropTypes.string,
+  tabIndex: PropTypes.string.isRequired,
+  text: PropTypes.string,
+}
+
+PasswordControl.defaultProps = {
+  classModifiers: '',
+  id: 'user_password',
+  name: 'user[password]',
+  placeholder: 'Enter your password',
+  showSuggestion: true,
+  status: STATUS.INDETERMINATE,
+  tabIndex: 0,
 }
 
 export default PasswordControl

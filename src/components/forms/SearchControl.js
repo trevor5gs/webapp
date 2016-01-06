@@ -2,22 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 
 class SearchControl extends Component {
-  static propTypes = {
-    controlWasChanged: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    tabIndex: PropTypes.string.isRequired,
-    text: PropTypes.string,
-  }
-
-  static defaultProps = {
-    id: 'search_field',
-    name: 'terms',
-    placeholder: 'Search',
-    tabIndex: '0',
-    text: '',
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -73,6 +57,23 @@ class SearchControl extends Component {
       </div>
     )
   }
+}
+
+SearchControl.propTypes = {
+  controlWasChanged: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  tabIndex: PropTypes.string.isRequired,
+  text: PropTypes.string,
+}
+
+SearchControl.defaultProps = {
+  id: 'search_field',
+  name: 'terms',
+  placeholder: 'Search',
+  tabIndex: '0',
+  text: '',
 }
 
 export default SearchControl

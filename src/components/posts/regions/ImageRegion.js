@@ -11,13 +11,6 @@ const STATUS = {
 }
 
 class ImageRegion extends Component {
-  static propTypes = {
-    assets: PropTypes.object.isRequired,
-    content: PropTypes.object.isRequired,
-    isGridLayout: PropTypes.bool.isRequired,
-    links: PropTypes.object,
-    postDetailPath: PropTypes.string,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -219,6 +212,14 @@ class ImageRegion extends Component {
     }
     return this.renderContent()
   }
+}
+
+ImageRegion.propTypes = {
+  assets: PropTypes.object.isRequired,
+  content: PropTypes.object.isRequired,
+  isGridLayout: PropTypes.bool.isRequired,
+  links: PropTypes.object,
+  postDetailPath: PropTypes.string,
 }
 
 export default ImageRegion

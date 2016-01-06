@@ -5,12 +5,6 @@ import StreamComponent from '../../components/streams/StreamComponent'
 import TabListLinks from '../../components/tabs/TabListLinks'
 
 class Discover extends Component {
-  static propTypes = {
-    pathname: PropTypes.string.isRequired,
-    params: PropTypes.shape({
-      type: PropTypes.string,
-    }),
-  }
 
   render() {
     const { params, pathname } = this.props
@@ -44,6 +38,13 @@ class Discover extends Component {
 
 Discover.preRender = (store, routerState) => {
   return store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
+}
+
+Discover.propTypes = {
+  pathname: PropTypes.string.isRequired,
+  params: PropTypes.shape({
+    type: PropTypes.string,
+  }),
 }
 
 function mapStateToProps(state) {

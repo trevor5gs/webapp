@@ -12,12 +12,6 @@ function getComponentKind(modal) {
 }
 
 class Modal extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    isActive: PropTypes.func,
-    modal: PropTypes.object,
-    wrapperClasses: PropTypes.string,
-  }
 
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => {
@@ -74,6 +68,13 @@ class Modal extends Component {
     }
     return <div className={groupClassNames}/>
   }
+}
+
+Modal.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  isActive: PropTypes.func,
+  modal: PropTypes.object,
+  wrapperClasses: PropTypes.string,
 }
 
 function mapStateToProps(state) {

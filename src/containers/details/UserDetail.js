@@ -5,11 +5,6 @@ import { loadUserDetail } from '../../actions/user'
 import StreamComponent from '../../components/streams/StreamComponent'
 
 class UserDetail extends Component {
-  static propTypes = {
-    params: PropTypes.shape({
-      username: PropTypes.string.isRequired,
-    }).isRequired,
-  }
 
   render() {
     const { params } = this.props
@@ -28,6 +23,12 @@ class UserDetail extends Component {
 
 UserDetail.preRender = (store, routerState) => {
   return store.dispatch(loadUserDetail(`~${routerState.params.username}`))
+}
+
+UserDetail.propTypes = {
+  params: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default UserDetail

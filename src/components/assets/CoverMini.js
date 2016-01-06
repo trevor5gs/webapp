@@ -10,10 +10,6 @@ const STATUS = {
 }
 
 class CoverMini extends Component {
-  static propTypes = {
-    coverImage: PropTypes.any,
-    to: PropTypes.string,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -108,6 +104,11 @@ class CoverMini extends Component {
         <figure className="CoverMiniImage" style={style} />
       </span>
   }
+}
+
+CoverMini.propTypes = {
+  coverImage: PropTypes.any,
+  to: PropTypes.string,
 }
 
 export default CoverMini

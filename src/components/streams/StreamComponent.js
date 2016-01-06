@@ -11,15 +11,6 @@ import { ElloMark } from '../interface/ElloIcons'
 import Paginator from '../streams/Paginator'
 
 export class StreamComponent extends Component {
-  static propTypes = {
-    action: PropTypes.object,
-    currentUser: PropTypes.object,
-    dispatch: PropTypes.func.isRequired,
-    initModel: PropTypes.object,
-    json: PropTypes.object.isRequired,
-    router: PropTypes.object.isRequired,
-    stream: PropTypes.object.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -269,6 +260,16 @@ export class StreamComponent extends Component {
       </section>
     )
   }
+}
+
+StreamComponent.propTypes = {
+  action: PropTypes.object,
+  currentUser: PropTypes.object,
+  dispatch: PropTypes.func.isRequired,
+  initModel: PropTypes.object,
+  json: PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
+  stream: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {

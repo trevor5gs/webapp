@@ -13,16 +13,6 @@ import StreamComponent from '../../components/streams/StreamComponent'
 import TabListButtons from '../../components/tabs/TabListButtons'
 
 class Find extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    location: PropTypes.shape({
-      query: PropTypes.shape({
-        terms: PropTypes.string,
-        type: PropTypes.string,
-      }).isRequired,
-    }).isRequired,
-    search: PropTypes.object.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -126,6 +116,17 @@ class Find extends Component {
       </section>
     )
   }
+}
+
+Find.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    query: PropTypes.shape({
+      terms: PropTypes.string,
+      type: PropTypes.string,
+    }).isRequired,
+  }).isRequired,
+  search: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
