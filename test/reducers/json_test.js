@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { expect, stub, isValidResult, json, clearJSON, sinon } from '../spec_helper'
 import * as subject from '../../src/reducers/json'
 import * as ACTION_TYPES from '../../src/constants/action_types'
@@ -21,7 +22,7 @@ function createRelationshipTest(priority) {
   expect(json.users['1'].relationshipPriority).to.be.null
   expect(json.users['1'].followersCount).to.equal(0)
   const action = {}
-  action.payload = { userId: '1', priority: priority }
+  action.payload = { userId: '1', priority }
   action.meta = { mappingType: MAPPING_TYPES.USERS }
   subject.methods.updateRelationship(json, action)
   expect(json.users['1'].relationshipPriority).to.equal(priority)
@@ -32,7 +33,7 @@ function destroyRelationshipTest(priority) {
   expect(json.users['1'].relationshipPriority).to.be.null
   expect(json.users['1'].followersCount).to.equal(0)
   const action = {}
-  action.payload = { userId: '1', priority: priority }
+  action.payload = { userId: '1', priority }
   action.meta = { mappingType: MAPPING_TYPES.USERS }
   subject.methods.updateRelationship(json, action)
   expect(json.users['1'].relationshipPriority).to.equal(priority)
