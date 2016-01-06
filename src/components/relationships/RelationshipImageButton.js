@@ -14,7 +14,7 @@ class RelationshipImageButton extends RelationshipButton {
       <button
         className="RelationshipImageButton"
         style={style}
-        onClick={::this.updatePriority}
+        onClick={::this.buttonWasClicked}
         data-priority={priority}
         data-next-priority={nextPriority}
       >

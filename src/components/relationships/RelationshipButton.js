@@ -13,9 +13,11 @@ class RelationshipButton extends Component {
     }
   }
 
-  updatePriority(e) {
-    const nextPriority = e.target.dataset.nextPriority
-    console.log('priority', nextPriority)
+  buttonWasClicked(e) {
+    this.updatePriority(e.target.dataset.nextPriority)
+  }
+
+  updatePriority(nextPriority) {
     const { buttonWasClicked, isLoggedIn, userId } = this.props
     if (isLoggedIn) {
       this.setState({ priority: nextPriority })
@@ -30,7 +32,7 @@ class RelationshipButton extends Component {
     return (
       <button
         className="RelationshipButton"
-        onClick={::this.updatePriority}
+        onClick={::this.buttonWasClicked}
         data-priority={priority}
         data-next-priority={nextPriority}
       >
