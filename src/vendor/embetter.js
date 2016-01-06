@@ -71,7 +71,7 @@
         }
       }
       // handle mobile auto-embed on scroll
-      if(embetter.utils.isMobile && embetter.mobileScrollSetup == false) {
+      if(embetter.utils.isMobile && embetter.mobileScrollSetup === false) {
         window.addEventListener('scroll', embetter.utils.scrollListener);
         embetter.mobileScrollSetup = true;
         // force scroll to trigger listener on page load
@@ -101,8 +101,8 @@
       }, 500);
     },
     initPlayer: function(embedEl, service) {
-      if(embedEl.classList.contains('embetter-ready') == true) return;
-      if(embedEl.classList.contains('embetter-static') == true) return;
+      if(embedEl.classList.contains('embetter-ready') === true) return;
+      if(embedEl.classList.contains('embetter-static') === true) return;
       embetter.curEmbeds.push( new embetter.EmbetterPlayer(embedEl, service) );
     },
     unembedPlayers: function(containerEl) {
@@ -141,7 +141,7 @@
     },
     getPlayerFromEl: function(el) {
       for (var i=0; i < embetter.curEmbeds.length; i++) {
-        if(el == embetter.curEmbeds[i].el) {
+        if(el === embetter.curEmbeds[i].el) {
           return embetter.curEmbeds[i];
         }
       }
@@ -151,7 +151,7 @@
       // dispose any players no longer in the DOM
       for (var i = embetter.curEmbeds.length - 1; i >= 0; i--) {
         var embed = embetter.curEmbeds[i];
-        if(document.body.contains(embed.el) == false || embed.el == null) {
+        if(document.body.contains(embed.el) === false || embed.el === null) {
           embed.dispose();
           delete embetter.curEmbeds.splice(i,1);
         }
@@ -183,7 +183,7 @@
     dataAttribute: 'data-youtube-id',
     regex: /(?:.+?)?(?:youtube\.com\/v\/|watch\/|\?v=|\&v=|youtu\.be\/|\/v=|^youtu\.be\/)([a-zA-Z0-9_-]{11})+/,
     embed: function(id, w, h, autoplay) {
-      var autoplayQuery = (autoplay == true) ? '&autoplay=1' : '';
+      var autoplayQuery = (autoplay === true) ? '&autoplay=1' : '';
       return '<iframe class="video" enablejsapi="1" width="'+ w +'" height="'+ h +'" src="https://www.youtube.com/embed/'+ id +'?rel=0&suggestedQuality=hd720&enablejsapi=1'+ autoplayQuery +'" frameborder="0" scrolling="no" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>';
     },
     link: function(id) {
@@ -218,7 +218,7 @@
             'onError': function() {},
             'onStateChange': function(e) {
               /* -1 (unstarted) | 0 (ended) | 1 (playing) | 2 (paused) | 3 (buffering) | 5 (video cued) */
-              if(e.data == 0) {
+              if(e.data === 0) {
                 embetter.utils.mediaComplete();
               }
             }
@@ -237,7 +237,7 @@
     dataAttribute: 'data-vimeo-id',
     regex: embetter.utils.buildRegex('vimeo.com\/(\\S*)'),
     embed: function(id, w, h, autoplay) {
-      var autoplayQuery = (autoplay == true) ? '&amp;autoplay=1' : '';
+      var autoplayQuery = (autoplay === true) ? '&amp;autoplay=1' : '';
       return '<iframe id="' + id + '" src="//player.vimeo.com/video/'+ id +'?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff&amp;api=1&amp;player_id=' + id + autoplayQuery +'" width="'+ w +'" height="'+ h +'" frameborder="0" scrolling="no" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
     },
     link: function(id) {
@@ -291,7 +291,7 @@
     dataAttribute: 'data-soundcloud-id',
     regex: embetter.utils.buildRegex('(?:soundcloud.com|snd.sc)\\/([a-zA-Z0-9_-]*(?:\\/sets)?(?:\\/groups)?\\/[a-zA-Z0-9_-]*)'),
     embed: function(id, w, h, autoplay) {
-      var autoplayQuery = (autoplay == true) ? '&amp;auto_play=true' : '';
+      var autoplayQuery = (autoplay === true) ? '&amp;auto_play=true' : '';
       if(!id.match(/^(playlist|track|group)/)) id = 'tracks/' + id; // if no tracks/sound-id, prepend tracks/ (mostly for legacy compatibility)
       return '<iframe id="sc-widget" width="100%" height="600" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/'+ id + autoplayQuery +'&amp;hide_related=false&amp;color=373737&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>';
     },
@@ -359,7 +359,7 @@
     dataAttribute: 'data-dailymotion-id',
     regex: embetter.utils.buildRegex('dailymotion.com\/video\/([a-zA-Z0-9-_]*)'),
     embed: function(id, w, h, autoplay) {
-      var autoplayQuery = (autoplay == true) ? '?autoPlay=1' : '';
+      var autoplayQuery = (autoplay === true) ? '?autoPlay=1' : '';
       return '<iframe class="video" width="'+ w +'" height="'+ h +'" src="//www.dailymotion.com/embed/video/'+ id + autoplayQuery +'" frameborder="0" scrolling="no" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>';
     },
     link: function(id) {
@@ -376,7 +376,7 @@
     dataAttribute: 'data-rdio-id',
     regex: embetter.utils.buildRegex('rdio.com\/(\\S*)'),
     embed: function(id, w, h, autoplay) {
-      // var autoplayQuery = (autoplay == true) ? '?autoplay=' : '';
+      // var autoplayQuery = (autoplay === true) ? '?autoplay=' : '';
       var autoplayQuery = '';
       return '<iframe width="100%" height="400" src="https://rd.io/i/'+ id + '/' + autoplayQuery +'" frameborder="0" scrolling="no"></iframe>';
     },
@@ -394,7 +394,7 @@
     dataAttribute: 'data-mixcloud-id',
     regex: embetter.utils.buildRegex('(?:mixcloud.com)\\/(.*\\/.*)'),
     embed: function(id, w, h, autoplay) {
-      var autoplayQuery = (autoplay == true) ? '&amp;autoplay=true' : '';
+      var autoplayQuery = (autoplay === true) ? '&amp;autoplay=true' : '';
       return '<iframe width="660" height="180" src="https://www.mixcloud.com/widget/iframe/?feed=' + window.escape('http://www.mixcloud.com/' + id) + '&amp;replace=0&amp;hide_cover=1&amp;stylecolor=ffffff&amp;embed_type=widget_standard&amp;'+ autoplayQuery +'" frameborder="0" scrolling="no"></iframe>';
     },
     link: function(id) {
@@ -458,7 +458,7 @@
     dataAttribute: 'data-ustream-id',
     regex: embetter.utils.buildRegex('(?:ustream.tv|ustre.am)\\/((?:(recorded|channel)\\/)?[a-zA-Z0-9_\\-%]*)'),
     embed: function(id, w, h, autoplay) {
-      var autoplayQuery = (autoplay == true) ? '&amp;autoplay=true' : '';
+      var autoplayQuery = (autoplay === true) ? '&amp;autoplay=true' : '';
       return '<iframe width="480" height="300" src="https://www.ustream.tv/embed/' + id + '?v=3&amp;wmode=direct' + autoplayQuery + '" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>';
     },
     link: function(id) {
@@ -590,7 +590,7 @@
       embetter.curPlayer = self;
     };
     // load API if one exists for service, otherwise just play
-    if(this.serviceObj.loadAPI && embetter.apiEnabled == true && embetter.utils.isMobile == false) {
+    if(this.serviceObj.loadAPI && embetter.apiEnabled === true && embetter.utils.isMobile === false) {
       this.serviceObj.loadAPI(startPlaying);
     } else {
       startPlaying();
@@ -606,7 +606,7 @@
 
   // embed if mobile
   embetter.EmbetterPlayer.prototype.embedMedia = function(autoplay) {
-    if(this.el.classList.contains('embetter-playing') == true) return;
+    if(this.el.classList.contains('embetter-playing') === true) return;
     if(this.id != null) this.playerEl = embetter.utils.stringToDomElement(this.serviceObj.embed(this.id, this.thumbnail.width, this.thumbnail.height, autoplay));
     this.el.appendChild(this.playerEl);
     this.el.classList.add('embetter-playing');
