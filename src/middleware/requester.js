@@ -165,8 +165,9 @@ export const requester = store => next => action => {
             .catch(error => {
               delete runningFetches[error.response.url]
               if ((error.response.status === 401 || error.response.status === 403) &&
-                  state.router.path.indexOf('/onboarding') === 0) {
-                resetAuth(store.dispatch, state.router.location)
+                  state.router.path.indexOf('/onboarding') === 0 &&
+                  typeof document !== 'undefined') {
+                resetAuth(store.dispatch, document.location)
               }
               next({ error, meta, payload, type: FAILURE })
               return false

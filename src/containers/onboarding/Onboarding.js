@@ -20,8 +20,10 @@ class Onboarding extends Component {
   constructor(props, context) {
     super(props, context)
     // check auth
-    const { accessToken, dispatch, router } = props
-    checkAuth(dispatch, accessToken, router.location)
+    const { accessToken, dispatch } = props
+    if (typeof document !== 'undefined') {
+      checkAuth(dispatch, accessToken, document.location)
+    }
   }
 
   getAvatarSource(profile) {
