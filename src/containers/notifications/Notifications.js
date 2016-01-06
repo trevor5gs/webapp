@@ -1,21 +1,25 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { loadNotifications } from '../../actions/notifications'
 import StreamComponent from '../../components/streams/StreamComponent'
-import { BubbleIcon, HeartIcon, RepostIcon, RelationshipIcon } from '../../components/notifications/NotificationIcons'
+import {
+  BubbleIcon,
+  HeartIcon,
+  RepostIcon,
+  RelationshipIcon,
+} from '../../components/notifications/NotificationIcons'
 import TabListLinks from '../../components/tabs/TabListLinks'
 
 class Notifications extends Component {
   static propTypes = {
-    location: PropTypes.shape({
-      pathname: PropTypes.string,
-    }),
+    pathname: PropTypes.string,
     params: PropTypes.shape({
       category: PropTypes.string,
     }),
   }
 
   render() {
-    const { pathname } = this.props.location
+    const { pathname } = this.props
     const { category } = this.props.params
     const params = {}
     if (category) {
@@ -52,5 +56,11 @@ Notifications.preRender = (store, routerState) => {
   return store.dispatch(loadNotifications(params))
 }
 
-export default Notifications
+function mapStateToProps(state) {
+  return {
+    pathname: state.router.path,
+  }
+}
+
+export default connect(mapStateToProps)(Notifications)
 

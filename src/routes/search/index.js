@@ -1,7 +1,7 @@
 export default [
   {
     path: 'search',
-    getComponents(location, cb) {
+    getComponent(location, cb) {
       // require.ensure([], (require) => {
       cb(null, require('../../containers/search/Search'))
       // })
@@ -9,7 +9,7 @@ export default [
   },
   {
     path: 'find',
-    getComponents(location, cb) {
+    getComponent(location, cb) {
       // require.ensure([], (require) => {
       cb(null, require('../../containers/search/Find'))
       // })

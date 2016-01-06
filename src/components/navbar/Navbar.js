@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { pushState } from 'redux-router'
+import { pushPath } from 'redux-simple-router'
 import classNames from 'classnames'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
@@ -53,7 +53,7 @@ class Navbar extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
-      dispatch(pushState(window.history.state, this.props.shortcuts[shortcut]))
+      dispatch(pushPath(this.props.shortcuts[shortcut], window.history.state))
     })
 
     Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
@@ -67,14 +67,14 @@ class Navbar extends Component {
     // TODO: probably need to handle this a bit better
     Mousetrap.bind(SHORTCUT_KEYS.LOGOUT, () => {
       dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
-      dispatch(pushState(window.history.state, '/'))
+      dispatch(pushPath('/', window.history.state))
     })
 
     Mousetrap.bind(SHORTCUT_KEYS.TOGGLE_LAYOUT, () => {
       const { json, router } = this.props
       let result = null
       if (json.pages) {
-        result = json.pages[router.location.pathname]
+        result = json.pages[router.path]
       }
       if (result && result.mode) {
         const newMode = result.mode === 'grid' ? 'list' : 'grid'
@@ -90,8 +90,20 @@ class Navbar extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { router } = nextProps
-    const pathnames = router.location.pathname.split('/').slice(1)
-    const whitelist = ['', 'discover', 'following', 'starred', 'notifications', 'search', 'invitations', 'onboarding', 'staff', 'find', 'explore']
+    const pathnames = router.path.split('/').slice(1)
+    const whitelist = [
+      '',
+      'discover',
+      'explore',
+      'find',
+      'following',
+      'invitations',
+      'notifications',
+      'onboarding',
+      'search',
+      'staff',
+      'starred',
+    ]
     const isWhitelisted = (whitelist.indexOf(pathnames[0]) >= 0 || pathnames[1] === 'post')
     const isPageChangeUpdate = pathnames[0] !== this.currentPath
     if (isPageChangeUpdate) {
@@ -199,13 +211,48 @@ class Navbar extends Component {
       <nav className={klassNames} role="navigation">
         <NavbarMark />
         <NavbarOmniButton callback={::this.omniButtonWasClicked} />
-        { hasLoadMoreButton ? <NavbarMorePostsButton callback={::this.loadMorePostsWasClicked} /> : null }
+        {
+          hasLoadMoreButton ?
+          <NavbarMorePostsButton callback={::this.loadMorePostsWasClicked} /> :
+          null
+        }
         <div className="NavbarLinks">
-          <NavbarLink to="/discover" label="Discover" modifiers="LabelOnly" pathname={pathname} icon={ <SparklesIcon/> } />
-          <NavbarLink to="/following" label="Following" modifiers="LabelOnly" pathname={pathname} icon={ <CircleIcon/> } />
-          <NavbarLink to="/starred" label="Starred" modifiers="" pathname={pathname} icon={ <StarIcon/> } />
-          <NavbarLink to="/notifications" label="Notifications" modifiers="IconOnly" pathname={pathname} icon={ <BoltIcon/> } />
-          <NavbarLink to="/search" label="Search" modifiers="IconOnly" pathname={pathname} onClick={::this.searchWasClicked} icon={ <SearchIcon/> } />
+          <NavbarLink
+            to="/discover"
+            label="Discover"
+            modifiers="LabelOnly"
+            pathname={pathname}
+            icon={ <SparklesIcon/> }
+          />
+          <NavbarLink
+            to="/following"
+            label="Following"
+            modifiers="LabelOnly"
+            pathname={pathname}
+            icon={ <CircleIcon/> }
+          />
+          <NavbarLink
+            to="/starred"
+            label="Starred"
+            modifiers=""
+            pathname={pathname}
+            icon={ <StarIcon/> }
+          />
+          <NavbarLink
+            to="/notifications"
+            label="Notifications"
+            modifiers="IconOnly"
+            pathname={pathname}
+            icon={ <BoltIcon/> }
+          />
+          <NavbarLink
+            to="/search"
+            label="Search"
+            modifiers="IconOnly"
+            pathname={pathname}
+            onClick={::this.searchWasClicked}
+            icon={ <SearchIcon/> }
+          />
         </div>
         <NavbarProfile { ...profile.payload } />
       </nav>
@@ -217,12 +264,41 @@ class Navbar extends Component {
       <nav className={klassNames} role="navigation">
         <NavbarMark />
         <NavbarLabel />
-        { hasLoadMoreButton ? <NavbarMorePostsButton callback={::this.loadMorePostsWasClicked} /> : null }
+        {
+          hasLoadMoreButton ?
+            <NavbarMorePostsButton callback={::this.loadMorePostsWasClicked} /> :
+            null
+        }
         <div className="NavbarLinks">
-          <NavbarLink to="/explore" label="Discover" modifiers="LabelOnly" pathname={pathname} icon={ <SparklesIcon/> } />
-          <NavbarLink to="/find" label="Search" modifiers="IconOnly" pathname={pathname} onClick={::this.searchWasClicked} icon={ <SearchIcon/> } />
-          <NavbarLink to="/enter" label="Log in" modifiers="LabelOnly" pathname={pathname} onClick={::this.logInWasClicked}/>
-          <NavbarLink to="/signup" label="Sign up" modifiers="LabelOnly" pathname={pathname} onClick={::this.launchSignUpModal} />
+          <NavbarLink
+            to="/explore"
+            label="Discover"
+            modifiers="LabelOnly"
+            pathname={pathname}
+            icon={ <SparklesIcon/> }
+          />
+          <NavbarLink
+            to="/find"
+            label="Search"
+            modifiers="IconOnly"
+            pathname={pathname}
+            onClick={::this.searchWasClicked}
+            icon={ <SearchIcon/> }
+          />
+          <NavbarLink
+            to="/enter"
+            label="Log in"
+            modifiers="LabelOnly"
+            pathname={pathname}
+            onClick={::this.logInWasClicked}
+          />
+          <NavbarLink
+            to="/signup"
+            label="Sign up"
+            modifiers="LabelOnly"
+            pathname={pathname}
+            onClick={::this.launchSignUpModal}
+          />
         </div>
       </nav>
     )
@@ -237,11 +313,13 @@ class Navbar extends Component {
       { asHidden: this.state.asHidden },
       { skipTransition: this.state.skipTransition },
     )
-    const pathname = router && router.location ? router.location.pathname : ''
-    const result = json.pages && router ? json.pages[router.location.pathname] : null
+    const pathname = router ? router.path : ''
+    const result = json.pages && router ? json.pages[router.path] : null
     const hasLoadMoreButton = result && result.newIds
 
-    return isLoggedIn ? this.renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) : this.renderLoggedOutNavbar(klassNames, hasLoadMoreButton, pathname)
+    return isLoggedIn ?
+      this.renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) :
+      this.renderLoggedOutNavbar(klassNames, hasLoadMoreButton, pathname)
   }
 }
 

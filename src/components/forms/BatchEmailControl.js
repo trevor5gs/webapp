@@ -28,7 +28,7 @@ class BatchEmailControl extends Component {
     super(props, context)
     const { text } = this.props
     this.state = {
-      text: text,
+      text,
       hasValue: text && text.length,
       hasFocus: false,
     }
@@ -78,8 +78,8 @@ class BatchEmailControl extends Component {
       'FormControlGroup',
       classModifiers,
       this.mapStatusToClass(),
-      { hasFocus: hasFocus },
-      { hasValue: hasValue },
+      { hasFocus },
+      { hasValue },
     )
     const labelClassNames = classNames(
       'FormControlLabel',
@@ -104,9 +104,9 @@ class BatchEmailControl extends Component {
           placeholder={placeholder}
           autoCapitalize="off"
           autoCorrect="off"
-          onFocus={(e) => this.handleFocus(e)}
-          onBlur={(e) => this.handleBlur(e)}
-          onChange={(e) => this.handleChange(e)}
+          onBlur={::this.handleBlur}
+          onChange={::this.handleChange}
+          onFocus={::this.handleFocus}
         />
         { this.renderError() }
       </div>

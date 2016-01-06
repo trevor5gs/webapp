@@ -28,13 +28,15 @@ class RelationshipButton extends Component {
     }
   }
 
-  updatePriority(priority) {
+  updatePriority(e) {
+    const nextPriority = e.target.dataset.nextPriority
+    console.log('priority', nextPriority)
     const { buttonWasClicked, isLoggedIn, userId } = this.props
     if (isLoggedIn) {
-      this.setState({ priority: priority })
+      this.setState({ priority: nextPriority })
     }
     if (buttonWasClicked) {
-      buttonWasClicked({ userId, priority, existing: this.state.priority })
+      buttonWasClicked({ userId, priority: nextPriority, existing: this.state.priority })
     }
   }
 
@@ -43,8 +45,10 @@ class RelationshipButton extends Component {
     return (
       <button
         className="RelationshipButton"
-        onClick={() => this.updatePriority(nextPriority)}
-        data-priority={priority}>
+        onClick={::this.updatePriority}
+        data-priority={priority}
+        data-next-priority={nextPriority}
+      >
         {icon}
         <span>{label}</span>
       </button>
@@ -59,7 +63,8 @@ class RelationshipButton extends Component {
     return (
       <button
         className="RelationshipButton"
-        data-priority={priority}>
+        data-priority={priority}
+      >
         <span>{label}</span>
       </button>
     )
@@ -71,7 +76,8 @@ class RelationshipButton extends Component {
       <Link
         className="RelationshipButton"
         to="/settings"
-        data-priority={priority}>
+        data-priority={priority}
+      >
         <MiniPlusIcon />
         <span>Edit Profile</span>
       </Link>
@@ -107,7 +113,9 @@ class RelationshipButton extends Component {
 
   render() {
     const { priority } = this.state
-    const fn = priority ? `renderAs${priority.charAt(0).toUpperCase() + priority.slice(1)}` : 'renderAsInactive'
+    const fn = priority ?
+      `renderAs${priority.charAt(0).toUpperCase() + priority.slice(1)}` :
+      'renderAsInactive'
     return this[fn]()
   }
 }

@@ -38,7 +38,12 @@ class InvitationForm extends Component {
     const { batchEmailStatus } = this.state
     const isFormValid = batchEmailStatus === STATUS.SUCCESS
     return (
-      <form className={classNames(className, 'InvitationForm')} noValidate="novalidate" onSubmit={this.handleSubmit} role="form" >
+      <form
+        className={classNames(className, 'InvitationForm')}
+        noValidate="novalidate"
+        onSubmit={this.handleSubmit}
+        role="form"
+      >
         <BatchEmailControl
           classModifiers="asBoxControl onWhite"
           controlWasChanged={::this.handleControlChange}

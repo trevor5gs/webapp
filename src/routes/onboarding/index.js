@@ -1,7 +1,7 @@
 function getRoute(path, subComponentName) {
   return {
-    path: path,
-    subComponentName: subComponentName,
+    path,
+    subComponentName,
     getComponents(location, cb) {
       // require.ensure([], (require) => {
       cb(null, require('../../containers/onboarding/Onboarding'))

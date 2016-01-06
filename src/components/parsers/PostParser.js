@@ -114,7 +114,14 @@ function body(content, id, isGridLayout, postDetailPath = null) {
 
 function footer(post, author, currentUser) {
   if (!author) { return null }
-  return <PostTools author={author} post={post} currentUser={currentUser} key={`PostTools_${post.id}`} />
+  return (
+    <PostTools
+      author={author}
+      post={post}
+      currentUser={currentUser}
+      key={`PostTools_${post.id}`}
+    />
+  )
 }
 
 export function parsePost(post, json, currentUser, isGridLayout = true) {
@@ -125,7 +132,9 @@ export function parsePost(post, json, currentUser, isGridLayout = true) {
   const postDetailPath = getPostDetailPath(author, post)
 
   if (post.repostContent && post.repostContent.length) {
-    cells.push(repostHeader(post, getLinkObject(post, 'repostAuthor', json), getLinkObject(post, 'repostedSource', json), author))
+    const authorLinkObject = getLinkObject(post, 'repostAuthor', json)
+    const sourceLinkObject = getLinkObject(post, 'repostedSource', json)
+    cells.push(repostHeader(post, authorLinkObject, sourceLinkObject, author))
     // this is weird, but the post summary is
     // actually the repost summary on reposts
     if (isGridLayout) {

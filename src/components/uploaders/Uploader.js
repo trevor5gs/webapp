@@ -37,10 +37,12 @@ class Uploader extends Component {
     if (this.isLegitimateFileType(file)) {
       return this.props.saveAction(file)
     }
-    return this.props.openAlert(<Dialog
-                                title="Invalid file type"
-                                body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
-                                />)
+    return this.props.openAlert(
+      <Dialog
+        title="Invalid file type"
+        body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
+      />
+    )
   }
 
   handleDrop(e) {
@@ -51,10 +53,12 @@ class Uploader extends Component {
       this.setState({ hasDragOver: false })
       return this.props.saveAction(file)
     }
-    return this.props.openAlert(<Dialog
-                                title="Invalid file type"
-                                body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
-                                />)
+    return this.props.openAlert(
+      <Dialog
+        title="Invalid file type"
+        body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
+      />
+    )
   }
 
   handleDragOver(e) {
@@ -77,24 +81,26 @@ class Uploader extends Component {
     return (
       <div
         className={klassNames}
-        onDrop={(e) => this.handleDrop(e)}
-        onDragOver={(e) => this.handleDragOver(e)}
-        onDragLeave={(e) => this.handleDragLeave(e)}
-        >
+        onDrop={::this.handleDrop}
+        onDragOver={::this.handleDragOver}
+        onDragLeave={::this.handleDragLeave}
+      >
         <button
           className="UploaderButton"
-          onClick={(e) => this.triggerFileBrowser(e)}>
+          onClick={::this.triggerFileBrowser}
+        >
           {title}
         </button>
         {message ? <p>{message}</p> : null}
         {recommend ? <p>{recommend}</p> : null}
         <input
           className="hidden"
-          onChange={(e) => this.handleFileBrowser(e)}
+          onChange={::this.handleFileBrowser}
           ref="FileBrowser"
           type="file"
           capture="camera"
-          accept="image/*" />
+          accept="image/*"
+        />
       </div>
     )
   }

@@ -3,7 +3,28 @@ import { StreamComponent as subject } from '../../../src/components/streams/Stre
 import * as MAPPING_TYPES from '../../../src/constants/mapping_types'
 
 function createPropsForStream(props = {}) {
-  const defaultProps = { stream: { error: false }, action: {}, dispatch: () => {}, json: { pages: { what: {} } }, result: { type: 'posts', ids: [] }, router: { location: { pathname: 'what' } }, currentUser: { id: 'currentUser' } }
+  const defaultProps = {
+    stream: {
+      error: false,
+    },
+    action: {},
+    dispatch: () => {},
+    json: {
+      pages: {
+        what: {},
+      },
+    },
+    result: {
+      type: 'posts',
+      ids: [],
+    },
+    router: {
+      path: 'what',
+    },
+    currentUser: {
+      id: 'currentUser',
+    },
+  }
   return { ...defaultProps, ...props }
 }
 
@@ -11,7 +32,8 @@ describe('StreamComponent', () => {
   describe('#render', () => {
     describe('StreamComponent hasErrored', () => {
       it('renders errors', () => {
-        const comp = getRenderedComponent(subject, createPropsForStream({ stream: { error: true }, action: { meta: {} } }))
+        const props = { stream: { error: true }, action: { meta: {} } }
+        const comp = getRenderedComponent(subject, createPropsForStream(props))
         expect(comp.props.className).to.equal('StreamComponent hasErrored')
         expect(comp.type).to.equal('section')
         const div = comp.props.children
@@ -54,7 +76,23 @@ describe('StreamComponent', () => {
       })
 
       it('renders a loader when there is no meta data', () => {
-        const comp = getRenderedComponent(subject, createPropsForStream({ meta: false, json: { pages: { what: {} }, posts: { '1': { id: '1' }, '2': { id: '2' } } }, result: { type: 'posts', ids: ['1', '2'] } }))
+        const props = {
+          meta: false,
+          json: {
+            pages: {
+              what: {},
+            },
+            posts: {
+              1: { id: '1' },
+              2: { id: '2' },
+            },
+          },
+          result: {
+            type: 'posts',
+            ids: ['1', '2'],
+          },
+        }
+        const comp = getRenderedComponent(subject, createPropsForStream(props))
         expect(comp.type).to.equal('section')
         expect(comp.props.className).to.equal('StreamComponent isBusy')
         const div = comp.props.children
@@ -75,7 +113,7 @@ describe('StreamComponent', () => {
           json: {
             pages: { what: { type: 'posts', ids: ['1'] } },
             posts: {
-              '1': { id: '1' },
+              1: { id: '1' },
             },
           },
         })
@@ -83,7 +121,25 @@ describe('StreamComponent', () => {
         const comp = getRenderedComponent(subject, props)
         expect(comp.type).to.equal('section')
         expect(comp.props.className).to.equal('StreamComponent')
-        expect(renderSpy.calledWith({ data: [{ id: '1' }], nestedData: [] }, { pages: { what: { type: 'posts', ids: ['1'] } }, posts: { '1': { id: '1' } } }, { id: 'currentUser' }, undefined)).to.be.true
+        const expectedProps = {
+          pages: {
+            what: {
+              type: 'posts',
+              ids: ['1'],
+            },
+          },
+          posts: {
+            1: {
+              id: '1',
+            },
+          },
+        }
+        expect(renderSpy.calledWith(
+          { data: [{ id: '1' }], nestedData: [] },
+          expectedProps,
+          { id: 'currentUser' },
+          undefined
+        )).to.be.true
       })
     })
   })

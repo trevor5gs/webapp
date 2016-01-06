@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { replaceState } from 'redux-router'
+import { replacePath } from 'redux-simple-router'
 import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { SIGNED_OUT_PROMOTIONS } from '../../constants/promotion_types'
@@ -71,8 +71,9 @@ class Find extends Component {
     }
   }
 
-  updateLocation(vo) {
+  updateLocation(valueObject) {
     const { dispatch } = this.props
+    const vo = valueObject
     if (typeof vo.terms === 'string' && vo.terms.length < 2) {
       vo.terms = null
     }
@@ -81,7 +82,7 @@ class Find extends Component {
     }
     if (typeof document !== 'undefined') {
       const uri = document.location.pathname + updateQueryParams(vo)
-      dispatch(replaceState(window.history.state, uri))
+      dispatch(replacePath(uri, window.history.state))
     }
   }
 

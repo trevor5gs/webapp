@@ -5,21 +5,25 @@ import 'isomorphic-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { ReduxRouter } from 'redux-router'
+import { Router } from 'react-router'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import { persistStore } from 'redux-persist'
 import localforage from 'localforage'
 import store from './store'
 import * as ACTION_TYPES from './constants/action_types'
+import { browserHistory } from 'react-router'
+import { syncReduxAndRouter } from 'redux-simple-router'
+import routes from './routes'
 
 import './vendor/embetter'
 import './vendor/embetter_initializer'
 
 updateTimeAgoStrings({ about: '' })
+syncReduxAndRouter(browserHistory, store, state => state.router)
 
 const element = (
   <Provider store={store}>
-    <ReduxRouter />
+    <Router history={browserHistory} routes={routes} />
   </Provider>
 )
 

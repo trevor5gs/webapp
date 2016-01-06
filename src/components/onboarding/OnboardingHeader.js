@@ -30,7 +30,14 @@ class OnboardingHeader extends Component {
   }
 
   nextWasClicked(e) {
-    const { dispatch, batchSave, relationshipMap, trackingLabel, redirection, nextPath } = this.props
+    const {
+      dispatch,
+      batchSave,
+      relationshipMap,
+      trackingLabel,
+      redirection,
+      nextPath,
+    } = this.props
     dispatch(trackEvent(`completed-${trackingLabel}`))
 
     if (redirection) {
@@ -90,8 +97,20 @@ class OnboardingHeader extends Component {
           <p>{message}</p>
         </div>
         <div className="OnboardingColumn">
-          <Link className={this.getButtonClassNames()} to={nextPath} onClick={(e) => {this.nextWasClicked(e)}}>Next</Link>
-          <Link className="OnboardingSkipButton" to={nextPath} onClick={(e) => {this.skipWasClicked(e)}}>Skip</Link>
+          <Link
+            className={ this.getButtonClassNames() }
+            to={nextPath}
+            onClick={ ::this.nextWasClicked }
+          >
+            Next
+          </Link>
+          <Link
+            className="OnboardingSkipButton"
+            to={nextPath}
+            onClick={ ::this.skipWasClicked }
+          >
+            Skip
+          </Link>
         </div>
       </header>
     )

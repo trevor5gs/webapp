@@ -50,7 +50,7 @@ class TreeButton extends Component {
       <button
         className={classNames(className, 'TreeButton', { isCollapsed: collapsed })}
         onClick={ ::this.handleChange }
-        >
+      >
         <TreeIcon/>
         {children}
       </button>

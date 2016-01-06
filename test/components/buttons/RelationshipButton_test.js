@@ -1,7 +1,10 @@
 import { expect, getRenderedComponent } from '../../spec_helper'
 import { RELATIONSHIP_PRIORITY } from '../../../src/constants/relationship_types'
 import { default as subject } from '../../../src/components/relationships/RelationshipButton'
-import { MiniCheckIcon, MiniPlusIcon } from '../../../src/components/relationships/RelationshipIcons'
+import {
+  MiniCheckIcon,
+  MiniPlusIcon,
+} from '../../../src/components/relationships/RelationshipIcons'
 
 describe('RelationshipButton', () => {
   describe('::RELATIONSHIP_PRIORITY', () => {

@@ -46,7 +46,8 @@ class UserCard extends Component {
           priority={user.relationshipPriority}
           ref="RelationshipImageButton"
           userId={user.id}
-          username={'@' + user.username} />
+          username={'@' + user.username}
+        />
       </div>
     )
   }
@@ -55,7 +56,7 @@ class UserCard extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
-    pathname: state.router.location.pathname,
+    pathname: state.router.path,
   }
 }
 

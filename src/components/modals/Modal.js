@@ -48,7 +48,9 @@ class Modal extends Component {
 
   handleModalTrigger(e) {
     const classList = e.target.classList
-    if (classList.contains('Modal') || classList.contains('Alert') || classList.contains('CloseModal')) {
+    if (classList.contains('Modal') ||
+        classList.contains('Alert') ||
+        classList.contains('CloseModal')) {
       return this.close()
     }
   }
@@ -64,7 +66,8 @@ class Modal extends Component {
       return (
         <div
           className={ `${groupClassNames} isActive` }
-          onClick={(e) => this.handleModalTrigger(e)}>
+          onClick={::this.handleModalTrigger}
+        >
           { payload }
         </div>
       )

@@ -32,7 +32,7 @@ class Footer extends Component {
     const { json, router } = this.props
     let result = null
     if (json.pages) {
-      result = json.pages[router.location.pathname]
+      result = json.pages[router.path]
     }
     if (result && result.mode) {
       this.setState({ isGridMode: result.mode === 'grid' })

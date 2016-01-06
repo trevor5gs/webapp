@@ -46,7 +46,7 @@ class ToggleControl extends Component {
         className={ classNames('ToggleControl', className, { isChecked: checked })}
         disabled={ isDisabled }
         htmlFor={ id }
-        >
+      >
         <input
           id={ id }
           type="checkbox"

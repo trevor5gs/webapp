@@ -11,7 +11,7 @@ const TabListLinks = ({ activePath, className, tabClasses, tabs }) => {
             className={classNames(tabClasses, 'TabLink', { active: tab.to === activePath })}
             key={`TabLink-${tab.to.replace('/', '_')}`}
             to={tab.to}
-            >
+          >
             {tab.children}
           </Link>
           )

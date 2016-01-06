@@ -19,7 +19,8 @@ class UserDetail extends Component {
         <StreamComponent
           ref="streamComponent"
           action={loadUserDetail(`~${params.username}`)}
-          initModel={{ collection: MAPPING_TYPES.USERS, findObj: { username: params.username } }} />
+          initModel={{ collection: MAPPING_TYPES.USERS, findObj: { username: params.username } }}
+        />
       </section>
     )
   }

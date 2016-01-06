@@ -16,7 +16,8 @@ class UserAvatars extends Component {
         {icon}
         <StreamComponent
           ref="streamComponent"
-          action={loadUserAvatars(endpoint, resultKey)} />
+          action={loadUserAvatars(endpoint, resultKey)}
+        />
       </section>
     )
   }

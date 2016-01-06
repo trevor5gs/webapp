@@ -10,9 +10,7 @@ import TabListLinks from '../../components/tabs/TabListLinks'
 class LoggedOutDiscover extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    location: PropTypes.shape({
-      pathname: PropTypes.string,
-    }),
+    pathname: PropTypes.string.isRequired,
     params: PropTypes.shape({
       type: PropTypes.string,
     }),
@@ -24,7 +22,7 @@ class LoggedOutDiscover extends Component {
   }
 
   render() {
-    const { params, location } = this.props
+    const { params, pathname } = this.props
     const type = params.type || 'recommended'
     const tabs = [
       { to: '/explore', children: 'Recommended' },
@@ -38,7 +36,7 @@ class LoggedOutDiscover extends Component {
           userlist={ SIGNED_OUT_PROMOTIONS }
         />
         <TabListLinks
-          activePath={location.pathname}
+          activePath={pathname}
           className="LabelTabList"
           tabClasses="LabelTab"
           tabs={tabs}
@@ -53,5 +51,11 @@ LoggedOutDiscover.preRender = (store, routerState) => {
   return store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
 }
 
-export default connect()(LoggedOutDiscover)
+function mapStateToProps(state) {
+  return {
+    pathname: state.router.path,
+  }
+}
+
+export default connect(mapStateToProps)(LoggedOutDiscover)
 

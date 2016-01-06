@@ -22,15 +22,33 @@ class NewSessionForm extends Component {
   handleSubmit(e) {
     e.preventDefault()
     const { dispatch } = this.props
-    dispatch(getUserCredentials(this.refs.emailControl.refs.input.value, this.refs.passwordControl.refs.input.value))
+    const { emailControl, passwordControl } = this.refs
+    dispatch(getUserCredentials(emailControl.refs.input.value, passwordControl.refs.input.value))
   }
 
   render() {
     const { emailStatus, passwordStatus } = this.state
     return (
-      <form id="NewSessionForm" className="AuthenticationForm" onSubmit={::this.handleSubmit} role="form" noValidate="novalidate">
-        <EmailControl ref="emailControl" tabIndex="1" text="" status={emailStatus} classModifiers="asBoxControl" />
-        <PasswordControl ref="passwordControl" tabIndex="2" status={passwordStatus} classModifiers="asBoxControl" />
+      <form
+        id="NewSessionForm"
+        className="AuthenticationForm"
+        onSubmit={::this.handleSubmit}
+        role="form"
+        noValidate="novalidate"
+      >
+        <EmailControl
+          ref="emailControl"
+          tabIndex="1"
+          text=""
+          status={emailStatus}
+          classModifiers="asBoxControl"
+        />
+        <PasswordControl
+          ref="passwordControl"
+          tabIndex="2"
+          status={passwordStatus}
+          classModifiers="asBoxControl"
+        />
         <FormButton tabIndex="3">Enter Ello</FormButton>
       </form>
     )

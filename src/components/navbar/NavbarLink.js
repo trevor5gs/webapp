@@ -25,7 +25,11 @@ class NavbarLink extends Component {
     const klassNames = classNames(
       'NavbarLink',
       modifiers,
-      { active: NavbarLink.highlightingRules[to] ? pathname.match(NavbarLink.highlightingRules[to]) : pathname.match(to) },
+      {
+        active: NavbarLink.highlightingRules[to] ?
+          pathname.match(NavbarLink.highlightingRules[to]) :
+          pathname.match(to),
+      },
     )
     return (
       <Link to={to} onClick={onClick} className={klassNames}>

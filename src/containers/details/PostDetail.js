@@ -19,7 +19,8 @@ class PostDetail extends Component {
         <StreamComponent
           ref="streamComponent"
           action={loadPostDetail(`~${params.token}`)}
-          initModel={{ collection: MAPPING_TYPES.POSTS, findObj: { token: params.token } }} />
+          initModel={{ collection: MAPPING_TYPES.POSTS, findObj: { token: params.token } }}
+        />
       </section>
     )
   }

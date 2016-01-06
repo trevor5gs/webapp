@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { replaceState } from 'redux-router'
+import { replacePath } from 'redux-simple-router'
 import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as SearchActions from '../../actions/search'
@@ -65,8 +65,9 @@ class Search extends Component {
     }
   }
 
-  updateLocation(vo) {
+  updateLocation(valueObject) {
     const { dispatch } = this.props
+    const vo = valueObject
     if (typeof vo.terms === 'string' && vo.terms.length < 2) {
       vo.terms = null
     }
@@ -74,7 +75,7 @@ class Search extends Component {
       vo.type = null
     }
     const uri = document.location.pathname + updateQueryParams(vo)
-    dispatch(replaceState(window.history.state, uri))
+    dispatch(replacePath(uri, window.history.state))
   }
 
   handleControlChange(vo) {

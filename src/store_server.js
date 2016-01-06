@@ -21,7 +21,7 @@ function reducer(state, action) {
 
 const store = compose(
   applyMiddleware(thunk, uploader, requester, analytics),
-  reduxReactRouter({ routes: routes, createHistory: createHistory })
+  reduxReactRouter({ routes, createHistory })
 )(createStore)(reducer, {})
 
 export default store

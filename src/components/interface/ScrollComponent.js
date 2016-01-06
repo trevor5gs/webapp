@@ -44,9 +44,9 @@ function getScrollProperties() {
   const scrollHeight = getScrollHeight()
   const scrollBottom = getScrollBottom(scrollHeight)
   return {
-    scrollY: scrollY,
-    scrollHeight: scrollHeight,
-    scrollBottom: scrollBottom,
+    scrollY,
+    scrollHeight,
+    scrollBottom,
     scrollPercent: getScrollPercent(0, scrollBottom, scrollY),
     scrollDirection: getScrollDirection(scrollY),
   }

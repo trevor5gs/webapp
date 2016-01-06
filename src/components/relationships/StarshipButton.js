@@ -27,13 +27,15 @@ class StarshipButton extends Component {
     }
   }
 
-  updatePriority(priority) {
+  updatePriority(e) {
+    const nextPriority = e.target.dataset.nextPriority
+    console.log('priority', nextPriority)
     const { buttonWasClicked, isLoggedIn, userId } = this.props
     if (isLoggedIn) {
-      this.setState({ priority: priority })
+      this.setState({ priority: nextPriority })
     }
     if (buttonWasClicked) {
-      buttonWasClicked({ userId, priority, existing: this.state.priority })
+      buttonWasClicked({ userId, priority: nextPriority, existing: this.state.priority })
     }
   }
 
@@ -45,8 +47,10 @@ class StarshipButton extends Component {
     return (
       <button
         className={"StarshipButton"}
-        onClick={() => this.updatePriority(nextPriority)}
-        data-priority={priority}>
+        onClick={::this.updatePriority}
+        data-priority={priority}
+        data-next-priority={nextPriority}
+      >
         <StarIcon/>
       </button>
     )

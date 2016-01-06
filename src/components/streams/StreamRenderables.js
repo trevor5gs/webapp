@@ -59,14 +59,28 @@ export function usersAsInviteeGrid(users) {
   return (
     <div className="Users asInviteeGrid">
       {users.data.map((user, i) => {
-        return <UserInvitee className="UserInviteeGrid" ref={'userInvitee_' + i} user={user} key={i} />
+        return (
+          <UserInvitee
+            className="UserInviteeGrid"
+            ref={'userInvitee_' + i}
+            user={user}
+            key={i}
+          />
+        )
       })}
     </div>
   )
 }
 
 export function postsAsGrid(posts, json, currentUser, gridColumnCount) {
-  return <PostsAsGrid posts={posts} json={json} currentUser={currentUser} gridColumnCount={gridColumnCount} />
+  return (
+    <PostsAsGrid
+      posts={posts}
+      json={json}
+      currentUser={currentUser}
+      gridColumnCount={gridColumnCount}
+    />
+  )
 }
 
 export function postsAsList(posts, json, currentUser) {
@@ -113,10 +127,24 @@ export function postDetail(posts, json, currentUser) {
   comments = comments.concat(posts.nestedData)
   const avatarDrawers = []
   if (Number(post.lovesCount) > 0) {
-    avatarDrawers.push(<UserAvatars endpoint={api.postLovers(post)} icon={<HeartIcon />} key={`lovers_${post.id}`} resultKey="lovers" />)
+    avatarDrawers.push(
+      <UserAvatars
+        endpoint={api.postLovers(post)}
+        icon={<HeartIcon />}
+        key={`lovers_${post.id}`}
+        resultKey="lovers"
+      />
+    )
   }
   if (Number(post.repostsCount) > 0) {
-    avatarDrawers.push(<UserAvatars endpoint={api.postReposters(post)} icon={<RepostIcon />} key={`reposters_${post.id}`} resultKey="reposters" />)
+    avatarDrawers.push(
+      <UserAvatars
+        endpoint={api.postReposters(post)}
+        icon={<RepostIcon />}
+        key={`reposters_${post.id}`}
+        resultKey="reposters"
+      />
+    )
   }
   return (
     <div className="PostDetails Posts asList">

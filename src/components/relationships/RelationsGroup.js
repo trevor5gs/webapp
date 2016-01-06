@@ -49,13 +49,15 @@ class RelationsGroup extends Component {
           isLoggedIn={isLoggedIn}
           priority={user.relationshipPriority}
           ref="RelationshipButton"
-          userId={user.id} />
+          userId={user.id}
+        />
         <StarshipButton
           buttonWasClicked={callback}
           isLoggedIn={isLoggedIn}
           priority={user.relationshipPriority}
           ref="StarshipButton"
-          userId={user.id} />
+          userId={user.id}
+        />
       </div>
     )
   }
@@ -64,7 +66,7 @@ class RelationsGroup extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
-    pathname: state.router.location.pathname,
+    pathname: state.router.path,
   }
 }
 

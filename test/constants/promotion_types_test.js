@@ -1,5 +1,8 @@
 import { expect } from '../spec_helper'
-import { AUTHENTICATION_PROMOTIONS, SIGNED_OUT_PROMOTIONS } from '../../src/constants/promotion_types'
+import {
+  AUTHENTICATION_PROMOTIONS,
+  SIGNED_OUT_PROMOTIONS,
+} from '../../src/constants/promotion_types'
 
 function isValidAuthenticationPromotionKey(key) {
   const validKeys = [

@@ -23,7 +23,7 @@ class SearchControl extends Component {
     super(props, context)
     const { text } = this.props
     this.state = {
-      text: text,
+      text,
       hasValue: text && text.length,
       hasFocus: false,
     }
@@ -48,8 +48,8 @@ class SearchControl extends Component {
     const { hasFocus, hasValue, text } = this.state
     const groupClassNames = classNames(
       'FormControlGroup',
-      { hasFocus: hasFocus },
-      { hasValue: hasValue },
+      { hasFocus },
+      { hasValue },
     )
 
     return (
@@ -66,9 +66,10 @@ class SearchControl extends Component {
           autoCapitalize="off"
           autoCorrect="off"
           autoComplete="off"
-          onFocus={(e) => this.handleFocus(e)}
-          onBlur={(e) => this.handleBlur(e)}
-          onChange={(e) => this.handleChange(e)} />
+          onBlur={::this.handleBlur}
+          onChange={::this.handleChange}
+          onFocus={::this.handleFocus}
+        />
       </div>
     )
   }

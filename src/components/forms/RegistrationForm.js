@@ -48,11 +48,13 @@ class RegistrationForm extends Component {
       return this.setState({ emailStatus: STATUS.FAILURE, emailSuggestion: null })
     }
     const { email, suggestions } = availability
-    const emailFullSuggestion = suggestions.email && suggestions.email.full && suggestions.email.full.length ? suggestions.email.full : null
+    const emailFull = suggestions.email && suggestions.email.full && suggestions.email.full.length ?
+      suggestions.email.full :
+      null
     if (email && emailStatus !== STATUS.SUCCESS) {
-      return this.setState({ emailStatus: STATUS.SUCCESS, emailSuggestion: emailFullSuggestion })
+      return this.setState({ emailStatus: STATUS.SUCCESS, emailSuggestion: emailFull })
     } else if (!email && emailStatus !== STATUS.FAILURE) {
-      return this.setState({ emailStatus: STATUS.FAILURE, emailSuggestion: emailFullSuggestion })
+      return this.setState({ emailStatus: STATUS.FAILURE, emailSuggestion: emailFull })
     }
   }
 
@@ -62,25 +64,52 @@ class RegistrationForm extends Component {
       return this.setState({ usernameStatus: STATUS.FAILURE, usernameFailureType: 'server' })
     }
     const { username, suggestions } = availability
-    const suggestionList = suggestions.username && suggestions.username.length ? suggestions.username : null
+    const suggestionList = suggestions.username && suggestions.username.length ?
+      suggestions.username :
+      null
     if (username && usernameStatus !== STATUS.SUCCESS) {
-      return this.setState({ usernameStatus: STATUS.SUCCESS, usernameFailureType: null, showUsernameAdvice: false, usernameSuggestions: suggestionList })
+      return this.setState({
+        usernameStatus: STATUS.SUCCESS,
+        usernameFailureType: null,
+        showUsernameAdvice: false,
+        usernameSuggestions: suggestionList,
+      })
     } else if (!username && usernameStatus !== STATUS.FAILURE) {
-      return this.setState({ usernameStatus: STATUS.FAILURE, usernameFailureType: 'server', showUsernameAdvice: false, usernameSuggestions: suggestionList })
+      return this.setState({
+        usernameStatus: STATUS.FAILURE,
+        usernameFailureType: 'server',
+        showUsernameAdvice: false,
+        usernameSuggestions: suggestionList,
+      })
     }
   }
 
   handleUsernameControlChanged(vo) {
     const { usernameStatus } = this.state
     if (!vo.username.length && usernameStatus !== STATUS.INDETERMINATE) {
-      return this.setState({ usernameStatus: STATUS.INDETERMINATE, usernameFailureType: null, showUsernameAdvice: true, usernameSuggestions: null })
+      return this.setState({
+        usernameStatus: STATUS.INDETERMINATE,
+        usernameFailureType: null,
+        showUsernameAdvice: true,
+        usernameSuggestions: null,
+      })
     }
     // Check for proper characters first
     if (!(/^[a-zA-Z0-9\-_]+$/).test(vo.username)) {
-      return this.setState({ usernameStatus: STATUS.FAILURE, usernameFailureType: 'client', showUsernameAdvice: false, usernameSuggestions: null })
+      return this.setState({
+        usernameStatus: STATUS.FAILURE,
+        usernameFailureType: 'client',
+        showUsernameAdvice: false,
+        usernameSuggestions: null,
+      })
     }
     if (usernameStatus !== STATUS.REQUEST) {
-      this.setState({ usernameStatus: STATUS.REQUEST, usernameFailureType: null, showUsernameAdvice: true, usernameSuggestions: null })
+      this.setState({
+        usernameStatus: STATUS.REQUEST,
+        usernameFailureType: null,
+        showUsernameAdvice: true,
+        usernameSuggestions: null,
+      })
     }
     this.props.dispatch(checkAvailability(vo))
   }
@@ -116,13 +145,55 @@ class RegistrationForm extends Component {
   }
 
   render() {
-    const { usernameStatus, usernameFailureType, showUsernameAdvice, usernameSuggestions, emailStatus, emailSuggestion, passwordStatus, showPasswordSuggestion } = this.state
-    const isFormValid = usernameStatus === STATUS.SUCCESS && emailStatus === STATUS.SUCCESS && passwordStatus === STATUS.SUCCESS
+    const {
+      usernameStatus,
+      usernameFailureType,
+      showUsernameAdvice,
+      usernameSuggestions,
+      emailStatus,
+      emailSuggestion,
+      passwordStatus,
+      showPasswordSuggestion,
+    } = this.state
+    const isFormValid = usernameStatus === STATUS.SUCCESS &&
+      emailStatus === STATUS.SUCCESS &&
+      passwordStatus === STATUS.SUCCESS
     return (
-      <form id="RegistrationForm" className="AuthenticationForm" onSubmit={::this.handleSubmit} role="form" noValidate="novalidate">
-        <EmailControl tabIndex="1" text="" placeholder="Enter your email" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={::this.handleEmailControlChanged} classModifiers="asBoxControl" />
-        <UsernameControl tabIndex="2" text="" placeholder="Create your username" status={usernameStatus} failureType={usernameFailureType} showAdvice={showUsernameAdvice} suggestions={usernameSuggestions} controlWasChanged={::this.handleUsernameControlChanged} classModifiers="asBoxControl" />
-        <PasswordControl tabIndex="3" placeholder="Set your password" status={passwordStatus} showSuggestion={showPasswordSuggestion} controlWasChanged={::this.handlePasswordControlChanged} classModifiers="asBoxControl" />
+      <form
+        id="RegistrationForm"
+        className="AuthenticationForm"
+        onSubmit={::this.handleSubmit}
+        role="form"
+        noValidate="novalidate"
+      >
+        <EmailControl
+          tabIndex="1"
+          text=""
+          placeholder="Enter your email"
+          status={emailStatus}
+          suggestions={emailSuggestion}
+          controlWasChanged={::this.handleEmailControlChanged}
+          classModifiers="asBoxControl"
+        />
+        <UsernameControl
+          tabIndex="2"
+          text=""
+          placeholder="Create your username"
+          status={usernameStatus}
+          failureType={usernameFailureType}
+          showAdvice={showUsernameAdvice}
+          suggestions={usernameSuggestions}
+          controlWasChanged={::this.handleUsernameControlChanged}
+          classModifiers="asBoxControl"
+        />
+        <PasswordControl
+          tabIndex="3"
+          placeholder="Set your password"
+          status={passwordStatus}
+          showSuggestion={showPasswordSuggestion}
+          controlWasChanged={::this.handlePasswordControlChanged}
+          classModifiers="asBoxControl"
+        />
         <FormButton tabIndex="4" disabled={!isFormValid}>Create Account</FormButton>
       </form>
     )
