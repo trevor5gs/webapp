@@ -3,7 +3,7 @@ export default [
     path: 'following',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/streams/Following'))
+      cb(null, require('../../containers/streams/Following').default)
       // })
     },
   },
@@ -11,7 +11,7 @@ export default [
     path: 'starred',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/streams/Starred'))
+      cb(null, require('../../containers/streams/Starred').default)
       // })
     },
   },

@@ -4,7 +4,7 @@ function getRoute(path, subComponentName) {
     subComponentName,
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/onboarding/Onboarding'))
+      cb(null, require('../../containers/onboarding/Onboarding').default)
       // })
     },
   }

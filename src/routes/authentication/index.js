@@ -3,7 +3,7 @@ export default [
     path: 'enter',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/authentication/SignIn'))
+      cb(null, require('../../containers/authentication/SignIn').default)
       // })
     },
   },
@@ -11,7 +11,7 @@ export default [
     path: 'join',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/authentication/Join'))
+      cb(null, require('../../containers/authentication/Join').default)
       // })
     },
   },
@@ -19,7 +19,7 @@ export default [
     path: 'forgot-password',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/authentication/ForgotPassword'))
+      cb(null, require('../../containers/authentication/ForgotPassword').default)
       // })
     },
   },
