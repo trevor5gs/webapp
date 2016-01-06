@@ -114,7 +114,7 @@ export class StreamComponent extends Component {
   }
 
   setAction(action) {
-    this.setState({ action: action })
+    this.setState({ action })
     this.props.dispatch(action)
   }
 
@@ -133,7 +133,7 @@ export class StreamComponent extends Component {
     if (!result) { return }
     if (scrolled && meta && meta.resultKey) { return }
     const { pagination } = result
-    if (!pagination[rel] || parseInt(pagination.totalPagesRemaining, 10) === 0 || !action) { return }
+    if (!action.payload.endpoint || !pagination[rel] || parseInt(pagination.totalPagesRemaining, 10) === 0 || !action) { return }
     if (runningFetches[pagination[rel]]) { return }
     this.refs.paginator.setLoading(true)
     const infiniteAction = {
@@ -247,7 +247,8 @@ export class StreamComponent extends Component {
           hasShowMoreButton={typeof meta.resultKey !== 'undefined'}
           key={`${meta.resultKey || 'stream'}Paginator`}
           pagination={result ? result.pagination : {}}
-          ref="paginator" />
+          ref="paginator"
+        />
       </section>
     )
   }

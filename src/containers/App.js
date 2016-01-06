@@ -52,9 +52,10 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    const { authentication, dispatch, location } = this.props
-    if (authentication && authentication.isLoggedIn && location.pathname !== '/') {
+  componentWillReceiveProps(nextProps) {
+    const prevAuthentication = this.props.authentication
+    const { authentication, dispatch, location } = nextProps
+    if (authentication && !prevAuthentication.isLoggedIn && authentication.isLoggedIn && location.pathname !== '/') {
       dispatch(loadProfile())
     }
   }
@@ -73,7 +74,7 @@ class App extends Component {
     const { pathname } = location
     const appClasses = classNames(
       'App',
-      { isLoggedIn: isLoggedIn },
+      { isLoggedIn },
       { isLoggedOut: !isLoggedIn },
     )
     return (
