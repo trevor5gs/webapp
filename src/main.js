@@ -19,7 +19,6 @@ import './vendor/embetter'
 import './vendor/embetter_initializer'
 
 updateTimeAgoStrings({ about: '' })
-syncReduxAndRouter(browserHistory, store, state => state.router)
 
 const element = (
   <Provider store={store}>
@@ -29,6 +28,9 @@ const element = (
 
 const storage = localforage.createInstance({ name: 'ello-webapp' })
 const persistor = persistStore(store, { storage, blacklist: ['router', 'modal'] }, () => {
+  // wait to sync the router until store is persisted
+  // this prevents the initial re route to the home page
+  syncReduxAndRouter(browserHistory, store, state => state.router)
   // this adds the 'more posts' to the existing result if present
   // so that a refresh won't have the 'more posts' button
   store.dispatch({ type: ACTION_TYPES.ADD_NEW_IDS_TO_RESULT })
