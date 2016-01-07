@@ -6,7 +6,6 @@ import { analytics, uploader, requester } from './middleware'
 import * as reducers from './reducers'
 import { routeReducer } from 'redux-simple-router'
 
-const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
 function reducer(state, action) {
   return {
     authentication: reducers.authentication(state.authentication, action),
@@ -19,10 +18,18 @@ function reducer(state, action) {
   }
 }
 
-const store = compose(
-  autoRehydrate(),
-  applyMiddleware(thunk, uploader, requester, analytics, logger),
-)(createStore)(reducer, window.__INITIAL_STATE__ || {})
+let store = null
+if (typeof window !== 'undefined') {
+  const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
+  store = compose(
+    autoRehydrate(),
+    applyMiddleware(thunk, uploader, requester, analytics, logger),
+  )(createStore)(reducer, window.__INITIAL_STATE__ || {})
+} else {
+  store = compose(
+    applyMiddleware(thunk, uploader, requester, analytics),
+  )(createStore)(reducer, {})
+}
 
 export default store
 

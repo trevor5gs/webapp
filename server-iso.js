@@ -1,5 +1,6 @@
+/* eslint-disable max-len */
 import 'newrelic'
-import 'babel-core/polyfill'
+import 'babel-polyfill'
 import 'isomorphic-fetch'
 
 import express from 'express'
@@ -10,11 +11,13 @@ import path from 'path'
 import fs from 'fs'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import { Router } from 'react-router'
+import { match, RouterContext } from 'react-router'
 import { Provider } from 'react-redux'
-import store from './src/store_server'
+import store from './src/store'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
 import addOauthRoute from './oauth'
+import routes from './src/routes'
+import { replacePath } from 'redux-simple-router'
 
 // load env vars first
 require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
@@ -48,29 +51,29 @@ app.use(express.static('public'))
 app.use('/static', express.static('public/static'))
 
 // Return promises for initial loads
-function preRender(routerState) {
-  const promises = routerState.components.map(component => (component && component.preRender) ? component.preRender(store, routerState) : null).filter(component => !!component)
+function preRender(renderProps) {
+  const promises = renderProps.components.map(component => (component && component.preRender) ? component.preRender(store, renderProps) : null).filter(component => !!component)
   return Promise.all(promises)
 }
 
 function renderFromServer(req, res) {
-  store.dispatch(match(req.url, (error, redirectLocation, routerState) => {
+  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+    // populate the rouer store object for initial render
+    store.dispatch(replacePath(renderProps.location.pathname, {}, { avoidRouterUpdate: true }))
     if (error) {
       console.log('error', error)
-    }
-    if (redirectLocation) {
+    } else if (redirectLocation) {
       console.log('handle redirect')
-    }
-    if (!routerState) { return }
-    preRender(routerState).then(() => {
+    } else if (!renderProps) { return }
+    preRender(renderProps).then(() => {
       const InitialComponent = (
         <Provider store={store}>
-          <ReduxRouter />
+          <RouterContext {...renderProps} />
         </Provider>
       )
       const componentHTML = renderToString(InitialComponent)
       const state = store.getState()
-      state.authentication = { isLoggedIn: false }
+      console.log('state', state)
       const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
       indexStr = indexStr.replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
       res.send(indexStr)
@@ -79,7 +82,7 @@ function renderFromServer(req, res) {
       // `window is not defined`
       console.log('ERROR', err)
     })
-  }))
+  })
 }
 
 const loggedOutPaths = {
@@ -119,5 +122,5 @@ const start = () => {
 
 throng(start, {
   workers: WORKERS,
-  lifetime: Infinity
+  lifetime: Infinity,
 });
