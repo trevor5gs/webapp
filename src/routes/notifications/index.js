@@ -10,9 +10,7 @@ const CATEGORIES = [
 export default {
   path: 'notifications(/:category)',
   getComponents(location, cb) {
-    // require.ensure([], (require) => {
     cb(null, require('../../containers/notifications/Notifications').default)
-    // })
   },
   onEnter(nextState, replaceState) {
     const category = nextState.params.category

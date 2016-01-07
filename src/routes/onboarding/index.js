@@ -3,9 +3,7 @@ function getRoute(path, subComponentName) {
     path,
     subComponentName,
     getComponents(location, cb) {
-      // require.ensure([], (require) => {
       cb(null, require('../../containers/onboarding/Onboarding').default)
-      // })
     },
   }
 }
@@ -13,7 +11,6 @@ function getRoute(path, subComponentName) {
 export default {
   path: 'onboarding',
   getChildRoutes(location, cb) {
-    // require.ensure([], () => {
     cb(null, [
       getRoute('communities', 'CommunityPicker'),
       getRoute('awesome-people', 'PeoplePicker'),
@@ -21,7 +18,6 @@ export default {
       getRoute('profile-avatar', 'AvatarPicker'),
       getRoute('profile-bio', 'InfoPicker'),
     ])
-    // })
   },
 }
 
