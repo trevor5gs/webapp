@@ -26,7 +26,7 @@ export default [
     path: 'explore(/:type)',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/discover/LoggedOutDiscover').default)
+      cb(null, require('../../containers/discover/Explore').default)
       // })
     },
     onEnter(nextState, replaceState) {

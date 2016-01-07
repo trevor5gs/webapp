@@ -7,7 +7,7 @@ import Banderole from '../../components/assets/Banderole'
 import StreamComponent from '../../components/streams/StreamComponent'
 import TabListLinks from '../../components/tabs/TabListLinks'
 
-class LoggedOutDiscover extends Component {
+class Explore extends Component {
 
   creditsTrackingEvent() {
     const { dispatch } = this.props
@@ -23,7 +23,7 @@ class LoggedOutDiscover extends Component {
       { to: '/explore/recent', children: 'Recent' },
     ]
     return (
-      <section className="LoggedOutDiscover Panel" key={`discover_${type}`}>
+      <section className="Explore Panel" key={`discover_${type}`}>
         <Banderole
           creditsClickAction={ ::this.creditsTrackingEvent }
           userlist={ SIGNED_OUT_PROMOTIONS }
@@ -40,11 +40,11 @@ class LoggedOutDiscover extends Component {
   }
 }
 
-LoggedOutDiscover.preRender = (store, routerState) => {
+Explore.preRender = (store, routerState) => {
   return store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
 }
 
-LoggedOutDiscover.propTypes = {
+Explore.propTypes = {
   dispatch: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
   params: PropTypes.shape({
@@ -58,5 +58,5 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(LoggedOutDiscover)
+export default connect(mapStateToProps)(Explore)
 
