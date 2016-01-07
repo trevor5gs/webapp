@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { Component, PropTypes } from 'react'
 import {
   FacebookIcon,
@@ -31,11 +32,6 @@ SHARE_DIMENSIONS[SHARE_TYPES.TUMBLR] = { width: 450, height: 430 }
 SHARE_DIMENSIONS[SHARE_TYPES.TWITTER] = { width: 520, height: 250 }
 
 class ShareDialog extends Component {
-  static propTypes = {
-    author: PropTypes.object.isRequired,
-    post: PropTypes.object.isRequired,
-    trackEvent: PropTypes.func,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -96,7 +92,8 @@ class ShareDialog extends Component {
     }
   }
 
-  popShareWindow(type) {
+  popShareWindow(e) {
+    const type = e.target.dataset.type
     const url = this.getUrl(type)
     const { trackEvent } = this.props
     if (url.indexOf('mailto') === 0) {
@@ -111,6 +108,10 @@ class ShareDialog extends Component {
     }
   }
 
+  selectReadOnlyInput(e) {
+    e.target.select()
+  }
+
   render() {
     return (
       <div className="Dialog ShareDialog">
@@ -118,21 +119,28 @@ class ShareDialog extends Component {
           className="ShareControl"
           type="url"
           readOnly
-          onClick={(e) => e.target.select()}
-          value={this.postLink} />
+          onClick={this.selectReadOnlyInput}
+          value={this.postLink}
+        />
         <div className="ShareLinks">
-          <button className="ShareLink" onClick={() => this.popShareWindow(SHARE_TYPES.EMAIL)}><MailIcon/></button>
-          <button className="ShareLink" onClick={() => this.popShareWindow(SHARE_TYPES.FACEBOOK)}><FacebookIcon/></button>
-          <button className="ShareLink" onClick={() => this.popShareWindow(SHARE_TYPES.TWITTER)}><TwitterIcon/></button>
-          <button className="ShareLink" onClick={() => this.popShareWindow(SHARE_TYPES.PINTEREST)}><PinterestIcon/></button>
-          <button className="ShareLink" onClick={() => this.popShareWindow(SHARE_TYPES.GOOGLE_PLUS)}><GooglePlusIcon/></button>
-          <button className="ShareLink" onClick={() => this.popShareWindow(SHARE_TYPES.TUMBLR)}><TumblrIcon/></button>
-          <button className="ShareLink" onClick={() => this.popShareWindow(SHARE_TYPES.REDDIT)}><RedditIcon/></button>
-          <button className="ShareLink" onClick={() => this.popShareWindow(SHARE_TYPES.LINKEDIN)}><LinkedInIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.EMAIL} onClick={::this.popShareWindow}><MailIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.FACEBOOK} onClick={::this.popShareWindow}><FacebookIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.TWITTER} onClick={::this.popShareWindow}><TwitterIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.PINTEREST} onClick={::this.popShareWindow}><PinterestIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.GOOGLE_PLUS} onClick={::this.popShareWindow}><GooglePlusIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.TUMBLR} onClick={::this.popShareWindow}><TumblrIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.REDDIT} onClick={::this.popShareWindow}><RedditIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.LINKEDIN} onClick={::this.popShareWindow}><LinkedInIcon/></button>
         </div>
       </div>
     )
   }
+}
+
+ShareDialog.propTypes = {
+  author: PropTypes.object.isRequired,
+  post: PropTypes.object.isRequired,
+  trackEvent: PropTypes.func,
 }
 
 export default ShareDialog

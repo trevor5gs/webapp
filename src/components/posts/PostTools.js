@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { pushState } from 'redux-router'
+import { pushPath } from 'redux-simple-router'
 import classNames from 'classnames'
 import { openModal, closeModal } from '../../actions/modals'
 import * as PostActions from '../../actions/posts'
@@ -24,13 +24,6 @@ import {
 } from '../posts/PostIcons'
 
 class PostTools extends Component {
-  static propTypes = {
-    author: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
-    post: PropTypes.object.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -44,7 +37,10 @@ class PostTools extends Component {
     const isOwnPost = currentUser && author.id === currentUser.id
     const cells = []
     cells.push(
-      <span className={classNames('PostTool', 'ViewsTool', { asPill: isLoggedIn })} key={`ViewsTool_${post.id}`}>
+      <span
+        className={classNames('PostTool', 'ViewsTool', { asPill: isLoggedIn })}
+        key={`ViewsTool_${post.id}`}
+      >
         <Link to={`/${author.username}/post/${post.token}`}>
           <EyeIcon />
           <span className="PostToolValue">{post.viewsCount}</span>
@@ -57,7 +53,12 @@ class PostTools extends Component {
         <span className="PostTool CommentTool" key={`CommentTool_${post.id}`}>
           <button onClick={ ::this.toggleComments }>
             <BubbleIcon />
-            <span className="PostToolValue" data-count={post.commentsCount} >{post.commentsCount}</span>
+            <span
+              className="PostToolValue"
+              data-count={post.commentsCount}
+            >
+              {post.commentsCount}
+            </span>
             <Hint>Comment</Hint>
           </button>
         </span>
@@ -79,7 +80,12 @@ class PostTools extends Component {
         <span className="PostTool RepostTool" key={`RepostTool_${post.id}`}>
           <button onClick={ ::this.signUp }>
             <RepostIcon />
-            <span className="PostToolValue" data-count={post.repostsCount}>{post.repostsCount}</span>
+            <span
+              className="PostToolValue"
+              data-count={post.repostsCount}
+            >
+              {post.repostsCount}
+            </span>
             <Hint>Repost</Hint>
           </button>
         </span>
@@ -87,7 +93,10 @@ class PostTools extends Component {
     }
     if (author.hasSharingEnabled) {
       cells.push(
-        <span className={classNames('PostTool', 'ShareTool', { asPill: !isLoggedIn })} key={`ShareTool_${post.id}`}>
+        <span
+          className={classNames('PostTool', 'ShareTool', { asPill: !isLoggedIn })}
+          key={`ShareTool_${post.id}`}
+        >
           <button onClick={ ::this.sharePost }>
             <ShareIcon />
             <Hint>Share</Hint>
@@ -155,7 +164,7 @@ class PostTools extends Component {
   toggleComments() {
     const { author, dispatch, isLoggedIn, post } = this.props
     if (!isLoggedIn) {
-      dispatch(pushState(window.history.state, `/${author.username}/post/${post.token}`))
+      dispatch(pushPath(`/${author.username}/post/${post.token}`, window.history.state))
     }
   }
 
@@ -173,11 +182,8 @@ class PostTools extends Component {
 
   sharePost() {
     const { author, dispatch, post } = this.props
-    dispatch(openModal(<ShareDialog
-                       author={author}
-                       post={post}
-                       trackEvent={bindActionCreators(trackEvent, dispatch)}
-                       />))
+    const action = bindActionCreators(trackEvent, dispatch)
+    dispatch(openModal(<ShareDialog author={author} post={post} trackEvent={action} />))
     return dispatch(trackEvent('open-share-dialog'))
   }
 
@@ -223,6 +229,14 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
   }
+}
+
+PostTools.propTypes = {
+  author: PropTypes.object.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  post: PropTypes.object.isRequired,
 }
 
 export default connect(mapStateToProps)(PostTools)

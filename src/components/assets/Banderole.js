@@ -13,10 +13,6 @@ const STATUS = {
 }
 
 class Banderole extends Component {
-  static propTypes = {
-    creditsClickAction: PropTypes.func,
-    userlist: PropTypes.array.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -106,6 +102,11 @@ class Banderole extends Component {
       </div>
     )
   }
+}
+
+Banderole.propTypes = {
+  creditsClickAction: PropTypes.func,
+  userlist: PropTypes.array.isRequired,
 }
 
 export default Banderole

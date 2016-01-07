@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 
@@ -10,7 +11,7 @@ const TabListButtons = ({ activeType, className, onTabClick, tabClasses, tabs })
             className={classNames(tabClasses, 'TabButton', { active: tab.type === activeType })}
             key={`TabButton-${tab.type}`}
             onClick={() => { onTabClick({ type: tab.type }) }}
-            >
+          >
             {tab.children}
           </button>
           )

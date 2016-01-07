@@ -18,10 +18,6 @@ import TreeButton from '../../components/navigation/TreeButton'
 
 
 class Settings extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    profile: PropTypes.object,
-  }
 
   getAvatarSource() {
     const { profile } = this.props
@@ -44,9 +40,18 @@ class Settings extends Component {
   getExternalLinkListAsText() {
     const { profile } = this.props
     return (
-      profile.externalLinksList.map((link, i) =>
-        <a href={link.url} target="_blank" key={ 'settingslinks_' + i } style={{ marginRight: `${5 / 16}rem` }}>{ link.text }</a>
-      )
+      profile.externalLinksList.map((link, i) => {
+        return (
+          <a
+            href={link.url}
+            target="_blank"
+            key={ 'settingslinks_' + i }
+            style={{ marginRight: `${5 / 16}rem` }}
+          >
+            { link.text }
+          </a>
+        )
+      })
     )
   }
 
@@ -73,8 +78,8 @@ class Settings extends Component {
     const { dispatch, profile } = this.props
     dispatch(openModal(
       <AdultPostsDialog
-      onConfirm={ ::this.closeModal }
-      user={ profile }
+        onConfirm={ ::this.closeModal }
+        user={ profile }
       />
     ))
   }
@@ -91,15 +96,18 @@ class Settings extends Component {
         <div className="SettingsBody" >
           <div className="SettingsAvatarPicker" >
           <Avatar
-              isModifiable
-              size="large"
-              sources={this.getAvatarSource()}
-            />
+            isModifiable
+            size="large"
+            sources={this.getAvatarSource()}
+          />
           </div>
 
           <header className="SettingsHeader">
             <h1 className="SettingsHeading">Profile</h1>
-            <p>Your username, name, bio and links appear on your public Ello profile. Your email address remains private.</p>
+            <p>
+              Your username, name, bio and links appear on your public Ello
+              profile. Your email address remains private.
+            </p>
           </header>
 
           <form className="SettingsForm">
@@ -306,7 +314,10 @@ class Settings extends Component {
               <div className="SettingsCell">
                 <dl className="SettingsDefinition">
                   <dt>Export Data</dt>
-                  <dd>This includes all of the content you have posted on Ello. We will email you a link to download your data.</dd>
+                  <dd>
+                    This includes all of the content you have posted on Ello.
+                    We will email you a link to download your data.
+                  </dd>
                 </dl>
                 { profile.dataExport && profile.dataExport.value ?
                   <a className="SettingsButton" href={profile.export}>Download Export</a> :
@@ -346,6 +357,11 @@ class Settings extends Component {
 // Settings.preRender = (store) => {
 //   return store.dispatch(loadInvitedUsers())
 // }
+
+Settings.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  profile: PropTypes.object,
+}
 
 function mapStateToProps(state) {
   return {

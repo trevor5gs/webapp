@@ -7,9 +7,6 @@ import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 
 class RegistrationRequestForm extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -36,7 +33,11 @@ class RegistrationRequestForm extends Component {
       return this.setState({ emailStatus: STATUS.FAILURE, emailSuggestion: null })
     }
     const { email, suggestions } = availability
-    const emailFullSuggestion = suggestions.email && suggestions.email.full && suggestions.email.full.length ? suggestions.email.full : null
+    const emailFullSuggestion = suggestions.email &&
+      suggestions.email.full &&
+      suggestions.email.full.length ?
+      suggestions.email.full :
+      null
     if (email && emailStatus !== STATUS.SUCCESS) {
       return this.setState({ emailStatus: STATUS.SUCCESS, emailSuggestion: emailFullSuggestion })
     } else if (!email && emailStatus !== STATUS.FAILURE) {
@@ -76,11 +77,29 @@ class RegistrationRequestForm extends Component {
     const wasSubmitted = emailStatus === STATUS.SUBMITTED
     return wasSubmitted ?
       <div>Please check your email to join Ello.</div> :
-      <form id="RegistrationRequestForm" className="AuthenticationForm" onSubmit={::this.handleSubmit} role="form" noValidate="novalidate">
-        <EmailControl ref="emailControl" tabIndex="1" text="" status={emailStatus} suggestions={emailSuggestion} controlWasChanged={::this.handleEmailControlChanged} classModifiers="asBoxControl" />
+      <form
+        id="RegistrationRequestForm"
+        className="AuthenticationForm"
+        onSubmit={::this.handleSubmit}
+        role="form"
+        noValidate="novalidate"
+      >
+        <EmailControl
+          ref="emailControl"
+          tabIndex="1"
+          text=""
+          status={emailStatus}
+          suggestions={emailSuggestion}
+          controlWasChanged={::this.handleEmailControlChanged}
+          classModifiers="asBoxControl"
+        />
         <FormButton tabIndex="2" disabled={!isFormValid}>Sign up</FormButton>
       </form>
   }
+}
+
+RegistrationRequestForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

@@ -14,9 +14,14 @@ class CommunityPicker extends Picker {
   }
 
   render() {
+    const klassNames = classNames(
+      'CommunityPicker',
+      'Panel',
+      { isFollowingAll: this.isFollowingAll() },
+    )
     return (
-      <div className={classNames('CommunityPicker', 'Panel', { isFollowingAll: this.isFollowingAll() })}>
-        <button className="PickerButton" ref="followAllButton" onClick={() => this.followAll()}>
+      <div className={klassNames}>
+        <button className="PickerButton" ref="followAllButton" onClick={::this.followAll}>
           <span>{this.renderBigButtonText()}</span>
         </button>
         <StreamComponent ref="streamComponent" action={loadCommunities()} />

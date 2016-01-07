@@ -2,12 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { parsePost } from '../parsers/PostParser'
 
 class PostsAsGrid extends Component {
-  static propTypes = {
-    currentUser: PropTypes.object,
-    gridColumnCount: PropTypes.number,
-    json: PropTypes.object,
-    posts: PropTypes.object,
-  }
 
   renderColumn(posts, index) {
     const { json, currentUser } = this.props
@@ -44,6 +38,13 @@ class PostsAsGrid extends Component {
       </div>
     )
   }
+}
+
+PostsAsGrid.propTypes = {
+  currentUser: PropTypes.object,
+  gridColumnCount: PropTypes.number,
+  json: PropTypes.object,
+  posts: PropTypes.object,
 }
 
 export default PostsAsGrid

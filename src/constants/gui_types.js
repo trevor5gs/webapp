@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // These get set by the ResizeComponent
 export const GUI = {
   innerWidth: null,

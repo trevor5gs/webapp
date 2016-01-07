@@ -1,11 +1,14 @@
-const path = require('path')
-const express = require('express')
-const webpack = require('webpack')
-const config = require('../webpack.dev.config')
+import path from 'path'
+import express from 'express'
+import webpack from 'webpack'
+import config from '../webpack.dev.config'
+import addOauthRoute from '../oauth'
+import { updateStrings as updateTimeAgoStrings } from '../src/vendor/time_ago_in_words'
+
 const app = express()
 const compiler = webpack(config)
-const addOauthRoute = require('../oauth')
 
+updateTimeAgoStrings({ about: '' })
 addOauthRoute(app)
 
 // Development Middleware

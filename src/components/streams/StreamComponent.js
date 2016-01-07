@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { runningFetches } from '../../middleware/requester'
@@ -10,15 +11,6 @@ import { ElloMark } from '../interface/ElloIcons'
 import Paginator from '../streams/Paginator'
 
 export class StreamComponent extends Component {
-  static propTypes = {
-    action: PropTypes.object,
-    currentUser: PropTypes.object,
-    dispatch: PropTypes.func.isRequired,
-    initModel: PropTypes.object,
-    json: PropTypes.object.isRequired,
-    router: PropTypes.object.isRequired,
-    stream: PropTypes.object.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -45,7 +37,7 @@ export class StreamComponent extends Component {
     const { meta } = action
     let result = null
     if (json.pages) {
-      result = json.pages[router.location.pathname]
+      result = json.pages[router.path]
     }
     if (result && !result.mode) {
       dispatch({
@@ -63,21 +55,27 @@ export class StreamComponent extends Component {
   shouldComponentUpdate() {
     const { action } = this.state
     const { router, stream } = this.props
-    const pathArr = router.location.pathname.split('/')
+    const pathArr = router.path.split('/')
     const path = pathArr[pathArr.length - 1]
     // TODO: potentially whitelist the actions that we would want to render on
     // TODO: test this!
     if (!action || !action.payload || !stream || !stream.payload) {
       return false
-    } else if (stream.type && (stream.type.indexOf('POST.') === 0 || stream.type.indexOf('LOAD_NEXT_CONTENT') === 0)) {
+    } else if (stream.type &&
+               (stream.type.indexOf('POST.') === 0 ||
+                stream.type.indexOf('LOAD_NEXT_CONTENT') === 0)) {
       return true
     } else if (action.payload.endpoint === stream.payload.endpoint) {
       return true
-    } else if (stream.meta && stream.meta.resultKey && stream.payload.endpoint.path.match(stream.meta.resultKey)) {
+    } else if (stream.meta &&
+               stream.meta.resultKey &&
+               stream.payload.endpoint.path.match(stream.meta.resultKey)) {
       // if we are a nested stream component and the resultKey
       // ie: lovers as a resultKey for the endpoint for post lovers
       return true
-    } else if (stream.payload.endpoint && stream.payload.endpoint.path && stream.payload.endpoint.path.match(path)) {
+    } else if (stream.payload.endpoint &&
+               stream.payload.endpoint.path &&
+               stream.payload.endpoint.path.match(path)) {
       // is used to match the endpoint required to load it
       return true
     } else if (path === 'search' || path === 'find') {
@@ -125,15 +123,18 @@ export class StreamComponent extends Component {
     let result = null
     if (json.pages) {
       if (meta && meta.resultKey) {
-        result = json.pages[`${router.location.pathname}_${meta.resultKey}`]
+        result = json.pages[`${router.path}_${meta.resultKey}`]
       } else {
-        result = json.pages[router.location.pathname]
+        result = json.pages[router.path]
       }
     }
     if (!result) { return }
     if (scrolled && meta && meta.resultKey) { return }
     const { pagination } = result
-    if (!action.payload.endpoint || !pagination[rel] || parseInt(pagination.totalPagesRemaining, 10) === 0 || !action) { return }
+    if (!action.payload.endpoint ||
+        !pagination[rel] ||
+        parseInt(pagination.totalPagesRemaining, 10) === 0 ||
+        !action) { return }
     if (runningFetches[pagination[rel]]) { return }
     this.refs.paginator.setLoading(true)
     const infiniteAction = {
@@ -195,10 +196,10 @@ export class StreamComponent extends Component {
     if (!action) { return null }
     const { meta, payload } = action
     let result = null
-    let resultPath = router.location.pathname
+    let resultPath = router.path
     if (json.pages) {
       if (meta && meta.resultKey) {
-        resultPath = `${router.location.pathname}_${meta.resultKey}`
+        resultPath = `${router.path}_${meta.resultKey}`
       }
       result = json.pages[resultPath]
     }
@@ -216,7 +217,8 @@ export class StreamComponent extends Component {
       if (result.next) {
         renderObj.data = renderObj.data.concat(result.next.ids)
       }
-    } else if (result.type === meta.mappingType || (meta.resultFilter && result.type !== meta.mappingType)) {
+    } else if (result.type === meta.mappingType ||
+               (meta.resultFilter && result.type !== meta.mappingType)) {
       for (const id of result.ids) {
         if (json[result.type][id]) {
           renderObj.data.push(json[result.type][id])
@@ -241,7 +243,13 @@ export class StreamComponent extends Component {
     const renderMethod = resultMode === 'grid' ? 'asGrid' : 'asList'
     return (
       <section className="StreamComponent">
-        { meta.renderStream[renderMethod](renderObj, json, currentUser, this.state.gridColumnCount) }
+        {
+          meta.renderStream[renderMethod](
+            renderObj,
+            json,
+            currentUser,
+            this.state.gridColumnCount)
+        }
         <Paginator
           delegate={this}
           hasShowMoreButton={typeof meta.resultKey !== 'undefined'}
@@ -252,6 +260,16 @@ export class StreamComponent extends Component {
       </section>
     )
   }
+}
+
+StreamComponent.propTypes = {
+  action: PropTypes.object,
+  currentUser: PropTypes.object,
+  dispatch: PropTypes.func.isRequired,
+  initModel: PropTypes.object,
+  json: PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
+  stream: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {

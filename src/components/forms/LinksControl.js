@@ -2,30 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 
 class LinksControl extends Component {
-  static propTypes = {
-    classModifiers: PropTypes.string,
-    controlWasChanged: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    tabIndex: PropTypes.string.isRequired,
-    text: PropTypes.string,
-  }
-
-  static defaultProps = {
-    classModifiers: '',
-    id: 'user_links',
-    name: 'user[links]',
-    placeholder: 'Links (optional)',
-    tabIndex: '0',
-    text: '',
-  }
 
   constructor(props, context) {
     super(props, context)
     const { text } = this.props
     this.state = {
-      text: text,
+      text,
       hasValue: text && text.length,
       hasFocus: false,
     }
@@ -51,8 +33,8 @@ class LinksControl extends Component {
     const groupClassNames = classNames(
       'FormControlGroup',
       classModifiers,
-      { hasFocus: hasFocus },
-      { hasValue: hasValue },
+      { hasFocus },
+      { hasValue },
     )
     const labelClassNames = classNames(
       'FormControlLabel',
@@ -78,12 +60,32 @@ class LinksControl extends Component {
           maxLength="50"
           autoCapitalize="off"
           autoCorrect="off"
-          onFocus={(e) => this.handleFocus(e)}
-          onBlur={(e) => this.handleBlur(e)}
-          onChange={(e) => this.handleChange(e)} />
+          onBlur={::this.handleBlur}
+          onChange={::this.handleChange}
+          onFocus={::this.handleFocus}
+        />
       </div>
     )
   }
+}
+
+LinksControl.propTypes = {
+  classModifiers: PropTypes.string,
+  controlWasChanged: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  tabIndex: PropTypes.string.isRequired,
+  text: PropTypes.string,
+}
+
+LinksControl.defaultProps = {
+  classModifiers: '',
+  id: 'user_links',
+  name: 'user[links]',
+  placeholder: 'Links (optional)',
+  tabIndex: '0',
+  text: '',
 }
 
 export default LinksControl

@@ -5,11 +5,6 @@ import { loadPostDetail } from '../../actions/posts'
 import StreamComponent from '../../components/streams/StreamComponent'
 
 class PostDetail extends Component {
-  static propTypes = {
-    params: PropTypes.shape({
-      token: PropTypes.string.isRequired,
-    }).isRequired,
-  }
 
   render() {
     const { params } = this.props
@@ -19,7 +14,8 @@ class PostDetail extends Component {
         <StreamComponent
           ref="streamComponent"
           action={loadPostDetail(`~${params.token}`)}
-          initModel={{ collection: MAPPING_TYPES.POSTS, findObj: { token: params.token } }} />
+          initModel={{ collection: MAPPING_TYPES.POSTS, findObj: { token: params.token } }}
+        />
       </section>
     )
   }
@@ -27,6 +23,12 @@ class PostDetail extends Component {
 
 PostDetail.preRender = (store, routerState) => {
   return store.dispatch(loadPostDetail(`~${routerState.params.type}`))
+}
+
+PostDetail.propTypes = {
+  params: PropTypes.shape({
+    token: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default PostDetail

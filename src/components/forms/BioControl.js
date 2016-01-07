@@ -2,30 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 
 class BioControl extends Component {
-  static propTypes = {
-    classModifiers: PropTypes.string,
-    controlWasChanged: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    tabIndex: PropTypes.string.isRequired,
-    text: PropTypes.string,
-  }
-
-  static defaultProps = {
-    classModifiers: '',
-    id: 'user_unsanitized_short_bio',
-    name: 'user[unsanitized_short_bio]',
-    placeholder: 'Bio (optional)',
-    tabIndex: '0',
-    text: '',
-  }
 
   constructor(props, context) {
     super(props, context)
     const { text } = this.props
     this.state = {
-      text: text,
+      text,
       hasValue: text && text.length,
       hasFocus: false,
     }
@@ -53,8 +35,8 @@ class BioControl extends Component {
     const groupClassNames = classNames(
       'FormControlGroup',
       classModifiers,
-      { hasFocus: hasFocus },
-      { hasValue: hasValue },
+      { hasFocus },
+      { hasValue },
       { hasExceeded: len > 192 },
     )
     const labelClassNames = classNames(
@@ -80,13 +62,32 @@ class BioControl extends Component {
           placeholder={placeholder}
           autoCapitalize="off"
           autoCorrect="off"
-          onFocus={(e) => this.handleFocus(e)}
-          onBlur={(e) => this.handleBlur(e)}
-          onChange={(e) => this.handleChange(e)}
+          onBlur={::this.handleBlur}
+          onChange={::this.handleChange}
+          onFocus={::this.handleFocus}
         />
       </div>
     )
   }
+}
+
+BioControl.propTypes = {
+  classModifiers: PropTypes.string,
+  controlWasChanged: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  tabIndex: PropTypes.string.isRequired,
+  text: PropTypes.string,
+}
+
+BioControl.defaultProps = {
+  classModifiers: '',
+  id: 'user_unsanitized_short_bio',
+  name: 'user[unsanitized_short_bio]',
+  placeholder: 'Bio (optional)',
+  tabIndex: '0',
+  text: '',
 }
 
 export default BioControl

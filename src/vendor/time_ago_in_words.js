@@ -1,4 +1,5 @@
 /* eslint no-extend-native: [2, {"exceptions": ["Date"]}] */
+/* eslint-disable max-len */
 const timeAgoInWordsStrings = {
   // prefix adverbs
   about: '~',

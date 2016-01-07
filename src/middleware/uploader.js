@@ -51,8 +51,8 @@ function getUploadData(key, credentials, file) {
 
 function getCredentialsHeader(accessToken) {
   return {
-    'Authorization': `Bearer ${accessToken}`,
-    'Accept': 'application/json',
+    Authorization: `Bearer ${accessToken}`,
+    Accept: 'application/json',
     'Content-Type': 'application/json',
   }
 }
@@ -77,7 +77,7 @@ export const uploader = store => next => action => {
   const FAILURE = type + '_FAILURE'
 
   // dispatch the start of the request
-  next({ type: REQUEST, payload, meta: meta })
+  next({ type: REQUEST, payload, meta })
   const state = store.getState()
   const { accessToken } = state.authentication
   function fetchCredentials() {
@@ -103,7 +103,9 @@ export const uploader = store => next => action => {
   }
 
   function saveLocationToApi() {
-    const vo = (type === ACTION_TYPES.PROFILE.SAVE_AVATAR) ? { remote_avatar_url: assetUrl } : { remote_cover_image_url: assetUrl }
+    const vo = (type === ACTION_TYPES.PROFILE.SAVE_AVATAR) ?
+      { remote_avatar_url: assetUrl } :
+      { remote_cover_image_url: assetUrl }
     return fetch(endpoint.path, {
       method: 'PATCH',
       headers: getCredentialsHeader(accessToken),

@@ -13,8 +13,8 @@ export function trackEvent(label, options = {}) {
     type: TRACK.EVENT,
     meta: {},
     payload: {
-      label: label,
-      options: options,
+      label,
+      options,
     },
   }
 }

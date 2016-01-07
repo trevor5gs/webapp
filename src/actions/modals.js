@@ -5,7 +5,7 @@ export function openModal(component, wrapperClasses = '') {
     type: MODAL.OPEN,
     meta: {
       kind: 'Modal',
-      wrapperClasses: wrapperClasses,
+      wrapperClasses,
     },
     payload: component,
   }
@@ -23,7 +23,7 @@ export function openAlert(component, wrapperClasses = '') {
     type: ALERT.OPEN,
     meta: {
       kind: 'Alert',
-      wrapperClasses: wrapperClasses,
+      wrapperClasses,
     },
     payload: component,
   }

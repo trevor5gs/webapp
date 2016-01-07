@@ -12,18 +12,6 @@ import Modal from '../components/modals/Modal'
 import Navbar from '../components/navbar/Navbar'
 
 class App extends Component {
-  static propTypes = {
-    authentication: PropTypes.object.isRequired,
-    children: PropTypes.node.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    location: PropTypes.shape({
-      pathname: PropTypes.string.isRequired,
-    }),
-  }
-
-  static defaultProps = {
-    lastLocation: '',
-  }
 
   constructor(props, context) {
     const loggedOutPaths = {
@@ -39,10 +27,10 @@ class App extends Component {
     // then logging out of the mothership wouldn't clear out the
     // authentication here and would show you the wrong navbar
     // and the links would be wrong for user/post detail pages
-    const { dispatch, location } = this.props
+    const { dispatch, pathname } = this.props
     let isLoggedOutPath = false
     for (const re in loggedOutPaths) {
-      if (location.pathname.match(loggedOutPaths[re])) {
+      if (pathname.match(loggedOutPaths[re])) {
         isLoggedOutPath = true
         break
       }
@@ -55,23 +43,25 @@ class App extends Component {
   componentWillReceiveProps(nextProps) {
     const prevAuthentication = this.props.authentication
     const { authentication, dispatch, location } = nextProps
-    if (authentication && !prevAuthentication.isLoggedIn && authentication.isLoggedIn && location.pathname !== '/') {
+    if (authentication &&
+        !prevAuthentication.isLoggedIn &&
+        authentication.isLoggedIn &&
+        location.pathname !== '/') {
       dispatch(loadProfile())
     }
   }
 
   componentDidUpdate() {
-    const { location, dispatch } = this.props
-    if (location.pathname !== this.lastLocation) {
-      this.lastLocation = location.pathname
+    const { pathname, dispatch } = this.props
+    if (pathname !== this.lastLocation) {
+      this.lastLocation = pathname
       dispatch(trackPageView())
     }
   }
 
   render() {
-    const { location, children, authentication } = this.props
+    const { pathname, children, authentication } = this.props
     const { isLoggedIn } = authentication
-    const { pathname } = location
     const appClasses = classNames(
       'App',
       { isLoggedIn },
@@ -100,9 +90,21 @@ App.preRender = (store) => {
   }
 }
 
+App.propTypes = {
+  authentication: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  pathname: PropTypes.string.isRequired,
+}
+
+App.defaultProps = {
+  lastLocation: '',
+}
+
 function mapStateToProps(state) {
   return {
     authentication: state.authentication,
+    pathname: state.router.path,
   }
 }
 

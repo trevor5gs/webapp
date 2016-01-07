@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -15,21 +16,14 @@ import Avatar from '../../components/assets/Avatar'
 import Cover from '../../components/assets/Cover'
 
 class Onboarding extends Component {
-  static propTypes = {
-    accessToken: PropTypes.string,
-    dispatch: PropTypes.func.isRequired,
-    json: PropTypes.object,
-    profile: PropTypes.object,
-    route: PropTypes.object,
-    router: PropTypes.object,
-    stream: PropTypes.object,
-  }
 
   constructor(props, context) {
     super(props, context)
     // check auth
-    const { accessToken, dispatch, router } = props
-    checkAuth(dispatch, accessToken, router.location)
+    const { accessToken, dispatch } = props
+    if (typeof document !== 'undefined') {
+      checkAuth(dispatch, accessToken, document.location)
+    }
   }
 
   getAvatarSource(profile) {
@@ -52,7 +46,7 @@ class Onboarding extends Component {
 
   getRelationshipMap() {
     const { json, router } = this.props
-    const result = json.pages ? json.pages[router.location.pathname] : null
+    const result = json.pages ? json.pages[router.path] : null
     const relationshipMap = { following: [], inactive: [] }
     if (!result || !result.type || !result.ids) {
       return relationshipMap
@@ -94,10 +88,15 @@ class Onboarding extends Component {
               batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
               lockNext
               title="What are you interested in?"
-              message="Follow the Ello Communities that you find most inspiring." />
+              message="Follow the Ello Communities that you find most inspiring."
+            />
             <CommunityPicker
-              shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
-              relationshipMap={rm} />
+              shouldAutoFollow={
+                stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ?
+                true : false
+              }
+              relationshipMap={rm}
+            />
           </section>
         )
 
@@ -111,10 +110,15 @@ class Onboarding extends Component {
               trackingLabel="people-picker"
               batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
               title="Follow some awesome people."
-              message="Ello is full of interesting and creative people committed to building a positive community." />
+              message="Ello is full of interesting and creative people committed to building a positive community."
+            />
             <PeoplePicker
-              shouldAutoFollow={ stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ? true : false }
-              relationshipMap={rm} />
+              shouldAutoFollow={
+                stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ?
+                true : false
+              }
+              relationshipMap={rm}
+            />
           </section>
         )
 
@@ -122,20 +126,23 @@ class Onboarding extends Component {
         return (
           <section className="CoverPicker Panel">
             <OnboardingHeader
-                nextPath="/onboarding/profile-avatar"
-                trackingLabel="cover-picker"
-                title="Customize your profile."
-                message="Choose a header image." />
+              nextPath="/onboarding/profile-avatar"
+              trackingLabel="cover-picker"
+              title="Customize your profile."
+              message="Choose a header image."
+            />
 
             <Uploader
               title="Upload a header image"
               message="Or drag & drop"
               recommend="Recommended image size: 2560 x 1440"
               openAlert={ bindActionCreators(openAlert, dispatch) }
-              saveAction={ bindActionCreators(saveCover, dispatch) }/>
+              saveAction={ bindActionCreators(saveCover, dispatch) }
+            />
             <Cover
               isModifiable
-              coverImage={this.getCoverSource(profile)} />
+              coverImage={this.getCoverSource(profile)}
+            />
           </section>
         )
 
@@ -143,10 +150,11 @@ class Onboarding extends Component {
         return (
           <section className="AvatarPicker Panel">
             <OnboardingHeader
-                nextPath="/onboarding/profile-bio"
-                trackingLabel="avatar-picker"
-                title="Customize your profile."
-                message="Choose an avatar." />
+              nextPath="/onboarding/profile-bio"
+              trackingLabel="avatar-picker"
+              title="Customize your profile."
+              message="Choose an avatar."
+            />
 
             <div className="AvatarPickerBody" >
               <Uploader
@@ -154,13 +162,14 @@ class Onboarding extends Component {
                 message="Or drag & drop it"
                 recommend="Recommended image size: 360 x 360"
                 openAlert={ bindActionCreators(openAlert, dispatch) }
-                saveAction={ bindActionCreators(saveAvatar, dispatch) }/>
+                saveAction={ bindActionCreators(saveAvatar, dispatch) }
+              />
               <Avatar
                 isModifiable
-                sources={this.getAvatarSource(profile)} />
+                sources={this.getAvatarSource(profile)}
+              />
             </div>
-            <Cover
-              coverImage={this.getCoverSource(profile)} />
+            <Cover coverImage={this.getCoverSource(profile)} />
           </section>
         )
 
@@ -168,18 +177,18 @@ class Onboarding extends Component {
         return (
           <section className="InfoPicker Panel">
             <OnboardingHeader
-                redirection
-                nextPath={ENV.REDIRECT_URI}
-                trackingLabel="info-picker"
-                title="Customize your profile."
-                message="Fill out your bio." />
+              redirection
+              nextPath={ENV.REDIRECT_URI}
+              trackingLabel="info-picker"
+              title="Customize your profile."
+              message="Fill out your bio."
+            />
 
             <div className="InfoPickerBody" >
               <Avatar sources={this.getAvatarSource(profile)} />
               <InfoForm />
             </div>
-            <Cover
-              coverImage={this.getCoverSource(profile)} />
+            <Cover coverImage={this.getCoverSource(profile)} />
           </section>
         )
 
@@ -187,6 +196,16 @@ class Onboarding extends Component {
         return null
     }
   }
+}
+
+Onboarding.propTypes = {
+  accessToken: PropTypes.string,
+  dispatch: PropTypes.func.isRequired,
+  json: PropTypes.object,
+  profile: PropTypes.object,
+  route: PropTypes.object,
+  router: PropTypes.object,
+  stream: PropTypes.object,
 }
 
 function mapStateToProps(state) {

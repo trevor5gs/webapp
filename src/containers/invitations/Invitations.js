@@ -9,7 +9,10 @@ class Invitations extends Component {
       <section className="Invitations Panel">
         <header className="InvitationsHeader">
           <h1 className="InvitationsHeading">Invite your friends</h1>
-          <p>Help Ello grow organically by inviting the people you love, and who you know will love Ello too.</p>
+          <p>
+            Help Ello grow organically by inviting the people you love, and who
+            you know will love Ello too.
+          </p>
         </header>
         <div className="InvitationsForm">
           <InvitationForm/>

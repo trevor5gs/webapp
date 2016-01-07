@@ -11,13 +11,6 @@ const STATUS = {
 }
 
 class ImageRegion extends Component {
-  static propTypes = {
-    assets: PropTypes.object.isRequired,
-    content: PropTypes.object.isRequired,
-    isGridLayout: PropTypes.bool.isRequired,
-    links: PropTypes.object,
-    postDetailPath: PropTypes.string,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -63,8 +56,8 @@ class ImageRegion extends Component {
       height = parseInt(hdpi.metadata.height, 10)
     }
     return {
-      width: width,
-      height: height,
+      width,
+      height,
       ratio: width ? width / height : null,
     }
   }
@@ -84,7 +77,7 @@ class ImageRegion extends Component {
     return {
       width: wv,
       height: hv,
-      ratio: ratio,
+      ratio,
     }
   }
 
@@ -151,7 +144,8 @@ class ImageRegion extends Component {
         alt={content.alt}
         width={dimensions.width}
         height={dimensions.height}
-        src={this.attachment.optimized.url} />
+        src={this.attachment.optimized.url}
+      />
     )
   }
 
@@ -166,7 +160,8 @@ class ImageRegion extends Component {
         width={dimensions.width}
         height={dimensions.height}
         src={this.attachment.hdpi.url}
-        srcSet={srcset} />
+        srcSet={srcset}
+      />
     )
   }
 
@@ -183,7 +178,8 @@ class ImageRegion extends Component {
       <img
         className="RegionContent ImageAttachment"
         alt={content.alt}
-        src={content.url} />
+        src={content.url}
+      />
     )
   }
 
@@ -210,10 +206,20 @@ class ImageRegion extends Component {
     const { assets, isGridLayout, links, postDetailPath } = this.props
     if (links && links.assets && assets[links.assets] && assets[links.assets].attachment) {
       this.attachment = assets[links.assets].attachment
-      return isGridLayout && postDetailPath ? this.renderAttachmentAsLink() : this.renderAttachmentAsStatic()
+      return isGridLayout && postDetailPath ?
+        this.renderAttachmentAsLink() :
+        this.renderAttachmentAsStatic()
     }
     return this.renderContent()
   }
+}
+
+ImageRegion.propTypes = {
+  assets: PropTypes.object.isRequired,
+  content: PropTypes.object.isRequired,
+  isGridLayout: PropTypes.bool.isRequired,
+  links: PropTypes.object,
+  postDetailPath: PropTypes.string,
 }
 
 export default ImageRegion

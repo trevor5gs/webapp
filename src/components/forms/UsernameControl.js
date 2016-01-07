@@ -4,37 +4,12 @@ import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class UsernameControl extends Component {
-  static propTypes = {
-    classModifiers: PropTypes.string,
-    controlWasChanged: PropTypes.func.isRequired,
-    failureType: PropTypes.string,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    status: PropTypes.string,
-    showAdvice: PropTypes.bool,
-    suggestions: PropTypes.array,
-    tabIndex: PropTypes.string.isRequired,
-    text: PropTypes.string,
-  }
-
-  static defaultProps = {
-    classModifiers: '',
-    failureType: null,
-    id: 'user_username',
-    name: 'user[username]',
-    placeholder: 'Enter your username',
-    showAdvice: true,
-    status: STATUS.INDETERMINATE,
-    suggestions: null,
-    tabIndex: 0,
-  }
 
   constructor(props, context) {
     super(props, context)
     const { text } = this.props
     this.state = {
-      text: text,
+      text,
       hasValue: text && text.length,
       hasFocus: false,
     }
@@ -76,11 +51,21 @@ class UsernameControl extends Component {
   }
 
   renderInvalidCharacterError() {
-    return <span>Username contains invalid characters. Letters, numbers, underscores & dashes only. No spaces.</span>
+    return (
+      <span>
+        Username contains invalid characters. Letters, numbers, underscores &
+        dashes only. No spaces.
+      </span>
+    )
   }
 
   renderAlreadyExistsError() {
-    return <span>Username already exists. Please try a new one. You can change your username at any time.</span>
+    return (
+      <span>
+        Username already exists. Please try a new one. You can change your
+        username at any time.
+      </span>
+    )
   }
 
   renderError() {
@@ -101,7 +86,10 @@ class UsernameControl extends Component {
   renderAdvice() {
     return (
       <p className="FormControlFeedback FormControlFeedbackSuggestions">
-        <span>You can change your username at any time. Letters, numbers, underscores & dashes only. No spaces.</span>
+        <span>
+          You can change your username at any time. Letters, numbers,
+          underscores & dashes only. No spaces.
+        </span>
       </p>
     )
   }
@@ -113,7 +101,15 @@ class UsernameControl extends Component {
         <div className="FormControlSuggestionList">
           <p>Here are some available usernames &mdash;</p>
           {suggestions.map((suggestion, i) => {
-            return <button title={suggestion} onClick={::this.handleUsernameSuggestionClick} key={'suggestion_' + i}>{suggestion}</button>
+            return (
+              <button
+                title={suggestion}
+                onClick={::this.handleUsernameSuggestionClick}
+                key={'suggestion_' + i}
+              >
+                {suggestion}
+              </button>
+            )
           })}
         </div>
       )
@@ -149,9 +145,9 @@ class UsernameControl extends Component {
       'FormControlGroup',
       classModifiers,
       this.mapStatusToClass(),
-      { hasFocus: hasFocus },
-      { hasValue: hasValue },
-      { showAdvice: showAdvice },
+      { hasFocus },
+      { hasValue },
+      { showAdvice },
       { showSuggestionList: suggestions && suggestions.length },
     )
     const labelClassNames = classNames(
@@ -178,9 +174,10 @@ class UsernameControl extends Component {
           maxLength="50"
           autoCapitalize="off"
           autoCorrect="off"
-          onFocus={(e) => this.handleFocus(e)}
-          onBlur={(e) => this.handleBlur(e)}
-          onChange={(e) => this.handleChange(e)} />
+          onBlur={::this.handleBlur}
+          onChange={::this.handleChange}
+          onFocus={::this.handleFocus}
+        />
         { this.renderError() }
         { this.renderAdvice() }
         { this.renderSuggestionList() }
@@ -188,6 +185,32 @@ class UsernameControl extends Component {
       </div>
     )
   }
+}
+
+UsernameControl.propTypes = {
+  classModifiers: PropTypes.string,
+  controlWasChanged: PropTypes.func.isRequired,
+  failureType: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  status: PropTypes.string,
+  showAdvice: PropTypes.bool,
+  suggestions: PropTypes.array,
+  tabIndex: PropTypes.string.isRequired,
+  text: PropTypes.string,
+}
+
+UsernameControl.defaultProps = {
+  classModifiers: '',
+  failureType: null,
+  id: 'user_username',
+  name: 'user[username]',
+  placeholder: 'Enter your username',
+  showAdvice: true,
+  status: STATUS.INDETERMINATE,
+  suggestions: null,
+  tabIndex: 0,
 }
 
 export default UsernameControl

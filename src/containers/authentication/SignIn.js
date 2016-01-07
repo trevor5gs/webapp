@@ -10,9 +10,6 @@ import NewSessionForm from '../../components/forms/NewSessionForm'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class SignIn extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -37,7 +34,10 @@ class SignIn extends Component {
     return (
       <section className="Authentication Panel">
         <div className="FormDialog">
-          <h1><img src="/static/images/support/v.png" width="32" height="32" alt="hi" /> Welcome back.</h1>
+          <h1>
+            <img src="/static/images/support/v.png" width="32" height="32" alt="hi" />
+            Welcome back.
+          </h1>
           <NewSessionForm/>
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>
@@ -47,6 +47,10 @@ class SignIn extends Component {
       </section>
     )
   }
+}
+
+SignIn.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(SignIn)

@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-param-reassign */
 import uniq from 'lodash.uniq'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
@@ -89,7 +91,7 @@ function updatePostLoves(state, newState, action) {
     default:
       return state
   }
-  methods.mergeModel(newState, MAPPING_TYPES.POSTS, { id: model.id, lovesCount: Number(model.lovesCount) + delta, loved: loved })
+  methods.mergeModel(newState, MAPPING_TYPES.POSTS, { id: model.id, lovesCount: Number(model.lovesCount) + delta, loved })
   return newState
 }
 methods.updatePostLoves = (state, newState, action) => {
@@ -98,7 +100,7 @@ methods.updatePostLoves = (state, newState, action) => {
 
 function addNewIdsToResult(state, newState, router) {
   if (!newState.pages) { newState.pages = {} }
-  const result = newState.pages[router.location.pathname]
+  const result = newState.pages[router.path]
   if (!result || !result.newIds) { return state }
   result.ids = result.newIds.concat(result.ids)
   delete result.newIds
@@ -110,7 +112,7 @@ methods.addNewIdsToResult = (state, newState, router) => {
 
 function setLayoutMode(action, state, newState, router) {
   if (!newState.pages) { newState.pages = {} }
-  const result = newState.pages[router.location.pathname]
+  const result = newState.pages[router.path]
   if (!result || (result && result.mode === action.payload.mode)) { return state }
   result.mode = action.payload.mode
   return newState
@@ -139,7 +141,7 @@ function getResult(response, newState, action) {
   const { mappingType, resultFilter } = action.meta
   const ids = methods.addModels(newState, mappingType, response)
   // set the result to the resultFilter if it exists
-  const result = (typeof resultFilter === 'function') ? resultFilter(response[mappingType]) : { type: mappingType, ids: ids }
+  const result = (typeof resultFilter === 'function') ? resultFilter(response[mappingType]) : { type: mappingType, ids }
   result.pagination = action.payload.pagination
   return result
 }
@@ -154,7 +156,7 @@ function updateResult(response, newState, action, router) {
   const { resultKey } = action.meta
   // the action payload pathname comes from before the fetch so that
   // we can be sure that the result is being assigned to the proper page
-  const pathname = action.payload && action.payload.pathname ? action.payload.pathname : router.location.pathname
+  const pathname = action.payload && action.payload.pathname ? action.payload.pathname : router.path
   const resultPath = resultKey ? `${pathname}_${resultKey}` : pathname
   const existingResult = newState.pages[resultPath]
   if (existingResult && action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
@@ -206,7 +208,7 @@ export default function json(state = {}, action = { type: '' }, router) {
     // clear out the search results to get the loader to show on new search
     // TODO: probably should move this to a method to make testing easier
     const { resultKey } = action.meta
-    const pathname = action.payload && action.payload.pathname ? action.payload.pathname : router.location.pathname
+    const pathname = action.payload && action.payload.pathname ? action.payload.pathname : router.path
     const resultPath = resultKey ? `${pathname}_${resultKey}` : pathname
     const existingResult = newState.pages[resultPath]
     if (existingResult) {

@@ -8,11 +8,6 @@ import FooterLink from '../footer/FooterLink'
 import FooterTool from '../footer/FooterTool'
 
 class Footer extends Component {
-  static propTypes = {
-    json: PropTypes.object,
-    router: PropTypes.object,
-  }
-
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -32,7 +27,7 @@ class Footer extends Component {
     const { json, router } = this.props
     let result = null
     if (json.pages) {
-      result = json.pages[router.location.pathname]
+      result = json.pages[router.path]
     }
     if (result && result.mode) {
       this.setState({ isGridMode: result.mode === 'grid' })
@@ -57,7 +52,14 @@ class Footer extends Component {
         <div className="FooterLinks">
           <FooterLabel label="Beta 2.2"/>
           <FooterLink className="asLabel" href="/wtf" label="WTF"/>
-          { isAndroid ? null : <FooterLink href="http://appstore.com/ello/ello" label="Get the app" icon={ <PhoneIcon/> }/> }
+          { isAndroid ?
+            null :
+            <FooterLink
+              href="http://appstore.com/ello/ello"
+              label="Get the app"
+              icon={ <PhoneIcon/> }
+            />
+          }
         </div>
 
         <div className="FooterTools">
@@ -77,6 +79,11 @@ class Footer extends Component {
       </footer>
     )
   }
+}
+
+Footer.propTypes = {
+  json: PropTypes.object,
+  router: PropTypes.object,
 }
 
 function mapStateToProps(state) {

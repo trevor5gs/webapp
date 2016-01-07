@@ -10,13 +10,11 @@
     "ENV": false
   },
   "rules": {
-    "semi": 0,
-    "react/no-multi-comp": 0,
+    "no-alert": 2,
     "no-console": 2,
     "no-debugger": 2,
-    "no-alert": 2,
-    "id-length": [2, { "properties": "never", "exceptions": ["c", "e", "h", "i", "r", "v", "w", "x", "y"] }],
     "no-multiple-empty-lines": [2, { "max": 3, "maxEOF": 2 }],
-    "no-unused-expressions": [2, { "allowTernary": true }]
+    "react/no-multi-comp": 0,
+    "semi": 0
   }
 }

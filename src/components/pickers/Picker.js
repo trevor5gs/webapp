@@ -2,14 +2,6 @@ import React from 'react'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 
 class Picker extends React.Component {
-  static propTypes = {
-    relationshipMap: React.PropTypes.any.isRequired,
-    shouldAutoFollow: React.PropTypes.bool,
-  }
-
-  static defaultProps = {
-    shouldAutoFollow: false,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -34,7 +26,9 @@ class Picker extends React.Component {
   followAll() {
     const { inactive } = this.props.relationshipMap
     const userRefs = this.refs.streamComponent.refs.wrappedInstance.refs
-    const relationship = inactive.length === 0 ? RELATIONSHIP_PRIORITY.INACTIVE : RELATIONSHIP_PRIORITY.FRIEND
+    const relationship = inactive.length === 0 ?
+      RELATIONSHIP_PRIORITY.INACTIVE :
+      RELATIONSHIP_PRIORITY.FRIEND
     for (const propName in userRefs) {
       if (userRefs.hasOwnProperty(propName)) {
         const relationshipButton = this.getRelationshipButton(userRefs[propName].refs)
@@ -65,6 +59,15 @@ class Picker extends React.Component {
   render() {
     return null
   }
+}
+
+Picker.propTypes = {
+  relationshipMap: React.PropTypes.any.isRequired,
+  shouldAutoFollow: React.PropTypes.bool,
+}
+
+Picker.defaultProps = {
+  shouldAutoFollow: false,
 }
 
 export default Picker

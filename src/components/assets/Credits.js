@@ -3,13 +3,6 @@ import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
 
 class Credits extends Component {
-  static propTypes = {
-    clickAction: PropTypes.func,
-    user: PropTypes.shape({
-      avatar: PropTypes.shape({}),
-      username: PropTypes.string,
-    }).isRequired,
-  }
 
   // Typically a passed through tracking event sent before following the link
   handleClick() {
@@ -30,6 +23,14 @@ class Credits extends Component {
       </Link>
     )
   }
+}
+
+Credits.propTypes = {
+  clickAction: PropTypes.func,
+  user: PropTypes.shape({
+    avatar: PropTypes.shape({}),
+    username: PropTypes.string,
+  }).isRequired,
 }
 
 export default Credits

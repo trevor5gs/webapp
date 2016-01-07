@@ -12,12 +12,6 @@ function getComponentKind(modal) {
 }
 
 class Modal extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    isActive: PropTypes.func,
-    modal: PropTypes.object,
-    wrapperClasses: PropTypes.string,
-  }
 
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => {
@@ -48,7 +42,9 @@ class Modal extends Component {
 
   handleModalTrigger(e) {
     const classList = e.target.classList
-    if (classList.contains('Modal') || classList.contains('Alert') || classList.contains('CloseModal')) {
+    if (classList.contains('Modal') ||
+        classList.contains('Alert') ||
+        classList.contains('CloseModal')) {
       return this.close()
     }
   }
@@ -64,13 +60,21 @@ class Modal extends Component {
       return (
         <div
           className={ `${groupClassNames} isActive` }
-          onClick={(e) => this.handleModalTrigger(e)}>
+          onClick={::this.handleModalTrigger}
+        >
           { payload }
         </div>
       )
     }
     return <div className={groupClassNames}/>
   }
+}
+
+Modal.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  isActive: PropTypes.func,
+  modal: PropTypes.object,
+  wrapperClasses: PropTypes.string,
 }
 
 function mapStateToProps(state) {

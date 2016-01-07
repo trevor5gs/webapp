@@ -2,28 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 
 class SearchControl extends Component {
-  static propTypes = {
-    controlWasChanged: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    tabIndex: PropTypes.string.isRequired,
-    text: PropTypes.string,
-  }
-
-  static defaultProps = {
-    id: 'search_field',
-    name: 'terms',
-    placeholder: 'Search',
-    tabIndex: '0',
-    text: '',
-  }
 
   constructor(props, context) {
     super(props, context)
     const { text } = this.props
     this.state = {
-      text: text,
+      text,
       hasValue: text && text.length,
       hasFocus: false,
     }
@@ -48,8 +32,8 @@ class SearchControl extends Component {
     const { hasFocus, hasValue, text } = this.state
     const groupClassNames = classNames(
       'FormControlGroup',
-      { hasFocus: hasFocus },
-      { hasValue: hasValue },
+      { hasFocus },
+      { hasValue },
     )
 
     return (
@@ -66,12 +50,30 @@ class SearchControl extends Component {
           autoCapitalize="off"
           autoCorrect="off"
           autoComplete="off"
-          onFocus={(e) => this.handleFocus(e)}
-          onBlur={(e) => this.handleBlur(e)}
-          onChange={(e) => this.handleChange(e)} />
+          onBlur={::this.handleBlur}
+          onChange={::this.handleChange}
+          onFocus={::this.handleFocus}
+        />
       </div>
     )
   }
+}
+
+SearchControl.propTypes = {
+  controlWasChanged: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  tabIndex: PropTypes.string.isRequired,
+  text: PropTypes.string,
+}
+
+SearchControl.defaultProps = {
+  id: 'search_field',
+  name: 'terms',
+  placeholder: 'Search',
+  tabIndex: '0',
+  text: '',
 }
 
 export default SearchControl

@@ -63,7 +63,7 @@ export function relationshipBatchSave(ids, priority = 'friend') {
     payload: {
       method: 'POST',
       endpoint: api.relationshipBatchPath(),
-      body: JSON.stringify({ user_ids: ids, priority: priority }),
+      body: JSON.stringify({ user_ids: ids, priority }),
     },
   }
 }

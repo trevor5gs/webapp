@@ -6,13 +6,18 @@ import * as StreamRenderables from '../components/streams/StreamRenderables'
 export function searchForPosts(terms) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.searchPosts({ terms: window.encodeURIComponent(terms), per_page: api.PER_PAGE }) },
+    payload: {
+      endpoint: api.searchPosts({
+        per_page: api.PER_PAGE,
+        terms: window.encodeURIComponent(terms),
+      }),
+    },
     meta: {
       defaultMode: 'grid',
       mappingType: MAPPING_TYPES.POSTS,
       renderStream: {
-        asList: StreamRenderables.postsAsList,
         asGrid: StreamRenderables.postsAsGrid,
+        asList: StreamRenderables.postsAsList,
       },
     },
   }
@@ -21,13 +26,18 @@ export function searchForPosts(terms) {
 export function searchForUsers(terms) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.searchUsers({ terms: window.encodeURIComponent(terms), per_page: api.PER_PAGE }) },
+    payload: {
+      endpoint: api.searchUsers({
+        per_page: api.PER_PAGE,
+        terms: window.encodeURIComponent(terms),
+      }),
+    },
     meta: {
       defaultMode: 'grid',
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
-        asList: StreamRenderables.usersAsList,
         asGrid: StreamRenderables.usersAsGrid,
+        asList: StreamRenderables.usersAsList,
       },
     },
   }

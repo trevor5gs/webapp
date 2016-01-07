@@ -5,17 +5,9 @@ import StreamComponent from '../../components/streams/StreamComponent'
 import TabListLinks from '../../components/tabs/TabListLinks'
 
 class Discover extends Component {
-  static propTypes = {
-    location: PropTypes.shape({
-      pathname: PropTypes.string,
-    }),
-    params: PropTypes.shape({
-      type: PropTypes.string,
-    }),
-  }
 
   render() {
-    const { params, location } = this.props
+    const { params, pathname } = this.props
     const type = params.type || 'recommended'
     let action = loadDiscoverUsers(type)
     if (type === 'communities') {
@@ -33,7 +25,7 @@ class Discover extends Component {
     return (
       <section className="Discover Panel" key={`discover_${type}`}>
         <TabListLinks
-          activePath={location.pathname}
+          activePath={pathname}
           className="LabelTabList"
           tabClasses="LabelTab"
           tabs={tabs}
@@ -48,5 +40,18 @@ Discover.preRender = (store, routerState) => {
   return store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
 }
 
-export default connect()(Discover)
+Discover.propTypes = {
+  pathname: PropTypes.string.isRequired,
+  params: PropTypes.shape({
+    type: PropTypes.string,
+  }),
+}
+
+function mapStateToProps(state) {
+  return {
+    pathname: state.router.path,
+  }
+}
+
+export default connect(mapStateToProps)(Discover)
 

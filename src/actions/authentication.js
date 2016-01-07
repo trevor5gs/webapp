@@ -8,7 +8,7 @@ export function sendForgotPasswordRequest(email) {
       endpoint: forgotPassword(),
       method: 'POST',
       body: {
-        email: email,
+        email,
       },
     },
   }

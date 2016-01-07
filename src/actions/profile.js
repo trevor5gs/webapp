@@ -50,11 +50,11 @@ export function requestInvite(email) {
 
 export function uploadAsset(type, file) {
   return {
-    type: type,
+    type,
     meta: {},
     payload: {
       endpoint: api.profilePath(),
-      file: file,
+      file,
     },
   }
 }

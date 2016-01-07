@@ -38,26 +38,26 @@ class DevTools extends Component {
     } else if (!isHorizontalGridVisible && !isVerticalGridVisible) {
       return this.setState({ isHorizontalGridVisible: true, isVerticalGridVisible: true })
     } else if (isHorizontalGridVisible && !isVerticalGridVisible) {
-      return this.setState({ isHorizontalGridVisible: isHorizontalGridVisible, isVerticalGridVisible: true })
+      return this.setState({ isHorizontalGridVisible, isVerticalGridVisible: true })
     } else if (!isHorizontalGridVisible && isVerticalGridVisible) {
-      return this.setState({ isHorizontalGridVisible: true, isVerticalGridVisible: isVerticalGridVisible })
+      return this.setState({ isHorizontalGridVisible: true, isVerticalGridVisible })
     }
-    return this.setState({ isHorizontalGridVisible: isHorizontalGridVisible, isVerticalGridVisible: isVerticalGridVisible })
+    return this.setState({ isHorizontalGridVisible, isVerticalGridVisible })
   }
 
   // Cycles through horizontal and vertical grid lines being on.
   nextGridForCycle() {
     const { isHorizontalGridVisible, isVerticalGridVisible } = this.state
     if (isHorizontalGridVisible && isVerticalGridVisible) {
-      return this.setState({ isHorizontalGridVisible: false, isVerticalGridVisible: isVerticalGridVisible })
+      return this.setState({ isHorizontalGridVisible: false, isVerticalGridVisible })
     } else if (!isHorizontalGridVisible && !isVerticalGridVisible) {
-      return this.setState({ isHorizontalGridVisible: isHorizontalGridVisible, isVerticalGridVisible: true })
+      return this.setState({ isHorizontalGridVisible, isVerticalGridVisible: true })
     } else if (isHorizontalGridVisible && !isVerticalGridVisible) {
       return this.setState({ isHorizontalGridVisible: false, isVerticalGridVisible: true })
     } else if (!isHorizontalGridVisible && isVerticalGridVisible) {
       return this.setState({ isHorizontalGridVisible: true, isVerticalGridVisible: false })
     }
-    return { isHorizontalGridVisible: isHorizontalGridVisible, isVerticalGridVisible: isVerticalGridVisible }
+    return { isHorizontalGridVisible, isVerticalGridVisible }
   }
 
 

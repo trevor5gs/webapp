@@ -2,30 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 
 class NameControl extends Component {
-  static propTypes = {
-    classModifiers: PropTypes.string,
-    controlWasChanged: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    tabIndex: PropTypes.string.isRequired,
-    text: PropTypes.string,
-  }
-
-  static defaultProps = {
-    classModifiers: '',
-    id: 'user_name',
-    name: 'user[name]',
-    placeholder: 'Name (optional)',
-    tabIndex: '0',
-    text: '',
-  }
 
   constructor(props, context) {
     super(props, context)
     const { text } = this.props
     this.state = {
-      text: text,
+      text,
       hasValue: text && text.length,
       hasFocus: false,
     }
@@ -51,8 +33,8 @@ class NameControl extends Component {
     const groupClassNames = classNames(
       'FormControlGroup',
       classModifiers,
-      { hasFocus: hasFocus },
-      { hasValue: hasValue },
+      { hasFocus },
+      { hasValue },
     )
     const labelClassNames = classNames(
       'FormControlLabel',
@@ -78,12 +60,32 @@ class NameControl extends Component {
           maxLength="50"
           autoCapitalize="off"
           autoCorrect="off"
-          onFocus={(e) => this.handleFocus(e)}
-          onBlur={(e) => this.handleBlur(e)}
-          onChange={(e) => this.handleChange(e)} />
+          onFocus={::this.handleFocus}
+          onBlur={::this.handleBlur}
+          onChange={::this.handleChange}
+        />
       </div>
     )
   }
+}
+
+NameControl.propTypes = {
+  classModifiers: PropTypes.string,
+  controlWasChanged: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  tabIndex: PropTypes.string.isRequired,
+  text: PropTypes.string,
+}
+
+NameControl.defaultProps = {
+  classModifiers: '',
+  id: 'user_name',
+  name: 'user[name]',
+  placeholder: 'Name (optional)',
+  tabIndex: '0',
+  text: '',
 }
 
 export default NameControl

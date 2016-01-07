@@ -4,33 +4,12 @@ import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class PasswordControl extends Component {
-  static propTypes = {
-    classModifiers: PropTypes.string,
-    controlWasChanged: PropTypes.func,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    showSuggestion: PropTypes.bool,
-    status: PropTypes.string,
-    tabIndex: PropTypes.string.isRequired,
-    text: PropTypes.string,
-  }
-
-  static defaultProps = {
-    classModifiers: '',
-    id: 'user_password',
-    name: 'user[password]',
-    placeholder: 'Enter your password',
-    showSuggestion: true,
-    status: STATUS.INDETERMINATE,
-    tabIndex: 0,
-  }
 
   constructor(props, context) {
     super(props, context)
     const { text } = this.props
     this.state = {
-      text: text,
+      text,
       hasValue: text && text.length,
       hasFocus: false,
     }
@@ -105,8 +84,8 @@ class PasswordControl extends Component {
       'FormControlGroup',
       classModifiers,
       this.mapStatusToClass(),
-      { hasFocus: hasFocus },
-      { hasValue: hasValue },
+      { hasFocus },
+      { hasValue },
       { hasSuggestions: showSuggestion },
     )
     const labelClassNames = classNames(
@@ -133,15 +112,38 @@ class PasswordControl extends Component {
           ref="input"
           autoCapitalize="off"
           autoCorrect="off"
-          onFocus={(e) => this.handleFocus(e)}
-          onBlur={(e) => this.handleBlur(e)}
-          onChange={(e) => this.handleChange(e)} />
+          onBlur={::this.handleBlur}
+          onChange={::this.handleChange}
+          onFocus={::this.handleFocus}
+        />
         { this.renderError() }
         { this.renderSuggestions() }
         { this.renderStatus() }
       </div>
     )
   }
+}
+
+PasswordControl.propTypes = {
+  classModifiers: PropTypes.string,
+  controlWasChanged: PropTypes.func,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  showSuggestion: PropTypes.bool,
+  status: PropTypes.string,
+  tabIndex: PropTypes.string.isRequired,
+  text: PropTypes.string,
+}
+
+PasswordControl.defaultProps = {
+  classModifiers: '',
+  id: 'user_password',
+  name: 'user[password]',
+  placeholder: 'Enter your password',
+  showSuggestion: true,
+  status: STATUS.INDETERMINATE,
+  tabIndex: 0,
 }
 
 export default PasswordControl

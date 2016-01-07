@@ -11,7 +11,7 @@ export default [
     path: 'discover(/:type)',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/discover/Discover'))
+      cb(null, require('../../containers/discover/Discover').default)
       // })
     },
     onEnter(nextState, replaceState) {
@@ -26,7 +26,7 @@ export default [
     path: 'explore(/:type)',
     getComponents(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/discover/LoggedOutDiscover'))
+      cb(null, require('../../containers/discover/LoggedOutDiscover').default)
       // })
     },
     onEnter(nextState, replaceState) {

@@ -2,11 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { ElloMark } from '../interface/ElloIcons'
 
 class Paginator extends Component {
-  static propTypes = {
-    delegate: PropTypes.object,
-    hasShowMoreButton: PropTypes.bool,
-    pagination: PropTypes.object,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -22,11 +17,13 @@ class Paginator extends Component {
     } else if (hasShowMoreButton) {
       return `+more..`
     }
-    return (totalPages > 0) ? `Loading: ${totalPages - totalPagesRemaining + 1} of ${totalPages}` : 'Loading...'
+    return (totalPages > 0) ?
+      `Loading: ${totalPages - totalPagesRemaining + 1} of ${totalPages}` :
+      'Loading...'
   }
 
   setLoading(isPaginationLoading) {
-    this.state = { isPaginationLoading: isPaginationLoading, message: this.getMessage() }
+    this.state = { isPaginationLoading, message: this.getMessage() }
   }
 
   loadMore() {
@@ -40,7 +37,9 @@ class Paginator extends Component {
     const { isPaginationLoading, message } = this.state
     const { hasShowMoreButton } = this.props
     const classes = isPaginationLoading ? 'Paginator isBusy' : 'Paginator'
-    const messageArea = hasShowMoreButton ? <button onClick={ ::this.loadMore }>{ message }</button> : <span>{ message }</span>
+    const messageArea = hasShowMoreButton ?
+      <button onClick={ ::this.loadMore }>{ message }</button> :
+      <span>{ message }</span>
     return (
       <div className={ classes }>
         <ElloMark />
@@ -48,6 +47,12 @@ class Paginator extends Component {
       </div>
     )
   }
+}
+
+Paginator.propTypes = {
+  delegate: PropTypes.object,
+  hasShowMoreButton: PropTypes.bool,
+  pagination: PropTypes.object,
 }
 
 export default Paginator

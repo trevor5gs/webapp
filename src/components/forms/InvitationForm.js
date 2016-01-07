@@ -7,10 +7,6 @@ import BatchEmailControl from '../forms/BatchEmailControl'
 import FormButton from '../forms/FormButton'
 
 class InvitationForm extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    dispatch: PropTypes.func.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -38,7 +34,12 @@ class InvitationForm extends Component {
     const { batchEmailStatus } = this.state
     const isFormValid = batchEmailStatus === STATUS.SUCCESS
     return (
-      <form className={classNames(className, 'InvitationForm')} noValidate="novalidate" onSubmit={this.handleSubmit} role="form" >
+      <form
+        className={classNames(className, 'InvitationForm')}
+        noValidate="novalidate"
+        onSubmit={this.handleSubmit}
+        role="form"
+      >
         <BatchEmailControl
           classModifiers="asBoxControl onWhite"
           controlWasChanged={::this.handleControlChange}
@@ -52,6 +53,11 @@ class InvitationForm extends Component {
       </form>
     )
   }
+}
+
+InvitationForm.propTypes = {
+  className: PropTypes.string,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(InvitationForm)

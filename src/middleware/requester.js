@@ -1,16 +1,17 @@
+/* eslint-disable max-len */
 import { camelizeKeys } from 'humps'
 import * as ACTION_TYPES from '../constants/action_types'
 import { resetAuth } from '../networking/auth'
 
 const runningFetches = {}
 const defaultHeaders = {
-  'Accept': 'application/json',
+  Accept: 'application/json',
   'Content-Type': 'application/json',
 }
 
 function getAuthToken(accessToken) {
   return {
-    'Authorization': `Bearer ${accessToken}`,
+    Authorization: `Bearer ${accessToken}`,
   }
 }
 
@@ -103,7 +104,9 @@ export const requester = store => next => action => {
         resolve({ token: { access_token: state.authentication.accessToken } })
       })
     }
-    const tokenPath = (typeof window === 'undefined') ? `http://localhost:${ENV.PORT}/api/webapp-token` : `${document.location.protocol}//${document.location.host}/api/webapp-token`
+    const tokenPath = (typeof window === 'undefined') ?
+      `http://localhost:${ENV.PORT}/api/webapp-token` :
+      `${document.location.protocol}//${document.location.host}/api/webapp-token`
     return fetch(tokenPath)
       .then((response) => {
         return response.ok ? response.json() : response
@@ -125,7 +128,9 @@ export const requester = store => next => action => {
     fetchCredentials()
       .then((tokenJSON) => {
         const accessToken = tokenJSON.token.access_token
-        options.headers = !method || method === 'GET' ? getGetHeader(accessToken) : getPostJsonHeader(accessToken)
+        options.headers = !method || method === 'GET' ?
+          getGetHeader(accessToken) :
+          getPostJsonHeader(accessToken)
         fetch(endpoint.path, options)
             .then(checkStatus)
             .then(response => {
@@ -134,7 +139,7 @@ export const requester = store => next => action => {
                 response.json().then((json) => {
                   payload.response = camelizeKeys(json)
                   // this allows us to set the proper result in the json reducer
-                  payload.pathname = state.router.location.pathname
+                  payload.pathname = state.router.path
                   if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
                     payload.pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
                   } else {
@@ -159,8 +164,10 @@ export const requester = store => next => action => {
             })
             .catch(error => {
               delete runningFetches[error.response.url]
-              if ((error.response.status === 401 || error.response.status === 403) && state.router.location.pathname.indexOf('/onboarding') === 0) {
-                resetAuth(store.dispatch, state.router.location)
+              if ((error.response.status === 401 || error.response.status === 403) &&
+                  state.router.path.indexOf('/onboarding') === 0 &&
+                  typeof document !== 'undefined') {
+                resetAuth(store.dispatch, document.location)
               }
               next({ error, meta, payload, type: FAILURE })
               return false

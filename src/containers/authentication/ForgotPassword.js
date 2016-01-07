@@ -9,9 +9,6 @@ import ForgotPasswordForm from '../../components/forms/ForgotPasswordForm'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class ForgotPassword extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-  }
 
   constructor(props, context) {
     super(props, context)
@@ -36,7 +33,10 @@ class ForgotPassword extends Component {
     return (
       <section className="Authentication Panel">
         <div className="FormDialog">
-          <h1><img src="/static/images/support/hot_shit.png" width="32" height="32" alt="hot shit" /> Shit happens.</h1>
+          <h1>
+            <img src="/static/images/support/hot_shit.png" width="32" height="32" alt="hot shit" />
+            Shit happens.
+          </h1>
           <ForgotPasswordForm/>
         </div>
         <AppleStoreLink/>
@@ -45,6 +45,10 @@ class ForgotPassword extends Component {
       </section>
     )
   }
+}
+
+ForgotPassword.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(ForgotPassword)
