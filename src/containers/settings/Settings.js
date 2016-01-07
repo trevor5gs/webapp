@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
 import { openModal, closeModal } from '../../actions/modals'
+import { availableToggles } from '../../actions/profile'
 import AdultPostsDialog from '../../components/dialogs/AdultPostsDialog'
 import BioControl from '../../components/forms/BioControl'
 import EmailControl from '../../components/forms/EmailControl'
@@ -15,6 +16,8 @@ import Preference from '../../components/forms/Preference'
 import Avatar from '../../components/assets/Avatar'
 import Cover from '../../components/assets/Cover'
 import TreeButton from '../../components/navigation/TreeButton'
+import StreamComponent from '../../components/streams/StreamComponent'
+import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 
 
 class Settings extends Component {
@@ -66,22 +69,22 @@ class Settings extends Component {
   handleControlChange() {
   }
 
-  handlePreferenceChange() {
-  }
-
   closeModal() {
     const { dispatch } = this.props
     dispatch(closeModal())
   }
 
-  launchAdultPostsPrompt() {
-    const { dispatch, profile } = this.props
-    dispatch(openModal(
-      <AdultPostsDialog
-        onConfirm={ ::this.closeModal }
-        user={ profile }
-      />
-    ))
+  launchAdultPostsPrompt(obj) {
+    if (obj.postsAdultContent) {
+      const { dispatch, profile } = this.props
+      dispatch(openModal(
+        <AdultPostsDialog
+          onConfirm={ ::this.closeModal }
+          user={ profile }
+        />
+      ))
+    }
+    preferenceToggleChanged(obj)
   }
 
   render() {
@@ -146,129 +149,12 @@ class Settings extends Component {
           <p className="SettingsLinks">
             <Link to="/">View Profile</Link>
             <Link to="/onboarding">Launch On-boarding</Link>
-            <button onClick={::this.launchAdultPostsPrompt}>Launch NSFW Modal</button>
           </p>
 
+
+
           <div className="SettingsPreferences">
-            <TreeButton>Preferences</TreeButton>
-            <div className="TreePanel">
-              <Preference
-                definition={ PREFERENCES.PREF_PUBLIC_PROFILE }
-                id="isPublic"
-                isChecked={ profile.isPublic }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_COMMENTS }
-                id="hasCommentingEnabled"
-                isChecked={ profile.hasCommentingEnabled }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_LOVES }
-                id="hasLovesEnabled"
-                isChecked={ profile.hasLovesEnabled }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_SHARING }
-                id="hasSharingEnabled"
-                isChecked={ profile.hasSharingEnabled }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_REPOSTING }
-                id="hasRepostingEnabled"
-                isChecked={ profile.hasRepostingEnabled }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_EMBEDDED_MEDIA }
-                id="hasAdNotificationsEnabled"
-                isChecked={ profile.hasAdNotificationsEnabled }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_ANALYTICS }
-                id="allowsAnalytics"
-                isChecked={ profile.allowsAnalytics }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_DISCOVERABILITY }
-                id="discoverable"
-                isChecked={ profile.discoverable }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-            </div>
-
-            <TreeButton>Notifications</TreeButton>
-            <div className="TreePanel">
-              <Preference
-                definition={ PREFERENCES.MAIL_COMMENTS }
-                id="notifyOfCommentsViaEmail"
-                isChecked={ profile.notifyOfCommentsViaEmail }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.MAIL_LOVES }
-                id="notifyOfLovesViaEmail"
-                isChecked={ profile.notifyOfLovesViaEmail }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.MAIL_MENTIONS }
-                id="notifyOfMentionsViaEmail"
-                isChecked={ profile.notifyOfMentionsViaEmail }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.MAIL_REPOSTS }
-                id="notifyOfRepostsViaEmail"
-                isChecked={ profile.notifyOfRepostsViaEmail }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.MAIL_NEW_FOLLOWERS }
-                id="notifyOfNewFollowersViaEmail"
-                isChecked={ profile.notifyOfNewFollowersViaEmail }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.MAIL_INVITE_ACCEPTED }
-                id="notifyOfInvitationAcceptancesViaEmail"
-                isChecked={ profile.notifyOfInvitationAcceptancesViaEmail }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-            </div>
-
-            <TreeButton>Newsletters</TreeButton>
-            <div className="TreePanel">
-              <Preference
-                definition={ PREFERENCES.NEWS_FEATURES }
-                id="subscribeToUsersEmailList"
-                isChecked={ profile.subscribeToUsersEmailList }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.NEWS_WEEKLY }
-                id="subscribeToWeeklyEllo"
-                isChecked={ profile.subscribeToWeeklyEllo }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.NEWS_DAILY }
-                id="subscribeToDailyEllo"
-                isChecked={ profile.subscribeToDailyEllo }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.NEWS_TIPS }
-                id="subscribeToOnboardingDrip"
-                isChecked={ profile.subscribeToOnboardingDrip }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-            </div>
+            <StreamComponent ref="streamComponent" action={availableToggles()} />
 
             <TreeButton>NSFW</TreeButton>
             <div className="TreePanel">
@@ -276,13 +162,13 @@ class Settings extends Component {
                 definition={ PREFERENCES.NSFW_VIEW }
                 id="viewsAdultContent"
                 isChecked={ profile.viewsAdultContent }
-                onToggleChange={ ::this.handlePreferenceChange }
+                onToggleChange={ preferenceToggleChanged }
               />
               <Preference
                 definition={ PREFERENCES.NSFW_POST }
                 id="postsAdultContent"
                 isChecked={ profile.postsAdultContent }
-                onToggleChange={ ::this.handlePreferenceChange }
+                onToggleChange={ ::this.launchAdultPostsPrompt }
               />
               <p><em>{ SETTINGS.NSFW_DISCLAIMER }</em></p>
             </div>

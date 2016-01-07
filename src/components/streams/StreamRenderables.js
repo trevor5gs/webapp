@@ -1,4 +1,5 @@
 import React from 'react'
+import { camelize } from 'humps'
 import * as api from '../../networking/api'
 import { getLinkArray } from '../base/json_helper'
 import { parsePost } from '../parsers/PostParser'
@@ -13,6 +14,9 @@ import UserCard from '../users/UserCard'
 import UserGrid from '../users/UserGrid'
 import UserInvitee from '../users/UserInvitee'
 import UserList from '../users/UserList'
+import Preference from '../../components/forms/Preference'
+import TreeButton from '../../components/navigation/TreeButton'
+import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 
 // TODO: convert these into react components (@see UserVitals)
 // to hopefully get better errors out of rendering streams
@@ -189,6 +193,34 @@ export function userAvatars(users) {
   return (
     users.data.map((user) => {
       return <UserAvatar user={user} key={`userAvatar_${user.id}`}/>
+    })
+  )
+}
+
+export function profileToggles(categories, json, currentUser) {
+  return (
+    categories.data.map((category, index) => {
+      if (category.label.toLowerCase().indexOf('push') === 0) { return null }
+      const arr = [<TreeButton key={`categoryLabel${index}`}>{category.label}</TreeButton>]
+      arr.push(
+        <div className="TreePanel" key={`categoryItems${index}`}>
+          {
+            category.items.map((item) => {
+              return (
+                <Preference
+                  definition={{ term: item.label, desc: item.info }}
+                  id={ item.key }
+                  key={ item.key }
+                  isChecked={ currentUser[camelize(item.key)] }
+                  isDisabled={ !currentUser.isPublic && item.key === 'has_sharing_enabled' }
+                  onToggleChange={ preferenceToggleChanged }
+                />
+              )
+            })
+          }
+        </div>
+      )
+      return arr
     })
   )
 }

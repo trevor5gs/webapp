@@ -22,8 +22,7 @@ export function profile(state = initialState, action) {
         error: action.error,
         payload: {
           ...state.payload,
-          ...response.linked,
-          ...response.users,
+          ...response,
         },
       }
 

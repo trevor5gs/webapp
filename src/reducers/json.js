@@ -28,7 +28,15 @@ function addModels(state, type, data) {
   // add state['modelType']
   if (!state[type]) { state[type] = {} }
   const ids = []
-  if (data[type] && data[type].length) {
+  if (type === MAPPING_TYPES.CATEGORIES) {
+    data[type].map((category, index) => {
+      const newType = { ...state[type] }
+      const id = index + 1
+      newType[id] = category
+      state[type] = newType
+      ids.push(id)
+    })
+  } else if (data[type] && data[type].length) {
     // add arrays of models to state['modelType']['id']
     data[type].map((model) => {
       methods.mergeModel(state, type, model)
