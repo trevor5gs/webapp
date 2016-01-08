@@ -9,6 +9,8 @@ import { routeReducer } from 'redux-simple-router'
 function reducer(state, action) {
   return {
     authentication: reducers.authentication(state.authentication, action),
+    // TODO: look at using the UPDATE_PATH action from
+    // redux-simple-router to see if we can revert this setup
     json: reducers.json(state.json, action, state.router),
     modal: reducers.modal(state.modal, action),
     profile: reducers.profile(state.profile, action),

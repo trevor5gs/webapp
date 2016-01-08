@@ -98,6 +98,27 @@ methods.updatePostLoves = (state, newState, action) => {
   return updatePostLoves(state, newState, action)
 }
 
+function deletePost(state, newState, action) {
+  const { model } = action.payload
+  switch (action.type) {
+    case ACTION_TYPES.POST.DELETE_REQUEST:
+    case ACTION_TYPES.POST.DELETE_SUCCESS:
+      delete newState[MAPPING_TYPES.POSTS][model.id]
+      break
+    case ACTION_TYPES.POST.DELETE_FAILURE:
+      // TODO: pop an alert or modal saying 'something went wrong'
+      // and we couldn't delete this post?
+      newState[MAPPING_TYPES.POSTS][model.id] = model
+      break
+    default:
+      return state
+  }
+  return newState
+}
+methods.deletePost = (state, newState, action) => {
+  return deletePost(state, newState, action)
+}
+
 function addNewIdsToResult(state, newState, router) {
   if (!newState.pages) { newState.pages = {} }
   const result = newState.pages[router.path]
@@ -198,8 +219,10 @@ export default function json(state = {}, action = { type: '' }, router) {
   const newState = { ...state }
   if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE) {
     return methods.updateRelationship(newState, action)
-  } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_SUCCESS || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {
+  } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {
     return methods.updatePostLoves(state, newState, action)
+  } else if (action.type === ACTION_TYPES.POST.DELETE_REQUEST || action.type === ACTION_TYPES.POST.DELETE_SUCCESS || action.type === ACTION_TYPES.POST.DELETE_FAILURE) {
+    return methods.deletePost(state, newState, action)
   } else if (action.type === ACTION_TYPES.ADD_NEW_IDS_TO_RESULT) {
     return methods.addNewIdsToResult(state, newState, router)
   } else if (action.type === ACTION_TYPES.SET_LAYOUT_MODE) {

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { pushPath } from 'redux-simple-router'
+import { pushPath, replacePath } from 'redux-simple-router'
 import classNames from 'classnames'
 import { openModal, closeModal } from '../../actions/modals'
 import * as PostActions from '../../actions/posts'
@@ -222,9 +222,14 @@ class PostTools extends Component {
   }
 
   deletePostConfirmed() {
-    // const { post } = this.props
-    // console.log('delete post', post.id)
+    const { dispatch, path, post } = this.props
     this.closeModal()
+    dispatch(PostActions.deletePost(post))
+    if (path.match(post.token)) {
+      // TODO: will have to make the router smarter about
+      // where the root redirects to
+      dispatch(replacePath(`/`, window.history.state))
+    }
   }
 
   render() {
@@ -246,6 +251,7 @@ class PostTools extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
+    path: state.router.path,
   }
 }
 
@@ -254,6 +260,7 @@ PostTools.propTypes = {
   currentUser: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
+  path: PropTypes.string.isRequired,
   post: PropTypes.object.isRequired,
 }
 
