@@ -27,7 +27,6 @@ class RelationshipImageButton extends RelationshipButton {
     )
   }
 
-  // @see `RelationshipButton` for todo items
   // Override the super's `renderAsLabelButton`
   renderAsLabelButton(label) {
     const { priority } = this.state
