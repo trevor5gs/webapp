@@ -59,6 +59,18 @@
 .RelationshipImageButton[data-priority="noise"] .RelationshipImageButtonLabels > .SVGIcon g
   stroke: white
 
+.RelationshipImageButton[data-priority="block"],
+.RelationshipImageButton[data-priority="mute"],
+.RelationshipImageButton[data-priority="block"]:hover,
+.RelationshipImageButton[data-priority="mute"]:hover
+  background-color: $danger
+  border-color: $danger
+  color: white
+.RelationshipImageButton[data-priority="block"] > .SVGIcon g,
+.RelationshipImageButton[data-priority="mute"] > .SVGIcon g
+  stroke: white
+
+
 .RelationshipImageButtonLabels > .MiniPlusIcon
   margin-top: rem(-2)
 

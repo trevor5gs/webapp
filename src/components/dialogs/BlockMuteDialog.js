@@ -1,7 +1,13 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 
-const BlockMuteDialog = ({ onBlock, onMute, blockIsActive = false, muteIsActive = false }) => {
+const BlockMuteDialog = ({
+  onBlock,
+  onMute,
+  username,
+  blockIsActive = false,
+  muteIsActive = false,
+  }) => {
   const blockButtonClasses = classNames({ isActive: blockIsActive }, 'BlockMuteDialogButton')
   const muteButtonClasses = classNames({ isActive: muteIsActive }, 'BlockMuteDialogButton')
   const blockButtonText = blockIsActive ? 'Unblock' : 'Block'
@@ -9,7 +15,7 @@ const BlockMuteDialog = ({ onBlock, onMute, blockIsActive = false, muteIsActive 
 
   return (
     <div className="Dialog BlockMuteDialog">
-      <h2>Would you like to block or mute XXX</h2>
+      <h2>{`Would you like to block or mute @${username}?`}</h2>
       <div className="BlockMuteDialogBody">
         <div className="BlockMuteDialogColumn">
           <button
@@ -50,15 +56,4 @@ BlockMuteDialog.propTypes = {
 }
 
 export default BlockMuteDialog
-
-  // launchBlockMutePrompt() {
-  //   const { dispatch } = this.props
-  //   dispatch(openModal(
-  //     <BlockMuteDialog
-  //       onBlock={ ::this.closeModal }
-  //       onMute={ ::this.closeModal }
-  //     />
-  //   , 'asDangerZone'))
-  // }
-  // <button onClick={::this.launchBlockMutePrompt}>Launch Block / Mute Modal</button>
 
