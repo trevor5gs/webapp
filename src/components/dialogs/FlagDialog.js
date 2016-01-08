@@ -1,25 +1,15 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 
-const flags = [
-  'spam',
-  'violence',
-  'copyright',
-  'threatening',
-  'hate_speech',
-  'adult',
-  'offensive',
-]
-
-const labels = [
-  'Spam',
-  'Violence',
-  'Copyright infringement',
-  'Threatening',
-  'Hate Speech',
-  'Adult content that isn\'t marked NSFW*',
-  'I don\'t like it',
-]
+const flags = {
+  spam: 'Spam',
+  violence: 'Violence',
+  copyright: 'Copyright infringement',
+  threatening: 'Threatening',
+  hate_speech: 'Hate Speech',
+  adult: 'Adult content that isn\'t marked NSFW*',
+  offensive: 'I don\'t like it',
+}
 
 class FlagDialog extends Component {
   constructor(props, context) {
@@ -48,23 +38,25 @@ class FlagDialog extends Component {
 
   renderFlagChoices() {
     const { activeChoice } = this.state
-    return flags.map((choice, index) => {
-      return (
+    const buttons = []
+    for (const choice of Object.keys(flags)) {
+      buttons.push(
         <button
           className={ classNames({ isActive: activeChoice === choice }, 'FlagDialogChoice') }
           data-flag={ choice }
-          key={ index }
+          key={ choice }
           onClick={ ::this.handleChoiceClick }
         >
-          { labels[index] }
+          { flags[choice] }
         </button>
       )
-    })
+    }
+    return buttons
   }
 
   renderChoicesScreen() {
     const { activeChoice } = this.state
-    const index = flags.indexOf(activeChoice)
+    const index = Object.keys(flags).indexOf(activeChoice)
     const top = index < 0 ? null : (70 * index) + 80
     return (
       <div className="Dialog FlagDialog">
