@@ -32,18 +32,21 @@ class Navbar extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props
-    Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
-      dispatch(pushPath(this.props.shortcuts[shortcut], window.history.state))
-    })
+    const { dispatch, isLoggedIn } = this.props
 
-    Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
-      const { modal } = this.props
-      if (modal.payload) {
-        return dispatch(closeModal())
-      }
-      return dispatch(openModal(<HelpDialog/>))
-    })
+    if (isLoggedIn) {
+      Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
+        dispatch(pushPath(this.props.shortcuts[shortcut], window.history.state))
+      })
+
+      Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
+        const { modal } = this.props
+        if (modal.payload) {
+          return dispatch(closeModal())
+        }
+        return dispatch(openModal(<HelpDialog/>))
+      })
+    }
 
     Mousetrap.bind(SHORTCUT_KEYS.TOGGLE_LAYOUT, () => {
       const { json, router } = this.props
@@ -106,8 +109,11 @@ class Navbar extends Component {
   }
 
   componentWillUnmount() {
-    Mousetrap.unbind(Object.keys(this.props.shortcuts))
-    Mousetrap.unbind(SHORTCUT_KEYS.HELP)
+    const { isLoggedIn, shortcuts } = this.props
+    if (isLoggedIn) {
+      Mousetrap.unbind(Object.keys(shortcuts))
+      Mousetrap.unbind(SHORTCUT_KEYS.HELP)
+    }
     Mousetrap.unbind(SHORTCUT_KEYS.TOGGLE_LAYOUT)
     removeResizeObject(this)
     removeScrollObject(this)
