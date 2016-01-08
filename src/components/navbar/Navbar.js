@@ -32,24 +32,21 @@ class Navbar extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props
-    Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
-      dispatch(pushPath(this.props.shortcuts[shortcut], window.history.state))
-    })
+    const { dispatch, isLoggedIn } = this.props
 
-    Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
-      const { modal } = this.props
-      if (modal.payload) {
-        return dispatch(closeModal())
-      }
-      return dispatch(openModal(<HelpDialog/>))
-    })
+    if (isLoggedIn) {
+      Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
+        dispatch(pushPath(this.props.shortcuts[shortcut], window.history.state))
+      })
 
-    // TODO: probably need to handle this a bit better
-    Mousetrap.bind(SHORTCUT_KEYS.LOGOUT, () => {
-      dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
-      dispatch(pushPath('/', window.history.state))
-    })
+      Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
+        const { modal } = this.props
+        if (modal.payload) {
+          return dispatch(closeModal())
+        }
+        return dispatch(openModal(<HelpDialog/>))
+      })
+    }
 
     Mousetrap.bind(SHORTCUT_KEYS.TOGGLE_LAYOUT, () => {
       const { json, router } = this.props
@@ -112,8 +109,11 @@ class Navbar extends Component {
   }
 
   componentWillUnmount() {
-    Mousetrap.unbind(Object.keys(this.props.shortcuts))
-    Mousetrap.unbind(SHORTCUT_KEYS.HELP)
+    const { isLoggedIn, shortcuts } = this.props
+    if (isLoggedIn) {
+      Mousetrap.unbind(Object.keys(shortcuts))
+      Mousetrap.unbind(SHORTCUT_KEYS.HELP)
+    }
     Mousetrap.unbind(SHORTCUT_KEYS.TOGGLE_LAYOUT)
     removeResizeObject(this)
     removeScrollObject(this)
@@ -158,6 +158,13 @@ class Navbar extends Component {
         this.scrollYAtDirectionChange = null
       }
     }
+  }
+
+  // TODO: probably need to handle this a bit better
+  onLogOut() {
+    const { dispatch } = this.props
+    dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
+    dispatch(pushPath('/', window.history.state))
   }
 
   omniButtonWasClicked() {
@@ -229,7 +236,11 @@ class Navbar extends Component {
             icon={ <SearchIcon/> }
           />
         </div>
-        <NavbarProfile { ...profile.payload } />
+        <NavbarProfile
+          avatar={ profile.avatar }
+          onLogOut={ ::this.onLogOut }
+          username={ profile.username }
+        />
       </nav>
     )
   }
@@ -321,7 +332,7 @@ function mapStateToProps(state) {
     isLoggedIn: state.authentication.isLoggedIn,
     json: state.json,
     modal: state.modal,
-    profile: state.profile,
+    profile: state.profile.payload,
     router: state.router,
   }
 }

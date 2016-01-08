@@ -1,0 +1,39 @@
+.NavbarProfileLinks
+  pointer-events: none
+  transition: opacity $speed ease
+  position: absolute
+  overflow: hidden
+  opacity: 0
+  top: rem(40)
+  right: 0
+  min-width: rem(160)
+  padding: rem(5) rem(10)
+  background-color: white
+  border: 1px solid #aaa
+  border-top: 0
+  color: #aaa
+
+// Testing out the hover state to show the links (doesn't work for touch devices)
+.no-touch .NavbarProfile:hover .NavbarProfileLinks
+  pointer-events: auto
+  opacity: 1
+
+.NavbarProfileLink
+  +sans-typeset
+  display: block
+  height: rem(30)
+  line-height: rem(30)
+
+.no-touch .NavbarProfileLink:hover
+  color: black
+
+.NavbarProfileLinkDivider
+  margin: rem(4) rem(-10)
+  border-color: #ccc
+
+.NavbarProfileLinkDivider ~ .NavbarProfileLink
+  font-size: rem(12)
+  height: rem(25)
+  line-height: rem(25)
+  color: #ccc
+
