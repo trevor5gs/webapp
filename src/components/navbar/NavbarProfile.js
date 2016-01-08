@@ -7,7 +7,7 @@ const threadlessLink = 'http://ello.threadless.com/'
 
 class NavbarProfile extends Component {
   render() {
-    const { avatar, username } = this.props
+    const { avatar, username, onLogOut } = this.props
     if (avatar && username) {
       return (
         <span className="NavbarProfile">
@@ -20,9 +20,9 @@ class NavbarProfile extends Component {
             <hr className="NavbarProfileLinkDivider"/>
             <Link className="NavbarProfileLink" to="/discover/communities">Communities</Link>
             <a className="NavbarProfileLink" href="/wtf" target="_blank">Help</a>
-            <a className="NavbarProfileLink" href={appleStoreLink} target="_blank">Get the app</a>
-            <a className="NavbarProfileLink" href={threadlessLink} target="_blank">Store</a>
-            <a className="NavbarProfileLink" href="/logout" rel="nofollow">Logout</a>
+            <a className="NavbarProfileLink" href={ appleStoreLink } target="_blank">Get the app</a>
+            <a className="NavbarProfileLink" href={ threadlessLink } target="_blank">Store</a>
+            <button className="NavbarProfileLink" onClick={ onLogOut }>Logout</button>
           </nav>
 
         </span>
@@ -38,6 +38,7 @@ class NavbarProfile extends Component {
 
 NavbarProfile.propTypes = {
   avatar: PropTypes.object,
+  onLogOut: PropTypes.func,
   username: PropTypes.string,
 }
 

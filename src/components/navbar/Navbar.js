@@ -45,12 +45,6 @@ class Navbar extends Component {
       return dispatch(openModal(<HelpDialog/>))
     })
 
-    // TODO: probably need to handle this a bit better
-    Mousetrap.bind(SHORTCUT_KEYS.LOGOUT, () => {
-      dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
-      dispatch(pushPath('/', window.history.state))
-    })
-
     Mousetrap.bind(SHORTCUT_KEYS.TOGGLE_LAYOUT, () => {
       const { json, router } = this.props
       let result = null
@@ -160,6 +154,13 @@ class Navbar extends Component {
     }
   }
 
+  // TODO: probably need to handle this a bit better
+  onLogOut() {
+    const { dispatch } = this.props
+    dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
+    dispatch(pushPath('/', window.history.state))
+  }
+
   omniButtonWasClicked() {
   }
 
@@ -229,7 +230,11 @@ class Navbar extends Component {
             icon={ <SearchIcon/> }
           />
         </div>
-        <NavbarProfile { ...profile.payload } />
+        <NavbarProfile
+          avatar={ profile.avatar }
+          onLogOut={ ::this.onLogOut }
+          username={ profile.username }
+        />
       </nav>
     )
   }
@@ -321,7 +326,7 @@ function mapStateToProps(state) {
     isLoggedIn: state.authentication.isLoggedIn,
     json: state.json,
     modal: state.modal,
-    profile: state.profile,
+    profile: state.profile.payload,
     router: state.router,
   }
 }
