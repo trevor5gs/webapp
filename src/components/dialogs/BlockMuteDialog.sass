@@ -1,0 +1,51 @@
+.BlockMuteDialog
+  max-width: rem(400)
+
+.BlockMuteDialogColumn + .BlockMuteDialogColumn
+  margin-top: rem(40)
+
+.BlockMuteDialog h2
+  margin-bottom: rem(40)
+  font-size: rem(18)
+  height: rem(30)
+  line-height: rem(30)
+  white-space: nowrap
+
+.BlockMuteDialogButton
+  +sans-typeset
+  transition: background-color $speed ease, border-color $speed ease, color $speed ease
+  width: 100%
+  height: rem(60)
+  margin-bottom: rem(20)
+  text-align: center
+  line-height: rem(60)
+  white-space: nowrap
+  background-color: white
+  border: 1px solid white
+  color: black
+
+.BlockMuteDialogButton.isActive,
+.no-touch .BlockMuteDialogButton:hover
+  background-color: black
+  border-color: black
+  color: white
+
+.BlockMuteDialogButton.isActive:hover
+  background-color: white
+  border-color: white
+  color: black
+
+
+@media(min-width: #{$break-2})
+  .BlockMuteDialog
+    max-width: rem(600)
+  .BlockMuteDialogColumn
+    display: inline-block
+    vertical-align: top
+    max-width: calc(50% - #{rem(40)})
+  .BlockMuteDialogColumn + .BlockMuteDialogColumn
+    margin-top: 0
+    margin-left: rem(40)
+  .BlockMuteDialog h2
+    font-size: rem(24)
+

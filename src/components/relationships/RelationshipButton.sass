@@ -33,6 +33,17 @@
 .RelationshipButton[data-priority="self"]
   width: auto
 
+.RelationshipButton[data-priority="block"],
+.RelationshipButton[data-priority="mute"],
+.RelationshipButton[data-priority="block"]:hover,
+.RelationshipButton[data-priority="mute"]:hover
+  background-color: $danger
+  border-color: $danger
+  color: white
+.RelationshipButton[data-priority="block"] > .SVGIcon g,
+.RelationshipButton[data-priority="mute"] > .SVGIcon g
+  stroke: white
+
 .RelationshipButton > .MiniPlusIcon
   margin-top: rem(-2)
 

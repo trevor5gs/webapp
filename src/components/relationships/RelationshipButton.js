@@ -42,15 +42,14 @@ class RelationshipButton extends Component {
     )
   }
 
-  // This behavior is incomplete, for now it just renders a noop click label
-  // for block and muting. This will need to be built out still.
-  // Also @see `RelationshipImageButton` when we make changes
   renderAsLabelButton(label) {
+    const{ buttonWasClicked } = this.props
     const { priority } = this.state
     return (
       <button
         className="RelationshipButton"
         data-priority={priority}
+        onClick={ buttonWasClicked }
       >
         <span>{label}</span>
       </button>

@@ -23,3 +23,16 @@ export const StarIcon = () =>
     </g>
   </SVGIcon>
 
+export const DotsIcon = () =>
+  <SVGIcon className="DotsIcon">
+    <g>
+      <circle cx="3" cy="10" r="2.5"/>
+    </g>
+    <g>
+      <circle cx="10" cy="10" r="2.5"/>
+    </g>
+    <g>
+      <circle cx="17" cy="10" r="2.5"/>
+    </g>
+  </SVGIcon>
+

@@ -1,0 +1,21 @@
+.BlockMuteButton
+  width: rem(30)
+  height: rem(30)
+
+.BlockMuteButton > .DotsIcon > g
+  fill: #aaa
+  stroke: transparent
+
+.no-touch .BlockMuteButton:hover > .DotsIcon > g
+  fill: black
+  stroke: transparent
+
+.BlockMuteButton .Hint
+  top: rem(5)
+  left: rem(30)
+
+@media(min-width: #{$break-2})
+  .BlockMuteButton .Hint
+    top: rem(5)
+    left: rem(-120)
+
