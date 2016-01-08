@@ -8,7 +8,6 @@ import { openModal, closeModal } from '../../actions/modals'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import HelpDialog from '../dialogs/HelpDialog'
-import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import NavbarLabel from '../navbar/NavbarLabel'
 import NavbarLink from '../navbar/NavbarLink'
 import NavbarMark from '../navbar/NavbarMark'
@@ -181,12 +180,6 @@ class Navbar extends Component {
     document.location.href = ENV.REDIRECT_URI + e.target.pathname
   }
 
-  launchSignUpModal(e) {
-    const { dispatch } = this.props
-    e.preventDefault()
-    return dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
-  }
-
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
     const { profile } = this.props
     return (
@@ -279,7 +272,6 @@ class Navbar extends Component {
             label="Sign up"
             modifiers="LabelOnly"
             pathname={pathname}
-            onClick={::this.launchSignUpModal}
           />
         </div>
       </nav>
