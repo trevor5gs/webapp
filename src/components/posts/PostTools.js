@@ -8,6 +8,7 @@ import { openModal, closeModal } from '../../actions/modals'
 import * as PostActions from '../../actions/posts'
 import { trackEvent } from '../../actions/tracking'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
+import FlagDialog from '../dialogs/FlagDialog'
 import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import ShareDialog from '../dialogs/ShareDialog'
 import Hint from '../hints/Hint'
@@ -133,7 +134,7 @@ class PostTools extends Component {
       } else {
         cells.push(
           <span className="PostTool FlagTool ShyTool" key={`FlagTool_${post.id}`}>
-            <button>
+            <button onClick={ ::this.flagPost }>
               <FlagIcon />
               <Hint>Flag</Hint>
             </button>
@@ -191,6 +192,23 @@ class PostTools extends Component {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
     return dispatch(trackEvent('open-registration-request-post-tools'))
+  }
+
+  flagPost() {
+    const { dispatch } = this.props
+    dispatch(openModal(
+      <FlagDialog
+        onResponse={ ::this.postWasFlagged }
+        onConfirm={ ::this.closeModal }
+      />))
+  }
+
+  postWasFlagged({ flag }) {
+    return flag
+    // This is the value to send to the API. The flag will be the value chosen
+    // button when submit was clicked. This is returned before the final
+    // confirmation screen (which just closes the modal when Okay is clicked)
+    // console.log(flag)
   }
 
   deletePost() {
