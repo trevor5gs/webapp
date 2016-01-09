@@ -139,13 +139,15 @@ class ImageRegion extends Component {
     const { content } = this.props
     const dimensions = this.getImageDimensions()
     return (
-      <img
-        className="RegionContent ImageAttachment"
-        alt={content.alt}
-        width={dimensions.width}
-        height={dimensions.height}
-        src={this.attachment.optimized.url}
-      />
+      <div className="RegionContent">
+        <img
+          className="ImageAttachment"
+          alt={content.alt}
+          width={dimensions.width}
+          height={dimensions.height}
+          src={this.attachment.optimized.url}
+        />
+      </div>
     )
   }
 
@@ -154,14 +156,16 @@ class ImageRegion extends Component {
     const srcset = this.getImageSourceSet()
     const dimensions = this.getImageDimensions()
     return (
-      <img
-        className="RegionContent ImageAttachment"
-        alt={content.alt}
-        width={dimensions.width}
-        height={dimensions.height}
-        src={this.attachment.hdpi.url}
-        srcSet={srcset}
-      />
+      <div className="RegionContent">
+        <img
+          className="ImageAttachment"
+          alt={content.alt}
+          width={dimensions.width}
+          height={dimensions.height}
+          src={this.attachment.hdpi.url}
+          srcSet={srcset}
+        />
+      </div>
     )
   }
 
@@ -175,11 +179,13 @@ class ImageRegion extends Component {
   renderContent() {
     const { content } = this.props
     return (
+      <div className="RegionContent">
       <img
-        className="RegionContent ImageAttachment"
+        className="ImageAttachment"
         alt={content.alt}
         src={content.url}
       />
+      </div>
     )
   }
 

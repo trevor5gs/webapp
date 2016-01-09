@@ -1,13 +1,3 @@
-.TextRegion
-  max-width: rem(780)
-
-.ImageRegion
-  display: inline-block
-.ImageRegion:after
-  content: ''
-  display: block
-
-
 .ImageRegion + .ImageRegion,
 .ImageRegion + .EmbedRegion,
 .EmbedRegion + .ImageRegion,
@@ -21,33 +11,8 @@
 .EmbedRegion + .TextRegion
   margin-top: rem(20)
 
-.asHotRegion
-  cursor: pointer
-
-// Always get's rid of the first and last child's margin and protect against
-// potentially nested elements
-.RegionContent > *:first-of-type,
-.RegionContent:first-child > *:first-of-type
-  margin-top: 0
-
-.RegionContent > *:last-of-type,
-.RegionContent:last-child > *:last-of-type
-  margin-bottom: 0
-
-.ImageRegion
-  background-color: rgba(black, 0.1)
-  color: rgba(black, 0)
-
-.ImageRegion.isFailing
-  background-color: $danger
-
-.ImageAttachment
-  transition: opacity $speed2
-  display: block
-
-.isPending > .ImageAttachment,
-.isRequesting > .ImageAttachment
-  opacity: 0
+.TextRegion
+  max-width: rem(780)
 
 // Todo: We should be able to rip this out when we convert your fake `span`
 // elements over to links
@@ -58,4 +23,35 @@
   cursor: pointer
 .no-touch .TextRegion .hashtag-link:hover
   color: #aaa
+
+.RegionContent
+  transition: background-color $speed2
+
+.RegionContent.asHotRegion
+  cursor: pointer
+
+.ImageRegion > .RegionContent
+  transition: background-color $speed2
+  display: inline-block
+  background-color: rgba(black, 0.1)
+  color: rgba(black, 0)
+.ImageRegion.isFailing > .RegionContent
+  background-color: $danger
+
+.ImageAttachment
+  transition: opacity $speed2
+
+.isPending .ImageAttachment,
+.isRequesting .ImageAttachment
+  opacity: 0
+
+// Always get's rid of the first and last child's margin and protect against
+// potentially nested elements
+.RegionContent > *:first-of-type,
+.RegionContent:first-child > *:first-of-type
+  margin-top: 0
+
+.RegionContent > *:last-of-type,
+.RegionContent:last-child > *:last-of-type
+  margin-bottom: 0
 
