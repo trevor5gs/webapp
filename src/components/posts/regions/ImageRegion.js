@@ -16,6 +16,8 @@ class ImageRegion extends Component {
     super(props, context)
     this.state = {
       status: STATUS.PENDING,
+      scale: null,
+      marginBottom: null,
     }
   }
 
@@ -26,6 +28,13 @@ class ImageRegion extends Component {
   componentDidMount() {
     if (this.state.status === STATUS.REQUEST) {
       this.createLoader()
+    }
+  }
+
+  componentWillReceiveProps() {
+    const { scale } = this.state
+    if (scale) {
+      this.setImageScale()
     }
   }
 
@@ -96,6 +105,32 @@ class ImageRegion extends Component {
       }
     }
     return images.join(', ')
+  }
+
+  setImageScale() {
+    const dimensions = this.getImageDimensions()
+    const imageHeight = dimensions.height
+    const innerHeight = GUI.innerHeight - 80
+    if (imageHeight && imageHeight > innerHeight) {
+      this.setState({
+        scale: innerHeight / imageHeight,
+        marginBottom: -(imageHeight - innerHeight),
+      })
+    }
+  }
+
+  resetImageScale() {
+    this.setState({ scale: null, marginBottom: null })
+  }
+
+  staticImageRegionWasClicked() {
+    const { scale } = this.state
+    if (scale) {
+      return this.resetImageScale()
+    } else if (!this.attachment) {
+      return null
+    }
+    return this.setImageScale()
   }
 
   createLoader() {
@@ -195,8 +230,13 @@ class ImageRegion extends Component {
   }
 
   renderRegionAsStatic() {
+    const { marginBottom, scale } = this.state
     return (
-      <div className="RegionContent">
+      <div
+        className="RegionContent"
+        onClick={ ::this.staticImageRegionWasClicked }
+        style={{ transform: scale ? `scale(${scale})` : null, marginBottom }}
+      >
         { this.renderAttachment() }
       </div>
     )
@@ -207,7 +247,7 @@ class ImageRegion extends Component {
     const { status } = this.state
     const asLink = isGridLayout && postDetailPath
     return (
-      <div className={ classNames('ImageRegion', status) }>
+      <div className={ classNames('ImageRegion', status) } >
         { asLink ? this.renderRegionAsLink() : this.renderRegionAsStatic() }
       </div>
     )

@@ -4,6 +4,7 @@
 .EmbedRegion + .EmbedRegion
   margin-top: rem(10)
 
+.PostBody + .PostBody,
 .TextRegion + .TextRegion,
 .TextRegion + .ImageRegion,
 .TextRegion + .EmbedRegion,
@@ -25,13 +26,13 @@
   color: #aaa
 
 .RegionContent
-  transition: background-color $speed2
+  transform-origin: 0 0
+  transition: background-color $speed2, transform $speed, margin-bottom $speed
 
 .RegionContent.asHotRegion
   cursor: pointer
 
 .ImageRegion > .RegionContent
-  transition: background-color $speed2
   display: inline-block
   background-color: rgba(black, 0.1)
   color: rgba(black, 0)
