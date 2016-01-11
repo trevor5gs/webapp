@@ -1,51 +1,62 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import classNames from 'classnames'
+import { inviteUsers } from '../../actions/invitations'
 import Avatar from '../assets/Avatar'
 import RelationsGroup from '../relationships/RelationsGroup'
+import { getLinkObject } from '../base/json_helper'
 
 class UserInvitee extends Component {
 
-  renderMailtoUserHeader(user) {
-    const { email } = user
+  reInviteUser() {
+    const { dispatch, invitation } = this.props
+    const emails = [invitation.email]
+    dispatch(inviteUsers(emails))
+  }
+
+  renderMailtoUserHeader(invitation) {
+    const { email } = invitation
     return (
       <div className="UserInviteeHeader">
-        <a className="UserInviteeUserLink" href={`mailto: ${email}`}>
+        <a className="UserInviteeUserLink" href={ `mailto: ${email}` }>
           <Avatar/>
-          <span className="UserInviteeEmail">name@example.com</span>
+          <span className="UserInviteeEmail">{ email }</span>
         </a>
       </div>
     )
   }
 
-  renderSending(user) {
+  renderSending(invitation) {
     return (
       <div className={classNames(this.props.className, 'UserInvitee')}>
-        { this.renderMailtoUserHeader(user) }
+        { this.renderMailtoUserHeader(invitation) }
         <span className="UserInviteeStatusLabel">Sending</span>
       </div>
     )
   }
 
-  renderPending(user) {
+  renderPending(invitation) {
     return (
       <div className={classNames(this.props.className, 'UserInvitee')}>
-        { this.renderMailtoUserHeader(user) }
+        { this.renderMailtoUserHeader(invitation) }
         <span className="UserInviteeStatusLabel">Pending</span>
       </div>
     )
   }
 
-  renderReInvite(user) {
+  renderReInvite(invitation) {
     return (
       <div className={classNames(this.props.className, 'UserInvitee')}>
-        { this.renderMailtoUserHeader(user) }
-        <button className="UserInviteeAction">Re-Invite</button>
+        { this.renderMailtoUserHeader(invitation) }
+        <button className="UserInviteeAction" onClick={ ::this.reInviteUser }>Re-Invite</button>
       </div>
     )
   }
 
-  renderAccepted(user) {
+  renderAccepted(invitation) {
+    const { json } = this.props
+    const user = getLinkObject(invitation, 'acceptedBy', json)
     return (
       <div className={classNames(this.props.className, 'UserInvitee')}>
         <div className="UserInviteeHeader">
@@ -61,16 +72,22 @@ class UserInvitee extends Component {
 
   // Need to actually define when these states are setup
   render() {
-    const { user } = this.props
-    // return user.username ? this.renderAccepted(user) : this.renderPending(user)
-    return user.username ? this.renderAccepted(user) : this.renderReInvite(user)
+    const { invitation } = this.props
+    if (invitation.acceptedAt) {
+      return this.renderAccepted(invitation)
+    } else if (invitation.email) {
+      return this.renderReInvite(invitation)
+    }
+    return null
   }
 }
 
 UserInvitee.propTypes = {
   className: PropTypes.string,
-  user: PropTypes.shape({}).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  invitation: PropTypes.shape({}).isRequired,
+  json: PropTypes.object.isRequired,
 }
 
-export default UserInvitee
+export default connect()(UserInvitee)
 
