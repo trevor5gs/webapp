@@ -16,6 +16,8 @@ class ImageRegion extends Component {
     super(props, context)
     this.state = {
       status: STATUS.PENDING,
+      scale: null,
+      marginBottom: null,
     }
   }
 
@@ -26,6 +28,13 @@ class ImageRegion extends Component {
   componentDidMount() {
     if (this.state.status === STATUS.REQUEST) {
       this.createLoader()
+    }
+  }
+
+  componentWillReceiveProps() {
+    const { scale } = this.state
+    if (scale) {
+      this.setImageScale()
     }
   }
 
@@ -98,6 +107,32 @@ class ImageRegion extends Component {
     return images.join(', ')
   }
 
+  setImageScale() {
+    const dimensions = this.getImageDimensions()
+    const imageHeight = dimensions.height
+    const innerHeight = GUI.innerHeight - 80
+    if (imageHeight && imageHeight > innerHeight) {
+      this.setState({
+        scale: innerHeight / imageHeight,
+        marginBottom: -(imageHeight - innerHeight),
+      })
+    }
+  }
+
+  resetImageScale() {
+    this.setState({ scale: null, marginBottom: null })
+  }
+
+  staticImageRegionWasClicked() {
+    const { scale } = this.state
+    if (scale) {
+      return this.resetImageScale()
+    } else if (!this.attachment) {
+      return null
+    }
+    return this.setImageScale()
+  }
+
   createLoader() {
     const srcset = this.getImageSourceSet()
     this.disposeLoader()
@@ -135,82 +170,87 @@ class ImageRegion extends Component {
     return false
   }
 
-  renderGif() {
+  renderGifAttachment() {
     const { content } = this.props
     const dimensions = this.getImageDimensions()
     return (
       <img
-        className="RegionContent ImageAttachment"
-        alt={content.alt}
-        width={dimensions.width}
-        height={dimensions.height}
-        src={this.attachment.optimized.url}
+        alt={ content.alt }
+        className="ImageAttachment"
+        src={ this.attachment.optimized.url }
+        width={ dimensions.width }
+        height={ dimensions.height }
       />
     )
   }
 
-  renderImage() {
+  renderImageAttachment() {
     const { content } = this.props
     const srcset = this.getImageSourceSet()
     const dimensions = this.getImageDimensions()
     return (
       <img
-        className="RegionContent ImageAttachment"
-        alt={content.alt}
-        width={dimensions.width}
-        height={dimensions.height}
-        src={this.attachment.hdpi.url}
-        srcSet={srcset}
+        alt={ content.alt }
+        className="ImageAttachment"
+        src={ this.attachment.hdpi.url }
+        srcSet={ srcset }
+        width={ dimensions.width }
+        height={ dimensions.height }
+      />
+    )
+  }
+
+  renderLegacyImageAttachment() {
+    const { content } = this.props
+    return (
+      <img
+        alt={ content.alt }
+        className="ImageAttachment"
+        src={ content.url }
       />
     )
   }
 
   renderAttachment() {
-    if (this.isGif()) {
-      return this.renderGif()
+    const { assets, links } = this.props
+    if (links && links.assets && assets[links.assets] && assets[links.assets].attachment) {
+      this.attachment = assets[links.assets].attachment
+      return this.isGif() ? this.renderGifAttachment() : this.renderImageAttachment()
     }
-    return this.renderImage()
+    return this.renderLegacyImageAttachment()
   }
 
-  renderContent() {
-    const { content } = this.props
-    return (
-      <img
-        className="RegionContent ImageAttachment"
-        alt={content.alt}
-        src={content.url}
-      />
-    )
-  }
-
-  renderAttachmentAsLink() {
+  renderRegionAsLink() {
     const { postDetailPath } = this.props
-    const { status } = this.state
     return (
-      <Link to={postDetailPath} className={classNames('ImageRegion', status)}>
-        {this.renderAttachment()}
+      <Link to={ postDetailPath } className="RegionContent">
+        { this.renderAttachment() }
       </Link>
     )
   }
 
-  renderAttachmentAsStatic() {
-    const { status } = this.state
+  renderRegionAsStatic() {
+    const { marginBottom, scale } = this.state
     return (
-      <div className={classNames('ImageRegion', status)}>
-        {this.renderAttachment()}
+      <div
+        className="RegionContent"
+        onClick={ ::this.staticImageRegionWasClicked }
+        style={{ transform: scale ? `scale(${scale})` : null, marginBottom }}
+      >
+        { this.renderAttachment() }
       </div>
     )
   }
 
   render() {
-    const { assets, isGridLayout, links, postDetailPath } = this.props
-    if (links && links.assets && assets[links.assets] && assets[links.assets].attachment) {
-      this.attachment = assets[links.assets].attachment
-      return isGridLayout && postDetailPath ?
-        this.renderAttachmentAsLink() :
-        this.renderAttachmentAsStatic()
-    }
-    return this.renderContent()
+    const { isGridLayout, postDetailPath } = this.props
+    const { status } = this.state
+    const asLink = isGridLayout && postDetailPath
+    return (
+      <div className={ classNames('ImageRegion', status) } >
+        { asLink ? this.renderRegionAsLink() : this.renderRegionAsStatic() }
+      </div>
+    )
   }
 }
 
