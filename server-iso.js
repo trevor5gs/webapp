@@ -35,6 +35,10 @@ librato.configure({ email: process.env.LIBRATO_EMAIL,
 librato.start()
 app.use(librato.middleware())
 
+librato.on('error', (err) => {
+  console.log('ELLO LIBRATO ERROR', err)
+})
+
 let indexStr = ''
 // grab out the index.html string first thing
 fs.readFile(path.join(__dirname, './public/index.html'), 'utf-8', (err, data) => {
