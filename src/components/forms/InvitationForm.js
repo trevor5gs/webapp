@@ -58,7 +58,11 @@ class InvitationForm extends Component {
         />
         <FormButton tabIndex="2" disabled={ !isFormValid }>Invite</FormButton>
         <p className="BatchEmailControlSuggestions" style={{ color: '#aaa' }}>
-          You can invite multiple friends at once, just separate their email adresses with commas.
+        {
+          batchEmailStatus === STATUS.SUBMITTED ?
+          'Your invitations have been sent.' :
+          'You can invite multiple friends at once, just separate their email adresses with commas.'
+        }
         </p>
       </form>
     )
