@@ -61,9 +61,9 @@ function renderFromServer(req, res) {
     // populate the rouer store object for initial render
     store.dispatch(replacePath(renderProps.location.pathname, {}, { avoidRouterUpdate: true }))
     if (error) {
-      console.log('error', error)
+      console.log('match error', error)
     } else if (redirectLocation) {
-      console.log('handle redirect')
+      console.log('handle redirect', redirectLocation)
     } else if (!renderProps) { return }
     preRender(renderProps).then(() => {
       const InitialComponent = (
@@ -73,14 +73,13 @@ function renderFromServer(req, res) {
       )
       const componentHTML = renderToString(InitialComponent)
       const state = store.getState()
-      console.log('state', state)
       const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
       indexStr = indexStr.replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
       res.send(indexStr)
     }).catch((err) => {
       // this will give you a js error like:
       // `window is not defined`
-      console.log('ERROR', err)
+      console.log('CATCH ERROR', err)
     })
   })
 }
