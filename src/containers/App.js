@@ -15,10 +15,11 @@ class App extends Component {
 
   constructor(props, context) {
     const loggedOutPaths = {
-      find: /^\/find/,
-      root: /^\/explore/,
-      recent: /^\/explore\/recent/,
-      trending: /^\/explore\/trending/,
+      find: /^\/find$/,
+      explore: /^\/explore/,
+      explore_recent: /^\/explore\/recent/,
+      explore_trending: /^\/explore\/trending/,
+      signup: /^\/signup/,
     }
     super(props, context)
     this.lastLocation = ''
