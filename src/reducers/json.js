@@ -3,7 +3,7 @@
 import uniq from 'lodash.uniq'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
-import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
+import relationshipMethods from './experience_updates/relationships'
 
 // adding methods and accessing them from this object
 // allows the unit tests to stub methods in this module
@@ -41,28 +41,6 @@ function addModels(state, type, data) {
 }
 methods.addModels = (state, type, data) => {
   return addModels(state, type, data)
-}
-
-function updateRelationship(newState, action) {
-  const { userId, priority } = action.payload
-  const { mappingType } = action.meta
-  let followersCount = parseInt(newState[mappingType][userId].followersCount, 10)
-  switch (priority) {
-    case RELATIONSHIP_PRIORITY.FRIEND:
-    case RELATIONSHIP_PRIORITY.NOISE:
-      followersCount += 1
-      break
-    default:
-      followersCount -= 1
-      break
-  }
-  // TODO: update the current user's followingCount +1 (this might happen in the profile reducer)
-  // TODO: if the priority changes to MUTE or BLOCK we should remove this user from the store
-  methods.mergeModel(newState, mappingType, { id: userId, relationshipPriority: priority, followersCount })
-  return newState
-}
-methods.updateRelationship = (newState, action) => {
-  return updateRelationship(newState, action)
 }
 
 function updatePostLoves(state, newState, action) {
@@ -217,8 +195,8 @@ methods.updateResult = (response, newState, action, router) => {
 
 export default function json(state = {}, action = { type: '' }, router) {
   const newState = { ...state }
-  if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE) {
-    return methods.updateRelationship(newState, action)
+  if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL) {
+    return relationshipMethods.updateRelationship(newState, action)
   } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {
     return methods.updatePostLoves(state, newState, action)
   } else if (action.type === ACTION_TYPES.POST.DELETE_REQUEST || action.type === ACTION_TYPES.POST.DELETE_SUCCESS || action.type === ACTION_TYPES.POST.DELETE_FAILURE) {
@@ -246,7 +224,12 @@ export default function json(state = {}, action = { type: '' }, router) {
   switch (action.type) {
     case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
+      // fall through to parse the rest
       break
+    case ACTION_TYPES.RELATIONSHIPS.UPDATE_REQUEST:
+    case ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS:
+    case ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE:
+      return relationshipMethods.updateRelationship(newState, action)
     default:
       return state
   }
@@ -261,5 +244,5 @@ export default function json(state = {}, action = { type: '' }, router) {
   return newState
 }
 
-export { json, methods }
+export { json, methods, relationshipMethods }
 

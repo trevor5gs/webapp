@@ -110,8 +110,31 @@ function stubPost(properties) {
   return model
 }
 
+function stubComment(properties) {
+  const defaultProps = {
+    authorId: 'authorId',
+    body: [],
+    commentsCount: 0,
+    content: [stubTextRegion()],
+    contentWarning: null,
+    isAdultContent: false,
+    loved: false,
+    lovesCount: 0,
+    repostCount: 0,
+    reposted: false,
+    summary: [stubTextRegion()],
+    token: 'token',
+    viewsCount: 0,
+  }
+  const model = { ...commonProps, ...defaultProps, ...properties }
+  addToJSON(MAPPING_TYPES.COMMENTS, model)
+  return model
+}
+
 export function stub(model, properties) {
   switch (model.toLowerCase()) {
+    case 'comment':
+      return stubComment(properties)
     case 'post':
       return stubPost(properties)
     case 'user':

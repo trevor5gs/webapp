@@ -1,10 +1,10 @@
 export const RELATIONSHIP_PRIORITY = {
-  INACTIVE: 'inactive',
-  FRIEND: 'friend',
-  NOISE: 'noise',
-  SELF: 'self',
-  MUTE: 'mute',
   BLOCK: 'block',
+  FRIEND: 'friend',
+  INACTIVE: 'inactive',
+  MUTE: 'mute',
+  NOISE: 'noise',
   NONE: 'none',
+  SELF: 'self',
 }
 

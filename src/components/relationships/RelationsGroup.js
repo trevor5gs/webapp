@@ -22,11 +22,8 @@ class RelationsGroup extends Component {
     const { userId, priority, existing } = vo
     const { dispatch, pathname } = this.props
 
-    // During on-boarding relationships are batch updated.
-    // TODO: When fully wired up this will actually have to split and be
-    // changed to something like `batchUpdateRelationship`
     if (pathname && (/^\/onboarding/).test(pathname)) {
-      return dispatch(updateRelationship(userId, priority, existing))
+      return dispatch(updateRelationship(userId, priority, existing, true))
     }
     return dispatch(updateRelationship(userId, priority, existing))
   }
@@ -84,17 +81,17 @@ class RelationsGroup extends Component {
         { this.shouldRenderBlockMute() ? this.renderBlockMuteButton() : null }
         <RelationshipButton
           buttonWasClicked={ isLoggedIn ? callback : ::this.handleLaunchSignUpModal }
-          isLoggedIn={isLoggedIn}
-          priority={user.relationshipPriority}
+          isLoggedIn={ isLoggedIn }
+          priority={ user.relationshipPriority }
           ref="RelationshipButton"
-          userId={user.id}
+          userId={ user.id }
         />
         <StarshipButton
           buttonWasClicked={ isLoggedIn ? callback : ::this.handleLaunchSignUpModal }
-          isLoggedIn={isLoggedIn}
-          priority={user.relationshipPriority}
+          isLoggedIn={ isLoggedIn }
+          priority={ user.relationshipPriority }
           ref="StarshipButton"
-          userId={user.id}
+          userId={ user.id }
         />
       </div>
     )
