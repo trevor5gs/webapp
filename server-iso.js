@@ -65,9 +65,9 @@ function renderFromServer(req, res) {
     // populate the rouer store object for initial render
     store.dispatch(replacePath(renderProps.location.pathname, {}, { avoidRouterUpdate: true }))
     if (error) {
-      console.log('match error', error)
+      console.log('ELLO MATCH ERROR', error)
     } else if (redirectLocation) {
-      console.log('handle redirect', redirectLocation)
+      console.log('ELLO HANDLE REDIRECT', redirectLocation)
     } else if (!renderProps) { return }
     preRender(renderProps).then(() => {
       const InitialComponent = (
@@ -83,7 +83,7 @@ function renderFromServer(req, res) {
     }).catch((err) => {
       // this will give you a js error like:
       // `window is not defined`
-      console.log('CATCH ERROR', err)
+      console.log('ELLO CATCH ERROR', err)
     })
   })
 }
@@ -104,7 +104,7 @@ app.use((req, res) => {
       break
     }
   }
-  console.log('url', req.url, isLoggedOutPath)
+  console.log('ELLO START URL', req.url, isLoggedOutPath)
   if (isLoggedOutPath) {
     renderFromServer(req, res)
   } else {
