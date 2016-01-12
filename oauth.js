@@ -10,7 +10,7 @@ export default function addOauthRoute(app) {
     site: process.env.AUTH_DOMAIN,
     tokenPath: '/api/oauth/token',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
     },
   }
 
@@ -35,7 +35,7 @@ export default function addOauthRoute(app) {
     })
 
   app.get('/api/webapp-token', (req, res) => {
-    if (token.expired()) {
+    if (!token || token.expired()) {
       oauth2.client
         .getToken(tokenConfig)
         .then((result) => {

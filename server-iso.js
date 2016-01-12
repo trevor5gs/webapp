@@ -35,6 +35,10 @@ librato.configure({ email: process.env.LIBRATO_EMAIL,
 librato.start()
 app.use(librato.middleware())
 
+librato.on('error', (err) => {
+  console.log('ELLO LIBRATO ERROR', err)
+})
+
 let indexStr = ''
 // grab out the index.html string first thing
 fs.readFile(path.join(__dirname, './public/index.html'), 'utf-8', (err, data) => {
@@ -61,9 +65,9 @@ function renderFromServer(req, res) {
     // populate the rouer store object for initial render
     store.dispatch(replacePath(renderProps.location.pathname, {}, { avoidRouterUpdate: true }))
     if (error) {
-      console.log('error', error)
+      console.log('ELLO MATCH ERROR', error)
     } else if (redirectLocation) {
-      console.log('handle redirect')
+      console.log('ELLO HANDLE REDIRECT', redirectLocation)
     } else if (!renderProps) { return }
     preRender(renderProps).then(() => {
       const InitialComponent = (
@@ -73,23 +77,23 @@ function renderFromServer(req, res) {
       )
       const componentHTML = renderToString(InitialComponent)
       const state = store.getState()
-      console.log('state', state)
       const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
       indexStr = indexStr.replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
       res.send(indexStr)
     }).catch((err) => {
       // this will give you a js error like:
       // `window is not defined`
-      console.log('ERROR', err)
+      console.log('ELLO CATCH ERROR', err)
     })
   })
 }
 
 const loggedOutPaths = {
   find: /^\/find$/,
-  root: /^\/explore/,
-  recent: /^\/explore\/recent/,
-  trending: /^\/explore\/trending/,
+  explore: /^\/explore/,
+  explore_recent: /^\/explore\/recent/,
+  explore_trending: /^\/explore\/trending/,
+  signup: /^\/signup/,
 }
 
 app.use((req, res) => {
@@ -100,7 +104,7 @@ app.use((req, res) => {
       break
     }
   }
-  console.log('url', req.url, isLoggedOutPath)
+  console.log('ELLO START URL', req.url, isLoggedOutPath)
   if (isLoggedOutPath) {
     renderFromServer(req, res)
   } else {
