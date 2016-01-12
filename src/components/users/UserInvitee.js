@@ -36,15 +36,6 @@ class UserInvitee extends Component {
     )
   }
 
-  renderPending(invitation) {
-    return (
-      <div className={classNames(this.props.className, 'UserInvitee')}>
-        { this.renderMailtoUserHeader(invitation) }
-        <span className="UserInviteeStatusLabel">Pending</span>
-      </div>
-    )
-  }
-
   renderReInvite(invitation) {
     return (
       <div className={classNames(this.props.className, 'UserInvitee')}>
