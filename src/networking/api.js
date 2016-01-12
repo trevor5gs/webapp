@@ -166,7 +166,7 @@ export function availability() {
 // INVITE
 export function invite() {
   return {
-    path: getAPIPath('invitations'),
+    path: getAPIPath('invitations', { per_page: 100 }),
   }
 }
 

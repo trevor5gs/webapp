@@ -45,26 +45,34 @@ export function usersAsList(users) {
   )
 }
 
-export function usersAsInviteeList(users) {
+export function usersAsInviteeList(invitations, json) {
   return (
     <div className="Users asInviteeList">
-      {users.data.map((user, i) => {
-        return <UserInvitee ref={'userInvitee_' + i} user={user} key={i} />
+      {invitations.data.map((invitation, i) => {
+        return (
+          <UserInvitee
+            ref={ 'userInvitee_' + i }
+            invitation={ invitation }
+            json={ json }
+            key={ i }
+          />
+        )
       })}
     </div>
   )
 }
 
-export function usersAsInviteeGrid(users) {
+export function usersAsInviteeGrid(invitations, json) {
   return (
     <div className="Users asInviteeGrid">
-      {users.data.map((user, i) => {
+      {invitations.data.map((invitation, i) => {
         return (
           <UserInvitee
             className="UserInviteeGrid"
-            ref={'userInvitee_' + i}
-            user={user}
-            key={i}
+            ref={ 'userInvitee_' + i }
+            invitation={ invitation }
+            json={ json }
+            key={ i }
           />
         )
       })}

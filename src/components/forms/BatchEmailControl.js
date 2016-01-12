@@ -84,6 +84,7 @@ class BatchEmailControl extends Component {
           placeholder={placeholder}
           autoCapitalize="off"
           autoCorrect="off"
+          ref="input"
           onBlur={::this.handleBlur}
           onChange={::this.handleChange}
           onFocus={::this.handleFocus}

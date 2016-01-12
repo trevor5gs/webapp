@@ -18,3 +18,17 @@ export function loadInvitedUsers() {
   }
 }
 
+export function inviteUsers(emails) {
+  return {
+    type: ACTION_TYPES.POST_JSON,
+    payload: {
+      endpoint: api.invite(),
+      method: 'POST',
+      body: JSON.stringify({ email: emails }),
+    },
+    meta: {
+      mappingType: MAPPING_TYPES.INVITATIONS,
+    },
+  }
+}
+
