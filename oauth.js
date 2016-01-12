@@ -10,7 +10,7 @@ export default function addOauthRoute(app) {
     site: process.env.AUTH_DOMAIN,
     tokenPath: '/api/oauth/token',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
     },
   }
 
