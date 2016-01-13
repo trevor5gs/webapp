@@ -12,7 +12,6 @@ export function loadProfile() {
 }
 
 export function saveProfile(params) {
-  console.log('saveProfile', params)
   return {
     type: PROFILE.SAVE,
     meta: {},
