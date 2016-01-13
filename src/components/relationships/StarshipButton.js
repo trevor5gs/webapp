@@ -12,6 +12,10 @@ class StarshipButton extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ priority: nextProps.priority })
+  }
+
   updatePriority(e) {
     const nextPriority = e.target.dataset.nextPriority
     const { buttonWasClicked, isLoggedIn, userId } = this.props

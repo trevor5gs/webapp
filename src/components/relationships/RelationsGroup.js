@@ -105,7 +105,7 @@ RelationsGroup.propTypes = {
   showBlockMuteButton: PropTypes.bool,
   user: PropTypes.shape({
     id: PropTypes.string,
-    priority: PropTypes.string,
+    relationshipPriority: PropTypes.string,
   }).isRequired,
 }
 

@@ -227,8 +227,9 @@ export default function json(state = {}, action = { type: '' }, router) {
       // fall through to parse the rest
       break
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_REQUEST:
-    case ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS:
-    case ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE:
+    // case ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS:
+    // case ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE:
+      console.log('update relationship')
       return relationshipMethods.updateRelationship(newState, action)
     default:
       return state

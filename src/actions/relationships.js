@@ -1,6 +1,6 @@
 import { RELATIONSHIPS } from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
-import { getAPIPath } from '../networking/api'
+import * as api from '../networking/api'
 
 export function updateRelationship(userId, priority, existing, internal = false) {
   const action = internal ?
@@ -13,9 +13,7 @@ export function updateRelationship(userId, priority, existing, internal = false)
       type: RELATIONSHIPS.UPDATE,
       meta: { mappingType: MAPPING_TYPES.RELATIONSHIPS },
       payload: {
-        endpoint: {
-          path: `${getAPIPath('users')}/${userId}/add/${priority}`,
-        },
+        endpoint: api.relationshipAdd(userId, priority),
         existing,
         method: 'POST',
         priority,

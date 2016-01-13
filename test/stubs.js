@@ -114,17 +114,9 @@ function stubComment(properties) {
   const defaultProps = {
     authorId: 'authorId',
     body: [],
-    commentsCount: 0,
     content: [stubTextRegion()],
-    contentWarning: null,
-    isAdultContent: false,
-    loved: false,
-    lovesCount: 0,
-    repostCount: 0,
-    reposted: false,
+    postId: '1',
     summary: [stubTextRegion()],
-    token: 'token',
-    viewsCount: 0,
   }
   const model = { ...commonProps, ...defaultProps, ...properties }
   addToJSON(MAPPING_TYPES.COMMENTS, model)

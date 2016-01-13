@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { MiniPlusIcon, MiniCheckIcon } from '../relationships/RelationshipIcons'
 
+// TODO: can we just use this.props and not have to set state here
 class RelationshipButton extends Component {
 
   constructor(props, context) {
@@ -11,6 +12,10 @@ class RelationshipButton extends Component {
     this.state = {
       priority: priority || RELATIONSHIP_PRIORITY.INACTIVE,
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ priority: nextProps.priority })
   }
 
   buttonWasClicked(e) {
