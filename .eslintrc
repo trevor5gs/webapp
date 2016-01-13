@@ -14,7 +14,6 @@
     "no-console": 2,
     "no-debugger": 2,
     "no-multiple-empty-lines": [2, { "max": 3, "maxEOF": 2 }],
-    "react/no-multi-comp": 0,
     "semi": 0
   }
 }
