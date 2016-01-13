@@ -103,6 +103,11 @@ export function unlovePost(post) {
     path: getAPIPath(`posts/${post.id}/love`),
   }
 }
+export function deletePost(post) {
+  return {
+    path: getAPIPath(`posts/${post.id}`),
+  }
+}
 export function postLovers(post) {
   const params = { per_page: 10 }
   return {

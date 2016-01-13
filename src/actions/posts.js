@@ -21,7 +21,11 @@ export function loadPostDetail(token) {
 export function lovePost(post) {
   return {
     type: ACTION_TYPES.POST.LOVE,
-    payload: { endpoint: api.lovePost(post), method: 'POST', model: post },
+    payload: {
+      endpoint: api.lovePost(post),
+      method: 'POST',
+      model: post,
+    },
     meta: { mappingType: MAPPING_TYPES.LOVES },
   }
 }
@@ -29,7 +33,24 @@ export function lovePost(post) {
 export function unlovePost(post) {
   return {
     type: ACTION_TYPES.POST.LOVE,
-    payload: { endpoint: api.unlovePost(post), method: 'DELETE', model: post },
+    payload: {
+      endpoint: api.unlovePost(post),
+      method: 'DELETE',
+      model: post,
+    },
     meta: {},
   }
 }
+
+export function deletePost(post) {
+  return {
+    type: ACTION_TYPES.POST.DELETE,
+    payload: {
+      endpoint: api.deletePost(post),
+      method: 'DELETE',
+      model: post,
+    },
+    meta: {},
+  }
+}
+

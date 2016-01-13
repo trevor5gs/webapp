@@ -1,3 +1,4 @@
+// TODO: test these as they are data related
 export function findBy(params, collection, json) {
   const models = json[collection]
   if (!models) {
@@ -25,9 +26,10 @@ export function getLinkObject(model, identifier, json) {
   if (!model.links || !model.links[identifier]) { return null }
   const key = model.links[identifier].id || model.links[identifier]
   const collection = model.links[identifier].type || identifier
-  if (key && json[collection]) {
+  if (key && json[collection] && json[collection][key]) {
     return json[collection][key]
   }
+  return null
 }
 
 export function getLinkArray(model, identifier, json) {
@@ -35,9 +37,16 @@ export function getLinkArray(model, identifier, json) {
   const keys = model.links[identifier].ids || model.links[identifier]
   const collection = model.links[identifier].type || identifier
   if (keys.length && json[collection]) {
-    return keys.map((key) => {
+    // filter they keys so that models that don't exist
+    // aren't added to the link object mainly used for
+    // when a model gets deleted ie: post or comment
+    const filteredKeys = keys.filter((key) => {
+      return json[collection][key] ? true : false
+    })
+    return filteredKeys.map((key) => {
       return json[collection][key]
     })
   }
+  return null
 }
 
