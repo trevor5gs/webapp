@@ -8,66 +8,66 @@ class RelationshipButton extends Component {
 
   constructor(props, context) {
     super(props, context)
-    const { priority } = this.props
-    this.state = {
-      priority: priority || RELATIONSHIP_PRIORITY.INACTIVE,
-    }
+    this.state = { nextPriority: this.getNextPriority(this.props) }
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ priority: nextProps.priority })
+    this.setState({ nextPriority: this.getNextPriority(nextProps) })
   }
 
-  buttonWasClicked(e) {
-    this.updatePriority(e.target.dataset.nextPriority)
-  }
-
-  updatePriority(nextPriority) {
-    const { buttonWasClicked, isLoggedIn, userId } = this.props
-    if (isLoggedIn) {
-      this.setState({ priority: nextPriority })
+  getNextPriority(props) {
+    const { priority } = props
+    switch (priority) {
+      case RELATIONSHIP_PRIORITY.INACTIVE:
+      case RELATIONSHIP_PRIORITY.NOISE:
+        return RELATIONSHIP_PRIORITY.FRIEND
+      default:
+        return RELATIONSHIP_PRIORITY.INACTIVE
     }
+  }
+
+  updatePriority() {
+    const { nextPriority } = this.state
+    const { buttonWasClicked, priority, userId } = this.props
     if (buttonWasClicked) {
-      buttonWasClicked({ userId, priority: nextPriority, existing: this.state.priority })
+      buttonWasClicked({ userId, priority: nextPriority, existing: priority })
     }
   }
 
-  renderAsToggleButton(label, nextPriority, icon = null) {
-    const { priority } = this.state
+  renderAsToggleButton(label, icon = null) {
+    const { priority } = this.props
     return (
       <button
         className="RelationshipButton"
-        onClick={::this.buttonWasClicked}
-        data-priority={priority}
-        data-next-priority={nextPriority}
+        onClick={ ::this.updatePriority }
+        data-priority={ priority }
       >
-        {icon}
-        <span>{label}</span>
+        { icon }
+        <span>{ label }</span>
       </button>
     )
   }
 
   renderAsLabelButton(label) {
-    const{ buttonWasClicked } = this.props
-    const { priority } = this.state
+    const{ buttonWasClicked, priority } = this.props
     return (
       <button
         className="RelationshipButton"
-        data-priority={priority}
+        data-priority={ priority }
         onClick={ buttonWasClicked }
       >
-        <span>{label}</span>
+        <span>{ label }</span>
       </button>
     )
   }
 
   renderAsSelf() {
-    const { priority } = this.state
+    const { priority } = this.props
     return (
       <Link
         className="RelationshipButton"
         to="/settings"
-        data-priority={priority}
+        data-priority={ priority }
       >
         <MiniPlusIcon />
         <span>Edit Profile</span>
@@ -76,8 +76,7 @@ class RelationshipButton extends Component {
   }
 
   renderAsInactive() {
-    const nextPriority = RELATIONSHIP_PRIORITY.FRIEND
-    return this.renderAsToggleButton('Follow', nextPriority, <MiniPlusIcon />)
+    return this.renderAsToggleButton('Follow', <MiniPlusIcon />)
   }
 
   renderAsNone() {
@@ -85,13 +84,11 @@ class RelationshipButton extends Component {
   }
 
   renderAsFriend() {
-    const nextPriority = RELATIONSHIP_PRIORITY.INACTIVE
-    return this.renderAsToggleButton('Following', nextPriority, <MiniCheckIcon />)
+    return this.renderAsToggleButton('Following', <MiniCheckIcon />)
   }
 
   renderAsNoise() {
-    const nextPriority = RELATIONSHIP_PRIORITY.FRIEND
-    return this.renderAsToggleButton('Starred', nextPriority, <MiniCheckIcon />)
+    return this.renderAsToggleButton('Starred', <MiniCheckIcon />)
   }
 
   renderAsMute() {
@@ -103,7 +100,7 @@ class RelationshipButton extends Component {
   }
 
   render() {
-    const { priority } = this.state
+    const { priority } = this.props
     const fn = priority ?
       `renderAs${priority.charAt(0).toUpperCase() + priority.slice(1)}` :
       'renderAsInactive'

@@ -1,4 +1,5 @@
 import React from 'react'
+import { batchUpdateRelationship } from '../../actions/relationships'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 
 class Picker extends React.Component {
@@ -29,13 +30,18 @@ class Picker extends React.Component {
     const relationship = inactive.length === 0 ?
       RELATIONSHIP_PRIORITY.INACTIVE :
       RELATIONSHIP_PRIORITY.FRIEND
+    const userIds = []
     for (const propName in userRefs) {
       if (userRefs.hasOwnProperty(propName)) {
         const relationshipButton = this.getRelationshipButton(userRefs[propName].refs)
         if (relationshipButton) {
-          relationshipButton.updatePriority(relationship)
+          userIds.push(relationshipButton.props.userId)
         }
       }
+    }
+    if (userIds.length) {
+      const { dispatch } = this.props
+      dispatch(batchUpdateRelationship(userIds, relationship))
     }
   }
 
@@ -62,6 +68,7 @@ class Picker extends React.Component {
 }
 
 Picker.propTypes = {
+  dispatch: React.PropTypes.func.isRequired,
   relationshipMap: React.PropTypes.any.isRequired,
   shouldAutoFollow: React.PropTypes.bool,
 }

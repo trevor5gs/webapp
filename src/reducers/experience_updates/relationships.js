@@ -71,5 +71,23 @@ methods.updateRelationship = (newState, action) => {
   return updateRelationship(newState, action)
 }
 
+function batchUpdateRelationship(newState, action) {
+  const { priority, userIds } = action.payload
+  for (const id of userIds) {
+    jsonMethods.mergeModel(
+      newState,
+      MAPPING_TYPES.USERS,
+      {
+        id,
+        relationshipPriority: priority,
+      }
+    )
+  }
+  return newState
+}
+methods.batchUpdateRelationship = (newState, action) => {
+  return batchUpdateRelationship(newState, action)
+}
+
 export default methods
 

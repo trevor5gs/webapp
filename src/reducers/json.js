@@ -197,6 +197,8 @@ export default function json(state = {}, action = { type: '' }, router) {
   const newState = { ...state }
   if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL) {
     return relationshipMethods.updateRelationship(newState, action)
+  } else if (action.type === ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL) {
+    return relationshipMethods.batchUpdateRelationship(newState, action)
   } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {
     return methods.updatePostLoves(state, newState, action)
   } else if (action.type === ACTION_TYPES.POST.DELETE_REQUEST || action.type === ACTION_TYPES.POST.DELETE_SUCCESS || action.type === ACTION_TYPES.POST.DELETE_FAILURE) {
