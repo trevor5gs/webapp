@@ -8,7 +8,7 @@ export function loadInvitedUsers() {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.invite(), vo: {} },
     meta: {
-      defaultMode: 'grid',
+      defaultMode: 'list',
       mappingType: MAPPING_TYPES.INVITATIONS,
       renderStream: {
         asList: StreamRenderables.usersAsInviteeList,
