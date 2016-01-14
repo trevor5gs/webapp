@@ -86,8 +86,8 @@ class Cover extends Component {
     const { coverImage } = props
     if (!coverImage) {
       return ''
-    } else if (typeof coverImage === 'string') {
-      return coverImage
+    } else if (coverImage.tmp && coverImage.tmp.url) {
+      return coverImage.tmp.url
     }
     const { imageSize } = this.state
     return coverImage[imageSize] ? coverImage[imageSize].url : null
@@ -135,7 +135,7 @@ class Cover extends Component {
 }
 
 Cover.propTypes = {
-  coverImage: PropTypes.any,
+  coverImage: PropTypes.object,
   isModifiable: PropTypes.bool,
   modifiers: PropTypes.string,
 }

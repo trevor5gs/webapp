@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { pushPath } from 'redux-simple-router'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
-import { openModal, closeModal } from '../../actions/modals'
-import { availableToggles } from '../../actions/profile'
+import { openModal, closeModal, openAlert } from '../../actions/modals'
+import { availableToggles, saveCover, saveAvatar } from '../../actions/profile'
 import AdultPostsDialog from '../../components/dialogs/AdultPostsDialog'
 import BioControl from '../../components/forms/BioControl'
 import EmailControl from '../../components/forms/EmailControl'
@@ -13,7 +15,7 @@ import NameControl from '../../components/forms/NameControl'
 import PasswordControl from '../../components/forms/PasswordControl'
 import UsernameControl from '../../components/forms/UsernameControl'
 import Preference from '../../components/forms/Preference'
-// import Uploader from '../../components/uploaders/Uploader'
+import Uploader from '../../components/uploaders/Uploader'
 import Avatar from '../../components/assets/Avatar'
 import Cover from '../../components/assets/Cover'
 import TreeButton from '../../components/navigation/TreeButton'
@@ -23,22 +25,6 @@ import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 
 class Settings extends Component {
 
-  getAvatarSource() {
-    const { profile } = this.props
-    const { avatar, tmpAvatar } = profile
-    if (tmpAvatar) {
-      return tmpAvatar
-    }
-    return avatar ? avatar.large.url : null
-  }
-
-  getCoverSource() {
-    const { profile } = this.props
-    const { coverImage, tmpCover } = profile
-    if (tmpCover) {
-      return tmpCover
-    }
-    return coverImage ? coverImage : null
   onLogOut() {
     const { dispatch } = this.props
     dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
@@ -101,11 +87,25 @@ class Settings extends Component {
     return (
       <section className="Settings Panel">
         <div className="SettingsCoverPicker">
+          <Uploader
+            title="Upload a header image"
+            message="Or drag & drop"
+            recommend="Recommended image size: 2560 x 1440"
+            openAlert={ bindActionCreators(openAlert, dispatch) }
+            saveAction={ bindActionCreators(saveCover, dispatch) }
+          />
           <Cover isModifiable coverImage={ profile.coverImage } />
         </div>
         <button className="SettingsLogoutButton" onClick={ ::this.onLogOut }>Logout</button>
         <div className="SettingsBody" >
           <div className="SettingsAvatarPicker" >
+            <Uploader
+              title="Pick an Avatar"
+              message="Or drag & drop it"
+              recommend="Recommended image size: 360 x 360"
+              openAlert={ bindActionCreators(openAlert, dispatch) }
+              saveAction={ bindActionCreators(saveAvatar, dispatch) }
+            />
             <Avatar
               isModifiable
               size="large"
@@ -141,6 +141,7 @@ class Settings extends Component {
               classModifiers="asBoxControl onWhite"
               controlWasChanged={::this.handleControlChange}
               tabIndex="4"
+              text={profile.name || null}
             />
             <BioControl
               classModifiers="asBoxControl onWhite"

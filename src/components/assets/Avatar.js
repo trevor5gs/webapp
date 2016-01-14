@@ -59,8 +59,8 @@ class Avatar extends Component {
     const { sources, size } = props
     if (!sources) {
       return ''
-    } else if (typeof sources === 'string') {
-      return sources
+    } else if (sources.tmp && sources.tmp.url) {
+      return sources.tmp.url
     }
     return sources[size] ? sources[size].url : null
   }
@@ -113,7 +113,7 @@ class Avatar extends Component {
 Avatar.propTypes = {
   isModifiable: PropTypes.bool,
   size: PropTypes.string,
-  sources: PropTypes.any,
+  sources: PropTypes.object,
   to: PropTypes.string,
 }
 

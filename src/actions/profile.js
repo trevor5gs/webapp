@@ -79,7 +79,7 @@ export function temporaryAvatarCreated(b64Asset) {
   return {
     type: PROFILE.TMP_AVATAR_CREATED,
     meta: {},
-    payload: { tmpAvatar: b64Asset },
+    payload: { tmp: { url: b64Asset } },
   }
 }
 
@@ -87,7 +87,7 @@ export function temporaryCoverCreated(b64Asset) {
   return {
     type: PROFILE.TMP_COVER_CREATED,
     meta: {},
-    payload: { tmpCover: b64Asset },
+    payload: { tmp: { url: b64Asset } },
   }
 }
 
