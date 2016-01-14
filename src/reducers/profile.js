@@ -24,8 +24,14 @@ export function profile(state = initialState, action) {
         meta: action.meta,
         error: action.error,
         payload: {
-          ...state.payload,
-          ...response,
+          linked: {
+            ...state.payload.linked,
+            ...response.linked,
+          },
+          users: {
+            ...state.payload.users,
+            ...response.users,
+          },
         },
       }
 
