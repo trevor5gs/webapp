@@ -258,7 +258,7 @@ Settings.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    profile: state.profile.payload,
+    profile: state.profile.payload.users,
   }
 }
 
