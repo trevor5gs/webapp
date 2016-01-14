@@ -3,13 +3,15 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { pushPath } from 'redux-simple-router'
+import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
 import { openModal, closeModal, openAlert } from '../../actions/modals'
-import { availableToggles, saveCover, saveAvatar } from '../../actions/profile'
+import { availableToggles, saveCover, saveAvatar, saveProfile } from '../../actions/profile'
 import AdultPostsDialog from '../../components/dialogs/AdultPostsDialog'
 import BioControl from '../../components/forms/BioControl'
 import EmailControl from '../../components/forms/EmailControl'
+import FormButton from '../../components/forms/FormButton'
 import LinksControl from '../../components/forms/LinksControl'
 import NameControl from '../../components/forms/NameControl'
 import PasswordControl from '../../components/forms/PasswordControl'
@@ -24,6 +26,16 @@ import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 
 
 class Settings extends Component {
+  constructor(props, context) {
+    super(props, context)
+    this.state = {
+      isInfoFormSaving: false,
+    }
+  }
+
+  componentWillMount() {
+    this.saveInfoForm = debounce(this.saveInfoForm, 300)
+  }
 
   onLogOut() {
     const { dispatch } = this.props
@@ -60,6 +72,22 @@ class Settings extends Component {
   handleControlChange() {
   }
 
+  saveInfoForm(vo) {
+    const { isInfoFormSaving } = this.state
+    if (!isInfoFormSaving) {
+      this.setState({ isInfoFormSaving: true })
+    }
+    this.props.dispatch(saveProfile(vo))
+  }
+
+  handleInfoControlChanged(vo) {
+    this.saveInfoForm(vo)
+  }
+
+  handleSubmit(e) {
+    e.preventDefault()
+  }
+
   closeModal() {
     const { dispatch } = this.props
     dispatch(closeModal())
@@ -80,10 +108,14 @@ class Settings extends Component {
 
   render() {
     const { profile, dispatch } = this.props
-    const mdash = <span>&mdash;</span>
     if (!profile) {
       return null
     }
+
+    const { isInfoFormSaving } = this.state
+    const mdash = <span>&mdash;</span>
+    const boxControlClassNames = 'asBoxControl onWhite isOriginalValue'
+
     return (
       <section className="Settings Panel">
         <div className="SettingsCoverPicker">
@@ -121,38 +153,78 @@ class Settings extends Component {
             </p>
           </header>
 
-          <form className="SettingsForm">
+          <form
+            className="SettingsForm"
+            noValidate="novalidate"
+            onSubmit={this.handleSubmit}
+            role="form"
+          >
             <UsernameControl
-              classModifiers="asBoxControl onWhite"
+              classModifiers={ boxControlClassNames }
               controlWasChanged={::this.handleControlChange}
               tabIndex="1"
+              text={ profile.username }
             />
             <EmailControl
-              classModifiers="asBoxControl onWhite"
+              classModifiers={ boxControlClassNames }
               controlWasChanged={::this.handleControlChange}
               tabIndex="2"
+              text={ profile.email }
             />
             <PasswordControl
-              classModifiers="asBoxControl onWhite"
+              classModifiers={ boxControlClassNames }
               controlWasChanged={::this.handleControlChange}
+              placeholder="Set a new password"
               tabIndex="3"
             />
+            <div className="SettingsCredentialActions">
+              <PasswordControl
+                classModifiers={ boxControlClassNames }
+                controlWasChanged={::this.handleControlChange}
+                placeholder="Enter current password"
+              />
+              <p>
+                To save changes to [ password ] you must re-enter your current Ello
+                password.
+              </p>
+              <FormButton disabled>Save</FormButton>
+            </div>
+          </form>
+
+          <form
+            className="SettingsForm"
+            noValidate="novalidate"
+            onSubmit={this.handleSubmit}
+            role="form"
+          >
             <NameControl
-              classModifiers="asBoxControl onWhite"
-              controlWasChanged={::this.handleControlChange}
+              classModifiers={ boxControlClassNames }
+              controlWasChanged={ ::this.handleInfoControlChanged }
               tabIndex="4"
               text={profile.name || null}
             />
             <BioControl
-              classModifiers="asBoxControl onWhite"
-              controlWasChanged={::this.handleControlChange}
+              classModifiers={ boxControlClassNames }
+              controlWasChanged={ ::this.handleInfoControlChanged }
               tabIndex="5"
+              text={profile.shortBio || null}
             />
             <LinksControl
-              classModifiers="asBoxControl onWhite"
-              controlWasChanged={::this.handleControlChange}
+              classModifiers={ boxControlClassNames }
+              controlWasChanged={ ::this.handleInfoControlChanged }
               tabIndex="6"
+              text={
+                profile.externalLinksList ?
+                profile.externalLinksList.map((link) => { return link.text }).join(', ') :
+                [].join()
+              }
             />
+            <span
+              className="SettingsInfoFormStatus"
+              style={{ opacity: isInfoFormSaving ? 1 : 0 }}
+            >
+              Profile updated successfully
+            </span>
           </form>
 
           <p className="SettingsLinks">
@@ -240,16 +312,15 @@ class Settings extends Component {
                   </dl>
               </div>
             </div>
-
           </div>
         </div>
       </section>
     )
   }
 }
-// TODO: Should this load profile?
+// TODO: Should this load profile or will the App take care of it?
 // Settings.preRender = (store) => {
-//   return store.dispatch(loadInvitedUsers())
+//   return store.dispatch(loadProfile())
 // }
 
 Settings.propTypes = {

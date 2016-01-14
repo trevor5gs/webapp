@@ -210,7 +210,7 @@ UsernameControl.defaultProps = {
   showAdvice: true,
   status: STATUS.INDETERMINATE,
   suggestions: null,
-  tabIndex: 0,
+  tabIndex: '0',
 }
 
 export default UsernameControl

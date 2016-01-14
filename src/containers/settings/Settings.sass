@@ -75,6 +75,36 @@
 .SettingsLinks > *
   margin-left: rem(20)
 
+
+.SettingsCredentialActions
+  transition: height $speed ease
+  position: relative
+  overflow: hidden
+  height: rem(200)
+  height: 0
+.SettingsCredentialActions p
+  max-width: calc(100% - #{rem(140)})
+.SettingsCredentialActions .FormButton
+  position: absolute
+  width: rem(120)
+  top: rem(70)
+  right: 0
+
+.SettingsInfoFormStatus
+  +sans-typeset
+  transition: opacity $speed
+  position: absolute
+  right: 0
+  padding: 0 rem(15)
+  min-width: rem(240)
+  height: rem(30)
+  border-radius: rem(15)
+  line-height: rem(30)
+  text-align: center
+  background-color: black
+  border: 1px solid black
+  color: white
+
 // -------------------------------------
 
 @media(min-width: #{$break-2})

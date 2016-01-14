@@ -143,7 +143,7 @@ PasswordControl.defaultProps = {
   placeholder: 'Enter your password',
   showSuggestion: true,
   status: STATUS.INDETERMINATE,
-  tabIndex: 0,
+  tabIndex: '0',
 }
 
 export default PasswordControl

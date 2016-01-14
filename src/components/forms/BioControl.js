@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
+import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
+import { RequestIcon } from '../forms/FormIcons'
 
 class BioControl extends Component {
 
@@ -27,6 +29,30 @@ class BioControl extends Component {
     this.props.controlWasChanged({ unsanitized_short_bio: val })
   }
 
+  mapStatusToClass() {
+    const { status } = this.props
+    switch (status) {
+      case STATUS.REQUEST:
+        return 'isValidating'
+      case STATUS.INDETERMINATE:
+      default:
+        return 'isIndeterminate'
+    }
+  }
+
+  renderStatus() {
+    const { status } = this.props
+    let icon = null
+    if (status === STATUS.REQUEST) {
+      icon = <RequestIcon/>
+    }
+    return (
+      <div className="FormControlStatus">
+        {icon}
+      </div>
+    )
+  }
+
   render() {
     const { classModifiers, id, name, tabIndex, placeholder } = this.props
     const { hasFocus, hasValue, text } = this.state
@@ -35,6 +61,7 @@ class BioControl extends Component {
     const groupClassNames = classNames(
       'FormControlGroup',
       classModifiers,
+      this.mapStatusToClass(),
       { hasFocus },
       { hasValue },
       { hasExceeded: len > 192 },
@@ -66,6 +93,7 @@ class BioControl extends Component {
           onChange={::this.handleChange}
           onFocus={::this.handleFocus}
         />
+        { this.renderStatus() }
       </div>
     )
   }
@@ -77,6 +105,7 @@ BioControl.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
+  status: PropTypes.string,
   tabIndex: PropTypes.string.isRequired,
   text: PropTypes.string,
 }
@@ -86,6 +115,7 @@ BioControl.defaultProps = {
   id: 'user_unsanitized_short_bio',
   name: 'user[unsanitized_short_bio]',
   placeholder: 'Bio (optional)',
+  status: STATUS.INDETERMINATE,
   tabIndex: '0',
   text: '',
 }
