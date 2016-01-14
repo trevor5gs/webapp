@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import * as ACTION_TYPES from '../../constants/action_types'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
 import { openModal, closeModal } from '../../actions/modals'
 import { availableToggles } from '../../actions/profile'
@@ -38,6 +39,10 @@ class Settings extends Component {
       return tmpCover
     }
     return coverImage ? coverImage : null
+  onLogOut() {
+    const { dispatch } = this.props
+    dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
+    dispatch(pushPath('/', window.history.state))
   }
 
   getExternalLinkListAsText() {
@@ -88,21 +93,24 @@ class Settings extends Component {
   }
 
   render() {
-    const { profile } = this.props
+    const { profile, dispatch } = this.props
     const mdash = <span>&mdash;</span>
     if (!profile) {
       return null
     }
     return (
       <section className="Settings Panel">
-        <Cover isModifiable coverImage={this.getCoverSource()} />
+        <div className="SettingsCoverPicker">
+          <Cover isModifiable coverImage={ profile.coverImage } />
+        </div>
+        <button className="SettingsLogoutButton" onClick={ ::this.onLogOut }>Logout</button>
         <div className="SettingsBody" >
           <div className="SettingsAvatarPicker" >
-          <Avatar
-            isModifiable
-            size="large"
-            sources={this.getAvatarSource()}
-          />
+            <Avatar
+              isModifiable
+              size="large"
+              sources={ profile.avatar }
+            />
           </div>
 
           <header className="SettingsHeader">
@@ -147,11 +155,10 @@ class Settings extends Component {
           </form>
 
           <p className="SettingsLinks">
-            <Link to="/">View Profile</Link>
-            <Link to="/onboarding">Launch On-boarding</Link>
+            <Link to={ `/${profile.username}` }>View profile</Link>
+            <Link to="/invitations">Invite people</Link>
+            <Link to="/onboarding">Launch on-boarding</Link>
           </p>
-
-
 
           <div className="SettingsPreferences">
             <StreamComponent ref="streamComponent" action={availableToggles()} />

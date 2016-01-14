@@ -1,9 +1,13 @@
-.AuthenticationForm
-  max-width: rem(320)
-
 .InfoForm
   position: relative
   max-width: rem(610)
+
+.InfoForm .NameControl
+  +sans-bold-family
+  font-size: 1rem
+
+.AuthenticationForm
+  max-width: rem(320)
 
 .InvitationForm
   max-width: rem(440)
@@ -17,8 +21,19 @@
 @media(min-width: #{$break-3})
   .InvitationForm .FormControlFeedback
     width: rem(250)
+  // This sucks.. can't wait for us to convert to CSS modules
+  .SettingsForm .FormControlFeedback
+    position: static
+    width: auto
 
-.InfoForm .NameControl
-  +sans-bold-family
-  font-size: 1rem
+@media(min-width: #{em(1280)})
+  .SettingsForm .FormControlFeedback
+    position: absolute
+    width: rem(250)
+    left: rem(790)
+    right: auto
 
+@media(min-width: #{$break-4})
+  .SettingsForm .FormControlFeedback
+    width: rem(280)
+    left: rem(800)

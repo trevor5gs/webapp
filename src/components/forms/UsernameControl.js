@@ -88,7 +88,7 @@ class UsernameControl extends Component {
       <p className="FormControlFeedback FormControlFeedbackSuggestions">
         <span>
           You can change your username at any time. Letters, numbers,
-          underscores & dashes only. No spaces.
+          dashes & underscores only. No spaces.
         </span>
       </p>
     )
