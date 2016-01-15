@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { pushPath, replacePath } from 'redux-simple-router'
 import classNames from 'classnames'
 import { openModal, closeModal } from '../../actions/modals'
-import * as PostActions from '../../actions/posts'
+import * as postActions from '../../actions/posts'
 import { trackEvent } from '../../actions/tracking'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
 import FlagDialog from '../dialogs/FlagDialog'
@@ -175,9 +175,9 @@ class PostTools extends Component {
       return this.signUp()
     }
     if (post.loved) {
-      dispatch(PostActions.unlovePost(post))
+      dispatch(postActions.unlovePost(post))
     } else {
-      dispatch(PostActions.lovePost(post))
+      dispatch(postActions.lovePost(post))
     }
   }
 
@@ -204,11 +204,8 @@ class PostTools extends Component {
   }
 
   postWasFlagged({ flag }) {
-    return flag
-    // This is the value to send to the API. The flag will be the value chosen
-    // button when submit was clicked. This is returned before the final
-    // confirmation screen (which just closes the modal when Okay is clicked)
-    // console.log(flag)
+    const { dispatch, post } = this.props
+    dispatch(postActions.flagPost(post, flag))
   }
 
   deletePost() {
@@ -224,7 +221,7 @@ class PostTools extends Component {
   deletePostConfirmed() {
     const { dispatch, path, post, previousPath } = this.props
     this.closeModal()
-    dispatch(PostActions.deletePost(post))
+    dispatch(postActions.deletePost(post))
     if (path.match(post.token)) {
       dispatch(replacePath(previousPath || '/', window.history.state))
     }
