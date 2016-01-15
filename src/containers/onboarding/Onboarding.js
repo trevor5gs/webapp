@@ -91,6 +91,7 @@ class Onboarding extends Component {
               message="Follow the Ello Communities that you find most inspiring."
             />
             <CommunityPicker
+              dispatch={ dispatch }
               shouldAutoFollow={
                 stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ?
                 true : false
@@ -113,6 +114,7 @@ class Onboarding extends Component {
               message="Ello is full of interesting and creative people committed to building a positive community."
             />
             <PeoplePicker
+              dispatch={ dispatch }
               shouldAutoFollow={
                 stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ?
                 true : false

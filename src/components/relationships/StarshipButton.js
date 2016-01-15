@@ -6,34 +6,38 @@ class StarshipButton extends Component {
 
   constructor(props, context) {
     super(props, context)
-    const { priority } = this.props
-    this.state = {
-      priority: priority || RELATIONSHIP_PRIORITY.INACTIVE,
+    this.state = { nextPriority: this.getNextPriority(this.props) }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ nextPriority: this.getNextPriority(nextProps) })
+  }
+
+  getNextPriority(props) {
+    const { priority } = props
+    switch (priority) {
+      case RELATIONSHIP_PRIORITY.NOISE:
+        return RELATIONSHIP_PRIORITY.FRIEND
+      default:
+        return RELATIONSHIP_PRIORITY.NOISE
     }
   }
 
-  updatePriority(e) {
-    const nextPriority = e.target.dataset.nextPriority
-    const { buttonWasClicked, isLoggedIn, userId } = this.props
-    if (isLoggedIn) {
-      this.setState({ priority: nextPriority })
-    }
+  updatePriority() {
+    const nextPriority = this.state
+    const { buttonWasClicked, priority, userId } = this.props
     if (buttonWasClicked) {
-      buttonWasClicked({ userId, priority: nextPriority, existing: this.state.priority })
+      buttonWasClicked({ userId, priority: nextPriority, existing: priority })
     }
   }
 
   renderStar() {
-    const { priority } = this.state
-    const nextPriority = priority === RELATIONSHIP_PRIORITY.NOISE ?
-                                      RELATIONSHIP_PRIORITY.FRIEND :
-                                      RELATIONSHIP_PRIORITY.NOISE
+    const { priority } = this.props
     return (
       <button
         className={"StarshipButton"}
         onClick={::this.updatePriority}
         data-priority={priority}
-        data-next-priority={nextPriority}
       >
         <StarIcon/>
       </button>
@@ -41,14 +45,13 @@ class StarshipButton extends Component {
   }
 
   render() {
-    const { priority } = this.state
+    const { priority } = this.props
     return priority === RELATIONSHIP_PRIORITY.SELF ? null : this.renderStar()
   }
 }
 
 StarshipButton.propTypes = {
   buttonWasClicked: PropTypes.func,
-  isLoggedIn: PropTypes.bool.isRequired,
   priority: PropTypes.oneOf([
     RELATIONSHIP_PRIORITY.INACTIVE,
     RELATIONSHIP_PRIORITY.FRIEND,

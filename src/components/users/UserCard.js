@@ -11,11 +11,8 @@ class UserCard extends Component {
     const { userId, priority, existing } = vo
     const { dispatch, pathname } = this.props
 
-    // During on-boarding relationships are batch updated.
-    // TODO: When fully wired up this will actually have to split and be
-    // changed to something like `batchUpdateRelationship`
     if (pathname && (/^\/onboarding/).test(pathname)) {
-      return dispatch(updateRelationship(userId, priority, existing))
+      return dispatch(updateRelationship(userId, priority, existing, true))
     }
     return dispatch(updateRelationship(userId, priority, existing))
   }

@@ -110,8 +110,23 @@ function stubPost(properties) {
   return model
 }
 
+function stubComment(properties) {
+  const defaultProps = {
+    authorId: 'authorId',
+    body: [],
+    content: [stubTextRegion()],
+    postId: '1',
+    summary: [stubTextRegion()],
+  }
+  const model = { ...commonProps, ...defaultProps, ...properties }
+  addToJSON(MAPPING_TYPES.COMMENTS, model)
+  return model
+}
+
 export function stub(model, properties) {
   switch (model.toLowerCase()) {
+    case 'comment':
+      return stubComment(properties)
     case 'post':
       return stubPost(properties)
     case 'user':

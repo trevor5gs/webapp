@@ -19,7 +19,8 @@ export class StreamComponent extends Component {
 
   componentWillMount() {
     const { action } = this.state
-    if (action) { this.props.dispatch(action) }
+    const { router } = this.props
+    if (action && !router.replace) { this.props.dispatch(action) }
   }
 
   componentDidMount() {
@@ -53,13 +54,15 @@ export class StreamComponent extends Component {
 
   // this prevents nested stream components from clobbering parents
   shouldComponentUpdate() {
-    const { action } = this.state
+    const { action, gridColumnCount } = this.state
     const { router, stream } = this.props
     const pathArr = router.path.split('/')
     const path = pathArr[pathArr.length - 1]
     // TODO: potentially whitelist the actions that we would want to render on
     // TODO: test this!
-    if (!action || !action.payload || !stream || !stream.payload) {
+    if (!gridColumnCount) {
+      return true
+    } else if (!action || !action.payload || !stream || !stream.payload) {
       return false
     } else if (stream.type &&
                (stream.type.indexOf('POST.') === 0 ||

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { replacePath } from 'redux-simple-router'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { openModal, closeModal } from '../../actions/modals'
 import { updateRelationship } from '../../actions/relationships'
@@ -12,23 +13,23 @@ import StarshipButton from '../relationships/StarshipButton'
 
 class RelationsGroup extends Component {
 
-  isBlockedOrMuted() {
-    const { user } = this.props
-    const status = user.relationshipPriority
-    return status && status === RELATIONSHIP_PRIORITY.BLOCK || status === RELATIONSHIP_PRIORITY.MUTE
-  }
-
-  handleRelationshipUpdate(vo) {
-    const { userId, priority, existing } = vo
-    const { dispatch, pathname } = this.props
-
-    // During on-boarding relationships are batch updated.
-    // TODO: When fully wired up this will actually have to split and be
-    // changed to something like `batchUpdateRelationship`
-    if (pathname && (/^\/onboarding/).test(pathname)) {
-      return dispatch(updateRelationship(userId, priority, existing))
+  getNextPriority(props, btnId) {
+    const { user } = props
+    const priority = user.relationshipPriority
+    switch (priority) {
+      case RELATIONSHIP_PRIORITY.BLOCK:
+      case RELATIONSHIP_PRIORITY.MUTE:
+        return RELATIONSHIP_PRIORITY.INACTIVE
+      default:
+        switch (btnId) {
+          case 'block':
+            return RELATIONSHIP_PRIORITY.BLOCK
+          case 'mute':
+            return RELATIONSHIP_PRIORITY.MUTE
+          default:
+            return RELATIONSHIP_PRIORITY.INACTIVE
+        }
     }
-    return dispatch(updateRelationship(userId, priority, existing))
   }
 
   closeModal() {
@@ -36,13 +37,53 @@ class RelationsGroup extends Component {
     dispatch(closeModal())
   }
 
+  handleRelationshipUpdate(vo) {
+    const { userId, priority, existing } = vo
+    const { dispatch, pathname } = this.props
+
+    if (pathname && (/^\/onboarding/).test(pathname)) {
+      return dispatch(updateRelationship(userId, priority, existing, true))
+    }
+    return dispatch(updateRelationship(userId, priority, existing))
+  }
+
+  isBlockedOrMuted() {
+    const { user } = this.props
+    const status = user.relationshipPriority
+    return status && status === RELATIONSHIP_PRIORITY.BLOCK || status === RELATIONSHIP_PRIORITY.MUTE
+  }
+
+  handleBlockUser() {
+    const { dispatch, previousPath } = this.props
+    const { user } = this.props
+    const priority = user.relationshipPriority
+    this.handleRelationshipUpdate({
+      userId: user.id,
+      priority: this.getNextPriority(this.props, 'block'),
+      existing: priority,
+    })
+    this.closeModal()
+    dispatch(replacePath(previousPath || '/', window.history.state))
+  }
+
+  handleMuteUser() {
+    const { user } = this.props
+    const priority = user.relationshipPriority
+    this.handleRelationshipUpdate({
+      userId: user.id,
+      priority: this.getNextPriority(this.props, 'mute'),
+      existing: priority,
+    })
+    this.closeModal()
+  }
+
   launchBlockMutePrompt() {
     const { dispatch, user } = this.props
     const priority = user.relationshipPriority
     dispatch(openModal(
       <BlockMuteDialog
-        onBlock={ ::this.closeModal }
-        onMute={ ::this.closeModal }
+        onBlock={ ::this.handleBlockUser }
+        onMute={ ::this.handleMuteUser }
         blockIsActive={ priority === RELATIONSHIP_PRIORITY.BLOCK }
         muteIsActive={ priority === RELATIONSHIP_PRIORITY.MUTE }
         username = { user.username }
@@ -84,17 +125,15 @@ class RelationsGroup extends Component {
         { this.shouldRenderBlockMute() ? this.renderBlockMuteButton() : null }
         <RelationshipButton
           buttonWasClicked={ isLoggedIn ? callback : ::this.handleLaunchSignUpModal }
-          isLoggedIn={isLoggedIn}
-          priority={user.relationshipPriority}
+          priority={ user.relationshipPriority }
           ref="RelationshipButton"
-          userId={user.id}
+          userId={ user.id }
         />
         <StarshipButton
           buttonWasClicked={ isLoggedIn ? callback : ::this.handleLaunchSignUpModal }
-          isLoggedIn={isLoggedIn}
-          priority={user.relationshipPriority}
+          priority={ user.relationshipPriority }
           ref="StarshipButton"
-          userId={user.id}
+          userId={ user.id }
         />
       </div>
     )
@@ -105,10 +144,11 @@ RelationsGroup.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   pathname: PropTypes.string,
+  previousPath: PropTypes.string,
   showBlockMuteButton: PropTypes.bool,
   user: PropTypes.shape({
     id: PropTypes.string,
-    priority: PropTypes.string,
+    relationshipPriority: PropTypes.string,
   }).isRequired,
 }
 
@@ -120,6 +160,7 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
     pathname: state.router.path,
+    previousPath: state.router.previousPath,
   }
 }
 

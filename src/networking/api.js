@@ -175,5 +175,12 @@ export function invite() {
   }
 }
 
+// RELATIONSHIPS
+export function relationshipAdd(userId, priority) {
+  return {
+    path: getAPIPath(`users/${userId}/add/${priority}`),
+  }
+}
+
 export { API_VERSION, getAPIPath, PER_PAGE }
 

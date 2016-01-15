@@ -38,17 +38,6 @@ describe('RelationshipButton', () => {
   })
 
   describe('#render', () => {
-    it('renders inactive by default', () => {
-      const button = getRenderedComponent(subject)
-      expect(button.type).to.equal('button')
-      expect(button.props.className).to.equal('RelationshipButton')
-      expect(button.props.onClick).to.be.a('function')
-      expect(button.props['data-priority']).to.equal('inactive')
-      const [icon, span] = button.props.children
-      expect(icon.type).to.equal(MiniPlusIcon)
-      expect(span.props.children).to.equal('Follow')
-    })
-
     it('renders inactive', () => {
       const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.INACTIVE })
       const [icon, span] = button.props.children

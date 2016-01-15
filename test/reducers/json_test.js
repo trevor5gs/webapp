@@ -3,7 +3,6 @@ import { expect, stub, isValidResult, json, clearJSON, sinon } from '../spec_hel
 import * as subject from '../../src/reducers/json'
 import * as ACTION_TYPES from '../../src/constants/action_types'
 import * as MAPPING_TYPES from '../../src/constants/mapping_types'
-import { RELATIONSHIP_PRIORITY } from '../../src/constants/relationship_types'
 
 function stubJSONStore() {
   // add some users
@@ -16,28 +15,6 @@ function stubJSONStore() {
   stub('post', { id: '2', token: 'token2', authorId: '2' })
   stub('post', { id: '3', token: 'token3', authorId: '3' })
   stub('post', { id: '4', token: 'token4', authorId: '4' })
-}
-
-function createRelationshipTest(priority) {
-  expect(json.users['1'].relationshipPriority).to.be.null
-  expect(json.users['1'].followersCount).to.equal(0)
-  const action = {}
-  action.payload = { userId: '1', priority }
-  action.meta = { mappingType: MAPPING_TYPES.USERS }
-  subject.methods.updateRelationship(json, action)
-  expect(json.users['1'].relationshipPriority).to.equal(priority)
-  expect(json.users['1'].followersCount).to.equal(1)
-}
-
-function destroyRelationshipTest(priority) {
-  expect(json.users['1'].relationshipPriority).to.be.null
-  expect(json.users['1'].followersCount).to.equal(0)
-  const action = {}
-  action.payload = { userId: '1', priority }
-  action.meta = { mappingType: MAPPING_TYPES.USERS }
-  subject.methods.updateRelationship(json, action)
-  expect(json.users['1'].relationshipPriority).to.equal(priority)
-  expect(json.users['1'].followersCount).to.equal(-1)
 }
 
 describe('json reducer', () => {
@@ -90,33 +67,6 @@ describe('json reducer', () => {
       expect(json.users['123'].username).to.equal('carol')
       expect(ids).to.deep.equal(['123'])
     })
-  })
-
-  describe('#updateRelationship', () => {
-    it('updates relationship properly with friend or noise', () => {
-      const relationships = [RELATIONSHIP_PRIORITY.FRIEND, RELATIONSHIP_PRIORITY.NOISE]
-      for (const priority of relationships) {
-        stubJSONStore()
-        createRelationshipTest(priority)
-        clearJSON()
-      }
-    })
-
-    it('updates relationship to inactive, self, mute, block, or none', () => {
-      const relationships = [
-        RELATIONSHIP_PRIORITY.INACTIVE,
-        RELATIONSHIP_PRIORITY.SELF,
-        RELATIONSHIP_PRIORITY.MUTE,
-        RELATIONSHIP_PRIORITY.BLOCK,
-        RELATIONSHIP_PRIORITY.NONE,
-      ]
-      for (const priority of relationships) {
-        stubJSONStore()
-        destroyRelationshipTest(priority)
-        clearJSON()
-      }
-    })
-    // TODO: add tests for mute/block removing the user entirely from the store
   })
 
   describe('#updatePostLoves', () => {
@@ -340,11 +290,11 @@ describe('json reducer', () => {
   })
 
   describe('#json', () => {
-    it('calls #updateRelationship if action.type === RELATIONSHIPS.UPDATE', () => {
-      const spy = sinon.stub(subject.methods, 'updateRelationship')
-      subject.json(json, { type: ACTION_TYPES.RELATIONSHIPS.UPDATE })
+    it('calls #relationshipMethods.updateRelationship if action.type === RELATIONSHIPS.UPDATE_INTERNAL', () => {
+      const spy = sinon.stub(subject.relationshipMethods, 'updateRelationship')
+      subject.json(json, { type: ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL })
       expect(spy.called).to.be.true
-      subject.methods.updateRelationship.restore()
+      subject.relationshipMethods.updateRelationship.restore()
     })
 
     it('calls #updatePostLoves if action.type === POST.LOVE_REQUEST', () => {
