@@ -108,6 +108,11 @@ export function deletePost(post) {
     path: getAPIPath(`posts/${post.id}`),
   }
 }
+export function flagPost(post, kind) {
+  return {
+    path: getAPIPath(`posts/${post.id}/flag/${kind}`),
+  }
+}
 export function postLovers(post) {
   const params = { per_page: 10 }
   return {

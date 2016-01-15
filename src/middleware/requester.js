@@ -69,6 +69,7 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.POST.COMMENT &&
         type !== ACTION_TYPES.POST.DELETE &&
         type !== ACTION_TYPES.POST.EDIT &&
+        type !== ACTION_TYPES.POST.FLAG &&
         type !== ACTION_TYPES.POST.LOVE &&
         type !== ACTION_TYPES.POST.REPOST &&
         type !== ACTION_TYPES.POST_FORM &&

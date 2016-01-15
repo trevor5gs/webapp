@@ -54,3 +54,14 @@ export function deletePost(post) {
   }
 }
 
+export function flagPost(post, kind) {
+  return {
+    type: ACTION_TYPES.POST.FLAG,
+    payload: {
+      endpoint: api.flagPost(post, kind),
+      method: 'POST',
+    },
+    meta: {},
+  }
+}
+
