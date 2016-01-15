@@ -135,6 +135,16 @@ export function commentsForPost(post) {
     params,
   }
 }
+export function deleteComment(comment) {
+  return {
+    path: getAPIPath(`posts/${comment.postId}/comments/${comment.id}`),
+  }
+}
+export function flagComment(comment, kind) {
+  return {
+    path: getAPIPath(`posts/${comment.postId}/comments/${comment.id}/flag/${kind}`),
+  }
+}
 // Users
 export function userDetail(idOrUsername) {
   const params = { post_count: PER_PAGE }

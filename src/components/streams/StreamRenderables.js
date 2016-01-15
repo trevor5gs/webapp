@@ -2,6 +2,7 @@ import React from 'react'
 import * as api from '../../networking/api'
 import { getLinkArray } from '../base/json_helper'
 import { parsePost } from '../parsers/PostParser'
+import { parseComment } from '../parsers/CommentParser'
 import { parseNotification } from '../parsers/NotificationParser'
 import Cover from '../assets/Cover'
 import PostsAsGrid from '../posts/PostsAsGrid'
@@ -164,7 +165,7 @@ export function postDetail(posts, json, currentUser) {
           {comments.map((comment) => {
             return (
               <div ref={`commentList_${comment.id}`} key={comment.id} className="CommentList">
-                {parsePost(comment, json, currentUser, false)}
+                {parseComment(comment, json, currentUser, false)}
               </div>
             )
           })}
