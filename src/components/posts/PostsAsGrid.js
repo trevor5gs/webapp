@@ -25,15 +25,15 @@ class PostsAsGrid extends Component {
     for (let i = 0; i < gridColumnCount; i++) {
       columns.push([])
     }
-    for (const index in posts.data) {
-      if (posts.data[index]) {
-        columns[index % gridColumnCount].push(posts.data[index])
+    for (const index in posts) {
+      if (posts[index]) {
+        columns[index % gridColumnCount].push(posts[index])
       }
     }
     return (
       <div className="Posts asGrid">
-        {columns.map((column, index) => {
-          return this.renderColumn(column, index)
+        {columns.map((columnPosts, index) => {
+          return this.renderColumn(columnPosts, index)
         })}
       </div>
     )
@@ -44,7 +44,7 @@ PostsAsGrid.propTypes = {
   currentUser: PropTypes.object,
   gridColumnCount: PropTypes.number,
   json: PropTypes.object,
-  posts: PropTypes.object,
+  posts: PropTypes.array.isRequired,
 }
 
 export default PostsAsGrid

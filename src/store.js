@@ -2,9 +2,8 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { compose, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
-import { analytics, uploader, requester } from './middleware'
+import { analytics, requester, uploader } from './middleware'
 import * as reducers from './reducers'
-import { routeReducer } from 'redux-simple-router'
 
 function reducer(state, action) {
   return {
@@ -14,7 +13,7 @@ function reducer(state, action) {
     json: reducers.json(state.json, action, state.router),
     modal: reducers.modal(state.modal, action),
     profile: reducers.profile(state.profile, action),
-    router: routeReducer(state.router, action),
+    router: reducers.routing(state.router, action),
     search: reducers.search(state.search, action),
     stream: reducers.stream(state.stream, action),
   }

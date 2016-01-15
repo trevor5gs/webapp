@@ -222,13 +222,11 @@ class PostTools extends Component {
   }
 
   deletePostConfirmed() {
-    const { dispatch, path, post } = this.props
+    const { dispatch, path, post, previousPath } = this.props
     this.closeModal()
     dispatch(PostActions.deletePost(post))
     if (path.match(post.token)) {
-      // TODO: will have to make the router smarter about
-      // where the root redirects to
-      dispatch(replacePath(`/`, window.history.state))
+      dispatch(replacePath(previousPath || '/', window.history.state))
     }
   }
 
@@ -252,6 +250,7 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
     path: state.router.path,
+    previousPath: state.router.previousPath,
   }
 }
 
@@ -262,6 +261,7 @@ PostTools.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   path: PropTypes.string.isRequired,
   post: PropTypes.object.isRequired,
+  previousPath: PropTypes.string,
 }
 
 export default connect(mapStateToProps)(PostTools)
