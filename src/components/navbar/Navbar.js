@@ -325,7 +325,7 @@ function mapStateToProps(state) {
     json: state.json,
     modal: state.modal,
     pathname: state.routing.location.pathname,
-    profile: state.profile.payload,
+    profile: state.profile,
   }
 }
 

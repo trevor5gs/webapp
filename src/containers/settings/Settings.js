@@ -330,7 +330,7 @@ Settings.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    profile: state.profile.payload.users,
+    profile: state.profile,
   }
 }
 
