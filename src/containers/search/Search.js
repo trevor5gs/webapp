@@ -58,7 +58,6 @@ class Search extends Component {
       const label = type === 'users' ? 'people' : 'posts'
       this.refs.streamComponent.refs.wrappedInstance.setAction(action)
       const trackStr = `search-logged-${isLoggedIn ? 'in' : 'out'}-${label}`
-      console.log('trackStr', trackStr)
       dispatch(trackEvent(trackStr))
     }
   }
