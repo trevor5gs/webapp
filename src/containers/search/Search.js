@@ -3,8 +3,11 @@ import { connect } from 'react-redux'
 import { replacePath } from 'redux-simple-router'
 import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
+import { SIGNED_OUT_PROMOTIONS } from '../../constants/promotion_types'
 import * as SearchActions from '../../actions/search'
+import { trackEvent } from '../../actions/tracking'
 import { updateQueryParams } from '../../components/base/uri_helper'
+import Banderole from '../../components/assets/Banderole'
 import SearchControl from '../../components/forms/SearchControl'
 import StreamComponent from '../../components/streams/StreamComponent'
 import TabListButtons from '../../components/tabs/TabListButtons'
@@ -44,14 +47,19 @@ class Search extends Component {
   }
 
   search() {
-    const { dispatch } = this.props
+    const { dispatch, isLoggedIn } = this.props
+    const { type } = this.state
     dispatch({
       type: ACTION_TYPES.SEARCH.SAVE,
       payload: this.state,
     })
     const action = this.getAction()
     if (action) {
+      const label = type === 'users' ? 'people' : 'posts'
       this.refs.streamComponent.refs.wrappedInstance.setAction(action)
+      const trackStr = `search-logged-${isLoggedIn ? 'in' : 'out'}-${label}`
+      console.log('trackStr', trackStr)
+      dispatch(trackEvent(trackStr))
     }
   }
 
@@ -64,8 +72,10 @@ class Search extends Component {
     if (typeof vo.type === 'string' && vo.type === 'posts') {
       vo.type = null
     }
-    const uri = document.location.pathname + updateQueryParams(vo)
-    dispatch(replacePath(uri, window.history.state))
+    if (typeof document !== 'undefined') {
+      const uri = document.location.pathname + updateQueryParams(vo)
+      dispatch(replacePath(uri, window.history.state))
+    }
   }
 
   handleControlChange(vo) {
@@ -74,7 +84,13 @@ class Search extends Component {
     this.updateLocation(vo)
   }
 
+  creditsTrackingEvent() {
+    const { dispatch } = this.props
+    dispatch(trackEvent(`banderole-credits-clicked`))
+  }
+
   render() {
+    const { isLoggedIn } = this.props
     const { terms, type } = this.state
     const tabs = [
       { type: 'posts', children: 'Posts' },
@@ -82,6 +98,11 @@ class Search extends Component {
     ]
     return (
       <section className="Search Panel">
+        <Banderole
+          creditsClickAction={ ::this.creditsTrackingEvent }
+          isLoggedIn={ isLoggedIn }
+          userlist={ SIGNED_OUT_PROMOTIONS }
+        />
         <div className="SearchBar">
           <SearchControl
             controlWasChanged={ ::this.handleControlChange }
@@ -95,14 +116,16 @@ class Search extends Component {
             tabs={ tabs }
           />
         </div>
-        <StreamComponent action={ this.getAction() } ref="streamComponent" />
+        <StreamComponent ref="streamComponent" action={ this.getAction() } />
       </section>
     )
   }
 }
 
+
 Search.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
   location: PropTypes.shape({
     query: PropTypes.shape({
       terms: PropTypes.string,
@@ -114,6 +137,7 @@ Search.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    isLoggedIn: state.authentication.isLoggedIn,
     search: state.search,
   }
 }

@@ -11,7 +11,7 @@ export default [
     path: 'find',
     getComponent(location, cb) {
       // require.ensure([], (require) => {
-      cb(null, require('../../containers/search/Find').default)
+      cb(null, require('../../containers/search/Search').default)
       // })
     },
   },
