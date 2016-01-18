@@ -140,7 +140,7 @@ class CommentTools extends Component {
       { isMoreToolActive: this.state.isMoreToolActive },
     )
     return (
-      <footer className={classes}>
+      <footer className={classes} style={{ paddingLeft: '60px' }}>
         {this.getToolCells()}
       </footer>
     )
