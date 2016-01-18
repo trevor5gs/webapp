@@ -89,10 +89,11 @@ function renderFromServer(req, res) {
 }
 
 const loggedOutPaths = {
-  find: /^\/find$/,
   explore: /^\/explore/,
   explore_recent: /^\/explore\/recent/,
   explore_trending: /^\/explore\/trending/,
+  find: /^\/find$/,
+  forgot_password: /^\/forgot-password/,
   signup: /^\/signup/,
 }
 

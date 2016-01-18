@@ -18,11 +18,17 @@ class ForgotPassword extends Component {
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(sendForgotPasswordRequest(this.refs.emailControl.refs.input.value))
+    this.setState({ emailStatus: STATUS.SUBMITTED })
   }
 
   render() {
     const { emailStatus } = this.state
-    return (
+    const wasSubmitted = emailStatus === STATUS.SUBMITTED
+    return wasSubmitted ?
+      <div>
+        If your email address exists in our database, you will receive a
+        password recovery link at your email address in a few minutes.
+      </div> :
       <form
         id="ForgotPassword"
         className="AuthenticationForm"
@@ -39,7 +45,6 @@ class ForgotPassword extends Component {
         />
         <FormButton tabIndex="2">Reset password</FormButton>
       </form>
-    )
   }
 }
 
