@@ -56,6 +56,16 @@ export const PencilIcon = () =>
     </g>
   </SVGIcon>
 
+export const ReplyIcon = () =>
+  <SVGIcon className="ReplyIcon">
+    <g>
+      <path d="M17,14.2c0-2.3-1.9-4.2-4.2-4.2H3" />
+    </g>
+    <g>
+      <polyline points="7,14 3,10 7,6 " />
+    </g>
+  </SVGIcon>
+
 export const RepostIcon = () =>
   <SVGIcon className="RepostIcon">
     <g>

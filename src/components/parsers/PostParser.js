@@ -2,14 +2,11 @@ import React from 'react'
 import { Link } from 'react-router'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { getLinkObject } from '../base/json_helper'
+import { body, regionItems, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
-import TextRegion from '../posts/regions/TextRegion'
-import ImageRegion from '../posts/regions/ImageRegion'
 import PostTools from '../posts/PostTools'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
-
-let models = {}
 
 function getPostDetailPath(author, post) {
   return `/${author.username}/post/${post.token}`
@@ -51,67 +48,6 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   )
 }
 
-function textRegion(region, key, isGridLayout, postDetailPath) {
-  return (
-    <TextRegion
-      content={region.data}
-      isGridLayout={isGridLayout}
-      key={key}
-      postDetailPath={postDetailPath}
-    />
-  )
-}
-
-function imageRegion(region, key, isGridLayout, postDetailPath) {
-  return (
-    <ImageRegion
-      assets={models.assets}
-      content={region.data}
-      isGridLayout={isGridLayout}
-      key={key}
-      links={region.links}
-      postDetailPath={postDetailPath}
-    />
-  )
-}
-
-function embedRegion(region, key) {
-  const data = {}
-  data[`data-${region.data.service}-id`] = region.data.id
-  return (
-    <div className="EmbedRegion embetter" {...data} key={key}>
-      <Link className="RegionContent" to={region.data.url}>
-        <img src={region.data.thumbnailLargeUrl} />
-      </Link>
-    </div>
-  )
-}
-
-function regionItems(content, only = null, isGridLayout = true, postDetailPath = null) {
-  return content.map((region, i) => {
-    if (!only || only === region.kind) {
-      switch (region.kind) {
-        case 'text':
-          return textRegion(region, `TextRegion_${i}`, isGridLayout, postDetailPath)
-        case 'image':
-          return imageRegion(region, `ImageRegion_${i}`, isGridLayout, postDetailPath)
-        case 'embed':
-          return embedRegion(region, `EmbedRegion_${i}`)
-        default:
-          throw new Error(`UNKNOWN REGION: ${region.kind}`)
-      }
-    }
-  })
-}
-
-function body(content, id, isGridLayout, postDetailPath = null) {
-  return (
-    <div className="PostBody" key={`PostBody_${id}`}>
-      {regionItems(content, null, isGridLayout, postDetailPath)}
-    </div>
-  )
-}
-
 function footer(post, author, currentUser) {
   if (!author) { return null }
   return (
@@ -126,7 +62,7 @@ function footer(post, author, currentUser) {
 
 export function parsePost(post, json, currentUser, isGridLayout = true) {
   if (!post) { return null }
-  models = json
+  setModels(json)
   const author = json[MAPPING_TYPES.USERS][post.authorId]
   const cells = []
   const postDetailPath = getPostDetailPath(author, post)
@@ -151,12 +87,12 @@ export function parsePost(post, json, currentUser, isGridLayout = true) {
     cells.push(body(content, post.id, isGridLayout, postDetailPath))
   }
   cells.push(footer(post, author, currentUser))
-  models = {}
+  setModels({})
   return cells
 }
 
 export function parseSummary(post, json, only = null) {
-  models = json
+  setModels(json)
   return regionItems(post.summary, only, false)
 }
 

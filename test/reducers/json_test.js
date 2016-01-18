@@ -69,63 +69,6 @@ describe('json reducer', () => {
     })
   })
 
-  describe('#updatePostLoves', () => {
-    it('returns original state if action is not love request or fail', () => {
-      expect(subject.methods.updatePostLoves({ state: 'yo' }, json, { payload: {} })).to.deep.equal({ state: 'yo' })
-    })
-
-    context('on love request', () => {
-      it('handles POST', () => {
-        const post = json.posts['1']
-        expect(post.lovesCount).to.equal(0)
-        expect(post.loved).to.be.false
-        const action = { type: ACTION_TYPES.POST.LOVE_REQUEST }
-        action.payload = { method: 'POST', model: post }
-        subject.methods.updatePostLoves({ state: 'yo' }, json, action)
-        const updatedPost = json.posts['1']
-        expect(updatedPost.lovesCount).to.equal(1)
-        expect(updatedPost.loved).to.be.true
-      })
-
-      it('handles DELETE', () => {
-        const post = json.posts['1']
-        expect(post.lovesCount).to.equal(0)
-        expect(post.loved).to.be.false
-        const action = { type: ACTION_TYPES.POST.LOVE_REQUEST }
-        action.payload = { method: 'DELETE', model: post }
-        subject.methods.updatePostLoves({ state: 'yo' }, json, action)
-        const updatedPost = json.posts['1']
-        expect(updatedPost.lovesCount).to.equal(-1)
-        expect(updatedPost.loved).to.be.false
-      })
-    })
-
-    context('on love failure', () => {
-      it('handles POST', () => {
-        const post = json.posts['1']
-        expect(post.lovesCount).to.equal(0)
-        expect(post.loved).to.be.false
-        const action = { type: ACTION_TYPES.POST.LOVE_FAILURE }
-        action.payload = { method: 'POST', model: post }
-        subject.methods.updatePostLoves({ state: 'yo' }, json, action)
-        const updatedPost = json.posts['1']
-        expect(updatedPost.lovesCount).to.equal(-1)
-        expect(updatedPost.loved).to.be.false
-      })
-
-      it('handles DELETE', () => {
-        const post = json.posts['1']
-        expect(post.lovesCount).to.equal(0)
-        expect(post.loved).to.be.false
-        const action = { type: ACTION_TYPES.POST.LOVE_FAILURE }
-        action.payload = { method: 'DELETE', model: post }
-        subject.methods.updatePostLoves({ state: 'yo' }, json, action)
-        const updatedPost = json.posts['1']
-        expect(updatedPost.lovesCount).to.equal(1)
-        expect(updatedPost.loved).to.be.true
-      })
-    })
-  })
 
   describe('#addNewIdsToResult', () => {
     it('returns the original state if no result', () => {
@@ -297,18 +240,43 @@ describe('json reducer', () => {
       subject.relationshipMethods.updateRelationship.restore()
     })
 
-    it('calls #updatePostLoves if action.type === POST.LOVE_REQUEST', () => {
-      const spy = sinon.stub(subject.methods, 'updatePostLoves')
-      subject.json(json, { type: ACTION_TYPES.POST.LOVE_REQUEST })
-      expect(spy.called).to.be.true
-      subject.methods.updatePostLoves.restore()
+    context('with post actions', () => {
+      it('calls #postMethods.updatePostLoves if action.type === POST.LOVE_REQUEST', () => {
+        const spy = sinon.stub(subject.postMethods, 'updatePostLoves')
+        subject.json(json, { type: ACTION_TYPES.POST.LOVE_REQUEST })
+        expect(spy.called).to.be.true
+        subject.postMethods.updatePostLoves.restore()
+      })
+
+      it('calls #postMethods.updatePostLoves if action.type === POST.LOVE_FAILURE', () => {
+        const spy = sinon.stub(subject.postMethods, 'updatePostLoves')
+        subject.json(json, { type: ACTION_TYPES.POST.LOVE_FAILURE })
+        expect(spy.called).to.be.true
+        subject.postMethods.updatePostLoves.restore()
+      })
     })
 
-    it('calls #updatePostLoves if action.type === POST.LOVE_FAILURE', () => {
-      const spy = sinon.stub(subject.methods, 'updatePostLoves')
-      subject.json(json, { type: ACTION_TYPES.POST.LOVE_FAILURE })
-      expect(spy.called).to.be.true
-      subject.methods.updatePostLoves.restore()
+    context('with comment actions', () => {
+      it('calls #commentMethods.deleteComment if action.type === COMMENT.DELETE_REQUEST', () => {
+        const spy = sinon.stub(subject.commentMethods, 'deleteComment')
+        subject.json(json, { type: ACTION_TYPES.COMMENT.DELETE_REQUEST })
+        expect(spy.called).to.be.true
+        subject.commentMethods.deleteComment.restore()
+      })
+
+      it('calls #commentMethods.deleteComment if action.type === COMMENT.DELETE_SUCCESS', () => {
+        const spy = sinon.stub(subject.commentMethods, 'deleteComment')
+        subject.json(json, { type: ACTION_TYPES.COMMENT.DELETE_SUCCESS })
+        expect(spy.called).to.be.true
+        subject.commentMethods.deleteComment.restore()
+      })
+
+      it('calls #commentMethods.deleteComment if action.type === COMMENT.DELETE_FAILURE', () => {
+        const spy = sinon.stub(subject.commentMethods, 'deleteComment')
+        subject.json(json, { type: ACTION_TYPES.COMMENT.DELETE_FAILURE })
+        expect(spy.called).to.be.true
+        subject.commentMethods.deleteComment.restore()
+      })
     })
 
     it('returns the original state if the type is not LOAD_NEXT_CONTENT_SUCCESS or LOAD_STREAM_SUCCESS', () => {

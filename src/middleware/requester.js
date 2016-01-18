@@ -66,6 +66,9 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.LOAD_PREV_CONTENT &&
         type !== ACTION_TYPES.AUTHENTICATION.FORGOT_PASSWORD &&
         type !== ACTION_TYPES.AUTHENTICATION.USER &&
+        type !== ACTION_TYPES.COMMENT.DELETE &&
+        type !== ACTION_TYPES.COMMENT.EDIT &&
+        type !== ACTION_TYPES.COMMENT.FLAG &&
         type !== ACTION_TYPES.POST.COMMENT &&
         type !== ACTION_TYPES.POST.DELETE &&
         type !== ACTION_TYPES.POST.EDIT &&

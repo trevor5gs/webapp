@@ -2,7 +2,8 @@
 /* eslint-disable no-param-reassign */
 import uniq from 'lodash.uniq'
 import * as ACTION_TYPES from '../constants/action_types'
-import * as MAPPING_TYPES from '../constants/mapping_types'
+import commentMethods from './experience_updates/comments'
+import postMethods from './experience_updates/posts'
 import relationshipMethods from './experience_updates/relationships'
 
 // adding methods and accessing them from this object
@@ -41,60 +42,6 @@ function addModels(state, type, data) {
 }
 methods.addModels = (state, type, data) => {
   return addModels(state, type, data)
-}
-
-function updatePostLoves(state, newState, action) {
-  const { method, model } = action.payload
-  let delta = 0
-  let loved = false
-  switch (action.type) {
-    case ACTION_TYPES.POST.LOVE_REQUEST:
-      if (method === 'DELETE') {
-        delta = -1
-        loved = false
-      } else {
-        delta = 1
-        loved = true
-      }
-      break
-    case ACTION_TYPES.POST.LOVE_FAILURE:
-      if (method === 'POST') {
-        delta = -1
-        loved = false
-      } else {
-        delta = 1
-        loved = true
-      }
-      break
-    default:
-      return state
-  }
-  methods.mergeModel(newState, MAPPING_TYPES.POSTS, { id: model.id, lovesCount: Number(model.lovesCount) + delta, loved })
-  return newState
-}
-methods.updatePostLoves = (state, newState, action) => {
-  return updatePostLoves(state, newState, action)
-}
-
-function deletePost(state, newState, action) {
-  const { model } = action.payload
-  switch (action.type) {
-    case ACTION_TYPES.POST.DELETE_REQUEST:
-    case ACTION_TYPES.POST.DELETE_SUCCESS:
-      delete newState[MAPPING_TYPES.POSTS][model.id]
-      break
-    case ACTION_TYPES.POST.DELETE_FAILURE:
-      // TODO: pop an alert or modal saying 'something went wrong'
-      // and we couldn't delete this post?
-      newState[MAPPING_TYPES.POSTS][model.id] = model
-      break
-    default:
-      return state
-  }
-  return newState
-}
-methods.deletePost = (state, newState, action) => {
-  return deletePost(state, newState, action)
 }
 
 function addNewIdsToResult(state, newState, router) {
@@ -200,9 +147,9 @@ export default function json(state = {}, action = { type: '' }, router) {
   } else if (action.type === ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL) {
     return relationshipMethods.batchUpdateRelationship(newState, action)
   } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {
-    return methods.updatePostLoves(state, newState, action)
+    return postMethods.updatePostLoves(state, newState, action)
   } else if (action.type === ACTION_TYPES.POST.DELETE_REQUEST || action.type === ACTION_TYPES.POST.DELETE_SUCCESS || action.type === ACTION_TYPES.POST.DELETE_FAILURE) {
-    return methods.deletePost(state, newState, action)
+    return postMethods.deletePost(state, newState, action)
   } else if (action.type === ACTION_TYPES.ADD_NEW_IDS_TO_RESULT) {
     return methods.addNewIdsToResult(state, newState, router)
   } else if (action.type === ACTION_TYPES.SET_LAYOUT_MODE) {
@@ -228,6 +175,10 @@ export default function json(state = {}, action = { type: '' }, router) {
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
       // fall through to parse the rest
       break
+    case ACTION_TYPES.COMMENT.DELETE_REQUEST:
+    case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
+    case ACTION_TYPES.COMMENT.DELETE_FAILURE:
+      return commentMethods.deleteComment(state, newState, action)
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_REQUEST:
     // case ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS:
     // case ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE:
@@ -246,5 +197,5 @@ export default function json(state = {}, action = { type: '' }, router) {
   return newState
 }
 
-export { json, methods, relationshipMethods }
+export { json, methods, commentMethods, postMethods, relationshipMethods }
 
