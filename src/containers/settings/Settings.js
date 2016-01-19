@@ -3,20 +3,24 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { pushPath } from 'redux-simple-router'
-import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
+import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
 import { openModal, closeModal, openAlert } from '../../actions/modals'
-import { availableToggles, saveCover, saveAvatar, saveProfile } from '../../actions/profile'
+import { availableToggles, checkAvailability, saveAvatar, saveCover } from '../../actions/profile'
 import AdultPostsDialog from '../../components/dialogs/AdultPostsDialog'
-import BioControl from '../../components/forms/BioControl'
 import EmailControl from '../../components/forms/EmailControl'
 import FormButton from '../../components/forms/FormButton'
-import LinksControl from '../../components/forms/LinksControl'
-import NameControl from '../../components/forms/NameControl'
 import PasswordControl from '../../components/forms/PasswordControl'
 import UsernameControl from '../../components/forms/UsernameControl'
 import Preference from '../../components/forms/Preference'
+import {
+  getUsernameStateFromClient,
+  getUsernameStateFromServer,
+  getEmailStateFromClient,
+  getEmailStateFromServer,
+  getPasswordState,
+} from '../../components/forms/Validators'
 import Uploader from '../../components/uploaders/Uploader'
 import Avatar from '../../components/assets/Avatar'
 import Cover from '../../components/assets/Cover'
@@ -24,17 +28,34 @@ import TreeButton from '../../components/navigation/TreeButton'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 
+import InfoForm from '../../components/forms/InfoForm'
+
 
 class Settings extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      isInfoFormSaving: false,
+      passwordNewState: { status: STATUS.INDETERMINATE, message: '' },
+      usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
+      emailState: { status: STATUS.INDETERMINATE, message: '' },
     }
+    this.onLogOut = ::this.onLogOut
+    this.usernameControlWasChanged = ::this.usernameControlWasChanged
+    this.passwordNewControlWasChanged = ::this.passwordNewControlWasChanged
+    this.emailControlWasChanged = ::this.emailControlWasChanged
   }
 
-  componentWillMount() {
-    this.saveInfoForm = debounce(this.saveInfoForm, 300)
+  componentWillReceiveProps(nextProps) {
+    const { availability } = nextProps
+    if (!availability) {
+      return
+    }
+    if (availability.hasOwnProperty('username')) {
+      this.validateUsernameResponse(availability)
+    }
+    if (availability.hasOwnProperty('email')) {
+      this.validateEmailResponse(availability)
+    }
   }
 
   onLogOut() {
@@ -69,19 +90,65 @@ class Settings extends Component {
     )
   }
 
-  handleControlChange() {
-  }
+  usernameControlWasChanged({ username }) {
+    const { usernameState } = this.state
+    const currentStatus = usernameState.status
+    const currentMessage = usernameState.message
+    const clientState = getUsernameStateFromClient({ value: username, currentStatus })
 
-  saveInfoForm(vo) {
-    const { isInfoFormSaving } = this.state
-    if (!isInfoFormSaving) {
-      this.setState({ isInfoFormSaving: true })
+    if (clientState.status === STATUS.SUCCESS) {
+      if (currentStatus !== STATUS.REQUEST) {
+        this.setState({ usernameState: { status: STATUS.REQUEST, message: 'checking...' } })
+      }
+      // This will end up landing on `validateUsernameResponse` after fetching
+      return this.props.dispatch(checkAvailability({ username }))
     }
-    this.props.dispatch(saveProfile(vo))
+    if (clientState.status !== currentStatus && clientState.message !== currentMessage) {
+      this.setState({ usernameState: clientState })
+    }
   }
 
-  handleInfoControlChanged(vo) {
-    this.saveInfoForm(vo)
+  validateUsernameResponse(availability) {
+    const { usernameState } = this.state
+    const currentStatus = usernameState.status
+    const newState = getUsernameStateFromServer({ availability, currentStatus })
+    if (newState.status !== currentStatus) {
+      this.setState({ usernameState: newState })
+    }
+  }
+
+  emailControlWasChanged({ email }) {
+    const { emailState } = this.state
+    const currentStatus = emailState.status
+    const clientState = getEmailStateFromClient({ value: email, currentStatus })
+    if (clientState.status === STATUS.SUCCESS) {
+      if (currentStatus !== STATUS.REQUEST) {
+        this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
+      }
+      // This will end up landing on `validateEmailResponse` after fetching
+      return this.props.dispatch(checkAvailability({ email }))
+    }
+    if (clientState.status !== currentStatus) {
+      this.setState({ emailState: clientState })
+    }
+  }
+
+  validateEmailResponse(availability) {
+    const { emailState } = this.state
+    const currentStatus = emailState.status
+    const newState = getEmailStateFromServer({ availability, currentStatus })
+    if (newState.status !== currentStatus) {
+      this.setState({ emailState: newState })
+    }
+  }
+
+  passwordNewControlWasChanged({ password }) {
+    const { passwordNewState } = this.state
+    const currentStatus = passwordNewState.status
+    const newState = getPasswordState({ value: password, currentStatus })
+    if (newState.status !== currentStatus) {
+      this.setState({ passwordNewState: newState })
+    }
   }
 
   handleSubmit(e) {
@@ -108,13 +175,14 @@ class Settings extends Component {
 
   render() {
     const { profile, dispatch } = this.props
+    const { emailState, passwordNewState, usernameState } = this.state
     if (!profile) {
       return null
     }
 
-    const { isInfoFormSaving } = this.state
+    // const { isInfoFormSaving } = this.state
     const mdash = <span>&mdash;</span>
-    const boxControlClassNames = 'asBoxControl onWhite isOriginalValue'
+    const boxControlClassNames = 'asBoxControl onWhite'
 
     return (
       <section className="Settings Panel">
@@ -128,7 +196,8 @@ class Settings extends Component {
           />
           <Cover isModifiable coverImage={ profile.coverImage } />
         </div>
-        <button className="SettingsLogoutButton" onClick={ ::this.onLogOut }>Logout</button>
+        <button className="SettingsLogoutButton" onClick={ this.onLogOut }>Logout</button>
+
         <div className="SettingsBody" >
           <div className="SettingsAvatarPicker" >
             <Uploader
@@ -160,27 +229,36 @@ class Settings extends Component {
             role="form"
           >
             <UsernameControl
-              classModifiers={ boxControlClassNames }
-              controlWasChanged={::this.handleControlChange}
+              classList={ boxControlClassNames }
+              label={`Username ${usernameState.message}`}
+              onChange={ this.usernameControlWasChanged }
+              status={ usernameState.status }
+              suggestions={ usernameState.suggestions }
               tabIndex="1"
               text={ profile.username }
             />
             <EmailControl
-              classModifiers={ boxControlClassNames }
-              controlWasChanged={::this.handleControlChange}
+              classList={ boxControlClassNames }
+              label={`Email ${emailState.message}`}
+              onChange={ this.emailControlWasChanged }
+              status={ emailState.status }
               tabIndex="2"
               text={ profile.email }
             />
             <PasswordControl
-              classModifiers={ boxControlClassNames }
-              controlWasChanged={::this.handleControlChange}
+              classList={ boxControlClassNames }
+              label={`Password ${passwordNewState.message}`}
+              onChange={ this.passwordNewControlWasChanged }
               placeholder="Set a new password"
+              status={ passwordNewState.status }
               tabIndex="3"
             />
             <div className="SettingsCredentialActions">
               <PasswordControl
-                classModifiers={ boxControlClassNames }
-                controlWasChanged={::this.handleControlChange}
+                classList={ boxControlClassNames }
+                id="current_password"
+                label="Password - Please enter your current one."
+                name="user[current_password]"
                 placeholder="Enter current password"
               />
               <p>
@@ -191,41 +269,10 @@ class Settings extends Component {
             </div>
           </form>
 
-          <form
-            className="SettingsForm"
-            noValidate="novalidate"
-            onSubmit={this.handleSubmit}
-            role="form"
-          >
-            <NameControl
-              classModifiers={ boxControlClassNames }
-              controlWasChanged={ ::this.handleInfoControlChanged }
-              tabIndex="4"
-              text={profile.name || null}
-            />
-            <BioControl
-              classModifiers={ boxControlClassNames }
-              controlWasChanged={ ::this.handleInfoControlChanged }
-              tabIndex="5"
-              text={profile.shortBio || null}
-            />
-            <LinksControl
-              classModifiers={ boxControlClassNames }
-              controlWasChanged={ ::this.handleInfoControlChanged }
-              tabIndex="6"
-              text={
-                profile.externalLinksList ?
-                profile.externalLinksList.map((link) => { return link.text }).join(', ') :
-                [].join()
-              }
-            />
-            <span
-              className="SettingsInfoFormStatus"
-              style={{ opacity: isInfoFormSaving ? 1 : 0 }}
-            >
-              Profile updated successfully
-            </span>
-          </form>
+          <InfoForm
+            controlClassModifiers={ boxControlClassNames }
+            tabIndexStart={ 4 }
+          />
 
           <p className="SettingsLinks">
             <Link to={ `/${profile.username}` }>View profile</Link>
@@ -330,6 +377,7 @@ Settings.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    availability: state.profile.availability,
     profile: state.profile,
   }
 }

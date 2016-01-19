@@ -1,10 +1,28 @@
-.InfoForm
+[data-pathname^="/onboarding"] .InfoForm
   position: relative
   max-width: rem(610)
 
-.InfoForm .NameControl
+[data-pathname^="/onboarding"] .InfoForm .NameControl
   +sans-bold-family
   font-size: 1rem
+
+.InfoFormStatus
+  +sans-typeset
+  transition: opacity $speed2
+  position: absolute
+  right: 0
+  padding: 0 rem(15)
+  min-width: rem(240)
+  height: rem(30)
+  border-radius: rem(15)
+  line-height: rem(30)
+  text-align: center
+  background-color: black
+  border: 1px solid black
+  color: white
+  opacity: 0
+.InfoFormStatus.showThenHideMessage
+  animation: showWaitThenHide 3s 1 linear
 
 .AuthenticationForm
   max-width: rem(320)
