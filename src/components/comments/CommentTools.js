@@ -151,8 +151,6 @@ class CommentTools extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
-    path: state.router.path,
-    previousPath: state.router.previousPath,
   }
 }
 
