@@ -137,10 +137,11 @@ class CommentTools extends Component {
     if (!comment) { return null }
     const classes = classNames(
       'PostTools',
+      'CommentTools',
       { isMoreToolActive: this.state.isMoreToolActive },
     )
     return (
-      <footer className={classes} style={{ paddingLeft: '60px' }}>
+      <footer className={classes}>
         {this.getToolCells()}
       </footer>
     )

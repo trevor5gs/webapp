@@ -8,7 +8,7 @@ import CommentTools from '../comments/CommentTools'
 function header(comment, author) {
   if (!comment || !author) { return null }
   return (
-    <header className="PostHeader" key={`CommentHeader_${comment.id}`} style={{ height: '45px' }}>
+    <header className="PostHeader CommentHeader" key={`CommentHeader_${comment.id}`}>
       <div className="PostHeaderAuthor">
         <Link className="PostHeaderLink" to={`/${author.username}`}>
           <Avatar sources={author.avatar} />
@@ -42,7 +42,7 @@ export function parseComment(comment, json, currentUser, isGridLayout = true) {
   const content = isGridLayout ? comment.summary : comment.content
   cells.push(
     <div
-      style={{ paddingLeft: '60px' }}
+      className="CommentBody"
       key={ `CommentBody${comment.id}` }
     >
       { body(content, comment.id, isGridLayout) }
