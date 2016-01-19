@@ -4,19 +4,17 @@ import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { body, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import CommentTools from '../comments/CommentTools'
-import RelationsGroup from '../relationships/RelationsGroup'
 
 function header(comment, author) {
   if (!comment || !author) { return null }
   return (
-    <header className="PostHeader" key={`PostHeader_${comment.id}`}>
+    <header className="PostHeader CommentHeader" key={`CommentHeader_${comment.id}`}>
       <div className="PostHeaderAuthor">
         <Link className="PostHeaderLink" to={`/${author.username}`}>
           <Avatar sources={author.avatar} />
           <span>{`@${author.username}`}</span>
         </Link>
       </div>
-      <RelationsGroup user={author} />
     </header>
   )
 }
@@ -42,7 +40,14 @@ export function parseComment(comment, json, currentUser, isGridLayout = true) {
   cells.push(header(comment, author))
   // body
   const content = isGridLayout ? comment.summary : comment.content
-  cells.push(body(content, comment.id, isGridLayout))
+  cells.push(
+    <div
+      className="CommentBody"
+      key={ `CommentBody${comment.id}` }
+    >
+      { body(content, comment.id, isGridLayout) }
+    </div>
+  )
   // footer
   cells.push(footer(comment, author, currentUser))
   setModels({})

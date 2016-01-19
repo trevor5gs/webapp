@@ -137,6 +137,7 @@ class CommentTools extends Component {
     if (!comment) { return null }
     const classes = classNames(
       'PostTools',
+      'CommentTools',
       { isMoreToolActive: this.state.isMoreToolActive },
     )
     return (
