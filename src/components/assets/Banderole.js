@@ -84,7 +84,7 @@ class Banderole extends Component {
 
   render() {
     const { featuredUser, status } = this.state
-    const { creditsClickAction } = this.props
+    const { creditsClickAction, isLoggedIn } = this.props
     if (!featuredUser) { return null }
     const { caption } = featuredUser
     const src = this.getCoverSource()
@@ -96,7 +96,7 @@ class Banderole extends Component {
         <figure className="BanderoleImage" style={style} />
         <div className="BanderoleCaption">
           { caption }
-          <Link to="https://ello.co/wtf/about/what-is-ello/" target="_blank">Learn More</Link>
+          { isLoggedIn ? null : <Link to="https://ello.co/wtf/about/what-is-ello/" target="_blank">Learn More</Link> }
         </div>
         <Credits clickAction={creditsClickAction} user={featuredUser} />
       </div>
@@ -106,6 +106,7 @@ class Banderole extends Component {
 
 Banderole.propTypes = {
   creditsClickAction: PropTypes.func,
+  isLoggedIn: PropTypes.bool.isRequired,
   userlist: PropTypes.array.isRequired,
 }
 
