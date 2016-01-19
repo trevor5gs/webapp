@@ -3,6 +3,7 @@
 import { UPDATE_LOCATION } from 'redux-simple-router'
 import uniq from 'lodash.uniq'
 import * as ACTION_TYPES from '../constants/action_types'
+import * as MAPPING_TYPES from '../constants/mapping_types'
 import commentMethods from './experience_updates/comments'
 import postMethods from './experience_updates/posts'
 import relationshipMethods from './experience_updates/relationships'
