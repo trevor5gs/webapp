@@ -142,33 +142,34 @@ methods.updateResult = (response, newState, action, router) => {
 
 export default function json(state = {}, action = { type: '' }, router) {
   const newState = { ...state }
-  if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL) {
-    return relationshipMethods.updateRelationship(newState, action)
-  } else if (action.type === ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL) {
-    return relationshipMethods.batchUpdateRelationship(newState, action)
-  } else if (action.type === ACTION_TYPES.POST.LOVE_REQUEST || action.type === ACTION_TYPES.POST.LOVE_FAILURE) {
-    return postMethods.updatePostLoves(state, newState, action)
-  } else if (action.type === ACTION_TYPES.POST.DELETE_REQUEST || action.type === ACTION_TYPES.POST.DELETE_SUCCESS || action.type === ACTION_TYPES.POST.DELETE_FAILURE) {
-    return postMethods.deletePost(state, newState, action)
-  } else if (action.type === ACTION_TYPES.ADD_NEW_IDS_TO_RESULT) {
-    return methods.addNewIdsToResult(state, newState, router)
-  } else if (action.type === ACTION_TYPES.SET_LAYOUT_MODE) {
-    return methods.setLayoutMode(action, state, newState, router)
-  }
   // whitelist actions
   switch (action.type) {
-    case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
-    case ACTION_TYPES.LOAD_STREAM_SUCCESS:
-      // fall through to parse the rest
-      break
+    case ACTION_TYPES.ADD_NEW_IDS_TO_RESULT:
+      return methods.addNewIdsToResult(state, newState, router)
     case ACTION_TYPES.COMMENT.DELETE_REQUEST:
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
     case ACTION_TYPES.COMMENT.DELETE_FAILURE:
       return commentMethods.deleteComment(state, newState, action)
+    case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
+    case ACTION_TYPES.LOAD_STREAM_SUCCESS:
+      // fall through to parse the rest
+      break
+    case ACTION_TYPES.POST.DELETE_REQUEST:
+    case ACTION_TYPES.POST.DELETE_SUCCESS:
+    case ACTION_TYPES.POST.DELETE_FAILURE:
+      return postMethods.deletePost(state, newState, action)
+    case ACTION_TYPES.POST.LOVE_REQUEST:
+    case ACTION_TYPES.POST.LOVE_FAILURE:
+      return postMethods.updatePostLoves(state, newState, action)
+    case ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL:
+      return relationshipMethods.batchUpdateRelationship(newState, action)
+    case ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL:
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_REQUEST:
-    // case ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS:
-    // case ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE:
+    case ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS:
+    case ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE:
       return relationshipMethods.updateRelationship(newState, action)
+    case ACTION_TYPES.SET_LAYOUT_MODE:
+      return methods.setLayoutMode(action, state, newState, router)
     default:
       return state
   }

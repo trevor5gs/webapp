@@ -69,10 +69,11 @@ class Search extends Component {
   }
 
   handleControlChange(vo) {
-    console.log('this.state', this.state)
+    // order is important here, need to update
+    // location so fetch has the correct path
+    this.updateLocation(vo)
     this.setState(vo)
     this.search()
-    this.updateLocation(vo)
   }
 
   creditsTrackingEvent() {
@@ -81,7 +82,6 @@ class Search extends Component {
   }
 
   render() {
-    console.log('render')
     const { isLoggedIn } = this.props
     const { terms, type } = this.state
     const tabs = [
