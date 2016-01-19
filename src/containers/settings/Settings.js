@@ -47,7 +47,7 @@ class Settings extends Component {
   }
 
   componentWillMount() {
-    this.checkServerForAvailability = debounce(this.checkServerForAvailability, 500)
+    this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
   }
 
   componentWillReceiveProps(nextProps) {

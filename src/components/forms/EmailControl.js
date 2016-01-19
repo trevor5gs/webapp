@@ -19,7 +19,7 @@ EmailControl.defaultProps = {
   className: 'EmailControl',
   id: 'email',
   label: 'Email',
-  name: 'user[name]',
+  name: 'user[email]',
   placeholder: 'Enter your email',
 }
 

@@ -80,19 +80,19 @@ class FormControl extends Component {
     }
   }
 
-  handleFocus() {
+  handleFocus(e) {
     this.setState({ hasFocus: true })
     const { onFocus } = this.props
     if (typeof onFocus === 'function') {
-      onFocus()
+      onFocus(e)
     }
   }
 
-  handleBlur() {
+  handleBlur(e) {
     this.setState({ hasFocus: false })
     const { onBlur } = this.props
     if (typeof onBlur === 'function') {
-      onBlur()
+      onBlur(e)
     }
   }
 
