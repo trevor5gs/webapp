@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { pushPath } from 'redux-simple-router'
+import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
@@ -43,6 +44,10 @@ class Settings extends Component {
     this.usernameControlWasChanged = ::this.usernameControlWasChanged
     this.passwordNewControlWasChanged = ::this.passwordNewControlWasChanged
     this.emailControlWasChanged = ::this.emailControlWasChanged
+  }
+
+  componentWillMount() {
+    this.checkServerForAvailability = debounce(this.checkServerForAvailability, 500)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -90,6 +95,10 @@ class Settings extends Component {
     )
   }
 
+  checkServerForAvailability(vo) {
+    return this.props.dispatch(checkAvailability(vo))
+  }
+
   usernameControlWasChanged({ username }) {
     const { usernameState } = this.state
     const currentStatus = usernameState.status
@@ -101,7 +110,7 @@ class Settings extends Component {
         this.setState({ usernameState: { status: STATUS.REQUEST, message: 'checking...' } })
       }
       // This will end up landing on `validateUsernameResponse` after fetching
-      return this.props.dispatch(checkAvailability({ username }))
+      return this.checkServerForAvailability({ username })
     }
     if (clientState.status !== currentStatus && clientState.message !== currentMessage) {
       this.setState({ usernameState: clientState })
@@ -126,7 +135,7 @@ class Settings extends Component {
         this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
       }
       // This will end up landing on `validateEmailResponse` after fetching
-      return this.props.dispatch(checkAvailability({ email }))
+      return this.checkServerForAvailability({ email })
     }
     if (clientState.status !== currentStatus) {
       this.setState({ emailState: clientState })
