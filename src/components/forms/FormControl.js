@@ -117,6 +117,7 @@ class FormControl extends Component {
         onFocus={ this.handleFocus }
         onBlur={ this.handleBlur }
         onChange={ this.handleChange }
+        ref="input"
         value={ text }
       />
     )
@@ -130,6 +131,7 @@ class FormControl extends Component {
         onFocus={ this.handleFocus }
         onBlur={ this.handleBlur }
         onChange={ this.handleChange }
+        ref="input"
         value={ text }
       />
     )
