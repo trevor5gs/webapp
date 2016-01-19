@@ -97,7 +97,7 @@ class Search extends Component {
         />
         <div className="SearchBar">
           <SearchControl
-            controlWasChanged={ ::this.handleControlChange }
+            onChange={ ::this.handleControlChange }
             text={ terms }
           />
           <TabListButtons
