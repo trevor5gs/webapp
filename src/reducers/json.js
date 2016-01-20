@@ -101,7 +101,6 @@ methods.getResult = (response, newState, action) => {
 
 // TODO: need to test the existingResult conditional logic!!!!
 function updateResult(response, newState, action) {
-  console.log('path', path)
   if (!newState.pages) { newState.pages = {} }
   const result = methods.getResult(response, newState, action)
   const { resultKey } = action.meta
