@@ -1,14 +1,18 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
+import { UPDATE_PATH } from 'redux-simple-router'
 import uniq from 'lodash.uniq'
 import * as ACTION_TYPES from '../constants/action_types'
 import commentMethods from './experience_updates/comments'
 import postMethods from './experience_updates/posts'
 import relationshipMethods from './experience_updates/relationships'
 
+// hack to get into the init state of router
+const INIT_PATH = '@@router/INIT_PATH'
 // adding methods and accessing them from this object
 // allows the unit tests to stub methods in this module
 const methods = {}
+let path = '/'
 let hasLoadedFirstStream = false
 
 function mergeModel(state, type, params) {
@@ -44,27 +48,27 @@ methods.addModels = (state, type, data) => {
   return addModels(state, type, data)
 }
 
-function addNewIdsToResult(state, newState, router) {
+function addNewIdsToResult(state, newState) {
   if (!newState.pages) { newState.pages = {} }
-  const result = newState.pages[router.path]
+  const result = newState.pages[path]
   if (!result || !result.newIds) { return state }
   result.ids = result.newIds.concat(result.ids)
   delete result.newIds
   return newState
 }
-methods.addNewIdsToResult = (state, newState, router) => {
-  return addNewIdsToResult(state, newState, router)
+methods.addNewIdsToResult = (state, newState) => {
+  return addNewIdsToResult(state, newState)
 }
 
-function setLayoutMode(action, state, newState, router) {
+function setLayoutMode(action, state, newState) {
   if (!newState.pages) { newState.pages = {} }
-  const result = newState.pages[router.path]
+  const result = newState.pages[path]
   if (!result || (result && result.mode === action.payload.mode)) { return state }
   result.mode = action.payload.mode
   return newState
 }
-methods.setLayoutMode = (action, state, newState, router) => {
-  return setLayoutMode(action, state, newState, router)
+methods.setLayoutMode = (action, state, newState) => {
+  return setLayoutMode(action, state, newState)
 }
 
 // parses the 'linked' node of the JSON
@@ -96,13 +100,14 @@ methods.getResult = (response, newState, action) => {
 }
 
 // TODO: need to test the existingResult conditional logic!!!!
-function updateResult(response, newState, action, router) {
+function updateResult(response, newState, action) {
+  console.log('path', path)
   if (!newState.pages) { newState.pages = {} }
   const result = methods.getResult(response, newState, action)
   const { resultKey } = action.meta
   // the action payload pathname comes from before the fetch so that
   // we can be sure that the result is being assigned to the proper page
-  const pathname = action.payload && action.payload.pathname ? action.payload.pathname : router.path
+  const pathname = action.payload && action.payload.pathname ? action.payload.pathname : path
   const resultPath = resultKey ? `${pathname}_${resultKey}` : pathname
   const existingResult = newState.pages[resultPath]
   if (existingResult && action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
@@ -136,16 +141,16 @@ function updateResult(response, newState, action, router) {
     newState.pages[resultPath] = result
   }
 }
-methods.updateResult = (response, newState, action, router) => {
-  return updateResult(response, newState, action, router)
+methods.updateResult = (response, newState, action) => {
+  return updateResult(response, newState, action)
 }
 
-export default function json(state = {}, action = { type: '' }, router) {
+export default function json(state = {}, action = { type: '' }) {
   const newState = { ...state }
   // whitelist actions
   switch (action.type) {
     case ACTION_TYPES.ADD_NEW_IDS_TO_RESULT:
-      return methods.addNewIdsToResult(state, newState, router)
+      return methods.addNewIdsToResult(state, newState)
     case ACTION_TYPES.COMMENT.DELETE_REQUEST:
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
     case ACTION_TYPES.COMMENT.DELETE_FAILURE:
@@ -169,7 +174,11 @@ export default function json(state = {}, action = { type: '' }, router) {
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE:
       return relationshipMethods.updateRelationship(newState, action)
     case ACTION_TYPES.SET_LAYOUT_MODE:
-      return methods.setLayoutMode(action, state, newState, router)
+      return methods.setLayoutMode(action, state, newState)
+    case INIT_PATH:
+    case UPDATE_PATH:
+      path = action.payload.path
+      return state
     default:
       return state
   }
@@ -179,9 +188,14 @@ export default function json(state = {}, action = { type: '' }, router) {
   methods.parseLinked(response.linked, newState)
   // parse main part of response into the state
   // and update the paging information
-  methods.updateResult(response, newState, action, router)
+  methods.updateResult(response, newState, action)
   hasLoadedFirstStream = true
   return newState
+}
+
+// only used for testing where results get stored
+export function setPath(newPath) {
+  path = newPath
 }
 
 export { json, methods, commentMethods, postMethods, relationshipMethods }
