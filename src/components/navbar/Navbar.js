@@ -170,11 +170,6 @@ class Navbar extends Component {
   omniButtonWasClicked() {
   }
 
-  searchWasClicked() {
-    const { dispatch } = this.props
-    dispatch({ type: ACTION_TYPES.SEARCH.CLEAR })
-  }
-
   loadMorePostsWasClicked() {
     const { dispatch } = this.props
     dispatch({
@@ -232,7 +227,6 @@ class Navbar extends Component {
             label="Search"
             modifiers="IconOnly"
             pathname={pathname}
-            onClick={::this.searchWasClicked}
             icon={ <SearchIcon/> }
           />
         </div>
@@ -268,7 +262,6 @@ class Navbar extends Component {
             label="Search"
             modifiers="IconOnly"
             pathname={pathname}
-            onClick={::this.searchWasClicked}
             icon={ <SearchIcon/> }
           />
           <NavbarLink

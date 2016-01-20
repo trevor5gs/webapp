@@ -1,23 +1,11 @@
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
-import { compose, createStore, applyMiddleware } from 'redux'
+import { combineReducers, compose, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
 import { analytics, requester, uploader } from './middleware'
 import * as reducers from './reducers'
 
-function reducer(state, action) {
-  return {
-    authentication: reducers.authentication(state.authentication, action),
-    // TODO: look at using the UPDATE_PATH action from
-    // redux-simple-router to see if we can revert this setup
-    json: reducers.json(state.json, action, state.router),
-    modal: reducers.modal(state.modal, action),
-    profile: reducers.profile(state.profile, action),
-    router: reducers.routing(state.router, action),
-    search: reducers.search(state.search, action),
-    stream: reducers.stream(state.stream, action),
-  }
-}
+const reducer = combineReducers(reducers)
 
 let store = null
 if (typeof window !== 'undefined') {

@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { replacePath } from 'redux-simple-router'
 import debounce from 'lodash.debounce'
-import * as ACTION_TYPES from '../../constants/action_types'
 import { SIGNED_OUT_PROMOTIONS } from '../../constants/promotion_types'
 import * as SearchActions from '../../actions/search'
 import { trackEvent } from '../../actions/tracking'
@@ -16,23 +15,19 @@ class Search extends Component {
 
   constructor(props, context) {
     super(props, context)
-    this.state = this.props.search
-    const terms = props.location.query.terms
-    const type = props.location.query.type
-    if (terms) {
-      this.state.terms = terms
+    this.state = {
+      terms: this.props.location.query.terms || '',
+      type: this.props.location.query.type || 'posts',
     }
-    if (type && (type === 'users' || type === 'posts')) {
-      this.state.type = type
-    } else {
-      this.state.type = 'posts'
-    }
-    this.updateLocation({ ...this.state })
   }
 
   componentWillMount() {
     this.search = debounce(this.search, 300)
     this.updateLocation = debounce(this.updateLocation, 300)
+  }
+
+  componentDidMount() {
+    this.updateLocation({ ...this.state })
   }
 
   getAction() {
@@ -49,14 +44,10 @@ class Search extends Component {
   search() {
     const { dispatch, isLoggedIn } = this.props
     const { type } = this.state
-    dispatch({
-      type: ACTION_TYPES.SEARCH.SAVE,
-      payload: this.state,
-    })
     const action = this.getAction()
     if (action) {
-      const label = type === 'users' ? 'people' : 'posts'
       this.refs.streamComponent.refs.wrappedInstance.setAction(action)
+      const label = type === 'users' ? 'people' : 'posts'
       const trackStr = `search-logged-${isLoggedIn ? 'in' : 'out'}-${label}`
       dispatch(trackEvent(trackStr))
     }
@@ -78,9 +69,11 @@ class Search extends Component {
   }
 
   handleControlChange(vo) {
+    // order is important here, need to update
+    // location so fetch has the correct path
+    this.updateLocation(vo)
     this.setState(vo)
     this.search()
-    this.updateLocation(vo)
   }
 
   creditsTrackingEvent() {
@@ -131,13 +124,11 @@ Search.propTypes = {
       type: PropTypes.string,
     }).isRequired,
   }).isRequired,
-  search: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
-    search: state.search,
   }
 }
 

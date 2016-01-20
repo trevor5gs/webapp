@@ -77,10 +77,6 @@ export const COMMENT = {
   FLAG_SUCCESS: 'COMMENT.FLAG_SUCCESS',
   FLAG_FAILURE: 'COMMENT.FLAG_FAILURE',
 }
-export const SEARCH = {
-  CLEAR: 'SEARCH.CLEAR',
-  SAVE: 'SEARCH.SAVE',
-}
 
 export const MODAL = {
   OPEN: 'MODAL.OPEN',

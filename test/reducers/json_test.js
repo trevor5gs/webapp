@@ -73,18 +73,19 @@ describe('json reducer', () => {
   describe('#addNewIdsToResult', () => {
     it('returns the original state if no result', () => {
       const state = { yo: 'yo', mama: 'mama' }
-      expect(subject.methods.addNewIdsToResult(state, json, { path: '' })).to.equal(state)
+      expect(subject.methods.addNewIdsToResult(state, json)).to.equal(state)
     })
 
     it('returns the original state if no result.newIds', () => {
       const state = { yo: 'yo', mama: 'mama' }
       json.pages = { sweetpath: { } }
-      expect(subject.methods.addNewIdsToResult(state, json, { path: 'sweetpath' })).to.equal(state)
+      expect(subject.methods.addNewIdsToResult(state, json)).to.equal(state)
     })
 
     it('concats the existing result ids to the newIds and deletes the old newIds', () => {
       json.pages = { sweetpath: { newIds: ['1', '2', '3'], ids: ['10', '20', '30'] } }
-      subject.methods.addNewIdsToResult({}, json, { path: 'sweetpath' })
+      subject.setPath('sweetpath')
+      subject.methods.addNewIdsToResult({}, json)
       expect(json.pages.sweetpath.newIds).to.be.undefined
       expect(json.pages.sweetpath.ids).to.deep.equal(['1', '2', '3', '10', '20', '30'])
     })
@@ -144,9 +145,9 @@ describe('json reducer', () => {
         sinon.stub(subject.methods, 'getResult', () => { return result })
         const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
         action.meta.mappingType = MAPPING_TYPES.USERS
-        const router = { path: 'sweetness' }
+        subject.setPath('sweetness')
         expect(json.pages).to.be.undefined
-        subject.methods.updateResult({}, json, action, router)
+        subject.methods.updateResult({}, json, action)
         expect(json.pages.sweetness).to.equal(result)
       })
 
@@ -158,8 +159,8 @@ describe('json reducer', () => {
           // const result = { pagination: 'sweet', ids: ['3'] }
           // sinon.stub(subject.methods, 'getResult', () => { return result })
           // const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
-          // const router = { path: 'sweetness' }
-          // subject.methods.updateResult({}, json, action, router)
+          // subject.setPath('sweetness')
+          // subject.methods.updateResult({}, json, action)
           // expect(json.pages.sweetness).to.deep.equal({ next: { ids: ['1', '2'] }, ...result })
         })
 
@@ -184,9 +185,9 @@ describe('json reducer', () => {
         sinon.stub(subject.methods, 'getResult', () => { return result })
         const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { resultKey: 'yo' } }
         action.meta.mappingType = MAPPING_TYPES.USERS
-        const router = { path: 'sweetness' }
+        subject.setPath('sweetness')
         expect(json.pages).to.be.undefined
-        subject.methods.updateResult({}, json, action, router)
+        subject.methods.updateResult({}, json, action)
         expect(json.pages.sweetness_yo).to.equal(result)
       })
     })
@@ -197,10 +198,10 @@ describe('json reducer', () => {
         const result = { pagination: 'sweet', ids: ['2', '3', '4'] }
         sinon.stub(subject.methods, 'getResult', () => { return result })
         const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: {} }
-        const router = { path: 'sweetness' }
+        subject.setPath('sweetness')
         expect(json.pages.sweetness.next).to.be.undefined
         expect(json.pages.sweetness.pagination).to.equal('cool')
-        subject.methods.updateResult({}, json, action, router)
+        subject.methods.updateResult({}, json, action)
         expect(json.pages.sweetness.next).to.equal(result)
         expect(json.pages.sweetness.pagination).to.equal('sweet')
       })
@@ -209,10 +210,10 @@ describe('json reducer', () => {
         json.pages = { sweetness: { next: { ids: ['1', '2'] }, pagination: 'cool' } }
         sinon.stub(subject.methods, 'getResult', () => { return { pagination: 'sweet', ids: ['2', '3', '4'] } })
         const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: {} }
-        const router = { path: 'sweetness' }
+        subject.setPath('sweetness')
         expect(json.pages.sweetness.next).to.deep.equal({ ids: ['1', '2'] })
         expect(json.pages.sweetness.pagination).to.equal('cool')
-        subject.methods.updateResult({}, json, action, router)
+        subject.methods.updateResult({}, json, action)
         expect(json.pages.sweetness.next).to.deep.equal({ ids: ['1', '2', '3', '4'] })
         expect(json.pages.sweetness.pagination).to.equal('sweet')
       })
@@ -222,10 +223,10 @@ describe('json reducer', () => {
         const result = { pagination: 'sweet', ids: ['2', '3', '4'] }
         sinon.stub(subject.methods, 'getResult', () => { return result })
         const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: { resultKey: 'yo' } }
-        const router = { path: 'sweetness' }
+        subject.setPath('sweetness')
         expect(json.pages.sweetness_yo.next).to.be.undefined
         expect(json.pages.sweetness_yo.pagination).to.equal('cool')
-        subject.methods.updateResult({}, json, action, router)
+        subject.methods.updateResult({}, json, action)
         expect(json.pages.sweetness_yo.next).to.deep.equal({ ids: ['2', '3', '4'], pagination: 'sweet' })
         expect(json.pages.sweetness_yo.pagination).to.equal('sweet')
       })

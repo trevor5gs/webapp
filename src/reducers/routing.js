@@ -1,5 +1,6 @@
+import { UPDATE_PATH } from 'redux-simple-router'
+
 const INIT_PATH = '@@router/INIT_PATH'
-const UPDATE_PATH = '@@router/UPDATE_PATH'
 const initialState = {
   changeId: 1,
   path: undefined,
