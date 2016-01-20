@@ -1,12 +1,7 @@
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 
 export function isFormValid(states) {
-  for (const state of states) {
-    if (state.status !== STATUS.SUCCESS) {
-      return false
-    }
-  }
-  return true
+  return states.every((state) => state.status === STATUS.SUCCESS)
 }
 
 export function containsSpace(value) {
