@@ -19,7 +19,7 @@ if (typeof window !== 'undefined') {
   )(createStore)(reducer, window.__INITIAL_STATE__ || {})
 } else {
   store = compose(
-    applyMiddleware(thunk, reduxRouterMiddleware, uploader, requester, analytics),
+    applyMiddleware(thunk, uploader, requester, analytics),
   )(createStore)(reducer, {})
 }
 
