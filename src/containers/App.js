@@ -71,7 +71,17 @@ class App extends Component {
     )
     return (
       <section className={appClasses}>
-        <Helmet title="Be inspired." titleTemplate="Ello | %s" />
+        <Helmet
+          title="Be inspired."
+          titleTemplate="Ello | %s"
+          meta={[
+            {
+              name: 'apple-itunes-app',
+              content: 'app-id=953614327',
+              'app-argument': pathname,
+            },
+          ]}
+        />
         <main className="Main" data-pathname={pathname} role="main">
           {children}
         </main>
