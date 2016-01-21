@@ -18,8 +18,11 @@ class RegistrationRequestForm extends Component {
     this.emailControlWasChanged = ::this.emailControlWasChanged
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillMount() {
     this.emailValue = ''
+  }
+
+  componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
     if (availability && availability.hasOwnProperty('email')) {
       this.onValidateEmailResponse(availability)

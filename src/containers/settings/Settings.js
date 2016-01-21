@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { pushPath } from 'redux-simple-router'
+import classNames from 'classnames'
 import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
@@ -28,7 +29,6 @@ import Cover from '../../components/assets/Cover'
 import TreeButton from '../../components/navigation/TreeButton'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { preferenceToggleChanged } from '../../components/base/junk_drawer'
-
 import InfoForm from '../../components/forms/InfoForm'
 
 
@@ -47,7 +47,11 @@ class Settings extends Component {
   }
 
   componentWillMount() {
+    const { profile } = this.props
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
+    this.passwordNewValue = ''
+    this.emailValue = profile.email
+    this.usernameValue = profile.username
   }
 
   componentWillReceiveProps(nextProps) {
@@ -95,16 +99,22 @@ class Settings extends Component {
     )
   }
 
+  shouldRequireCredentialsSave() {
+    const { emailState, passwordNewState, usernameState } = this.state
+    return [emailState, passwordNewState, usernameState].some((state) => {
+      return state.status === STATUS.SUCCESS
+    })
+  }
+
   checkServerForAvailability(vo) {
     return this.props.dispatch(checkAvailability(vo))
   }
 
   usernameControlWasChanged({ username }) {
+    this.usernameValue = username
     const { usernameState } = this.state
     const currentStatus = usernameState.status
-    const currentMessage = usernameState.message
     const clientState = getUsernameStateFromClient({ value: username, currentStatus })
-
     if (clientState.status === STATUS.SUCCESS) {
       if (currentStatus !== STATUS.REQUEST) {
         this.setState({ usernameState: { status: STATUS.REQUEST, message: 'checking...' } })
@@ -112,21 +122,18 @@ class Settings extends Component {
       // This will end up landing on `validateUsernameResponse` after fetching
       return this.checkServerForAvailability({ username })
     }
-    if (clientState.status !== currentStatus && clientState.message !== currentMessage) {
-      this.setState({ usernameState: clientState })
-    }
+    this.setState({ usernameState: clientState })
   }
 
   validateUsernameResponse(availability) {
     const { usernameState } = this.state
     const currentStatus = usernameState.status
     const newState = getUsernameStateFromServer({ availability, currentStatus })
-    if (newState.status !== currentStatus) {
-      this.setState({ usernameState: newState })
-    }
+    this.setState({ usernameState: newState })
   }
 
   emailControlWasChanged({ email }) {
+    this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
     const clientState = getEmailStateFromClient({ value: email, currentStatus })
@@ -137,27 +144,22 @@ class Settings extends Component {
       // This will end up landing on `validateEmailResponse` after fetching
       return this.checkServerForAvailability({ email })
     }
-    if (clientState.status !== currentStatus) {
-      this.setState({ emailState: clientState })
-    }
+    this.setState({ emailState: clientState })
   }
 
   validateEmailResponse(availability) {
     const { emailState } = this.state
     const currentStatus = emailState.status
     const newState = getEmailStateFromServer({ availability, currentStatus })
-    if (newState.status !== currentStatus) {
-      this.setState({ emailState: newState })
-    }
+    this.setState({ emailState: newState })
   }
 
   passwordNewControlWasChanged({ password }) {
+    this.passwordNewValue = password
     const { passwordNewState } = this.state
     const currentStatus = passwordNewState.status
     const newState = getPasswordState({ value: password, currentStatus })
-    if (newState.status !== currentStatus) {
-      this.setState({ passwordNewState: newState })
-    }
+    this.setState({ passwordNewState: newState })
   }
 
   handleSubmit(e) {
@@ -185,6 +187,8 @@ class Settings extends Component {
   render() {
     const { profile, dispatch } = this.props
     const { emailState, passwordNewState, usernameState } = this.state
+    const requiresSave = this.shouldRequireCredentialsSave()
+
     if (!profile) {
       return null
     }
@@ -262,7 +266,8 @@ class Settings extends Component {
               status={ passwordNewState.status }
               tabIndex="3"
             />
-            <div className="SettingsCredentialActions">
+            <div className={ classNames('SettingsCredentialActions', { requiresSave }) }>
+              <p>To save changes you must re-enter your current Ello password.</p>
               <PasswordControl
                 classList={ boxControlClassNames }
                 id="current_password"
@@ -270,11 +275,7 @@ class Settings extends Component {
                 name="user[current_password]"
                 placeholder="Enter current password"
               />
-              <p>
-                To save changes to [ password ] you must re-enter your current Ello
-                password.
-              </p>
-              <FormButton disabled>Save</FormButton>
+              <FormButton disabled={ !requiresSave }>Save</FormButton>
             </div>
           </form>
 
