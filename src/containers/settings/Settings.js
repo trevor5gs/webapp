@@ -36,20 +36,23 @@ class Settings extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      passwordNewState: { status: STATUS.INDETERMINATE, message: '' },
+      passwordState: { status: STATUS.INDETERMINATE, message: '' },
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
       emailState: { status: STATUS.INDETERMINATE, message: '' },
     }
     this.onLogOut = ::this.onLogOut
+    this.handleSubmit = ::this.handleSubmit
     this.usernameControlWasChanged = ::this.usernameControlWasChanged
-    this.passwordNewControlWasChanged = ::this.passwordNewControlWasChanged
+    this.passwordControlWasChanged = ::this.passwordControlWasChanged
     this.emailControlWasChanged = ::this.emailControlWasChanged
+    this.passwordCurrentControlWasChanged = ::this.passwordCurrentControlWasChanged
   }
 
   componentWillMount() {
     const { profile } = this.props
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
-    this.passwordNewValue = ''
+    this.passwordValue = ''
+    this.passwordCurrentValue = ''
     this.emailValue = profile.email
     this.usernameValue = profile.username
   }
@@ -100,8 +103,8 @@ class Settings extends Component {
   }
 
   shouldRequireCredentialsSave() {
-    const { emailState, passwordNewState, usernameState } = this.state
-    return [emailState, passwordNewState, usernameState].some((state) => {
+    const { emailState, passwordState, usernameState } = this.state
+    return [emailState, passwordState, usernameState].some((state) => {
       return state.status === STATUS.SUCCESS
     })
   }
@@ -154,16 +157,29 @@ class Settings extends Component {
     this.setState({ emailState: newState })
   }
 
-  passwordNewControlWasChanged({ password }) {
-    this.passwordNewValue = password
-    const { passwordNewState } = this.state
-    const currentStatus = passwordNewState.status
+  passwordControlWasChanged({ password }) {
+    this.passwordValue = password
+    const { passwordState } = this.state
+    const currentStatus = passwordState.status
     const newState = getPasswordState({ value: password, currentStatus })
-    this.setState({ passwordNewState: newState })
+    this.setState({ passwordState: newState })
+  }
+
+  passwordCurrentControlWasChanged(vo) {
+    console.log(vo.current_password)
+    this.passwordCurrentValue = vo.current_password
   }
 
   handleSubmit(e) {
     e.preventDefault()
+    const formData = {
+      current_password: this.passwordCurrentValue,
+      email: this.emailValue,
+      password: this.passwordValue,
+      username: this.usernameValue,
+    }
+    // console.log(formData)
+    return formData
   }
 
   closeModal() {
@@ -186,7 +202,7 @@ class Settings extends Component {
 
   render() {
     const { profile, dispatch } = this.props
-    const { emailState, passwordNewState, usernameState } = this.state
+    const { emailState, passwordState, usernameState } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
 
     if (!profile) {
@@ -260,10 +276,10 @@ class Settings extends Component {
             />
             <PasswordControl
               classList={ boxControlClassNames }
-              label={`Password ${passwordNewState.message}`}
-              onChange={ this.passwordNewControlWasChanged }
+              label={`Password ${passwordState.message}`}
+              onChange={ this.passwordControlWasChanged }
               placeholder="Set a new password"
-              status={ passwordNewState.status }
+              status={ passwordState.status }
               tabIndex="3"
             />
             <div className={ classNames('SettingsCredentialActions', { requiresSave }) }>
@@ -273,6 +289,7 @@ class Settings extends Component {
                 id="current_password"
                 label="Password - Please enter your current one."
                 name="user[current_password]"
+                onChange={ this.passwordCurrentControlWasChanged }
                 placeholder="Enter current password"
               />
               <FormButton disabled={ !requiresSave }>Save</FormButton>
