@@ -16,6 +16,7 @@ class SignUp extends Component {
     this.state = {
       featuredUser: null,
     }
+    this.creditsTrackingEvent = ::this.creditsTrackingEvent
   }
 
   componentWillMount() {
@@ -42,8 +43,8 @@ class SignUp extends Component {
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>
         <AppleStoreLink/>
-        <Credits clickAction={::this.creditsTrackingEvent} user={featuredUser} />
-        <Cover coverImage={featuredUser.coverImage} modifiers="asFullScreen withOverlay" />
+        <Credits clickAction={ this.creditsTrackingEvent } user={ featuredUser } />
+        <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
       </section>
     )
   }

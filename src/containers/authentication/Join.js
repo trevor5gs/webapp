@@ -41,6 +41,9 @@ class Join extends Component {
   }
 
   componentWillMount() {
+    this.emailValue = ''
+    this.usernameValue = ''
+    this.passwordValue = ''
     const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
     this.setState({ featuredUser: userlist[index] })
@@ -70,6 +73,7 @@ class Join extends Component {
   }
 
   usernameControlWasChanged({ username }) {
+    this.usernameValue = username
     const { usernameState } = this.state
     const currentStatus = usernameState.status
     const currentMessage = usernameState.message
@@ -97,6 +101,7 @@ class Join extends Component {
   }
 
   emailControlWasChanged({ email }) {
+    this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
     const clientState = getEmailStateFromClient({ value: email, currentStatus })
@@ -122,6 +127,7 @@ class Join extends Component {
   }
 
   passwordControlWasChanged({ password }) {
+    this.passwordValue = password
     const { passwordState } = this.state
     const currentStatus = passwordState.status
     const newState = getPasswordState({ value: password, currentStatus })
@@ -133,6 +139,8 @@ class Join extends Component {
   // TODO: Still needs to be hooked up
   handleSubmit(e) {
     e.preventDefault()
+    // const { dispatch } = this.props
+    // dispatch(someActionFunction(this.emailValue, this.usernameValue, this.passwordValue))
   }
 
   render() {

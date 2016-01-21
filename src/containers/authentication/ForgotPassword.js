@@ -21,13 +21,13 @@ class ForgotPassword extends Component {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
       featuredUser: null,
     }
-    this.emailValue = ''
     this.handleSubmit = ::this.handleSubmit
     this.creditsTrackingEvent = ::this.creditsTrackingEvent
     this.emailControlWasChanged = ::this.emailControlWasChanged
   }
 
   componentWillMount() {
+    this.emailValue = ''
     const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
     this.setState({ featuredUser: userlist[index] })

@@ -27,8 +27,6 @@ class SignIn extends Component {
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
       featuredUser: null,
     }
-    this.emailValue = ''
-    this.passwordValue = ''
     this.handleSubmit = ::this.handleSubmit
     this.creditsTrackingEvent = ::this.creditsTrackingEvent
     this.emailControlWasChanged = ::this.emailControlWasChanged
@@ -36,6 +34,8 @@ class SignIn extends Component {
   }
 
   componentWillMount() {
+    this.emailValue = ''
+    this.passwordValue = ''
     const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
     this.setState({ featuredUser: userlist[index] })
