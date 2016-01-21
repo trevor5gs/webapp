@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { replacePath } from 'redux-simple-router'
+import { routeActions } from 'redux-simple-router'
 import debounce from 'lodash.debounce'
 import { SIGNED_OUT_PROMOTIONS } from '../../constants/promotion_types'
 import * as SearchActions from '../../actions/search'
@@ -64,7 +64,7 @@ class Search extends Component {
     }
     if (typeof document !== 'undefined') {
       const uri = document.location.pathname + updateQueryParams(vo)
-      dispatch(replacePath(uri, window.history.state))
+      dispatch(routeActions.replace(uri))
     }
   }
 

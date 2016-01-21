@@ -106,7 +106,7 @@ App.defaultProps = {
 function mapStateToProps(state) {
   return {
     authentication: state.authentication,
-    pathname: state.router.path,
+    pathname: state.routing.location.pathname,
   }
 }
 

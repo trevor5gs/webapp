@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { pushPath } from 'redux-simple-router'
+import { routeActions } from 'redux-simple-router'
 import classNames from 'classnames'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
@@ -36,7 +36,7 @@ class Navbar extends Component {
 
     if (isLoggedIn) {
       Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
-        dispatch(pushPath(this.props.shortcuts[shortcut], window.history.state))
+        dispatch(routeActions.push(this.props.shortcuts[shortcut]))
       })
 
       Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
@@ -49,10 +49,10 @@ class Navbar extends Component {
     }
 
     Mousetrap.bind(SHORTCUT_KEYS.TOGGLE_LAYOUT, () => {
-      const { json, router } = this.props
+      const { json, pathname } = this.props
       let result = null
       if (json.pages) {
-        result = json.pages[router.path]
+        result = json.pages[pathname]
       }
       if (result && result.mode) {
         const newMode = result.mode === 'grid' ? 'list' : 'grid'
@@ -67,8 +67,8 @@ class Navbar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { router } = nextProps
-    const pathnames = router.path.split('/').slice(1)
+    const { pathname } = nextProps
+    const pathnames = pathname.split('/').slice(1)
     const whitelist = [
       '',
       'discover',
@@ -164,7 +164,7 @@ class Navbar extends Component {
   onLogOut() {
     const { dispatch } = this.props
     dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
-    dispatch(pushPath('/', window.history.state))
+    dispatch(routeActions.push('/'))
   }
 
   omniButtonWasClicked() {
@@ -283,7 +283,7 @@ class Navbar extends Component {
   }
 
   render() {
-    const { isLoggedIn, json, router } = this.props
+    const { isLoggedIn, json, pathname } = this.props
     const klassNames = classNames(
       'Navbar',
       { asLocked: this.state.asLocked },
@@ -291,8 +291,7 @@ class Navbar extends Component {
       { asHidden: this.state.asHidden },
       { skipTransition: this.state.skipTransition },
     )
-    const pathname = router ? router.path : ''
-    const result = json.pages && router ? json.pages[router.path] : null
+    const result = json.pages ? json.pages[pathname] : null
     const hasLoadMoreButton = result && result.newIds
 
     return isLoggedIn ?
@@ -306,8 +305,8 @@ Navbar.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   json: PropTypes.object.isRequired,
   modal: PropTypes.any,
+  pathname: PropTypes.string.isRequired,
   profile: PropTypes.object,
-  router: PropTypes.object.isRequired,
   shortcuts: PropTypes.object.isRequired,
 }
 
@@ -325,8 +324,8 @@ function mapStateToProps(state) {
     isLoggedIn: state.authentication.isLoggedIn,
     json: state.json,
     modal: state.modal,
+    pathname: state.routing.location.pathname,
     profile: state.profile.payload,
-    router: state.router,
   }
 }
 

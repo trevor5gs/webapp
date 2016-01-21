@@ -18,9 +18,7 @@ function createPropsForStream(props = {}) {
       type: 'posts',
       ids: [],
     },
-    router: {
-      path: 'what',
-    },
+    pathname: 'what',
     currentUser: {
       id: 'currentUser',
     },

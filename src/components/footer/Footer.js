@@ -24,10 +24,10 @@ class Footer extends Component {
   }
 
   componentWillReceiveProps() {
-    const { json, router } = this.props
+    const { json, pathname } = this.props
     let result = null
     if (json.pages) {
-      result = json.pages[router.path]
+      result = json.pages[pathname]
     }
     if (result && result.mode) {
       this.setState({ isGridMode: result.mode === 'grid' })
@@ -82,14 +82,14 @@ class Footer extends Component {
 }
 
 Footer.propTypes = {
-  json: PropTypes.object,
-  router: PropTypes.object,
+  json: PropTypes.object.isRequired,
+  pathname: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state) {
   return {
     json: state.json,
-    router: state.router,
+    pathname: state.routing.location.pathname,
   }
 }
 

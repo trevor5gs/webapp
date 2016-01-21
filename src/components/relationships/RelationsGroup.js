@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { replacePath } from 'redux-simple-router'
+import { routeActions } from 'redux-simple-router'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { openModal, closeModal } from '../../actions/modals'
 import { updateRelationship } from '../../actions/relationships'
@@ -63,7 +63,7 @@ class RelationsGroup extends Component {
       existing: priority,
     })
     this.closeModal()
-    dispatch(replacePath(previousPath || '/', window.history.state))
+    dispatch(routeActions.replace(previousPath || '/'))
   }
 
   handleMuteUser() {
@@ -159,8 +159,8 @@ RelationsGroup.defaultProps = {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
-    pathname: state.router.path,
-    previousPath: state.router.previousPath,
+    pathname: state.routing.location.pathname,
+    previousPath: state.routing.previousPath,
   }
 }
 

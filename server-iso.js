@@ -17,7 +17,7 @@ import store from './src/store'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
 import addOauthRoute from './oauth'
 import routes from './src/routes'
-import { replacePath } from 'redux-simple-router'
+import { routeActions } from 'redux-simple-router'
 
 // load env vars first
 require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
@@ -63,7 +63,7 @@ function preRender(renderProps) {
 function renderFromServer(req, res) {
   match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
     // populate the rouer store object for initial render
-    store.dispatch(replacePath(renderProps.location.pathname, {}, { avoidRouterUpdate: true }))
+    store.dispatch(routeActions.replace(renderProps.location.pathname))
     if (error) {
       console.log('ELLO MATCH ERROR', error)
     } else if (redirectLocation) {

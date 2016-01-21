@@ -1,14 +1,12 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
-import { UPDATE_PATH } from 'redux-simple-router'
+import { UPDATE_LOCATION } from 'redux-simple-router'
 import uniq from 'lodash.uniq'
 import * as ACTION_TYPES from '../constants/action_types'
 import commentMethods from './experience_updates/comments'
 import postMethods from './experience_updates/posts'
 import relationshipMethods from './experience_updates/relationships'
 
-// hack to get into the init state of router
-const INIT_PATH = '@@router/INIT_PATH'
 // adding methods and accessing them from this object
 // allows the unit tests to stub methods in this module
 const methods = {}
@@ -174,8 +172,7 @@ export default function json(state = {}, action = { type: '' }) {
       return relationshipMethods.updateRelationship(newState, action)
     case ACTION_TYPES.SET_LAYOUT_MODE:
       return methods.setLayoutMode(action, state, newState)
-    case INIT_PATH:
-    case UPDATE_PATH:
+    case UPDATE_LOCATION:
       path = action.payload.path
       return state
     default:

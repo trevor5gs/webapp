@@ -19,8 +19,7 @@ export class StreamComponent extends Component {
 
   componentWillMount() {
     const { action } = this.state
-    const { router } = this.props
-    if (action && !router.replace) { this.props.dispatch(action) }
+    if (action) { this.props.dispatch(action) }
   }
 
   componentDidMount() {
@@ -32,13 +31,13 @@ export class StreamComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch, json, router, stream } = nextProps
+    const { dispatch, json, pathname, stream } = nextProps
     const { action } = this.state
     if (!action) { return null }
     const { meta } = action
     let result = null
     if (json.pages) {
-      result = json.pages[router.path]
+      result = json.pages[pathname]
     }
     if (result && !result.mode) {
       dispatch({
@@ -55,8 +54,8 @@ export class StreamComponent extends Component {
   // this prevents nested stream components from clobbering parents
   shouldComponentUpdate() {
     const { action, gridColumnCount } = this.state
-    const { router, stream } = this.props
-    const pathArr = router.path.split('/')
+    const { pathname, stream } = this.props
+    const pathArr = pathname.split('/')
     const path = pathArr[pathArr.length - 1]
     // TODO: potentially whitelist the actions that we would want to render on
     // TODO: test this!
@@ -120,15 +119,15 @@ export class StreamComponent extends Component {
   }
 
   loadPage(rel, scrolled = false) {
-    const { dispatch, json, router } = this.props
+    const { dispatch, json, pathname } = this.props
     const { action } = this.state
     const { meta } = action
     let result = null
     if (json.pages) {
       if (meta && meta.resultKey) {
-        result = json.pages[`${router.path}_${meta.resultKey}`]
+        result = json.pages[`${pathname}_${meta.resultKey}`]
       } else {
-        result = json.pages[router.path]
+        result = json.pages[pathname]
       }
     }
     if (!result) { return }
@@ -194,15 +193,15 @@ export class StreamComponent extends Component {
   }
 
   render() {
-    const { currentUser, initModel, json, router, stream } = this.props
+    const { currentUser, initModel, json, pathname, stream } = this.props
     const { action } = this.state
     if (!action) { return null }
     const { meta, payload } = action
     let result = null
-    let resultPath = router.path
+    let resultPath = pathname
     if (json.pages) {
       if (meta && meta.resultKey) {
-        resultPath = `${router.path}_${meta.resultKey}`
+        resultPath = `${pathname}_${meta.resultKey}`
       }
       result = json.pages[resultPath]
     }
@@ -222,15 +221,19 @@ export class StreamComponent extends Component {
       }
     } else if (result.type === meta.mappingType ||
                (meta.resultFilter && result.type !== meta.mappingType)) {
+      const deletedCollection = json[`deleted_${result.type}`]
       for (const id of result.ids) {
-        if (json[result.type][id]) {
+        if (json[result.type][id] &&
+           (!deletedCollection || deletedCollection.indexOf(id) === -1)) {
           renderObj.data.push(json[result.type][id])
         }
       }
       if (result.next) {
+        const nextDeletedCollection = json[`deleted_${result.next.type}`]
         const dataProp = payload.endpoint.pagingPath ? 'nestedData' : 'data'
         for (const nextId of result.next.ids) {
-          if (json[result.next.type][nextId]) {
+          if (json[result.next.type][nextId] &&
+              (!nextDeletedCollection || nextDeletedCollection.indexOf(nextId) === -1)) {
             renderObj[dataProp].push(json[result.next.type][nextId])
           }
         }
@@ -271,7 +274,7 @@ StreamComponent.propTypes = {
   dispatch: PropTypes.func.isRequired,
   initModel: PropTypes.object,
   json: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired,
+  pathname: PropTypes.string.isRequired,
   stream: PropTypes.object.isRequired,
 }
 
@@ -279,7 +282,7 @@ function mapStateToProps(state) {
   return {
     currentUser: state.profile.payload,
     json: state.json,
-    router: state.router,
+    pathname: state.routing.location.pathname,
     stream: state.stream,
   }
 }
