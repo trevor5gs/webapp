@@ -166,7 +166,6 @@ class Settings extends Component {
   }
 
   passwordCurrentControlWasChanged(vo) {
-    console.log(vo.current_password)
     this.passwordCurrentValue = vo.current_password
   }
 
