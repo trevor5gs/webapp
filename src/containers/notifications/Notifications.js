@@ -59,7 +59,7 @@ Notifications.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    pathname: state.router.path,
+    pathname: state.routing.location.pathname,
   }
 }
 

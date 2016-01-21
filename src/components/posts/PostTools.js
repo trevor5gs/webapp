@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { pushPath, replacePath } from 'redux-simple-router'
+import { routeActions } from 'redux-simple-router'
 import classNames from 'classnames'
 import { openModal, closeModal } from '../../actions/modals'
 import * as postActions from '../../actions/posts'
@@ -165,7 +165,7 @@ class PostTools extends Component {
   toggleComments() {
     const { author, dispatch, isLoggedIn, post } = this.props
     if (!isLoggedIn) {
-      dispatch(pushPath(`/${author.username}/post/${post.token}`, window.history.state))
+      dispatch(routeActions.push(`/${author.username}/post/${post.token}`))
     }
   }
 
@@ -219,11 +219,11 @@ class PostTools extends Component {
   }
 
   deletePostConfirmed() {
-    const { dispatch, path, post, previousPath } = this.props
+    const { dispatch, pathname, post, previousPath } = this.props
     this.closeModal()
     dispatch(postActions.deletePost(post))
-    if (path.match(post.token)) {
-      dispatch(replacePath(previousPath || '/', window.history.state))
+    if (pathname.match(post.token)) {
+      dispatch(routeActions.replace(previousPath || '/'))
     }
   }
 
@@ -246,8 +246,8 @@ class PostTools extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
-    path: state.router.path,
-    previousPath: state.router.previousPath,
+    pathname: state.routing.location.pathname,
+    previousPath: state.routing.previousPath,
   }
 }
 
@@ -256,7 +256,7 @@ PostTools.propTypes = {
   currentUser: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
-  path: PropTypes.string.isRequired,
+  pathname: PropTypes.string.isRequired,
   post: PropTypes.object.isRequired,
   previousPath: PropTypes.string,
 }

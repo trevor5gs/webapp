@@ -45,8 +45,8 @@ class Onboarding extends Component {
   }
 
   getRelationshipMap() {
-    const { json, router } = this.props
-    const result = json.pages ? json.pages[router.path] : null
+    const { json, pathname } = this.props
+    const result = json.pages ? json.pages[pathname] : null
     const relationshipMap = { following: [], inactive: [] }
     if (!result || !result.type || !result.ids) {
       return relationshipMap
@@ -204,9 +204,9 @@ Onboarding.propTypes = {
   accessToken: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
   json: PropTypes.object,
+  pathname: PropTypes.string.isRequired,
   profile: PropTypes.object,
   route: PropTypes.object,
-  router: PropTypes.object,
   stream: PropTypes.object,
 }
 
@@ -214,8 +214,8 @@ function mapStateToProps(state) {
   return {
     accessToken: state.authentication.accessToken,
     json: state.json,
+    pathname: state.routing.location.pathname,
     profile: state.profile,
-    router: state.router,
     stream: state.stream,
   }
 }

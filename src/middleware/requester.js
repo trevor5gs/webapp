@@ -144,7 +144,7 @@ export const requester = store => next => action => {
                 response.json().then((json) => {
                   payload.response = camelizeKeys(json)
                   // this allows us to set the proper result in the json reducer
-                  payload.pathname = state.router.path
+                  payload.pathname = state.routing.location.pathname
                   if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
                     payload.pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
                   } else {
@@ -170,7 +170,7 @@ export const requester = store => next => action => {
             .catch(error => {
               delete runningFetches[error.response.url]
               if ((error.response.status === 401 || error.response.status === 403) &&
-                  state.router.path.indexOf('/onboarding') === 0 &&
+                  state.routing.location.pathname.indexOf('/onboarding') === 0 &&
                   typeof document !== 'undefined') {
                 resetAuth(store.dispatch, document.location)
               }

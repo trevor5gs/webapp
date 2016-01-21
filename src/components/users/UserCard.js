@@ -54,7 +54,7 @@ UserCard.propTypes = {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
-    pathname: state.router.path,
+    pathname: state.routing.location.pathname,
   }
 }
 

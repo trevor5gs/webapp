@@ -62,16 +62,16 @@ Discover.preRender = (store, routerState) => {
 Discover.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
-  pathname: PropTypes.string.isRequired,
   params: PropTypes.shape({
     type: PropTypes.string,
   }),
+  pathname: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state) {
   return {
-    pathname: state.router.path,
     isLoggedIn: state.authentication.isLoggedIn,
+    pathname: state.routing.location.pathname,
   }
 }
 
