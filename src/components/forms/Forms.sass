@@ -2,9 +2,11 @@
   position: relative
   max-width: rem(610)
 
-[data-pathname^="/onboarding"] .InfoForm .NameControl
+[data-pathname^="/onboarding"] .NameControl > .FormControlInput
   +sans-bold-family
   font-size: 1rem
+[data-pathname^="/onboarding"] .FormControlStatus
+  display: none
 
 .InfoFormStatus
   +sans-typeset
@@ -23,6 +25,9 @@
   opacity: 0
 .InfoFormStatus.showThenHideMessage
   animation: showWaitThenHide 3s 1 linear
+
+[data-pathname^="/onboarding"] .InfoFormStatus
+  margin-top: rem(20)
 
 .AuthenticationForm
   max-width: rem(320)

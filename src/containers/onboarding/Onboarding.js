@@ -174,7 +174,10 @@ class Onboarding extends Component {
                 size="large"
                 sources={ profile.avatar }
               />
-              <InfoForm />
+              <InfoForm
+                tabIndexStart={ 1 }
+              />
+
             </div>
             <Cover coverImage={ profile.coverImage } />
           </section>
