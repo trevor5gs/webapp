@@ -5,7 +5,10 @@ export function profile(state = {}, action) {
   switch (action.type) {
     case PROFILE.LOAD_SUCCESS:
       const { users } = action.payload.response
-      return { ...state, ...users }
+      const assetState = { ...state, ...users }
+      delete assetState.avatar.tmp
+      delete assetState.coverImage.tmp
+      return assetState
 
     case PROFILE.SAVE_SUCCESS:
     case PROFILE.AVAILABILITY_SUCCESS:
@@ -22,12 +25,12 @@ export function profile(state = {}, action) {
 
     // TODO: This isn't really working, it's still pulling the previous image here?
     // Once the asset is uploaded, remove `tmp` which will trigger a load of the new image
-    case PROFILE.SAVE_AVATAR_SUCCESS:
-    case PROFILE.SAVE_COVER_SUCCESS:
-      assetType = action.type === PROFILE.SAVE_AVATAR_SUCCESS ? 'avatar' : 'coverImage'
-      const assetState = { ...state, ...action.payload.response }
-      delete assetState[assetType].tmp
-      return assetState
+    // case PROFILE.SAVE_AVATAR_SUCCESS:
+    // case PROFILE.SAVE_COVER_SUCCESS:
+    //   assetType = action.type === PROFILE.SAVE_AVATAR_SUCCESS ? 'avatar' : 'coverImage'
+    //   const assetState = { ...state, ...action.payload.response }
+    //   delete assetState[assetType].tmp
+    //   return assetState
 
     default:
       return state
