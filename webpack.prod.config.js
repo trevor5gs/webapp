@@ -47,7 +47,7 @@ module.exports = {
     {
       test: /\.sass$/,
       loader: ExtractTextPlugin.extract(
-          'css!sass!autoprefixer!sass?indentedSyntax'
+          'css!autoprefixer!sass?indentedSyntax'
       )
     }]
   }
