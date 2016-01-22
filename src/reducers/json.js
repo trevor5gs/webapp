@@ -7,11 +7,13 @@ import * as MAPPING_TYPES from '../constants/mapping_types'
 import commentMethods from './experience_updates/comments'
 import postMethods from './experience_updates/posts'
 import relationshipMethods from './experience_updates/relationships'
+import { getQueryParamValue } from '../components/base/uri_helper'
 
 // adding methods and accessing them from this object
 // allows the unit tests to stub methods in this module
 const methods = {}
 let path = '/'
+let termsQuery = null
 let hasLoadedFirstStream = false
 
 function mergeModel(state, type, params) {
@@ -151,6 +153,26 @@ methods.updateResult = (response, newState, action) => {
   return updateResult(response, newState, action)
 }
 
+function clearSearchResults(state, newState, action) {
+  if (action.payload.endpoint.path.indexOf('terms=') > -1 && termsQuery !== getQueryParamValue('terms', action.payload.endpoint.path)) {
+    const { resultKey } = action.meta
+    const pathname = action.payload && action.payload.pathname ? action.payload.pathname : path
+    const resultPath = resultKey ? `${pathname}_${resultKey}` : pathname
+    const existingResult = newState.pages[resultPath]
+    if (existingResult) {
+      existingResult.ids = []
+      if (existingResult.next) {
+        existingResult.next.ids = []
+      }
+      return newState
+    }
+  }
+  return state
+}
+methods.clearSearchResults = (state, newState, action) => {
+  return clearSearchResults(state, newState, action)
+}
+
 export default function json(state = {}, action = { type: '' }) {
   const newState = { ...state }
   // whitelist actions
@@ -165,6 +187,8 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
       // fall through to parse the rest
       break
+    case ACTION_TYPES.LOAD_STREAM_REQUEST:
+      return methods.clearSearchResults(state, newState, action)
     case ACTION_TYPES.POST.DELETE_REQUEST:
     case ACTION_TYPES.POST.DELETE_SUCCESS:
     case ACTION_TYPES.POST.DELETE_FAILURE:
@@ -182,7 +206,8 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.SET_LAYOUT_MODE:
       return methods.setLayoutMode(action, state, newState)
     case UPDATE_LOCATION:
-      path = action.payload.path
+      path = action.payload.pathname
+      termsQuery = action.payload.query.terms
       return state
     default:
       return state

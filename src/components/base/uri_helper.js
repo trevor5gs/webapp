@@ -32,3 +32,17 @@ export function updateQueryParams(params) {
   return query
 }
 
+export function getQueryParamValue(param, uri) {
+  const search = uri.split('?')[1]
+  if (search) {
+    const searchArr = search.split('&')
+    for (const keyVal of searchArr) {
+      const keyValArr = keyVal.split('=')
+      if (keyValArr[0] === param) {
+        return keyValArr[1]
+      }
+    }
+  }
+  return null
+}
+

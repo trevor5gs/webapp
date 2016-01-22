@@ -99,10 +99,13 @@ export const requester = store => next => action => {
   const SUCCESS = type + '_SUCCESS'
   const FAILURE = type + '_FAILURE'
 
+  const state = store.getState()
+  // this allows us to set the proper result in the json reducer
+  payload.pathname = state.routing.location.pathname
+
   // dispatch the start of the request
   next({ type: REQUEST, payload, meta })
 
-  const state = store.getState()
   function fetchCredentials() {
     if (state.authentication && state.authentication.accessToken) {
       return new Promise((resolve) => {
@@ -143,8 +146,6 @@ export const requester = store => next => action => {
               if (response.status === 200) {
                 response.json().then((json) => {
                   payload.response = camelizeKeys(json)
-                  // this allows us to set the proper result in the json reducer
-                  payload.pathname = state.routing.location.pathname
                   if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
                     payload.pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
                   } else {
