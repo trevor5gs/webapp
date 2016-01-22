@@ -11,8 +11,10 @@ import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
 import { openModal, closeModal, openAlert, closeAlert } from '../../actions/modals'
 import {
   availableToggles,
+  blockedUsers,
   checkAvailability,
   deleteProfile,
+  mutedUsers,
   saveAvatar,
   saveCover,
 } from '../../actions/profile'
@@ -356,9 +358,10 @@ class Settings extends Component {
 
             <TreeButton>Muted/Blocked</TreeButton>
             <TreePanel>
-              <p>
-                <Emoji name="hot_shit" title="Still need to build this!" size={ 40 }/>
-              </p>
+              <div>Blocked:</div>
+              <StreamComponent action={blockedUsers()} />
+              <div>Muted:</div>
+              <StreamComponent action={mutedUsers()} />
             </TreePanel>
 
             <TreeButton>Your Data</TreeButton>

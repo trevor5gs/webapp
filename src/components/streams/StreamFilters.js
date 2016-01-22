@@ -34,3 +34,11 @@ export function notificationsFromActivities(activities) {
   return { type: MAPPING_TYPES.NOTIFICATIONS, ids: activities }
 }
 
+export function userResults(users) {
+  const result = { type: MAPPING_TYPES.USERS, ids: [] }
+  for (const user of users) {
+    result.ids.push(user.id)
+  }
+  return result
+}
+

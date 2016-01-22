@@ -2,6 +2,7 @@ import React from 'react'
 import { LOAD_STREAM, PROFILE } from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
+import * as StreamFilters from '../components/streams/StreamFilters'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
 import { ErrorState } from '../components/errors/Errors'
 
@@ -126,6 +127,44 @@ export function saveCover(file) {
     }
     dispatch(uploadAsset(PROFILE.SAVE_COVER, file))
     reader.readAsDataURL(file)
+  }
+}
+
+export function blockedUsers() {
+  return {
+    type: LOAD_STREAM,
+    payload: {
+      endpoint: api.profileBlockedUsers(),
+    },
+    meta: {
+      defaultMode: 'list',
+      mappingType: MAPPING_TYPES.USERS,
+      renderStream: {
+        asList: StreamRenderables.blockedMutedUserList,
+        asGrid: StreamRenderables.blockedMutedUserList,
+      },
+      resultFilter: StreamFilters.userResults,
+      resultKey: 'blocked',
+    },
+  }
+}
+
+export function mutedUsers() {
+  return {
+    type: LOAD_STREAM,
+    payload: {
+      endpoint: api.profileMutedUsers(),
+    },
+    meta: {
+      defaultMode: 'list',
+      mappingType: MAPPING_TYPES.USERS,
+      renderStream: {
+        asList: StreamRenderables.blockedMutedUserList,
+        asGrid: StreamRenderables.blockedMutedUserList,
+      },
+      resultFilter: StreamFilters.userResults,
+      resultKey: 'muted',
+    },
   }
 }
 

@@ -189,6 +189,7 @@ export class StreamComponent extends Component {
       }
       result = json.pages[resultPath]
     }
+    console.log(meta.resultKey, result)
     if (stream.error) {
       return this.renderError()
     }

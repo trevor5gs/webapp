@@ -243,3 +243,13 @@ export function profileToggles(categories, json, currentUser) {
   )
 }
 
+export function blockedMutedUserList(users) {
+  return (
+    users.data.map((user) => {
+      return (
+        <UserList showBlockMuteButton user={user} />
+      )
+    })
+  )
+}
+
