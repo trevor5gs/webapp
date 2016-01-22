@@ -253,7 +253,7 @@ class Settings extends Component {
           <form
             className="SettingsForm"
             noValidate="novalidate"
-            onSubmit={this.handleSubmit}
+            onSubmit={ this.handleSubmit }
             role="form"
           >
             <UsernameControl
