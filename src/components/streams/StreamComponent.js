@@ -280,7 +280,7 @@ StreamComponent.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    currentUser: state.profile.payload,
+    currentUser: state.profile,
     json: state.json,
     pathname: state.routing.location.pathname,
     stream: state.stream,

@@ -41,6 +41,12 @@ export function profilePath() {
     path: getAPIPath('profile'),
   }
 }
+
+export function profileAvailableToggles() {
+  return {
+    path: getAPIPath('profile/available_toggles'),
+  }
+}
 // Onboarding
 export function awesomePeoplePath() {
   const params = { per_page: PER_PAGE }

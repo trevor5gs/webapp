@@ -1,91 +1,46 @@
 import React, { Component, PropTypes } from 'react'
-import classNames from 'classnames'
+import FormControl from './FormControl'
 
 class LinksControl extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  getLinks() {
     const { text } = this.props
-    this.state = {
-      text,
-      hasValue: text && text.length,
-      hasFocus: false,
+    const links = text || ''
+    if (typeof links === 'string') {
+      return links
     }
-  }
-
-  handleFocus() {
-    this.setState({ hasFocus: true })
-  }
-
-  handleBlur() {
-    this.setState({ hasFocus: false })
-  }
-
-  handleChange(e) {
-    const val = e.target.value
-    this.setState({ text: val, hasValue: val.length })
-    this.props.controlWasChanged({ external_links: val })
+    return links.map((link) => {
+      return link.text
+    }).join(', ')
   }
 
   render() {
-    const { classModifiers, id, name, tabIndex, placeholder } = this.props
-    const { hasFocus, hasValue, text } = this.state
-    const groupClassNames = classNames(
-      'FormControlGroup',
-      classModifiers,
-      { hasFocus },
-      { hasValue },
-    )
-    const labelClassNames = classNames(
-      'FormControlLabel',
-      classModifiers,
-    )
-    const controlClassNames = classNames(
-      'FormControl',
-      'LinksControl',
-      classModifiers,
-    )
-
     return (
-      <div className={groupClassNames}>
-        <label className={labelClassNames} htmlFor={id}>Links</label>
-        <input
-          className={controlClassNames}
-          id={id}
-          name={name}
-          value={text}
-          type="text"
-          tabIndex={tabIndex}
-          placeholder={placeholder}
-          maxLength="50"
-          autoCapitalize="off"
-          autoCorrect="off"
-          onBlur={::this.handleBlur}
-          onChange={::this.handleChange}
-          onFocus={::this.handleFocus}
-        />
-      </div>
+      <FormControl
+        { ...this.props }
+        autoCapitalize="off"
+        autoCorrect="off"
+        maxLength="50"
+        text={ this.getLinks() }
+        type="text"
+      />
     )
   }
 }
 
 LinksControl.propTypes = {
-  classModifiers: PropTypes.string,
-  controlWasChanged: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
-  tabIndex: PropTypes.string.isRequired,
-  text: PropTypes.string,
+  text: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array,
+  ]),
 }
 
 LinksControl.defaultProps = {
-  classModifiers: '',
-  id: 'user_links',
+  className: 'LinksControl',
+  id: 'external_links',
+  label: 'Links',
   name: 'user[links]',
   placeholder: 'Links (optional)',
-  tabIndex: '0',
-  text: '',
 }
 
 export default LinksControl

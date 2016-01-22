@@ -98,15 +98,15 @@ class Navbar extends Component {
     }
   }
 
-  componentDidUpdate() {
-    if (typeof window === 'undefined') {
-      return
-    }
-    const { asLocked, isPageChangeUpdate, offset } = this.state
-    if (isPageChangeUpdate && asLocked) {
-      window.scrollTo(0, offset - 120)
-    }
-  }
+  // componentDidUpdate() {
+  //   if (typeof window === 'undefined') {
+  //     return
+  //   }
+  //   const { asLocked, isPageChangeUpdate, offset } = this.state
+  //   if (isPageChangeUpdate && asLocked) {
+  //     window.scrollTo(0, offset - 120)
+  //   }
+  // }
 
   componentWillUnmount() {
     const { isLoggedIn, shortcuts } = this.props
@@ -325,7 +325,7 @@ function mapStateToProps(state) {
     json: state.json,
     modal: state.modal,
     pathname: state.routing.location.pathname,
-    profile: state.profile.payload,
+    profile: state.profile,
   }
 }
 

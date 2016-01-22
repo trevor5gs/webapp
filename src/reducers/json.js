@@ -3,6 +3,7 @@
 import { UPDATE_LOCATION } from 'redux-simple-router'
 import uniq from 'lodash.uniq'
 import * as ACTION_TYPES from '../constants/action_types'
+import * as MAPPING_TYPES from '../constants/mapping_types'
 import commentMethods from './experience_updates/comments'
 import postMethods from './experience_updates/posts'
 import relationshipMethods from './experience_updates/relationships'
@@ -28,7 +29,15 @@ function addModels(state, type, data) {
   // add state['modelType']
   if (!state[type]) { state[type] = {} }
   const ids = []
-  if (data[type] && data[type].length) {
+  if (type === MAPPING_TYPES.CATEGORIES) {
+    data[type].map((category, index) => {
+      const newType = { ...state[type] }
+      const id = index + 1
+      newType[id] = category
+      state[type] = newType
+      ids.push(id)
+    })
+  } else if (data[type] && data[type].length) {
     // add arrays of models to state['modelType']['id']
     data[type].map((model) => {
       methods.mergeModel(state, type, model)

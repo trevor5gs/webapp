@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
 import debounce from 'lodash.debounce'
+import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { saveProfile } from '../../actions/profile'
 import BioControl from '../forms/BioControl'
 import NameControl from '../forms/NameControl'
@@ -8,8 +10,30 @@ import LinksControl from '../forms/LinksControl'
 
 class InfoForm extends Component {
 
+  constructor(props, context) {
+    super(props, context)
+    this.state = {
+      bioStatus: STATUS.INDETERMINATE,
+      linksStatus: STATUS.INDETERMINATE,
+      nameStatus: STATUS.INDETERMINATE,
+      showThenHideMessage: false,
+    }
+    this.nameControlWasChanged = ::this.nameControlWasChanged
+    this.bioControlWasChanged = ::this.bioControlWasChanged
+    this.linksControlWasChanged = ::this.linksControlWasChanged
+  }
+
   componentWillMount() {
     this.saveForm = debounce(this.saveForm, 300)
+  }
+
+  componentWillReceiveProps() {
+    this.setState({
+      bioStatus: STATUS.INDETERMINATE,
+      linksStatus: STATUS.INDETERMINATE,
+      nameStatus: STATUS.INDETERMINATE,
+      showThenHideMessage: true,
+    })
   }
 
   saveForm(vo) {
@@ -20,26 +44,68 @@ class InfoForm extends Component {
     e.preventDefault()
   }
 
-  handleControlChange(vo) {
+  controlWasChanged(vo, prop) {
+    const status = this.state[prop]
+    if (status !== STATUS.REQUEST) {
+      this.setState({
+        [prop]: STATUS.REQUEST,
+        showThenHideMessage: false,
+      })
+    }
     this.saveForm(vo)
   }
 
-  render() {
-    const { payload } = this.props.profile
-    const { name, externalLinksList, shortBio, username } = payload
-    const externalLinks = externalLinksList ?
-      externalLinksList.map((link) => { return link.text }) :
-      []
-    const links = externalLinks.join(', ')
+  nameControlWasChanged(vo) {
+    this.controlWasChanged(vo, 'nameStatus')
+  }
 
-    if (!username) {
+  bioControlWasChanged(vo) {
+    this.controlWasChanged(vo, 'bioStatus')
+  }
+
+  linksControlWasChanged(vo) {
+    this.controlWasChanged(vo, 'linksStatus')
+  }
+
+  render() {
+    const { bioStatus, linksStatus, nameStatus, showThenHideMessage } = this.state
+    const { className, controlClassModifiers, profile, tabIndexStart } = this.props
+    if (!profile.username) {
       return <div />
     }
     return (
-      <form className="InfoForm" onSubmit={this.handleSubmit} role="form" noValidate="novalidate">
-        <NameControl tabIndex="1" text={name} controlWasChanged={::this.handleControlChange} />
-        <BioControl tabIndex="2" text={shortBio} controlWasChanged={::this.handleControlChange} />
-        <LinksControl tabIndex="3" text={links} controlWasChanged={::this.handleControlChange} />
+      <form
+        className={ classNames(className, 'InfoForm') }
+        noValidate="novalidate"
+        onSubmit={ this.handleSubmit }
+        role="form"
+      >
+        <NameControl
+          classList={ controlClassModifiers }
+          onChange={ this.nameControlWasChanged }
+          status={ nameStatus }
+          tabIndex={ `${tabIndexStart}` }
+          text={ profile.name }
+        />
+        <BioControl
+          classList={ controlClassModifiers }
+          onChange={ this.bioControlWasChanged }
+          status={ bioStatus }
+          tabIndex={ `${tabIndexStart + 1}` }
+          text={ profile.shortBio }
+        />
+        <LinksControl
+          classList={ controlClassModifiers }
+          onChange={ this.linksControlWasChanged }
+          status={ linksStatus }
+          tabIndex={`${ tabIndexStart + 2 }`}
+          text={ profile.externalLinksList }
+        />
+        <span
+          className={ classNames('InfoFormStatus', { showThenHideMessage }) }
+        >
+          Profile updated successfully
+        </span>
       </form>
     )
   }
@@ -52,8 +118,15 @@ function mapStateToProps(state) {
 }
 
 InfoForm.propTypes = {
+  className: PropTypes.string,
+  controlClassModifiers: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
   profile: PropTypes.object,
+  tabIndexStart: PropTypes.number,
+}
+
+InfoForm.defaultProps = {
+  tabIndexStart: 0,
 }
 
 export default connect(mapStateToProps)(InfoForm)

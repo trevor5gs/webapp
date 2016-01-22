@@ -1,44 +1,37 @@
 import { PROFILE } from '../constants/action_types'
 
-// need to hydrate this thing with current user at login
-const initialState = {
-  payload: {
-  },
-}
-
-export function profile(state = initialState, action) {
+export function profile(state = {}, action) {
+  let assetType
   switch (action.type) {
+    case PROFILE.LOAD_SUCCESS:
+      const { users } = action.payload.response
+      const assetState = { ...state, ...users }
+      delete assetState.avatar.tmp
+      delete assetState.coverImage.tmp
+      return assetState
+
+    case PROFILE.SAVE_SUCCESS:
     case PROFILE.AVAILABILITY_SUCCESS:
       return { ...state, ...action.payload.response }
-    case PROFILE.LOAD_REQUEST:
-    case PROFILE.LOAD_SUCCESS:
-    case PROFILE.SAVE_REQUEST:
-    case PROFILE.SAVE_SUCCESS:
-      const response = action.payload.response ? action.payload.response : {}
-      return {
-        availability: state.availability,
-        type: action.type,
-        meta: action.meta,
-        error: action.error,
-        payload: {
-          ...state.payload,
-          ...response.linked,
-          ...response.users,
-        },
-      }
 
+    // Store a base64 reprensentation of the asset in `tmp` while uploading
     case PROFILE.TMP_AVATAR_CREATED:
     case PROFILE.TMP_COVER_CREATED:
+      assetType = action.type === PROFILE.TMP_AVATAR_CREATED ? 'avatar' : 'coverImage'
       return {
-        availability: state.availability,
-        type: action.type,
-        meta: action.meta,
-        error: action.error,
-        payload: {
-          ...state.payload,
-          ...action.payload,
-        },
+        ...state,
+        [assetType]: { ...state[assetType], ...action.payload },
       }
+
+    // TODO: This isn't really working, it's still pulling the previous image here?
+    // Once the asset is uploaded, remove `tmp` which will trigger a load of the new image
+    // case PROFILE.SAVE_AVATAR_SUCCESS:
+    // case PROFILE.SAVE_COVER_SUCCESS:
+    //   assetType = action.type === PROFILE.SAVE_AVATAR_SUCCESS ? 'avatar' : 'coverImage'
+    //   const assetState = { ...state, ...action.payload.response }
+    //   delete assetState[assetType].tmp
+    //   return assetState
+
     default:
       return state
   }

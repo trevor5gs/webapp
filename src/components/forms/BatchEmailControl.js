@@ -55,7 +55,7 @@ class BatchEmailControl extends Component {
     const { classModifiers, id, name, tabIndex, placeholder } = this.props
     const { hasFocus, hasValue, text } = this.state
     const groupClassNames = classNames(
-      'FormControlGroup',
+      'FormControl',
       classModifiers,
       this.mapStatusToClass(),
       { hasFocus },
@@ -66,7 +66,7 @@ class BatchEmailControl extends Component {
       classModifiers,
     )
     const controlClassNames = classNames(
-      'FormControl',
+      'FormControlInput',
       'BatchEmailControl',
       classModifiers,
     )

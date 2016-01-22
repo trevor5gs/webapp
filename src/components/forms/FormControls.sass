@@ -1,14 +1,14 @@
-.FormControlGroup
+.FormControl
   position: relative
 
-.FormControlGroup.asBoxControl
+.FormControl.asBoxControl
   margin-bottom: rem(10)
 
 // -------------------------------------
 
-.FormControl
+.FormControlInput
   +sans-typeset
-  transition: border-color $speed $ease, background-color $speed $ease, color $speed $ease, width $speed $ease, height $speed $ease
+  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease, height $speed $ease
   display: inline-block
   vertical-align: baseline
   width: 100%
@@ -23,54 +23,54 @@
   &::placeholder
     color: #aaa
 
-.FormControl.asBoxControl
+.FormControlInput.asBoxControl
   height: rem(60)
   padding: 0 rem(10)
   background-color: #d8d8d8
   border: 1px solid #d8d8d8
   color: black
-.FormControl.asBoxControl:focus
+.FormControlInput.asBoxControl:focus
   background-color: white
   border-color: white
-.FormControl.asBoxControl.onWhite:focus
+.FormControlInput.asBoxControl.onWhite:focus
   background-color: #666
   border-color: #666
   color: white
 
-.hasValue > .FormControl
+.hasValue:not(.isInitialValue) > .FormControlInput
   border-color: black
 
-.hasValue > .FormControl.asBoxControl
+.hasValue:not(.isInitialValue) > .FormControlInput.asBoxControl
   background-color: white
   border-color: white
-.hasValue > .FormControl.asBoxControl.onWhite
+.hasValue:not(.isInitialValue) > .FormControlInput.asBoxControl.onWhite
   background-color: #666
   border-color: #666
   color: white
 
-.isFailing > .FormControl,
-.isFailing > .FormControl.asBoxControl,
-.isFailing > .FormControl.asBoxControl.onWhite
+.isFailing > .FormControlInput,
+.isFailing > .FormControlInput.asBoxControl,
+.isFailing > .FormControlInput.asBoxControl.onWhite
   border-color: $danger
 
-textarea.FormControl:not(.asBoxControl)
+textarea.FormControlInput:not(.asBoxControl)
   height: rem(30)
   min-height: 0
   margin-top: rem(10)
 
-textarea.FormControl.asBoxControl
+textarea.FormControlInput.asBoxControl
   height: rem(120)
   padding-top: rem(20)
   padding-bottom: rem(20)
   margin-bottom: rem(-5)
 
-.hasValue > textarea.FormControl:not(.asBoxControl),
-.hasFocus > textarea.FormControl:not(.asBoxControl)
+.hasValue > textarea.FormControlInput:not(.asBoxControl),
+.hasFocus > textarea.FormControlInput:not(.asBoxControl)
   height: rem(115)
 
 @media(min-width: #{$break-3})
-  .hasValue > textarea.FormControl:not(.asBoxControl),
-  .hasFocus > textarea.FormControl:not(.asBoxControl)
+  .hasValue > textarea.FormControlInput:not(.asBoxControl),
+  .hasFocus > textarea.FormControlInput:not(.asBoxControl)
     height: rem(85)
 
 // -------------------------------------
@@ -126,7 +126,7 @@ textarea.FormControl.asBoxControl
   height: rem(80)
 
 
-@media(min-width: #{$break-2})
+@media(min-width: #{$break-3})
   .FormControlFeedback
     position: absolute
     top: 0
@@ -146,7 +146,7 @@ textarea.FormControl.asBoxControl
   overflow: hidden
   height: 0
   margin: 0
-.showSuggestionList > .FormControlSuggestionList
+.FormControlSuggestionList.hasSuggestions
   height: rem(75)
 
 .FormControlSuggestionList > p
@@ -161,14 +161,8 @@ textarea.FormControl.asBoxControl
 .no-touch .FormControlSuggestionList > button:hover
   color: #aaa
 
-.FormControlSuggestionList > button:after
-  content: ','
-
 .FormControlSuggestionList > button:last-of-type
   margin-right: 0
-
-.FormControlSuggestionList > button:last-of-type:after
-  content: ''
 
 // -------------------------------------
 

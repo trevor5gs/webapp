@@ -1,5 +1,7 @@
-import { PROFILE } from '../constants/action_types'
+import { LOAD_STREAM, PROFILE } from '../constants/action_types'
+import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
+import * as StreamRenderables from '../components/streams/StreamRenderables'
 
 export function loadProfile() {
   return {
@@ -9,19 +11,33 @@ export function loadProfile() {
   }
 }
 
-export function saveProfile(users) {
+export function saveProfile(params) {
   return {
     type: PROFILE.SAVE,
     meta: {},
     payload: {
       method: 'PATCH',
       endpoint: api.profilePath(),
-      body: JSON.stringify(users),
+      body: JSON.stringify(params),
     },
   }
 }
 
-export function savePreferences() {
+export function availableToggles() {
+  return {
+    type: LOAD_STREAM,
+    meta: {
+      defaultMode: 'list',
+      mappingType: MAPPING_TYPES.CATEGORIES,
+      renderStream: {
+        asList: StreamRenderables.profileToggles,
+        asGrid: StreamRenderables.profileToggles,
+      },
+    },
+    payload: {
+      endpoint: api.profileAvailableToggles(),
+    },
+  }
 }
 
 export function checkAvailability(vo) {
@@ -63,7 +79,7 @@ export function temporaryAvatarCreated(b64Asset) {
   return {
     type: PROFILE.TMP_AVATAR_CREATED,
     meta: {},
-    payload: { tmpAvatar: b64Asset },
+    payload: { tmp: { url: b64Asset } },
   }
 }
 
@@ -71,7 +87,7 @@ export function temporaryCoverCreated(b64Asset) {
   return {
     type: PROFILE.TMP_COVER_CREATED,
     meta: {},
-    payload: { tmpCover: b64Asset },
+    payload: { tmp: { url: b64Asset } },
   }
 }
 

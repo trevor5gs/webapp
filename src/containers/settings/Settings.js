@@ -1,40 +1,79 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { pushPath } from 'redux-simple-router'
+import classNames from 'classnames'
+import debounce from 'lodash.debounce'
+import * as ACTION_TYPES from '../../constants/action_types'
+import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
-import { openModal, closeModal } from '../../actions/modals'
+import { openModal, closeModal, openAlert } from '../../actions/modals'
+import { availableToggles, checkAvailability, saveAvatar, saveCover } from '../../actions/profile'
 import AdultPostsDialog from '../../components/dialogs/AdultPostsDialog'
-import BioControl from '../../components/forms/BioControl'
 import EmailControl from '../../components/forms/EmailControl'
-import LinksControl from '../../components/forms/LinksControl'
-import NameControl from '../../components/forms/NameControl'
+import FormButton from '../../components/forms/FormButton'
 import PasswordControl from '../../components/forms/PasswordControl'
 import UsernameControl from '../../components/forms/UsernameControl'
 import Preference from '../../components/forms/Preference'
-// import Uploader from '../../components/uploaders/Uploader'
+import {
+  getUsernameStateFromClient,
+  getUsernameStateFromServer,
+  getEmailStateFromClient,
+  getEmailStateFromServer,
+  getPasswordState,
+} from '../../components/forms/Validators'
+import Uploader from '../../components/uploaders/Uploader'
 import Avatar from '../../components/assets/Avatar'
 import Cover from '../../components/assets/Cover'
 import TreeButton from '../../components/navigation/TreeButton'
+import StreamComponent from '../../components/streams/StreamComponent'
+import { preferenceToggleChanged } from '../../components/base/junk_drawer'
+import InfoForm from '../../components/forms/InfoForm'
 
 
 class Settings extends Component {
-
-  getAvatarSource() {
-    const { profile } = this.props
-    const { avatar, tmpAvatar } = profile
-    if (tmpAvatar) {
-      return tmpAvatar
+  constructor(props, context) {
+    super(props, context)
+    this.state = {
+      passwordState: { status: STATUS.INDETERMINATE, message: '' },
+      usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
+      emailState: { status: STATUS.INDETERMINATE, message: '' },
     }
-    return avatar ? avatar.large.url : null
+    this.onLogOut = ::this.onLogOut
+    this.handleSubmit = ::this.handleSubmit
+    this.usernameControlWasChanged = ::this.usernameControlWasChanged
+    this.passwordControlWasChanged = ::this.passwordControlWasChanged
+    this.emailControlWasChanged = ::this.emailControlWasChanged
+    this.passwordCurrentControlWasChanged = ::this.passwordCurrentControlWasChanged
   }
 
-  getCoverSource() {
+  componentWillMount() {
     const { profile } = this.props
-    const { coverImage, tmpCover } = profile
-    if (tmpCover) {
-      return tmpCover
+    this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
+    this.passwordValue = ''
+    this.passwordCurrentValue = ''
+    this.emailValue = profile.email
+    this.usernameValue = profile.username
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { availability } = nextProps
+    if (!availability) {
+      return
     }
-    return coverImage ? coverImage : null
+    if (availability.hasOwnProperty('username')) {
+      this.validateUsernameResponse(availability)
+    }
+    if (availability.hasOwnProperty('email')) {
+      this.validateEmailResponse(availability)
+    }
+  }
+
+  onLogOut() {
+    const { dispatch } = this.props
+    dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
+    dispatch(pushPath('/', window.history.state))
   }
 
   getExternalLinkListAsText() {
@@ -63,10 +102,83 @@ class Settings extends Component {
     )
   }
 
-  handleControlChange() {
+  shouldRequireCredentialsSave() {
+    const { emailState, passwordState, usernameState } = this.state
+    return [emailState, passwordState, usernameState].some((state) => {
+      return state.status === STATUS.SUCCESS
+    })
   }
 
-  handlePreferenceChange() {
+  checkServerForAvailability(vo) {
+    return this.props.dispatch(checkAvailability(vo))
+  }
+
+  usernameControlWasChanged({ username }) {
+    this.usernameValue = username
+    const { usernameState } = this.state
+    const currentStatus = usernameState.status
+    const clientState = getUsernameStateFromClient({ value: username, currentStatus })
+    if (clientState.status === STATUS.SUCCESS) {
+      if (currentStatus !== STATUS.REQUEST) {
+        this.setState({ usernameState: { status: STATUS.REQUEST, message: 'checking...' } })
+      }
+      // This will end up landing on `validateUsernameResponse` after fetching
+      return this.checkServerForAvailability({ username })
+    }
+    this.setState({ usernameState: clientState })
+  }
+
+  validateUsernameResponse(availability) {
+    const { usernameState } = this.state
+    const currentStatus = usernameState.status
+    const newState = getUsernameStateFromServer({ availability, currentStatus })
+    this.setState({ usernameState: newState })
+  }
+
+  emailControlWasChanged({ email }) {
+    this.emailValue = email
+    const { emailState } = this.state
+    const currentStatus = emailState.status
+    const clientState = getEmailStateFromClient({ value: email, currentStatus })
+    if (clientState.status === STATUS.SUCCESS) {
+      if (currentStatus !== STATUS.REQUEST) {
+        this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
+      }
+      // This will end up landing on `validateEmailResponse` after fetching
+      return this.checkServerForAvailability({ email })
+    }
+    this.setState({ emailState: clientState })
+  }
+
+  validateEmailResponse(availability) {
+    const { emailState } = this.state
+    const currentStatus = emailState.status
+    const newState = getEmailStateFromServer({ availability, currentStatus })
+    this.setState({ emailState: newState })
+  }
+
+  passwordControlWasChanged({ password }) {
+    this.passwordValue = password
+    const { passwordState } = this.state
+    const currentStatus = passwordState.status
+    const newState = getPasswordState({ value: password, currentStatus })
+    this.setState({ passwordState: newState })
+  }
+
+  passwordCurrentControlWasChanged(vo) {
+    this.passwordCurrentValue = vo.current_password
+  }
+
+  handleSubmit(e) {
+    e.preventDefault()
+    const formData = {
+      current_password: this.passwordCurrentValue,
+      email: this.emailValue,
+      password: this.passwordValue,
+      username: this.usernameValue,
+    }
+    // console.log(formData)
+    return formData
   }
 
   closeModal() {
@@ -74,32 +186,60 @@ class Settings extends Component {
     dispatch(closeModal())
   }
 
-  launchAdultPostsPrompt() {
-    const { dispatch, profile } = this.props
-    dispatch(openModal(
-      <AdultPostsDialog
-        onConfirm={ ::this.closeModal }
-        user={ profile }
-      />
-    ))
+  launchAdultPostsPrompt(obj) {
+    if (obj.postsAdultContent) {
+      const { dispatch, profile } = this.props
+      dispatch(openModal(
+        <AdultPostsDialog
+          onConfirm={ ::this.closeModal }
+          user={ profile }
+        />
+      ))
+    }
+    preferenceToggleChanged(obj)
   }
 
   render() {
-    const { profile } = this.props
-    const mdash = <span>&mdash;</span>
+    const { profile, dispatch } = this.props
+    const { emailState, passwordState, usernameState } = this.state
+    const requiresSave = this.shouldRequireCredentialsSave()
+
     if (!profile) {
       return null
     }
+
+    // const { isInfoFormSaving } = this.state
+    const mdash = <span>&mdash;</span>
+    const boxControlClassNames = 'asBoxControl onWhite'
+
     return (
       <section className="Settings Panel">
-        <Cover isModifiable coverImage={this.getCoverSource()} />
+        <div className="SettingsCoverPicker">
+          <Uploader
+            title="Upload a header image"
+            message="Or drag & drop"
+            recommend="Recommended image size: 2560 x 1440"
+            openAlert={ bindActionCreators(openAlert, dispatch) }
+            saveAction={ bindActionCreators(saveCover, dispatch) }
+          />
+          <Cover isModifiable coverImage={ profile.coverImage } />
+        </div>
+        <button className="SettingsLogoutButton" onClick={ this.onLogOut }>Logout</button>
+
         <div className="SettingsBody" >
           <div className="SettingsAvatarPicker" >
-          <Avatar
-            isModifiable
-            size="large"
-            sources={this.getAvatarSource()}
-          />
+            <Uploader
+              title="Pick an Avatar"
+              message="Or drag & drop it"
+              recommend="Recommended image size: 360 x 360"
+              openAlert={ bindActionCreators(openAlert, dispatch) }
+              saveAction={ bindActionCreators(saveAvatar, dispatch) }
+            />
+            <Avatar
+              isModifiable
+              size="large"
+              sources={ profile.avatar }
+            />
           </div>
 
           <header className="SettingsHeader">
@@ -110,165 +250,64 @@ class Settings extends Component {
             </p>
           </header>
 
-          <form className="SettingsForm">
+          <form
+            className="SettingsForm"
+            noValidate="novalidate"
+            onSubmit={ this.handleSubmit }
+            role="form"
+          >
             <UsernameControl
-              classModifiers="asBoxControl onWhite"
-              controlWasChanged={::this.handleControlChange}
+              classList={ boxControlClassNames }
+              label={`Username ${usernameState.message}`}
+              onChange={ this.usernameControlWasChanged }
+              status={ usernameState.status }
+              suggestions={ usernameState.suggestions }
               tabIndex="1"
+              text={ profile.username }
             />
             <EmailControl
-              classModifiers="asBoxControl onWhite"
-              controlWasChanged={::this.handleControlChange}
+              classList={ boxControlClassNames }
+              label={`Email ${emailState.message}`}
+              onChange={ this.emailControlWasChanged }
+              status={ emailState.status }
               tabIndex="2"
+              text={ profile.email }
             />
             <PasswordControl
-              classModifiers="asBoxControl onWhite"
-              controlWasChanged={::this.handleControlChange}
+              classList={ boxControlClassNames }
+              label={`Password ${passwordState.message}`}
+              onChange={ this.passwordControlWasChanged }
+              placeholder="Set a new password"
+              status={ passwordState.status }
               tabIndex="3"
             />
-            <NameControl
-              classModifiers="asBoxControl onWhite"
-              controlWasChanged={::this.handleControlChange}
-              tabIndex="4"
-            />
-            <BioControl
-              classModifiers="asBoxControl onWhite"
-              controlWasChanged={::this.handleControlChange}
-              tabIndex="5"
-            />
-            <LinksControl
-              classModifiers="asBoxControl onWhite"
-              controlWasChanged={::this.handleControlChange}
-              tabIndex="6"
-            />
+            <div className={ classNames('SettingsCredentialActions', { requiresSave }) }>
+              <p>To save changes you must re-enter your current Ello password.</p>
+              <PasswordControl
+                classList={ boxControlClassNames }
+                id="current_password"
+                label="Password - Please enter your current one."
+                name="user[current_password]"
+                onChange={ this.passwordCurrentControlWasChanged }
+                placeholder="Enter current password"
+              />
+              <FormButton disabled={ !requiresSave }>Save</FormButton>
+            </div>
           </form>
 
+          <InfoForm
+            controlClassModifiers={ boxControlClassNames }
+            tabIndexStart={ 4 }
+          />
+
           <p className="SettingsLinks">
-            <Link to="/">View Profile</Link>
-            <Link to="/onboarding">Launch On-boarding</Link>
-            <button onClick={::this.launchAdultPostsPrompt}>Launch NSFW Modal</button>
+            <Link to={ `/${profile.username}` }>View profile</Link>
+            <Link to="/invitations">Invite people</Link>
+            <Link to="/onboarding">Launch on-boarding</Link>
           </p>
 
           <div className="SettingsPreferences">
-            <TreeButton>Preferences</TreeButton>
-            <div className="TreePanel">
-              <Preference
-                definition={ PREFERENCES.PREF_PUBLIC_PROFILE }
-                id="isPublic"
-                isChecked={ profile.isPublic }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_COMMENTS }
-                id="hasCommentingEnabled"
-                isChecked={ profile.hasCommentingEnabled }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_LOVES }
-                id="hasLovesEnabled"
-                isChecked={ profile.hasLovesEnabled }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_SHARING }
-                id="hasSharingEnabled"
-                isChecked={ profile.hasSharingEnabled }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_REPOSTING }
-                id="hasRepostingEnabled"
-                isChecked={ profile.hasRepostingEnabled }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_EMBEDDED_MEDIA }
-                id="hasAdNotificationsEnabled"
-                isChecked={ profile.hasAdNotificationsEnabled }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_ANALYTICS }
-                id="allowsAnalytics"
-                isChecked={ profile.allowsAnalytics }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.PREF_DISCOVERABILITY }
-                id="discoverable"
-                isChecked={ profile.discoverable }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-            </div>
-
-            <TreeButton>Notifications</TreeButton>
-            <div className="TreePanel">
-              <Preference
-                definition={ PREFERENCES.MAIL_COMMENTS }
-                id="notifyOfCommentsViaEmail"
-                isChecked={ profile.notifyOfCommentsViaEmail }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.MAIL_LOVES }
-                id="notifyOfLovesViaEmail"
-                isChecked={ profile.notifyOfLovesViaEmail }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.MAIL_MENTIONS }
-                id="notifyOfMentionsViaEmail"
-                isChecked={ profile.notifyOfMentionsViaEmail }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.MAIL_REPOSTS }
-                id="notifyOfRepostsViaEmail"
-                isChecked={ profile.notifyOfRepostsViaEmail }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.MAIL_NEW_FOLLOWERS }
-                id="notifyOfNewFollowersViaEmail"
-                isChecked={ profile.notifyOfNewFollowersViaEmail }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.MAIL_INVITE_ACCEPTED }
-                id="notifyOfInvitationAcceptancesViaEmail"
-                isChecked={ profile.notifyOfInvitationAcceptancesViaEmail }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-            </div>
-
-            <TreeButton>Newsletters</TreeButton>
-            <div className="TreePanel">
-              <Preference
-                definition={ PREFERENCES.NEWS_FEATURES }
-                id="subscribeToUsersEmailList"
-                isChecked={ profile.subscribeToUsersEmailList }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.NEWS_WEEKLY }
-                id="subscribeToWeeklyEllo"
-                isChecked={ profile.subscribeToWeeklyEllo }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.NEWS_DAILY }
-                id="subscribeToDailyEllo"
-                isChecked={ profile.subscribeToDailyEllo }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-              <Preference
-                definition={ PREFERENCES.NEWS_TIPS }
-                id="subscribeToOnboardingDrip"
-                isChecked={ profile.subscribeToOnboardingDrip }
-                onToggleChange={ ::this.handlePreferenceChange }
-              />
-            </div>
+            <StreamComponent ref="streamComponent" action={availableToggles()} />
 
             <TreeButton>NSFW</TreeButton>
             <div className="TreePanel">
@@ -276,13 +315,13 @@ class Settings extends Component {
                 definition={ PREFERENCES.NSFW_VIEW }
                 id="viewsAdultContent"
                 isChecked={ profile.viewsAdultContent }
-                onToggleChange={ ::this.handlePreferenceChange }
+                onToggleChange={ preferenceToggleChanged }
               />
               <Preference
                 definition={ PREFERENCES.NSFW_POST }
                 id="postsAdultContent"
                 isChecked={ profile.postsAdultContent }
-                onToggleChange={ ::this.handlePreferenceChange }
+                onToggleChange={ ::this.launchAdultPostsPrompt }
               />
               <p><em>{ SETTINGS.NSFW_DISCLAIMER }</em></p>
             </div>
@@ -346,16 +385,15 @@ class Settings extends Component {
                   </dl>
               </div>
             </div>
-
           </div>
         </div>
       </section>
     )
   }
 }
-// TODO: Should this load profile?
+// TODO: Should this load profile or will the App take care of it?
 // Settings.preRender = (store) => {
-//   return store.dispatch(loadInvitedUsers())
+//   return store.dispatch(loadProfile())
 // }
 
 Settings.propTypes = {
@@ -365,7 +403,8 @@ Settings.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    profile: state.profile.payload,
+    availability: state.profile.availability,
+    profile: state.profile,
   }
 }
 

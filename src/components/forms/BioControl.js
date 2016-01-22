@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import FormControl from './FormControl'
 import classNames from 'classnames'
 
 class BioControl extends Component {
@@ -6,88 +7,61 @@ class BioControl extends Component {
   constructor(props, context) {
     super(props, context)
     const { text } = this.props
-    this.state = {
-      text,
-      hasValue: text && text.length,
-      hasFocus: false,
+    this.state = { textLength: text ? text.length : 0 }
+    this.handleChange = ::this.handleChange
+  }
+
+  handleChange(vo) {
+    const { id, onChange } = this.props
+    const { textLength } = this.state
+    const len = vo[id] ? vo[id].length : 0
+    if (textLength !== len) {
+      this.setState({ textLength: len })
+    }
+    if (id && typeof onChange === 'function') {
+      onChange(vo)
     }
   }
 
-  handleFocus() {
-    this.setState({ hasFocus: true })
+  isValidBioLength() {
+    const { textLength } = this.state
+    return textLength > 192
   }
 
-  handleBlur() {
-    this.setState({ hasFocus: false })
-  }
-
-  handleChange(e) {
-    const val = e.target.value
-    this.setState({ text: val, hasValue: val.length })
-    this.props.controlWasChanged({ unsanitized_short_bio: val })
-  }
-
+  // For consistency we should probably move the checks up to Validators and
+  // let the Container control the state. The component is more portable this
+  // way but it's still weird. Exceeding isn't really an error either.
   render() {
-    const { classModifiers, id, name, tabIndex, placeholder } = this.props
-    const { hasFocus, hasValue, text } = this.state
-    const len = text ? text.length : 0
-    const label = len > 192 ? `Bio ${len}` : 'Bio'
-    const groupClassNames = classNames(
-      'FormControlGroup',
-      classModifiers,
-      { hasFocus },
-      { hasValue },
-      { hasExceeded: len > 192 },
-    )
-    const labelClassNames = classNames(
-      'FormControlLabel',
-      classModifiers,
-    )
-    const controlClassNames = classNames(
-      'FormControl',
-      'BioControl',
-      classModifiers,
-    )
-
+    const { textLength } = this.state
+    const hasExceeded = this.isValidBioLength()
+    const label = hasExceeded ? `Bio ${textLength}` : `Bio`
     return (
-      <div className={groupClassNames}>
-        <label className={labelClassNames} htmlFor={id}>{label}</label>
-        <textarea
-          className={controlClassNames}
-          id={id}
-          name={name}
-          value={text}
-          type="text"
-          tabIndex={tabIndex}
-          placeholder={placeholder}
-          autoCapitalize="off"
-          autoCorrect="off"
-          onBlur={::this.handleBlur}
-          onChange={::this.handleChange}
-          onFocus={::this.handleFocus}
-        />
-      </div>
+      <FormControl
+        { ...this.props }
+        className={ classNames({ hasExceeded }) }
+        autoCapitalize="off"
+        autoCorrect="off"
+        kind="textarea"
+        label={ label }
+        onChange={ this.handleChange }
+        type="text"
+      />
     )
   }
 }
 
 BioControl.propTypes = {
-  classModifiers: PropTypes.string,
-  controlWasChanged: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
-  tabIndex: PropTypes.string.isRequired,
+  onChange: PropTypes.func,
   text: PropTypes.string,
 }
 
 BioControl.defaultProps = {
-  classModifiers: '',
-  id: 'user_unsanitized_short_bio',
+  className: 'BioControl',
+  id: 'unsanitized_short_bio',
+  label: 'Bio',
   name: 'user[unsanitized_short_bio]',
   placeholder: 'Bio (optional)',
-  tabIndex: '0',
-  text: '',
 }
 
 export default BioControl

@@ -26,24 +26,6 @@ class Onboarding extends Component {
     }
   }
 
-  getAvatarSource(profile) {
-    const { payload } = profile
-    const { avatar, tmpAvatar } = payload
-    if (tmpAvatar) {
-      return tmpAvatar
-    }
-    return avatar ? avatar.large.url : null
-  }
-
-  getCoverSource(profile) {
-    const { payload } = profile
-    const { coverImage, tmpCover } = payload
-    if (tmpCover) {
-      return tmpCover
-    }
-    return coverImage ? coverImage : null
-  }
-
   getRelationshipMap() {
     const { json, pathname } = this.props
     const result = json.pages ? json.pages[pathname] : null
@@ -143,7 +125,7 @@ class Onboarding extends Component {
             />
             <Cover
               isModifiable
-              coverImage={this.getCoverSource(profile)}
+              coverImage={ profile.coverImage }
             />
           </section>
         )
@@ -168,10 +150,11 @@ class Onboarding extends Component {
               />
               <Avatar
                 isModifiable
-                sources={this.getAvatarSource(profile)}
+                size="large"
+                sources={ profile.avatar }
               />
             </div>
-            <Cover coverImage={this.getCoverSource(profile)} />
+            <Cover coverImage={ profile.coverImage } />
           </section>
         )
 
@@ -187,10 +170,16 @@ class Onboarding extends Component {
             />
 
             <div className="InfoPickerBody" >
-              <Avatar sources={this.getAvatarSource(profile)} />
-              <InfoForm />
+              <Avatar
+                size="large"
+                sources={ profile.avatar }
+              />
+              <InfoForm
+                tabIndexStart={ 1 }
+              />
+
             </div>
-            <Cover coverImage={this.getCoverSource(profile)} />
+            <Cover coverImage={ profile.coverImage } />
           </section>
         )
 
