@@ -31,6 +31,15 @@ class PostTools extends Component {
     this.state = {
       isMoreToolActive: false,
     }
+    this.closeModal = ::this.closeModal
+    this.deletePost = ::this.deletePost
+    this.flagPost = ::this.flagPost
+    this.lovePost = ::this.lovePost
+    this.postWasFlagged = ::this.postWasFlagged
+    this.sharePost = ::this.sharePost
+    this.signUp = ::this.signUp
+    this.toggleActiveMoreTool = ::this.toggleActiveMoreTool
+    this.toggleComments = ::this.toggleComments
   }
 
   getToolCells() {
@@ -52,7 +61,7 @@ class PostTools extends Component {
     if (author.hasCommentingEnabled) {
       cells.push(
         <span className="PostTool CommentTool" key={`CommentTool_${post.id}`}>
-          <button onClick={ ::this.toggleComments }>
+          <button onClick={ this.toggleComments }>
             <BubbleIcon />
             <span
               className="PostToolValue"
@@ -68,7 +77,7 @@ class PostTools extends Component {
     if (author.hasLovesEnabled) {
       cells.push(
         <span className="PostTool LoveTool" key={`LoveTool_${post.id}`}>
-          <button className={classNames({ active: post.loved })} onClick={ ::this.lovePost }>
+          <button className={classNames({ active: post.loved })} onClick={ this.lovePost }>
             <HeartIcon />
             <span className="PostToolValue" data-count={post.lovesCount}>{post.lovesCount}</span>
             <Hint>Love</Hint>
@@ -79,7 +88,7 @@ class PostTools extends Component {
     if (author.hasRepostingEnabled) {
       cells.push(
         <span className="PostTool RepostTool" key={`RepostTool_${post.id}`}>
-          <button onClick={ ::this.signUp }>
+          <button onClick={ this.signUp }>
             <RepostIcon />
             <span
               className="PostToolValue"
@@ -98,7 +107,7 @@ class PostTools extends Component {
           className={classNames('PostTool', 'ShareTool', { asPill: !isLoggedIn })}
           key={`ShareTool_${post.id}`}
         >
-          <button onClick={ ::this.sharePost }>
+          <button onClick={ this.sharePost }>
             <ShareIcon />
             <Hint>Share</Hint>
           </button>
@@ -125,7 +134,7 @@ class PostTools extends Component {
         )
         cells.push(
           <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${post.id}`}>
-            <button onClick={ ::this.deletePost }>
+            <button onClick={ this.deletePost }>
               <XBoxIcon />
               <Hint>Delete</Hint>
             </button>
@@ -134,7 +143,7 @@ class PostTools extends Component {
       } else {
         cells.push(
           <span className="PostTool FlagTool ShyTool" key={`FlagTool_${post.id}`}>
-            <button onClick={ ::this.flagPost }>
+            <button onClick={ this.flagPost }>
               <FlagIcon />
               <Hint>Flag</Hint>
             </button>
@@ -144,7 +153,7 @@ class PostTools extends Component {
     }
     cells.push(
       <span className={"PostTool MoreTool"} key={`MoreTool_${post.id}`}>
-        <button onClick={ ::this.toggleActiveMoreTool }>
+        <button onClick={ this.toggleActiveMoreTool }>
           <ChevronIcon />
           <Hint>More</Hint>
         </button>
@@ -198,8 +207,8 @@ class PostTools extends Component {
     const { dispatch } = this.props
     dispatch(openModal(
       <FlagDialog
-        onResponse={ ::this.postWasFlagged }
-        onConfirm={ ::this.closeModal }
+        onResponse={ this.postWasFlagged }
+        onConfirm={ this.closeModal }
       />))
   }
 
@@ -213,8 +222,8 @@ class PostTools extends Component {
     dispatch(openModal(
       <ConfirmDialog
         title="Delete Post?"
-        onConfirm={ ::this.deletePostConfirmed }
-        onRejected={ ::this.closeModal }
+        onConfirm={ this.deletePostConfirmed }
+        onRejected={ this.closeModal }
       />))
   }
 

@@ -7,6 +7,7 @@ class StarshipButton extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = { nextPriority: this.getNextPriority(this.props) }
+    this.updatePriority = ::this.updatePriority
   }
 
   componentWillReceiveProps(nextProps) {
@@ -36,7 +37,7 @@ class StarshipButton extends Component {
     return (
       <button
         className={"StarshipButton"}
-        onClick={::this.updatePriority}
+        onClick={ this.updatePriority }
         data-priority={priority}
       >
         <StarIcon/>

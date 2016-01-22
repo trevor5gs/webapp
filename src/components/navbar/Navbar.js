@@ -29,6 +29,10 @@ class Navbar extends Component {
       asLocked: false,
       skipTransition: false,
     }
+    this.logInWasClicked = ::this.logInWasClicked
+    this.onLogOut = ::this.onLogOut
+    this.omniButtonWasClicked = ::this.omniButtonWasClicked
+    this.loadMorePostsWasClicked = ::this.loadMorePostsWasClicked
   }
 
   componentDidMount() {
@@ -187,10 +191,10 @@ class Navbar extends Component {
     return (
       <nav className={klassNames} role="navigation">
         <NavbarMark />
-        <NavbarOmniButton callback={::this.omniButtonWasClicked} />
+        <NavbarOmniButton callback={ this.omniButtonWasClicked } />
         {
           hasLoadMoreButton ?
-          <NavbarMorePostsButton callback={::this.loadMorePostsWasClicked} /> :
+          <NavbarMorePostsButton callback={ this.loadMorePostsWasClicked } /> :
           null
         }
         <div className="NavbarLinks">
@@ -232,7 +236,7 @@ class Navbar extends Component {
         </div>
         <NavbarProfile
           avatar={ profile.avatar }
-          onLogOut={ ::this.onLogOut }
+          onLogOut={ this.onLogOut }
           username={ profile.username }
         />
       </nav>
@@ -246,7 +250,7 @@ class Navbar extends Component {
         <NavbarLabel />
         {
           hasLoadMoreButton ?
-            <NavbarMorePostsButton callback={::this.loadMorePostsWasClicked} /> :
+            <NavbarMorePostsButton callback={ this.loadMorePostsWasClicked } /> :
             null
         }
         <div className="NavbarLinks">
@@ -269,7 +273,7 @@ class Navbar extends Component {
             label="Log in"
             modifiers="LabelOnly"
             pathname={pathname}
-            onClick={::this.logInWasClicked}
+            onClick={ this.logInWasClicked }
           />
           <NavbarLink
             to="/signup"

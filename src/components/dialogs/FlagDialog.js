@@ -18,6 +18,8 @@ class FlagDialog extends Component {
       activeChoice: null,
       scene: 'renderChoicesScreen',
     }
+    this.choiceWasMade = ::this.choiceWasMade
+    this.handleChoiceClick = ::this.handleChoiceClick
   }
 
   choiceWasMade() {
@@ -45,7 +47,7 @@ class FlagDialog extends Component {
           className={ classNames({ isActive: activeChoice === choice }, 'FlagDialogChoice') }
           data-flag={ choice }
           key={ choice }
-          onClick={ ::this.handleChoiceClick }
+          onClick={ this.handleChoiceClick }
         >
           { flags[choice] }
         </button>
@@ -66,7 +68,7 @@ class FlagDialog extends Component {
 
           <button
             className="FlagDialogButton"
-            onClick={ ::this.choiceWasMade }
+            onClick={ this.choiceWasMade }
             style={ top ? { top, display: 'inline-block' } : { display: 'none' } }
           >
             Submit

@@ -19,6 +19,9 @@ class ImageRegion extends Component {
       scale: null,
       marginBottom: null,
     }
+    this.loadDidFail = ::this.loadDidFail
+    this.loadDidSucceed = ::this.loadDidSucceed
+    this.staticImageRegionWasClicked = ::this.staticImageRegionWasClicked
   }
 
   componentWillMount() {
@@ -138,8 +141,8 @@ class ImageRegion extends Component {
     this.disposeLoader()
     if (srcset) {
       this.img = new Image()
-      this.img.onload = ::this.loadDidSucceed
-      this.img.onerror = ::this.loadDidFail
+      this.img.onload = this.loadDidSucceed
+      this.img.onerror = this.loadDidFail
       this.img.srcset = srcset
     }
   }
@@ -234,7 +237,7 @@ class ImageRegion extends Component {
     return (
       <div
         className="RegionContent"
-        onClick={ ::this.staticImageRegionWasClicked }
+        onClick={ this.staticImageRegionWasClicked }
         style={{ transform: scale ? `scale(${scale})` : null, marginBottom }}
       >
         { this.renderAttachment() }

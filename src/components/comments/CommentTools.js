@@ -23,6 +23,13 @@ class CommentTools extends Component {
     this.state = {
       isMoreToolActive: false,
     }
+    this.closeModal = ::this.closeModal
+    this.commentWasFlagged = ::this.commentWasFlagged
+    this.deleteComment = ::this.deleteComment
+    this.deleteCommentConfirmed = ::this.deleteCommentConfirmed
+    this.flagComment = ::this.flagComment
+    this.replyToComment = ::this.replyToComment
+    this.toggleActiveMoreTool = ::this.toggleActiveMoreTool
   }
 
   getToolCells() {
@@ -47,7 +54,7 @@ class CommentTools extends Component {
         )
         cells.push(
           <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${comment.id}`}>
-            <button onClick={ ::this.deleteComment }>
+            <button onClick={ this.deleteComment }>
               <XBoxIcon />
               <Hint>Delete</Hint>
             </button>
@@ -56,7 +63,7 @@ class CommentTools extends Component {
       } else {
         cells.push(
           <span className="PostTool ReplyTool" key={`ReplyTool_${comment.id}`}>
-            <button onClick={ ::this.replyToComment }>
+            <button onClick={ this.replyToComment }>
               <ReplyIcon />
               <Hint>Reply</Hint>
             </button>
@@ -64,7 +71,7 @@ class CommentTools extends Component {
         )
         cells.push(
           <span className="PostTool FlagTool ShyTool" key={`FlagTool_${comment.id}`}>
-            <button onClick={ ::this.flagComment }>
+            <button onClick={ this.flagComment }>
               <FlagIcon />
               <Hint>Flag</Hint>
             </button>
@@ -74,7 +81,7 @@ class CommentTools extends Component {
     }
     cells.push(
       <span className={"PostTool MoreTool"} key={`MoreTool_${comment.id}`}>
-        <button onClick={ ::this.toggleActiveMoreTool }>
+        <button onClick={ this.toggleActiveMoreTool }>
           <ChevronIcon />
           <Hint>More</Hint>
         </button>
@@ -106,8 +113,8 @@ class CommentTools extends Component {
     const { dispatch } = this.props
     dispatch(openModal(
       <FlagDialog
-        onResponse={ ::this.commentWasFlagged }
-        onConfirm={ ::this.closeModal }
+        onResponse={ this.commentWasFlagged }
+        onConfirm={ this.closeModal }
       />))
   }
 
@@ -121,8 +128,8 @@ class CommentTools extends Component {
     dispatch(openModal(
       <ConfirmDialog
         title="Delete Comment?"
-        onConfirm={ ::this.deleteCommentConfirmed }
-        onRejected={ ::this.closeModal }
+        onConfirm={ this.deleteCommentConfirmed }
+        onRejected={ this.closeModal }
       />))
   }
 

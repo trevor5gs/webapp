@@ -19,6 +19,8 @@ class Search extends Component {
       terms: this.props.location.query.terms || '',
       type: this.props.location.query.type || 'posts',
     }
+    this.creditsTrackingEvent = ::this.creditsTrackingEvent
+    this.handleControlChange = ::this.handleControlChange
   }
 
   componentWillMount() {
@@ -91,19 +93,19 @@ class Search extends Component {
     return (
       <section className="Search Panel">
         <Banderole
-          creditsClickAction={ ::this.creditsTrackingEvent }
+          creditsClickAction={ this.creditsTrackingEvent }
           isLoggedIn={ isLoggedIn }
           userlist={ SIGNED_OUT_PROMOTIONS }
         />
         <div className="SearchBar">
           <SearchControl
-            onChange={ ::this.handleControlChange }
+            onChange={ this.handleControlChange }
             text={ terms }
           />
           <TabListButtons
             activeType={ type }
             className="SearchTabList"
-            onTabClick={ ::this.handleControlChange }
+            onTabClick={ this.handleControlChange }
             tabClasses="LabelTab"
             tabs={ tabs }
           />

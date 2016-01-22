@@ -13,6 +13,8 @@ class InvitationForm extends Component {
     this.state = {
       batchEmailStatus: STATUS.INDETERMINATE,
     }
+    this.handleSubmit = ::this.handleSubmit
+    this.handleControlChange = ::this.handleControlChange
   }
 
   handleControlChange(vo) {
@@ -46,12 +48,12 @@ class InvitationForm extends Component {
       <form
         className={classNames(className, 'InvitationForm')}
         noValidate="novalidate"
-        onSubmit={ ::this.handleSubmit }
+        onSubmit={ this.handleSubmit }
         role="form"
       >
         <BatchEmailControl
           classModifiers="asBoxControl onWhite"
-          controlWasChanged={ ::this.handleControlChange }
+          controlWasChanged={ this.handleControlChange }
           ref="batchEmailControl"
           status={ batchEmailStatus }
           tabIndex="1"

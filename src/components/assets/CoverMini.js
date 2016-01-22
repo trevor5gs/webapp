@@ -17,6 +17,8 @@ class CoverMini extends Component {
       imageSize: 'hdpi',
       status: STATUS.PENDING,
     }
+    this.loadDidFail = ::this.loadDidFail
+    this.loadDidSucceed = ::this.loadDidSucceed
   }
 
   componentWillMount() {
@@ -65,8 +67,8 @@ class CoverMini extends Component {
     this.disposeLoader()
     if (src) {
       this.img = new Image()
-      this.img.onload = ::this.loadDidSucceed
-      this.img.onerror = ::this.loadDidFail
+      this.img.onload = this.loadDidSucceed
+      this.img.onerror = this.loadDidFail
       this.img.src = src
     }
   }

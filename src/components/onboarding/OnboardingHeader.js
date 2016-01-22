@@ -6,6 +6,11 @@ import { trackEvent } from '../../actions/tracking'
 import { ElloMark } from '../interface/ElloIcons'
 
 class OnboardingHeader extends Component {
+  constructor(props, context) {
+    super(props, context)
+    this.nextWasClicked = ::this.nextWasClicked
+    this.skipWasClicked = ::this.skipWasClicked
+  }
 
   getButtonClassNames() {
     const { lockNext, relationshipMap } = this.props
@@ -89,14 +94,14 @@ class OnboardingHeader extends Component {
           <Link
             className={ this.getButtonClassNames() }
             to={nextPath}
-            onClick={ ::this.nextWasClicked }
+            onClick={ this.nextWasClicked }
           >
             Next
           </Link>
           <Link
             className="OnboardingSkipButton"
             to={nextPath}
-            onClick={ ::this.skipWasClicked }
+            onClick={ this.skipWasClicked }
           >
             Skip
           </Link>

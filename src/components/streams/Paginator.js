@@ -6,6 +6,7 @@ class Paginator extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = { isPaginationLoading: false, message: this.getMessage() }
+    this.loadMore = ::this.loadMore
   }
 
   getMessage() {
@@ -38,7 +39,7 @@ class Paginator extends Component {
     const { hasShowMoreButton } = this.props
     const classes = isPaginationLoading ? 'Paginator isBusy' : 'Paginator'
     const messageArea = hasShowMoreButton ?
-      <button onClick={ ::this.loadMore }>{ message }</button> :
+      <button onClick={ this.loadMore }>{ message }</button> :
       <span>{ message }</span>
     return (
       <div className={ classes }>

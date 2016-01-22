@@ -8,6 +8,11 @@ import RelationsGroup from '../relationships/RelationsGroup'
 import { getLinkObject } from '../base/json_helper'
 
 class UserInvitee extends Component {
+  constructor(props, context) {
+    super(props, context)
+    this.reInviteUser = ::this.reInviteUser
+  }
+
 
   reInviteUser() {
     const { dispatch, invitation } = this.props
@@ -40,7 +45,7 @@ class UserInvitee extends Component {
     return (
       <div className={classNames(this.props.className, 'UserInvitee')}>
         { this.renderMailtoUserHeader(invitation) }
-        <button className="UserInviteeAction" onClick={ ::this.reInviteUser }>Re-Invite</button>
+        <button className="UserInviteeAction" onClick={ this.reInviteUser }>Re-Invite</button>
       </div>
     )
   }

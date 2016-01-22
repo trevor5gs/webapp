@@ -12,6 +12,9 @@ class BatchEmailControl extends Component {
       hasValue: text && text.length,
       hasFocus: false,
     }
+    this.handleBlur = ::this.handleBlur
+    this.handleFocus = ::this.handleFocus
+    this.handleChange = ::this.handleChange
   }
 
   handleFocus() {
@@ -85,9 +88,9 @@ class BatchEmailControl extends Component {
           autoCapitalize="off"
           autoCorrect="off"
           ref="input"
-          onBlur={::this.handleBlur}
-          onChange={::this.handleChange}
-          onFocus={::this.handleFocus}
+          onBlur={ this.handleBlur }
+          onChange={ this.handleChange }
+          onFocus={ this.handleFocus }
         />
         { this.renderError() }
       </div>
