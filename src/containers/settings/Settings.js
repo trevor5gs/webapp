@@ -31,7 +31,6 @@ import StreamComponent from '../../components/streams/StreamComponent'
 import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 import InfoForm from '../../components/forms/InfoForm'
 
-
 class Settings extends Component {
   constructor(props, context) {
     super(props, context)
@@ -41,11 +40,13 @@ class Settings extends Component {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
     }
     this.onLogOut = ::this.onLogOut
+    this.closeModal = ::this.closeModal
     this.handleSubmit = ::this.handleSubmit
     this.usernameControlWasChanged = ::this.usernameControlWasChanged
     this.passwordControlWasChanged = ::this.passwordControlWasChanged
     this.emailControlWasChanged = ::this.emailControlWasChanged
     this.passwordCurrentControlWasChanged = ::this.passwordCurrentControlWasChanged
+    this.launchAdultPostsPrompt = ::this.launchAdultPostsPrompt
   }
 
   componentWillMount() {
@@ -191,7 +192,7 @@ class Settings extends Component {
       const { dispatch, profile } = this.props
       dispatch(openModal(
         <AdultPostsDialog
-          onConfirm={ ::this.closeModal }
+          onConfirm={ this.closeModal }
           user={ profile }
         />
       ))
@@ -321,7 +322,7 @@ class Settings extends Component {
                 definition={ PREFERENCES.NSFW_POST }
                 id="postsAdultContent"
                 isChecked={ profile.postsAdultContent }
-                onToggleChange={ ::this.launchAdultPostsPrompt }
+                onToggleChange={ this.launchAdultPostsPrompt }
               />
               <p><em>{ SETTINGS.NSFW_DISCLAIMER }</em></p>
             </div>

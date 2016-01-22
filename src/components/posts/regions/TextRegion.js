@@ -4,6 +4,11 @@ import { routeActions } from 'redux-simple-router'
 import classNames from 'classnames'
 
 class TextRegion extends Component {
+  constructor(props, context) {
+    super(props, context)
+    this.handleRegionClick = ::this.handleRegionClick
+  }
+
 
   handleRegionClick(e) {
     const { dispatch, isGridLayout, postDetailPath } = this.props
@@ -39,7 +44,7 @@ class TextRegion extends Component {
         <div
           className={classNames('RegionContent', { asHotRegion: isHotRegion })}
           dangerouslySetInnerHTML={{ __html: content }}
-          onClick={::this.handleRegionClick}
+          onClick={ this.handleRegionClick }
         />
       </div>
     )

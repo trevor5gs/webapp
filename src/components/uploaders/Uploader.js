@@ -9,6 +9,11 @@ class Uploader extends Component {
     this.state = {
       hasDragOver: false,
     }
+    this.handleDrop = ::this.handleDrop
+    this.handleDragOver = ::this.handleDragOver
+    this.handleDragLeave = ::this.handleDragLeave
+    this.handleFileBrowser = ::this.handleFileBrowser
+    this.triggerFileBrowser = ::this.triggerFileBrowser
   }
 
   triggerFileBrowser() {
@@ -68,13 +73,13 @@ class Uploader extends Component {
     return (
       <div
         className={klassNames}
-        onDrop={::this.handleDrop}
-        onDragOver={::this.handleDragOver}
-        onDragLeave={::this.handleDragLeave}
+        onDrop={ this.handleDrop }
+        onDragOver={ this.handleDragOver }
+        onDragLeave={ this.handleDragLeave }
       >
         <button
           className="UploaderButton"
-          onClick={::this.triggerFileBrowser}
+          onClick={ this.triggerFileBrowser }
         >
           {title}
         </button>
@@ -82,7 +87,7 @@ class Uploader extends Component {
         {recommend ? <p>{recommend}</p> : null}
         <input
           className="hidden"
-          onChange={::this.handleFileBrowser}
+          onChange={ this.handleFileBrowser }
           ref="FileBrowser"
           type="file"
           capture="camera"

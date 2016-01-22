@@ -8,6 +8,11 @@ import StreamComponent from '../../components/streams/StreamComponent'
 import TabListLinks from '../../components/tabs/TabListLinks'
 
 class Discover extends Component {
+  constructor(props, context) {
+    super(props, context)
+    this.creditsTrackingEvent = ::this.creditsTrackingEvent
+  }
+
 
   creditsTrackingEvent() {
     const { dispatch } = this.props
@@ -39,7 +44,7 @@ class Discover extends Component {
     return (
       <section className="Discover Panel" key={`discover_${type}`}>
         <Banderole
-          creditsClickAction={ ::this.creditsTrackingEvent }
+          creditsClickAction={ this.creditsTrackingEvent }
           isLoggedIn={ isLoggedIn }
           userlist={ SIGNED_OUT_PROMOTIONS }
         />

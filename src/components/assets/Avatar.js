@@ -16,6 +16,8 @@ class Avatar extends Component {
     this.state = {
       status: this.getAvatarSource() ? STATUS.REQUEST : STATUS.PENDING,
     }
+    this.loadDidFail = ::this.loadDidFail
+    this.loadDidSucceed = ::this.loadDidSucceed
   }
 
   componentDidMount() {
@@ -70,8 +72,8 @@ class Avatar extends Component {
     this.disposeLoader()
     if (src) {
       this.img = new Image()
-      this.img.onload = ::this.loadDidSucceed
-      this.img.onerror = ::this.loadDidFail
+      this.img.onload = this.loadDidSucceed
+      this.img.onerror = this.loadDidFail
       this.img.src = src
     }
   }

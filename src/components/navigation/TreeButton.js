@@ -21,6 +21,7 @@ class TreeButton extends Component {
     this.state = {
       collapsed: isCollapsed,
     }
+    this.handleChange = ::this.handleChange
   }
 
   handleChange(...rest) {
@@ -39,7 +40,7 @@ class TreeButton extends Component {
     return (
       <button
         className={classNames(className, 'TreeButton', { isCollapsed: collapsed })}
-        onClick={ ::this.handleChange }
+        onClick={ this.handleChange }
       >
         <TreeIcon/>
         {children}

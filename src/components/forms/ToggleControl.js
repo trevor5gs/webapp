@@ -9,6 +9,7 @@ class ToggleControl extends Component {
     this.state = {
       checked: isChecked,
     }
+    this.handleChange = ::this.handleChange
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,7 +45,7 @@ class ToggleControl extends Component {
           id={ id }
           type="checkbox"
           checked={ checked }
-          onChange={ ::this.handleChange }
+          onChange={ this.handleChange }
         />
         <span>{ checked ? 'Yes' : 'No' }</span>
       </label>

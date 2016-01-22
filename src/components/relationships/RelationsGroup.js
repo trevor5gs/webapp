@@ -12,6 +12,14 @@ import RelationshipButton from '../relationships/RelationshipButton'
 import StarshipButton from '../relationships/StarshipButton'
 
 class RelationsGroup extends Component {
+  constructor(props, context) {
+    super(props, context)
+    this.handleMuteUser = ::this.handleMuteUser
+    this.handleBlockUser = ::this.handleBlockUser
+    this.launchBlockMutePrompt = ::this.launchBlockMutePrompt
+    this.handleLaunchSignUpModal = ::this.handleLaunchSignUpModal
+  }
+
 
   getNextPriority(props, btnId) {
     const { user } = props
@@ -82,8 +90,8 @@ class RelationsGroup extends Component {
     const priority = user.relationshipPriority
     dispatch(openModal(
       <BlockMuteDialog
-        onBlock={ ::this.handleBlockUser }
-        onMute={ ::this.handleMuteUser }
+        onBlock={ this.handleBlockUser }
+        onMute={ this.handleMuteUser }
         blockIsActive={ priority === RELATIONSHIP_PRIORITY.BLOCK }
         muteIsActive={ priority === RELATIONSHIP_PRIORITY.MUTE }
         username = { user.username }
@@ -107,7 +115,7 @@ class RelationsGroup extends Component {
     const { user } = this.props
     return (
       <BlockMuteButton
-        onClick={ ::this.launchBlockMutePrompt }
+        onClick={ this.launchBlockMutePrompt }
         priority={ user.relationshipPriority }
         userId={ user.id }
       />
@@ -117,20 +125,20 @@ class RelationsGroup extends Component {
   render() {
     const { isLoggedIn, user } = this.props
     const callback = this.isBlockedOrMuted() ?
-                     (::this.launchBlockMutePrompt) :
-                     (::this.handleRelationshipUpdate)
+                     (this.launchBlockMutePrompt) :
+                     (this.handleRelationshipUpdate)
 
     return (
       <div className="RelationsGroup" >
         { this.shouldRenderBlockMute() ? this.renderBlockMuteButton() : null }
         <RelationshipButton
-          buttonWasClicked={ isLoggedIn ? callback : ::this.handleLaunchSignUpModal }
+          buttonWasClicked={ isLoggedIn ? callback : this.handleLaunchSignUpModal }
           priority={ user.relationshipPriority }
           ref="RelationshipButton"
           userId={ user.id }
         />
         <StarshipButton
-          buttonWasClicked={ isLoggedIn ? callback : ::this.handleLaunchSignUpModal }
+          buttonWasClicked={ isLoggedIn ? callback : this.handleLaunchSignUpModal }
           priority={ user.relationshipPriority }
           ref="StarshipButton"
           userId={ user.id }

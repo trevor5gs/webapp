@@ -68,6 +68,7 @@ class ShareDialog extends Component {
     this.tweetSummarySafe = window.encodeURIComponent(tweetSummary)
     this.emailSubjectSafe = window.encodeURIComponent(emailSubject)
     this.emailBodySafe = `${this.summarySafe}%0D%0A%0D%0A${this.postLinkSafe}`
+    this.popShareWindow = ::this.popShareWindow
   }
 
   getUrl(type) {
@@ -123,14 +124,14 @@ class ShareDialog extends Component {
           value={this.postLink}
         />
         <div className="ShareLinks">
-          <button className="ShareLink" data-type={SHARE_TYPES.EMAIL} onClick={::this.popShareWindow}><MailIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.FACEBOOK} onClick={::this.popShareWindow}><FacebookIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.TWITTER} onClick={::this.popShareWindow}><TwitterIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.PINTEREST} onClick={::this.popShareWindow}><PinterestIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.GOOGLE_PLUS} onClick={::this.popShareWindow}><GooglePlusIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.TUMBLR} onClick={::this.popShareWindow}><TumblrIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.REDDIT} onClick={::this.popShareWindow}><RedditIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.LINKEDIN} onClick={::this.popShareWindow}><LinkedInIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.EMAIL} onClick={this.popShareWindow}><MailIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.FACEBOOK} onClick={this.popShareWindow}><FacebookIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.TWITTER} onClick={this.popShareWindow}><TwitterIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.PINTEREST} onClick={this.popShareWindow}><PinterestIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.GOOGLE_PLUS} onClick={this.popShareWindow}><GooglePlusIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.TUMBLR} onClick={this.popShareWindow}><TumblrIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.REDDIT} onClick={this.popShareWindow}><RedditIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.LINKEDIN} onClick={this.popShareWindow}><LinkedInIcon/></button>
         </div>
       </div>
     )

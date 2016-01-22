@@ -13,7 +13,7 @@ class RelationshipImageButton extends RelationshipButton {
       <button
         className="RelationshipImageButton"
         style={ style }
-        onClick={ ::this.updatePriority }
+        onClick={ this.updatePriority }
         data-priority={ priority }
       >
         <span className="RelationshipImageButtonUsername">{ username }</span>

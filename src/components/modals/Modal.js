@@ -12,6 +12,10 @@ function getComponentKind(modal) {
 }
 
 class Modal extends Component {
+  constructor(props, context) {
+    super(props, context)
+    this.handleModalTrigger = ::this.handleModalTrigger
+  }
 
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => {
@@ -60,7 +64,7 @@ class Modal extends Component {
       return (
         <div
           className={ `${groupClassNames} isActive` }
-          onClick={::this.handleModalTrigger}
+          onClick={ this.handleModalTrigger }
         >
           { payload }
         </div>

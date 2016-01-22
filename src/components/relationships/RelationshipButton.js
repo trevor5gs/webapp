@@ -8,6 +8,7 @@ class RelationshipButton extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = { nextPriority: this.getNextPriority(this.props) }
+    this.updatePriority = ::this.updatePriority
   }
 
   componentWillReceiveProps(nextProps) {
@@ -38,7 +39,7 @@ class RelationshipButton extends Component {
     return (
       <button
         className="RelationshipButton"
-        onClick={ ::this.updatePriority }
+        onClick={ this.updatePriority }
         data-priority={ priority }
       >
         { icon }

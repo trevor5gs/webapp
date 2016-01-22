@@ -14,6 +14,8 @@ class Footer extends Component {
       isAndroid: false,
       isGridMode: true,
     }
+    this.scrollToTop = ::this.scrollToTop
+    this.toggleLayoutMode = ::this.toggleLayoutMode
   }
 
   componentWillMount() {
@@ -67,13 +69,13 @@ class Footer extends Component {
             className="TopTool"
             label="Top"
             icon={ <ChevronIcon/> }
-            onClick={ ::this.scrollToTop }
+            onClick={ this.scrollToTop }
           />
           <FooterTool
             className="LayoutTool"
             label={ isGridMode ? 'List View' : 'Grid View' }
             icon={ isGridMode ? <ListIcon/> : <GridIcon/> }
-            onClick={ ::this.toggleLayoutMode }
+            onClick={ this.toggleLayoutMode }
           />
         </div>
       </footer>

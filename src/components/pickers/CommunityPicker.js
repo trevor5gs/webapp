@@ -5,6 +5,11 @@ import StreamComponent from '../streams/StreamComponent'
 import Picker from '../pickers/Picker'
 
 class CommunityPicker extends Picker {
+  constructor(props, context) {
+    super(props, context)
+    this.followAll = ::this.followAll
+  }
+
   getRelationshipButton(refs) {
     const userContainer = refs.wrappedInstance
     if (userContainer) {
@@ -21,7 +26,7 @@ class CommunityPicker extends Picker {
     )
     return (
       <div className={klassNames}>
-        <button className="PickerButton" ref="followAllButton" onClick={::this.followAll}>
+        <button className="PickerButton" ref="followAllButton" onClick={ this.followAll }>
           <span>{this.renderBigButtonText()}</span>
         </button>
         <StreamComponent ref="streamComponent" action={loadCommunities()} />
