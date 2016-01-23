@@ -44,8 +44,8 @@ class Navbar extends Component {
       })
 
       Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
-        const { modal } = this.props
-        if (modal.payload) {
+        const { modalIsActive } = this.props
+        if (modalIsActive) {
           return dispatch(closeModal())
         }
         return dispatch(openModal(<HelpDialog/>))
@@ -308,7 +308,7 @@ Navbar.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   json: PropTypes.object.isRequired,
-  modal: PropTypes.any,
+  modalIsActive: PropTypes.bool,
   pathname: PropTypes.string.isRequired,
   profile: PropTypes.object,
   shortcuts: PropTypes.object.isRequired,
@@ -327,7 +327,7 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
     json: state.json,
-    modal: state.modal,
+    modalIsActive: state.modal.isActive,
     pathname: state.routing.location.pathname,
     profile: state.profile,
   }
