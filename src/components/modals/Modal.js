@@ -33,8 +33,10 @@ class Modal extends Component {
 
   close() {
     const { modal, dispatch } = this.props
-    const { kind } = modal
-    dispatch(kind === 'Modal' ? closeModal() : closeAlert())
+    const { kind, isActive } = modal
+    if (isActive) {
+      dispatch(kind === 'Modal' ? closeModal() : closeAlert())
+    }
   }
 
   handleModalTrigger(e) {
