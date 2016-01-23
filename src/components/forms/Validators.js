@@ -94,3 +94,20 @@ export function getPasswordState({ currentStatus, value }) {
   )
 }
 
+// TODO: This could probably validate each of the individual values
+export function getBatchEmailState({ currentStatus, value }) {
+  if (!value && !value.length && currentStatus) {
+    return { status: STATUS.INDETERMINATE, message: '' }
+  }
+  // return if the field only has commas and spaces
+  if (value.replace(/(,|\s)/g, '').length === 0) {
+    return { status: STATUS.INDETERMINATE, message: '' }
+  }
+  const emails = value.split(/[,\s]+/)
+  return (
+    emails.length > 0 ?
+      { status: STATUS.SUCCESS, message: '' } :
+      { status: STATUS.FAILURE, message: 'appears to be invalid.' }
+  )
+}
+
