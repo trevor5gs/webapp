@@ -1,7 +1,7 @@
 .UserGrid
   overflow: hidden
   position: relative
-  height: rem(220)
+  height: rem(240)
   margin-top: rem(20)
   // outline: 1px dotted purple
 
@@ -16,13 +16,16 @@
 
 .UserGrid > .RelationsGroup > .RelationshipButton
   position: absolute
-  top: rem(22)
-  right: rem(35)
+  top: rem(90)
+  right: rem(30)
+
+.UserGrid > .RelationsGroup > .RelationshipButton[data-priority="self"]
+  right: 0
 
 .UserGrid > .RelationsGroup > .StarshipButton
   position: absolute
-  top: rem(22)
-  right: 0
+  top: rem(90)
+  right: rem(-5)
 
 .UserGrid > .UserStats,
 .UserGrid > .UserNames,
@@ -30,7 +33,7 @@
   padding: 0 rem(10)
 
 .UserGrid > .UserStats
-  margin-top: rem(40)
+  margin-top: rem(60)
 
 .UserGrid > .UserNames
   margin-top: rem(10)
