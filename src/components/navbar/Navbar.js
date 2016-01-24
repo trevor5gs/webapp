@@ -102,15 +102,17 @@ class Navbar extends Component {
     }
   }
 
-  // componentDidUpdate() {
-  //   if (typeof window === 'undefined') {
-  //     return
-  //   }
-  //   const { asLocked, isPageChangeUpdate, offset } = this.state
-  //   if (isPageChangeUpdate && asLocked) {
-  //     window.scrollTo(0, offset - 120)
-  //   }
-  // }
+  // TODO: This may need some tweeks once we get a little more intelligent
+  // around the scroll to calls utilizing history
+  componentDidUpdate() {
+    if (typeof window === 'undefined') {
+      return
+    }
+    const { asLocked, isPageChangeUpdate, offset } = this.state
+    if (isPageChangeUpdate && asLocked) {
+      window.scrollTo(0, offset - 120)
+    }
+  }
 
   componentWillUnmount() {
     const { isLoggedIn, shortcuts } = this.props
