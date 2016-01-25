@@ -1,7 +1,10 @@
 import { MODAL, ALERT } from '../constants/action_types'
 
 const initialState = {
+  classList: null,
+  component: null,
   isActive: false,
+  kind: 'Modal',
 }
 
 export function modal(state = initialState, action) {
@@ -10,15 +13,7 @@ export function modal(state = initialState, action) {
     case MODAL.CLOSE:
     case ALERT.OPEN:
     case ALERT.CLOSE:
-      return {
-        type: action.type,
-        error: action.error,
-        meta: {
-          ...state.meta,
-          ...action.meta,
-        },
-        payload: action.payload,
-      }
+      return { ...state, ...action.payload }
     default:
       return state
   }

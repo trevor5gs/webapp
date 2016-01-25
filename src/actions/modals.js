@@ -1,38 +1,50 @@
 import { MODAL, ALERT } from '../constants/action_types'
 
-export function openModal(component, wrapperClasses = '') {
+export function openModal(component, classList = '') {
   return {
     type: MODAL.OPEN,
-    meta: {
+    payload: {
+      classList,
+      component,
+      isActive: true,
       kind: 'Modal',
-      wrapperClasses,
     },
-    payload: component,
   }
 }
 
 export function closeModal() {
   return {
     type: MODAL.CLOSE,
-    payload: null,
+    payload: {
+      classList: null,
+      component: null,
+      isActive: false,
+      kind: 'Modal',
+    },
   }
 }
 
-export function openAlert(component, wrapperClasses = '') {
+export function openAlert(component, classList = '') {
   return {
     type: ALERT.OPEN,
-    meta: {
+    payload: {
+      classList,
+      component,
+      isActive: true,
       kind: 'Alert',
-      wrapperClasses,
     },
-    payload: component,
   }
 }
 
 export function closeAlert() {
   return {
     type: ALERT.CLOSE,
-    payload: null,
+    payload: {
+      classList: null,
+      component: null,
+      isActive: false,
+      kind: 'Alert',
+    },
   }
 }
 
