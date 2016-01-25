@@ -29,13 +29,11 @@ export function checkAuth(dispatch, oldToken, location) {
       },
     })
   } else {
-    const url = `${ENV.AUTH_DOMAIN}/api/oauth/authorize.html
-      ?response_type=token
-      &scope=web_app+public
-      &client_id=${ENV.AUTH_CLIENT_ID}
-      &redirect_uri=${ENV.AUTH_REDIRECT_URI}`
-
-    window.location.href = url
+    const urlArr = [`${ENV.AUTH_DOMAIN}/api/oauth/authorize.html`]
+    urlArr.push('?response_type=token&scope=web_app+public')
+    urlArr.push(`&client_id=${ENV.AUTH_CLIENT_ID}`)
+    urlArr.push(`&redirect_uri=${ENV.AUTH_REDIRECT_URI}`)
+    window.location.href = urlArr.join('')
   }
 }
 
