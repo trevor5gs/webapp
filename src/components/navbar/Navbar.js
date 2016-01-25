@@ -17,6 +17,20 @@ import NavbarProfile from '../navbar/NavbarProfile'
 import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
 import Mousetrap from '../../vendor/mousetrap'
 
+const whitelist = [
+  '',
+  'discover',
+  'explore',
+  'find',
+  'following',
+  'invitations',
+  'notifications',
+  'onboarding',
+  'search',
+  'staff',
+  'starred',
+]
+
 class Navbar extends Component {
 
   constructor(props, context) {
@@ -33,6 +47,13 @@ class Navbar extends Component {
     this.onLogOut = ::this.onLogOut
     this.omniButtonWasClicked = ::this.omniButtonWasClicked
     this.loadMorePostsWasClicked = ::this.loadMorePostsWasClicked
+  }
+
+  componentWillMount() {
+    const { pathname } = this.props
+    const pathnames = pathname.split('/').slice(1)
+    const isBlacklisted = !(whitelist.indexOf(pathnames[0]) >= 0)
+    this.setState({ asFixed: isBlacklisted })
   }
 
   componentDidMount() {
@@ -73,25 +94,12 @@ class Navbar extends Component {
   componentWillReceiveProps(nextProps) {
     const { pathname } = nextProps
     const pathnames = pathname.split('/').slice(1)
-    const whitelist = [
-      '',
-      'discover',
-      'explore',
-      'find',
-      'following',
-      'invitations',
-      'notifications',
-      'onboarding',
-      'search',
-      'staff',
-      'starred',
-    ]
     const isWhitelisted = (whitelist.indexOf(pathnames[0]) >= 0 || pathnames[1] === 'post')
     const isPageChangeUpdate = pathnames[0] !== this.currentPath
     if (isPageChangeUpdate) {
       this.currentPath = pathnames[0]
       this.setState({
-        asFixed: false,
+        asFixed: !isWhitelisted,
         asHidden: false,
         asLocked: !isWhitelisted,
         isPageChangeUpdate: true,
@@ -102,15 +110,17 @@ class Navbar extends Component {
     }
   }
 
-  // componentDidUpdate() {
-  //   if (typeof window === 'undefined') {
-  //     return
-  //   }
-  //   const { asLocked, isPageChangeUpdate, offset } = this.state
-  //   if (isPageChangeUpdate && asLocked) {
-  //     window.scrollTo(0, offset - 120)
-  //   }
-  // }
+  // TODO: This may need some tweeks once we get a little more intelligent
+  // around the scroll to calls utilizing history
+  componentDidUpdate() {
+    if (typeof window === 'undefined') {
+      return
+    }
+    const { asLocked, isPageChangeUpdate, offset } = this.state
+    if (isPageChangeUpdate && asLocked) {
+      window.scrollTo(0, offset - 120)
+    }
+  }
 
   componentWillUnmount() {
     const { isLoggedIn, shortcuts } = this.props
