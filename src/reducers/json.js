@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
-import { UPDATE_LOCATION } from 'redux-simple-router'
+import { UPDATE_LOCATION } from 'react-router-redux'
 import uniq from 'lodash.uniq'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'

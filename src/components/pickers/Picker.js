@@ -57,9 +57,9 @@ class Picker extends React.Component {
     if (followingLength === 0 && inactiveLength === 0) {
       return ''
     } else if (followingLength === 0) {
-      return 'Follow All (' + inactiveLength + ')'
+      return `Follow All (${inactiveLength})`
     }
-    return 'Following (' + followingLength + ')'
+    return `Following (${followingLength})`
   }
 
   render() {

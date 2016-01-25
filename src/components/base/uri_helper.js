@@ -27,7 +27,7 @@ export function updateQueryParams(params) {
   // re-assemble the query string
   let query = ''
   if (queryArr.length) {
-    query = '?' + queryArr.join('&')
+    query = `?${queryArr.join('&')}`
   }
   return query
 }

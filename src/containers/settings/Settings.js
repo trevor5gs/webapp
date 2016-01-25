@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { pushPath } from 'redux-simple-router'
+import { pushPath } from 'react-router-redux'
 import classNames from 'classnames'
 import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
@@ -85,7 +85,7 @@ class Settings extends Component {
           <a
             href={link.url}
             target="_blank"
-            key={ 'settingslinks_' + i }
+            key={ `settingslinks_${i}` }
             style={{ marginRight: `${5 / 16}rem` }}
           >
             { link.text }
