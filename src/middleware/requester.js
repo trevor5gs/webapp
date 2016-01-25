@@ -95,9 +95,9 @@ export const requester = store => next => action => {
   if (runningFetches[endpoint.path]) { return next(action) }
   runningFetches[endpoint.path] = true
 
-  const REQUEST = type + '_REQUEST'
-  const SUCCESS = type + '_SUCCESS'
-  const FAILURE = type + '_FAILURE'
+  const REQUEST = `${type}_REQUEST`
+  const SUCCESS = `${type}_SUCCESS`
+  const FAILURE = `${type}_FAILURE`
 
   const state = store.getState()
   // this allows us to set the proper result in the json reducer

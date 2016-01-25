@@ -17,7 +17,7 @@ import store from './src/store'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
 import addOauthRoute from './oauth'
 import routes from './src/routes'
-import { routeActions } from 'redux-simple-router'
+import { routeActions } from 'react-router-redux'
 
 // load env vars first
 require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })

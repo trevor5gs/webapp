@@ -1,4 +1,4 @@
-import { UPDATE_LOCATION } from 'redux-simple-router'
+import { UPDATE_LOCATION } from 'react-router-redux'
 
 const initialState = {
   location: { pathname: '/' },

@@ -10,6 +10,7 @@
     "ENV": false
   },
   "rules": {
+    "arrow-body-style": 0,
     "no-alert": 2,
     "no-console": 2,
     "no-debugger": 2,

@@ -36,7 +36,7 @@ class UserCard extends Component {
           priority={user.relationshipPriority}
           ref="RelationshipImageButton"
           userId={user.id}
-          username={'@' + user.username}
+          username={ `@${user.username}` }
         />
       </div>
     )

@@ -24,7 +24,7 @@ export function usersAsCards(users) {
   return (
     <div className="Cards">
       {users.data.map((user, i) => {
-        return <UserCard ref={'userCard_' + i} user={user} key={i} />
+        return <UserCard ref={ `userCard_${i}` } user={ user } key={ i } />
       })}
     </div>
   )
@@ -34,7 +34,7 @@ export function usersAsGrid(users) {
   return (
     <div className="Users asGrid">
       {users.data.map((user, i) => {
-        return <UserGrid ref={'userGrid_' + i} user={user} key={i} />
+        return <UserGrid ref={ `userGrid_${i}` } user={ user } key={ i } />
       })}
     </div>
   )
@@ -44,7 +44,7 @@ export function usersAsList(users) {
   return (
     <div className="Users asList">
       {users.data.map((user, i) => {
-        return <UserList ref={'userList_' + i} user={user} key={i} />
+        return <UserList ref={ `userList_${i}` } user={ user } key={ i } />
       })}
     </div>
   )
@@ -56,7 +56,7 @@ export function usersAsInviteeList(invitations, json) {
       {invitations.data.map((invitation, i) => {
         return (
           <UserInvitee
-            ref={ 'userInvitee_' + i }
+            ref={ `userInvite${i}` }
             invitation={ invitation }
             json={ json }
             key={ i }
@@ -74,7 +74,7 @@ export function usersAsInviteeGrid(invitations, json) {
         return (
           <UserInvitee
             className="UserInviteeGrid"
-            ref={ 'userInvitee_' + i }
+            ref={ `userInvite${i}` }
             invitation={ invitation }
             json={ json }
             key={ i }
@@ -101,7 +101,7 @@ export function postsAsList(posts, json, currentUser) {
     <div className="Posts asList">
       {posts.data.map((post) => {
         return (
-          <article ref={`postList_${post.id}`} key={post.id} className="Post PostList">
+          <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList">
             {parsePost(post, json, currentUser, false)}
           </article>
         )
@@ -116,12 +116,12 @@ export function userDetail(users, json, currentUser, gridColumnCount) {
   posts = posts.concat(users.nestedData)
   return (
     <div className="UserDetails">
-      <Cover coverImage={user.coverImage} />
+      <Cover coverImage={ user.coverImage } />
       <UserList
         classList="asUserDetailHeader"
-        ref={'UserList_' + user.id}
-        user={user}
-        key={user.id}
+        ref={ `UserList_${user.id}` }
+        user={ user }
+        key={ user.id }
         showBlockMuteButton
       />
       {gridColumnCount ?
@@ -148,9 +148,9 @@ export function postDetail(posts, json, currentUser) {
   if (Number(post.lovesCount) > 0) {
     avatarDrawers.push(
       <UserAvatars
-        endpoint={api.postLovers(post)}
-        icon={<HeartIcon />}
-        key={`lovers_${post.id}`}
+        endpoint={ api.postLovers(post) }
+        icon={ <HeartIcon /> }
+        key={ `lovers_${post.id}` }
         resultKey="lovers"
       />
     )
@@ -158,23 +158,23 @@ export function postDetail(posts, json, currentUser) {
   if (Number(post.repostsCount) > 0) {
     avatarDrawers.push(
       <UserAvatars
-        endpoint={api.postReposters(post)}
-        icon={<RepostIcon />}
-        key={`reposters_${post.id}`}
+        endpoint={ api.postReposters(post) }
+        icon={ <RepostIcon /> }
+        key={ `reposters_${post.id}` }
         resultKey="reposters"
       />
     )
   }
   return (
     <div className="PostDetails Posts asList">
-      <article ref={`postList_${post.id}`} key={post.id} className="Post PostList">
+      <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList">
         {parsePost(post, json, currentUser, false)}
         {avatarDrawers}
         <section className="Comments">
           <BubbleIcon/>
           {comments.map((comment) => {
             return (
-              <div ref={`commentList_${comment.id}`} key={comment.id} className="CommentList">
+              <div ref={ `commentList_${comment.id}` } key={ comment.id } className="CommentList">
                 {parseComment(comment, json, currentUser, false)}
               </div>
             )

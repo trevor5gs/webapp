@@ -25,15 +25,15 @@ function imageGuid() {
 }
 
 function getFilename(type) {
-  return 'ello-' + imageGuid() + type.replace('image/', '.')
+  return `ello-${imageGuid() + type.replace('image/', '.')}`
 }
 
 function getFileKey(prefix, filename) {
-  return prefix + '/' + encodeURIComponent(filename)
+  return `${prefix}/${encodeURIComponent(filename)}`
 }
 
 function getAssetUrl(endpoint, key) {
-  return endpoint + '/' + key
+  return `${endpoint}/${key}`
 }
 
 function getUploadData(key, credentials, file) {
@@ -72,9 +72,9 @@ export const uploader = store => next => action => {
   if (!endpoint) return next(action);
 
   let assetUrl
-  const REQUEST = type + '_REQUEST'
-  const SUCCESS = type + '_SUCCESS'
-  const FAILURE = type + '_FAILURE'
+  const REQUEST = `${type}_REQUEST`
+  const SUCCESS = `${type}_SUCCESS`
+  const FAILURE = `${type}_FAILURE`
 
   // dispatch the start of the request
   next({ type: REQUEST, payload, meta })

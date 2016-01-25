@@ -24,7 +24,7 @@ class UsernameControl extends Component {
               <button
                 title={ suggestion }
                 onClick={ this.handleUsernameSuggestionClick }
-                key={ 'suggestion_' + i }
+                key={ `suggestion_${i}` }
               >
                 { suggestion }
               </button>
