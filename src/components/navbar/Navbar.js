@@ -17,6 +17,20 @@ import NavbarProfile from '../navbar/NavbarProfile'
 import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
 import Mousetrap from '../../vendor/mousetrap'
 
+const whitelist = [
+  '',
+  'discover',
+  'explore',
+  'find',
+  'following',
+  'invitations',
+  'notifications',
+  'onboarding',
+  'search',
+  'staff',
+  'starred',
+]
+
 class Navbar extends Component {
 
   constructor(props, context) {
@@ -33,6 +47,13 @@ class Navbar extends Component {
     this.onLogOut = ::this.onLogOut
     this.omniButtonWasClicked = ::this.omniButtonWasClicked
     this.loadMorePostsWasClicked = ::this.loadMorePostsWasClicked
+  }
+
+  componentWillMount() {
+    const { pathname } = this.props
+    const pathnames = pathname.split('/').slice(1)
+    const isBlacklisted = !(whitelist.indexOf(pathnames[0]) >= 0)
+    this.setState({ asFixed: isBlacklisted })
   }
 
   componentDidMount() {
@@ -73,25 +94,12 @@ class Navbar extends Component {
   componentWillReceiveProps(nextProps) {
     const { pathname } = nextProps
     const pathnames = pathname.split('/').slice(1)
-    const whitelist = [
-      '',
-      'discover',
-      'explore',
-      'find',
-      'following',
-      'invitations',
-      'notifications',
-      'onboarding',
-      'search',
-      'staff',
-      'starred',
-    ]
     const isWhitelisted = (whitelist.indexOf(pathnames[0]) >= 0 || pathnames[1] === 'post')
     const isPageChangeUpdate = pathnames[0] !== this.currentPath
     if (isPageChangeUpdate) {
       this.currentPath = pathnames[0]
       this.setState({
-        asFixed: false,
+        asFixed: !isWhitelisted,
         asHidden: false,
         asLocked: !isWhitelisted,
         isPageChangeUpdate: true,
