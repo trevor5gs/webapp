@@ -18,6 +18,7 @@ class RelationsGroup extends Component {
     this.handleBlockUser = ::this.handleBlockUser
     this.launchBlockMutePrompt = ::this.launchBlockMutePrompt
     this.handleLaunchSignUpModal = ::this.handleLaunchSignUpModal
+    this.handleRelationshipUpdate = ::this.handleRelationshipUpdate
   }
 
 
