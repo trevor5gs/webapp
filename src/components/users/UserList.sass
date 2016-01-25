@@ -7,58 +7,60 @@
   // outline: 1px dotted purple
 
 .UserList > .Avatar
-  overflow: hidden
   position: absolute
   top: 0
-  right: 0
+  left: 0
   z-index: 3
-  width: rem(120)
-  height: rem(120)
+
+.UserList > .RelationsGroup
+  position: relative
+  top: rem(45)
 
 .UserList > .RelationsGroup > .BlockMuteButton
   position: absolute
   top: 0
-  left: rem(155)
+  right: rem(150)
 
 .UserList > .RelationsGroup > .RelationshipButton
   position: absolute
   top: 0
-  left: 0
+  right: rem(30)
+
+.UserList > .RelationsGroup > .RelationshipButton[data-priority="self"]
+  right: 0
 
 .UserList > .RelationsGroup > .StarshipButton
   position: absolute
   top: 0
-  left: rem(120)
+  right: rem(-5)
 
 .UserList > .UserNames
   width: calc(100% - #{rem(120)})
-  margin-top: rem(80)
+  margin-top: rem(140)
 
 .UserList > .UserStats
   margin: rem(20) 0
 
+// Special case for the user detail header in mobile land
+@media(max-width: #{$break-2-max})
+  .UserList.asUserDetailHeader
+    margin-top: rem(-70)
+  .UserList.asUserDetailHeader > .RelationsGroup
+    top: rem(80)
+  .UserList.asUserDetailHeader > .UserNames
+    margin-top: rem(200)
+  .UserList.asUserDetailHeader > .UserStats
+    position: absolute
+    top: rem(120)
+    left: 0
+    right: 0
 
 @media(min-width: #{$break-2})
   .UserList
     margin-top: rem(20)
 
-  .UserList > .Avatar
-    left: 0
-    right: auto
-    width: rem(180)
-    height: rem(180)
-
-  .UserList > .RelationsGroup > .BlockMuteButton
-    left: auto
-    right: rem(165)
-
-  .UserList > .RelationsGroup > .RelationshipButton
-    left: auto
-    right: rem(35)
-
-  .UserList > .RelationsGroup > .StarshipButton
-    left: auto
-    right: 0
+  .UserList > .RelationsGroup
+    top: 0
 
   .UserList > .UserNames
     width: calc(100% - #{rem(370)})

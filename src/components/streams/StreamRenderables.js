@@ -117,7 +117,13 @@ export function userDetail(users, json, currentUser, gridColumnCount) {
   return (
     <div className="UserDetails">
       <Cover coverImage={user.coverImage} />
-      <UserList ref={'UserList_' + user.id} user={user} key={user.id} showBlockMuteButton />
+      <UserList
+        classList="asUserDetailHeader"
+        ref={'UserList_' + user.id}
+        user={user}
+        key={user.id}
+        showBlockMuteButton
+      />
       {gridColumnCount ?
         postsAsGrid({ data: posts, nestedData: [] }, json, currentUser, gridColumnCount) :
         postsAsList({ data: posts, nestedData: [] }, json, currentUser)
