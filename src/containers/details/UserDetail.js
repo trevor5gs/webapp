@@ -59,16 +59,16 @@ class UserDetail extends Component {
       streamAction = loadUserPosts(`~${params.username}`, type)
     }
     return (
-      <div className="UserDetails">
-        <section className="UserDetail Panel">
-          <Helmet title={`${params.username}`} />
+      <section className="UserDetail Panel">
+        <Helmet title={`${params.username}`} />
+        <div className="UserDetails">
           { userEls }
           <StreamComponent
             ref="streamComponent"
             action={ streamAction }
           />
-        </section>
-      </div>
+        </div>
+      </section>
     )
   }
 }
