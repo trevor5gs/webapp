@@ -23,34 +23,34 @@ export const UserStats = ({ user }) =>
       </Link>
     </dl>
     <dl>
-      <span
-        className="UserStatsLink asDisabled"
+      <Link
+        className="UserStatsLink"
         activeClassName="active"
         to={`/${user.username}/following`}
       >
         <dt>{user.followingCount}</dt>
         <dd>Following</dd>
-      </span>
+      </Link>
     </dl>
     <dl>
-      <span
-        className="UserStatsLink asDisabled"
+      <Link
+        className="UserStatsLink"
         activeClassName="active"
         to={`/${user.username}/followers`}
       >
         <dt>{user.followersCount}</dt>
         <dd>Followers</dd>
-      </span>
+      </Link>
     </dl>
     <dl>
-      <span
-        className="UserStatsLink asDisabled"
+      <Link
+        className="UserStatsLink"
         activeClassName="active"
         to={`/${user.username}/loves`}
       >
         <dt>{user.lovesCount}</dt>
         <dd>Loves</dd>
-      </span>
+      </Link>
     </dl>
   </div>
 

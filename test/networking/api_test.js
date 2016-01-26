@@ -116,8 +116,11 @@ describe('api.js', () => {
 
   context('users', () => {
     it('#userDetail', () => {
-      expect(api.userDetail('~666').path).to.match(/\/users\/~666\?/)
-      expect(api.userDetail('666').pagingPath).to.equal('posts')
+      expect(api.userDetail('~666').path).to.match(/\/users\/~666\?post_count=false$/)
+    })
+
+    it('#userResources', () => {
+      expect(api.userResources('~666', 'loves').path).to.match(/\/users\/~666\/loves\?per_page=/)
     })
   })
 
