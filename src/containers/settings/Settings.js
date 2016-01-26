@@ -11,6 +11,7 @@ import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
 import { openModal, closeModal, openAlert } from '../../actions/modals'
 import { availableToggles, checkAvailability, saveAvatar, saveCover } from '../../actions/profile'
 import AdultPostsDialog from '../../components/dialogs/AdultPostsDialog'
+import DeleteAccountDialog from '../../components/dialogs/DeleteAccountDialog'
 import EmailControl from '../../components/forms/EmailControl'
 import FormButton from '../../components/forms/FormButton'
 import PasswordControl from '../../components/forms/PasswordControl'
@@ -41,12 +42,14 @@ class Settings extends Component {
     }
     this.onLogOut = ::this.onLogOut
     this.closeModal = ::this.closeModal
+    this.accountWasDeleted = ::this.accountWasDeleted
     this.handleSubmit = ::this.handleSubmit
     this.usernameControlWasChanged = ::this.usernameControlWasChanged
     this.passwordControlWasChanged = ::this.passwordControlWasChanged
     this.emailControlWasChanged = ::this.emailControlWasChanged
     this.passwordCurrentControlWasChanged = ::this.passwordCurrentControlWasChanged
     this.launchAdultPostsPrompt = ::this.launchAdultPostsPrompt
+    this.launchDeleteAccountModal = ::this.launchDeleteAccountModal
   }
 
   componentWillMount() {
@@ -187,6 +190,13 @@ class Settings extends Component {
     dispatch(closeModal())
   }
 
+  // TODO: This needs to be wired up still to:
+  // delete local db, delete account and redirect to home.
+  accountWasDeleted() {
+    this.closeModal()
+    // window.location('/')
+  }
+
   launchAdultPostsPrompt(obj) {
     if (obj.postsAdultContent) {
       const { dispatch, profile } = this.props
@@ -198,6 +208,17 @@ class Settings extends Component {
       ))
     }
     preferenceToggleChanged(obj)
+  }
+
+  launchDeleteAccountModal() {
+    const { dispatch, profile } = this.props
+    dispatch(openModal(
+      <DeleteAccountDialog
+        user={ profile }
+        onConfirm={ this.accountWasDeleted }
+        onRejected={ this.closeModal }
+      />
+    , 'asDangerZone'))
   }
 
   render() {
@@ -382,7 +403,12 @@ class Settings extends Component {
                       />
                     </dt>
                     <dd>{SETTINGS.ACCOUNT_DELETION_DEFINITION.desc}</dd>
-                    <button className="SettingsButton asDangerous">Delete</button>
+                    <button
+                      className="SettingsButton asDangerous"
+                      onClick={ this.launchDeleteAccountModal }
+                    >
+                      Delete
+                    </button>
                   </dl>
               </div>
             </div>
