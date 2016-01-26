@@ -2,14 +2,20 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { pushPath } from 'react-router-redux'
+import { routeActions } from 'react-router-redux'
 import classNames from 'classnames'
 import debounce from 'lodash.debounce'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
 import { openModal, closeModal, openAlert } from '../../actions/modals'
-import { availableToggles, checkAvailability, saveAvatar, saveCover } from '../../actions/profile'
+import {
+  availableToggles,
+  checkAvailability,
+  deleteProfile,
+  saveAvatar,
+  saveCover,
+} from '../../actions/profile'
 import AdultPostsDialog from '../../components/dialogs/AdultPostsDialog'
 import DeleteAccountDialog from '../../components/dialogs/DeleteAccountDialog'
 import EmailControl from '../../components/forms/EmailControl'
@@ -31,6 +37,7 @@ import TreeButton from '../../components/navigation/TreeButton'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 import InfoForm from '../../components/forms/InfoForm'
+import { clearStore } from '../../main'
 
 class Settings extends Component {
 
@@ -69,7 +76,7 @@ class Settings extends Component {
   onLogOut = () => {
     const { dispatch } = this.props
     dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
-    dispatch(pushPath('/', window.history.state))
+    dispatch(routeActions.push('/'))
   };
 
   getExternalLinkListAsText() {
@@ -180,11 +187,12 @@ class Settings extends Component {
     dispatch(closeModal())
   };
 
-  // TODO: This needs to be wired up still to:
-  // delete local db, delete account and redirect to home.
   accountWasDeleted = () => {
+    const { dispatch } = this.props
+    dispatch(deleteProfile())
     this.closeModal()
-    // window.location('/')
+    clearStore()
+    dispatch(routeActions.replace('/'))
   };
 
   launchAdultPostsPrompt = (obj) => {
