@@ -6,10 +6,9 @@
 .Panel.Settings
   margin-top: 56.25%
   min-height: 100vh
-.Panel.UserDetail
-  padding-top: 0
 
-.Panel.Settings
+.Panel.Settings,
+.Panel.UserDetail
   padding-top: rem(40)
 
 @media(max-width: #{$break-2-max})
@@ -17,8 +16,7 @@
     padding-top: rem(50)
 
 @media(min-width: #{$break-2})
-  .Panel.Authentication,
-  .Panel.UserDetail
+  .Panel.Authentication
     padding-top: 0
 
 
