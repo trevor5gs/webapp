@@ -14,10 +14,6 @@ class Invitations extends Component {
     dispatch: PropTypes.func.isRequired,
   };
 
-  static preRender = (store) => {
-    return store.dispatch(loadInvitedUsers())
-  };
-
   componentWillMount() {
     this.state = {
       formStatus: STATUS.INDETERMINATE,
@@ -25,6 +21,9 @@ class Invitations extends Component {
     }
     this.batchEmailValue = ''
   }
+
+  static preRender = (store) =>
+    store.dispatch(loadInvitedUsers());
 
   handleControlChange = ({ emails }) => {
     this.batchEmailValue = emails

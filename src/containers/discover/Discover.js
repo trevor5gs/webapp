@@ -18,9 +18,8 @@ class Discover extends Component {
     pathname: PropTypes.string.isRequired,
   };
 
-  static preRender = (store, routerState) => {
-    return store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
-  };
+  static preRender = (store, routerState) =>
+    store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'));
 
   creditsTrackingEvent = () => {
     const { dispatch } = this.props

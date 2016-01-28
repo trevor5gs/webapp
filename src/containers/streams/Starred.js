@@ -4,9 +4,8 @@ import StreamComponent from '../../components/streams/StreamComponent'
 
 class Starred extends Component {
 
-  static preRender = (store) => {
-    return store.dispatch(loadNoise())
-  };
+  static preRender = (store) =>
+    store.dispatch(loadNoise());
 
   render() {
     return (

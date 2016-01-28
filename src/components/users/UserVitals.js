@@ -62,11 +62,9 @@ UserStats.propTypes = {
 export const UserInfo = ({ user }) => {
   let externalLinks = []
   if (user.externalLinksList) {
-    externalLinks = user.externalLinksList.map((link, i) => {
-      return (
-        <a href={link.url} target="_blank" key={i} >{link.text}</a>
-      )
-    })
+    externalLinks = user.externalLinksList.map((link, i) =>
+      <a href={link.url} target="_blank" key={i} >{link.text}</a>
+    )
   }
   return (
     <div className="UserInfo">

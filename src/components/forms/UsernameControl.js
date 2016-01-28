@@ -27,17 +27,15 @@ class UsernameControl extends Component {
       return (
         <div className="FormControlSuggestionList hasSuggestions">
           <p>Here are some available usernames &mdash;</p>
-          { suggestions.map((suggestion, i) => {
-            return (
-              <button
-                title={ suggestion }
-                onClick={ this.handleUsernameSuggestionClick }
-                key={ `suggestion_${i}` }
-              >
-                { suggestion }
-              </button>
-            )
-          })}
+          { suggestions.map((suggestion, i) =>
+            <button
+              title={ suggestion }
+              onClick={ this.handleUsernameSuggestionClick }
+              key={ `suggestion_${i}` }
+            >
+              { suggestion }
+            </button>
+          )}
         </div>
       )
     }

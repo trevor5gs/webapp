@@ -61,12 +61,12 @@ class OnboardingHeader extends Component {
     const inactiveLength = inactive.length
 
     if (followingLength) {
-      const followingIds = following.map((user) => { return user.id })
+      const followingIds = following.map((user) => user.id)
       this.props.batchSave(followingIds, 'friend')
     }
 
     if (inactiveLength) {
-      const inactiveIds = inactive.map((user) => { return user.id })
+      const inactiveIds = inactive.map((user) => user.id)
       this.props.batchSave(inactiveIds, 'inactive')
     }
 

@@ -42,9 +42,9 @@ function updatePostLoves(state, newState, action) {
   )
   return newState
 }
-methods.updatePostLoves = (state, newState, action) => {
-  return updatePostLoves(state, newState, action)
-}
+methods.updatePostLoves = (state, newState, action) =>
+  updatePostLoves(state, newState, action)
+
 
 function deletePost(state, newState, action) {
   const { model } = action.payload
@@ -73,9 +73,9 @@ function deletePost(state, newState, action) {
   }
   return newState
 }
-methods.deletePost = (state, newState, action) => {
-  return deletePost(state, newState, action)
-}
+methods.deletePost = (state, newState, action) =>
+  deletePost(state, newState, action)
+
 
 export default methods
 

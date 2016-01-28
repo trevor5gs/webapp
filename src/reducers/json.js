@@ -23,9 +23,8 @@ function mergeModel(state, type, params) {
     state[type] = newType
   }
 }
-methods.mergeModel = (state, type, params) => {
-  return mergeModel(state, type, params)
-}
+methods.mergeModel = (state, type, params) =>
+  mergeModel(state, type, params)
 
 function addModels(state, type, data) {
   // add state['modelType']
@@ -53,9 +52,8 @@ function addModels(state, type, data) {
   }
   return ids
 }
-methods.addModels = (state, type, data) => {
-  return addModels(state, type, data)
-}
+methods.addModels = (state, type, data) =>
+  addModels(state, type, data)
 
 function addNewIdsToResult(state, newState) {
   if (!newState.pages) { newState.pages = {} }
@@ -65,9 +63,8 @@ function addNewIdsToResult(state, newState) {
   delete result.newIds
   return newState
 }
-methods.addNewIdsToResult = (state, newState) => {
-  return addNewIdsToResult(state, newState)
-}
+methods.addNewIdsToResult = (state, newState) =>
+  addNewIdsToResult(state, newState)
 
 function setLayoutMode(action, state, newState) {
   if (!newState.pages) { newState.pages = {} }
@@ -76,9 +73,8 @@ function setLayoutMode(action, state, newState) {
   result.mode = action.payload.mode
   return newState
 }
-methods.setLayoutMode = (action, state, newState) => {
-  return setLayoutMode(action, state, newState)
-}
+methods.setLayoutMode = (action, state, newState) =>
+  setLayoutMode(action, state, newState)
 
 // parses the 'linked' node of the JSON
 // api responses into the json store
@@ -90,9 +86,8 @@ function parseLinked(linked, newState) {
     }
   }
 }
-methods.parseLinked = (linked, newState) => {
-  return parseLinked(linked, newState)
-}
+methods.parseLinked = (linked, newState) =>
+  parseLinked(linked, newState)
 
 // parse main part of request into the state and
 // pull out the ids as this is the main payload
@@ -104,9 +99,8 @@ function getResult(response, newState, action) {
   result.pagination = action.payload.pagination
   return result
 }
-methods.getResult = (response, newState, action) => {
-  return getResult(response, newState, action)
-}
+methods.getResult = (response, newState, action) =>
+  getResult(response, newState, action)
 
 // TODO: need to test the existingResult conditional logic!!!!
 function updateResult(response, newState, action) {
@@ -149,9 +143,8 @@ function updateResult(response, newState, action) {
     newState.pages[resultPath] = result
   }
 }
-methods.updateResult = (response, newState, action) => {
-  return updateResult(response, newState, action)
-}
+methods.updateResult = (response, newState, action) =>
+  updateResult(response, newState, action)
 
 function clearSearchResults(state, newState, action) {
   if (action.payload.endpoint.path.indexOf('terms=') > -1 && termsQuery !== getQueryParamValue('terms', action.payload.endpoint.path)) {
@@ -169,9 +162,8 @@ function clearSearchResults(state, newState, action) {
   }
   return state
 }
-methods.clearSearchResults = (state, newState, action) => {
-  return clearSearchResults(state, newState, action)
-}
+methods.clearSearchResults = (state, newState, action) =>
+  clearSearchResults(state, newState, action)
 
 export default function json(state = {}, action = { type: '' }) {
   const newState = { ...state }

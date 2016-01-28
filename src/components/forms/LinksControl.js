@@ -24,9 +24,7 @@ class LinksControl extends Component {
     if (typeof links === 'string') {
       return links
     }
-    return links.map((link) => {
-      return link.text
-    }).join(', ')
+    return links.map((link) => link.text).join(', ')
   }
 
   render() {

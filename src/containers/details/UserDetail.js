@@ -12,9 +12,8 @@ class UserDetail extends Component {
     }).isRequired,
   };
 
-  static preRender = (store, routerState) => {
-    return store.dispatch(loadUserDetail(`~${routerState.params.username}`))
-  };
+  static preRender = (store, routerState) =>
+    store.dispatch(loadUserDetail(`~${routerState.params.username}`));
 
   render() {
     const { params } = this.props

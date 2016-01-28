@@ -75,18 +75,16 @@ class Settings extends Component {
   getExternalLinkListAsText() {
     const { profile } = this.props
     return (
-      profile.externalLinksList.map((link, i) => {
-        return (
-          <a
-            href={link.url}
-            target="_blank"
-            key={ `settingslinks_${i}` }
-            style={{ marginRight: `${5 / 16}rem` }}
-          >
-            { link.text }
-          </a>
-        )
-      })
+      profile.externalLinksList.map((link, i) =>
+        <a
+          href={link.url}
+          target="_blank"
+          key={ `settingslinks_${i}` }
+          style={{ marginRight: `${5 / 16}rem` }}
+        >
+          { link.text }
+        </a>
+      )
     )
   }
 
@@ -100,9 +98,9 @@ class Settings extends Component {
 
   shouldRequireCredentialsSave() {
     const { emailState, passwordState, usernameState } = this.state
-    return [emailState, passwordState, usernameState].some((state) => {
-      return state.status === STATUS.SUCCESS
-    })
+    return [emailState, passwordState, usernameState].some((state) =>
+      state.status === STATUS.SUCCESS
+    )
   }
 
   checkServerForAvailability(vo) {

@@ -192,6 +192,7 @@ class Navbar extends Component {
   };
 
   omniButtonWasClicked = () => {
+    // working on it...
   };
 
   loadMorePostsWasClicked = () => {

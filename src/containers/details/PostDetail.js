@@ -12,9 +12,8 @@ class PostDetail extends Component {
     }).isRequired,
   };
 
-  static preRender = (store, routerState) => {
-    return store.dispatch(loadPostDetail(`~${routerState.params.type}`))
-  };
+  static preRender = (store, routerState) =>
+    store.dispatch(loadPostDetail(`~${routerState.params.type}`));
 
   render() {
     const { params } = this.props

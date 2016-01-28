@@ -45,15 +45,11 @@ export function getLinkArray(model, identifier, json) {
     // filter they keys so that models that don't exist
     // aren't added to the link object mainly used for
     // when a model gets deleted ie: post or comment
-    const filteredKeys = keys.filter((key) => {
-      return json[collection][key] &&
-        (!deletedCollection || deletedCollection.indexOf(key) === -1) ?
-        true :
-        false
-    })
-    return filteredKeys.map((key) => {
-      return json[collection][key]
-    })
+    const filteredKeys = keys.filter((key) =>
+      json[collection][key] && (!deletedCollection || deletedCollection.indexOf(key) === -1) ?
+      true : false
+    )
+    return filteredKeys.map((key) => json[collection][key])
   }
   return null
 }

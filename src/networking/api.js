@@ -1,8 +1,6 @@
 const API_VERSION = 'v2'
 const PER_PAGE = 20
-const basePath = () => {
-  return `${ENV.AUTH_DOMAIN}/api`
-}
+const basePath = () => `${ENV.AUTH_DOMAIN}/api`
 
 function getAPIPath(relPath, queryParams = {}) {
   let path = `${basePath()}/${API_VERSION}/${relPath}`

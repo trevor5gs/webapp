@@ -4,9 +4,8 @@ import StreamComponent from '../../components/streams/StreamComponent'
 
 class Following extends Component {
 
-  static preRender = (store) => {
-    return store.dispatch(loadFriends())
-  };
+  static preRender = (store) =>
+    store.dispatch(loadFriends());
 
   render() {
     return (
