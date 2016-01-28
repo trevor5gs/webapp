@@ -21,7 +21,7 @@ class Discover extends Component {
 
   render() {
     const { isLoggedIn, params, pathname } = this.props
-    const type = params.type || 'recommended'
+    const type = params.type || (isLoggedIn ? 'recommended' : 'trending')
     let action = loadDiscoverUsers(type)
     if (type === 'communities') {
       action = loadCommunities()
@@ -37,8 +37,8 @@ class Discover extends Component {
         // { to: '/discover/featured-users', children: 'Featured Users' },
       ] :
       [
-        { to: '/explore', children: 'Recommended' },
-        { to: '/explore/trending', children: 'Trending' },
+        { to: '/explore', children: 'Trending' },
+        { to: '/explore/recommended', children: 'Recommended' },
         { to: '/explore/recent', children: 'Recent' },
       ]
     return (
