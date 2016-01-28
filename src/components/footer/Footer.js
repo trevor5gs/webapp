@@ -10,13 +10,14 @@ import FooterTool from '../footer/FooterTool'
 class Footer extends Component {
 
   componentWillMount() {
+    this.state = {
+      isAndroid: false,
+      isGridMode: true,
+    }
     if (typeof window === 'undefined') {
       return
     }
-    this.state = {
-      isAndroid: !(navigator.userAgent.match(/Android/i) === null),
-      isGridMode: true,
-    }
+    this.setState({ isAndroid: !(navigator.userAgent.match(/Android/i) === null) })
   }
 
   componentWillReceiveProps() {
