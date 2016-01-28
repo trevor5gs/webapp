@@ -18,8 +18,7 @@ import {
 
 class CommentTools extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.state = {
       isMoreToolActive: false,
     }

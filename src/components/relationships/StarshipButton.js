@@ -4,8 +4,7 @@ import { StarIcon } from '../relationships/RelationshipIcons'
 
 class StarshipButton extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.state = { nextPriority: this.getNextPriority(this.props) }
     this.updatePriority = ::this.updatePriority
   }

@@ -33,27 +33,22 @@ const whitelist = [
 
 class Navbar extends Component {
 
-  constructor(props, context) {
-    super(props, context)
-    this.scrollYAtDirectionChange = null
-    this.currentPath = null
-    this.state = {
-      asFixed: false,
-      asHidden: false,
-      asLocked: false,
-      skipTransition: false,
-    }
-    this.logInWasClicked = ::this.logInWasClicked
-    this.onLogOut = ::this.onLogOut
-    this.omniButtonWasClicked = ::this.omniButtonWasClicked
-    this.loadMorePostsWasClicked = ::this.loadMorePostsWasClicked
-  }
-
   componentWillMount() {
     const { pathname } = this.props
     const pathnames = pathname.split('/').slice(1)
     const isBlacklisted = !(whitelist.indexOf(pathnames[0]) >= 0)
-    this.setState({ asFixed: isBlacklisted })
+    this.state = {
+      asFixed: isBlacklisted,
+      asHidden: false,
+      asLocked: isBlacklisted,
+      skipTransition: false,
+    }
+    this.currentPath = null
+    this.scrollYAtDirectionChange = null
+    this.logInWasClicked = ::this.logInWasClicked
+    this.onLogOut = ::this.onLogOut
+    this.omniButtonWasClicked = ::this.omniButtonWasClicked
+    this.loadMorePostsWasClicked = ::this.loadMorePostsWasClicked
   }
 
   componentDidMount() {

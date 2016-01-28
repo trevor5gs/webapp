@@ -4,11 +4,10 @@ import { routeActions } from 'react-router-redux'
 import classNames from 'classnames'
 
 class TextRegion extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
     this.handleRegionClick = ::this.handleRegionClick
   }
-
 
   handleRegionClick(e) {
     const { dispatch, isGridLayout, postDetailPath } = this.props
@@ -21,7 +20,7 @@ class TextRegion extends Component {
       e.preventDefault()
       return dispatch(routeActions.push(href))
 
-    // We have a special `span` based fake link at the moment we have to test
+    // TODO: We have a special `span` based fake link at the moment we have to test
     // for. Once we change this back to an `<a> element we can rip this out.
     } else if (classList.contains('hashtag-link')) {
       e.preventDefault()

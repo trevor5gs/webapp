@@ -5,8 +5,7 @@ import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class FormControl extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     const { text } = this.props
     this.state = {
       hasFocus: false,

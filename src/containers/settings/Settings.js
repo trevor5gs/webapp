@@ -33,13 +33,18 @@ import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 import InfoForm from '../../components/forms/InfoForm'
 
 class Settings extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
+    const { profile } = this.props
     this.state = {
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
       emailState: { status: STATUS.INDETERMINATE, message: '' },
     }
+    this.passwordValue = ''
+    this.passwordCurrentValue = ''
+    this.emailValue = profile.email
+    this.usernameValue = profile.username
     this.onLogOut = ::this.onLogOut
     this.closeModal = ::this.closeModal
     this.accountWasDeleted = ::this.accountWasDeleted
@@ -50,15 +55,7 @@ class Settings extends Component {
     this.passwordCurrentControlWasChanged = ::this.passwordCurrentControlWasChanged
     this.launchAdultPostsPrompt = ::this.launchAdultPostsPrompt
     this.launchDeleteAccountModal = ::this.launchDeleteAccountModal
-  }
-
-  componentWillMount() {
-    const { profile } = this.props
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
-    this.passwordValue = ''
-    this.passwordCurrentValue = ''
-    this.emailValue = profile.email
-    this.usernameValue = profile.username
   }
 
   componentWillReceiveProps(nextProps) {

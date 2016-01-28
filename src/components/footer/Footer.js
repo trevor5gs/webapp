@@ -8,21 +8,17 @@ import FooterLink from '../footer/FooterLink'
 import FooterTool from '../footer/FooterTool'
 
 class Footer extends Component {
-  constructor(props, context) {
-    super(props, context)
-    this.state = {
-      isAndroid: false,
-      isGridMode: true,
-    }
-    this.scrollToTop = ::this.scrollToTop
-    this.toggleLayoutMode = ::this.toggleLayoutMode
-  }
 
   componentWillMount() {
     if (typeof window === 'undefined') {
       return
     }
-    this.setState({ isAndroid: !(navigator.userAgent.match(/Android/i) === null) })
+    this.state = {
+      isAndroid: !(navigator.userAgent.match(/Android/i) === null),
+      isGridMode: true,
+    }
+    this.scrollToTop = ::this.scrollToTop
+    this.toggleLayoutMode = ::this.toggleLayoutMode
   }
 
   componentWillReceiveProps() {

@@ -11,8 +11,7 @@ const STATUS = {
 
 class Avatar extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.state = {
       status: this.getAvatarSource() ? STATUS.REQUEST : STATUS.PENDING,
     }

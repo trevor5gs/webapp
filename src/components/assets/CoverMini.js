@@ -11,18 +11,13 @@ const STATUS = {
 
 class CoverMini extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.state = {
       imageSize: 'hdpi',
-      status: STATUS.PENDING,
+      status: STATUS.REQUEST,
     }
     this.loadDidFail = ::this.loadDidFail
     this.loadDidSucceed = ::this.loadDidSucceed
-  }
-
-  componentWillMount() {
-    this.setState({ status: STATUS.REQUEST })
   }
 
   componentDidMount() {

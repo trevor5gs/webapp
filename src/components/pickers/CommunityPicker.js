@@ -5,8 +5,8 @@ import StreamComponent from '../streams/StreamComponent'
 import Picker from '../pickers/Picker'
 
 class CommunityPicker extends Picker {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
     this.followAll = ::this.followAll
   }
 

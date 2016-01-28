@@ -12,20 +12,15 @@ const STATUS = {
 
 class ImageRegion extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.state = {
-      status: STATUS.PENDING,
-      scale: null,
       marginBottom: null,
+      scale: null,
+      status: STATUS.REQUEST,
     }
     this.loadDidFail = ::this.loadDidFail
     this.loadDidSucceed = ::this.loadDidSucceed
     this.staticImageRegionWasClicked = ::this.staticImageRegionWasClicked
-  }
-
-  componentWillMount() {
-    this.setState({ status: STATUS.REQUEST })
   }
 
   componentDidMount() {

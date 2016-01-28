@@ -20,25 +20,20 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class SignIn extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
+    const userlist = AUTHENTICATION_PROMOTIONS
+    const index = random(0, userlist.length - 1)
     this.state = {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
+      featuredUser: userlist[index],
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
-      featuredUser: null,
     }
+    this.emailValue = ''
+    this.passwordValue = ''
     this.handleSubmit = ::this.handleSubmit
     this.creditsTrackingEvent = ::this.creditsTrackingEvent
     this.emailControlWasChanged = ::this.emailControlWasChanged
     this.passwordControlWasChanged = ::this.passwordControlWasChanged
-  }
-
-  componentWillMount() {
-    this.emailValue = ''
-    this.passwordValue = ''
-    const userlist = AUTHENTICATION_PROMOTIONS
-    const index = random(0, userlist.length - 1)
-    this.setState({ featuredUser: userlist[index] })
   }
 
   creditsTrackingEvent() {

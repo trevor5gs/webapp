@@ -13,7 +13,7 @@ import Navbar from '../components/navbar/Navbar'
 
 class App extends Component {
 
-  constructor(props, context) {
+  componentWillMount() {
     const loggedOutPaths = {
       explore: /^\/explore/,
       explore_recent: /^\/explore\/recent/,
@@ -22,7 +22,6 @@ class App extends Component {
       forgot_password: /^\/forgot-password/,
       signup: /^\/signup/,
     }
-    super(props, context)
     this.lastLocation = ''
     // need to clear out the authentication for the case of
     // when you are on ello.co and go to /onboarding (logging in)

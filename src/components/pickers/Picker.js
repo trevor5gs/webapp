@@ -4,8 +4,7 @@ import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 
 class Picker extends React.Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.hasAutoFollowed = false
   }
 
@@ -18,7 +17,6 @@ class Picker extends React.Component {
       })
     }
   }
-
 
   getRelationshipButton() {
     return null

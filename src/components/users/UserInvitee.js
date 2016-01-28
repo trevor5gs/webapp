@@ -8,11 +8,10 @@ import RelationsGroup from '../relationships/RelationsGroup'
 import { getLinkObject } from '../base/json_helper'
 
 class UserInvitee extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
     this.reInviteUser = ::this.reInviteUser
   }
-
 
   reInviteUser() {
     const { dispatch, invitation } = this.props

@@ -4,8 +4,7 @@ import classNames from 'classnames'
 
 class BioControl extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     const { text } = this.props
     this.state = { textLength: text ? text.length : 0 }
     this.handleChange = ::this.handleChange

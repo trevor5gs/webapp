@@ -14,21 +14,16 @@ const STATUS = {
 
 class Banderole extends Component {
 
-  constructor(props, context) {
-    super(props, context)
-    this.state = {
-      featuredUser: null,
-      imageSize: 'hdpi',
-      status: STATUS.PENDING,
-    }
-    this.loadDidFail = ::this.loadDidFail
-    this.loadDidSucceed = ::this.loadDidSucceed
-  }
-
   componentWillMount() {
     const { userlist } = this.props
     const index = random(0, userlist.length - 1)
-    this.setState({ featuredUser: userlist[index], status: STATUS.REQUEST })
+    this.state = {
+      featuredUser: userlist[index],
+      imageSize: 'hdpi',
+      status: STATUS.REQUEST,
+    }
+    this.loadDidFail = ::this.loadDidFail
+    this.loadDidSucceed = ::this.loadDidSucceed
   }
 
   componentDidMount() {

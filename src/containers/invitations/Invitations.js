@@ -9,8 +9,8 @@ import { getBatchEmailState } from '../../components/forms/Validators'
 import FormButton from '../../components/forms/FormButton'
 
 class Invitations extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
     this.state = {
       formStatus: STATUS.INDETERMINATE,
       batchEmailState: { status: STATUS.INDETERMINATE, message: '' },

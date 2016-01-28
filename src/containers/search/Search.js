@@ -13,17 +13,13 @@ import TabListButtons from '../../components/tabs/TabListButtons'
 
 class Search extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.state = {
       terms: this.props.location.query.terms || '',
       type: this.props.location.query.type || 'posts',
     }
     this.creditsTrackingEvent = ::this.creditsTrackingEvent
     this.handleControlChange = ::this.handleControlChange
-  }
-
-  componentWillMount() {
     this.search = debounce(this.search, 300)
     this.updateLocation = debounce(this.updateLocation, 300)
   }

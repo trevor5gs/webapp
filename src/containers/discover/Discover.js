@@ -8,11 +8,10 @@ import StreamComponent from '../../components/streams/StreamComponent'
 import TabListLinks from '../../components/tabs/TabListLinks'
 
 class Discover extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
     this.creditsTrackingEvent = ::this.creditsTrackingEvent
   }
-
 
   creditsTrackingEvent() {
     const { dispatch } = this.props

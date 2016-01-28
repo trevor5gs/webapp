@@ -25,28 +25,23 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class Join extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
+    const userlist = AUTHENTICATION_PROMOTIONS
+    const index = random(0, userlist.length - 1)
     this.state = {
-      featuredUser: null,
+      featuredUser: userlist[index],
       emailState: { status: STATUS.INDETERMINATE, message: '' },
-      usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
+      usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
     }
+    this.emailValue = ''
+    this.usernameValue = ''
+    this.passwordValue = ''
     this.handleSubmit = ::this.handleSubmit
     this.creditsTrackingEvent = ::this.creditsTrackingEvent
     this.emailControlWasChanged = ::this.emailControlWasChanged
     this.usernameControlWasChanged = ::this.usernameControlWasChanged
     this.passwordControlWasChanged = ::this.passwordControlWasChanged
-  }
-
-  componentWillMount() {
-    this.emailValue = ''
-    this.usernameValue = ''
-    this.passwordValue = ''
-    const userlist = AUTHENTICATION_PROMOTIONS
-    const index = random(0, userlist.length - 1)
-    this.setState({ featuredUser: userlist[index] })
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
   }
 

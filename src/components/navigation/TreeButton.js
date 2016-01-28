@@ -15,8 +15,7 @@ const TreeIcon = () =>
 
 class TreeButton extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     const { isCollapsed } = this.props
     this.state = {
       collapsed: isCollapsed,

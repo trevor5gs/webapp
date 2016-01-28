@@ -17,10 +17,9 @@ import Cover from '../../components/assets/Cover'
 
 class Onboarding extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     // check auth
-    const { accessToken, dispatch } = props
+    const { accessToken, dispatch } = this.props
     if (typeof document !== 'undefined') {
       checkAuth(dispatch, accessToken, document.location)
     }

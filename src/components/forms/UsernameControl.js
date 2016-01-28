@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import FormControl from './FormControl'
 
 class UsernameControl extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
     this.renderSuggestions = ::this.renderSuggestions
     this.handleUsernameSuggestionClick = ::this.handleUsernameSuggestionClick
   }

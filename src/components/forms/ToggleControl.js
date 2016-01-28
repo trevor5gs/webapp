@@ -3,8 +3,7 @@ import classNames from 'classnames'
 
 class ToggleControl extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     const { isChecked } = this.props
     this.state = {
       checked: isChecked,

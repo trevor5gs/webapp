@@ -12,8 +12,8 @@ const flags = {
 }
 
 class FlagDialog extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
     this.state = {
       activeChoice: null,
       scene: 'renderChoicesScreen',

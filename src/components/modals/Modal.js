@@ -7,8 +7,8 @@ import { closeModal, closeAlert } from '../../actions/modals'
 import Mousetrap from '../../vendor/mousetrap'
 
 class Modal extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
     this.handleModalTrigger = ::this.handleModalTrigger
   }
 

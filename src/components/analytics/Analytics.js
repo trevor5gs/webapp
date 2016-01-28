@@ -26,8 +26,7 @@ export function doesAllowTracking() {
 
 class Analytics extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.hasLoadedTracking = false
   }
 

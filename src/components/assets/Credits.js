@@ -3,8 +3,8 @@ import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
 
 class Credits extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
     this.handleClick = ::this.handleClick
   }
 

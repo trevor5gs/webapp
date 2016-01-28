@@ -5,8 +5,7 @@ import { MiniPlusIcon, MiniCheckIcon } from '../relationships/RelationshipIcons'
 
 class RelationshipButton extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.state = { nextPriority: this.getNextPriority(this.props) }
     this.updatePriority = ::this.updatePriority
   }

@@ -8,18 +8,14 @@ import { isFormValid, getEmailStateFromClient } from '../forms/Validators'
 
 class RegistrationRequestForm extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.state = {
       formStatus: STATUS.INDETERMINATE,
       emailState: { status: STATUS.INDETERMINATE, message: '' },
     }
+    this.emailValue = ''
     this.handleSubmit = ::this.handleSubmit
     this.emailControlWasChanged = ::this.emailControlWasChanged
-  }
-
-  componentWillMount() {
-    this.emailValue = ''
   }
 
   componentWillReceiveProps(nextProps) {

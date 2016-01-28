@@ -4,8 +4,7 @@ import Dialog from '../dialogs/Dialog'
 
 class Uploader extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.state = {
       hasDragOver: false,
     }

@@ -14,23 +14,18 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class ForgotPassword extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
+    const userlist = AUTHENTICATION_PROMOTIONS
+    const index = random(0, userlist.length - 1)
     this.state = {
-      formStatus: STATUS.INDETERMINATE,
       emailState: { status: STATUS.INDETERMINATE, message: '' },
-      featuredUser: null,
+      featuredUser: userlist[index],
+      formStatus: STATUS.INDETERMINATE,
     }
+    this.emailValue = ''
     this.handleSubmit = ::this.handleSubmit
     this.creditsTrackingEvent = ::this.creditsTrackingEvent
     this.emailControlWasChanged = ::this.emailControlWasChanged
-  }
-
-  componentWillMount() {
-    this.emailValue = ''
-    const userlist = AUTHENTICATION_PROMOTIONS
-    const index = random(0, userlist.length - 1)
-    this.setState({ featuredUser: userlist[index] })
   }
 
   creditsTrackingEvent() {

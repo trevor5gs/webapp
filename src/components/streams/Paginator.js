@@ -3,8 +3,7 @@ import { ElloMark } from '../interface/ElloIcons'
 
 class Paginator extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.state = { isPaginationLoading: false, message: this.getMessage() }
     this.loadMore = ::this.loadMore
   }

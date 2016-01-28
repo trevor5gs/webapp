@@ -12,14 +12,10 @@ import Paginator from '../streams/Paginator'
 
 export class StreamComponent extends Component {
 
-  constructor(props, context) {
-    super(props, context)
-    this.state = { action: this.props.action }
-  }
-
   componentWillMount() {
-    const { action } = this.state
-    if (action) { this.props.dispatch(action) }
+    const { action, dispatch } = this.props
+    this.state = { action }
+    if (action) { dispatch(action) }
   }
 
   componentDidMount() {

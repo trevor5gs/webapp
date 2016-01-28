@@ -12,15 +12,14 @@ import RelationshipButton from '../relationships/RelationshipButton'
 import StarshipButton from '../relationships/StarshipButton'
 
 class RelationsGroup extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
     this.handleMuteUser = ::this.handleMuteUser
     this.handleBlockUser = ::this.handleBlockUser
     this.launchBlockMutePrompt = ::this.launchBlockMutePrompt
     this.handleLaunchSignUpModal = ::this.handleLaunchSignUpModal
     this.handleRelationshipUpdate = ::this.handleRelationshipUpdate
   }
-
 
   getNextPriority(props, btnId) {
     const { user } = props

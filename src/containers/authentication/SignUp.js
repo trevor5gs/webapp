@@ -11,18 +11,13 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class SignUp extends Component {
 
-  constructor(props, context) {
-    super(props, context)
-    this.state = {
-      featuredUser: null,
-    }
-    this.creditsTrackingEvent = ::this.creditsTrackingEvent
-  }
-
   componentWillMount() {
     const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
-    this.setState({ featuredUser: userlist[index] })
+    this.state = {
+      featuredUser: userlist[index],
+    }
+    this.creditsTrackingEvent = ::this.creditsTrackingEvent
   }
 
   creditsTrackingEvent() {

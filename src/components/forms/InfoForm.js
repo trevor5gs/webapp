@@ -10,8 +10,7 @@ import LinksControl from '../forms/LinksControl'
 
 class InfoForm extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     this.state = {
       bioStatus: STATUS.INDETERMINATE,
       linksStatus: STATUS.INDETERMINATE,
@@ -21,9 +20,6 @@ class InfoForm extends Component {
     this.nameControlWasChanged = ::this.nameControlWasChanged
     this.bioControlWasChanged = ::this.bioControlWasChanged
     this.linksControlWasChanged = ::this.linksControlWasChanged
-  }
-
-  componentWillMount() {
     this.saveForm = debounce(this.saveForm, 300)
   }
 

@@ -33,8 +33,7 @@ SHARE_DIMENSIONS[SHARE_TYPES.TWITTER] = { width: 520, height: 250 }
 
 class ShareDialog extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  componentWillMount() {
     const { author, post } = this.props
     this.postLink = `${window.location.protocol}//${window.location.host}/${author.username}/post/${post.token}`
     let summary = 'Check out this post on Ello'

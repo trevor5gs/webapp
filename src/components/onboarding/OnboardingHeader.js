@@ -6,8 +6,8 @@ import { trackEvent } from '../../actions/tracking'
 import { ElloMark } from '../interface/ElloIcons'
 
 class OnboardingHeader extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
     this.nextWasClicked = ::this.nextWasClicked
     this.skipWasClicked = ::this.skipWasClicked
   }
