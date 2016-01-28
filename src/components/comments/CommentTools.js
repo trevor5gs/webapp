@@ -22,13 +22,6 @@ class CommentTools extends Component {
     this.state = {
       isMoreToolActive: false,
     }
-    this.closeModal = ::this.closeModal
-    this.commentWasFlagged = ::this.commentWasFlagged
-    this.deleteComment = ::this.deleteComment
-    this.deleteCommentConfirmed = ::this.deleteCommentConfirmed
-    this.flagComment = ::this.flagComment
-    this.replyToComment = ::this.replyToComment
-    this.toggleActiveMoreTool = ::this.toggleActiveMoreTool
   }
 
   getToolCells() {
@@ -89,14 +82,14 @@ class CommentTools extends Component {
     return cells
   }
 
-  closeModal() {
+  closeModal = () => {
     const { dispatch } = this.props
     dispatch(closeModal())
-  }
+  };
 
-  toggleActiveMoreTool() {
+  toggleActiveMoreTool = () => {
     this.setState({ isMoreToolActive: !this.state.isMoreToolActive })
-  }
+  };
 
   signUp() {
     const { dispatch } = this.props
@@ -104,25 +97,25 @@ class CommentTools extends Component {
     return dispatch(trackEvent('open-registration-request-post-tools'))
   }
 
-  replyToComment() {
+  replyToComment = () => {
     // TODO: hook this up with the editor
-  }
+  };
 
-  flagComment() {
+  flagComment = () => {
     const { dispatch } = this.props
     dispatch(openModal(
       <FlagDialog
         onResponse={ this.commentWasFlagged }
         onConfirm={ this.closeModal }
       />))
-  }
+  };
 
-  commentWasFlagged({ flag }) {
+  commentWasFlagged = ({ flag }) => {
     const { dispatch, comment } = this.props
     dispatch(commentActions.flagComment(comment, flag))
-  }
+  };
 
-  deleteComment() {
+  deleteComment = () => {
     const { dispatch } = this.props
     dispatch(openModal(
       <ConfirmDialog
@@ -130,13 +123,13 @@ class CommentTools extends Component {
         onConfirm={ this.deleteCommentConfirmed }
         onRejected={ this.closeModal }
       />))
-  }
+  };
 
-  deleteCommentConfirmed() {
+  deleteCommentConfirmed = () => {
     const { comment, dispatch } = this.props
     this.closeModal()
     dispatch(commentActions.deleteComment(comment))
-  }
+  };
 
   render() {
     const { comment } = this.props

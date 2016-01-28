@@ -4,17 +4,13 @@ import Avatar from '../assets/Avatar'
 
 class Credits extends Component {
 
-  componentWillMount() {
-    this.handleClick = ::this.handleClick
-  }
-
   // Typically a passed through tracking event sent before following the link
-  handleClick() {
+  handleClick = () => {
     const { clickAction } = this.props
     if (clickAction) {
       clickAction()
     }
-  }
+  };
 
   render() {
     const { user } = this.props

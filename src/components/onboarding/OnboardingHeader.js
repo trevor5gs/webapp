@@ -7,11 +7,6 @@ import { ElloMark } from '../interface/ElloIcons'
 
 class OnboardingHeader extends Component {
 
-  componentWillMount() {
-    this.nextWasClicked = ::this.nextWasClicked
-    this.skipWasClicked = ::this.skipWasClicked
-  }
-
   getButtonClassNames() {
     const { lockNext, relationshipMap } = this.props
     if (lockNext && relationshipMap) {
@@ -23,7 +18,7 @@ class OnboardingHeader extends Component {
     return classNames('OnboardingNextButton')
   }
 
-  nextWasClicked(e) {
+  nextWasClicked = (e) => {
     const {
       dispatch,
       batchSave,
@@ -70,16 +65,16 @@ class OnboardingHeader extends Component {
     } else {
       dispatch(trackEvent(`followed-some-${trackingLabel}`))
     }
-  }
+  };
 
-  skipWasClicked(e) {
+  skipWasClicked = (e) => {
     const { dispatch, trackingLabel, nextPath, redirection } = this.props
     dispatch(trackEvent(`skipped-${trackingLabel}`))
     if (redirection) {
       e.preventDefault()
       window.location = nextPath
     }
-  }
+  };
 
   render() {
     const { title, message, nextPath } = this.props

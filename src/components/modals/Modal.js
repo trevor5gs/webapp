@@ -8,10 +8,6 @@ import Mousetrap from '../../vendor/mousetrap'
 
 class Modal extends Component {
 
-  componentWillMount() {
-    this.handleModalTrigger = ::this.handleModalTrigger
-  }
-
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => { this.close() })
   }
@@ -39,14 +35,14 @@ class Modal extends Component {
     }
   }
 
-  handleModalTrigger(e) {
+  handleModalTrigger = (e) => {
     const classList = e.target.classList
     if (classList.contains('Modal') ||
         classList.contains('Alert') ||
         classList.contains('CloseModal')) {
       return this.close()
     }
-  }
+  };
 
   render() {
     const { modal } = this.props

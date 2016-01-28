@@ -6,10 +6,6 @@ import Picker from '../pickers/Picker'
 
 class PeoplePicker extends Picker {
 
-  componentWillMount() {
-    this.followAll = ::this.followAll
-  }
-
   getRelationshipButton(refs) {
     const relationsGroup = refs.RelationsGroup
     if (relationsGroup) {

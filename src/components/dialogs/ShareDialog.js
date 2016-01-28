@@ -67,7 +67,6 @@ class ShareDialog extends Component {
     this.tweetSummarySafe = window.encodeURIComponent(tweetSummary)
     this.emailSubjectSafe = window.encodeURIComponent(emailSubject)
     this.emailBodySafe = `${this.summarySafe}%0D%0A%0D%0A${this.postLinkSafe}`
-    this.popShareWindow = ::this.popShareWindow
   }
 
   getUrl(type) {
@@ -92,7 +91,7 @@ class ShareDialog extends Component {
     }
   }
 
-  popShareWindow(e) {
+  popShareWindow = (e) => {
     const type = e.target.dataset.type
     const url = this.getUrl(type)
     const { trackEvent } = this.props
@@ -106,7 +105,7 @@ class ShareDialog extends Component {
     if (trackEvent) {
       trackEvent(`share-to-${type}`)
     }
-  }
+  };
 
   selectReadOnlyInput(e) {
     e.target.select()

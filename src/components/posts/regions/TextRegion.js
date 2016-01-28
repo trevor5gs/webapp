@@ -5,11 +5,7 @@ import classNames from 'classnames'
 
 class TextRegion extends Component {
 
-  componentWillMount() {
-    this.handleRegionClick = ::this.handleRegionClick
-  }
-
-  handleRegionClick(e) {
+  handleRegionClick = (e) => {
     const { dispatch, isGridLayout, postDetailPath } = this.props
     const { classList, dataset, nodeName } = e.target
     // Get the raw value instead of the property value which is always absolute
@@ -33,7 +29,7 @@ class TextRegion extends Component {
     }
     // The alternative is it's either in list and we ignore it or it's an
     // absolute link and we allow it's default behavior.
-  }
+  };
 
   render() {
     const { content, isGridLayout, postDetailPath } = this.props

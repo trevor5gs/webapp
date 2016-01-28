@@ -45,10 +45,6 @@ class Navbar extends Component {
     }
     this.currentPath = null
     this.scrollYAtDirectionChange = null
-    this.logInWasClicked = ::this.logInWasClicked
-    this.onLogOut = ::this.onLogOut
-    this.omniButtonWasClicked = ::this.omniButtonWasClicked
-    this.loadMorePostsWasClicked = ::this.loadMorePostsWasClicked
   }
 
   componentDidMount() {
@@ -170,26 +166,26 @@ class Navbar extends Component {
   }
 
   // TODO: probably need to handle this a bit better
-  onLogOut() {
+  onLogOut = () => {
     const { dispatch } = this.props
     dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
     dispatch(routeActions.push('/'))
-  }
+  };
 
-  omniButtonWasClicked() {
-  }
+  omniButtonWasClicked = () => {
+  };
 
-  loadMorePostsWasClicked() {
+  loadMorePostsWasClicked = () => {
     const { dispatch } = this.props
     dispatch({
       type: ACTION_TYPES.ADD_NEW_IDS_TO_RESULT,
     })
-  }
+  };
 
-  logInWasClicked(e) {
+  logInWasClicked = (e) => {
     e.preventDefault()
     document.location.href = ENV.REDIRECT_URI + e.target.pathname
-  }
+  };
 
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
     const { profile } = this.props

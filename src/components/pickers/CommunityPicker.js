@@ -6,10 +6,6 @@ import Picker from '../pickers/Picker'
 
 class CommunityPicker extends Picker {
 
-  componentWillMount() {
-    this.followAll = ::this.followAll
-  }
-
   getRelationshipButton(refs) {
     const userContainer = refs.wrappedInstance
     if (userContainer) {

@@ -14,9 +14,6 @@ class FormControl extends Component {
       text,
     }
     this.initialValue = text
-    this.handleBlur = ::this.handleBlur
-    this.handleChange = ::this.handleChange
-    this.handleFocus = ::this.handleFocus
   }
 
   getStatusAsClassName() {
@@ -79,23 +76,23 @@ class FormControl extends Component {
     }
   }
 
-  handleFocus(e) {
+  handleFocus = (e) => {
     this.setState({ hasFocus: true })
     const { onFocus } = this.props
     if (typeof onFocus === 'function') {
       onFocus(e)
     }
-  }
+  };
 
-  handleBlur(e) {
+  handleBlur = (e) => {
     this.setState({ hasFocus: false })
     const { onBlur } = this.props
     if (typeof onBlur === 'function') {
       onBlur(e)
     }
-  }
+  };
 
-  handleChange(e) {
+  handleChange = (e) => {
     const val = e.target.value
     const { id, onChange } = this.props
     this.setState({
@@ -106,7 +103,7 @@ class FormControl extends Component {
     if (id && typeof onChange === 'function') {
       onChange({ [id]: val })
     }
-  }
+  };
 
   renderTextArea(text, inputClassNames) {
     return (

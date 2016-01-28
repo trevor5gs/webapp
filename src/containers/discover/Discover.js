@@ -9,14 +9,10 @@ import TabListLinks from '../../components/tabs/TabListLinks'
 
 class Discover extends Component {
 
-  componentWillMount() {
-    this.creditsTrackingEvent = ::this.creditsTrackingEvent
-  }
-
-  creditsTrackingEvent() {
+  creditsTrackingEvent = () => {
     const { dispatch } = this.props
     dispatch(trackEvent(`banderole-credits-clicked`))
-  }
+  };
 
   render() {
     const { isLoggedIn, params, pathname } = this.props

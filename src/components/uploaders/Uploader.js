@@ -8,22 +8,13 @@ class Uploader extends Component {
     this.state = {
       hasDragOver: false,
     }
-    this.handleDrop = ::this.handleDrop
-    this.handleDragOver = ::this.handleDragOver
-    this.handleDragLeave = ::this.handleDragLeave
-    this.handleFileBrowser = ::this.handleFileBrowser
-    this.triggerFileBrowser = ::this.triggerFileBrowser
-  }
-
-  triggerFileBrowser() {
-    this.refs.FileBrowser.click()
   }
 
   isLegitimateFileType(file) {
     return (file && file.type && file.type.match(/^image\/(jpg|jpeg|gif|png|tiff|tif|bmp)/))
   }
 
-  handleFileBrowser(e) {
+  handleFileBrowser = (e) => {
     const file = e.target.files[0]
     if (this.isLegitimateFileType(file)) {
       return this.props.saveAction(file)
@@ -34,9 +25,13 @@ class Uploader extends Component {
         body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
       />
     )
-  }
+  };
 
-  handleDrop(e) {
+  triggerFileBrowser = () => {
+    this.refs.FileBrowser.click()
+  };
+
+  handleDrop = (e) => {
     e.preventDefault()
     e.stopPropagation()
     const file = e.dataTransfer.files[0]
@@ -50,17 +45,17 @@ class Uploader extends Component {
         body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
       />
     )
-  }
+  };
 
-  handleDragOver(e) {
+  handleDragOver = (e) => {
     e.preventDefault()
     this.setState({ hasDragOver: true })
-  }
+  };
 
-  handleDragLeave(e) {
+  handleDragLeave = (e) => {
     e.preventDefault()
     this.setState({ hasDragOver: false })
-  }
+  };
 
   render() {
     const { title, message, recommend } = this.props

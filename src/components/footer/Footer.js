@@ -17,8 +17,6 @@ class Footer extends Component {
       isAndroid: !(navigator.userAgent.match(/Android/i) === null),
       isGridMode: true,
     }
-    this.scrollToTop = ::this.scrollToTop
-    this.toggleLayoutMode = ::this.toggleLayoutMode
   }
 
   componentWillReceiveProps() {
@@ -32,16 +30,16 @@ class Footer extends Component {
     }
   }
 
-  scrollToTop() {
+  scrollToTop = () => {
     if (typeof window === 'undefined') {
       return
     }
     window.scrollTo(0, 0)
-  }
+  };
 
-  toggleLayoutMode() {
+  toggleLayoutMode = () => {
     Mousetrap.trigger(SHORTCUT_KEYS.TOGGLE_LAYOUT)
-  }
+  };
 
   render() {
     const { isAndroid, isGridMode } = this.state

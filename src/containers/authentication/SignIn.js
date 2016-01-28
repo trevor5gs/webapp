@@ -30,25 +30,21 @@ class SignIn extends Component {
     }
     this.emailValue = ''
     this.passwordValue = ''
-    this.handleSubmit = ::this.handleSubmit
-    this.creditsTrackingEvent = ::this.creditsTrackingEvent
-    this.emailControlWasChanged = ::this.emailControlWasChanged
-    this.passwordControlWasChanged = ::this.passwordControlWasChanged
   }
 
-  creditsTrackingEvent() {
+  creditsTrackingEvent = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
-  }
+  };
 
   // TODO: Need to handle the return error or success when this is submitted
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(getUserCredentials(this.emailValue, this.passwordValue))
-  }
+  };
 
-  emailControlWasChanged({ email }) {
+  emailControlWasChanged = ({ email }) => {
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -56,9 +52,9 @@ class SignIn extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
     }
-  }
+  };
 
-  passwordControlWasChanged({ password }) {
+  passwordControlWasChanged = ({ password }) => {
     this.passwordValue = password
     const { passwordState } = this.state
     const currentStatus = passwordState.status
@@ -66,7 +62,7 @@ class SignIn extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ passwordState: newState })
     }
-  }
+  };
 
   render() {
     const { emailState, passwordState, featuredUser } = this.state

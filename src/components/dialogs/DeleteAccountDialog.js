@@ -7,33 +7,29 @@ class DeleteAccountDialog extends Component {
       scene: 'renderConfirm',
     }
     this.counter = 6
-    this.handleJustKidding = ::this.handleJustKidding
-    this.handleNotKidding = ::this.handleNotKidding
-    this.handleConfirm = ::this.handleConfirm
-    this.handleConfirmReally = ::this.handleConfirmReally
   }
 
   componentWillUnmount() {
     clearInterval(this.interval)
   }
 
-  handleJustKidding() {
+  handleJustKidding = () => {
     this.props.onRejected()
-  }
+  };
 
-  handleNotKidding() {
+  handleNotKidding = () => {
     this.props.onConfirm()
-  }
+  };
 
-  handleConfirm() {
+  handleConfirm = () => {
     this.setState({ scene: 'renderConfirmReally' })
-  }
+  };
 
-  handleConfirmReally() {
+  handleConfirmReally = () => {
     this.interval = setInterval(() => {
       this.setState({ scene: 'renderCountdown' })
     }, 1000)
-  }
+  };
 
   renderConfirm() {
     return (

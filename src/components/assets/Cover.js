@@ -18,8 +18,6 @@ class Cover extends Component {
       imageSize: 'hdpi',
       status: STATUS.REQUEST,
     }
-    this.loadDidFail = ::this.loadDidFail
-    this.loadDidSucceed = ::this.loadDidSucceed
   }
 
   componentDidMount() {
@@ -109,15 +107,15 @@ class Cover extends Component {
     }
   }
 
-  loadDidSucceed() {
+  loadDidSucceed = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  }
+  };
 
-  loadDidFail() {
+  loadDidFail = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  }
+  };
 
   render() {
     const src = this.getCoverSource()

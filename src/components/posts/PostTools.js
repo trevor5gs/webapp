@@ -30,15 +30,6 @@ class PostTools extends Component {
     this.state = {
       isMoreToolActive: false,
     }
-    this.closeModal = ::this.closeModal
-    this.deletePost = ::this.deletePost
-    this.flagPost = ::this.flagPost
-    this.lovePost = ::this.lovePost
-    this.postWasFlagged = ::this.postWasFlagged
-    this.sharePost = ::this.sharePost
-    this.signUp = ::this.signUp
-    this.toggleActiveMoreTool = ::this.toggleActiveMoreTool
-    this.toggleComments = ::this.toggleComments
   }
 
   getToolCells() {
@@ -161,23 +152,23 @@ class PostTools extends Component {
     return cells
   }
 
-  closeModal() {
+  closeModal = () => {
     const { dispatch } = this.props
     dispatch(closeModal())
-  }
+  };
 
-  toggleActiveMoreTool() {
+  toggleActiveMoreTool = () => {
     this.setState({ isMoreToolActive: !this.state.isMoreToolActive })
-  }
+  };
 
-  toggleComments() {
+  toggleComments = () => {
     const { author, dispatch, isLoggedIn, post } = this.props
     if (!isLoggedIn) {
       dispatch(routeActions.push(`/${author.username}/post/${post.token}`))
     }
-  }
+  };
 
-  lovePost() {
+  lovePost = () => {
     const { dispatch, isLoggedIn, post } = this.props
     if (!isLoggedIn) {
       return this.signUp()
@@ -187,36 +178,36 @@ class PostTools extends Component {
     } else {
       dispatch(postActions.lovePost(post))
     }
-  }
+  };
 
-  sharePost() {
+  sharePost = () => {
     const { author, dispatch, post } = this.props
     const action = bindActionCreators(trackEvent, dispatch)
     dispatch(openModal(<ShareDialog author={author} post={post} trackEvent={action} />))
     return dispatch(trackEvent('open-share-dialog'))
-  }
+  };
 
-  signUp() {
+  signUp = () => {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
     return dispatch(trackEvent('open-registration-request-post-tools'))
-  }
+  };
 
-  flagPost() {
+  flagPost = () => {
     const { dispatch } = this.props
     dispatch(openModal(
       <FlagDialog
         onResponse={ this.postWasFlagged }
         onConfirm={ this.closeModal }
       />))
-  }
+  };
 
-  postWasFlagged({ flag }) {
+  postWasFlagged = ({ flag }) => {
     const { dispatch, post } = this.props
     dispatch(postActions.flagPost(post, flag))
-  }
+  };
 
-  deletePost() {
+  deletePost = () => {
     const { dispatch } = this.props
     dispatch(openModal(
       <ConfirmDialog
@@ -224,7 +215,7 @@ class PostTools extends Component {
         onConfirm={ this.deletePostConfirmed }
         onRejected={ this.closeModal }
       />))
-  }
+  };
 
   deletePostConfirmed() {
     const { dispatch, pathname, post, previousPath } = this.props

@@ -17,13 +17,12 @@ class SignUp extends Component {
     this.state = {
       featuredUser: userlist[index],
     }
-    this.creditsTrackingEvent = ::this.creditsTrackingEvent
   }
 
-  creditsTrackingEvent() {
+  creditsTrackingEvent = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
-  }
+  };
 
   render() {
     const { featuredUser } = this.state

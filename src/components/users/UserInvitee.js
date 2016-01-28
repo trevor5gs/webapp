@@ -9,15 +9,11 @@ import { getLinkObject } from '../base/json_helper'
 
 class UserInvitee extends Component {
 
-  componentWillMount() {
-    this.reInviteUser = ::this.reInviteUser
-  }
-
-  reInviteUser() {
+  reInviteUser = () => {
     const { dispatch, invitation } = this.props
     const emails = [invitation.email]
     dispatch(inviteUsers(emails))
-  }
+  };
 
   renderMailtoUserHeader(invitation) {
     const { email } = invitation

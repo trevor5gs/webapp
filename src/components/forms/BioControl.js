@@ -7,10 +7,9 @@ class BioControl extends Component {
   componentWillMount() {
     const { text } = this.props
     this.state = { textLength: text ? text.length : 0 }
-    this.handleChange = ::this.handleChange
   }
 
-  handleChange(vo) {
+  handleChange = (vo) => {
     const { id, onChange } = this.props
     const { textLength } = this.state
     const len = vo[id] ? vo[id].length : 0
@@ -20,7 +19,7 @@ class BioControl extends Component {
     if (id && typeof onChange === 'function') {
       onChange(vo)
     }
-  }
+  };
 
   isValidBioLength() {
     const { textLength } = this.state

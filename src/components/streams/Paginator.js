@@ -5,7 +5,6 @@ class Paginator extends Component {
 
   componentWillMount() {
     this.state = { isPaginationLoading: false, message: this.getMessage() }
-    this.loadMore = ::this.loadMore
   }
 
   getMessage() {
@@ -26,12 +25,12 @@ class Paginator extends Component {
     this.state = { isPaginationLoading, message: this.getMessage() }
   }
 
-  loadMore() {
+  loadMore = () => {
     const { delegate } = this.props
     if (delegate && typeof delegate.onLoadNextPage === 'function') {
       delegate.onLoadNextPage()
     }
-  }
+  };
 
   render() {
     const { isPaginationLoading, message } = this.state

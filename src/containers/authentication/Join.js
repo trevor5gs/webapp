@@ -37,11 +37,6 @@ class Join extends Component {
     this.emailValue = ''
     this.usernameValue = ''
     this.passwordValue = ''
-    this.handleSubmit = ::this.handleSubmit
-    this.creditsTrackingEvent = ::this.creditsTrackingEvent
-    this.emailControlWasChanged = ::this.emailControlWasChanged
-    this.usernameControlWasChanged = ::this.usernameControlWasChanged
-    this.passwordControlWasChanged = ::this.passwordControlWasChanged
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
   }
 
@@ -58,16 +53,16 @@ class Join extends Component {
     }
   }
 
-  creditsTrackingEvent() {
+  creditsTrackingEvent = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
-  }
+  };
 
   checkServerForAvailability(vo) {
     return this.props.dispatch(checkAvailability(vo))
   }
 
-  usernameControlWasChanged({ username }) {
+  usernameControlWasChanged = ({ username }) => {
     this.usernameValue = username
     const { usernameState } = this.state
     const currentStatus = usernameState.status
@@ -84,7 +79,7 @@ class Join extends Component {
     if (clientState.status !== currentStatus && clientState.message !== currentMessage) {
       this.setState({ usernameState: clientState })
     }
-  }
+  };
 
   validateUsernameResponse(availability) {
     const { usernameState } = this.state
@@ -95,7 +90,7 @@ class Join extends Component {
     }
   }
 
-  emailControlWasChanged({ email }) {
+  emailControlWasChanged = ({ email }) => {
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -110,7 +105,7 @@ class Join extends Component {
     if (clientState.status !== currentStatus) {
       this.setState({ emailState: clientState })
     }
-  }
+  };
 
   validateEmailResponse(availability) {
     const { emailState } = this.state
@@ -121,7 +116,7 @@ class Join extends Component {
     }
   }
 
-  passwordControlWasChanged({ password }) {
+  passwordControlWasChanged = ({ password }) => {
     this.passwordValue = password
     const { passwordState } = this.state
     const currentStatus = passwordState.status
@@ -129,14 +124,14 @@ class Join extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ passwordState: newState })
     }
-  }
+  };
 
   // TODO: Still needs to be hooked up
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault()
     // const { dispatch } = this.props
     // dispatch(someActionFunction(this.emailValue, this.usernameValue, this.passwordValue))
-  }
+  };
 
   render() {
     const { emailState, usernameState, passwordState, featuredUser } = this.state

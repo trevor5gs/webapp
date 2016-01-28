@@ -20,10 +20,9 @@ class TreeButton extends Component {
     this.state = {
       collapsed: isCollapsed,
     }
-    this.handleChange = ::this.handleChange
   }
 
-  handleChange(...rest) {
+  handleChange = (...rest) => {
     const { onClick } = this.props
     const { collapsed } = this.state
     const newCollapsedState = !collapsed
@@ -31,7 +30,7 @@ class TreeButton extends Component {
     if (typeof onClick === 'function') {
       onClick(...rest)
     }
-  }
+  };
 
   render() {
     const { children, className } = this.props

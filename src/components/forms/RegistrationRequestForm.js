@@ -14,8 +14,6 @@ class RegistrationRequestForm extends Component {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
     }
     this.emailValue = ''
-    this.handleSubmit = ::this.handleSubmit
-    this.emailControlWasChanged = ::this.emailControlWasChanged
   }
 
   componentWillReceiveProps(nextProps) {
@@ -25,14 +23,14 @@ class RegistrationRequestForm extends Component {
     }
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(requestInvite(this.emailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
-  }
+  };
 
-  emailControlWasChanged({ email }) {
+  emailControlWasChanged = ({ email }) => {
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -40,7 +38,7 @@ class RegistrationRequestForm extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
     }
-  }
+  };
 
   renderSubmitted() {
     return (

@@ -17,9 +17,6 @@ class InfoForm extends Component {
       nameStatus: STATUS.INDETERMINATE,
       showThenHideMessage: false,
     }
-    this.nameControlWasChanged = ::this.nameControlWasChanged
-    this.bioControlWasChanged = ::this.bioControlWasChanged
-    this.linksControlWasChanged = ::this.linksControlWasChanged
     this.saveForm = debounce(this.saveForm, 300)
   }
 
@@ -51,17 +48,17 @@ class InfoForm extends Component {
     this.saveForm(vo)
   }
 
-  nameControlWasChanged(vo) {
+  nameControlWasChanged = (vo) => {
     this.controlWasChanged(vo, 'nameStatus')
-  }
+  };
 
-  bioControlWasChanged(vo) {
+  bioControlWasChanged = (vo) => {
     this.controlWasChanged(vo, 'bioStatus')
-  }
+  };
 
-  linksControlWasChanged(vo) {
+  linksControlWasChanged = (vo) => {
     this.controlWasChanged(vo, 'linksStatus')
-  }
+  };
 
   render() {
     const { bioStatus, linksStatus, nameStatus, showThenHideMessage } = this.state

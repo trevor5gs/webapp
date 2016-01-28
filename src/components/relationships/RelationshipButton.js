@@ -7,7 +7,6 @@ class RelationshipButton extends Component {
 
   componentWillMount() {
     this.state = { nextPriority: this.getNextPriority(this.props) }
-    this.updatePriority = ::this.updatePriority
   }
 
   componentWillReceiveProps(nextProps) {
@@ -25,13 +24,13 @@ class RelationshipButton extends Component {
     }
   }
 
-  updatePriority() {
+  updatePriority = () => {
     const { nextPriority } = this.state
     const { buttonWasClicked, priority, userId } = this.props
     if (buttonWasClicked) {
       buttonWasClicked({ userId, priority: nextPriority, existing: priority })
     }
-  }
+  };
 
   renderAsToggleButton(label, icon = null) {
     const { priority } = this.props

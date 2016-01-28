@@ -23,24 +23,21 @@ class ForgotPassword extends Component {
       formStatus: STATUS.INDETERMINATE,
     }
     this.emailValue = ''
-    this.handleSubmit = ::this.handleSubmit
-    this.creditsTrackingEvent = ::this.creditsTrackingEvent
-    this.emailControlWasChanged = ::this.emailControlWasChanged
   }
 
-  creditsTrackingEvent() {
+  creditsTrackingEvent = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(sendForgotPasswordRequest(this.emailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
-  }
+  };
 
-  emailControlWasChanged({ email }) {
+  emailControlWasChanged = ({ email }) => {
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -48,7 +45,7 @@ class ForgotPassword extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
     }
-  }
+  };
 
   renderSubmitted() {
     return (

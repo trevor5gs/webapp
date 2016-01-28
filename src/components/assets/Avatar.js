@@ -15,8 +15,6 @@ class Avatar extends Component {
     this.state = {
       status: this.getAvatarSource() ? STATUS.REQUEST : STATUS.PENDING,
     }
-    this.loadDidFail = ::this.loadDidFail
-    this.loadDidSucceed = ::this.loadDidSucceed
   }
 
   componentDidMount() {
@@ -85,15 +83,15 @@ class Avatar extends Component {
     }
   }
 
-  loadDidSucceed() {
+  loadDidSucceed = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  }
+  };
 
-  loadDidFail() {
+  loadDidFail = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  }
+  };
 
   render() {
     const { to } = this.props

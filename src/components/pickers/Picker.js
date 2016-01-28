@@ -22,7 +22,7 @@ class Picker extends React.Component {
     return null
   }
 
-  followAll() {
+  followAll = () => {
     const { inactive } = this.props.relationshipMap
     const userRefs = this.refs.streamComponent.refs.wrappedInstance.refs
     const relationship = inactive.length === 0 ?
@@ -41,7 +41,7 @@ class Picker extends React.Component {
       const { dispatch } = this.props
       dispatch(batchUpdateRelationship(userIds, relationship))
     }
-  }
+  };
 
   isFollowingAll() {
     const { following, inactive } = this.props.relationshipMap

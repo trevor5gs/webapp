@@ -18,9 +18,6 @@ class ImageRegion extends Component {
       scale: null,
       status: STATUS.REQUEST,
     }
-    this.loadDidFail = ::this.loadDidFail
-    this.loadDidSucceed = ::this.loadDidSucceed
-    this.staticImageRegionWasClicked = ::this.staticImageRegionWasClicked
   }
 
   componentDidMount() {
@@ -121,7 +118,7 @@ class ImageRegion extends Component {
     this.setState({ scale: null, marginBottom: null })
   }
 
-  staticImageRegionWasClicked() {
+  staticImageRegionWasClicked = () => {
     const { scale } = this.state
     if (scale) {
       return this.resetImageScale()
@@ -129,7 +126,7 @@ class ImageRegion extends Component {
       return null
     }
     return this.setImageScale()
-  }
+  };
 
   createLoader() {
     const srcset = this.getImageSourceSet()
@@ -150,15 +147,15 @@ class ImageRegion extends Component {
     }
   }
 
-  loadDidSucceed() {
+  loadDidSucceed = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  }
+  };
 
-  loadDidFail() {
+  loadDidFail = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  }
+  };
 
   isGif() {
     const optimized = this.attachment.optimized

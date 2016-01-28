@@ -8,7 +8,6 @@ class ToggleControl extends Component {
     this.state = {
       checked: isChecked,
     }
-    this.handleChange = ::this.handleChange
   }
 
   componentWillReceiveProps(nextProps) {
@@ -21,7 +20,7 @@ class ToggleControl extends Component {
     }
   }
 
-  handleChange() {
+  handleChange = () => {
     const { onChange, id } = this.props
     const { checked } = this.state
     const newCheckedState = !checked
@@ -29,7 +28,7 @@ class ToggleControl extends Component {
     if (typeof onChange === 'function') {
       onChange({ [id]: newCheckedState })
     }
-  }
+  };
 
   render() {
     const { className, id, isDisabled } = this.props

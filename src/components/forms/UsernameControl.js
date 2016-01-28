@@ -3,17 +3,12 @@ import FormControl from './FormControl'
 
 class UsernameControl extends Component {
 
-  componentWillMount() {
-    this.renderSuggestions = ::this.renderSuggestions
-    this.handleUsernameSuggestionClick = ::this.handleUsernameSuggestionClick
-  }
-
-  handleUsernameSuggestionClick(e) {
+  handleUsernameSuggestionClick = (e) => {
     const val = e.target.title
     this.refs.FormControl.handleChange({ target: { value: val } })
-  }
+  };
 
-  renderSuggestions() {
+  renderSuggestions = () => {
     const { suggestions } = this.props
     if (suggestions && suggestions.length) {
       return (
@@ -38,7 +33,7 @@ class UsernameControl extends Component {
         <span></span>
       </p>
     )
-  }
+  };
 
   render() {
     return (

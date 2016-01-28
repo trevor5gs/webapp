@@ -16,11 +16,9 @@ class Invitations extends Component {
       batchEmailState: { status: STATUS.INDETERMINATE, message: '' },
     }
     this.batchEmailValue = ''
-    this.handleSubmit = ::this.handleSubmit
-    this.handleControlChange = ::this.handleControlChange
   }
 
-  handleControlChange({ emails }) {
+  handleControlChange = ({ emails }) => {
     this.batchEmailValue = emails
     const { batchEmailState } = this.state
     const currentStatus = batchEmailState.status
@@ -28,9 +26,9 @@ class Invitations extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ batchEmailState: newState })
     }
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault()
     const { batchEmailState } = this.state
     if (batchEmailState.status !== STATUS.SUCCESS) {
@@ -39,7 +37,7 @@ class Invitations extends Component {
     const { dispatch } = this.props
     this.setState({ formStatus: STATUS.SUBMITTED })
     dispatch(inviteUsers(this.batchEmailValue))
-  }
+  };
 
   renderMessage() {
     const { formStatus } = this.state
