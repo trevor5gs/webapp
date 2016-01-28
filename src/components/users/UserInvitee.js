@@ -9,6 +9,13 @@ import { getLinkObject } from '../base/json_helper'
 
 class UserInvitee extends Component {
 
+  static propTypes = {
+    className: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
+    invitation: PropTypes.shape({}).isRequired,
+    json: PropTypes.object.isRequired,
+  };
+
   reInviteUser = () => {
     const { dispatch, invitation } = this.props
     const emails = [invitation.email]
@@ -71,13 +78,6 @@ class UserInvitee extends Component {
     }
     return null
   }
-}
-
-UserInvitee.propTypes = {
-  className: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
-  invitation: PropTypes.shape({}).isRequired,
-  json: PropTypes.object.isRequired,
 }
 
 export default connect()(UserInvitee)

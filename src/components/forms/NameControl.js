@@ -3,6 +3,14 @@ import FormControl from './FormControl'
 
 class NameControl extends Component {
 
+  static defaultProps = {
+    className: 'NameControl',
+    id: 'name',
+    label: 'Name',
+    name: 'user[name]',
+    placeholder: 'Name (optional)',
+  };
+
   render() {
     return (
       <FormControl
@@ -14,14 +22,6 @@ class NameControl extends Component {
       />
     )
   }
-}
-
-NameControl.defaultProps = {
-  className: 'NameControl',
-  id: 'name',
-  label: 'Name',
-  name: 'user[name]',
-  placeholder: 'Name (optional)',
 }
 
 export default NameControl

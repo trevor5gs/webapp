@@ -13,6 +13,17 @@ import TabListButtons from '../../components/tabs/TabListButtons'
 
 class Search extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    location: PropTypes.shape({
+      query: PropTypes.shape({
+        terms: PropTypes.string,
+        type: PropTypes.string,
+      }).isRequired,
+    }).isRequired,
+  };
+
   componentWillMount() {
     this.state = {
       terms: this.props.location.query.terms || '',
@@ -110,17 +121,6 @@ class Search extends Component {
   }
 }
 
-
-Search.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  location: PropTypes.shape({
-    query: PropTypes.shape({
-      terms: PropTypes.string,
-      type: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
-}
 
 function mapStateToProps(state) {
   return {

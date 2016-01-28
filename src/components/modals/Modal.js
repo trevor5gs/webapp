@@ -8,6 +8,16 @@ import Mousetrap from '../../vendor/mousetrap'
 
 class Modal extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    modal: PropTypes.shape({
+      component: PropTypes.object,
+      isActive: PropTypes.bool,
+      kind: PropTypes.string,
+      classList: PropTypes.string,
+    }).isRequired,
+  };
+
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => { this.close() })
   }
@@ -56,16 +66,6 @@ class Modal extends Component {
       </div>
     )
   }
-}
-
-Modal.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  modal: PropTypes.shape({
-    component: PropTypes.object,
-    isActive: PropTypes.bool,
-    kind: PropTypes.string,
-    classList: PropTypes.string,
-  }).isRequired,
 }
 
 function mapStateToProps(state) {

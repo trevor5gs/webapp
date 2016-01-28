@@ -11,6 +11,11 @@ const STATUS = {
 
 class CoverMini extends Component {
 
+  static propTypes = {
+    coverImage: PropTypes.any,
+    to: PropTypes.string,
+  };
+
   componentWillMount() {
     this.state = {
       imageSize: 'hdpi',
@@ -99,11 +104,6 @@ class CoverMini extends Component {
         <figure className="CoverMiniImage" style={style} />
       </span>
   }
-}
-
-CoverMini.propTypes = {
-  coverImage: PropTypes.any,
-  to: PropTypes.string,
 }
 
 export default CoverMini

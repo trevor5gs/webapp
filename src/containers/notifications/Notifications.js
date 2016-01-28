@@ -12,6 +12,22 @@ import TabListLinks from '../../components/tabs/TabListLinks'
 
 class Notifications extends Component {
 
+  static propTypes = {
+    pathname: PropTypes.string,
+    params: PropTypes.shape({
+      category: PropTypes.string,
+    }),
+  };
+
+  static preRender = (store, routerState) => {
+    const { category } = routerState.params
+    const params = {}
+    if (category) {
+      params.category = category
+    }
+    return store.dispatch(loadNotifications(params))
+  };
+
   render() {
     const { pathname } = this.props
     const { category } = this.props.params
@@ -39,22 +55,6 @@ class Notifications extends Component {
       </section>
     )
   }
-}
-
-Notifications.preRender = (store, routerState) => {
-  const { category } = routerState.params
-  const params = {}
-  if (category) {
-    params.category = category
-  }
-  return store.dispatch(loadNotifications(params))
-}
-
-Notifications.propTypes = {
-  pathname: PropTypes.string,
-  params: PropTypes.shape({
-    category: PropTypes.string,
-  }),
 }
 
 function mapStateToProps(state) {

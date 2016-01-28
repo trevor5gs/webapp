@@ -14,6 +14,10 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class ForgotPassword extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  };
+
   componentWillMount() {
     const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
@@ -95,10 +99,6 @@ class ForgotPassword extends Component {
       </section>
     )
   }
-}
-
-ForgotPassword.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(ForgotPassword)

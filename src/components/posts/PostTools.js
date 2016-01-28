@@ -26,6 +26,16 @@ import {
 
 class PostTools extends Component {
 
+  static propTypes = {
+    author: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    pathname: PropTypes.string.isRequired,
+    post: PropTypes.object.isRequired,
+    previousPath: PropTypes.string,
+  };
+
   componentWillMount() {
     this.state = {
       isMoreToolActive: false,
@@ -248,16 +258,6 @@ function mapStateToProps(state) {
     pathname: state.routing.location.pathname,
     previousPath: state.routing.previousPath,
   }
-}
-
-PostTools.propTypes = {
-  author: PropTypes.object.isRequired,
-  currentUser: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  pathname: PropTypes.string.isRequired,
-  post: PropTypes.object.isRequired,
-  previousPath: PropTypes.string,
 }
 
 export default connect(mapStateToProps)(PostTools)

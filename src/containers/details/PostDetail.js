@@ -6,6 +6,16 @@ import StreamComponent from '../../components/streams/StreamComponent'
 
 class PostDetail extends Component {
 
+  static propTypes = {
+    params: PropTypes.shape({
+      token: PropTypes.string.isRequired,
+    }).isRequired,
+  };
+
+  static preRender = (store, routerState) => {
+    return store.dispatch(loadPostDetail(`~${routerState.params.type}`))
+  };
+
   render() {
     const { params } = this.props
     return (
@@ -19,16 +29,6 @@ class PostDetail extends Component {
       </section>
     )
   }
-}
-
-PostDetail.preRender = (store, routerState) => {
-  return store.dispatch(loadPostDetail(`~${routerState.params.type}`))
-}
-
-PostDetail.propTypes = {
-  params: PropTypes.shape({
-    token: PropTypes.string.isRequired,
-  }).isRequired,
 }
 
 export default PostDetail

@@ -13,6 +13,22 @@ import StarshipButton from '../relationships/StarshipButton'
 
 class RelationsGroup extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    pathname: PropTypes.string,
+    previousPath: PropTypes.string,
+    showBlockMuteButton: PropTypes.bool,
+    user: PropTypes.shape({
+      id: PropTypes.string,
+      relationshipPriority: PropTypes.string,
+    }).isRequired,
+  };
+
+  static defaultProps = {
+    showBlockMuteButton: false,
+  };
+
   getNextPriority(props, btnId) {
     const { user } = props
     const priority = user.relationshipPriority
@@ -138,22 +154,6 @@ class RelationsGroup extends Component {
       </div>
     )
   }
-}
-
-RelationsGroup.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  pathname: PropTypes.string,
-  previousPath: PropTypes.string,
-  showBlockMuteButton: PropTypes.bool,
-  user: PropTypes.shape({
-    id: PropTypes.string,
-    relationshipPriority: PropTypes.string,
-  }).isRequired,
-}
-
-RelationsGroup.defaultProps = {
-  showBlockMuteButton: false,
 }
 
 function mapStateToProps(state) {

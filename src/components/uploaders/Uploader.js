@@ -4,6 +4,20 @@ import Dialog from '../dialogs/Dialog'
 
 class Uploader extends Component {
 
+  static propTypes = {
+    message: PropTypes.string,
+    openAlert: PropTypes.func.isRequired,
+    recommend: PropTypes.string,
+    saveAction: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+  };
+
+  static defaultProps = {
+    message: null,
+    recommend: null,
+    title: '',
+  };
+
   componentWillMount() {
     this.state = {
       hasDragOver: false,
@@ -90,20 +104,6 @@ class Uploader extends Component {
       </div>
     )
   }
-}
-
-Uploader.propTypes = {
-  message: PropTypes.string,
-  openAlert: PropTypes.func.isRequired,
-  recommend: PropTypes.string,
-  saveAction: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-}
-
-Uploader.defaultProps = {
-  message: null,
-  recommend: null,
-  title: '',
 }
 
 export default Uploader

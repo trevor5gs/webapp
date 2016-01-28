@@ -33,6 +33,25 @@ const whitelist = [
 
 class Navbar extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    json: PropTypes.object.isRequired,
+    modalIsActive: PropTypes.bool,
+    pathname: PropTypes.string.isRequired,
+    profile: PropTypes.object,
+    shortcuts: PropTypes.object.isRequired,
+  };
+
+  static defaultProps = {
+    shortcuts: {
+      [SHORTCUT_KEYS.SEARCH]: '/search',
+      [SHORTCUT_KEYS.DISCOVER]: '/discover',
+      [SHORTCUT_KEYS.FOLLOWING]: '/following',
+      [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/communities',
+    },
+  };
+
   componentWillMount() {
     const { pathname } = this.props
     const pathnames = pathname.split('/').slice(1)
@@ -303,25 +322,6 @@ class Navbar extends Component {
       this.renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) :
       this.renderLoggedOutNavbar(klassNames, hasLoadMoreButton, pathname)
   }
-}
-
-Navbar.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  json: PropTypes.object.isRequired,
-  modalIsActive: PropTypes.bool,
-  pathname: PropTypes.string.isRequired,
-  profile: PropTypes.object,
-  shortcuts: PropTypes.object.isRequired,
-}
-
-Navbar.defaultProps = {
-  shortcuts: {
-    [SHORTCUT_KEYS.SEARCH]: '/search',
-    [SHORTCUT_KEYS.DISCOVER]: '/discover',
-    [SHORTCUT_KEYS.FOLLOWING]: '/following',
-    [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/communities',
-  },
 }
 
 function mapStateToProps(state) {

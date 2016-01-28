@@ -33,6 +33,12 @@ SHARE_DIMENSIONS[SHARE_TYPES.TWITTER] = { width: 520, height: 250 }
 
 class ShareDialog extends Component {
 
+  static propTypes = {
+    author: PropTypes.object.isRequired,
+    post: PropTypes.object.isRequired,
+    trackEvent: PropTypes.func,
+  };
+
   componentWillMount() {
     const { author, post } = this.props
     this.postLink = `${window.location.protocol}//${window.location.host}/${author.username}/post/${post.token}`
@@ -134,12 +140,6 @@ class ShareDialog extends Component {
       </div>
     )
   }
-}
-
-ShareDialog.propTypes = {
-  author: PropTypes.object.isRequired,
-  post: PropTypes.object.isRequired,
-  trackEvent: PropTypes.func,
 }
 
 export default ShareDialog

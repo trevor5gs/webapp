@@ -34,6 +34,11 @@ import InfoForm from '../../components/forms/InfoForm'
 
 class Settings extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    profile: PropTypes.object,
+  };
+
   componentWillMount() {
     const { profile } = this.props
     this.state = {
@@ -404,15 +409,6 @@ class Settings extends Component {
       </section>
     )
   }
-}
-// TODO: Should this load profile or will the App take care of it?
-// Settings.preRender = (store) => {
-//   return store.dispatch(loadProfile())
-// }
-
-Settings.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  profile: PropTypes.object,
 }
 
 function mapStateToProps(state) {

@@ -10,6 +10,18 @@ import LinksControl from '../forms/LinksControl'
 
 class InfoForm extends Component {
 
+  static propTypes = {
+    className: PropTypes.string,
+    controlClassModifiers: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
+    profile: PropTypes.object,
+    tabIndexStart: PropTypes.number,
+  };
+
+  static defaultProps = {
+    tabIndexStart: 0,
+  };
+
   componentWillMount() {
     this.state = {
       bioStatus: STATUS.INDETERMINATE,
@@ -108,18 +120,6 @@ function mapStateToProps(state) {
   return {
     profile: state.profile,
   }
-}
-
-InfoForm.propTypes = {
-  className: PropTypes.string,
-  controlClassModifiers: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
-  profile: PropTypes.object,
-  tabIndexStart: PropTypes.number,
-}
-
-InfoForm.defaultProps = {
-  tabIndexStart: 0,
 }
 
 export default connect(mapStateToProps)(InfoForm)

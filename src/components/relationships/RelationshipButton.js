@@ -5,6 +5,21 @@ import { MiniPlusIcon, MiniCheckIcon } from '../relationships/RelationshipIcons'
 
 class RelationshipButton extends Component {
 
+  static propTypes = {
+    buttonWasClicked: PropTypes.func,
+    priority: PropTypes.oneOf([
+      RELATIONSHIP_PRIORITY.INACTIVE,
+      RELATIONSHIP_PRIORITY.FRIEND,
+      RELATIONSHIP_PRIORITY.NOISE,
+      RELATIONSHIP_PRIORITY.SELF,
+      RELATIONSHIP_PRIORITY.MUTE,
+      RELATIONSHIP_PRIORITY.BLOCK,
+      RELATIONSHIP_PRIORITY.NONE,
+      null,
+    ]),
+    userId: PropTypes.string,
+  };
+
   componentWillMount() {
     this.state = { nextPriority: this.getNextPriority(this.props) }
   }
@@ -104,21 +119,6 @@ class RelationshipButton extends Component {
       'renderAsInactive'
     return this[fn]()
   }
-}
-
-RelationshipButton.propTypes = {
-  buttonWasClicked: PropTypes.func,
-  priority: PropTypes.oneOf([
-    RELATIONSHIP_PRIORITY.INACTIVE,
-    RELATIONSHIP_PRIORITY.FRIEND,
-    RELATIONSHIP_PRIORITY.NOISE,
-    RELATIONSHIP_PRIORITY.SELF,
-    RELATIONSHIP_PRIORITY.MUTE,
-    RELATIONSHIP_PRIORITY.BLOCK,
-    RELATIONSHIP_PRIORITY.NONE,
-    null,
-  ]),
-  userId: PropTypes.string,
 }
 
 export default RelationshipButton

@@ -7,6 +7,18 @@ import { ElloMark } from '../interface/ElloIcons'
 
 class OnboardingHeader extends Component {
 
+  static propTypes = {
+    batchSave: PropTypes.func,
+    dispatch: PropTypes.func.isRequired,
+    lockNext: PropTypes.bool,
+    message: PropTypes.string.isRequired,
+    nextPath: PropTypes.string.isRequired,
+    redirection: PropTypes.bool,
+    relationshipMap: PropTypes.object,
+    title: PropTypes.string.isRequired,
+    trackingLabel: PropTypes.string.isRequired,
+  };
+
   getButtonClassNames() {
     const { lockNext, relationshipMap } = this.props
     if (lockNext && relationshipMap) {
@@ -104,18 +116,6 @@ class OnboardingHeader extends Component {
       </header>
     )
   }
-}
-
-OnboardingHeader.propTypes = {
-  batchSave: PropTypes.func,
-  dispatch: PropTypes.func.isRequired,
-  lockNext: PropTypes.bool,
-  message: PropTypes.string.isRequired,
-  nextPath: PropTypes.string.isRequired,
-  redirection: PropTypes.bool,
-  relationshipMap: PropTypes.object,
-  title: PropTypes.string.isRequired,
-  trackingLabel: PropTypes.string.isRequired,
 }
 
 export default connect()(OnboardingHeader)

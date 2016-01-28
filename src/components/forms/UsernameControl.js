@@ -3,6 +3,19 @@ import FormControl from './FormControl'
 
 class UsernameControl extends Component {
 
+  static propTypes = {
+    suggestions: PropTypes.array,
+  };
+
+  static defaultProps = {
+    className: 'UsernameControl',
+    id: 'username',
+    label: 'Username',
+    name: 'user[username]',
+    placeholder: 'Enter your username',
+    suggestions: null,
+  };
+
   handleUsernameSuggestionClick = (e) => {
     const val = e.target.title
     this.refs.FormControl.handleChange({ target: { value: val } })
@@ -48,19 +61,6 @@ class UsernameControl extends Component {
       />
     )
   }
-}
-
-UsernameControl.propTypes = {
-  suggestions: PropTypes.array,
-}
-
-UsernameControl.defaultProps = {
-  className: 'UsernameControl',
-  id: 'username',
-  label: 'Username',
-  name: 'user[username]',
-  placeholder: 'Enter your username',
-  suggestions: null,
 }
 
 export default UsernameControl

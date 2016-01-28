@@ -11,6 +11,10 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class SignUp extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  };
+
   componentWillMount() {
     const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
@@ -42,10 +46,6 @@ class SignUp extends Component {
       </section>
     )
   }
-}
-
-SignUp.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(SignUp)

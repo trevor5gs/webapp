@@ -11,6 +11,18 @@ const STATUS = {
 
 class Avatar extends Component {
 
+  static propTypes = {
+    isModifiable: PropTypes.bool,
+    size: PropTypes.string,
+    sources: PropTypes.object,
+    to: PropTypes.string,
+  };
+
+  static defaultProps = {
+    isModifiable: false,
+    size: 'regular',
+  };
+
   componentWillMount() {
     this.state = {
       status: this.getAvatarSource() ? STATUS.REQUEST : STATUS.PENDING,
@@ -107,18 +119,6 @@ class Avatar extends Component {
         <div className="AvatarImage" style={style} />
       </span>
   }
-}
-
-Avatar.propTypes = {
-  isModifiable: PropTypes.bool,
-  size: PropTypes.string,
-  sources: PropTypes.object,
-  to: PropTypes.string,
-}
-
-Avatar.defaultProps = {
-  isModifiable: false,
-  size: 'regular',
 }
 
 export default Avatar

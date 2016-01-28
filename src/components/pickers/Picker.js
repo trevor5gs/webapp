@@ -4,6 +4,16 @@ import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 
 class Picker extends React.Component {
 
+  static propTypes = {
+    dispatch: React.PropTypes.func.isRequired,
+    relationshipMap: React.PropTypes.any.isRequired,
+    shouldAutoFollow: React.PropTypes.bool,
+  };
+
+  static defaultProps = {
+    shouldAutoFollow: false,
+  };
+
   componentWillMount() {
     this.hasAutoFollowed = false
   }
@@ -63,16 +73,6 @@ class Picker extends React.Component {
   render() {
     return null
   }
-}
-
-Picker.propTypes = {
-  dispatch: React.PropTypes.func.isRequired,
-  relationshipMap: React.PropTypes.any.isRequired,
-  shouldAutoFollow: React.PropTypes.bool,
-}
-
-Picker.defaultProps = {
-  shouldAutoFollow: false,
 }
 
 export default Picker

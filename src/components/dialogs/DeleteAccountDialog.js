@@ -2,6 +2,12 @@ import React, { Component, PropTypes } from 'react'
 
 class DeleteAccountDialog extends Component {
 
+  static propTypes = {
+    user: PropTypes.shape({}),
+    onConfirm: PropTypes.func,
+    onRejected: PropTypes.func,
+  };
+
   componentWillMount() {
     this.state = {
       scene: 'renderConfirm',
@@ -86,13 +92,6 @@ class DeleteAccountDialog extends Component {
     const { scene } = this.state
     return this[scene]()
   }
-}
-
-
-DeleteAccountDialog.propTypes = {
-  user: PropTypes.shape({}),
-  onConfirm: PropTypes.func,
-  onRejected: PropTypes.func,
 }
 
 export default DeleteAccountDialog

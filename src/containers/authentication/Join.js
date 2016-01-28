@@ -25,6 +25,10 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class Join extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  };
+
   componentWillMount() {
     const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
@@ -188,10 +192,6 @@ class Join extends Component {
       </section>
     )
   }
-}
-
-Join.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

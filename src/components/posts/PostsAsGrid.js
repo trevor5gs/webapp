@@ -3,6 +3,13 @@ import { parsePost } from '../parsers/PostParser'
 
 class PostsAsGrid extends Component {
 
+  static propTypes = {
+    currentUser: PropTypes.object,
+    gridColumnCount: PropTypes.number,
+    json: PropTypes.object,
+    posts: PropTypes.array.isRequired,
+  };
+
   renderColumn(posts, index) {
     const { json, currentUser } = this.props
     return (
@@ -38,13 +45,6 @@ class PostsAsGrid extends Component {
       </div>
     )
   }
-}
-
-PostsAsGrid.propTypes = {
-  currentUser: PropTypes.object,
-  gridColumnCount: PropTypes.number,
-  json: PropTypes.object,
-  posts: PropTypes.array.isRequired,
 }
 
 export default PostsAsGrid

@@ -26,6 +26,12 @@ export function doesAllowTracking() {
 
 class Analytics extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    profile: PropTypes.object,
+  };
+
   componentWillMount() {
     this.hasLoadedTracking = false
   }
@@ -72,13 +78,6 @@ class Analytics extends Component {
     return null
   }
 }
-
-Analytics.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  profile: PropTypes.object,
-}
-
 
 function mapStateToProps(state) {
   return {

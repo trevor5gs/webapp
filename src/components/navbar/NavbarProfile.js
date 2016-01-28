@@ -6,6 +6,12 @@ const appleStoreLink = 'http://appstore.com/ello/ello'
 const threadlessLink = 'http://ello.threadless.com/'
 
 class NavbarProfile extends Component {
+  static propTypes = {
+    avatar: PropTypes.object,
+    onLogOut: PropTypes.func,
+    username: PropTypes.string,
+  };
+
   render() {
     const { avatar, username, onLogOut } = this.props
     if (avatar && username) {
@@ -34,12 +40,6 @@ class NavbarProfile extends Component {
       </span>
     )
   }
-}
-
-NavbarProfile.propTypes = {
-  avatar: PropTypes.object,
-  onLogOut: PropTypes.func,
-  username: PropTypes.string,
 }
 
 export default NavbarProfile

@@ -18,6 +18,14 @@ import {
 
 class CommentTools extends Component {
 
+  static propTypes = {
+    author: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    comment: PropTypes.object.isRequired,
+  };
+
   componentWillMount() {
     this.state = {
       isMoreToolActive: false,
@@ -152,14 +160,6 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
   }
-}
-
-CommentTools.propTypes = {
-  author: PropTypes.object.isRequired,
-  currentUser: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  comment: PropTypes.object.isRequired,
 }
 
 export default connect(mapStateToProps)(CommentTools)

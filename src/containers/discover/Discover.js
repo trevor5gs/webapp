@@ -9,6 +9,19 @@ import TabListLinks from '../../components/tabs/TabListLinks'
 
 class Discover extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    params: PropTypes.shape({
+      type: PropTypes.string,
+    }),
+    pathname: PropTypes.string.isRequired,
+  };
+
+  static preRender = (store, routerState) => {
+    return store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
+  };
+
   creditsTrackingEvent = () => {
     const { dispatch } = this.props
     dispatch(trackEvent(`banderole-credits-clicked`))
@@ -53,19 +66,6 @@ class Discover extends Component {
       </section>
     )
   }
-}
-
-Discover.preRender = (store, routerState) => {
-  return store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
-}
-
-Discover.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  params: PropTypes.shape({
-    type: PropTypes.string,
-  }),
-  pathname: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state) {

@@ -3,6 +3,14 @@ import FormControl from './FormControl'
 
 class PasswordControl extends Component {
 
+  static defaultProps = {
+    className: 'PasswordControl',
+    id: 'password',
+    label: 'Password',
+    name: 'user[password]',
+    placeholder: 'Enter your password',
+  };
+
   render() {
     return (
       <FormControl
@@ -13,14 +21,6 @@ class PasswordControl extends Component {
       />
     )
   }
-}
-
-PasswordControl.defaultProps = {
-  className: 'PasswordControl',
-  id: 'password',
-  label: 'Password',
-  name: 'user[password]',
-  placeholder: 'Enter your password',
 }
 
 export default PasswordControl

@@ -12,6 +12,16 @@ const STATUS = {
 
 class Cover extends Component {
 
+  static propTypes = {
+    coverImage: PropTypes.object,
+    isModifiable: PropTypes.bool,
+    modifiers: PropTypes.string,
+  };
+
+  static defaultProps = {
+    modifiers: '',
+  };
+
   componentWillMount() {
     this.state = {
       asHidden: false,
@@ -127,16 +137,6 @@ class Cover extends Component {
       </div>
     )
   }
-}
-
-Cover.propTypes = {
-  coverImage: PropTypes.object,
-  isModifiable: PropTypes.bool,
-  modifiers: PropTypes.string,
-}
-
-Cover.defaultProps = {
-  modifiers: '',
 }
 
 export default Cover

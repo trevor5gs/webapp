@@ -17,6 +17,16 @@ import Cover from '../../components/assets/Cover'
 
 class Onboarding extends Component {
 
+  static propTypes = {
+    accessToken: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
+    json: PropTypes.object,
+    pathname: PropTypes.string.isRequired,
+    profile: PropTypes.object,
+    route: PropTypes.object,
+    stream: PropTypes.object,
+  };
+
   componentWillMount() {
     // check auth
     const { accessToken, dispatch } = this.props
@@ -186,16 +196,6 @@ class Onboarding extends Component {
         return null
     }
   }
-}
-
-Onboarding.propTypes = {
-  accessToken: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
-  json: PropTypes.object,
-  pathname: PropTypes.string.isRequired,
-  profile: PropTypes.object,
-  route: PropTypes.object,
-  stream: PropTypes.object,
 }
 
 function mapStateToProps(state) {

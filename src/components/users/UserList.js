@@ -6,6 +6,18 @@ import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
 
 class UserList extends Component {
 
+  static propTypes = {
+    classList: PropTypes.string,
+    showBlockMuteButton: PropTypes.bool,
+    user: PropTypes.shape({
+    }).isRequired,
+  };
+
+  static defaultProps = {
+    classList: '',
+    showBlockMuteButton: false,
+  };
+
   render() {
     const { classList, user, showBlockMuteButton } = this.props
     const userPath = `/${user.username}`
@@ -19,18 +31,6 @@ class UserList extends Component {
       </div>
     )
   }
-}
-
-UserList.propTypes = {
-  classList: PropTypes.string,
-  showBlockMuteButton: PropTypes.bool,
-  user: PropTypes.shape({
-  }).isRequired,
-}
-
-UserList.defaultProps = {
-  classList: '',
-  showBlockMuteButton: false,
 }
 
 export default UserList

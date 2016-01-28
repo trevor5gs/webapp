@@ -8,6 +8,10 @@ import { isFormValid, getEmailStateFromClient } from '../forms/Validators'
 
 class RegistrationRequestForm extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  };
+
   componentWillMount() {
     this.state = {
       formStatus: STATUS.INDETERMINATE,
@@ -72,10 +76,6 @@ class RegistrationRequestForm extends Component {
     const { formStatus } = this.state
     return formStatus === STATUS.SUBMITTED ? this.renderSubmitted() : this.renderForm()
   }
-}
-
-RegistrationRequestForm.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(RegistrationRequestForm)

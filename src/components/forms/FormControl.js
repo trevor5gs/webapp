@@ -5,6 +5,32 @@ import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class FormControl extends Component {
 
+  static propTypes = {
+    classList: PropTypes.string,
+    className: PropTypes.string,
+    id: PropTypes.string.isRequired,
+    kind: PropTypes.string,
+    label: PropTypes.string,
+    name: PropTypes.string,
+    onBlur: PropTypes.func,
+    onChange: PropTypes.func,
+    onFocus: PropTypes.func,
+    placeholder: PropTypes.string,
+    renderFeedback: PropTypes.func,
+    status: PropTypes.string,
+    tabIndex: PropTypes.string.isRequired,
+    text: PropTypes.string,
+  };
+
+  static defaultProps = {
+    kind: 'input',
+    renderFeedback: null,
+    status: STATUS.INDETERMINATE,
+    tabIndex: '0',
+    text: '',
+    type: 'text',
+  };
+
   componentWillMount() {
     const { text } = this.props
     this.state = {
@@ -157,32 +183,6 @@ class FormControl extends Component {
       </div>
     )
   }
-}
-
-FormControl.propTypes = {
-  classList: PropTypes.string,
-  className: PropTypes.string,
-  id: PropTypes.string.isRequired,
-  kind: PropTypes.string,
-  label: PropTypes.string,
-  name: PropTypes.string,
-  onBlur: PropTypes.func,
-  onChange: PropTypes.func,
-  onFocus: PropTypes.func,
-  placeholder: PropTypes.string,
-  renderFeedback: PropTypes.func,
-  status: PropTypes.string,
-  tabIndex: PropTypes.string.isRequired,
-  text: PropTypes.string,
-}
-
-FormControl.defaultProps = {
-  kind: 'input',
-  renderFeedback: null,
-  status: STATUS.INDETERMINATE,
-  tabIndex: '0',
-  text: '',
-  type: 'text',
 }
 
 export default FormControl

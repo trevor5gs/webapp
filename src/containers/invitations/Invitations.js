@@ -10,6 +10,14 @@ import FormButton from '../../components/forms/FormButton'
 
 class Invitations extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  };
+
+  static preRender = (store) => {
+    return store.dispatch(loadInvitedUsers())
+  };
+
   componentWillMount() {
     this.state = {
       formStatus: STATUS.INDETERMINATE,
@@ -93,14 +101,6 @@ class Invitations extends Component {
       </section>
     )
   }
-}
-
-Invitations.preRender = (store) => {
-  return store.dispatch(loadInvitedUsers())
-}
-
-Invitations.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(Invitations)

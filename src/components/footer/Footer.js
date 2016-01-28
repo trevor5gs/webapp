@@ -9,6 +9,11 @@ import FooterTool from '../footer/FooterTool'
 
 class Footer extends Component {
 
+  static propTypes = {
+    json: PropTypes.object.isRequired,
+    pathname: PropTypes.string.isRequired,
+  };
+
   componentWillMount() {
     this.state = {
       isAndroid: false,
@@ -76,11 +81,6 @@ class Footer extends Component {
       </footer>
     )
   }
-}
-
-Footer.propTypes = {
-  json: PropTypes.object.isRequired,
-  pathname: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state) {

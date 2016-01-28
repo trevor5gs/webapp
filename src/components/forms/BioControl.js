@@ -4,6 +4,20 @@ import classNames from 'classnames'
 
 class BioControl extends Component {
 
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    onChange: PropTypes.func,
+    text: PropTypes.string,
+  };
+
+  static defaultProps = {
+    className: 'BioControl',
+    id: 'unsanitized_short_bio',
+    label: 'Bio',
+    name: 'user[unsanitized_short_bio]',
+    placeholder: 'Bio (optional)',
+  };
+
   componentWillMount() {
     const { text } = this.props
     this.state = { textLength: text ? text.length : 0 }
@@ -46,20 +60,6 @@ class BioControl extends Component {
       />
     )
   }
-}
-
-BioControl.propTypes = {
-  id: PropTypes.string.isRequired,
-  onChange: PropTypes.func,
-  text: PropTypes.string,
-}
-
-BioControl.defaultProps = {
-  className: 'BioControl',
-  id: 'unsanitized_short_bio',
-  label: 'Bio',
-  name: 'user[unsanitized_short_bio]',
-  placeholder: 'Bio (optional)',
 }
 
 export default BioControl

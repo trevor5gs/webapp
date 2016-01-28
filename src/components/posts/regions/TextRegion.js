@@ -5,6 +5,13 @@ import classNames from 'classnames'
 
 class TextRegion extends Component {
 
+  static propTypes = {
+    content: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    isGridLayout: PropTypes.bool.isRequired,
+    postDetailPath: PropTypes.string,
+  };
+
   handleRegionClick = (e) => {
     const { dispatch, isGridLayout, postDetailPath } = this.props
     const { classList, dataset, nodeName } = e.target
@@ -44,13 +51,6 @@ class TextRegion extends Component {
       </div>
     )
   }
-}
-
-TextRegion.propTypes = {
-  content: PropTypes.string.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  isGridLayout: PropTypes.bool.isRequired,
-  postDetailPath: PropTypes.string,
 }
 
 export default connect()(TextRegion)

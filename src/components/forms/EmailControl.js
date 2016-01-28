@@ -3,6 +3,14 @@ import FormControl from './FormControl'
 
 class EmailControl extends Component {
 
+  static defaultProps = {
+    className: 'EmailControl',
+    id: 'email',
+    label: 'Email',
+    name: 'user[email]',
+    placeholder: 'Enter your email',
+  };
+
   render() {
     return (
       <FormControl
@@ -14,15 +22,6 @@ class EmailControl extends Component {
     )
   }
 }
-
-EmailControl.defaultProps = {
-  className: 'EmailControl',
-  id: 'email',
-  label: 'Email',
-  name: 'user[email]',
-  placeholder: 'Enter your email',
-}
-
 
 export default EmailControl
 

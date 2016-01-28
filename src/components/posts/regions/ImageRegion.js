@@ -12,6 +12,14 @@ const STATUS = {
 
 class ImageRegion extends Component {
 
+  static propTypes = {
+    assets: PropTypes.object.isRequired,
+    content: PropTypes.object.isRequired,
+    isGridLayout: PropTypes.bool.isRequired,
+    links: PropTypes.object,
+    postDetailPath: PropTypes.string,
+  };
+
   componentWillMount() {
     this.state = {
       marginBottom: null,
@@ -247,14 +255,6 @@ class ImageRegion extends Component {
       </div>
     )
   }
-}
-
-ImageRegion.propTypes = {
-  assets: PropTypes.object.isRequired,
-  content: PropTypes.object.isRequired,
-  isGridLayout: PropTypes.bool.isRequired,
-  links: PropTypes.object,
-  postDetailPath: PropTypes.string,
 }
 
 export default ImageRegion

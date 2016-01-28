@@ -13,6 +13,11 @@ const flags = {
 
 class FlagDialog extends Component {
 
+  static propTypes = {
+    onResponse: PropTypes.func,
+    onConfirm: PropTypes.func,
+  };
+
   componentWillMount() {
     this.state = {
       activeChoice: null,
@@ -103,11 +108,6 @@ class FlagDialog extends Component {
     const { scene } = this.state
     return this[scene]()
   }
-}
-
-FlagDialog.propTypes = {
-  onResponse: PropTypes.func,
-  onConfirm: PropTypes.func,
 }
 
 export default FlagDialog
