@@ -13,7 +13,18 @@ import Navbar from '../components/navbar/Navbar'
 
 class App extends Component {
 
-  constructor(props, context) {
+  static propTypes = {
+    authentication: PropTypes.object.isRequired,
+    children: PropTypes.node.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    pathname: PropTypes.string.isRequired,
+  };
+
+  static defaultProps = {
+    lastLocation: '',
+  };
+
+  componentWillMount() {
     const loggedOutPaths = {
       explore: /^\/explore/,
       explore_recent: /^\/explore\/recent/,
@@ -22,7 +33,6 @@ class App extends Component {
       forgot_password: /^\/forgot-password/,
       signup: /^\/signup/,
     }
-    super(props, context)
     this.lastLocation = ''
     // need to clear out the authentication for the case of
     // when you are on ello.co and go to /onboarding (logging in)
@@ -100,17 +110,6 @@ App.preRender = (store) => {
   if (state.authentication && state.authentication.isLoggedIn) {
     return store.dispatch(loadProfile())
   }
-}
-
-App.propTypes = {
-  authentication: PropTypes.object.isRequired,
-  children: PropTypes.node.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  pathname: PropTypes.string.isRequired,
-}
-
-App.defaultProps = {
-  lastLocation: '',
 }
 
 function mapStateToProps(state) {

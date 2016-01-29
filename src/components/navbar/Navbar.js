@@ -33,27 +33,37 @@ const whitelist = [
 
 class Navbar extends Component {
 
-  constructor(props, context) {
-    super(props, context)
-    this.scrollYAtDirectionChange = null
-    this.currentPath = null
-    this.state = {
-      asFixed: false,
-      asHidden: false,
-      asLocked: false,
-      skipTransition: false,
-    }
-    this.logInWasClicked = ::this.logInWasClicked
-    this.onLogOut = ::this.onLogOut
-    this.omniButtonWasClicked = ::this.omniButtonWasClicked
-    this.loadMorePostsWasClicked = ::this.loadMorePostsWasClicked
-  }
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    json: PropTypes.object.isRequired,
+    modalIsActive: PropTypes.bool,
+    pathname: PropTypes.string.isRequired,
+    profile: PropTypes.object,
+    shortcuts: PropTypes.object.isRequired,
+  };
+
+  static defaultProps = {
+    shortcuts: {
+      [SHORTCUT_KEYS.SEARCH]: '/search',
+      [SHORTCUT_KEYS.DISCOVER]: '/discover',
+      [SHORTCUT_KEYS.FOLLOWING]: '/following',
+      [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/communities',
+    },
+  };
 
   componentWillMount() {
     const { pathname } = this.props
     const pathnames = pathname.split('/').slice(1)
     const isBlacklisted = !(whitelist.indexOf(pathnames[0]) >= 0)
-    this.setState({ asFixed: isBlacklisted })
+    this.state = {
+      asFixed: isBlacklisted,
+      asHidden: false,
+      asLocked: isBlacklisted,
+      skipTransition: false,
+    }
+    this.currentPath = null
+    this.scrollYAtDirectionChange = null
   }
 
   componentDidMount() {
@@ -175,26 +185,27 @@ class Navbar extends Component {
   }
 
   // TODO: probably need to handle this a bit better
-  onLogOut() {
+  onLogOut = () => {
     const { dispatch } = this.props
     dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
     dispatch(routeActions.push('/'))
-  }
+  };
 
-  omniButtonWasClicked() {
-  }
+  omniButtonWasClicked = () => {
+    // working on it...
+  };
 
-  loadMorePostsWasClicked() {
+  loadMorePostsWasClicked = () => {
     const { dispatch } = this.props
     dispatch({
       type: ACTION_TYPES.ADD_NEW_IDS_TO_RESULT,
     })
-  }
+  };
 
-  logInWasClicked(e) {
+  logInWasClicked = (e) => {
     e.preventDefault()
     document.location.href = ENV.REDIRECT_URI + e.target.pathname
-  }
+  };
 
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
     const { profile } = this.props
@@ -312,25 +323,6 @@ class Navbar extends Component {
       this.renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) :
       this.renderLoggedOutNavbar(klassNames, hasLoadMoreButton, pathname)
   }
-}
-
-Navbar.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  json: PropTypes.object.isRequired,
-  modalIsActive: PropTypes.bool,
-  pathname: PropTypes.string.isRequired,
-  profile: PropTypes.object,
-  shortcuts: PropTypes.object.isRequired,
-}
-
-Navbar.defaultProps = {
-  shortcuts: {
-    [SHORTCUT_KEYS.SEARCH]: '/search',
-    [SHORTCUT_KEYS.DISCOVER]: '/discover',
-    [SHORTCUT_KEYS.FOLLOWING]: '/following',
-    [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/communities',
-  },
 }
 
 function mapStateToProps(state) {

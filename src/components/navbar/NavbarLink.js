@@ -8,6 +8,19 @@ const highlightingRules = {
 
 class NavbarLink extends Component {
 
+  static propTypes = {
+    icon: PropTypes.element,
+    label: PropTypes.string.isRequired,
+    modifiers: PropTypes.string,
+    onClick: PropTypes.func,
+    pathname: PropTypes.string.isRequired,
+    to: PropTypes.string.isRequired,
+  };
+
+  static defaultProps = {
+    modifiers: '',
+  };
+
   render() {
     const { icon, label, modifiers, onClick, pathname, to } = this.props
     const klassNames = classNames(
@@ -26,19 +39,6 @@ class NavbarLink extends Component {
       </Link>
     )
   }
-}
-
-NavbarLink.propTypes = {
-  icon: PropTypes.element,
-  label: PropTypes.string.isRequired,
-  modifiers: PropTypes.string,
-  onClick: PropTypes.func,
-  pathname: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
-}
-
-NavbarLink.defaultProps = {
-  modifiers: '',
 }
 
 export default NavbarLink

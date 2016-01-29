@@ -12,15 +12,22 @@ import RelationshipButton from '../relationships/RelationshipButton'
 import StarshipButton from '../relationships/StarshipButton'
 
 class RelationsGroup extends Component {
-  constructor(props, context) {
-    super(props, context)
-    this.handleMuteUser = ::this.handleMuteUser
-    this.handleBlockUser = ::this.handleBlockUser
-    this.launchBlockMutePrompt = ::this.launchBlockMutePrompt
-    this.handleLaunchSignUpModal = ::this.handleLaunchSignUpModal
-    this.handleRelationshipUpdate = ::this.handleRelationshipUpdate
-  }
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    pathname: PropTypes.string,
+    previousPath: PropTypes.string,
+    showBlockMuteButton: PropTypes.bool,
+    user: PropTypes.shape({
+      id: PropTypes.string,
+      relationshipPriority: PropTypes.string,
+    }).isRequired,
+  };
+
+  static defaultProps = {
+    showBlockMuteButton: false,
+  };
 
   getNextPriority(props, btnId) {
     const { user } = props
@@ -46,7 +53,7 @@ class RelationsGroup extends Component {
     dispatch(closeModal())
   }
 
-  handleRelationshipUpdate(vo) {
+  handleRelationshipUpdate = (vo) => {
     const { userId, priority, existing } = vo
     const { dispatch, pathname } = this.props
 
@@ -54,7 +61,7 @@ class RelationsGroup extends Component {
       return dispatch(updateRelationship(userId, priority, existing, true))
     }
     return dispatch(updateRelationship(userId, priority, existing))
-  }
+  };
 
   isBlockedOrMuted() {
     const { user } = this.props
@@ -62,7 +69,7 @@ class RelationsGroup extends Component {
     return status && status === RELATIONSHIP_PRIORITY.BLOCK || status === RELATIONSHIP_PRIORITY.MUTE
   }
 
-  handleBlockUser() {
+  handleBlockUser = () => {
     const { dispatch, previousPath } = this.props
     const { user } = this.props
     const priority = user.relationshipPriority
@@ -73,9 +80,9 @@ class RelationsGroup extends Component {
     })
     this.closeModal()
     dispatch(routeActions.replace(previousPath || '/'))
-  }
+  };
 
-  handleMuteUser() {
+  handleMuteUser = () => {
     const { user } = this.props
     const priority = user.relationshipPriority
     this.handleRelationshipUpdate({
@@ -84,9 +91,9 @@ class RelationsGroup extends Component {
       existing: priority,
     })
     this.closeModal()
-  }
+  };
 
-  launchBlockMutePrompt() {
+  launchBlockMutePrompt = () => {
     const { dispatch, user } = this.props
     const priority = user.relationshipPriority
     dispatch(openModal(
@@ -98,13 +105,13 @@ class RelationsGroup extends Component {
         username = { user.username }
       />
     , 'asDangerZone'))
-  }
+  };
 
-  handleLaunchSignUpModal() {
+  handleLaunchSignUpModal = () => {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
     return dispatch(trackEvent('open-registration-request-follow-button'))
-  }
+  };
 
   shouldRenderBlockMute() {
     const { isLoggedIn, showBlockMuteButton, user } = this.props
@@ -147,22 +154,6 @@ class RelationsGroup extends Component {
       </div>
     )
   }
-}
-
-RelationsGroup.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  pathname: PropTypes.string,
-  previousPath: PropTypes.string,
-  showBlockMuteButton: PropTypes.bool,
-  user: PropTypes.shape({
-    id: PropTypes.string,
-    relationshipPriority: PropTypes.string,
-  }).isRequired,
-}
-
-RelationsGroup.defaultProps = {
-  showBlockMuteButton: false,
 }
 
 function mapStateToProps(state) {

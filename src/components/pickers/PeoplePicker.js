@@ -5,10 +5,6 @@ import StreamComponent from '../streams/StreamComponent'
 import Picker from '../pickers/Picker'
 
 class PeoplePicker extends Picker {
-  constructor(props, context) {
-    super(props, context)
-    this.followAll = ::this.followAll
-  }
 
   getRelationshipButton(refs) {
     const relationsGroup = refs.RelationsGroup

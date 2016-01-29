@@ -4,14 +4,26 @@ import classNames from 'classnames'
 
 class BioControl extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    onChange: PropTypes.func,
+    text: PropTypes.string,
+  };
+
+  static defaultProps = {
+    className: 'BioControl',
+    id: 'unsanitized_short_bio',
+    label: 'Bio',
+    name: 'user[unsanitized_short_bio]',
+    placeholder: 'Bio (optional)',
+  };
+
+  componentWillMount() {
     const { text } = this.props
     this.state = { textLength: text ? text.length : 0 }
-    this.handleChange = ::this.handleChange
   }
 
-  handleChange(vo) {
+  handleChange = (vo) => {
     const { id, onChange } = this.props
     const { textLength } = this.state
     const len = vo[id] ? vo[id].length : 0
@@ -21,7 +33,7 @@ class BioControl extends Component {
     if (id && typeof onChange === 'function') {
       onChange(vo)
     }
-  }
+  };
 
   isValidBioLength() {
     const { textLength } = this.state
@@ -48,20 +60,6 @@ class BioControl extends Component {
       />
     )
   }
-}
-
-BioControl.propTypes = {
-  id: PropTypes.string.isRequired,
-  onChange: PropTypes.func,
-  text: PropTypes.string,
-}
-
-BioControl.defaultProps = {
-  className: 'BioControl',
-  id: 'unsanitized_short_bio',
-  label: 'Bio',
-  name: 'user[unsanitized_short_bio]',
-  placeholder: 'Bio (optional)',
 }
 
 export default BioControl

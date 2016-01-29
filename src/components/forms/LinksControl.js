@@ -3,15 +3,28 @@ import FormControl from './FormControl'
 
 class LinksControl extends Component {
 
+  static propTypes = {
+    text: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.array,
+    ]),
+  };
+
+  static defaultProps = {
+    className: 'LinksControl',
+    id: 'external_links',
+    label: 'Links',
+    name: 'user[links]',
+    placeholder: 'Links (optional)',
+  };
+
   getLinks() {
     const { text } = this.props
     const links = text || ''
     if (typeof links === 'string') {
       return links
     }
-    return links.map((link) => {
-      return link.text
-    }).join(', ')
+    return links.map((link) => link.text).join(', ')
   }
 
   render() {
@@ -26,21 +39,6 @@ class LinksControl extends Component {
       />
     )
   }
-}
-
-LinksControl.propTypes = {
-  text: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array,
-  ]),
-}
-
-LinksControl.defaultProps = {
-  className: 'LinksControl',
-  id: 'external_links',
-  label: 'Links',
-  name: 'user[links]',
-  placeholder: 'Links (optional)',
 }
 
 export default LinksControl

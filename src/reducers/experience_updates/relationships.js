@@ -34,9 +34,9 @@ function updateFollowersCountAndPriority(newState, action) {
   )
   return newState
 }
-methods.updateFollowersCountAndPriority = (newState, action) => {
-  return updateFollowersCountAndPriority(newState, action)
-}
+methods.updateFollowersCountAndPriority = (newState, action) =>
+  updateFollowersCountAndPriority(newState, action)
+
 
 function removeItemsForAuthor(newState, mappingType, authorId) {
   for (const itemId in newState[mappingType]) {
@@ -49,9 +49,8 @@ function removeItemsForAuthor(newState, mappingType, authorId) {
   }
   return newState
 }
-methods.removeItemsForAuthor = (newState, mappingType, authorId) => {
-  return removeItemsForAuthor(newState, mappingType, authorId)
-}
+methods.removeItemsForAuthor = (newState, mappingType, authorId) =>
+  removeItemsForAuthor(newState, mappingType, authorId)
 
 function updateRelationship(newState, action) {
   const { userId, priority } = action.payload
@@ -67,9 +66,8 @@ function updateRelationship(newState, action) {
   }
   return newState
 }
-methods.updateRelationship = (newState, action) => {
-  return updateRelationship(newState, action)
-}
+methods.updateRelationship = (newState, action) =>
+  updateRelationship(newState, action)
 
 function batchUpdateRelationship(newState, action) {
   const { priority, userIds } = action.payload
@@ -85,9 +83,8 @@ function batchUpdateRelationship(newState, action) {
   }
   return newState
 }
-methods.batchUpdateRelationship = (newState, action) => {
-  return batchUpdateRelationship(newState, action)
-}
+methods.batchUpdateRelationship = (newState, action) =>
+  batchUpdateRelationship(newState, action)
 
 export default methods
 

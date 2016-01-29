@@ -14,38 +14,34 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 class ForgotPassword extends Component {
 
-  constructor(props, context) {
-    super(props, context)
-    this.state = {
-      formStatus: STATUS.INDETERMINATE,
-      emailState: { status: STATUS.INDETERMINATE, message: '' },
-      featuredUser: null,
-    }
-    this.handleSubmit = ::this.handleSubmit
-    this.creditsTrackingEvent = ::this.creditsTrackingEvent
-    this.emailControlWasChanged = ::this.emailControlWasChanged
-  }
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  };
 
   componentWillMount() {
-    this.emailValue = ''
     const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
-    this.setState({ featuredUser: userlist[index] })
+    this.state = {
+      emailState: { status: STATUS.INDETERMINATE, message: '' },
+      featuredUser: userlist[index],
+      formStatus: STATUS.INDETERMINATE,
+    }
+    this.emailValue = ''
   }
 
-  creditsTrackingEvent() {
+  creditsTrackingEvent = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(sendForgotPasswordRequest(this.emailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
-  }
+  };
 
-  emailControlWasChanged({ email }) {
+  emailControlWasChanged = ({ email }) => {
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -53,7 +49,7 @@ class ForgotPassword extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
     }
-  }
+  };
 
   renderSubmitted() {
     return (
@@ -103,10 +99,6 @@ class ForgotPassword extends Component {
       </section>
     )
   }
-}
-
-ForgotPassword.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(ForgotPassword)

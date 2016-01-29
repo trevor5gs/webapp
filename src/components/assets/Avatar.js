@@ -11,13 +11,22 @@ const STATUS = {
 
 class Avatar extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  static propTypes = {
+    isModifiable: PropTypes.bool,
+    size: PropTypes.string,
+    sources: PropTypes.object,
+    to: PropTypes.string,
+  };
+
+  static defaultProps = {
+    isModifiable: false,
+    size: 'regular',
+  };
+
+  componentWillMount() {
     this.state = {
       status: this.getAvatarSource() ? STATUS.REQUEST : STATUS.PENDING,
     }
-    this.loadDidFail = ::this.loadDidFail
-    this.loadDidSucceed = ::this.loadDidSucceed
   }
 
   componentDidMount() {
@@ -86,15 +95,15 @@ class Avatar extends Component {
     }
   }
 
-  loadDidSucceed() {
+  loadDidSucceed = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  }
+  };
 
-  loadDidFail() {
+  loadDidFail = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  }
+  };
 
   render() {
     const { to } = this.props
@@ -110,18 +119,6 @@ class Avatar extends Component {
         <div className="AvatarImage" style={style} />
       </span>
   }
-}
-
-Avatar.propTypes = {
-  isModifiable: PropTypes.bool,
-  size: PropTypes.string,
-  sources: PropTypes.object,
-  to: PropTypes.string,
-}
-
-Avatar.defaultProps = {
-  isModifiable: false,
-  size: 'regular',
 }
 
 export default Avatar

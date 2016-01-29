@@ -5,8 +5,33 @@ import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class FormControl extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  static propTypes = {
+    classList: PropTypes.string,
+    className: PropTypes.string,
+    id: PropTypes.string.isRequired,
+    kind: PropTypes.string,
+    label: PropTypes.string,
+    name: PropTypes.string,
+    onBlur: PropTypes.func,
+    onChange: PropTypes.func,
+    onFocus: PropTypes.func,
+    placeholder: PropTypes.string,
+    renderFeedback: PropTypes.func,
+    status: PropTypes.string,
+    tabIndex: PropTypes.string.isRequired,
+    text: PropTypes.string,
+  };
+
+  static defaultProps = {
+    kind: 'input',
+    renderFeedback: null,
+    status: STATUS.INDETERMINATE,
+    tabIndex: '0',
+    text: '',
+    type: 'text',
+  };
+
+  componentWillMount() {
     const { text } = this.props
     this.state = {
       hasFocus: false,
@@ -15,9 +40,6 @@ class FormControl extends Component {
       text,
     }
     this.initialValue = text
-    this.handleBlur = ::this.handleBlur
-    this.handleChange = ::this.handleChange
-    this.handleFocus = ::this.handleFocus
   }
 
   getStatusAsClassName() {
@@ -80,23 +102,23 @@ class FormControl extends Component {
     }
   }
 
-  handleFocus(e) {
+  handleFocus = (e) => {
     this.setState({ hasFocus: true })
     const { onFocus } = this.props
     if (typeof onFocus === 'function') {
       onFocus(e)
     }
-  }
+  };
 
-  handleBlur(e) {
+  handleBlur = (e) => {
     this.setState({ hasFocus: false })
     const { onBlur } = this.props
     if (typeof onBlur === 'function') {
       onBlur(e)
     }
-  }
+  };
 
-  handleChange(e) {
+  handleChange = (e) => {
     const val = e.target.value
     const { id, onChange } = this.props
     this.setState({
@@ -107,7 +129,7 @@ class FormControl extends Component {
     if (id && typeof onChange === 'function') {
       onChange({ [id]: val })
     }
-  }
+  };
 
   renderTextArea(text, inputClassNames) {
     return (
@@ -161,32 +183,6 @@ class FormControl extends Component {
       </div>
     )
   }
-}
-
-FormControl.propTypes = {
-  classList: PropTypes.string,
-  className: PropTypes.string,
-  id: PropTypes.string.isRequired,
-  kind: PropTypes.string,
-  label: PropTypes.string,
-  name: PropTypes.string,
-  onBlur: PropTypes.func,
-  onChange: PropTypes.func,
-  onFocus: PropTypes.func,
-  placeholder: PropTypes.string,
-  renderFeedback: PropTypes.func,
-  status: PropTypes.string,
-  tabIndex: PropTypes.string.isRequired,
-  text: PropTypes.string,
-}
-
-FormControl.defaultProps = {
-  kind: 'input',
-  renderFeedback: null,
-  status: STATUS.INDETERMINATE,
-  tabIndex: '0',
-  text: '',
-  type: 'text',
 }
 
 export default FormControl

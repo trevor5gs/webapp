@@ -116,12 +116,12 @@ export const requester = store => next => action => {
       `http://localhost:${ENV.PORT}/api/webapp-token` :
       `${document.location.protocol}//${document.location.host}/api/webapp-token`
     return fetch(tokenPath)
-      .then((response) => {
-        return response.ok ? response.json() : response
-      })
-      .catch(() => {
-        return fetchCredentials()
-      })
+      .then((response) =>
+        response.ok ? response.json() : response
+      )
+      .catch(() =>
+        fetchCredentials()
+      )
   }
 
   const options = { method: method || 'GET' }

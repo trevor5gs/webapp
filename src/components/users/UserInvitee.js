@@ -8,17 +8,19 @@ import RelationsGroup from '../relationships/RelationsGroup'
 import { getLinkObject } from '../base/json_helper'
 
 class UserInvitee extends Component {
-  constructor(props, context) {
-    super(props, context)
-    this.reInviteUser = ::this.reInviteUser
-  }
 
+  static propTypes = {
+    className: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
+    invitation: PropTypes.shape({}).isRequired,
+    json: PropTypes.object.isRequired,
+  };
 
-  reInviteUser() {
+  reInviteUser = () => {
     const { dispatch, invitation } = this.props
     const emails = [invitation.email]
     dispatch(inviteUsers(emails))
-  }
+  };
 
   renderMailtoUserHeader(invitation) {
     const { email } = invitation
@@ -76,13 +78,6 @@ class UserInvitee extends Component {
     }
     return null
   }
-}
-
-UserInvitee.propTypes = {
-  className: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
-  invitation: PropTypes.shape({}).isRequired,
-  json: PropTypes.object.isRequired,
 }
 
 export default connect()(UserInvitee)

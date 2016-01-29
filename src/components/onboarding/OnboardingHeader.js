@@ -6,11 +6,18 @@ import { trackEvent } from '../../actions/tracking'
 import { ElloMark } from '../interface/ElloIcons'
 
 class OnboardingHeader extends Component {
-  constructor(props, context) {
-    super(props, context)
-    this.nextWasClicked = ::this.nextWasClicked
-    this.skipWasClicked = ::this.skipWasClicked
-  }
+
+  static propTypes = {
+    batchSave: PropTypes.func,
+    dispatch: PropTypes.func.isRequired,
+    lockNext: PropTypes.bool,
+    message: PropTypes.string.isRequired,
+    nextPath: PropTypes.string.isRequired,
+    redirection: PropTypes.bool,
+    relationshipMap: PropTypes.object,
+    title: PropTypes.string.isRequired,
+    trackingLabel: PropTypes.string.isRequired,
+  };
 
   getButtonClassNames() {
     const { lockNext, relationshipMap } = this.props
@@ -23,7 +30,7 @@ class OnboardingHeader extends Component {
     return classNames('OnboardingNextButton')
   }
 
-  nextWasClicked(e) {
+  nextWasClicked = (e) => {
     const {
       dispatch,
       batchSave,
@@ -54,12 +61,12 @@ class OnboardingHeader extends Component {
     const inactiveLength = inactive.length
 
     if (followingLength) {
-      const followingIds = following.map((user) => { return user.id })
+      const followingIds = following.map((user) => user.id)
       this.props.batchSave(followingIds, 'friend')
     }
 
     if (inactiveLength) {
-      const inactiveIds = inactive.map((user) => { return user.id })
+      const inactiveIds = inactive.map((user) => user.id)
       this.props.batchSave(inactiveIds, 'inactive')
     }
 
@@ -70,16 +77,16 @@ class OnboardingHeader extends Component {
     } else {
       dispatch(trackEvent(`followed-some-${trackingLabel}`))
     }
-  }
+  };
 
-  skipWasClicked(e) {
+  skipWasClicked = (e) => {
     const { dispatch, trackingLabel, nextPath, redirection } = this.props
     dispatch(trackEvent(`skipped-${trackingLabel}`))
     if (redirection) {
       e.preventDefault()
       window.location = nextPath
     }
-  }
+  };
 
   render() {
     const { title, message, nextPath } = this.props
@@ -109,18 +116,6 @@ class OnboardingHeader extends Component {
       </header>
     )
   }
-}
-
-OnboardingHeader.propTypes = {
-  batchSave: PropTypes.func,
-  dispatch: PropTypes.func.isRequired,
-  lockNext: PropTypes.bool,
-  message: PropTypes.string.isRequired,
-  nextPath: PropTypes.string.isRequired,
-  redirection: PropTypes.bool,
-  relationshipMap: PropTypes.object,
-  title: PropTypes.string.isRequired,
-  trackingLabel: PropTypes.string.isRequired,
 }
 
 export default connect()(OnboardingHeader)

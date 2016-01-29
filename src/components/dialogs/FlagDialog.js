@@ -12,31 +12,34 @@ const flags = {
 }
 
 class FlagDialog extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  static propTypes = {
+    onResponse: PropTypes.func,
+    onConfirm: PropTypes.func,
+  };
+
+  componentWillMount() {
     this.state = {
       activeChoice: null,
       scene: 'renderChoicesScreen',
     }
-    this.choiceWasMade = ::this.choiceWasMade
-    this.handleChoiceClick = ::this.handleChoiceClick
   }
 
-  choiceWasMade() {
+  choiceWasMade = () => {
     const { onResponse } = this.props
     const { activeChoice } = this.state
     this.setState({ scene: 'renderConfirmationScreen' })
     onResponse({ flag: activeChoice })
-  }
+  };
 
-  handleChoiceClick(e) {
+  handleChoiceClick = (e) => {
     const { activeChoice } = this.state
     const dataFlag = e.target.dataset.flag
     const newChoice = dataFlag === activeChoice ? null : dataFlag
     this.setState(
       { activeChoice: newChoice },
     )
-  }
+  };
 
   renderFlagChoices() {
     const { activeChoice } = this.state
@@ -105,11 +108,6 @@ class FlagDialog extends Component {
     const { scene } = this.state
     return this[scene]()
   }
-}
-
-FlagDialog.propTypes = {
-  onResponse: PropTypes.func,
-  onConfirm: PropTypes.func,
 }
 
 export default FlagDialog

@@ -9,18 +9,23 @@ import { getBatchEmailState } from '../../components/forms/Validators'
 import FormButton from '../../components/forms/FormButton'
 
 class Invitations extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  };
+
+  componentWillMount() {
     this.state = {
       formStatus: STATUS.INDETERMINATE,
       batchEmailState: { status: STATUS.INDETERMINATE, message: '' },
     }
     this.batchEmailValue = ''
-    this.handleSubmit = ::this.handleSubmit
-    this.handleControlChange = ::this.handleControlChange
   }
 
-  handleControlChange({ emails }) {
+  static preRender = (store) =>
+    store.dispatch(loadInvitedUsers());
+
+  handleControlChange = ({ emails }) => {
     this.batchEmailValue = emails
     const { batchEmailState } = this.state
     const currentStatus = batchEmailState.status
@@ -28,9 +33,9 @@ class Invitations extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ batchEmailState: newState })
     }
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault()
     const { batchEmailState } = this.state
     if (batchEmailState.status !== STATUS.SUCCESS) {
@@ -39,7 +44,7 @@ class Invitations extends Component {
     const { dispatch } = this.props
     this.setState({ formStatus: STATUS.SUBMITTED })
     dispatch(inviteUsers(this.batchEmailValue))
-  }
+  };
 
   renderMessage() {
     const { formStatus } = this.state
@@ -95,14 +100,6 @@ class Invitations extends Component {
       </section>
     )
   }
-}
-
-Invitations.preRender = (store) => {
-  return store.dispatch(loadInvitedUsers())
-}
-
-Invitations.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(Invitations)

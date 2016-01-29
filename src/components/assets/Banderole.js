@@ -14,21 +14,20 @@ const STATUS = {
 
 class Banderole extends Component {
 
-  constructor(props, context) {
-    super(props, context)
-    this.state = {
-      featuredUser: null,
-      imageSize: 'hdpi',
-      status: STATUS.PENDING,
-    }
-    this.loadDidFail = ::this.loadDidFail
-    this.loadDidSucceed = ::this.loadDidSucceed
-  }
+  static propTypes = {
+    creditsClickAction: PropTypes.func,
+    isLoggedIn: PropTypes.bool.isRequired,
+    userlist: PropTypes.array.isRequired,
+  };
 
   componentWillMount() {
     const { userlist } = this.props
     const index = random(0, userlist.length - 1)
-    this.setState({ featuredUser: userlist[index], status: STATUS.REQUEST })
+    this.state = {
+      featuredUser: userlist[index],
+      imageSize: 'hdpi',
+      status: STATUS.REQUEST,
+    }
   }
 
   componentDidMount() {
@@ -74,15 +73,15 @@ class Banderole extends Component {
     }
   }
 
-  loadDidSucceed() {
+  loadDidSucceed = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  }
+  };
 
-  loadDidFail() {
+  loadDidFail = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  }
+  };
 
   render() {
     const { featuredUser, status } = this.state
@@ -104,12 +103,6 @@ class Banderole extends Component {
       </div>
     )
   }
-}
-
-Banderole.propTypes = {
-  creditsClickAction: PropTypes.func,
-  isLoggedIn: PropTypes.bool.isRequired,
-  userlist: PropTypes.array.isRequired,
 }
 
 export default Banderole

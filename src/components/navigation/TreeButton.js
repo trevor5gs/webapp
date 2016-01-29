@@ -15,16 +15,25 @@ const TreeIcon = () =>
 
 class TreeButton extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  static propTypes = {
+    children: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    isCollapsed: PropTypes.bool,
+    onClick: PropTypes.func,
+  };
+
+  static defaultProps = {
+    isCollapsed: true,
+  };
+
+  componentWillMount() {
     const { isCollapsed } = this.props
     this.state = {
       collapsed: isCollapsed,
     }
-    this.handleChange = ::this.handleChange
   }
 
-  handleChange(...rest) {
+  handleChange = (...rest) => {
     const { onClick } = this.props
     const { collapsed } = this.state
     const newCollapsedState = !collapsed
@@ -32,7 +41,7 @@ class TreeButton extends Component {
     if (typeof onClick === 'function') {
       onClick(...rest)
     }
-  }
+  };
 
   render() {
     const { children, className } = this.props
@@ -47,17 +56,6 @@ class TreeButton extends Component {
       </button>
     )
   }
-}
-
-TreeButton.propTypes = {
-  children: PropTypes.string.isRequired,
-  className: PropTypes.string,
-  isCollapsed: PropTypes.bool,
-  onClick: PropTypes.func,
-}
-
-TreeButton.defaultProps = {
-  isCollapsed: true,
 }
 
 export default TreeButton

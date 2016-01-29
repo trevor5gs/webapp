@@ -8,17 +8,15 @@ import { isFormValid, getEmailStateFromClient } from '../forms/Validators'
 
 class RegistrationRequestForm extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  };
+
+  componentWillMount() {
     this.state = {
       formStatus: STATUS.INDETERMINATE,
       emailState: { status: STATUS.INDETERMINATE, message: '' },
     }
-    this.handleSubmit = ::this.handleSubmit
-    this.emailControlWasChanged = ::this.emailControlWasChanged
-  }
-
-  componentWillMount() {
     this.emailValue = ''
   }
 
@@ -29,14 +27,14 @@ class RegistrationRequestForm extends Component {
     }
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(requestInvite(this.emailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
-  }
+  };
 
-  emailControlWasChanged({ email }) {
+  emailControlWasChanged = ({ email }) => {
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -44,7 +42,7 @@ class RegistrationRequestForm extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
     }
-  }
+  };
 
   renderSubmitted() {
     return (
@@ -78,10 +76,6 @@ class RegistrationRequestForm extends Component {
     const { formStatus } = this.state
     return formStatus === STATUS.SUBMITTED ? this.renderSubmitted() : this.renderForm()
   }
-}
-
-RegistrationRequestForm.propTypes = {
-  dispatch: PropTypes.func.isRequired,
 }
 
 export default connect()(RegistrationRequestForm)

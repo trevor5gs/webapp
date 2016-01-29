@@ -4,13 +4,14 @@ import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import Mousetrap from '../../vendor/mousetrap'
 
 class DevTools extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  componentWillMount() {
     this.state = {
       isHorizontalGridVisible: false,
       isVerticalGridVisible: false,
     }
   }
+
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.DT_GRID_TOGGLE, () => {
       this.nextGridForToggle()

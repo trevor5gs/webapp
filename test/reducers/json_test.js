@@ -117,7 +117,10 @@ describe('json reducer', () => {
       const action = { meta: {} }
       action.meta.mappingType = MAPPING_TYPES.USERS
       action.payload = { pagination: '' }
-      action.meta.resultFilter = (users) => { return { usernames: users.map((user) => { return user.username }) } }
+      action.meta.resultFilter = (users) => {
+        const stuff = { usernames: users.map((user) => user.username) }
+        return stuff
+      }
       const result = subject.methods.getResult(response, json, action)
       expect(result).to.deep.equal({ usernames: ['yo', 'mama'], pagination: '' })
     })
@@ -142,7 +145,7 @@ describe('json reducer', () => {
     context('action.type === LOAD_STREAM_SUCCESS', () => {
       it('sets the result when it does not exist', () => {
         const result = { pagination: 'sweet' }
-        sinon.stub(subject.methods, 'getResult', () => { return result })
+        sinon.stub(subject.methods, 'getResult', () => result)
         const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
         action.meta.mappingType = MAPPING_TYPES.USERS
         subject.setPath('sweetness')
@@ -154,7 +157,7 @@ describe('json reducer', () => {
       context('with an existingResult and existingResult.ids[0] !== result.ids[0]', () => {
         it('adds newIds if hasLoadedFirstStream && it is not a nested result && the index is greater than 0', () => {
           const result = { pagination: 'sweet' }
-          sinon.stub(subject.methods, 'getResult', () => { return result })
+          sinon.stub(subject.methods, 'getResult', () => result)
           // json.pages = { sweetness: { ids: ['1', '2'], next: { ids: ['1', '2'] } } }
           // const result = { pagination: 'sweet', ids: ['3'] }
           // sinon.stub(subject.methods, 'getResult', () => { return result })
@@ -166,23 +169,23 @@ describe('json reducer', () => {
 
         it('overrides the existing result if the above condition is not met', () => {
           const result = { pagination: 'sweet' }
-          sinon.stub(subject.methods, 'getResult', () => { return result })
+          sinon.stub(subject.methods, 'getResult', () => result)
         })
       })
 
       it('overlays the result with the existingResult when existingResult and resultKey', () => {
         const result = { pagination: 'sweet' }
-        sinon.stub(subject.methods, 'getResult', () => { return result })
+        sinon.stub(subject.methods, 'getResult', () => result)
       })
 
       it('resets the result', () => {
         const result = { pagination: 'sweet' }
-        sinon.stub(subject.methods, 'getResult', () => { return result })
+        sinon.stub(subject.methods, 'getResult', () => result)
       })
 
       it('uses the resultKey to update the storage location within json.pages', () => {
         const result = { pagination: 'sweet' }
-        sinon.stub(subject.methods, 'getResult', () => { return result })
+        sinon.stub(subject.methods, 'getResult', () => result)
         const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { resultKey: 'yo' } }
         action.meta.mappingType = MAPPING_TYPES.USERS
         subject.setPath('sweetness')
@@ -196,7 +199,7 @@ describe('json reducer', () => {
       it('sets the next property of result when it does not exist', () => {
         json.pages = { sweetness: { pagination: 'cool' } }
         const result = { pagination: 'sweet', ids: ['2', '3', '4'] }
-        sinon.stub(subject.methods, 'getResult', () => { return result })
+        sinon.stub(subject.methods, 'getResult', () => result)
         const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: {} }
         subject.setPath('sweetness')
         expect(json.pages.sweetness.next).to.be.undefined
@@ -208,7 +211,10 @@ describe('json reducer', () => {
 
       it('updates the next property of result when it exists', () => {
         json.pages = { sweetness: { next: { ids: ['1', '2'] }, pagination: 'cool' } }
-        sinon.stub(subject.methods, 'getResult', () => { return { pagination: 'sweet', ids: ['2', '3', '4'] } })
+        sinon.stub(subject.methods, 'getResult', () => {
+          const stuff = { pagination: 'sweet', ids: ['2', '3', '4'] }
+          return stuff
+        })
         const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: {} }
         subject.setPath('sweetness')
         expect(json.pages.sweetness.next).to.deep.equal({ ids: ['1', '2'] })
@@ -221,7 +227,7 @@ describe('json reducer', () => {
       it('uses the resultKey to update the storage location within json.pages', () => {
         json.pages = { sweetness_yo: { pagination: 'cool' } }
         const result = { pagination: 'sweet', ids: ['2', '3', '4'] }
-        sinon.stub(subject.methods, 'getResult', () => { return result })
+        sinon.stub(subject.methods, 'getResult', () => result)
         const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: { resultKey: 'yo' } }
         subject.setPath('sweetness')
         expect(json.pages.sweetness_yo.next).to.be.undefined

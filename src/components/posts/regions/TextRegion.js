@@ -4,13 +4,15 @@ import { routeActions } from 'react-router-redux'
 import classNames from 'classnames'
 
 class TextRegion extends Component {
-  constructor(props, context) {
-    super(props, context)
-    this.handleRegionClick = ::this.handleRegionClick
-  }
 
+  static propTypes = {
+    content: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    isGridLayout: PropTypes.bool.isRequired,
+    postDetailPath: PropTypes.string,
+  };
 
-  handleRegionClick(e) {
+  handleRegionClick = (e) => {
     const { dispatch, isGridLayout, postDetailPath } = this.props
     const { classList, dataset, nodeName } = e.target
     // Get the raw value instead of the property value which is always absolute
@@ -21,7 +23,7 @@ class TextRegion extends Component {
       e.preventDefault()
       return dispatch(routeActions.push(href))
 
-    // We have a special `span` based fake link at the moment we have to test
+    // TODO: We have a special `span` based fake link at the moment we have to test
     // for. Once we change this back to an `<a> element we can rip this out.
     } else if (classList.contains('hashtag-link')) {
       e.preventDefault()
@@ -34,7 +36,7 @@ class TextRegion extends Component {
     }
     // The alternative is it's either in list and we ignore it or it's an
     // absolute link and we allow it's default behavior.
-  }
+  };
 
   render() {
     const { content, isGridLayout, postDetailPath } = this.props
@@ -49,13 +51,6 @@ class TextRegion extends Component {
       </div>
     )
   }
-}
-
-TextRegion.propTypes = {
-  content: PropTypes.string.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  isGridLayout: PropTypes.bool.isRequired,
-  postDetailPath: PropTypes.string,
 }
 
 export default connect()(TextRegion)

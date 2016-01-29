@@ -12,14 +12,20 @@ import Paginator from '../streams/Paginator'
 
 export class StreamComponent extends Component {
 
-  constructor(props, context) {
-    super(props, context)
-    this.state = { action: this.props.action }
-  }
+  static propTypes = {
+    action: PropTypes.object,
+    currentUser: PropTypes.object,
+    dispatch: PropTypes.func.isRequired,
+    initModel: PropTypes.object,
+    json: PropTypes.object.isRequired,
+    pathname: PropTypes.string.isRequired,
+    stream: PropTypes.object.isRequired,
+  };
 
   componentWillMount() {
-    const { action } = this.state
-    if (action) { this.props.dispatch(action) }
+    const { action, dispatch } = this.props
+    this.state = { action }
+    if (action) { dispatch(action) }
   }
 
   componentDidMount() {
@@ -266,16 +272,6 @@ export class StreamComponent extends Component {
       </section>
     )
   }
-}
-
-StreamComponent.propTypes = {
-  action: PropTypes.object,
-  currentUser: PropTypes.object,
-  dispatch: PropTypes.func.isRequired,
-  initModel: PropTypes.object,
-  json: PropTypes.object.isRequired,
-  pathname: PropTypes.string.isRequired,
-  stream: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {

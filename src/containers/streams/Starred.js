@@ -4,6 +4,9 @@ import StreamComponent from '../../components/streams/StreamComponent'
 
 class Starred extends Component {
 
+  static preRender = (store) =>
+    store.dispatch(loadNoise());
+
   render() {
     return (
       <section className="Starred Panel">
@@ -11,10 +14,6 @@ class Starred extends Component {
       </section>
     )
   }
-}
-
-Starred.preRender = (store) => {
-  return store.dispatch(loadNoise())
 }
 
 export default Starred

@@ -3,6 +3,14 @@ import FormControl from './FormControl'
 
 class BatchEmailControl extends Component {
 
+  static defaultProps = {
+    className: 'BatchEmailControl',
+    id: 'emails',
+    label: 'Emails',
+    name: 'invitations[email]',
+    placeholder: 'Enter email addresses',
+  };
+
   render() {
     return (
       <FormControl
@@ -13,14 +21,6 @@ class BatchEmailControl extends Component {
       />
     )
   }
-}
-
-BatchEmailControl.defaultProps = {
-  className: 'BatchEmailControl',
-  id: 'emails',
-  label: 'Emails',
-  name: 'invitations[email]',
-  placeholder: 'Enter email addresses',
 }
 
 export default BatchEmailControl

@@ -8,17 +8,17 @@ import FooterLink from '../footer/FooterLink'
 import FooterTool from '../footer/FooterTool'
 
 class Footer extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  static propTypes = {
+    json: PropTypes.object.isRequired,
+    pathname: PropTypes.string.isRequired,
+  };
+
+  componentWillMount() {
     this.state = {
       isAndroid: false,
       isGridMode: true,
     }
-    this.scrollToTop = ::this.scrollToTop
-    this.toggleLayoutMode = ::this.toggleLayoutMode
-  }
-
-  componentWillMount() {
     if (typeof window === 'undefined') {
       return
     }
@@ -36,16 +36,16 @@ class Footer extends Component {
     }
   }
 
-  scrollToTop() {
+  scrollToTop = () => {
     if (typeof window === 'undefined') {
       return
     }
     window.scrollTo(0, 0)
-  }
+  };
 
-  toggleLayoutMode() {
+  toggleLayoutMode = () => {
     Mousetrap.trigger(SHORTCUT_KEYS.TOGGLE_LAYOUT)
-  }
+  };
 
   render() {
     const { isAndroid, isGridMode } = this.state
@@ -81,11 +81,6 @@ class Footer extends Component {
       </footer>
     )
   }
-}
-
-Footer.propTypes = {
-  json: PropTypes.object.isRequired,
-  pathname: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state) {

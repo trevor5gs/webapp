@@ -33,8 +33,13 @@ SHARE_DIMENSIONS[SHARE_TYPES.TWITTER] = { width: 520, height: 250 }
 
 class ShareDialog extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  static propTypes = {
+    author: PropTypes.object.isRequired,
+    post: PropTypes.object.isRequired,
+    trackEvent: PropTypes.func,
+  };
+
+  componentWillMount() {
     const { author, post } = this.props
     this.postLink = `${window.location.protocol}//${window.location.host}/${author.username}/post/${post.token}`
     let summary = 'Check out this post on Ello'
@@ -68,7 +73,6 @@ class ShareDialog extends Component {
     this.tweetSummarySafe = window.encodeURIComponent(tweetSummary)
     this.emailSubjectSafe = window.encodeURIComponent(emailSubject)
     this.emailBodySafe = `${this.summarySafe}%0D%0A%0D%0A${this.postLinkSafe}`
-    this.popShareWindow = ::this.popShareWindow
   }
 
   getUrl(type) {
@@ -93,7 +97,7 @@ class ShareDialog extends Component {
     }
   }
 
-  popShareWindow(e) {
+  popShareWindow = (e) => {
     const type = e.target.dataset.type
     const url = this.getUrl(type)
     const { trackEvent } = this.props
@@ -107,7 +111,7 @@ class ShareDialog extends Component {
     if (trackEvent) {
       trackEvent(`share-to-${type}`)
     }
-  }
+  };
 
   selectReadOnlyInput(e) {
     e.target.select()
@@ -136,12 +140,6 @@ class ShareDialog extends Component {
       </div>
     )
   }
-}
-
-ShareDialog.propTypes = {
-  author: PropTypes.object.isRequired,
-  post: PropTypes.object.isRequired,
-  trackEvent: PropTypes.func,
 }
 
 export default ShareDialog

@@ -2,34 +2,40 @@ import React, { Component, PropTypes } from 'react'
 import FormControl from './FormControl'
 
 class UsernameControl extends Component {
-  constructor(props, context) {
-    super(props, context)
-    this.renderSuggestions = ::this.renderSuggestions
-    this.handleUsernameSuggestionClick = ::this.handleUsernameSuggestionClick
-  }
 
-  handleUsernameSuggestionClick(e) {
+  static propTypes = {
+    suggestions: PropTypes.array,
+  };
+
+  static defaultProps = {
+    className: 'UsernameControl',
+    id: 'username',
+    label: 'Username',
+    name: 'user[username]',
+    placeholder: 'Enter your username',
+    suggestions: null,
+  };
+
+  handleUsernameSuggestionClick = (e) => {
     const val = e.target.title
     this.refs.FormControl.handleChange({ target: { value: val } })
-  }
+  };
 
-  renderSuggestions() {
+  renderSuggestions = () => {
     const { suggestions } = this.props
     if (suggestions && suggestions.length) {
       return (
         <div className="FormControlSuggestionList hasSuggestions">
           <p>Here are some available usernames &mdash;</p>
-          { suggestions.map((suggestion, i) => {
-            return (
-              <button
-                title={ suggestion }
-                onClick={ this.handleUsernameSuggestionClick }
-                key={ `suggestion_${i}` }
-              >
-                { suggestion }
-              </button>
-            )
-          })}
+          { suggestions.map((suggestion, i) =>
+            <button
+              title={ suggestion }
+              onClick={ this.handleUsernameSuggestionClick }
+              key={ `suggestion_${i}` }
+            >
+              { suggestion }
+            </button>
+          )}
         </div>
       )
     }
@@ -38,7 +44,7 @@ class UsernameControl extends Component {
         <span></span>
       </p>
     )
-  }
+  };
 
   render() {
     return (
@@ -53,19 +59,6 @@ class UsernameControl extends Component {
       />
     )
   }
-}
-
-UsernameControl.propTypes = {
-  suggestions: PropTypes.array,
-}
-
-UsernameControl.defaultProps = {
-  className: 'UsernameControl',
-  id: 'username',
-  label: 'Username',
-  name: 'user[username]',
-  placeholder: 'Enter your username',
-  suggestions: null,
 }
 
 export default UsernameControl

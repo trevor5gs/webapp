@@ -13,17 +13,22 @@ import TabListButtons from '../../components/tabs/TabListButtons'
 
 class Search extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    location: PropTypes.shape({
+      query: PropTypes.shape({
+        terms: PropTypes.string,
+        type: PropTypes.string,
+      }).isRequired,
+    }).isRequired,
+  };
+
+  componentWillMount() {
     this.state = {
       terms: this.props.location.query.terms || '',
       type: this.props.location.query.type || 'posts',
     }
-    this.creditsTrackingEvent = ::this.creditsTrackingEvent
-    this.handleControlChange = ::this.handleControlChange
-  }
-
-  componentWillMount() {
     this.search = debounce(this.search, 300)
     this.updateLocation = debounce(this.updateLocation, 300)
   }
@@ -70,18 +75,18 @@ class Search extends Component {
     }
   }
 
-  handleControlChange(vo) {
+  handleControlChange = (vo) => {
     // order is important here, need to update
     // location so fetch has the correct path
     this.updateLocation(vo)
     this.setState(vo)
     this.search()
-  }
+  };
 
-  creditsTrackingEvent() {
+  creditsTrackingEvent = () => {
     const { dispatch } = this.props
     dispatch(trackEvent(`banderole-credits-clicked`))
-  }
+  };
 
   render() {
     const { isLoggedIn } = this.props
@@ -116,17 +121,6 @@ class Search extends Component {
   }
 }
 
-
-Search.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  location: PropTypes.shape({
-    query: PropTypes.shape({
-      terms: PropTypes.string,
-      type: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
-}
 
 function mapStateToProps(state) {
   return {

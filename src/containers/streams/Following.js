@@ -3,6 +3,10 @@ import { loadFriends } from '../../actions/stream'
 import StreamComponent from '../../components/streams/StreamComponent'
 
 class Following extends Component {
+
+  static preRender = (store) =>
+    store.dispatch(loadFriends());
+
   render() {
     return (
       <section className="Following Panel">
@@ -10,10 +14,6 @@ class Following extends Component {
       </section>
     )
   }
-}
-
-Following.preRender = (store) => {
-  return store.dispatch(loadFriends())
 }
 
 export default Following

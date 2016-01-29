@@ -21,9 +21,9 @@ function deleteComment(state, newState, action) {
   }
   return newState
 }
-methods.deleteComment = (state, newState, action) => {
-  return deleteComment(state, newState, action)
-}
+methods.deleteComment = (state, newState, action) =>
+  deleteComment(state, newState, action)
+
 
 export default methods
 

@@ -8,16 +8,23 @@ import StreamComponent from '../../components/streams/StreamComponent'
 import TabListLinks from '../../components/tabs/TabListLinks'
 
 class Discover extends Component {
-  constructor(props, context) {
-    super(props, context)
-    this.creditsTrackingEvent = ::this.creditsTrackingEvent
-  }
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    params: PropTypes.shape({
+      type: PropTypes.string,
+    }),
+    pathname: PropTypes.string.isRequired,
+  };
 
-  creditsTrackingEvent() {
+  static preRender = (store, routerState) =>
+    store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'));
+
+  creditsTrackingEvent = () => {
     const { dispatch } = this.props
     dispatch(trackEvent(`banderole-credits-clicked`))
-  }
+  };
 
   render() {
     const { isLoggedIn, params, pathname } = this.props
@@ -58,19 +65,6 @@ class Discover extends Component {
       </section>
     )
   }
-}
-
-Discover.preRender = (store, routerState) => {
-  return store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
-}
-
-Discover.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  params: PropTypes.shape({
-    type: PropTypes.string,
-  }),
-  pathname: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(state) {

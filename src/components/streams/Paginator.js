@@ -3,10 +3,14 @@ import { ElloMark } from '../interface/ElloIcons'
 
 class Paginator extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  static propTypes = {
+    delegate: PropTypes.object,
+    hasShowMoreButton: PropTypes.bool,
+    pagination: PropTypes.object,
+  };
+
+  componentWillMount() {
     this.state = { isPaginationLoading: false, message: this.getMessage() }
-    this.loadMore = ::this.loadMore
   }
 
   getMessage() {
@@ -27,12 +31,12 @@ class Paginator extends Component {
     this.state = { isPaginationLoading, message: this.getMessage() }
   }
 
-  loadMore() {
+  loadMore = () => {
     const { delegate } = this.props
     if (delegate && typeof delegate.onLoadNextPage === 'function') {
       delegate.onLoadNextPage()
     }
-  }
+  };
 
   render() {
     const { isPaginationLoading, message } = this.state
@@ -48,12 +52,6 @@ class Paginator extends Component {
       </div>
     )
   }
-}
-
-Paginator.propTypes = {
-  delegate: PropTypes.object,
-  hasShowMoreButton: PropTypes.bool,
-  pagination: PropTypes.object,
 }
 
 export default Paginator

@@ -11,18 +11,16 @@ const STATUS = {
 
 class CoverMini extends Component {
 
-  constructor(props, context) {
-    super(props, context)
-    this.state = {
-      imageSize: 'hdpi',
-      status: STATUS.PENDING,
-    }
-    this.loadDidFail = ::this.loadDidFail
-    this.loadDidSucceed = ::this.loadDidSucceed
-  }
+  static propTypes = {
+    coverImage: PropTypes.any,
+    to: PropTypes.string,
+  };
 
   componentWillMount() {
-    this.setState({ status: STATUS.REQUEST })
+    this.state = {
+      imageSize: 'hdpi',
+      status: STATUS.REQUEST,
+    }
   }
 
   componentDidMount() {
@@ -81,15 +79,15 @@ class CoverMini extends Component {
     }
   }
 
-  loadDidSucceed() {
+  loadDidSucceed = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  }
+  };
 
-  loadDidFail() {
+  loadDidFail = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  }
+  };
 
   render() {
     const { to } = this.props
@@ -106,11 +104,6 @@ class CoverMini extends Component {
         <figure className="CoverMiniImage" style={style} />
       </span>
   }
-}
-
-CoverMini.propTypes = {
-  coverImage: PropTypes.any,
-  to: PropTypes.string,
 }
 
 export default CoverMini

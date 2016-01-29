@@ -33,32 +33,24 @@ import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 import InfoForm from '../../components/forms/InfoForm'
 
 class Settings extends Component {
-  constructor(props, context) {
-    super(props, context)
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    profile: PropTypes.object,
+  };
+
+  componentWillMount() {
+    const { profile } = this.props
     this.state = {
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
       emailState: { status: STATUS.INDETERMINATE, message: '' },
     }
-    this.onLogOut = ::this.onLogOut
-    this.closeModal = ::this.closeModal
-    this.accountWasDeleted = ::this.accountWasDeleted
-    this.handleSubmit = ::this.handleSubmit
-    this.usernameControlWasChanged = ::this.usernameControlWasChanged
-    this.passwordControlWasChanged = ::this.passwordControlWasChanged
-    this.emailControlWasChanged = ::this.emailControlWasChanged
-    this.passwordCurrentControlWasChanged = ::this.passwordCurrentControlWasChanged
-    this.launchAdultPostsPrompt = ::this.launchAdultPostsPrompt
-    this.launchDeleteAccountModal = ::this.launchDeleteAccountModal
-  }
-
-  componentWillMount() {
-    const { profile } = this.props
-    this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
     this.passwordValue = ''
     this.passwordCurrentValue = ''
     this.emailValue = profile.email
     this.usernameValue = profile.username
+    this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -74,27 +66,25 @@ class Settings extends Component {
     }
   }
 
-  onLogOut() {
+  onLogOut = () => {
     const { dispatch } = this.props
     dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
     dispatch(pushPath('/', window.history.state))
-  }
+  };
 
   getExternalLinkListAsText() {
     const { profile } = this.props
     return (
-      profile.externalLinksList.map((link, i) => {
-        return (
-          <a
-            href={link.url}
-            target="_blank"
-            key={ `settingslinks_${i}` }
-            style={{ marginRight: `${5 / 16}rem` }}
-          >
-            { link.text }
-          </a>
-        )
-      })
+      profile.externalLinksList.map((link, i) =>
+        <a
+          href={link.url}
+          target="_blank"
+          key={ `settingslinks_${i}` }
+          style={{ marginRight: `${5 / 16}rem` }}
+        >
+          { link.text }
+        </a>
+      )
     )
   }
 
@@ -108,16 +98,16 @@ class Settings extends Component {
 
   shouldRequireCredentialsSave() {
     const { emailState, passwordState, usernameState } = this.state
-    return [emailState, passwordState, usernameState].some((state) => {
-      return state.status === STATUS.SUCCESS
-    })
+    return [emailState, passwordState, usernameState].some((state) =>
+      state.status === STATUS.SUCCESS
+    )
   }
 
   checkServerForAvailability(vo) {
     return this.props.dispatch(checkAvailability(vo))
   }
 
-  usernameControlWasChanged({ username }) {
+  usernameControlWasChanged = ({ username }) => {
     this.usernameValue = username
     const { usernameState } = this.state
     const currentStatus = usernameState.status
@@ -130,7 +120,7 @@ class Settings extends Component {
       return this.checkServerForAvailability({ username })
     }
     this.setState({ usernameState: clientState })
-  }
+  };
 
   validateUsernameResponse(availability) {
     const { usernameState } = this.state
@@ -139,7 +129,7 @@ class Settings extends Component {
     this.setState({ usernameState: newState })
   }
 
-  emailControlWasChanged({ email }) {
+  emailControlWasChanged = ({ email }) => {
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -152,7 +142,7 @@ class Settings extends Component {
       return this.checkServerForAvailability({ email })
     }
     this.setState({ emailState: clientState })
-  }
+  };
 
   validateEmailResponse(availability) {
     const { emailState } = this.state
@@ -161,19 +151,19 @@ class Settings extends Component {
     this.setState({ emailState: newState })
   }
 
-  passwordControlWasChanged({ password }) {
+  passwordControlWasChanged = ({ password }) => {
     this.passwordValue = password
     const { passwordState } = this.state
     const currentStatus = passwordState.status
     const newState = getPasswordState({ value: password, currentStatus })
     this.setState({ passwordState: newState })
-  }
+  };
 
-  passwordCurrentControlWasChanged(vo) {
+  passwordCurrentControlWasChanged = (vo) => {
     this.passwordCurrentValue = vo.current_password
-  }
+  };
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault()
     const formData = {
       current_password: this.passwordCurrentValue,
@@ -183,21 +173,21 @@ class Settings extends Component {
     }
     // console.log(formData)
     return formData
-  }
+  };
 
-  closeModal() {
+  closeModal = () => {
     const { dispatch } = this.props
     dispatch(closeModal())
-  }
+  };
 
   // TODO: This needs to be wired up still to:
   // delete local db, delete account and redirect to home.
-  accountWasDeleted() {
+  accountWasDeleted = () => {
     this.closeModal()
     // window.location('/')
-  }
+  };
 
-  launchAdultPostsPrompt(obj) {
+  launchAdultPostsPrompt = (obj) => {
     if (obj.postsAdultContent) {
       const { dispatch, profile } = this.props
       dispatch(openModal(
@@ -208,9 +198,9 @@ class Settings extends Component {
       ))
     }
     preferenceToggleChanged(obj)
-  }
+  };
 
-  launchDeleteAccountModal() {
+  launchDeleteAccountModal = () => {
     const { dispatch, profile } = this.props
     dispatch(openModal(
       <DeleteAccountDialog
@@ -219,7 +209,7 @@ class Settings extends Component {
         onRejected={ this.closeModal }
       />
     , 'asDangerZone'))
-  }
+  };
 
   render() {
     const { profile, dispatch } = this.props
@@ -417,15 +407,6 @@ class Settings extends Component {
       </section>
     )
   }
-}
-// TODO: Should this load profile or will the App take care of it?
-// Settings.preRender = (store) => {
-//   return store.dispatch(loadProfile())
-// }
-
-Settings.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  profile: PropTypes.object,
 }
 
 function mapStateToProps(state) {

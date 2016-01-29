@@ -7,6 +7,14 @@ import RelationshipImageButton from '../relationships/RelationshipImageButton'
 
 class UserCard extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    pathname: PropTypes.string,
+    user: PropTypes.shape({
+    }).isRequired,
+  };
+
   handleRelationshipUpdate(vo) {
     const { userId, priority, existing } = vo
     const { dispatch, pathname } = this.props
@@ -41,14 +49,6 @@ class UserCard extends Component {
       </div>
     )
   }
-}
-
-UserCard.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  pathname: PropTypes.string,
-  user: PropTypes.shape({
-  }).isRequired,
 }
 
 function mapStateToProps(state) {

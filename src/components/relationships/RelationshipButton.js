@@ -5,10 +5,23 @@ import { MiniPlusIcon, MiniCheckIcon } from '../relationships/RelationshipIcons'
 
 class RelationshipButton extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  static propTypes = {
+    buttonWasClicked: PropTypes.func,
+    priority: PropTypes.oneOf([
+      RELATIONSHIP_PRIORITY.INACTIVE,
+      RELATIONSHIP_PRIORITY.FRIEND,
+      RELATIONSHIP_PRIORITY.NOISE,
+      RELATIONSHIP_PRIORITY.SELF,
+      RELATIONSHIP_PRIORITY.MUTE,
+      RELATIONSHIP_PRIORITY.BLOCK,
+      RELATIONSHIP_PRIORITY.NONE,
+      null,
+    ]),
+    userId: PropTypes.string,
+  };
+
+  componentWillMount() {
     this.state = { nextPriority: this.getNextPriority(this.props) }
-    this.updatePriority = ::this.updatePriority
   }
 
   componentWillReceiveProps(nextProps) {
@@ -26,13 +39,13 @@ class RelationshipButton extends Component {
     }
   }
 
-  updatePriority() {
+  updatePriority = () => {
     const { nextPriority } = this.state
     const { buttonWasClicked, priority, userId } = this.props
     if (buttonWasClicked) {
       buttonWasClicked({ userId, priority: nextPriority, existing: priority })
     }
-  }
+  };
 
   renderAsToggleButton(label, icon = null) {
     const { priority } = this.props
@@ -106,21 +119,6 @@ class RelationshipButton extends Component {
       'renderAsInactive'
     return this[fn]()
   }
-}
-
-RelationshipButton.propTypes = {
-  buttonWasClicked: PropTypes.func,
-  priority: PropTypes.oneOf([
-    RELATIONSHIP_PRIORITY.INACTIVE,
-    RELATIONSHIP_PRIORITY.FRIEND,
-    RELATIONSHIP_PRIORITY.NOISE,
-    RELATIONSHIP_PRIORITY.SELF,
-    RELATIONSHIP_PRIORITY.MUTE,
-    RELATIONSHIP_PRIORITY.BLOCK,
-    RELATIONSHIP_PRIORITY.NONE,
-    null,
-  ]),
-  userId: PropTypes.string,
 }
 
 export default RelationshipButton

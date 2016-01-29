@@ -12,20 +12,20 @@ const STATUS = {
 
 class ImageRegion extends Component {
 
-  constructor(props, context) {
-    super(props, context)
-    this.state = {
-      status: STATUS.PENDING,
-      scale: null,
-      marginBottom: null,
-    }
-    this.loadDidFail = ::this.loadDidFail
-    this.loadDidSucceed = ::this.loadDidSucceed
-    this.staticImageRegionWasClicked = ::this.staticImageRegionWasClicked
-  }
+  static propTypes = {
+    assets: PropTypes.object.isRequired,
+    content: PropTypes.object.isRequired,
+    isGridLayout: PropTypes.bool.isRequired,
+    links: PropTypes.object,
+    postDetailPath: PropTypes.string,
+  };
 
   componentWillMount() {
-    this.setState({ status: STATUS.REQUEST })
+    this.state = {
+      marginBottom: null,
+      scale: null,
+      status: STATUS.REQUEST,
+    }
   }
 
   componentDidMount() {
@@ -126,7 +126,7 @@ class ImageRegion extends Component {
     this.setState({ scale: null, marginBottom: null })
   }
 
-  staticImageRegionWasClicked() {
+  staticImageRegionWasClicked = () => {
     const { scale } = this.state
     if (scale) {
       return this.resetImageScale()
@@ -134,7 +134,7 @@ class ImageRegion extends Component {
       return null
     }
     return this.setImageScale()
-  }
+  };
 
   createLoader() {
     const srcset = this.getImageSourceSet()
@@ -155,15 +155,15 @@ class ImageRegion extends Component {
     }
   }
 
-  loadDidSucceed() {
+  loadDidSucceed = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  }
+  };
 
-  loadDidFail() {
+  loadDidFail = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  }
+  };
 
   isGif() {
     const optimized = this.attachment.optimized
@@ -255,14 +255,6 @@ class ImageRegion extends Component {
       </div>
     )
   }
-}
-
-ImageRegion.propTypes = {
-  assets: PropTypes.object.isRequired,
-  content: PropTypes.object.isRequired,
-  isGridLayout: PropTypes.bool.isRequired,
-  links: PropTypes.object,
-  postDetailPath: PropTypes.string,
 }
 
 export default ImageRegion

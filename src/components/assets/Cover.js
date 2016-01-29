@@ -12,19 +12,22 @@ const STATUS = {
 
 class Cover extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  static propTypes = {
+    coverImage: PropTypes.object,
+    isModifiable: PropTypes.bool,
+    modifiers: PropTypes.string,
+  };
+
+  static defaultProps = {
+    modifiers: '',
+  };
+
+  componentWillMount() {
     this.state = {
       asHidden: false,
       imageSize: 'hdpi',
-      status: STATUS.PENDING,
+      status: STATUS.REQUEST,
     }
-    this.loadDidFail = ::this.loadDidFail
-    this.loadDidSucceed = ::this.loadDidSucceed
-  }
-
-  componentWillMount() {
-    this.setState({ status: STATUS.REQUEST })
   }
 
   componentDidMount() {
@@ -114,15 +117,15 @@ class Cover extends Component {
     }
   }
 
-  loadDidSucceed() {
+  loadDidSucceed = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  }
+  };
 
-  loadDidFail() {
+  loadDidFail = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  }
+  };
 
   render() {
     const src = this.getCoverSource()
@@ -134,16 +137,6 @@ class Cover extends Component {
       </div>
     )
   }
-}
-
-Cover.propTypes = {
-  coverImage: PropTypes.object,
-  isModifiable: PropTypes.bool,
-  modifiers: PropTypes.string,
-}
-
-Cover.defaultProps = {
-  modifiers: '',
 }
 
 export default Cover

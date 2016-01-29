@@ -10,20 +10,25 @@ import LinksControl from '../forms/LinksControl'
 
 class InfoForm extends Component {
 
-  constructor(props, context) {
-    super(props, context)
+  static propTypes = {
+    className: PropTypes.string,
+    controlClassModifiers: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
+    profile: PropTypes.object,
+    tabIndexStart: PropTypes.number,
+  };
+
+  static defaultProps = {
+    tabIndexStart: 0,
+  };
+
+  componentWillMount() {
     this.state = {
       bioStatus: STATUS.INDETERMINATE,
       linksStatus: STATUS.INDETERMINATE,
       nameStatus: STATUS.INDETERMINATE,
       showThenHideMessage: false,
     }
-    this.nameControlWasChanged = ::this.nameControlWasChanged
-    this.bioControlWasChanged = ::this.bioControlWasChanged
-    this.linksControlWasChanged = ::this.linksControlWasChanged
-  }
-
-  componentWillMount() {
     this.saveForm = debounce(this.saveForm, 300)
   }
 
@@ -55,17 +60,17 @@ class InfoForm extends Component {
     this.saveForm(vo)
   }
 
-  nameControlWasChanged(vo) {
+  nameControlWasChanged = (vo) => {
     this.controlWasChanged(vo, 'nameStatus')
-  }
+  };
 
-  bioControlWasChanged(vo) {
+  bioControlWasChanged = (vo) => {
     this.controlWasChanged(vo, 'bioStatus')
-  }
+  };
 
-  linksControlWasChanged(vo) {
+  linksControlWasChanged = (vo) => {
     this.controlWasChanged(vo, 'linksStatus')
-  }
+  };
 
   render() {
     const { bioStatus, linksStatus, nameStatus, showThenHideMessage } = this.state
@@ -115,18 +120,6 @@ function mapStateToProps(state) {
   return {
     profile: state.profile,
   }
-}
-
-InfoForm.propTypes = {
-  className: PropTypes.string,
-  controlClassModifiers: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
-  profile: PropTypes.object,
-  tabIndexStart: PropTypes.number,
-}
-
-InfoForm.defaultProps = {
-  tabIndexStart: 0,
 }
 
 export default connect(mapStateToProps)(InfoForm)

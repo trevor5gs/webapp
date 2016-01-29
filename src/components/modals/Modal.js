@@ -7,10 +7,16 @@ import { closeModal, closeAlert } from '../../actions/modals'
 import Mousetrap from '../../vendor/mousetrap'
 
 class Modal extends Component {
-  constructor(props, context) {
-    super(props, context)
-    this.handleModalTrigger = ::this.handleModalTrigger
-  }
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    modal: PropTypes.shape({
+      component: PropTypes.object,
+      isActive: PropTypes.bool,
+      kind: PropTypes.string,
+      classList: PropTypes.string,
+    }).isRequired,
+  };
 
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => { this.close() })
@@ -39,14 +45,14 @@ class Modal extends Component {
     }
   }
 
-  handleModalTrigger(e) {
+  handleModalTrigger = (e) => {
     const classList = e.target.classList
     if (classList.contains('Modal') ||
         classList.contains('Alert') ||
         classList.contains('CloseModal')) {
       return this.close()
     }
-  }
+  };
 
   render() {
     const { modal } = this.props
@@ -60,16 +66,6 @@ class Modal extends Component {
       </div>
     )
   }
-}
-
-Modal.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  modal: PropTypes.shape({
-    component: PropTypes.object,
-    isActive: PropTypes.bool,
-    kind: PropTypes.string,
-    classList: PropTypes.string,
-  }).isRequired,
 }
 
 function mapStateToProps(state) {

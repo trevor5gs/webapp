@@ -2,38 +2,40 @@ import React, { Component, PropTypes } from 'react'
 
 class DeleteAccountDialog extends Component {
 
+  static propTypes = {
+    user: PropTypes.shape({}),
+    onConfirm: PropTypes.func,
+    onRejected: PropTypes.func,
+  };
+
   componentWillMount() {
     this.state = {
       scene: 'renderConfirm',
     }
     this.counter = 6
-    this.handleJustKidding = ::this.handleJustKidding
-    this.handleNotKidding = ::this.handleNotKidding
-    this.handleConfirm = ::this.handleConfirm
-    this.handleConfirmReally = ::this.handleConfirmReally
   }
 
   componentWillUnmount() {
     clearInterval(this.interval)
   }
 
-  handleJustKidding() {
+  handleJustKidding = () => {
     this.props.onRejected()
-  }
+  };
 
-  handleNotKidding() {
+  handleNotKidding = () => {
     this.props.onConfirm()
-  }
+  };
 
-  handleConfirm() {
+  handleConfirm = () => {
     this.setState({ scene: 'renderConfirmReally' })
-  }
+  };
 
-  handleConfirmReally() {
+  handleConfirmReally = () => {
     this.interval = setInterval(() => {
       this.setState({ scene: 'renderCountdown' })
     }, 1000)
-  }
+  };
 
   renderConfirm() {
     return (
@@ -90,13 +92,6 @@ class DeleteAccountDialog extends Component {
     const { scene } = this.state
     return this[scene]()
   }
-}
-
-
-DeleteAccountDialog.propTypes = {
-  user: PropTypes.shape({}),
-  onConfirm: PropTypes.func,
-  onRejected: PropTypes.func,
 }
 
 export default DeleteAccountDialog
