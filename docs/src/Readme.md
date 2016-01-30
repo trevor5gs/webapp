@@ -1,14 +1,14 @@
 # Src
 
-1. [Actions](/docs/src/Actions.md)
-* [Components](/docs/src/Components.md)
-* [Constants](/docs/src/Constants.md)
-* [Containers](/docs/src/Containers.md)
-* [Middleware](/docs/src/Middleware.md)
-* [Networking](/docs/src/Networking.md)
-* [Reducers](/docs/src/Reducers.md)
-* [Routes](/docs/src/Routes.md)
-* [Vendor](/docs/src/Vendor.md)
+1. Actions
+* Components
+* Constants
+* Containers
+* Middleware
+* Networking
+* Reducers
+* Routes
+* Vendor
 
 ## Types of Views and Components
 We're still refining and evolving how this is defined in the codebase, but it

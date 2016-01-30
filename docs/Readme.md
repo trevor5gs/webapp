@@ -6,21 +6,21 @@
   * [Editors](/docs/setup/Editors.md)
   * [Tasks](/docs/setup/Tasks.md)
 * [Technologies](/docs/technologies/Readme.md)
-  * [Redux + React](/docs/technologies/ReduxAndReact.md)
-  * [Sass](/docs/technologies/Sass.md)
-  * [Webpack](/docs/technologies/Webpack.md)
+  * Redux + React
+  * Sass
+  * Webpack
 * [Src](/docs/src/Readme.md)
-  * [Actions](/docs/src/Actions.md)
-  * [Components](/docs/src/Components.md)
-  * [Constants](/docs/src/Constants.md)
-  * [Containers](/docs/src/Containers.md)
-  * [Middleware](/docs/src/Middleware.md)
-  * [Networking](/docs/src/Networking.md)
-  * [Reducers](/docs/src/Reducers.md)
-  * [Routes](/docs/src/Routes.md)
-  * [Vendor](/docs/src/Vendor.md)
-* [Tests](/docs/test/Readme.md)
-* [Assets](/docs/assets/Readme.md)
-  * [Images](/docs/assets/Images.md)
-  * [Fonts](/docs/assets/Fonts.md)
+  * Actions
+  * Components
+  * Constants
+  * Containers
+  * Middleware
+  * Networking
+  * Reducers
+  * Routes
+  * Vendor
+* Tests
+* Assets
+  * Images
+  * Fonts
 
