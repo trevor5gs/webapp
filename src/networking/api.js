@@ -131,6 +131,19 @@ export function postReposters(post) {
     params,
   }
 }
+export function createPost(repostId) {
+  const params = {}
+  if (repostId) { params.repost_id = repostId }
+  return {
+    path: getAPIPath('posts', params),
+    params,
+  }
+}
+export function postPreviews() {
+  return {
+    path: getAPIPath('post_previews'),
+  }
+}
 // Comments
 export function commentsForPost(post) {
   const params = { per_page: PER_PAGE }

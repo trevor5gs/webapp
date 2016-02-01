@@ -12,20 +12,20 @@ const STATUS = {
 
 class ImageRegion extends Component {
 
-  static propTypes = {
-    assets: PropTypes.object.isRequired,
-    content: PropTypes.object.isRequired,
-    isGridLayout: PropTypes.bool.isRequired,
-    links: PropTypes.object,
-    postDetailPath: PropTypes.string,
-  };
+  constructor(props, context) {
+    super(props, context)
+    this.state = {
+      status: STATUS.PENDING,
+      scale: null,
+      marginBottom: null,
+    }
+    this.loadDidFail = ::this.loadDidFail
+    this.loadDidSucceed = ::this.loadDidSucceed
+    this.staticImageRegionWasClicked = ::this.staticImageRegionWasClicked
+  }
 
   componentWillMount() {
-    this.state = {
-      marginBottom: null,
-      scale: null,
-      status: STATUS.REQUEST,
-    }
+    this.setState({ status: STATUS.REQUEST })
   }
 
   componentDidMount() {
@@ -94,9 +94,9 @@ class ImageRegion extends Component {
   }
 
   getImageSourceSet() {
-    const { assets, isGridLayout, links } = this.props
+    const { isGridLayout } = this.props
     const images = []
-    if (links && links.assets && assets[links.assets] && assets[links.assets].attachment) {
+    if (!this.isBasicAttachment()) {
       if (isGridLayout) {
         images.push(`${this.attachment.mdpi.url} 375w`)
         images.push(`${this.attachment.hdpi.url} 1920w`)
@@ -122,11 +122,16 @@ class ImageRegion extends Component {
     }
   }
 
+  isBasicAttachment() {
+    const { assets, links } = this.props
+    return !(links && links.assets && assets[links.assets] && assets[links.assets].attachment)
+  }
+
   resetImageScale() {
     this.setState({ scale: null, marginBottom: null })
   }
 
-  staticImageRegionWasClicked = () => {
+  staticImageRegionWasClicked() {
     const { scale } = this.state
     if (scale) {
       return this.resetImageScale()
@@ -134,16 +139,21 @@ class ImageRegion extends Component {
       return null
     }
     return this.setImageScale()
-  };
+  }
 
   createLoader() {
-    const srcset = this.getImageSourceSet()
+    const isBasicAttachment = this.isBasicAttachment()
+    const sources = isBasicAttachment ? this.props.content.url : this.getImageSourceSet()
     this.disposeLoader()
-    if (srcset) {
+    if (sources) {
       this.img = new Image()
       this.img.onload = this.loadDidSucceed
       this.img.onerror = this.loadDidFail
-      this.img.srcset = srcset
+      if (isBasicAttachment) {
+        this.img.src = sources
+      } else {
+        this.img.srcset = sources
+      }
     }
   }
 
@@ -155,15 +165,15 @@ class ImageRegion extends Component {
     }
   }
 
-  loadDidSucceed = () => {
+  loadDidSucceed() {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  };
+  }
 
-  loadDidFail = () => {
+  loadDidFail() {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  };
+  }
 
   isGif() {
     const optimized = this.attachment.optimized
@@ -255,6 +265,14 @@ class ImageRegion extends Component {
       </div>
     )
   }
+}
+
+ImageRegion.propTypes = {
+  assets: PropTypes.object.isRequired,
+  content: PropTypes.object.isRequired,
+  isGridLayout: PropTypes.bool.isRequired,
+  links: PropTypes.object,
+  postDetailPath: PropTypes.string,
 }
 
 export default ImageRegion

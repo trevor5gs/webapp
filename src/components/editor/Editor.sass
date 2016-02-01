@@ -1,0 +1,99 @@
+.Modal.Omnibar.isActive
+  background-color: rgba(white, 0.95)
+
+@media(min-width: #{$break-2})
+  .Modal.Omnibar
+    padding-top: 0
+    display: block
+
+.Omnibar > .editor
+  padding: rem(20)
+  margin-left: rem(60)
+
+.editor
+  +sans-typeset
+  color: black
+  position: relative
+
+.editor:before
+  +triangle(west, #e5e5e5, rem(20))
+  transition: border-color $speed ease
+  position: absolute
+  top: rem(30)
+  left: 0
+  content: ""
+
+.editor-region
+  transition: background-color $speed ease
+  background-color: #e5e5e5
+  padding: rem(20)
+  min-height: calc(50vh - #{rem(130)})
+  max-height: calc(100vh - #{rem(130)})
+  overflow-y: auto
+  -webkit-overflow-scrolling: touch
+
+.editor-actions
+  padding: 0 rem(20)
+  height: rem(40)
+  line-height: rem(40)
+  text-align: right
+  background-color: white
+
+.editor-actions button + button
+  margin-left: rem(20)
+
+// -------------------------------------
+
+// editor has a mention - turn background yellow
+.editor-is-mention .editor-region
+  background-color: #ffffcc
+
+.editor-is-mention:before
+  border-right-color: #ffffcc
+
+// editor is dragged over with a droppable element - turn background green
+.editor-drop-ready .editor-region
+  background-color: #ccffcc
+
+.editor-drop-ready:before
+  border-right-color: #ccffcc
+
+// -------------------------------------
+
+// "Say Ello" placeholder text
+.editor:after
+  position: absolute
+  top: rem(40)
+  left: rem(40)
+  content: attr(data-placeholder)
+  color: #999
+  pointer-events: none
+.editor-has-content.editor:after
+  display: none
+
+// -------------------------------------
+
+.editor-block
+  position: relative
+
+.editable
+  padding: rem(40) rem(20) rem(20)
+  border: 1px dashed #666
+  white-space: pre-wrap
+  word-break: break-word
+  outline: 0
+  min-height: rem(60)
+
+// .editor-block.readonly
+//   border: 1px solid #aaa
+
+// .editor-block [contenteditable="false"]
+//   user-select: none
+
+// .editor-block.reposted-content [contenteditable="false"]
+//   border: 0
+//   padding: 0
+
+.editor-block + .editor-block
+  margin-top: rem(20)
+

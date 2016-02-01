@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as ACTION_TYPES from '../../constants/action_types'
+// import * as RELATIONSHIP_PRIORITY from '../../constants/relationship_types'
 import { methods as jsonMethods } from '../json'
 
 const methods = {}
@@ -76,6 +77,23 @@ function deletePost(state, newState, action) {
 methods.deletePost = (state, newState, action) =>
   deletePost(state, newState, action)
 
+function addNewPost(newState, action) {
+  const { response } = action.payload
+  newState[MAPPING_TYPES.POSTS][response.id] = response
+  if (newState.pages['/following']) {
+    newState.pages['/following'].ids.unshift(response.id)
+  }
+  // TODO: hook this up once following/followers/loves is merged
+  // for (const user of newState[MAPPING_TYPES.USERS]) {
+  //   if (user.relationshipPriority === RELATIONSHIP_PRIORITY.SELF &&
+  //       newState.pages[`/${user.username}`]) {
+  //     newState.pages[`/${user.username}`].unshift(response.id)
+  //   }
+  // }
+  return newState
+}
+methods.addNewPost = (newState, action) =>
+  addNewPost(newState, action)
 
 export default methods
 

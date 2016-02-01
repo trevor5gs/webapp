@@ -175,6 +175,8 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
       // fall through to parse the rest
       break
+    case ACTION_TYPES.POST.CREATE_SUCCESS:
+      return postMethods.addNewPost(newState, action)
     case ACTION_TYPES.POST.DELETE_REQUEST:
     case ACTION_TYPES.POST.DELETE_SUCCESS:
     case ACTION_TYPES.POST.DELETE_FAILURE:

@@ -1,4 +1,5 @@
 export { authentication } from './authentication'
+export { editor } from './editor'
 export { json } from './json'
 export { modal } from './modal'
 export { profile } from './profile'
