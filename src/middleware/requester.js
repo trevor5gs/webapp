@@ -146,7 +146,7 @@ export const requester = store => next => action => {
             .then(checkStatus)
             .then(response => {
               delete runningFetches[response.url]
-              if (response.status === 200) {
+              if (response.status === 200 || response.status === 201) {
                 return response.json().then((json) => {
                   payload.response = camelizeKeys(json)
                   if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
@@ -171,7 +171,9 @@ export const requester = store => next => action => {
               return Promise.resolve(true);
             })
             .catch(error => {
-              delete runningFetches[error.response.url]
+              if (error.response) {
+                delete runningFetches[error.response.url]
+              }
               if ((error.response.status === 401 || error.response.status === 403) &&
                   state.routing.location.pathname.indexOf('/onboarding') === 0 &&
                   typeof document !== 'undefined') {
