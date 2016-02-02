@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import Block from './Block'
 
 class EmbedBlock extends Component {
 
@@ -10,7 +11,6 @@ class EmbedBlock extends Component {
       thumbnailLargeUrl: PropTypes.string,
       thumbnailSmallUrl: PropTypes.string,
     }),
-    uid: PropTypes.number.isRequired,
   };
 
   static defaultProps = {
@@ -20,17 +20,11 @@ class EmbedBlock extends Component {
   render() {
     const { data } = this.props
     return (
-      <div
-        className="editor-block"
-        data-collection-id={ this.uid }
-      >
-        <div
-          ref="editable"
-          className="editable"
-        >
-          <img src={ data.thumbnailLargeUrl } />
-        </div>
-      </div>
+      <Block
+        { ...this.props }
+        children={ <img src={ data.thumbnailLargeUrl } /> }
+        ref="block"
+      />
     )
   }
 

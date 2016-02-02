@@ -8,6 +8,7 @@ class RegionTools extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    onRemoveBlock: PropTypes.func.isRequired,
   };
 
   closeModal = () => {
@@ -16,9 +17,9 @@ class RegionTools extends Component {
   };
 
   deleteContentConfirmed = () => {
-    // const { dispatch } = this.props
+    const { onRemoveBlock } = this.props
     this.closeModal()
-    // dispatch(commentActions.deleteComment(comment))
+    onRemoveBlock()
   };
 
   handleDeleteBlock = () => {

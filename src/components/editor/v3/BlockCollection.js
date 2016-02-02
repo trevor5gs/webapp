@@ -28,10 +28,9 @@ class BlockCollection extends Component {
   componentDidMount() {
     const { blocks } = this.props
     for (const block of blocks) {
-      this.add(block)
+      this.add(block, false)
     }
-    // always add a text block at the end
-    this.add({ kind: 'text', data: '' })
+    this.addEmptyTextBlock()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,18 +59,51 @@ class BlockCollection extends Component {
     }
   }
 
-  add(block) {
+  addEmptyTextBlock() {
+    const { collection, order } = this.state
+    requestAnimationFrame(() => {
+      if (order.length > 1) {
+        const last = collection[order[order.length - 1]][BLOCK_KEY]
+        const secondToLast = collection[order[order.length - 2]][BLOCK_KEY]
+        if (secondToLast.kind === 'text' &&
+            secondToLast.data.length &&
+            last.kind === 'text' && !last.data.length) {
+          return this.remove(last.uid, false)
+        }
+      }
+      if (!order.length || collection[order[order.length - 1]][BLOCK_KEY].kind !== 'text') {
+        this.add({ kind: 'text', data: '' })
+      }
+    })
+  }
+
+  add(block, shouldCheckForEmpty = true) {
     const newBlock = { ...block, uid: this.uid }
     const { collection, order } = this.state
     const obj = {}
     obj[BLOCK_KEY] = newBlock
     obj[UID_KEY] = this.uid
     collection[this.uid] = obj
-    order.push(`${this.uid}`)
+    order.push(this.uid)
     this.uid++
+    // order matters here
     this.setState({ collection, order })
+    if (shouldCheckForEmpty) {
+      this.addEmptyTextBlock()
+    }
     return newBlock
   }
+
+  remove = (uid, shouldCheckForEmpty = true) => {
+    const { collection, order } = this.state
+    delete collection[uid]
+    order.splice(order.indexOf(uid), 1)
+    // order matters here
+    this.setState({ collection, order })
+    if (shouldCheckForEmpty) {
+      this.addEmptyTextBlock()
+    }
+  };
 
   addSortable(uid, sortable) {
     const { collection } = this.state
@@ -110,7 +142,10 @@ class BlockCollection extends Component {
             <TextBlock
               data={ block.data }
               key={ uid }
+              kind={ block.kind }
               onChange={ this.handleChange }
+              onRemoveBlock={ this.remove }
+              ref={ `block_${block.uid}` }
               uid={ block.uid }
             />
           )
@@ -120,6 +155,9 @@ class BlockCollection extends Component {
             <ImageBlock
               data={ block.data }
               key={ uid }
+              kind={ block.kind }
+              onRemoveBlock={ this.remove }
+              ref={ `block_${block.uid}` }
               uid={ block.uid }
             />
           )
@@ -129,6 +167,9 @@ class BlockCollection extends Component {
             <EmbedBlock
               data={ block.data }
               key={ uid }
+              kind={ block.kind }
+              onRemoveBlock={ this.remove }
+              ref={ `block_${block.uid}` }
               uid={ block.uid }
             />
           )
@@ -139,7 +180,10 @@ class BlockCollection extends Component {
       }
     }
     return (
-      <div className="editor-region">
+      <div
+        className="editor-region"
+        data-num-blocks={ order.length }
+      >
         { blocks }
       </div>
     )

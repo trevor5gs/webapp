@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { pasted } from './PasteHandler'
-import RegionTools from '../RegionTools'
+import Block from './Block'
 
 class TextBlock extends Component {
 
@@ -9,15 +9,11 @@ class TextBlock extends Component {
     data: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
-    uid: PropTypes.number.isRequired,
-  };
-
-  static defaultProps = {
-    data: '',
   };
 
   handleInput = (e) => {
-    const { uid, onChange } = this.props
+    const { onChange } = this.props
+    const uid = this.refs.block.props.uid
     onChange({ kind: 'text', data: e.target.innerHTML, uid })
   };
 
@@ -29,20 +25,14 @@ class TextBlock extends Component {
   render() {
     const { data } = this.props
     return (
-      <div
-        className="editor-block"
-        data-collection-id={ this.uid }
-      >
-        <div
-          ref="editable"
-          className="editable"
-          contentEditable="true"
-          onInput={ this.handleInput }
-          onPaste={ this.handlePaste }
-          dangerouslySetInnerHTML={{ __html: data }}
-        />
-        <RegionTools/>
-      </div>
+      <Block
+        { ...this.props }
+        contentEditable
+        onInput={ this.handleInput }
+        onPaste={ this.handlePaste }
+        dangerouslySetInnerHTML={{ __html: data }}
+        ref="block"
+      />
     )
   }
 }

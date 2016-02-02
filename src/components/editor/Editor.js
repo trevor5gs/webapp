@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { createPost } from '../../actions/posts'
-import { closeModal } from '../../actions/modals'
+import { closeOmnibar } from '../../actions/omnibar'
 import ElloEditor from './v3/ElloEditor'
 
 class Editor extends Component {
@@ -14,7 +14,7 @@ class Editor extends Component {
   submit(data) {
     const { dispatch } = this.props
     dispatch(createPost(data))
-    dispatch(closeModal())
+    dispatch(closeOmnibar())
   }
 
   imageUploader(file, callback) {

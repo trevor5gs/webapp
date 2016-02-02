@@ -19,7 +19,11 @@ class ElloEditor extends Component {
     const { dispatch, editor } = this.props
     return (
       <div className="editor" data-placeholder="Say Ello...">
-        <BlockCollection ref="collection" dispatch={ dispatch } editorStore={ editor } />
+        <BlockCollection
+          ref="collection"
+          dispatch={ dispatch }
+          editorStore={ editor }
+        />
         <PostActionBar ref="postActionBar" editor={ this } />
       </div>
     )

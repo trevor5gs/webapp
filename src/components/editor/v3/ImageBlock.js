@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react'
-import RegionTools from '../RegionTools'
+import Block from './Block'
 
 class ImageBlock extends Component {
 
   static propTypes = {
     data: PropTypes.object,
-    uid: PropTypes.number.isRequired,
   };
 
   static defaultProps = {
@@ -15,18 +14,11 @@ class ImageBlock extends Component {
   render() {
     const { data } = this.props
     return (
-      <div
-        className="editor-block"
-        data-collection-id={ this.uid }
-      >
-        <div
-          ref="editable"
-          className="editable"
-        >
-          <img src={ data.url } alt={ data.alt } />
-        </div>
-        <RegionTools/>
-      </div>
+      <Block
+        { ...this.props }
+        children={ <img src={ data.url } alt={ data.alt } /> }
+        ref="block"
+      />
     )
   }
 }
