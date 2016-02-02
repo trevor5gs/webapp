@@ -24,9 +24,8 @@ class NavbarProfile extends Component {
             <Link className="NavbarProfileLink" to="/invitations">Invite</Link>
             <Link className="NavbarProfileLink" to="/settings">Settings</Link>
             <hr className="NavbarProfileLinkDivider"/>
-            <Link className="NavbarProfileLink" to="/discover/communities">Communities</Link>
+            <a className="NavbarProfileLink" href="https://ello.co/wtf/resources/community-directory/" target="_blank">Communities</a>
             <a className="NavbarProfileLink" href="/wtf" target="_blank">Help</a>
-            <a className="NavbarProfileLink" href={ appleStoreLink } target="_blank">Get the app</a>
             <a className="NavbarProfileLink" href={ threadlessLink } target="_blank">Store</a>
             <button className="NavbarProfileLink" onClick={ onLogOut }>Logout</button>
           </nav>
