@@ -1,8 +1,7 @@
 import { expect } from '../spec_helper'
-import {
-  AUTHENTICATION_PROMOTIONS,
-  SIGNED_OUT_PROMOTIONS,
-} from '../../src/constants/promotion_types'
+import { AUTHENTICATION_PROMOTIONS } from '../../src/constants/promotions/authentication'
+import { LOGGED_IN_PROMOTIONS } from '../../src/constants/promotions/logged_in'
+import { LOGGED_OUT_PROMOTIONS } from '../../src/constants/promotions/logged_out'
 
 function isValidAuthenticationPromotionKey(key) {
   const validKeys = [
@@ -146,42 +145,81 @@ describe('promotion_types.js', () => {
     })
   })
 
-  describe('SIGNED_OUT_PROMOTIONS', () => {
+  describe('LOGGED_IN_PROMOTIONS', () => {
     it('has a length within the range of 1-20', () => {
-      expect(SIGNED_OUT_PROMOTIONS.length > 0).to.be.true
-      expect(SIGNED_OUT_PROMOTIONS.length <= 20).to.be.true
+      expect(LOGGED_IN_PROMOTIONS.length > 0).to.be.true
+      expect(LOGGED_IN_PROMOTIONS.length <= 20).to.be.true
     })
 
     it('has the appropriate keys for each index: username, avatar, coverImage', () => {
-      expect(SIGNED_OUT_PROMOTIONS.every(hasValidSignedOutPromotionKeys)).to.be.true
+      expect(LOGGED_IN_PROMOTIONS.every(hasValidSignedOutPromotionKeys)).to.be.true
     })
 
     it('has a valid username for each index', () => {
-      expect(SIGNED_OUT_PROMOTIONS.every(hasValidUsername)).to.be.true
+      expect(LOGGED_IN_PROMOTIONS.every(hasValidUsername)).to.be.true
     })
 
     it('has a valid caption for each index', () => {
-      expect(SIGNED_OUT_PROMOTIONS.every(hasValidCaption)).to.be.true
+      expect(LOGGED_IN_PROMOTIONS.every(hasValidCaption)).to.be.true
     })
 
     it('has a valid avatar for each index', () => {
-      expect(SIGNED_OUT_PROMOTIONS.every(hasValidAvatar)).to.be.true
+      expect(LOGGED_IN_PROMOTIONS.every(hasValidAvatar)).to.be.true
     })
 
     it('has valid cover image assets for each index', () => {
-      expect(SIGNED_OUT_PROMOTIONS.every(hasValidCoverImage)).to.be.true
+      expect(LOGGED_IN_PROMOTIONS.every(hasValidCoverImage)).to.be.true
     })
 
     it('has valid hdpi cover image asset for each index', () => {
-      expect(SIGNED_OUT_PROMOTIONS.every(hasValidHDPICoverImage)).to.be.true
+      expect(LOGGED_IN_PROMOTIONS.every(hasValidHDPICoverImage)).to.be.true
     })
 
     it('has valid xhdpi cover image asset for each index', () => {
-      expect(SIGNED_OUT_PROMOTIONS.every(hasValidXHDPICoverImage)).to.be.true
+      expect(LOGGED_IN_PROMOTIONS.every(hasValidXHDPICoverImage)).to.be.true
     })
 
     it('has valid optimized cover image asset for each index', () => {
-      expect(SIGNED_OUT_PROMOTIONS.every(hasValidOptimizedCoverImage)).to.be.true
+      expect(LOGGED_IN_PROMOTIONS.every(hasValidOptimizedCoverImage)).to.be.true
+    })
+  })
+
+  describe('LOGGED_OUT_PROMOTIONS', () => {
+    it('has a length within the range of 1-20', () => {
+      expect(LOGGED_OUT_PROMOTIONS.length > 0).to.be.true
+      expect(LOGGED_OUT_PROMOTIONS.length <= 20).to.be.true
+    })
+
+    it('has the appropriate keys for each index: username, avatar, coverImage', () => {
+      expect(LOGGED_OUT_PROMOTIONS.every(hasValidSignedOutPromotionKeys)).to.be.true
+    })
+
+    it('has a valid username for each index', () => {
+      expect(LOGGED_OUT_PROMOTIONS.every(hasValidUsername)).to.be.true
+    })
+
+    it('has a valid caption for each index', () => {
+      expect(LOGGED_OUT_PROMOTIONS.every(hasValidCaption)).to.be.true
+    })
+
+    it('has a valid avatar for each index', () => {
+      expect(LOGGED_OUT_PROMOTIONS.every(hasValidAvatar)).to.be.true
+    })
+
+    it('has valid cover image assets for each index', () => {
+      expect(LOGGED_OUT_PROMOTIONS.every(hasValidCoverImage)).to.be.true
+    })
+
+    it('has valid hdpi cover image asset for each index', () => {
+      expect(LOGGED_OUT_PROMOTIONS.every(hasValidHDPICoverImage)).to.be.true
+    })
+
+    it('has valid xhdpi cover image asset for each index', () => {
+      expect(LOGGED_OUT_PROMOTIONS.every(hasValidXHDPICoverImage)).to.be.true
+    })
+
+    it('has valid optimized cover image asset for each index', () => {
+      expect(LOGGED_OUT_PROMOTIONS.every(hasValidOptimizedCoverImage)).to.be.true
     })
   })
 })
