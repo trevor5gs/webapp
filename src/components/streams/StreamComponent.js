@@ -59,38 +59,15 @@ export class StreamComponent extends Component {
 
   // this prevents nested stream components from clobbering parents
   shouldComponentUpdate() {
-    const { action, gridColumnCount } = this.state
-    const { pathname, stream } = this.props
-    const pathArr = pathname.split('/')
-    const path = pathArr[pathArr.length - 1]
+    const { stream } = this.props
     // TODO: potentially whitelist the actions that we would want to render on
     // TODO: test this!
-    if (!gridColumnCount) {
-      return true
-    } else if (!action || !action.payload || !stream || !stream.payload) {
+    if (stream.meta &&
+        stream.meta.resultKey &&
+        !stream.payload.endpoint.path.match(stream.meta.resultKey)) {
       return false
-    } else if (stream.type &&
-               (stream.type.indexOf('POST.') === 0 ||
-                stream.type.indexOf('LOAD_NEXT_CONTENT') === 0)) {
-      return true
-    } else if (action.payload.endpoint === stream.payload.endpoint) {
-      return true
-    } else if (stream.meta &&
-               stream.meta.resultKey &&
-               stream.payload.endpoint.path.match(stream.meta.resultKey)) {
-      // if we are a nested stream component and the resultKey
-      // ie: lovers as a resultKey for the endpoint for post lovers
-      return true
-    } else if (stream.payload.endpoint &&
-               stream.payload.endpoint.path &&
-               stream.payload.endpoint.path.match(path)) {
-      // is used to match the endpoint required to load it
-      return true
-    } else if (path === 'search' || path === 'find') {
-      // TODO: figure out why search is weird
-      return true
     }
-    return false
+    return true
   }
 
   componentDidUpdate() {

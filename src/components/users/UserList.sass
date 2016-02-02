@@ -41,6 +41,16 @@
 .UserList > .UserStats
   margin: rem(20) 0
 
+.UserList.asUserDetailHeader
+  margin-left: rem(10)
+
+@media(min-width: #{$break-2})
+  .UserList.asUserDetailHeader
+    margin-left: rem(20)
+@media(min-width: #{$break-4})
+  .UserList.asUserDetailHeader
+    margin-left: rem(40)
+
 // Special case for the user detail header in mobile land
 @media(max-width: #{$break-2-max})
   .UserList.asUserDetailHeader

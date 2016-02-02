@@ -5,7 +5,6 @@ import { getLinkArray } from '../base/json_helper'
 import { parsePost } from '../parsers/PostParser'
 import { parseComment } from '../parsers/CommentParser'
 import { parseNotification } from '../parsers/NotificationParser'
-import Cover from '../assets/Cover'
 import PostsAsGrid from '../posts/PostsAsGrid'
 import { BubbleIcon, HeartIcon, RepostIcon } from '../posts/PostIcons'
 import UserAvatar from '../users/UserAvatar'
@@ -102,36 +101,6 @@ export function postsAsList(posts, json, currentUser) {
       )}
     </div>
   )
-}
-
-export function userDetail(users, json, currentUser, gridColumnCount) {
-  const user = users.data[0]
-  let posts = getLinkArray(user, 'posts', json) || []
-  posts = posts.concat(users.nestedData)
-  return (
-    <div className="UserDetails">
-      <Cover coverImage={ user.coverImage } />
-      <UserList
-        classList="asUserDetailHeader"
-        ref={ `UserList_${user.id}` }
-        user={ user }
-        key={ user.id }
-        showBlockMuteButton
-      />
-      {gridColumnCount ?
-        postsAsGrid({ data: posts, nestedData: [] }, json, currentUser, gridColumnCount) :
-        postsAsList({ data: posts, nestedData: [] }, json, currentUser)
-      }
-    </div>
-  )
-}
-
-export function userDetailAsGrid(users, json, currentUser, gridColumnCount) {
-  return userDetail(users, json, currentUser, gridColumnCount)
-}
-
-export function userDetailAsList(users, json, currentUser) {
-  return userDetail(users, json, currentUser)
 }
 
 export function postDetail(posts, json, currentUser) {

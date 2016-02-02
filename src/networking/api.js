@@ -151,10 +151,16 @@ export function flagComment(comment, kind) {
 }
 // Users
 export function userDetail(idOrUsername) {
-  const params = { post_count: PER_PAGE }
+  const params = { post_count: false }
   return {
     path: getAPIPath(`users/${idOrUsername}`, params),
-    pagingPath: 'posts',
+    params,
+  }
+}
+export function userResources(idOrUsername, resource) {
+  const params = { per_page: PER_PAGE }
+  return {
+    path: getAPIPath(`users/${idOrUsername}/${resource}`, params),
     params,
   }
 }

@@ -22,6 +22,14 @@ export function postsFromActivities(activities) {
   return result
 }
 
+export function postsFromLoves(loves) {
+  const result = { type: MAPPING_TYPES.POSTS, ids: [] }
+  for (const love of loves) {
+    result.ids.push(love.postId)
+  }
+  return result
+}
+
 export function notificationsFromActivities(activities) {
   return { type: MAPPING_TYPES.NOTIFICATIONS, ids: activities }
 }
