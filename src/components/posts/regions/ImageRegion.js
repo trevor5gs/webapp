@@ -178,7 +178,7 @@ class ImageRegion extends Component {
     const dimensions = this.getImageDimensions()
     return (
       <img
-        alt={ content.alt.replace('.gif', '') }
+        alt={ content.alt ? content.alt.replace('.gif', '') : null }
         className="ImageAttachment"
         src={ this.attachment.optimized.url }
         width={ dimensions.width }
@@ -193,7 +193,7 @@ class ImageRegion extends Component {
     const dimensions = this.getImageDimensions()
     return (
       <img
-        alt={ content.alt.replace('.jpg', '') }
+        alt={ content.alt ? content.alt.replace('.jpg', '') : null }
         className="ImageAttachment"
         src={ this.attachment.hdpi.url }
         srcSet={ srcset }
@@ -207,7 +207,7 @@ class ImageRegion extends Component {
     const { content } = this.props
     return (
       <img
-        alt={ content.alt.replace('.jpg', '') }
+        alt={ content.alt ? content.alt.replace('.jpg', '') : null }
         className="ImageAttachment"
         src={ content.url }
       />
