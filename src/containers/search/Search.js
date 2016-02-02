@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { routeActions } from 'react-router-redux'
 import debounce from 'lodash.debounce'
-import { SIGNED_OUT_PROMOTIONS } from '../../constants/promotion_types'
+import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
+import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import * as SearchActions from '../../actions/search'
 import { trackEvent } from '../../actions/tracking'
 import { updateQueryParams } from '../../components/base/uri_helper'
@@ -100,7 +101,7 @@ class Search extends Component {
         <Banderole
           creditsClickAction={ this.creditsTrackingEvent }
           isLoggedIn={ isLoggedIn }
-          userlist={ SIGNED_OUT_PROMOTIONS }
+          userlist={ isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS }
         />
         <div className="SearchBar">
           <SearchControl

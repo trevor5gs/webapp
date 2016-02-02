@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { SIGNED_OUT_PROMOTIONS } from '../../constants/promotion_types'
+import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
+import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import { loadCommunities, loadDiscoverUsers, loadFeaturedUsers } from '../../actions/discover'
 import { trackEvent } from '../../actions/tracking'
 import Banderole from '../../components/assets/Banderole'
@@ -53,7 +54,7 @@ class Discover extends Component {
         <Banderole
           creditsClickAction={ this.creditsTrackingEvent }
           isLoggedIn={ isLoggedIn }
-          userlist={ SIGNED_OUT_PROMOTIONS }
+          userlist={ isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS }
         />
         <TabListLinks
           activePath={ pathname }
