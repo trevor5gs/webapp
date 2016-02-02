@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { openModal, closeModal } from '../../actions/modals'
+import { openOmnibar } from '../../actions/omnibar'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import Editor from '../editor/Editor'
@@ -196,7 +197,7 @@ class Navbar extends Component {
 
   omniButtonWasClicked = () => {
     const { dispatch } = this.props
-    dispatch(openModal(<Editor/>, 'Omnibar'))
+    dispatch(openOmnibar(<Editor/>))
   };
 
   loadMorePostsWasClicked = () => {

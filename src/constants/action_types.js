@@ -106,6 +106,11 @@ export const ALERT = {
   CLOSE: 'ALERT.CLOSE',
 }
 
+export const OMNIBAR = {
+  OPEN: 'OMNIBAR.OPEN',
+  CLOSE: 'OMNIBAR.CLOSE',
+}
+
 export const PROFILE = {
   LOAD: 'PROFILE.LOAD',
   LOAD_REQUEST: 'PROFILE.LOAD_REQUEST',
