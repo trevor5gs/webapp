@@ -211,7 +211,7 @@ export default function json(state = {}, action = { type: '' }) {
   // unless updateResult is false which is used for
   // user details when you want the result to be for
   // posts/following/followers/loves
-  if (action.meta.updateResult === false) {
+  if (action && action.meta && action.meta.updateResult === false) {
     const { mappingType } = action.meta
     methods.addModels(newState, mappingType, response)
   } else {
