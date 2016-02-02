@@ -227,14 +227,14 @@ class PostTools extends Component {
       />))
   };
 
-  deletePostConfirmed() {
+  deletePostConfirmed = () => {
     const { dispatch, pathname, post, previousPath } = this.props
     this.closeModal()
     dispatch(postActions.deletePost(post))
     if (pathname.match(post.token)) {
       dispatch(routeActions.replace(previousPath || '/'))
     }
-  }
+  };
 
   render() {
     const { post } = this.props
