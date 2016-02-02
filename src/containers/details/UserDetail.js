@@ -3,7 +3,7 @@ import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { findBy } from '../../components/base/json_helper'
-import { loadUserDetail, loadUserPosts, loadUserUsers } from '../../actions/user'
+import { loadUserDetail, loadUserLoves, loadUserPosts, loadUserUsers } from '../../actions/user'
 import Cover from '../../components/assets/Cover'
 import StreamComponent from '../../components/streams/StreamComponent'
 import UserList from '../../components/users/UserList'
@@ -53,13 +53,21 @@ class UserDetail extends Component {
       />)
     }
     let streamAction = null
-    if (type === 'following' || type === 'followers') {
-      streamAction = loadUserUsers(`~${params.username}`, type)
-    } else {
-      streamAction = loadUserPosts(`~${params.username}`, type)
+    switch (type) {
+      case 'following':
+      case 'followers':
+        streamAction = loadUserUsers(`~${params.username}`, type)
+        break
+      case 'loves':
+        streamAction = loadUserLoves(`~${params.username}`, type)
+        break
+      default:
+        streamAction = loadUserPosts(`~${params.username}`, type)
+        break
     }
+    console.log('streamAction', streamAction)
     return (
-      <section className="UserDetail Panel">
+      <section className="UserDetail Panel" key={ `userDetail_${type}` }>
         <Helmet title={`${params.username}`} />
         <div className="UserDetails">
           { userEls }
