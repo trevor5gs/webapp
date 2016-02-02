@@ -122,14 +122,16 @@ class Navbar extends Component {
 
   // TODO: This may need some tweeks once we get a little more intelligent
   // around the scroll to calls utilizing history
+  //
+  // @mkitt would like to kick this thing extremely hard.
   componentDidUpdate() {
-    if (typeof window === 'undefined') {
-      return
-    }
-    const { asLocked, isPageChangeUpdate, offset } = this.state
-    if (isPageChangeUpdate && asLocked) {
-      window.scrollTo(0, offset - 120)
-    }
+    // if (typeof window === 'undefined') {
+    //   return
+    // }
+    // const { asLocked, isPageChangeUpdate, offset } = this.state
+    // if (isPageChangeUpdate && asLocked) {
+    //   window.scrollTo(0, offset - 120)
+    // }
   }
 
   componentWillUnmount() {
