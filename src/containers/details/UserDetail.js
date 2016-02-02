@@ -65,7 +65,6 @@ class UserDetail extends Component {
         streamAction = loadUserPosts(`~${params.username}`, type)
         break
     }
-    console.log('streamAction', streamAction)
     return (
       <section className="UserDetail Panel" key={ `userDetail_${type}` }>
         <Helmet title={`${params.username}`} />
