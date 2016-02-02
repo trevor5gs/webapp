@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import Avatar from '../assets/Avatar'
 import { Link } from 'react-router'
 
-const appleStoreLink = 'http://appstore.com/ello/ello'
 const threadlessLink = 'http://ello.threadless.com/'
 
 class NavbarProfile extends Component {
