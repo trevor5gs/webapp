@@ -26,7 +26,7 @@ class RegionTools extends Component {
     dispatch(openModal(
       <ConfirmDialog
         title="Remove this content?"
-        onConfirm={ this.deleteCommentConfirmed }
+        onConfirm={ this.deleteContentConfirmed }
         onRejected={ this.closeModal }
       />))
   };
