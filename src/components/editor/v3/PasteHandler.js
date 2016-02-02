@@ -1,7 +1,6 @@
-import SelectionUtil from '../v2/selection_util.coffee'
+import { getLastWordPasted, replaceSelectionWithText } from '../SelectionUtil'
 import { postPreviews, savePostImage } from '../../../actions/posts'
 
-const selectionUtil = new SelectionUtil()
 let dispatch = null
 
 function checkForEmbeds(text) {
@@ -15,14 +14,14 @@ function checkForEmbeds(text) {
 
 function handlePlainText(text) {
   if (!text.length) return
-  selectionUtil.replaceSelectionWithText(text)
+  replaceSelectionWithText(text)
   checkForEmbeds(text)
 }
 
 function handleAndroidBrokenPaste() {
   // android bug: https://code.google.com/p/chromium/issues/detail?id=369101
   requestAnimationFrame(() => {
-    handlePlainText(selectionUtil.getLastWordPasted())
+    handlePlainText(getLastWordPasted())
   })
 }
 
