@@ -139,12 +139,12 @@ export const requester = store => next => action => {
         options.headers = !method || method === 'GET' ?
           getGetHeader(accessToken) :
           getPostJsonHeader(accessToken)
-        fetch(endpoint.path, options)
+        return fetch(endpoint.path, options)
             .then(checkStatus)
             .then(response => {
               delete runningFetches[response.url]
               if (response.status === 200) {
-                response.json().then((json) => {
+                return response.json().then((json) => {
                   payload.response = camelizeKeys(json)
                   if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
                     payload.pagination = payload.response[meta.mappingType].links[endpoint.pagingPath].pagination
@@ -161,12 +161,11 @@ export const requester = store => next => action => {
               } else if (response.ok) {
                 // TODO: handle a 204 properly so that we know to stop paging
                 next({ ...action, type: SUCCESS })
-                return true
               } else {
                 // TODO: is this what should be happening here?
                 next({ ...action, type: SUCCESS })
-                return true
               }
+              return Promise.resolve(true);
             })
             .catch(error => {
               delete runningFetches[error.response.url]
