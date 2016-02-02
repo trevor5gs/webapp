@@ -9,5 +9,5 @@ The web app for [ello.co](http://ello.co).
 * Tests
 * Assets
 
-:metal: :metal:
+:metal::metal:
 
