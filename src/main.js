@@ -45,3 +45,7 @@ if (ENV.APP_VERSION) {
     })
 }
 
+export function clearStore() {
+  persistor.purgeAll()
+}
+

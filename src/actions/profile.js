@@ -23,6 +23,17 @@ export function saveProfile(params) {
   }
 }
 
+export function deleteProfile() {
+  return {
+    type: PROFILE.DELETE,
+    meta: {},
+    payload: {
+      method: 'DELETE',
+      endpoint: api.profilePath(),
+    },
+  }
+}
+
 export function availableToggles() {
   return {
     type: LOAD_STREAM,
