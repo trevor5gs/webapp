@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import Block from './Block'
 import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
 import * as ACTION_TYPES from '../../../constants/action_types'
-import { addDragObject, removeDragObject } from './Draggable'
+import { addDragObject, removeDragObject } from './DragComponent'
 
 const BLOCK_KEY = 'block'
 const UID_KEY = 'uid'
@@ -71,22 +72,114 @@ class BlockCollection extends Component {
 
   // Drag Stuff
 
-  onDragStart() {
+  onDragStart(props) {
+    const { collection } = this.state
+    this.blockNode = props.target.parentNode.parentNode
+    this.startOffset = this.blockNode.offsetTop
+    this.startHeight = this.blockNode.offsetHeight
+    this.prevBlock = this.blockNode.previousSibling
+    this.nextBlock = this.blockNode.nextSibling
+    const dragUid = this.blockNode.dataset.collectionId
+    this.dragBlock = collection[dragUid][BLOCK_KEY]
     // swap the dragging block for a
     // normal block and set the height/width
-    // console.log('dragStart', e)
+    collection[dragUid][BLOCK_KEY] = {
+      data: {
+        width: this.blockNode.offsetWidth,
+        height: this.blockNode.offsetHeight,
+      },
+      kind: 'block',
+      uid: this.dragBlock.uid,
+    }
+    this.onDragMove(props)
+    this.setState({ collection })
   }
 
-  onDragMove() {
-    // calculate delta and change the order
-    // array to kick off a render
-    // console.log('dragMove', e)
+  onDragMove(props) {
+    // move the block we are currently dragging
+    this.setState({ dragBlockTop: props.dragY + this.startOffset })
+    // determine if we should change order
+    if (props.dragY < props.lastDragY) {
+      this.onDragUp(props)
+    } else if (props.dragY > props.lastDragY) {
+      this.onDragDown(props)
+    }
+  }
+
+  onDragUp(props) {
+    if (this.prevBlock &&
+        (props.dragY + this.startOffset) <
+        (this.prevBlock.offsetTop + this.prevBlock.offsetHeight * 0.5)) {
+      this.onMoveBlock(-1)
+    }
+  }
+
+  onDragDown(props) {
+    if (this.nextBlock &&
+        (props.dragY + this.startOffset + this.startHeight) >
+        (this.nextBlock.offsetTop + this.nextBlock.offsetHeight * 0.5)) {
+      this.onMoveBlock(1)
+    }
+  }
+
+  onMoveBlock(delta) {
+    const { order } = this.state
+    const dragUid = this.dragBlock.uid
+    const index = order.indexOf(dragUid)
+    // remove from old spot
+    order.splice(index, 1)
+    // add to new spot
+    order.splice(index + delta, 0, dragUid)
+    this.setState({ order })
+    const placeholder = this.refs.blockPlaceholder.refs.editorBlock
+    // update prev/next blocks
+    this.prevBlock = placeholder.previousSibling
+    this.nextBlock = placeholder.nextSibling
   }
 
   onDragEnd() {
+    const { collection } = this.state
     // swap the normal block out for
     // the one that was removed initially
-    // console.log('dragEnd', e)
+    const dragUid = this.dragBlock.uid
+    collection[dragUid][BLOCK_KEY] = this.dragBlock
+    // order matters here so the dragBlock gets removed
+    this.dragBlock = null
+    this.setState({ collection, dragBlockTop: null })
+  }
+
+  getBlockElement(block) {
+    const blockProps = {
+      data: block.data,
+      key: block.uid,
+      kind: block.kind,
+      onRemoveBlock: this.remove,
+      ref: `block_${block.uid}`,
+      uid: block.uid,
+    }
+    switch (block.kind) {
+      case 'text':
+        return (
+          <TextBlock
+            { ...blockProps }
+            onInput={ this.handleTextBlockInput }
+          />
+        )
+      case 'image':
+        return (
+          <ImageBlock { ...blockProps }/>
+        )
+      case 'embed':
+        return (
+          <EmbedBlock { ...blockProps }/>
+        )
+      case 'block':
+        return (
+          <Block { ...blockProps } className="BlockPlaceholder" ref="blockPlaceholder"/>
+        )
+      default:
+        return null
+    }
   }
 
   add(block, shouldCheckForEmpty = true) {
@@ -168,41 +261,18 @@ class BlockCollection extends Component {
   }
 
   render() {
-    const { collection, order } = this.state
+    const { collection, dragBlockTop, order } = this.state
     const blocks = []
     for (const uid of order) {
       const block = collection[uid][BLOCK_KEY]
-      const blockProps = {
-        data: block.data,
-        key: uid,
-        kind: block.kind,
-        onRemoveBlock: this.remove,
-        ref: `block_${block.uid}`,
-        uid: block.uid,
-      }
-      switch (block.kind) {
-        case 'text':
-          blocks.push(
-            <TextBlock
-              { ...blockProps }
-              onInput={ this.handleTextBlockInput }
-            />
-          )
-          break
-        case 'image':
-          blocks.push(
-            <ImageBlock { ...blockProps }/>
-          )
-          break
-        case 'embed':
-          blocks.push(
-            <EmbedBlock { ...blockProps }/>
-          )
-          break
-        default:
-          blocks.push(null)
-          break
-      }
+      blocks.push(this.getBlockElement(block))
+    }
+    let dragElem = null
+    if (this.dragBlock) {
+      dragElem = (<div className="DragBlock" style={{ top: dragBlockTop }}>
+          { this.getBlockElement(this.dragBlock) }
+        </div>
+      )
     }
     return (
       <div
@@ -214,6 +284,7 @@ class BlockCollection extends Component {
           data-num-blocks={ order.length }
         >
           { blocks }
+          { dragElem }
         </div>
         <PostActionBar ref="postActionBar" editor={ this } />
       </div>

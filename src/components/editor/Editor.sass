@@ -79,8 +79,9 @@
 // .editor-block.readonly
 //   border: 1px solid #aaa
 
-// .editor-block [contenteditable="false"]
-//   user-select: none
+.editor-block [kind="embed"],
+.editor-block [kind="image"]
+  user-select: none
 
 // .editor-block.reposted-content [contenteditable="false"]
 //   border: 0
@@ -88,4 +89,10 @@
 
 .editor-block + .editor-block
   margin-top: rem(20)
+
+.DragBlock
+  position: absolute
+  left: rem(40)
+  right: rem(40)
+  z-index: 2
 

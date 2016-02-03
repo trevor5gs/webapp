@@ -11,12 +11,13 @@ class Block extends Component {
       PropTypes.string,
       PropTypes.object,
     ]).isRequired,
-    onRemoveBlock: PropTypes.func.isRequired,
     kind: PropTypes.oneOf([
-      'text',
-      'image',
+      'block',
       'embed',
+      'image',
+      'text',
     ]).isRequired,
+    onRemoveBlock: PropTypes.func.isRequired,
     uid: PropTypes.number.isRequired,
   };
 
@@ -31,15 +32,19 @@ class Block extends Component {
   };
 
   render() {
-    const { children, className } = this.props
+    const { children, className, data, uid } = this.props
+    const { width, height } = data
     return (
       <div
         className="editor-block"
-        data-collection-id={ this.uid }
+        data-collection-id={ uid }
+        style={{ width, height }}
+        ref="editorBlock"
       >
         <div
           { ...this.props }
           className={classNames('editable', className)}
+          style={{ width, height }}
         >
           { children }
         </div>
