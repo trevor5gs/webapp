@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import RegionTools from '../RegionTools'
+import RegionTools from './RegionTools'
 import classNames from 'classnames'
 
 class Block extends Component {

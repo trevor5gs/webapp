@@ -1,5 +1,5 @@
-import { getLastWordPasted, replaceSelectionWithText } from '../SelectionUtil'
-import { postPreviews, savePostImage } from '../../../actions/posts'
+import { getLastWordPasted, replaceSelectionWithText } from './SelectionUtil'
+import { postPreviews, savePostImage } from '../../actions/posts'
 
 let dispatch = null
 

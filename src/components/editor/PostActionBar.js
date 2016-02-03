@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { openAlert } from '../../../actions/modals'
-import { savePostImage } from '../../../actions/posts'
-import Dialog from '../../../components/dialogs/Dialog'
+import { openAlert } from '../../actions/modals'
+import { savePostImage } from '../../actions/posts'
+import Dialog from '../../components/dialogs/Dialog'
 
 class PostActionBar extends Component {
 

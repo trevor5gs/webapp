@@ -5,7 +5,7 @@ import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
-import * as ACTION_TYPES from '../../../constants/action_types'
+import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 
 const BLOCK_KEY = 'block'
@@ -146,6 +146,7 @@ class BlockCollection extends Component {
     // order matters here so the dragBlock gets removed
     this.dragBlock = null
     this.setState({ collection, dragBlockTop: null })
+    this.addEmptyTextBlock(false)
   }
 
   getBlockElement(block) {
@@ -199,20 +200,19 @@ class BlockCollection extends Component {
     return newBlock
   }
 
-  addEmptyTextBlock() {
+  addEmptyTextBlock(shouldCheckForEmpty = true) {
     const { collection, order } = this.state
     requestAnimationFrame(() => {
       if (order.length > 1) {
         const last = collection[order[order.length - 1]][BLOCK_KEY]
         const secondToLast = collection[order[order.length - 2]][BLOCK_KEY]
         if (secondToLast.kind === 'text' &&
-            secondToLast.data.length &&
             last.kind === 'text' && !last.data.length) {
           return this.remove(last.uid, false)
         }
       }
       if (!order.length || collection[order[order.length - 1]][BLOCK_KEY].kind !== 'text') {
-        this.add({ kind: 'text', data: '' })
+        this.add({ kind: 'text', data: '' }, shouldCheckForEmpty)
       }
     })
   }

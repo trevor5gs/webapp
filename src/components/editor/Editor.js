@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { createPost } from '../../actions/posts'
 import { closeOmnibar } from '../../actions/omnibar'
-import BlockCollection from './v3/BlockCollection'
+import BlockCollection from './BlockCollection'
 
 class Editor extends Component {
 
