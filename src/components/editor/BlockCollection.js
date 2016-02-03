@@ -146,7 +146,7 @@ class BlockCollection extends Component {
     // order matters here so the dragBlock gets removed
     this.dragBlock = null
     this.setState({ collection, dragBlockTop: null })
-    this.addEmptyTextBlock(false)
+    this.addEmptyTextBlock(true)
   }
 
   getBlockElement(block) {
@@ -200,7 +200,7 @@ class BlockCollection extends Component {
     return newBlock
   }
 
-  addEmptyTextBlock(shouldCheckForEmpty = true) {
+  addEmptyTextBlock(shouldCheckForEmpty = false) {
     const { collection, order } = this.state
     requestAnimationFrame(() => {
       if (order.length > 1) {
@@ -208,11 +208,11 @@ class BlockCollection extends Component {
         const secondToLast = collection[order[order.length - 2]][BLOCK_KEY]
         if (secondToLast.kind === 'text' &&
             last.kind === 'text' && !last.data.length) {
-          return this.remove(last.uid, false)
+          return this.remove(last.uid, shouldCheckForEmpty)
         }
       }
       if (!order.length || collection[order[order.length - 1]][BLOCK_KEY].kind !== 'text') {
-        this.add({ kind: 'text', data: '' }, shouldCheckForEmpty)
+        this.add({ kind: 'text', data: '' })
       }
     })
   }
