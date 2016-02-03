@@ -71,22 +71,22 @@ class BlockCollection extends Component {
 
   // Drag Stuff
 
-  onDragStart(e) {
+  onDragStart() {
     // swap the dragging block for a
     // normal block and set the height/width
-    console.log('dragStart', e)
+    // console.log('dragStart', e)
   }
 
-  onDragMove(e) {
+  onDragMove() {
     // calculate delta and change the order
     // array to kick off a render
-    console.log('dragMove', e)
+    // console.log('dragMove', e)
   }
 
-  onDragEnd(e) {
+  onDragEnd() {
     // swap the normal block out for
     // the one that was removed initially
-    console.log('dragEnd', e)
+    // console.log('dragEnd', e)
   }
 
   add(block, shouldCheckForEmpty = true) {
