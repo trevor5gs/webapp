@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
 import TextBlock from './TextBlock'
+import PostActionBar from './PostActionBar'
 import * as ACTION_TYPES from '../../../constants/action_types'
 
 const BLOCK_KEY = 'block'
@@ -12,6 +14,7 @@ class BlockCollection extends Component {
 
   static propTypes = {
     blocks: PropTypes.array,
+    delegate: PropTypes.any.isRequired,
     dispatch: PropTypes.func.isRequired,
     editorStore: PropTypes.object.isRequired,
   };
@@ -37,6 +40,7 @@ class BlockCollection extends Component {
     const { dispatch, editorStore } = nextProps
     switch (editorStore.type) {
       case ACTION_TYPES.POST.TMP_IMAGE_CREATED:
+        this.removeEmptyTextBlock()
         const newBlock = this.add({ kind: 'image', data: { url: editorStore.url } })
         dispatch({ type: ACTION_TYPES.POST.IMAGE_BLOCK_CREATED, payload: { uid: newBlock.uid } })
         break
@@ -52,11 +56,18 @@ class BlockCollection extends Component {
         this.setState({ collection })
         break
       case ACTION_TYPES.POST.POST_PREVIEW_SUCCESS:
+        this.removeEmptyTextBlock()
         this.add({ ...editorStore.postPreviews.body[0] })
         break
       default:
         break
     }
+  }
+
+  submit() {
+    const { delegate } = this.props
+    const data = this.serialize()
+    delegate.submit(data)
   }
 
   addEmptyTextBlock() {
@@ -75,6 +86,16 @@ class BlockCollection extends Component {
         this.add({ kind: 'text', data: '' })
       }
     })
+  }
+
+  removeEmptyTextBlock() {
+    const { collection, order } = this.state
+    if (order.length > 0) {
+      const last = collection[order[order.length - 1]][BLOCK_KEY]
+      if (last && last.kind === 'text' && !last.data.length) {
+        this.remove(last.uid, false)
+      }
+    }
   }
 
   add(block, shouldCheckForEmpty = true) {
@@ -180,16 +201,25 @@ class BlockCollection extends Component {
       }
     }
     return (
-      <div
-        className="editor-region"
-        data-num-blocks={ order.length }
-      >
-        { blocks }
+      <div className="editor" data-placeholder="Say Ello...">
+        <div
+          className="editor-region"
+          data-num-blocks={ order.length }
+        >
+          { blocks }
+        </div>
+        <PostActionBar ref="postActionBar" editor={ this } />
       </div>
     )
   }
 
 }
 
-export default BlockCollection
+function mapStateToProps(state) {
+  return {
+    editorStore: state.editor,
+  }
+}
+
+export default connect(mapStateToProps)(BlockCollection)
 

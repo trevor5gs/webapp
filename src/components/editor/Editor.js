@@ -2,13 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { createPost } from '../../actions/posts'
 import { closeOmnibar } from '../../actions/omnibar'
-import ElloEditor from './v3/ElloEditor'
+import BlockCollection from './v3/BlockCollection'
 
 class Editor extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    stream: PropTypes.object.isRequired,
   };
 
   submit(data) {
@@ -17,21 +16,10 @@ class Editor extends Component {
     dispatch(closeOmnibar())
   }
 
-  imageUploader(file, callback) {
-    return { file, callback }
-    // console.log('upload file:', file, 'when complete callback:', callback)
-  }
-
   render() {
-    return <ElloEditor delegate={ this } />
+    return <BlockCollection delegate={ this } />
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    stream: state.stream,
-  }
-}
-
-export default connect(mapStateToProps)(Editor)
+export default connect()(Editor)
 
