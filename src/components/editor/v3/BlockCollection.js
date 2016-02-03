@@ -5,9 +5,9 @@ import ImageBlock from './ImageBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
 import * as ACTION_TYPES from '../../../constants/action_types'
+import { addDragObject, removeDragObject } from './Draggable'
 
 const BLOCK_KEY = 'block'
-const SORTABLE_KEY = 'sortable'
 const UID_KEY = 'uid'
 
 class BlockCollection extends Component {
@@ -26,6 +26,7 @@ class BlockCollection extends Component {
   componentWillMount() {
     this.state = { collection: {}, order: [] }
     this.uid = 0
+    addDragObject(this)
   }
 
   componentDidMount() {
@@ -64,10 +65,45 @@ class BlockCollection extends Component {
     }
   }
 
-  submit() {
-    const { delegate } = this.props
-    const data = this.serialize()
-    delegate.submit(data)
+  componentWillUnmount() {
+    removeDragObject(this)
+  }
+
+  // Drag Stuff
+
+  onDragStart(e) {
+    // swap the dragging block for a
+    // normal block and set the height/width
+    console.log('dragStart', e)
+  }
+
+  onDragMove(e) {
+    // calculate delta and change the order
+    // array to kick off a render
+    console.log('dragMove', e)
+  }
+
+  onDragEnd(e) {
+    // swap the normal block out for
+    // the one that was removed initially
+    console.log('dragEnd', e)
+  }
+
+  add(block, shouldCheckForEmpty = true) {
+    const newBlock = { ...block, uid: this.uid }
+    const { collection, order } = this.state
+    const obj = {}
+    obj[BLOCK_KEY] = newBlock
+    obj[UID_KEY] = this.uid
+    collection[this.uid] = obj
+    order.push(this.uid)
+    this.uid++
+    // order matters here
+    this.setState({ collection, order })
+    if (shouldCheckForEmpty) {
+      this.addEmptyTextBlock()
+    }
+    return newBlock
   }
 
   addEmptyTextBlock() {
@@ -88,33 +124,6 @@ class BlockCollection extends Component {
     })
   }
 
-  removeEmptyTextBlock() {
-    const { collection, order } = this.state
-    if (order.length > 0) {
-      const last = collection[order[order.length - 1]][BLOCK_KEY]
-      if (last && last.kind === 'text' && !last.data.length) {
-        this.remove(last.uid, false)
-      }
-    }
-  }
-
-  add(block, shouldCheckForEmpty = true) {
-    const newBlock = { ...block, uid: this.uid }
-    const { collection, order } = this.state
-    const obj = {}
-    obj[BLOCK_KEY] = newBlock
-    obj[UID_KEY] = this.uid
-    collection[this.uid] = obj
-    order.push(this.uid)
-    this.uid++
-    // order matters here
-    this.setState({ collection, order })
-    if (shouldCheckForEmpty) {
-      this.addEmptyTextBlock()
-    }
-    return newBlock
-  }
-
   remove = (uid, shouldCheckForEmpty = true) => {
     const { collection, order } = this.state
     delete collection[uid]
@@ -126,14 +135,26 @@ class BlockCollection extends Component {
     }
   };
 
-  addSortable(uid, sortable) {
-    const { collection } = this.state
-    if (!collection[uid] || collection[uid][SORTABLE_KEY]) {
-      return false
+  removeEmptyTextBlock() {
+    const { collection, order } = this.state
+    if (order.length > 0) {
+      const last = collection[order[order.length - 1]][BLOCK_KEY]
+      if (last && last.kind === 'text' && !last.data.length) {
+        this.remove(last.uid, false)
+      }
     }
-    collection[uid][SORTABLE_KEY] = sortable
-    // sortable.uid = uid
-    // sortable.collection = this
+  }
+
+  handleTextBlockInput = (vo) => {
+    const { collection } = this.state
+    collection[vo.uid][BLOCK_KEY] = vo
+    this.setState({ collection })
+  };
+
+  submit() {
+    const { delegate } = this.props
+    const data = this.serialize()
+    delegate.submit(data)
   }
 
   serialize() {
@@ -146,53 +167,36 @@ class BlockCollection extends Component {
     return results
   }
 
-  handleChange = (vo) => {
-    const { collection } = this.state
-    collection[vo.uid][BLOCK_KEY] = vo
-    this.setState({ collection })
-  };
-
   render() {
     const { collection, order } = this.state
     const blocks = []
     for (const uid of order) {
       const block = collection[uid][BLOCK_KEY]
+      const blockProps = {
+        data: block.data,
+        key: uid,
+        kind: block.kind,
+        onRemoveBlock: this.remove,
+        ref: `block_${block.uid}`,
+        uid: block.uid,
+      }
       switch (block.kind) {
         case 'text':
           blocks.push(
             <TextBlock
-              data={ block.data }
-              key={ uid }
-              kind={ block.kind }
-              onChange={ this.handleChange }
-              onRemoveBlock={ this.remove }
-              ref={ `block_${block.uid}` }
-              uid={ block.uid }
+              { ...blockProps }
+              onInput={ this.handleTextBlockInput }
             />
           )
           break
         case 'image':
           blocks.push(
-            <ImageBlock
-              data={ block.data }
-              key={ uid }
-              kind={ block.kind }
-              onRemoveBlock={ this.remove }
-              ref={ `block_${block.uid}` }
-              uid={ block.uid }
-            />
+            <ImageBlock { ...blockProps }/>
           )
           break
         case 'embed':
           blocks.push(
-            <EmbedBlock
-              data={ block.data }
-              key={ uid }
-              kind={ block.kind }
-              onRemoveBlock={ this.remove }
-              ref={ `block_${block.uid}` }
-              uid={ block.uid }
-            />
+            <EmbedBlock { ...blockProps }/>
           )
           break
         default:
@@ -201,7 +205,10 @@ class BlockCollection extends Component {
       }
     }
     return (
-      <div className="editor" data-placeholder="Say Ello...">
+      <div
+        className="editor"
+        data-placeholder="Say Ello..."
+      >
         <div
           className="editor-region"
           data-num-blocks={ order.length }

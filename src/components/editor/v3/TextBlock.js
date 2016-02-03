@@ -8,13 +8,13 @@ class TextBlock extends Component {
   static propTypes = {
     data: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
+    onInput: PropTypes.func.isRequired,
   };
 
   handleInput = (e) => {
-    const { onChange } = this.props
+    const { onInput } = this.props
     const uid = this.refs.block.props.uid
-    onChange({ kind: 'text', data: e.target.innerHTML, uid })
+    onInput({ kind: 'text', data: e.target.innerHTML, uid })
   };
 
   handlePaste = (e) => {

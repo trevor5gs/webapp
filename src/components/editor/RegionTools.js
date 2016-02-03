@@ -40,7 +40,9 @@ class RegionTools extends Component {
         >
           <DeleteIcon />
         </button>
-        <button>
+        <button
+          className="DragHandler"
+        >
           <DragIcon />
         </button>
       </div>
