@@ -123,6 +123,7 @@ class BlockCollection extends Component {
   }
 
   onMoveBlock(delta) {
+    if (!this.refs.blockPlaceholder) return
     const { order } = this.state
     const dragUid = this.dragBlock.uid
     const index = order.indexOf(dragUid)
