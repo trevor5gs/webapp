@@ -23,6 +23,15 @@ export function editor(state = {}, action) {
         type: action.type,
         ...action.payload.response,
       }
+    case POST.PERSIST:
+      const obj = {
+        ...state,
+        type: action.type,
+      }
+      if (action.payload) {
+        obj.editorState = action.payload
+      }
+      return obj
     default:
       return state
   }
