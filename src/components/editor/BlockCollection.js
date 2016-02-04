@@ -256,7 +256,16 @@ class BlockCollection extends Component {
     const results = []
     for (const uid of order) {
       const block = collection[uid][BLOCK_KEY]
-      results.push({ kind: block.kind, data: block.data })
+      switch (block.kind) {
+        case 'text':
+          if (block.data.length) {
+            results.push({ kind: block.kind, data: block.data })
+          }
+          break
+        default:
+          results.push({ kind: block.kind, data: block.data })
+          break
+      }
     }
     return results
   }
