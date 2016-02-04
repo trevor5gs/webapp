@@ -39,7 +39,6 @@ class CommentTools extends Component {
     cells.push(
       <span className="PostTool TimeAgoTool" key={`TimeAgoTool_${comment.id}`}>
         <span className="PostToolValue">{new Date(comment.createdAt).timeAgoInWords()}</span>
-        <Hint>Visit</Hint>
       </span>
     )
     if (isLoggedIn) {

@@ -12,7 +12,7 @@ function header(comment, author) {
       <div className="PostHeaderAuthor">
         <Link className="PostHeaderLink" to={`/${author.username}`}>
           <Avatar sources={author.avatar} />
-          <span>{`@${author.username}`}</span>
+          <span className="CommentUsername">{`@${author.username}`}</span>
         </Link>
       </div>
     </header>

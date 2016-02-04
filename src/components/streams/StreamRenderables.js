@@ -6,7 +6,7 @@ import { parsePost } from '../parsers/PostParser'
 import { parseComment } from '../parsers/CommentParser'
 import { parseNotification } from '../parsers/NotificationParser'
 import PostsAsGrid from '../posts/PostsAsGrid'
-import { BubbleIcon, HeartIcon, RepostIcon } from '../posts/PostIcons'
+import { HeartIcon, RepostIcon } from '../posts/PostIcons'
 import UserAvatar from '../users/UserAvatar'
 import UserAvatars from '../users/UserAvatars'
 import UserCard from '../users/UserCard'
@@ -134,7 +134,6 @@ export function postDetail(posts, json, currentUser) {
         {parsePost(post, json, currentUser, false)}
         {avatarDrawers}
         <section className="Comments">
-          <BubbleIcon/>
           {comments.map((comment) =>
             <div ref={ `commentList_${comment.id}` } key={ comment.id } className="CommentList">
               {parseComment(comment, json, currentUser, false)}
