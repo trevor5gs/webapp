@@ -6,6 +6,7 @@ import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
+import TextTools from './TextTools'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 
@@ -31,7 +32,11 @@ class BlockCollection extends Component {
       this.state = editorStore.editorState
       this.uid = Math.max(...editorStore.editorState.order) + 1
     } else {
-      this.state = { collection: {}, order: [] }
+      this.state = {
+        collection: {},
+        hideTextTools: false,
+        order: [],
+      }
       this.uid = 0
     }
     addDragObject(this)
@@ -300,7 +305,7 @@ class BlockCollection extends Component {
   }
 
   render() {
-    const { collection, dragBlockTop, order } = this.state
+    const { collection, dragBlockTop, hideTextTools, order } = this.state
     const hasContent = this.hasContent()
     const blocks = []
     for (const uid of order) {
@@ -326,6 +331,7 @@ class BlockCollection extends Component {
           { blocks }
           { dragElem }
         </div>
+        <TextTools isHidden={ hideTextTools }/>
         <PostActionBar ref="postActionBar" editor={ this } />
       </div>
     )
