@@ -36,7 +36,8 @@ class RegionTools extends Component {
     return (
       <div className="RegionTools">
         <button
-          onClick={this.handleDeleteBlock}
+          className="BlockRemove"
+          onClick={ this.handleDeleteBlock }
         >
           <DeleteIcon />
         </button>
