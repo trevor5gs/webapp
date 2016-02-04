@@ -55,12 +55,12 @@
 // "Say Ello" placeholder text
 .editor:after
   position: absolute
-  top: rem(40)
-  left: rem(40)
+  top: rem(81)
+  left: rem(61)
   content: attr(data-placeholder)
   color: #999
   pointer-events: none
-.editor-has-content.editor:after
+.editor.hasContent:after
   display: none
 
 // -------------------------------------
@@ -69,12 +69,12 @@
   position: relative
 
 .editable
-  padding: rem(40) rem(20) rem(20)
+  padding: rem(40) rem(20)
   border: 1px dashed #666
   white-space: pre-wrap
   word-break: break-word
   outline: 0
-  min-height: rem(60)
+  min-height: rem(80)
 
 // .editor-block.readonly
 //   border: 1px solid #aaa

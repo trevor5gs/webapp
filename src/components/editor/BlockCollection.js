@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
@@ -270,8 +271,20 @@ class BlockCollection extends Component {
     return results
   }
 
+  hasContent() {
+    const { collection, order } = this.state
+    const firstBlock = collection[order[0]]
+    return (
+      order.length > 1 ||
+      firstBlock &&
+      firstBlock.block.data.length &&
+      firstBlock.block.data !== '<br>'
+    )
+  }
+
   render() {
     const { collection, dragBlockTop, order } = this.state
+    const hasContent = this.hasContent()
     const blocks = []
     for (const uid of order) {
       const block = collection[uid][BLOCK_KEY]
@@ -286,7 +299,7 @@ class BlockCollection extends Component {
     }
     return (
       <div
-        className="editor"
+        className={ classNames('editor', { hasContent }) }
         data-placeholder="Say Ello..."
       >
         <div
