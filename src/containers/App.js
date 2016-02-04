@@ -10,6 +10,7 @@ import DevTools from '../components/devtools/DevTools'
 import Footer from '../components/footer/Footer'
 import Modal from '../components/modals/Modal'
 import Navbar from '../components/navbar/Navbar'
+import Omnibar from '../components/omnibar/Omnibar'
 
 class App extends Component {
 
@@ -97,6 +98,7 @@ class App extends Component {
         </main>
         <Navbar/>
         <Footer/>
+        { isLoggedIn ? <Omnibar/> : null }
         <Modal/>
         <DevTools/>
         <Analytics isLoggedIn={isLoggedIn}/>

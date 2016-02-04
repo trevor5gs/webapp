@@ -70,10 +70,12 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.COMMENT.EDIT &&
         type !== ACTION_TYPES.COMMENT.FLAG &&
         type !== ACTION_TYPES.POST.COMMENT &&
+        type !== ACTION_TYPES.POST.CREATE &&
         type !== ACTION_TYPES.POST.DELETE &&
         type !== ACTION_TYPES.POST.EDIT &&
         type !== ACTION_TYPES.POST.FLAG &&
         type !== ACTION_TYPES.POST.LOVE &&
+        type !== ACTION_TYPES.POST.POST_PREVIEW &&
         type !== ACTION_TYPES.POST.REPOST &&
         type !== ACTION_TYPES.POST_FORM &&
         type !== ACTION_TYPES.POST_JSON &&
@@ -144,7 +146,7 @@ export const requester = store => next => action => {
             .then(checkStatus)
             .then(response => {
               delete runningFetches[response.url]
-              if (response.status === 200) {
+              if (response.status === 200 || response.status === 201) {
                 return response.json().then((json) => {
                   payload.response = camelizeKeys(json)
                   if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
@@ -169,7 +171,9 @@ export const requester = store => next => action => {
               return Promise.resolve(true);
             })
             .catch(error => {
-              delete runningFetches[error.response.url]
+              if (error.response) {
+                delete runningFetches[error.response.url]
+              }
               if ((error.response.status === 401 || error.response.status === 403) &&
                   state.routing.location.pathname.indexOf('/onboarding') === 0 &&
                   typeof document !== 'undefined') {

@@ -4,7 +4,7 @@ import * as ACTION_TYPES from '../constants/action_types'
 import { s3CredentialsPath } from '../networking/api'
 
 function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.ok) {
     return response
   }
   const error = new Error(response.statusText)
@@ -62,14 +62,13 @@ export const uploader = store => next => action => {
 
   // This is problematic... :(
   if ((type !== ACTION_TYPES.PROFILE.SAVE_AVATAR &&
-        type !== ACTION_TYPES.PROFILE.SAVE_COVER
+        type !== ACTION_TYPES.PROFILE.SAVE_COVER &&
+        type !== ACTION_TYPES.POST.SAVE_IMAGE
       ) || !payload) {
     return next(action)
   }
 
   const { endpoint, file } = payload
-
-  if (!endpoint) return next(action);
 
   let assetUrl
   const REQUEST = `${type}_REQUEST`
@@ -102,6 +101,22 @@ export const uploader = store => next => action => {
       .then(checkStatus)
   }
 
+  if (!endpoint) {
+    return (
+      fetchCredentials()
+      .then(postAsset)
+      .then(() => {
+        payload.response = { url: assetUrl }
+        next({ meta, payload, type: SUCCESS })
+        return true
+      })
+      .catch(error => {
+        next({ error, meta, payload, type: FAILURE })
+        return false
+      })
+    )
+  }
+
   function saveLocationToApi() {
     const vo = (type === ACTION_TYPES.PROFILE.SAVE_AVATAR) ?
       { remote_avatar_url: assetUrl } :
@@ -118,6 +133,7 @@ export const uploader = store => next => action => {
   return (
     fetchCredentials()
     .then(postAsset)
+    // TODO: send this image up as the tmp for profiles
     .then(saveLocationToApi)
     .then(response => {
       payload.response = camelizeKeys(response)

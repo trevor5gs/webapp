@@ -94,9 +94,9 @@ class ImageRegion extends Component {
   }
 
   getImageSourceSet() {
-    const { assets, isGridLayout, links } = this.props
+    const { isGridLayout } = this.props
     const images = []
-    if (links && links.assets && assets[links.assets] && assets[links.assets].attachment) {
+    if (!this.isBasicAttachment()) {
       if (isGridLayout) {
         images.push(`${this.attachment.mdpi.url} 375w`)
         images.push(`${this.attachment.hdpi.url} 1920w`)
@@ -122,6 +122,11 @@ class ImageRegion extends Component {
     }
   }
 
+  isBasicAttachment() {
+    const { assets, links } = this.props
+    return !(links && links.assets && assets[links.assets] && assets[links.assets].attachment)
+  }
+
   resetImageScale() {
     this.setState({ scale: null, marginBottom: null })
   }
@@ -137,13 +142,18 @@ class ImageRegion extends Component {
   };
 
   createLoader() {
-    const srcset = this.getImageSourceSet()
+    const isBasicAttachment = this.isBasicAttachment()
+    const sources = isBasicAttachment ? this.props.content.url : this.getImageSourceSet()
     this.disposeLoader()
-    if (srcset) {
+    if (sources) {
       this.img = new Image()
       this.img.onload = this.loadDidSucceed
       this.img.onerror = this.loadDidFail
-      this.img.srcset = srcset
+      if (isBasicAttachment) {
+        this.img.src = sources
+      } else {
+        this.img.srcset = sources
+      }
     }
   }
 

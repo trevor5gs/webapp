@@ -5,8 +5,10 @@ import classNames from 'classnames'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { openModal, closeModal } from '../../actions/modals'
+import { openOmnibar } from '../../actions/omnibar'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
+import Editor from '../editor/Editor'
 import HelpDialog from '../dialogs/HelpDialog'
 import NavbarLabel from '../navbar/NavbarLabel'
 import NavbarLink from '../navbar/NavbarLink'
@@ -194,7 +196,8 @@ class Navbar extends Component {
   };
 
   omniButtonWasClicked = () => {
-    // working on it...
+    const { dispatch } = this.props
+    dispatch(openOmnibar(<Editor/>))
   };
 
   loadMorePostsWasClicked = () => {
