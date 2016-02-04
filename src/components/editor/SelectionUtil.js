@@ -131,13 +131,6 @@ export function getLastWordPasted() {
 }
 
 
-// getFirefoxOffset: ->
-//   return 0 unless document.documentElement.classList.contains('is-firefox')
-//   return 0 if document.body.classList.contains('omnibar--open')
-//   return 0 if @getBrowserAndVersion().version > 33
-//   return document.getElementById('toolbar').offsetWidth
-
-
 // getBrowserAndVersion: ->
 //   ua = navigator.userAgent
 //   M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) or []

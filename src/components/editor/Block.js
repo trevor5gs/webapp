@@ -32,18 +32,17 @@ class Block extends Component {
   };
 
   render() {
-    const { children, className, data, uid } = this.props
+    const { children, className, data, kind, uid } = this.props
     const { width, height } = data
     return (
       <div
         className="editor-block"
         data-collection-id={ uid }
-        style={{ width, height }}
         ref="editorBlock"
       >
         <div
           { ...this.props }
-          className={classNames('editable', className)}
+          className={classNames('editable', kind, className)}
           style={{ width, height }}
         >
           { children }

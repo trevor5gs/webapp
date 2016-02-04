@@ -5,27 +5,42 @@ import { LinkIcon } from './EditorIcons'
 export default class TextTools extends Component {
 
   static propTypes = {
+    activeTools: PropTypes.shape({
+      isBoldActive: PropTypes.bool,
+      isItalicActive: PropTypes.bool,
+      isLinkActive: PropTypes.bool,
+    }),
+    coordinates: PropTypes.shape({
+      left: PropTypes.number,
+      top: PropTypes.number,
+    }),
     isHidden: PropTypes.bool,
     text: PropTypes.string,
   };
 
   static defaultProps = {
     isHidden: true,
+    activeTools: {
+      isBoldActive: false,
+      isItalicActive: false,
+      isLinkActive: false,
+    },
     text: '',
   };
 
   componentWillMount() {
     const { text } = this.props
     this.state = {
-      isBoldActive: false,
-      isItalicActive: false,
-      isLinkActive: false,
       hasFocus: false,
       hasValue: text && text.length,
       isInitialValue: true,
       text,
     }
     this.initialValue = text
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
   }
 
   handleFocus = () => {
@@ -53,13 +68,15 @@ export default class TextTools extends Component {
   };
 
   handleBoldToggle = () => {
-    const { isBoldActive } = this.state
-    this.setState({ isBoldActive: !isBoldActive })
+    // const { isBoldActive } = this.state
+    // this.setState({ isBoldActive: !isBoldActive })
+    document.execCommand('bold', false, true)
   };
 
   handleItalicToggle = () => {
-    const { isItalicActive } = this.state
-    this.setState({ isItalicActive: !isItalicActive })
+    // const { isItalicActive } = this.state
+    // this.setState({ isItalicActive: !isItalicActive })
+    document.execCommand('italic', false, true)
   };
 
   handleLinkToggle = () => {
@@ -68,11 +85,15 @@ export default class TextTools extends Component {
   };
 
   render() {
-    const { isBoldActive, isItalicActive, isLinkActive, text } = this.state
-    const { isHidden } = this.props
+    const { text } = this.state
+    const { activeTools, coordinates, isHidden } = this.props
+    const { isBoldActive, isItalicActive, isLinkActive } = activeTools
     const asShowLinkForm = isLinkActive
     return (
-      <div className={ classNames('TextTools', { asShowLinkForm, isHidden }) }>
+      <div
+        style={ coordinates }
+        className={ classNames('TextTools', { asShowLinkForm, isHidden }) }
+      >
         <button
           className={ classNames('TextToolButton forBold', { isActive: isBoldActive }) }
           onClick={ this.handleBoldToggle }
