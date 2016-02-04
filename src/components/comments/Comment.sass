@@ -1,18 +1,19 @@
 .Comments
   position: relative
-  padding-left: rem(20)
 
 .Comments > .SVGIcon
   position: absolute
   top: rem(22)
   left: 0
 
+.CommentUsername
+  transition: color $speed
+  color: #aaa
+.no-touch .CommentHeader .PostHeaderLink:hover .CommentUsername
+  color: black
 
-@media(min-width: #{$break-2})
-  .Comments
-    padding-left: rem(40)
-  .Comments > .SVGIcon
-    top: rem(30)
+.Comments .TimeAgoTool
+  color: #aaa
 
 .PostHeader.CommentHeader
   height: rem(45)
