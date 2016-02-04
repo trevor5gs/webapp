@@ -9,6 +9,8 @@ import TextTools from './TextTools'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addRangeObject, removeRangeObject } from './RangeComponent'
+import Avatar from '../assets/Avatar'
+import Completer from '../completers/Completer'
 
 const BLOCK_KEY = 'block'
 const UID_KEY = 'uid'
@@ -298,6 +300,10 @@ class BlockCollection extends Component {
     return results
   }
 
+  handleCompletion = ({ value }) => {
+    console.log('completed', value)
+  };
+
   render() {
     const { activeTools, collection, coordinates, dragBlockTop, hideTextTools, order } = this.state
     const blocks = []
@@ -312,6 +318,16 @@ class BlockCollection extends Component {
         </div>
       )
     }
+
+    const completions = [
+      { asset: <Avatar classList="tiny" />, value: '@mk', label: '@mk' },
+      { asset: <Avatar classList="tiny" />, value: '@ellophotography', label: '@ellophotography' },
+      { asset: <Avatar classList="tiny" />, value: '@budnitz', label: '@budnitz' },
+      { asset: <Avatar classList="tiny" />, value: '@666', label: '@666' },
+      { asset: <Avatar classList="tiny" />, value: '@sean', label: '@sean' },
+      { asset: <Avatar classList="tiny" />, value: '@s', label: '@ellodesign_is_really_long_one' },
+    ]
+
     return (
       <div className="editor" >
         <div
@@ -320,6 +336,10 @@ class BlockCollection extends Component {
         >
           { blocks }
           { dragElem }
+          <Completer
+            completions={ completions }
+            onCompletion ={ this.handleCompletion }
+          />
         </div>
         <TextTools
           activeTools={ activeTools }

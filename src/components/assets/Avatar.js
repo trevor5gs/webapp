@@ -12,6 +12,7 @@ const STATUS = {
 class Avatar extends Component {
 
   static propTypes = {
+    classList: PropTypes.string,
     isModifiable: PropTypes.bool,
     size: PropTypes.string,
     sources: PropTypes.object,
@@ -19,6 +20,7 @@ class Avatar extends Component {
   };
 
   static defaultProps = {
+    classList: '',
     isModifiable: false,
     size: 'regular',
   };
@@ -56,11 +58,12 @@ class Avatar extends Component {
   }
 
   getClassNames() {
-    const { isModifiable, size } = this.props
+    const { classList, isModifiable, size } = this.props
     const { status } = this.state
     return classNames(
       'Avatar',
-       size !== 'regular' ? size : null,
+      size !== 'regular' ? size : null,
+      classList,
       status,
       { isModifiable },
     )

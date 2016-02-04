@@ -1,0 +1,13 @@
+.Completer
+  position: fixed
+  z-index: 2
+  width: 100%
+  overflow: hidden
+
+
+@media(min-width: #{$break-2})
+  .Completer
+    max-width: rem(240)
+  .has-touch .Completer
+    max-width: none
+
