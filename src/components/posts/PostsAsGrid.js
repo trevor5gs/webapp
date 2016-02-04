@@ -1,5 +1,32 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { parsePost } from '../parsers/PostParser'
+
+const DumbGridPost = (props) => {
+  const { post, json, currentUser } = props
+  return (
+    <article className="Post PostGrid">
+      {parsePost(post, json, currentUser)}
+    </article>
+  )
+}
+
+DumbGridPost.propTypes = {
+  post: PropTypes.object.isRequired,
+  json: PropTypes.object.isRequired,
+  currentUser: PropTypes.object,
+}
+
+function mapGridStateToProps(state, ownProps) {
+  const post = state.json.posts[ownProps.post.id]
+  return {
+    currentUser: state.profile,
+    json: state.json,
+    showComments: post.showComments,
+  }
+}
+
+const GridPost = connect(mapGridStateToProps)(DumbGridPost)
 
 class PostsAsGrid extends Component {
 
@@ -11,13 +38,14 @@ class PostsAsGrid extends Component {
   };
 
   renderColumn(posts, index) {
-    const { json, currentUser } = this.props
     return (
       <div className="Column" key={`column_${index}`}>
         {posts.map((post) =>
-          <article ref={`postGrid_${post.id}`} key={post.id} className="Post PostGrid">
-            {parsePost(post, json, currentUser)}
-          </article>
+           <GridPost
+             ref={`postGrid_${post.id}`}
+             key={post.id}
+             post={post}
+           />
         )}
       </div>
     )

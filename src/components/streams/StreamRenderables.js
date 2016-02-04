@@ -145,7 +145,7 @@ export function postDetail(posts, json, currentUser) {
   )
 }
 
-export function commentsAsList(comments, json, currentUser) {
+export function commentsAsList(comments /* json, currentUser */) {
   return comments.data.map(comment => <p key={comment.id}>{comment.content[0].data}</p>)
 }
 
