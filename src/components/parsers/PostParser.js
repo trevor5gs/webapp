@@ -2,15 +2,24 @@ import React from 'react'
 import { Link } from 'react-router'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { getLinkObject } from '../base/json_helper'
+import { loadComments } from '../../actions/posts';
 import { body, regionItems, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostTools from '../posts/PostTools'
+import StreamComponent from '../streams/StreamComponent'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
 
 function getPostDetailPath(author, post) {
   return `/${author.username}/post/${post.token}`
+}
+
+function commentStream(post) {
+  const action = loadComments(post)
+  return (
+    <StreamComponent key={`Comments_${post.id}`} action={action} />
+  )
 }
 
 function header(post, author) {
@@ -96,6 +105,9 @@ export function parsePost(post, json, currentUser, isGridLayout = true) {
     cells.push(body(content, post.id, isGridLayout, postDetailPath))
   }
   cells.push(footer(post, author, currentUser))
+  if (post.showComments) {
+    cells.push(commentStream(post, author, currentUser))
+  }
   setModels({})
   return cells
 }
