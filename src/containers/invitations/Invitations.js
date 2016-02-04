@@ -88,7 +88,13 @@ class Invitations extends Component {
               onChange={ this.handleControlChange }
               tabIndex="1"
             />
-            <FormButton tabIndex="2" disabled={ !isValid }>Invite</FormButton>
+            <FormButton
+              className="FormButton asPill"
+              disabled={ !isValid }
+              tabIndex="2"
+            >
+              Invite
+            </FormButton>
             <p className="BatchEmailControlSuggestions" style={{ color: '#aaa' }}>
               { this.renderMessage() }
             </p>
