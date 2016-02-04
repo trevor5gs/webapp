@@ -7,6 +7,7 @@ class Block extends Component {
   static propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,
+    component: PropTypes.object,
     data: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.object,
@@ -22,6 +23,7 @@ class Block extends Component {
   };
 
   static defaultProps = {
+    component: null,
     data: '',
     ref: 'editable',
   };
@@ -32,7 +34,7 @@ class Block extends Component {
   };
 
   render() {
-    const { children, className, data, uid } = this.props
+    const { component, children, className, data, uid } = this.props
     const { width, height } = data
     return (
       <div
@@ -48,6 +50,7 @@ class Block extends Component {
         >
           { children }
         </div>
+        { component ? component : null }
         <RegionTools onRemoveBlock={ this.removeBlock }/>
       </div>
     )

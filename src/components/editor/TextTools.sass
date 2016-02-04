@@ -1,0 +1,61 @@
+.TextTools
+  transition: width $speed $ease, top $speed $ease, left $speed $ease, opacity $speed $ease
+  position: absolute
+  top: 0
+  left: 0
+  z-index: 2
+  overflow: hidden
+  width: rem(94)
+  margin-left: rem(-1)
+  white-space: nowrap
+
+.TextTools.asShowLinkForm
+  width: rem(215)
+
+.TextTools.isHidden
+  pointer-events: none
+  opacity: 0
+
+.TextToolButton
+  transition: color $speed, width $speed $ease
+  position: relative
+  width: rem(30)
+  height: rem(30)
+  margin-left: rem(1)
+  line-height: rem(30)
+  text-align: center
+  background-color: white
+  color: #aaa
+
+.TextTools.asShowLinkForm .TextToolButton.forBold,
+.TextTools.asShowLinkForm .TextToolButton.forItalic
+  width: 0
+
+.no-touch .TextToolButton:hover,
+.TextToolButton.isActive
+  color: black
+
+.TextToolButton.isActive g
+  stroke: currentColor
+
+.TextToolForm
+  display: inline-block
+
+.TextToolLinkInput
+  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease, height $speed $ease
+  display: inline-block
+  vertical-align: baseline
+  width: rem(180)
+  height: rem(30)
+  margin-left: rem(1)
+  padding: 0 rem(10)
+  background-color: white
+  border: 0
+  color: black
+  outline: 0
+  &:focus
+    border-color: black
+    outline: 0
+  &::placeholder
+    color: #aaa
+
