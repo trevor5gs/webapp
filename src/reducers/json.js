@@ -213,6 +213,8 @@ export default function json(state = {}, action = { type: '' }) {
       return postMethods.updatePostLoves(state, newState, action)
     case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
       return {}
+    case ACTION_TYPES.POST.TOGGLE_COMMENTS:
+      return postMethods.toggleComments(state, newState, action)
     case ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL:
       return relationshipMethods.batchUpdateRelationship(newState, action)
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL:
@@ -269,4 +271,3 @@ export function setPath(newPath) {
 }
 
 export { json, methods, path, commentMethods, postMethods, relationshipMethods }
-

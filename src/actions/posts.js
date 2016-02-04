@@ -17,6 +17,35 @@ export function loadPostDetail(token) {
   }
 }
 
+export function loadComments(post) {
+  return {
+    type: ACTION_TYPES.LOAD_STREAM,
+    payload: { endpoint: api.commentsForPost(post) },
+    meta: {
+      defaultMode: 'list',
+      mappingType: MAPPING_TYPES.COMMENTS,
+      renderStream: {
+        asList: StreamRenderables.commentsAsList,
+        asGrid: StreamRenderables.commentsAsList,
+      },
+      resultKey: `comments_${post.id}`,
+    },
+  }
+}
+
+export function toggleComments(post, visible) {
+  return {
+    type: ACTION_TYPES.POST.TOGGLE_COMMENTS,
+    payload: {
+      model: post,
+      showComments: visible,
+    },
+    meta: {
+      mappingType: MAPPING_TYPES.POSTS,
+    },
+  }
+}
+
 export function lovePost(post) {
   return {
     type: ACTION_TYPES.POST.LOVE,

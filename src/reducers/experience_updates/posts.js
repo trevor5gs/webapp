@@ -62,8 +62,17 @@ function addNewPost(newState, action) {
   // }
   return newState
 }
+
 methods.addNewPost = (newState, action) =>
   addNewPost(newState, action)
 
-export default methods
+function toggleComments(state, newState, action) {
+  const { model, showComments } = action.payload
+  newState[MAPPING_TYPES.POSTS][model.id].showComments = showComments
+  return newState;
+}
 
+methods.toggleComments = (state, newState, action) =>
+  toggleComments(state, newState, action)
+
+export default methods
