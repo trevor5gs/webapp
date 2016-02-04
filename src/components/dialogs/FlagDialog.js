@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
+import { GUI } from '../../constants/gui_types'
 
 const flags = {
   spam: 'Spam',
@@ -10,6 +11,8 @@ const flags = {
   adult: 'Adult content that isn\'t marked NSFW*',
   offensive: 'I don\'t like it',
 }
+
+const _offsets = { mobile: 70, tablet: 80, desktop: 100 }
 
 class FlagDialog extends Component {
 
@@ -62,7 +65,7 @@ class FlagDialog extends Component {
   renderChoicesScreen() {
     const { activeChoice } = this.state
     const index = Object.keys(flags).indexOf(activeChoice)
-    const top = index < 0 ? null : (70 * index) + 80
+    const top = index < 0 ? null : (70 * index) + _offsets[GUI.viewportSetting]
     return (
       <div className="Dialog FlagDialog">
         <h2>Would you like to flag this content as:</h2>
