@@ -2,8 +2,8 @@ import React from 'react'
 import { camelize } from 'humps'
 import * as api from '../../networking/api'
 import { getLinkArray } from '../base/json_helper'
-import { parsePost } from '../parsers/PostParser'
-import CommentParser, { parseComment } from '../parsers/CommentParser'
+import PostParser from '../parsers/PostParser'
+import CommentParser from '../parsers/CommentParser'
 import { parseNotification } from '../parsers/NotificationParser'
 import PostsAsGrid from '../posts/PostsAsGrid'
 import { HeartIcon, RepostIcon } from '../posts/PostIcons'
@@ -91,12 +91,12 @@ export function postsAsGrid(posts, json, currentUser, gridColumnCount) {
   )
 }
 
-export function postsAsList(posts, json, currentUser) {
+export function postsAsList(posts) {
   return (
     <div className="Posts asList">
       {posts.data.map((post) =>
         <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList">
-          {parsePost(post, json, currentUser, false)}
+          <PostParser post={post} isGridLayout={false} />
         </article>
       )}
     </div>
@@ -131,12 +131,12 @@ export function postDetail(posts, json, currentUser) {
   return (
     <div className="PostDetails Posts asList">
       <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList">
-        {parsePost(post, json, currentUser, false)}
+        <PostParser post={post} isGridLayout={false} />
         {avatarDrawers}
         <section className="Comments">
           {comments.map((comment) =>
             <div ref={ `commentList_${comment.id}` } key={ comment.id } className="CommentList">
-              {parseComment(comment, json, currentUser, false)}
+              <CommentParser comment={comment} isGridLayout={false} />
             </div>
           )}
         </section>
@@ -146,11 +146,13 @@ export function postDetail(posts, json, currentUser) {
 }
 
 export function commentsAsList(comments) {
-  return <div>
+  return (
+    <div>
       {comments.data.map(comment =>
         <CommentParser key={`CommentParser_${comment.id}`} comment={comment} isGridLayout={false} />
        )}
-  </div>
+    </div>
+  )
 }
 
 export function notificationList(notifications, json, currentUser) {

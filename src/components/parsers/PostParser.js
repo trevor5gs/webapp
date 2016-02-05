@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
+import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { getLinkObject } from '../base/json_helper'
 import { loadComments } from '../../actions/posts';
@@ -70,17 +71,12 @@ function footer(post, author, currentUser) {
   )
 }
 
-export function parsePost(post, json, currentUser, isGridLayout = true) {
+export function parsePost(post, author, currentUser, isGridLayout = true) {
   if (!post) { return null }
-  setModels(json)
-  const author = json[MAPPING_TYPES.USERS][post.authorId]
   const cells = []
   const postDetailPath = getPostDetailPath(author, post)
 
   if (post.repostContent && post.repostContent.length) {
-    const authorLinkObject = getLinkObject(post, 'repostAuthor', json)
-    const sourceLinkObject = getLinkObject(post, 'repostedSource', json)
-    cells.push(repostHeader(post, authorLinkObject, sourceLinkObject, author))
     if (post.contentWarning) {
       cells.push(<ContentWarningButton post={post}/>)
     }
@@ -95,8 +91,6 @@ export function parsePost(post, json, currentUser, isGridLayout = true) {
       }
     }
   } else {
-    cells.push(header(post, author))
-
     if (post.contentWarning) {
       cells.push(<ContentWarningButton post={post}/>)
     }
@@ -105,9 +99,6 @@ export function parsePost(post, json, currentUser, isGridLayout = true) {
     cells.push(body(content, post.id, isGridLayout, postDetailPath))
   }
   cells.push(footer(post, author, currentUser))
-  if (post.showComments) {
-    cells.push(commentStream(post, author, currentUser))
-  }
   setModels({})
   return cells
 }
@@ -117,3 +108,64 @@ export function parseSummary(post, json, only = null) {
   return regionItems(post.summary, only, false)
 }
 
+function isRepost(post) {
+  return post.repostContent && post.repostContent.length;
+}
+
+class PostParser extends Component {
+  static propTypes = {
+    post: PropTypes.object,
+    author: PropTypes.object,
+    assets: PropTypes.any.isRequired,
+    currentUser: PropTypes.object,
+    isGridLayout: PropTypes.bool,
+    authorLinkObject: PropTypes.object,
+    sourceLinkObject: PropTypes.object,
+  };
+
+  render() {
+    const { post, assets, currentUser, isGridLayout, author } = this.props
+    if (!post) { return null }
+
+    let postHeader;
+
+    setModels({ assets })
+    if (isRepost(post)) {
+      const { authorLinkObject, sourceLinkObject } = this.props
+      postHeader = repostHeader(post, authorLinkObject, sourceLinkObject, author)
+    } else {
+      postHeader = header(post, author)
+    }
+
+    return (
+      <div>
+        {postHeader}
+        {parsePost(post, author, currentUser, isGridLayout)}
+        {post.showComments ? commentStream(post, author, currentUser) : null}
+      </div>)
+  }
+}
+
+const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
+  const post = ownProps.post
+  const author = json[MAPPING_TYPES.USERS][post.authorId]
+  const assets = json.assets;
+
+  let newProps = {
+    assets,
+    currentUser,
+    author,
+  }
+
+  if (isRepost(post)) {
+    newProps = {
+      ...newProps,
+      authorLinkObject: getLinkObject(post, 'repostAuthor', json),
+      sourceLinkObject: getLinkObject(post, 'repostedSource', json),
+    }
+  }
+
+  return newProps
+}
+
+export default connect(mapStateToProps)(PostParser)

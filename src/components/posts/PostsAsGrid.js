@@ -1,27 +1,25 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { parsePost } from '../parsers/PostParser'
+import PostParser from '../parsers/PostParser'
 
 const DumbGridPost = (props) => {
-  const { post, json, currentUser } = props
+  const { post, showComments } = props
   return (
     <article className="Post PostGrid">
-      {parsePost(post, json, currentUser)}
+      <PostParser post={post} showComments={showComments} />
     </article>
   )
 }
 
 DumbGridPost.propTypes = {
   post: PropTypes.object.isRequired,
-  json: PropTypes.object.isRequired,
-  currentUser: PropTypes.object,
+  showComments: PropTypes.bool,
 }
 
 function mapGridStateToProps(state, ownProps) {
   const post = state.json.posts[ownProps.post.id]
   return {
     currentUser: state.profile,
-    json: state.json,
     showComments: post.showComments,
   }
 }
