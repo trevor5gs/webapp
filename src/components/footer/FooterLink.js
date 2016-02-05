@@ -5,7 +5,7 @@ import classNames from 'classnames'
 export default function FooterLink({ className, href, icon, label }) {
   return (
     <a className={classNames(className, 'FooterLink')} href={href} target="_blank">
-      { icon ? icon : null }
+      { icon }
       <span>{ label }</span>
     </a>
   )

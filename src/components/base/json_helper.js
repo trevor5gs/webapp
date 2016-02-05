@@ -46,8 +46,7 @@ export function getLinkArray(model, identifier, json) {
     // aren't added to the link object mainly used for
     // when a model gets deleted ie: post or comment
     const filteredKeys = keys.filter((key) =>
-      json[collection][key] && (!deletedCollection || deletedCollection.indexOf(key) === -1) ?
-      true : false
+      json[collection][key] && (!deletedCollection || deletedCollection.indexOf(key) === -1)
     )
     return filteredKeys.map((key) => json[collection][key])
   }

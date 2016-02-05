@@ -1,6 +1,7 @@
 import { POST } from '../constants/action_types'
 
 export function editor(state = {}, action) {
+  let obj
   switch (action.type) {
     case POST.CREATE_SUCCESS:
       return {}
@@ -24,7 +25,7 @@ export function editor(state = {}, action) {
         ...action.payload.response,
       }
     case POST.PERSIST:
-      const obj = {
+      obj = {
         ...state,
         type: action.type,
       }

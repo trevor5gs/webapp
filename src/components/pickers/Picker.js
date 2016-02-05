@@ -55,7 +55,7 @@ class Picker extends React.Component {
 
   isFollowingAll() {
     const { following, inactive } = this.props.relationshipMap
-    return following.length > 1 && inactive.length === 0 ? true : false
+    return following.length > 1 && inactive.length === 0
   }
 
   renderBigButtonText() {
