@@ -8,25 +8,26 @@ import CommentTools from '../comments/CommentTools'
 function header(comment, author) {
   if (!comment || !author) { return null }
   return (
-    <header className="PostHeader CommentHeader" key={`CommentHeader_${comment.id}`}>
+    <header className="PostHeader CommentHeader" key={ `CommentHeader_${comment.id}` }>
       <div className="PostHeaderAuthor">
-        <Link className="PostHeaderLink" to={`/${author.username}`}>
-          <Avatar sources={author.avatar} />
-          <span className="CommentUsername">{`@${author.username}`}</span>
+        <Link className="PostHeaderLink" to={ `/${author.username}` }>
+          <Avatar sources={ author.avatar } />
+          <span className="CommentUsername">{ `@${author.username}` }</span>
         </Link>
       </div>
     </header>
   )
 }
 
-function footer(comment, author, currentUser) {
+function footer(comment, author, currentUser, post) {
   if (!author) { return null }
   return (
     <CommentTools
-      author={author}
-      comment={comment}
-      currentUser={currentUser}
-      key={`CommentTools_${comment.id}`}
+      author={ author }
+      comment={ comment }
+      currentUser={ currentUser }
+      key={ `CommentTools_${comment.id}` }
+      post={ post }
     />
   )
 }
@@ -35,6 +36,7 @@ export function parseComment(comment, json, currentUser, isGridLayout = true) {
   if (!comment) { return null }
   setModels(json)
   const author = json[MAPPING_TYPES.USERS][comment.authorId]
+  const post = json[MAPPING_TYPES.POSTS][comment.postId]
   const cells = []
   // header
   cells.push(header(comment, author))
@@ -49,7 +51,7 @@ export function parseComment(comment, json, currentUser, isGridLayout = true) {
     </div>
   )
   // footer
-  cells.push(footer(comment, author, currentUser))
+  cells.push(footer(comment, author, currentUser, post))
   setModels({})
   return cells
 }
