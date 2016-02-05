@@ -4,6 +4,7 @@ import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { getLinkObject } from '../base/json_helper'
 import { body, regionItems, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
+import ContentWarningButton from '../posts/ContentWarningButton'
 import PostTools from '../posts/PostTools'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
@@ -71,6 +72,9 @@ export function parsePost(post, json, currentUser, isGridLayout = true) {
     const authorLinkObject = getLinkObject(post, 'repostAuthor', json)
     const sourceLinkObject = getLinkObject(post, 'repostedSource', json)
     cells.push(repostHeader(post, authorLinkObject, sourceLinkObject, author))
+    if (post.contentWarning) {
+      cells.push(<ContentWarningButton post={post}/>)
+    }
     // this is weird, but the post summary is
     // actually the repost summary on reposts
     if (isGridLayout) {
@@ -83,6 +87,11 @@ export function parsePost(post, json, currentUser, isGridLayout = true) {
     }
   } else {
     cells.push(header(post, author))
+
+    if (post.contentWarning) {
+      cells.push(<ContentWarningButton post={post}/>)
+    }
+
     const content = isGridLayout ? post.summary : post.content
     cells.push(body(content, post.id, isGridLayout, postDetailPath))
   }
