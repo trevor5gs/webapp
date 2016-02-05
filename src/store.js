@@ -8,7 +8,7 @@ import { analytics, requester, uploader } from './middleware'
 import * as reducers from './reducers'
 
 const reducer = combineReducers(reducers)
-const reduxRouterMiddleware = syncHistory(browserHistory)
+const reduxRouterMiddleware = browserHistory ? syncHistory(browserHistory) : null
 
 let store = null
 if (typeof window !== 'undefined') {

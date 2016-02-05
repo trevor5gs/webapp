@@ -1,11 +1,11 @@
 import { PROFILE } from '../constants/action_types'
 
 export function profile(state = {}, action) {
+  let assetState
   let assetType
   switch (action.type) {
     case PROFILE.LOAD_SUCCESS:
-      const { users } = action.payload.response
-      const assetState = { ...state, ...users }
+      assetState = { ...state, ...action.payload.response.users }
       delete assetState.avatar.tmp
       delete assetState.coverImage.tmp
       return assetState

@@ -49,14 +49,15 @@ class BlockCollection extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { dispatch, editorStore } = nextProps
+    const { collection } = this.state
+    let newBlock
     switch (editorStore.type) {
       case ACTION_TYPES.POST.TMP_IMAGE_CREATED:
         this.removeEmptyTextBlock()
-        const newBlock = this.add({ kind: 'image', data: { url: editorStore.url } })
+        newBlock = this.add({ kind: 'image', data: { url: editorStore.url } })
         dispatch({ type: ACTION_TYPES.POST.IMAGE_BLOCK_CREATED, payload: { uid: newBlock.uid } })
         break
       case ACTION_TYPES.POST.SAVE_IMAGE_SUCCESS:
-        const { collection } = this.state
         collection[editorStore.uid][BLOCK_KEY] = {
           kind: 'image',
           data: {

@@ -28,6 +28,9 @@ Date.prototype.distanceOfTimeInWords = function distanceOfTimeInWords(toDate) {
   const distanceInSeconds = Math.round(Math.abs((toDate.getTime() - this.getTime()) / 1000))
   const distanceInMinutes = Math.round(distanceInSeconds / 60)
 
+  let remainder
+  let distanceInYears
+  let yearProp
   switch (true) {
     case (distanceInMinutes <= 1):
       switch (true) {
@@ -66,9 +69,9 @@ Date.prototype.distanceOfTimeInWords = function distanceOfTimeInWords(toDate) {
       return Math.round(distanceInMinutes / 43200) + timeAgoInWordsStrings.months
     // TODO: handle leap year like rails does
     default:
-      const remainder = distanceInMinutes % MINUTES_IN_YEAR
-      const distanceInYears = Math.floor(distanceInMinutes / MINUTES_IN_YEAR)
-      const yearProp = distanceInYears <= 1 ? 'year' : 'years'
+      remainder = distanceInMinutes % MINUTES_IN_YEAR
+      distanceInYears = Math.floor(distanceInMinutes / MINUTES_IN_YEAR)
+      yearProp = distanceInYears <= 1 ? 'year' : 'years'
       if (remainder < MINUTES_IN_QUARTER_YEAR) {
         return timeAgoInWordsStrings.about + distanceInYears + timeAgoInWordsStrings[yearProp]
       } else if (remainder < MINUTES_IN_THREE_QUARTERS_YEAR) {

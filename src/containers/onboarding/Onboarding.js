@@ -84,8 +84,7 @@ class Onboarding extends Component {
             <CommunityPicker
               dispatch={ dispatch }
               shouldAutoFollow={
-                stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ?
-                true : false
+                stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS
               }
               relationshipMap={rm}
             />
@@ -107,8 +106,7 @@ class Onboarding extends Component {
             <PeoplePicker
               dispatch={ dispatch }
               shouldAutoFollow={
-                stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ?
-                true : false
+                stream.type && stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS
               }
               relationshipMap={rm}
             />

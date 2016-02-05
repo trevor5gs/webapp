@@ -24,7 +24,7 @@ class OnboardingHeader extends Component {
     if (lockNext && relationshipMap) {
       return classNames(
       'OnboardingNextButton',
-      { isDisabled: relationshipMap && relationshipMap.following.length > 0 ? false : true },
+      { isDisabled: relationshipMap && relationshipMap.following.length > 0 },
       )
     }
     return classNames('OnboardingNextButton')
