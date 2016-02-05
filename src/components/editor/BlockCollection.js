@@ -26,15 +26,23 @@ class BlockCollection extends Component {
   };
 
   componentWillMount() {
-    this.state = { collection: {}, order: [] }
-    this.uid = 0
+    const { editorStore } = this.props
+    if (editorStore.editorState) {
+      this.state = editorStore.editorState
+      this.uid = Math.max(...editorStore.editorState.order) + 1
+    } else {
+      this.state = { collection: {}, order: [] }
+      this.uid = 0
+    }
     addDragObject(this)
   }
 
   componentDidMount() {
     const { blocks } = this.props
-    for (const block of blocks) {
-      this.add(block, false)
+    if (blocks.length) {
+      for (const block of blocks) {
+        this.add(block, false)
+      }
     }
     this.addEmptyTextBlock()
   }
@@ -57,6 +65,7 @@ class BlockCollection extends Component {
           uid: editorStore.uid,
         }
         this.setState({ collection })
+        this.persistBlocks()
         break
       case ACTION_TYPES.POST.POST_PREVIEW_SUCCESS:
         this.removeEmptyTextBlock()
@@ -70,8 +79,6 @@ class BlockCollection extends Component {
   componentWillUnmount() {
     removeDragObject(this)
   }
-
-  // Drag Stuff
 
   onDragStart(props) {
     const { collection } = this.state
@@ -199,6 +206,7 @@ class BlockCollection extends Component {
     if (shouldCheckForEmpty) {
       this.addEmptyTextBlock()
     }
+    this.persistBlocks()
     return newBlock
   }
 
@@ -228,7 +236,14 @@ class BlockCollection extends Component {
     if (shouldCheckForEmpty) {
       this.addEmptyTextBlock()
     }
+    this.persistBlocks()
   };
+
+  persistBlocks() {
+    const { dispatch } = this.props
+    const { collection, order } = this.state
+    dispatch({ type: ACTION_TYPES.POST.PERSIST, payload: { collection, order } })
+  }
 
   removeEmptyTextBlock() {
     const { collection, order } = this.state
@@ -247,9 +262,10 @@ class BlockCollection extends Component {
   };
 
   submit() {
-    const { delegate } = this.props
+    const { delegate, dispatch } = this.props
     const data = this.serialize()
     delegate.submit(data)
+    dispatch({ type: ACTION_TYPES.POST.PERSIST, payload: null })
   }
 
   serialize() {
