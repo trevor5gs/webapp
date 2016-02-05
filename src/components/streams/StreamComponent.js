@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
 import { runningFetches } from '../../middleware/requester'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
@@ -22,6 +23,7 @@ export class StreamComponent extends Component {
     json: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
     stream: PropTypes.object.isRequired,
+    className: PropTypes.string,
   };
 
   componentWillMount() {
@@ -167,7 +169,7 @@ export class StreamComponent extends Component {
   }
 
   render() {
-    const { currentUser, initModel, gui, json, pathname, stream } = this.props
+    const { className, currentUser, initModel, gui, json, pathname, stream } = this.props
     const { action } = this.state
     if (!action) { return null }
     const { meta, payload } = action
@@ -222,7 +224,7 @@ export class StreamComponent extends Component {
     const resultMode = findLayoutMode(gui.modes)
     const renderMethod = resultMode && resultMode.mode === 'grid' ? 'asGrid' : 'asList'
     return (
-      <section className="StreamComponent">
+      <section className={classNames('StreamComponent', className)}>
         {
           meta.renderStream[renderMethod](
             renderObj,
@@ -253,4 +255,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, null, null, { withRef: true })(StreamComponent)
-

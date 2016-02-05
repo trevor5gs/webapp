@@ -19,7 +19,7 @@ function getPostDetailPath(author, post) {
 function commentStream(post) {
   const action = loadComments(post)
   return (
-    <StreamComponent key={`Comments_${post.id}`} action={action} />
+    <StreamComponent className="narrow" key={`Comments_${post.id}`} action={action} />
   )
 }
 
