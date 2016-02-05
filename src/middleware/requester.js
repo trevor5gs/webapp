@@ -69,6 +69,7 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.COMMENT.DELETE &&
         type !== ACTION_TYPES.COMMENT.EDIT &&
         type !== ACTION_TYPES.COMMENT.FLAG &&
+        type !== ACTION_TYPES.INVITATIONS.INVITE &&
         type !== ACTION_TYPES.POST.COMMENT &&
         type !== ACTION_TYPES.POST.CREATE &&
         type !== ACTION_TYPES.POST.DELETE &&
@@ -127,6 +128,18 @@ export const requester = store => next => action => {
       )
   }
 
+  function fireSuccessAction() {
+    if (meta && meta.successAction) {
+      store.dispatch(meta.successAction)
+    }
+  }
+
+  function fireFailureAction() {
+    if (meta && meta.failureAction) {
+      store.dispatch(meta.failureAction)
+    }
+  }
+
   const options = { method: method || 'GET' }
   if (options.method !== 'GET' && options.method !== 'HEAD') {
     options.body = body || null
@@ -159,14 +172,17 @@ export const requester = store => next => action => {
                     payload.pagination = linkPagination
                   }
                   next({ meta, payload, type: SUCCESS })
+                  fireSuccessAction()
                   return true
                 })
               } else if (response.ok) {
                 // TODO: handle a 204 properly so that we know to stop paging
                 next({ ...action, type: SUCCESS })
+                fireSuccessAction()
               } else {
                 // TODO: is this what should be happening here?
                 next({ ...action, type: SUCCESS })
+                fireSuccessAction()
               }
               return Promise.resolve(true);
             })
@@ -180,6 +196,7 @@ export const requester = store => next => action => {
                 resetAuth(store.dispatch, document.location)
               }
               next({ error, meta, payload, type: FAILURE })
+              fireFailureAction()
               return false
             })
       })

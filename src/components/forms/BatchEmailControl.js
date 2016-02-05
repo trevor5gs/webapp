@@ -17,6 +17,7 @@ class BatchEmailControl extends Component {
         { ...this.props }
         autoCapitalize="off"
         autoCorrect="off"
+        kind="textarea"
         type="text"
       />
     )

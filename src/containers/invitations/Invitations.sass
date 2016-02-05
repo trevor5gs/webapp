@@ -1,8 +1,9 @@
 .InvitationsHeader
-  padding: rem(20) rem(10) 0
+  margin: rem(20) rem(10) 0
   max-width: rem(440)
 
-.InvitationsHeading
+.InvitationsHeading,
+.InvitationsStreamHeading
   +sanserif
   height: rem(30)
   font-size: rem(18)
@@ -14,33 +15,46 @@
   margin-top: rem(60)
 
 .InvitationsForm
-  padding: 0 rem(10)
+  margin: 0 rem(10)
+  max-width: rem(440)
 
 .InvitationsStreamHeading
-  +sans-typeset
-  padding: 0 rem(10)
-  line-height: 1
-  margin-top: rem(40)
+  margin: rem(80) rem(10) 0
 
+.InvitationsForm .FormButton
+  min-width: rem(120)
+  float: right
+
+.InvitationForm .BatchEmailControlSuggestions
+  max-width: rem(380)
 
 @media(min-width: #{$break-2})
   .InvitationsHeader
-    padding: rem(40) rem(20) rem(20)
-  .InvitationsHeading
+    margin: rem(40) rem(20) rem(20)
+  .InvitationsHeading,
+  .InvitationsStreamHeading
     height: rem(40)
     font-size: rem(24)
     line-height: rem(40)
   .InvitationsForm
     margin-top: rem(-3)
+    max-width: rem(720)
   .InvitationsForm,
   .InvitationsStreamHeading
-    padding-left: rem(20)
-    padding-right: rem(20)
+    margin-left: rem(20)
+    margin-right: rem(20)
+  .InvitationForm .FormControlFeedback
+    left: rem(730)
+    width: rem(150)
+
+@media(min-width: #{$break-3})
+  .InvitationForm .FormControlFeedback
+    width: rem(250)
 
 @media(min-width: #{$break-4})
   .InvitationsForm,
   .InvitationsHeader,
   .InvitationsStreamHeading
-    padding-left: rem(40)
-    padding-right: rem(40)
+    margin-left: rem(40)
+    margin-right: rem(40)
 

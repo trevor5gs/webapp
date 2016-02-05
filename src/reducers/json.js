@@ -135,9 +135,9 @@ function updateResult(response, newState, action) {
       newState.pages[resultPath] = { ...existingResult, ...result }
     }
   } else if (existingResult) {
-    // this keeps the pagination correct on a refresh
-    // should probably be resetting the results here, but the more button breaks
-    newState.pages[resultPath] = { ...result, ...existingResult }
+    // keeping the existingResult pagination keeps
+    // the results correct when refreshing a page
+    newState.pages[resultPath] = { ...result, pagination: existingResult.pagination, next: existingResult.next }
   } else {
     newState.pages[resultPath] = result
   }

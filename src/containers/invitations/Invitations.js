@@ -19,14 +19,14 @@ class Invitations extends Component {
       formStatus: STATUS.INDETERMINATE,
       batchEmailState: { status: STATUS.INDETERMINATE, message: '' },
     }
-    this.batchEmailValue = ''
+    this.batchEmailValue = []
   }
 
   static preRender = (store) =>
     store.dispatch(loadInvitedUsers());
 
   handleControlChange = ({ emails }) => {
-    this.batchEmailValue = emails
+    this.batchEmailValue = emails.split(/[,\s]+/)
     const { batchEmailState } = this.state
     const currentStatus = batchEmailState.status
     const newState = getBatchEmailState({ value: emails, currentStatus })
@@ -42,8 +42,8 @@ class Invitations extends Component {
       return this.setState({ formStatus: STATUS.FAILURE })
     }
     const { dispatch } = this.props
-    this.setState({ formStatus: STATUS.SUBMITTED })
     dispatch(inviteUsers(this.batchEmailValue))
+    this.setState({ formStatus: STATUS.SUBMITTED })
   };
 
   renderMessage() {
@@ -88,7 +88,13 @@ class Invitations extends Component {
               onChange={ this.handleControlChange }
               tabIndex="1"
             />
-            <FormButton tabIndex="2" disabled={ !isValid }>Invite</FormButton>
+            <FormButton
+              className="FormButton asPill"
+              disabled={ !isValid }
+              tabIndex="2"
+            >
+              Invite
+            </FormButton>
             <p className="BatchEmailControlSuggestions" style={{ color: '#aaa' }}>
               { this.renderMessage() }
             </p>
