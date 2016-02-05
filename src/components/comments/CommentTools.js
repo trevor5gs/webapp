@@ -20,10 +20,11 @@ class CommentTools extends Component {
 
   static propTypes = {
     author: PropTypes.object.isRequired,
+    comment: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    comment: PropTypes.object.isRequired,
+    post: PropTypes.object.isRequired,
   };
 
   componentWillMount() {
@@ -33,8 +34,9 @@ class CommentTools extends Component {
   }
 
   getToolCells() {
-    const { author, currentUser, isLoggedIn, comment } = this.props
+    const { author, comment, currentUser, isLoggedIn, post } = this.props
     const isOwnComment = currentUser && author.id === currentUser.id
+    const isOwnPost = currentUser && post.authorId === currentUser.id
     const cells = []
     cells.push(
       <span className="PostTool TimeAgoTool" key={`TimeAgoTool_${comment.id}`}>
@@ -51,6 +53,15 @@ class CommentTools extends Component {
             </button>
           </span>
         )
+        cells.push(
+          <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${comment.id}`}>
+            <button onClick={ this.deleteComment }>
+              <XBoxIcon />
+              <Hint>Delete</Hint>
+            </button>
+          </span>
+        )
+      } else if (isOwnPost) {
         cells.push(
           <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${comment.id}`}>
             <button onClick={ this.deleteComment }>
