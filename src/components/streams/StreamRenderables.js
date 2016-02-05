@@ -3,7 +3,7 @@ import { camelize } from 'humps'
 import * as api from '../../networking/api'
 import { getLinkArray } from '../base/json_helper'
 import { parsePost } from '../parsers/PostParser'
-import { parseComment } from '../parsers/CommentParser'
+import CommentParser, { parseComment } from '../parsers/CommentParser'
 import { parseNotification } from '../parsers/NotificationParser'
 import PostsAsGrid from '../posts/PostsAsGrid'
 import { HeartIcon, RepostIcon } from '../posts/PostIcons'
@@ -145,8 +145,12 @@ export function postDetail(posts, json, currentUser) {
   )
 }
 
-export function commentsAsList(comments /* json, currentUser */) {
-  return comments.data.map(comment => <p key={comment.id}>{comment.content[0].data}</p>)
+export function commentsAsList(comments) {
+  return <div>
+      {comments.data.map(comment =>
+        <CommentParser key={`CommentParser_${comment.id}`} comment={comment} isGridLayout={false} />
+       )}
+  </div>
 }
 
 export function notificationList(notifications, json, currentUser) {

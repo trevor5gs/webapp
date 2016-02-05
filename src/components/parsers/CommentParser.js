@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { body, setModels } from './RegionParser'
@@ -33,26 +34,60 @@ function footer(comment, author, currentUser, post) {
 }
 
 export function parseComment(comment, json, currentUser, isGridLayout = true) {
-  if (!comment) { return null }
-  setModels(json)
-  const author = json[MAPPING_TYPES.USERS][comment.authorId]
-  const post = json[MAPPING_TYPES.POSTS][comment.postId]
-  const cells = []
-  // header
-  cells.push(header(comment, author))
-  // body
-  const content = isGridLayout ? comment.summary : comment.content
-  cells.push(
-    <div
-      className="CommentBody"
-      key={ `CommentBody${comment.id}` }
-    >
-      { body(content, comment.id, isGridLayout) }
-    </div>
-  )
-  // footer
-  cells.push(footer(comment, author, currentUser, post))
-  setModels({})
-  return cells
+  return <CommentParser comment={comment} isGridLayout={isGridLayout} />
 }
 
+class CommentParser extends Component {
+  static propTypes = {
+    comment: PropTypes.object,
+    post: PropTypes.object,
+    author: PropTypes.object,
+    assets: PropTypes.any.isRequired,
+    currentUser: PropTypes.object,
+    isGridLayout: PropTypes.bool,
+  };
+
+  render() {
+    const { comment, author, assets, currentUser, isGridLayout, post } = this.props
+
+    if (!comment) {
+      return null
+    }
+
+    setModels({ assets })
+    const commentHeader = header(comment, author)
+    const content = isGridLayout ? comment.summary : comment.content
+
+    const commentBody = (
+      <div className="CommentBody" key={ `CommentBody${comment.id}` } >
+        { body(content, comment.id, isGridLayout) }
+      </div>
+    )
+
+    const commentFooter = footer(comment, author, currentUser, post)
+    setModels({})
+
+    return (
+      <div>
+        {commentHeader}
+        {commentBody}
+        {commentFooter}
+      </div>
+    )
+  }
+}
+
+const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
+  const comment = ownProps.comment
+  const author = json[MAPPING_TYPES.USERS][comment.authorId]
+  const post = json[MAPPING_TYPES.POSTS][comment.postId]
+  const assets = json.assets;
+  return {
+    assets,
+    currentUser,
+    author,
+    post,
+  }
+}
+
+export default connect(mapStateToProps)(CommentParser)
