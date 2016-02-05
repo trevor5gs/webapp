@@ -65,7 +65,7 @@ class FlagDialog extends Component {
   renderChoicesScreen() {
     const { activeChoice } = this.state
     const index = Object.keys(flags).indexOf(activeChoice)
-    const top = index < 0 ? null : (70 * index) + _offsets[GUI.viewportSetting]
+    const top = index < 0 ? null : (70 * index) + _offsets[GUI.viewportDeviceSize]
     return (
       <div className="Dialog FlagDialog">
         <h2>Would you like to flag this content as:</h2>

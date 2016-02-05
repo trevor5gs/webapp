@@ -24,12 +24,21 @@ function getCoverImageSize(innerWidth) {
   return 'optimized'
 }
 
+// This could be anything really, baby, momma, poppa bear would work too.
+function getViewportDeviceSize(gridColumnCount, innerWidth) {
+  if (gridColumnCount >= 4) {
+    return 'desktop'
+  } else if (gridColumnCount >= 2 && innerWidth >= 640) {
+    return 'tablet'
+  }
+  return 'mobile'
+}
+
 function getProbeProperties() {
   const probeElement = document.getElementById('root')
   const styles = window.getComputedStyle(probeElement, ':after')
-  const viewportSetting = styles.getPropertyValue('content')
   const gridColumnCount = parseInt(styles.getPropertyValue('z-index'), 10)
-  return { viewportSetting, gridColumnCount }
+  return { gridColumnCount }
 }
 
 
@@ -41,8 +50,8 @@ function setResizeProperties() {
   const wiw = window.innerWidth
   const probe = getProbeProperties()
   const gridColumnCount = parseInt(probe.gridColumnCount, 10)
-  const viewportSetting = probe.viewportSetting
-  const padding = viewportSetting === 'mobile' ? 10 : (gridColumnCount >= 4 ? 40 : 20)
+  const viewportDeviceSize = getViewportDeviceSize(gridColumnCount, wiw)
+  const padding = viewportDeviceSize === 'mobile' ? 10 : (gridColumnCount >= 4 ? 40 : 20)
   const columnWidth = Math.round((wiw - ((gridColumnCount + 1) * padding)) / gridColumnCount)
   const contentWidth = Math.round(wiw - (padding * 2))
 
@@ -50,7 +59,7 @@ function setResizeProperties() {
   GUI.innerHeight = window.innerHeight
   GUI.coverOffset = Math.round((wiw * 0.5625))
   GUI.coverImageSize = getCoverImageSize(wiw)
-  GUI.viewportSetting = viewportSetting
+  GUI.viewportDeviceSize = viewportDeviceSize
   GUI.gridColumnCount = gridColumnCount
   GUI.columnWidth = columnWidth
   GUI.contentWidth = contentWidth

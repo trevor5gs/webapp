@@ -7,7 +7,7 @@ export const GUI = {
   contentWidth: null,
   coverOffset: null,
   coverImageSize: null,
-  viewportSetting: null,
+  viewportDeviceSize: null,
   gridColumnCount: null,
 }
 
