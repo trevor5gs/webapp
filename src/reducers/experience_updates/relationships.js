@@ -1,7 +1,9 @@
 /* eslint-disable no-param-reassign */
+import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { methods as jsonMethods } from '../json'
+import postMethods from './posts'
 
 const methods = {}
 
@@ -43,6 +45,13 @@ function removeItemsForAuthor(newState, mappingType, authorId) {
     if (newState[mappingType].hasOwnProperty(itemId)) {
       const item = newState[mappingType][itemId]
       if (item.hasOwnProperty('authorId') && item.authorId === authorId) {
+        const action = {
+          type: ACTION_TYPES.POST.DELETE_REQUEST,
+          payload: {
+            model: newState[mappingType][itemId],
+          },
+        }
+        newState = postMethods.deletePost(null, newState, action)
         delete newState[mappingType][itemId]
       }
     }

@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as ACTION_TYPES from '../../constants/action_types'
+import * as MAPPING_TYPES from '../../constants/mapping_types'
 // import * as RELATIONSHIP_PRIORITY from '../../constants/relationship_types'
 import { methods as jsonMethods } from '../json'
 
