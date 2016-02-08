@@ -125,7 +125,11 @@ const start = () => {
   })
 }
 
-throng(start, {
-  workers: WORKERS,
-  lifetime: Infinity,
-});
+if (WORKERS > 1) {
+  throng(start, {
+    workers: WORKERS,
+    lifetime: Infinity,
+  })
+} else {
+  start()
+}
