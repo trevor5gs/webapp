@@ -29,7 +29,9 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       ENV: JSON.stringify(require(path.join(__dirname, './env.js')))
-    })
+    }),
+    new webpack.BannerPlugin('require("source-map-support").install();',
+                             {raw: true, entryOnly: false})
   ],
   module:  {
     loaders: [
