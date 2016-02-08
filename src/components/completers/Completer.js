@@ -11,6 +11,9 @@ export default class Completer extends Component {
     onCompletion: PropTypes.func,
   };
 
+  static emojiRegex = /\s?:{1}(\w+|\+|-):{0}$/;
+  static userRegex = /^\s?@{1}\w+/;
+
   render() {
     const { className, completions, onCompletion } = this.props
     if (!completions || !completions.length) {

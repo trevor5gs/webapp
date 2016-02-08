@@ -6,10 +6,11 @@ import ImageBlock from './ImageBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
 import TextTools from './TextTools'
+import { autoComplete } from '../../actions/posts'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addRangeObject, removeRangeObject } from './RangeComponent'
-import Avatar from '../assets/Avatar'
+import { getWordFromSelection } from './SelectionUtil'
 import Completer from '../completers/Completer'
 
 const BLOCK_KEY = 'block'
@@ -30,6 +31,7 @@ class BlockCollection extends Component {
 
   componentWillMount() {
     const { editorStore } = this.props
+
     if (editorStore.editorState) {
       this.state = editorStore.editorState
       this.uid = Math.max(...editorStore.editorState.order) + 1
@@ -91,7 +93,14 @@ class BlockCollection extends Component {
   }
 
   onRangeChanged(props) {
+    const { dispatch } = this.props
     this.setState(props)
+    const word = getWordFromSelection()
+    if (word.match(Completer.userRegex)) {
+      dispatch(autoComplete('user', word))
+    } else if (word.match(Completer.emojiRegex)) {
+      dispatch(autoComplete('emoji', word))
+    }
   }
 
   onDragStart(props) {
@@ -300,11 +309,12 @@ class BlockCollection extends Component {
     return results
   }
 
-  handleCompletion = ({ value }) => {
-    console.log('completed', value)
+  handleCompletion = (/* { value } */) => {
+    // console.log('completed', value)
   };
 
   render() {
+    const { editorStore } = this.props
     const { activeTools, collection, coordinates, dragBlockTop, hideTextTools, order } = this.state
     const blocks = []
     for (const uid of order) {
@@ -319,15 +329,6 @@ class BlockCollection extends Component {
       )
     }
 
-    const completions = [
-      { asset: <Avatar classList="tiny" />, value: '@mk', label: '@mk' },
-      { asset: <Avatar classList="tiny" />, value: '@ellophotography', label: '@ellophotography' },
-      { asset: <Avatar classList="tiny" />, value: '@budnitz', label: '@budnitz' },
-      { asset: <Avatar classList="tiny" />, value: '@666', label: '@666' },
-      { asset: <Avatar classList="tiny" />, value: '@sean', label: '@sean' },
-      { asset: <Avatar classList="tiny" />, value: '@s', label: '@ellodesign_is_really_long_one' },
-    ]
-
     return (
       <div className="editor" >
         <div
@@ -337,7 +338,7 @@ class BlockCollection extends Component {
           { blocks }
           { dragElem }
           <Completer
-            completions={ completions }
+            completions={ editorStore.completions }
             onCompletion ={ this.handleCompletion }
           />
         </div>

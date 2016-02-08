@@ -117,3 +117,12 @@ export function postPreviews(embedUrl) {
   }
 }
 
+export function autoComplete(type, word) {
+  return {
+    type: ACTION_TYPES.POST.AUTO_COMPLETE,
+    payload: {
+      endpoint: (type === 'user' ? api.userAutocompleter(word) : api.userAutocompleter()),
+    },
+  }
+}
+

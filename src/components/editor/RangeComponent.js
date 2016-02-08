@@ -7,7 +7,7 @@ function getPositionFromSelection() {
   const pos = range.getBoundingClientRect()
   // TODO: magic number of -60 should be tested
   // in multiple browsers, this works for safari
-  return { left: Math.round(pos.left - 60), top: Math.round(pos.top - 40) }
+  return { left: Math.round(pos.left - 60), top: Math.round(pos.top) }
 }
 
 function getActiveTextTools() {

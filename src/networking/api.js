@@ -144,6 +144,11 @@ export function postPreviews() {
     path: getAPIPath('post_previews'),
   }
 }
+export function userAutocompleter(word) {
+  return {
+    path: getAPIPath('users/autocomplete', { terms: word.replace(/@|:/ig, '') }),
+  }
+}
 // Comments
 export function commentsForPost(post) {
   const params = { per_page: PER_PAGE }
