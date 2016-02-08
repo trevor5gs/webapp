@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { openAlert } from '../../actions/modals'
+import { closeOmnibar } from '../../actions/omnibar'
 import { savePostImage } from '../../actions/posts'
 import Dialog from '../../components/dialogs/Dialog'
 
@@ -48,11 +49,15 @@ class PostActionBar extends Component {
     // @browseInput.click()
   };
 
+  cancel = () => {
+    this.props.dispatch(closeOmnibar())
+  };
+
   render() {
     return (
       <div className="editor-actions">
         <button ref="browseButton" onClick={ this.browse } name="browse-button">Upload</button>
-        <button ref="cancelButton" name="cancel-button" className="CloseModal">Cancel</button>
+        <button ref="cancelButton" onClick={ this.cancel } name="cancel-button">Cancel</button>
         <button ref="submitButton" onClick={ this.submitted } name="submit-button">Post</button>
         <input
           className="hidden"

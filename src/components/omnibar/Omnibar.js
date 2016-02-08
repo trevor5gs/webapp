@@ -5,11 +5,13 @@ import { connect } from 'react-redux'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { closeOmnibar } from '../../actions/omnibar'
 import Mousetrap from '../../vendor/mousetrap'
+import Avatar from '../assets/Avatar'
 
 class Omnibar extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    avatar: PropTypes.shape({}),
     omnibar: PropTypes.shape({
       component: PropTypes.object,
       isActive: PropTypes.bool,
@@ -52,13 +54,14 @@ class Omnibar extends Component {
   };
 
   render() {
-    const { omnibar } = this.props
+    const { avatar, omnibar } = this.props
     const { isActive, classList, component } = omnibar
     return (
       <div
         className={classNames('Omnibar', { isActive }, classList)}
         onClick={ isActive ? this.handleOmnibarTrigger : null }
       >
+        <Avatar sources={avatar} />
         { component }
       </div>
     )
@@ -68,6 +71,7 @@ class Omnibar extends Component {
 function mapStateToProps(state) {
   return {
     omnibar: state.omnibar,
+    avatar: state.profile.avatar,
   }
 }
 

@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import classNames from 'classnames'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
@@ -271,7 +270,6 @@ class BlockCollection extends Component {
   handleTextBlockInput = (vo) => {
     const { collection } = this.state
     collection[vo.uid][BLOCK_KEY] = vo
-    this.setState({ collection })
   };
 
   submit() {
@@ -300,20 +298,8 @@ class BlockCollection extends Component {
     return results
   }
 
-  hasContent() {
-    const { collection, order } = this.state
-    const firstBlock = collection[order[0]]
-    return (
-      order.length > 1 ||
-      firstBlock &&
-      firstBlock.block.data.length &&
-      firstBlock.block.data !== '<br>'
-    )
-  }
-
   render() {
     const { activeTools, collection, coordinates, dragBlockTop, hideTextTools, order } = this.state
-    const hasContent = this.hasContent()
     const blocks = []
     for (const uid of order) {
       const block = collection[uid][BLOCK_KEY]
@@ -327,10 +313,7 @@ class BlockCollection extends Component {
       )
     }
     return (
-      <div
-        className={ classNames('editor', { hasContent }) }
-        data-placeholder="Say Ello..."
-      >
+      <div className="editor" >
         <div
           className="editor-region"
           data-num-blocks={ order.length }

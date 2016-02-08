@@ -19,10 +19,7 @@
   transition: background-color $speed ease
   background-color: #e5e5e5
   padding: rem(20)
-  min-height: calc(50vh - #{rem(130)})
-  max-height: calc(100vh - #{rem(130)})
-  overflow-y: auto
-  -webkit-overflow-scrolling: touch
+  min-height: rem(100)
 
 .editor-actions
   padding: 0 rem(20)
@@ -52,29 +49,16 @@
 
 // -------------------------------------
 
-// "Say Ello" placeholder text
-.editor:after
-  position: absolute
-  top: rem(81)
-  left: rem(61)
-  content: attr(data-placeholder)
-  color: #999
-  pointer-events: none
-.editor.hasContent:after
-  display: none
-
-// -------------------------------------
-
 .editor-block
   position: relative
 
 .editable
-  padding: rem(40) rem(20)
+  padding: rem(30) rem(20)
   border: 1px dashed #666
   white-space: pre-wrap
   word-break: break-word
   outline: 0
-  min-height: rem(80)
+  min-height: rem(60)
 
 // .editor-block.readonly
 //   border: 1px solid #aaa
