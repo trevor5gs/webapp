@@ -119,12 +119,13 @@ class PostParser extends Component {
     assets: PropTypes.any.isRequired,
     currentUser: PropTypes.object,
     isGridLayout: PropTypes.bool,
+    showComments: PropTypes.bool,
     authorLinkObject: PropTypes.object,
     sourceLinkObject: PropTypes.object,
   };
 
   render() {
-    const { post, assets, currentUser, isGridLayout, author } = this.props
+    const { post, assets, currentUser, isGridLayout, author, showComments } = this.props
     if (!post) { return null }
 
     let postHeader;
@@ -141,19 +142,20 @@ class PostParser extends Component {
       <div>
         {postHeader}
         {parsePost(post, author, currentUser, isGridLayout)}
-        {post.showComments ? commentStream(post, author, currentUser) : null}
+        {showComments ? commentStream(post, author, currentUser) : null}
       </div>)
   }
 }
 
 const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
-  const post = ownProps.post
+  const post = json[MAPPING_TYPES.POSTS][ownProps.post.id]
   const author = json[MAPPING_TYPES.USERS][post.authorId]
   const assets = json.assets;
 
   let newProps = {
     assets,
     currentUser,
+    post,
     author,
   }
 

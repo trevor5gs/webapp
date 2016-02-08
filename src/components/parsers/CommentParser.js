@@ -33,10 +33,6 @@ function footer(comment, author, currentUser, post) {
   )
 }
 
-export function parseComment(comment, json, currentUser, isGridLayout = true) {
-  return <CommentParser comment={comment} isGridLayout={isGridLayout} />
-}
-
 class CommentParser extends Component {
   static propTypes = {
     comment: PropTypes.object,

@@ -70,4 +70,3 @@ class PostsAsGrid extends Component {
 }
 
 export default PostsAsGrid
-

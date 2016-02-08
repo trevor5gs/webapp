@@ -103,7 +103,7 @@ export function postsAsList(posts) {
   )
 }
 
-export function postDetail(posts, json, currentUser) {
+export function postDetail(posts, json) {
   const post = posts.data[0]
   let comments = getLinkArray(post, 'comments', json) || []
   comments = comments.concat(posts.nestedData)
