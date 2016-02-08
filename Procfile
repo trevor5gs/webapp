@@ -1,1 +1,1 @@
-web: node --optimize_for_size --max_old_space_size=460 --gc_interval=100 dist/server-iso.js
+web: node --optimize-for-size --max-old-space-size=${MAX_OLD_SPACE_SIZE:-460} --gc-interval=${GC_INTERVAL:-100} dist/server-iso.js

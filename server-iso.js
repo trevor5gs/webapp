@@ -114,22 +114,22 @@ app.use((req, res) => {
 })
 
 const port = process.env.PORT || 6660
-const WORKERS = process.env.WEB_CONCURRENCY || 1;
-const start = () => {
+const workers = process.env.WEB_CONCURRENCY || 1;
+const start = (workerId) => {
   app.listen(port, (err) => {
     if (err) {
       console.log(err)
       return
     }
-    console.log('Listening at http://localhost:' + port)
+    console.log('Worker ' + workerId + ' listening at http://localhost:' + port)
   })
 }
 
-if (WORKERS > 1) {
+if (workers > 1) {
   throng(start, {
-    workers: WORKERS,
+    workers: workers,
     lifetime: Infinity,
   })
 } else {
-  start()
+  start(1)
 }
