@@ -156,7 +156,7 @@ export function loadEmojis() {
 }
 // Comments
 export function commentsForPost(post) {
-  const params = { per_page: PER_PAGE }
+  const params = { per_page: 10 }
   return {
     path: getAPIPath(`posts/${post.id}/comments`, params),
     params,
