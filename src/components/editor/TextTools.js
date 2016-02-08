@@ -39,10 +39,6 @@ export default class TextTools extends Component {
     this.initialValue = text
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
-  }
-
   handleFocus = () => {
     this.setState({ hasFocus: true })
   };
@@ -63,8 +59,9 @@ export default class TextTools extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { isLinkActive, text } = this.state
-    this.setState({ isLinkActive: !isLinkActive })
-    console.log('form submitted', text)
+    if (text.length) {
+      this.setState({ isLinkActive: !isLinkActive })
+    }
   };
 
   handleBoldToggle = () => {
