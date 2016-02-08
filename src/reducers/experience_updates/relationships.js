@@ -1,9 +1,7 @@
 /* eslint-disable no-param-reassign */
-import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { methods as jsonMethods } from '../json'
-import postMethods from './posts'
 
 const methods = {}
 
@@ -46,13 +44,12 @@ function removeItemsForAuthor(newState, mappingType, authorId) {
       const item = newState[mappingType][itemId]
       if (item.hasOwnProperty('authorId') && item.authorId === authorId) {
         const action = {
-          type: ACTION_TYPES.POST.DELETE_REQUEST,
+          type: '_REQUEST',
           payload: {
             model: newState[mappingType][itemId],
           },
         }
-        newState = postMethods.deletePost(null, newState, action)
-        delete newState[mappingType][itemId]
+        newState = jsonMethods.deleteModel(null, newState, action, mappingType)
       }
     }
   }
@@ -67,7 +64,13 @@ function updateRelationship(newState, action) {
   // remove the user from the store
   if (priority === RELATIONSHIP_PRIORITY.BLOCK) {
     // delete the user
-    delete newState[MAPPING_TYPES.USERS][userId]
+    const userAction = {
+      type: '_REQUEST',
+      payload: {
+        model: newState[MAPPING_TYPES.USERS][userId],
+      },
+    }
+    jsonMethods.deleteModel(null, newState, userAction, MAPPING_TYPES.USERS)
     // delete all of their posts
     methods.removeItemsForAuthor(newState, MAPPING_TYPES.POSTS, userId)
     // delete all of their comments

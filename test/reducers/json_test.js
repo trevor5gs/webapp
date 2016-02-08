@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import { UPDATE_LOCATION } from 'react-router-redux'
 import { expect, stub, isValidResult, json, clearJSON, sinon } from '../spec_helper'
 import * as subject from '../../src/reducers/json'
 import * as ACTION_TYPES from '../../src/constants/action_types'
@@ -239,50 +240,133 @@ describe('json reducer', () => {
     })
   })
 
-  describe('#json', () => {
-    it('calls #relationshipMethods.updateRelationship if action.type === RELATIONSHIPS.UPDATE_INTERNAL', () => {
-      const spy = sinon.stub(subject.relationshipMethods, 'updateRelationship')
-      subject.json(json, { type: ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL })
-      expect(spy.called).to.be.true
-      subject.relationshipMethods.updateRelationship.restore()
+  describe('#deleteModel', () => {
+    it('deletes a post on request', () => {
+      const post = json.posts['1']
+      expect(post).not.to.be.undefined
+      const action = { type: ACTION_TYPES.POST.DELETE_REQUEST }
+      action.payload = { model: post }
+      subject.methods.deleteModel({ state: 'yo' }, json, action, MAPPING_TYPES.POSTS)
+      expect(json.posts['1']).to.be.undefined
     })
 
-    context('with post actions', () => {
-      it('calls #postMethods.updatePostLoves if action.type === POST.LOVE_REQUEST', () => {
-        const spy = sinon.stub(subject.postMethods, 'updatePostLoves')
-        subject.json(json, { type: ACTION_TYPES.POST.LOVE_REQUEST })
-        expect(spy.called).to.be.true
-        subject.postMethods.updatePostLoves.restore()
-      })
+    it('deletes a post on success', () => {
+      const post = json.posts['1']
+      expect(post).not.to.be.undefined
+      const action = { type: ACTION_TYPES.POST.DELETE_SUCCESS }
+      action.payload = { model: post }
+      subject.methods.deleteModel({ state: 'yo' }, json, action, MAPPING_TYPES.POSTS)
+      expect(json.posts['1']).to.be.undefined
+    })
 
-      it('calls #postMethods.updatePostLoves if action.type === POST.LOVE_FAILURE', () => {
-        const spy = sinon.stub(subject.postMethods, 'updatePostLoves')
-        subject.json(json, { type: ACTION_TYPES.POST.LOVE_FAILURE })
+    it('restores a post on failure', () => {
+      const post = json.posts['1']
+      expect(post).not.to.be.undefined
+      const action = { type: ACTION_TYPES.POST.DELETE_FAILURE }
+      action.payload = { model: post }
+      subject.methods.deleteModel({ state: 'yo' }, json, action, MAPPING_TYPES.POSTS)
+      expect(json.posts['1']).not.to.be.undefined
+    })
+
+    it('returns a passed in state if type is not supported', () => {
+      const post = json.posts['1']
+      expect(post).not.to.be.undefined
+      const action = { type: 'blah' }
+      action.payload = { model: post }
+      expect(subject.methods.deleteModel({ state: 'yo' }, json, action, MAPPING_TYPES.POSTS)).to.deep.equal({ state: 'yo' })
+    })
+  })
+
+  describe('#json', () => {
+    function methodCalledWithActions(methods, method, actions) {
+      const spy = sinon.stub(methods, method)
+      for (const action of actions) {
+        subject.json(json, { type: action })
         expect(spy.called).to.be.true
-        subject.postMethods.updatePostLoves.restore()
-      })
+      }
+      methods[method].restore()
+    }
+
+    it('calls #methods.addNewIdsToResult', () => {
+      methodCalledWithActions(subject.methods, 'addNewIdsToResult', [
+        ACTION_TYPES.ADD_NEW_IDS_TO_RESULT,
+      ])
     })
 
     context('with comment actions', () => {
-      it('calls #commentMethods.deleteComment if action.type === COMMENT.DELETE_REQUEST', () => {
-        const spy = sinon.stub(subject.commentMethods, 'deleteComment')
-        subject.json(json, { type: ACTION_TYPES.COMMENT.DELETE_REQUEST })
-        expect(spy.called).to.be.true
-        subject.commentMethods.deleteComment.restore()
+      it('calls #methods.deleteModel', () => {
+        methodCalledWithActions(subject.methods, 'deleteModel', [
+          ACTION_TYPES.COMMENT.DELETE_REQUEST,
+          ACTION_TYPES.COMMENT.DELETE_SUCCESS,
+          ACTION_TYPES.COMMENT.DELETE_FAILURE,
+        ])
+      })
+    })
+
+    context('with post actions', () => {
+      it('calls #postMethods.addNewPost', () => {
+        methodCalledWithActions(subject.postMethods, 'addNewPost', [
+          ACTION_TYPES.POST.CREATE_SUCCESS,
+        ])
       })
 
-      it('calls #commentMethods.deleteComment if action.type === COMMENT.DELETE_SUCCESS', () => {
-        const spy = sinon.stub(subject.commentMethods, 'deleteComment')
-        subject.json(json, { type: ACTION_TYPES.COMMENT.DELETE_SUCCESS })
-        expect(spy.called).to.be.true
-        subject.commentMethods.deleteComment.restore()
+      it('calls #methods.deleteModel', () => {
+        methodCalledWithActions(subject.methods, 'deleteModel', [
+          ACTION_TYPES.POST.DELETE_REQUEST,
+          ACTION_TYPES.POST.DELETE_SUCCESS,
+          ACTION_TYPES.POST.DELETE_FAILURE,
+        ])
       })
 
-      it('calls #commentMethods.deleteComment if action.type === COMMENT.DELETE_FAILURE', () => {
-        const spy = sinon.stub(subject.commentMethods, 'deleteComment')
-        subject.json(json, { type: ACTION_TYPES.COMMENT.DELETE_FAILURE })
+      it('calls #postMethods.updatePostLoves', () => {
+        methodCalledWithActions(subject.postMethods, 'updatePostLoves', [
+          ACTION_TYPES.POST.LOVE_REQUEST,
+          ACTION_TYPES.POST.LOVE_FAILURE,
+        ])
+      })
+    })
+
+    context('with relationship actions', () => {
+      it('calls #relationshipMethods.batchUpdateRelationship', () => {
+        methodCalledWithActions(subject.relationshipMethods, 'batchUpdateRelationship', [
+          ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL,
+        ])
+      })
+
+      it('calls #relationshipMethods.updateRelationship', () => {
+        methodCalledWithActions(subject.relationshipMethods, 'updateRelationship', [
+          ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL,
+          ACTION_TYPES.RELATIONSHIPS.UPDATE_REQUEST,
+          ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS,
+          ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE,
+        ])
+      })
+    })
+
+    it('calls #methods.setLayoutMode', () => {
+      methodCalledWithActions(subject.methods, 'setLayoutMode', [
+        ACTION_TYPES.SET_LAYOUT_MODE,
+      ])
+    })
+
+    context('when the action is UPDATE_LOCATION', () => {
+      it('sets the path to the payload.pathname', () => {
+        subject.json(json, { type: UPDATE_LOCATION, payload: { pathname: 'kgb', query: {} } })
+        expect(subject.path).to.equal('kgb')
+      })
+
+      it('calls #methods.clearSearchResults if query params are different', () => {
+        const spy = sinon.stub(subject.methods, 'clearSearchResults')
+        const action = {
+          type: UPDATE_LOCATION,
+          payload: {
+            pathname: 'ants',
+            query: { terms: 'awesome search' },
+          },
+        }
+        subject.json(json, action)
         expect(spy.called).to.be.true
-        subject.commentMethods.deleteComment.restore()
+        subject.methods.clearSearchResults.restore()
       })
     })
 

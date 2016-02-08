@@ -90,42 +90,5 @@ describe('posts experience update', () => {
       })
     })
   })
-
-  describe('#deletePost', () => {
-    it('deletes the post on request', () => {
-      const post = json.posts['1']
-      expect(post).not.to.be.undefined
-      const action = { type: ACTION_TYPES.POST.DELETE_REQUEST }
-      action.payload = { model: post }
-      subject.deletePost({ state: 'yo' }, json, action)
-      expect(json.posts['1']).to.be.undefined
-    })
-
-    it('deletes the post on success', () => {
-      const post = json.posts['1']
-      expect(post).not.to.be.undefined
-      const action = { type: ACTION_TYPES.POST.DELETE_SUCCESS }
-      action.payload = { model: post }
-      subject.deletePost({ state: 'yo' }, json, action)
-      expect(json.posts['1']).to.be.undefined
-    })
-
-    it('restores the post on failure', () => {
-      const post = json.posts['1']
-      expect(post).not.to.be.undefined
-      const action = { type: ACTION_TYPES.POST.DELETE_FAILURE }
-      action.payload = { model: post }
-      subject.deletePost({ state: 'yo' }, json, action)
-      expect(json.posts['1']).not.to.be.undefined
-    })
-
-    it('returns the passed in state if type is not supported', () => {
-      const post = json.posts['1']
-      expect(post).not.to.be.undefined
-      const action = { type: 'blah' }
-      action.payload = { model: post }
-      expect(subject.deletePost({ state: 'yo' }, json, action)).to.deep.equal({ state: 'yo' })
-    })
-  })
 })
 
