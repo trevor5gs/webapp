@@ -1,41 +1,52 @@
+let node = null
+let startIndex = -1
+let endIndex = -1
 
-// getWordFromSelection: ->
-//   selection = document.getSelection()
-//   return unless @node = selection.anchorNode
-//   return '' unless @node.nodeName == '#text'
-//   text = @node.textContent
-//   text = ' ' unless text && text.length
-//   wordArr = text.split('')
-//   @endIndex = selection.anchorOffset - 1
-//   @endIndex = 0 if @endIndex < 0
-//   letters = []
-//   for index in [@endIndex..0]
-//     letter = wordArr[index]
-//     prevLetter = if index > 0 then wordArr[index - 1] else null
-//     break unless letter
-//     if letter.match(/\s/)
-//       break
-//     else if letter.match(/:/) && (!prevLetter || prevLetter.match(/(\s|:)+/))
-//       letters.unshift(letter)
-//       break
-//     else letters.unshift(letter)
-//   @startIndex = @endIndex - letters.length + 1
-//   letters.join('')
+export function getWordFromSelection() {
+  const selection = document.getSelection()
+  node = selection.anchorNode
+  if (!node || node.nodeName !== '#text') return ''
+  let text = node.textContent
+  if (!text || !text.length) text = ' '
+  const wordArr = text.split('')
+  endIndex = selection.anchorOffset - 1
+  if (endIndex < 0) endIndex = 0
+  const letters = []
+  let index = endIndex
+  while (index > -1) {
+    const letter = wordArr[index]
+    const prevLetter = index > 0 ? wordArr[index - 1] : null
+    index--
+    if (!letter) break
+    if (letter.match(/\s/)) {
+      break
+    } else if (letter.match(/:/) && (!prevLetter || prevLetter.match(/(\s|:)+/))) {
+      letters.unshift(letter)
+      break
+    } else {
+      letters.unshift(letter)
+    }
+  }
+  startIndex = endIndex - letters.length + 1
+  return letters.join('')
+}
 
 
-// getPositionFromSelection: ->
-//   @getWordFromSelection()
-//   range = document.createRange()
-//   range.setStart(@node, @startIndex)
-//   range.setEnd(@node, @endIndex + 1)
-//   pos = range.getBoundingClientRect()
-//   range.detach()
-//   {
-//     top: pos.top
-//     left: pos.left + @getFirefoxOffset()
-//     height: pos.height
-//     width: pos.width
-//   }
+export function getPositionFromSelection() {
+  getWordFromSelection()
+  if (!node) return null
+  const range = document.createRange()
+  range.setStart(node, startIndex)
+  range.setEnd(node, endIndex + 1)
+  const pos = range.getBoundingClientRect()
+  range.detach()
+  return {
+    top: pos.top,
+    left: pos.left,
+    height: pos.height,
+    width: pos.width,
+  }
+}
 
 
 // getPositionOfCaret: ->
@@ -56,28 +67,28 @@
 //     return null
 
 
-// replaceWordFromSelection: (word) ->
-//   @getWordFromSelection()
-//   range = document.createRange()
-//   return unless @node.nodeName == '#text'
-//   range.setStart(@node, @startIndex)
-//   range.setEnd(@node, @endIndex + 1)
-//   node = document.createTextNode(word)
-//   range.deleteContents()
-//   range.insertNode(node)
-//   range.setEndAfter(node)
-//   selection = document.getSelection()
-//   selection.addRange(range)
-//   selection.collapseToEnd()
-//   # this is a fix for safari not placing the cursor at the end of the initial text node..
-//   if document.activeElement.textContent.split(' ').length == 1
-//     @placeCursorAtEndOfContent(document.activeElement)
-//   range.detach()
-
+export function replaceWordFromSelection(word) {
+  getWordFromSelection()
+  const range = document.createRange()
+  if (node && node.nodeName !== '#text') return
+  range.setStart(node, startIndex)
+  range.setEnd(node, endIndex + 1)
+  node = document.createTextNode(word)
+  range.deleteContents()
+  range.insertNode(node)
+  range.setEndAfter(node)
+  const selection = document.getSelection()
+  selection.addRange(range)
+  selection.collapseToEnd()
+  // this is a fix for safari not placing the cursor at the end of the initial text node..
+  // if (document.activeElement.textContent.split(' ').length == 1)
+  //   placeCursorAtEndOfContent(document.activeElement)
+  range.detach()
+}
 
 export function replaceSelectionWithText(text) {
   const selection = document.getSelection()
-  const node = document.createTextNode(text)
+  node = document.createTextNode(text)
   let range = null
   if (selection.type === 'Range') {
     range = selection.getRangeAt(0)
@@ -123,7 +134,7 @@ export function replaceSelectionWithText(text) {
 
 export function getLastWordPasted() {
   const selection = document.getSelection()
-  const node = selection.anchorNode
+  node = selection.anchorNode
   const text = node && node.textContent ? node.textContent : ''
   if (!node || !text) return ''
   const nodeWords = text.split(' ')

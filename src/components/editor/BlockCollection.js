@@ -1,14 +1,19 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
+import { debounce } from 'lodash'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
 import TextTools from './TextTools'
+import { autoComplete } from '../../actions/posts'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
-import { addRangeObject, removeRangeObject } from './RangeComponent'
+import { addInputObject, removeInputObject } from './InputComponent'
+import { replaceWordFromSelection } from './SelectionUtil'
+import Completer, { userRegex } from '../completers/Completer'
 
 const BLOCK_KEY = 'block'
 const UID_KEY = 'uid'
@@ -28,19 +33,21 @@ class BlockCollection extends Component {
 
   componentWillMount() {
     const { editorStore } = this.props
+    this.onHideCompleter()
     if (editorStore.editorState) {
-      this.state = editorStore.editorState
+      this.state = { ...editorStore.editorState, hideTextTools: true }
       this.uid = Math.max(...editorStore.editorState.order) + 1
     } else {
       this.state = {
         collection: {},
-        hideTextTools: false,
+        hideTextTools: true,
         order: [],
       }
       this.uid = 0
     }
+    this.onUserCompleter = debounce(this.onUserCompleter, 300)
     addDragObject(this)
-    addRangeObject(this)
+    addInputObject(this)
   }
 
   componentDidMount() {
@@ -84,12 +91,9 @@ class BlockCollection extends Component {
   }
 
   componentWillUnmount() {
+    this.onHideCompleter()
     removeDragObject(this)
-    removeRangeObject(this)
-  }
-
-  onRangeChanged(props) {
-    this.setState(props)
+    removeInputObject(this)
   }
 
   onDragStart(props) {
@@ -168,6 +172,39 @@ class BlockCollection extends Component {
     this.dragBlock = null
     this.setState({ collection, dragBlockTop: null })
     this.addEmptyTextBlock(true)
+  }
+
+  onPositionChange(props) {
+    this.setState(props)
+  }
+
+  onShowTextTools() {
+    this.setState({ hideTextTools: false })
+  }
+
+  onHideTextTools() {
+    this.setState({ hideTextTools: true })
+  }
+
+  onUserCompleter({ word }) {
+    const { dispatch } = this.props
+    dispatch(autoComplete('user', word))
+  }
+
+  onEmojiCompleter({ word }) {
+    const { dispatch } = this.props
+    dispatch(autoComplete('emoji', word))
+  }
+
+  onHideCompleter() {
+    const { dispatch, editorStore } = this.props
+    if (editorStore.completions) {
+      dispatch({ type: ACTION_TYPES.POST.AUTO_COMPLETE_CLEAR })
+    }
+  }
+
+  onSubmitPost() {
+    this.submit()
   }
 
   getBlockElement(block) {
@@ -298,34 +335,77 @@ class BlockCollection extends Component {
     return results
   }
 
-  render() {
-    const { activeTools, collection, coordinates, dragBlockTop, hideTextTools, order } = this.state
-    const blocks = []
+  handleCompletion = ({ value }) => {
+    replaceWordFromSelection(value)
+    this.handleCancelAutoCompleter()
+  };
+
+  handleCancelAutoCompleter = () => {
+    this.onHideCompleter()
+    this.onHideTextTools()
+    // TODO: maybe clear out the completions from the editor store
+  };
+
+  hasMention() {
+    const { collection, order } = this.state
     for (const uid of order) {
       const block = collection[uid][BLOCK_KEY]
-      blocks.push(this.getBlockElement(block))
+      if (block.kind === 'text' && block.data.match(userRegex)) {
+        return true
+      }
     }
-    let dragElem = null
-    if (this.dragBlock) {
-      dragElem = (<div className="DragBlock" style={{ top: dragBlockTop }}>
-          { this.getBlockElement(this.dragBlock) }
-        </div>
-      )
-    }
+    return false
+  }
+
+  hasContent() {
+    const { collection, order } = this.state
+    const firstBlock = collection[order[0]]
     return (
-      <div className="editor" >
+      order.length > 1 ||
+      firstBlock &&
+      firstBlock.block.data.length &&
+      firstBlock.block.data !== '<br>'
+    )
+  }
+
+  render() {
+    const { editorStore } = this.props
+    const { activeTools, collection, coordinates, dragBlockTop, hideTextTools, order } = this.state
+    const hasMention = this.hasMention()
+    const hasContent = this.hasContent()
+    return (
+      <div
+        className={ classNames('editor', { hasMention, hasContent }) }
+        data-placeholder="Say Ello..."
+      >
         <div
           className="editor-region"
           data-num-blocks={ order.length }
         >
-          { blocks }
-          { dragElem }
+          { order.map((uid) => this.getBlockElement(collection[uid][BLOCK_KEY])) }
+          { this.dragBlock ?
+            <div className="DragBlock" style={{ top: dragBlockTop }}>
+              { this.getBlockElement(this.dragBlock) }
+            </div> :
+            null
+          }
+          { editorStore.completions ?
+            <Completer
+              completions={ editorStore.completions }
+              onCancel={ this.handleCancelAutoCompleter }
+              onCompletion={ this.handleCompletion }
+            /> :
+            null
+          }
         </div>
-        <TextTools
-          activeTools={ activeTools }
-          isHidden={ hideTextTools }
-          coordinates={ coordinates }
-        />
+        { !hideTextTools ?
+          <TextTools
+            activeTools={ activeTools }
+            isHidden={ hideTextTools }
+            coordinates={ coordinates }
+          /> :
+          null
+        }
         <PostActionBar ref="postActionBar" editor={ this } />
       </div>
     )

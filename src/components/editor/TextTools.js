@@ -86,9 +86,10 @@ export default class TextTools extends Component {
     const { activeTools, coordinates, isHidden } = this.props
     const { isBoldActive, isItalicActive, isLinkActive } = activeTools
     const asShowLinkForm = isLinkActive
+    const style = coordinates ? { left: coordinates.left, top: coordinates.top - 40 } : null
     return (
       <div
-        style={ coordinates }
+        style={ style }
         className={ classNames('TextTools', { asShowLinkForm, isHidden }) }
       >
         <button

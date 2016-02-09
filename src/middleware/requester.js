@@ -70,6 +70,7 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.COMMENT.EDIT &&
         type !== ACTION_TYPES.COMMENT.FLAG &&
         type !== ACTION_TYPES.INVITATIONS.INVITE &&
+        type !== ACTION_TYPES.POST.AUTO_COMPLETE &&
         type !== ACTION_TYPES.POST.COMMENT &&
         type !== ACTION_TYPES.POST.CREATE &&
         type !== ACTION_TYPES.POST.DELETE &&
