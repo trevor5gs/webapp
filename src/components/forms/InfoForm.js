@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import debounce from 'lodash.debounce'
+import { debounce } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { saveProfile } from '../../actions/profile'
 import BioControl from '../forms/BioControl'

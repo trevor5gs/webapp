@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { routeActions } from 'react-router-redux'
-import debounce from 'lodash.debounce'
+import { debounce } from 'lodash'
 import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import * as SearchActions from '../../actions/search'

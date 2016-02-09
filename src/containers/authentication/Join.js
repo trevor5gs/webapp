@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import debounce from 'lodash.debounce'
-import random from 'lodash.random'
+import { debounce } from 'lodash'
+import { random } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { checkAvailability } from '../../actions/profile'

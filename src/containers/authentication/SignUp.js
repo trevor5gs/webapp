@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import random from 'lodash.random'
+import { random } from 'lodash'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
