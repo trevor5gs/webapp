@@ -20,7 +20,10 @@ export function loadPostDetail(token) {
 export function loadComments(post) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.commentsForPost(post) },
+    payload: {
+      endpoint: api.commentsForPost(post),
+      parentPostId: post.id,
+    },
     meta: {
       defaultMode: 'list',
       mappingType: MAPPING_TYPES.COMMENTS,

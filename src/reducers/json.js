@@ -26,6 +26,26 @@ function mergeModel(state, type, params) {
 methods.mergeModel = (state, type, params) =>
   mergeModel(state, type, params)
 
+function cleanUpModels(state, action) {
+  // Kludge to abort for some tests
+  if (!action || !action.meta) return null
+
+  const { mappingType: type } = action.meta
+
+  if (type !== 'comments') return null
+
+  const { response: data, parentPostId } = action.payload
+
+  data[type].forEach(model => {
+    if (!state[MAPPING_TYPES.POSTS][model.postId] && parentPostId) {
+      model.postId = parentPostId
+    }
+  })
+}
+
+methods.cleanUpModels = (state, type, data) =>
+  cleanUpModels(state, type, data)
+
 function addModels(state, type, data) {
   // add state['modelType']
   if (!state[type]) { state[type] = {} }
@@ -259,6 +279,7 @@ export default function json(state = {}, action = { type: '' }) {
     const { mappingType } = action.meta
     methods.addModels(newState, mappingType, response)
   } else {
+    methods.cleanUpModels(newState, action)
     methods.updateResult(response, newState, action)
   }
   hasLoadedFirstStream = true
