@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "clean": "rm -f public/index.html public/static/*.js public/static/*.css",
-    "build": "NODE_ENV=production node node_modules/webpack/bin/webpack.js -p --colors --progress --config=webpack.prod.config.js",
+    "build": "NODE_ENV=production node node_modules/webpack/bin/webpack.js -p --colors --progress --config=webpack.prod.config.js && NODE_ENV=production node node_modules/webpack/bin/webpack.js -p --colors --progress --config=webpack.server.config.js",
     "dev": "npm run clean && node_modules/jade/bin/jade.js dev/dev.jade --pretty && DEBUG=express:* NODE_ENV=development babel-node dev/dev-server.js",
     "lint": "eslint src test",
     "spec": "NODE_ENV=test mocha --compilers js:babel-core/register test/*.js test/**/*.js test/**/**/*.js",
-    "start": "NODE_ENV=production babel-node server-iso.js",
+    "start": "NODE_ENV=production node dist/server-iso.js",
     "start:debug": "DEBUG=express:* NODE_ENV=production babel-node server-iso.js",
     "start:old": "NODE_ENV=production babel-node server.js",
     "postinstall": "npm run build",
@@ -79,6 +79,7 @@
     "react-transform-hmr": "1.0.2",
     "redbox-react": "1.2.2",
     "sinon": "1.17.3",
+    "source-map-support": "^0.4.0",
     "webpack-dev-middleware": "1.5.1",
     "webpack-hot-middleware": "2.6.4"
   }
