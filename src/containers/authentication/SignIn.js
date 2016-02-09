@@ -8,6 +8,7 @@ import { getUserCredentials } from '../../actions/authentication'
 import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
+import Emoji from '../../components/assets/Emoji'
 import EmailControl from '../../components/forms/EmailControl'
 import PasswordControl from '../../components/forms/PasswordControl'
 import FormButton from '../../components/forms/FormButton'
@@ -75,7 +76,7 @@ class SignIn extends Component {
       <section className="Authentication Panel">
         <div className="FormDialog">
           <h1>
-            <img src="/static/images/support/v.png" width="32" height="32" alt="Hi" />
+            <Emoji name="v" title="Hi!" size={ 32 }/>
             Welcome back.
           </h1>
           <form

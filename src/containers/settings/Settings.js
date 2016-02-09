@@ -16,6 +16,7 @@ import {
   saveAvatar,
   saveCover,
 } from '../../actions/profile'
+import Emoji from '../../components/assets/Emoji'
 import AdultPostsDialog from '../../components/dialogs/AdultPostsDialog'
 import DeleteAccountDialog from '../../components/dialogs/DeleteAccountDialog'
 import EmailControl from '../../components/forms/EmailControl'
@@ -350,7 +351,7 @@ class Settings extends Component {
             <TreeButton>Muted/Blocked</TreeButton>
             <div className="TreePanel">
               <p>
-                <img src="/static/images/support/hot_shit.png" width="20" height="20"/>
+                <Emoji name="hot_shit" title="Still need to build this!" size={ 40 }/>
               </p>
             </div>
 
@@ -392,13 +393,10 @@ class Settings extends Component {
                   <dl className="SettingsDefinition">
                     <dt>
                       <span>{ SETTINGS.ACCOUNT_DELETION_DEFINITION.term }</span>
-                      <img
-                        alt=":wave:"
-                        title=":wave:"
-                        src="/static/images/support/wave.png"
+                      <Emoji
+                        name="wave"
+                        title="Sad wave"
                         style={{ marginTop: `-${5 / 16}rem`, marginLeft: `${5 / 16}rem` }}
-                        width="20"
-                        height="20"
                       />
                     </dt>
                     <dd>{SETTINGS.ACCOUNT_DELETION_DEFINITION.desc}</dd>

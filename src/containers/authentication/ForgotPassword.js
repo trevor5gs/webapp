@@ -7,6 +7,7 @@ import { sendForgotPasswordRequest } from '../../actions/authentication'
 import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
+import Emoji from '../../components/assets/Emoji'
 import EmailControl from '../../components/forms/EmailControl'
 import FormButton from '../../components/forms/FormButton'
 import { isFormValid, getEmailStateFromClient } from '../../components/forms/Validators'
@@ -88,7 +89,7 @@ class ForgotPassword extends Component {
       <section className="Authentication Panel">
         <div className="FormDialog">
           <h1>
-            <img src="/static/images/support/hot_shit.png" width="32" height="32" alt="hot shit" />
+            <Emoji name="hot_shit" title="It really does" size={ 32 } />
             Shit happens.
           </h1>
           { formStatus === STATUS.SUBMITTED ? this.renderSubmitted() : this.renderForm() }
