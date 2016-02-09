@@ -93,12 +93,12 @@ class App extends Component {
             },
           ]}
         />
+        { isLoggedIn ? <Omnibar/> : null }
         <main className="Main" data-pathname={pathname} role="main">
           {children}
         </main>
         <Navbar/>
         <Footer/>
-        { isLoggedIn ? <Omnibar/> : null }
         <Modal/>
         <DevTools/>
         <Analytics isLoggedIn={isLoggedIn}/>

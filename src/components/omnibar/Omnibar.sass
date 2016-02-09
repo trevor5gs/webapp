@@ -1,35 +1,18 @@
-body.omnibarIsActive
-  overflow: hidden
-
-body.omnibarIsActive .Main
-  pointer-events: none
+// This is only part of it
+body.omnibarIsActive .Navbar
+  display: none
 
 .Omnibar
-  pointer-events: none
-  transition: opacity $speed2 $ease, background-color $speed2 $ease
-  position: fixed
-  top: 0
-  bottom: 0
-  left: 0
-  right: 0
-  z-index: $z-omnibar
-  padding-top: rem(40)
-  opacity: 0
-  background-color: transparent
+  position: relative
+  display: none
+  background-color: rgba(white, 0.95)
   color: white
 
 .Omnibar.isActive
-  pointer-events: auto
-  overflow-y: auto
-  opacity: 1
-  background-color: rgba(white, 0.95)
-  -webkit-overflow-scrolling: touch
+  display: block
 
-.Omnibar.isActive.asDangerZone
-  background-color: rgba($danger, 0.95)
-
-@media(min-width: #{$break-2})
-  .Omnibar
-    padding-top: 0
-    display: block
+.Omnibar .Avatar
+  position: absolute
+  top: rem(20)
+  left: rem(20)
 

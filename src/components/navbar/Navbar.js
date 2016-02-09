@@ -198,6 +198,7 @@ class Navbar extends Component {
   omniButtonWasClicked = () => {
     const { dispatch } = this.props
     dispatch(openOmnibar(<Editor/>))
+    window.scrollTo(0, 0)
   };
 
   loadMorePostsWasClicked = () => {
