@@ -33,13 +33,21 @@ export function editor(state = {}, action) {
         obj.editorState = action.payload
       }
       return obj
+    case POST.AUTO_COMPLETE_CLEAR:
+      obj = {
+        ...state,
+        type: action.type,
+      }
+      delete obj.completions
+      return obj
     case POST.AUTO_COMPLETE_SUCCESS:
       obj = {
         ...state,
         type: action.type,
       }
       if (action.payload && action.payload.response) {
-        obj.completions = action.payload.response.autocompleteResults
+        const { type = 'user' } = action.payload
+        obj.completions = { data: action.payload.response.autocompleteResults, type }
       }
       return obj
     default:

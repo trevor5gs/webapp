@@ -11,6 +11,10 @@ class TextBlock extends Component {
     onInput: PropTypes.func.isRequired,
   };
 
+  shouldComponentUpdate() {
+    return false
+  }
+
   handleInput = (e) => {
     const { onInput } = this.props
     const uid = this.refs.block.props.uid

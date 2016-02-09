@@ -1,5 +1,5 @@
 let node = null
-// let startIndex = -1
+let startIndex = -1
 let endIndex = -1
 
 export function getWordFromSelection() {
@@ -12,9 +12,8 @@ export function getWordFromSelection() {
   endIndex = selection.anchorOffset - 1
   if (endIndex < 0) endIndex = 0
   const letters = []
-  // for (const index of [endIndex..0]) {
   let index = endIndex
-  while (index > 0) {
+  while (index > -1) {
     const letter = wordArr[index]
     const prevLetter = index > 0 ? wordArr[index - 1] : null
     index--
@@ -28,24 +27,26 @@ export function getWordFromSelection() {
       letters.unshift(letter)
     }
   }
-  // startIndex = endIndex - letters.length + 1
+  startIndex = endIndex - letters.length + 1
   return letters.join('')
 }
 
 
-// getPositionFromSelection: ->
-//   @getWordFromSelection()
-//   range = document.createRange()
-//   range.setStart(@node, @startIndex)
-//   range.setEnd(@node, @endIndex + 1)
-//   pos = range.getBoundingClientRect()
-//   range.detach()
-//   {
-//     top: pos.top
-//     left: pos.left + @getFirefoxOffset()
-//     height: pos.height
-//     width: pos.width
-//   }
+export function getPositionFromSelection() {
+  getWordFromSelection()
+  if (!node) return null
+  const range = document.createRange()
+  range.setStart(node, startIndex)
+  range.setEnd(node, endIndex + 1)
+  const pos = range.getBoundingClientRect()
+  range.detach()
+  return {
+    top: pos.top,
+    left: pos.left,
+    height: pos.height,
+    width: pos.width,
+  }
+}
 
 
 // getPositionOfCaret: ->
@@ -66,24 +67,24 @@ export function getWordFromSelection() {
 //     return null
 
 
-// replaceWordFromSelection: (word) ->
-//   @getWordFromSelection()
-//   range = document.createRange()
-//   return unless @node.nodeName == '#text'
-//   range.setStart(@node, @startIndex)
-//   range.setEnd(@node, @endIndex + 1)
-//   node = document.createTextNode(word)
-//   range.deleteContents()
-//   range.insertNode(node)
-//   range.setEndAfter(node)
-//   selection = document.getSelection()
-//   selection.addRange(range)
-//   selection.collapseToEnd()
-//   # this is a fix for safari not placing the cursor at the end of the initial text node..
-//   if document.activeElement.textContent.split(' ').length == 1
-//     @placeCursorAtEndOfContent(document.activeElement)
-//   range.detach()
-
+export function replaceWordFromSelection(word) {
+  getWordFromSelection()
+  const range = document.createRange()
+  if (node && node.nodeName !== '#text') return
+  range.setStart(node, startIndex)
+  range.setEnd(node, endIndex + 1)
+  node = document.createTextNode(word)
+  range.deleteContents()
+  range.insertNode(node)
+  range.setEndAfter(node)
+  const selection = document.getSelection()
+  selection.addRange(range)
+  selection.collapseToEnd()
+  // this is a fix for safari not placing the cursor at the end of the initial text node..
+  // if (document.activeElement.textContent.split(' ').length == 1)
+  //   placeCursorAtEndOfContent(document.activeElement)
+  range.detach()
+}
 
 export function replaceSelectionWithText(text) {
   const selection = document.getSelection()
