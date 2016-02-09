@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as ACTION_TYPES from '../../constants/action_types'
+import * as MAPPING_TYPES from '../../constants/mapping_types'
 // import * as RELATIONSHIP_PRIORITY from '../../constants/relationship_types'
 import { methods as jsonMethods } from '../json'
 
@@ -46,36 +46,6 @@ function updatePostLoves(state, newState, action) {
 methods.updatePostLoves = (state, newState, action) =>
   updatePostLoves(state, newState, action)
 
-
-function deletePost(state, newState, action) {
-  const { model } = action.payload
-  if (!newState[`deleted_${MAPPING_TYPES.POSTS}`]) {
-    newState[`deleted_${MAPPING_TYPES.POSTS}`] = []
-  }
-  switch (action.type) {
-    case ACTION_TYPES.POST.DELETE_REQUEST:
-    case ACTION_TYPES.POST.DELETE_SUCCESS:
-      delete newState[MAPPING_TYPES.POSTS][model.id]
-      if (newState[`deleted_${MAPPING_TYPES.POSTS}`].indexOf(model.id) === -1) {
-        newState[`deleted_${MAPPING_TYPES.POSTS}`].push(model.id)
-      }
-      break
-    case ACTION_TYPES.POST.DELETE_FAILURE:
-      // TODO: pop an alert or modal saying 'something went wrong'
-      // and we couldn't delete this post?
-      newState[MAPPING_TYPES.POSTS][model.id] = model
-      newState[`deleted_${MAPPING_TYPES.POSTS}`].splice(
-        newState[`deleted_${MAPPING_TYPES.POSTS}`].indexOf(model.id),
-        1
-      )
-      break
-    default:
-      return state
-  }
-  return newState
-}
-methods.deletePost = (state, newState, action) =>
-  deletePost(state, newState, action)
 
 function addNewPost(newState, action) {
   const { response } = action.payload

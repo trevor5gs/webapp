@@ -43,7 +43,13 @@ function removeItemsForAuthor(newState, mappingType, authorId) {
     if (newState[mappingType].hasOwnProperty(itemId)) {
       const item = newState[mappingType][itemId]
       if (item.hasOwnProperty('authorId') && item.authorId === authorId) {
-        delete newState[mappingType][itemId]
+        const action = {
+          type: '_REQUEST',
+          payload: {
+            model: newState[mappingType][itemId],
+          },
+        }
+        newState = jsonMethods.deleteModel(null, newState, action, mappingType)
       }
     }
   }
@@ -58,7 +64,13 @@ function updateRelationship(newState, action) {
   // remove the user from the store
   if (priority === RELATIONSHIP_PRIORITY.BLOCK) {
     // delete the user
-    delete newState[MAPPING_TYPES.USERS][userId]
+    const userAction = {
+      type: '_REQUEST',
+      payload: {
+        model: newState[MAPPING_TYPES.USERS][userId],
+      },
+    }
+    jsonMethods.deleteModel(null, newState, userAction, MAPPING_TYPES.USERS)
     // delete all of their posts
     methods.removeItemsForAuthor(newState, MAPPING_TYPES.POSTS, userId)
     // delete all of their comments

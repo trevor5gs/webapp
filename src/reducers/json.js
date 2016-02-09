@@ -161,6 +161,32 @@ function clearSearchResults(state, newState, action) {
 methods.clearSearchResults = (state, newState, action) =>
   clearSearchResults(state, newState, action)
 
+function deleteModel(state, newState, action, mappingType) {
+  const { model } = action.payload
+  if (!newState[`deleted_${mappingType}`]) {
+    newState[`deleted_${mappingType}`] = []
+  }
+  if (action.type.indexOf('_REQUEST') !== -1 || action.type.indexOf('_SUCCESS') !== -1) {
+    delete newState[mappingType][model.id]
+    if (newState[`deleted_${mappingType}`].indexOf(model.id) === -1) {
+      newState[`deleted_${mappingType}`].push(model.id)
+    }
+    return newState
+  } else if (action.type.indexOf('_FAILURE') !== -1) {
+    // TODO: pop an alert or modal saying 'something went wrong'
+    // and we couldn't delete this model?
+    newState[mappingType][model.id] = model
+    newState[`deleted_${mappingType}`].splice(
+      newState[`deleted_${mappingType}`].indexOf(model.id),
+      1
+    )
+    return newState
+  }
+  return state
+}
+methods.deleteModel = (state, newState, action, mappingType) =>
+  deleteModel(state, newState, action, mappingType)
+
 export default function json(state = {}, action = { type: '' }) {
   let newState = { ...state }
   // whitelist actions
@@ -170,7 +196,7 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.COMMENT.DELETE_REQUEST:
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
     case ACTION_TYPES.COMMENT.DELETE_FAILURE:
-      return commentMethods.deleteComment(state, newState, action)
+      return methods.deleteModel(state, newState, action, MAPPING_TYPES.COMMENTS)
     case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
       // fall through to parse the rest
@@ -180,7 +206,7 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.POST.DELETE_REQUEST:
     case ACTION_TYPES.POST.DELETE_SUCCESS:
     case ACTION_TYPES.POST.DELETE_FAILURE:
-      return postMethods.deletePost(state, newState, action)
+      return methods.deleteModel(state, newState, action, MAPPING_TYPES.POSTS)
     case ACTION_TYPES.POST.LOVE_REQUEST:
     case ACTION_TYPES.POST.LOVE_FAILURE:
       return postMethods.updatePostLoves(state, newState, action)
@@ -228,5 +254,5 @@ export function setPath(newPath) {
   path = newPath
 }
 
-export { json, methods, commentMethods, postMethods, relationshipMethods }
+export { json, methods, path, commentMethods, postMethods, relationshipMethods }
 
