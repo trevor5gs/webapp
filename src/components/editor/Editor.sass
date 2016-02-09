@@ -33,11 +33,23 @@
 
 // -------------------------------------
 
+// "Say Ello" placeholder text
+.editor:after
+  position: absolute
+  top: rem(71)
+  left: rem(61)
+  content: attr(data-placeholder)
+  color: #999
+  pointer-events: none
+.editor.hasContent:after
+  display: none
+
+
 // editor has a mention - turn background yellow
-.editor-is-mention .editor-region
+.editor.hasMention .editor-region
   background-color: #ffffcc
 
-.editor-is-mention:before
+.editor.hasMention:before
   border-right-color: #ffffcc
 
 // editor is dragged over with a droppable element - turn background green

@@ -6,7 +6,7 @@ import { getPositionFromSelection } from '../editor/SelectionUtil'
 import { addKeyObject, removeKeyObject } from '../interface/KeyComponent'
 
 export const emojiRegex = /\s?:{1}(\w+|\+|-):{0}$/
-export const userRegex = /^\s?@{1}\w+/
+export const userRegex = /\s?@{1}\w+/
 
 export default class Completer extends Component {
 

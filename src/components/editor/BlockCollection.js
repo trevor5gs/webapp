@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
 import debounce from 'lodash.debounce'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
@@ -12,7 +13,7 @@ import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addInputObject, removeInputObject } from './InputComponent'
 import { replaceWordFromSelection } from './SelectionUtil'
-import Completer from '../completers/Completer'
+import Completer, { userRegex } from '../completers/Completer'
 
 const BLOCK_KEY = 'block'
 const UID_KEY = 'uid'
@@ -196,8 +197,10 @@ class BlockCollection extends Component {
   }
 
   onHideCompleter() {
-    const { dispatch } = this.props
-    dispatch({ type: ACTION_TYPES.POST.AUTO_COMPLETE_CLEAR })
+    const { dispatch, editorStore } = this.props
+    if (editorStore.completions) {
+      dispatch({ type: ACTION_TYPES.POST.AUTO_COMPLETE_CLEAR })
+    }
   }
 
   onSubmitPost() {
@@ -343,11 +346,38 @@ class BlockCollection extends Component {
     // TODO: maybe clear out the completions from the editor store
   };
 
+  hasMention() {
+    const { collection, order } = this.state
+    for (const uid of order) {
+      const block = collection[uid][BLOCK_KEY]
+      if (block.kind === 'text' && block.data.match(userRegex)) {
+        return true
+      }
+    }
+    return false
+  }
+
+  hasContent() {
+    const { collection, order } = this.state
+    const firstBlock = collection[order[0]]
+    return (
+      order.length > 1 ||
+      firstBlock &&
+      firstBlock.block.data.length &&
+      firstBlock.block.data !== '<br>'
+    )
+  }
+
   render() {
     const { editorStore } = this.props
     const { activeTools, collection, coordinates, dragBlockTop, hideTextTools, order } = this.state
+    const hasMention = this.hasMention()
+    const hasContent = this.hasContent()
     return (
-      <div className="editor" >
+      <div
+        className={ classNames('editor', { hasMention, hasContent }) }
+        data-placeholder="Say Ello..."
+      >
         <div
           className="editor-region"
           data-num-blocks={ order.length }
