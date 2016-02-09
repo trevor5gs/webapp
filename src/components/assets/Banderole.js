@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
-import random from 'lodash.random'
+import { random } from 'lodash'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import Credits from '../assets/Credits'
 
