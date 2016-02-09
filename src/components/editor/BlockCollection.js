@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import debounce from 'lodash.debounce'
+import { debounce } from 'lodash'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
