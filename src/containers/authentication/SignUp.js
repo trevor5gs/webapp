@@ -6,6 +6,7 @@ import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentica
 import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
+import Emoji from '../../components/assets/Emoji'
 import RegistrationRequestForm from '../../components/forms/RegistrationRequestForm'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
@@ -34,7 +35,7 @@ class SignUp extends Component {
       <section className="Authentication Panel">
         <div className="FormDialog">
           <h1>
-            <img src="/static/images/support/v.png" width="32" height="32" alt="hi" />
+            <Emoji name="v" title="Awesome!" size={ 32 }/>
             Be inspired.
           </h1>
           <RegistrationRequestForm/>
