@@ -28,7 +28,7 @@ export function loadComments(post) {
         asList: StreamRenderables.commentsAsList,
         asGrid: StreamRenderables.commentsAsList,
       },
-      resultKey: `comments_${post.id}`,
+      resultKey: `${post.id}/comments`,
     },
   }
 }
