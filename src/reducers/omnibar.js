@@ -2,7 +2,6 @@ import { OMNIBAR } from '../constants/action_types'
 
 const initialState = {
   classList: null,
-  component: null,
   isActive: false,
 }
 

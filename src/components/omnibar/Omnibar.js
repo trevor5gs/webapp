@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { closeOmnibar } from '../../actions/omnibar'
 import Avatar from '../assets/Avatar'
+import Editor from '../editor/Editor'
 import { SVGIcon } from '../interface/SVGComponents'
 
 const ChevronIcon = () =>
@@ -19,7 +20,6 @@ class Omnibar extends Component {
     dispatch: PropTypes.func.isRequired,
     avatar: PropTypes.shape({}),
     omnibar: PropTypes.shape({
-      component: PropTypes.object,
       isActive: PropTypes.bool,
       classList: PropTypes.string,
     }).isRequired,
@@ -46,11 +46,14 @@ class Omnibar extends Component {
 
   render() {
     const { avatar, omnibar } = this.props
-    const { isActive, classList, component } = omnibar
+    const { isActive, classList } = omnibar
+    if (!isActive) {
+      return <div className={classNames('Omnibar', { isActive }, classList)}/>
+    }
     return (
       <div className={classNames('Omnibar', { isActive }, classList)} >
         <Avatar sources={avatar} />
-        { component }
+        <Editor/>
         <button className="OmnibarRevealNavbar" onClick={ this.close }>
           <ChevronIcon />
         </button>
