@@ -178,8 +178,8 @@ class BlockCollection extends Component {
     this.setState(props)
   }
 
-  onShowTextTools() {
-    this.setState({ hideTextTools: false })
+  onShowTextTools({ activeTools }) {
+    this.setState({ hideTextTools: false, activeTools })
   }
 
   onHideTextTools() {
@@ -403,6 +403,7 @@ class BlockCollection extends Component {
             activeTools={ activeTools }
             isHidden={ hideTextTools }
             coordinates={ coordinates }
+            key={ JSON.stringify(activeTools) }
           /> :
           null
         }

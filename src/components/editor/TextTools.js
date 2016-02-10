@@ -29,11 +29,15 @@ export default class TextTools extends Component {
   };
 
   componentWillMount() {
-    const { text } = this.props
+    const { activeTools, text } = this.props
+    const { isBoldActive, isItalicActive, isLinkActive } = activeTools
     this.state = {
       hasFocus: false,
       hasValue: text && text.length,
       isInitialValue: true,
+      isBoldActive,
+      isItalicActive,
+      isLinkActive,
       text,
     }
     this.initialValue = text
@@ -65,14 +69,14 @@ export default class TextTools extends Component {
   };
 
   handleBoldToggle = () => {
-    // const { isBoldActive } = this.state
-    // this.setState({ isBoldActive: !isBoldActive })
+    const { isBoldActive } = this.state
+    this.setState({ isBoldActive: !isBoldActive })
     document.execCommand('bold', false, true)
   };
 
   handleItalicToggle = () => {
-    // const { isItalicActive } = this.state
-    // this.setState({ isItalicActive: !isItalicActive })
+    const { isItalicActive } = this.state
+    this.setState({ isItalicActive: !isItalicActive })
     document.execCommand('italic', false, true)
   };
 
@@ -82,9 +86,8 @@ export default class TextTools extends Component {
   };
 
   render() {
-    const { text } = this.state
-    const { activeTools, coordinates, isHidden } = this.props
-    const { isBoldActive, isItalicActive, isLinkActive } = activeTools
+    const { isBoldActive, isItalicActive, isLinkActive, text } = this.state
+    const { coordinates, isHidden } = this.props
     const asShowLinkForm = isLinkActive
     const style = coordinates ? { left: coordinates.left, top: coordinates.top - 40 } : null
     return (

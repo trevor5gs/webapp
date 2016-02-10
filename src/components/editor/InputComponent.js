@@ -36,8 +36,11 @@ function callMethod(method, vo) {
   }
 }
 
-function onClick() {
+function onClick(e) {
   callMethod('onHideCompleter')
+  if (!e.target.classList.contains('TextToolButton')) {
+    callMethod('onHideTextTools', { activeTools: null })
+  }
 }
 
 function onKeyUp(e) {
@@ -76,6 +79,10 @@ methods.onKeyUp = (e) =>
 
 function onKeyDown(e) {
   if (!e.target.classList || !e.target.classList.contains('text')) return false
+  // b or i for key commands
+  if ((e.keyCode === 66 || e.keyCode === 73) && (e.metaKey || e.ctrlKey)) {
+    callMethod('onShowTextTools', { activeTools: getActiveTextTools() })
+  }
   if ((e.metaKey || e.ctrlKey) && e.keyCode === 13) {
     callMethod('onSubmitPost')
   }
