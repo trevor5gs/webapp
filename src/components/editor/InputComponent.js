@@ -38,7 +38,10 @@ function callMethod(method, vo) {
 
 function onClick(e) {
   callMethod('onHideCompleter')
-  if (!e.target.classList.contains('TextToolButton')) {
+  const classList = e.target.classList
+  if (!classList.contains('TextToolButton') &&
+      !classList.contains('TextToolForm') &&
+      !classList.contains('TextToolLinkInput')) {
     callMethod('onHideTextTools', { activeTools: null })
   }
 }
