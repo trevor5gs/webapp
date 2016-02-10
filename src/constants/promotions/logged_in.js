@@ -198,7 +198,7 @@ export const LOGGED_IN_PROMOTIONS = [
     username: 'mermarin',
     caption: <h1>We are creators.</h1>,
     avatar: {
-      regular: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/1385077/ello-regular-a645cacd.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/1385077/ello-regular-d27bfa75.png' },
     },
     coverImage: {
       hdpi: { url: 'https://d324imu86q1bqn.cloudfront.net/uploads/asset/attachment/3492995/ello-hdpi-12a59943.jpg' },
