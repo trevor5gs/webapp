@@ -343,12 +343,6 @@ describe('json reducer', () => {
       })
     })
 
-    it('calls #methods.setLayoutMode', () => {
-      methodCalledWithActions(subject.methods, 'setLayoutMode', [
-        ACTION_TYPES.SET_LAYOUT_MODE,
-      ])
-    })
-
     context('when the action is UPDATE_LOCATION', () => {
       it('sets the path to the payload.pathname', () => {
         subject.json(json, { type: UPDATE_LOCATION, payload: { pathname: 'kgb', query: {} } })

@@ -10,7 +10,6 @@ import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_word
 import { persistStore } from 'redux-persist'
 import localforage from 'localforage'
 import store from './store'
-import * as ACTION_TYPES from './constants/action_types'
 import { browserHistory } from 'react-router'
 import routes from './routes'
 
@@ -26,11 +25,8 @@ const element = (
 )
 
 const storage = localforage.createInstance({ name: 'ello-webapp' })
-const blacklist = ['routing', 'modal', 'omnibar']
-const persistor = persistStore(store, { storage, blacklist }, () => {
-  // this adds the 'more posts' to the existing result if present
-  // so that a refresh won't have the 'more posts' button
-  store.dispatch({ type: ACTION_TYPES.ADD_NEW_IDS_TO_RESULT })
+const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
+const persistor = persistStore(store, { storage, whitelist }, () => {
   ReactDOM.render(element, document.getElementById('root'))
 })
 
@@ -40,7 +36,7 @@ if (ENV.APP_VERSION) {
   storage.getItem('APP_VERSION')
     .then((curVersion) => {
       if (curVersion && curVersion !== ENV.APP_VERSION) {
-        persistor.purge(['authentication', 'json', 'profile', 'search', 'stream'])
+        persistor.purge(['json', 'profile'])
       }
       storage.setItem('APP_VERSION', ENV.APP_VERSION)
     })

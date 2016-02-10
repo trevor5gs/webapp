@@ -9,6 +9,7 @@ function createPropsForStream(props = {}) {
     },
     action: {},
     dispatch: () => {/**/},
+    gui: { modes: [] },
     json: {
       pages: {
         what: {},

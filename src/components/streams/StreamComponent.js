@@ -9,6 +9,7 @@ import { addScrollObject, removeScrollObject } from '../interface/ScrollComponen
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import { ElloMark } from '../interface/ElloIcons'
 import Paginator from '../streams/Paginator'
+import { findLayoutMode } from '../../reducers/gui'
 
 export class StreamComponent extends Component {
 
@@ -17,6 +18,7 @@ export class StreamComponent extends Component {
     currentUser: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     initModel: PropTypes.object,
+    gui: PropTypes.object.isRequired,
     json: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
     stream: PropTypes.object.isRequired,
@@ -37,20 +39,9 @@ export class StreamComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch, json, pathname, stream } = nextProps
+    const { stream } = nextProps
     const { action } = this.state
     if (!action) { return null }
-    const { meta } = action
-    let result = null
-    if (json.pages) {
-      result = json.pages[pathname]
-    }
-    if (result && !result.mode) {
-      dispatch({
-        type: ACTION_TYPES.SET_LAYOUT_MODE,
-        payload: { mode: meta.defaultMode },
-      })
-    }
     // TODO: make this work for nested stream components separately of others on the page
     if (this.refs.paginator && stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.refs.paginator.setLoading(false)
@@ -176,7 +167,7 @@ export class StreamComponent extends Component {
   }
 
   render() {
-    const { currentUser, initModel, json, pathname, stream } = this.props
+    const { currentUser, initModel, gui, json, pathname, stream } = this.props
     const { action } = this.state
     if (!action) { return null }
     const { meta, payload } = action
@@ -228,8 +219,8 @@ export class StreamComponent extends Component {
       }
       return this.renderZeroState()
     }
-    const resultMode = result && result.mode ? result.mode : meta.defaultMode
-    const renderMethod = resultMode === 'grid' ? 'asGrid' : 'asList'
+    const resultMode = findLayoutMode(gui.modes)
+    const renderMethod = resultMode && resultMode.mode === 'grid' ? 'asGrid' : 'asList'
     return (
       <section className="StreamComponent">
         {
@@ -254,6 +245,7 @@ export class StreamComponent extends Component {
 function mapStateToProps(state) {
   return {
     currentUser: state.profile,
+    gui: state.gui,
     json: state.json,
     pathname: state.routing.location.pathname,
     stream: state.stream,
