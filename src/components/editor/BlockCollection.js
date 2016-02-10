@@ -59,6 +59,7 @@ class BlockCollection extends Component {
       }
     }
     this.addEmptyTextBlock()
+    this.setSelectionOnMount()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -240,6 +241,12 @@ class BlockCollection extends Component {
       default:
         return null
     }
+  }
+
+  setSelectionOnMount() {
+    if (this.hasContent()) { return }
+    const element = document.querySelector('.editable.text')
+    if (element) { element.focus() }
   }
 
   add(block, shouldCheckForEmpty = true) {
