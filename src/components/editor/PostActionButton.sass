@@ -1,0 +1,40 @@
+.PostActionButton
+  transition: width $speed $ease, background-color $speed ease, color $speed ease
+  vertical-align: middle
+  overflow: hidden
+  padding: 0 rem(10) 0 rem(15)
+  width: rem(40)
+  height: rem(40)
+  border-radius: rem(20)
+  line-height: rem(40)
+  text-align: right
+  white-space: nowrap
+  background-color: white
+  color: rgba(white, 0)
+
+.PostActionButton > .SVGIcon
+  margin-top: rem(-2)
+  margin-left: rem(-5)
+
+.PostActionButtonLabel
+  position: absolute
+  left: rem(20)
+
+@media(min-width: #{$break-2})
+  .no-touch .PostActionButton:hover
+    color: white
+    background-color: black
+    width: rem(105)
+  .no-touch .PostActionButton.forPost:hover
+    width: rem(85)
+  .no-touch .PostActionButton:hover > .SVGIcon g
+    stroke: white
+
+  // Cancel animation
+  .no-touch .PostActionButton > .CancelIcon
+    transform-origin: center center
+    transition-duration: $speed, $speed, $speed2
+  .no-touch .PostActionButton:hover > .CancelIcon
+    transition-delay: 0.5s, 0.5s, (0.5s + $speed)
+    transform: rotate(360deg)
+
