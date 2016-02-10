@@ -46,6 +46,7 @@ class BlockCollection extends Component {
       this.uid = 0
     }
     this.onUserCompleter = debounce(this.onUserCompleter, 300)
+    this.persistBlocks = debounce(this.persistBlocks, 300)
     addDragObject(this)
     addInputObject(this)
   }
@@ -178,8 +179,8 @@ class BlockCollection extends Component {
     this.setState(props)
   }
 
-  onShowTextTools() {
-    this.setState({ hideTextTools: false })
+  onShowTextTools({ activeTools }) {
+    this.setState({ hideTextTools: false, activeTools })
   }
 
   onHideTextTools() {
@@ -307,6 +308,7 @@ class BlockCollection extends Component {
   handleTextBlockInput = (vo) => {
     const { collection } = this.state
     collection[vo.uid][BLOCK_KEY] = vo
+    this.persistBlocks()
   };
 
   submit() {
@@ -403,6 +405,7 @@ class BlockCollection extends Component {
             activeTools={ activeTools }
             isHidden={ hideTextTools }
             coordinates={ coordinates }
+            key={ JSON.stringify(activeTools) }
           /> :
           null
         }

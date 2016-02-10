@@ -29,11 +29,16 @@ export default class TextTools extends Component {
   };
 
   componentWillMount() {
-    const { text } = this.props
+    const { activeTools, text } = this.props
+    const { isBoldActive, isItalicActive, isLinkActive } = activeTools
     this.state = {
       hasFocus: false,
       hasValue: text && text.length,
       isInitialValue: true,
+      isBoldActive,
+      isItalicActive,
+      isLinkActive,
+      isLinkInputOpen: false,
       text,
     }
     this.initialValue = text
@@ -58,34 +63,75 @@ export default class TextTools extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { isLinkActive, text } = this.state
+    const { text } = this.state
+    this.restoreSelection()
     if (text.length) {
-      this.setState({ isLinkActive: !isLinkActive })
+      this.createLink(text)
+    } else {
+      this.removeLink()
     }
   };
 
   handleBoldToggle = () => {
-    // const { isBoldActive } = this.state
-    // this.setState({ isBoldActive: !isBoldActive })
+    const { isBoldActive } = this.state
+    this.setState({ isBoldActive: !isBoldActive })
     document.execCommand('bold', false, true)
+    this.saveSelection()
   };
 
   handleItalicToggle = () => {
-    // const { isItalicActive } = this.state
-    // this.setState({ isItalicActive: !isItalicActive })
+    const { isItalicActive } = this.state
+    this.setState({ isItalicActive: !isItalicActive })
     document.execCommand('italic', false, true)
+    this.saveSelection()
   };
 
   handleLinkToggle = () => {
-    const { isLinkActive } = this.state
-    this.setState({ isLinkActive: !isLinkActive })
+    const { isLinkActive, isLinkInputOpen } = this.state
+    if (isLinkActive && !isLinkInputOpen) {
+      this.removeLink()
+    } else {
+      this.setState({ isLinkInputOpen: !isLinkInputOpen })
+    }
+    this.saveSelection()
   };
 
+  createLink(text) {
+    this.setState({ isLinkActive: true, isLinkInputOpen: false })
+    requestAnimationFrame(() => {
+      document.execCommand('createLink', false, this.prefixLink(text))
+      this.saveSelection()
+    })
+  }
+
+  removeLink() {
+    this.setState({ isLinkActive: false, isLinkInputOpen: false, text: '' })
+    document.execCommand('unlink', false, null)
+    this.saveSelection()
+  }
+
+  saveSelection() {
+    const sel = window.getSelection()
+    if (sel) this.range = sel.getRangeAt(0)
+  }
+
+  restoreSelection() {
+    if (!this.range) return
+    const sel = window.getSelection()
+    sel.removeAllRanges()
+    sel.addRange(this.range)
+  }
+
+  prefixLink(text) {
+    const linkPrefix = /((ftp|http|https):\/\/.)|mailto(?=\:[-\.\w]+@)/
+    if (!linkPrefix.test(text)) return `http://${text}`
+    return text
+  }
+
   render() {
-    const { text } = this.state
-    const { activeTools, coordinates, isHidden } = this.props
-    const { isBoldActive, isItalicActive, isLinkActive } = activeTools
-    const asShowLinkForm = isLinkActive
+    const { isBoldActive, isItalicActive, isLinkActive, isLinkInputOpen, text } = this.state
+    const { coordinates, isHidden } = this.props
+    const asShowLinkForm = isLinkInputOpen
     const style = coordinates ? { left: coordinates.left, top: coordinates.top - 40 } : null
     return (
       <div

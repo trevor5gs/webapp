@@ -36,8 +36,14 @@ function callMethod(method, vo) {
   }
 }
 
-function onClick() {
+function onClick(e) {
   callMethod('onHideCompleter')
+  const classList = e.target.classList
+  if (!classList.contains('TextToolButton') &&
+      !classList.contains('TextToolForm') &&
+      !classList.contains('TextToolLinkInput')) {
+    callMethod('onHideTextTools', { activeTools: null })
+  }
 }
 
 function onKeyUp(e) {
@@ -76,6 +82,12 @@ methods.onKeyUp = (e) =>
 
 function onKeyDown(e) {
   if (!e.target.classList || !e.target.classList.contains('text')) return false
+  // b or i for key commands
+  if ((e.keyCode === 66 || e.keyCode === 73) && (e.metaKey || e.ctrlKey)) {
+    requestAnimationFrame(() => {
+      callMethod('onShowTextTools', { activeTools: getActiveTextTools() })
+    })
+  }
   if ((e.metaKey || e.ctrlKey) && e.keyCode === 13) {
     callMethod('onSubmitPost')
   }
