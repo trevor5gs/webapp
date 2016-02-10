@@ -81,7 +81,9 @@ function onKeyDown(e) {
   if (!e.target.classList || !e.target.classList.contains('text')) return false
   // b or i for key commands
   if ((e.keyCode === 66 || e.keyCode === 73) && (e.metaKey || e.ctrlKey)) {
-    callMethod('onShowTextTools', { activeTools: getActiveTextTools() })
+    requestAnimationFrame(() => {
+      callMethod('onShowTextTools', { activeTools: getActiveTextTools() })
+    })
   }
   if ((e.metaKey || e.ctrlKey) && e.keyCode === 13) {
     callMethod('onSubmitPost')
