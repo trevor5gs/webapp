@@ -2,10 +2,16 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { closeOmnibar } from '../../actions/omnibar'
-import Mousetrap from '../../vendor/mousetrap'
 import Avatar from '../assets/Avatar'
+import { SVGIcon } from '../interface/SVGComponents'
+
+const ChevronIcon = () =>
+  <SVGIcon className="ChevronIcon">
+    <g>
+      <polyline points="6,16 12,10 6,4"/>
+    </g>
+  </SVGIcon>
 
 class Omnibar extends Component {
 
@@ -19,10 +25,6 @@ class Omnibar extends Component {
     }).isRequired,
   };
 
-  componentDidMount() {
-    Mousetrap.bind(SHORTCUT_KEYS.ESC, () => { this.close() })
-  }
-
   componentDidUpdate() {
     const { omnibar } = this.props
     const { isActive } = omnibar
@@ -34,22 +36,11 @@ class Omnibar extends Component {
     }
   }
 
-  componentWillUnmount() {
-    Mousetrap.unbind(SHORTCUT_KEYS.ESC)
-  }
-
-  close() {
+  close = () => {
     const { omnibar, dispatch } = this.props
     const { isActive } = omnibar
     if (isActive) {
       dispatch(closeOmnibar())
-    }
-  }
-
-  handleOmnibarTrigger = (e) => {
-    const classList = e.target.classList
-    if (classList.contains('Omnibar') || classList.contains('CloseOmnibar')) {
-      return this.close()
     }
   };
 
@@ -57,12 +48,12 @@ class Omnibar extends Component {
     const { avatar, omnibar } = this.props
     const { isActive, classList, component } = omnibar
     return (
-      <div
-        className={classNames('Omnibar', { isActive }, classList)}
-        onClick={ isActive ? this.handleOmnibarTrigger : null }
-      >
+      <div className={classNames('Omnibar', { isActive }, classList)} >
         <Avatar sources={avatar} />
         { component }
+        <button className="OmnibarRevealNavbar" onClick={ this.close }>
+          <ChevronIcon />
+        </button>
       </div>
     )
   }
