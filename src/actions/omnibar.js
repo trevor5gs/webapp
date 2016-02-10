@@ -1,11 +1,10 @@
 import { OMNIBAR } from '../constants/action_types'
 
-export function openOmnibar(component, classList = '') {
+export function openOmnibar(classList = '') {
   return {
     type: OMNIBAR.OPEN,
     payload: {
       classList,
-      component,
       isActive: true,
     },
   }
@@ -16,7 +15,6 @@ export function closeOmnibar() {
     type: OMNIBAR.CLOSE,
     payload: {
       classList: null,
-      component: null,
       isActive: false,
     },
   }

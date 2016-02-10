@@ -3,7 +3,7 @@
   position: absolute
   z-index: 2
   overflow: hidden
-  width: rem(94)
+  width: rem(93)
   margin-left: rem(-1)
   white-space: nowrap
 
@@ -15,19 +15,26 @@
   opacity: 0
 
 .TextToolButton
-  transition: color $speed, width $speed $ease
+  transition: border-width $speed, color $speed, width $speed $ease
   position: relative
   width: rem(30)
   height: rem(30)
+  border-radius: 50%
   margin-left: rem(1)
   line-height: rem(30)
   text-align: center
   background-color: white
+  border: 1px solid white
   color: #aaa
 
 .TextTools.asShowLinkForm .TextToolButton.forBold,
 .TextTools.asShowLinkForm .TextToolButton.forItalic
   width: 0
+  border-width: 0
+
+.TextTools.asShowLinkForm .TextToolButton.forLink
+  border-radius: 50% 0 0 50%
+  border-width: 0
 
 .no-touch .TextToolButton:hover,
 .TextToolButton.isActive
@@ -45,7 +52,6 @@
   vertical-align: baseline
   width: rem(180)
   height: rem(30)
-  margin-left: rem(1)
   padding: 0 rem(10)
   background-color: white
   border: 0
@@ -56,4 +62,9 @@
     outline: 0
   &::placeholder
     color: #aaa
+
+// TODO: We should really disable the tools
+@media(max-width: #{$break-2-max})
+  .TextTools
+    display: none
 

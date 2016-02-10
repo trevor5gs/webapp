@@ -151,7 +151,7 @@ export default class TextTools extends Component {
           <em>I</em>
         </button>
         <button
-          className={ classNames('TextToolButton', { isActive: isLinkActive }) }
+          className={ classNames('TextToolButton forLink', { isActive: isLinkActive }) }
           onClick={ this.handleLinkToggle }
         >
           <LinkIcon />

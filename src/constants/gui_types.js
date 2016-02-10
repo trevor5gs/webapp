@@ -19,6 +19,7 @@ export const SHORTCUT_KEYS = {
   DISCOVER: 'g d',
   FOLLOWING: 'g f',
   ONBOARDING: 'g 0',
+  FULLSCREEN: 'g m',
   DT_GRID_TOGGLE: 'g `',
   DT_GRID_CYCLE: 'g ~',
   DT_CONTAINER_TOGGLE: 'g |',

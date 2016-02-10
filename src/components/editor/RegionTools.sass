@@ -16,3 +16,11 @@
 .editor:not(.hasContent) .BlockRemove
   display: none
 
+@media(min-width: #{$break-2})
+  .no-touch .BlockRemove > .DeleteIcon
+    transform-origin: center center
+    transition-duration: $speed, $speed, $speed2
+  .no-touch .BlockRemove:hover > .DeleteIcon
+    transition-delay: 0.5s, 0.5s, (0.5s + $speed)
+    transform: rotate(360deg)
+

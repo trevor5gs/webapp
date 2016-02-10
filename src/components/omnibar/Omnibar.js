@@ -4,8 +4,17 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { closeOmnibar } from '../../actions/omnibar'
-import Mousetrap from '../../vendor/mousetrap'
 import Avatar from '../assets/Avatar'
+import Editor from '../editor/Editor'
+import { SVGIcon } from '../interface/SVGComponents'
+import Mousetrap from '../../vendor/mousetrap'
+
+const ChevronIcon = () =>
+  <SVGIcon className="ChevronIcon">
+    <g>
+      <polyline points="6,16 12,10 6,4"/>
+    </g>
+  </SVGIcon>
 
 class Omnibar extends Component {
 
@@ -13,14 +22,19 @@ class Omnibar extends Component {
     dispatch: PropTypes.func.isRequired,
     avatar: PropTypes.shape({}),
     omnibar: PropTypes.shape({
-      component: PropTypes.object,
       isActive: PropTypes.bool,
       classList: PropTypes.string,
     }).isRequired,
   };
 
+  componentWillMount() {
+    this.state = {
+      isFullScreen: false,
+    }
+  }
+
   componentDidMount() {
-    Mousetrap.bind(SHORTCUT_KEYS.ESC, () => { this.close() })
+    Mousetrap.bind(SHORTCUT_KEYS.FULLSCREEN, () => { this.fullScreen() })
   }
 
   componentDidUpdate() {
@@ -35,34 +49,36 @@ class Omnibar extends Component {
   }
 
   componentWillUnmount() {
-    Mousetrap.unbind(SHORTCUT_KEYS.ESC)
+    Mousetrap.unbind(SHORTCUT_KEYS.FULLSCREEN)
   }
 
-  close() {
+  fullScreen = () => {
+    const { isFullScreen } = this.state
+    this.setState({ isFullScreen: !isFullScreen })
+  };
+
+  close = () => {
     const { omnibar, dispatch } = this.props
     const { isActive } = omnibar
     if (isActive) {
       dispatch(closeOmnibar())
     }
-  }
-
-  handleOmnibarTrigger = (e) => {
-    const classList = e.target.classList
-    if (classList.contains('Omnibar') || classList.contains('CloseOmnibar')) {
-      return this.close()
-    }
   };
 
   render() {
     const { avatar, omnibar } = this.props
-    const { isActive, classList, component } = omnibar
+    const { isFullScreen } = this.state
+    const { isActive, classList } = omnibar
+    if (!isActive) {
+      return <div className={classNames('Omnibar', { isActive }, classList)}/>
+    }
     return (
-      <div
-        className={classNames('Omnibar', { isActive }, classList)}
-        onClick={ isActive ? this.handleOmnibarTrigger : null }
-      >
+      <div className={classNames('Omnibar', { isActive, isFullScreen }, classList)} >
         <Avatar sources={avatar} />
-        { component }
+        <Editor/>
+        <button className="OmnibarRevealNavbar" onClick={ this.close }>
+          <ChevronIcon />
+        </button>
       </div>
     )
   }
