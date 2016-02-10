@@ -4,6 +4,7 @@ import Avatar from '../assets/Avatar'
 import Completion from './Completion'
 import { getPositionFromSelection } from '../editor/SelectionUtil'
 import { addKeyObject, removeKeyObject } from '../interface/KeyComponent'
+import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 
 export const emojiRegex = /\s?:{1}(\w+|\+|-):{0}$/
 export const userRegex = /\s?@{1}\w+/
@@ -20,15 +21,18 @@ export default class Completer extends Component {
   componentWillMount() {
     this.state = {
       selectedIndex: 0,
+      viewportDeviceSize: null,
     }
   }
 
   componentDidMount() {
     addKeyObject(this)
+    addResizeObject(this)
   }
 
   componentWillUnmount() {
     removeKeyObject(this)
+    removeResizeObject(this)
   }
 
   onKeyDown(e) {
@@ -45,6 +49,10 @@ export default class Completer extends Component {
       e.preventDefault()
       this.props.onCancel()
     }
+  }
+
+  onResize({ viewportDeviceSize }) {
+    this.setState({ viewportDeviceSize })
   }
 
   nextSelection() {
@@ -92,11 +100,15 @@ export default class Completer extends Component {
 
   render() {
     const { className, completions } = this.props
+    const { viewportDeviceSize } = this.state
     if (!completions || !completions.data.length) {
       return null
     }
     const pos = getPositionFromSelection()
-    const style = pos ? { left: pos.left, top: pos.top + 20 } : null
+    const coords = pos || { top: 0, left: 0 }
+    const top = viewportDeviceSize === 'mobile' ? coords.top + 45 : coords.top + 20
+    const left = viewportDeviceSize === 'mobile' ? 0 : coords.left
+    const style = pos ? { top, left } : null
     return (
       <div style={ style } className={ classNames(className, 'Completer') }>
         { completions.type === 'user' ? this.renderUsers() : this.renderEmoji() }
