@@ -35,6 +35,7 @@ body.omnibarIsActive .Navbar
   pointer-events: none
   opacity: 0
   background-color: transparent
+  overflow: hidden
 
 
 // MAX-WIDTH!
@@ -67,4 +68,14 @@ body.omnibarIsActive .Navbar
   body.omnibarIsActive .Navbar > .NavbarLinks
     position: absolute
     transform: translate3d(#{rem(400)}, 0, 0)
+
+  body.omnibarIsActive .Omnibar.isFullScreen ~ .Main,
+  body.omnibarIsActive .Omnibar.isFullScreen ~ .Footer
+    display: none
+
+  body.omnibarIsActive .Omnibar.isFullScreen > .editor
+    max-width: none
+    padding-right: rem(40)
+  body.omnibarIsActive .Omnibar.isFullScreen > .editor .editor-region
+    min-height: calc(100vh - #{rem(100)})
 

@@ -2,10 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
+import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { closeOmnibar } from '../../actions/omnibar'
 import Avatar from '../assets/Avatar'
 import Editor from '../editor/Editor'
 import { SVGIcon } from '../interface/SVGComponents'
+import Mousetrap from '../../vendor/mousetrap'
 
 const ChevronIcon = () =>
   <SVGIcon className="ChevronIcon">
@@ -25,6 +27,16 @@ class Omnibar extends Component {
     }).isRequired,
   };
 
+  componentWillMount() {
+    this.state = {
+      isFullScreen: false,
+    }
+  }
+
+  componentDidMount() {
+    Mousetrap.bind(SHORTCUT_KEYS.FULLSCREEN, () => { this.fullScreen() })
+  }
+
   componentDidUpdate() {
     const { omnibar } = this.props
     const { isActive } = omnibar
@@ -36,6 +48,15 @@ class Omnibar extends Component {
     }
   }
 
+  componentWillUnmount() {
+    Mousetrap.unbind(SHORTCUT_KEYS.FULLSCREEN)
+  }
+
+  fullScreen = () => {
+    const { isFullScreen } = this.state
+    this.setState({ isFullScreen: !isFullScreen })
+  };
+
   close = () => {
     const { omnibar, dispatch } = this.props
     const { isActive } = omnibar
@@ -46,12 +67,13 @@ class Omnibar extends Component {
 
   render() {
     const { avatar, omnibar } = this.props
+    const { isFullScreen } = this.state
     const { isActive, classList } = omnibar
     if (!isActive) {
       return <div className={classNames('Omnibar', { isActive }, classList)}/>
     }
     return (
-      <div className={classNames('Omnibar', { isActive }, classList)} >
+      <div className={classNames('Omnibar', { isActive, isFullScreen }, classList)} >
         <Avatar sources={avatar} />
         <Editor/>
         <button className="OmnibarRevealNavbar" onClick={ this.close }>

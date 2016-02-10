@@ -10,6 +10,7 @@ const HelpDialog = () =>
     <p><span className="ShortcutLabel">{ SHORTCUT_KEYS.ONBOARDING }</span> Navigate to Onboarding</p>
     <p><span className="ShortcutLabel" style={{ textIndent: 15 }}>{ SHORTCUT_KEYS.TOGGLE_LAYOUT }</span> Toggle grid mode for main content</p>
     <p><span className="ShortcutLabel">{ SHORTCUT_KEYS.ESC.toUpperCase() }</span> Close modal or alerts</p>
+    <p><span className="ShortcutLabel">{ SHORTCUT_KEYS.FULLSCREEN }</span> Toggle fullscreen post editor</p>
     <p><span className="ShortcutLabel">{ SHORTCUT_KEYS.DT_GRID_TOGGLE }</span> Toggle layout grid</p>
     <p><span className="ShortcutLabel">{ SHORTCUT_KEYS.DT_GRID_CYCLE }</span> Toggle between horizontal and vertical grid</p>
     <p><span className="ShortcutLabel" style={{ textIndent: 15 }}>{ SHORTCUT_KEYS.HELP }</span> Show this help modal</p>
