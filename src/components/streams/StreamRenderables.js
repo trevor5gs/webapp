@@ -96,7 +96,7 @@ export function postsAsList(posts) {
     <div className="Posts asList">
       {posts.data.map((post) =>
         <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList">
-          <PostParser post={post} isGridLayout={false} />
+          <PostParser post={post} isGridLayout={false} showComments={post.showComments}/>
         </article>
       )}
     </div>
