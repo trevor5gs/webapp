@@ -12,6 +12,9 @@ const initialState = {
     { label: 'search', mode: 'grid', regex: /\/search|\/find/ },
     { label: 'starred', mode: 'list', regex: /\/starred/ },
     { label: 'posts', mode: 'list', regex: /\/[\w\-]+\/post\/.+/ },
+    { label: 'users/following', mode: 'grid', regex: /\/[\w\-]+\/following/ },
+    { label: 'users/followers', mode: 'grid', regex: /\/[\w\-]+\/followers/ },
+    { label: 'users/loves', mode: 'grid', regex: /\/[\w\-]+\/loves/ },
     { label: 'users', mode: 'list', regex: /\/[\w\-]+/ },
   ],
 }
