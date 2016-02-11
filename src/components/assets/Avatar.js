@@ -14,6 +14,7 @@ class Avatar extends Component {
   static propTypes = {
     classList: PropTypes.string,
     isModifiable: PropTypes.bool,
+    onClick: PropTypes.func,
     size: PropTypes.string,
     sources: PropTypes.object,
     to: PropTypes.string,
@@ -109,18 +110,28 @@ class Avatar extends Component {
   };
 
   render() {
-    const { to } = this.props
+    const { onClick, to } = this.props
     const src = this.getAvatarSource()
     const klassNames = this.getClassNames()
     const style = src ? { backgroundImage: `url(${src})` } : null
-
-    return to ?
-      <Link to={to} className={klassNames}>
-        <div className="AvatarImage" style={style} />
-      </Link> :
+    if (to) {
+      return (
+        <Link className={klassNames} to={to}>
+          <div className="AvatarImage" style={style}/>
+        </Link>
+      )
+    } else if (onClick) {
+      return (
+        <button className={klassNames} onClick={ onClick }>
+          <div className="AvatarImage" style={style}/>
+        </button>
+      )
+    }
+    return (
       <span className={klassNames}>
-        <div className="AvatarImage" style={style} />
+        <div className="AvatarImage" style={style}/>
       </span>
+    )
   }
 }
 
