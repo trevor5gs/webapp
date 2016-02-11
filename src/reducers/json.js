@@ -26,6 +26,26 @@ function mergeModel(state, type, params) {
 methods.mergeModel = (state, type, params) =>
   mergeModel(state, type, params)
 
+function cleanUpModels(state, action) {
+  // Kludge to abort for some tests
+  if (!action || !action.meta) return null
+
+  const { mappingType: type } = action.meta
+
+  if (type !== 'comments') return null
+
+  const { response: data, parentPostId } = action.payload
+
+  data[type].forEach(model => {
+    if (!state[MAPPING_TYPES.POSTS][model.postId] && parentPostId) {
+      model.postId = parentPostId
+    }
+  })
+}
+
+methods.cleanUpModels = (state, type, data) =>
+  cleanUpModels(state, type, data)
+
 function addModels(state, type, data) {
   // add state['modelType']
   if (!state[type]) { state[type] = {} }
@@ -213,6 +233,8 @@ export default function json(state = {}, action = { type: '' }) {
       return postMethods.updatePostLoves(state, newState, action)
     case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
       return {}
+    case ACTION_TYPES.POST.TOGGLE_COMMENTS:
+      return postMethods.toggleComments(state, newState, action)
     case ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL:
       return relationshipMethods.batchUpdateRelationship(newState, action)
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL:
@@ -257,6 +279,7 @@ export default function json(state = {}, action = { type: '' }) {
     const { mappingType } = action.meta
     methods.addModels(newState, mappingType, response)
   } else {
+    methods.cleanUpModels(newState, action)
     methods.updateResult(response, newState, action)
   }
   hasLoadedFirstStream = true
@@ -269,4 +292,3 @@ export function setPath(newPath) {
 }
 
 export { json, methods, path, commentMethods, postMethods, relationshipMethods }
-

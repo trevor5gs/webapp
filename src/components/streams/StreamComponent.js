@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
+import _ from 'lodash'
 import { runningFetches } from '../../middleware/requester'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
@@ -15,6 +17,7 @@ export class StreamComponent extends Component {
 
   static propTypes = {
     action: PropTypes.object,
+    children: PropTypes.any,
     currentUser: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     initModel: PropTypes.object,
@@ -22,6 +25,7 @@ export class StreamComponent extends Component {
     json: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
     stream: PropTypes.object.isRequired,
+    className: PropTypes.string,
   };
 
   componentWillMount() {
@@ -167,7 +171,7 @@ export class StreamComponent extends Component {
   }
 
   render() {
-    const { currentUser, initModel, gui, json, pathname, stream } = this.props
+    const { className, currentUser, initModel, gui, json, pathname, stream } = this.props
     const { action } = this.state
     if (!action) { return null }
     const { meta, payload } = action
@@ -197,9 +201,9 @@ export class StreamComponent extends Component {
                (meta.resultFilter && result.type !== meta.mappingType)) {
       const deletedCollection = json[`deleted_${result.type}`]
       for (const id of result.ids) {
-        if (json[result.type][id] &&
+        if (_.get(json, [result.type, id]) &&
            (!deletedCollection || deletedCollection.indexOf(id) === -1)) {
-          renderObj.data.push(json[result.type][id])
+          renderObj.data.push(_.get(json, [result.type, id]))
         }
       }
       if (result.next) {
@@ -222,7 +226,7 @@ export class StreamComponent extends Component {
     const resultMode = findLayoutMode(gui.modes)
     const renderMethod = resultMode && resultMode.mode === 'grid' ? 'asGrid' : 'asList'
     return (
-      <section className="StreamComponent">
+      <section className={classNames('StreamComponent', className)}>
         {
           meta.renderStream[renderMethod](
             renderObj,
@@ -230,6 +234,7 @@ export class StreamComponent extends Component {
             currentUser,
             this.state.gridColumnCount)
         }
+        {this.props.children}
         <Paginator
           delegate={this}
           hasShowMoreButton={typeof meta.resultKey !== 'undefined'}
@@ -253,4 +258,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, null, null, { withRef: true })(StreamComponent)
-

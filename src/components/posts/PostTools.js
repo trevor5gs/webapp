@@ -172,10 +172,9 @@ class PostTools extends Component {
   };
 
   toggleComments = () => {
-    const { author, dispatch, isLoggedIn, post } = this.props
-    if (!isLoggedIn) {
-      dispatch(routeActions.push(`/${author.username}/post/${post.token}`))
-    }
+    const { dispatch, post } = this.props
+    const showComments = !post.showComments
+    dispatch(postActions.toggleComments(post, showComments))
   };
 
   lovePost = () => {

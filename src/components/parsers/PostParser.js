@@ -1,16 +1,24 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
+import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { getLinkObject } from '../base/json_helper'
 import { body, regionItems, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostTools from '../posts/PostTools'
+import CommentStream from '../streams/CommentStream'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
 
 function getPostDetailPath(author, post) {
   return `/${author.username}/post/${post.token}`
+}
+
+function commentStream(post, author) {
+  return (
+    <CommentStream key={`Comments_${post.id}`} post={post} author={author} />
+  )
 }
 
 function header(post, author) {
@@ -61,17 +69,12 @@ function footer(post, author, currentUser) {
   )
 }
 
-export function parsePost(post, json, currentUser, isGridLayout = true) {
+export function parsePost(post, author, currentUser, isGridLayout = true) {
   if (!post) { return null }
-  setModels(json)
-  const author = json[MAPPING_TYPES.USERS][post.authorId]
   const cells = []
   const postDetailPath = getPostDetailPath(author, post)
 
   if (post.repostContent && post.repostContent.length) {
-    const authorLinkObject = getLinkObject(post, 'repostAuthor', json)
-    const sourceLinkObject = getLinkObject(post, 'repostedSource', json)
-    cells.push(repostHeader(post, authorLinkObject, sourceLinkObject, author))
     if (post.contentWarning) {
       cells.push(<ContentWarningButton post={post}/>)
     }
@@ -86,8 +89,6 @@ export function parsePost(post, json, currentUser, isGridLayout = true) {
       }
     }
   } else {
-    cells.push(header(post, author))
-
     if (post.contentWarning) {
       cells.push(<ContentWarningButton post={post}/>)
     }
@@ -105,3 +106,66 @@ export function parseSummary(post, json, only = null) {
   return regionItems(post.summary, only, false)
 }
 
+function isRepost(post) {
+  return post.repostContent && post.repostContent.length;
+}
+
+class PostParser extends Component {
+  static propTypes = {
+    post: PropTypes.object,
+    author: PropTypes.object,
+    assets: PropTypes.any.isRequired,
+    currentUser: PropTypes.object,
+    isGridLayout: PropTypes.bool,
+    showComments: PropTypes.bool,
+    authorLinkObject: PropTypes.object,
+    sourceLinkObject: PropTypes.object,
+  };
+
+  render() {
+    const { post, assets, currentUser, isGridLayout, author, showComments } = this.props
+    if (!post) { return null }
+
+    let postHeader;
+
+    setModels({ assets })
+    if (isRepost(post)) {
+      const { authorLinkObject, sourceLinkObject } = this.props
+      postHeader = repostHeader(post, authorLinkObject, sourceLinkObject, author)
+    } else {
+      postHeader = header(post, author)
+    }
+
+    return (
+      <div>
+        {postHeader}
+        {parsePost(post, author, currentUser, isGridLayout)}
+        {showComments ? commentStream(post, author, currentUser) : null}
+      </div>)
+  }
+}
+
+const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
+  const post = json[MAPPING_TYPES.POSTS][ownProps.post.id]
+  const author = json[MAPPING_TYPES.USERS][post.authorId]
+  const assets = json.assets;
+
+  let newProps = {
+    assets,
+    currentUser,
+    post,
+    author,
+  }
+
+  if (isRepost(post)) {
+    newProps = {
+      ...newProps,
+      authorLinkObject: getLinkObject(post, 'repostAuthor', json),
+      sourceLinkObject: getLinkObject(post, 'repostedSource', json),
+    }
+  }
+
+  return newProps
+}
+
+export default connect(mapStateToProps)(PostParser)
