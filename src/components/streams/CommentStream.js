@@ -14,8 +14,14 @@ export default class CommentStream extends Component {
     const action = loadComments(post)
     return (
       <div>
-        <StreamComponent className="narrow" action={action} />
-        <Link to={`/${author.username}/post/${post.token}`}>See More</Link>
+        <StreamComponent className="narrow" action={action}>
+          <Link
+            to={`/${author.username}/post/${post.token}`}
+            className="CommentsLink"
+          >
+            See More
+          </Link>
+        </StreamComponent>
       </div>
     )
   }

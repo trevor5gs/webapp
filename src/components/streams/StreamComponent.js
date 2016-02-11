@@ -17,6 +17,7 @@ export class StreamComponent extends Component {
 
   static propTypes = {
     action: PropTypes.object,
+    children: PropTypes.any,
     currentUser: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     initModel: PropTypes.object,
@@ -233,6 +234,7 @@ export class StreamComponent extends Component {
             currentUser,
             this.state.gridColumnCount)
         }
+        {this.props.children}
         <Paginator
           delegate={this}
           hasShowMoreButton={typeof meta.resultKey !== 'undefined'}
