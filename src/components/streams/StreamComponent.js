@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
+import _ from 'lodash'
 import { runningFetches } from '../../middleware/requester'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
@@ -199,9 +200,9 @@ export class StreamComponent extends Component {
                (meta.resultFilter && result.type !== meta.mappingType)) {
       const deletedCollection = json[`deleted_${result.type}`]
       for (const id of result.ids) {
-        if (json[result.type][id] &&
+        if (_.get(json, [result.type, id]) &&
            (!deletedCollection || deletedCollection.indexOf(id) === -1)) {
-          renderObj.data.push(json[result.type][id])
+          renderObj.data.push(_.get(json, [result.type, id]))
         }
       }
       if (result.next) {
