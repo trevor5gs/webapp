@@ -63,12 +63,12 @@ export const requester = store => next => action => {
   // This is problematic... :(
   if ((type !== ACTION_TYPES.LOAD_STREAM &&
         type !== ACTION_TYPES.LOAD_NEXT_CONTENT &&
-        type !== ACTION_TYPES.LOAD_PREV_CONTENT &&
         type !== ACTION_TYPES.AUTHENTICATION.FORGOT_PASSWORD &&
         type !== ACTION_TYPES.AUTHENTICATION.USER &&
         type !== ACTION_TYPES.COMMENT.DELETE &&
         type !== ACTION_TYPES.COMMENT.EDIT &&
         type !== ACTION_TYPES.COMMENT.FLAG &&
+        type !== ACTION_TYPES.EMOJI.LOAD &&
         type !== ACTION_TYPES.INVITATIONS.INVITE &&
         type !== ACTION_TYPES.POST.AUTO_COMPLETE &&
         type !== ACTION_TYPES.POST.COMMENT &&

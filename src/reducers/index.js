@@ -1,5 +1,6 @@
 export { authentication } from './authentication'
 export { editor } from './editor'
+export { emoji } from './emoji'
 export { gui } from './gui'
 export { json } from './json'
 export { modal } from './modal'

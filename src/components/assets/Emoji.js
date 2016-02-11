@@ -10,7 +10,7 @@ const Emoji = (props) => {
       { ...props }
       alt={ alt || tip }
       className={ classNames(className, 'Emoji') }
-      src={ src || `/static/images/support/${name}.png` }
+      src={ src || `${ENV.AUTH_DOMAIN}/images/emoji/${name}.png` }
       title={ title || tip }
       width={ width || size }
       height={ height || size }
