@@ -8,7 +8,7 @@ import ImageBlock from './ImageBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
 import TextTools from './TextTools'
-import { autoComplete } from '../../actions/posts'
+import { autoCompleteUser, loadEmojis } from '../../actions/posts'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addInputObject, removeInputObject } from './InputComponent'
@@ -25,6 +25,7 @@ class BlockCollection extends Component {
     delegate: PropTypes.any.isRequired,
     dispatch: PropTypes.func.isRequired,
     editorStore: PropTypes.object.isRequired,
+    emoji: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -190,12 +191,25 @@ class BlockCollection extends Component {
 
   onUserCompleter({ word }) {
     const { dispatch } = this.props
-    dispatch(autoComplete('user', word))
+    dispatch(autoCompleteUser('user', word))
   }
 
   onEmojiCompleter({ word }) {
-    const { dispatch } = this.props
-    dispatch(autoComplete('emoji', word))
+    const { dispatch, emoji } = this.props
+    if (emoji.emojis && emoji.emojis.length) {
+      dispatch({
+        type: ACTION_TYPES.EMOJI.LOAD_SUCCESS,
+        payload: {
+          response: {
+            emojis: emoji.emojis,
+          },
+          type: 'emoji',
+          word,
+        },
+      })
+    } else {
+      dispatch(loadEmojis('emoji', word))
+    }
   }
 
   onHideCompleter() {
@@ -347,6 +361,7 @@ class BlockCollection extends Component {
   handleCompletion = ({ value }) => {
     replaceWordFromSelection(value)
     this.handleCancelAutoCompleter()
+    this.persistBlocks()
   };
 
   handleCancelAutoCompleter = () => {
@@ -426,6 +441,7 @@ class BlockCollection extends Component {
 function mapStateToProps(state) {
   return {
     editorStore: state.editor,
+    emoji: state.emoji,
   }
 }
 

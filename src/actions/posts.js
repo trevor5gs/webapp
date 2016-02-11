@@ -116,12 +116,23 @@ export function postPreviews(embedUrl) {
   }
 }
 
-export function autoComplete(type, word) {
+export function autoCompleteUsers(type, word) {
   return {
     type: ACTION_TYPES.POST.AUTO_COMPLETE,
     payload: {
-      endpoint: (type === 'user' ? api.userAutocompleter(word) : api.userAutocompleter()),
+      endpoint: api.userAutocompleter(word),
       type,
+    },
+  }
+}
+
+export function loadEmojis(type, word) {
+  return {
+    type: ACTION_TYPES.EMOJI.LOAD,
+    payload: {
+      endpoint: api.loadEmojis(),
+      type,
+      word,
     },
   }
 }

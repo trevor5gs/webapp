@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
+import Emoji from '../assets/Emoji'
 import Completion from './Completion'
 import { getPositionFromSelection } from '../editor/SelectionUtil'
 import { addKeyObject, removeKeyObject } from '../interface/KeyComponent'
@@ -95,7 +96,20 @@ export default class Completer extends Component {
   }
 
   renderEmoji() {
-    return null
+    const { completions, onCompletion } = this.props
+    const { selectedIndex } = this.state
+    return (
+      completions.data.map((completion, i) =>
+        <Completion
+          className={ i === selectedIndex ? 'active' : null }
+          key={ `completion_${i}` }
+          asset={ <Emoji key={ completion.name } src={ completion.imageUrl }/>}
+          label={ `:${completion.name}:` }
+          ref={ `completion_${i}` }
+          onClick={ onCompletion }
+        />
+      )
+    )
   }
 
   render() {

@@ -149,6 +149,11 @@ export function userAutocompleter(word) {
     path: getAPIPath('users/autocomplete', { terms: word.replace(/@|:/ig, '') }),
   }
 }
+export function loadEmojis() {
+  return {
+    path: `${ENV.AUTH_DOMAIN}/emojis.json`,
+  }
+}
 // Comments
 export function commentsForPost(post) {
   const params = { per_page: PER_PAGE }
