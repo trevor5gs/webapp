@@ -357,7 +357,7 @@ class Settings extends Component {
 
             <TreeButton>Your Data</TreeButton>
             <div className="TreePanel">
-              <p>{ SETTINGS.YOUR_DATA_DESC}</p>
+              <p className="SettingsDataDescription">{ SETTINGS.YOUR_DATA_DESC}</p>
               <dl className="SettingsDefinitionValues">
                 <dt>Username:</dt>
                 <dd>{ `@${profile.username}` }</dd>

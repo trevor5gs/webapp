@@ -1,10 +1,9 @@
 .TreeButton
-  +sans-bold-family
   position: relative
   font-size: rem(18)
   white-space: nowrap
   height: rem(40)
-  padding-left: rem(40)
+  padding-left: rem(30)
   vertical-align: top
 
 .TreeIcon
@@ -22,15 +21,31 @@
 .TreeButton.isCollapsed .TreeIcon g
   stroke: #aaa
 
+@media(min-width: #{$break-2})
+  .TreeButton
+    font-size: rem(24)
+
+
+@media(min-width: #{$break-3})
+  .TreeButton
+    padding-left: 0
+  .TreeIcon
+    left: rem(-30)
+
+
 // -------------------------------------
 
 .TreePanel
   overflow: hidden
-  padding-left: rem(40)
+  padding-left: rem(30)
 
 .TreeButton.isCollapsed + .TreePanel
   height: 0
 
 .TreePanel > p:first-child
   margin-top: 0
+
+@media(min-width: #{$break-3})
+  .TreePanel
+    padding-left: 0
 
