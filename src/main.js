@@ -37,7 +37,9 @@ const persistor = persistStore(store, { storage, whitelist }, () => {
 storage.getItem('APP_VERSION')
   .then((curVersion) => {
     if (curVersion && curVersion !== APP_VERSION) {
-      persistor.purgeAll()
+      // we can't use purgeAll since localforage
+      // doesn't implement the getAllKeys method
+      persistor.purge(whitelist)
     }
     storage.setItem('APP_VERSION', APP_VERSION)
   })
