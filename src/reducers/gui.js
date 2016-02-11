@@ -1,5 +1,5 @@
 import { UPDATE_LOCATION } from 'react-router-redux'
-import { SET_LAYOUT_MODE } from '../constants/action_types'
+import { PROFILE, SET_LAYOUT_MODE } from '../constants/action_types'
 
 
 let location = {}
@@ -40,6 +40,8 @@ export function gui(state = initialState, action = { type: '' }) {
     case UPDATE_LOCATION:
       location = action.payload
       return state
+    case PROFILE.DELETE_SUCCESS:
+      return { ...initialState }
     default:
       return state
   }

@@ -1,4 +1,4 @@
-import { POST } from '../constants/action_types'
+import { POST, PROFILE } from '../constants/action_types'
 
 export function editor(state = {}, action) {
   let obj
@@ -50,6 +50,8 @@ export function editor(state = {}, action) {
         obj.completions = { data: action.payload.response.autocompleteResults, type }
       }
       return obj
+    case PROFILE.DELETE_SUCCESS:
+      return {}
     default:
       return state
   }

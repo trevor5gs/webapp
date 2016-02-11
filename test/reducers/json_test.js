@@ -326,6 +326,10 @@ describe('json reducer', () => {
       })
     })
 
+    it('returns an empty object when a user deletes their profile', () => {
+      expect(subject.json(json, { type: ACTION_TYPES.PROFILE.DELETE_SUCCESS })).to.deep.equal({})
+    })
+
     context('with relationship actions', () => {
       it('calls #relationshipMethods.batchUpdateRelationship', () => {
         methodCalledWithActions(subject.relationshipMethods, 'batchUpdateRelationship', [

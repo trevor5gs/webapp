@@ -22,6 +22,8 @@ export function profile(state = {}, action) {
         ...state,
         [assetType]: { ...state[assetType], ...action.payload },
       }
+    case PROFILE.DELETE_SUCCESS:
+      return {}
 
     // TODO: This isn't really working, it's still pulling the previous image here?
     // Once the asset is uploaded, remove `tmp` which will trigger a load of the new image
