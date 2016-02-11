@@ -2,7 +2,7 @@
   overflow: hidden
   position: relative
   max-width: rem(780)
-  min-height: rem(220)
+  min-height: rem(240)
   margin-top: rem(10)
   // outline: 1px dotted purple
 
@@ -41,8 +41,14 @@
 .UserList > .UserStats
   margin: rem(20) 0
 
+.UserList > .ShareProfileButton
+  display: none
+
 .UserList.asUserDetailHeader
   margin-left: rem(10)
+
+.UserList.asUserDetailHeader > .ShareProfileButton
+  display: block
 
 @media(min-width: #{$break-2})
   .UserList.asUserDetailHeader
@@ -54,9 +60,10 @@
 // Special case for the user detail header in mobile land
 @media(max-width: #{$break-2-max})
   .UserList.asUserDetailHeader
-    margin-top: rem(-70)
+    margin-top: rem(-120)
+    margin-bottom: rem(40)
   .UserList.asUserDetailHeader > .RelationsGroup
-    top: rem(80)
+    top: rem(90)
   .UserList.asUserDetailHeader > .UserNames
     margin-top: rem(200)
   .UserList.asUserDetailHeader > .UserStats
@@ -78,12 +85,17 @@
     margin-left: rem(220)
 
   .UserList > .UserStats
-    margin: rem(35) 0 rem(25) rem(220)
+    margin: rem(20) 0 rem(25) rem(220)
     padding-right: rem(20)
 
   .UserList > .UserInfo
     margin-left: rem(220)
     padding-right: rem(20)
+
+  .UserList > .ShareProfileButton
+    position: absolute
+    top: rem(210)
+    left: rem(35)
 
 @media(min-width: #{$break-4})
   .UserList > .UserStats,

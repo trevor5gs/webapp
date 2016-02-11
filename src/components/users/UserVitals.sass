@@ -4,13 +4,12 @@
 .UserStats dl
   display: inline-block
 .UserStats dl + dl
-  margin-left: 6%
+  margin-left: 8%
 
 .UserStats dt
   +sans-bold-family
 
 .UserStats dd
-  +monospace
   display: block
   transition: color $speed ease
   border-bottom: 1px solid
@@ -32,23 +31,21 @@
   +ellipse
 
 .UserUsername
-  +sans-bold-family
   font-size: rem(18)
 
 .no-touch .UserUsername > a:hover
   color: #666
 
 .UserName
-  +monospace
   color: #999
+
+@media(min-width: #{$break-2})
+  .UserUsername
+    font-size: rem(24)
+
 
 // -------------------------------------
 // UserInfo
-
-.UserShortBio,
-.UserShortBio > *,
-.UserExternalLinks
-  +monospace
 
 .UserExternalLinks
   margin-left: rem(-10)

@@ -1,7 +1,8 @@
 .RelationshipButton
-  +sanserif
+  +sans-family
+  font-size: 0.75rem
   transition: background-color $speed $ease, border-color $speed $ease, border-radius $speed $ease, color $speed $ease, width $speed $ease
-  width: rem(110)
+  width: rem(100)
   height: rem(30)
   padding: 0 rem(10) 0 rem(4)
   overflow: hidden
@@ -29,9 +30,6 @@
 .RelationshipButton[data-priority="friend"] > .SVGIcon g,
 .RelationshipButton[data-priority="noise"] > .SVGIcon g
   stroke: white
-
-.RelationshipButton[data-priority="self"]
-  width: auto
 
 .RelationshipButton[data-priority="block"],
 .RelationshipButton[data-priority="mute"],
@@ -64,7 +62,7 @@
   > .SVGIcon g
     stroke: #aaa
   .no-touch &:hover
-    width: rem(110)
+    width: rem(100)
     background-color: #aaa
     border-color: #aaa
     color: white

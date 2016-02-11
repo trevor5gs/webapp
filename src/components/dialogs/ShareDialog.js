@@ -34,14 +34,20 @@ SHARE_DIMENSIONS[SHARE_TYPES.TWITTER] = { width: 520, height: 250 }
 class ShareDialog extends Component {
 
   static propTypes = {
-    author: PropTypes.object.isRequired,
-    post: PropTypes.object.isRequired,
+    author: PropTypes.object,
+    post: PropTypes.object,
+    user: PropTypes.object,
     trackEvent: PropTypes.func,
   };
 
   componentWillMount() {
+    const { user } = this.props
+    return user ? this.getMountShareUser() : this.getMountSharePost()
+  }
+
+  getMountSharePost() {
     const { author, post } = this.props
-    this.postLink = `${window.location.protocol}//${window.location.host}/${author.username}/post/${post.token}`
+    this.shareLink = `${window.location.protocol}//${window.location.host}/${author.username}/post/${post.token}`
     let summary = 'Check out this post on Ello'
     // email string, since we can fit more text content
     const emailSubject = `${summary}, via @${author.username}`
@@ -61,36 +67,47 @@ class ShareDialog extends Component {
     }
     // truncate the tweet summary to be <= 140
     let tweetSummary = summary
-    if (tweetSummary.length + this.postLink.length > 139) {
-      tweetSummary = tweetSummary.substr(0, 139 - this.postLink.length)
+    if (tweetSummary.length + this.shareLink.length > 139) {
+      tweetSummary = tweetSummary.substr(0, 139 - this.shareLink.length)
       const summaryArr = tweetSummary.split(' ')
       summaryArr.pop()
       tweetSummary = summaryArr.join(' ')
     }
     // create "safe" versions of what we need to use
-    this.postLinkSafe = window.encodeURIComponent(this.postLink)
+    this.shareLinkSafe = window.encodeURIComponent(this.shareLink)
     this.summarySafe = window.encodeURIComponent(summary)
     this.tweetSummarySafe = window.encodeURIComponent(tweetSummary)
     this.emailSubjectSafe = window.encodeURIComponent(emailSubject)
-    this.emailBodySafe = `${this.summarySafe}%0D%0A%0D%0A${this.postLinkSafe}`
+    this.emailBodySafe = `${this.summarySafe}%0D%0A%0D%0A${this.shareLinkSafe}`
+  }
+
+  getMountShareUser() {
+    const { user } = this.props
+    const summary = `Check out @${user.username} on Ello`
+    this.shareLink = `${window.location.protocol}//${window.location.host}/${user.username}`
+    this.shareLinkSafe = window.encodeURIComponent(this.shareLink)
+    this.summarySafe = window.encodeURIComponent(summary)
+    this.tweetSummarySafe = this.summarySafe
+    this.emailSubjectSafe = this.summarySafe
+    this.emailBodySafe = `${this.summarySafe}%0D%0A%0D%0A${this.shareLinkSafe}`
   }
 
   getUrl(type) {
     switch (type) {
       case SHARE_TYPES.FACEBOOK:
-        return `https://www.facebook.com/sharer/sharer.php?u=${this.postLinkSafe}`
+        return `https://www.facebook.com/sharer/sharer.php?u=${this.shareLinkSafe}`
       case SHARE_TYPES.GOOGLE_PLUS:
-        return `https://plus.google.com/share?url=${this.postLinkSafe}`
+        return `https://plus.google.com/share?url=${this.shareLinkSafe}`
       case SHARE_TYPES.LINKEDIN:
-        return `http://www.linkedin.com/shareArticle?mini=true&url=${this.postLinkSafe}&title=${this.summarySafe}`
+        return `http://www.linkedin.com/shareArticle?mini=true&url=${this.shareLinkSafe}&title=${this.summarySafe}`
       case SHARE_TYPES.PINTEREST:
-        return `http://pinterest.com/pin/create/button/?url=${this.postLinkSafe}&description=${this.summarySafe}&media=${this.image}`
+        return `http://pinterest.com/pin/create/button/?url=${this.shareLinkSafe}&description=${this.summarySafe}&media=${this.image}`
       case SHARE_TYPES.REDDIT:
-        return `http://reddit.com/submit?url=${this.postLinkSafe}&title=${this.summarySafe}`
+        return `http://reddit.com/submit?url=${this.shareLinkSafe}&title=${this.summarySafe}`
       case SHARE_TYPES.TUMBLR:
-        return `http://www.tumblr.com/share/link?url=${this.postLinkSafe}&name=${this.summarySafe}`
+        return `http://www.tumblr.com/share/link?url=${this.shareLinkSafe}&name=${this.summarySafe}`
       case SHARE_TYPES.TWITTER:
-        return `https://twitter.com/intent/tweet?url=${this.postLinkSafe}&text=${this.tweetSummarySafe}`
+        return `https://twitter.com/intent/tweet?url=${this.shareLinkSafe}&text=${this.tweetSummarySafe}`
       case SHARE_TYPES.EMAIL:
       default:
         return `mailto:?subject=${this.emailSubjectSafe}&body=${this.emailBodySafe}`
@@ -100,7 +117,7 @@ class ShareDialog extends Component {
   popShareWindow = (e) => {
     const type = e.target.dataset.type
     const url = this.getUrl(type)
-    const { trackEvent } = this.props
+    const { trackEvent, user } = this.props
     if (url.indexOf('mailto') === 0) {
       document.location.href = url
     } else {
@@ -109,7 +126,7 @@ class ShareDialog extends Component {
       window.open(url, 'sharewindow', `width=${width}, height=${height}, left=${window.innerWidth / 2 - width / 2}, top=${window.innerHeight / 2 - height / 2}, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0`)
     }
     if (trackEvent) {
-      trackEvent(`share-to-${type}`)
+      return user ? trackEvent(`share-user-to-${type}-profile`) : trackEvent(`share-to-${type}`)
     }
   };
 
@@ -125,7 +142,7 @@ class ShareDialog extends Component {
           type="url"
           readOnly
           onClick={this.selectReadOnlyInput}
-          value={this.postLink}
+          value={this.shareLink}
         />
         <div className="ShareLinks">
           <button className="ShareLink" data-type={SHARE_TYPES.EMAIL} onClick={this.popShareWindow}><MailIcon/></button>
