@@ -41,8 +41,14 @@
 .UserList > .UserStats
   margin: rem(20) 0
 
+.UserList > .ShareProfileButton
+  display: none
+
 .UserList.asUserDetailHeader
   margin-left: rem(10)
+
+.UserList.asUserDetailHeader > .ShareProfileButton
+  display: block
 
 @media(min-width: #{$break-2})
   .UserList.asUserDetailHeader
@@ -85,6 +91,11 @@
   .UserList > .UserInfo
     margin-left: rem(220)
     padding-right: rem(20)
+
+  .UserList > .ShareProfileButton
+    position: absolute
+    top: rem(210)
+    left: rem(35)
 
 @media(min-width: #{$break-4})
   .UserList > .UserStats,
