@@ -38,7 +38,6 @@ export function availableToggles() {
   return {
     type: LOAD_STREAM,
     meta: {
-      defaultMode: 'list',
       mappingType: MAPPING_TYPES.CATEGORIES,
       renderStream: {
         asList: StreamRenderables.profileToggles,
