@@ -18,6 +18,8 @@ import './vendor/embetter_initializer'
 
 updateTimeAgoStrings({ about: '' })
 
+const APP_VERSION = '1.0.5'
+
 const element = (
   <Provider store={store}>
     <Router history={browserHistory} routes={routes} />
@@ -32,14 +34,11 @@ const persistor = persistStore(store, { storage, whitelist }, () => {
 
 // check and update current version and
 // only kill off the persisted reducers
-if (ENV.APP_VERSION) {
-  storage.getItem('APP_VERSION')
-    .then((curVersion) => {
-      if (curVersion && curVersion !== ENV.APP_VERSION) {
-        persistor.purge(['json', 'profile'])
-      }
-      storage.setItem('APP_VERSION', ENV.APP_VERSION)
-    })
-}
-
+storage.getItem('APP_VERSION')
+  .then((curVersion) => {
+    if (curVersion && curVersion !== APP_VERSION) {
+      persistor.purgeAll()
+    }
+    storage.setItem('APP_VERSION', APP_VERSION)
+  })
 
