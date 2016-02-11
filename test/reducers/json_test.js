@@ -326,6 +326,10 @@ describe('json reducer', () => {
       })
     })
 
+    it('returns an empty object when a user deletes their profile', () => {
+      expect(subject.json(json, { type: ACTION_TYPES.PROFILE.DELETE_SUCCESS })).to.deep.equal({})
+    })
+
     context('with relationship actions', () => {
       it('calls #relationshipMethods.batchUpdateRelationship', () => {
         methodCalledWithActions(subject.relationshipMethods, 'batchUpdateRelationship', [
@@ -341,12 +345,6 @@ describe('json reducer', () => {
           ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE,
         ])
       })
-    })
-
-    it('calls #methods.setLayoutMode', () => {
-      methodCalledWithActions(subject.methods, 'setLayoutMode', [
-        ACTION_TYPES.SET_LAYOUT_MODE,
-      ])
     })
 
     context('when the action is UPDATE_LOCATION', () => {

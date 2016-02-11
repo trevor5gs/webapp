@@ -6,10 +6,12 @@ import { PhoneIcon, ChevronIcon, ListIcon, GridIcon } from '../footer/FooterIcon
 import FooterLabel from '../footer/FooterLabel'
 import FooterLink from '../footer/FooterLink'
 import FooterTool from '../footer/FooterTool'
+import { findLayoutMode } from '../../reducers/gui'
 
 class Footer extends Component {
 
   static propTypes = {
+    gui: PropTypes.object.isRequired,
     json: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
   };
@@ -26,14 +28,9 @@ class Footer extends Component {
   }
 
   componentWillReceiveProps() {
-    const { json, pathname } = this.props
-    let result = null
-    if (json.pages) {
-      result = json.pages[pathname]
-    }
-    if (result && result.mode) {
-      this.setState({ isGridMode: result.mode === 'grid' })
-    }
+    const { gui } = this.props
+    const currentMode = findLayoutMode(gui.modes)
+    this.setState({ isGridMode: currentMode && currentMode.mode === 'grid' })
   }
 
   scrollToTop = () => {
@@ -85,6 +82,7 @@ class Footer extends Component {
 
 function mapStateToProps(state) {
   return {
+    gui: state.gui,
     json: state.json,
     pathname: state.routing.location.pathname,
   }

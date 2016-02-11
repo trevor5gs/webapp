@@ -9,6 +9,7 @@ function createPropsForStream(props = {}) {
     },
     action: {},
     dispatch: () => {/**/},
+    gui: { modes: [] },
     json: {
       pages: {
         what: {},
@@ -103,7 +104,6 @@ describe('StreamComponent', () => {
         const props = createPropsForStream({
           action: {
             meta: {
-              defaultMode: 'list',
               renderStream: { asList: () => {/**/}, asGrid: () => {/**/} },
               mappingType: MAPPING_TYPES.POSTS,
             },

@@ -9,7 +9,6 @@ export function loadDiscoverUsers(type) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.discoverUsers(type) },
     meta: {
-      defaultMode: 'grid',
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
         asList: StreamRenderables.postsAsList,
@@ -25,7 +24,6 @@ export function loadCommunities() {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.communitiesPath(), vo: {} },
     meta: {
-      defaultMode: 'grid',
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
         asList: StreamRenderables.usersAsCards,
@@ -40,7 +38,6 @@ export function loadFeaturedUsers() {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.awesomePeoplePath(), vo: {} },
     meta: {
-      defaultMode: 'grid',
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
         asList: StreamRenderables.usersAsList,

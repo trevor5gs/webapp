@@ -1,5 +1,6 @@
 export { authentication } from './authentication'
 export { editor } from './editor'
+export { gui } from './gui'
 export { json } from './json'
 export { modal } from './modal'
 export { omnibar } from './omnibar'

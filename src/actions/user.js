@@ -9,7 +9,6 @@ export function loadUserDetail(username) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.userDetail(username), vo: {} },
     meta: {
-      defaultMode: 'list',
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
         asList: StreamRenderables.userDetailAsList,
@@ -25,7 +24,6 @@ export function loadUserPosts(username, type) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.userResources(username, type), vo: {} },
     meta: {
-      defaultMode: 'list',
       mappingType: MAPPING_TYPES.POSTS,
       renderStream: {
         asList: StreamRenderables.postsAsList,
@@ -40,7 +38,6 @@ export function loadUserLoves(username, type) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.userResources(username, type), vo: {} },
     meta: {
-      defaultMode: 'grid',
       mappingType: MAPPING_TYPES.LOVES,
       renderStream: {
         asList: StreamRenderables.postsAsList,
@@ -56,7 +53,6 @@ export function loadUserUsers(username, type) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.userResources(username, type), vo: {} },
     meta: {
-      defaultMode: 'grid',
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
         asList: StreamRenderables.usersAsList,
@@ -71,7 +67,6 @@ export function loadUserAvatars(endpoint, resultKey) {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint, vo: {} },
     meta: {
-      defaultMode: 'grid',
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
         asList: StreamRenderables.userAvatars,

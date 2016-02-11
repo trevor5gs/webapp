@@ -17,6 +17,7 @@ import NavbarOmniButton from '../navbar/NavbarOmniButton'
 import NavbarProfile from '../navbar/NavbarProfile'
 import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
 import Mousetrap from '../../vendor/mousetrap'
+import { findLayoutMode } from '../../reducers/gui'
 
 const whitelist = [
   '',
@@ -37,6 +38,7 @@ class Navbar extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    gui: PropTypes.object.isRequired,
     json: PropTypes.object.isRequired,
     modalIsActive: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
@@ -85,18 +87,13 @@ class Navbar extends Component {
     }
 
     Mousetrap.bind(SHORTCUT_KEYS.TOGGLE_LAYOUT, () => {
-      const { json, pathname } = this.props
-      let result = null
-      if (json.pages) {
-        result = json.pages[pathname]
-      }
-      if (result && result.mode) {
-        const newMode = result.mode === 'grid' ? 'list' : 'grid'
-        dispatch({
-          type: ACTION_TYPES.SET_LAYOUT_MODE,
-          payload: { mode: newMode },
-        })
-      }
+      const { gui } = this.props
+      const currentMode = findLayoutMode(gui.modes)
+      const newMode = currentMode && currentMode.mode === 'grid' ? 'list' : 'grid'
+      dispatch({
+        type: ACTION_TYPES.SET_LAYOUT_MODE,
+        payload: { mode: newMode },
+      })
     })
     addResizeObject(this)
     addScrollObject(this)
@@ -333,6 +330,7 @@ class Navbar extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
+    gui: state.gui,
     json: state.json,
     modalIsActive: state.modal.isActive,
     pathname: state.routing.location.pathname,

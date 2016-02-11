@@ -38,8 +38,6 @@ import TreeButton from '../../components/navigation/TreeButton'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 import InfoForm from '../../components/forms/InfoForm'
-// TODO: figure out how to clear store some other way
-// import { clearStore } from '../../main'
 
 class Settings extends Component {
 
@@ -193,7 +191,6 @@ class Settings extends Component {
     const { dispatch } = this.props
     dispatch(deleteProfile())
     this.closeModal()
-    // clearStore()
     dispatch(routeActions.replace('/'))
   };
 

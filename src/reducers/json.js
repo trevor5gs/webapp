@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 import { UPDATE_LOCATION } from 'react-router-redux'
+import { REHYDRATE } from 'redux-persist/constants'
 import { uniq } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
@@ -210,6 +211,8 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.POST.LOVE_REQUEST:
     case ACTION_TYPES.POST.LOVE_FAILURE:
       return postMethods.updatePostLoves(state, newState, action)
+    case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
+      return {}
     case ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL:
       return relationshipMethods.batchUpdateRelationship(newState, action)
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL:
@@ -217,8 +220,19 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS:
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE:
       return relationshipMethods.updateRelationship(newState, action)
-    case ACTION_TYPES.SET_LAYOUT_MODE:
-      return methods.setLayoutMode(action, state, newState)
+    case REHYDRATE:
+      // only keep the items that have been deleted
+      // so we can still filter them out if needed
+      if (action.key === 'json') {
+        const keepers = {}
+        for (const collection in action.payload) {
+          if (collection.match('deleted_')) {
+            keepers[collection] = action.payload[collection]
+          }
+        }
+        return { ...state, ...keepers }
+      }
+      return state
     case UPDATE_LOCATION:
       path = action.payload.pathname
       if (action.payload.query.terms && prevTerms !== action.payload.query.terms) {

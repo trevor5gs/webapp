@@ -13,7 +13,6 @@ export function searchForPosts(terms) {
       }),
     },
     meta: {
-      defaultMode: 'grid',
       mappingType: MAPPING_TYPES.POSTS,
       renderStream: {
         asGrid: StreamRenderables.postsAsGrid,
@@ -33,7 +32,6 @@ export function searchForUsers(terms) {
       }),
     },
     meta: {
-      defaultMode: 'grid',
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
         asGrid: StreamRenderables.usersAsGrid,
