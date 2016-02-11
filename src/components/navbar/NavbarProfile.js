@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react'
+import ReactDOM from 'react-dom'
 import Avatar from '../assets/Avatar'
+import classNames from 'classnames'
 import { Link } from 'react-router'
+import { ExIcon } from './NavbarIcons'
 
 const threadlessLink = 'http://ello.threadless.com/'
 
@@ -11,13 +14,48 @@ class NavbarProfile extends Component {
     username: PropTypes.string,
   };
 
+  componentWillMount() {
+    this.state = {
+      isMenuOpen: false,
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.onDocumentClick)
+  }
+
+  onAvatarClick = () => {
+    const { isMenuOpen } = this.state
+    if (isMenuOpen) { return this.hideMenu() }
+    return this.showMenu()
+  };
+
+  onDocumentClick = () => {
+    this.hideMenu()
+  };
+
+  showMenu() {
+    if (this.state.isMenuOpen) { return }
+    ReactDOM.findDOMNode(document.body).classList.add('profileMenuIsActive')
+    document.addEventListener('click', this.onDocumentClick)
+    this.setState({ isMenuOpen: true })
+  }
+
+  hideMenu() {
+    if (!this.state.isMenuOpen) { return }
+    ReactDOM.findDOMNode(document.body).classList.remove('profileMenuIsActive')
+    document.removeEventListener('click', this.onDocumentClick)
+    this.setState({ isMenuOpen: false })
+  }
+
   render() {
     const { avatar, username, onLogOut } = this.props
+    const { isMenuOpen } = this.state
     if (avatar && username) {
       return (
         <span className="NavbarProfile">
-          <Avatar to={`/${username}`} sources={avatar} />
-          <nav className="NavbarProfileLinks">
+          <Avatar sources={avatar} onClick={ this.onAvatarClick } />
+          <nav className={ classNames('NavbarProfileLinks', { active: isMenuOpen })}>
             <Link className="NavbarProfileLink" to={`/${username}`}>{`@${username}`}</Link>
             <Link className="NavbarProfileLink" to={`/${username}/loves`}>Loves</Link>
             <Link className="NavbarProfileLink" to="/invitations">Invite</Link>
@@ -27,6 +65,9 @@ class NavbarProfile extends Component {
             <a className="NavbarProfileLink" href="/wtf" target="_blank">Help</a>
             <a className="NavbarProfileLink" href={ threadlessLink } target="_blank">Store</a>
             <button className="NavbarProfileLink" onClick={ onLogOut }>Logout</button>
+            <button className="NavbarProfileCloseButton">
+              <ExIcon/>
+            </button>
           </nav>
 
         </span>

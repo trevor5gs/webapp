@@ -66,3 +66,11 @@ export const ArrowIcon = () =>
     </g>
   </SVGIcon>
 
+export const ExIcon = () =>
+  <SVGIcon className="ArrowIcon">
+    <g>
+      <line x1="4" y1="4" x2="16" y2="16"/>
+      <line x1="16" y1="4" x2="4" y2="16"/>
+    </g>
+  </SVGIcon>
+
