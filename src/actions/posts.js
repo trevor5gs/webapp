@@ -43,9 +43,6 @@ export function toggleComments(post, visible) {
       model: post,
       showComments: visible,
     },
-    meta: {
-      mappingType: MAPPING_TYPES.POSTS,
-    },
   }
 }
 
