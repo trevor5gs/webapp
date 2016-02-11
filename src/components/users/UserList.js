@@ -27,7 +27,6 @@ class UserList extends Component {
   };
 
   onShareProfile = () => {
-    console.log('share profile')
     const { dispatch, user } = this.props
     const action = bindActionCreators(trackEvent, dispatch)
     dispatch(openModal(<ShareDialog user={ user } trackEvent={ action } />))
