@@ -26,25 +26,30 @@ class BlockCollection extends Component {
     dispatch: PropTypes.func.isRequired,
     editorStore: PropTypes.object.isRequired,
     emoji: PropTypes.object.isRequired,
+    shouldPersist: PropTypes.bool,
   };
 
   static defaultProps = {
     blocks: [],
+    shouldPersist: false,
   };
 
   componentWillMount() {
-    const { editorStore } = this.props
+    const { blocks, editorStore } = this.props
     this.onHideCompleter()
-    if (editorStore.editorState) {
+    this.state = {
+      collection: {},
+      hideTextTools: true,
+      order: [],
+    }
+    this.uid = 0
+    if (blocks.length) {
+      for (const block of blocks) {
+        this.add(block, false)
+      }
+    } else if (editorStore.editorState) {
       this.state = { ...editorStore.editorState, hideTextTools: true }
       this.uid = Math.max(...editorStore.editorState.order) + 1
-    } else {
-      this.state = {
-        collection: {},
-        hideTextTools: true,
-        order: [],
-      }
-      this.uid = 0
     }
     this.onUserCompleter = debounce(this.onUserCompleter, 300)
     this.persistBlocks = debounce(this.persistBlocks, 300)
@@ -53,12 +58,6 @@ class BlockCollection extends Component {
   }
 
   componentDidMount() {
-    const { blocks } = this.props
-    if (blocks.length) {
-      for (const block of blocks) {
-        this.add(block, false)
-      }
-    }
     this.addEmptyTextBlock()
     this.setSelectionOnMount()
   }
@@ -283,6 +282,7 @@ class BlockCollection extends Component {
 
   addEmptyTextBlock(shouldCheckForEmpty = false) {
     const { collection, order } = this.state
+    console.log('collection', collection)
     requestAnimationFrame(() => {
       if (order.length > 1) {
         const last = collection[order[order.length - 1]][BLOCK_KEY]
@@ -311,7 +311,8 @@ class BlockCollection extends Component {
   };
 
   persistBlocks() {
-    const { dispatch } = this.props
+    const { dispatch, shouldPersist } = this.props
+    if (!shouldPersist) { return }
     const { collection, order } = this.state
     dispatch({ type: ACTION_TYPES.POST.PERSIST, payload: { collection, order } })
   }

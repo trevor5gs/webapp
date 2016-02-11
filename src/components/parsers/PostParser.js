@@ -10,6 +10,7 @@ import PostTools from '../posts/PostTools'
 import CommentStream from '../streams/CommentStream'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
+import InlineEditor from '../../components/editor/InlineEditor'
 
 function getPostDetailPath(author, post) {
   return `/${author.username}/post/${post.token}`
@@ -112,21 +113,23 @@ function isRepost(post) {
 
 class PostParser extends Component {
   static propTypes = {
-    post: PropTypes.object,
-    author: PropTypes.object,
     assets: PropTypes.any.isRequired,
-    currentUser: PropTypes.object,
-    isGridLayout: PropTypes.bool,
-    showComments: PropTypes.bool,
+    author: PropTypes.object,
     authorLinkObject: PropTypes.object,
+    currentUser: PropTypes.object,
+    isEditing: PropTypes.bool,
+    isGridLayout: PropTypes.bool,
+    post: PropTypes.object,
+    showComments: PropTypes.bool,
     sourceLinkObject: PropTypes.object,
   };
 
   render() {
-    const { post, assets, currentUser, isGridLayout, author, showComments } = this.props
+    const { post, assets, currentUser, isEditing, isGridLayout, author, showComments } = this.props
     if (!post) { return null }
 
     let postHeader;
+    console.log('post editing', isEditing)
 
     setModels({ assets })
     if (isRepost(post)) {
@@ -139,7 +142,9 @@ class PostParser extends Component {
     return (
       <div>
         {postHeader}
-        {parsePost(post, author, currentUser, isGridLayout)}
+        { isEditing ?
+          <InlineEditor key={ JSON.stringify(post.body) } blocks={ post.body } post={ post }/> :
+          parsePost(post, author, currentUser, isGridLayout)}
         {showComments ? commentStream(post, author, currentUser) : null}
       </div>)
   }

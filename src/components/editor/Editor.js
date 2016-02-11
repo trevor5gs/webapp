@@ -7,6 +7,7 @@ import BlockCollection from './BlockCollection'
 class Editor extends Component {
 
   static propTypes = {
+    blocks: PropTypes.array,
     dispatch: PropTypes.func.isRequired,
   };
 
@@ -17,7 +18,7 @@ class Editor extends Component {
   }
 
   render() {
-    return <BlockCollection delegate={ this } />
+    return <BlockCollection blocks={ this.props.blocks } delegate={ this } />
   }
 }
 

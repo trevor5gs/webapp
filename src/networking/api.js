@@ -139,6 +139,11 @@ export function createPost(repostId) {
     params,
   }
 }
+export function updatePost(post) {
+  return {
+    path: getAPIPath(`posts/${post.id}`),
+  }
+}
 export function postPreviews() {
   return {
     path: getAPIPath('post_previews'),

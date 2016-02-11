@@ -47,10 +47,10 @@ methods.updatePostLoves = (state, newState, action) =>
   updatePostLoves(state, newState, action)
 
 
-function addNewPost(newState, action) {
+function addOrUpdatePost(newState, action) {
   const { response } = action.payload
   newState[MAPPING_TYPES.POSTS][response.id] = response
-  if (newState.pages['/following']) {
+  if (action.type !== ACTION_TYPES.POST.UPDATE_SUCCESS && newState.pages['/following']) {
     newState.pages['/following'].ids.unshift(response.id)
   }
   // TODO: hook this up once following/followers/loves is merged
@@ -62,17 +62,24 @@ function addNewPost(newState, action) {
   // }
   return newState
 }
-
-methods.addNewPost = (newState, action) =>
-  addNewPost(newState, action)
+methods.addOrUpdatePost = (newState, action) =>
+  addOrUpdatePost(newState, action)
 
 function toggleComments(state, newState, action) {
   const { model, showComments } = action.payload
   newState[MAPPING_TYPES.POSTS][model.id].showComments = showComments
-  return newState;
+  return newState
 }
-
 methods.toggleComments = (state, newState, action) =>
   toggleComments(state, newState, action)
 
+function toggleEditing(state, newState, action) {
+  const { model, isEditing } = action.payload
+  newState[MAPPING_TYPES.POSTS][model.id].isEditing = isEditing
+  return newState
+}
+methods.toggleEditing = (state, newState, action) =>
+  toggleEditing(state, newState, action)
+
 export default methods
+

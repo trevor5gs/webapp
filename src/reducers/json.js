@@ -223,7 +223,8 @@ export default function json(state = {}, action = { type: '' }) {
       // fall through to parse the rest
       break
     case ACTION_TYPES.POST.CREATE_SUCCESS:
-      return postMethods.addNewPost(newState, action)
+    case ACTION_TYPES.POST.UPDATE_SUCCESS:
+      return postMethods.addOrUpdatePost(newState, action)
     case ACTION_TYPES.POST.DELETE_REQUEST:
     case ACTION_TYPES.POST.DELETE_SUCCESS:
     case ACTION_TYPES.POST.DELETE_FAILURE:
@@ -231,10 +232,12 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.POST.LOVE_REQUEST:
     case ACTION_TYPES.POST.LOVE_FAILURE:
       return postMethods.updatePostLoves(state, newState, action)
-    case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
-      return {}
     case ACTION_TYPES.POST.TOGGLE_COMMENTS:
       return postMethods.toggleComments(state, newState, action)
+    case ACTION_TYPES.POST.TOGGLE_EDITING:
+      return postMethods.toggleEditing(state, newState, action)
+    case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
+      return {}
     case ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL:
       return relationshipMethods.batchUpdateRelationship(newState, action)
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL:

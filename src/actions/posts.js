@@ -46,6 +46,16 @@ export function toggleComments(post, visible) {
   }
 }
 
+export function toggleEditing(post, isEditing) {
+  return {
+    type: ACTION_TYPES.POST.TOGGLE_EDITING,
+    payload: {
+      model: post,
+      isEditing,
+    },
+  }
+}
+
 export function lovePost(post) {
   return {
     type: ACTION_TYPES.POST.LOVE,
@@ -100,6 +110,18 @@ export function createPost(body, repostId) {
       body: { body },
       endpoint: api.createPost(repostId),
       method: 'POST',
+    },
+    meta: {},
+  }
+}
+
+export function updatePost(post, body) {
+  return {
+    type: ACTION_TYPES.POST.UPDATE,
+    payload: {
+      body: { body },
+      endpoint: api.updatePost(post),
+      method: 'PATCH',
     },
     meta: {},
   }

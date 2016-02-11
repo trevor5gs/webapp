@@ -126,7 +126,7 @@ class PostTools extends Component {
       if (isOwnPost) {
         cells.push(
           <span className="PostTool EditTool ShyTool" key={`EditTool_${post.id}`}>
-            <button>
+            <button onClick={ this.editPost }>
               <PencilIcon />
               <Hint>Edit</Hint>
             </button>
@@ -214,6 +214,11 @@ class PostTools extends Component {
   postWasFlagged = ({ flag }) => {
     const { dispatch, post } = this.props
     dispatch(postActions.flagPost(post, flag))
+  };
+
+  editPost = () => {
+    const { dispatch, post } = this.props
+    dispatch(postActions.toggleEditing(post, true))
   };
 
   deletePost = () => {
