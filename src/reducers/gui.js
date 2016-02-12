@@ -1,5 +1,5 @@
 import { UPDATE_LOCATION } from 'react-router-redux'
-import { PROFILE, SET_LAYOUT_MODE } from '../constants/action_types'
+import { BEACONS, PROFILE, SET_LAYOUT_MODE } from '../constants/action_types'
 
 
 let location = {}
@@ -42,6 +42,12 @@ export function gui(state = initialState, action = { type: '' }) {
       return state
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
+    case BEACONS.LAST_DISCOVER_VERSION:
+      return { ...state, lastDiscoverBeaconVersion: action.payload.version }
+    case BEACONS.LAST_FOLLOWING_VERSION:
+      return { ...state, lastFollowingBeaconVersion: action.payload.version }
+    case BEACONS.LAST_STARRED_VERSION:
+      return { ...state, lastStarredBeaconVersion: action.payload.version }
     default:
       return state
   }

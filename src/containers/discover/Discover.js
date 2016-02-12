@@ -1,22 +1,40 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { BEACONS } from '../../constants/action_types'
 import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import { loadCommunities, loadDiscoverUsers, loadFeaturedUsers } from '../../actions/discover'
 import { trackEvent } from '../../actions/tracking'
 import Banderole from '../../components/assets/Banderole'
+import Beacon from '../../components/beacons/Beacon'
 import StreamComponent from '../../components/streams/StreamComponent'
 import TabListLinks from '../../components/tabs/TabListLinks'
+
+const BEACON_VERSION = '1'
 
 class Discover extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    lastDiscoverBeaconVersion: PropTypes.string,
     params: PropTypes.shape({
       type: PropTypes.string,
     }),
     pathname: PropTypes.string.isRequired,
+  };
+
+  componentWillMount() {
+    const { lastDiscoverBeaconVersion, isLoggedIn } = this.props
+    this.state = {
+      isBeaconActive: isLoggedIn && lastDiscoverBeaconVersion !== BEACON_VERSION,
+    }
+  }
+
+  onDismissBeacon = () => {
+    const { dispatch } = this.props
+    this.setState({ isBeaconActive: false })
+    dispatch({ type: BEACONS.LAST_DISCOVER_VERSION, payload: { version: BEACON_VERSION } })
   };
 
   static preRender = (store, routerState) =>
@@ -27,8 +45,17 @@ class Discover extends Component {
     dispatch(trackEvent(`banderole-credits-clicked`))
   };
 
+  renderBeacon() {
+    return (
+      <Beacon emoji="crystal_ball" onDismiss={ this.onDismissBeacon }>
+        Discover inspiring people and beautiful things you won’t find anywhere else.
+      </Beacon>
+    )
+  }
+
   render() {
     const { isLoggedIn, params, pathname } = this.props
+    const { isBeaconActive } = this.state
     const type = params.type || (isLoggedIn ? 'recommended' : 'trending')
     let action = loadDiscoverUsers(type)
     if (type === 'communities') {
@@ -51,6 +78,7 @@ class Discover extends Component {
       ]
     return (
       <section className="Discover Panel" key={`discover_${type}`}>
+        { isBeaconActive ? this.renderBeacon() : null }
         <Banderole
           creditsClickAction={ this.creditsTrackingEvent }
           isLoggedIn={ isLoggedIn }
@@ -71,6 +99,7 @@ class Discover extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
+    lastDiscoverBeaconVersion: state.gui.lastDiscoverBeaconVersion,
     pathname: state.routing.location.pathname,
   }
 }
