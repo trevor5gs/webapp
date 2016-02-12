@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { BEACONS } from '../../constants/action_types'
 import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import { loadCommunities, loadDiscoverUsers, loadFeaturedUsers } from '../../actions/discover'
@@ -9,11 +10,14 @@ import Beacon from '../../components/beacons/Beacon'
 import StreamComponent from '../../components/streams/StreamComponent'
 import TabListLinks from '../../components/tabs/TabListLinks'
 
+const BEACON_VERSION = '1'
+
 class Discover extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    lastDiscoverBeaconVersion: PropTypes.string,
     params: PropTypes.shape({
       type: PropTypes.string,
     }),
@@ -21,16 +25,16 @@ class Discover extends Component {
   };
 
   componentWillMount() {
-    const { isLoggedIn } = this.props
+    const { lastDiscoverBeaconVersion, isLoggedIn } = this.props
     this.state = {
-      isBeaconActive: isLoggedIn,
+      isBeaconActive: isLoggedIn && lastDiscoverBeaconVersion !== BEACON_VERSION,
     }
   }
 
   onDismissBeacon = () => {
+    const { dispatch } = this.props
     this.setState({ isBeaconActive: false })
-    // TODO: When a beacon is closed it's permanent until we update the version
-    // number. We'll need to save this state to the GUI store.
+    dispatch({ type: BEACONS.LAST_DISCOVER_VERSION, payload: { version: BEACON_VERSION } })
   };
 
   static preRender = (store, routerState) =>
@@ -72,8 +76,6 @@ class Discover extends Component {
         { to: '/explore/recommended', children: 'Recommended' },
         { to: '/explore/recent', children: 'Recent' },
       ]
-    // TODO: We should only render a beacon when a user is logged in and hasn't
-    // dismissed the current version
     return (
       <section className="Discover Panel" key={`discover_${type}`}>
         { isBeaconActive ? this.renderBeacon() : null }
@@ -97,6 +99,7 @@ class Discover extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
+    lastDiscoverBeaconVersion: state.gui.lastDiscoverBeaconVersion,
     pathname: state.routing.location.pathname,
   }
 }

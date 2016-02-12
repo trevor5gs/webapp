@@ -1,20 +1,30 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { BEACONS } from '../../constants/action_types'
 import { loadNoise } from '../../actions/stream'
 import Beacon from '../../components/beacons/Beacon'
 import StreamComponent from '../../components/streams/StreamComponent'
 
+const BEACON_VERSION = '1'
+
 class Starred extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    lastStarredBeaconVersion: PropTypes.string,
+  };
+
   componentWillMount() {
+    const { lastStarredBeaconVersion } = this.props
     this.state = {
-      isBeaconActive: true,
+      isBeaconActive: lastStarredBeaconVersion !== BEACON_VERSION,
     }
   }
 
   onDismissBeacon = () => {
+    const { dispatch } = this.props
     this.setState({ isBeaconActive: false })
-    // TODO: When a beacon is closed it's permanent until we update the version
-    // number. We'll need to save this state to the GUI store.
+    dispatch({ type: BEACONS.LAST_STARRED_VERSION, payload: { version: BEACON_VERSION } })
   };
 
   static preRender = (store) =>
@@ -39,5 +49,11 @@ class Starred extends Component {
   }
 }
 
-export default Starred
+function mapStateToProps(state) {
+  return {
+    lastStarredBeaconVersion: state.gui.lastStarredBeaconVersion,
+  }
+}
+
+export default connect(mapStateToProps)(Starred)
 

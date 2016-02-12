@@ -1,20 +1,30 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { BEACONS } from '../../constants/action_types'
 import { loadFriends } from '../../actions/stream'
 import Beacon from '../../components/beacons/Beacon'
 import StreamComponent from '../../components/streams/StreamComponent'
 
+const BEACON_VERSION = '1'
+
 class Following extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    lastFollowingBeaconVersion: PropTypes.string,
+  };
+
   componentWillMount() {
+    const { lastFollowingBeaconVersion } = this.props
     this.state = {
-      isBeaconActive: true,
+      isBeaconActive: lastFollowingBeaconVersion !== BEACON_VERSION,
     }
   }
 
   onDismissBeacon = () => {
+    const { dispatch } = this.props
     this.setState({ isBeaconActive: false })
-    // TODO: When a beacon is closed it's permanent until we update the version
-    // number. We'll need to save this state to the GUI store.
+    dispatch({ type: BEACONS.LAST_FOLLOWING_VERSION, payload: { version: BEACON_VERSION } })
   };
 
   static preRender = (store) =>
@@ -39,5 +49,11 @@ class Following extends Component {
   }
 }
 
-export default Following
+function mapStateToProps(state) {
+  return {
+    lastFollowingBeaconVersion: state.gui.lastFollowingBeaconVersion,
+  }
+}
+
+export default connect(mapStateToProps)(Following)
 
