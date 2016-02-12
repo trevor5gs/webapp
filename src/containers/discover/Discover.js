@@ -5,6 +5,7 @@ import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import { loadCommunities, loadDiscoverUsers, loadFeaturedUsers } from '../../actions/discover'
 import { trackEvent } from '../../actions/tracking'
 import Banderole from '../../components/assets/Banderole'
+import Beacon from '../../components/beacons/Beacon'
 import StreamComponent from '../../components/streams/StreamComponent'
 import TabListLinks from '../../components/tabs/TabListLinks'
 
@@ -19,6 +20,19 @@ class Discover extends Component {
     pathname: PropTypes.string.isRequired,
   };
 
+  componentWillMount() {
+    const { isLoggedIn } = this.props
+    this.state = {
+      isBeaconActive: isLoggedIn,
+    }
+  }
+
+  onDismissBeacon = () => {
+    this.setState({ isBeaconActive: false })
+    // TODO: When a beacon is closed it's permanent until we update the version
+    // number. We'll need to save this state to the GUI store.
+  };
+
   static preRender = (store, routerState) =>
     store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'));
 
@@ -27,8 +41,17 @@ class Discover extends Component {
     dispatch(trackEvent(`banderole-credits-clicked`))
   };
 
+  renderBeacon() {
+    return (
+      <Beacon emoji="crystal_ball" onDismiss={ this.onDismissBeacon }>
+        Discover inspiring people and beautiful things you won’t find anywhere else.
+      </Beacon>
+    )
+  }
+
   render() {
     const { isLoggedIn, params, pathname } = this.props
+    const { isBeaconActive } = this.state
     const type = params.type || (isLoggedIn ? 'recommended' : 'trending')
     let action = loadDiscoverUsers(type)
     if (type === 'communities') {
@@ -49,8 +72,11 @@ class Discover extends Component {
         { to: '/explore/recommended', children: 'Recommended' },
         { to: '/explore/recent', children: 'Recent' },
       ]
+    // TODO: We should only render a beacon when a user is logged in and hasn't
+    // dismissed the current version
     return (
       <section className="Discover Panel" key={`discover_${type}`}>
+        { isBeaconActive ? this.renderBeacon() : null }
         <Banderole
           creditsClickAction={ this.creditsTrackingEvent }
           isLoggedIn={ isLoggedIn }
