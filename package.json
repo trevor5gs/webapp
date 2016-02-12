@@ -61,7 +61,7 @@
     "sass-loader": "3.1.2",
     "simple-oauth2": "0.5.1",
     "style-loader": "0.13.0",
-    "throng": "2.0.1",
+    "throng": "1.0.1",
     "webpack": "1.12.13",
     "webpack-sources": "0.1.1"
   },
