@@ -15,12 +15,15 @@ export default class CommentStream extends Component {
     return (
       <div>
         <StreamComponent className="narrow" action={action}>
-          <Link
-            to={`/${author.username}/post/${post.token}`}
-            className="CommentsLink"
-          >
-            See More
-          </Link>
+          {post.commentsCount > 10 ?
+            <Link
+              to={`/${author.username}/post/${post.token}`}
+              className="CommentsLink"
+            >
+              See More
+            </Link>
+            : null
+          }
         </StreamComponent>
       </div>
     )
