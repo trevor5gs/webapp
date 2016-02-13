@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as ACTION_TYPES from '../../constants/action_types'
-import { openAlert } from '../../actions/modals'
+import { openAlert, closeAlert } from '../../actions/modals'
 import { relationshipBatchSave } from '../../actions/onboarding'
 import { saveCover, saveAvatar } from '../../actions/profile'
 import { checkAuth } from '../../networking/auth'
@@ -128,6 +128,7 @@ class Onboarding extends Component {
               message="Or drag & drop"
               recommend="Recommended image size: 2560 x 1440"
               openAlert={ bindActionCreators(openAlert, dispatch) }
+              closeAlert={ bindActionCreators(closeAlert, dispatch) }
               saveAction={ bindActionCreators(saveCover, dispatch) }
             />
             <Cover

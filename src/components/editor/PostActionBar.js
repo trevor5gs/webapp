@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { GUI } from '../../constants/gui_types'
-import { openAlert } from '../../actions/modals'
+import { openAlert, closeAlert } from '../../actions/modals'
 import { closeOmnibar } from '../../actions/omnibar'
 import { savePostImage } from '../../actions/posts'
 import Dialog from '../../components/dialogs/Dialog'
@@ -39,6 +40,7 @@ class PostActionBar extends Component {
       <Dialog
         title="Invalid file type"
         body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
+        onClick={ bindActionCreators(closeAlert, dispatch) }
       />
     ))
   };
