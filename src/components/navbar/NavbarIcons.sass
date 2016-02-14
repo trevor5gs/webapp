@@ -14,9 +14,9 @@
 // -------------------------------------
 // NavbarLink
 
-.NavbarLink.active > .SVGIcon g,
-.NavbarLink:active > .SVGIcon g,
-.no-touch .NavbarLink:hover > .SVGIcon g
+.NavbarLink.active > .SVGIcon > g,
+.NavbarLink:active > .SVGIcon > g,
+.no-touch .NavbarLink:hover > .SVGIcon > g
   stroke: black
 
 .NavbarLink.active > .SVGIcon:not(.SearchIcon) g,
@@ -71,9 +71,9 @@
   .no-touch .NavbarLink:hover > .CircleIcon
     transition-delay: 0.5s, 0.5s, (0.5s + $speed)
     transform: none
-  .no-touch .NavbarLink > .CircleIcon g
+  .no-touch .NavbarLink > .CircleIcon > g
     transition-delay: 0s
-  .no-touch .NavbarLink:hover > .CircleIcon g
+  .no-touch .NavbarLink:hover > .CircleIcon > g
     transition-delay: 0.5s + $speed
 
   // Star animation
