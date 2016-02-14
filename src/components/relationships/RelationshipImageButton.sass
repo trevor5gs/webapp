@@ -40,26 +40,18 @@
   background-color: white
   border: 1px solid white
 
-.RelationshipImageButtonLabels > .SVGIcon g
-  stroke: black
-
 .no-touch .RelationshipImageButton:hover:before
   background-color: transparent
 .no-touch .RelationshipImageButton:hover .RelationshipImageButtonLabels
   background-color: #666
   border-color: #666
   color: white
-.no-touch .RelationshipImageButton:hover .RelationshipImageButtonLabels > .SVGIcon g
-  stroke: white
 
 .RelationshipImageButton[data-priority="friend"] .RelationshipImageButtonLabels,
 .RelationshipImageButton[data-priority="noise"] .RelationshipImageButtonLabels
   background-color: black
   border-color: black
   color: white
-.RelationshipImageButton[data-priority="friend"] .RelationshipImageButtonLabels > .SVGIcon g,
-.RelationshipImageButton[data-priority="noise"] .RelationshipImageButtonLabels > .SVGIcon g
-  stroke: white
 
 .RelationshipImageButton[data-priority="block"],
 .RelationshipImageButton[data-priority="mute"],
@@ -68,10 +60,6 @@
   background-color: $danger
   border-color: $danger
   color: white
-.RelationshipImageButton[data-priority="block"] > .SVGIcon g,
-.RelationshipImageButton[data-priority="mute"] > .SVGIcon g
-  stroke: white
-
 
 .RelationshipImageButtonLabels > .MiniPlusIcon
   margin-top: rem(-2)

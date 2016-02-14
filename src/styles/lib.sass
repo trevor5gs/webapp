@@ -165,23 +165,20 @@ $html-fontface: 'AtlasGroteskRegular', 'AtlasGrotesk-Regular', 'Helvetica Neue',
   border-color: #aaa
   border-radius: rem(30)
   color: rgba(white, 0)
-  > .SVGIcon g
+  > .SVGIcon > g
     stroke: #aaa
   .no-touch &:hover
     width: rem(110)
     background-color: #aaa
     border-color: #aaa
     color: white
-  .no-touch &:hover > .SVGIcon g
-    stroke: white
+  .no-touch &:hover > .SVGIcon > g
+    stroke: currentColor
   &[data-priority="friend"],
   &[data-priority="noise"]
     background-color: white
     border-color: #aaa
     color: rgba(white, 0)
-  &[data-priority="friend"] > .SVGIcon g,
-  &[data-priority="noise"] > .SVGIcon g
-    stroke: #aaa
   &[data-priority="self"]
     display: none
 
@@ -206,8 +203,6 @@ $html-fontface: 'AtlasGroteskRegular', 'AtlasGrotesk-Regular', 'Helvetica Neue',
     color: black
   .no-touch &:hover > .SVGIcon
     width: rem(20)
-  .no-touch &:hover > .SVGIcon g
-    stroke: black
   + .StarshipButton
     margin-top: rem(-2)
 

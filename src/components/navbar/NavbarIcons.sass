@@ -14,17 +14,15 @@
 // -------------------------------------
 // NavbarLink
 
-.NavbarLink > .SVGIcon g
-  stroke: #aaa
+.NavbarLink.active > .SVGIcon g,
+.NavbarLink:active > .SVGIcon g,
+.no-touch .NavbarLink:hover > .SVGIcon g
+  stroke: black
 
 .NavbarLink.active > .SVGIcon:not(.SearchIcon) g,
 .NavbarLink:active > .SVGIcon:not(.SearchIcon) g,
 .no-touch .NavbarLink:hover > .SVGIcon:not(.SearchIcon) g
   fill: black
-  stroke: black
-
-.NavbarLink.active > .SearchIcon g
-  stroke: black
 
 // Label only (icon is hidden)
 .NavbarLink.LabelOnly > .SVGIcon
