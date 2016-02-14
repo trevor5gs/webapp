@@ -1,15 +1,22 @@
+@import ../../styles/lib
+
 .editor
   +sans-typeset
   color: black
   position: relative
 
 .editor:before
-  +triangle(west, #e5e5e5, rem(20))
   transition: border-color $speed ease
   position: absolute
   top: rem(30)
   left: 0
+  width: 0
+  height: 0
   content: ""
+  border-color: transparent
+  border-style: solid
+  border-width: rem(10)
+  border-right-color: #e5e5e5
 
 .editor-region
   transition: background-color $speed ease

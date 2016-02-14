@@ -33,7 +33,7 @@ class SignUp extends Component {
     const { featuredUser } = this.state
     return (
       <section className="Authentication Panel">
-        <div className="FormDialog">
+        <div className="AuthenticationFormDialog">
           <h1>
             <Emoji name="v" title="Awesome!" size={ 32 }/>
             Be inspired.

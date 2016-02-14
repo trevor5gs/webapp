@@ -1,3 +1,5 @@
+@import ../../styles/lib
+
 .FormControl
   position: relative
 
@@ -76,6 +78,10 @@ textarea.FormControlInput.asBoxControl
 .BatchEmailControl .FormControlInput.asBoxControl
   height: rem(160)
 
+[data-pathname^="/onboarding"] .NameControl > .FormControlInput
+  +sans-bold-family
+  font-size: 1rem
+
 // -------------------------------------
 
 .FormControlLabel
@@ -110,37 +116,6 @@ textarea.FormControlInput.asBoxControl
 
 .hasExceeded.hasValue > .FormControlLabel
   color: $danger
-
-// -------------------------------------
-
-.FormControlFeedback
-  transition: height $speed $ease
-  overflow: hidden
-  height: 0
-  margin: 0
-
-.FormControlFeedback > span:first-of-type
-  display: inline-block
-  margin-top: rem(10)
-
-.isFailing > .FormControlFeedbackError,
-.hasFocus.hasSuggestions > .FormControlFeedbackSuggestions,
-.hasFocus.showAdvice > .FormControlFeedbackSuggestions
-  height: rem(80)
-
-
-@media(min-width: #{$break-3})
-  .FormControlFeedback
-    position: absolute
-    top: 0
-    left: rem(330)
-    width: rem(280)
-  .FormControlFeedback > span:first-of-type
-    margin-top: 0
-  .isFailing > .FormControlFeedbackError
-    height: rem(60)
-  .isFailing.hasFocus.hasSuggestions > .FormControlFeedbackError
-    height: 0
 
 // -------------------------------------
 
@@ -189,4 +164,7 @@ textarea.FormControlInput.asBoxControl
 
 .FormControlStatus > .FailureIcon > g
   stroke: $danger
+
+[data-pathname^="/onboarding"] .FormControlStatus
+  display: none
 

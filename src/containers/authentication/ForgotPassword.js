@@ -87,7 +87,7 @@ class ForgotPassword extends Component {
     const { featuredUser, formStatus } = this.state
     return (
       <section className="Authentication Panel">
-        <div className="FormDialog">
+        <div className="AuthenticationFormDialog">
           <h1>
             <Emoji name="hot_shit" title="It really does" size={ 32 } />
             Shit happens.

@@ -15,6 +15,7 @@ import UserInvitee from '../users/UserInvitee'
 import UserList from '../users/UserList'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
+import TreePanel from '../../components/navigation/TreePanel'
 import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 
 // TODO: convert these into react components (@see UserVitals)
@@ -179,7 +180,7 @@ export function profileToggles(categories, json, currentUser) {
       if (category.label.toLowerCase().indexOf('push') === 0) { return null }
       const arr = [<TreeButton key={`categoryLabel${index}`}>{category.label}</TreeButton>]
       arr.push(
-        <div className="TreePanel" key={`categoryItems${index}`}>
+        <TreePanel key={`categoryItems${index}`}>
           {
             category.items.map((item) =>
               <Preference
@@ -192,7 +193,7 @@ export function profileToggles(categories, json, currentUser) {
               />
             )
           }
-        </div>
+        </TreePanel>
       )
       return arr
     })

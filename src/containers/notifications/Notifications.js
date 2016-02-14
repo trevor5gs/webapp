@@ -8,7 +8,7 @@ import {
   RepostIcon,
   RelationshipIcon,
 } from '../../components/notifications/NotificationIcons'
-import TabListLinks from '../../components/tabs/TabListLinks'
+import { TabListLinks } from '../../components/tabs/TabList'
 
 class Notifications extends Component {
 

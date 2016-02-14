@@ -1,0 +1,84 @@
+@import ../../styles/lib
+
+.LabelTabList
+  padding: rem(20) rem(10) 0
+
+
+@media(min-width: #{$break-2})
+  .LabelTabList
+    padding: rem(40) rem(20) rem(20)
+
+@media(min-width: #{$break-4})
+  .LabelTabList
+    padding-left: rem(40)
+    padding-right: rem(40)
+
+// -------------------------------------
+
+.LabelTab
+  transition: color $speed ease
+  overflow: hidden
+  position: relative
+  height: rem(30)
+  font-size: rem(18)
+  line-height: rem(30)
+  white-space: nowrap
+  color: #aaa
+
+.LabelTab:after
+  content: ''
+  transition: width $speed $ease, background-color $speed ease
+  position: absolute
+  bottom: 0
+  left: 0
+  width: 0
+  height: rem(2)
+  background-color: transparent
+
+.LabelTab.active,
+.LabelTab:active,
+.no-touch .LabelTab:hover
+  color: black
+  &:after
+    width: 100%
+    background-color: black
+
+.LabelTab + .LabelTab
+  margin-left: rem(20)
+
+
+@media(min-width: #{$break-2})
+  .LabelTab + .LabelTab
+    margin-left: rem(30)
+
+  .LabelTab.TabLink
+    height: rem(40)
+    font-size: rem(24)
+    line-height: rem(40)
+
+// -------------------------------------
+
+.IconTab
+  transition: background-color $speed ease, color $speed ease
+  width: (100% / 6)
+  height: rem(30)
+  padding-top: rem(6)
+  font-size: rem(12)
+  text-align: center
+  background-color: #e5e5e5
+  color: #aaa
+
+.IconTab + .IconTab
+  border-left: 1px solid white
+
+.IconTab.active,
+.IconTab:active,
+.no-touch .IconTab:hover
+  background-color: black
+  color: white
+
+.IconTab.active .SVGIcon g,
+.IconTab:active .SVGIcon g,
+.no-touch .IconTab:hover .SVGIcon g
+  stroke: white
+

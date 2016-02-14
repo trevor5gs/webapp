@@ -1,3 +1,5 @@
+@import ../../styles/lib
+
 .CoverMini
   display: block
   position: relative
@@ -6,6 +8,7 @@
   background: rgba(black, 0.1) no-repeat 50% 50%
   background-size: cover
 
+// The animation lives in global.sass :(
 .CoverMini.isRequesting
   animation: animateLavaLamp 3s infinite linear
 

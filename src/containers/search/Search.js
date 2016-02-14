@@ -10,7 +10,7 @@ import { updateQueryParams } from '../../components/base/uri_helper'
 import Banderole from '../../components/assets/Banderole'
 import SearchControl from '../../components/forms/SearchControl'
 import StreamComponent from '../../components/streams/StreamComponent'
-import TabListButtons from '../../components/tabs/TabListButtons'
+import { TabListButtons } from '../../components/tabs/TabList'
 
 class Search extends Component {
 
