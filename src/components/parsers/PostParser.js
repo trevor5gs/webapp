@@ -130,9 +130,7 @@ class PostParser extends Component {
       assets,
       author,
       currentUser,
-      isEditing,
       isGridLayout,
-      isReposting,
       post,
       showComments,
     } = this.props
@@ -151,11 +149,9 @@ class PostParser extends Component {
     return (
       <div>
         {postHeader}
-        { (isEditing || isReposting) && post.body ?
+        { (post.isEditing || post.isReposting) && post.body ?
           <InlineEditor
             blocks={ post.body }
-            isEditing
-            isReposting
             post={ post }
           /> :
           parsePost(post, author, currentUser, isGridLayout)}
