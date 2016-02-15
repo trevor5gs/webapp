@@ -7,6 +7,7 @@ class Uploader extends Component {
   static propTypes = {
     message: PropTypes.string,
     openAlert: PropTypes.func.isRequired,
+    closeAlert: PropTypes.func.isRequired,
     recommend: PropTypes.string,
     saveAction: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
@@ -37,6 +38,7 @@ class Uploader extends Component {
       <Dialog
         title="Invalid file type"
         body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
+        onClick={ this.props.closeAlert }
       />
     )
   };
@@ -57,6 +59,7 @@ class Uploader extends Component {
       <Dialog
         title="Invalid file type"
         body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
+        onDismiss={ this.onDismissAlert }
       />
     )
   };

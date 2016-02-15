@@ -8,7 +8,7 @@ import { debounce } from 'lodash'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
-import { openModal, closeModal, openAlert } from '../../actions/modals'
+import { openModal, closeModal, openAlert, closeAlert } from '../../actions/modals'
 import {
   availableToggles,
   checkAvailability,
@@ -240,6 +240,7 @@ class Settings extends Component {
             message="Or drag & drop"
             recommend="Recommended image size: 2560 x 1440"
             openAlert={ bindActionCreators(openAlert, dispatch) }
+            closeAlert={ bindActionCreators(closeAlert, dispatch) }
             saveAction={ bindActionCreators(saveCover, dispatch) }
           />
           <Cover isModifiable coverImage={ profile.coverImage } />
@@ -253,6 +254,7 @@ class Settings extends Component {
               message="Or drag & drop it"
               recommend="Recommended image size: 360 x 360"
               openAlert={ bindActionCreators(openAlert, dispatch) }
+              closeAlert={ bindActionCreators(closeAlert, dispatch) }
               saveAction={ bindActionCreators(saveAvatar, dispatch) }
             />
             <Avatar
