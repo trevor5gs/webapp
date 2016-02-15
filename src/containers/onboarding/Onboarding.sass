@@ -1,3 +1,5 @@
+@import ../../styles/lib
+
 main[data-pathname^="/onboarding"] .Panel
   padding-top: 0
 
@@ -86,8 +88,9 @@ main[data-pathname^="/onboarding"] .Panel
 
 .AvatarPickerBody > .Avatar,
 .InfoPickerBody > .Avatar
-  +circle(rem(160))
   pointer-events: none
+  width: rem(160)
+  height: rem(160)
   margin-top: rem(-90)
 
 .AvatarPickerBody > .Uploader

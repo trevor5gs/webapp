@@ -1,3 +1,5 @@
+@import ../../styles/lib
+
 .Post .BubbleIcon > g,
 .Post .FlagIcon > g,
 .Post .RepostIcon > g,
@@ -35,27 +37,16 @@
 
 .ViewsTool .EyeIcon > circle
   transition: fill $speed ease, stroke $speed ease
-  fill: #aaa
+  fill: currentColor
   stroke: transparent
 .no-touch .ViewsTool > a:hover > .EyeIcon > circle
   transition-delay: $speed, 0s
-  fill: black
   stroke: black
-
-.ViewsTool.asPill .EyeIcon > g
-  stroke: #535353
-.ViewsTool.asPill .EyeIcon > circle
-  fill: #535353
-
-.ShareTool.asPill > button > .ShareIcon > g
-  stroke: #535353
-
-.no-touch .ShareTool.asPill >  button:hover > .ShareIcon > g
+.no-touch .ViewsTool > a:hover > .EyeIcon > g
   stroke: black
 
 .no-touch .FlagTool > button:hover > .FlagIcon > g:nth-of-type(2)
   fill: black
-  stroke: black
 
 .no-touch .ShareTool > button:hover > .ShareIcon > g:nth-of-type(2)
   transform: translate3d(0,rem(-1),0)

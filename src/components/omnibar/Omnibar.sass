@@ -1,3 +1,5 @@
+@import ../../styles/lib
+
 .Omnibar
   display: none
   position: relative
@@ -17,12 +19,21 @@
   padding: rem(20) rem(10)
 
 .Omnibar .OmnibarRevealNavbar
+  transition: width $speed $ease
   position: absolute
   top: rem(15)
   right: rem(5)
+  width: rem(20)
+  overflow: hidden
+  font-size: 0.875rem
+  white-space: nowrap
+
+.no-touch .Omnibar .OmnibarRevealNavbar:hover
+  width: rem(100)
 
 .Omnibar .ChevronIcon
   transform: rotate(180deg)
+  margin-right: rem(5)
 
 // -------------------------------------
 // This is sort of gnarly and should get moved to the

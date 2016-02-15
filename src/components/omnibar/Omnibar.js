@@ -78,6 +78,7 @@ class Omnibar extends Component {
         <Editor/>
         <button className="OmnibarRevealNavbar" onClick={ this.close }>
           <ChevronIcon />
+          Navigation
         </button>
       </div>
     )

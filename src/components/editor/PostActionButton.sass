@@ -1,3 +1,5 @@
+@import ../../styles/lib
+
 .PostActionButton
   transition: width $speed $ease, background-color $speed ease, color $speed ease
   vertical-align: middle
@@ -16,6 +18,9 @@
   margin-top: rem(-2)
   margin-left: rem(-5)
 
+.PostActionButton > .SVGIcon > g
+  stroke: #aaa
+
 .PostActionButtonLabel
   position: absolute
   left: rem(20)
@@ -27,7 +32,7 @@
     width: rem(105)
   .no-touch .PostActionButton.forPost:hover
     width: rem(85)
-  .no-touch .PostActionButton:hover > .SVGIcon g
+  .no-touch .PostActionButton:hover > .SVGIcon > g
     stroke: white
 
   // Cancel animation

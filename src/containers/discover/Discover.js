@@ -8,7 +8,7 @@ import { trackEvent } from '../../actions/tracking'
 import Banderole from '../../components/assets/Banderole'
 import Beacon from '../../components/beacons/Beacon'
 import StreamComponent from '../../components/streams/StreamComponent'
-import TabListLinks from '../../components/tabs/TabListLinks'
+import { TabListLinks } from '../../components/tabs/TabList'
 
 const BEACON_VERSION = '1'
 

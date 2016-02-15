@@ -1,3 +1,5 @@
+@import ../../styles/lib
+
 .Cover
   transition: background-color $speed ease, opacity $speed2 ease
   position: fixed
@@ -17,6 +19,7 @@
   padding-bottom: 0
   bottom: 0
 
+// The animation lives in global.sass :(
 .Cover.isRequesting
   animation: animateLavaLamp 3s infinite linear
 

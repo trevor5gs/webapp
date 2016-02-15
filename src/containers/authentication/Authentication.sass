@@ -1,3 +1,5 @@
+@import ../../styles/lib
+
 .Authentication
   display: flex
   min-width: 100vw
@@ -5,13 +7,47 @@
   background-color: transparent
   color: white
 
+.AuthenticationFormDialog
+  width: rem(300)
+  margin: 0 auto
+
 .Authentication h1
+  margin-bottom: rem(20)
   padding-top: rem(40)
+  font-size: rem(24)
+  line-height: 1
+  white-space: nowrap
 
 .Authentication h1 > .Emoji
   margin-right: rem(10)
 
+.AuthenticationForm
+  max-width: rem(320)
+
+.AuthenticationFormDialog > p
+  +monospace
+  margin-top: rem(20)
+  color: #aaa
+
+.AuthenticationFormDialog a:focus,
+.AuthenticationFormDialog a:active,
+.no-touch .AuthenticationFormDialog a:hover
+  color: white
+
+.ForgotPasswordLink
+  +sans-typeset
+  margin-top: rem(15)
+  color: #aaa
+
+
+@media(min-width: #{em(350)})
+  .AuthenticationFormDialog
+    width: rem(320)
+
 @media(min-width: #{$break-2})
+  .AuthenticationFormDialog
+    margin: auto
   .Authentication h1
     padding-top: 0
+    margin-bottom: rem(70)
 

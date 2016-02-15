@@ -1,0 +1,16 @@
+@import ../../styles/lib
+
+.TreePanel
+  overflow: hidden
+  padding-left: rem(30)
+
+.TreeButton.isCollapsed + .TreePanel
+  height: 0
+
+.TreePanel > p:first-child
+  margin-top: 0
+
+@media(min-width: #{$break-3})
+  .TreePanel
+    padding-left: 0
+

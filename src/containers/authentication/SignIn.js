@@ -74,7 +74,7 @@ class SignIn extends Component {
     const isValid = isFormValid([emailState, passwordState])
     return (
       <section className="Authentication Panel">
-        <div className="FormDialog">
+        <div className="AuthenticationFormDialog">
           <h1>
             <Emoji name="v" title="Hi!" size={ 32 }/>
             Welcome back.

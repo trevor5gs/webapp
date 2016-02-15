@@ -1,3 +1,20 @@
+@import ../../styles/lib
+
+.LabelTabList
+  padding: rem(20) rem(10) 0
+
+
+@media(min-width: #{$break-2})
+  .LabelTabList
+    padding: rem(40) rem(20) rem(20)
+
+@media(min-width: #{$break-4})
+  .LabelTabList
+    padding-left: rem(40)
+    padding-right: rem(40)
+
+// -------------------------------------
+
 .LabelTab
   transition: color $speed ease
   overflow: hidden
@@ -38,4 +55,25 @@
     height: rem(40)
     font-size: rem(24)
     line-height: rem(40)
+
+// -------------------------------------
+
+.IconTab
+  transition: background-color $speed ease, color $speed ease
+  width: (100% / 6)
+  height: rem(30)
+  padding-top: rem(6)
+  font-size: rem(12)
+  text-align: center
+  background-color: #e5e5e5
+  color: #aaa
+
+.IconTab + .IconTab
+  border-left: 1px solid white
+
+.IconTab.active,
+.IconTab:active,
+.no-touch .IconTab:hover
+  background-color: black
+  color: white
 

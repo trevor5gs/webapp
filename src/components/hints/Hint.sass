@@ -1,10 +1,11 @@
+@import ../../styles/lib
+
 .Hint
   pointer-events: none
   display: none
   transition: opacity $speed ease, visibility 0s ease $speed, color $speed ease
   position: absolute
   top: rem(-25)
-  // left: calc(-50% + 10px)
   left: 0
   height: rem(22)
   padding: 0 rem(11)
@@ -19,14 +20,6 @@
 
 .no-touch .Hint
   display: inline-block
-
-// .no-touch .Hint:before
-//   +triangle(south, black, rem(14))
-//   content: ''
-//   position: absolute
-//   bottom: rem(-14)
-//   left: calc(50% - #{rem(7)})
-//   z-index: 1
 
 .no-touch a:hover > .Hint,
 .no-touch button:hover > .Hint

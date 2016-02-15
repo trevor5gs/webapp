@@ -1,0 +1,208 @@
+// -------------------------------------
+// Measurements
+
+@function em($px, $context: 16)
+  @return ($px / $context) * 1em
+
+@function rem($px, $context: 16)
+  @return ($px / $context) * 1rem
+
+// -------------------------------------
+// Config
+
+$speed:  0.2s
+$speed2: $speed * 2
+$ease: cubic-bezier(0.230, 1.000, 0.320, 1.000)
+$ease-in-out-quart: cubic-bezier(0.770,  0.000, 0.175, 1.000)
+
+$danger: #ff0000
+$success: #06a54f
+
+$z-popover: 1020
+$z-footer:  1030
+$z-navbar:  1040
+$z-omnibar: 1060
+$z-modal:   1070
+$z-grid:    3000
+
+$break-2: em(640)
+$break-3: em(960)
+$break-4: em(1360)
+$break-5: em(1720)
+$break-6: em(2080)
+$break-7: em(2440)
+
+$break-2-max: em(639)
+$break-3-max: em(959)
+$break-4-max: em(1359)
+
+$html-fontface: 'AtlasGroteskRegular', 'AtlasGrotesk-Regular', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', sans-serif
+
+// -------------------------------------
+// Assets
+
+@mixin font-face($family, $file-name, $weight: normal, $style: normal, $font-location: '//fonts.ello.co')
+  $font-path: "#{$font-location}/#{$file-name}"
+  @font-face
+    font-family: $family
+    font-weight: $weight
+    font-style: $style
+    font-stretch: normal
+    src: url('#{$font-path}.eot?#iefix') format('embedded-opentype'), url('#{$font-path}.woff') format('woff'), url('#{$font-path}.ttf') format('truetype'), url('#{$font-path}.svg##{$family}') format('svg')
+
+// -------------------------------------
+// Visibility
+
+// Totally hidden from screen readers and browsers
+@mixin hidden
+  display: none !important
+  visibility: hidden
+
+// Hide visually and remove from layout (useful for the checkbox hack)
+@mixin invisible
+  position: absolute
+  visibility: hidden
+  opacity: 0
+
+// -------------------------------------
+// Typography
+
+@mixin sans-family
+  font-family: 'AtlasGroteskRegular', 'AtlasGrotesk-Regular', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Arial', sans-serif
+  font-style:   normal
+  font-weight:  400
+
+@mixin sans-italic-family
+  font-family: 'AtlasGroteskRegular', 'AtlasGrotesk-Regular', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Arial', sans-serif
+  font-style:   italic
+  font-weight:  400
+
+@mixin sans-bold-family
+  font-family: 'AtlasGroteskBold', 'AtlasGrotesk-Bold', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Arial', sans-serif
+  font-style:   normal
+  font-weight:  700
+
+@mixin sans-bold-italic-family
+  font-family: 'AtlasGroteskBold', 'AtlasGrotesk-Bold', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Arial', sans-serif
+  font-style:   italic
+  font-weight:  700
+
+@mixin monospace-family
+  font-family: 'AtlasTypewriterRegular', 'AtlasTypewriter-Regular', 'Andale Mono', 'Consolas', 'Lucida Console', 'Menlo', 'Luxi Mono', monospace
+  font-style:   normal
+  font-weight:  400
+
+@mixin sans-typeset
+  font-size: 0.875rem
+
+@mixin monospace-typeset
+  font-size: 0.75rem
+
+@mixin heading
+  +sans-bold-family
+  font-size: 1.5rem
+  line-height: 1.35
+  color: black
+  text-rendering: optimizeLegibility
+
+@mixin sanserif
+  +sans-family
+  +sans-typeset
+
+@mixin monospace
+  +monospace-family
+  +monospace-typeset
+
+@mixin unstyled-list
+  margin-left: 0
+  list-style: none
+
+@mixin ellipse
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+
+// -------------------------------------
+// Buttons
+
+@mixin button-reset
+  display: inline-block
+  vertical-align: middle
+  margin: 0
+  padding: 0
+  font: inherit
+  text-transform: none
+  background: transparent
+  border: 0
+  border-radius: 0
+  color: inherit
+  outline: 0
+
+@mixin hitarea
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  z-index: 2
+  content: ''
+  background-color: rgba(0,0,0,0)
+
+@mixin button-with-hitarea
+  position: relative
+  &:before
+    +hitarea
+
+@mixin link-as-button-with-hitarea
+  vertical-align: middle
+  +button-with-hitarea
+
+// Relationships
+@mixin RelationshipButtonAsCompact
+  width: rem(30)
+  height: rem(30)
+  background-color: white
+  border-color: #aaa
+  border-radius: rem(30)
+  color: rgba(white, 0)
+  > .SVGIcon > g
+    stroke: #aaa
+  .no-touch &:hover
+    width: rem(110)
+    background-color: #aaa
+    border-color: #aaa
+    color: white
+  .no-touch &:hover > .SVGIcon > g
+    stroke: currentColor
+  &[data-priority="friend"],
+  &[data-priority="noise"]
+    background-color: white
+    border-color: #aaa
+    color: rgba(white, 0)
+  &[data-priority="self"]
+    display: none
+
+
+@mixin RelationshipButtonAsLabel
+  width: auto
+  background-color: transparent
+  border: 0
+  border-radius: 0
+  color: #666
+  padding: 0
+  text-align: left
+  position: relative
+  > .SVGIcon
+    transition: width $speed $ease
+    width: 0
+  .no-touch &:hover
+    width: auto
+    background-color: transparent
+    border: 0
+    border-radius: 0
+    color: black
+  .no-touch &:hover > .SVGIcon
+    width: rem(20)
+  + .StarshipButton
+    margin-top: rem(-2)
+

@@ -35,6 +35,7 @@ import Uploader from '../../components/uploaders/Uploader'
 import Avatar from '../../components/assets/Avatar'
 import Cover from '../../components/assets/Cover'
 import TreeButton from '../../components/navigation/TreeButton'
+import TreePanel from '../../components/navigation/TreePanel'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 import InfoForm from '../../components/forms/InfoForm'
@@ -329,7 +330,7 @@ class Settings extends Component {
             <StreamComponent ref="streamComponent" action={availableToggles()} />
 
             <TreeButton>NSFW</TreeButton>
-            <div className="TreePanel">
+            <TreePanel>
               <Preference
                 definition={ PREFERENCES.NSFW_VIEW }
                 id="viewsAdultContent"
@@ -343,17 +344,17 @@ class Settings extends Component {
                 onToggleChange={ this.launchAdultPostsPrompt }
               />
               <p><em>{ SETTINGS.NSFW_DISCLAIMER }</em></p>
-            </div>
+            </TreePanel>
 
             <TreeButton>Muted/Blocked</TreeButton>
-            <div className="TreePanel">
+            <TreePanel>
               <p>
                 <Emoji name="hot_shit" title="Still need to build this!" size={ 40 }/>
               </p>
-            </div>
+            </TreePanel>
 
             <TreeButton>Your Data</TreeButton>
-            <div className="TreePanel">
+            <TreePanel>
               <p className="SettingsDataDescription">{ SETTINGS.YOUR_DATA_DESC}</p>
               <dl className="SettingsDefinitionValues">
                 <dt>Username:</dt>
@@ -382,10 +383,10 @@ class Settings extends Component {
                   <a className="SettingsButton" href="/export">Request Export</a>
                 }
               </div>
-            </div>
+            </TreePanel>
 
             <TreeButton>Account Deletion</TreeButton>
-            <div className="TreePanel">
+            <TreePanel>
               <div className="SettingsCell">
                   <dl className="SettingsDefinition">
                     <dt>
@@ -405,7 +406,7 @@ class Settings extends Component {
                     </button>
                   </dl>
               </div>
-            </div>
+            </TreePanel>
           </div>
         </div>
       </section>

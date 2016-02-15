@@ -1,3 +1,5 @@
+@import ../../styles/lib
+
 @mixin showTool
   pointer-events: auto
   opacity: 1
@@ -149,7 +151,8 @@
 
 .PostTools.isMoreToolActive .MoreTool
   transform: translate3d(rem(120), 0, 0)
-.PostTools.isMoreToolActive .MoreTool .SVGIcon g
+
+.PostTools.isMoreToolActive .MoreTool .SVGIcon > g
   stroke: black
 
 .PostTools.isMoreToolActive .ShyTool

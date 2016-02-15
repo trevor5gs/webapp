@@ -144,7 +144,7 @@ class Join extends Component {
     const boxControlClassNames = 'asBoxControl'
     return (
       <section className="Authentication Panel">
-        <div className="FormDialog">
+        <div className="AuthenticationFormDialog">
           <h1>
             <Emoji name="muscle" title="Welcome!" size={ 32 }/>
             Be inspired.
