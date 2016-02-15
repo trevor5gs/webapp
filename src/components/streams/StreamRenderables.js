@@ -101,6 +101,7 @@ export function postsAsList(posts) {
             post={ post }
             isEditing={ post.isEditing }
             isGridLayout={ false }
+            isReposting={ post.isReposting }
             showComments={ post.showComments }
           />
         </article>
@@ -141,6 +142,7 @@ export function postDetail(posts, json) {
           post={ post }
           isEditing={ post.isEditing }
           isGridLayout={ false }
+          isReposting={ post.isReposting }
         />
         { avatarDrawers }
         <section className="Comments">

@@ -75,7 +75,11 @@ class Omnibar extends Component {
     return (
       <div className={classNames('Omnibar', { isActive, isFullScreen }, classList)} >
         <Avatar sources={avatar} />
-        <Editor/>
+        <Editor
+          submitAction={ this.savePost }
+          cancelAction={ this.savePost }
+          submitText=""
+        />
         <button className="OmnibarRevealNavbar" onClick={ this.close }>
           <ChevronIcon />
           Navigation

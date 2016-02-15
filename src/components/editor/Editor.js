@@ -11,14 +11,26 @@ class Editor extends Component {
     dispatch: PropTypes.func.isRequired,
   };
 
-  submit(data) {
+  submit = (data) => {
     const { dispatch } = this.props
     dispatch(createPost(data))
     dispatch(closeOmnibar())
-  }
+  };
+
+  cancel = () => {
+    const { dispatch } = this.props
+    dispatch(closeOmnibar())
+  };
 
   render() {
-    return <BlockCollection blocks={ this.props.blocks } delegate={ this } />
+    return (
+      <BlockCollection
+        blocks={ this.props.blocks }
+        cancelAction={ this.cancel }
+        submitAction={ this.submit }
+        submitText={ 'Post' }
+      />
+    )
   }
 }
 

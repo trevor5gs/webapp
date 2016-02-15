@@ -17,6 +17,17 @@ export function loadPostDetail(token) {
   }
 }
 
+export function loadEditablePost(post) {
+  return {
+    type: ACTION_TYPES.POST.EDITABLE,
+    payload: { endpoint: api.postDetail(post.id) },
+    meta: {
+      mappingType: MAPPING_TYPES.POSTS,
+      updateResult: false,
+    },
+  }
+}
+
 export function loadComments(post) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
@@ -52,6 +63,16 @@ export function toggleEditing(post, isEditing) {
     payload: {
       model: post,
       isEditing,
+    },
+  }
+}
+
+export function toggleReposting(post, isReposting) {
+  return {
+    type: ACTION_TYPES.POST.TOGGLE_REPOSTING,
+    payload: {
+      model: post,
+      isReposting,
     },
   }
 }

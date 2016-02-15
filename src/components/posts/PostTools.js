@@ -88,7 +88,7 @@ class PostTools extends Component {
     if (author.hasRepostingEnabled) {
       cells.push(
         <span className="PostTool RepostTool" key={`RepostTool_${post.id}`}>
-          <button onClick={ this.signUp }>
+          <button onClick={ isLoggedIn ? this.repostPost : this.signUp }>
             <RepostIcon />
             <span
               className="PostToolValue"
@@ -218,7 +218,14 @@ class PostTools extends Component {
 
   editPost = () => {
     const { dispatch, post } = this.props
+    dispatch(postActions.loadEditablePost(post))
     dispatch(postActions.toggleEditing(post, true))
+  };
+
+  repostPost = () => {
+    const { dispatch, post } = this.props
+    dispatch(postActions.loadEditablePost(post))
+    dispatch(postActions.toggleReposting(post, true))
   };
 
   deletePost = () => {

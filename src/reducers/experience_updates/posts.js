@@ -81,5 +81,13 @@ function toggleEditing(state, newState, action) {
 methods.toggleEditing = (state, newState, action) =>
   toggleEditing(state, newState, action)
 
+function toggleReposting(state, newState, action) {
+  const { model, isReposting } = action.payload
+  newState[MAPPING_TYPES.POSTS][model.id].isReposting = isReposting
+  return newState
+}
+methods.toggleReposting = (state, newState, action) =>
+  toggleReposting(state, newState, action)
+
 export default methods
 

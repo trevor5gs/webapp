@@ -220,6 +220,7 @@ export default function json(state = {}, action = { type: '' }) {
       return methods.deleteModel(state, newState, action, MAPPING_TYPES.COMMENTS)
     case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
+    case ACTION_TYPES.POST.EDITABLE_SUCCESS:
       // fall through to parse the rest
       break
     case ACTION_TYPES.POST.CREATE_SUCCESS:
@@ -236,6 +237,8 @@ export default function json(state = {}, action = { type: '' }) {
       return postMethods.toggleComments(state, newState, action)
     case ACTION_TYPES.POST.TOGGLE_EDITING:
       return postMethods.toggleEditing(state, newState, action)
+    case ACTION_TYPES.POST.TOGGLE_REPOSTING:
+      return postMethods.toggleReposting(state, newState, action)
     case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
       return {}
     case ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL:

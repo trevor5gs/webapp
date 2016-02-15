@@ -119,17 +119,26 @@ class PostParser extends Component {
     currentUser: PropTypes.object,
     isEditing: PropTypes.bool,
     isGridLayout: PropTypes.bool,
+    isReposting: PropTypes.bool,
     post: PropTypes.object,
     showComments: PropTypes.bool,
     sourceLinkObject: PropTypes.object,
   };
 
   render() {
-    const { post, assets, currentUser, isEditing, isGridLayout, author, showComments } = this.props
+    const {
+      assets,
+      author,
+      currentUser,
+      isEditing,
+      isGridLayout,
+      isReposting,
+      post,
+      showComments,
+    } = this.props
     if (!post) { return null }
 
     let postHeader;
-    console.log('post editing', isEditing)
 
     setModels({ assets })
     if (isRepost(post)) {
@@ -142,8 +151,13 @@ class PostParser extends Component {
     return (
       <div>
         {postHeader}
-        { isEditing ?
-          <InlineEditor key={ JSON.stringify(post.body) } blocks={ post.body } post={ post }/> :
+        { (isEditing || isReposting) && post.body ?
+          <InlineEditor
+            blocks={ post.body }
+            isEditing
+            isReposting
+            post={ post }
+          /> :
           parsePost(post, author, currentUser, isGridLayout)}
         {showComments ? commentStream(post, author, currentUser) : null}
       </div>)

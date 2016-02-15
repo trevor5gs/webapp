@@ -22,16 +22,19 @@ class BlockCollection extends Component {
 
   static propTypes = {
     blocks: PropTypes.array,
-    delegate: PropTypes.any.isRequired,
     dispatch: PropTypes.func.isRequired,
     editorStore: PropTypes.object.isRequired,
     emoji: PropTypes.object.isRequired,
     shouldPersist: PropTypes.bool,
+    cancelAction: PropTypes.func.isRequired,
+    submitAction: PropTypes.func.isRequired,
+    submitText: PropTypes.string,
   };
 
   static defaultProps = {
     blocks: [],
     shouldPersist: false,
+    submitText: 'Post',
   };
 
   componentWillMount() {
@@ -282,7 +285,6 @@ class BlockCollection extends Component {
 
   addEmptyTextBlock(shouldCheckForEmpty = false) {
     const { collection, order } = this.state
-    console.log('collection', collection)
     requestAnimationFrame(() => {
       if (order.length > 1) {
         const last = collection[order[order.length - 1]][BLOCK_KEY]
@@ -333,12 +335,12 @@ class BlockCollection extends Component {
     this.persistBlocks()
   };
 
-  submit() {
-    const { delegate, dispatch } = this.props
+  submit = () => {
+    const { dispatch, submitAction } = this.props
     const data = this.serialize()
-    delegate.submit(data)
+    submitAction(data)
     dispatch({ type: ACTION_TYPES.POST.PERSIST, payload: null })
-  }
+  };
 
   serialize() {
     const { collection, order } = this.state
@@ -394,7 +396,7 @@ class BlockCollection extends Component {
   }
 
   render() {
-    const { editorStore } = this.props
+    const { cancelAction, editorStore, submitText } = this.props
     const { activeTools, collection, coordinates, dragBlockTop, hideTextTools, order } = this.state
     const hasMention = this.hasMention()
     const hasContent = this.hasContent()
@@ -432,7 +434,12 @@ class BlockCollection extends Component {
           /> :
           null
         }
-        <PostActionBar ref="postActionBar" editor={ this } />
+        <PostActionBar
+          ref="postActionBar"
+          cancelAction={ cancelAction }
+          submitAction={ this.submit }
+          submitText={ submitText }
+        />
       </div>
     )
   }
