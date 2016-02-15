@@ -23,7 +23,6 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       ENV: JSON.stringify(require(path.join(__dirname, './env.js'))),
-      'process.env.NODE_ENV': '"production"'
     }),
     new ExtractTextPlugin('bundle.css'),
     new webpack.optimize.CommonsChunkPlugin('commons'),
