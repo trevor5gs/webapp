@@ -97,7 +97,7 @@ class Banderole extends Component {
         <figure className="BanderoleImage" style={style} />
         <div className="BanderoleCaption">
           { caption }
-          { isLoggedIn ? null : <Link to="https://ello.co/wtf/about/what-is-ello/" target="_blank">Learn More</Link> }
+          { isLoggedIn ? null : <Link to="https://ello.co/signup" target="_blank">Sign Up</Link> }
         </div>
         <Credits clickAction={creditsClickAction} user={featuredUser} />
       </div>
