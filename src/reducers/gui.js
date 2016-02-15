@@ -19,19 +19,29 @@ const initialState = {
   ],
 }
 
+// TODO: figure out why the users regex doesn't work properly
 export function findLayoutMode(modes) {
   for (const mode of modes) {
-    if (location.pathname.match(mode.regex)) {
+    const regEx = new RegExp(mode.regex)
+    if (regEx.test(location.pathname)) {
       return mode
     }
   }
-  return null
+  return modes[modes.length - 1]
 }
 
 export function gui(state = initialState, action = { type: '' }) {
   const newState = { ...state }
   let mode = null
   switch (action.type) {
+    case BEACONS.LAST_DISCOVER_VERSION:
+      return { ...state, lastDiscoverBeaconVersion: action.payload.version }
+    case BEACONS.LAST_FOLLOWING_VERSION:
+      return { ...state, lastFollowingBeaconVersion: action.payload.version }
+    case BEACONS.LAST_STARRED_VERSION:
+      return { ...state, lastStarredBeaconVersion: action.payload.version }
+    case PROFILE.DELETE_SUCCESS:
+      return { ...initialState }
     case SET_LAYOUT_MODE:
       mode = findLayoutMode(newState.modes)
       if (mode.mode === action.payload.mode) return state
@@ -40,14 +50,6 @@ export function gui(state = initialState, action = { type: '' }) {
     case UPDATE_LOCATION:
       location = action.payload
       return state
-    case PROFILE.DELETE_SUCCESS:
-      return { ...initialState }
-    case BEACONS.LAST_DISCOVER_VERSION:
-      return { ...state, lastDiscoverBeaconVersion: action.payload.version }
-    case BEACONS.LAST_FOLLOWING_VERSION:
-      return { ...state, lastFollowingBeaconVersion: action.payload.version }
-    case BEACONS.LAST_STARRED_VERSION:
-      return { ...state, lastStarredBeaconVersion: action.payload.version }
     default:
       return state
   }
