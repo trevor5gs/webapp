@@ -8,7 +8,7 @@ const initialState = {
   modes: [
     { label: 'discover', mode: 'grid', regex: /\/discover|\/explore/ },
     { label: 'following', mode: 'grid', regex: /\/following/ },
-    { label: 'invitations', mode: 'grid', regex: /\/invitations/ },
+    { label: 'invitations', mode: 'list', regex: /\/invitations/ },
     { label: 'onboarding', mode: 'grid', regex: /\/onboarding/ },
     { label: 'search', mode: 'grid', regex: /\/search|\/find/ },
     { label: 'starred', mode: 'list', regex: /\/starred/ },
