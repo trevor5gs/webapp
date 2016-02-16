@@ -87,7 +87,8 @@ function hasValidHDPICoverImage(promotion) {
   return (
     promotion.coverImage.hdpi.url &&
     promotion.coverImage.hdpi.url.indexOf('ello-hdpi-') > -1 &&
-    promotion.coverImage.hdpi.url.indexOf('d324imu86q1bqn.cloudfront') > -1
+    (promotion.coverImage.hdpi.url.indexOf('d324imu86q1bqn.cloudfront') > -1 ||
+    promotion.coverImage.hdpi.url.indexOf('assets.ello.co') > -1)
   )
 }
 
@@ -95,7 +96,8 @@ function hasValidXHDPICoverImage(promotion) {
   return (
     promotion.coverImage.xhdpi.url &&
     promotion.coverImage.xhdpi.url.indexOf('ello-xhdpi-') > -1 &&
-    promotion.coverImage.xhdpi.url.indexOf('d324imu86q1bqn.cloudfront') > -1
+    (promotion.coverImage.xhdpi.url.indexOf('d324imu86q1bqn.cloudfront') > -1 ||
+     promotion.coverImage.xhdpi.url.indexOf('assets.ello.co') > -1)
   )
 }
 
@@ -104,7 +106,8 @@ function hasValidOptimizedCoverImage(promotion) {
   return (
     promotion.coverImage.optimized.url &&
     promotion.coverImage.optimized.url.indexOf('ello-optimized-') > -1 &&
-    promotion.coverImage.optimized.url.indexOf('d324imu86q1bqn.cloudfront') > -1
+    (promotion.coverImage.optimized.url.indexOf('d324imu86q1bqn.cloudfront') > -1 ||
+    promotion.coverImage.optimized.url.indexOf('assets.ello.co') > -1)
   )
 }
 
