@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { routeActions } from 'react-router-redux'
 import { random } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
@@ -43,10 +44,16 @@ class SignIn extends Component {
   };
 
   // TODO: Need to handle the return error or success when this is submitted
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault()
     const { dispatch } = this.props
-    dispatch(getUserCredentials(this.emailValue, this.passwordValue))
+    const action = getUserCredentials(this.emailValue, this.passwordValue)
+
+    const success = await dispatch(action)
+
+    if (success) {
+      dispatch(routeActions.replace('/discover'))
+    }
   };
 
   emailControlWasChanged = ({ email }) => {
