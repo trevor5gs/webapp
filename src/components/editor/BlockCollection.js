@@ -8,7 +8,7 @@ import ImageBlock from './ImageBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
 import TextTools from './TextTools'
-import { autoCompleteUser, loadEmojis } from '../../actions/posts'
+import { autoCompleteUsers, loadEmojis } from '../../actions/posts'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addInputObject, removeInputObject } from './InputComponent'
@@ -191,7 +191,7 @@ class BlockCollection extends Component {
 
   onUserCompleter({ word }) {
     const { dispatch } = this.props
-    dispatch(autoCompleteUser('user', word))
+    dispatch(autoCompleteUsers('user', word))
   }
 
   onEmojiCompleter({ word }) {
