@@ -28,6 +28,15 @@ export function accessTokens() {
     path: `${basePath()}/oauth/token`,
   }
 }
+
+export function loginToken(email, password) {
+  const params = { email, password }
+  return {
+    path: `${basePath()}/oauth/login`,
+    params,
+  }
+}
+
 export function forgotPassword() {
   return {
     path: getAPIPath('forgot-password'),
