@@ -20,7 +20,10 @@ class RelationsGroup extends Component {
     previousPath: PropTypes.string,
     showBlockMuteButton: PropTypes.bool,
     user: PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+      ]),
       relationshipPriority: PropTypes.string,
     }).isRequired,
   };

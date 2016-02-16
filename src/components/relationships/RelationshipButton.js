@@ -17,7 +17,10 @@ class RelationshipButton extends Component {
       RELATIONSHIP_PRIORITY.NONE,
       null,
     ]),
-    userId: PropTypes.string,
+    userId: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
   };
 
   componentWillMount() {

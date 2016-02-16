@@ -50,7 +50,7 @@ methods.updatePostLoves = (state, newState, action) =>
 function addOrUpdatePost(newState, action) {
   const { response } = action.payload
   newState[MAPPING_TYPES.POSTS][response.id] = response
-  if (action.type !== ACTION_TYPES.POST.UPDATE_SUCCESS && newState.pages['/following']) {
+  if (action.type === ACTION_TYPES.POST.CREATE_SUCCESS && newState.pages['/following']) {
     newState.pages['/following'].ids.unshift(response.id)
   }
   // TODO: hook this up once following/followers/loves is merged

@@ -149,11 +149,8 @@ class PostParser extends Component {
     return (
       <div>
         {postHeader}
-        { (post.isEditing || post.isReposting) && post.body ?
-          <InlineEditor
-            blocks={ post.body }
-            post={ post }
-          /> :
+        { (post.isEditing || post.isReposting) ?
+          <InlineEditor post={ post }/> :
           parsePost(post, author, currentUser, isGridLayout)}
         {showComments ? commentStream(post, author, currentUser) : null}
       </div>)
@@ -175,7 +172,7 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
   if (isRepost(post)) {
     newProps = {
       ...newProps,
-      authorLinkObject: getLinkObject(post, 'repostAuthor', json),
+      authorLinkObject: post.repostAuthor || getLinkObject(post, 'repostAuthor', json),
       sourceLinkObject: getLinkObject(post, 'repostedSource', json),
     }
   }

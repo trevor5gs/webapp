@@ -5,6 +5,7 @@ import { debounce } from 'lodash'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
+import RepostBlock from './RepostBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
 import TextTools from './TextTools'
@@ -22,23 +23,25 @@ class BlockCollection extends Component {
 
   static propTypes = {
     blocks: PropTypes.array,
+    cancelAction: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     editorStore: PropTypes.object.isRequired,
     emoji: PropTypes.object.isRequired,
+    repostContent: PropTypes.array,
     shouldPersist: PropTypes.bool,
-    cancelAction: PropTypes.func.isRequired,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
   };
 
   static defaultProps = {
     blocks: [],
+    repostContent: [],
     shouldPersist: false,
     submitText: 'Post',
   };
 
   componentWillMount() {
-    const { blocks, editorStore } = this.props
+    const { blocks, editorStore, repostContent } = this.props
     this.onHideCompleter()
     this.state = {
       collection: {},
@@ -46,6 +49,9 @@ class BlockCollection extends Component {
       order: [],
     }
     this.uid = 0
+    if (repostContent.length) {
+      this.add({ kind: 'repost', data: repostContent })
+    }
     if (blocks.length) {
       for (const block of blocks) {
         this.add(block, false)
@@ -137,6 +143,7 @@ class BlockCollection extends Component {
 
   onDragUp(props) {
     if (this.prevBlock &&
+        !this.prevBlock.classList.contains('readonly') &&
         (props.dragY + this.startOffset) <
         (this.prevBlock.offsetTop + this.prevBlock.offsetHeight * 0.5)) {
       this.onMoveBlock(-1)
@@ -235,24 +242,28 @@ class BlockCollection extends Component {
       uid: block.uid,
     }
     switch (block.kind) {
+      case 'block':
+        return (
+          <Block { ...blockProps } className="BlockPlaceholder" ref="blockPlaceholder"/>
+        )
+      case 'embed':
+        return (
+          <EmbedBlock { ...blockProps }/>
+        )
+      case 'image':
+        return (
+          <ImageBlock { ...blockProps }/>
+        )
+      case 'repost':
+        return (
+          <RepostBlock { ...blockProps } onRemoveBlock={ null }/>
+        )
       case 'text':
         return (
           <TextBlock
             { ...blockProps }
             onInput={ this.handleTextBlockInput }
           />
-        )
-      case 'image':
-        return (
-          <ImageBlock { ...blockProps }/>
-        )
-      case 'embed':
-        return (
-          <EmbedBlock { ...blockProps }/>
-        )
-      case 'block':
-        return (
-          <Block { ...blockProps } className="BlockPlaceholder" ref="blockPlaceholder"/>
         )
       default:
         return null
@@ -352,6 +363,8 @@ class BlockCollection extends Component {
           if (block.data.length) {
             results.push({ kind: block.kind, data: block.data })
           }
+          break
+        case 'repost':
           break
         default:
           results.push({ kind: block.kind, data: block.data })
