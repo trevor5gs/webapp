@@ -1,5 +1,5 @@
 export const AUTHENTICATION_PROMOTIONS = [
- {
+  {
     username: 'borrowedparadise',
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/1996388/ello-regular-e4286df6.png' },
@@ -11,7 +11,7 @@ export const AUTHENTICATION_PROMOTIONS = [
     },
   },
   {
-    username: 'anne_baronesso'
+    username: 'anne_baronesso',
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/1876934/ello-regular-732acae1.png' },
     },
