@@ -20,7 +20,7 @@ export function loadPostDetail(token) {
 export function loadEditablePost(post) {
   return {
     type: ACTION_TYPES.POST.EDITABLE,
-    payload: { endpoint: api.postDetail(post.id) },
+    payload: { endpoint: api.editPostDetail(post.id) },
     meta: {
       mappingType: MAPPING_TYPES.POSTS,
       updateResult: false,

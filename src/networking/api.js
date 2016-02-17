@@ -97,6 +97,15 @@ export function postDetail(idOrToken) {
     params,
   }
 }
+// TODO: should eventually be able to send 0 or false
+// to not have the api look for comments on this post
+export function editPostDetail(idOrToken) {
+  const params = { comment_count: 1 }
+  return {
+    path: getAPIPath(`posts/${idOrToken}`, params),
+    params,
+  }
+}
 export function lovePost(post) {
   return {
     path: getAPIPath(`posts/${post.id}/loves`),
