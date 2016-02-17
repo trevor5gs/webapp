@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { getLinkObject } from '../base/json_helper'
-import { body, regionItems, repostedBody, setModels } from './RegionParser'
+import { body, repostedBody, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostTools from '../posts/PostTools'
@@ -98,11 +98,6 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
   cells.push(footer(post, author, currentUser))
   setModels({})
   return cells
-}
-
-export function parseSummary(post, json, only = null) {
-  setModels(json)
-  return regionItems(post.summary, only, false)
 }
 
 function isRepost(post) {

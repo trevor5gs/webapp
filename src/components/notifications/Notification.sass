@@ -1,0 +1,65 @@
+@import ../../styles/lib
+
+.Notification
+  position: relative
+  min-height: rem(80)
+  background-color: white
+  border-bottom: 1px solid #e3e3e3
+  padding: rem(20) rem(140) rem(10) rem(50)
+  overflow: hidden
+
+.NotificationHeader
+  position: absolute
+  top: rem(20)
+  left: 0
+
+.NotificationBody,
+.NotificationSummary
+  margin-bottom: rem(20)
+  word-wrap: break-word
+
+.NotificationBody,
+.NotificationFooter
+  color: #aaa
+
+.NotificationBody + .NotificationFooter
+  margin-top: rem(-15)
+
+.NotificationFooter
+  +sans-typeset
+
+.NotificationBody > p
+  margin: 0
+
+.NotificationBody > p a,
+.NotificationFooter > a
+  transition: color $speed
+
+.no-touch .NotificationBody > p a:hover,
+.no-touch .NotificationFooter > a:hover
+  color: black
+
+.NotificationSummary > .ImageRegion,
+.NotificationSummary > .EmbedRegion
+  display: block
+  overflow: hidden
+  position: absolute
+  top: rem(20)
+  right: 0
+  bottom: rem(10)
+  max-width: rem(120)
+  margin-top: 0 !important
+  user-select: none
+
+.NotificationSummary > .ImageRegion + .ImageRegion,
+.NotificationSummary > .ImageRegion + .EmbedRegion,
+.NotificationSummary > .EmbedRegion + .ImageRegion,
+.NotificationSummary > .EmbedRegion + .EmbedRegion,
+.NotificationSummary > .TextRegion img:not(.emoji)
+  display: none
+
+
+@media(min-width: #{$break-2})
+  .Notification
+    padding-left: rem(60)
+

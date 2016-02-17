@@ -4,7 +4,7 @@ import { postLovers, postReposters } from '../../networking/api'
 import { getLinkArray } from '../base/json_helper'
 import PostParser from '../parsers/PostParser'
 import CommentParser from '../parsers/CommentParser'
-import { parseNotification } from '../parsers/NotificationParser'
+import NotificationParser from '../parsers/NotificationParser'
 import PostsAsGrid from '../posts/PostsAsGrid'
 import { HeartIcon, RepostIcon } from '../posts/PostIcons'
 import UserAvatar from '../users/UserAvatar'
@@ -191,11 +191,11 @@ export function commentsAsList(comments) {
   )
 }
 
-export function notificationList(notifications, json, currentUser) {
+export function notificationList(notifications, json) {
   return (
     <div className="Notifications">
       {notifications.data.map((notification) =>
-        parseNotification(notification, json, currentUser)
+        <NotificationParser notification={notification} json={json} />
       )}
     </div>
   )
