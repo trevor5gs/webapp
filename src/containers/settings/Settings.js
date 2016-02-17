@@ -358,9 +358,9 @@ class Settings extends Component {
 
             <TreeButton>Muted/Blocked</TreeButton>
             <TreePanel>
-              <div>Blocked:</div>
+              <h2 className="SettingsSubheading">Blocked</h2>
               <StreamComponent action={blockedUsers()} />
-              <div>Muted:</div>
+              <h2 className="SettingsSubheading">Muted</h2>
               <StreamComponent action={mutedUsers()} />
             </TreePanel>
 
