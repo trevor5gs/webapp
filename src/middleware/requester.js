@@ -141,7 +141,7 @@ export const requester = store => next => action => {
     }
   }
 
-  const options = { method: method || 'GET' }
+  const options = { method: method || 'GET', credentials: 'include' }
   if (options.method !== 'GET' && options.method !== 'HEAD') {
     options.body = body || null
     if (options.body && typeof options.body !== 'string') {
