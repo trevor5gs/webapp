@@ -68,6 +68,7 @@ class Navbar extends Component {
       asFixed: isBlacklisted,
       asHidden: false,
       asLocked: isBlacklisted,
+      hasNotifications: false,
       skipTransition: false,
     }
     this.scrollYAtDirectionChange = null
@@ -200,6 +201,7 @@ class Navbar extends Component {
 
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
     const { profile } = this.props
+    const { hasNotifications } = this.state
     return (
       <nav className={klassNames} role="navigation">
         <NavbarMark />
@@ -234,7 +236,7 @@ class Navbar extends Component {
           <NavbarLink
             to="/notifications"
             label="Notifications"
-            modifiers="IconOnly"
+            modifiers={ classNames('IconOnly', { hasNotifications }) }
             pathname={pathname}
             icon={ <BoltIcon/> }
           />
