@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { createPost, toggleEditing, toggleReposting, updatePost } from '../../actions/posts'
+import { closeOmnibar } from '../../actions/omnibar'
 import BlockCollection from './BlockCollection'
 
 class InlineEditor extends Component {
@@ -13,7 +14,10 @@ class InlineEditor extends Component {
 
   submit = (data) => {
     const { dispatch, post } = this.props
-    if (post.isReposting) {
+    if (!post) {
+      dispatch(closeOmnibar())
+      dispatch(createPost(data))
+    } else if (post.isReposting) {
       dispatch(toggleReposting(post, false))
       dispatch(createPost(data, post.repostId || post.id))
     } else if (post.isEditing) {
@@ -32,17 +36,21 @@ class InlineEditor extends Component {
     const { post } = this.props
     let blocks = []
     let repostContent = []
+    let submitText = 'Post'
     if (!post) {
       // console.log('create new post')
     } else if (post.showComments) {
+      submitText = 'Comment'
       // console.log('create new comment')
     } else if (post.isReposting) {
+      submitText = 'Repost'
       if (post.repostId) {
         repostContent = post.repostContent
       } else {
         repostContent = post.content
       }
     } else if (post.isEditing) {
+      submitText = 'Update'
       if (post.repostContent && post.repostContent.length) {
         repostContent = post.repostContent
       }
@@ -57,7 +65,7 @@ class InlineEditor extends Component {
         cancelAction={ this.cancel }
         repostContent={ repostContent }
         submitAction={ this.submit }
-        submitText={ post.isReposting ? 'Repost' : 'Update' }
+        submitText={ submitText }
       />
     )
   }
