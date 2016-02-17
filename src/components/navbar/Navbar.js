@@ -6,6 +6,7 @@ import * as ACTION_TYPES from '../../constants/action_types'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { openModal, closeModal } from '../../actions/modals'
 import { openOmnibar } from '../../actions/omnibar'
+import NotificationsContainer from '../../containers/notifications/NotificationsContainer'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import HelpDialog from '../dialogs/HelpDialog'
@@ -133,9 +134,8 @@ class Navbar extends Component {
     removeScrollObject(this)
   }
 
-  onResize(resizeProperties) {
-    const { coverOffset } = resizeProperties
-    this.setState({ offset: coverOffset - 80 })
+  onResize({ coverOffset, viewportDeviceSize }) {
+    this.setState({ offset: coverOffset - 80, viewportDeviceSize })
   }
 
   onScrollTop() {
@@ -181,6 +181,15 @@ class Navbar extends Component {
     dispatch(routeActions.push('/'))
   };
 
+  onNotificationToggle = (e) => {
+    if (e) { e.preventDefault() }
+    const { dispatch, gui } = this.props
+    dispatch({
+      type: ACTION_TYPES.TOGGLE_NOTIFICATIONS,
+      payload: { isNotificationsActive: !gui.isNotificationsActive },
+    })
+  };
+
   omniButtonWasClicked = () => {
     const { dispatch } = this.props
     dispatch(openOmnibar())
@@ -200,8 +209,8 @@ class Navbar extends Component {
   };
 
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
-    const { profile } = this.props
-    const { hasNotifications } = this.state
+    const { profile, gui } = this.props
+    const { hasNotifications, viewportDeviceSize } = this.state
     return (
       <nav className={klassNames} role="navigation">
         <NavbarMark />
@@ -239,6 +248,7 @@ class Navbar extends Component {
             modifiers={ classNames('IconOnly', { hasNotifications }) }
             pathname={pathname}
             icon={ <BoltIcon/> }
+            onClick={ viewportDeviceSize !== 'mobile' ? this.onNotificationToggle : null }
           />
           <NavbarLink
             to="/search"
@@ -253,6 +263,9 @@ class Navbar extends Component {
           onLogOut={ this.onLogOut }
           username={ profile.username }
         />
+        { viewportDeviceSize !== 'mobile' && gui.isNotificationsActive ?
+          <NotificationsContainer/> : null
+        }
       </nav>
     )
   }

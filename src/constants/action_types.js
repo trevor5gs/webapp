@@ -16,6 +16,7 @@ export const POST_JSON = 'POST_JSON'
 export const POST_FORM = 'POST_FORM'
 
 export const SET_LAYOUT_MODE = 'SET_LAYOUT_MODE'
+export const TOGGLE_NOTIFICATIONS = 'TOGGLE_NOTIFICATIONS'
 
 export const ALERT = {
   OPEN: 'ALERT.OPEN',
