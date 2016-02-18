@@ -105,3 +105,7 @@ export function removeResizeObject(obj) {
   }
 }
 
+export function triggerResize() {
+  resized()
+}
+
