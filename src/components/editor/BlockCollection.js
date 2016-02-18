@@ -25,6 +25,7 @@ class BlockCollection extends Component {
     editorStore: PropTypes.object.isRequired,
     emoji: PropTypes.object.isRequired,
     repostContent: PropTypes.array,
+    shouldLoadFromState: PropTypes.bool,
     shouldPersist: PropTypes.bool,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
@@ -33,12 +34,13 @@ class BlockCollection extends Component {
   static defaultProps = {
     blocks: [],
     repostContent: [],
+    shouldLoadFromState: false,
     shouldPersist: false,
     submitText: 'Post',
   };
 
   componentWillMount() {
-    const { blocks, editorStore, repostContent } = this.props
+    const { blocks, editorStore, repostContent, shouldLoadFromState } = this.props
     this.state = {
       collection: {},
       hideTextTools: true,
@@ -52,7 +54,7 @@ class BlockCollection extends Component {
       for (const block of blocks) {
         this.add(block, false)
       }
-    } else if (editorStore.editorState) {
+    } else if (shouldLoadFromState && editorStore.editorState) {
       this.state = { ...editorStore.editorState, hideTextTools: true }
       this.uid = Math.max(...editorStore.editorState.order) + 1
     }
@@ -296,6 +298,7 @@ class BlockCollection extends Component {
   handleTextBlockInput = (vo) => {
     const { collection } = this.state
     collection[vo.uid][BLOCK_KEY] = vo
+    this.setState({ collection })
     this.persistBlocks()
   };
 

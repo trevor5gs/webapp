@@ -22,8 +22,11 @@ class TextBlock extends Component {
   };
 
   handlePaste = (e) => {
-    const { dispatch } = this.props
+    const { dispatch, onInput } = this.props
+    const uid = this.refs.block.props.uid
+    // order matters here!
     pasted(e, dispatch)
+    onInput({ kind: 'text', data: this.refs.block.refs.text.innerHTML, uid })
   };
 
   render() {

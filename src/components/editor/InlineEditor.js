@@ -10,6 +10,11 @@ class InlineEditor extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     post: PropTypes.object,
+    shouldLoadFromState: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    shouldLoadFromState: false,
   };
 
   submit = (data) => {
@@ -28,12 +33,16 @@ class InlineEditor extends Component {
 
   cancel = () => {
     const { dispatch, post } = this.props
-    dispatch(toggleEditing(post, false))
-    dispatch(toggleReposting(post, false))
+    if (post) {
+      dispatch(toggleEditing(post, false))
+      dispatch(toggleReposting(post, false))
+    } else {
+      dispatch(closeOmnibar())
+    }
   };
 
   render() {
-    const { post } = this.props
+    const { post, shouldLoadFromState } = this.props
     let blocks = []
     let repostContent = []
     let submitText = 'Post'
@@ -66,6 +75,8 @@ class InlineEditor extends Component {
         repostContent={ repostContent }
         submitAction={ this.submit }
         submitText={ submitText }
+        shouldLoadFromState={ shouldLoadFromState }
+        shouldPersist={ !post }
       />
     )
   }

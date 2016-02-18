@@ -46,18 +46,20 @@
   display: inline-block
 
 .TextToolLinkInput
+  +sans-typeset
   transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease, height $speed $ease
   display: inline-block
   vertical-align: baseline
   width: rem(180)
   height: rem(30)
   padding: 0 rem(10)
+  border-radius: 0 rem(15) rem(15) 0
   background-color: white
-  border: 0
+  border: 1px solid white
   color: black
   outline: 0
   &:focus
-    border-color: black
+    border-color: white
     outline: 0
   &::placeholder
     color: #aaa

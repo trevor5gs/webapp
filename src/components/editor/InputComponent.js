@@ -36,12 +36,12 @@ function callMethod(method, vo) {
   }
 }
 
-function onClick(e) {
-  callMethod('onHideCompleter')
-  const classList = e.target.classList
-  if (!classList.contains('TextToolButton') &&
-      !classList.contains('TextToolForm') &&
-      !classList.contains('TextToolLinkInput')) {
+function toggleTools(input) {
+  const word = input.trim()
+  if (word && word.length) {
+    callMethod('onPositionChange', { coordinates: getPositionFromSelection() })
+    callMethod('onShowTextTools', { activeTools: getActiveTextTools() })
+  } else {
     callMethod('onHideTextTools', { activeTools: null })
   }
 }
@@ -49,13 +49,7 @@ function onClick(e) {
 function onKeyUp(e) {
   // Handles text tools show/hide and position
   if (!e.target.classList || !e.target.classList.contains('text')) return false
-  const word = getWordFromSelection()
-  if (word && word.length) {
-    callMethod('onPositionChange', { coordinates: getPositionFromSelection() })
-    callMethod('onShowTextTools', { activeTools: getActiveTextTools() })
-  } else {
-    callMethod('onHideTextTools', { activeTools: null })
-  }
+  toggleTools(window.getSelection().toString())
   // Handles autocompletion stuff
   // check for autocompletable strings: currently usernames and emoji codes
   switch (e.which) {
@@ -68,6 +62,7 @@ function onKeyUp(e) {
     default:
       break
   }
+  const word = getWordFromSelection()
   // now do something for the auto completers
   if (word.match(userRegex)) {
     callMethod('onUserCompleter', { word })
@@ -94,6 +89,22 @@ function onKeyDown(e) {
 }
 methods.onKeyDown = (e) =>
   onKeyDown(e)
+
+function onClick(e) {
+  callMethod('onHideCompleter')
+  const classList = e.target.classList
+  console.log('classList', classList)
+  if (classList.contains('text')) {
+    console.log('we habve text')
+    requestAnimationFrame(() => {
+      onKeyUp(e)
+    })
+  } else if (!classList.contains('TextToolButton') &&
+      !classList.contains('TextToolForm') &&
+      !classList.contains('TextToolLinkInput')) {
+    callMethod('onHideTextTools', { activeTools: null })
+  }
+}
 
 function addListeners() {
   document.addEventListener('click', onClick)
