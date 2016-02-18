@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
@@ -13,6 +12,7 @@ import { ElloMark } from '../interface/ElloIcons'
 import Paginator from '../streams/Paginator'
 import { findLayoutMode } from '../../reducers/gui'
 import { ZeroState } from '../zeros/Zeros'
+import { ErrorState400 } from '../errors/Errors'
 
 export class StreamComponent extends Component {
 
@@ -141,14 +141,14 @@ export class StreamComponent extends Component {
   }
 
   renderError() {
+    const { action } = this.props
+    const { meta } = action
     return (
       <section className="StreamComponent hasErrored">
-        <div className="StreamErrorMessage">
-          <img src="/static/images/support/ello-spin.gif" alt="Ello" width="130" height="130" />
-          <p>This doesn't happen often, but it looks like something is broken. Hitting the back button and trying again might be your best bet. If that doesn't work you can <a href="http://ello.co/">head back to the homepage.</a></p>
-          <p>There might be more information on our <a href="http://status.ello.co/">status page</a>.</p>
-          <p>If all else fails you can try checking out our <a href="http://ello.threadless.com/" target="_blank">Store</a> or the <a href="https://ello.co/wtf/post/communitydirectory">Community Directory</a>.</p>
-        </div>
+        { meta && meta.renderStream && meta.renderStream.asError ?
+          meta.renderStream.asError :
+          <ErrorState400/>
+        }
       </section>
     )
   }
