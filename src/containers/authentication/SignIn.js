@@ -53,6 +53,8 @@ class SignIn extends Component {
 
     if (success) {
       dispatch(routeActions.replace('/discover'))
+    } else {
+      this.setState({ failureMessage: 'No dice. Access denied.' })
     }
   };
 
@@ -73,6 +75,17 @@ class SignIn extends Component {
     const newState = getPasswordState({ value: password, currentStatus })
     if (newState.status !== currentStatus) {
       this.setState({ passwordState: newState })
+    }
+  };
+
+  renderError = () => {
+    const { failureMessage } = this.state
+    if (failureMessage) {
+      return (
+        <div className="FormControlFeedbackError accessDenied">
+          {failureMessage}
+        </div>
+      )
     }
   };
 
@@ -103,6 +116,7 @@ class SignIn extends Component {
               classList="asBoxControl"
               label={ `Password ${passwordState.message}` }
               onChange={ this.passwordControlWasChanged }
+              renderFeedback={ this.renderError }
               tabIndex="2"
             />
             <FormButton disabled={ !isValid } tabIndex="3">Enter Ello</FormButton>
