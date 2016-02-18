@@ -83,7 +83,7 @@ class SignIn extends Component {
     const { failureMessage } = this.state
     if (failureMessage) {
       return (
-        <div className="FormControlFeedbackError accessDenied">
+        <div className="AuthenticationError accessDenied">
           {failureMessage}
         </div>
       )
