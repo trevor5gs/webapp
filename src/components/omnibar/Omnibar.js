@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { closeOmnibar } from '../../actions/omnibar'
 import Avatar from '../assets/Avatar'
-import InlineEditor from '../editor/InlineEditor'
+import Editor from '../editor/Editor'
 import { SVGIcon } from '../interface/SVGComponents'
 import Mousetrap from '../../vendor/mousetrap'
 
@@ -75,7 +75,7 @@ class Omnibar extends Component {
     return (
       <div className={classNames('Omnibar', { isActive, isFullScreen }, classList)} >
         <Avatar sources={avatar} />
-        <InlineEditor shouldLoadFromState/>
+        <Editor shouldLoadFromState/>
         <button className="OmnibarRevealNavbar" onClick={ this.close }>
           <ChevronIcon />
           Navigation

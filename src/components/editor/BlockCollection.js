@@ -98,6 +98,16 @@ class BlockCollection extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    const { editorStore } = this.props
+    const prevEditorStore = prevProps.editorStore
+    if (prevEditorStore.completions && !editorStore.completions) {
+      requestAnimationFrame(() => {
+        this.updateTextCollectionData()
+      })
+    }
+  }
+
   componentWillUnmount() {
     // this.onHideCompleter()
     removeDragObject(this)
@@ -229,6 +239,21 @@ class BlockCollection extends Component {
     if (this.hasContent()) { return }
     const element = document.querySelector('.editable.text')
     if (element) { element.focus() }
+  }
+
+  // TODO: probably should have the completer
+  // dispatch an action that updates the gui
+  // and then we can listen to that instead
+  // of brute forcing it with dom lookups
+  updateTextCollectionData() {
+    const { collection, order } = this.state
+    for (const uid of order) {
+      const block = collection[uid][BLOCK_KEY]
+      if (block.kind === 'text') {
+        block.data = document.querySelector(`[data-collection-id="${uid}"]`).textContent
+      }
+    }
+    this.setState({ collection })
   }
 
   add(block, shouldCheckForEmpty = true) {

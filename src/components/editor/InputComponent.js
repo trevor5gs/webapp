@@ -93,9 +93,7 @@ methods.onKeyDown = (e) =>
 function onClick(e) {
   callMethod('onHideCompleter')
   const classList = e.target.classList
-  console.log('classList', classList)
   if (classList.contains('text')) {
-    console.log('we habve text')
     requestAnimationFrame(() => {
       onKeyUp(e)
     })

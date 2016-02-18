@@ -15,10 +15,14 @@ class TextBlock extends Component {
     return false
   }
 
-  handleInput = (e) => {
+  getData() {
+    return this.refs.block.refs.text.innerHTML
+  }
+
+  handleInput = () => {
     const { onInput } = this.props
     const uid = this.refs.block.props.uid
-    onInput({ kind: 'text', data: e.target.innerHTML, uid })
+    onInput({ kind: 'text', data: this.getData(), uid })
   };
 
   handlePaste = (e) => {
@@ -26,7 +30,7 @@ class TextBlock extends Component {
     const uid = this.refs.block.props.uid
     // order matters here!
     pasted(e, dispatch)
-    onInput({ kind: 'text', data: this.refs.block.refs.text.innerHTML, uid })
+    onInput({ kind: 'text', data: this.getData(), uid })
   };
 
   render() {

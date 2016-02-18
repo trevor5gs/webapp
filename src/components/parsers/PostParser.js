@@ -10,7 +10,7 @@ import PostTools from '../posts/PostTools'
 import CommentStream from '../streams/CommentStream'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
-import InlineEditor from '../../components/editor/InlineEditor'
+import Editor from '../../components/editor/Editor'
 
 function getPostDetailPath(author, post) {
   return `/${author.username}/post/${post.token}`
@@ -149,8 +149,8 @@ class PostParser extends Component {
     return (
       <div>
         {postHeader}
-        { (post.isEditing || post.isReposting) ?
-          <InlineEditor post={ post }/> :
+        { (post.isEditing || post.isReposting) && post.body ?
+          <Editor post={ post }/> :
           parsePost(post, author, currentUser, isGridLayout)}
         {showComments ? commentStream(post, author, currentUser) : null}
       </div>)
