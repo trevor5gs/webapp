@@ -12,7 +12,7 @@ import { ElloMark } from '../interface/ElloIcons'
 import Paginator from '../streams/Paginator'
 import { findLayoutMode } from '../../reducers/gui'
 import { ZeroState } from '../zeros/Zeros'
-import { ErrorState400 } from '../errors/Errors'
+import { ErrorState4xx } from '../errors/Errors'
 
 export class StreamComponent extends Component {
 
@@ -147,7 +147,7 @@ export class StreamComponent extends Component {
       <section className="StreamComponent hasErrored">
         { meta && meta.renderStream && meta.renderStream.asError ?
           meta.renderStream.asError :
-          <ErrorState400/>
+          <ErrorState4xx/>
         }
       </section>
     )
