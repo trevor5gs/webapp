@@ -46,6 +46,7 @@ class SignIn extends Component {
   // TODO: Need to handle the return error or success when this is submitted
   handleSubmit = async (e) => {
     e.preventDefault()
+
     const { dispatch } = this.props
     const action = getUserCredentials(this.emailValue, this.passwordValue)
 
