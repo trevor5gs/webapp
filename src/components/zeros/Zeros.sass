@@ -1,0 +1,29 @@
+.ZeroStates
+  max-width: rem(560)
+  padding: rem(10)
+
+.ZeroStates > .ZeroState
+  margin-top: rem(60)
+
+.ZeroStateUsername
+  text-decoration: underline
+
+.ZeroStateTitle
+  font-size: rem(18)
+  color: #aaa
+  margin-bottom: rem(20)
+
+.ZeroStateTextField
+  margin: 0 auto
+  color: #aaa
+
+@media(min-width: #{$break-2})
+  .ZeroStates
+    padding: 0
+  .UserDetails .ZeroStates
+    margin-left: rem(240)
+  .UserDetail .ZeroStateTextField
+    margin-left: rem(220)
+  .ZeroStateTitle
+    font-size: rem(24)
+

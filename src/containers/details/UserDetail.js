@@ -7,11 +7,17 @@ import { loadUserDetail, loadUserLoves, loadUserPosts, loadUserUsers } from '../
 import Cover from '../../components/assets/Cover'
 import StreamComponent from '../../components/streams/StreamComponent'
 import UserList from '../../components/users/UserList'
+import {
+  ZeroStateCreateRelationship,
+  ZeroStateFirstPost,
+  ZeroStateSayHello,
+} from '../../components/zeros/Zeros'
 
 class UserDetail extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     json: PropTypes.object.isRequired,
     params: PropTypes.shape({
       type: PropTypes.string,
@@ -32,6 +38,27 @@ class UserDetail extends Component {
       return null
     }
     return findBy(initModel.findObj, initModel.collection, json)
+  }
+
+  renderZeroStates(user) {
+    const { isLoggedIn } = this.props
+    if (!user) { return null }
+    const cells = []
+    if (!user.followersCount) {
+      cells.push(<ZeroStateCreateRelationship key="zero_1" user={ user }/>)
+    }
+    if (isLoggedIn && !user.postsCount) {
+      cells.push(<ZeroStateSayHello key="zero_2" user={ user }/>)
+    }
+    return cells.length ? <div className="ZeroStates">{ cells }</div> : cells
+  }
+
+  renderZeroStatesForCurrentUser(user) {
+    const cells = []
+    if (!user.postsCount) {
+      cells.push(<ZeroStateFirstPost key="zero_3"/>)
+    }
+    return cells.length ? <div className="ZeroStates">{ cells }</div> : cells
   }
 
   render() {
@@ -70,6 +97,10 @@ class UserDetail extends Component {
         <Helmet title={`${params.username}`} />
         <div className="UserDetails">
           { userEls }
+          { user && user.relationshipPriority === 'self' ?
+            this.renderZeroStatesForCurrentUser(user) :
+            this.renderZeroStates(user)
+          }
           <StreamComponent
             ref="streamComponent"
             action={ streamAction }
@@ -83,6 +114,7 @@ class UserDetail extends Component {
 function mapStateToProps(state) {
   return {
     json: state.json,
+    isLoggedIn: state.authentication.isLoggedIn,
   }
 }
 
