@@ -5,7 +5,7 @@ import { emojiRegex, userRegex } from '../completers/Completer'
 const methods = {}
 
 export let range = null
-const rangeObjects = []
+const inputObjects = []
 let hasListeners = false
 
 function getPositionFromSelection() {
@@ -13,7 +13,7 @@ function getPositionFromSelection() {
   const pos = range.getBoundingClientRect()
   // TODO: magic number of -60 should be tested
   // in multiple browsers, this works for safari
-  return { left: Math.round(pos.left - 60), top: Math.round(pos.top) }
+  return { left: Math.round(pos.left), top: Math.round(pos.top) }
 }
 
 function getActiveTextTools() {
@@ -29,7 +29,7 @@ function getActiveTextTools() {
 }
 
 function callMethod(method, vo) {
-  for (const obj of rangeObjects) {
+  for (const obj of inputObjects) {
     if (obj[method]) {
       obj[method](vo)
     }
@@ -106,21 +106,21 @@ function removeListeners() {
 }
 
 export function addInputObject(obj) {
-  if (rangeObjects.indexOf(obj) === -1) {
-    rangeObjects.push(obj)
+  if (inputObjects.indexOf(obj) === -1) {
+    inputObjects.push(obj)
   }
-  if (rangeObjects.length === 1 && !hasListeners) {
+  if (inputObjects.length === 1 && !hasListeners) {
     hasListeners = true
     addListeners()
   }
 }
 
 export function removeInputObject(obj) {
-  const index = rangeObjects.indexOf(obj)
+  const index = inputObjects.indexOf(obj)
   if (index > -1) {
-    rangeObjects.splice(index, 1)
+    inputObjects.splice(index, 1)
   }
-  if (rangeObjects.length === 0) {
+  if (inputObjects.length === 0) {
     hasListeners = false
     removeListeners()
   }

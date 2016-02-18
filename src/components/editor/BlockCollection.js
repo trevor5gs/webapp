@@ -8,13 +8,10 @@ import ImageBlock from './ImageBlock'
 import RepostBlock from './RepostBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
-import TextTools from './TextTools'
-import { autoCompleteUsers, loadEmojis } from '../../actions/posts'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addInputObject, removeInputObject } from './InputComponent'
-import { replaceWordFromSelection } from './SelectionUtil'
-import Completer, { userRegex } from '../completers/Completer'
+import { userRegex } from '../completers/Completer'
 
 const BLOCK_KEY = 'block'
 const UID_KEY = 'uid'
@@ -42,7 +39,6 @@ class BlockCollection extends Component {
 
   componentWillMount() {
     const { blocks, editorStore, repostContent } = this.props
-    this.onHideCompleter()
     this.state = {
       collection: {},
       hideTextTools: true,
@@ -60,7 +56,6 @@ class BlockCollection extends Component {
       this.state = { ...editorStore.editorState, hideTextTools: true }
       this.uid = Math.max(...editorStore.editorState.order) + 1
     }
-    this.onUserCompleter = debounce(this.onUserCompleter, 300)
     this.persistBlocks = debounce(this.persistBlocks, 300)
     addDragObject(this)
     addInputObject(this)
@@ -102,7 +97,7 @@ class BlockCollection extends Component {
   }
 
   componentWillUnmount() {
-    this.onHideCompleter()
+    // this.onHideCompleter()
     removeDragObject(this)
     removeInputObject(this)
   }
@@ -184,48 +179,6 @@ class BlockCollection extends Component {
     this.dragBlock = null
     this.setState({ collection, dragBlockTop: null })
     this.addEmptyTextBlock(true)
-  }
-
-  onPositionChange(props) {
-    this.setState(props)
-  }
-
-  onShowTextTools({ activeTools }) {
-    this.setState({ hideTextTools: false, activeTools })
-  }
-
-  onHideTextTools() {
-    this.setState({ hideTextTools: true })
-  }
-
-  onUserCompleter({ word }) {
-    const { dispatch } = this.props
-    dispatch(autoCompleteUsers('user', word))
-  }
-
-  onEmojiCompleter({ word }) {
-    const { dispatch, emoji } = this.props
-    if (emoji.emojis && emoji.emojis.length) {
-      dispatch({
-        type: ACTION_TYPES.EMOJI.LOAD_SUCCESS,
-        payload: {
-          response: {
-            emojis: emoji.emojis,
-          },
-          type: 'emoji',
-          word,
-        },
-      })
-    } else {
-      dispatch(loadEmojis('emoji', word))
-    }
-  }
-
-  onHideCompleter() {
-    const { dispatch, editorStore } = this.props
-    if (editorStore.completions) {
-      dispatch({ type: ACTION_TYPES.POST.AUTO_COMPLETE_CLEAR })
-    }
   }
 
   onSubmitPost() {
@@ -374,18 +327,6 @@ class BlockCollection extends Component {
     return results
   }
 
-  handleCompletion = ({ value }) => {
-    replaceWordFromSelection(value)
-    this.handleCancelAutoCompleter()
-    this.persistBlocks()
-  };
-
-  handleCancelAutoCompleter = () => {
-    this.onHideCompleter()
-    this.onHideTextTools()
-    // TODO: maybe clear out the completions from the editor store
-  };
-
   hasMention() {
     const { collection, order } = this.state
     for (const uid of order) {
@@ -409,8 +350,8 @@ class BlockCollection extends Component {
   }
 
   render() {
-    const { cancelAction, editorStore, submitText } = this.props
-    const { activeTools, collection, coordinates, dragBlockTop, hideTextTools, order } = this.state
+    const { cancelAction, submitText } = this.props
+    const { collection, dragBlockTop, order } = this.state
     const hasMention = this.hasMention()
     const hasContent = this.hasContent()
     return (
@@ -429,24 +370,7 @@ class BlockCollection extends Component {
             </div> :
             null
           }
-          { editorStore.completions ?
-            <Completer
-              completions={ editorStore.completions }
-              onCancel={ this.handleCancelAutoCompleter }
-              onCompletion={ this.handleCompletion }
-            /> :
-            null
-          }
         </div>
-        { !hideTextTools ?
-          <TextTools
-            activeTools={ activeTools }
-            isHidden={ hideTextTools }
-            coordinates={ coordinates }
-            key={ JSON.stringify(activeTools) }
-          /> :
-          null
-        }
         <PostActionBar
           ref="postActionBar"
           cancelAction={ cancelAction }

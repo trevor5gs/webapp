@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import Helmet from 'react-helmet'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
+import { debounce } from 'lodash'
+import { autoCompleteUsers, loadEmojis } from '../actions/posts'
 import { loadProfile } from '../actions/profile'
 import { trackPageView } from '../actions/tracking'
 import * as ACTION_TYPES from '../constants/action_types'
@@ -11,6 +13,10 @@ import Footer from '../components/footer/Footer'
 import Modal from '../components/modals/Modal'
 import Navbar from '../components/navbar/Navbar'
 import Omnibar from '../components/omnibar/Omnibar'
+import Completer from '../components/completers/Completer'
+import TextTools from '../components/editor/TextTools'
+import { addInputObject, removeInputObject } from '../components/editor/InputComponent'
+import { replaceWordFromSelection } from '../components/editor/SelectionUtil'
 
 class App extends Component {
 
@@ -18,14 +24,23 @@ class App extends Component {
     authentication: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
+    editorStore: PropTypes.object.isRequired,
+    emoji: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
+    editorStore: {},
     lastLocation: '',
   };
 
   componentWillMount() {
+    this.state = {
+      activeTools: {},
+      coordinates: { top: -200, left: -666 },
+      hideCompleter: true,
+      hideTextTools: true,
+    }
     const loggedOutPaths = {
       explore: /^\/explore/,
       explore_recent: /^\/explore\/recent/,
@@ -51,6 +66,8 @@ class App extends Component {
     if (isLoggedOutPath) {
       dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
     }
+    this.onUserCompleter = debounce(this.onUserCompleter, 300)
+    addInputObject(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,8 +89,70 @@ class App extends Component {
     }
   }
 
+  componentWillUnmount() {
+    removeInputObject(this)
+  }
+
+  onHideCompleter() {
+    const { dispatch, editorStore } = this.props
+    this.setState({ hideCompleter: true })
+    if (editorStore.completions) {
+      dispatch({ type: ACTION_TYPES.POST.AUTO_COMPLETE_CLEAR })
+    }
+  }
+
+  onPositionChange(props) {
+    this.setState(props)
+  }
+
+  onShowTextTools({ activeTools }) {
+    this.setState({ hideTextTools: false, activeTools })
+  }
+
+  onHideTextTools() {
+    this.setState({ hideTextTools: true })
+  }
+
+  onUserCompleter({ word }) {
+    const { dispatch } = this.props
+    dispatch(autoCompleteUsers('user', word))
+    this.setState({ hideCompleter: false })
+  }
+
+  onEmojiCompleter({ word }) {
+    const { dispatch, emoji } = this.props
+    if (emoji.emojis && emoji.emojis.length) {
+      dispatch({
+        type: ACTION_TYPES.EMOJI.LOAD_SUCCESS,
+        payload: {
+          response: {
+            emojis: emoji.emojis,
+          },
+          type: 'emoji',
+          word,
+        },
+      })
+    } else {
+      dispatch(loadEmojis('emoji', word))
+    }
+    this.setState({ hideCompleter: false })
+  }
+
+  handleCompletion = ({ value }) => {
+    replaceWordFromSelection(value)
+    this.handleCancelAutoCompleter()
+    // this.persistBlocks()
+  };
+
+  handleCancelAutoCompleter = () => {
+    this.onHideCompleter()
+    this.onHideTextTools()
+    // TODO: maybe clear out the completions from the editor store
+  };
+
   render() {
-    const { pathname, children, authentication } = this.props
+    const { pathname, children, authentication, editorStore } = this.props
+    const { activeTools, coordinates, hideCompleter, hideTextTools } = this.state
     const { isLoggedIn } = authentication
     const appClasses = classNames(
       'App',
@@ -97,6 +176,23 @@ class App extends Component {
         <main className="Main" data-pathname={pathname} role="main">
           {children}
         </main>
+        { !hideCompleter && editorStore.completions ?
+          <Completer
+            completions={ editorStore.completions }
+            onCancel={ this.handleCancelAutoCompleter }
+            onCompletion={ this.handleCompletion }
+          /> :
+          null
+        }
+        { !hideTextTools ?
+          <TextTools
+            activeTools={ activeTools }
+            isHidden={ hideTextTools }
+            coordinates={ coordinates }
+            key={ JSON.stringify(activeTools) }
+          /> :
+          null
+        }
         <Navbar/>
         <Footer/>
         <Modal/>
@@ -117,6 +213,8 @@ App.preRender = (store) => {
 function mapStateToProps(state) {
   return {
     authentication: state.authentication,
+    editorStore: state.editor,
+    emoji: state.emoji,
     pathname: state.routing.location.pathname,
   }
 }
