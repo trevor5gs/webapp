@@ -17,6 +17,17 @@ export function loadPostDetail(token) {
   }
 }
 
+export function loadEditablePost(post) {
+  return {
+    type: ACTION_TYPES.POST.EDITABLE,
+    payload: { endpoint: api.editPostDetail(post.id) },
+    meta: {
+      mappingType: MAPPING_TYPES.POSTS,
+      updateResult: false,
+    },
+  }
+}
+
 export function loadComments(post) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
@@ -42,6 +53,26 @@ export function toggleComments(post, visible) {
     payload: {
       model: post,
       showComments: visible,
+    },
+  }
+}
+
+export function toggleEditing(post, isEditing) {
+  return {
+    type: ACTION_TYPES.POST.TOGGLE_EDITING,
+    payload: {
+      model: post,
+      isEditing,
+    },
+  }
+}
+
+export function toggleReposting(post, isReposting) {
+  return {
+    type: ACTION_TYPES.POST.TOGGLE_REPOSTING,
+    payload: {
+      model: post,
+      isReposting,
     },
   }
 }
@@ -100,6 +131,18 @@ export function createPost(body, repostId) {
       body: { body },
       endpoint: api.createPost(repostId),
       method: 'POST',
+    },
+    meta: {},
+  }
+}
+
+export function updatePost(post, body) {
+  return {
+    type: ACTION_TYPES.POST.UPDATE,
+    payload: {
+      body: { body },
+      endpoint: api.updatePost(post),
+      method: 'PATCH',
     },
     meta: {},
   }

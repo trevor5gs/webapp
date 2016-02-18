@@ -5,15 +5,13 @@ import { debounce } from 'lodash'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
+import RepostBlock from './RepostBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
-import TextTools from './TextTools'
-import { autoCompleteUsers, loadEmojis } from '../../actions/posts'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addInputObject, removeInputObject } from './InputComponent'
-import { replaceWordFromSelection } from './SelectionUtil'
-import Completer, { userRegex } from '../completers/Completer'
+import { userRegex } from '../completers/Completer'
 
 const BLOCK_KEY = 'block'
 const UID_KEY = 'uid'
@@ -22,43 +20,50 @@ class BlockCollection extends Component {
 
   static propTypes = {
     blocks: PropTypes.array,
-    delegate: PropTypes.any.isRequired,
+    cancelAction: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     editorStore: PropTypes.object.isRequired,
     emoji: PropTypes.object.isRequired,
+    repostContent: PropTypes.array,
+    shouldLoadFromState: PropTypes.bool,
+    shouldPersist: PropTypes.bool,
+    submitAction: PropTypes.func.isRequired,
+    submitText: PropTypes.string,
   };
 
   static defaultProps = {
     blocks: [],
+    repostContent: [],
+    shouldLoadFromState: false,
+    shouldPersist: false,
+    submitText: 'Post',
   };
 
   componentWillMount() {
-    const { editorStore } = this.props
-    this.onHideCompleter()
-    if (editorStore.editorState) {
+    const { blocks, editorStore, repostContent, shouldLoadFromState } = this.props
+    this.state = {
+      collection: {},
+      hideTextTools: true,
+      order: [],
+    }
+    this.uid = 0
+    if (repostContent.length) {
+      this.add({ kind: 'repost', data: repostContent })
+    }
+    if (blocks.length) {
+      for (const block of blocks) {
+        this.add(block, false)
+      }
+    } else if (shouldLoadFromState && editorStore.editorState) {
       this.state = { ...editorStore.editorState, hideTextTools: true }
       this.uid = Math.max(...editorStore.editorState.order) + 1
-    } else {
-      this.state = {
-        collection: {},
-        hideTextTools: true,
-        order: [],
-      }
-      this.uid = 0
     }
-    this.onUserCompleter = debounce(this.onUserCompleter, 300)
     this.persistBlocks = debounce(this.persistBlocks, 300)
     addDragObject(this)
     addInputObject(this)
   }
 
   componentDidMount() {
-    const { blocks } = this.props
-    if (blocks.length) {
-      for (const block of blocks) {
-        this.add(block, false)
-      }
-    }
     this.addEmptyTextBlock()
     this.setSelectionOnMount()
   }
@@ -93,8 +98,18 @@ class BlockCollection extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    const { editorStore } = this.props
+    const prevEditorStore = prevProps.editorStore
+    if (prevEditorStore.completions && !editorStore.completions) {
+      requestAnimationFrame(() => {
+        this.updateTextCollectionData()
+      })
+    }
+  }
+
   componentWillUnmount() {
-    this.onHideCompleter()
+    // this.onHideCompleter()
     removeDragObject(this)
     removeInputObject(this)
   }
@@ -135,6 +150,7 @@ class BlockCollection extends Component {
 
   onDragUp(props) {
     if (this.prevBlock &&
+        !this.prevBlock.classList.contains('readonly') &&
         (props.dragY + this.startOffset) <
         (this.prevBlock.offsetTop + this.prevBlock.offsetHeight * 0.5)) {
       this.onMoveBlock(-1)
@@ -177,48 +193,6 @@ class BlockCollection extends Component {
     this.addEmptyTextBlock(true)
   }
 
-  onPositionChange(props) {
-    this.setState(props)
-  }
-
-  onShowTextTools({ activeTools }) {
-    this.setState({ hideTextTools: false, activeTools })
-  }
-
-  onHideTextTools() {
-    this.setState({ hideTextTools: true })
-  }
-
-  onUserCompleter({ word }) {
-    const { dispatch } = this.props
-    dispatch(autoCompleteUsers('user', word))
-  }
-
-  onEmojiCompleter({ word }) {
-    const { dispatch, emoji } = this.props
-    if (emoji.emojis && emoji.emojis.length) {
-      dispatch({
-        type: ACTION_TYPES.EMOJI.LOAD_SUCCESS,
-        payload: {
-          response: {
-            emojis: emoji.emojis,
-          },
-          type: 'emoji',
-          word,
-        },
-      })
-    } else {
-      dispatch(loadEmojis('emoji', word))
-    }
-  }
-
-  onHideCompleter() {
-    const { dispatch, editorStore } = this.props
-    if (editorStore.completions) {
-      dispatch({ type: ACTION_TYPES.POST.AUTO_COMPLETE_CLEAR })
-    }
-  }
-
   onSubmitPost() {
     this.submit()
   }
@@ -233,24 +207,28 @@ class BlockCollection extends Component {
       uid: block.uid,
     }
     switch (block.kind) {
+      case 'block':
+        return (
+          <Block { ...blockProps } className="BlockPlaceholder" ref="blockPlaceholder"/>
+        )
+      case 'embed':
+        return (
+          <EmbedBlock { ...blockProps }/>
+        )
+      case 'image':
+        return (
+          <ImageBlock { ...blockProps }/>
+        )
+      case 'repost':
+        return (
+          <RepostBlock { ...blockProps } onRemoveBlock={ null }/>
+        )
       case 'text':
         return (
           <TextBlock
             { ...blockProps }
             onInput={ this.handleTextBlockInput }
           />
-        )
-      case 'image':
-        return (
-          <ImageBlock { ...blockProps }/>
-        )
-      case 'embed':
-        return (
-          <EmbedBlock { ...blockProps }/>
-        )
-      case 'block':
-        return (
-          <Block { ...blockProps } className="BlockPlaceholder" ref="blockPlaceholder"/>
         )
       default:
         return null
@@ -261,6 +239,21 @@ class BlockCollection extends Component {
     if (this.hasContent()) { return }
     const element = document.querySelector('.editable.text')
     if (element) { element.focus() }
+  }
+
+  // TODO: probably should have the completer
+  // dispatch an action that updates the gui
+  // and then we can listen to that instead
+  // of brute forcing it with dom lookups
+  updateTextCollectionData() {
+    const { collection, order } = this.state
+    for (const uid of order) {
+      const block = collection[uid][BLOCK_KEY]
+      if (block.kind === 'text') {
+        block.data = document.querySelector(`[data-collection-id="${uid}"]`).textContent
+      }
+    }
+    this.setState({ collection })
   }
 
   add(block, shouldCheckForEmpty = true) {
@@ -311,7 +304,8 @@ class BlockCollection extends Component {
   };
 
   persistBlocks() {
-    const { dispatch } = this.props
+    const { dispatch, shouldPersist } = this.props
+    if (!shouldPersist) { return }
     const { collection, order } = this.state
     dispatch({ type: ACTION_TYPES.POST.PERSIST, payload: { collection, order } })
   }
@@ -329,15 +323,16 @@ class BlockCollection extends Component {
   handleTextBlockInput = (vo) => {
     const { collection } = this.state
     collection[vo.uid][BLOCK_KEY] = vo
+    this.setState({ collection })
     this.persistBlocks()
   };
 
-  submit() {
-    const { delegate, dispatch } = this.props
+  submit = () => {
+    const { dispatch, submitAction } = this.props
     const data = this.serialize()
-    delegate.submit(data)
+    submitAction(data)
     dispatch({ type: ACTION_TYPES.POST.PERSIST, payload: null })
-  }
+  };
 
   serialize() {
     const { collection, order } = this.state
@@ -350,6 +345,8 @@ class BlockCollection extends Component {
             results.push({ kind: block.kind, data: block.data })
           }
           break
+        case 'repost':
+          break
         default:
           results.push({ kind: block.kind, data: block.data })
           break
@@ -357,18 +354,6 @@ class BlockCollection extends Component {
     }
     return results
   }
-
-  handleCompletion = ({ value }) => {
-    replaceWordFromSelection(value)
-    this.handleCancelAutoCompleter()
-    this.persistBlocks()
-  };
-
-  handleCancelAutoCompleter = () => {
-    this.onHideCompleter()
-    this.onHideTextTools()
-    // TODO: maybe clear out the completions from the editor store
-  };
 
   hasMention() {
     const { collection, order } = this.state
@@ -393,8 +378,8 @@ class BlockCollection extends Component {
   }
 
   render() {
-    const { editorStore } = this.props
-    const { activeTools, collection, coordinates, dragBlockTop, hideTextTools, order } = this.state
+    const { cancelAction, submitText } = this.props
+    const { collection, dragBlockTop, order } = this.state
     const hasMention = this.hasMention()
     const hasContent = this.hasContent()
     return (
@@ -413,25 +398,13 @@ class BlockCollection extends Component {
             </div> :
             null
           }
-          { editorStore.completions ?
-            <Completer
-              completions={ editorStore.completions }
-              onCancel={ this.handleCancelAutoCompleter }
-              onCompletion={ this.handleCompletion }
-            /> :
-            null
-          }
         </div>
-        { !hideTextTools ?
-          <TextTools
-            activeTools={ activeTools }
-            isHidden={ hideTextTools }
-            coordinates={ coordinates }
-            key={ JSON.stringify(activeTools) }
-          /> :
-          null
-        }
-        <PostActionBar ref="postActionBar" editor={ this } />
+        <PostActionBar
+          ref="postActionBar"
+          cancelAction={ cancelAction }
+          submitAction={ this.submit }
+          submitText={ submitText }
+        />
       </div>
     )
   }

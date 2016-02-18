@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { GUI } from '../../constants/gui_types'
 import { openAlert, closeAlert } from '../../actions/modals'
-import { closeOmnibar } from '../../actions/omnibar'
 import { savePostImage } from '../../actions/posts'
 import Dialog from '../../components/dialogs/Dialog'
 import { PostIcon, CancelIcon, BrowseIcon, CameraIcon } from './EditorIcons'
@@ -12,12 +11,14 @@ class PostActionBar extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    editor: PropTypes.any.isRequired,
+    cancelAction: PropTypes.func.isRequired,
+    submitAction: PropTypes.func.isRequired,
+    submitText: PropTypes.string,
   };
 
   submitted = () => {
-    const { editor } = this.props
-    editor.submit()
+    const { submitAction } = this.props
+    submitAction()
     // return if window.diddrag.dragged()
     // return if @submitButton.classList.contains('sending')
     // $hideSoftKeyboard()
@@ -54,7 +55,7 @@ class PostActionBar extends Component {
   };
 
   cancel = () => {
-    this.props.dispatch(closeOmnibar())
+    this.props.cancelAction()
   };
 
   render() {
@@ -72,7 +73,7 @@ class PostActionBar extends Component {
         </button>
 
         <button className="PostActionButton forPost" ref="submitButton" onClick={ this.submitted }>
-          <span className="PostActionButtonLabel">Post</span>
+          <span className="PostActionButtonLabel">{ this.props.submitText }</span>
           <PostIcon/>
         </button>
 

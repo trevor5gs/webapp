@@ -75,8 +75,9 @@
   outline: 0
   min-height: rem(60)
 
-// .editor-block.readonly
-//   border: 1px solid #aaa
+.editor-block.readonly
+  padding: rem(20)
+  border: 1px solid #aaa
 
 .editor-block [kind="embed"],
 .editor-block [kind="image"]
@@ -91,7 +92,11 @@
 
 .DragBlock
   position: absolute
+  left: rem(20)
+  right: rem(20)
+  z-index: 2
+
+.Omnibar .DragBlock
   left: rem(40)
   right: rem(40)
-  z-index: 2
 

@@ -67,3 +67,13 @@ export const CameraIcon = () =>
     </g>
   </SVGIcon>
 
+export const LockIcon = () =>
+  <SVGIcon className="LockIcon">
+    <g>
+      <rect x="6.5" y="8.8" width="7" height="6.6"/>
+    </g>
+    <g>
+      <path d="M12,8.8V7c0-1.1-0.9-2-2-2S8,5.9,8,7v1.8"/>
+    </g>
+  </SVGIcon>
+

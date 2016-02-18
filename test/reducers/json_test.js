@@ -304,9 +304,10 @@ describe('json reducer', () => {
     })
 
     context('with post actions', () => {
-      it('calls #postMethods.addNewPost', () => {
-        methodCalledWithActions(subject.postMethods, 'addNewPost', [
+      it('calls #postMethods.addOrUpdatePost', () => {
+        methodCalledWithActions(subject.postMethods, 'addOrUpdatePost', [
           ACTION_TYPES.POST.CREATE_SUCCESS,
+          ACTION_TYPES.POST.UPDATE_SUCCESS,
         ])
       })
 

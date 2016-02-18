@@ -10,6 +10,7 @@ import PostTools from '../posts/PostTools'
 import CommentStream from '../streams/CommentStream'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
+import Editor from '../../components/editor/Editor'
 
 function getPostDetailPath(author, post) {
   return `/${author.username}/post/${post.token}`
@@ -112,18 +113,27 @@ function isRepost(post) {
 
 class PostParser extends Component {
   static propTypes = {
-    post: PropTypes.object,
-    author: PropTypes.object,
     assets: PropTypes.any.isRequired,
-    currentUser: PropTypes.object,
-    isGridLayout: PropTypes.bool,
-    showComments: PropTypes.bool,
+    author: PropTypes.object,
     authorLinkObject: PropTypes.object,
+    currentUser: PropTypes.object,
+    isEditing: PropTypes.bool,
+    isGridLayout: PropTypes.bool,
+    isReposting: PropTypes.bool,
+    post: PropTypes.object,
+    showComments: PropTypes.bool,
     sourceLinkObject: PropTypes.object,
   };
 
   render() {
-    const { post, assets, currentUser, isGridLayout, author, showComments } = this.props
+    const {
+      assets,
+      author,
+      currentUser,
+      isGridLayout,
+      post,
+      showComments,
+    } = this.props
     if (!post) { return null }
 
     let postHeader;
@@ -139,7 +149,9 @@ class PostParser extends Component {
     return (
       <div>
         {postHeader}
-        {parsePost(post, author, currentUser, isGridLayout)}
+        { (post.isEditing || post.isReposting) && post.body ?
+          <Editor post={ post }/> :
+          parsePost(post, author, currentUser, isGridLayout)}
         {showComments ? commentStream(post, author, currentUser) : null}
       </div>)
   }
@@ -160,7 +172,7 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
   if (isRepost(post)) {
     newProps = {
       ...newProps,
-      authorLinkObject: getLinkObject(post, 'repostAuthor', json),
+      authorLinkObject: post.repostAuthor || getLinkObject(post, 'repostAuthor', json),
       sourceLinkObject: getLinkObject(post, 'repostedSource', json),
     }
   }

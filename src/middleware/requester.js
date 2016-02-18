@@ -66,7 +66,7 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.AUTHENTICATION.FORGOT_PASSWORD &&
         type !== ACTION_TYPES.AUTHENTICATION.USER &&
         type !== ACTION_TYPES.COMMENT.DELETE &&
-        type !== ACTION_TYPES.COMMENT.EDIT &&
+        type !== ACTION_TYPES.COMMENT.UPDATE &&
         type !== ACTION_TYPES.COMMENT.FLAG &&
         type !== ACTION_TYPES.EMOJI.LOAD &&
         type !== ACTION_TYPES.INVITATIONS.INVITE &&
@@ -74,11 +74,11 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.POST.COMMENT &&
         type !== ACTION_TYPES.POST.CREATE &&
         type !== ACTION_TYPES.POST.DELETE &&
-        type !== ACTION_TYPES.POST.EDIT &&
+        type !== ACTION_TYPES.POST.EDITABLE &&
         type !== ACTION_TYPES.POST.FLAG &&
         type !== ACTION_TYPES.POST.LOVE &&
         type !== ACTION_TYPES.POST.POST_PREVIEW &&
-        type !== ACTION_TYPES.POST.REPOST &&
+        type !== ACTION_TYPES.POST.UPDATE &&
         type !== ACTION_TYPES.POST_FORM &&
         type !== ACTION_TYPES.POST_JSON &&
         type !== ACTION_TYPES.PROFILE.AVAILABILITY &&
