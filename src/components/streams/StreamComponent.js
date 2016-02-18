@@ -12,7 +12,7 @@ import { addResizeObject, removeResizeObject } from '../interface/ResizeComponen
 import { ElloMark } from '../interface/ElloIcons'
 import Paginator from '../streams/Paginator'
 import { findLayoutMode } from '../../reducers/gui'
-import { ZeroResults } from '../zeros/Zeros'
+import { ZeroState } from '../zeros/Zeros'
 
 export class StreamComponent extends Component {
 
@@ -170,7 +170,7 @@ export class StreamComponent extends Component {
       <section className="StreamComponent">
         { meta && meta.renderStream && meta.renderStream.asZero ?
           meta.renderStream.asZero :
-          <ZeroResults/>
+          <ZeroState/>
         }
       </section>
     )
