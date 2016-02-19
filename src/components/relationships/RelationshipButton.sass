@@ -7,12 +7,12 @@
   height: rem(30)
   padding: 0 rem(10) 0 rem(4)
   overflow: hidden
+  border-radius: rem(15)
   line-height: rem(30)
   text-align: center
   white-space: nowrap
   background-color: white
   border: 1px solid black
-  border-radius: rem(15)
 
 .no-touch .RelationshipButton:hover
   background-color: #aaa
@@ -33,43 +33,43 @@
   border-color: $danger
   color: white
 
-.RelationshipButton > .MiniPlusIcon
+.RelationshipButton:not(.inHeader) > .MiniPlusIcon
   margin-top: rem(-2)
 
-.RelationshipButton > .MiniCheckIcon
+.RelationshipButton:not(.inHeader) > .MiniCheckIcon
   margin-top: rem(-4)
 
 
 // -------------------------------------
 // Within post and repost headers...
 .RelationshipButton.inHeader
-  width: rem(14)
-  height: rem(14)
-  border-radius: 50%
+  width: rem(20)
+  height: rem(20)
+  border-radius: 0
   padding: 0
   font-size: 0
-  border-color: #aaa
+  border: 0
+  background-color: transparent
+  color: #aaa
+
+.RelationshipButton.inHeader > .SVGIcon
+  position: relative
+  top: rem(-3)
 
 .no-touch .RelationshipButton.inHeader:hover
-  background-color: black
-  border-color: black
+  background-color: transparent
   color: white
-
-.RelationshipButton.inHeader > .MiniCheckIcon,
-.RelationshipButton.inHeader > .MiniPlusIcon
-  position: absolute
-  top: rem(-5)
-  left: rem(-4)
-  margin: 0
-.RelationshipButton.inHeader > .MiniPlusIcon
-  top: rem(-4)
 
 .RelationshipButton.inHeader[data-priority="friend"],
 .RelationshipButton.inHeader[data-priority="noise"]
-  background-color: #aaa
-  border-color: #aaa
   color: white
 
-.RelationshipButton.inHeader[data-priority="self"]
-  display: none
+.RelationshipButton.inHeader[data-priority="friend"] > .SVGIcon > g:first-child,
+.RelationshipButton.inHeader[data-priority="noise"] > .SVGIcon > g:first-child
+  fill: #aaa
+  stroke: #aaa
+
+.RelationshipButton.inHeader:hover > .SVGIcon > g:first-of-type
+  fill: #535353
+  stroke: #535353
 

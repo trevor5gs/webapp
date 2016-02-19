@@ -2,7 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
-import { MiniPlusIcon, MiniCheckIcon } from '../relationships/RelationshipIcons'
+import {
+  HeaderPlusIcon,
+  HeaderCheckIcon,
+  MiniPlusIcon,
+  MiniCheckIcon,
+} from '../relationships/RelationshipIcons'
 
 class RelationshipButton extends Component {
 
@@ -86,14 +91,15 @@ class RelationshipButton extends Component {
         to="/settings"
         data-priority={ priority }
       >
-        <MiniPlusIcon />
+        { classList === 'inHeader' ? <HeaderPlusIcon/> : <MiniPlusIcon/> }
         <span>Edit Profile</span>
       </Link>
     )
   }
 
   renderAsInactive() {
-    return this.renderAsToggleButton('Follow', <MiniPlusIcon />)
+    const icon = this.props.classList === 'inHeader' ? <HeaderPlusIcon/> : <MiniPlusIcon/>
+    return this.renderAsToggleButton('Follow', icon)
   }
 
   renderAsNone() {
@@ -101,11 +107,13 @@ class RelationshipButton extends Component {
   }
 
   renderAsFriend() {
-    return this.renderAsToggleButton('Following', <MiniCheckIcon />)
+    const icon = this.props.classList === 'inHeader' ? <HeaderCheckIcon/> : <MiniCheckIcon/>
+    return this.renderAsToggleButton('Following', icon)
   }
 
   renderAsNoise() {
-    return this.renderAsToggleButton('Starred', <MiniCheckIcon />)
+    const icon = this.props.classList === 'inHeader' ? <HeaderCheckIcon/> : <MiniCheckIcon/>
+    return this.renderAsToggleButton('Starred', icon)
   }
 
   renderAsMute() {
