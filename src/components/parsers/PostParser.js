@@ -32,7 +32,7 @@ function header(post, author) {
           <span>{`@${author.username}`}</span>
         </Link>
       </div>
-      <RelationsGroup user={author} />
+      <RelationsGroup user={author} classList="inHeader" />
     </header>
   )
 }
@@ -47,13 +47,13 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
           <span>{`@${repostAuthor.username}`}</span>
         </Link>
       </div>
+      <RelationsGroup user={repostAuthor} classList="inHeader" />
       <div className="RepostHeaderReposter">
         <Link className="PostHeaderLink" to={`/${repostedBy.username}`}>
           <RepostIcon />
           {` by @${repostedBy.username}`}
         </Link>
       </div>
-      <RelationsGroup user={repostAuthor} />
     </header>
   )
 }

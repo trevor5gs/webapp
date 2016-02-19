@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import classNames from 'classnames'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { StarIcon } from '../relationships/RelationshipIcons'
 
@@ -6,6 +7,7 @@ class StarshipButton extends Component {
 
   static propTypes = {
     buttonWasClicked: PropTypes.func,
+    classList: PropTypes.string,
     priority: PropTypes.oneOf([
       RELATIONSHIP_PRIORITY.INACTIVE,
       RELATIONSHIP_PRIORITY.FRIEND,
@@ -49,10 +51,10 @@ class StarshipButton extends Component {
   };
 
   renderStar() {
-    const { priority } = this.props
+    const { classList, priority } = this.props
     return (
       <button
-        className={"StarshipButton"}
+        className={ classNames('StarshipButton', classList) }
         onClick={ this.updatePriority }
         data-priority={priority}
       >

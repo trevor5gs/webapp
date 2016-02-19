@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
+import classNames from 'classnames'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { MiniPlusIcon, MiniCheckIcon } from '../relationships/RelationshipIcons'
 
@@ -7,6 +8,7 @@ class RelationshipButton extends Component {
 
   static propTypes = {
     buttonWasClicked: PropTypes.func,
+    classList: PropTypes.string,
     priority: PropTypes.oneOf([
       RELATIONSHIP_PRIORITY.INACTIVE,
       RELATIONSHIP_PRIORITY.FRIEND,
@@ -51,10 +53,10 @@ class RelationshipButton extends Component {
   };
 
   renderAsToggleButton(label, icon = null) {
-    const { priority } = this.props
+    const { classList, priority } = this.props
     return (
       <button
-        className="RelationshipButton"
+        className={ classNames('RelationshipButton', classList) }
         onClick={ this.updatePriority }
         data-priority={ priority }
       >
@@ -68,7 +70,6 @@ class RelationshipButton extends Component {
     const{ buttonWasClicked, priority } = this.props
     return (
       <button
-        className="RelationshipButton"
         data-priority={ priority }
         onClick={ buttonWasClicked }
       >
@@ -78,10 +79,10 @@ class RelationshipButton extends Component {
   }
 
   renderAsSelf() {
-    const { priority } = this.props
+    const { priority, classList } = this.props
     return (
       <Link
-        className="RelationshipButton"
+        className={ classNames('RelationshipButton', classList) }
         to="/settings"
         data-priority={ priority }
       >

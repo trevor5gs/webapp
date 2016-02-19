@@ -14,6 +14,7 @@ import StarshipButton from '../relationships/StarshipButton'
 class RelationsGroup extends Component {
 
   static propTypes = {
+    classList: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     pathname: PropTypes.string,
@@ -134,7 +135,7 @@ class RelationsGroup extends Component {
   }
 
   render() {
-    const { isLoggedIn, user } = this.props
+    const { isLoggedIn, user, classList } = this.props
     const callback = this.isBlockedOrMuted() ?
                      (this.launchBlockMutePrompt) :
                      (this.handleRelationshipUpdate)
@@ -144,12 +145,14 @@ class RelationsGroup extends Component {
         { this.shouldRenderBlockMute() ? this.renderBlockMuteButton() : null }
         <RelationshipButton
           buttonWasClicked={ isLoggedIn ? callback : this.handleLaunchSignUpModal }
+          classList={ classList }
           priority={ user.relationshipPriority }
           ref="RelationshipButton"
           userId={ user.id }
         />
         <StarshipButton
           buttonWasClicked={ isLoggedIn ? callback : this.handleLaunchSignUpModal }
+          classList={ classList }
           priority={ user.relationshipPriority }
           ref="StarshipButton"
           userId={ user.id }
