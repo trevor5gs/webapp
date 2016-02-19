@@ -10,10 +10,12 @@ function createRedirect(from, to) {
 }
 
 const routes = [
-  createRedirect('/', '/explore'),
   {
     path: '/',
     component: App,
+    getIndexRoute(location, cb) {
+      cb(null, require('./discover').indexRoute)
+    },
     // order matters, so less specific routes should go at the bottom
     childRoutes: [
       require('./post_detail').default,
