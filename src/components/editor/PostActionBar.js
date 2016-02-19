@@ -59,21 +59,26 @@ class PostActionBar extends Component {
   };
 
   render() {
+    const { submitText } = this.props
     return (
       <div className="editor-actions">
 
-        <button className="PostActionButton" ref="browseButton" onClick={ this.browse }>
+        <button className="PostActionButton forUpload" ref="browseButton" onClick={ this.browse }>
           <span className="PostActionButtonLabel">Upload</span>
           { GUI.viewportDeviceSize === 'mobile' ? <CameraIcon/> : <BrowseIcon /> }
         </button>
 
-        <button className="PostActionButton" ref="cancelButton" onClick={ this.cancel }>
+        <button className="PostActionButton forCancel" ref="cancelButton" onClick={ this.cancel }>
           <span className="PostActionButtonLabel">Cancel</span>
           <CancelIcon/>
         </button>
 
-        <button className="PostActionButton forPost" ref="submitButton" onClick={ this.submitted }>
-          <span className="PostActionButtonLabel">{ this.props.submitText }</span>
+        <button
+          className={ `PostActionButton for${submitText}` }
+          ref="submitButton"
+          onClick={ this.submitted }
+        >
+          <span className="PostActionButtonLabel">{ submitText }</span>
           <PostIcon/>
         </button>
 

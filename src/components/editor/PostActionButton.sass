@@ -21,6 +21,9 @@
 .PostActionButton > .SVGIcon > g
   stroke: #aaa
 
+.PostActionButton > .BrowseIcon > g
+  fill: white
+
 .PostActionButtonLabel
   position: absolute
   left: rem(20)
@@ -30,10 +33,16 @@
     color: white
     background-color: black
     width: rem(105)
-  // .no-touch .PostActionButton.forPost:hover
-  //   width: rem(105)
+  .no-touch .PostActionButton.forUpload:hover
+    width: rem(110)
+  .no-touch .PostActionButton.forPost:hover
+    width: rem(85)
+  .no-touch .PostActionButton.forComment:hover
+    width: rem(125)
   .no-touch .PostActionButton:hover > .SVGIcon > g
     stroke: white
+  .no-touch .PostActionButton:hover > .BrowseIcon > g
+    fill: black
 
   // Cancel animation
   .no-touch .PostActionButton > .CancelIcon

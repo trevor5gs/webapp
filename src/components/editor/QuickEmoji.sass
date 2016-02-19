@@ -1,0 +1,42 @@
+.QuickEmoji
+  position: absolute
+  width: rem(180)
+  white-space: nowrap
+  overflow: hidden
+  color: #999
+
+.QuickEmoji.isActive
+  color: #535353
+
+.QuickEmojiButton
+  transition: color $speed
+
+.no-touch .QuickEmojiButton:hover
+  color: #535353
+
+.QuickEmojiList
+  transition: opacity $speed
+  position: absolute
+  top: 0
+  right: rem(40)
+  opacity: 0
+
+.QuickEmoji.isActive .QuickEmojiList
+  opacity: 1
+
+.QuickEmojiChoiceButton
+  transition: opacity $speed
+  margin-top: rem(-5)
+
+.no-touch .QuickEmojiChoiceButton:hover
+  opacity: 0.5
+
+.QuickEmojiChoiceButton + .QuickEmojiChoiceButton
+  margin-left: rem(20)
+
+
+// Positioning is testing only
+// .editor-actions .QuickEmoji
+//   top: rem(65)
+//   right: rem(50)
+

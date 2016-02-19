@@ -12,8 +12,12 @@
 
 .BeaconButton
   +sans-typeset
+  transition: color $speed
   color: #aaa
   margin-top: rem(20)
+
+.no-touch .BeaconButton:hover
+  color: black
 
 .Beacon > .Emoji
   display: none
