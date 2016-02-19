@@ -148,7 +148,7 @@ export const LOGGED_OUT_PROMOTIONS = [
   },
   {
     username: 'gonzalesfrank',
-    caption: <h1>Realize the promise of the Internet.<br/>Join the Creators Network.</h1>,
+    caption: <h1>Realize the promise of the Internet. Join the Creators Network.</h1>,
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/2650470/ello-regular-db3c1d3a.png' },
     },
@@ -160,7 +160,7 @@ export const LOGGED_OUT_PROMOTIONS = [
   },
   {
     username: 'eboy',
-    caption: <h1>Realize the promise of the Internet.<br/>Join the Creators Network.</h1>,
+    caption: <h1>Realize the promise of the Internet. Join the Creators Network.</h1>,
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/12196/ello-regular-c63d8565.png' },
     },
@@ -172,7 +172,7 @@ export const LOGGED_OUT_PROMOTIONS = [
   },
   {
     username: 'esteepreda',
-    caption: <h1>Realize the promise of the Internet.<br/>Join the Creators Network.</h1>,
+    caption: <h1>Realize the promise of the Internet. Join the Creators Network.</h1>,
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/920143/ello-regular-d5696caf.png' },
     },
@@ -184,7 +184,7 @@ export const LOGGED_OUT_PROMOTIONS = [
   },
   {
     username: 'nestorovilla',
-    caption: <h1>Realize the promise of the Internet.<br/>Join the Creators Network.</h1>,
+    caption: <h1>Realize the promise of the Internet. Join the Creators Network.</h1>,
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/796390/ello-regular-344d8bdb.png' },
     },
@@ -196,7 +196,7 @@ export const LOGGED_OUT_PROMOTIONS = [
   },
   {
     username: 'jordinblair',
-    caption: <h1>cre·a·tor /krēˈādər/<br/>_noun_ a person or thing that brings something into existence.</h1>,
+    caption: <h1>cre·a·tor /krēˈātər/<br/>A person or thing that brings something into existence.</h1>,
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/2683470/ello-regular-c9a78b94.png' },
     },
@@ -208,7 +208,7 @@ export const LOGGED_OUT_PROMOTIONS = [
   },
   {
     username: 'emmahartvig',
-    caption: <h1>cre·a·tor /krēˈādər/<br/>_noun_ a person or thing that brings something into existence.</h1>,
+    caption: <h1>cre·a·tor /krēˈātər/<br/>A person or thing that brings something into existence.</h1>,
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/487354/ello-regular-d88d8de3.png' },
     },
@@ -220,7 +220,7 @@ export const LOGGED_OUT_PROMOTIONS = [
   },
   {
     username: 'shiver_rayfresh',
-    caption: <h1>cre·a·tor /krēˈādər/<br/>_noun_ a person or thing that brings something into existence.</h1>,
+    caption: <h1>cre·a·tor /krēˈātər/<br/>A person or thing that brings something into existence.</h1>,
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/1703359/ello-regular-3b94b33b.png' },
     },
@@ -232,7 +232,7 @@ export const LOGGED_OUT_PROMOTIONS = [
   },
   {
     username: 'vladanghel',
-    caption: <h1>cre·a·tor /krēˈādər/<br/>_noun_ a person or thing that brings something into existence.</h1>,
+    caption: <h1>cre·a·tor /krēˈātər/<br/>A person or thing that brings something into existence.</h1>,
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/338903/ello-regular-4006448e.png' },
     },
