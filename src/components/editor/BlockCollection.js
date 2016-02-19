@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { debounce } from 'lodash'
+import Avatar from '../assets/Avatar'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
@@ -19,11 +20,13 @@ const UID_KEY = 'uid'
 class BlockCollection extends Component {
 
   static propTypes = {
+    avatar: PropTypes.object.isRequired,
     blocks: PropTypes.array,
     cancelAction: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     editorStore: PropTypes.object.isRequired,
     emoji: PropTypes.object.isRequired,
+    isComment: PropTypes.bool,
     repostContent: PropTypes.array,
     shouldLoadFromState: PropTypes.bool,
     shouldPersist: PropTypes.bool,
@@ -33,6 +36,7 @@ class BlockCollection extends Component {
 
   static defaultProps = {
     blocks: [],
+    isComment: false,
     repostContent: [],
     shouldLoadFromState: false,
     shouldPersist: false,
@@ -388,15 +392,16 @@ class BlockCollection extends Component {
   }
 
   render() {
-    const { cancelAction, submitText } = this.props
+    const { avatar, cancelAction, isComment, submitText } = this.props
     const { collection, dragBlockTop, order } = this.state
     const hasMention = this.hasMention()
     const hasContent = this.hasContent()
     return (
       <div
-        className={ classNames('editor', { hasMention, hasContent }) }
+        className={ classNames('editor', { hasMention, hasContent, isComment }) }
         data-placeholder="Say Ello..."
       >
+        { isComment ? <Avatar sources={ avatar }/> : null }
         <div
           className="editor-region"
           data-num-blocks={ order.length }
@@ -423,6 +428,7 @@ class BlockCollection extends Component {
 
 function mapStateToProps(state) {
   return {
+    avatar: state.profile.avatar,
     editorStore: state.editor,
     emoji: state.emoji,
   }

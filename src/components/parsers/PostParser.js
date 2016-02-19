@@ -152,7 +152,8 @@ class PostParser extends Component {
         { (post.isEditing || post.isReposting) && post.body ?
           <Editor post={ post }/> :
           parsePost(post, author, currentUser, isGridLayout)}
-        {showComments ? commentStream(post, author, currentUser) : null}
+        { showComments ? <Editor post={ post } isComment/> : null }
+        { showComments ? commentStream(post, author, currentUser) : null }
       </div>)
   }
 }

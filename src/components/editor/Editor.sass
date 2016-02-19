@@ -34,6 +34,27 @@
 .editor-actions .PostActionButton + .PostActionButton
   margin-left: rem(20)
 
+.editor.isComment:before
+  display: none
+
+.editor.isComment .Avatar
+  margin-bottom: rem(10)
+
+@media(min-width: #{$break-2})
+  .editor.isComment
+    padding-left: rem(60)
+    max-width: rem(640)
+  .editor.isComment:before
+    display: block
+    top: rem(10)
+    left: rem(40)
+  .editor.isComment .Avatar
+    position: absolute
+    top: 0
+    left: 0
+    margin-bottom: 0
+
+
 // -------------------------------------
 
 // "Say Ello" placeholder text
@@ -46,6 +67,9 @@
   pointer-events: none
 .editor.hasContent:after
   display: none
+.editor.isComment:after
+  top: rem(51)
+  left: rem(101)
 
 
 // editor has a mention - turn background yellow
@@ -100,3 +124,4 @@
   left: rem(40)
   right: rem(40)
 
+// -------------------------------------

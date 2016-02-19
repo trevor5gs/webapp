@@ -13,6 +13,7 @@ class Editor extends Component {
   static propTypes = {
     autoPopulate: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
+    isComment: PropTypes.bool,
     onSubmit: PropTypes.func,
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
@@ -21,35 +22,39 @@ class Editor extends Component {
 
   static defaultProps = {
     autoPopulate: null,
+    isComment: false,
     shouldLoadFromState: false,
     shouldPersist: false,
   };
 
   submit = (data) => {
-    const { dispatch, post, onSubmit } = this.props
+    const { dispatch, isComment, onSubmit, post } = this.props
     if (!post) {
       dispatch(closeOmnibar())
       dispatch(createPost(data))
-    } else if (post.isReposting) {
-      dispatch(toggleReposting(post, false))
-      dispatch(createPost(data, post.repostId || post.id))
+    } else if (isComment) {
+      // dispatch(updatePost(post, data))
+      console.log('comment')
     } else if (post.isEditing) {
       dispatch(toggleEditing(post, false))
       dispatch(updatePost(post, data))
+    } else if (post.isReposting) {
+      dispatch(toggleReposting(post, false))
+      dispatch(createPost(data, post.repostId || post.id))
     }
     if (onSubmit) { onSubmit() }
   };
 
   cancel = () => {
-    const { post } = this.props
+    const { isComment, post } = this.props
     if (!post) {
       this.launchCancelConfirm('post')
+    } else if (isComment) {
+      this.launchCancelConfirm('comment')
     } else if (post.isEditing) {
       this.launchCancelConfirm('edit')
     } else if (post.isReposting) {
       this.launchCancelConfirm('repost')
-    } else if (post.showComments) {
-      this.launchCancelConfirm('comment')
     }
   };
 
@@ -80,7 +85,7 @@ class Editor extends Component {
   };
 
   render() {
-    const { autoPopulate, post, shouldLoadFromState, shouldPersist } = this.props
+    const { autoPopulate, isComment, post, shouldLoadFromState, shouldPersist } = this.props
     let blocks = []
     let repostContent = []
     let submitText = 'Post'
@@ -89,7 +94,7 @@ class Editor extends Component {
     }
     if (!post) {
       // console.log('create new post')
-    } else if (post.showComments) {
+    } else if (isComment) {
       submitText = 'Comment'
       // console.log('create new comment')
     } else if (post.isReposting) {
@@ -113,6 +118,7 @@ class Editor extends Component {
         key={ blocks.length + repostContent.length }
         blocks={ blocks }
         cancelAction={ this.cancel }
+        isComment={ isComment }
         repostContent={ repostContent }
         submitAction={ this.submit }
         submitText={ submitText }

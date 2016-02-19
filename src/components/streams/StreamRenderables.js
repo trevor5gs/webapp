@@ -13,6 +13,7 @@ import UserCard from '../users/UserCard'
 import UserGrid from '../users/UserGrid'
 import UserInvitee from '../users/UserInvitee'
 import UserList from '../users/UserList'
+import Editor from '../../components/editor/Editor'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
@@ -145,6 +146,7 @@ export function postDetail(posts, json) {
           isReposting={ post.isReposting }
         />
         { avatarDrawers }
+        <Editor post={ post } isComment/>
         <section className="Comments">
           {comments.map((comment) =>
             <div ref={ `commentList_${comment.id}` } key={ comment.id } className="CommentList">
