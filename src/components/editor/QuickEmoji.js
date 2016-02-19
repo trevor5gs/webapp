@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
+import { sampleSize } from 'lodash'
 import Emoji from '../assets/Emoji'
 import { SVGIcon } from '../interface/SVGComponents'
 
@@ -10,6 +11,12 @@ import { SVGIcon } from '../interface/SVGComponents'
 // };
 
 // <QuickEmoji onAddEmoji={ this.onInsertEmoji }/>
+
+const options = [
+  '+1', 'sparkles', 'metal', 'ok_hand', 'v', 'snowman', 'heart', 'panda_face',
+  'clap', 'boom', 'star', 'wave', 'raised_hands', 'dizzy', 'sparkling_heart',
+  'muscle', 'fire', 'fist', 'ello', 'bread',
+]
 
 const MiniElloEmoji = () =>
   <SVGIcon className="MiniElloEmoji">
@@ -30,7 +37,7 @@ class QuickEmoji extends Component {
 
   static propTypes = {
     onAddEmoji: PropTypes.func.isRequired,
-  }
+  };
 
   componentWillMount() {
     this.state = { isActive: false }
@@ -47,13 +54,9 @@ class QuickEmoji extends Component {
   };
 
   renderEmojis() {
-    return (
-      <div className="QuickEmojiList">
-        <QuickEmojiChoiceButton name="ello" onClick={ this.emojiWasClicked }/>
-        <QuickEmojiChoiceButton name="v" onClick={ this.emojiWasClicked }/>
-        <QuickEmojiChoiceButton name="bread" onClick={ this.emojiWasClicked }/>
-        <QuickEmojiChoiceButton name="metal" onClick={ this.emojiWasClicked }/>
-      </div>
+    const samples = sampleSize(options, 4)
+    return samples.map((sample) =>
+      <QuickEmojiChoiceButton key={ sample } name={ sample } onClick={ this.emojiWasClicked }/>
     )
   }
 
@@ -64,7 +67,9 @@ class QuickEmoji extends Component {
         <button className="QuickEmojiButton" onClick={ this.buttonWasClicked }>
           <MiniElloEmoji/>
         </button>
-        { isActive ? this.renderEmojis() : <div className="QuickEmojiList"></div> }
+        <div className="QuickEmojiList">
+          { isActive ? this.renderEmojis() : null }
+        </div>
       </div>
     )
   }

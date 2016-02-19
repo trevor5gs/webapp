@@ -6,17 +6,30 @@
   color: #999
 
 .QuickEmoji.isActive
-  color: black
+  color: #535353
+
+.QuickEmojiButton
+  transition: color $speed
+
+.no-touch .QuickEmojiButton:hover
+  color: #535353
 
 .QuickEmojiList
   transition: opacity $speed
   position: absolute
   top: 0
-  right: rem(30)
+  right: rem(40)
   opacity: 0
 
 .QuickEmoji.isActive .QuickEmojiList
   opacity: 1
+
+.QuickEmojiChoiceButton
+  transition: opacity $speed
+  margin-top: rem(-5)
+
+.no-touch .QuickEmojiChoiceButton:hover
+  opacity: 0.5
 
 .QuickEmojiChoiceButton + .QuickEmojiChoiceButton
   margin-left: rem(20)
