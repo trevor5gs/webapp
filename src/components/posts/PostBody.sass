@@ -71,3 +71,22 @@
 .RegionContent:last-child > *:last-of-type
   margin-bottom: 0
 
+// -------------------------------------
+
+.RepostedBody
+  position: relative
+  min-height: rem(30)
+  padding-top: rem(5)
+  padding-left: rem(40)
+
+.RepostedBody > .Avatar
+  position: absolute
+  top: 0
+  left: 0
+
+@media(min-width: #{$break-2})
+  .RepostedBody
+    min-height: rem(40)
+    padding-top: rem(10)
+    padding-left: rem(60)
+
