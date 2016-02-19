@@ -69,11 +69,11 @@ class App extends Component {
       dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
     }
     this.onUserCompleter = debounce(this.onUserCompleter, 300)
-    addInputObject(this)
   }
 
   componentDidMount() {
     if (!GUI.innerWidth) { triggerResize() }
+    addInputObject(this)
   }
 
   componentWillReceiveProps(nextProps) {
