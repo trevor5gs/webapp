@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
+import Avatar from '../assets/Avatar'
 import TextRegion from '../posts/regions/TextRegion'
 import ImageRegion from '../posts/regions/ImageRegion'
 
@@ -61,6 +62,15 @@ export function regionItems(content, only = null, isGridLayout = true, postDetai
 export function body(content, id, isGridLayout, postDetailPath = null) {
   return (
     <div className="PostBody" key={`PostBody_${id}`}>
+      {regionItems(content, null, isGridLayout, postDetailPath)}
+    </div>
+  )
+}
+
+export function repostedBody(author, content, id, isGridLayout, postDetailPath = null) {
+  return (
+    <div className="PostBody RepostedBody" key={`RepostedBody_${id}`}>
+      <Avatar sources={author.avatar} to={`/${author.username}`} />
       {regionItems(content, null, isGridLayout, postDetailPath)}
     </div>
   )

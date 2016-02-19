@@ -4,11 +4,30 @@
   width: rem(30)
   height: rem(30)
 
-.PostHeader .StarshipButton .StarIcon > g
-  stroke: #aaa
-
 .StarshipButton[data-priority="noise"] .StarIcon > g,
 .no-touch .StarshipButton:hover > .StarIcon > g
   fill: black
   stroke: black
+
+.StarshipButton.inHeader
+  width: rem(20)
+  height: rem(20)
+  font-size: 0
+  color: #aaa
+  padding-left: rem(3)
+
+.StarshipButton.inHeader .StarIcon
+  position: relative
+  top: rem(-1)
+
+.StarshipButton.inHeader .StarIcon > g
+  stroke: #aaa
+
+.StarshipButton.inHeader[data-priority="noise"] .StarIcon > g
+  fill: #aaa
+  stroke: #aaa
+
+.no-touch .StarshipButton.inHeader:hover > .StarIcon > g
+  fill: #535353
+  stroke: #535353
 

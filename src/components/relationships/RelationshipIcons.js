@@ -36,3 +36,28 @@ export const DotsIcon = () =>
     </g>
   </SVGIcon>
 
+// Original `+` from Illustrator which is blurry on non-retina.
+// We may need to show B&L this since it's a little offset
+// <line x1="10" y1="7.5" x2="10" y2="12.5"/>
+// <line x1="12.5" y1="10" x2="7.5" y2="10"/>
+export const HeaderPlusIcon = () =>
+  <SVGIcon className="MiniPlusIcon">
+    <g>
+      <circle cx="10" cy="10" r="7"/>
+    </g>
+    <g>
+      <line x1="10.5" x2="10.5" y1="7.5" y2="13.5"/>
+      <line x1="13.5" x2="7.5" y1="10.5" y2="10.5"/>
+    </g>
+  </SVGIcon>
+
+export const HeaderCheckIcon = () =>
+  <SVGIcon className="MiniCheckIcon">
+    <g>
+      <circle cx="10" cy="10" r="7"/>
+    </g>
+    <g>
+      <polyline points="7,9.9 9.5,13 13,7"/>
+    </g>
+  </SVGIcon>
+

@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { getLinkObject } from '../base/json_helper'
-import { body, regionItems, setModels } from './RegionParser'
+import { body, regionItems, repostedBody, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostTools from '../posts/PostTools'
@@ -32,7 +32,7 @@ function header(post, author) {
           <span>{`@${author.username}`}</span>
         </Link>
       </div>
-      <RelationsGroup user={author} />
+      <RelationsGroup user={author} classList="inHeader" />
     </header>
   )
 }
@@ -47,13 +47,13 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
           <span>{`@${repostAuthor.username}`}</span>
         </Link>
       </div>
+      <RelationsGroup user={repostAuthor} classList="inHeader" />
       <div className="RepostHeaderReposter">
         <Link className="PostHeaderLink" to={`/${repostedBy.username}`}>
           <RepostIcon />
           {` by @${repostedBy.username}`}
         </Link>
       </div>
-      <RelationsGroup user={repostAuthor} />
     </header>
   )
 }
@@ -86,7 +86,7 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
     } else {
       cells.push(body(post.repostContent, `repost_${post.id}`, isGridLayout, postDetailPath))
       if (post.content && post.content.length) {
-        cells.push(body(post.content, post.id, isGridLayout, postDetailPath))
+        cells.push(repostedBody(author, post.content, post.id, isGridLayout, postDetailPath))
       }
     }
   } else {
