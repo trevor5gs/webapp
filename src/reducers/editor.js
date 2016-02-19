@@ -1,4 +1,4 @@
-import { EMOJI, POST, PROFILE } from '../constants/action_types'
+import { AUTHENTICATION, EMOJI, POST, PROFILE } from '../constants/action_types'
 import { suggestEmoji } from '../components/completers/EmojiSuggester'
 
 export function editor(state = {}, action) {
@@ -56,6 +56,7 @@ export function editor(state = {}, action) {
         }
       }
       return obj
+    case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
       return {}
     default:
