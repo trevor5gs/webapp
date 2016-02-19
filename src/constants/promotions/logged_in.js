@@ -2,7 +2,7 @@
 import React from 'react'
 
 export const LOGGED_IN_PROMOTIONS = [
-{
+  {
     username: 'borrowedparadise',
     caption: <h1>Humans over algorithms.</h1>,
     avatar: {
