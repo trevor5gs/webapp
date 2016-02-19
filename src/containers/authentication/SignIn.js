@@ -53,7 +53,7 @@ class SignIn extends Component {
     const success = await dispatch(action)
 
     if (success) {
-      dispatch(routeActions.push({ pathname: '/discover' }))
+      dispatch(routeActions.replace({ pathname: '/discover' }))
     } else {
       this.setState({ failureMessage: 'No dice. Access denied.' })
     }
