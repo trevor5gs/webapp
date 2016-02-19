@@ -59,13 +59,13 @@ class BlockCollection extends Component {
       this.uid = Math.max(...editorStore.editorState.order) + 1
     }
     this.persistBlocks = debounce(this.persistBlocks, 300)
-    addDragObject(this)
-    addInputObject(this)
   }
 
   componentDidMount() {
     this.addEmptyTextBlock()
     this.setSelectionOnMount()
+    addDragObject(this)
+    addInputObject(this)
   }
 
   componentWillReceiveProps(nextProps) {
