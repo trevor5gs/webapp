@@ -3,8 +3,8 @@ import App from '../containers/App'
 function createRedirect(from, to) {
   return {
     path: from,
-    onEnter(nextState, replaceState) {
-      replaceState(nextState, to)
+    onEnter(nextState, replace) {
+      replace({ pathname: to, state: nextState })
     },
   }
 }
