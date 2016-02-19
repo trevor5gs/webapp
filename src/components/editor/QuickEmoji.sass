@@ -1,0 +1,29 @@
+.QuickEmoji
+  position: absolute
+  width: rem(180)
+  white-space: nowrap
+  overflow: hidden
+  color: #999
+
+.QuickEmoji.isActive
+  color: black
+
+.QuickEmojiList
+  transition: opacity $speed
+  position: absolute
+  top: 0
+  right: rem(30)
+  opacity: 0
+
+.QuickEmoji.isActive .QuickEmojiList
+  opacity: 1
+
+.QuickEmojiChoiceButton + .QuickEmojiChoiceButton
+  margin-left: rem(20)
+
+
+// Positioning is testing only
+// .editor-actions .QuickEmoji
+//   top: rem(65)
+//   right: rem(50)
+
