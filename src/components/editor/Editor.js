@@ -14,10 +14,12 @@ class Editor extends Component {
     dispatch: PropTypes.func.isRequired,
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
+    shouldPersist: PropTypes.bool,
   };
 
   static defaultProps = {
     shouldLoadFromState: false,
+    shouldPersist: false,
   };
 
   submit = (data) => {
@@ -108,7 +110,7 @@ class Editor extends Component {
         submitAction={ this.submit }
         submitText={ submitText }
         shouldLoadFromState={ shouldLoadFromState }
-        shouldPersist={ !post }
+        shouldPersist={ shouldPersist }
       />
     )
   }
