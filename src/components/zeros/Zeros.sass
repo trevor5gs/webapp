@@ -26,15 +26,53 @@
     padding: 0
   .ZeroStateTitle
     font-size: rem(24)
+  .UserDetails .ZeroStates
+    max-width: rem( 560 + 240)
   .UserDetails .ZeroState
     position: relative
-    left: rem(240)
+    padding-left: rem(240)
   .UserDetails .StreamComponent .ZeroState
     margin-left: rem(-20)
 
 @media(min-width: #{$break-4})
+  .UserDetails .ZeroStates
+    max-width: rem( 560 + 260)
   .UserDetails .ZeroState
-    left: rem(260)
+    padding-left: rem(260)
   .UserDetails .StreamComponent .ZeroState
     margin-left: rem(-40)
+
+// -------------------------------------
+// This should become a `ZeroStateEditor` at some point,
+// but waiting for the editor API to settle a little more
+
+.ZeroState .editor
+  color: #666
+
+.ZeroState .editor:before
+  display: none
+
+.ZeroState .editor-region
+  min-height: rem(60)
+
+.ZeroState .editable
+  padding: 0
+  min-height: 0
+  border: 0
+
+.ZeroState .editor.hasMention .editor-region
+  background-color: #e5e5e5
+
+.ZeroState .RegionTools
+  display: none
+
+.ZeroState .PostActionButton
+  color: #aaa
+  border: 1px solid currentColor
+
+.ZeroState .PostActionButton:not(.forPost)
+  display: none
+
+.ZeroState .PostActionButton.forPost
+  width: rem(85)
 
