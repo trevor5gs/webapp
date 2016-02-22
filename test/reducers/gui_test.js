@@ -12,4 +12,18 @@ describe('gui reducer', () => {
       ).to.have.keys('modes', 'currentStream')
     })
   })
+  describe('UPDATE_LOCATION', () => {
+    it('stores relevant streams to currentStream', () => {
+      const action = {
+        type: UPDATE_LOCATION,
+        payload: {
+          pathname: '/discover/trending',
+        },
+      }
+
+      expect(
+        subject.gui(undefined, action)
+      ).to.have.property('currentStream', '/discover/trending')
+    })
+  })
 })
