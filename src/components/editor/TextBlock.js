@@ -11,8 +11,8 @@ class TextBlock extends Component {
     onInput: PropTypes.func.isRequired,
   };
 
-  shouldComponentUpdate() {
-    return false
+  shouldComponentUpdate(nextProps) {
+    return !(nextProps.data === this.refs.block.refs.text.innerHTML)
   }
 
   getData() {
