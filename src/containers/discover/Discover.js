@@ -20,7 +20,7 @@ class Discover extends Component {
     lastDiscoverBeaconVersion: PropTypes.string,
     params: PropTypes.shape({
       type: PropTypes.string,
-    }),
+    }).isRequired,
     pathname: PropTypes.string.isRequired,
   };
 
