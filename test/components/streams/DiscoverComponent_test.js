@@ -21,6 +21,14 @@ describe('DiscoverComponent', () => {
       getRenderedComponent(Component, props)
       expect(props.dispatch.callCount).to.equal(0)
     })
+
+    it("still doesn't redirect when there's a currentStream", () => {
+      const props = createPropsForComponent({
+        currentStream: '/discover/trending',
+      })
+
+      getRenderedComponent(Component, props)
+
       expect(props.dispatch.callCount).to.equal(0)
     })
 
