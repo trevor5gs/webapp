@@ -12,17 +12,20 @@ export const GUI = {
 }
 
 export const SHORTCUT_KEYS = {
-  TOGGLE_LAYOUT: '=',
-  HELP: '?',
-  ESC: 'esc',
-  SEARCH: 'g s',
   DISCOVER: 'g d',
-  FOLLOWING: 'g f',
-  ONBOARDING: 'g 0',
-  FULLSCREEN: 'g m',
-  DT_GRID_TOGGLE: 'g `',
-  DT_GRID_CYCLE: 'g ~',
   DT_CONTAINER_TOGGLE: 'g |',
+  DT_GRID_CYCLE: 'g ~',
+  DT_GRID_TOGGLE: 'g `',
+  ESC: 'esc',
+  FOLLOWING: 'g f',
+  FULLSCREEN: 'g m',
+  HELP: '?',
+  NOTIFICATIONS: 'g r',
+  OMNIBAR: 'g o',
+  ONBOARDING: 'g 0',
+  SEARCH: 'g s',
+  STARRED: 'g n',
+  TOGGLE_LAYOUT: '=',
 }
 
 export const FORM_CONTROL_STATUS = {
