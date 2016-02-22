@@ -71,7 +71,7 @@ class BlockCollection extends Component {
   componentWillReceiveProps(nextProps) {
     const { dispatch, editorStore } = nextProps
     const { collection } = this.state
-    let newBlock
+    let newBlock = null
     switch (editorStore.type) {
       case ACTION_TYPES.POST.TMP_IMAGE_CREATED:
         this.removeEmptyTextBlock()
@@ -209,19 +209,19 @@ class BlockCollection extends Component {
     switch (block.kind) {
       case 'block':
         return (
-          <Block { ...blockProps } className="BlockPlaceholder" ref="blockPlaceholder"/>
+          <Block { ...blockProps } className="BlockPlaceholder" ref="blockPlaceholder" />
         )
       case 'embed':
         return (
-          <EmbedBlock { ...blockProps }/>
+          <EmbedBlock { ...blockProps } />
         )
       case 'image':
         return (
-          <ImageBlock { ...blockProps }/>
+          <ImageBlock { ...blockProps } />
         )
       case 'repost':
         return (
-          <RepostBlock { ...blockProps } onRemoveBlock={ null }/>
+          <RepostBlock { ...blockProps } onRemoveBlock={ null } />
         )
       case 'text':
         return (
@@ -282,13 +282,23 @@ class BlockCollection extends Component {
         const secondToLast = collection[order[order.length - 2]][BLOCK_KEY]
         if (secondToLast.kind === 'text' &&
             last.kind === 'text' && !last.data.length) {
-          return this.remove(last.uid, shouldCheckForEmpty)
+          this.remove(last.uid, shouldCheckForEmpty)
         }
       }
       if (!order.length || collection[order[order.length - 1]][BLOCK_KEY].kind !== 'text') {
         this.add({ kind: 'text', data: '' })
       }
     })
+  }
+
+  appendText = (content) => {
+    const { collection, order } = this.state
+    const textBlocks = order.filter((uid) => collection[uid].block.kind === 'text')
+    const lastBlock = collection[textBlocks[textBlocks.length - 1]].block
+    if (lastBlock) {
+      lastBlock.data += content
+      this.setState({ collection })
+    }
   }
 
   remove = (uid, shouldCheckForEmpty = true) => {
