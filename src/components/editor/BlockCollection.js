@@ -282,7 +282,7 @@ class BlockCollection extends Component {
         const secondToLast = collection[order[order.length - 2]][BLOCK_KEY]
         if (secondToLast.kind === 'text' &&
             last.kind === 'text' && !last.data.length) {
-          this.remove(last.uid, shouldCheckForEmpty)
+          return this.remove(last.uid, shouldCheckForEmpty)
         }
       }
       if (!order.length || collection[order[order.length - 1]][BLOCK_KEY].kind !== 'text') {
@@ -299,7 +299,7 @@ class BlockCollection extends Component {
       lastBlock.data += content
       this.setState({ collection })
     }
-  }
+  };
 
   remove = (uid, shouldCheckForEmpty = true) => {
     const { collection, order } = this.state
