@@ -27,8 +27,20 @@ class UserDetail extends Component {
 
   componentWillMount() {
     const { dispatch, params } = this.props
+    this.state = {
+      madeFirstPost: false,
+      saidHelloTo: false,
+    }
     dispatch(loadUserDetail(`~${params.username}`))
   }
+
+  onZeroStateHello = () => {
+    this.setState({ saidHelloTo: true })
+  };
+
+  onZeroStateFirstPost = () => {
+    this.setState({ madeFirstPost: true })
+  };
 
   static preRender = (store, routerState) =>
     store.dispatch(loadUserDetail(`~${routerState.params.username}`));
@@ -42,21 +54,36 @@ class UserDetail extends Component {
 
   renderZeroStates(user) {
     const { isLoggedIn } = this.props
+    const { saidHelloTo } = this.state
     if (!user) { return null }
     const cells = []
     if (!user.followersCount) {
-      cells.push(<ZeroStateCreateRelationship key="zero_1" user={ user }/>)
+      cells.push(<ZeroStateCreateRelationship key="zero1" user={ user } />)
     }
     if (isLoggedIn && !user.postsCount) {
-      cells.push(<ZeroStateSayHello key="zero_2" user={ user }/>)
+      cells.push(
+        <ZeroStateSayHello
+          hasPosted={ saidHelloTo }
+          key="zero2"
+          onSubmit={ this.onZeroStateHello }
+          user={ user }
+        />
+      )
     }
     return cells.length ? <div className="ZeroStates">{ cells }</div> : cells
   }
 
   renderZeroStatesForCurrentUser(user) {
+    const { madeFirstPost } = this.state
     const cells = []
     if (!user.postsCount) {
-      cells.push(<ZeroStateFirstPost key="zero_3"/>)
+      cells.push(
+        <ZeroStateFirstPost
+          hasPosted={ madeFirstPost }
+          key="zero3"
+          onSubmit={ this.onZeroStateFirstPost }
+        />
+      )
     }
     return cells.length ? <div className="ZeroStates">{ cells }</div> : cells
   }
