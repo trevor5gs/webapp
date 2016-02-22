@@ -296,7 +296,6 @@ class Navbar extends Component {
             label="Log in"
             modifiers="LabelOnly"
             pathname={pathname}
-            onClick={ this.logInWasClicked }
           />
           <NavbarLink
             to="/signup"

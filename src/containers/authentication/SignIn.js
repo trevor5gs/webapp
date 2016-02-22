@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { routeActions } from 'react-router-redux'
 import { random } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
@@ -43,10 +44,19 @@ class SignIn extends Component {
   };
 
   // TODO: Need to handle the return error or success when this is submitted
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault()
+
     const { dispatch } = this.props
-    dispatch(getUserCredentials(this.emailValue, this.passwordValue))
+    const action = getUserCredentials(this.emailValue, this.passwordValue)
+
+    const success = await dispatch(action)
+
+    if (success) {
+      dispatch(routeActions.replace({ pathname: '/discover' }))
+    } else {
+      this.setState({ failureMessage: 'No dice. Access denied.' })
+    }
   };
 
   emailControlWasChanged = ({ email }) => {
@@ -66,6 +76,17 @@ class SignIn extends Component {
     const newState = getPasswordState({ value: password, currentStatus })
     if (newState.status !== currentStatus) {
       this.setState({ passwordState: newState })
+    }
+  };
+
+  renderError = () => {
+    const { failureMessage } = this.state
+    if (failureMessage) {
+      return (
+        <div className="AuthenticationError accessDenied">
+          {failureMessage}
+        </div>
+      )
     }
   };
 
@@ -96,6 +117,7 @@ class SignIn extends Component {
               classList="asBoxControl"
               label={ `Password ${passwordState.message}` }
               onChange={ this.passwordControlWasChanged }
+              renderFeedback={ this.renderError }
               tabIndex="2"
             />
             <FormButton disabled={ !isValid } tabIndex="3">Enter Ello</FormButton>
