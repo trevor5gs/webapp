@@ -11,6 +11,7 @@ import ConfirmDialog from '../dialogs/ConfirmDialog'
 class Editor extends Component {
 
   static propTypes = {
+    autoPopulate: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
@@ -18,6 +19,7 @@ class Editor extends Component {
   };
 
   static defaultProps = {
+    autoPopulate: null,
     shouldLoadFromState: false,
     shouldPersist: false,
   };
@@ -76,10 +78,13 @@ class Editor extends Component {
   };
 
   render() {
-    const { post, shouldLoadFromState } = this.props
+    const { autoPopulate, post, shouldLoadFromState, shouldPersist } = this.props
     let blocks = []
     let repostContent = []
     let submitText = 'Post'
+    if (autoPopulate && !shouldPersist) {
+      blocks = [{ kind: 'text', data: autoPopulate }]
+    }
     if (!post) {
       // console.log('create new post')
     } else if (post.showComments) {
