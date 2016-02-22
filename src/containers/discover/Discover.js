@@ -12,7 +12,7 @@ import { TabListLinks } from '../../components/tabs/TabList'
 
 const BEACON_VERSION = '1'
 
-class Discover extends Component {
+export class Discover extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
