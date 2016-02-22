@@ -13,6 +13,7 @@ class Editor extends Component {
   static propTypes = {
     autoPopulate: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
     shouldPersist: PropTypes.bool,
@@ -25,7 +26,7 @@ class Editor extends Component {
   };
 
   submit = (data) => {
-    const { dispatch, post } = this.props
+    const { dispatch, post, onSubmit } = this.props
     if (!post) {
       dispatch(closeOmnibar())
       dispatch(createPost(data))
@@ -36,6 +37,7 @@ class Editor extends Component {
       dispatch(toggleEditing(post, false))
       dispatch(updatePost(post, data))
     }
+    if (onSubmit) { onSubmit() }
   };
 
   cancel = () => {
