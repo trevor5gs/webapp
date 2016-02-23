@@ -40,9 +40,6 @@ class UserDetail extends Component {
     window.scrollTo(0, offset)
   }
 
-  static preRender = (store, routerState) =>
-    store.dispatch(loadUserDetail(`~${routerState.params.username}`));
-
   onZeroStateHello = () => {
     this.setState({ saidHelloTo: true })
   };
@@ -50,6 +47,9 @@ class UserDetail extends Component {
   onZeroStateFirstPost = () => {
     this.setState({ madeFirstPost: true })
   };
+
+  static preRender = (store, routerState) =>
+    store.dispatch(loadUserDetail(`~${routerState.params.username}`));
 
   findModel(json, initModel) {
     if (!initModel || !initModel.findObj || !initModel.collection) {
