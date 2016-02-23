@@ -11,17 +11,22 @@ import ConfirmDialog from '../dialogs/ConfirmDialog'
 class Editor extends Component {
 
   static propTypes = {
+    autoPopulate: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
+    shouldPersist: PropTypes.bool,
   };
 
   static defaultProps = {
+    autoPopulate: null,
     shouldLoadFromState: false,
+    shouldPersist: false,
   };
 
   submit = (data) => {
-    const { dispatch, post } = this.props
+    const { dispatch, post, onSubmit } = this.props
     if (!post) {
       dispatch(closeOmnibar())
       dispatch(createPost(data))
@@ -32,6 +37,7 @@ class Editor extends Component {
       dispatch(toggleEditing(post, false))
       dispatch(updatePost(post, data))
     }
+    if (onSubmit) { onSubmit() }
   };
 
   cancel = () => {
@@ -74,10 +80,13 @@ class Editor extends Component {
   };
 
   render() {
-    const { post, shouldLoadFromState } = this.props
+    const { autoPopulate, post, shouldLoadFromState, shouldPersist } = this.props
     let blocks = []
     let repostContent = []
     let submitText = 'Post'
+    if (autoPopulate && !shouldPersist) {
+      blocks = [{ kind: 'text', data: autoPopulate }]
+    }
     if (!post) {
       // console.log('create new post')
     } else if (post.showComments) {
@@ -108,7 +117,7 @@ class Editor extends Component {
         submitAction={ this.submit }
         submitText={ submitText }
         shouldLoadFromState={ shouldLoadFromState }
-        shouldPersist={ !post }
+        shouldPersist={ shouldPersist }
       />
     )
   }

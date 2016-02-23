@@ -12,6 +12,7 @@ import { addResizeObject, removeResizeObject } from '../interface/ResizeComponen
 import { ElloMark } from '../interface/ElloIcons'
 import Paginator from '../streams/Paginator'
 import { findLayoutMode } from '../../reducers/gui'
+import { ZeroState } from '../zeros/Zeros'
 
 export class StreamComponent extends Component {
 
@@ -163,9 +164,14 @@ export class StreamComponent extends Component {
   }
 
   renderZeroState() {
+    const { action } = this.props
+    const { meta } = action
     return (
       <section className="StreamComponent">
-        <p>NO RESULTS</p>
+        { meta && meta.renderStream && meta.renderStream.asZero ?
+          meta.renderStream.asZero :
+          <ZeroState/>
+        }
       </section>
     )
   }
@@ -191,7 +197,9 @@ export class StreamComponent extends Component {
     if (model && !result) {
       renderObj.data.push(model)
     } else if (!result || !result.type || !result.ids) {
-      return this.renderLoading()
+      return stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS ?
+        this.renderZeroState() :
+        this.renderLoading()
     } else if (result.type === MAPPING_TYPES.NOTIFICATIONS) {
       renderObj.data = renderObj.data.concat(result.ids)
       if (result.next) {

@@ -1,8 +1,10 @@
+import React from 'react'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
 import * as StreamFilters from '../components/streams/StreamFilters'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
+import { ZeroFollowingStream, ZeroStarredStream } from '../components/zeros/Zeros'
 
 export function loadFriends() {
   return {
@@ -13,6 +15,7 @@ export function loadFriends() {
       renderStream: {
         asList: StreamRenderables.postsAsList,
         asGrid: StreamRenderables.postsAsGrid,
+        asZero: <ZeroFollowingStream/>,
       },
       resultFilter: StreamFilters.postsFromActivities,
     },
@@ -28,6 +31,7 @@ export function loadNoise() {
       renderStream: {
         asList: StreamRenderables.postsAsList,
         asGrid: StreamRenderables.postsAsGrid,
+        asZero: <ZeroStarredStream/>,
       },
       resultFilter: StreamFilters.postsFromActivities,
     },
