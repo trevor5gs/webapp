@@ -10,11 +10,12 @@ export default {
   getComponents(location, cb) {
     cb(null, require('../../containers/details/UserDetail').default)
   },
-  onEnter(nextState, replaceState, callback) {
-    if (callback) {
-      document.location.href = ENV.REDIRECT_URI + nextState.location.pathname
-    }
-  },
+  // TODO: kill this whole thing before merging to master
+  // onEnter(nextState, replaceState, callback) {
+  //   if (callback) {
+  //     document.location.href = ENV.REDIRECT_URI + nextState.location.pathname
+  //   }
+  // },
   // TODO: uncomment this to lock down user paths
   // onEnter(nextState, replaceState) {
   //   const type = nextState.params.type
@@ -24,4 +25,3 @@ export default {
   //   }
   // },
 }
-
