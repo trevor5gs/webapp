@@ -31,7 +31,7 @@ export class Discover extends Component {
             isLoggedIn, pathname } = this.props
 
     if (pathname === '/' && isLoggedIn) {
-      const replaceTarget = currentStream || '/following'
+      const replaceTarget = currentStream
       dispatch(routeActions.replace(replaceTarget))
     }
 

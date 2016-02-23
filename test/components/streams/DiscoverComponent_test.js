@@ -5,6 +5,7 @@ import { Discover as Component } from '../../../src/containers/discover/Discover
 
 function createPropsForComponent(props = {}) {
   const defaultProps = {
+    currentStream: '/following',
     dispatch: sinon.spy(),
     isLoggedIn: false,
     params: {},

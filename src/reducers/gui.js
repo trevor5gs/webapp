@@ -20,7 +20,7 @@ const initialState = {
     { label: 'users/loves', mode: 'grid', regex: /\/[\w\-]+\/loves/ },
     { label: 'users', mode: 'list', regex: /\/[\w\-]+/ },
   ],
-  currentStream: null,
+  currentStream: '/following',
 }
 
 // TODO: figure out why the users regex doesn't work properly
