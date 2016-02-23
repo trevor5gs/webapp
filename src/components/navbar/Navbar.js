@@ -51,6 +51,8 @@ class Navbar extends Component {
       [SHORTCUT_KEYS.SEARCH]: '/search',
       [SHORTCUT_KEYS.DISCOVER]: '/discover',
       [SHORTCUT_KEYS.FOLLOWING]: '/following',
+      [SHORTCUT_KEYS.STARRED]: '/starred',
+      [SHORTCUT_KEYS.NOTIFICATIONS]: '/notifications',
       [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/communities',
     },
   };
@@ -70,11 +72,10 @@ class Navbar extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, isLoggedIn } = this.props
-
+    const { dispatch, isLoggedIn, shortcuts } = this.props
     if (isLoggedIn) {
-      Mousetrap.bind(Object.keys(this.props.shortcuts), (event, shortcut) => {
-        dispatch(routeActions.push(this.props.shortcuts[shortcut]))
+      Mousetrap.bind(Object.keys(shortcuts), (event, shortcut) => {
+        dispatch(routeActions.push(shortcuts[shortcut]))
       })
 
       Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
