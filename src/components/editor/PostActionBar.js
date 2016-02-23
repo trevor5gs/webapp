@@ -87,7 +87,6 @@ class PostActionBar extends Component {
           onChange={ this.handleFileBrowser }
           ref="FileBrowser"
           type="file"
-          capture="camera"
           accept="image/*"
         />
       </div>
