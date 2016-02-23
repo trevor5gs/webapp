@@ -33,6 +33,11 @@ const whitelist = [
   'starred',
 ]
 
+function isBlacklistedRoute(pathname) {
+  const pathnames = pathname.split('/').slice(1)
+  return !(whitelist.indexOf(pathnames[0]) >= 0)
+}
+
 class Navbar extends Component {
 
   static propTypes = {
@@ -59,15 +64,13 @@ class Navbar extends Component {
 
   componentWillMount() {
     const { pathname } = this.props
-    const pathnames = pathname.split('/').slice(1)
-    const isBlacklisted = !(whitelist.indexOf(pathnames[0]) >= 0)
+    const isBlacklisted = isBlacklistedRoute(pathname)
     this.state = {
       asFixed: isBlacklisted,
       asHidden: false,
       asLocked: isBlacklisted,
       skipTransition: false,
     }
-    this.currentPath = null
     this.scrollYAtDirectionChange = null
   }
 
@@ -102,35 +105,21 @@ class Navbar extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { pathname } = nextProps
-    const pathnames = pathname.split('/').slice(1)
-    const isWhitelisted = (whitelist.indexOf(pathnames[0]) >= 0 || pathnames[1] === 'post')
-    const isPageChangeUpdate = pathnames[0] !== this.currentPath
-    if (isPageChangeUpdate) {
-      this.currentPath = pathnames[0]
-      this.setState({
-        asFixed: !isWhitelisted,
-        asHidden: false,
-        asLocked: !isWhitelisted,
-        isPageChangeUpdate: true,
-        skipTransition: false,
-      })
-    } else {
-      this.setState({ asLocked: !isWhitelisted, isPageChangeUpdate: false })
-    }
+    const isBlacklisted = isBlacklistedRoute(pathname)
+    this.setState({ asFixed: true, asLocked: isBlacklisted })
   }
 
-  // TODO: This may need some tweeks once we get a little more intelligent
-  // around the scroll to calls utilizing history
-  //
-  // @mkitt would like to kick this thing extremely hard.
-  componentDidUpdate() {
-    // if (typeof window === 'undefined') {
-    //   return
-    // }
-    // const { asLocked, isPageChangeUpdate, offset } = this.state
-    // if (isPageChangeUpdate && asLocked) {
-    //   window.scrollTo(0, offset - 120)
-    // }
+  // @mkitt would like to ~kick~ marry this thing extremely hard.
+  // The blacklisted view's (UserDetail and Settings) will also call the same
+  // scrollTo when they are mounted.
+  componentDidUpdate(prevProps) {
+    if (typeof window === 'undefined' || !prevProps.pathname || !this.props.pathname) { return }
+    const { pathname } = this.props
+    if (pathname !== prevProps.pathname) {
+      if (isBlacklistedRoute(pathname)) {
+        window.scrollTo(0, this.state.offset - 120)
+      }
+    }
   }
 
   componentWillUnmount() {

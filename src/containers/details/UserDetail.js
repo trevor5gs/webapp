@@ -34,6 +34,12 @@ class UserDetail extends Component {
     dispatch(loadUserDetail(`~${params.username}`))
   }
 
+  componentDidMount() {
+    // Calculate the cover height (ResizeComponent isn't initialized yet)
+    const offset = Math.round((window.innerWidth * 0.5625)) - 200
+    window.scrollTo(0, offset)
+  }
+
   onZeroStateHello = () => {
     this.setState({ saidHelloTo: true })
   };

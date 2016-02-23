@@ -61,6 +61,12 @@ class Settings extends Component {
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
   }
 
+  componentDidMount() {
+    // Calculate the cover height (ResizeComponent isn't initialized yet)
+    const offset = Math.round((window.innerWidth * 0.5625)) - 200
+    window.scrollTo(0, offset)
+  }
+
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
     if (!availability) {
