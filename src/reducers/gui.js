@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import { UPDATE_LOCATION } from 'react-router-redux'
 import { BEACONS, PROFILE, SET_LAYOUT_MODE } from '../constants/action_types'
 
@@ -18,6 +20,7 @@ const initialState = {
     { label: 'users/loves', mode: 'grid', regex: /\/[\w\-]+\/loves/ },
     { label: 'users', mode: 'list', regex: /\/[\w\-]+/ },
   ],
+  currentStream: '/following',
 }
 
 // TODO: figure out why the users regex doesn't work properly
@@ -31,9 +34,16 @@ export function findLayoutMode(modes) {
   return modes[modes.length - 1]
 }
 
+const STREAMS_WHITELIST = [
+  /discover/,
+  /following/,
+  /starred/,
+]
+
 export function gui(state = initialState, action = { type: '' }) {
   const newState = { ...state }
   let mode = null
+  let pathname = null
   switch (action.type) {
     case BEACONS.LAST_DISCOVER_VERSION:
       return { ...state, lastDiscoverBeaconVersion: action.payload.version }
@@ -50,9 +60,14 @@ export function gui(state = initialState, action = { type: '' }) {
       return newState
     case UPDATE_LOCATION:
       location = action.payload
+      pathname = location.pathname
+
+      if (_.some(STREAMS_WHITELIST, re => re.test(pathname))) {
+        return { ...state, currentStream: pathname }
+      }
+
       return state
     default:
       return state
   }
 }
-

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { routeActions } from 'react-router-redux'
 import { BEACONS } from '../../constants/action_types'
 import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
@@ -12,20 +13,28 @@ import { TabListLinks } from '../../components/tabs/TabList'
 
 const BEACON_VERSION = '1'
 
-class Discover extends Component {
+export class Discover extends Component {
 
   static propTypes = {
+    currentStream: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     lastDiscoverBeaconVersion: PropTypes.string,
     params: PropTypes.shape({
       type: PropTypes.string,
-    }),
+    }).isRequired,
     pathname: PropTypes.string.isRequired,
   };
 
   componentWillMount() {
-    const { lastDiscoverBeaconVersion, isLoggedIn } = this.props
+    const { currentStream, dispatch, lastDiscoverBeaconVersion,
+            isLoggedIn, pathname } = this.props
+
+    if (pathname === '/' && isLoggedIn) {
+      const replaceTarget = currentStream
+      dispatch(routeActions.replace(replaceTarget))
+    }
+
     this.state = {
       isBeaconActive: isLoggedIn && lastDiscoverBeaconVersion !== BEACON_VERSION,
     }
@@ -98,6 +107,7 @@ class Discover extends Component {
 
 function mapStateToProps(state) {
   return {
+    currentStream: state.gui.currentStream,
     isLoggedIn: state.authentication.isLoggedIn,
     lastDiscoverBeaconVersion: state.gui.lastDiscoverBeaconVersion,
     pathname: state.routing.location.pathname,
@@ -105,4 +115,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Discover)
-

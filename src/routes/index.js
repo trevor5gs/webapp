@@ -3,17 +3,19 @@ import App from '../containers/App'
 function createRedirect(from, to) {
   return {
     path: from,
-    onEnter(nextState, replaceState) {
-      replaceState(nextState, to)
+    onEnter(nextState, replace) {
+      replace({ pathname: to, state: nextState })
     },
   }
 }
 
 const routes = [
-  createRedirect('/', '/explore'),
   {
     path: '/',
     component: App,
+    getIndexRoute(location, cb) {
+      cb(null, require('./discover').indexRoute)
+    },
     // order matters, so less specific routes should go at the bottom
     childRoutes: [
       require('./post_detail').default,

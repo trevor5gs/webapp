@@ -17,9 +17,8 @@ function getLogoMarkFromEnvironment() {
 }
 
 const NavbarMark = () =>
-  <Link className="NavbarMark" to="/explore">
+  <Link className="NavbarMark" to="/">
     { getLogoMarkFromEnvironment() }
   </Link>
 
 export default NavbarMark
-
