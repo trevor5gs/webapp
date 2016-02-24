@@ -221,8 +221,11 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
     case ACTION_TYPES.COMMENT.DELETE_FAILURE:
       return methods.deleteModel(state, newState, action, MAPPING_TYPES.COMMENTS)
+    case ACTION_TYPES.COMMENT.TOGGLE_EDITING:
+      return commentMethods.toggleEditing(state, newState, action)
     case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
+    case ACTION_TYPES.COMMENT.EDITABLE_SUCCESS:
     case ACTION_TYPES.POST.EDITABLE_SUCCESS:
       // fall through to parse the rest
       break

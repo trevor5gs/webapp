@@ -30,7 +30,6 @@ class BlockCollection extends Component {
     editorStore: PropTypes.object,
     emoji: PropTypes.object.isRequired,
     isComment: PropTypes.bool,
-    post: PropTypes.object,
     repostContent: PropTypes.array,
     shouldLoadFromState: PropTypes.bool,
     shouldPersist: PropTypes.bool,

@@ -5,6 +5,7 @@ import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { body, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import CommentTools from '../comments/CommentTools'
+import Editor from '../../components/editor/Editor'
 
 function header(comment, author) {
   if (!comment || !author) { return null }
@@ -33,6 +34,19 @@ function footer(comment, author, currentUser, post) {
   )
 }
 
+function parseComment(comment, author, currentUser, post, isGridLayout = true) {
+  const cells = []
+  const content = isGridLayout ? comment.summary : comment.content
+  cells.push(
+    <div className="CommentBody" key={ `CommentBody${comment.id}` } >
+      { body(content, comment.id, isGridLayout) }
+    </div>
+  )
+  cells.push(footer(comment, author, currentUser, post))
+  setModels({})
+  return cells
+}
+
 class CommentParser extends Component {
   static propTypes = {
     comment: PropTypes.object,
@@ -40,6 +54,7 @@ class CommentParser extends Component {
     author: PropTypes.object,
     assets: PropTypes.any.isRequired,
     currentUser: PropTypes.object,
+    isEditing: PropTypes.bool,
     isGridLayout: PropTypes.bool,
   };
 
@@ -52,22 +67,14 @@ class CommentParser extends Component {
 
     setModels({ assets })
     const commentHeader = header(comment, author)
-    const content = isGridLayout ? comment.summary : comment.content
-
-    const commentBody = (
-      <div className="CommentBody" key={ `CommentBody${comment.id}` } >
-        { body(content, comment.id, isGridLayout) }
-      </div>
-    )
-
-    const commentFooter = footer(comment, author, currentUser, post)
-    setModels({})
 
     return (
       <div>
         {commentHeader}
-        {commentBody}
-        {commentFooter}
+        { comment.isEditing && comment.body ?
+          <Editor isComment comment={ comment } /> :
+          parseComment(comment, author, currentUser, post, isGridLayout)
+        }
       </div>
     )
   }

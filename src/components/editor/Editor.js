@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { openModal, closeModal } from '../../actions/modals'
+import { toggleEditing as toggleCommentEditing } from '../../actions/comments'
 import {
   createComment,
   createPost,
@@ -18,6 +19,7 @@ class Editor extends Component {
 
   static propTypes = {
     autoPopulate: PropTypes.string,
+    comment: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     isComment: PropTypes.bool,
     onSubmit: PropTypes.func,
@@ -34,7 +36,10 @@ class Editor extends Component {
   };
 
   getEditorIdentifier() {
-    const { post } = this.props
+    const { comment, post } = this.props
+    if (comment) {
+      return `${comment.postId}_${comment.id}`
+    }
     return `${post ? post.id : 0}`
   }
 
@@ -51,12 +56,16 @@ class Editor extends Component {
   }
 
   submit = (data) => {
-    const { dispatch, isComment, onSubmit, post } = this.props
-    if (!post) {
+    const { comment, dispatch, isComment, onSubmit, post } = this.props
+    if (isComment) {
+      if (comment && comment.isEditing) {
+        dispatch(toggleCommentEditing(comment, false))
+      } else {
+        dispatch(createComment(data, this.getEditorIdentifier(), post.id))
+      }
+    } else if (!post) {
       dispatch(closeOmnibar())
       dispatch(createPost(data, this.getEditorIdentifier()))
-    } else if (isComment) {
-      dispatch(createComment(data, this.getEditorIdentifier(), post.id))
     } else if (post.isEditing) {
       dispatch(toggleEditing(post, false))
       dispatch(updatePost(post, data))
@@ -69,11 +78,15 @@ class Editor extends Component {
   };
 
   cancel = () => {
-    const { isComment, post } = this.props
-    if (!post) {
+    const { comment, isComment, post } = this.props
+    if (isComment) {
+      if (comment && comment.isEditing) {
+        this.launchCancelConfirm('comment edit')
+      } else {
+        this.launchCancelConfirm('comment')
+      }
+    } else if (!post) {
       this.launchCancelConfirm('post')
-    } else if (isComment) {
-      this.launchCancelConfirm('comment')
     } else if (post.isEditing) {
       this.launchCancelConfirm('edit')
     } else if (post.isReposting) {
@@ -97,28 +110,43 @@ class Editor extends Component {
   };
 
   cancelConfirmed = () => {
-    const { dispatch, post } = this.props
+    const { comment, dispatch, post } = this.props
     this.closeModal()
     dispatch(closeOmnibar())
     if (post) {
       dispatch(toggleEditing(post, false))
       dispatch(toggleReposting(post, false))
     }
+    if (comment) {
+      dispatch(toggleCommentEditing(comment, false))
+    }
     this.clearPersistedData()
   };
 
   render() {
-    const { autoPopulate, isComment, post, shouldLoadFromState, shouldPersist } = this.props
+    const {
+      autoPopulate,
+      comment,
+      isComment,
+      post,
+      shouldLoadFromState,
+      shouldPersist,
+    } = this.props
     let blocks = []
     let repostContent = []
     let submitText
     if (autoPopulate && !shouldPersist) {
       blocks = [{ kind: 'text', data: autoPopulate }]
-    }
-    if (!post) {
       submitText = 'Post'
     } else if (isComment) {
-      submitText = 'Comment'
+      if (comment && comment.isEditing) {
+        submitText = 'Update'
+        blocks = comment.body
+      } else {
+        submitText = 'Comment'
+      }
+    } else if (!post) {
+      submitText = 'Post'
     } else if (post.isReposting) {
       submitText = 'Repost'
       if (post.repostId) {
@@ -135,6 +163,7 @@ class Editor extends Component {
         blocks = post.body
       }
     }
+    // TODO: update this to work with comment editing
     const key = `editor${submitText}_${post ? post.id : 0}_${blocks.length + repostContent.length}`
     return (
       <BlockCollection
@@ -143,7 +172,6 @@ class Editor extends Component {
         editorId={ this.getEditorIdentifier() }
         isComment={ isComment }
         key={ key }
-        post={ post }
         ref="blockCollection"
         repostContent={ repostContent }
         shouldLoadFromState={ shouldLoadFromState }

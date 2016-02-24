@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { methods as jsonMethods } from '../json'
@@ -30,6 +31,14 @@ function addOrUpdateComment(newState, action) {
 }
 methods.addOrUpdateComment = (newState, action) =>
   addOrUpdateComment(newState, action)
+
+function toggleEditing(state, newState, action) {
+  const { model, isEditing } = action.payload
+  newState[MAPPING_TYPES.COMMENTS][model.id].isEditing = isEditing
+  return newState
+}
+methods.toggleEditing = (state, newState, action) =>
+  toggleEditing(state, newState, action)
 
 export default methods
 

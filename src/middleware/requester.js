@@ -67,6 +67,7 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.AUTHENTICATION.USER &&
         type !== ACTION_TYPES.COMMENT.CREATE &&
         type !== ACTION_TYPES.COMMENT.DELETE &&
+        type !== ACTION_TYPES.COMMENT.EDITABLE &&
         type !== ACTION_TYPES.COMMENT.UPDATE &&
         type !== ACTION_TYPES.COMMENT.FLAG &&
         type !== ACTION_TYPES.EMOJI.LOAD &&
