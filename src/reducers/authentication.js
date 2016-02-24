@@ -1,3 +1,4 @@
+import { REHYDRATE } from 'redux-persist/constants'
 import * as ACTION_TYPES from '../constants/action_types'
 
 const initialState = {
@@ -6,6 +7,7 @@ const initialState = {
   tokenType: null,
   expiresIn: null,
   createdAt: null,
+  refreshTimeoutId: null,
 }
 
 export function authentication(state = initialState, action) {
@@ -18,6 +20,16 @@ export function authentication(state = initialState, action) {
     case ACTION_TYPES.AUTHENTICATION.USER_SUCCESS:
     case ACTION_TYPES.AUTHENTICATION.REFRESH_SUCCESS:
       return { ...state, ...action.payload.response, isLoggedIn: true }
+    case REHYDRATE:
+      if (action.key === 'authentication') {
+        // Don't take the timeout ID from localstorage
+        return {
+          ...action.payload,
+          refreshTimeoutId: state.refreshTimeoutId,
+        }
+      }
+
+      return state
     default:
       return state
   }
