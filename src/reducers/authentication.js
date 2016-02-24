@@ -14,9 +14,9 @@ export function authentication(state = initialState, action) {
     case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
       return { ...initialState }
     case ACTION_TYPES.AUTHENTICATION.USER_SUCCESS:
+    case ACTION_TYPES.AUTHENTICATION.REFRESH_SUCCESS:
       return { ...state, ...action.payload.response, isLoggedIn: true }
     default:
       return state
   }
 }
-

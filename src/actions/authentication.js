@@ -1,5 +1,5 @@
 import * as ACTION_TYPES from '../constants/action_types'
-import { loginToken, forgotPassword } from '../networking/api'
+import { loginToken, forgotPassword, refreshAuthToken } from '../networking/api'
 
 export function getUserCredentials(email, password) {
   return {
@@ -10,6 +10,19 @@ export function getUserCredentials(email, password) {
       body: {
         email,
         password,
+      },
+    },
+  }
+}
+
+export function refreshAuthenticationToken(refreshToken) {
+  return {
+    type: ACTION_TYPES.AUTHENTICATION.REFRESH,
+    payload: {
+      endpoint: refreshAuthToken(refreshToken),
+      method: 'POST',
+      body: {
+        refresh_token: refreshToken,
       },
     },
   }
@@ -27,4 +40,3 @@ export function sendForgotPasswordRequest(email) {
     },
   }
 }
-
