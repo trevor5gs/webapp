@@ -124,13 +124,28 @@ export function flagPost(post, kind) {
   }
 }
 
-export function createPost(body, repostId) {
+export function createPost(body, editorId, repostId) {
   return {
     type: ACTION_TYPES.POST.CREATE,
     payload: {
       body: { body },
+      editorId,
       endpoint: api.createPost(repostId),
       method: 'POST',
+    },
+    meta: {},
+  }
+}
+
+export function createComment(body, editorId, postId) {
+  return {
+    type: ACTION_TYPES.COMMENT.CREATE,
+    payload: {
+      body: { body },
+      editorId,
+      endpoint: api.createComment(postId),
+      method: 'POST',
+      postId: editorId,
     },
     meta: {},
   }
@@ -148,40 +163,42 @@ export function updatePost(post, body) {
   }
 }
 
-export function uploadAsset(type, file) {
+export function uploadAsset(type, file, editorId) {
   return {
     type,
     meta: {},
     payload: {
+      editorId,
       file,
     },
   }
 }
 
-export function temporaryPostImageCreated(b64Asset) {
+export function temporaryPostImageCreated(b64Asset, editorId) {
   return {
     type: ACTION_TYPES.POST.TMP_IMAGE_CREATED,
     meta: {},
-    payload: { url: b64Asset },
+    payload: { url: b64Asset, editorId },
   }
 }
 
-export function savePostImage(file) {
+export function savePostImage(file, editorId) {
   return dispatch => {
     const reader = new FileReader()
     reader.onloadend = () => {
-      dispatch(temporaryPostImageCreated(reader.result))
+      dispatch(temporaryPostImageCreated(reader.result, editorId))
     }
-    dispatch(uploadAsset(ACTION_TYPES.POST.SAVE_IMAGE, file))
+    dispatch(uploadAsset(ACTION_TYPES.POST.SAVE_IMAGE, file, editorId))
     reader.readAsDataURL(file)
   }
 }
 
-export function postPreviews(embedUrl) {
+export function postPreviews(embedUrl, editorId) {
   return {
     type: ACTION_TYPES.POST.POST_PREVIEW,
     payload: {
       body: { body: [{ kind: 'embed', data: { url: embedUrl } }] },
+      editorId,
       endpoint: api.postPreviews(),
       method: 'POST',
     },

@@ -2,17 +2,23 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { pasted } from './PasteHandler'
 import Block from './Block'
+import { placeCaretAtEnd } from './SelectionUtil'
 
 class TextBlock extends Component {
 
   static propTypes = {
     data: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
+    editorId: PropTypes.string.isRequired,
     onInput: PropTypes.func.isRequired,
   };
 
   shouldComponentUpdate(nextProps) {
     return !(nextProps.data === this.refs.block.refs.text.innerHTML)
+  }
+
+  componentDidUpdate() {
+    placeCaretAtEnd(document.querySelector('.editable.text'))
   }
 
   getData() {
@@ -26,10 +32,10 @@ class TextBlock extends Component {
   };
 
   handlePaste = (e) => {
-    const { dispatch, onInput } = this.props
+    const { dispatch, editorId, onInput } = this.props
     const uid = this.refs.block.props.uid
     // order matters here!
-    pasted(e, dispatch)
+    pasted(e, dispatch, editorId)
     onInput({ kind: 'text', data: this.getData(), uid })
   };
 

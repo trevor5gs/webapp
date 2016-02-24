@@ -1,8 +1,6 @@
 .QuickEmoji
   position: absolute
-  width: rem(180)
   white-space: nowrap
-  overflow: hidden
   color: #999
 
 .QuickEmoji.isActive
@@ -18,7 +16,7 @@
   transition: opacity $speed
   position: absolute
   top: 0
-  right: rem(40)
+  left: rem(-160)
   opacity: 0
 
 .QuickEmoji.isActive .QuickEmojiList
@@ -36,7 +34,7 @@
 
 
 // Positioning is testing only
-// .editor-actions .QuickEmoji
-//   top: rem(65)
-//   right: rem(50)
+.editor.isComment .QuickEmoji
+  top: rem(53)
+  right: rem(30)
 

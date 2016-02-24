@@ -18,7 +18,7 @@ function getPostDetailPath(author, post) {
 
 function commentStream(post, author) {
   return (
-    <CommentStream key={`Comments_${post.id}`} post={post} author={author} />
+    <CommentStream key={`Comments_${post.id}_${post.commentsCount}`} post={post} author={author} />
   )
 }
 

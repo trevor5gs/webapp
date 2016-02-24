@@ -214,6 +214,9 @@ export default function json(state = {}, action = { type: '' }) {
   switch (action.type) {
     case ACTION_TYPES.ADD_NEW_IDS_TO_RESULT:
       return methods.addNewIdsToResult(state, newState)
+    case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
+    case ACTION_TYPES.COMMENT.CREATE_FAILURE:
+      return commentMethods.addOrUpdateComment(newState, action)
     case ACTION_TYPES.COMMENT.DELETE_REQUEST:
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
     case ACTION_TYPES.COMMENT.DELETE_FAILURE:

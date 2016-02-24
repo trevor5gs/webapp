@@ -3,7 +3,13 @@ import { connect } from 'react-redux'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { openModal, closeModal } from '../../actions/modals'
-import { createPost, toggleEditing, toggleReposting, updatePost } from '../../actions/posts'
+import {
+  createComment,
+  createPost,
+  toggleEditing,
+  toggleReposting,
+  updatePost,
+} from '../../actions/posts'
 import { closeOmnibar } from '../../actions/omnibar'
 import BlockCollection from './BlockCollection'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
@@ -27,22 +33,39 @@ class Editor extends Component {
     shouldPersist: false,
   };
 
+  getEditorIdentifier() {
+    const { post } = this.props
+    return `${post ? post.id : 0}`
+  }
+
+  clearPersistedData() {
+    const { dispatch } = this.props
+    dispatch({
+      type: ACTION_TYPES.POST.PERSIST,
+      payload: {
+        editorId: this.getEditorIdentifier(),
+        collection: {},
+        order: [],
+      },
+    })
+  }
+
   submit = (data) => {
     const { dispatch, isComment, onSubmit, post } = this.props
     if (!post) {
       dispatch(closeOmnibar())
-      dispatch(createPost(data))
+      dispatch(createPost(data, this.getEditorIdentifier()))
     } else if (isComment) {
-      // dispatch(updatePost(post, data))
-      console.log('comment')
+      dispatch(createComment(data, this.getEditorIdentifier(), post.id))
     } else if (post.isEditing) {
       dispatch(toggleEditing(post, false))
       dispatch(updatePost(post, data))
     } else if (post.isReposting) {
       dispatch(toggleReposting(post, false))
-      dispatch(createPost(data, post.repostId || post.id))
+      dispatch(createPost(data, this.getEditorIdentifier(), post.repostId || post.id))
     }
     if (onSubmit) { onSubmit() }
+    this.clearPersistedData()
   };
 
   cancel = () => {
@@ -81,22 +104,21 @@ class Editor extends Component {
       dispatch(toggleEditing(post, false))
       dispatch(toggleReposting(post, false))
     }
-    dispatch({ type: ACTION_TYPES.POST.PERSIST, payload: { collection: {}, order: [] } })
+    this.clearPersistedData()
   };
 
   render() {
     const { autoPopulate, isComment, post, shouldLoadFromState, shouldPersist } = this.props
     let blocks = []
     let repostContent = []
-    let submitText = 'Post'
+    let submitText
     if (autoPopulate && !shouldPersist) {
       blocks = [{ kind: 'text', data: autoPopulate }]
     }
     if (!post) {
-      // console.log('create new post')
+      submitText = 'Post'
     } else if (isComment) {
       submitText = 'Comment'
-      // console.log('create new comment')
     } else if (post.isReposting) {
       submitText = 'Repost'
       if (post.repostId) {
@@ -113,17 +135,21 @@ class Editor extends Component {
         blocks = post.body
       }
     }
+    const key = `editor${submitText}_${post ? post.id : 0}_${blocks.length + repostContent.length}`
     return (
       <BlockCollection
-        key={ blocks.length + repostContent.length }
         blocks={ blocks }
         cancelAction={ this.cancel }
+        editorId={ this.getEditorIdentifier() }
         isComment={ isComment }
+        key={ key }
+        post={ post }
+        ref="blockCollection"
         repostContent={ repostContent }
-        submitAction={ this.submit }
-        submitText={ submitText }
         shouldLoadFromState={ shouldLoadFromState }
         shouldPersist={ shouldPersist }
+        submitAction={ this.submit }
+        submitText={ submitText }
       />
     )
   }

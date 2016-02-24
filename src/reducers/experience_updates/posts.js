@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
-// import * as RELATIONSHIP_PRIORITY from '../../constants/relationship_types'
+import * as RELATIONSHIP_PRIORITY from '../../constants/relationship_types'
 import { methods as jsonMethods } from '../json'
 
 const methods = {}
@@ -53,13 +53,12 @@ function addOrUpdatePost(newState, action) {
   if (action.type === ACTION_TYPES.POST.CREATE_SUCCESS && newState.pages['/following']) {
     newState.pages['/following'].ids.unshift(response.id)
   }
-  // TODO: hook this up once following/followers/loves is merged
-  // for (const user of newState[MAPPING_TYPES.USERS]) {
-  //   if (user.relationshipPriority === RELATIONSHIP_PRIORITY.SELF &&
-  //       newState.pages[`/${user.username}`]) {
-  //     newState.pages[`/${user.username}`].unshift(response.id)
-  //   }
-  // }
+  for (const user of newState[MAPPING_TYPES.USERS]) {
+    if (user.relationshipPriority === RELATIONSHIP_PRIORITY.SELF &&
+        newState.pages[`/${user.username}`]) {
+      newState.pages[`/${user.username}`].unshift(response.id)
+    }
+  }
   return newState
 }
 methods.addOrUpdatePost = (newState, action) =>

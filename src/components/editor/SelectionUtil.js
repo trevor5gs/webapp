@@ -115,21 +115,14 @@ export function replaceSelectionWithText(text) {
 
 
 // # perhaps better than above method, which seems to fail sometimes
-// placeCaretAtEnd: (el) ->
-//   el.focus()
-//   if typeof window.getSelection isnt "undefined" and typeof document.createRange isnt "undefined"
-//     range = document.createRange()
-//     range.selectNodeContents(el)
-//     range.collapse(false)
-//     sel = window.getSelection()
-//     sel.removeAllRanges()
-//     sel.addRange(range)
-//   else unless typeof document.body.createTextRange is "undefined"
-//     textRange = document.body.createTextRange()
-//     textRange.moveToElementText(el)
-//     textRange.collapse(false)
-//     textRange.select()
-//   return
+export function placeCaretAtEnd(editable) {
+  const range = document.createRange()
+  range.selectNodeContents(editable)
+  range.collapse(false)
+  const sel = document.getSelection()
+  sel.removeAllRanges()
+  sel.addRange(range)
+}
 
 
 export function getLastWordPasted() {

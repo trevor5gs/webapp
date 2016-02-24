@@ -10,8 +10,9 @@ import { PostIcon, CancelIcon, BrowseIcon, CameraIcon } from './EditorIcons'
 class PostActionBar extends Component {
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     cancelAction: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    editorId: PropTypes.string.isRequired,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
   };
@@ -33,9 +34,9 @@ class PostActionBar extends Component {
 
   handleFileBrowser = (e) => {
     const file = e.target.files[0]
-    const { dispatch } = this.props
+    const { dispatch, editorId } = this.props
     if (this.isLegitimateFileType(file)) {
-      return dispatch(savePostImage(file))
+      return dispatch(savePostImage(file, editorId))
     }
     return dispatch(openAlert(
       <Dialog
