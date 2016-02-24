@@ -7,6 +7,7 @@ const initialState = {
   tokenType: null,
   expiresIn: null,
   createdAt: null,
+  refreshToken: null,
   refreshTimeoutId: null,
 }
 
