@@ -10,6 +10,8 @@ const initialState = {
 
 export function authentication(state = initialState, action) {
   switch (action.type) {
+    case ACTION_TYPES.AUTHENTICATION.SCHEDULE_REFRESH:
+      return { ...state, refreshTimeoutId: action.payload.refreshTimeoutId }
     case ACTION_TYPES.AUTHENTICATION.LOGOUT:
     case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
       return { ...initialState }

@@ -28,6 +28,21 @@ export function refreshAuthenticationToken(refreshToken) {
   }
 }
 
+export function scheduleAuthRefresh(refreshToken, timeout) {
+  return dispatch => {
+    const refreshTimeoutId = window.setTimeout(() => {
+      dispatch(refreshAuthenticationToken(refreshToken))
+    }, timeout)
+
+    return dispatch({
+      type: ACTION_TYPES.AUTHENTICATION.SCHEDULE_REFRESH,
+      payload: {
+        refreshTimeoutId,
+      },
+    })
+  }
+}
+
 export function sendForgotPasswordRequest(email) {
   return {
     type: ACTION_TYPES.AUTHENTICATION.FORGOT_PASSWORD,
