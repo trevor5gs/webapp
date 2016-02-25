@@ -133,9 +133,8 @@ class SignIn extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    currentStream: state.gui.currentStream,
-  }
-}
+const mapStateToProps = state => ({
+  currentStream: state.gui.currentStream,
+})
+
 export default connect(mapStateToProps)(SignIn)
