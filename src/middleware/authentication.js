@@ -28,10 +28,13 @@ export const authentication = store => next => action => {
     case REHYDRATE:
       if (action.key === 'authentication') {
         const { createdAt, expiresIn, refreshToken } = payload
+
+        if (!refreshToken) break
+
         const now = new Date()
         const expirationDate = new Date(toMilliseconds(createdAt + expiresIn))
 
-        if (refreshToken && expirationDate < now) {
+        if (expirationDate < now) {
           store.dispatch(refreshAuthenticationToken(refreshToken))
         } else {
           const newTimeout = futureTimeout(expirationDate)
