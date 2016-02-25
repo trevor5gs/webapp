@@ -224,8 +224,10 @@ class PostTools extends Component {
 
   repostPost = () => {
     const { dispatch, post } = this.props
-    dispatch(postActions.toggleReposting(post, true))
-    dispatch(postActions.loadEditablePost(post))
+    if (!post.reposted) {
+      dispatch(postActions.toggleReposting(post, true))
+      dispatch(postActions.loadEditablePost(post))
+    }
   };
 
   deletePost = () => {
