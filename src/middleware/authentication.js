@@ -4,7 +4,7 @@ import {
   refreshAuthenticationToken,
   scheduleAuthRefresh,
 } from '../actions/authentication'
-import * as ACTION_TYPES from '../constants/action_types'
+import { AUTHENTICATION } from '../constants/action_types'
 
 const toMilliseconds = seconds => seconds * 1000
 
@@ -44,8 +44,8 @@ export const authentication = store => next => action => {
       }
 
       break
-    case ACTION_TYPES.AUTHENTICATION.REFRESH_SUCCESS:
-    case ACTION_TYPES.AUTHENTICATION.USER_SUCCESS:
+    case AUTHENTICATION.REFRESH_SUCCESS:
+    case AUTHENTICATION.USER_SUCCESS:
       store.dispatch(scheduleAuthRefresh(
         payload.response.refreshToken,
         toMilliseconds(7100)
