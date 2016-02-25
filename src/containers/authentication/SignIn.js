@@ -24,6 +24,7 @@ class SignIn extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    currentStream: PropTypes.string,
   };
 
   componentWillMount() {
@@ -47,13 +48,13 @@ class SignIn extends Component {
   handleSubmit = async (e) => {
     e.preventDefault()
 
-    const { dispatch } = this.props
+    const { currentStream, dispatch } = this.props
     const action = getUserCredentials(this.emailValue, this.passwordValue)
 
     const success = await dispatch(action)
 
     if (success) {
-      dispatch(routeActions.replace({ pathname: '/discover' }))
+      dispatch(routeActions.replace({ pathname: currentStream }))
     } else {
       this.setState({ failureMessage: 'No dice. Access denied.' })
     }
@@ -132,5 +133,9 @@ class SignIn extends Component {
   }
 }
 
-export default connect()(SignIn)
-
+const mapStateToProps = (state) => {
+  return {
+    currentStream: state.gui.currentStream,
+  }
+}
+export default connect(mapStateToProps)(SignIn)
