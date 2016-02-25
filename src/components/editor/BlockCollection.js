@@ -213,7 +213,10 @@ class BlockCollection extends Component {
   }
 
   onSubmitPost() {
-    this.submit()
+    const { editorId } = this.props
+    if (document.activeElement.parentNode.dataset.editorId === editorId) {
+      this.submit()
+    }
   }
 
   onInsertEmoji = ({ value }) => {
@@ -288,7 +291,6 @@ class BlockCollection extends Component {
       if (block && block.kind === 'text') {
         const selector = `[data-editor-id="${editorId}"][data-collection-id="${uid}"]`
         block.data = document.querySelector(selector).textContent
-        break
       }
     }
     this.setState({ collection })
