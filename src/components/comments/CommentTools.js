@@ -47,7 +47,7 @@ class CommentTools extends Component {
       if (isOwnComment) {
         cells.push(
           <span className="PostTool EditTool ShyTool" key={`EditTool_${comment.id}`}>
-            <button>
+            <button onClick={ this.editComment }>
               <PencilIcon />
               <Hint>Edit</Hint>
             </button>
@@ -118,6 +118,12 @@ class CommentTools extends Component {
   replyToComment = () => {
     // TODO: hook this up with the editor
   };
+
+  editComment = () => {
+    const { comment, dispatch } = this.props
+    dispatch(commentActions.toggleEditing(comment, true))
+    dispatch(commentActions.loadEditableComment(comment))
+  }
 
   flagComment = () => {
     const { dispatch } = this.props

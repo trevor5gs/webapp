@@ -11,6 +11,7 @@ class Block extends Component {
       PropTypes.string,
       PropTypes.object,
     ]).isRequired,
+    editorId: PropTypes.string.isRequired,
     kind: PropTypes.oneOf([
       'block',
       'embed',
@@ -32,12 +33,13 @@ class Block extends Component {
   };
 
   render() {
-    const { children, className, data, kind, uid } = this.props
+    const { children, className, data, kind, editorId, uid } = this.props
     const { width, height } = data
     return (
       <div
         className="editor-block"
         data-collection-id={ uid }
+        data-editor-id={ editorId }
         ref="editorBlock"
       >
         <div
@@ -48,7 +50,7 @@ class Block extends Component {
         >
           { children }
         </div>
-        <RegionTools onRemoveBlock={ this.removeBlock }/>
+        <RegionTools editorId={ editorId } onRemoveBlock={ this.removeBlock }/>
       </div>
     )
   }

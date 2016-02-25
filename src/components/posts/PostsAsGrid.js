@@ -12,6 +12,8 @@ const DumbGridPost = (props) => {
 }
 
 DumbGridPost.propTypes = {
+  isEditing: PropTypes.bool,
+  isReposting: PropTypes.bool,
   post: PropTypes.object.isRequired,
   showComments: PropTypes.bool,
 }
@@ -21,6 +23,7 @@ function mapGridStateToProps(state, ownProps) {
   return {
     currentUser: state.profile,
     showComments: post.showComments,
+    isReposting: post.isReposting,
   }
 }
 
@@ -37,12 +40,14 @@ class PostsAsGrid extends Component {
 
   renderColumn(posts, index) {
     return (
-      <div className="Column" key={`column_${index}`}>
+      <div className="Column" key={ `column_${index}` }>
         {posts.map((post) =>
            <GridPost
-             ref={`postGrid_${post.id}`}
-             key={post.id}
-             post={post}
+             isEditing={ post.isEditing }
+             isReposting={ post.isReposting }
+             key={ post.id }
+             post={ post }
+             ref={ `postGrid_${post.id}` }
            />
         )}
       </div>
@@ -70,3 +75,4 @@ class PostsAsGrid extends Component {
 }
 
 export default PostsAsGrid
+

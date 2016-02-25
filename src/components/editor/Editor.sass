@@ -34,6 +34,12 @@
 .editor-actions .PostActionButton + .PostActionButton
   margin-left: rem(20)
 
+.editor.isComment:before
+  display: none
+
+.editor.isComment .Avatar
+  margin-bottom: rem(10)
+
 // -------------------------------------
 
 // "Say Ello" placeholder text
@@ -46,7 +52,28 @@
   pointer-events: none
 .editor.hasContent:after
   display: none
+.editor.isComment:after
+  top: rem(91)
+  left: rem(41)
 
+@media(min-width: #{$break-2})
+  .editor.isComment
+    padding-left: rem(60)
+    max-width: rem(640)
+  .editor.isComment:before
+    display: block
+    top: rem(10)
+    left: rem(40)
+  .editor.isComment .Avatar
+    position: absolute
+    top: 0
+    left: 0
+    margin-bottom: 0
+  .editor.hasContent:after
+    display: none
+  .editor.isComment:after
+    top: rem(51)
+    left: rem(101)
 
 // editor has a mention - turn background yellow
 .editor.hasMention .editor-region
@@ -79,8 +106,10 @@
   padding: rem(20)
   border: 1px solid #aaa
 
+.editor-block [kind="block"],
 .editor-block [kind="embed"],
-.editor-block [kind="image"]
+.editor-block [kind="image"],
+.editor-block [kind="repost"]
   user-select: none
 
 // .editor-block.reposted-content [contenteditable="false"]
@@ -100,3 +129,7 @@
   left: rem(40)
   right: rem(40)
 
+.editor.isComment .DragBlock
+  left: rem(80)
+
+// -------------------------------------

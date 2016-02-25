@@ -176,6 +176,16 @@ export function commentsForPost(post) {
     params,
   }
 }
+export function createComment(postId) {
+  return {
+    path: getAPIPath(`posts/${postId}/comments`),
+  }
+}
+export function editComment(comment) {
+  return {
+    path: getAPIPath(`posts/${comment.postId}/comments/${comment.id}`),
+  }
+}
 export function deleteComment(comment) {
   return {
     path: getAPIPath(`posts/${comment.postId}/comments/${comment.id}`),

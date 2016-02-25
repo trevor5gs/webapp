@@ -5,6 +5,7 @@ import { REHYDRATE } from 'redux-persist/constants'
 import { uniq } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
+import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
 import commentMethods from './experience_updates/comments'
 import postMethods from './experience_updates/posts'
 import relationshipMethods from './experience_updates/relationships'
@@ -15,6 +16,34 @@ const methods = {}
 let path = '/'
 let prevTerms = null
 let hasLoadedFirstStream = false
+
+function updateUserCount(newState, userId, prop, delta) {
+  const count = newState[MAPPING_TYPES.USERS][userId][prop]
+  const obj = { id: userId }
+  obj[prop] = Number(count) + delta
+  methods.mergeModel(
+    newState,
+    MAPPING_TYPES.USERS,
+    obj,
+  )
+  return newState
+}
+methods.updateUserCount = (newState, userId, prop, delta) =>
+  updateUserCount(newState, userId, prop, delta)
+
+function getCurrentUser(state) {
+  for (const id in state[MAPPING_TYPES.USERS]) {
+    if (state[MAPPING_TYPES.USERS].hasOwnProperty(id)) {
+      const user = state[MAPPING_TYPES.USERS][id]
+      if (user.relationshipPriority === RELATIONSHIP_PRIORITY.SELF) {
+        return user
+      }
+    }
+  }
+  return null
+}
+methods.getCurrentUser = (state) =>
+  getCurrentUser(state)
 
 function mergeModel(state, type, params) {
   if (params.id) {
@@ -184,6 +213,16 @@ methods.clearSearchResults = (state, newState, action) =>
 
 function deleteModel(state, newState, action, mappingType) {
   const { model } = action.payload
+  switch (action.type) {
+    case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
+      newState = commentMethods.addOrUpdateComment(newState, { ...action, payload: { ...action.payload, postId: model.postId } })
+      break
+    case ACTION_TYPES.POST.DELETE_SUCCESS:
+      newState = postMethods.addOrUpdatePost(newState, action)
+      break
+    default:
+      break
+  }
   if (!newState[`deleted_${mappingType}`]) {
     newState[`deleted_${mappingType}`] = []
   }
@@ -214,15 +253,23 @@ export default function json(state = {}, action = { type: '' }) {
   switch (action.type) {
     case ACTION_TYPES.ADD_NEW_IDS_TO_RESULT:
       return methods.addNewIdsToResult(state, newState)
+    case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
+    case ACTION_TYPES.COMMENT.CREATE_FAILURE:
+    case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
+      return commentMethods.addOrUpdateComment(newState, action)
     case ACTION_TYPES.COMMENT.DELETE_REQUEST:
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
     case ACTION_TYPES.COMMENT.DELETE_FAILURE:
       return methods.deleteModel(state, newState, action, MAPPING_TYPES.COMMENTS)
+    case ACTION_TYPES.COMMENT.TOGGLE_EDITING:
+      return commentMethods.toggleEditing(state, newState, action)
     case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
+    case ACTION_TYPES.COMMENT.EDITABLE_SUCCESS:
     case ACTION_TYPES.POST.EDITABLE_SUCCESS:
       // fall through to parse the rest
       break
+    case ACTION_TYPES.POST.CREATE_FAILURE:
     case ACTION_TYPES.POST.CREATE_SUCCESS:
     case ACTION_TYPES.POST.UPDATE_SUCCESS:
       return postMethods.addOrUpdatePost(newState, action)
@@ -245,8 +292,6 @@ export default function json(state = {}, action = { type: '' }) {
       return relationshipMethods.batchUpdateRelationship(newState, action)
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL:
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_REQUEST:
-    case ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS:
-    case ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE:
       return relationshipMethods.updateRelationship(newState, action)
     case REHYDRATE:
       // only keep the items that have been deleted

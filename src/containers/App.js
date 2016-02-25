@@ -25,6 +25,10 @@ class App extends Component {
   static propTypes = {
     authentication: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
+    completions: PropTypes.shape({
+      data: PropTypes.array,
+      type: PropTypes.string,
+    }),
     dispatch: PropTypes.func.isRequired,
     editorStore: PropTypes.object.isRequired,
     emoji: PropTypes.object.isRequired,
@@ -100,9 +104,9 @@ class App extends Component {
   }
 
   onHideCompleter() {
-    const { dispatch, editorStore } = this.props
+    const { completions, dispatch } = this.props
     this.setState({ hideCompleter: true })
-    if (editorStore.completions) {
+    if (completions) {
       dispatch({ type: ACTION_TYPES.POST.AUTO_COMPLETE_CLEAR })
     }
   }
@@ -157,7 +161,7 @@ class App extends Component {
   };
 
   render() {
-    const { pathname, children, authentication, editorStore } = this.props
+    const { authentication, children, completions, pathname } = this.props
     const { activeTools, coordinates, hideCompleter, hideTextTools } = this.state
     const { isLoggedIn } = authentication
     const appClasses = classNames(
@@ -182,9 +186,9 @@ class App extends Component {
         <main className="Main" data-pathname={pathname} role="main">
           {children}
         </main>
-        { !hideCompleter && editorStore.completions ?
+        { !hideCompleter && completions ?
           <Completer
-            completions={ editorStore.completions }
+            completions={ completions }
             onCancel={ this.handleCancelAutoCompleter }
             onCompletion={ this.handleCompletion }
           /> :
@@ -219,7 +223,7 @@ App.preRender = (store) => {
 function mapStateToProps(state) {
   return {
     authentication: state.authentication,
-    editorStore: state.editor,
+    completions: state.editor.completions,
     emoji: state.emoji,
     pathname: state.routing.location.pathname,
   }
