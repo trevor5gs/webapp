@@ -135,8 +135,9 @@ class UserDetail extends Component {
             this.renderZeroStates(user)
           }
           <StreamComponent
-            ref="streamComponent"
             action={ streamAction }
+            key={ params.username }
+            ref="streamComponent"
           />
         </div>
       </section>
