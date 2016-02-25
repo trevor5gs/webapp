@@ -21,9 +21,10 @@ class PostDetail extends Component {
       <section className="PostDetail Panel">
         <Helmet title={`${params.username}`} />
         <StreamComponent
-          ref="streamComponent"
           action={loadPostDetail(`~${params.token}`)}
           initModel={{ collection: MAPPING_TYPES.POSTS, findObj: { token: params.token } }}
+          key={ params.token }
+          ref="streamComponent"
         />
       </section>
     )
