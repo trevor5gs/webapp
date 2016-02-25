@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
-import * as RELATIONSHIP_PRIORITY from '../../constants/relationship_types'
+import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { methods as jsonMethods } from '../json'
 
 const methods = {}
@@ -46,18 +46,36 @@ function updatePostLoves(state, newState, action) {
 methods.updatePostLoves = (state, newState, action) =>
   updatePostLoves(state, newState, action)
 
-// TODO: on create success we should increase user's post count
-// on delete we should decrease it by one (should happen in profile too)
+function updateUserPostsCount(newState, userId, delta) {
+  const postsCount = newState[MAPPING_TYPES.USERS][userId].postsCount
+  jsonMethods.mergeModel(
+    newState,
+    MAPPING_TYPES.USERS,
+    {
+      id: userId,
+      postsCount: Number(postsCount) + delta,
+    }
+  )
+  return newState
+}
+
 function addOrUpdatePost(newState, action) {
   const { response } = action.payload
   newState[MAPPING_TYPES.POSTS][response.id] = response
-  if (action.type === ACTION_TYPES.POST.CREATE_SUCCESS && newState.pages['/following']) {
-    newState.pages['/following'].ids.unshift(response.id)
-  }
-  for (const user of newState[MAPPING_TYPES.USERS]) {
-    if (user.relationshipPriority === RELATIONSHIP_PRIORITY.SELF &&
-        newState.pages[`/${user.username}`]) {
-      newState.pages[`/${user.username}`].unshift(response.id)
+  if (action.type === ACTION_TYPES.POST.CREATE_SUCCESS) {
+    if (newState.pages['/following']) {
+      newState.pages['/following'].ids.unshift(response.id)
+    }
+    for (const id in newState[MAPPING_TYPES.USERS]) {
+      if (newState[MAPPING_TYPES.USERS].hasOwnProperty(id)) {
+        const user = newState[MAPPING_TYPES.USERS][id]
+        if (user.relationshipPriority === RELATIONSHIP_PRIORITY.SELF) {
+          updateUserPostsCount(newState, user.id, 1)
+          if (newState.pages[`/${user.username}`]) {
+            newState.pages[`/${user.username}`].ids.unshift(response.id)
+          }
+        }
+      }
     }
   }
   return newState
