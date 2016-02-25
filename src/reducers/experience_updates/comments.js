@@ -20,9 +20,21 @@ function updateCommentsCount(newState, postId, delta) {
 
 function addOrUpdateComment(newState, action) {
   const { postId } = action.payload
+  let post
+  let response
   switch (action.type) {
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
+    case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
+      response = action.payload.response
+      newState[MAPPING_TYPES.COMMENTS][response.id] = response
+      post = newState[MAPPING_TYPES.POSTS][postId]
+      if (action.type === ACTION_TYPES.COMMENT.UPDATE_SUCCESS) { return newState }
+      // add the comment to the linked array
+      if (post.links && post.links.comments) {
+        post.links.comments.ids.unshift(`${action.payload.response.id}`)
+      }
       return updateCommentsCount(newState, postId, 1)
+    case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
       return updateCommentsCount(newState, postId, -1)
     default:

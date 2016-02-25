@@ -184,6 +184,13 @@ methods.clearSearchResults = (state, newState, action) =>
 
 function deleteModel(state, newState, action, mappingType) {
   const { model } = action.payload
+  switch (action.type) {
+    case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
+      newState = commentMethods.addOrUpdateComment(newState, { ...action, payload: { ...action.payload, postId: model.postId } })
+      break
+    default:
+      break
+  }
   if (!newState[`deleted_${mappingType}`]) {
     newState[`deleted_${mappingType}`] = []
   }
@@ -216,6 +223,7 @@ export default function json(state = {}, action = { type: '' }) {
       return methods.addNewIdsToResult(state, newState)
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
+    case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
       return commentMethods.addOrUpdateComment(newState, action)
     case ACTION_TYPES.COMMENT.DELETE_REQUEST:
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:

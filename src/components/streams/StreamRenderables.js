@@ -138,7 +138,7 @@ export function postDetail(posts, json) {
   }
   return (
     <div className="PostDetails Posts asList">
-      <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList">
+      <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList" >
         <PostParser
           post={ post }
           isEditing={ post.isEditing }
@@ -150,7 +150,11 @@ export function postDetail(posts, json) {
         <section className="Comments">
           {comments.map((comment) =>
             <div ref={ `commentList_${comment.id}` } key={ comment.id } className="CommentList">
-              <CommentParser comment={ comment } isGridLayout={ false } />
+              <CommentParser
+                comment={ comment }
+                isEditing={ comment.isEditing }
+                isGridLayout={ false }
+              />
             </div>
           )}
         </section>
@@ -163,8 +167,13 @@ export function commentsAsList(comments) {
   return (
     <div>
       {comments.data.map(comment =>
-        <CommentParser key={`CommentParser_${comment.id}`} comment={comment} isGridLayout={false} />
-       )}
+        <CommentParser
+          key={ `CommentParser_${comment.id}` }
+          comment={ comment }
+          isEditing={ comment.isEditing }
+          isGridLayout={ false }
+        />
+      )}
     </div>
   )
 }

@@ -37,6 +37,7 @@ function footer(comment, author, currentUser, post) {
 function parseComment(comment, author, currentUser, post, isGridLayout = true) {
   const cells = []
   const content = isGridLayout ? comment.summary : comment.content
+  cells.push(header(comment, author))
   cells.push(
     <div className="CommentBody" key={ `CommentBody${comment.id}` } >
       { body(content, comment.id, isGridLayout) }
@@ -60,17 +61,10 @@ class CommentParser extends Component {
 
   render() {
     const { comment, author, assets, currentUser, isGridLayout, post } = this.props
-
-    if (!comment) {
-      return null
-    }
-
+    if (!comment) { return null }
     setModels({ assets })
-    const commentHeader = header(comment, author)
-
     return (
       <div>
-        {commentHeader}
         { comment.isEditing && comment.body ?
           <Editor isComment comment={ comment } /> :
           parseComment(comment, author, currentUser, post, isGridLayout)
@@ -81,12 +75,13 @@ class CommentParser extends Component {
 }
 
 const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
-  const comment = ownProps.comment
+  const comment = json[MAPPING_TYPES.COMMENTS][ownProps.comment.id]
   const author = json[MAPPING_TYPES.USERS][comment.authorId]
   const post = json[MAPPING_TYPES.POSTS][comment.postId]
   const assets = json.assets;
   return {
     assets,
+    isEditing: comment.isEditing,
     currentUser,
     author,
     post,
@@ -94,3 +89,4 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
 }
 
 export default connect(mapStateToProps)(CommentParser)
+

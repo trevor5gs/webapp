@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { openModal, closeModal } from '../../actions/modals'
-import { toggleEditing as toggleCommentEditing } from '../../actions/comments'
+import { toggleEditing as toggleCommentEditing, updateComment } from '../../actions/comments'
 import {
   createComment,
   createPost,
@@ -40,6 +40,7 @@ class Editor extends Component {
     if (comment) {
       return `${comment.postId}_${comment.id}`
     }
+    // TODO: make this unique for zero states too
     return `${post ? post.id : 0}`
   }
 
@@ -60,6 +61,7 @@ class Editor extends Component {
     if (isComment) {
       if (comment && comment.isEditing) {
         dispatch(toggleCommentEditing(comment, false))
+        dispatch(updateComment(comment, data))
       } else {
         dispatch(createComment(data, this.getEditorIdentifier(), post.id))
       }
@@ -81,7 +83,7 @@ class Editor extends Component {
     const { comment, isComment, post } = this.props
     if (isComment) {
       if (comment && comment.isEditing) {
-        this.launchCancelConfirm('comment edit')
+        this.launchCancelConfirm('edit')
       } else {
         this.launchCancelConfirm('comment')
       }
@@ -110,7 +112,7 @@ class Editor extends Component {
   };
 
   cancelConfirmed = () => {
-    const { comment, dispatch, post } = this.props
+    const { comment, dispatch, post, shouldPersist } = this.props
     this.closeModal()
     dispatch(closeOmnibar())
     if (post) {
@@ -120,7 +122,9 @@ class Editor extends Component {
     if (comment) {
       dispatch(toggleCommentEditing(comment, false))
     }
-    this.clearPersistedData()
+    if (shouldPersist) {
+      this.clearPersistedData()
+    }
   };
 
   render() {

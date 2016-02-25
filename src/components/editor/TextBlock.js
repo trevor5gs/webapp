@@ -18,7 +18,7 @@ class TextBlock extends Component {
   }
 
   componentDidUpdate() {
-    placeCaretAtEnd(document.querySelector('.editable.text'))
+    placeCaretAtEnd(this.refs.block.refs.text)
   }
 
   getData() {
@@ -45,9 +45,9 @@ class TextBlock extends Component {
       <Block
         { ...this.props }
         contentEditable
+        dangerouslySetInnerHTML={{ __html: data }}
         onInput={ this.handleInput }
         onPaste={ this.handlePaste }
-        dangerouslySetInnerHTML={{ __html: data }}
         ref="block"
       />
     )

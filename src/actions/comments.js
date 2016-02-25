@@ -23,6 +23,18 @@ export function loadEditableComment(comment) {
   }
 }
 
+export function updateComment(comment, body) {
+  return {
+    type: ACTION_TYPES.COMMENT.UPDATE,
+    payload: {
+      body: { body },
+      endpoint: api.editComment(comment),
+      method: 'PATCH',
+    },
+    meta: {},
+  }
+}
+
 export function deleteComment(comment) {
   return {
     type: ACTION_TYPES.COMMENT.DELETE,

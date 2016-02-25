@@ -46,7 +46,8 @@ function updatePostLoves(state, newState, action) {
 methods.updatePostLoves = (state, newState, action) =>
   updatePostLoves(state, newState, action)
 
-
+// TODO: on create success we should increase user's post count
+// on delete we should decrease it by one (should happen in profile too)
 function addOrUpdatePost(newState, action) {
   const { response } = action.payload
   newState[MAPPING_TYPES.POSTS][response.id] = response

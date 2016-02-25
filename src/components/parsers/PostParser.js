@@ -165,9 +165,11 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
 
   let newProps = {
     assets,
-    currentUser,
-    post,
     author,
+    currentUser,
+    isEditing: post.isEditing,
+    isReposting: post.isReposting,
+    post,
   }
 
   if (isRepost(post)) {
@@ -182,3 +184,4 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
 }
 
 export default connect(mapStateToProps)(PostParser)
+
