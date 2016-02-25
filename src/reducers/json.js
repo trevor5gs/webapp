@@ -217,6 +217,9 @@ function deleteModel(state, newState, action, mappingType) {
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
       newState = commentMethods.addOrUpdateComment(newState, { ...action, payload: { ...action.payload, postId: model.postId } })
       break
+    case ACTION_TYPES.POST.DELETE_SUCCESS:
+      newState = postMethods.addOrUpdatePost(newState, action)
+      break
     default:
       break
   }
@@ -266,6 +269,7 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.POST.EDITABLE_SUCCESS:
       // fall through to parse the rest
       break
+    case ACTION_TYPES.POST.CREATE_FAILURE:
     case ACTION_TYPES.POST.CREATE_SUCCESS:
     case ACTION_TYPES.POST.UPDATE_SUCCESS:
       return postMethods.addOrUpdatePost(newState, action)

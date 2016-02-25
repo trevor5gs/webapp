@@ -47,19 +47,31 @@ methods.updatePostLoves = (state, newState, action) =>
   updatePostLoves(state, newState, action)
 
 function addOrUpdatePost(newState, action) {
-  const { response } = action.payload
-  newState[MAPPING_TYPES.POSTS][response.id] = response
-  if (action.type === ACTION_TYPES.POST.CREATE_SUCCESS) {
-    if (newState.pages['/following']) {
-      newState.pages['/following'].ids.unshift(response.id)
-    }
-    const user = jsonMethods.getCurrentUser(newState)
-    if (user) {
-      jsonMethods.updateUserCount(newState, user.id, 'postsCount', 1)
-      if (newState.pages[`/${user.username}`]) {
-        newState.pages[`/${user.username}`].ids.unshift(response.id)
+  const { model, response } = action.payload
+  const user = model ?
+    newState[MAPPING_TYPES.USERS][model.authorId] :
+    jsonMethods.getCurrentUser(newState)
+  switch (action.type) {
+    case ACTION_TYPES.POST.CREATE_SUCCESS:
+      newState[MAPPING_TYPES.POSTS][response.id] = response
+      if (newState.pages['/following']) {
+        newState.pages['/following'].ids.unshift(response.id)
       }
-    }
+      if (user) {
+        jsonMethods.updateUserCount(newState, user.id, 'postsCount', 1)
+        if (newState.pages[`/${user.username}`]) {
+          newState.pages[`/${user.username}`].ids.unshift(response.id)
+        }
+      }
+      return newState
+    case ACTION_TYPES.POST.DELETE_SUCCESS:
+    case ACTION_TYPES.POST.CREATE_FAILURE:
+      if (user) {
+        jsonMethods.updateUserCount(newState, user.id, 'postsCount', -1)
+      }
+      return newState
+    default:
+      return newState
   }
   return newState
 }
