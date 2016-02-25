@@ -13,6 +13,10 @@ class TextBlock extends Component {
     onInput: PropTypes.func.isRequired,
   };
 
+  componentDidMount() {
+    placeCaretAtEnd(this.refs.block.refs.text)
+  }
+
   shouldComponentUpdate(nextProps) {
     return !(nextProps.data === this.refs.block.refs.text.innerHTML)
   }
