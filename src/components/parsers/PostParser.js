@@ -75,10 +75,11 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
   const cells = []
   const postDetailPath = getPostDetailPath(author, post)
 
+  if (post.contentWarning) {
+    cells.push(<ContentWarningButton post={post}/>)
+  }
+
   if (post.repostContent && post.repostContent.length) {
-    if (post.contentWarning) {
-      cells.push(<ContentWarningButton post={post}/>)
-    }
     // this is weird, but the post summary is
     // actually the repost summary on reposts
     if (isGridLayout) {
@@ -90,10 +91,6 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
       }
     }
   } else {
-    if (post.contentWarning) {
-      cells.push(<ContentWarningButton post={post}/>)
-    }
-
     const content = isGridLayout ? post.summary : post.content
     cells.push(body(content, post.id, isGridLayout, postDetailPath))
   }
