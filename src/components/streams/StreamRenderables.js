@@ -154,6 +154,7 @@ export function postDetail(posts, json) {
                 comment={ comment }
                 isEditing={ comment.isEditing }
                 isGridLayout={ false }
+                post={ post }
               />
             </div>
           )}

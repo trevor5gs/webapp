@@ -77,7 +77,7 @@ class CommentParser extends Component {
 const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
   const comment = json[MAPPING_TYPES.COMMENTS][ownProps.comment.id]
   const author = json[MAPPING_TYPES.USERS][comment.authorId]
-  const post = json[MAPPING_TYPES.POSTS][comment.postId]
+  const post = ownProps.post || json[MAPPING_TYPES.POSTS][comment.postId]
   const assets = json.assets;
   return {
     assets,
