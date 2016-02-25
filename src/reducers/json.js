@@ -5,6 +5,7 @@ import { REHYDRATE } from 'redux-persist/constants'
 import { uniq } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
+import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
 import commentMethods from './experience_updates/comments'
 import postMethods from './experience_updates/posts'
 import relationshipMethods from './experience_updates/relationships'
@@ -15,6 +16,34 @@ const methods = {}
 let path = '/'
 let prevTerms = null
 let hasLoadedFirstStream = false
+
+function updateUserCount(newState, userId, prop, delta) {
+  const count = newState[MAPPING_TYPES.USERS][userId][prop]
+  const obj = { id: userId }
+  obj[prop] = Number(count) + delta
+  methods.mergeModel(
+    newState,
+    MAPPING_TYPES.USERS,
+    obj,
+  )
+  return newState
+}
+methods.updateUserCount = (newState, userId, prop, delta) =>
+  updateUserCount(newState, userId, prop, delta)
+
+function getCurrentUser(state) {
+  for (const id in state[MAPPING_TYPES.USERS]) {
+    if (state[MAPPING_TYPES.USERS].hasOwnProperty(id)) {
+      const user = state[MAPPING_TYPES.USERS][id]
+      if (user.relationshipPriority === RELATIONSHIP_PRIORITY.SELF) {
+        return user
+      }
+    }
+  }
+  return null
+}
+methods.getCurrentUser = (state) =>
+  getCurrentUser(state)
 
 function mergeModel(state, type, params) {
   if (params.id) {
@@ -259,8 +288,6 @@ export default function json(state = {}, action = { type: '' }) {
       return relationshipMethods.batchUpdateRelationship(newState, action)
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL:
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_REQUEST:
-    case ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS:
-    case ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE:
       return relationshipMethods.updateRelationship(newState, action)
     case REHYDRATE:
       // only keep the items that have been deleted

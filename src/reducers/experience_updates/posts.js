@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
-import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { methods as jsonMethods } from '../json'
 
 const methods = {}
@@ -32,6 +31,7 @@ function updatePostLoves(state, newState, action) {
     default:
       return state
   }
+  jsonMethods.updateUserCount(newState, model.authorId, 'lovesCount', delta)
   jsonMethods.mergeModel(
     newState,
     MAPPING_TYPES.POSTS,
@@ -46,19 +46,6 @@ function updatePostLoves(state, newState, action) {
 methods.updatePostLoves = (state, newState, action) =>
   updatePostLoves(state, newState, action)
 
-function updateUserPostsCount(newState, userId, delta) {
-  const postsCount = newState[MAPPING_TYPES.USERS][userId].postsCount
-  jsonMethods.mergeModel(
-    newState,
-    MAPPING_TYPES.USERS,
-    {
-      id: userId,
-      postsCount: Number(postsCount) + delta,
-    }
-  )
-  return newState
-}
-
 function addOrUpdatePost(newState, action) {
   const { response } = action.payload
   newState[MAPPING_TYPES.POSTS][response.id] = response
@@ -66,15 +53,11 @@ function addOrUpdatePost(newState, action) {
     if (newState.pages['/following']) {
       newState.pages['/following'].ids.unshift(response.id)
     }
-    for (const id in newState[MAPPING_TYPES.USERS]) {
-      if (newState[MAPPING_TYPES.USERS].hasOwnProperty(id)) {
-        const user = newState[MAPPING_TYPES.USERS][id]
-        if (user.relationshipPriority === RELATIONSHIP_PRIORITY.SELF) {
-          updateUserPostsCount(newState, user.id, 1)
-          if (newState.pages[`/${user.username}`]) {
-            newState.pages[`/${user.username}`].ids.unshift(response.id)
-          }
-        }
+    const user = jsonMethods.getCurrentUser(newState)
+    if (user) {
+      jsonMethods.updateUserCount(newState, user.id, 'postsCount', 1)
+      if (newState.pages[`/${user.username}`]) {
+        newState.pages[`/${user.username}`].ids.unshift(response.id)
       }
     }
   }
