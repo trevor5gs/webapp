@@ -53,5 +53,5 @@ export const authentication = store => next => action => {
       break
   }
 
-  next(action)
+  return next(action)
 }
