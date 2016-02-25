@@ -42,6 +42,15 @@ export function forgotPassword() {
     path: getAPIPath('forgot-password'),
   }
 }
+
+export function refreshAuthToken(refreshToken) {
+  const params = { refresh_token: refreshToken }
+  return {
+    path: `${basePath()}/oauth/refresh`,
+    params,
+  }
+}
+
 // Current User Profile
 export function profilePath() {
   return {
@@ -254,4 +263,3 @@ export function relationshipAdd(userId, priority) {
 }
 
 export { API_VERSION, getAPIPath, PER_PAGE }
-

@@ -65,6 +65,7 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.LOAD_NEXT_CONTENT &&
         type !== ACTION_TYPES.AUTHENTICATION.FORGOT_PASSWORD &&
         type !== ACTION_TYPES.AUTHENTICATION.USER &&
+        type !== ACTION_TYPES.AUTHENTICATION.REFRESH &&
         type !== ACTION_TYPES.COMMENT.DELETE &&
         type !== ACTION_TYPES.COMMENT.UPDATE &&
         type !== ACTION_TYPES.COMMENT.FLAG &&
@@ -205,4 +206,3 @@ export const requester = store => next => action => {
 }
 
 export { runningFetches }
-

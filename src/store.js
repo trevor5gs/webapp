@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router'
 import { syncHistory } from 'react-router-redux'
 import { combineReducers, compose, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
-import { analytics, requester, uploader } from './middleware'
+import { analytics, authentication, requester, uploader } from './middleware'
 import * as reducers from './reducers'
 
 const reducer = combineReducers(reducers)
@@ -15,7 +15,15 @@ if (typeof window !== 'undefined') {
   const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
   store = compose(
     autoRehydrate(),
-    applyMiddleware(thunk, reduxRouterMiddleware, uploader, requester, analytics, logger),
+    applyMiddleware(
+      thunk,
+      authentication,
+      reduxRouterMiddleware,
+      uploader,
+      requester,
+      analytics,
+      logger
+    ),
   )(createStore)(reducer, window.__INITIAL_STATE__ || {})
 } else {
   store = compose(
@@ -24,4 +32,3 @@ if (typeof window !== 'undefined') {
 }
 
 export default store
-
