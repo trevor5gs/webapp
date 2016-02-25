@@ -1,4 +1,10 @@
-import { AUTHENTICATION, EMOJI, POST, PROFILE } from '../constants/action_types'
+import {
+  AUTHENTICATION,
+  EDITOR,
+  EMOJI,
+  POST,
+  PROFILE,
+} from '../constants/action_types'
 import { suggestEmoji } from '../components/completers/EmojiSuggester'
 
 const initialState = {
@@ -9,6 +15,18 @@ const initialState = {
 function editorObject(state = {}, action) {
   let obj
   switch (action.type) {
+    case EDITOR.APPEND_TEXT:
+      return {
+        ...state,
+        type: action.type,
+        appendText: action.payload.text,
+      }
+    case EDITOR.CLEAR_APPENDED_TEXT:
+      return {
+        ...state,
+        type: action.type,
+        appendText: null,
+      }
     case POST.TMP_IMAGE_CREATED:
     case POST.IMAGE_BLOCK_CREATED:
       return {
@@ -44,6 +62,8 @@ export function editor(state = initialState, action) {
   let editorId
   let obj
   switch (action.type) {
+    case EDITOR.APPEND_TEXT:
+    case EDITOR.CLEAR_APPENDED_TEXT:
     case POST.CREATE_SUCCESS:
     case POST.IMAGE_BLOCK_CREATED:
     case POST.PERSIST:

@@ -15,6 +15,14 @@ import { closeOmnibar } from '../../actions/omnibar'
 import BlockCollection from './BlockCollection'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
 
+export function getEditorId(post, comment) {
+  if (comment) {
+    return `${comment.postId}_${comment.id}`
+  }
+  // TODO: make this unique for zero states too
+  return `${post ? post.id : 0}`
+}
+
 class Editor extends Component {
 
   static propTypes = {
@@ -37,11 +45,7 @@ class Editor extends Component {
 
   getEditorIdentifier() {
     const { comment, post } = this.props
-    if (comment) {
-      return `${comment.postId}_${comment.id}`
-    }
-    // TODO: make this unique for zero states too
-    return `${post ? post.id : 0}`
+    return getEditorId(post, comment)
   }
 
   clearPersistedData() {

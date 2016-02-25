@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
+import * as ACTION_TYPES from '../../constants/action_types'
 import { openModal, closeModal } from '../../actions/modals'
 import * as commentActions from '../../actions/comments'
 import { trackEvent } from '../../actions/tracking'
@@ -15,6 +16,7 @@ import {
   ReplyIcon,
   XBoxIcon,
 } from '../posts/PostIcons'
+import { getEditorId } from '../editor/Editor'
 
 class CommentTools extends Component {
 
@@ -116,7 +118,14 @@ class CommentTools extends Component {
   }
 
   replyToComment = () => {
-    // TODO: hook this up with the editor
+    const { author, comment, dispatch } = this.props
+    dispatch({
+      type: ACTION_TYPES.EDITOR.APPEND_TEXT,
+      payload: {
+        editorId: getEditorId({ id: comment.postId }),
+        text: `@${author.username} `,
+      },
+    })
   };
 
   editComment = () => {

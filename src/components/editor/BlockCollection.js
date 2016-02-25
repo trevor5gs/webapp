@@ -83,6 +83,12 @@ class BlockCollection extends Component {
     const { collection } = this.state
     let newBlock = null
     switch (editorStore.type) {
+      case ACTION_TYPES.EDITOR.APPEND_TEXT:
+        if (editorStore.appendText && editorStore.appendText.length) {
+          this.appendText(editorStore.appendText)
+          dispatch({ type: ACTION_TYPES.EDITOR.CLEAR_APPENDED_TEXT, payload: { editorId } })
+        }
+        break
       case ACTION_TYPES.POST.TMP_IMAGE_CREATED:
         this.removeEmptyTextBlock()
         newBlock = this.add({ kind: 'image', data: { url: editorStore.url } })
