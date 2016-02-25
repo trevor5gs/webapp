@@ -1,4 +1,3 @@
-import _ from 'lodash/fp'
 import { REHYDRATE } from 'redux-persist/constants'
 import {
   refreshAuthenticationToken,
@@ -8,18 +7,17 @@ import { AUTHENTICATION } from '../constants/action_types'
 
 const toMilliseconds = seconds => seconds * 1000
 
-const fromNow = (time) => time - new Date()
-const atLeastFifty = _.partial(Math.max, 50)
-// Reverse arity, curried version of https://lodash.com/docs#subtract
-const subtract = subtrahend => minuend => minuend - subtrahend
-
 // Get a timeout value about 100ms before a given date,
-// or 50ms from this moment if the given date is too close
-const futureTimeout = _.pipe(
-  fromNow,
-  subtract(100),
-  atLeastFifty
-)
+// or at least not in the past
+const futureTimeout = time => {
+  let msFromNow = time - new Date()
+
+  // Establish a lead time of 100ms before expiration date
+  msFromNow = msFromNow - 100
+
+  // Let's not set a timeout for in the past
+  return Math.max(msFromNow, 0)
+}
 
 export const authentication = store => next => action => {
   const { payload, type } = action
