@@ -39,6 +39,7 @@ class Block extends Component {
       <div
         className="editor-block"
         data-collection-id={ uid }
+        data-editor-id={ editorId }
         ref="editorBlock"
       >
         <div

@@ -281,18 +281,21 @@ class BlockCollection extends Component {
   // and then we can listen to that instead
   // of brute forcing it with dom lookups
   updateTextCollectionData() {
+    const { editorId } = this.props
     const { collection, order } = this.state
     for (const uid of order) {
       const block = this.getBlockFromUid(uid)
       if (block && block.kind === 'text') {
-        block.data = document.querySelector(`[data-collection-id="${uid}"]`).textContent
+        const selector = `[data-editor-id="${editorId}"][data-collection-id="${uid}"]`
+        block.data = document.querySelector(selector).textContent
+        break
       }
     }
     this.setState({ collection })
   }
 
   add(block, shouldCheckForEmpty = true) {
-    const newBlock = { ...block, uid: this.uid, updateCount: 0 }
+    const newBlock = { ...block, uid: this.uid }
     const { collection, order } = this.state
     collection[this.getBlockIdentifier(this.uid)] = newBlock
     order.push(this.uid)
