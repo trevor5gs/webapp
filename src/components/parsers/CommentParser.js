@@ -50,13 +50,13 @@ function parseComment(comment, author, currentUser, post, isGridLayout = true) {
 
 class CommentParser extends Component {
   static propTypes = {
-    comment: PropTypes.object,
-    post: PropTypes.object,
+    assets: PropTypes.any,
     author: PropTypes.object,
-    assets: PropTypes.any.isRequired,
+    comment: PropTypes.object,
     currentUser: PropTypes.object,
     isEditing: PropTypes.bool,
     isGridLayout: PropTypes.bool,
+    post: PropTypes.object,
   };
 
   render() {

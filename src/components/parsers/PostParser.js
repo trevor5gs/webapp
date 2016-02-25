@@ -113,7 +113,7 @@ function isRepost(post) {
 
 class PostParser extends Component {
   static propTypes = {
-    assets: PropTypes.any.isRequired,
+    assets: PropTypes.any,
     author: PropTypes.object,
     authorLinkObject: PropTypes.object,
     currentUser: PropTypes.object,
@@ -161,7 +161,7 @@ class PostParser extends Component {
 const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
   const post = json[MAPPING_TYPES.POSTS][ownProps.post.id]
   const author = json[MAPPING_TYPES.USERS][post.authorId]
-  const assets = json.assets;
+  const assets = json.assets
 
   let newProps = {
     assets,
