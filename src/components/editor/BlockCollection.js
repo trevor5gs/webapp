@@ -72,8 +72,12 @@ class BlockCollection extends Component {
 
   componentDidMount() {
     const { editorId } = this.props
+    // TODO: figure out why this is causing a setState warning
+    // you can get the error to happen by going to a profile page
+    // visiting a post detail and then hitting back, the setState
+    // happens in add, but is triggered from this method since
+    // commenting it out gets rid of the issue
     this.addEmptyTextBlock()
-    this.setSelectionOnMount()
     addDragObject({ component: this, dragId: editorId })
     addInputObject(this)
   }
@@ -279,12 +283,6 @@ class BlockCollection extends Component {
     }
   }
 
-  setSelectionOnMount() {
-    if (this.hasContent()) { return }
-    const element = document.querySelector('.editable.text')
-    if (element) { element.focus() }
-  }
-
   // TODO: probably should have the completer
   // dispatch an action that updates the gui
   // and then we can listen to that instead
@@ -330,7 +328,7 @@ class BlockCollection extends Component {
       }
       if (!order.length ||
           this.getBlockFromUid(order[order.length - 1]).kind !== 'text') {
-        this.add({ kind: 'text', data: '' })
+        this.add({ kind: 'text', data: '' }, false)
       }
     })
   }
