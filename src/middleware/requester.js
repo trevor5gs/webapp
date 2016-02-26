@@ -138,7 +138,7 @@ export const requester = store => next => action => {
 
   const state = store.getState()
   // this allows us to set the proper result in the json reducer
-  payload.pathname = state.routing.location.pathname
+  payload.pathname = document.location.pathname
 
   // dispatch the start of the request
   store.dispatch({ type: REQUEST, payload, meta })
@@ -224,7 +224,7 @@ export const requester = store => next => action => {
                 delete runningFetches[error.response.url]
               }
               if ((error.response.status === 401 || error.response.status === 403) &&
-                  state.routing.location.pathname.indexOf('/onboarding') === 0 &&
+                  document.location.pathname.indexOf('/onboarding') === 0 &&
                   typeof document !== 'undefined') {
                 resetAuth(store.dispatch, document.location)
               }

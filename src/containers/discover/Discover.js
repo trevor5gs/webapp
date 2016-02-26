@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { routeActions } from 'react-router-redux'
+import { replace } from 'react-router-redux'
 import { BEACONS } from '../../constants/action_types'
 import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
@@ -32,7 +32,7 @@ export class Discover extends Component {
 
     if (pathname === '/' && isLoggedIn) {
       const replaceTarget = currentStream
-      dispatch(routeActions.replace(replaceTarget))
+      dispatch(replace(replaceTarget))
     }
 
     this.state = {
@@ -105,12 +105,12 @@ export class Discover extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     currentStream: state.gui.currentStream,
     isLoggedIn: state.authentication.isLoggedIn,
     lastDiscoverBeaconVersion: state.gui.lastDiscoverBeaconVersion,
-    pathname: state.routing.location.pathname,
+    pathname: ownProps.location.pathname,
   }
 }
 

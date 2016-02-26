@@ -1,5 +1,5 @@
 import { expect, getRenderedComponent, sinon } from '../../spec_helper'
-import { routeActions } from 'react-router-redux'
+import { replace } from 'react-router-redux'
 
 import { Discover as Component } from '../../../src/containers/discover/Discover'
 
@@ -40,7 +40,7 @@ describe('DiscoverComponent', () => {
 
       getRenderedComponent(Component, props)
 
-      const routeAction = routeActions.replace('/following')
+      const routeAction = replace('/following')
       const routeDispatch = props.dispatch.firstCall
       expect(routeDispatch.args[0]).to.eql(routeAction)
     })
@@ -53,7 +53,7 @@ describe('DiscoverComponent', () => {
 
       getRenderedComponent(Component, props)
 
-      const routeAction = routeActions.replace('/discover/trending')
+      const routeAction = replace('/discover/trending')
       const routeDispatch = props.dispatch.firstCall
       expect(routeDispatch.args[0]).to.eql(routeAction)
     })

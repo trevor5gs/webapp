@@ -197,15 +197,14 @@ class Onboarding extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     accessToken: state.authentication.accessToken,
     json: state.json,
-    pathname: state.routing.location.pathname,
+    pathname: ownProps.location.pathname,
     profile: state.profile,
     stream: state.stream,
   }
 }
 
 export default connect(mapStateToProps)(Onboarding)
-

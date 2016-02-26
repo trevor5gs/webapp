@@ -1,14 +1,18 @@
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { browserHistory } from 'react-router'
-import { syncHistory } from 'react-router-redux'
+import { routerMiddleware, routerReducer } from 'react-router-redux'
 import { combineReducers, compose, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
 import { analytics, authentication, requester, uploader } from './middleware'
 import * as reducers from './reducers'
 
-const reducer = combineReducers(reducers)
-const reduxRouterMiddleware = browserHistory ? syncHistory(browserHistory) : null
+const reducer = combineReducers({
+  ...reducers,
+  routing: routerReducer,
+})
+
+const reduxRouterMiddleware = browserHistory ? routerMiddleware(browserHistory) : null
 
 let store = null
 if (typeof window !== 'undefined') {

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { routeActions } from 'react-router-redux'
+import { replace } from 'react-router-redux'
 import classNames from 'classnames'
 import { openModal, closeModal } from '../../actions/modals'
 import * as postActions from '../../actions/posts'
@@ -247,7 +247,7 @@ class PostTools extends Component {
     this.closeModal()
     dispatch(postActions.deletePost(post))
     if (pathname.match(post.token)) {
-      dispatch(routeActions.replace(previousPath || '/'))
+      dispatch(replace(previousPath || '/'))
     }
   };
 
@@ -271,10 +271,9 @@ class PostTools extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
-    pathname: state.routing.location.pathname,
+    pathname: document.location.pathname,
     previousPath: state.routing.previousPath,
   }
 }
 
 export default connect(mapStateToProps)(PostTools)
-

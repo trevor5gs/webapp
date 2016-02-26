@@ -59,9 +59,8 @@ class Notifications extends Component {
 
 function mapStateToProps(state) {
   return {
-    pathname: state.routing.location.pathname,
+    pathname: document.location.pathname,
   }
 }
 
 export default connect(mapStateToProps)(Notifications)
-

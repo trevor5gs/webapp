@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { routeActions } from 'react-router-redux'
+import { replace } from 'react-router-redux'
 import { debounce } from 'lodash'
 import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
@@ -72,7 +72,7 @@ class Search extends Component {
     }
     if (typeof document !== 'undefined') {
       const uri = document.location.pathname + updateQueryParams(vo)
-      dispatch(routeActions.replace(uri))
+      dispatch(replace(uri))
     }
   }
 
@@ -130,4 +130,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Search)
-
