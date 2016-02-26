@@ -31,7 +31,6 @@ export function getWordFromSelection() {
   return letters.join('')
 }
 
-
 export function getPositionFromSelection() {
   getWordFromSelection()
   if (!node) return null
@@ -47,7 +46,6 @@ export function getPositionFromSelection() {
     width: pos.width,
   }
 }
-
 
 // getPositionOfCaret: ->
 //   selection = document.getSelection()
@@ -66,11 +64,10 @@ export function getPositionFromSelection() {
 //     # newline doesn't give us a good clientRect
 //     return null
 
-
 export function replaceWordFromSelection(word) {
   getWordFromSelection()
   const range = document.createRange()
-  if (node && node.nodeName !== '#text') return
+  if (node && node.nodeName !== '#text') { return }
   range.setStart(node, startIndex)
   range.setEnd(node, endIndex + 1)
   node = document.createTextNode(word)
@@ -104,16 +101,6 @@ export function replaceSelectionWithText(text) {
   selection.addRange(range)
 }
 
-
-// placeCursorAtEndOfContent: (editable) ->
-//   range = document.createRange()
-//   range.selectNodeContents(editable)
-//   range.collapse(false)
-//   sel = document.getSelection()
-//   sel.removeAllRanges()
-//   sel.addRange(range)
-
-
 // # perhaps better than above method, which seems to fail sometimes
 export function placeCaretAtEnd(editable) {
   const range = document.createRange()
@@ -124,7 +111,6 @@ export function placeCaretAtEnd(editable) {
   sel.addRange(range)
 }
 
-
 export function getLastWordPasted() {
   const selection = document.getSelection()
   node = selection.anchorNode
@@ -133,7 +119,6 @@ export function getLastWordPasted() {
   const nodeWords = text.split(' ')
   return nodeWords[nodeWords.length - 1]
 }
-
 
 // getBrowserAndVersion: ->
 //   ua = navigator.userAgent

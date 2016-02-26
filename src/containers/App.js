@@ -151,7 +151,6 @@ class App extends Component {
   handleCompletion = ({ value }) => {
     replaceWordFromSelection(value)
     this.handleCancelAutoCompleter()
-    // this.persistBlocks()
   };
 
   handleCancelAutoCompleter = () => {
