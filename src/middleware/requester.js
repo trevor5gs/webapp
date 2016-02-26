@@ -4,6 +4,10 @@ import * as ACTION_TYPES from '../constants/action_types'
 import { resetAuth } from '../networking/auth'
 
 const runningFetches = {}
+
+let requesterIsPaused = false
+let requestQueue = []
+
 const defaultHeaders = {
   Accept: 'application/json',
   'Content-Type': 'application/json',
@@ -57,8 +61,28 @@ function parseLink(linksHeader) {
   return result
 }
 
+const processQueue = (queue, handler) => {
+  if (queue.length === 0) return queue
+
+  const [action, ...tail] = queue
+  handler(action)
+  return processQueue(tail, handler)
+}
+
 export const requester = store => next => action => {
   const { payload, type, meta } = action
+  if (type === ACTION_TYPES.REQUESTER.PAUSE) {
+    requesterIsPaused = true
+    return next(action)
+  }
+
+  if (type === ACTION_TYPES.REQUESTER.UNPAUSE) {
+    requesterIsPaused = false
+    requestQueue = processQueue(requestQueue, queuedAction => {
+      store.dispatch(queuedAction)
+    })
+    return next(action)
+  }
 
   // This is problematic... :(
   if ((type !== ACTION_TYPES.LOAD_STREAM &&
@@ -89,6 +113,11 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.PROFILE.SAVE &&
         type !== ACTION_TYPES.RELATIONSHIPS.UPDATE
       ) || !payload) {
+    return next(action)
+  }
+
+  if (requesterIsPaused) {
+    requestQueue = [...requestQueue, action]
     return next(action)
   }
 
