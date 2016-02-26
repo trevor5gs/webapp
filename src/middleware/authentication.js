@@ -3,6 +3,11 @@ import {
   refreshAuthenticationToken,
   scheduleAuthRefresh,
 } from '../actions/authentication'
+import {
+  pauseRequester,
+  unpauseRequester,
+} from '../actions/api'
+
 import { AUTHENTICATION } from '../constants/action_types'
 
 const toMilliseconds = seconds => seconds * 1000
@@ -21,7 +26,7 @@ const futureTimeout = time => {
 
 export const authentication = store => next => action => {
   const { payload, type } = action
-
+  let result = null
   switch (type) {
     case REHYDRATE:
       if (action.key === 'authentication') {
@@ -42,13 +47,20 @@ export const authentication = store => next => action => {
       }
 
       break
+    case AUTHENTICATION.USER_REQUEST:
+    case AUTHENTICATION.REFRESH_REQUEST:
+      result = next(action)
+      store.dispatch(pauseRequester())
+      return result
     case AUTHENTICATION.REFRESH_SUCCESS:
     case AUTHENTICATION.USER_SUCCESS:
+      result = next(action)
+      store.dispatch(unpauseRequester())
       store.dispatch(scheduleAuthRefresh(
         payload.response.refreshToken,
         toMilliseconds(7100)
       ))
-      break
+      return result
     default:
       break
   }
