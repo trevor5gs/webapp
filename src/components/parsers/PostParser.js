@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import * as api from '../../networking/api'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
@@ -8,6 +9,8 @@ import Avatar from '../assets/Avatar'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostTools from '../posts/PostTools'
 import CommentStream from '../streams/CommentStream'
+import UserAvatars from '../users/UserAvatars'
+import { HeartIcon } from '../notifications/NotificationIcons.js'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
 import Editor from '../../components/editor/Editor'
@@ -19,6 +22,17 @@ function getPostDetailPath(author, post) {
 function commentStream(post, author) {
   return (
     <CommentStream key={`Comments_${post.id}_${post.commentsCount}`} post={post} author={author} />
+  )
+}
+
+function loversDrawer(post) {
+  return (
+    <UserAvatars
+      endpoint={ api.postLovers(post) }
+      icon={ <HeartIcon /> }
+      key={ `lovers_${post.id}` }
+      resultKey={ `/${post.id}/lovers` }
+    />
   )
 }
 
@@ -119,6 +133,7 @@ class PostParser extends Component {
     isReposting: PropTypes.bool,
     post: PropTypes.object,
     showComments: PropTypes.bool,
+    showLovers: PropTypes.bool,
     sourceLinkObject: PropTypes.object,
   };
 
@@ -130,6 +145,7 @@ class PostParser extends Component {
       isGridLayout,
       post,
       showComments,
+      showLovers,
     } = this.props
     if (!post) { return null }
 
@@ -149,6 +165,7 @@ class PostParser extends Component {
         { (post.isEditing || post.isReposting) && post.body ?
           <Editor post={ post }/> :
           parsePost(post, author, currentUser, isGridLayout)}
+        { showLovers ? loversDrawer(post) : null }
         { showComments ? <Editor post={ post } isComment/> : null }
         { showComments ? commentStream(post, author, currentUser) : null }
       </div>)

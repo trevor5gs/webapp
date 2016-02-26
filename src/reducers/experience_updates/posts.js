@@ -39,6 +39,7 @@ function updatePostLoves(state, newState, action) {
       id: model.id,
       lovesCount: Number(model.lovesCount) + delta,
       loved,
+      showLovers: loved,
     }
   )
   return newState
@@ -93,6 +94,14 @@ function toggleEditing(state, newState, action) {
 }
 methods.toggleEditing = (state, newState, action) =>
   toggleEditing(state, newState, action)
+
+function toggleLovers(state, newState, action) {
+  const { model, showLovers } = action.payload
+  newState[MAPPING_TYPES.POSTS][model.id].showLovers = showLovers
+  return newState
+}
+methods.toggleLovers = (state, newState, action) =>
+  toggleLovers(state, newState, action)
 
 function toggleReposting(state, newState, action) {
   const { model, isReposting } = action.payload

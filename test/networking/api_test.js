@@ -68,6 +68,11 @@ describe('api.js', () => {
       expect(api.postDetail('666').pagingPath).to.equal('comments')
     })
 
+    it('#loversForPost', () => {
+      expect(api.loversForPost({ id: 'what' }).path).to.match(/\/posts\/what\/loves\?/)
+      expect(api.loversForPost({ id: 'what' }).pagingPath).to.be.undefined
+    })
+
     it('#lovePost', () => {
       expect(api.lovePost({ id: '666' }).path).to.match(/\/posts\/666\/loves/)
     })

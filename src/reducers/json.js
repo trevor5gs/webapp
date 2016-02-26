@@ -284,6 +284,8 @@ export default function json(state = {}, action = { type: '' }) {
       return postMethods.toggleComments(state, newState, action)
     case ACTION_TYPES.POST.TOGGLE_EDITING:
       return postMethods.toggleEditing(state, newState, action)
+    case ACTION_TYPES.POST.TOGGLE_LOVERS:
+      return postMethods.toggleLovers(state, newState, action)
     case ACTION_TYPES.POST.TOGGLE_REPOSTING:
       return postMethods.toggleReposting(state, newState, action)
     case ACTION_TYPES.PROFILE.DELETE_SUCCESS:

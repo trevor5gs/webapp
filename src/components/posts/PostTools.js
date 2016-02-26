@@ -79,6 +79,9 @@ class PostTools extends Component {
         <span className="PostTool LoveTool" key={`LoveTool_${post.id}`}>
           <button className={classNames({ active: post.loved })} onClick={ this.lovePost }>
             <HeartIcon />
+            <Hint>Love</Hint>
+          </button>
+          <button className={classNames({ active: post.loved })} onClick={ this.toggleLovers }>
             <span className="PostToolValue" data-count={post.lovesCount}>{post.lovesCount}</span>
             <Hint>Love</Hint>
           </button>
@@ -187,6 +190,11 @@ class PostTools extends Component {
     } else {
       dispatch(postActions.lovePost(post))
     }
+  };
+  toggleLovers = () => {
+    const { dispatch, post } = this.props
+    const showLovers = !post.showLovers
+    dispatch(postActions.toggleLovers(post, showLovers))
   };
 
   sharePost = () => {

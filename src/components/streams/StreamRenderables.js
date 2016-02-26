@@ -104,6 +104,7 @@ export function postsAsList(posts) {
             isGridLayout={ false }
             isReposting={ post.isReposting }
             showComments={ post.showComments }
+            showLovers={ post.showLovers }
           />
         </article>
       )}
