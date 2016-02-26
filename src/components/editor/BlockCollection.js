@@ -294,7 +294,7 @@ class BlockCollection extends Component {
       const block = this.getBlockFromUid(uid)
       if (block && block.kind === 'text') {
         const selector = `[data-editor-id="${editorId}"][data-collection-id="${uid}"]`
-        block.data = document.querySelector(selector).textContent
+        block.data = document.querySelector(selector).firstChild.innerHTML
       }
     }
     this.setState({ collection })
