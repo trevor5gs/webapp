@@ -65,6 +65,14 @@ class CommentTools extends Component {
         )
       } else if (isOwnPost) {
         cells.push(
+          <span className="PostTool ReplyTool" key={`ReplyTool_${comment.id}`}>
+            <button onClick={ this.replyToComment }>
+              <ReplyIcon />
+              <Hint>Reply</Hint>
+            </button>
+          </span>
+        )
+        cells.push(
           <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${comment.id}`}>
             <button onClick={ this.deleteComment }>
               <XBoxIcon />
