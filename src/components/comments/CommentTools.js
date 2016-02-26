@@ -126,11 +126,11 @@ class CommentTools extends Component {
   }
 
   replyToComment = () => {
-    const { author, comment, dispatch } = this.props
+    const { author, dispatch, post } = this.props
     dispatch({
       type: ACTION_TYPES.EDITOR.APPEND_TEXT,
       payload: {
-        editorId: getEditorId({ id: comment.postId }),
+        editorId: getEditorId(post),
         text: `@${author.username} `,
       },
     })
