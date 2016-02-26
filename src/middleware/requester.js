@@ -139,7 +139,7 @@ export const requester = store => next => action => {
   payload.pathname = state.routing.location.pathname
 
   // dispatch the start of the request
-  next({ type: REQUEST, payload, meta })
+  store.dispatch({ type: REQUEST, payload, meta })
 
   function fetchCredentials() {
     if (state.authentication && state.authentication.accessToken) {
@@ -202,17 +202,17 @@ export const requester = store => next => action => {
                     linkPagination.totalPagesRemaining = parseInt(response.headers.get('X-Total-Pages-Remaining'), 10)
                     payload.pagination = linkPagination
                   }
-                  next({ meta, payload, type: SUCCESS })
+                  store.dispatch({ meta, payload, type: SUCCESS })
                   fireSuccessAction()
                   return true
                 })
               } else if (response.ok) {
                 // TODO: handle a 204 properly so that we know to stop paging
-                next({ ...action, type: SUCCESS })
+                store.dispatch({ ...action, type: SUCCESS })
                 fireSuccessAction()
               } else {
                 // TODO: is this what should be happening here?
-                next({ ...action, type: SUCCESS })
+                store.dispatch({ ...action, type: SUCCESS })
                 fireSuccessAction()
               }
               return Promise.resolve(true);
@@ -226,7 +226,7 @@ export const requester = store => next => action => {
                   typeof document !== 'undefined') {
                 resetAuth(store.dispatch, document.location)
               }
-              next({ error, meta, payload, type: FAILURE })
+              store.dispatch({ error, meta, payload, type: FAILURE })
               fireFailureAction()
               return false
             })
