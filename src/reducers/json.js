@@ -253,6 +253,9 @@ export default function json(state = {}, action = { type: '' }) {
   switch (action.type) {
     case ACTION_TYPES.ADD_NEW_IDS_TO_RESULT:
       return methods.addNewIdsToResult(state, newState)
+    case ACTION_TYPES.AUTHENTICATION.LOGOUT:
+    case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
+      return {}
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
@@ -286,8 +289,6 @@ export default function json(state = {}, action = { type: '' }) {
       return postMethods.toggleEditing(state, newState, action)
     case ACTION_TYPES.POST.TOGGLE_REPOSTING:
       return postMethods.toggleReposting(state, newState, action)
-    case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
-      return {}
     case ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL:
       return relationshipMethods.batchUpdateRelationship(newState, action)
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL:
