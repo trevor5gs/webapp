@@ -47,12 +47,12 @@ export function loadComments(post) {
   }
 }
 
-export function toggleComments(post, visible) {
+export function toggleComments(post, showComments) {
   return {
     type: ACTION_TYPES.POST.TOGGLE_COMMENTS,
     payload: {
       model: post,
-      showComments: visible,
+      showComments,
     },
   }
 }
