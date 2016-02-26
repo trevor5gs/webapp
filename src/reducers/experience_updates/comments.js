@@ -26,6 +26,9 @@ function addOrUpdateComment(newState, action) {
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
       response = action.payload.response
+      if (!newState[MAPPING_TYPES.COMMENTS]) {
+        newState[MAPPING_TYPES.COMMENTS] = {}
+      }
       newState[MAPPING_TYPES.COMMENTS][response.id] = response
       post = newState[MAPPING_TYPES.POSTS][postId]
       if (action.type === ACTION_TYPES.COMMENT.UPDATE_SUCCESS) { return newState }
