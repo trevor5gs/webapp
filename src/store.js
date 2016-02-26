@@ -17,10 +17,10 @@ if (typeof window !== 'undefined') {
     autoRehydrate(),
     applyMiddleware(
       thunk,
-      authentication,
       reduxRouterMiddleware,
       uploader,
       requester,
+      authentication,
       analytics,
       logger
     ),
