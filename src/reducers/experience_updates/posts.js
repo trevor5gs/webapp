@@ -10,9 +10,6 @@ function updatePostLoves(state, newState, action) {
   const { method, model } = action.payload
   const resultPath = jsonMethods.pagesKey(action)
   const currentUser = jsonMethods.getCurrentUser(newState)
-  const existingResult = newState.pages[resultPath] ||
-    { type: 'users', ids: [], pagination: emptyPagination() }
-  const existingIds = existingResult.ids
 
   let delta = 0
   let loved = false
@@ -38,6 +35,10 @@ function updatePostLoves(state, newState, action) {
     default:
       return state
   }
+
+  const existingResult = newState.pages[resultPath] ||
+    { type: 'users', ids: [], pagination: emptyPagination() }
+  const existingIds = existingResult.ids
 
   if (delta === 1) {
     existingIds.unshift(currentUser.id)
