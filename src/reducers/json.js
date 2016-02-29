@@ -153,7 +153,7 @@ methods.getResult = (response, newState, action) =>
 
 function pagesKey(action) {
   const pathname = action.payload && action.payload.pathname ? action.payload.pathname : path
-  const { resultKey } = action.meta
+  const { resultKey } = action.meta || {}
   return resultKey || pathname
 }
 methods.pagesKey = (action) =>
