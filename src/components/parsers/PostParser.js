@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import * as api from '../../networking/api'
+import { postLovers } from '../../networking/api'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
@@ -28,7 +28,7 @@ function commentStream(post, author) {
 function loversDrawer(post) {
   return (
     <UserAvatars
-      endpoint={ api.postLovers(post) }
+      endpoint={ postLovers(post) }
       icon={ <HeartIcon /> }
       key={ `lovers_${post.id}` }
       post={ post }
