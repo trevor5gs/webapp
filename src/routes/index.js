@@ -1,4 +1,14 @@
 import App from '../containers/App'
+import PostDetailRoute from './post_detail'
+import AuthenticationRoutes from './authentication'
+import DiscoverRoutes, { indexRoute } from './discover'
+import StreamsRoutes from './streams'
+import NotificationsRoute from './notifications'
+import InvitationsRoutes from './invitations'
+import SettingsRoutes from './settings'
+import OnboardingRoute from './onboarding'
+import SearchRoutes from './search'
+import UserDetailRoute from './user_detail'
 
 function createRedirect(from, to) {
   return {
@@ -14,25 +24,23 @@ const routes = [
     path: '/',
     component: App,
     getIndexRoute(location, cb) {
-      cb(null, require('./discover').indexRoute)
+      cb(null, indexRoute)
     },
     // order matters, so less specific routes should go at the bottom
     childRoutes: [
-      require('./post_detail').default,
-      ...require('./authentication').default,
-      ...require('./discover').default,
-      ...require('./streams').default,
-      require('./notifications').default,
-      ...require('./invitations').default,
-      ...require('./settings').default,
-      ...require('./invitations').default,
+      PostDetailRoute,
+      ...AuthenticationRoutes,
+      ...DiscoverRoutes,
+      ...StreamsRoutes,
+      NotificationsRoute,
+      ...InvitationsRoutes,
+      ...SettingsRoutes,
       createRedirect('onboarding', '/onboarding/communities'),
-      require('./onboarding').default,
-      ...require('./search').default,
-      require('./user_detail').default,
+      OnboardingRoute,
+      ...SearchRoutes,
+      UserDetailRoute,
     ],
   },
 ]
 
 export default routes
-
