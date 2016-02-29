@@ -12,6 +12,7 @@ class PostActionBar extends Component {
   static propTypes = {
     cancelAction: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
+    disableSubmitAction: PropTypes.bool,
     editorId: PropTypes.string.isRequired,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
@@ -60,7 +61,7 @@ class PostActionBar extends Component {
   };
 
   render() {
-    const { submitText } = this.props
+    const { disableSubmitAction, submitText } = this.props
     return (
       <div className="editor-actions">
 
@@ -76,6 +77,7 @@ class PostActionBar extends Component {
 
         <button
           className={ `PostActionButton for${submitText}` }
+          disabled={ disableSubmitAction }
           ref="submitButton"
           onClick={ this.submitted }
         >
