@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import classNames from 'classnames'
 import { sampleSize } from 'lodash'
 import Emoji from '../assets/Emoji'
 import { SVGIcon } from '../interface/SVGComponents'
@@ -43,14 +42,28 @@ class QuickEmoji extends Component {
     this.state = { isActive: false }
   }
 
-  buttonWasClicked = () => {
-    this.setState({ isActive: !this.state.isActive })
+  componentWillUnmount() {
+    document.removeEventListener('click', this.onDocumentClick)
+  }
+
+  onDocumentClick = () => {
+    this.hide()
+  };
+
+  show = () => {
+    this.setState({ isActive: true })
+    document.addEventListener('click', this.onDocumentClick)
+  };
+
+  hide = () => {
+    this.setState({ isActive: false })
+    document.removeEventListener('click', this.onDocumentClick)
   };
 
   emojiWasClicked = (e) => {
     const { onAddEmoji } = this.props
     onAddEmoji({ value: `:${e.target.name}:` })
-    this.setState({ isActive: false })
+    this.hide()
   };
 
   renderEmojis() {
@@ -62,14 +75,22 @@ class QuickEmoji extends Component {
 
   render() {
     const { isActive } = this.state
+    if (isActive) {
+      return (
+        <div className="QuickEmoji isActive">
+          <div className="QuickEmojiList">
+            { this.renderEmojis() }
+          </div>
+        </div>
+      )
+    }
     return (
-      <div className={ classNames('QuickEmoji', { isActive })}>
-        <button className="QuickEmojiButton" onClick={ this.buttonWasClicked }>
+      <div className="QuickEmoji">
+        <button className="QuickEmojiButton" onClick={ this.show }>
           <MiniElloEmoji/>
         </button>
-        <div className="QuickEmojiList">
-          { isActive ? this.renderEmojis() : null }
-        </div>
+          <div className="QuickEmojiList">
+          </div>
       </div>
     )
   }
