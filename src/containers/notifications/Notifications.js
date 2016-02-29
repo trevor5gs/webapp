@@ -57,9 +57,9 @@ class Notifications extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
-    pathname: document.location.pathname,
+    pathname: ownProps.location.pathname,
   }
 }
 
