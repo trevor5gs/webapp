@@ -356,11 +356,13 @@ class Settings extends Component {
               <p><em>{ SETTINGS.NSFW_DISCLAIMER }</em></p>
             </TreePanel>
 
-            <TreeButton>Muted/Blocked</TreeButton>
+            <TreeButton>Blocked users</TreeButton>
             <TreePanel>
-              <h2 className="SettingsSubheading">Blocked</h2>
               <StreamComponent action={blockedUsers()} />
-              <h2 className="SettingsSubheading">Muted</h2>
+            </TreePanel>
+
+            <TreeButton>Muted users</TreeButton>
+            <TreePanel>
               <StreamComponent action={mutedUsers()} />
             </TreePanel>
 
