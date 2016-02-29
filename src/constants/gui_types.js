@@ -12,19 +12,18 @@ export const GUI = {
 }
 
 export const SHORTCUT_KEYS = {
-  DISCOVER: 'g d',
+  DISCOVER: 'd',
   DT_CONTAINER_TOGGLE: 'g |',
   DT_GRID_CYCLE: 'g ~',
   DT_GRID_TOGGLE: 'g `',
   ESC: 'esc',
-  FOLLOWING: 'g f',
+  FOLLOWING: 'f',
   FULLSCREEN: 'g m',
   HELP: '?',
-  NOTIFICATIONS: 'g r',
-  OMNIBAR: 'g o',
-  ONBOARDING: 'g 0',
-  SEARCH: 'g s',
-  STARRED: 'g n',
+  NOTIFICATIONS: 'r',
+  OMNIBAR: '2',
+  SEARCH: 's',
+  STARRED: 'n',
   TOGGLE_LAYOUT: '=',
 }
 

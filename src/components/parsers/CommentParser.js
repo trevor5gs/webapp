@@ -10,9 +10,9 @@ import Editor from '../../components/editor/Editor'
 function header(comment, author) {
   if (!comment || !author) { return null }
   return (
-    <header className="PostHeader CommentHeader" key={ `CommentHeader_${comment.id}` }>
-      <div className="PostHeaderAuthor">
-        <Link className="PostHeaderLink" to={ `/${author.username}` }>
+    <header className="CommentHeader" key={ `CommentHeader_${comment.id}` }>
+      <div className="CommentHeaderAuthor">
+        <Link className="CommentHeaderLink" to={ `/${author.username}` }>
           <Avatar sources={ author.avatar } />
           <span className="CommentUsername">{ `@${author.username}` }</span>
         </Link>
