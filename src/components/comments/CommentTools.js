@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
+import * as ACTION_TYPES from '../../constants/action_types'
 import { openModal, closeModal } from '../../actions/modals'
 import * as commentActions from '../../actions/comments'
 import { trackEvent } from '../../actions/tracking'
@@ -15,6 +16,7 @@ import {
   ReplyIcon,
   XBoxIcon,
 } from '../posts/PostIcons'
+import { getEditorId } from '../editor/Editor'
 
 class CommentTools extends Component {
 
@@ -47,7 +49,7 @@ class CommentTools extends Component {
       if (isOwnComment) {
         cells.push(
           <span className="PostTool EditTool ShyTool" key={`EditTool_${comment.id}`}>
-            <button>
+            <button onClick={ this.editComment }>
               <PencilIcon />
               <Hint>Edit</Hint>
             </button>
@@ -62,6 +64,14 @@ class CommentTools extends Component {
           </span>
         )
       } else if (isOwnPost) {
+        cells.push(
+          <span className="PostTool ReplyTool" key={`ReplyTool_${comment.id}`}>
+            <button onClick={ this.replyToComment }>
+              <ReplyIcon />
+              <Hint>Reply</Hint>
+            </button>
+          </span>
+        )
         cells.push(
           <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${comment.id}`}>
             <button onClick={ this.deleteComment }>
@@ -116,8 +126,21 @@ class CommentTools extends Component {
   }
 
   replyToComment = () => {
-    // TODO: hook this up with the editor
+    const { author, dispatch, post } = this.props
+    dispatch({
+      type: ACTION_TYPES.EDITOR.APPEND_TEXT,
+      payload: {
+        editorId: getEditorId(post),
+        text: `@${author.username} `,
+      },
+    })
   };
+
+  editComment = () => {
+    const { comment, dispatch } = this.props
+    dispatch(commentActions.toggleEditing(comment, true))
+    dispatch(commentActions.loadEditableComment(comment))
+  }
 
   flagComment = () => {
     const { dispatch } = this.props

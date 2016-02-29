@@ -37,8 +37,10 @@ class RepostBlock extends Component {
     const { currentUser, data } = this.props
     return (
       <div className="editor-block readonly">
-        <RepostIcon />
-        {` by @${currentUser.username}`}
+        <div className="RepostBlockLabel">
+          <RepostIcon />
+          {` by @${currentUser.username}`}
+        </div>
         { data.map((block, i) => this.getBlockElement(block, i)) }
         <div className="RegionTools">
           <LockIcon/>

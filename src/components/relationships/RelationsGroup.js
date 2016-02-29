@@ -141,7 +141,7 @@ class RelationsGroup extends Component {
                      (this.handleRelationshipUpdate)
 
     return (
-      <div className="RelationsGroup" >
+      <div className="RelationsGroup" data-priority={ user.relationshipPriority }>
         { this.shouldRenderBlockMute() ? this.renderBlockMuteButton() : null }
         <RelationshipButton
           buttonWasClicked={ isLoggedIn ? callback : this.handleLaunchSignUpModal }

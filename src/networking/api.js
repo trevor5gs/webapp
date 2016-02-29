@@ -115,10 +115,8 @@ export function postDetail(idOrToken) {
     params,
   }
 }
-// TODO: should eventually be able to send 0 or false
-// to not have the api look for comments on this post
 export function editPostDetail(idOrToken) {
-  const params = { comment_count: 1 }
+  const params = { comment_count: false }
   return {
     path: getAPIPath(`posts/${idOrToken}`, params),
     params,
@@ -192,6 +190,16 @@ export function commentsForPost(post) {
   return {
     path: getAPIPath(`posts/${post.id}/comments`, params),
     params,
+  }
+}
+export function createComment(postId) {
+  return {
+    path: getAPIPath(`posts/${postId}/comments`),
+  }
+}
+export function editComment(comment) {
+  return {
+    path: getAPIPath(`posts/${comment.postId}/comments/${comment.id}`),
   }
 }
 export function deleteComment(comment) {

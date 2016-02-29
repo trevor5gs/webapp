@@ -26,6 +26,8 @@
 .PostHeader .RelationsGroup,
 .RepostHeader .RelationsGroup
   margin-left: rem(10)
+  margin-top: rem(-2)
+
 
 .PostHeaderLink
   vertical-align: middle
@@ -74,4 +76,13 @@
   .PostHeader .Avatar,
   .RepostHeader .Avatar
     top: rem(20)
+
+
+// Don't show the relationship buttons in these specific conditions
+.Panel.Following .PostHeader .RelationsGroup,
+.Panel.Starred .PostHeader .RelationsGroup,
+.Panel.UserDetail .PostHeader .RelationsGroup[data-priority="friend"],
+.Panel.UserDetail .PostHeader .RelationsGroup[data-priority="noise"],
+.Panel.UserDetail .PostHeader .RelationsGroup[data-priority="self"]
+  display: none
 

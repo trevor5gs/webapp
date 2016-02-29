@@ -18,7 +18,7 @@ import './vendor/embetter_initializer'
 
 updateTimeAgoStrings({ about: '' })
 
-const APP_VERSION = '1.0.6'
+const APP_VERSION = '1.0.7'
 
 const element = (
   <Provider store={store}>
