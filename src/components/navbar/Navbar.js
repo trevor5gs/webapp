@@ -58,7 +58,6 @@ class Navbar extends Component {
       [SHORTCUT_KEYS.FOLLOWING]: '/following',
       [SHORTCUT_KEYS.STARRED]: '/starred',
       [SHORTCUT_KEYS.NOTIFICATIONS]: '/notifications',
-      [SHORTCUT_KEYS.ONBOARDING]: '/onboarding/communities',
     },
   };
 
