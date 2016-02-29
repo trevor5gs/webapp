@@ -1,5 +1,9 @@
 @import ../../styles/lib
 
+body.isDragging,
+body.isDragging .editor-block
+  user-select: none
+
 .editor
   +sans-typeset
   color: black
@@ -105,12 +109,6 @@
 .editor-block.readonly
   padding: rem(20)
   border: 1px solid #aaa
-
-.editor-block [kind="block"],
-.editor-block [kind="embed"],
-.editor-block [kind="image"],
-.editor-block [kind="repost"]
-  user-select: none
 
 // .editor-block.reposted-content [contenteditable="false"]
 //   border: 0

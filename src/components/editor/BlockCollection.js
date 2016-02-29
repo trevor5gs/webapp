@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { debounce } from 'lodash'
@@ -164,6 +165,7 @@ class BlockCollection extends Component {
     }
     this.onDragMove(props)
     this.setState({ collection })
+    ReactDOM.findDOMNode(document.body).classList.add('isDragging')
   }
 
   onDragMove(props) {
@@ -217,6 +219,7 @@ class BlockCollection extends Component {
     const dragUid = this.dragBlock.uid
     collection[this.getBlockIdentifier(dragUid)] = this.dragBlock
     // order matters here so the dragBlock gets removed
+    ReactDOM.findDOMNode(document.body).classList.remove('isDragging')
     this.dragBlock = null
     this.setState({ collection, dragBlockTop: null })
     this.addEmptyTextBlock(true)
