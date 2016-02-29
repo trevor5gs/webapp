@@ -31,7 +31,8 @@ function loversDrawer(post) {
       endpoint={ api.postLovers(post) }
       icon={ <HeartIcon /> }
       key={ `lovers_${post.id}` }
-      resultKey={ `/${post.id}/lovers` }
+      post={ post }
+      resultType="love"
     />
   )
 }

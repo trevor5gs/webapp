@@ -123,7 +123,8 @@ export function postDetail(posts, json) {
         endpoint={ api.postLovers(post) }
         icon={ <HeartIcon /> }
         key={ `lovers_${post.id}` }
-        resultKey="lovers"
+        post={ post }
+        resultType="love"
       />
     )
   }
@@ -133,7 +134,8 @@ export function postDetail(posts, json) {
         endpoint={ api.postReposters(post) }
         icon={ <RepostIcon /> }
         key={ `reposters_${post.id}` }
-        resultKey="reposters"
+        post={ post }
+        resultType="repost"
       />
     )
   }

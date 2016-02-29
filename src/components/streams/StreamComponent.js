@@ -59,8 +59,8 @@ export class StreamComponent extends Component {
     // TODO: potentially whitelist the actions that we would want to render on
     // TODO: test this!
     if (stream.meta &&
-        stream.meta.resultKey &&
-        !stream.payload.endpoint.path.match(stream.meta.resultKey)) {
+        stream.meta.updateKey &&
+        !stream.payload.endpoint.path.match(stream.meta.updateKey)) {
       return false
     }
     return true
@@ -104,7 +104,7 @@ export class StreamComponent extends Component {
     let result = null
     if (json.pages) {
       if (meta && meta.resultKey) {
-        result = json.pages[`${pathname}_${meta.resultKey}`]
+        result = json.pages[meta.resultKey]
       } else {
         result = json.pages[pathname]
       }
@@ -185,7 +185,7 @@ export class StreamComponent extends Component {
     let resultPath = pathname
     if (json.pages) {
       if (meta && meta.resultKey) {
-        resultPath = `${pathname}_${meta.resultKey}`
+        resultPath = meta.resultKey
       }
       result = json.pages[resultPath]
     }

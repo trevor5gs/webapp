@@ -43,6 +43,7 @@ export function loadComments(post) {
         asGrid: StreamRenderables.commentsAsList,
       },
       resultKey: `/${post.id}/comments`,
+      updateKey: `/posts/${post.id}/`,
     },
   }
 }
@@ -95,7 +96,11 @@ export function lovePost(post) {
       method: 'POST',
       model: post,
     },
-    meta: { mappingType: MAPPING_TYPES.LOVES },
+    meta: {
+      mappingType: MAPPING_TYPES.LOVES,
+      resultKey: `/${post.id}/love`,
+      updateKey: `/posts/${post.id}/`,
+    },
   }
 }
 
@@ -107,7 +112,10 @@ export function unlovePost(post) {
       method: 'DELETE',
       model: post,
     },
-    meta: {},
+    meta: {
+      resultKey: `/${post.id}/love`,
+      updateKey: `/posts/${post.id}/`,
+    },
   }
 }
 
