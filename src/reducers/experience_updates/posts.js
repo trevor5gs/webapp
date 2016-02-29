@@ -2,11 +2,18 @@
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { methods as jsonMethods } from '../json'
+import { emptyPagination } from '../../components/streams/Paginator'
 
 const methods = {}
 
 function updatePostLoves(state, newState, action) {
   const { method, model } = action.payload
+  const resultPath = jsonMethods.pagesKey(action)
+  const currentUser = jsonMethods.getCurrentUser(newState)
+  const existingResult = newState.pages[resultPath] ||
+    { type: 'users', ids: [], pagination: emptyPagination() }
+  const existingIds = existingResult.ids
+
   let delta = 0
   let loved = false
   switch (action.type) {
@@ -31,6 +38,17 @@ function updatePostLoves(state, newState, action) {
     default:
       return state
   }
+
+  if (delta === 1) {
+    existingIds.unshift(currentUser.id)
+  } else {
+    const index = existingIds.indexOf(currentUser.id)
+    if (index !== -1) {
+      existingIds.splice(index, 1)
+    }
+  }
+  newState.pages[resultPath] = existingResult
+
   jsonMethods.updateUserCount(newState, model.authorId, 'lovesCount', delta)
   jsonMethods.mergeModel(
     newState,
@@ -42,6 +60,7 @@ function updatePostLoves(state, newState, action) {
       showLovers: loved,
     }
   )
+
   return newState
 }
 methods.updatePostLoves = (state, newState, action) =>
