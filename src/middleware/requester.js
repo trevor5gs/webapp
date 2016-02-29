@@ -4,6 +4,10 @@ import * as ACTION_TYPES from '../constants/action_types'
 import { resetAuth } from '../networking/auth'
 
 const runningFetches = {}
+
+let requesterIsPaused = false
+let requestQueue = []
+
 const defaultHeaders = {
   Accept: 'application/json',
   'Content-Type': 'application/json',
@@ -57,8 +61,28 @@ function parseLink(linksHeader) {
   return result
 }
 
+const processQueue = (queue, handler) => {
+  if (queue.length === 0) return queue
+
+  const [action, ...tail] = queue
+  handler(action)
+  return processQueue(tail, handler)
+}
+
 export const requester = store => next => action => {
   const { payload, type, meta } = action
+  if (type === ACTION_TYPES.REQUESTER.PAUSE) {
+    requesterIsPaused = true
+    return next(action)
+  }
+
+  if (type === ACTION_TYPES.REQUESTER.UNPAUSE) {
+    requesterIsPaused = false
+    requestQueue = processQueue(requestQueue, queuedAction => {
+      store.dispatch(queuedAction)
+    })
+    return next(action)
+  }
 
   // This is problematic... :(
   if ((type !== ACTION_TYPES.LOAD_STREAM &&
@@ -92,6 +116,11 @@ export const requester = store => next => action => {
     return next(action)
   }
 
+  if (requesterIsPaused) {
+    requestQueue = [...requestQueue, action]
+    return next(action)
+  }
+
   // TODO: I think the body should actually come
   // from the endpoint instead of the payload
   const { endpoint, method, body } = payload
@@ -110,7 +139,7 @@ export const requester = store => next => action => {
   payload.pathname = state.routing.location.pathname
 
   // dispatch the start of the request
-  next({ type: REQUEST, payload, meta })
+  store.dispatch({ type: REQUEST, payload, meta })
 
   function fetchCredentials() {
     if (state.authentication && state.authentication.accessToken) {
@@ -173,17 +202,17 @@ export const requester = store => next => action => {
                     linkPagination.totalPagesRemaining = parseInt(response.headers.get('X-Total-Pages-Remaining'), 10)
                     payload.pagination = linkPagination
                   }
-                  next({ meta, payload, type: SUCCESS })
+                  store.dispatch({ meta, payload, type: SUCCESS })
                   fireSuccessAction()
                   return true
                 })
               } else if (response.ok) {
                 // TODO: handle a 204 properly so that we know to stop paging
-                next({ ...action, type: SUCCESS })
+                store.dispatch({ ...action, type: SUCCESS })
                 fireSuccessAction()
               } else {
                 // TODO: is this what should be happening here?
-                next({ ...action, type: SUCCESS })
+                store.dispatch({ ...action, type: SUCCESS })
                 fireSuccessAction()
               }
               return Promise.resolve(true);
@@ -197,7 +226,7 @@ export const requester = store => next => action => {
                   typeof document !== 'undefined') {
                 resetAuth(store.dispatch, document.location)
               }
-              next({ error, meta, payload, type: FAILURE })
+              store.dispatch({ error, meta, payload, type: FAILURE })
               fireFailureAction()
               return false
             })
