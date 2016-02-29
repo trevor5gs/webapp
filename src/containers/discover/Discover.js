@@ -40,6 +40,15 @@ export class Discover extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { currentStream, dispatch, isLoggedIn, pathname } = nextProps
+
+    if (pathname === '/' && isLoggedIn) {
+      const replaceTarget = currentStream
+      dispatch(replace(replaceTarget))
+    }
+  }
+
   onDismissBeacon = () => {
     const { dispatch } = this.props
     this.setState({ isBeaconActive: false })
