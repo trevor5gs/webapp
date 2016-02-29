@@ -105,6 +105,7 @@ export function postsAsList(posts) {
             isReposting={ post.isReposting }
             showComments={ post.showComments }
             showLovers={ post.showLovers }
+            showReposters={ post.showReposters }
           />
         </article>
       )}

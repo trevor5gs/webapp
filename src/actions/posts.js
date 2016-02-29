@@ -79,6 +79,16 @@ export function toggleLovers(post, showLovers) {
   }
 }
 
+export function toggleReposters(post, showReposters) {
+  return {
+    type: ACTION_TYPES.POST.TOGGLE_REPOSTERS,
+    payload: {
+      model: post,
+      showReposters,
+    },
+  }
+}
+
 export function toggleReposting(post, isReposting) {
   return {
     type: ACTION_TYPES.POST.TOGGLE_REPOSTING,

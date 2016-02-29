@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { postLovers } from '../../networking/api'
+import { postLovers, postReposters } from '../../networking/api'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
@@ -33,6 +33,18 @@ function loversDrawer(post) {
       key={ `lovers_${post.id}` }
       post={ post }
       resultType="love"
+    />
+  )
+}
+
+function repostersDrawer(post) {
+  return (
+    <UserAvatars
+      endpoint={ postReposters(post) }
+      icon={ <RepostIcon /> }
+      key={ `reposters_${post.id}` }
+      post={ post }
+      resultType="repost"
     />
   )
 }
@@ -135,6 +147,7 @@ class PostParser extends Component {
     post: PropTypes.object,
     showComments: PropTypes.bool,
     showLovers: PropTypes.bool,
+    showReposters: PropTypes.bool,
     sourceLinkObject: PropTypes.object,
   };
 
@@ -147,6 +160,7 @@ class PostParser extends Component {
       post,
       showComments,
       showLovers,
+      showReposters,
     } = this.props
     if (!post) { return null }
 
@@ -168,6 +182,7 @@ class PostParser extends Component {
           <Editor post={ post }/> :
           parsePost(post, author, currentUser, isGridLayout)}
         { showLovers ? loversDrawer(post) : null }
+        { showReposters ? repostersDrawer(post) : null }
         { showComments ? <Editor post={ post } isComment/> : null }
         { showComments && post.commentsCount > 0 ? commentStream(post, author, currentUser) : null }
       </div>)

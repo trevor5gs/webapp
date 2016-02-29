@@ -94,6 +94,9 @@ class PostTools extends Component {
         <span className="PostTool RepostTool" key={`RepostTool_${post.id}`}>
           <button onClick={ this.repostPost }>
             <RepostIcon />
+            <Hint>Repost</Hint>
+          </button>
+          <button onClick={ this.toggleReposters }>
             <span
               className="PostToolValue"
               data-count={post.repostsCount}
@@ -197,6 +200,11 @@ class PostTools extends Component {
     const { dispatch, post } = this.props
     const showLovers = !post.showLovers
     dispatch(postActions.toggleLovers(post, showLovers))
+  };
+  toggleReposters = () => {
+    const { dispatch, post } = this.props
+    const showReposters = !post.showReposters
+    dispatch(postActions.toggleReposters(post, showReposters))
   };
 
   sharePost = () => {
