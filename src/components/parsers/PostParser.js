@@ -160,10 +160,11 @@ class PostParser extends Component {
       postHeader = header(post, author)
     }
 
+    const showEditor = (post.isEditing || post.isReposting) && post.body
     return (
       <div>
         {postHeader}
-        { (post.isEditing || post.isReposting) && post.body ?
+        { showEditor ?
           <Editor post={ post }/> :
           parsePost(post, author, currentUser, isGridLayout)}
         { showLovers ? loversDrawer(post) : null }
