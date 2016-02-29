@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { UPDATE_LOCATION } from 'react-router-redux'
+import { LOCATION_CHANGE } from 'react-router-redux'
 import { BEACONS, PROFILE, SET_LAYOUT_MODE } from '../constants/action_types'
 
 
@@ -58,7 +58,7 @@ export function gui(state = initialState, action = { type: '' }) {
       if (mode.mode === action.payload.mode) return state
       mode.mode = action.payload.mode
       return newState
-    case UPDATE_LOCATION:
+    case LOCATION_CHANGE:
       location = action.payload
       pathname = location.pathname
 

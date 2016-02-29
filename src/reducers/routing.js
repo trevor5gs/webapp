@@ -1,11 +1,11 @@
-import { UPDATE_LOCATION } from 'react-router-redux'
+import { LOCATION_CHANGE } from 'react-router-redux'
 
 const initialState = {
   location: { pathname: '/' },
 }
 
 export function routeReducer(state = initialState, { type, payload: location }) {
-  if (type !== UPDATE_LOCATION) {
+  if (type !== LOCATION_CHANGE) {
     return state
   }
   return {
