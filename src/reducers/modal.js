@@ -1,4 +1,4 @@
-import { MODAL, ALERT } from '../constants/action_types'
+import { ALERT, AUTHENTICATION, MODAL, PROFILE } from '../constants/action_types'
 
 const initialState = {
   classList: null,
@@ -9,11 +9,14 @@ const initialState = {
 
 export function modal(state = initialState, action) {
   switch (action.type) {
-    case MODAL.OPEN:
-    case MODAL.CLOSE:
     case ALERT.OPEN:
     case ALERT.CLOSE:
+    case MODAL.OPEN:
+    case MODAL.CLOSE:
       return { ...state, ...action.payload }
+    case AUTHENTICATION.LOGOUT:
+    case PROFILE.DELETE_SUCCESS:
+      return { ...initialState }
     default:
       return state
   }

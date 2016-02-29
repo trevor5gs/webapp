@@ -1,17 +1,33 @@
-import { AUTHENTICATION, EMOJI, POST, PROFILE } from '../constants/action_types'
+import {
+  AUTHENTICATION,
+  EDITOR,
+  EMOJI,
+  POST,
+  PROFILE,
+} from '../constants/action_types'
 import { suggestEmoji } from '../components/completers/EmojiSuggester'
 
-export function editor(state = {}, action) {
+const initialState = {
+  completions: {},
+  editors: {},
+}
+
+function editorObject(state = {}, action) {
   let obj
   switch (action.type) {
-    case POST.CREATE_SUCCESS:
-      return {}
-    case POST.TMP_IMAGE_CREATED:
+    case EDITOR.APPEND_TEXT:
       return {
         ...state,
         type: action.type,
-        ...action.payload,
+        appendText: action.payload.text,
       }
+    case EDITOR.CLEAR_APPENDED_TEXT:
+      return {
+        ...state,
+        type: action.type,
+        appendText: null,
+      }
+    case POST.TMP_IMAGE_CREATED:
     case POST.IMAGE_BLOCK_CREATED:
       return {
         ...state,
@@ -34,6 +50,32 @@ export function editor(state = {}, action) {
         obj.editorState = action.payload
       }
       return obj
+    case POST.CREATE_SUCCESS:
+      return {}
+    default:
+      return state
+  }
+}
+
+export function editor(state = initialState, action) {
+  const newState = { ...state }
+  let editorId
+  let obj
+  switch (action.type) {
+    case EDITOR.APPEND_TEXT:
+    case EDITOR.CLEAR_APPENDED_TEXT:
+    case POST.CREATE_SUCCESS:
+    case POST.IMAGE_BLOCK_CREATED:
+    case POST.PERSIST:
+    case POST.POST_PREVIEW_SUCCESS:
+    case POST.SAVE_IMAGE_SUCCESS:
+    case POST.TMP_IMAGE_CREATED:
+      editorId = action.payload ? action.payload.editorId : null
+      if (editorId) {
+        newState.editors[editorId] = editorObject(newState.editors[editorId], action)
+        return newState
+      }
+      return state
     case POST.AUTO_COMPLETE_CLEAR:
       obj = {
         ...state,
@@ -58,7 +100,7 @@ export function editor(state = {}, action) {
       return obj
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
-      return {}
+      return { ...initialState }
     default:
       return state
   }

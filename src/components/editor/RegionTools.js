@@ -8,6 +8,7 @@ class RegionTools extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    editorId: PropTypes.string.isRequired,
     onRemoveBlock: PropTypes.func.isRequired,
   };
 
@@ -33,6 +34,7 @@ class RegionTools extends Component {
   };
 
   render() {
+    const { editorId } = this.props
     return (
       <div className="RegionTools">
         <button
@@ -43,6 +45,7 @@ class RegionTools extends Component {
         </button>
         <button
           className="DragHandler"
+          data-drag-id={ editorId }
         >
           <DragIcon />
         </button>

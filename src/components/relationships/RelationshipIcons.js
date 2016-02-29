@@ -43,7 +43,7 @@ export const DotsIcon = () =>
 export const HeaderPlusIcon = () =>
   <SVGIcon className="MiniPlusIcon">
     <g>
-      <circle cx="10" cy="10" r="7"/>
+      <circle cx="10.5" cy="10.5" r="7"/>
     </g>
     <g>
       <line x1="10.5" x2="10.5" y1="7.5" y2="13.5"/>
@@ -54,10 +54,10 @@ export const HeaderPlusIcon = () =>
 export const HeaderCheckIcon = () =>
   <SVGIcon className="MiniCheckIcon">
     <g>
-      <circle cx="10" cy="10" r="7"/>
+      <circle cx="10.5" cy="10.5" r="7"/>
     </g>
     <g>
-      <polyline points="7,9.9 9.5,13 13,7"/>
+      <polyline points="7.5,10 10,13 13.5,7"/>
     </g>
   </SVGIcon>
 

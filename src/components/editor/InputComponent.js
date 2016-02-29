@@ -86,6 +86,12 @@ function onKeyDown(e) {
   if ((e.metaKey || e.ctrlKey) && e.keyCode === 13) {
     callMethod('onSubmitPost')
   }
+  // adding br tags while completing causes all of the text to disappear
+  const completerActive = document.body.querySelector('.Completion.active')
+  if (e.keyCode === 13 && !completerActive) {
+    e.preventDefault() // Prevent DIVs from being created
+    document.execCommand('insertHTML', false, '<br/><br/>')
+  }
 }
 methods.onKeyDown = (e) =>
   onKeyDown(e)

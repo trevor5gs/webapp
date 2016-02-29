@@ -39,6 +39,7 @@ class PostTools extends Component {
   componentWillMount() {
     this.state = {
       isMoreToolActive: false,
+      isCommentsActive: false,
     }
   }
 
@@ -173,8 +174,9 @@ class PostTools extends Component {
 
   toggleComments = () => {
     const { dispatch, post } = this.props
-    const showComments = !post.showComments
-    dispatch(postActions.toggleComments(post, showComments))
+    const nextShowComments = !post.showComments
+    this.setState({ isCommentsActive: nextShowComments })
+    dispatch(postActions.toggleComments(post, nextShowComments))
   };
 
   lovePost = () => {
@@ -224,8 +226,10 @@ class PostTools extends Component {
 
   repostPost = () => {
     const { dispatch, post } = this.props
-    dispatch(postActions.toggleReposting(post, true))
-    dispatch(postActions.loadEditablePost(post))
+    if (!post.reposted) {
+      dispatch(postActions.toggleReposting(post, true))
+      dispatch(postActions.loadEditablePost(post))
+    }
   };
 
   deletePost = () => {
@@ -253,6 +257,7 @@ class PostTools extends Component {
     const classes = classNames(
       'PostTools',
       { isMoreToolActive: this.state.isMoreToolActive },
+      { isCommentsActive: this.state.isCommentsActive },
     )
     return (
       <footer className={classes}>

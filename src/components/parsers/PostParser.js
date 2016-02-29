@@ -18,7 +18,7 @@ function getPostDetailPath(author, post) {
 
 function commentStream(post, author) {
   return (
-    <CommentStream key={`Comments_${post.id}`} post={post} author={author} />
+    <CommentStream key={`Comments_${post.id}_${post.commentsCount}`} post={post} author={author} />
   )
 }
 
@@ -113,7 +113,7 @@ function isRepost(post) {
 
 class PostParser extends Component {
   static propTypes = {
-    assets: PropTypes.any.isRequired,
+    assets: PropTypes.any,
     author: PropTypes.object,
     authorLinkObject: PropTypes.object,
     currentUser: PropTypes.object,
@@ -152,7 +152,8 @@ class PostParser extends Component {
         { (post.isEditing || post.isReposting) && post.body ?
           <Editor post={ post }/> :
           parsePost(post, author, currentUser, isGridLayout)}
-        {showComments ? commentStream(post, author, currentUser) : null}
+        { showComments ? <Editor post={ post } isComment/> : null }
+        { showComments && post.commentsCount > 0 ? commentStream(post, author, currentUser) : null }
       </div>)
   }
 }
@@ -160,13 +161,15 @@ class PostParser extends Component {
 const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
   const post = json[MAPPING_TYPES.POSTS][ownProps.post.id]
   const author = json[MAPPING_TYPES.USERS][post.authorId]
-  const assets = json.assets;
+  const assets = json.assets
 
   let newProps = {
     assets,
-    currentUser,
-    post,
     author,
+    currentUser,
+    isEditing: post.isEditing,
+    isReposting: post.isReposting,
+    post,
   }
 
   if (isRepost(post)) {
@@ -181,3 +184,4 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
 }
 
 export default connect(mapStateToProps)(PostParser)
+

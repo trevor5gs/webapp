@@ -9,19 +9,23 @@ function updateFollowersCountAndPriority(newState, action) {
   const { userId, priority } = action.payload
   const user = newState[MAPPING_TYPES.USERS][userId]
   const prevPriority = user.relationshipPriority
-  let followersCount = parseInt(user.followersCount, 10)
+  let delta = 0
   switch (priority) {
     case RELATIONSHIP_PRIORITY.FRIEND:
     case RELATIONSHIP_PRIORITY.NOISE:
-      followersCount += 1
+      if (prevPriority !== RELATIONSHIP_PRIORITY.FRIEND &&
+          prevPriority !== RELATIONSHIP_PRIORITY.NOISE) {
+        delta = 1
+      }
       break
     default:
       if (prevPriority === RELATIONSHIP_PRIORITY.FRIEND ||
           prevPriority === RELATIONSHIP_PRIORITY.NOISE) {
-        followersCount -= 1
+        delta = -1
       }
       break
   }
+  jsonMethods.updateUserCount(newState, userId, 'followersCount', delta)
   // update local user
   jsonMethods.mergeModel(
     newState,
@@ -29,7 +33,6 @@ function updateFollowersCountAndPriority(newState, action) {
     {
       id: userId,
       relationshipPriority: priority,
-      followersCount,
     }
   )
   return newState

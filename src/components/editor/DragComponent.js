@@ -44,8 +44,8 @@ function callMethod(method) {
     totalDragY,
   }
   for (const obj of dragObjects) {
-    if (obj[method]) {
-      obj[method](props)
+    if (obj.component[method] && target.dataset.dragId === obj.dragId) {
+      obj.component[method](props)
     }
   }
 }

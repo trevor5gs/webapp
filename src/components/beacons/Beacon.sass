@@ -25,6 +25,11 @@
   top: rem(20)
   left: 0
 
+// Deal with the rare case of double beacons.
+.Panel.Following .Beacon + .StreamComponent > .Beacon,
+.Panel.Starred .Beacon + .StreamComponent > .Beacon
+  display: none
+
 
 @media(min-width: #{$break-2})
   .Beacon

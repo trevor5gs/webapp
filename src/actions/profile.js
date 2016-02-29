@@ -1,7 +1,9 @@
+import React from 'react'
 import { LOAD_STREAM, PROFILE } from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
+import { ErrorState } from '../components/errors/Errors'
 
 export function loadProfile() {
   return {
@@ -42,6 +44,7 @@ export function availableToggles() {
       renderStream: {
         asList: StreamRenderables.profileToggles,
         asGrid: StreamRenderables.profileToggles,
+        asError: <ErrorState/>,
       },
     },
     payload: {

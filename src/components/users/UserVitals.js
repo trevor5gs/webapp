@@ -14,43 +14,46 @@ UserNames.propTypes = {
 }
 
 
+const UserStatsLink = ({ asDisabled = false, children, to }) => {
+  if (asDisabled) {
+    return (
+      <span activeClassName="active" className="UserStatsLink asDisabled">
+        { children }
+      </span>
+    )
+  }
+  return (
+    <Link activeClassName="active" className="UserStatsLink" to={ to }>
+      { children }
+    </Link>
+  )
+}
+
 export const UserStats = ({ user }) =>
   <div className="UserStats">
     <dl>
-      <Link className="UserStatsLink" activeClassName="active" to={`/${user.username}`}>
+      <UserStatsLink to={`/${user.username}`}>
         <dt>{user.postsCount}</dt>
         <dd>Posts</dd>
-      </Link>
+      </UserStatsLink>
     </dl>
     <dl>
-      <Link
-        className="UserStatsLink"
-        activeClassName="active"
-        to={`/${user.username}/following`}
-      >
+      <UserStatsLink asDisabled={ !user.followingCount } to={`/${user.username}/following`}>
         <dt>{user.followingCount}</dt>
         <dd>Following</dd>
-      </Link>
+      </UserStatsLink>
     </dl>
     <dl>
-      <Link
-        className="UserStatsLink"
-        activeClassName="active"
-        to={`/${user.username}/followers`}
-      >
+      <UserStatsLink asDisabled={ !user.followersCount } to={`/${user.username}/followers`}>
         <dt>{user.followersCount}</dt>
         <dd>Followers</dd>
-      </Link>
+      </UserStatsLink>
     </dl>
     <dl>
-      <Link
-        className="UserStatsLink"
-        activeClassName="active"
-        to={`/${user.username}/loves`}
-      >
+      <UserStatsLink asDisabled={ !user.lovesCount } to={`/${user.username}/loves`} >
         <dt>{user.lovesCount}</dt>
         <dd>Loves</dd>
-      </Link>
+      </UserStatsLink>
     </dl>
   </div>
 
@@ -61,40 +64,28 @@ UserStats.propTypes = {
 export const LoggedOutUserStats = ({ user }) =>
   <div className="UserStats">
     <dl>
-      <span className="UserStatsLink asDisabled" activeClassName="active" to={`/${user.username}`}>
+      <UserStatsLink asDisabled >
         <dt>{user.postsCount}</dt>
         <dd>Posts</dd>
-      </span>
+      </UserStatsLink>
     </dl>
     <dl>
-      <span
-        className="UserStatsLink asDisabled"
-        activeClassName="active"
-        to={`/${user.username}/following`}
-      >
+      <UserStatsLink asDisabled >
         <dt>{user.followingCount}</dt>
         <dd>Following</dd>
-      </span>
+      </UserStatsLink>
     </dl>
     <dl>
-      <span
-        className="UserStatsLink asDisabled"
-        activeClassName="active"
-        to={`/${user.username}/followers`}
-      >
+      <UserStatsLink asDisabled >
         <dt>{user.followersCount}</dt>
         <dd>Followers</dd>
-      </span>
+      </UserStatsLink>
     </dl>
     <dl>
-      <span
-        className="UserStatsLink asDisabled"
-        activeClassName="active"
-        to={`/${user.username}/loves`}
-      >
+      <UserStatsLink asDisabled >
         <dt>{user.lovesCount}</dt>
         <dd>Loves</dd>
-      </span>
+      </UserStatsLink>
     </dl>
   </div>
 

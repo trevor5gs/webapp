@@ -7,9 +7,12 @@ const Beacon = ({ children, emoji, onDismiss }) =>
     <h2 className="BeaconHeading">
       { children }
     </h2>
-    <button className="BeaconButton" onClick={ onDismiss }>
-      <span>Close</span>
-    </button>
+    { onDismiss ?
+      <button className="BeaconButton" onClick={ onDismiss }>
+        <span>Close</span>
+      </button> :
+      null
+     }
   </div>
 
 Beacon.propTypes = {

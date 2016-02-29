@@ -36,7 +36,7 @@ describe('StreamComponent', () => {
         expect(comp.props.className).to.equal('StreamComponent hasErrored')
         expect(comp.type).to.equal('section')
         const div = comp.props.children
-        expect(div.props.className).to.equal('StreamErrorMessage')
+        expect(div)
         // const [ img, p1, p2, p3 ] = div.props.children
       })
     })
