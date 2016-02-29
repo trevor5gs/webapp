@@ -1,7 +1,7 @@
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { browserHistory } from 'react-router'
-import { routerMiddleware, routerReducer } from 'react-router-redux'
+import { routerMiddleware } from 'react-router-redux'
 import { combineReducers, compose, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
 import { analytics, authentication, requester, uploader } from './middleware'
