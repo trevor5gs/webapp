@@ -208,9 +208,12 @@ export class StreamComponent extends Component {
     } else if (result.type === meta.mappingType ||
                (meta.resultFilter && result.type !== meta.mappingType)) {
       const deletedCollection = json[`deleted_${result.type}`]
+      // don't filter out blocked ids if we are in settings
+      // since you can unblock/unmute them from here
       for (const id of result.ids) {
         if (_.get(json, [result.type, id]) &&
-           (!deletedCollection || deletedCollection.indexOf(id) === -1)) {
+            (pathname === '/settings' ||
+            (!deletedCollection || deletedCollection.indexOf(id) === -1))) {
           renderObj.data.push(_.get(json, [result.type, id]))
         }
       }
@@ -219,7 +222,8 @@ export class StreamComponent extends Component {
         const dataProp = payload.endpoint.pagingPath ? 'nestedData' : 'data'
         for (const nextId of result.next.ids) {
           if (json[result.next.type][nextId] &&
-              (!nextDeletedCollection || nextDeletedCollection.indexOf(nextId) === -1)) {
+              (pathname === '/settings' ||
+              (!nextDeletedCollection || nextDeletedCollection.indexOf(nextId) === -1))) {
             renderObj[dataProp].push(json[result.next.type][nextId])
           }
         }
