@@ -151,6 +151,14 @@ function getResult(response, newState, action) {
 methods.getResult = (response, newState, action) =>
   getResult(response, newState, action)
 
+function pagesKey(action) {
+  const pathname = action.payload && action.payload.pathname ? action.payload.pathname : path
+  const { resultKey } = action.meta || {}
+  return resultKey || pathname
+}
+methods.pagesKey = (action) =>
+  pagesKey(action)
+
 // TODO: need to test the existingResult conditional logic!!!!
 function updateResult(response, newState, action) {
   if (!newState.pages) { newState.pages = {} }
@@ -159,7 +167,7 @@ function updateResult(response, newState, action) {
   // the action payload pathname comes from before the fetch so that
   // we can be sure that the result is being assigned to the proper page
   const pathname = action.payload && action.payload.pathname ? action.payload.pathname : path
-  const resultPath = resultKey ? `${pathname}_${resultKey}` : pathname
+  const resultPath = methods.pagesKey(action)
   const existingResult = newState.pages[resultPath]
   if (existingResult && action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
     existingResult.pagination = result.pagination
@@ -287,6 +295,8 @@ export default function json(state = {}, action = { type: '' }) {
       return postMethods.toggleComments(state, newState, action)
     case ACTION_TYPES.POST.TOGGLE_EDITING:
       return postMethods.toggleEditing(state, newState, action)
+    case ACTION_TYPES.POST.TOGGLE_LOVERS:
+      return postMethods.toggleLovers(state, newState, action)
     case ACTION_TYPES.POST.TOGGLE_REPOSTING:
       return postMethods.toggleReposting(state, newState, action)
     case ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL:

@@ -104,6 +104,14 @@ export function editPostDetail(idOrToken) {
     params,
   }
 }
+// Loves
+export function loversForPost(post) {
+  const params = { per_page: 10 }
+  return {
+    path: getAPIPath(`posts/${post.id}/lovers`, params),
+    params,
+  }
+}
 export function lovePost(post) {
   return {
     path: getAPIPath(`posts/${post.id}/loves`),

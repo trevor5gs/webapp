@@ -2,11 +2,15 @@
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { methods as jsonMethods } from '../json'
+import { emptyPagination } from '../../components/streams/Paginator'
 
 const methods = {}
 
 function updatePostLoves(state, newState, action) {
   const { method, model } = action.payload
+  const resultPath = jsonMethods.pagesKey(action)
+  const currentUser = jsonMethods.getCurrentUser(newState)
+
   let delta = 0
   let loved = false
   switch (action.type) {
@@ -31,6 +35,21 @@ function updatePostLoves(state, newState, action) {
     default:
       return state
   }
+
+  const existingResult = newState.pages[resultPath] ||
+    { type: 'users', ids: [], pagination: emptyPagination() }
+  const existingIds = existingResult.ids
+
+  if (delta === 1) {
+    existingIds.unshift(currentUser.id)
+  } else {
+    const index = existingIds.indexOf(currentUser.id)
+    if (index !== -1) {
+      existingIds.splice(index, 1)
+    }
+  }
+  newState.pages[resultPath] = existingResult
+
   jsonMethods.updateUserCount(newState, model.authorId, 'lovesCount', delta)
   jsonMethods.mergeModel(
     newState,
@@ -39,8 +58,10 @@ function updatePostLoves(state, newState, action) {
       id: model.id,
       lovesCount: Number(model.lovesCount) + delta,
       loved,
+      showLovers: loved,
     }
   )
+
   return newState
 }
 methods.updatePostLoves = (state, newState, action) =>
@@ -93,6 +114,14 @@ function toggleEditing(state, newState, action) {
 }
 methods.toggleEditing = (state, newState, action) =>
   toggleEditing(state, newState, action)
+
+function toggleLovers(state, newState, action) {
+  const { model, showLovers } = action.payload
+  newState[MAPPING_TYPES.POSTS][model.id].showLovers = showLovers
+  return newState
+}
+methods.toggleLovers = (state, newState, action) =>
+  toggleLovers(state, newState, action)
 
 function toggleReposting(state, newState, action) {
   const { model, isReposting } = action.payload

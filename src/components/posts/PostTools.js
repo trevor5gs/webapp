@@ -80,6 +80,9 @@ class PostTools extends Component {
         <span className="PostTool LoveTool" key={`LoveTool_${post.id}`}>
           <button className={classNames({ active: post.loved })} onClick={ this.lovePost }>
             <HeartIcon />
+            <Hint>Love</Hint>
+          </button>
+          <button className={classNames({ active: post.loved })} onClick={ this.toggleLovers }>
             <span className="PostToolValue" data-count={post.lovesCount}>{post.lovesCount}</span>
             <Hint>Love</Hint>
           </button>
@@ -89,7 +92,7 @@ class PostTools extends Component {
     if (author.hasRepostingEnabled) {
       cells.push(
         <span className="PostTool RepostTool" key={`RepostTool_${post.id}`}>
-          <button onClick={ isLoggedIn ? this.repostPost : this.signUp }>
+          <button onClick={ this.repostPost }>
             <RepostIcon />
             <span
               className="PostToolValue"
@@ -190,6 +193,11 @@ class PostTools extends Component {
       dispatch(postActions.lovePost(post))
     }
   };
+  toggleLovers = () => {
+    const { dispatch, post } = this.props
+    const showLovers = !post.showLovers
+    dispatch(postActions.toggleLovers(post, showLovers))
+  };
 
   sharePost = () => {
     const { author, dispatch, post } = this.props
@@ -225,7 +233,10 @@ class PostTools extends Component {
   };
 
   repostPost = () => {
-    const { dispatch, post } = this.props
+    const { dispatch, isLoggedIn, post } = this.props
+    if (!isLoggedIn) {
+      return this.signUp()
+    }
     if (!post.reposted) {
       dispatch(postActions.toggleReposting(post, true))
       dispatch(postActions.loadEditablePost(post))
