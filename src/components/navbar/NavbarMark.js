@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { ElloMark, ElloRainbowMark, ElloDonutMark } from '../interface/ElloIcons'
 
@@ -16,9 +17,19 @@ function getLogoMarkFromEnvironment() {
   }
 }
 
-const NavbarMark = () =>
-  <Link className="NavbarMark" to="/">
+const NavbarMark = (props) =>
+  <Link className="NavbarMark" to={props.markTarget}>
     { getLogoMarkFromEnvironment() }
   </Link>
 
-export default NavbarMark
+NavbarMark.propTypes = {
+  markTarget: PropTypes.string.isRequired,
+}
+
+const mapStateToProps = (state) => {
+  const { authentication: { isLoggedIn }, gui: { currentStream } } = state
+  return {
+    markTarget: isLoggedIn ? currentStream : '/',
+  }
+}
+export default connect(mapStateToProps)(NavbarMark)
