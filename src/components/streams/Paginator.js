@@ -1,6 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { ElloMark } from '../interface/ElloIcons'
 
+export function emptyPagination() {
+  return {
+    totalPages: 0,
+    totalPagesRemaining: 0,
+  }
+}
+
 class Paginator extends Component {
 
   static propTypes = {
