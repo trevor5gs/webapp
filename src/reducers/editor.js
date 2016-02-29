@@ -100,7 +100,7 @@ export function editor(state = initialState, action) {
       return obj
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
-      return {}
+      return { ...initialState }
     default:
       return state
   }
