@@ -72,9 +72,10 @@ class RelationshipButton extends Component {
   }
 
   renderAsLabelButton(label) {
-    const{ buttonWasClicked, priority } = this.props
+    const{ buttonWasClicked, priority, classList } = this.props
     return (
       <button
+        className={ classNames('RelationshipButton', classList) }
         data-priority={ priority }
         onClick={ buttonWasClicked }
       >
