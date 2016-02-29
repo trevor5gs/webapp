@@ -9,7 +9,6 @@ import * as reducers from './reducers'
 
 const reducer = combineReducers({
   ...reducers,
-  routing: routerReducer,
 })
 
 const reduxRouterMiddleware = browserHistory ? routerMiddleware(browserHistory) : null
