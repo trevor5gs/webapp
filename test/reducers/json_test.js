@@ -192,7 +192,7 @@ describe('json reducer', () => {
         subject.setPath('sweetness')
         expect(json.pages).to.be.undefined
         subject.methods.updateResult({}, json, action)
-        expect(json.pages.sweetness_yo).to.equal(result)
+        expect(json.pages.yo).to.equal(result)
       })
     })
 
@@ -226,16 +226,16 @@ describe('json reducer', () => {
       })
 
       it('uses the resultKey to update the storage location within json.pages', () => {
-        json.pages = { sweetness_yo: { pagination: 'cool' } }
+        json.pages = { yo: { pagination: 'cool' } }
         const result = { pagination: 'sweet', ids: ['2', '3', '4'] }
         sinon.stub(subject.methods, 'getResult', () => result)
         const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: { resultKey: 'yo' } }
         subject.setPath('sweetness')
-        expect(json.pages.sweetness_yo.next).to.be.undefined
-        expect(json.pages.sweetness_yo.pagination).to.equal('cool')
+        expect(json.pages.yo.next).to.be.undefined
+        expect(json.pages.yo.pagination).to.equal('cool')
         subject.methods.updateResult({}, json, action)
-        expect(json.pages.sweetness_yo.next).to.deep.equal({ ids: ['2', '3', '4'], pagination: 'sweet' })
-        expect(json.pages.sweetness_yo.pagination).to.equal('sweet')
+        expect(json.pages.yo.next).to.deep.equal({ ids: ['2', '3', '4'], pagination: 'sweet' })
+        expect(json.pages.yo.pagination).to.equal('sweet')
       })
     })
   })
