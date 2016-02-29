@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { routeActions } from 'react-router-redux'
+import { push, replace } from 'react-router-redux'
 import classNames from 'classnames'
 import { debounce } from 'lodash'
 import * as ACTION_TYPES from '../../constants/action_types'
@@ -83,7 +83,7 @@ class Settings extends Component {
   onLogOut = () => {
     const { dispatch } = this.props
     dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
-    dispatch(routeActions.push('/'))
+    dispatch(push('/'))
   };
 
   getExternalLinkListAsText() {
@@ -198,7 +198,7 @@ class Settings extends Component {
     const { dispatch } = this.props
     dispatch(deleteProfile())
     this.closeModal()
-    dispatch(routeActions.replace('/'))
+    dispatch(replace('/'))
   };
 
   launchAdultPostsPrompt = (obj) => {
@@ -430,4 +430,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Settings)
-

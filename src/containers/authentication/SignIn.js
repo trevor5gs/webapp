@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { routeActions } from 'react-router-redux'
+import { replace } from 'react-router-redux'
 import { random } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
@@ -54,7 +54,7 @@ class SignIn extends Component {
     const success = await dispatch(action)
 
     if (success) {
-      dispatch(routeActions.replace({ pathname: currentStream }))
+      dispatch(replace({ pathname: currentStream }))
     } else {
       this.setState({ failureMessage: 'No dice. Access denied.' })
     }

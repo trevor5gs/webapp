@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
-import { UPDATE_LOCATION } from 'react-router-redux'
+import { LOCATION_CHANGE } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
 import { uniq } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
@@ -307,7 +307,7 @@ export default function json(state = {}, action = { type: '' }) {
         return { ...state, ...keepers }
       }
       return state
-    case UPDATE_LOCATION:
+    case LOCATION_CHANGE:
       path = action.payload.pathname
       if (action.payload.query.terms && prevTerms !== action.payload.query.terms) {
         newState = methods.clearSearchResults(state, newState, action)

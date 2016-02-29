@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { routeActions } from 'react-router-redux'
+import { push } from 'react-router-redux'
 import classNames from 'classnames'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
@@ -77,7 +77,7 @@ class Navbar extends Component {
     const { dispatch, isLoggedIn, shortcuts } = this.props
     if (isLoggedIn) {
       Mousetrap.bind(Object.keys(shortcuts), (event, shortcut) => {
-        dispatch(routeActions.push(shortcuts[shortcut]))
+        dispatch(push(shortcuts[shortcut]))
       })
 
       Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
@@ -177,7 +177,7 @@ class Navbar extends Component {
   onLogOut = () => {
     const { dispatch } = this.props
     dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
-    dispatch(routeActions.push('/'))
+    dispatch(push('/'))
   };
 
   omniButtonWasClicked = () => {
@@ -321,10 +321,9 @@ function mapStateToProps(state) {
     gui: state.gui,
     json: state.json,
     modalIsActive: state.modal.isActive,
-    pathname: state.routing.location.pathname,
+    pathname: document.location.pathname,
     profile: state.profile,
   }
 }
 
 export default connect(mapStateToProps)(Navbar)
-

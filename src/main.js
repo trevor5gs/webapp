@@ -6,6 +6,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import { persistStore } from 'redux-persist'
 import localforage from 'localforage'
@@ -20,9 +21,10 @@ updateTimeAgoStrings({ about: '' })
 
 const APP_VERSION = '1.0.7'
 
+const history = syncHistoryWithStore(browserHistory, store)
 const element = (
   <Provider store={store}>
-    <Router history={browserHistory} routes={routes} />
+    <Router history={history} routes={routes} />
   </Provider>
 )
 

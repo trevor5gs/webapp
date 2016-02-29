@@ -1,16 +1,23 @@
-import { UPDATE_LOCATION } from 'react-router-redux'
+import { get } from 'lodash'
+import { LOCATION_CHANGE } from 'react-router-redux'
+import { routerReducer } from 'react-router-redux'
 
+const previousPath = typeof document === 'undefined' ? '/' : document.location.pathname
+
+// Merge our initial state with routerReducer's initial state
 const initialState = {
-  location: { pathname: '/' },
+  ...routerReducer(undefined, { type: null, payload: null }),
+  previousPath,
 }
 
 export function routeReducer(state = initialState, { type, payload: location }) {
-  if (type !== UPDATE_LOCATION) {
-    return state
+  const newState = routerReducer(state, { type, payload: location })
+
+  if (type !== LOCATION_CHANGE) {
+    return newState
   }
   return {
-    ...state,
-    previousPath: state.location.pathname,
-    location,
+    ...newState,
+    previousPath: get(state, 'locationBeforeTransitions.pathname'),
   }
 }

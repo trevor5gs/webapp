@@ -84,9 +84,8 @@ function mapStateToProps(state) {
   return {
     gui: state.gui,
     json: state.json,
-    pathname: state.routing.location.pathname,
+    pathname: document.location.pathname,
   }
 }
 
 export default connect(mapStateToProps)(Footer)
-

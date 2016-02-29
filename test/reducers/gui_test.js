@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { UPDATE_LOCATION } from 'react-router-redux'
+import { LOCATION_CHANGE } from 'react-router-redux'
 import { expect } from '../spec_helper'
 import * as subject from '../../src/reducers/gui'
 
@@ -11,10 +11,10 @@ describe('gui reducer', () => {
       ).to.have.keys('modes', 'currentStream')
     })
   })
-  describe('UPDATE_LOCATION', () => {
+  describe('LOCATION_CHANGE', () => {
     it('stores relevant streams to currentStream', () => {
       const action = {
-        type: UPDATE_LOCATION,
+        type: LOCATION_CHANGE,
         payload: {
           pathname: '/discover/trending',
         },

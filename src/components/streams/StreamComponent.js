@@ -260,7 +260,7 @@ function mapStateToProps(state) {
     currentUser: state.profile,
     gui: state.gui,
     json: state.json,
-    pathname: state.routing.location.pathname,
+    pathname: document.location.pathname,
     stream: state.stream,
   }
 }
