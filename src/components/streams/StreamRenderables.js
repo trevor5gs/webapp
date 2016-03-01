@@ -194,8 +194,12 @@ export function commentsAsList(comments) {
 export function notificationList(notifications, json) {
   return (
     <div className="Notifications">
-      {notifications.data.map((notification) =>
-        <NotificationParser notification={notification} json={json} />
+      {notifications.data.map((notification, index) =>
+        <NotificationParser
+          json={json}
+          key={`n_${notification.kind}_${index}`}
+          notification={notification}
+        />
       )}
     </div>
   )
