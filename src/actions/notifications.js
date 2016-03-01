@@ -18,6 +18,7 @@ export function loadNotifications(params = {}) {
         asZero: <ZeroState>Sorry, no notifications found.</ZeroState>,
       },
       resultFilter: StreamFilters.notificationsFromActivities,
+      resultKey: `/notifications/${params.category}`,
     },
   }
 }

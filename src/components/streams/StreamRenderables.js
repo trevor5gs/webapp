@@ -1,7 +1,7 @@
 import React from 'react'
 import { camelize } from 'humps'
 import { postLovers, postReposters } from '../../networking/api'
-import { getLinkArray } from '../base/json_helper'
+import { getLinkArray, getLinkObject } from '../base/json_helper'
 import PostParser from '../parsers/PostParser'
 import CommentParser from '../parsers/CommentParser'
 import NotificationParser from '../parsers/NotificationParser'
@@ -194,12 +194,16 @@ export function commentsAsList(comments) {
 export function notificationList(notifications, json) {
   return (
     <div className="Notifications">
-      {notifications.data.map((notification, index) =>
-        <NotificationParser
-          json={json}
-          key={`n_${notification.kind}_${index}`}
-          notification={notification}
-        />
+      {notifications.data.map((notification) => {
+        const subject = getLinkObject(notification, `subject`, json)
+        return (
+          <NotificationParser
+            json={ json }
+            key={ `${notification.kind}_${subject.id}` }
+            notification={ notification }
+            subject={ subject }
+          />
+        )}
       )}
     </div>
   )

@@ -54,6 +54,7 @@ class Notifications extends Component {
         <StreamComponent
           action={loadNotifications(params)}
           className="asFullWidth"
+          key={ `notificationPanel_${params.category}` }
         />
       </section>
     )

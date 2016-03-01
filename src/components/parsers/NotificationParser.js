@@ -339,15 +339,15 @@ class NotificationParser extends Component {
   static propTypes = {
     notification: PropTypes.object,
     json: PropTypes.object,
+    subject: PropTypes.object.isRequired,
   };
 
   render() {
-    const { notification, json } = this.props
+    const { notification, json, subject } = this.props
     if (!notification) { return null }
     models = json
     setModels(models)
     const createdAt = notification.createdAt
-    const subject = getLinkObject(notification, `subject`, json)
 
     switch (notification.kind) {
       case NOTIFICATION_KIND.COMMENT:
