@@ -61,7 +61,7 @@ class App extends Component {
     // then logging out of the mothership wouldn't clear out the
     // authentication here and would show you the wrong navbar
     // and the links would be wrong for user/post detail pages
-    const { dispatch, pathname } = this.props
+    const { pathname } = this.props
     let isLoggedOutPath = false
     for (const re in loggedOutPaths) {
       if (pathname.match(loggedOutPaths[re])) {
@@ -70,7 +70,9 @@ class App extends Component {
       }
     }
     if (isLoggedOutPath) {
-      dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
+      /* eslint-disable no-console */
+      console.log('logged out page')
+      /* eslint-enable no-console */
     }
     this.onUserCompleter = debounce(this.onUserCompleter, 300)
   }
