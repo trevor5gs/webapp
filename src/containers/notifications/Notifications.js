@@ -51,7 +51,10 @@ class Notifications extends Component {
           tabClasses="IconTab"
           tabs={tabs}
         />
-        <StreamComponent action={loadNotifications(params)} />
+        <StreamComponent
+          action={loadNotifications(params)}
+          className="asFullWidth"
+        />
       </section>
     )
   }

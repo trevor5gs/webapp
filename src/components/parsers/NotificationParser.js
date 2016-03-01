@@ -64,7 +64,7 @@ function commentNotification(comment, createdAt) {
   return (
     <Notification
       activityPath={ activityPath }
-      className="CommentMentionNotification"
+      className="CommentNotification"
       createdAt={ createdAt }
       notifier={ author }
       summary={ summary }
