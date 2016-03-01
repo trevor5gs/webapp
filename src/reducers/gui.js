@@ -1,5 +1,13 @@
 import { UPDATE_LOCATION } from 'react-router-redux'
-import { BEACONS, PROFILE, SET_LAYOUT_MODE } from '../constants/action_types'
+import {
+  BEACONS,
+  HEAD_FAILURE,
+  HEAD_REQUEST,
+  HEAD_SUCCESS,
+  LOAD_STREAM_SUCCESS,
+  PROFILE,
+  SET_LAYOUT_MODE,
+} from '../constants/action_types'
 
 
 let location = {}
@@ -18,6 +26,7 @@ const initialState = {
     { label: 'users/loves', mode: 'grid', regex: /\/[\w\-]+\/loves/ },
     { label: 'users', mode: 'list', regex: /\/[\w\-]+/ },
   ],
+  newNotificationContent: false,
 }
 
 // TODO: figure out why the users regex doesn't work properly
@@ -41,6 +50,20 @@ export function gui(state = initialState, action = { type: '' }) {
       return { ...state, lastFollowingBeaconVersion: action.payload.version }
     case BEACONS.LAST_STARRED_VERSION:
       return { ...state, lastStarredBeaconVersion: action.payload.version }
+    case HEAD_FAILURE:
+      return { ...state, newNotificationContent: false }
+    case HEAD_REQUEST:
+      return { ...state, lastNotificationCheck: new Date() }
+    case HEAD_SUCCESS:
+      if (action.payload.serverResponse.status === 204) {
+        return { ...state, newNotificationContent: true }
+      }
+      return state
+    case LOAD_STREAM_SUCCESS:
+      if (action.meta && /\/notifications/.test(action.meta.resultKey)) {
+        return { ...state, newNotificationContent: false }
+      }
+      return state
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
     case SET_LAYOUT_MODE:

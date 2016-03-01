@@ -57,7 +57,6 @@ class NotificationsContainer extends Component {
     const scrollHeight = Math.max(scrollable.scrollHeight, scrollable.offsetHeight)
     const scrollBottom = Math.round(scrollHeight - scrollable.offsetHeight)
     if (Math.abs(scrollY - scrollBottom) < 5) {
-      console.log('firing')
       this.refs.streamComponent.refs.wrappedInstance.onLoadNextPage()
     }
   };

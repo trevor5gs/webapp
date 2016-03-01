@@ -6,6 +6,7 @@ import * as ACTION_TYPES from '../../constants/action_types'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { openModal, closeModal } from '../../actions/modals'
 import { openOmnibar } from '../../actions/omnibar'
+import { checkForNewNotifications } from '../../actions/notifications'
 import NotificationsContainer from '../../containers/notifications/NotificationsContainer'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
@@ -74,6 +75,7 @@ class Navbar extends Component {
       skipTransition: false,
     }
     this.scrollYAtDirectionChange = null
+    this.checkForNotifications()
   }
 
   componentDidMount() {
@@ -106,9 +108,13 @@ class Navbar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { pathname } = nextProps
+    const { gui, pathname } = nextProps
     const isBlacklisted = isBlacklistedRoute(pathname)
-    this.setState({ asFixed: true, asLocked: isBlacklisted })
+    this.setState({
+      asFixed: true,
+      asLocked: isBlacklisted,
+      hasNotifications: gui.newNotificationContent,
+    })
   }
 
   // @mkitt would like to ~kick~ marry this thing extremely hard.
@@ -121,6 +127,9 @@ class Navbar extends Component {
       if (isBlacklistedRoute(pathname)) {
         window.scrollTo(0, this.state.offset - 120)
       }
+    }
+    if (prevProps.pathname !== this.props.pathname) {
+      this.checkForNotifications()
     }
   }
 
@@ -208,6 +217,11 @@ class Navbar extends Component {
     e.preventDefault()
     document.location.href = ENV.REDIRECT_URI + e.target.pathname
   };
+
+  checkForNotifications() {
+    const { dispatch } = this.props
+    dispatch(checkForNewNotifications())
+  }
 
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
     const { profile, isNotificationsActive } = this.props

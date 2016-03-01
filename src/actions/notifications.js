@@ -23,3 +23,13 @@ export function loadNotifications(params = {}) {
   }
 }
 
+export function checkForNewNotifications() {
+  return {
+    type: ACTION_TYPES.HEAD,
+    payload: {
+      endpoint: api.newNotifications(),
+      method: 'HEAD',
+    },
+  }
+}
+
