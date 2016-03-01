@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import { postLovers, postReposters } from '../../networking/api'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
@@ -9,8 +8,7 @@ import Avatar from '../assets/Avatar'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostTools from '../posts/PostTools'
 import CommentStream from '../streams/CommentStream'
-import UserAvatars from '../users/UserAvatars'
-import { HeartIcon } from '../notifications/NotificationIcons.js'
+import { postLoversDrawer, postRepostersDrawer } from '../streams/StreamRenderables'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
 import Editor from '../../components/editor/Editor'
@@ -22,30 +20,6 @@ function getPostDetailPath(author, post) {
 function commentStream(post, author) {
   return (
     <CommentStream key={`Comments_${post.id}_${post.commentsCount}`} post={post} author={author} />
-  )
-}
-
-function loversDrawer(post) {
-  return (
-    <UserAvatars
-      endpoint={ postLovers(post) }
-      icon={ <HeartIcon /> }
-      key={ `lovers_${post.id}` }
-      post={ post }
-      resultType="love"
-    />
-  )
-}
-
-function repostersDrawer(post) {
-  return (
-    <UserAvatars
-      endpoint={ postReposters(post) }
-      icon={ <RepostIcon /> }
-      key={ `reposters_${post.id}` }
-      post={ post }
-      resultType="repost"
-    />
   )
 }
 
@@ -181,8 +155,8 @@ class PostParser extends Component {
         { showEditor ?
           <Editor post={ post }/> :
           parsePost(post, author, currentUser, isGridLayout)}
-        { showLovers ? loversDrawer(post) : null }
-        { showReposters ? repostersDrawer(post) : null }
+        { showLovers ? postLoversDrawer(post) : null }
+        { showReposters ? postRepostersDrawer(post) : null }
         { showComments ? <Editor post={ post } isComment/> : null }
         { showComments && post.commentsCount > 0 ? commentStream(post, author, currentUser) : null }
       </div>)

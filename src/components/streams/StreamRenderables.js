@@ -1,6 +1,6 @@
 import React from 'react'
 import { camelize } from 'humps'
-import * as api from '../../networking/api'
+import { postLovers, postReposters } from '../../networking/api'
 import { getLinkArray } from '../base/json_helper'
 import PostParser from '../parsers/PostParser'
 import CommentParser from '../parsers/CommentParser'
@@ -113,32 +113,40 @@ export function postsAsList(posts) {
   )
 }
 
+export function postLoversDrawer(post) {
+  return (
+    <UserAvatars
+      endpoint={ postLovers(post) }
+      icon={ <HeartIcon /> }
+      key={ `lovers_${post.id}` }
+      post={ post }
+      resultType="love"
+    />
+  )
+}
+
+export function postRepostersDrawer(post) {
+  return (
+    <UserAvatars
+      endpoint={ postReposters(post) }
+      icon={ <RepostIcon /> }
+      key={ `reposters_${post.id}` }
+      post={ post }
+      resultType="repost"
+    />
+  )
+}
+
 export function postDetail(posts, json) {
   const post = posts.data[0]
   let comments = getLinkArray(post, 'comments', json) || []
   comments = comments.concat(posts.nestedData)
   const avatarDrawers = []
   if (Number(post.lovesCount) > 0) {
-    avatarDrawers.push(
-      <UserAvatars
-        endpoint={ api.postLovers(post) }
-        icon={ <HeartIcon /> }
-        key={ `lovers_${post.id}` }
-        post={ post }
-        resultType="love"
-      />
-    )
+    avatarDrawers.push(postLoversDrawer(post))
   }
   if (Number(post.repostsCount) > 0) {
-    avatarDrawers.push(
-      <UserAvatars
-        endpoint={ api.postReposters(post) }
-        icon={ <RepostIcon /> }
-        key={ `reposters_${post.id}` }
-        post={ post }
-        resultType="repost"
-      />
-    )
+    avatarDrawers.push(postRepostersDrawer(post))
   }
   return (
     <div className="PostDetails Posts asList">
