@@ -131,5 +131,13 @@ function toggleReposting(state, newState, action) {
 methods.toggleReposting = (state, newState, action) =>
   toggleReposting(state, newState, action)
 
+function toggleReposters(state, newState, action) {
+  const { model, showReposters } = action.payload
+  newState[MAPPING_TYPES.POSTS][model.id].showReposters = showReposters
+  return newState
+}
+methods.toggleReposters = (state, newState, action) =>
+  toggleReposters(state, newState, action)
+
 export default methods
 

@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import { postLovers } from '../../networking/api'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
@@ -9,8 +8,7 @@ import Avatar from '../assets/Avatar'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostTools from '../posts/PostTools'
 import CommentStream from '../streams/CommentStream'
-import UserAvatars from '../users/UserAvatars'
-import { HeartIcon } from '../notifications/NotificationIcons.js'
+import { postLoversDrawer, postRepostersDrawer } from '../streams/StreamRenderables'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
 import Editor from '../../components/editor/Editor'
@@ -22,18 +20,6 @@ function getPostDetailPath(author, post) {
 function commentStream(post, author) {
   return (
     <CommentStream key={`Comments_${post.id}_${post.commentsCount}`} post={post} author={author} />
-  )
-}
-
-function loversDrawer(post) {
-  return (
-    <UserAvatars
-      endpoint={ postLovers(post) }
-      icon={ <HeartIcon /> }
-      key={ `lovers_${post.id}` }
-      post={ post }
-      resultType="love"
-    />
   )
 }
 
@@ -135,6 +121,7 @@ class PostParser extends Component {
     post: PropTypes.object,
     showComments: PropTypes.bool,
     showLovers: PropTypes.bool,
+    showReposters: PropTypes.bool,
     sourceLinkObject: PropTypes.object,
   };
 
@@ -146,8 +133,9 @@ class PostParser extends Component {
       isGridLayout,
       post,
       showComments,
-      showLovers,
     } = this.props
+    const showLovers = !isGridLayout && this.props.showLovers
+    const showReposters = !isGridLayout && this.props.showReposters
     if (!post) { return null }
 
     let postHeader;
@@ -160,13 +148,15 @@ class PostParser extends Component {
       postHeader = header(post, author)
     }
 
+    const showEditor = (post.isEditing || post.isReposting) && post.body
     return (
       <div>
         {postHeader}
-        { (post.isEditing || post.isReposting) && post.body ?
+        { showEditor ?
           <Editor post={ post }/> :
           parsePost(post, author, currentUser, isGridLayout)}
-        { showLovers ? loversDrawer(post) : null }
+        { showLovers ? postLoversDrawer(post) : null }
+        { showReposters ? postRepostersDrawer(post) : null }
         { showComments ? <Editor post={ post } isComment/> : null }
         { showComments && post.commentsCount > 0 ? commentStream(post, author, currentUser) : null }
       </div>)
@@ -184,6 +174,8 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
     currentUser,
     isEditing: post.isEditing,
     isReposting: post.isReposting,
+    showLovers: post.showLovers || false,
+    showReposters: post.showReposters || false,
     post,
   }
 

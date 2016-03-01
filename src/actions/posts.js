@@ -43,7 +43,7 @@ export function loadComments(post) {
         asGrid: StreamRenderables.commentsAsList,
         asZero: null,
       },
-      resultKey: `/${post.id}/comments`,
+      resultKey: `/posts/${post.id}/comments`,
       updateKey: `/posts/${post.id}/`,
     },
   }
@@ -79,6 +79,16 @@ export function toggleLovers(post, showLovers) {
   }
 }
 
+export function toggleReposters(post, showReposters) {
+  return {
+    type: ACTION_TYPES.POST.TOGGLE_REPOSTERS,
+    payload: {
+      model: post,
+      showReposters,
+    },
+  }
+}
+
 export function toggleReposting(post, isReposting) {
   return {
     type: ACTION_TYPES.POST.TOGGLE_REPOSTING,
@@ -99,7 +109,7 @@ export function lovePost(post) {
     },
     meta: {
       mappingType: MAPPING_TYPES.LOVES,
-      resultKey: `/${post.id}/love`,
+      resultKey: `/posts/${post.id}/love`,
       updateKey: `/posts/${post.id}/`,
     },
   }
@@ -114,7 +124,7 @@ export function unlovePost(post) {
       model: post,
     },
     meta: {
-      resultKey: `/${post.id}/love`,
+      resultKey: `/posts/${post.id}/love`,
       updateKey: `/posts/${post.id}/`,
     },
   }

@@ -297,6 +297,8 @@ export default function json(state = {}, action = { type: '' }) {
       return postMethods.toggleEditing(state, newState, action)
     case ACTION_TYPES.POST.TOGGLE_LOVERS:
       return postMethods.toggleLovers(state, newState, action)
+    case ACTION_TYPES.POST.TOGGLE_REPOSTERS:
+      return postMethods.toggleReposters(state, newState, action)
     case ACTION_TYPES.POST.TOGGLE_REPOSTING:
       return postMethods.toggleReposting(state, newState, action)
     case ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL:
