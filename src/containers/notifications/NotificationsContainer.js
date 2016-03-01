@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
+import { debounce } from 'lodash'
 import { TOGGLE_NOTIFICATIONS } from '../../constants/action_types'
 import { connect } from 'react-redux'
 import { loadNotifications } from '../../actions/notifications'
@@ -24,6 +25,7 @@ class NotificationsContainer extends Component {
     this.body = ReactDOM.findDOMNode(document.body)
     this.body.classList.add('notificationsAreActive')
     this.state = { activeTabType: 'all' }
+    this.onScrolled = debounce(this.onScrolled, 300)
   }
 
   componentDidMount() {
@@ -39,7 +41,8 @@ class NotificationsContainer extends Component {
     this.setState({ activeTabType: type })
   };
 
-  onDocumentClick = () => {
+  onDocumentClick = (e) => {
+    if (e.target.classList.contains('TabButton')) { return }
     const { dispatch } = this.props
     dispatch({
       type: TOGGLE_NOTIFICATIONS,
@@ -54,7 +57,8 @@ class NotificationsContainer extends Component {
     const scrollHeight = Math.max(scrollable.scrollHeight, scrollable.offsetHeight)
     const scrollBottom = Math.round(scrollHeight - scrollable.offsetHeight)
     if (Math.abs(scrollY - scrollBottom) < 5) {
-      // console.log('onScrollBottom!')
+      console.log('firing')
+      this.refs.streamComponent.refs.wrappedInstance.onLoadNextPage()
     }
   };
 
@@ -91,6 +95,8 @@ class NotificationsContainer extends Component {
           <StreamComponent
             action={loadNotifications({ category: activeTabType })}
             className="asFullWidth"
+            key={ `notificationPanel_${activeTabType}` }
+            ref="streamComponent"
           />
         </div>
       </div>
@@ -98,5 +104,5 @@ class NotificationsContainer extends Component {
   }
 }
 
-export default connect()(NotificationsContainer)
+export default connect(null, null, null, { withRef: true })(NotificationsContainer)
 
