@@ -8,6 +8,7 @@ let location = {}
 // order matters for matching routes
 const initialState = {
   modes: [
+    { label: 'root', mode: 'grid', regex: /^\/$/ },
     { label: 'discover', mode: 'grid', regex: /\/discover|\/explore/ },
     { label: 'following', mode: 'grid', regex: /\/following/ },
     { label: 'invitations', mode: 'list', regex: /\/invitations/ },
