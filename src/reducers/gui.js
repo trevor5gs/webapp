@@ -1,11 +1,10 @@
 import { UPDATE_LOCATION } from 'react-router-redux'
-import { BEACONS, PROFILE, SET_LAYOUT_MODE, TOGGLE_NOTIFICATIONS } from '../constants/action_types'
+import { BEACONS, PROFILE, SET_LAYOUT_MODE } from '../constants/action_types'
 
 
 let location = {}
 // order matters for matching routes
 const initialState = {
-  isNotificationsActive: false,
   modes: [
     { label: 'discover', mode: 'grid', regex: /\/discover|\/explore/ },
     { label: 'following', mode: 'grid', regex: /\/following/ },
@@ -49,8 +48,6 @@ export function gui(state = initialState, action = { type: '' }) {
       if (mode.mode === action.payload.mode) return state
       mode.mode = action.payload.mode
       return newState
-    case TOGGLE_NOTIFICATIONS:
-      return { ...state, isNotificationsActive: action.payload.isNotificationsActive }
     case UPDATE_LOCATION:
       location = action.payload
       return state

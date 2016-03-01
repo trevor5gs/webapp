@@ -44,6 +44,7 @@ class Navbar extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    isNotificationsActive: PropTypes.bool.isRequired,
     gui: PropTypes.object.isRequired,
     json: PropTypes.object.isRequired,
     modalIsActive: PropTypes.bool,
@@ -183,10 +184,10 @@ class Navbar extends Component {
 
   onNotificationToggle = (e) => {
     if (e) { e.preventDefault() }
-    const { dispatch, gui } = this.props
+    const { dispatch, isNotificationsActive } = this.props
     dispatch({
       type: ACTION_TYPES.TOGGLE_NOTIFICATIONS,
-      payload: { isNotificationsActive: !gui.isNotificationsActive },
+      payload: { isNotificationsActive: !isNotificationsActive },
     })
   };
 
@@ -209,7 +210,7 @@ class Navbar extends Component {
   };
 
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
-    const { profile, gui } = this.props
+    const { profile, isNotificationsActive } = this.props
     const { hasNotifications, viewportDeviceSize } = this.state
     return (
       <nav className={klassNames} role="navigation">
@@ -263,7 +264,7 @@ class Navbar extends Component {
           onLogOut={ this.onLogOut }
           username={ profile.username }
         />
-        { viewportDeviceSize !== 'mobile' && gui.isNotificationsActive ?
+        { viewportDeviceSize !== 'mobile' && isNotificationsActive ?
           <NotificationsContainer/> : null
         }
       </nav>
@@ -334,6 +335,7 @@ class Navbar extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
+    isNotificationsActive: state.modal.isNotificationsActive,
     gui: state.gui,
     json: state.json,
     modalIsActive: state.modal.isActive,

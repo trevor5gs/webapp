@@ -95,11 +95,5 @@ class NotificationsContainer extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    isNotificationsActive: state.gui.isNotificationsActive,
-  }
-}
-
-export default connect(mapStateToProps)(NotificationsContainer)
+export default connect()(NotificationsContainer)
 
