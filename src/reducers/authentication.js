@@ -16,6 +16,10 @@ export function authentication(state = initialState, action) {
     case ACTION_TYPES.AUTHENTICATION.SCHEDULE_REFRESH:
       return { ...state, refreshTimeoutId: action.payload.refreshTimeoutId }
     case ACTION_TYPES.AUTHENTICATION.LOGOUT:
+      if (state.refreshTimeoutId) {
+        window.clearTimeout(state.refreshTimeoutId)
+      }
+      return { ...initialState }
     case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
       return { ...initialState }
     case ACTION_TYPES.AUTHENTICATION.USER_SUCCESS:
