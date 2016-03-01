@@ -133,9 +133,9 @@ class PostParser extends Component {
       isGridLayout,
       post,
       showComments,
-      showLovers,
-      showReposters,
     } = this.props
+    const showLovers = !isGridLayout && this.props.showLovers
+    const showReposters = !isGridLayout && this.props.showReposters
     if (!post) { return null }
 
     let postHeader;
@@ -174,6 +174,8 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
     currentUser,
     isEditing: post.isEditing,
     isReposting: post.isReposting,
+    showLovers: post.showLovers || false,
+    showReposters: post.showReposters || false,
     post,
   }
 

@@ -6,7 +6,7 @@ const DumbGridPost = (props) => {
   const { post, showComments } = props
   return (
     <article className="Post PostGrid">
-      <PostParser post={post} showComments={showComments} />
+      <PostParser post={post} showComments={showComments} isGridLayout />
     </article>
   )
 }
