@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { getLinkObject } from '../base/json_helper'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
-import Avatar from '../assets/Avatar'
-import { parseSummary } from '../parsers/PostParser'
+import { regionItemsForNotifications, setModels } from '../parsers/RegionParser'
+import { Notification } from '../notifications/Notification'
 
 const NOTIFICATION_KIND = {
   COMMENT: 'comment_notification',
@@ -24,10 +24,15 @@ const NOTIFICATION_KIND = {
 let models = {}
 
 // HELPERS
+function getActivityPath(user, post) {
+  if (!post) { return `/${user.username}` }
+  return `/${user.username}/post/${post.token}`
+}
+
 function userTextLink(user) {
   if (!user) { return null }
   return (
-    <Link to={`/${user.username}`}>
+    <Link to={ getActivityPath(user) }>
       {`@${user.username}`}
     </Link>
   )
@@ -36,281 +41,346 @@ function userTextLink(user) {
 function postTextLink(post, text = 'post') {
   if (!post) { return null }
   const author = models[MAPPING_TYPES.USERS][post.authorId]
+  if (!author) { return null }
   return (
-    <Link to={`/${author.username}/post/${post.token}`}>
-      {text}
+    <Link to={ getActivityPath(author, post) }>
+      { text }
     </Link>
   )
 }
 
-function timestamp(createdAt) {
-  return (
-    <div>{new Date(createdAt).timeAgoInWords()}</div>
-  )
+function parseSummary(post, path) {
+  return regionItemsForNotifications(post.summary, path)
 }
+
 
 // COMMENTS
 function commentNotification(comment, createdAt) {
-  // TODO: investigate why these are undefined sometimes
-  if (!comment) { return null }
   const author = getLinkObject(comment, 'author', models)
   const parentPost = getLinkObject(comment, 'parentPost', models)
   if (!author || !parentPost) { return null }
+  const activityPath = getActivityPath(author, parentPost)
+  const summary = parseSummary(comment, activityPath)
   return (
-    <div key={`commentNotification_${comment.id}`}>
-      <Avatar to={`/${author.username}`} sources={author.avatar} />
-      {userTextLink(author)}
-      {` commented on your `}
-      {postTextLink(parentPost)}
-      .
-      {parseSummary(parentPost, models, 'text')}
-      {timestamp(createdAt)}
-    </div>
+    <Notification
+      activityPath={ activityPath }
+      className="CommentNotification"
+      createdAt={ createdAt }
+      notifier={ author }
+      summary={ summary }
+    >
+      <p>
+        { userTextLink(author) }
+        { ` commented on your ` }
+        { postTextLink(parentPost) }
+        { `.` }
+      </p>
+    </Notification>
   )
 }
 
 function commentMentionNotification(comment, createdAt) {
-  if (!comment) { return null }
   const author = getLinkObject(comment, 'author', models)
   const parentPost = getLinkObject(comment, 'parentPost', models)
   if (!author || !parentPost) { return null }
+  const activityPath = getActivityPath(author, parentPost)
+  const summary = parseSummary(comment, activityPath)
   return (
-    <div key={`commentMentionNotification_${comment.id}`}>
-      <Avatar to={`/${author.username}`} sources={author.avatar} />
-      {userTextLink(author)}
-      {` mentioned you in a `}
-      {postTextLink(parentPost, 'comment')}
-      .
-      {parseSummary(parentPost, models, 'text')}
-      {timestamp(createdAt)}
-    </div>
+    <Notification
+      activityPath={ activityPath }
+      className="CommentMentionNotification"
+      createdAt={ createdAt }
+      notifier={ author }
+      summary={ summary }
+    >
+      <p>
+        { userTextLink(author) }
+        { ` mentioned you in a ` }
+        { postTextLink(parentPost, 'comment') }
+        { `.` }
+      </p>
+    </Notification>
   )
 }
 
 function commentOnOriginalPostNotification(comment, createdAt) {
-  if (!comment) { return null }
   const author = getLinkObject(comment, 'author', models)
   const repost = getLinkObject(comment, 'parentPost', models)
   const repostAuthor = getLinkObject(repost, 'author', models)
   const repostedSource = getLinkObject(repost, 'repostedSource', models)
   if (!author || !repost || !repostAuthor || !repostedSource) { return null }
+  const activityPath = getActivityPath(author, repostedSource)
+  const summary = parseSummary(comment, activityPath)
   return (
-    <div key={`commentOnOriginalPostNotification_${comment.id}`}>
-      <Avatar to={`/${author.username}`} sources={author.avatar} />
-      {userTextLink(author)}
-      {` commented on `}
-      {userTextLink(repostAuthor)}
-      {`'s `}
-      {postTextLink(repost, 'repost')}
-      {` of your `}
-      {postTextLink(repostedSource)}
-      .
-      {parseSummary(repost, models, 'text')}
-      {timestamp(createdAt)}
-    </div>
+    <Notification
+      activityPath={ activityPath }
+      className="CommentOnPostNotification"
+      createdAt={ createdAt }
+      notifier={ author }
+      summary={ summary }
+    >
+      <p>
+        { userTextLink(author) }
+        { ` commented on ` }
+        { userTextLink(repostAuthor) }
+        {`'s `}
+        { postTextLink(repost, 'repost') }
+        {` of your `}
+        { postTextLink(repostedSource) }
+        { `.` }
+      </p>
+    </Notification>
   )
 }
 
 function commentOnRepostNotification(comment, createdAt) {
-  if (!comment) { return null }
   const author = getLinkObject(comment, 'author', models)
   const repost = getLinkObject(comment, 'parentPost', models)
   if (!author || !repost) { return null }
+  const activityPath = getActivityPath(author, repost)
+  const summary = parseSummary(comment, activityPath)
   return (
-    <div key={`commentOnRepostNotification_${comment.id}`}>
-      <Avatar to={`/${author.username}`} sources={author.avatar} />
-      {userTextLink(author)}
-      {` commented on your `}
-      {postTextLink(repost, 'repost')}
-      .
-      {parseSummary(repost, models, 'text')}
-      {timestamp(createdAt)}
-    </div>
+    <Notification
+      activityPath={ activityPath }
+      className="CommentOnRepostNotification"
+      createdAt={ createdAt }
+      notifier={ author }
+      summary={ summary }
+    >
+      <p>
+        { userTextLink(author) }
+        { ` commented on your ` }
+        { postTextLink(repost, 'repost') }
+        { `.` }
+      </p>
+    </Notification>
   )
 }
 
 // INVITATIONS
 function invitationAcceptedNotification(user, createdAt) {
-  if (!user) { return null }
   return (
-    <div key={`invitationAcceptedNotification_${user.id}`}>
-      <Avatar to={`/${user.username}`} sources={user.avatar} />
-      {userTextLink(user)}
-      {` accepted your invitation.`}
-      {timestamp(createdAt)}
-    </div>
+    <Notification
+      activityPath={ getActivityPath(user) }
+      className="InvitationAcceptedNotification"
+      createdAt={ createdAt }
+      notifier={ user }
+    >
+      <p>
+        { userTextLink(user) }
+        { ` accepted your invitation.` }
+      </p>
+    </Notification>
   )
 }
 
 // LOVES
 function loveNotification(love, createdAt) {
-  if (!love) { return null }
   const user = getLinkObject(love, 'user', models)
   const post = getLinkObject(love, 'post', models)
   if (!user || !post) { return null }
+  const activityPath = getActivityPath(user, post)
+  const summary = parseSummary(post, activityPath)
   return (
-    <div key={`loveNotification_${user.id}_${post.id}`}>
-      <Avatar to={`/${user.username}`} sources={user.avatar} />
-      {userTextLink(user)}
-      {` loved your `}
-      {postTextLink(post)}
-      .
-      {timestamp(createdAt)}
-    </div>
+    <Notification
+      activityPath={ activityPath }
+      className="LoveNotification"
+      createdAt={ createdAt }
+      notifier={ user }
+      summary={ summary }
+    >
+      <p>
+        { userTextLink(user) }
+        { ` loved your ` }
+        { postTextLink(post) }
+        { `.` }
+      </p>
+    </Notification>
   )
 }
 
 function loveOnRepostNotification(love, createdAt) {
-  if (!love) { return null }
   const user = getLinkObject(love, 'user', models)
   const repost = getLinkObject(love, 'post', models)
   if (!user || !repost) { return null }
+  const activityPath = getActivityPath(user, repost)
+  const summary = parseSummary(repost, activityPath)
   return (
-    <div key={`loveOnRepostNotification_${user.id}_${repost.id}`}>
-      <Avatar to={`/${user.username}`} sources={user.avatar} />
-      {userTextLink(user)}
-      {` loved your `}
-      {postTextLink(repost, 'repost')}
-      .
-      {timestamp(createdAt)}
-    </div>
+    <Notification
+      activityPath={ activityPath }
+      className="LoveOnRepostNotification"
+      createdAt={ createdAt }
+      notifier={ user }
+      summary={ summary }
+    >
+      <p>
+        { userTextLink(user) }
+        { ` loved your ` }
+        { postTextLink(repost, 'repost') }
+        { `.` }
+      </p>
+    </Notification>
   )
 }
 
 function loveOnOriginalPostNotification(love, createdAt) {
-  if (!love) { return null }
   const user = getLinkObject(love, 'user', models)
   const repost = getLinkObject(love, 'post', models)
   const repostAuthor = getLinkObject(repost, 'author', models)
   const repostedSource = getLinkObject(repost, 'repostedSource', models)
   if (!user || !repost || !repostAuthor || !repostedSource) { return null }
+  const activityPath = getActivityPath(user, repost)
+  const summary = parseSummary(repost, activityPath)
   return (
-    <div key={`loveOnOriginalPostNotification_${user.id}_${repost.id}`}>
-      <Avatar to={`/${user.username}`} sources={user.avatar} />
-      {userTextLink(user)}
-      {` loved `}
-      {userTextLink(repostAuthor)}
-      {`'s `}
-      {postTextLink(repost, 'repost')}
-      {` of your `}
-      {postTextLink(repostedSource)}
-      .
-      {timestamp(createdAt)}
-    </div>
+    <Notification
+      activityPath={ activityPath }
+      className="LoveOnOriginalPostNotification"
+      createdAt={ createdAt }
+      notifier={ user }
+      summary={ summary }
+    >
+      <p>
+        {userTextLink(user)}
+        {` loved `}
+        {userTextLink(repostAuthor)}
+        {`'s `}
+        {postTextLink(repost, 'repost')}
+        {` of your `}
+        {postTextLink(repostedSource)}
+        { `.` }
+      </p>
+    </Notification>
   )
 }
 
 // MENTIONS
 function postMentionNotification(post, createdAt) {
-  if (!post) { return null }
   const author = getLinkObject(post, 'author', models)
   if (!author) { return null }
+  const activityPath = getActivityPath(author, post)
+  const summary = parseSummary(post, activityPath)
   return (
-    <div key={`postMentionNotification_${post.id}`}>
-      <Avatar to={`/${author.username}`} sources={author.avatar} />
-      {userTextLink(author)}
-      {` mentioned you in a `}
-      {postTextLink(post)}
-      .
-      {parseSummary(post, models, 'text')}
-      {timestamp(createdAt)}
-    </div>
+    <Notification
+      activityPath={ activityPath }
+      className="PostMentionNotification"
+      createdAt={ createdAt }
+      notifier={ author }
+      summary={ summary }
+    >
+      <p>
+        { userTextLink(author) }
+        { ` mentioned you in a ` }
+        { postTextLink(post) }
+        { `.` }
+      </p>
+    </Notification>
   )
 }
 
 // RELATIONSHIPS
 function newFollowerPost(user, createdAt) {
-  if (!user) { return null }
   return (
-    <div key={`newFollowerPost_${user.id}`}>
-      <Avatar to={`/${user.username}`} sources={user.avatar} />
-      {userTextLink(user)}
-      {` started following you.`}
-      {timestamp(createdAt)}
-    </div>
+    <Notification
+      activityPath={ getActivityPath(user) }
+      className="NewFollowerPostNotification"
+      createdAt={ createdAt }
+      notifier={ user }
+    >
+      <p>
+        { userTextLink(user) }
+        { ` started following you.` }
+      </p>
+    </Notification>
   )
 }
 
 function newFollowedUserPost(user, createdAt) {
-  if (!user) { return null }
   return (
-    <div key={`newFollowedUserPost_${user.id}`}>
-      <Avatar to={`/${user.username}`} sources={user.avatar} />
-      {`You started following `}
-      {userTextLink(user)}
-      .
-      {timestamp(createdAt)}
-    </div>
+    <Notification
+      activityPath={ getActivityPath(user) }
+      className="NewFollowedUserPostNotification"
+      createdAt={ createdAt }
+      notifier={ user }
+    >
+      <p>
+        { `You started following ` }
+        { userTextLink(user) }
+        { `.` }
+      </p>
+    </Notification>
   )
 }
 
 // REPOSTS
 function repostNotification(post, createdAt) {
-  if (!post) { return null }
   const author = getLinkObject(post, 'author', models)
   if (!author) { return null }
+  const activityPath = getActivityPath(author, post)
+  const summary = parseSummary(post, activityPath)
   return (
-    <div key={`repostNotification_${post.id}`}>
-      <Avatar to={`/${author.username}`} sources={author.avatar} />
-      {userTextLink(author)}
-      {` reposted your `}
-      {postTextLink(post)}
-      .
-      {parseSummary(post, models, 'text')}
-      {timestamp(createdAt)}
-    </div>
+    <Notification
+      activityPath={ activityPath }
+      className="RepostNotification"
+      createdAt={ createdAt }
+      notifier={ author }
+      summary={ summary }
+    >
+      <p>
+        { userTextLink(author) }
+        { ` reposted your `}
+        { postTextLink(post) }
+        { `.` }
+      </p>
+    </Notification>
   )
 }
 
-export function parseNotification(notification, json) {
-  // TODO: investigate why the notification is sometimes undefined
-  if (!notification) { return null }
-  models = json
-  const cells = []
-  const createdAt = notification.createdAt
-  const subject = getLinkObject(notification, `subject`, json)
-  switch (notification.kind) {
-    case NOTIFICATION_KIND.COMMENT:
-      cells.push(commentNotification(subject, createdAt))
-      break
-    case NOTIFICATION_KIND.COMMENT_MENTION:
-      cells.push(commentMentionNotification(subject, createdAt))
-      break
-    case NOTIFICATION_KIND.COMMENT_ORIGINAL:
-      cells.push(commentOnOriginalPostNotification(subject, createdAt))
-      break
-    case NOTIFICATION_KIND.COMMENT_REPOST:
-      cells.push(commentOnRepostNotification(subject, createdAt))
-      break
-    case NOTIFICATION_KIND.INVITATION_ACCEPTED:
-      cells.push(invitationAcceptedNotification(subject, createdAt))
-      break
-    case NOTIFICATION_KIND.LOVE:
-      cells.push(loveNotification(subject, createdAt))
-      break
-    case NOTIFICATION_KIND.LOVE_ORIGINAL:
-      cells.push(loveOnOriginalPostNotification(subject, createdAt))
-      break
-    case NOTIFICATION_KIND.LOVE_REPOST:
-      cells.push(loveOnRepostNotification(subject, createdAt))
-      break
-    case NOTIFICATION_KIND.NEW_FOLLOWER:
-      cells.push(newFollowerPost(subject, createdAt))
-      break
-    case NOTIFICATION_KIND.NEW_FOLLOWED_USER:
-      cells.push(newFollowedUserPost(subject, createdAt))
-      break
-    case NOTIFICATION_KIND.POST_MENTION:
-      cells.push(postMentionNotification(subject, createdAt))
-      break
-    case NOTIFICATION_KIND.REPOST:
-      cells.push(repostNotification(subject, createdAt))
-      break
-    case NOTIFICATION_KIND.WELCOME:
-      return <div>Welcome to Ello!</div>
-    default:
-      return null
+class NotificationParser extends Component {
+  static propTypes = {
+    notification: PropTypes.object,
+    json: PropTypes.object,
+    subject: PropTypes.object.isRequired,
+  };
+
+  render() {
+    const { notification, json, subject } = this.props
+    if (!notification) { return null }
+    models = json
+    setModels(models)
+    const createdAt = notification.createdAt
+
+    switch (notification.kind) {
+      case NOTIFICATION_KIND.COMMENT:
+        return commentNotification(subject, createdAt)
+      case NOTIFICATION_KIND.COMMENT_MENTION:
+        return commentMentionNotification(subject, createdAt)
+      case NOTIFICATION_KIND.COMMENT_ORIGINAL:
+        return commentOnOriginalPostNotification(subject, createdAt)
+      case NOTIFICATION_KIND.COMMENT_REPOST:
+        return commentOnRepostNotification(subject, createdAt)
+      case NOTIFICATION_KIND.INVITATION_ACCEPTED:
+        return invitationAcceptedNotification(subject, createdAt)
+      case NOTIFICATION_KIND.LOVE:
+        return loveNotification(subject, createdAt)
+      case NOTIFICATION_KIND.LOVE_ORIGINAL:
+        return loveOnOriginalPostNotification(subject, createdAt)
+      case NOTIFICATION_KIND.LOVE_REPOST:
+        return loveOnRepostNotification(subject, createdAt)
+      case NOTIFICATION_KIND.NEW_FOLLOWER:
+        return newFollowerPost(subject, createdAt)
+      case NOTIFICATION_KIND.NEW_FOLLOWED_USER:
+        return newFollowedUserPost(subject, createdAt)
+      case NOTIFICATION_KIND.POST_MENTION:
+        return postMentionNotification(subject, createdAt)
+      case NOTIFICATION_KIND.REPOST:
+        return repostNotification(subject, createdAt)
+      case NOTIFICATION_KIND.WELCOME:
+        return <p>Welcome to Ello!</p>
+      default:
+        return null
+    }
   }
-  return cells
 }
+
+export default NotificationParser
 

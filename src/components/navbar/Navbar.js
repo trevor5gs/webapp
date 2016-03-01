@@ -6,6 +6,8 @@ import * as ACTION_TYPES from '../../constants/action_types'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { openModal, closeModal } from '../../actions/modals'
 import { openOmnibar } from '../../actions/omnibar'
+import { checkForNewNotifications } from '../../actions/notifications'
+import NotificationsContainer from '../../containers/notifications/NotificationsContainer'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import HelpDialog from '../dialogs/HelpDialog'
@@ -43,6 +45,7 @@ class Navbar extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    isNotificationsActive: PropTypes.bool.isRequired,
     gui: PropTypes.object.isRequired,
     json: PropTypes.object.isRequired,
     modalIsActive: PropTypes.bool,
@@ -68,9 +71,11 @@ class Navbar extends Component {
       asFixed: isBlacklisted,
       asHidden: false,
       asLocked: isBlacklisted,
+      hasNotifications: false,
       skipTransition: false,
     }
     this.scrollYAtDirectionChange = null
+    this.checkForNotifications()
   }
 
   componentDidMount() {
@@ -103,9 +108,13 @@ class Navbar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { pathname } = nextProps
+    const { gui, pathname } = nextProps
     const isBlacklisted = isBlacklistedRoute(pathname)
-    this.setState({ asFixed: true, asLocked: isBlacklisted })
+    this.setState({
+      asFixed: true,
+      asLocked: isBlacklisted,
+      hasNotifications: gui.newNotificationContent,
+    })
   }
 
   // @mkitt would like to ~kick~ marry this thing extremely hard.
@@ -118,6 +127,9 @@ class Navbar extends Component {
       if (isBlacklistedRoute(pathname)) {
         window.scrollTo(0, this.state.offset - 120)
       }
+    }
+    if (prevProps.pathname !== this.props.pathname) {
+      this.checkForNotifications()
     }
   }
 
@@ -132,9 +144,8 @@ class Navbar extends Component {
     removeScrollObject(this)
   }
 
-  onResize(resizeProperties) {
-    const { coverOffset } = resizeProperties
-    this.setState({ offset: coverOffset - 80 })
+  onResize({ coverOffset, viewportDeviceSize }) {
+    this.setState({ offset: coverOffset - 80, viewportDeviceSize })
   }
 
   onScrollTop() {
@@ -180,6 +191,15 @@ class Navbar extends Component {
     dispatch(routeActions.push('/'))
   };
 
+  onNotificationToggle = (e) => {
+    if (e) { e.preventDefault() }
+    const { dispatch, isNotificationsActive } = this.props
+    dispatch({
+      type: ACTION_TYPES.TOGGLE_NOTIFICATIONS,
+      payload: { isNotificationsActive: !isNotificationsActive },
+    })
+  };
+
   omniButtonWasClicked = () => {
     const { dispatch } = this.props
     dispatch(openOmnibar())
@@ -198,8 +218,14 @@ class Navbar extends Component {
     document.location.href = ENV.REDIRECT_URI + e.target.pathname
   };
 
+  checkForNotifications() {
+    const { dispatch } = this.props
+    dispatch(checkForNewNotifications())
+  }
+
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
-    const { profile } = this.props
+    const { profile, isNotificationsActive } = this.props
+    const { hasNotifications, viewportDeviceSize } = this.state
     return (
       <nav className={klassNames} role="navigation">
         <NavbarMark />
@@ -234,9 +260,10 @@ class Navbar extends Component {
           <NavbarLink
             to="/notifications"
             label="Notifications"
-            modifiers="IconOnly"
+            modifiers={ classNames('IconOnly', { hasNotifications }) }
             pathname={pathname}
             icon={ <BoltIcon/> }
+            onClick={ viewportDeviceSize !== 'mobile' ? this.onNotificationToggle : null }
           />
           <NavbarLink
             to="/search"
@@ -251,6 +278,9 @@ class Navbar extends Component {
           onLogOut={ this.onLogOut }
           username={ profile.username }
         />
+        { viewportDeviceSize !== 'mobile' && isNotificationsActive ?
+          <NotificationsContainer/> : null
+        }
       </nav>
     )
   }
@@ -319,6 +349,7 @@ class Navbar extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
+    isNotificationsActive: state.modal.isNotificationsActive,
     gui: state.gui,
     json: state.json,
     modalIsActive: state.modal.isActive,

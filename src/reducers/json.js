@@ -176,7 +176,11 @@ function updateResult(response, newState, action) {
     } else {
       existingResult.next = result
     }
-  } else if (existingResult && existingResult.ids[0] !== result.ids[0]) {
+    // need to check agianst the typeof the result ids since we hack this for
+    // notifications and the ids is actually an array of notificaitons not ids
+  } else if (existingResult &&
+             (typeof existingResult.ids[0] === 'string' || typeof existingResult.ids[0] === 'number') &&
+             existingResult.ids[0] !== result.ids[0]) {
     const existingIndex = result.ids.indexOf(existingResult.ids[0])
     // only do this for top level streams, nested ones like lovers/reposters
     // should just update with the new results

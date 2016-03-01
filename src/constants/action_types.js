@@ -15,7 +15,13 @@ export const LOAD_NEXT_CONTENT_FAILURE = 'LOAD_NEXT_CONTENT_FAILURE'
 export const POST_JSON = 'POST_JSON'
 export const POST_FORM = 'POST_FORM'
 
+export const HEAD = 'HEAD'
+export const HEAD_REQUEST = 'HEAD_REQUEST'
+export const HEAD_SUCCESS = 'HEAD_SUCCESS'
+export const HEAD_FAILURE = 'HEAD_FAILURE'
+
 export const SET_LAYOUT_MODE = 'SET_LAYOUT_MODE'
+export const TOGGLE_NOTIFICATIONS = 'TOGGLE_NOTIFICATIONS'
 
 export const ALERT = {
   OPEN: 'ALERT.OPEN',

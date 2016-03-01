@@ -238,6 +238,11 @@ export function notifications(params = {}) {
     newParams,
   }
 }
+export function newNotifications() {
+  return {
+    path: getAPIPath('notifications'),
+  }
+}
 
 // AVAILABILITY
 export function availability() {
