@@ -47,7 +47,7 @@ class Notifications extends Component {
       <section className="Notifications Panel">
         <TabListLinks
           activePath={pathname}
-          className="IconTabList"
+          className="IconTabList NotificationsContainerTabs"
           tabClasses="IconTab"
           tabs={tabs}
         />
