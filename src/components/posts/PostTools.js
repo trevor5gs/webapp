@@ -78,13 +78,19 @@ class PostTools extends Component {
     if (author.hasLovesEnabled) {
       cells.push(
         <span className="PostTool LoveTool" key={`LoveTool_${post.id}`}>
-          <button className={classNames({ active: post.loved })} onClick={ this.lovePost }>
+          <button
+            className={classNames({ active: post.loved, hasPostToolDrawer: post.lovesCount > 0 })}
+            onClick={ this.lovePost }
+          >
             <HeartIcon />
             <Hint>Love</Hint>
           </button>
-          <button className={classNames({ active: post.loved })} onClick={ this.toggleLovers }>
+          <button
+            className={classNames({ active: post.loved }, 'PostToolDrawerButton')}
+            onClick={ this.toggleLovers }
+          >
             <span className="PostToolValue" data-count={post.lovesCount}>{post.lovesCount}</span>
-            <Hint>Love</Hint>
+            <Hint>Loved by</Hint>
           </button>
         </span>
       )
@@ -92,18 +98,21 @@ class PostTools extends Component {
     if (author.hasRepostingEnabled) {
       cells.push(
         <span className="PostTool RepostTool" key={`RepostTool_${post.id}`}>
-          <button onClick={ this.repostPost }>
+          <button
+            className={classNames({ hasPostToolDrawer: post.repostsCount > 0 })}
+            onClick={ this.repostPost }
+          >
             <RepostIcon />
             <Hint>Repost</Hint>
           </button>
-          <button onClick={ this.toggleReposters }>
+          <button className="PostToolDrawerButton" onClick={ this.toggleReposters }>
             <span
               className="PostToolValue"
               data-count={post.repostsCount}
             >
               {post.repostsCount}
             </span>
-            <Hint>Repost</Hint>
+            <Hint>Reposted by</Hint>
           </button>
         </span>
       )
