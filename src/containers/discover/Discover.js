@@ -90,7 +90,7 @@ export class Discover extends Component {
         // { to: '/discover/featured-users', children: 'Featured Users' },
       ] :
       [
-        { to: '/explore', children: 'Trending' },
+        { to: '/explore', children: 'Trending', activePattern: /^\/(?:explore)?$/ },
         { to: '/explore/recommended', children: 'Recommended' },
         { to: '/explore/recent', children: 'Recent' },
       ]
