@@ -30,23 +30,32 @@ function renderSummary({ summary }) {
   )
 }
 
-function renderFooter({ createdAt, activityPath }) {
+function renderFooter({ activityPath, createdAt, retort }) {
   if (!createdAt) { return null }
   return (
     <footer className="NotificationFooter">
-      <Link to={ activityPath }>
+      <Link className="NotificationFooterTimestamp" to={ activityPath }>
         { new Date(createdAt).timeAgoInWords() }
       </Link>
+      { retort }
     </footer>
   )
 }
 
-export const Notification = ({ activityPath, children, className, createdAt, summary, notifier }) =>
+export const Notification = ({
+  activityPath,
+  children,
+  className,
+  createdAt,
+  notifier,
+  retort,
+  summary,
+  }) =>
   <div className={ classNames('Notification', className) }>
     { renderHeader({ notifier }) }
     { renderBody({ children }) }
     { renderSummary({ summary }) }
-    { renderFooter({ createdAt, activityPath }) }
+    { renderFooter({ activityPath, createdAt, retort }) }
   </div>
 
 
