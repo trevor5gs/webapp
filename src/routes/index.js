@@ -1,7 +1,7 @@
 import App from '../containers/App'
 import PostDetailRoute from './post_detail'
 import AuthenticationRoutes from './authentication'
-import DiscoverRoutes, { indexRoute } from './discover'
+import DiscoverRoutes, { getComponents as getDiscoverComponents } from './discover'
 import StreamsRoutes from './streams'
 import NotificationsRoute from './notifications'
 import InvitationsRoutes from './invitations'
@@ -19,28 +19,43 @@ function createRedirect(from, to) {
   }
 }
 
-const routes = [
-  {
-    path: '/',
-    component: App,
-    getIndexRoute(location, cb) {
-      cb(null, indexRoute)
+const routes = store => {
+  const indexRoute = {
+    getComponents: getDiscoverComponents,
+
+    onEnter(nextState, replace) {
+      const {
+        authentication: { isLoggedIn },
+        gui: { currentStream },
+      } = store.getState()
+
+      if (isLoggedIn) {
+        replace({ pathname: currentStream, state: nextState })
+      }
     },
-    // order matters, so less specific routes should go at the bottom
-    childRoutes: [
-      PostDetailRoute,
-      ...AuthenticationRoutes,
-      ...DiscoverRoutes,
-      ...StreamsRoutes,
-      NotificationsRoute,
-      ...InvitationsRoutes,
-      ...SettingsRoutes,
-      createRedirect('onboarding', '/onboarding/communities'),
-      OnboardingRoute,
-      ...SearchRoutes,
-      UserDetailRoute,
-    ],
-  },
-]
+  }
+
+  return [
+    {
+      path: '/',
+      component: App,
+      indexRoute,
+      // order matters, so less specific routes should go at the bottom
+      childRoutes: [
+        PostDetailRoute,
+        ...AuthenticationRoutes,
+        ...DiscoverRoutes,
+        ...StreamsRoutes,
+        NotificationsRoute,
+        ...InvitationsRoutes,
+        ...SettingsRoutes,
+        createRedirect('onboarding', '/onboarding/communities'),
+        OnboardingRoute,
+        ...SearchRoutes,
+        UserDetailRoute,
+      ],
+    },
+  ]
+}
 
 export default routes

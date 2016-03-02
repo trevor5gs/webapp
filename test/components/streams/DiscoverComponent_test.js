@@ -1,5 +1,4 @@
 import { expect, getRenderedComponent, sinon } from '../../spec_helper'
-import { replace } from 'react-router-redux'
 
 import { Discover as Component } from '../../../src/containers/discover/Discover'
 
@@ -31,31 +30,6 @@ describe('DiscoverComponent', () => {
       getRenderedComponent(Component, props)
 
       expect(props.dispatch.callCount).to.equal(0)
-    })
-
-    it('redirects logged in users to /following by default', () => {
-      const props = createPropsForComponent({
-        isLoggedIn: true,
-      })
-
-      getRenderedComponent(Component, props)
-
-      const routeAction = replace('/following')
-      const routeDispatch = props.dispatch.firstCall
-      expect(routeDispatch.args[0]).to.eql(routeAction)
-    })
-
-    it('otherwise redirects users to their last active stream', () => {
-      const props = createPropsForComponent({
-        isLoggedIn: true,
-        currentStream: '/discover/trending',
-      })
-
-      getRenderedComponent(Component, props)
-
-      const routeAction = replace('/discover/trending')
-      const routeDispatch = props.dispatch.firstCall
-      expect(routeDispatch.args[0]).to.eql(routeAction)
     })
   })
 })
