@@ -7,6 +7,9 @@
   padding: rem(20) rem(10) rem(10) rem(50)
   overflow: hidden
 
+.Notification .RelationsGroup
+  color: black
+
 // Notification kinds without images
 // .InvitationAcceptedNotification
 // .NewFollowerPostNotification
@@ -44,6 +47,9 @@
 
 .NotificationFooter
   +sans-typeset
+
+.NotificationFooterTimestamp + *
+  margin-top: rem(20)
 
 .NotificationBody > p
   margin: 0
