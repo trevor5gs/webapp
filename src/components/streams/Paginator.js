@@ -11,9 +11,15 @@ export function emptyPagination() {
 class Paginator extends Component {
 
   static propTypes = {
-    delegate: PropTypes.object,
     hasShowMoreButton: PropTypes.bool,
-    pagination: PropTypes.object,
+    loadNextPage: PropTypes.func.isRequired,
+    messageText: PropTypes.string,
+    totalPages: PropTypes.number.isRequired,
+    totalPagesRemaining: PropTypes.number.isRequired,
+  };
+
+  static defaultProps = {
+    messageText: '+more..',
   };
 
   componentWillMount() {
@@ -21,13 +27,11 @@ class Paginator extends Component {
   }
 
   getMessage() {
-    const { hasShowMoreButton, pagination } = this.props
-    const totalPages = parseInt(pagination.totalPages, 10)
-    const totalPagesRemaining = parseInt(pagination.totalPagesRemaining, 10)
-    if (parseInt(pagination.totalPagesRemaining, 10) === 0) {
+    const { hasShowMoreButton, messageText, totalPages, totalPagesRemaining } = this.props
+    if (totalPagesRemaining === 0) {
       return ''
     } else if (hasShowMoreButton) {
-      return `+more..`
+      return messageText
     }
     return (totalPages > 0) ?
       `Loading: ${totalPages - totalPagesRemaining + 1} of ${totalPages}` :
@@ -39,10 +43,8 @@ class Paginator extends Component {
   }
 
   loadMore = () => {
-    const { delegate } = this.props
-    if (delegate && typeof delegate.onLoadNextPage === 'function') {
-      delegate.onLoadNextPage()
-    }
+    const { loadNextPage } = this.props
+    loadNextPage()
   };
 
   render() {

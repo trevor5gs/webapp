@@ -144,7 +144,8 @@ export function blockedUsers() {
         asGrid: StreamRenderables.blockedMutedUserList,
       },
       resultFilter: StreamFilters.userResults,
-      resultKey: 'blocked',
+      resultKey: '/settings/blocked',
+      updateKey: '/profile/blocked',
     },
   }
 }
@@ -163,7 +164,8 @@ export function mutedUsers() {
         asGrid: StreamRenderables.blockedMutedUserList,
       },
       resultFilter: StreamFilters.userResults,
-      resultKey: 'muted',
+      resultKey: '/settings/muted',
+      updateKey: '/profile/muted',
     },
   }
 }

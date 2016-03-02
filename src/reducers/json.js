@@ -239,9 +239,8 @@ function deleteModel(state, newState, action, mappingType) {
     newState[`deleted_${mappingType}`] = []
   }
   if (action.type.indexOf('_REQUEST') !== -1 || action.type.indexOf('_SUCCESS') !== -1) {
-    delete newState[mappingType][model.id]
-    if (newState[`deleted_${mappingType}`].indexOf(model.id) === -1) {
-      newState[`deleted_${mappingType}`].push(model.id)
+    if (newState[`deleted_${mappingType}`].indexOf(`${model.id}`) === -1) {
+      newState[`deleted_${mappingType}`].push(`${model.id}`)
     }
     return newState
   } else if (action.type.indexOf('_FAILURE') !== -1) {
@@ -249,7 +248,7 @@ function deleteModel(state, newState, action, mappingType) {
     // and we couldn't delete this model?
     newState[mappingType][model.id] = model
     newState[`deleted_${mappingType}`].splice(
-      newState[`deleted_${mappingType}`].indexOf(model.id),
+      newState[`deleted_${mappingType}`].indexOf(`${model.id}`),
       1
     )
     return newState
@@ -309,6 +308,7 @@ export default function json(state = {}, action = { type: '' }) {
       return relationshipMethods.batchUpdateRelationship(newState, action)
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL:
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_REQUEST:
+    case ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS:
       return relationshipMethods.updateRelationship(newState, action)
     case REHYDRATE:
       // only keep the items that have been deleted

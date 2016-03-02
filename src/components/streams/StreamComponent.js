@@ -9,7 +9,7 @@ import { findBy } from '../base/json_helper'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import { ElloMark } from '../interface/ElloIcons'
-import Paginator from '../streams/Paginator'
+import Paginator, { emptyPagination } from '../streams/Paginator'
 import { findLayoutMode } from '../../reducers/gui'
 import { ZeroState } from '../zeros/Zeros'
 import { ErrorState4xx } from '../errors/Errors'
@@ -47,7 +47,6 @@ export class StreamComponent extends Component {
     const { stream } = nextProps
     const { action } = this.state
     if (!action) { return null }
-    // TODO: make this work for nested stream components separately of others on the page
     if (this.refs.paginator && stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.refs.paginator.setLoading(false)
     }
@@ -88,9 +87,9 @@ export class StreamComponent extends Component {
     this.setState(resizeProps)
   }
 
-  onLoadNextPage() {
+  onLoadNextPage = () => {
     this.loadPage('next')
-  }
+  };
 
   setAction(action) {
     this.setState({ action })
@@ -237,6 +236,7 @@ export class StreamComponent extends Component {
     }
     const resultMode = findLayoutMode(gui.modes)
     const renderMethod = resultMode && resultMode.mode === 'grid' ? 'asGrid' : 'asList'
+    const pagination = result ? result.pagination : emptyPagination()
     return (
       <section className={classNames('StreamComponent', className)}>
         {
@@ -248,11 +248,13 @@ export class StreamComponent extends Component {
         }
         {this.props.children}
         <Paginator
-          delegate={this}
-          hasShowMoreButton={typeof meta.resultKey !== 'undefined'}
-          key={`${meta.resultKey || 'stream'}Paginator`}
-          pagination={result ? result.pagination : {}}
+          hasShowMoreButton={ typeof meta.resultKey !== 'undefined' }
+          key={ `paginator${meta.resultKey || '/stream'}${pagination.totalPagesRemaining}` }
+          loadNextPage={ this.onLoadNextPage }
+          messageText={ pathname === '/settings' ? 'See more' : null }
           ref="paginator"
+          totalPages={ parseInt(pagination.totalPages, 10) }
+          totalPagesRemaining={ parseInt(pagination.totalPagesRemaining, 10) }
         />
       </section>
     )
