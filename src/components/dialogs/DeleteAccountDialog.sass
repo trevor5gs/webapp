@@ -17,30 +17,6 @@
   margin-top: rem(40)
   text-align: left
 
-.DeleteAccountDialogButton
-  +sans-typeset
-  transition: background-color $speed ease, border-color $speed ease, color $speed ease, opacity $speed ease
-  display: inline-block
-  vertical-align: middle
-  width: rem(60)
-  height: rem(30)
-  border-radius: rem(15)
-  text-align: center
-  line-height: rem(30)
-  white-space: nowrap
-  background-color: white
-  border: 1px solid white
-  color: black
-
-.DeleteAccountDialogButton.isActive,
-.no-touch .DeleteAccountDialogButton:hover
-  background-color: black
-  border-color: black
-  color: white
-
-.DeleteAccountDialogButton + .DeleteAccountDialogButton
-  margin-left: rem(5)
-
 @media(min-width: #{$break-2})
   .DeleteAccountDialog
     text-align: left
