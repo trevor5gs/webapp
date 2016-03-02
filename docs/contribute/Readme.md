@@ -24,5 +24,6 @@ remove/the-drawer
 update/existing-feature
 ```
 
-It makes running `git branch` very pleasant.
+It makes running `git branch` very pleasant. Please delete your branch when you
+are done with it. Stale branches will be removed violently.
 
