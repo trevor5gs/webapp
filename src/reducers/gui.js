@@ -1,6 +1,7 @@
 import { UPDATE_LOCATION } from 'react-router-redux'
 import {
   BEACONS,
+  GUI,
   HEAD_FAILURE,
   HEAD_REQUEST,
   HEAD_SUCCESS,
@@ -27,6 +28,7 @@ const initialState = {
     { label: 'users', mode: 'list', regex: /\/[\w\-]+/ },
   ],
   newNotificationContent: false,
+  history: {},
 }
 
 // TODO: figure out why the users regex doesn't work properly
@@ -74,6 +76,9 @@ export function gui(state = initialState, action = { type: '' }) {
     case UPDATE_LOCATION:
       location = action.payload
       return state
+    case GUI.SET_SCROLL:
+      newState.history[action.payload.key] = { ...action.payload }
+      return newState
     default:
       return state
   }

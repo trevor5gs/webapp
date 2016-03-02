@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
+import scrollTop from '../../vendor/scrollTop'
 import classNames from 'classnames'
 import _ from 'lodash'
 import { runningFetches } from '../../middleware/requester'
@@ -31,8 +33,16 @@ export class StreamComponent extends Component {
 
   componentWillMount() {
     const { action, dispatch } = this.props
-    this.state = { action }
     if (action) { dispatch(action) }
+
+    const unlisten = browserHistory.listen(location => {
+      console.log('=============== StreamComponent.js at line 39 ===============');
+      console.log('location:', location);
+      this.state = { action, locationKey: location.key }
+    })
+    unlisten()
+
+    this.setScroll = _.debounce(this.setScroll, 300)
   }
 
   componentDidMount() {
@@ -66,9 +76,17 @@ export class StreamComponent extends Component {
     return true
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (window.embetter) {
       window.embetter.reloadPlayers()
+    }
+    if (this.props.stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
+      prevProps.stream.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
+      const history = this.props.gui.history[this.state.locationKey] || {}
+      const scrollTopValue = history.scrollTop
+      if (scrollTopValue) {
+        window.scrollTo(0, scrollTopValue)
+      }
     }
   }
 
@@ -78,6 +96,12 @@ export class StreamComponent extends Component {
     }
     removeScrollObject(this)
     removeResizeObject(this)
+
+    this.setScroll()
+  }
+
+  onScroll() {
+    this.setScroll()
   }
 
   onScrollBottom() {
@@ -95,6 +119,16 @@ export class StreamComponent extends Component {
   setAction(action) {
     this.setState({ action })
     this.props.dispatch(action)
+  }
+
+  setScroll() {
+    this.props.dispatch({
+      type: ACTION_TYPES.GUI.SET_SCROLL,
+      payload: {
+        key: this.state.locationKey,
+        scrollTop: scrollTop(window),
+      },
+    })
   }
 
   loadPage(rel, scrolled = false) {

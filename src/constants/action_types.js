@@ -224,3 +224,7 @@ export const TRACK = {
   EVENT: 'TRACK.EVENT',
   PAGE_VIEW: 'TRACK.PAGE_VIEW',
 }
+
+export const GUI = {
+  SET_SCROLL: 'SET_SCROLL',
+}
