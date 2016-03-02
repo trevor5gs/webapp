@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { replace } from 'react-router-redux'
 import { BEACONS } from '../../constants/action_types'
 import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
@@ -27,25 +26,10 @@ export class Discover extends Component {
   };
 
   componentWillMount() {
-    const { currentStream, dispatch, lastDiscoverBeaconVersion,
-            isLoggedIn, pathname } = this.props
-
-    if (pathname === '/' && isLoggedIn) {
-      const replaceTarget = currentStream
-      dispatch(replace(replaceTarget))
-    }
+    const { lastDiscoverBeaconVersion, isLoggedIn } = this.props
 
     this.state = {
       isBeaconActive: isLoggedIn && lastDiscoverBeaconVersion !== BEACON_VERSION,
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { currentStream, dispatch, isLoggedIn, pathname } = nextProps
-
-    if (pathname === '/' && isLoggedIn) {
-      const replaceTarget = currentStream
-      dispatch(replace(replaceTarget))
     }
   }
 

@@ -37,6 +37,7 @@ const discover = {
 
 export {
   indexRoute,
+  getComponents,
   discover,
   explore,
 }

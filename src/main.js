@@ -24,7 +24,7 @@ const APP_VERSION = '1.0.7'
 const history = syncHistoryWithStore(browserHistory, store)
 const element = (
   <Provider store={store}>
-    <Router history={history} routes={routes} />
+    <Router history={history} routes={routes(store)} />
   </Provider>
 )
 
