@@ -36,13 +36,12 @@ export class StreamComponent extends Component {
     if (action) { dispatch(action) }
 
     const unlisten = browserHistory.listen(location => {
-      console.log('=============== StreamComponent.js at line 39 ===============');
-      console.log('location:', location);
       this.state = { action, locationKey: location.key }
     })
     unlisten()
 
-    this.setScroll = _.debounce(this.setScroll, 300)
+    window.scrollTo(0, 0)
+    this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
   }
 
   componentDidMount() {
@@ -97,11 +96,12 @@ export class StreamComponent extends Component {
     removeScrollObject(this)
     removeResizeObject(this)
 
+    this.setDebouncedScroll = function setDebouncedScroll() {}
     this.setScroll()
   }
 
   onScroll() {
-    this.setScroll()
+    this.setDebouncedScroll()
   }
 
   onScrollBottom() {
@@ -119,6 +119,10 @@ export class StreamComponent extends Component {
   setAction(action) {
     this.setState({ action })
     this.props.dispatch(action)
+  }
+
+  setDebouncedScroll() {
+    this.setScroll()
   }
 
   setScroll() {
