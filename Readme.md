@@ -8,6 +8,7 @@ The web app for [ello.co](http://ello.co).
 * [Src](/docs/src/Readme.md)
 * Tests
 * Assets
+* [Contributing](/docs/contribute/Readme.md)
 
 :metal::metal:
 

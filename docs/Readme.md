@@ -23,4 +23,5 @@
 * Assets
   * Images
   * Fonts
+* [Contributing](/docs/contribute/Readme.md)
 
