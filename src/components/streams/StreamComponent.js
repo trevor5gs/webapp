@@ -96,7 +96,7 @@ export class StreamComponent extends Component {
     removeScrollObject(this)
     removeResizeObject(this)
 
-    this.setDebouncedScroll = () => {}
+    this.setDebouncedScroll = () => null
     this.setScroll()
   }
 
