@@ -9,7 +9,10 @@ import { ErrorState } from '../components/errors/Errors'
 export function loadProfile() {
   return {
     type: PROFILE.LOAD,
-    meta: {},
+    meta: {
+      mappingType: MAPPING_TYPES.USERS,
+      updateResult: false,
+    },
     payload: { endpoint: api.profilePath() },
   }
 }
