@@ -39,10 +39,19 @@ export function profilePath() {
     path: getAPIPath('profile'),
   }
 }
-
 export function profileAvailableToggles() {
   return {
     path: getAPIPath('profile/available_toggles'),
+  }
+}
+export function profileBlockedUsers() {
+  return {
+    path: getAPIPath('profile/blocked'),
+  }
+}
+export function profileMutedUsers() {
+  return {
+    path: getAPIPath('profile/muted'),
   }
 }
 // Onboarding

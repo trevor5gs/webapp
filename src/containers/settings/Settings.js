@@ -11,8 +11,10 @@ import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
 import { openModal, closeModal, openAlert, closeAlert } from '../../actions/modals'
 import {
   availableToggles,
+  blockedUsers,
   checkAvailability,
   deleteProfile,
+  mutedUsers,
   saveAvatar,
   saveCover,
 } from '../../actions/profile'
@@ -43,7 +45,9 @@ import InfoForm from '../../components/forms/InfoForm'
 class Settings extends Component {
 
   static propTypes = {
+    blockedCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
+    mutedCount: PropTypes.number.isRequired,
     profile: PropTypes.object,
   };
 
@@ -226,7 +230,7 @@ class Settings extends Component {
   };
 
   render() {
-    const { profile, dispatch } = this.props
+    const { blockedCount, dispatch, mutedCount, profile } = this.props
     const { emailState, passwordState, usernameState } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
 
@@ -335,7 +339,9 @@ class Settings extends Component {
           </p>
 
           <div className="SettingsPreferences">
-            <StreamComponent ref="streamComponent" action={availableToggles()} />
+            <StreamComponent
+              action={availableToggles()}
+            />
 
             <TreeButton>NSFW</TreeButton>
             <TreePanel>
@@ -354,12 +360,31 @@ class Settings extends Component {
               <p><em>{ SETTINGS.NSFW_DISCLAIMER }</em></p>
             </TreePanel>
 
-            <TreeButton>Muted/Blocked</TreeButton>
-            <TreePanel>
-              <p>
-                <Emoji name="hot_shit" title="Still need to build this!" size={ 40 }/>
-              </p>
-            </TreePanel>
+            { blockedCount > 0 ?
+              <div>
+                <TreeButton>Blocked users</TreeButton>
+                <TreePanel>
+                  <StreamComponent
+                    action={blockedUsers()}
+                    className="BlockedUsers"
+                    hasShowMoreButton
+                  />
+                </TreePanel>
+              </div> :
+              null }
+
+            { mutedCount > 0 ?
+              <div>
+                <TreeButton>Muted users</TreeButton>
+                <TreePanel>
+                  <StreamComponent
+                    action={mutedUsers()}
+                    className="MutedUsers"
+                    hasShowMoreButton
+                  />
+                </TreePanel>
+              </div> :
+              null }
 
             <TreeButton>Your Data</TreeButton>
             <TreePanel>
@@ -425,6 +450,8 @@ class Settings extends Component {
 function mapStateToProps(state) {
   return {
     availability: state.profile.availability,
+    blockedCount: state.profile.blockedCount,
+    mutedCount: state.profile.mutedCount,
     profile: state.profile,
   }
 }

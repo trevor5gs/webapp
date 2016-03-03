@@ -10,6 +10,7 @@ import { HeartIcon, RepostIcon } from '../posts/PostIcons'
 import UserAvatar from '../users/UserAvatar'
 import UserAvatars from '../users/UserAvatars'
 import UserCard from '../users/UserCard'
+import UserCompact from '../users/UserCompact'
 import UserGrid from '../users/UserGrid'
 import UserInvitee from '../users/UserInvitee'
 import UserList from '../users/UserList'
@@ -240,6 +241,14 @@ export function profileToggles(categories, json, currentUser) {
       )
       return arr
     })
+  )
+}
+
+export function blockedMutedUserList(users) {
+  return (
+    users.data.map((user, i) =>
+      <UserCompact user={user} key={`userCompact_${i}`}/>
+    )
   )
 }
 
