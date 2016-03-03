@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
+import scrollTop from '../../vendor/scrollTop'
 import classNames from 'classnames'
 import _ from 'lodash'
 import { runningFetches } from '../../middleware/requester'
@@ -31,8 +33,26 @@ export class StreamComponent extends Component {
 
   componentWillMount() {
     const { action, dispatch } = this.props
-    this.state = { action }
     if (action) { dispatch(action) }
+
+    let browserListen
+    if (browserHistory) {
+      browserListen = browserHistory.listen
+    } else {
+      browserListen = (listener) => {
+        listener({ key: 'testing' })
+        return () => null
+      }
+    }
+    const unlisten = browserListen(location => {
+      this.state = { action, locationKey: location.key }
+    })
+    unlisten()
+
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0)
+    }
+    this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
   }
 
   componentDidMount() {
@@ -65,9 +85,17 @@ export class StreamComponent extends Component {
     return true
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (window.embetter) {
       window.embetter.reloadPlayers()
+    }
+    if (this.props.stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
+      prevProps.stream.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
+      const history = this.props.gui.history[this.state.locationKey] || {}
+      const scrollTopValue = history.scrollTop
+      if (scrollTopValue) {
+        window.scrollTo(0, scrollTopValue)
+      }
     }
   }
 
@@ -77,6 +105,13 @@ export class StreamComponent extends Component {
     }
     removeScrollObject(this)
     removeResizeObject(this)
+
+    this.setDebouncedScroll = () => null
+    this.setScroll()
+  }
+
+  onScroll() {
+    this.setDebouncedScroll()
   }
 
   onScrollBottom() {
@@ -94,6 +129,20 @@ export class StreamComponent extends Component {
   setAction(action) {
     this.setState({ action })
     this.props.dispatch(action)
+  }
+
+  setDebouncedScroll() {
+    this.setScroll()
+  }
+
+  setScroll() {
+    this.props.dispatch({
+      type: ACTION_TYPES.GUI.SET_SCROLL,
+      payload: {
+        key: this.state.locationKey,
+        scrollTop: scrollTop(window),
+      },
+    })
   }
 
   loadPage(rel, scrolled = false) {
