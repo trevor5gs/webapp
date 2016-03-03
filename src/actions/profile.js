@@ -170,6 +170,14 @@ export function mutedUsers() {
   }
 }
 
-export function deleteAccountForReal() {
+export function exportData() {
+  return {
+    type: PROFILE.EXPORT,
+    meta: {},
+    payload: {
+      endpoint: api.profileExport(),
+      method: 'POST',
+    },
+  }
 }
 
