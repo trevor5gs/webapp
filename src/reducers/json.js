@@ -276,10 +276,11 @@ export default function json(state = {}, action = { type: '' }) {
       return methods.deleteModel(state, newState, action, MAPPING_TYPES.COMMENTS)
     case ACTION_TYPES.COMMENT.TOGGLE_EDITING:
       return commentMethods.toggleEditing(state, newState, action)
+    case ACTION_TYPES.COMMENT.EDITABLE_SUCCESS:
     case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
-    case ACTION_TYPES.COMMENT.EDITABLE_SUCCESS:
     case ACTION_TYPES.POST.EDITABLE_SUCCESS:
+    case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
       // fall through to parse the rest
       break
     case ACTION_TYPES.POST.CREATE_FAILURE:
@@ -320,6 +321,9 @@ export default function json(state = {}, action = { type: '' }) {
           }
         }
         return { ...state, ...keepers }
+      } else if (action.key === 'profile') {
+        methods.addModels(newState, MAPPING_TYPES.USERS, { users: action.payload })
+        return newState
       }
       return state
     case UPDATE_LOCATION:
