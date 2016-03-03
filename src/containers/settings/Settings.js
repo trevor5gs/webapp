@@ -14,6 +14,7 @@ import {
   blockedUsers,
   checkAvailability,
   deleteProfile,
+  exportData,
   mutedUsers,
   saveAvatar,
   saveCover,
@@ -229,6 +230,13 @@ class Settings extends Component {
     , 'asDangerZone'))
   };
 
+  requestDataExport = () => {
+    const { dispatch } = this.props
+    dispatch(exportData())
+    this.refs.exportButton.disabled = true
+    this.refs.exportButton.innerHTML = 'Exported'
+  };
+
   render() {
     const { blockedCount, dispatch, mutedCount, profile } = this.props
     const { emailState, passwordState, usernameState } = this.state
@@ -411,9 +419,21 @@ class Settings extends Component {
                     We will email you a link to download your data.
                   </dd>
                 </dl>
-                { profile.dataExport && profile.dataExport.value ?
-                  <a className="SettingsButton" href={profile.export}>Download Export</a> :
-                  <a className="SettingsButton" href="/export">Request Export</a>
+                { profile.dataExport ?
+                  <a
+                    className="SettingsButton"
+                    href={ profile.dataExport }
+                    target="_blank"
+                  >
+                    Download Export
+                  </a> :
+                  <button
+                    className="SettingsButton"
+                    onClick={ this.requestDataExport }
+                    ref="exportButton"
+                  >
+                    Request Export
+                  </button>
                 }
               </div>
             </TreePanel>

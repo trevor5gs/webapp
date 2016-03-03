@@ -7,6 +7,11 @@ export function profile(state = {}, action) {
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
       return {}
+    case PROFILE.EXPORT_SUCCESS:
+      if (action.payload.serverResponse.status === 200) {
+        return { ...state, dataExport: action.payload.response.exportUrl }
+      }
+      return { ...state, dataExport: null }
     case PROFILE.LOAD_SUCCESS:
       assetState = { ...state, ...action.payload.response.users }
       delete assetState.avatar.tmp

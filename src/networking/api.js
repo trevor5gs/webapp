@@ -54,6 +54,11 @@ export function profileMutedUsers() {
     path: getAPIPath('profile/muted'),
   }
 }
+export function profileExport() {
+  return {
+    path: getAPIPath('profile/export'),
+  }
+}
 // Onboarding
 export function awesomePeoplePath() {
   const params = { per_page: PER_PAGE }
