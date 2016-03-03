@@ -17,21 +17,20 @@ let path = '/'
 let prevTerms = null
 let hasLoadedFirstStream = false
 
-function updateUserCount(newState, userId, prop, delta) {
+function _updateUserCount(newState, userId, prop, delta) {
   const count = newState[MAPPING_TYPES.USERS][userId][prop]
   const obj = { id: userId }
-  obj[prop] = Number(count) + delta
-  methods.mergeModel(
+  obj[prop] = parseInt(count, 10) + delta
+  return methods.mergeModel(
     newState,
     MAPPING_TYPES.USERS,
     obj,
   )
-  return newState
 }
 methods.updateUserCount = (newState, userId, prop, delta) =>
-  updateUserCount(newState, userId, prop, delta)
+  _updateUserCount(newState, userId, prop, delta)
 
-function getCurrentUser(state) {
+function _getCurrentUser(state) {
   for (const id in state[MAPPING_TYPES.USERS]) {
     if (state[MAPPING_TYPES.USERS].hasOwnProperty(id)) {
       const user = state[MAPPING_TYPES.USERS][id]
@@ -43,19 +42,20 @@ function getCurrentUser(state) {
   return null
 }
 methods.getCurrentUser = (state) =>
-  getCurrentUser(state)
+  _getCurrentUser(state)
 
-function mergeModel(state, type, params) {
+function _mergeModel(state, type, params) {
   if (params.id) {
     const newType = { ...state[type] }
     newType[params.id] = { ...newType[params.id], ...params }
     state[type] = newType
   }
+  return state
 }
 methods.mergeModel = (state, type, params) =>
-  mergeModel(state, type, params)
+  _mergeModel(state, type, params)
 
-function cleanUpModels(state, action) {
+function _cleanUpModels(state, action) {
   // Kludge to abort for some tests
   if (!action || !action.meta) return null
 
@@ -71,11 +71,10 @@ function cleanUpModels(state, action) {
     }
   })
 }
-
 methods.cleanUpModels = (state, type, data) =>
-  cleanUpModels(state, type, data)
+  _cleanUpModels(state, type, data)
 
-function addModels(state, type, data) {
+function _addModels(state, type, data) {
   // add state['modelType']
   if (!state[type]) { state[type] = {} }
   const ids = []
@@ -102,9 +101,9 @@ function addModels(state, type, data) {
   return ids
 }
 methods.addModels = (state, type, data) =>
-  addModels(state, type, data)
+  _addModels(state, type, data)
 
-function addNewIdsToResult(state, newState) {
+function _addNewIdsToResult(state, newState) {
   if (!newState.pages) { newState.pages = {} }
   const result = newState.pages[path]
   if (!result || !result.newIds) { return state }
@@ -113,9 +112,9 @@ function addNewIdsToResult(state, newState) {
   return newState
 }
 methods.addNewIdsToResult = (state, newState) =>
-  addNewIdsToResult(state, newState)
+  _addNewIdsToResult(state, newState)
 
-function setLayoutMode(action, state, newState) {
+function _setLayoutMode(action, state, newState) {
   if (!newState.pages) { newState.pages = {} }
   const result = newState.pages[path]
   if (!result || (result && result.mode === action.payload.mode)) { return state }
@@ -123,11 +122,11 @@ function setLayoutMode(action, state, newState) {
   return newState
 }
 methods.setLayoutMode = (action, state, newState) =>
-  setLayoutMode(action, state, newState)
+  _setLayoutMode(action, state, newState)
 
 // parses the 'linked' node of the JSON
 // api responses into the json store
-function parseLinked(linked, newState) {
+function _parseLinked(linked, newState) {
   if (!linked) { return }
   for (const linkedType in linked) {
     if ({}.hasOwnProperty.call(linked, linkedType)) {
@@ -136,11 +135,11 @@ function parseLinked(linked, newState) {
   }
 }
 methods.parseLinked = (linked, newState) =>
-  parseLinked(linked, newState)
+  _parseLinked(linked, newState)
 
 // parse main part of request into the state and
 // pull out the ids as this is the main payload
-function getResult(response, newState, action) {
+function _getResult(response, newState, action) {
   const { mappingType, resultFilter } = action.meta
   const ids = methods.addModels(newState, mappingType, response)
   // set the result to the resultFilter if it exists
@@ -149,18 +148,18 @@ function getResult(response, newState, action) {
   return result
 }
 methods.getResult = (response, newState, action) =>
-  getResult(response, newState, action)
+  _getResult(response, newState, action)
 
-function pagesKey(action) {
+function _pagesKey(action) {
   const pathname = action.payload && action.payload.pathname ? action.payload.pathname : path
   const { resultKey } = action.meta || {}
   return resultKey || pathname
 }
 methods.pagesKey = (action) =>
-  pagesKey(action)
+  _pagesKey(action)
 
 // TODO: need to test the existingResult conditional logic!!!!
-function updateResult(response, newState, action) {
+function _updateResult(response, newState, action) {
   if (!newState.pages) { newState.pages = {} }
   const result = methods.getResult(response, newState, action)
   const { resultKey } = action.meta
@@ -205,9 +204,9 @@ function updateResult(response, newState, action) {
   }
 }
 methods.updateResult = (response, newState, action) =>
-  updateResult(response, newState, action)
+  _updateResult(response, newState, action)
 
-function clearSearchResults(state, newState, action) {
+function _clearSearchResults(state, newState, action) {
   if (!newState.pages) return state
   const pathname = action.payload.pathname
   const existingResult = newState.pages[pathname]
@@ -221,9 +220,9 @@ function clearSearchResults(state, newState, action) {
   return state
 }
 methods.clearSearchResults = (state, newState, action) =>
-  clearSearchResults(state, newState, action)
+  _clearSearchResults(state, newState, action)
 
-function deleteModel(state, newState, action, mappingType) {
+function _deleteModel(state, newState, action, mappingType) {
   const { model } = action.payload
   switch (action.type) {
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
@@ -256,7 +255,7 @@ function deleteModel(state, newState, action, mappingType) {
   return state
 }
 methods.deleteModel = (state, newState, action, mappingType) =>
-  deleteModel(state, newState, action, mappingType)
+  _deleteModel(state, newState, action, mappingType)
 
 export default function json(state = {}, action = { type: '' }) {
   let newState = { ...state }
@@ -360,3 +359,4 @@ export function setPath(newPath) {
 }
 
 export { json, methods, path, commentMethods, postMethods, relationshipMethods }
+

@@ -27,6 +27,22 @@ describe('json reducer', () => {
     clearJSON()
   })
 
+  describe('#updateUserCount', () => {
+    it('should update the count', () => {
+      const spy = sinon.stub(subject.methods, 'mergeModel')
+      subject.methods.updateUserCount(json, '1', 'followersCount', 1)
+      expect(spy.calledWith(
+        json,
+        MAPPING_TYPES.USERS,
+        {
+          id: '1',
+          followersCount: 2,
+        }
+      ))
+      spy.restore()
+    })
+  })
+
   describe('#mergeModel', () => {
     it('does not modify state if there is no id in params', () => {
       subject.methods.mergeModel(json, MAPPING_TYPES.USERS, { username: 'new' })
@@ -241,24 +257,6 @@ describe('json reducer', () => {
   })
 
   describe('#deleteModel', () => {
-    it('deletes a post on request', () => {
-      const post = json.posts['1']
-      expect(post).not.to.be.undefined
-      const action = { type: ACTION_TYPES.POST.DELETE_REQUEST }
-      action.payload = { model: post }
-      subject.methods.deleteModel({ state: 'yo' }, json, action, MAPPING_TYPES.POSTS)
-      expect(json.posts['1']).to.be.undefined
-    })
-
-    it('deletes a post on success', () => {
-      const post = json.posts['1']
-      expect(post).not.to.be.undefined
-      const action = { type: ACTION_TYPES.POST.DELETE_SUCCESS }
-      action.payload = { model: post }
-      subject.methods.deleteModel({ state: 'yo' }, json, action, MAPPING_TYPES.POSTS)
-      expect(json.posts['1']).to.be.undefined
-    })
-
     it('restores a post on failure', () => {
       const post = json.posts['1']
       expect(post).not.to.be.undefined
@@ -284,7 +282,7 @@ describe('json reducer', () => {
         subject.json(json, { type: action })
         expect(spy.called).to.be.true
       }
-      methods[method].restore()
+      spy.restore()
     }
 
     it('calls #methods.addNewIdsToResult', () => {
