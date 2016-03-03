@@ -23,7 +23,7 @@ class Paginator extends Component {
   };
 
   componentWillMount() {
-    this.state = { isPaginationLoading: false, message: this.getMessage() }
+    this.state = { isPaginationLoading: false }
   }
 
   getMessage() {
@@ -39,7 +39,7 @@ class Paginator extends Component {
   }
 
   setLoading(isPaginationLoading) {
-    this.state = { isPaginationLoading, message: this.getMessage() }
+    this.setState({ isPaginationLoading })
   }
 
   loadMore = () => {
@@ -48,12 +48,12 @@ class Paginator extends Component {
   };
 
   render() {
-    const { isPaginationLoading, message } = this.state
+    const { isPaginationLoading } = this.state
     const { hasShowMoreButton } = this.props
     const classes = isPaginationLoading ? 'Paginator isBusy' : 'Paginator'
     const messageArea = hasShowMoreButton ?
-      <button onClick={ this.loadMore }>{ message }</button> :
-      <span>{ message }</span>
+      <button onClick={ this.loadMore }>{ this.getMessage() }</button> :
+      <span>{ this.getMessage() }</span>
     return (
       <div className={ classes }>
         <ElloMark />

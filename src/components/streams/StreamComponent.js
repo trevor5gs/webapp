@@ -236,7 +236,7 @@ export class StreamComponent extends Component {
     }
     const resultMode = findLayoutMode(gui.modes)
     const renderMethod = resultMode && resultMode.mode === 'grid' ? 'asGrid' : 'asList'
-    const pagination = result ? result.pagination : emptyPagination()
+    const pagination = result && result.pagination ? result.pagination : emptyPagination()
     return (
       <section className={classNames('StreamComponent', className)}>
         {
@@ -249,7 +249,6 @@ export class StreamComponent extends Component {
         {this.props.children}
         <Paginator
           hasShowMoreButton={ typeof meta.resultKey !== 'undefined' }
-          key={ `paginator${meta.resultKey || '/stream'}${pagination.totalPagesRemaining}` }
           loadNextPage={ this.onLoadNextPage }
           messageText={ pathname === '/settings' ? 'See more' : null }
           ref="paginator"
