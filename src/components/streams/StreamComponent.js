@@ -35,7 +35,16 @@ export class StreamComponent extends Component {
     const { action, dispatch } = this.props
     if (action) { dispatch(action) }
 
-    const unlisten = browserHistory.listen(location => {
+    let browserListen
+    if (browserHistory) {
+      browserListen = browserHistory.listen
+    } else {
+      browserListen = (listener) => {
+        listener({ key: 'testing' })
+        return () => null
+      }
+    }
+    const unlisten = browserListen(location => {
       this.state = { action, locationKey: location.key }
     })
     unlisten()
