@@ -49,7 +49,9 @@ export class StreamComponent extends Component {
     })
     unlisten()
 
-    window.scrollTo(0, 0)
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0)
+    }
     this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
   }
 
