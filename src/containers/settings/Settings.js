@@ -368,7 +368,6 @@ class Settings extends Component {
                     action={blockedUsers()}
                     className="BlockedUsers"
                     hasShowMoreButton
-                    key={ `blockedUsers_${blockedCount}` }
                   />
                 </TreePanel>
               </div> :
@@ -382,7 +381,6 @@ class Settings extends Component {
                     action={mutedUsers()}
                     className="MutedUsers"
                     hasShowMoreButton
-                    key={ `mutedUsers_${mutedCount}` }
                   />
                 </TreePanel>
               </div> :
