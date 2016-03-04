@@ -141,9 +141,14 @@ export class StreamComponent extends Component {
     const { history, stream } = this.props
     if (stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
       prevProps.stream.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
-      const historyKey = history[this.state.locationKey] || {}
-      const scrollTopValue = historyKey.scrollTop
-      if (scrollTopValue) {
+      const historyObj = history[this.state.locationKey] || {}
+      const scrollTopValue = historyObj.scrollTop
+
+      const scrollToTarget = typeof this.scrollContainer !== 'undefined' &&
+                             this.scrollContainer
+      if (scrollTopValue && scrollToTarget) {
+        scrollToTarget.scrollTop = scrollTopValue
+      } else if (!scrollToTarget && typeof window !== 'undefined') {
         window.scrollTo(0, scrollTopValue)
       }
     }
@@ -186,11 +191,17 @@ export class StreamComponent extends Component {
   }
 
   setScroll() {
+    let scrollTopValue
+    if (this.scrollContainer) {
+      scrollTopValue = scrollTop(this.scrollContainer)
+    } else {
+      scrollTopValue = scrollTop(window)
+    }
     this.props.dispatch({
       type: ACTION_TYPES.GUI.SET_SCROLL,
       payload: {
         key: this.state.locationKey,
-        scrollTop: scrollTop(window),
+        scrollTop: scrollTopValue,
       },
     })
   }
