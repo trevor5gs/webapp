@@ -96,10 +96,6 @@ export class StreamComponent extends Component {
       this.state = { action, locationKey: this.generateLocationKey(location.key) }
     })
     unlisten()
-
-    if (typeof window !== 'undefined') {
-      window.scrollTo(0, 0)
-    }
     this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
   }
 
@@ -107,7 +103,10 @@ export class StreamComponent extends Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    addScrollObject(this)
+    if (this.props.componentPrefix) {
+      addScrollObject(this)
+      window.scrollTo(0, 0)
+    }
     addResizeObject(this)
   }
 
