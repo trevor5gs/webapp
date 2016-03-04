@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
+import { numberToHuman } from '../../vendor/number_to_human'
 
 export const UserNames = ({ user }) =>
   <div className="UserNames">
@@ -10,87 +11,114 @@ export const UserNames = ({ user }) =>
   </div>
 
 UserNames.propTypes = {
-  user: PropTypes.shape({}).isRequired,
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    username: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
-
-const UserStatsLink = ({ asDisabled = false, children, to }) => {
-  if (asDisabled) {
-    return (
-      <span activeClassName="active" className="UserStatsLink asDisabled">
-        { children }
-      </span>
-    )
-  }
-  return (
+const UserStatsLink = ({ asDisabled = false, children, to }) =>
+  asDisabled ?
+    <span activeClassName="active" className="UserStatsLink asDisabled">
+      { children }
+    </span> :
     <Link activeClassName="active" className="UserStatsLink" to={ to }>
       { children }
     </Link>
-  )
-}
 
 export const UserStats = ({ user }) =>
   <div className="UserStats">
     <dl>
       <UserStatsLink to={`/${user.username}`}>
-        <dt>{user.postsCount}</dt>
+        <dt>{ numberToHuman(user.postsCount) }</dt>
         <dd>Posts</dd>
       </UserStatsLink>
     </dl>
     <dl>
       <UserStatsLink asDisabled={ !user.followingCount } to={`/${user.username}/following`}>
-        <dt>{user.followingCount}</dt>
+        <dt>{ numberToHuman(user.followingCount) }</dt>
         <dd>Following</dd>
       </UserStatsLink>
     </dl>
     <dl>
-      <UserStatsLink asDisabled={ !user.followersCount } to={`/${user.username}/followers`}>
-        <dt>{user.followersCount}</dt>
+      <UserStatsLink
+        asDisabled={ typeof user.followersCount === 'string' || !user.followersCount }
+        to={`/${user.username}/followers`}
+      >
+        <dt>
+          {
+            typeof user.followersCount === 'string' ?
+              user.followersCount :
+              numberToHuman(user.followersCount)
+          }
+        </dt>
         <dd>Followers</dd>
       </UserStatsLink>
     </dl>
     <dl>
       <UserStatsLink asDisabled={ !user.lovesCount } to={`/${user.username}/loves`} >
-        <dt>{user.lovesCount}</dt>
+        <dt>{ numberToHuman(user.lovesCount) }</dt>
         <dd>Loves</dd>
       </UserStatsLink>
     </dl>
   </div>
 
 UserStats.propTypes = {
-  user: PropTypes.shape({}).isRequired,
+  user: PropTypes.shape({
+    followingCount: PropTypes.number.isRequired,
+    followersCount: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]).isRequired,
+    followersCountRounded: PropTypes.string.isRequired,
+    lovesCount: PropTypes.number.isRequired,
+    postsCount: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export const LoggedOutUserStats = ({ user }) =>
   <div className="UserStats">
     <dl>
       <UserStatsLink asDisabled >
-        <dt>{user.postsCount}</dt>
+        <dt>{ numberToHuman(user.postsCount) }</dt>
         <dd>Posts</dd>
       </UserStatsLink>
     </dl>
     <dl>
       <UserStatsLink asDisabled >
-        <dt>{user.followingCount}</dt>
+        <dt>{ numberToHuman(user.followingCount) }</dt>
         <dd>Following</dd>
       </UserStatsLink>
     </dl>
     <dl>
       <UserStatsLink asDisabled >
-        <dt>{user.followersCount}</dt>
+        <dt>
+          {
+            typeof user.followersCount === 'string' ?
+              user.followersCount :
+              numberToHuman(user.followersCount)
+          }
+        </dt>
         <dd>Followers</dd>
       </UserStatsLink>
     </dl>
     <dl>
       <UserStatsLink asDisabled >
-        <dt>{user.lovesCount}</dt>
+        <dt>{ numberToHuman(user.lovesCount) }</dt>
         <dd>Loves</dd>
       </UserStatsLink>
     </dl>
   </div>
 
 LoggedOutUserStats.propTypes = {
-  user: PropTypes.shape({}).isRequired,
+  user: PropTypes.shape({
+    followersCount: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]).isRequired,
+    lovesCountRounded: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export const UserInfo = ({ user }) => {
@@ -111,6 +139,9 @@ export const UserInfo = ({ user }) => {
 }
 
 UserInfo.propTypes = {
-  user: PropTypes.shape({}).isRequired,
+  user: PropTypes.shape({
+    externalLinksList: PropTypes.array,
+    formattedShortBio: PropTypes.string,
+  }).isRequired,
 }
 

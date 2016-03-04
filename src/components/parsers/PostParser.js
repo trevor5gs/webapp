@@ -145,7 +145,7 @@ class PostParser extends Component {
 
     const showEditor = (post.isEditing || post.isReposting) && post.body
     return (
-      <div>
+      <div className="Post">
         {postHeader}
         { showEditor ?
           <Editor post={ post }/> :
