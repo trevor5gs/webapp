@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import _ from 'lodash'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
@@ -25,6 +26,13 @@ class UserList extends Component {
     classList: '',
     showBlockMuteButton: false,
   };
+
+  shouldComponentUpdate(prevProps) {
+    if (_.isEqual(prevProps, this.props)) {
+      return false
+    }
+    return true
+  }
 
   onShareProfile = () => {
     const { dispatch, user } = this.props

@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import _ from 'lodash'
 import Avatar from '../assets/Avatar'
 import CoverMini from '../assets/CoverMini'
 import RelationsGroup from '../relationships/RelationsGroup'
@@ -10,6 +11,13 @@ class UserGrid extends Component {
     user: PropTypes.shape({
     }).isRequired,
   };
+
+  shouldComponentUpdate(prevProps) {
+    if (_.isEqual(prevProps, this.props)) {
+      return false
+    }
+    return true
+  }
 
   render() {
     const user = this.props.user

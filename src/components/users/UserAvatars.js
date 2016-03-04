@@ -19,6 +19,7 @@ class UserAvatars extends Component {
         <StreamComponent
           ref="streamComponent"
           action={loadUserAvatars(endpoint, post, resultType)}
+          paginatorText="+more.."
         />
       </section>
     )

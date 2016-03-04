@@ -13,13 +13,9 @@ class Paginator extends Component {
   static propTypes = {
     hasShowMoreButton: PropTypes.bool,
     loadNextPage: PropTypes.func.isRequired,
-    messageText: PropTypes.string,
+    messageText: PropTypes.string.isRequired,
     totalPages: PropTypes.number.isRequired,
     totalPagesRemaining: PropTypes.number.isRequired,
-  };
-
-  static defaultProps = {
-    messageText: '+more..',
   };
 
   componentWillMount() {
@@ -34,8 +30,8 @@ class Paginator extends Component {
       return messageText
     }
     return (totalPages > 0) ?
-      `Loading: ${totalPages - totalPagesRemaining + 1} of ${totalPages}` :
-      'Loading...'
+      `${messageText}: ${totalPages - totalPagesRemaining + 1} of ${totalPages}` :
+      `${messageText}...`
   }
 
   setLoading(isPaginationLoading) {
