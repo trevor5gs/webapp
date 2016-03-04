@@ -89,6 +89,7 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.LOAD_NEXT_CONTENT &&
         type !== ACTION_TYPES.AUTHENTICATION.FORGOT_PASSWORD &&
         type !== ACTION_TYPES.AUTHENTICATION.USER &&
+        type !== ACTION_TYPES.AUTHENTICATION.LOGOUT &&
         type !== ACTION_TYPES.AUTHENTICATION.REFRESH &&
         type !== ACTION_TYPES.COMMENT.CREATE &&
         type !== ACTION_TYPES.COMMENT.DELETE &&
