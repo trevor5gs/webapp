@@ -195,7 +195,7 @@ export function notificationList(notifications, json) {
         return (
           <NotificationParser
             json={ json }
-            key={ `notificationParser_${subject.id}` }
+            key={ `notificationParser_${subject.createdAt}` }
             notification={ notification }
             subject={ subject }
           />
