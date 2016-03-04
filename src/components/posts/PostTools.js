@@ -23,6 +23,7 @@ import {
   ShareIcon,
   XBoxIcon,
 } from '../posts/PostIcons'
+import { numberToHuman } from '../../vendor/number_to_human'
 
 class PostTools extends Component {
 
@@ -54,7 +55,7 @@ class PostTools extends Component {
       >
         <Link to={`/${author.username}/post/${post.token}`}>
           <EyeIcon />
-          <span className="PostToolValue">{post.viewsCount}</span>
+          <span className="PostToolValue">{post.viewsCountRounded}</span>
           <Hint>Views</Hint>
         </Link>
       </span>
@@ -68,7 +69,7 @@ class PostTools extends Component {
               className="PostToolValue"
               data-count={post.commentsCount}
             >
-              {post.commentsCount}
+              {numberToHuman(post.commentsCount, false)}
             </span>
             <Hint>Comment</Hint>
           </button>
@@ -89,7 +90,12 @@ class PostTools extends Component {
             className={classNames({ active: post.loved }, 'PostToolDrawerButton')}
             onClick={ this.toggleLovers }
           >
-            <span className="PostToolValue" data-count={post.lovesCount}>{post.lovesCount}</span>
+            <span
+              className="PostToolValue"
+              data-count={post.lovesCount}
+            >
+              { numberToHuman(post.lovesCount, false) }
+            </span>
             <Hint>Loved by</Hint>
           </button>
         </span>
@@ -110,7 +116,7 @@ class PostTools extends Component {
               className="PostToolValue"
               data-count={post.repostsCount}
             >
-              {post.repostsCount}
+              {numberToHuman(post.repostsCount, false)}
             </span>
             <Hint>Reposted by</Hint>
           </button>

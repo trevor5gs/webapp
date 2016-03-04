@@ -9,13 +9,9 @@ import { ErrorState } from '../components/errors/Errors'
 export function loadUserDetail(username) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.userDetail(username), vo: {} },
+    payload: { endpoint: api.userDetail(username) },
     meta: {
       mappingType: MAPPING_TYPES.USERS,
-      renderStream: {
-        asList: StreamRenderables.userDetailAsList,
-        asGrid: StreamRenderables.userDetailAsGrid,
-      },
       updateResult: false,
     },
   }
