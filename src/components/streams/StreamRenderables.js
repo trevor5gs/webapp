@@ -1,15 +1,16 @@
 import React from 'react'
 import { camelize } from 'humps'
-import * as api from '../../networking/api'
-import { getLinkArray } from '../base/json_helper'
+import { postLovers, postReposters } from '../../networking/api'
+import { getLinkArray, getLinkObject } from '../base/json_helper'
 import PostParser from '../parsers/PostParser'
 import CommentParser from '../parsers/CommentParser'
-import { parseNotification } from '../parsers/NotificationParser'
+import NotificationParser from '../parsers/NotificationParser'
 import PostsAsGrid from '../posts/PostsAsGrid'
 import { HeartIcon, RepostIcon } from '../posts/PostIcons'
 import UserAvatar from '../users/UserAvatar'
 import UserAvatars from '../users/UserAvatars'
 import UserCard from '../users/UserCard'
+import UserCompact from '../users/UserCompact'
 import UserGrid from '../users/UserGrid'
 import UserInvitee from '../users/UserInvitee'
 import UserList from '../users/UserList'
@@ -24,8 +25,8 @@ import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 export function usersAsCards(users) {
   return (
     <div className="Cards">
-      {users.data.map((user, i) =>
-        <UserCard ref={ `userCard_${i}` } user={ user } key={ i } />
+      {users.data.map((user) =>
+        <UserCard user={ user } key={ `userCard_${user.id}` } />
       )}
     </div>
   )
@@ -34,8 +35,8 @@ export function usersAsCards(users) {
 export function usersAsGrid(users) {
   return (
     <div className="Users asGrid">
-      {users.data.map((user, i) =>
-        <UserGrid ref={ `userGrid_${i}` } user={ user } key={ i } />
+      {users.data.map((user) =>
+        <UserGrid user={ user } key={ `userGrid_${user.id}` } />
       )}
     </div>
   )
@@ -44,8 +45,8 @@ export function usersAsGrid(users) {
 export function usersAsList(users) {
   return (
     <div className="Users asList">
-      {users.data.map((user, i) =>
-        <UserList ref={ `userList_${i}` } user={ user } key={ i } />
+      {users.data.map((user) =>
+        <UserList user={ user } key={ `userList_${user.id}` } />
       )}
     </div>
   )
@@ -54,12 +55,11 @@ export function usersAsList(users) {
 export function usersAsInviteeList(invitations, json) {
   return (
     <div className="Users asInviteeList">
-      {invitations.data.map((invitation, i) =>
+      {invitations.data.map((invitation) =>
         <UserInvitee
-          ref={ `userInvite${i}` }
           invitation={ invitation }
           json={ json }
-          key={ i }
+          key={ `userInviteeList_${invitation.id}` }
         />
       )}
     </div>
@@ -69,13 +69,12 @@ export function usersAsInviteeList(invitations, json) {
 export function usersAsInviteeGrid(invitations, json) {
   return (
     <div className="Users asInviteeGrid">
-      {invitations.data.map((invitation, i) =>
+      {invitations.data.map((invitation) =>
           <UserInvitee
             className="UserInviteeGrid"
-            ref={ `userInvite${i}` }
             invitation={ invitation }
             json={ json }
-            key={ i }
+            key={ `userInviteeGrid_${invitation.id}` }
           />
       )}
     </div>
@@ -97,17 +96,40 @@ export function postsAsList(posts) {
   return (
     <div className="Posts asList">
       {posts.data.map((post) =>
-        <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList">
-          <PostParser
-            post={ post }
-            isEditing={ post.isEditing }
-            isGridLayout={ false }
-            isReposting={ post.isReposting }
-            showComments={ post.showComments }
-          />
-        </article>
+        <PostParser
+          post={ post }
+          isEditing={ post.isEditing }
+          isGridLayout={ false }
+          isReposting={ post.isReposting }
+          key={ `postParser_${post.id}` }
+          showComments={ post.showComments }
+          showLovers={ post.showLovers }
+          showReposters={ post.showReposters }
+        />
       )}
     </div>
+  )
+}
+
+export function postLoversDrawer(post) {
+  return (
+    <UserAvatars
+      endpoint={ postLovers(post) }
+      icon={ <HeartIcon /> }
+      post={ post }
+      resultType="love"
+    />
+  )
+}
+
+export function postRepostersDrawer(post) {
+  return (
+    <UserAvatars
+      endpoint={ postReposters(post) }
+      icon={ <RepostIcon /> }
+      post={ post }
+      resultType="repost"
+    />
   )
 }
 
@@ -117,24 +139,10 @@ export function postDetail(posts, json) {
   comments = comments.concat(posts.nestedData)
   const avatarDrawers = []
   if (Number(post.lovesCount) > 0) {
-    avatarDrawers.push(
-      <UserAvatars
-        endpoint={ api.postLovers(post) }
-        icon={ <HeartIcon /> }
-        key={ `lovers_${post.id}` }
-        resultKey="lovers"
-      />
-    )
+    avatarDrawers.push(postLoversDrawer(post))
   }
   if (Number(post.repostsCount) > 0) {
-    avatarDrawers.push(
-      <UserAvatars
-        endpoint={ api.postReposters(post) }
-        icon={ <RepostIcon /> }
-        key={ `reposters_${post.id}` }
-        resultKey="reposters"
-      />
-    )
+    avatarDrawers.push(postRepostersDrawer(post))
   }
   return (
     <div className="PostDetails Posts asList">
@@ -149,7 +157,7 @@ export function postDetail(posts, json) {
         <Editor post={ post } isComment/>
         <section className="Comments">
           {comments.map((comment) =>
-            <div ref={ `commentList_${comment.id}` } key={ comment.id } className="CommentList">
+            <div key={ `commentList_${comment.id}` } className="CommentList">
               <CommentParser
                 comment={ comment }
                 isEditing={ comment.isEditing }
@@ -169,7 +177,7 @@ export function commentsAsList(comments) {
     <div>
       {comments.data.map(comment =>
         <CommentParser
-          key={ `CommentParser_${comment.id}` }
+          key={ `commentParser_${comment.id}` }
           comment={ comment }
           isEditing={ comment.isEditing }
           isGridLayout={ false }
@@ -179,11 +187,19 @@ export function commentsAsList(comments) {
   )
 }
 
-export function notificationList(notifications, json, currentUser) {
+export function notificationList(notifications, json) {
   return (
     <div className="Notifications">
-      {notifications.data.map((notification) =>
-        parseNotification(notification, json, currentUser)
+      {notifications.data.map((notification) => {
+        const subject = getLinkObject(notification, `subject`, json)
+        return (
+          <NotificationParser
+            json={ json }
+            key={ `notificationParser_${subject.createdAt}` }
+            notification={ notification }
+            subject={ subject }
+          />
+        )}
       )}
     </div>
   )
@@ -209,7 +225,7 @@ export function profileToggles(categories, json, currentUser) {
               <Preference
                 definition={{ term: item.label, desc: item.info }}
                 id={ item.key }
-                key={ item.key }
+                key={ `preference_${item.key}` }
                 isChecked={ currentUser[camelize(item.key)] }
                 isDisabled={ !currentUser.isPublic && item.key === 'has_sharing_enabled' }
                 onToggleChange={ preferenceToggleChanged }
@@ -220,6 +236,14 @@ export function profileToggles(categories, json, currentUser) {
       )
       return arr
     })
+  )
+}
+
+export function blockedMutedUserList(users) {
+  return (
+    users.data.map((user) =>
+      <UserCompact user={user} key={`userCompact_${user.id}`}/>
+    )
   )
 }
 

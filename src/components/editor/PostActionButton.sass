@@ -28,6 +28,10 @@
   position: absolute
   left: rem(20)
 
+.PostActionButton[disabled]
+  pointer-events: none
+  opacity: 0.5
+
 @media(min-width: #{$break-2})
   .no-touch .PostActionButton:hover
     color: white

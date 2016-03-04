@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { debounce } from 'lodash'
@@ -52,6 +53,7 @@ class BlockCollection extends Component {
     this.state = {
       collection: {},
       hideTextTools: true,
+      loadingImageBlocks: [],
       order: [],
     }
     this.uid = 0
@@ -64,7 +66,7 @@ class BlockCollection extends Component {
         this.add(block, false)
       }
     } else if (shouldLoadFromState && editorStore.editorState) {
-      this.state = { ...editorStore.editorState, hideTextTools: true }
+      this.state = { ...editorStore.editorState, hideTextTools: true, loadingImageBlocks: [] }
       this.uid = Math.max(...editorStore.editorState.order) + 1
     }
     this.persistBlocks = debounce(this.persistBlocks, 300)
@@ -84,8 +86,9 @@ class BlockCollection extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { dispatch, editorId, editorStore } = nextProps
-    const { collection } = this.state
+    const { collection, loadingImageBlocks } = this.state
     let newBlock = null
+    let index = -1
     switch (editorStore.type) {
       case ACTION_TYPES.EDITOR.APPEND_TEXT:
         if (editorStore.appendText && editorStore.appendText.length) {
@@ -103,6 +106,9 @@ class BlockCollection extends Component {
             uid: newBlock.uid,
           },
         })
+        // we have one that is uploading to s3
+        loadingImageBlocks.push(newBlock.uid)
+        this.setState({ loadingImageBlocks })
         break
       case ACTION_TYPES.POST.SAVE_IMAGE_SUCCESS:
         newBlock = this.getBlockFromUid(editorStore.uid)
@@ -116,6 +122,10 @@ class BlockCollection extends Component {
           }
           this.setState({ collection })
           this.persistBlocks()
+          // can stop the uploading whatever
+          index = loadingImageBlocks.indexOf(editorStore.uid)
+          loadingImageBlocks.splice(index, 1)
+          this.setState({ loadingImageBlocks })
         }
         break
       case ACTION_TYPES.POST.POST_PREVIEW_SUCCESS:
@@ -164,6 +174,7 @@ class BlockCollection extends Component {
     }
     this.onDragMove(props)
     this.setState({ collection })
+    ReactDOM.findDOMNode(document.body).classList.add('isDragging')
   }
 
   onDragMove(props) {
@@ -217,6 +228,7 @@ class BlockCollection extends Component {
     const dragUid = this.dragBlock.uid
     collection[this.getBlockIdentifier(dragUid)] = this.dragBlock
     // order matters here so the dragBlock gets removed
+    ReactDOM.findDOMNode(document.body).classList.remove('isDragging')
     this.dragBlock = null
     this.setState({ collection, dragBlockTop: null })
     this.addEmptyTextBlock(true)
@@ -245,6 +257,8 @@ class BlockCollection extends Component {
 
   getBlockElement(block) {
     const { editorId } = this.props
+    const { loadingImageBlocks } = this.state
+    const isUploading = loadingImageBlocks.indexOf(block.uid) !== -1
     const blockProps = {
       data: block.data,
       editorId,
@@ -253,11 +267,16 @@ class BlockCollection extends Component {
       onRemoveBlock: this.remove,
       ref: `block${block.uid}`,
       uid: block.uid,
+      className: classNames({ isUploading }),
     }
     switch (block.kind) {
       case 'block':
         return (
-          <Block { ...blockProps } className="BlockPlaceholder" ref="blockPlaceholder" />
+          <Block
+            { ...blockProps }
+            className={ classNames('BlockPlaceholder', { isUploading }) }
+            ref="blockPlaceholder"
+          />
         )
       case 'embed':
         return (
@@ -294,7 +313,10 @@ class BlockCollection extends Component {
       const block = this.getBlockFromUid(uid)
       if (block && block.kind === 'text') {
         const selector = `[data-editor-id="${editorId}"][data-collection-id="${uid}"]`
-        block.data = document.querySelector(selector).firstChild.innerHTML
+        const elem = document.querySelector(selector)
+        if (elem && elem.firstChild) {
+          block.data = elem.firstChild.innerHTML
+        }
       }
     }
     this.setState({ collection })
@@ -389,6 +411,8 @@ class BlockCollection extends Component {
   submit = () => {
     const { isComment, submitAction } = this.props
     const data = this.serialize()
+    // prevent submit from happening until all
+    // embeds have data and all images have urls
     submitAction(data)
     if (isComment) {
       this.clearBlocks()
@@ -449,7 +473,7 @@ class BlockCollection extends Component {
 
   render() {
     const { avatar, cancelAction, editorId, isComment, submitText } = this.props
-    const { dragBlockTop, order } = this.state
+    const { dragBlockTop, loadingImageBlocks, order } = this.state
     const hasMention = this.hasMention()
     const hasContent = this.hasContent()
     return (
@@ -472,9 +496,10 @@ class BlockCollection extends Component {
         </div>
         { isComment ? <QuickEmoji onAddEmoji={ this.onInsertEmoji }/> : null }
         <PostActionBar
-          ref="postActionBar"
           cancelAction={ cancelAction }
+          disableSubmitAction={ loadingImageBlocks.length > 0 }
           editorId={ editorId }
+          ref="postActionBar"
           submitAction={ this.submit }
           submitText={ submitText }
         />

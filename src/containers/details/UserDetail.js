@@ -106,9 +106,8 @@ class UserDetail extends Component {
       userEls.push(<Cover coverImage={ user.coverImage } key={ `userDetailCover_${user.id}` } />)
       userEls.push(<UserList
         classList="asUserDetailHeader"
-        ref={ `UserList_${user.id}` }
+        key={ `userList_${user.id}` }
         user={ user }
-        key={ `userDetailUserList_${user.id}` }
         showBlockMuteButton
       />)
     }

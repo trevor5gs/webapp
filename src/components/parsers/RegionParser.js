@@ -17,12 +17,13 @@ function textRegion(region, key, isGridLayout, postDetailPath) {
   )
 }
 
-function imageRegion(region, key, isGridLayout, postDetailPath) {
+function imageRegion(region, key, isGridLayout, postDetailPath, isNotification) {
   return (
     <ImageRegion
       assets={models.assets}
       content={region.data}
       isGridLayout={isGridLayout}
+      isNotification={ isNotification }
       key={key}
       links={region.links}
       postDetailPath={postDetailPath}
@@ -40,6 +41,21 @@ function embedRegion(region, key) {
       </Link>
     </div>
   )
+}
+
+export function regionItemsForNotifications(content, postDetailPath = null) {
+  return content.map((region, i) => {
+    switch (region.kind) {
+      case 'text':
+        return textRegion(region, `TextRegion_${i}`, false, postDetailPath)
+      case 'image':
+        return imageRegion(region, `ImageRegion_${i}`, true, postDetailPath, true)
+      case 'embed':
+        return embedRegion(region, `EmbedRegion_${i}`)
+      default:
+        throw new Error(`UNKNOWN NOTIFICATION REGION: ${region.kind}`)
+    }
+  })
 }
 
 export function regionItems(content, only = null, isGridLayout = true, postDetailPath = null) {

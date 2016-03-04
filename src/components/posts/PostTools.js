@@ -23,6 +23,7 @@ import {
   ShareIcon,
   XBoxIcon,
 } from '../posts/PostIcons'
+import { numberToHuman } from '../../vendor/number_to_human'
 
 class PostTools extends Component {
 
@@ -54,7 +55,7 @@ class PostTools extends Component {
       >
         <Link to={`/${author.username}/post/${post.token}`}>
           <EyeIcon />
-          <span className="PostToolValue">{post.viewsCount}</span>
+          <span className="PostToolValue">{post.viewsCountRounded}</span>
           <Hint>Views</Hint>
         </Link>
       </span>
@@ -68,7 +69,7 @@ class PostTools extends Component {
               className="PostToolValue"
               data-count={post.commentsCount}
             >
-              {post.commentsCount}
+              {numberToHuman(post.commentsCount, false)}
             </span>
             <Hint>Comment</Hint>
           </button>
@@ -78,10 +79,24 @@ class PostTools extends Component {
     if (author.hasLovesEnabled) {
       cells.push(
         <span className="PostTool LoveTool" key={`LoveTool_${post.id}`}>
-          <button className={classNames({ active: post.loved })} onClick={ this.lovePost }>
+          <button
+            className={classNames({ active: post.loved, hasPostToolDrawer: post.lovesCount > 0 })}
+            onClick={ this.lovePost }
+          >
             <HeartIcon />
-            <span className="PostToolValue" data-count={post.lovesCount}>{post.lovesCount}</span>
             <Hint>Love</Hint>
+          </button>
+          <button
+            className={classNames({ active: post.loved }, 'PostToolDrawerButton')}
+            onClick={ this.toggleLovers }
+          >
+            <span
+              className="PostToolValue"
+              data-count={post.lovesCount}
+            >
+              { numberToHuman(post.lovesCount, false) }
+            </span>
+            <Hint>Loved by</Hint>
           </button>
         </span>
       )
@@ -89,15 +104,21 @@ class PostTools extends Component {
     if (author.hasRepostingEnabled) {
       cells.push(
         <span className="PostTool RepostTool" key={`RepostTool_${post.id}`}>
-          <button onClick={ isLoggedIn ? this.repostPost : this.signUp }>
+          <button
+            className={classNames({ hasPostToolDrawer: post.repostsCount > 0 })}
+            onClick={ this.repostPost }
+          >
             <RepostIcon />
+            <Hint>Repost</Hint>
+          </button>
+          <button className="PostToolDrawerButton" onClick={ this.toggleReposters }>
             <span
               className="PostToolValue"
               data-count={post.repostsCount}
             >
-              {post.repostsCount}
+              {numberToHuman(post.repostsCount, false)}
             </span>
-            <Hint>Repost</Hint>
+            <Hint>Reposted by</Hint>
           </button>
         </span>
       )
@@ -190,6 +211,16 @@ class PostTools extends Component {
       dispatch(postActions.lovePost(post))
     }
   };
+  toggleLovers = () => {
+    const { dispatch, post } = this.props
+    const showLovers = !post.showLovers
+    dispatch(postActions.toggleLovers(post, showLovers))
+  };
+  toggleReposters = () => {
+    const { dispatch, post } = this.props
+    const showReposters = !post.showReposters
+    dispatch(postActions.toggleReposters(post, showReposters))
+  };
 
   sharePost = () => {
     const { author, dispatch, post } = this.props
@@ -225,7 +256,10 @@ class PostTools extends Component {
   };
 
   repostPost = () => {
-    const { dispatch, post } = this.props
+    const { dispatch, isLoggedIn, post } = this.props
+    if (!isLoggedIn) {
+      return this.signUp()
+    }
     if (!post.reposted) {
       dispatch(postActions.toggleReposting(post, true))
       dispatch(postActions.loadEditablePost(post))

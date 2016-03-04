@@ -45,10 +45,15 @@ describe('posts experience update', () => {
         expect(post.loved).to.be.false
         const action = { type: ACTION_TYPES.POST.LOVE_REQUEST }
         action.payload = { method: 'POST', model: post }
+        action.meta = { resultKey: 'love', updateKey: 'post' }
+
+        stub('user', { id: 'abc', relationshipPriority: 'self' })
+        json.pages = { love: { ids: ['test'] } }
         subject.updatePostLoves({ state: 'yo' }, json, action)
         const updatedPost = json.posts['1']
         expect(updatedPost.lovesCount).to.equal(1)
         expect(updatedPost.loved).to.be.true
+        expect(json.pages.love.ids).to.deep.equal(['abc', 'test'])
       })
 
       it('handles DELETE', () => {
@@ -57,6 +62,10 @@ describe('posts experience update', () => {
         expect(post.loved).to.be.false
         const action = { type: ACTION_TYPES.POST.LOVE_REQUEST }
         action.payload = { method: 'DELETE', model: post }
+        action.meta = { resultKey: 'love', updateKey: 'post' }
+
+        stub('user', { id: 'abc', relationshipPriority: 'self' })
+        json.pages = { love: { ids: ['test'] } }
         subject.updatePostLoves({ state: 'yo' }, json, action)
         const updatedPost = json.posts['1']
         expect(updatedPost.lovesCount).to.equal(-1)
@@ -71,6 +80,10 @@ describe('posts experience update', () => {
         expect(post.loved).to.be.false
         const action = { type: ACTION_TYPES.POST.LOVE_FAILURE }
         action.payload = { method: 'POST', model: post }
+        action.meta = { resultKey: 'love', updateKey: 'post' }
+
+        stub('user', { id: 'abc', relationshipPriority: 'self' })
+        json.pages = { love: { ids: ['test'] } }
         subject.updatePostLoves({ state: 'yo' }, json, action)
         const updatedPost = json.posts['1']
         expect(updatedPost.lovesCount).to.equal(-1)
@@ -83,6 +96,10 @@ describe('posts experience update', () => {
         expect(post.loved).to.be.false
         const action = { type: ACTION_TYPES.POST.LOVE_FAILURE }
         action.payload = { method: 'DELETE', model: post }
+        action.meta = { resultKey: 'love', updateKey: 'post' }
+
+        stub('user', { id: 'abc', relationshipPriority: 'self' })
+        json.pages = { love: { ids: ['test'] } }
         subject.updatePostLoves({ state: 'yo' }, json, action)
         const updatedPost = json.posts['1']
         expect(updatedPost.lovesCount).to.equal(1)

@@ -7,17 +7,18 @@ class UserAvatars extends Component {
   static propTypes = {
     endpoint: PropTypes.object.isRequired,
     icon: PropTypes.element.isRequired,
-    resultKey: PropTypes.string.isRequired,
+    post: PropTypes.object.isRequired,
+    resultType: PropTypes.string.isRequired,
   };
 
   render() {
-    const { endpoint, icon, resultKey } = this.props
+    const { endpoint, icon, post, resultType } = this.props
     return (
       <section className="UserAvatars">
         {icon}
         <StreamComponent
           ref="streamComponent"
-          action={loadUserAvatars(endpoint, resultKey)}
+          action={loadUserAvatars(endpoint, post, resultType)}
         />
       </section>
     )

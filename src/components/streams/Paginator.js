@@ -1,26 +1,37 @@
 import React, { Component, PropTypes } from 'react'
 import { ElloMark } from '../interface/ElloIcons'
 
+export function emptyPagination() {
+  return {
+    totalPages: 0,
+    totalPagesRemaining: 0,
+  }
+}
+
 class Paginator extends Component {
 
   static propTypes = {
-    delegate: PropTypes.object,
     hasShowMoreButton: PropTypes.bool,
-    pagination: PropTypes.object,
+    loadNextPage: PropTypes.func.isRequired,
+    messageText: PropTypes.string,
+    totalPages: PropTypes.number.isRequired,
+    totalPagesRemaining: PropTypes.number.isRequired,
+  };
+
+  static defaultProps = {
+    messageText: '+more..',
   };
 
   componentWillMount() {
-    this.state = { isPaginationLoading: false, message: this.getMessage() }
+    this.state = { isPaginationLoading: false }
   }
 
   getMessage() {
-    const { hasShowMoreButton, pagination } = this.props
-    const totalPages = parseInt(pagination.totalPages, 10)
-    const totalPagesRemaining = parseInt(pagination.totalPagesRemaining, 10)
-    if (parseInt(pagination.totalPagesRemaining, 10) === 0) {
+    const { hasShowMoreButton, messageText, totalPages, totalPagesRemaining } = this.props
+    if (totalPagesRemaining === 0) {
       return ''
     } else if (hasShowMoreButton) {
-      return `+more..`
+      return messageText
     }
     return (totalPages > 0) ?
       `Loading: ${totalPages - totalPagesRemaining + 1} of ${totalPages}` :
@@ -28,23 +39,21 @@ class Paginator extends Component {
   }
 
   setLoading(isPaginationLoading) {
-    this.state = { isPaginationLoading, message: this.getMessage() }
+    this.setState({ isPaginationLoading })
   }
 
   loadMore = () => {
-    const { delegate } = this.props
-    if (delegate && typeof delegate.onLoadNextPage === 'function') {
-      delegate.onLoadNextPage()
-    }
+    const { loadNextPage } = this.props
+    loadNextPage()
   };
 
   render() {
-    const { isPaginationLoading, message } = this.state
+    const { isPaginationLoading } = this.state
     const { hasShowMoreButton } = this.props
     const classes = isPaginationLoading ? 'Paginator isBusy' : 'Paginator'
     const messageArea = hasShowMoreButton ?
-      <button onClick={ this.loadMore }>{ message }</button> :
-      <span>{ message }</span>
+      <button onClick={ this.loadMore }>{ this.getMessage() }</button> :
+      <span>{ this.getMessage() }</span>
     return (
       <div className={ classes }>
         <ElloMark />

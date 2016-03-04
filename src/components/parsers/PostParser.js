@@ -3,11 +3,12 @@ import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { getLinkObject } from '../base/json_helper'
-import { body, regionItems, repostedBody, setModels } from './RegionParser'
+import { body, repostedBody, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostTools from '../posts/PostTools'
 import CommentStream from '../streams/CommentStream'
+import { postLoversDrawer, postRepostersDrawer } from '../streams/StreamRenderables'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
 import Editor from '../../components/editor/Editor'
@@ -75,10 +76,11 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
   const cells = []
   const postDetailPath = getPostDetailPath(author, post)
 
+  if (post.contentWarning) {
+    cells.push(<ContentWarningButton post={post}/>)
+  }
+
   if (post.repostContent && post.repostContent.length) {
-    if (post.contentWarning) {
-      cells.push(<ContentWarningButton post={post}/>)
-    }
     // this is weird, but the post summary is
     // actually the repost summary on reposts
     if (isGridLayout) {
@@ -90,21 +92,12 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
       }
     }
   } else {
-    if (post.contentWarning) {
-      cells.push(<ContentWarningButton post={post}/>)
-    }
-
     const content = isGridLayout ? post.summary : post.content
     cells.push(body(content, post.id, isGridLayout, postDetailPath))
   }
   cells.push(footer(post, author, currentUser))
   setModels({})
   return cells
-}
-
-export function parseSummary(post, json, only = null) {
-  setModels(json)
-  return regionItems(post.summary, only, false)
 }
 
 function isRepost(post) {
@@ -122,6 +115,8 @@ class PostParser extends Component {
     isReposting: PropTypes.bool,
     post: PropTypes.object,
     showComments: PropTypes.bool,
+    showLovers: PropTypes.bool,
+    showReposters: PropTypes.bool,
     sourceLinkObject: PropTypes.object,
   };
 
@@ -134,6 +129,8 @@ class PostParser extends Component {
       post,
       showComments,
     } = this.props
+    const showLovers = !isGridLayout && this.props.showLovers
+    const showReposters = !isGridLayout && this.props.showReposters
     if (!post) { return null }
 
     let postHeader;
@@ -146,12 +143,15 @@ class PostParser extends Component {
       postHeader = header(post, author)
     }
 
+    const showEditor = (post.isEditing || post.isReposting) && post.body
     return (
-      <div>
+      <div className="Post">
         {postHeader}
-        { (post.isEditing || post.isReposting) && post.body ?
+        { showEditor ?
           <Editor post={ post }/> :
           parsePost(post, author, currentUser, isGridLayout)}
+        { showLovers ? postLoversDrawer(post) : null }
+        { showReposters ? postRepostersDrawer(post) : null }
         { showComments ? <Editor post={ post } isComment/> : null }
         { showComments && post.commentsCount > 0 ? commentStream(post, author, currentUser) : null }
       </div>)
@@ -169,6 +169,8 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
     currentUser,
     isEditing: post.isEditing,
     isReposting: post.isReposting,
+    showLovers: post.showLovers || false,
+    showReposters: post.showReposters || false,
     post,
   }
 

@@ -2,13 +2,17 @@ import React from 'react'
 import { LOAD_STREAM, PROFILE } from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
+import * as StreamFilters from '../components/streams/StreamFilters'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
 import { ErrorState } from '../components/errors/Errors'
 
 export function loadProfile() {
   return {
     type: PROFILE.LOAD,
-    meta: {},
+    meta: {
+      mappingType: MAPPING_TYPES.USERS,
+      updateResult: false,
+    },
     payload: { endpoint: api.profilePath() },
   }
 }
@@ -129,6 +133,54 @@ export function saveCover(file) {
   }
 }
 
-export function deleteAccountForReal() {
+export function blockedUsers() {
+  return {
+    type: LOAD_STREAM,
+    payload: {
+      endpoint: api.profileBlockedUsers(),
+    },
+    meta: {
+      defaultMode: 'list',
+      mappingType: MAPPING_TYPES.USERS,
+      renderStream: {
+        asList: StreamRenderables.blockedMutedUserList,
+        asGrid: StreamRenderables.blockedMutedUserList,
+      },
+      resultFilter: StreamFilters.userResults,
+      resultKey: '/settings/blocked',
+      updateKey: '/profile/blocked',
+    },
+  }
+}
+
+export function mutedUsers() {
+  return {
+    type: LOAD_STREAM,
+    payload: {
+      endpoint: api.profileMutedUsers(),
+    },
+    meta: {
+      defaultMode: 'list',
+      mappingType: MAPPING_TYPES.USERS,
+      renderStream: {
+        asList: StreamRenderables.blockedMutedUserList,
+        asGrid: StreamRenderables.blockedMutedUserList,
+      },
+      resultFilter: StreamFilters.userResults,
+      resultKey: '/settings/muted',
+      updateKey: '/profile/muted',
+    },
+  }
+}
+
+export function exportData() {
+  return {
+    type: PROFILE.EXPORT,
+    meta: {},
+    payload: {
+      endpoint: api.profileExport(),
+      method: 'POST',
+    },
+  }
 }
 

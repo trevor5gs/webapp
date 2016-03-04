@@ -43,17 +43,18 @@ export function loadComments(post) {
         asGrid: StreamRenderables.commentsAsList,
         asZero: null,
       },
-      resultKey: `${post.id}/comments`,
+      resultKey: `/posts/${post.id}/comments`,
+      updateKey: `/posts/${post.id}/`,
     },
   }
 }
 
-export function toggleComments(post, visible) {
+export function toggleComments(post, showComments) {
   return {
     type: ACTION_TYPES.POST.TOGGLE_COMMENTS,
     payload: {
       model: post,
-      showComments: visible,
+      showComments,
     },
   }
 }
@@ -64,6 +65,26 @@ export function toggleEditing(post, isEditing) {
     payload: {
       model: post,
       isEditing,
+    },
+  }
+}
+
+export function toggleLovers(post, showLovers) {
+  return {
+    type: ACTION_TYPES.POST.TOGGLE_LOVERS,
+    payload: {
+      model: post,
+      showLovers,
+    },
+  }
+}
+
+export function toggleReposters(post, showReposters) {
+  return {
+    type: ACTION_TYPES.POST.TOGGLE_REPOSTERS,
+    payload: {
+      model: post,
+      showReposters,
     },
   }
 }
@@ -86,7 +107,11 @@ export function lovePost(post) {
       method: 'POST',
       model: post,
     },
-    meta: { mappingType: MAPPING_TYPES.LOVES },
+    meta: {
+      mappingType: MAPPING_TYPES.LOVES,
+      resultKey: `/posts/${post.id}/love`,
+      updateKey: `/posts/${post.id}/`,
+    },
   }
 }
 
@@ -98,7 +123,10 @@ export function unlovePost(post) {
       method: 'DELETE',
       model: post,
     },
-    meta: {},
+    meta: {
+      resultKey: `/posts/${post.id}/love`,
+      updateKey: `/posts/${post.id}/`,
+    },
   }
 }
 
