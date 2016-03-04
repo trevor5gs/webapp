@@ -24,7 +24,7 @@ export class StreamComponent extends Component {
     currentUser: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-    mode: PropTypes.array.isRequired,
+    mode: PropTypes.string.isRequired,
     initModel: PropTypes.object,
     json: PropTypes.object.isRequired,
     paginatorText: PropTypes.string,
@@ -122,9 +122,9 @@ export class StreamComponent extends Component {
 
   // this prevents nested stream components from clobbering parents
   shouldComponentUpdate(prevProps) {
-    const { renderObj, stream } = this.props
-    const { renderObj: prevRenderObj } = prevProps
-    if (_.isEqual(renderObj, prevRenderObj) && _.isEqual(this.props.stream, prevProps.stream)) {
+    const { mode, renderObj, stream } = this.props
+    const { mode: prevMode, renderObj: prevRenderObj, stream: prevStream } = prevProps
+    if (mode === prevMode && _.isEqual(renderObj, prevRenderObj) && _.isEqual(stream, prevStream)) {
       return false
     } else if (stream.meta &&
                stream.meta.updateKey &&
@@ -371,7 +371,7 @@ function mapStateToProps(state, ownProps) {
     result,
     currentUser: state.profile,
     history: state.gui.history,
-    mode: findLayoutMode(state.gui.modes),
+    mode: findLayoutMode(state.gui.modes).mode,
     json: state.json,
     stream: state.stream,
   }
