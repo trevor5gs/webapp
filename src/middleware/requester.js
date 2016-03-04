@@ -61,6 +61,13 @@ function parseLink(linksHeader) {
   return result
 }
 
+const forwardableActions = [
+  ACTION_TYPES.AUTHENTICATION.LOGOUT,
+]
+
+const shouldForwardAction = ({ type }) =>
+      forwardableActions.indexOf(type) !== -1
+
 const processQueue = (queue, handler) => {
   if (queue.length === 0) return queue
 
@@ -124,6 +131,9 @@ export const requester = store => next => action => {
     return next(action)
   }
 
+  if (shouldForwardAction(action)) {
+    next(action)
+  }
   // TODO: I think the body should actually come
   // from the endpoint instead of the payload
   const { endpoint, method, body } = payload
