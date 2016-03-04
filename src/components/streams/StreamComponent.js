@@ -72,6 +72,7 @@ export class StreamComponent extends Component {
     }),
     stream: PropTypes.object.isRequired,
     className: PropTypes.string,
+    componentPrefix: PropTypes.string,
   };
 
   static defaultProps = {
@@ -92,7 +93,7 @@ export class StreamComponent extends Component {
       }
     }
     const unlisten = browserListen(location => {
-      this.state = { action, locationKey: location.key }
+      this.state = { action, locationKey: this.generateLocationKey(location.key) }
     })
     unlisten()
 
@@ -193,6 +194,13 @@ export class StreamComponent extends Component {
         scrollTop: scrollTop(window),
       },
     })
+  }
+
+  generateLocationKey(locationKey) {
+    if (this.props.componentPrefix) {
+      return `${this.props.componentPrefix}_${locationKey}`
+    }
+    return locationKey
   }
 
   loadPage(rel, scrolled = false) {

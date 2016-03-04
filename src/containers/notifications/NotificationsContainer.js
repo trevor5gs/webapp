@@ -96,6 +96,7 @@ class NotificationsContainer extends Component {
             className="asFullWidth"
             key={ `notificationPanel_${activeTabType}` }
             ref="streamComponent"
+            componentPrefix={ `notifications_${activeTabType}` }
           />
         </div>
       </div>
