@@ -34,8 +34,9 @@ class NotificationsContainer extends Component {
     this.refs.streamComponent.refs.wrappedInstance.scrollContainer = this.refs.scrollable
   }
 
-  componentDidUpdate() {
-    if (this.refs.scrollable) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.activeTabType !== this.state.activeTabType && this.refs.scrollable) {
+      this.refs.streamComponent.refs.wrappedInstance.scrollContainer = this.refs.scrollable
       this.refs.scrollable.scrollTop = 0
     }
   }
