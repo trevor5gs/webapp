@@ -17,4 +17,3 @@ export function omnibar(state = initialState, action) {
       return state
   }
 }
-
