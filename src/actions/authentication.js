@@ -1,5 +1,23 @@
 import * as ACTION_TYPES from '../constants/action_types'
-import { loginToken, forgotPassword, refreshAuthToken } from '../networking/api'
+import {
+  loginToken,
+  logout as logoutEndpoint,
+  forgotPassword,
+  refreshAuthToken,
+} from '../networking/api'
+
+export function cancelAuthRefresh() {
+  return (dispatch, getState) => {
+    const refreshTimeoutId = getState().authentication.refreshTimeoutId
+    if (!!refreshTimeoutId) {
+      clearTimeout(refreshTimeoutId)
+    }
+
+    return dispatch({
+      type: ACTION_TYPES.AUTHENTICATION.CANCEL_REFRESH,
+    })
+  }
+}
 
 export function getUserCredentials(email, password) {
   return {
