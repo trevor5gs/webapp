@@ -15,6 +15,20 @@ export function getUserCredentials(email, password) {
   }
 }
 
+export function logout() {
+  return dispatch => {
+    dispatch(cancelAuthRefresh())
+
+    return dispatch({
+      type: ACTION_TYPES.AUTHENTICATION.LOGOUT,
+      payload: {
+        endpoint: logoutEndpoint(),
+        method: 'DELETE',
+      },
+    })
+  }
+}
+
 export function refreshAuthenticationToken(refreshToken) {
   return {
     type: ACTION_TYPES.AUTHENTICATION.REFRESH,

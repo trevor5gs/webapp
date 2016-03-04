@@ -37,6 +37,12 @@ export function loginToken(email, password) {
   }
 }
 
+export function logout() {
+  return {
+    path: `${basePath()}/oauth/logout`,
+  }
+}
+
 export function forgotPassword() {
   return {
     path: getAPIPath('forgot-password'),

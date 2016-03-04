@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import classNames from 'classnames'
+import { logout } from '../../actions/authentication'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { openModal, closeModal } from '../../actions/modals'
@@ -174,9 +175,9 @@ class Navbar extends Component {
   }
 
   // TODO: probably need to handle this a bit better
-  onLogOut = () => {
+  onLogOut = async() => {
     const { dispatch } = this.props
-    dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
+    await dispatch(logout())
     dispatch(push('/'))
   };
 
