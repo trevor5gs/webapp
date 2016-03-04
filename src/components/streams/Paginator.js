@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
+import classNames from 'classnames'
 import { ElloMark } from '../interface/ElloIcons'
 
 export function emptyPagination() {
@@ -8,56 +9,44 @@ export function emptyPagination() {
   }
 }
 
-class Paginator extends Component {
-
-  static propTypes = {
-    hasShowMoreButton: PropTypes.bool,
-    loadNextPage: PropTypes.func.isRequired,
-    messageText: PropTypes.string.isRequired,
-    totalPages: PropTypes.number.isRequired,
-    totalPagesRemaining: PropTypes.number.isRequired,
-  };
-
-  componentWillMount() {
-    this.state = { isPaginationLoading: false }
+function getMessage({ hasShowMoreButton, messageText, totalPages, totalPagesRemaining }) {
+  if (totalPagesRemaining === 0) {
+    return ''
+  } else if (hasShowMoreButton) {
+    return messageText
   }
-
-  getMessage() {
-    const { hasShowMoreButton, messageText, totalPages, totalPagesRemaining } = this.props
-    if (totalPagesRemaining === 0) {
-      return ''
-    } else if (hasShowMoreButton) {
-      return messageText
-    }
-    return (totalPages > 0) ?
-      `${messageText}: ${totalPages - totalPagesRemaining + 1} of ${totalPages}` :
-      `${messageText}...`
-  }
-
-  setLoading(isPaginationLoading) {
-    this.setState({ isPaginationLoading })
-  }
-
-  loadMore = () => {
-    const { loadNextPage } = this.props
-    loadNextPage()
-  };
-
-  render() {
-    const { isPaginationLoading } = this.state
-    const { hasShowMoreButton } = this.props
-    const classes = isPaginationLoading ? 'Paginator isBusy' : 'Paginator'
-    const messageArea = hasShowMoreButton ?
-      <button onClick={ this.loadMore }>{ this.getMessage() }</button> :
-      <span>{ this.getMessage() }</span>
-    return (
-      <div className={ classes }>
-        <ElloMark />
-        { messageArea }
-      </div>
-    )
-  }
+  return (totalPages > 0) ?
+    `${messageText}: ${totalPages - totalPagesRemaining + 1} of ${totalPages}` :
+    `${messageText}...`
 }
 
-export default Paginator
+export const Paginator = ({
+    hasShowMoreButton = false,
+    isHidden = true,
+    loadNextPage,
+    messageText = '',
+    totalPages,
+    totalPagesRemaining,
+  }) => {
+  const message = getMessage({ hasShowMoreButton, messageText, totalPages, totalPagesRemaining })
+  return (
+    <div className={ classNames('Paginator', { isBusy: !isHidden }) }>
+      <ElloMark />
+      {
+        hasShowMoreButton ?
+        <button onClick={ loadNextPage }>{ message }</button> :
+        <span>{ message }</span>
+      }
+    </div>
+  )
+}
+
+Paginator.propTypes = {
+  hasShowMoreButton: PropTypes.bool,
+  isHidden: PropTypes.bool,
+  loadNextPage: PropTypes.func,
+  messageText: PropTypes.string,
+  totalPages: PropTypes.number.isRequired,
+  totalPagesRemaining: PropTypes.number.isRequired,
+};
 

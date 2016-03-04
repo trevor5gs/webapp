@@ -11,7 +11,7 @@ import { findBy } from '../base/json_helper'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import { ElloMark } from '../interface/ElloIcons'
-import Paginator, { emptyPagination } from '../streams/Paginator'
+import { Paginator, emptyPagination } from '../streams/Paginator'
 import { findLayoutMode } from '../../reducers/gui'
 import { ZeroState } from '../zeros/Zeros'
 import { ErrorState4xx } from '../errors/Errors'
@@ -114,8 +114,9 @@ export class StreamComponent extends Component {
     const { stream } = nextProps
     const { action } = this.state
     if (!action) { return null }
-    if (this.refs.paginator && stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
-      this.refs.paginator.setLoading(false)
+
+    if (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
+      this.setState({ hidePaginator: true })
     }
   }
 
@@ -206,7 +207,7 @@ export class StreamComponent extends Component {
         parseInt(pagination.totalPagesRemaining, 10) === 0 ||
         !action) { return }
     if (runningFetches[pagination[rel]]) { return }
-    this.refs.paginator.setLoading(true)
+    this.setState({ hidePaginator: false })
     const infiniteAction = {
       ...action,
       type: ACTION_TYPES.LOAD_NEXT_CONTENT,
@@ -277,7 +278,7 @@ export class StreamComponent extends Component {
       result,
       stream,
     } = this.props
-    const { action, gridColumnCount } = this.state
+    const { action, gridColumnCount, hidePaginator } = this.state
     if (!action) { return null }
     const model = this.findModel(json, initModel)
     if (!renderObj.data.length) {
@@ -312,9 +313,9 @@ export class StreamComponent extends Component {
         {this.props.children}
         <Paginator
           hasShowMoreButton={ typeof meta.resultKey !== 'undefined' }
+          isHidden={ hidePaginator }
           loadNextPage={ this.onLoadNextPage }
           messageText={ paginatorText }
-          ref="paginator"
           totalPages={ parseInt(pagination.totalPages, 10) }
           totalPagesRemaining={ parseInt(pagination.totalPagesRemaining, 10) }
         />
