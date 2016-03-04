@@ -30,6 +30,13 @@ function getGetHeader(accessToken) {
   return getAuthToken(accessToken)
 }
 
+function getHeadHeader(accessToken, lastCheck) {
+  return {
+    ...getAuthToken(accessToken),
+    'If-Modified-Since': lastCheck,
+  }
+}
+
 function checkStatus(response) {
   if (response.ok) {
     return response
@@ -96,6 +103,7 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.COMMENT.UPDATE &&
         type !== ACTION_TYPES.COMMENT.FLAG &&
         type !== ACTION_TYPES.EMOJI.LOAD &&
+        type !== ACTION_TYPES.HEAD &&
         type !== ACTION_TYPES.INVITATIONS.INVITE &&
         type !== ACTION_TYPES.POST.AUTO_COMPLETE &&
         type !== ACTION_TYPES.POST.COMMENT &&
@@ -110,6 +118,7 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.POST_JSON &&
         type !== ACTION_TYPES.PROFILE.AVAILABILITY &&
         type !== ACTION_TYPES.PROFILE.DELETE &&
+        type !== ACTION_TYPES.PROFILE.EXPORT &&
         type !== ACTION_TYPES.PROFILE.LOAD &&
         type !== ACTION_TYPES.PROFILE.REQUEST_INVITE &&
         type !== ACTION_TYPES.PROFILE.SAVE &&
@@ -185,13 +194,24 @@ export const requester = store => next => action => {
     fetchCredentials()
       .then((tokenJSON) => {
         const accessToken = tokenJSON.token.access_token
-        options.headers = !method || method === 'GET' ?
-          getGetHeader(accessToken) :
-          getPostJsonHeader(accessToken)
+        switch (method) {
+          case 'HEAD':
+            // TODO: will need to update where to grab the lastCheck
+            // date if we end up hooking up following/starred checks
+            options.headers = getHeadHeader(accessToken, state.gui.lastNotificationCheck)
+            break
+          case 'POST':
+            options.headers = getPostJsonHeader(accessToken)
+            break
+          default:
+            options.headers = getGetHeader(accessToken)
+            break
+        }
         return fetch(endpoint.path, options)
             .then(checkStatus)
             .then(response => {
               delete runningFetches[response.url]
+              payload.serverResponse = response
               if (response.status === 200 || response.status === 201) {
                 return response.json().then((json) => {
                   payload.response = camelizeKeys(json)
@@ -210,11 +230,11 @@ export const requester = store => next => action => {
                 })
               } else if (response.ok) {
                 // TODO: handle a 204 properly so that we know to stop paging
-                store.dispatch({ ...action, type: SUCCESS })
+                store.dispatch({ meta, payload, type: SUCCESS })
                 fireSuccessAction()
               } else {
                 // TODO: is this what should be happening here?
-                store.dispatch({ ...action, type: SUCCESS })
+                store.dispatch({ meta, payload, type: SUCCESS })
                 fireSuccessAction()
               }
               return Promise.resolve(true);

@@ -1,13 +1,13 @@
 /* eslint-disable no-param-reassign */
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
-import { methods as jsonMethods } from '../json'
+import * as jsonReducer from '../../reducers/json'
 
 const methods = {}
 
-function updateCommentsCount(newState, postId, delta) {
+function _updateCommentsCount(newState, postId, delta) {
   const commentCount = newState[MAPPING_TYPES.POSTS][postId].commentsCount
-  jsonMethods.mergeModel(
+  jsonReducer.methods.mergeModel(
     newState,
     MAPPING_TYPES.POSTS,
     {
@@ -17,8 +17,10 @@ function updateCommentsCount(newState, postId, delta) {
   )
   return newState
 }
+methods.updateCommentsCount = (newState, postId, delta) =>
+  _updateCommentsCount(newState, postId, delta)
 
-function addOrUpdateComment(newState, action) {
+function _addOrUpdateComment(newState, action) {
   const { postId } = action.payload
   let post
   let response
@@ -36,24 +38,24 @@ function addOrUpdateComment(newState, action) {
       if (post.links && post.links.comments) {
         post.links.comments.ids.unshift(`${action.payload.response.id}`)
       }
-      return updateCommentsCount(newState, postId, 1)
+      return methods.updateCommentsCount(newState, postId, 1)
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
-      return updateCommentsCount(newState, postId, -1)
+      return methods.updateCommentsCount(newState, postId, -1)
     default:
       return newState
   }
 }
 methods.addOrUpdateComment = (newState, action) =>
-  addOrUpdateComment(newState, action)
+  _addOrUpdateComment(newState, action)
 
-function toggleEditing(state, newState, action) {
+function _toggleEditing(state, newState, action) {
   const { model, isEditing } = action.payload
   newState[MAPPING_TYPES.COMMENTS][model.id].isEditing = isEditing
   return newState
 }
 methods.toggleEditing = (state, newState, action) =>
-  toggleEditing(state, newState, action)
+  _toggleEditing(state, newState, action)
 
 export default methods
 

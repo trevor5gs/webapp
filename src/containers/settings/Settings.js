@@ -11,8 +11,11 @@ import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
 import { openModal, closeModal, openAlert, closeAlert } from '../../actions/modals'
 import {
   availableToggles,
+  blockedUsers,
   checkAvailability,
   deleteProfile,
+  exportData,
+  mutedUsers,
   saveAvatar,
   saveCover,
 } from '../../actions/profile'
@@ -43,7 +46,9 @@ import InfoForm from '../../components/forms/InfoForm'
 class Settings extends Component {
 
   static propTypes = {
+    blockedCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
+    mutedCount: PropTypes.number.isRequired,
     profile: PropTypes.object,
   };
 
@@ -225,8 +230,15 @@ class Settings extends Component {
     , 'asDangerZone'))
   };
 
+  requestDataExport = () => {
+    const { dispatch } = this.props
+    dispatch(exportData())
+    this.refs.exportButton.disabled = true
+    this.refs.exportButton.innerHTML = 'Exported'
+  };
+
   render() {
-    const { profile, dispatch } = this.props
+    const { blockedCount, dispatch, mutedCount, profile } = this.props
     const { emailState, passwordState, usernameState } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
 
@@ -335,7 +347,9 @@ class Settings extends Component {
           </p>
 
           <div className="SettingsPreferences">
-            <StreamComponent ref="streamComponent" action={availableToggles()} />
+            <StreamComponent
+              action={availableToggles()}
+            />
 
             <TreeButton>NSFW</TreeButton>
             <TreePanel>
@@ -354,12 +368,31 @@ class Settings extends Component {
               <p><em>{ SETTINGS.NSFW_DISCLAIMER }</em></p>
             </TreePanel>
 
-            <TreeButton>Muted/Blocked</TreeButton>
-            <TreePanel>
-              <p>
-                <Emoji name="hot_shit" title="Still need to build this!" size={ 40 }/>
-              </p>
-            </TreePanel>
+            { blockedCount > 0 ?
+              <div>
+                <TreeButton>Blocked users</TreeButton>
+                <TreePanel>
+                  <StreamComponent
+                    action={blockedUsers()}
+                    className="BlockedUsers"
+                    hasShowMoreButton
+                  />
+                </TreePanel>
+              </div> :
+              null }
+
+            { mutedCount > 0 ?
+              <div>
+                <TreeButton>Muted users</TreeButton>
+                <TreePanel>
+                  <StreamComponent
+                    action={mutedUsers()}
+                    className="MutedUsers"
+                    hasShowMoreButton
+                  />
+                </TreePanel>
+              </div> :
+              null }
 
             <TreeButton>Your Data</TreeButton>
             <TreePanel>
@@ -386,9 +419,21 @@ class Settings extends Component {
                     We will email you a link to download your data.
                   </dd>
                 </dl>
-                { profile.dataExport && profile.dataExport.value ?
-                  <a className="SettingsButton" href={profile.export}>Download Export</a> :
-                  <a className="SettingsButton" href="/export">Request Export</a>
+                { profile.dataExport ?
+                  <a
+                    className="SettingsButton"
+                    href={ profile.dataExport }
+                    target="_blank"
+                  >
+                    Download Export
+                  </a> :
+                  <button
+                    className="SettingsButton"
+                    onClick={ this.requestDataExport }
+                    ref="exportButton"
+                  >
+                    Request Export
+                  </button>
                 }
               </div>
             </TreePanel>
@@ -425,6 +470,8 @@ class Settings extends Component {
 function mapStateToProps(state) {
   return {
     availability: state.profile.availability,
+    blockedCount: state.profile.blockedCount,
+    mutedCount: state.profile.mutedCount,
     profile: state.profile,
   }
 }

@@ -16,8 +16,13 @@ class ImageRegion extends Component {
     assets: PropTypes.object.isRequired,
     content: PropTypes.object.isRequired,
     isGridLayout: PropTypes.bool.isRequired,
+    isNotification: PropTypes.bool,
     links: PropTypes.object,
     postDetailPath: PropTypes.string,
+  };
+
+  static defaultProps = {
+    isNotification: false,
   };
 
   componentWillMount() {
@@ -184,7 +189,7 @@ class ImageRegion extends Component {
   }
 
   renderGifAttachment() {
-    const { content } = this.props
+    const { content, isNotification } = this.props
     const dimensions = this.getImageDimensions()
     return (
       <img
@@ -192,13 +197,13 @@ class ImageRegion extends Component {
         className="ImageAttachment"
         src={ this.attachment.optimized.url }
         width={ dimensions.width }
-        height={ dimensions.height }
+        height={ isNotification ? 'auto' : dimensions.height }
       />
     )
   }
 
   renderImageAttachment() {
-    const { content } = this.props
+    const { content, isNotification } = this.props
     const srcset = this.getImageSourceSet()
     const dimensions = this.getImageDimensions()
     return (
@@ -208,7 +213,7 @@ class ImageRegion extends Component {
         src={ this.attachment.hdpi.url }
         srcSet={ srcset }
         width={ dimensions.width }
-        height={ dimensions.height }
+        height={ isNotification ? 'auto' : dimensions.height }
       />
     )
   }

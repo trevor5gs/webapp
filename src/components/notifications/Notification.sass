@@ -1,0 +1,88 @@
+@import ../../styles/lib
+
+.Notification
+  position: relative
+  min-height: rem(80)
+  background-color: white
+  padding: rem(20) rem(10) rem(10) rem(50)
+  overflow: hidden
+
+.Notification .RelationsGroup
+  color: black
+
+// Notification kinds without images
+// .InvitationAcceptedNotification
+// .NewFollowerPostNotification
+// .NewFollowedUserPostNotification
+
+// Notification kinds with images (potentially)
+.CommentNotification,
+.CommentMentionNotification,
+.CommentOnPostNotification,
+.CommentOnRepostNotification,
+.LoveNotification,
+.LoveOnRepostNotification,
+.LoveOnOriginalPostNotification,
+.PostMentionNotification,
+.RepostNotification
+  padding-right: rem(140)
+
+
+.NotificationHeader
+  position: absolute
+  top: rem(20)
+  left: rem(10)
+
+.NotificationBody,
+.NotificationSummary
+  margin-bottom: rem(20)
+  word-wrap: break-word
+
+.NotificationBody,
+.NotificationFooter
+  color: #aaa
+
+.NotificationBody + .NotificationFooter
+  margin-top: rem(-15)
+
+.NotificationFooter
+  +sans-typeset
+
+.NotificationFooterTimestamp + *
+  margin-top: rem(20)
+
+.NotificationBody > p
+  margin: 0
+
+.NotificationBody > p a,
+.NotificationFooter > a
+  transition: color $speed
+
+.no-touch .NotificationBody > p a:hover,
+.no-touch .NotificationFooter > a:hover
+  color: black
+
+.NotificationSummary > .ImageRegion,
+.NotificationSummary > .EmbedRegion
+  display: block
+  overflow: hidden
+  position: absolute
+  top: rem(20)
+  right: rem(10)
+  bottom: rem(10)
+  max-width: rem(120)
+  margin-top: 0 !important
+  user-select: none
+
+.NotificationSummary > .ImageRegion + .ImageRegion,
+.NotificationSummary > .ImageRegion + .EmbedRegion,
+.NotificationSummary > .EmbedRegion + .ImageRegion,
+.NotificationSummary > .EmbedRegion + .EmbedRegion,
+.NotificationSummary > .TextRegion img:not(.emoji)
+  display: none
+
+
+@media(min-width: #{$break-2})
+  .Notification
+    padding-left: rem(60)
+

@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
+import scrollTop from '../../vendor/scrollTop'
 import classNames from 'classnames'
 import _ from 'lodash'
 import { runningFetches } from '../../middleware/requester'
@@ -9,7 +11,7 @@ import { findBy } from '../base/json_helper'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import { ElloMark } from '../interface/ElloIcons'
-import Paginator from '../streams/Paginator'
+import Paginator, { emptyPagination } from '../streams/Paginator'
 import { findLayoutMode } from '../../reducers/gui'
 import { ZeroState } from '../zeros/Zeros'
 import { ErrorState4xx } from '../errors/Errors'
@@ -31,8 +33,26 @@ export class StreamComponent extends Component {
 
   componentWillMount() {
     const { action, dispatch } = this.props
-    this.state = { action }
     if (action) { dispatch(action) }
+
+    let browserListen
+    if (browserHistory) {
+      browserListen = browserHistory.listen
+    } else {
+      browserListen = (listener) => {
+        listener({ key: 'testing' })
+        return () => null
+      }
+    }
+    const unlisten = browserListen(location => {
+      this.state = { action, locationKey: location.key }
+    })
+    unlisten()
+
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0)
+    }
+    this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
   }
 
   componentDidMount() {
@@ -47,7 +67,6 @@ export class StreamComponent extends Component {
     const { stream } = nextProps
     const { action } = this.state
     if (!action) { return null }
-    // TODO: make this work for nested stream components separately of others on the page
     if (this.refs.paginator && stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.refs.paginator.setLoading(false)
     }
@@ -59,16 +78,24 @@ export class StreamComponent extends Component {
     // TODO: potentially whitelist the actions that we would want to render on
     // TODO: test this!
     if (stream.meta &&
-        stream.meta.resultKey &&
-        !stream.payload.endpoint.path.match(stream.meta.resultKey)) {
+        stream.meta.updateKey &&
+        !stream.payload.endpoint.path.match(stream.meta.updateKey)) {
       return false
     }
     return true
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (window.embetter) {
       window.embetter.reloadPlayers()
+    }
+    if (this.props.stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
+      prevProps.stream.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
+      const history = this.props.gui.history[this.state.locationKey] || {}
+      const scrollTopValue = history.scrollTop
+      if (scrollTopValue) {
+        window.scrollTo(0, scrollTopValue)
+      }
     }
   }
 
@@ -78,6 +105,13 @@ export class StreamComponent extends Component {
     }
     removeScrollObject(this)
     removeResizeObject(this)
+
+    this.setDebouncedScroll = () => null
+    this.setScroll()
+  }
+
+  onScroll() {
+    this.setDebouncedScroll()
   }
 
   onScrollBottom() {
@@ -88,13 +122,27 @@ export class StreamComponent extends Component {
     this.setState(resizeProps)
   }
 
-  onLoadNextPage() {
+  onLoadNextPage = () => {
     this.loadPage('next')
-  }
+  };
 
   setAction(action) {
     this.setState({ action })
     this.props.dispatch(action)
+  }
+
+  setDebouncedScroll() {
+    this.setScroll()
+  }
+
+  setScroll() {
+    this.props.dispatch({
+      type: ACTION_TYPES.GUI.SET_SCROLL,
+      payload: {
+        key: this.state.locationKey,
+        scrollTop: scrollTop(window),
+      },
+    })
   }
 
   loadPage(rel, scrolled = false) {
@@ -104,7 +152,7 @@ export class StreamComponent extends Component {
     let result = null
     if (json.pages) {
       if (meta && meta.resultKey) {
-        result = json.pages[`${pathname}_${meta.resultKey}`]
+        result = json.pages[meta.resultKey]
       } else {
         result = json.pages[pathname]
       }
@@ -185,7 +233,7 @@ export class StreamComponent extends Component {
     let resultPath = pathname
     if (json.pages) {
       if (meta && meta.resultKey) {
-        resultPath = `${pathname}_${meta.resultKey}`
+        resultPath = meta.resultKey
       }
       result = json.pages[resultPath]
     }
@@ -208,9 +256,12 @@ export class StreamComponent extends Component {
     } else if (result.type === meta.mappingType ||
                (meta.resultFilter && result.type !== meta.mappingType)) {
       const deletedCollection = json[`deleted_${result.type}`]
+      // don't filter out blocked ids if we are in settings
+      // since you can unblock/unmute them from here
       for (const id of result.ids) {
         if (_.get(json, [result.type, id]) &&
-           (!deletedCollection || deletedCollection.indexOf(id) === -1)) {
+            (pathname === '/settings' ||
+            (!deletedCollection || deletedCollection.indexOf(id) === -1))) {
           renderObj.data.push(_.get(json, [result.type, id]))
         }
       }
@@ -219,7 +270,8 @@ export class StreamComponent extends Component {
         const dataProp = payload.endpoint.pagingPath ? 'nestedData' : 'data'
         for (const nextId of result.next.ids) {
           if (json[result.next.type][nextId] &&
-              (!nextDeletedCollection || nextDeletedCollection.indexOf(nextId) === -1)) {
+              (pathname === '/settings' ||
+              (!nextDeletedCollection || nextDeletedCollection.indexOf(nextId) === -1))) {
             renderObj[dataProp].push(json[result.next.type][nextId])
           }
         }
@@ -233,6 +285,7 @@ export class StreamComponent extends Component {
     }
     const resultMode = findLayoutMode(gui.modes)
     const renderMethod = resultMode && resultMode.mode === 'grid' ? 'asGrid' : 'asList'
+    const pagination = result && result.pagination ? result.pagination : emptyPagination()
     return (
       <section className={classNames('StreamComponent', className)}>
         {
@@ -244,11 +297,12 @@ export class StreamComponent extends Component {
         }
         {this.props.children}
         <Paginator
-          delegate={this}
-          hasShowMoreButton={typeof meta.resultKey !== 'undefined'}
-          key={`${meta.resultKey || 'stream'}Paginator`}
-          pagination={result ? result.pagination : {}}
+          hasShowMoreButton={ typeof meta.resultKey !== 'undefined' }
+          loadNextPage={ this.onLoadNextPage }
+          messageText={ pathname === '/settings' ? 'See more' : null }
           ref="paginator"
+          totalPages={ parseInt(pagination.totalPages, 10) }
+          totalPagesRemaining={ parseInt(pagination.totalPagesRemaining, 10) }
         />
       </section>
     )

@@ -1,3 +1,4 @@
+import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, PROFILE } from '../constants/action_types'
 
 export function profile(state = {}, action) {
@@ -7,6 +8,11 @@ export function profile(state = {}, action) {
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
       return {}
+    case PROFILE.EXPORT_SUCCESS:
+      if (action.payload.serverResponse.status === 200) {
+        return { ...state, dataExport: action.payload.response.exportUrl }
+      }
+      return { ...state, dataExport: null }
     case PROFILE.LOAD_SUCCESS:
       assetState = { ...state, ...action.payload.response.users }
       delete assetState.avatar.tmp
@@ -25,6 +31,11 @@ export function profile(state = {}, action) {
         ...state,
         [assetType]: { ...state[assetType], ...action.payload },
       }
+    case REHYDRATE:
+      if (action.key === 'profile') {
+        return { ...action.payload, dataExport: null }
+      }
+      return state
     // TODO: This isn't really working, it's still pulling the previous image here?
     // Once the asset is uploaded, remove `tmp` which will trigger a load of the new image
     // case PROFILE.SAVE_AVATAR_SUCCESS:

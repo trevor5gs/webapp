@@ -57,10 +57,24 @@ export function profilePath() {
     path: getAPIPath('profile'),
   }
 }
-
 export function profileAvailableToggles() {
   return {
     path: getAPIPath('profile/available_toggles'),
+  }
+}
+export function profileBlockedUsers() {
+  return {
+    path: getAPIPath('profile/blocked'),
+  }
+}
+export function profileMutedUsers() {
+  return {
+    path: getAPIPath('profile/muted'),
+  }
+}
+export function profileExport() {
+  return {
+    path: getAPIPath('profile/export'),
   }
 }
 // Onboarding
@@ -119,6 +133,14 @@ export function editPostDetail(idOrToken) {
   const params = { comment_count: false }
   return {
     path: getAPIPath(`posts/${idOrToken}`, params),
+    params,
+  }
+}
+// Loves
+export function loversForPost(post) {
+  const params = { per_page: 10 }
+  return {
+    path: getAPIPath(`posts/${post.id}/lovers`, params),
     params,
   }
 }
@@ -246,6 +268,11 @@ export function notifications(params = {}) {
   return {
     path: getAPIPath('notifications', newParams),
     newParams,
+  }
+}
+export function newNotifications() {
+  return {
+    path: getAPIPath('notifications'),
   }
 }
 
