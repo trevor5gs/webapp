@@ -103,7 +103,7 @@ export class StreamComponent extends Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    if (this.props.componentPrefix) {
+    if (!this.props.componentPrefix) {
       addScrollObject(this)
       window.scrollTo(0, 0)
     }
