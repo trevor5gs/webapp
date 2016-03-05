@@ -315,19 +315,19 @@ export class StreamComponent extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+export function mapStateToProps(state, ownProps) {
   let result
   let resultPath = state.routing.location.pathname
   const { action } = ownProps
   const meta = action ? action.meta : null
   const payload = action ? action.payload : null
+  const renderObj = { data: [], nestedData: [] }
   if (state.json.pages) {
     if (meta && meta.resultKey) {
       resultPath = meta.resultKey
     }
     result = state.json.pages[resultPath]
   }
-  const renderObj = { data: [], nestedData: [] }
   if (result && result.type === MAPPING_TYPES.NOTIFICATIONS) {
     renderObj.data = renderObj.data.concat(result.ids)
     if (result.next) {
@@ -358,14 +358,15 @@ function mapStateToProps(state, ownProps) {
     }
   }
   return {
-    renderObj,
-    result,
     currentUser: state.profile,
     history: state.gui.history,
-    mode: findLayoutMode(state.gui.modes).mode,
     json: state.json,
+    mode: findLayoutMode(state.gui.modes).mode,
+    renderObj,
+    result,
     stream: state.stream,
   }
 }
 
 export default connect(mapStateToProps, null, null, { withRef: true })(StreamComponent)
+
