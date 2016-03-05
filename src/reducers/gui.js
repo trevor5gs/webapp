@@ -84,3 +84,8 @@ export function gui(state = initialState, action = { type: '' }) {
   }
 }
 
+// this is used for testing in StreamComponent_test
+export function setLocation(loc) {
+  location = loc
+}
+

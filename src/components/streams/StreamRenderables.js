@@ -116,6 +116,7 @@ export function postLoversDrawer(post) {
     <UserAvatars
       endpoint={ postLovers(post) }
       icon={ <HeartIcon /> }
+      key={ `userAvatarsLovers_${post.id}` }
       post={ post }
       resultType="love"
     />
@@ -127,6 +128,7 @@ export function postRepostersDrawer(post) {
     <UserAvatars
       endpoint={ postReposters(post) }
       icon={ <RepostIcon /> }
+      key={ `userAvatarsReposters_${post.id}` }
       post={ post }
       resultType="repost"
     />
@@ -195,7 +197,7 @@ export function notificationList(notifications, json) {
         return (
           <NotificationParser
             json={ json }
-            key={ `notificationParser_${subject.createdAt}` }
+            key={ `notificationParser_${notification.createdAt}` }
             notification={ notification }
             subject={ subject }
           />

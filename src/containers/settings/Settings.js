@@ -376,6 +376,7 @@ class Settings extends Component {
                     action={blockedUsers()}
                     className="BlockedUsers"
                     hasShowMoreButton
+                    paginatorText="See more"
                   />
                 </TreePanel>
               </div> :
@@ -389,6 +390,7 @@ class Settings extends Component {
                     action={mutedUsers()}
                     className="MutedUsers"
                     hasShowMoreButton
+                    paginatorText="See more"
                   />
                 </TreePanel>
               </div> :

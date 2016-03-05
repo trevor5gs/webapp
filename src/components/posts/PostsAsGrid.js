@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 import PostParser from '../parsers/PostParser'
 
 const DumbGridPost = (props) => {
@@ -38,6 +39,13 @@ class PostsAsGrid extends Component {
     posts: PropTypes.array.isRequired,
   };
 
+  shouldComponentUpdate(prevProps) {
+    if (_.isEqual(prevProps.posts, this.props.posts)) {
+      return false
+    }
+    return true
+  }
+
   renderColumn(posts, index) {
     return (
       <div className="Column" key={ `column_${index}` }>
@@ -45,9 +53,8 @@ class PostsAsGrid extends Component {
            <GridPost
              isEditing={ post.isEditing }
              isReposting={ post.isReposting }
-             key={ post.id }
+             key={ `gridPost_${post.id}` }
              post={ post }
-             ref={ `postGrid_${post.id}` }
            />
         )}
       </div>
