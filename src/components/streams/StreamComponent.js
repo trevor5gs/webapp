@@ -267,21 +267,14 @@ export class StreamComponent extends Component {
   }
 
   render() {
-    const {
-      className,
-      currentUser,
-      initModel,
-      json,
-      mode,
-      paginatorText,
-      renderObj,
-      result,
-      stream,
-    } = this.props
+    const { className, currentUser, initModel, json, mode,
+      paginatorText, renderObj, result, stream } = this.props
     const { action, gridColumnCount, hidePaginator } = this.state
     if (!action) { return null }
     const model = this.findModel(json, initModel)
-    if (!renderObj.data.length) {
+    if (model && !result) {
+      renderObj.data.push(model)
+    } else if (!renderObj.data.length) {
       switch (stream.type) {
         case ACTION_TYPES.LOAD_STREAM_SUCCESS:
           return this.renderZeroState()
@@ -295,8 +288,6 @@ export class StreamComponent extends Component {
         default:
           return null
       }
-    } else if (model && !result) {
-      renderObj.data.push(model)
     }
     const { meta } = action
     const renderMethod = mode === 'grid' ? 'asGrid' : 'asList'
