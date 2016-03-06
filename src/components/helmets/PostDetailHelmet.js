@@ -46,8 +46,10 @@ function getEmbeds(blocks) {
   return embedUrls
 }
 
-function getMetaTags({ title, desc, url }) {
+function getMetaTags({ badForSeo, title, desc, url }) {
+  const robots = badForSeo ? 'noindex, follow' : 'index, follow'
   const tags = [
+    { name: 'robots', content: robots },
     { name: 'name', itemprop: 'name', content: title },
     { name: 'url', itemprop: 'url', content: url },
     { name: 'description', itemprop: 'description', content: desc },
@@ -98,7 +100,7 @@ export const PostDetailHelmet = ({ post, author }) => {
   const url = `${ENV.AUTH_DOMAIN}/${author.username}/post/${post.token}`
   const repostUrl = post.repostContent ? `${ENV.AUTH_DOMAIN}${post.repostPath}` : null
 
-  const metaTags = getMetaTags({ title, desc, url })
+  const metaTags = getMetaTags({ badForSeo: author.badForSeo, title, desc, url })
   const openGraphTags = getOpenGraphTags({ title, desc, images, embeds, url })
   const twitterTags = getTwitterTags({ images, embeds })
   const schemaTags = getSchemaTags({ images, embeds })
