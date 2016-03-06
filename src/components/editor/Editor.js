@@ -30,6 +30,7 @@ class Editor extends Component {
     comment: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     isComment: PropTypes.bool,
+    isLoggedIn: PropTypes.bool,
     onSubmit: PropTypes.func,
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
@@ -136,10 +137,12 @@ class Editor extends Component {
       autoPopulate,
       comment,
       isComment,
+      isLoggedIn,
       post,
       shouldLoadFromState,
       shouldPersist,
     } = this.props
+    if (!isLoggedIn) { return null }
     let blocks = []
     let repostContent = []
     let submitText
@@ -191,8 +194,9 @@ class Editor extends Component {
   }
 }
 
-function mapStateToProps({ json }, ownProps) {
+function mapStateToProps({ json, authentication }, ownProps) {
   return {
+    isLoggedIn: authentication.isLoggedIn,
     post: ownProps.post ? json[MAPPING_TYPES.POSTS][ownProps.post.id] : null,
   }
 }
