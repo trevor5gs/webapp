@@ -7,7 +7,7 @@ import PostParser from '../parsers/PostParser'
 import CommentParser from '../parsers/CommentParser'
 import NotificationParser from '../parsers/NotificationParser'
 import PostsAsGrid from '../posts/PostsAsGrid'
-import { PostHead } from '../posts/PostHead'
+import { PostDetailHelmet } from '../helmets/PostDetailHelmet'
 import { HeartIcon, RepostIcon } from '../posts/PostIcons'
 import UserAvatar from '../users/UserAvatar'
 import UserAvatars from '../users/UserAvatars'
@@ -151,7 +151,7 @@ export function postDetail(posts, json) {
   }
   return (
     <div className="PostDetails Posts asList">
-      <PostHead post={ post } author={ author } />
+      <PostDetailHelmet post={ post } author={ author } />
       <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList">
         <PostParser
           post={ post }

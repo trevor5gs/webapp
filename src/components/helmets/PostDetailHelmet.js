@@ -46,6 +46,15 @@ function getEmbeds(blocks) {
   return embedUrls
 }
 
+function getMetaTags({ title, desc, url }) {
+  const tags = [
+    { name: 'name', itemprop: 'name', content: title },
+    { name: 'url', itemprop: 'url', content: url },
+    { name: 'description', itemprop: 'description', content: desc },
+  ]
+  return tags
+}
+
 function getOpenGraphTags({ title, desc, images, embeds, url }) {
   const tags = [
     { property: 'og:type', content: 'article' },
@@ -70,20 +79,16 @@ function getTwitterTags({ images = [], embeds = [] }) {
   return tags
 }
 
-function getSchemaTags({ title, desc, images, embeds, url }) {
-  const tags = [
-    { itemprop: 'url', content: url },
-    { itemprop: 'name', content: title },
-    { itemprop: 'description', content: desc },
-  ]
+function getSchemaTags({ images, embeds }) {
+  const tags = []
   const imgs = [].concat(images, embeds)
   for (const img of imgs) {
-    tags.push({ itemprop: 'image', content: img })
+    tags.push({ name: 'image', itemprop: 'image', content: img })
   }
   return tags
 }
 
-export const PostHead = ({ post, author }) => {
+export const PostDetailHelmet = ({ post, author }) => {
   const blocks = (post.repostContent || post.content) || post.summary
   const text = getTextContent(blocks)
   const title = getTitle(text, author.username)
@@ -92,15 +97,15 @@ export const PostHead = ({ post, author }) => {
   const embeds = getEmbeds(blocks)
   const url = `${ENV.AUTH_DOMAIN}/${author.username}/post/${post.token}`
 
+  const metaTags = getMetaTags({ title, desc, url })
   const openGraphTags = getOpenGraphTags({ title, desc, images, embeds, url })
   const twitterTags = getTwitterTags({ images, embeds })
-  const schemaTags = getSchemaTags({ title, desc, images, embeds, url })
-  const tags = [].concat(openGraphTags, twitterTags, schemaTags)
+  const schemaTags = getSchemaTags({ images, embeds })
+  const tags = [].concat(metaTags, openGraphTags, twitterTags, schemaTags)
   return <Helmet title={ title } meta={ tags } />
 }
 
-PostHead.propTypes = {
-  assets: PropTypes.object.isRequired,
+PostDetailHelmet.propTypes = {
   author: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
 }
