@@ -96,13 +96,16 @@ export const PostDetailHelmet = ({ post, author }) => {
   const images = getImages(blocks)
   const embeds = getEmbeds(blocks)
   const url = `${ENV.AUTH_DOMAIN}/${author.username}/post/${post.token}`
+  const repostUrl = post.repostContent ? `${ENV.AUTH_DOMAIN}${post.repostPath}` : null
 
   const metaTags = getMetaTags({ title, desc, url })
   const openGraphTags = getOpenGraphTags({ title, desc, images, embeds, url })
   const twitterTags = getTwitterTags({ images, embeds })
   const schemaTags = getSchemaTags({ images, embeds })
   const tags = [].concat(metaTags, openGraphTags, twitterTags, schemaTags)
-  return <Helmet title={ title } meta={ tags } />
+  const links = post.repostContent ? [{ rel: 'canonical', href: repostUrl }] : []
+
+  return <Helmet title={ title } link={ links } meta={ tags } />
 }
 
 PostDetailHelmet.propTypes = {
