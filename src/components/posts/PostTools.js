@@ -63,16 +63,25 @@ class PostTools extends Component {
     if (author.hasCommentingEnabled) {
       cells.push(
         <span className="PostTool CommentTool" key={`CommentTool_${post.id}`}>
-          <button onClick={ this.toggleComments }>
-            <BubbleIcon />
-            <span
-              className="PostToolValue"
-              data-count={post.commentsCount}
-            >
-              {numberToHuman(post.commentsCount, false)}
-            </span>
-            <Hint>Comment</Hint>
-          </button>
+          { isLoggedIn ?
+            <button onClick={ this.toggleComments }>
+              <BubbleIcon />
+              <span
+                className="PostToolValue"
+                data-count={post.commentsCount}
+              >
+                {numberToHuman(post.commentsCount, false)}
+              </span>
+              <Hint>Comment</Hint>
+            </button> :
+            <Link to={`/${author.username}/post/${post.token}`}>
+              <BubbleIcon />
+              <span className="PostToolValue" data-count={post.commentsCount} >
+                {numberToHuman(post.commentsCount, false)}
+              </span>
+              <Hint>Comment</Hint>
+            </Link>
+          }
         </span>
       )
     }
