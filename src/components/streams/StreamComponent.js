@@ -103,7 +103,7 @@ export class StreamComponent extends Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    if (!this.props.componentPrefix) {
+    if (this.isPageLevelComponent()) {
       addScrollObject(this)
       window.scrollTo(0, 0)
     }
@@ -204,6 +204,10 @@ export class StreamComponent extends Component {
         scrollTop: scrollTopValue,
       },
     })
+  }
+
+  isPageLevelComponent() {
+    return this.props.componentPrefix === null
   }
 
   generateLocationKey(locationKey) {
