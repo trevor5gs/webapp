@@ -14,7 +14,7 @@ export default class CommentStream extends Component {
     const action = loadComments(post)
     return (
       <div>
-        <StreamComponent className="narrow" action={action}>
+        <StreamComponent className="narrow" action={action} ignoresScrollPosition>
           {post.commentsCount > 10 ?
             <Link
               to={`/${author.username}/post/${post.token}`}
