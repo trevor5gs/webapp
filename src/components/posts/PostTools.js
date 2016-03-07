@@ -60,23 +60,32 @@ class PostTools extends Component {
         </Link>
       </span>
     )
+    cells.push(
+      <span className="PostTool TimeAgoTool" key={`TimeAgoTool_${post.id}`}>
+        <Link to={`/${author.username}/post/${post.token}`}>
+          <span className="PostToolValue">{new Date(post.createdAt).timeAgoInWords()}</span>
+          <Hint>Visit</Hint>
+        </Link>
+      </span>
+    )
     if (author.hasCommentingEnabled) {
       cells.push(
-        <span className="PostTool CommentTool" key={`CommentTool_${post.id}`}>
+        <span
+          className="PostTool CommentTool"
+          data-count={ post.commentsCount }
+          key={`CommentTool_${post.id}`}
+        >
           { isLoggedIn ?
-            <button onClick={ this.toggleComments }>
+            <button onClick={ this.toggleComments } >
               <BubbleIcon />
-              <span
-                className="PostToolValue"
-                data-count={post.commentsCount}
-              >
+              <span className="PostToolValue" >
                 {numberToHuman(post.commentsCount, false)}
               </span>
               <Hint>Comment</Hint>
             </button> :
             <Link to={`/${author.username}/post/${post.token}`}>
               <BubbleIcon />
-              <span className="PostToolValue" data-count={post.commentsCount} >
+              <span className="PostToolValue" >
                 {numberToHuman(post.commentsCount, false)}
               </span>
               <Hint>Comment</Hint>
@@ -87,7 +96,11 @@ class PostTools extends Component {
     }
     if (author.hasLovesEnabled) {
       cells.push(
-        <span className="PostTool LoveTool" key={`LoveTool_${post.id}`}>
+        <span
+          className="PostTool LoveTool"
+          data-count={ post.lovesCount }
+          key={`LoveTool_${post.id}`}
+        >
           <button
             className={classNames({ active: post.loved, hasPostToolDrawer: post.lovesCount > 0 })}
             onClick={ this.lovePost }
@@ -99,10 +112,7 @@ class PostTools extends Component {
             className={classNames({ active: post.loved }, 'PostToolDrawerButton')}
             onClick={ this.toggleLovers }
           >
-            <span
-              className="PostToolValue"
-              data-count={post.lovesCount}
-            >
+            <span className="PostToolValue" >
               { numberToHuman(post.lovesCount, false) }
             </span>
             <Hint>Loved by</Hint>
@@ -112,7 +122,11 @@ class PostTools extends Component {
     }
     if (author.hasRepostingEnabled) {
       cells.push(
-        <span className="PostTool RepostTool" key={`RepostTool_${post.id}`}>
+        <span
+          className="PostTool RepostTool"
+          data-count={post.repostsCount}
+          key={`RepostTool_${post.id}`}
+        >
           <button
             className={classNames({ hasPostToolDrawer: post.repostsCount > 0 })}
             onClick={ this.repostPost }
@@ -121,10 +135,7 @@ class PostTools extends Component {
             <Hint>Repost</Hint>
           </button>
           <button className="PostToolDrawerButton" onClick={ this.toggleReposters }>
-            <span
-              className="PostToolValue"
-              data-count={post.repostsCount}
-            >
+            <span className="PostToolValue" >
               {numberToHuman(post.repostsCount, false)}
             </span>
             <Hint>Reposted by</Hint>
@@ -145,14 +156,6 @@ class PostTools extends Component {
         </span>
       )
     }
-    cells.push(
-      <span className="PostTool TimeAgoTool ShyTool" key={`TimeAgoTool_${post.id}`}>
-        <Link to={`/${author.username}/post/${post.token}`}>
-          <span className="PostToolValue">{new Date(post.createdAt).timeAgoInWords()}</span>
-          <Hint>Visit</Hint>
-        </Link>
-      </span>
-    )
     if (isLoggedIn) {
       if (isOwnPost) {
         cells.push(
@@ -186,7 +189,6 @@ class PostTools extends Component {
       <span className={"PostTool MoreTool"} key={`MoreTool_${post.id}`}>
         <button onClick={ this.toggleActiveMoreTool }>
           <ChevronIcon />
-          <Hint>More</Hint>
         </button>
       </span>
     )
