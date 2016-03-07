@@ -73,6 +73,7 @@ export class StreamComponent extends Component {
     stream: PropTypes.object.isRequired,
     className: PropTypes.string,
     historyLocationPrefix: PropTypes.string,
+    ignoresScrollPosition: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -97,6 +98,7 @@ export class StreamComponent extends Component {
     })
     unlisten()
     this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
+    this.ignoresScrollPosition = this.props.ignoresScrollPosition || false
   }
 
   componentDidMount() {
@@ -139,8 +141,10 @@ export class StreamComponent extends Component {
       window.embetter.reloadPlayers()
     }
     const { history, stream } = this.props
-    if (stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
-      prevProps.stream.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
+    const shouldScroll = !this.ignoresScrollPosition &&
+      stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
+      prevProps.stream.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS
+    if (shouldScroll) {
       const historyObj = history[this.state.locationKey] || {}
       const scrollTopValue = historyObj.scrollTop
 
