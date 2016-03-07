@@ -72,7 +72,7 @@ export class StreamComponent extends Component {
     }),
     stream: PropTypes.object.isRequired,
     className: PropTypes.string,
-    componentPrefix: PropTypes.string,
+    historyLocationPrefix: PropTypes.string,
   };
 
   static defaultProps = {
@@ -207,12 +207,12 @@ export class StreamComponent extends Component {
   }
 
   isPageLevelComponent() {
-    return this.props.componentPrefix === null
+    return this.props.historyLocationPrefix === null
   }
 
   generateLocationKey(locationKey) {
-    if (this.props.componentPrefix) {
-      return `${this.props.componentPrefix}_${locationKey}`
+    if (this.props.historyLocationPrefix) {
+      return `${this.props.historyLocationPrefix}_${locationKey}`
     }
     return locationKey
   }
