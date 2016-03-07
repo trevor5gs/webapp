@@ -2,11 +2,18 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 
+function isActive(tab, activePath) {
+  if (!tab.activePattern) {
+    return tab.to === activePath
+  }
+  return tab.activePattern.test(activePath)
+}
+
 export const TabListLinks = ({ activePath, className, tabClasses, tabs }) =>
   <nav className={classNames(className, 'TabListLinks')} role="tablist">
     {tabs.map((tab) =>
       <Link
-        className={classNames(tabClasses, 'TabLink', { active: tab.to === activePath })}
+        className={classNames(tabClasses, 'TabLink', { active: isActive(tab, activePath) })}
         key={`TabLink-${tab.to.replace('/', '_')}`}
         to={tab.to}
       >
@@ -46,4 +53,3 @@ TabListButtons.propTypes = {
   tabClasses: PropTypes.string,
   tabs: PropTypes.array.isRequired,
 }
-
