@@ -23,7 +23,7 @@ class BioControl extends Component {
     this.state = { textLength: text ? text.length : 0 }
   }
 
-  handleChange = (vo) => {
+  onChangeControl = (vo) => {
     const { id, onChange } = this.props
     const { textLength } = this.state
     const len = vo[id] ? vo[id].length : 0
@@ -55,7 +55,7 @@ class BioControl extends Component {
         autoCorrect="off"
         kind="textarea"
         label={ label }
-        onChange={ this.handleChange }
+        onChange={ this.onChangeControl }
         type="text"
       />
     )

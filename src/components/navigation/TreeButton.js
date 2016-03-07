@@ -33,7 +33,7 @@ class TreeButton extends Component {
     }
   }
 
-  handleChange = (...rest) => {
+  onClickTreeButton = (...rest) => {
     const { onClick } = this.props
     const { collapsed } = this.state
     const newCollapsedState = !collapsed
@@ -49,7 +49,7 @@ class TreeButton extends Component {
     return (
       <button
         className={classNames(className, 'TreeButton', { isCollapsed: collapsed })}
-        onClick={ this.handleChange }
+        onClick={ this.onClickTreeButton }
       >
         <TreeIcon/>
         {children}

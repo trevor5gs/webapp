@@ -47,6 +47,16 @@ class Banderole extends Component {
     this.setState({ imageSize: coverImageSize })
   }
 
+  onLoadSuccess = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.SUCCESS })
+  };
+
+  onLoadFailure = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.FAILURE })
+  };
+
   getCoverSource() {
     const { featuredUser, imageSize } = this.state
     if (!featuredUser) { return null }
@@ -59,8 +69,8 @@ class Banderole extends Component {
     this.disposeLoader()
     if (src) {
       this.img = new Image()
-      this.img.onload = this.loadDidSucceed
-      this.img.onerror = this.loadDidFail
+      this.img.onload = this.onLoadSuccess
+      this.img.onerror = this.onLoadFailure
       this.img.src = src
     }
   }
@@ -72,16 +82,6 @@ class Banderole extends Component {
       this.img = null
     }
   }
-
-  loadDidSucceed = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.SUCCESS })
-  };
-
-  loadDidFail = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.FAILURE })
-  };
 
   render() {
     const { featuredUser, status } = this.state
@@ -99,7 +99,7 @@ class Banderole extends Component {
           { caption }
           { isLoggedIn ? null : <Link to="https://ello.co/signup">Sign Up</Link> }
         </div>
-        <Credits clickAction={creditsClickAction} user={featuredUser} />
+        <Credits onClick={creditsClickAction} user={featuredUser} />
       </div>
     )
   }

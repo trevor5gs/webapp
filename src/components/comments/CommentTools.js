@@ -35,6 +35,57 @@ class CommentTools extends Component {
     }
   }
 
+  onClickMoreTool = () => {
+    this.setState({ isMoreToolActive: !this.state.isMoreToolActive })
+  };
+
+  onClickReplyToComment = () => {
+    const { author, dispatch, post } = this.props
+    dispatch({
+      type: ACTION_TYPES.EDITOR.APPEND_TEXT,
+      payload: {
+        editorId: getEditorId(post),
+        text: `@${author.username} `,
+      },
+    })
+  };
+
+  onClickEditComment = () => {
+    const { comment, dispatch } = this.props
+    dispatch(commentActions.toggleEditing(comment, true))
+    dispatch(commentActions.loadEditableComment(comment))
+  };
+
+  onClickFlagComment = () => {
+    const { dispatch } = this.props
+    dispatch(openModal(
+      <FlagDialog
+        onResponse={ this.onCommentWasFlagged }
+        onConfirm={ this.closeModal }
+      />))
+  };
+
+  onCommentWasFlagged = ({ flag }) => {
+    const { dispatch, comment } = this.props
+    dispatch(commentActions.flagComment(comment, flag))
+  };
+
+  onClickDeleteComment = () => {
+    const { dispatch } = this.props
+    dispatch(openModal(
+      <ConfirmDialog
+        title="Delete Comment?"
+        onConfirm={ this.onConfirmDeleteComment }
+        onDismiss={ this.closeModal }
+      />))
+  };
+
+  onConfirmDeleteComment = () => {
+    const { comment, dispatch } = this.props
+    this.closeModal()
+    dispatch(commentActions.deleteComment(comment))
+  };
+
   getToolCells() {
     const { author, comment, currentUser, isLoggedIn, post } = this.props
     const isOwnComment = currentUser && author.id === currentUser.id
@@ -49,7 +100,7 @@ class CommentTools extends Component {
       if (isOwnComment) {
         cells.push(
           <span className="PostTool EditTool ShyTool" key={`EditTool_${comment.id}`}>
-            <button onClick={ this.editComment }>
+            <button onClick={ this.onClickEditComment }>
               <PencilIcon />
               <Hint>Edit</Hint>
             </button>
@@ -57,7 +108,7 @@ class CommentTools extends Component {
         )
         cells.push(
           <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${comment.id}`}>
-            <button onClick={ this.deleteComment }>
+            <button onClick={ this.onClickDeleteComment }>
               <XBoxIcon />
               <Hint>Delete</Hint>
             </button>
@@ -66,7 +117,7 @@ class CommentTools extends Component {
       } else if (isOwnPost) {
         cells.push(
           <span className="PostTool ReplyTool" key={`ReplyTool_${comment.id}`}>
-            <button onClick={ this.replyToComment }>
+            <button onClick={ this.onClickReplyToComment }>
               <ReplyIcon />
               <Hint>Reply</Hint>
             </button>
@@ -74,7 +125,7 @@ class CommentTools extends Component {
         )
         cells.push(
           <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${comment.id}`}>
-            <button onClick={ this.deleteComment }>
+            <button onClick={ this.onClickDeleteComment }>
               <XBoxIcon />
               <Hint>Delete</Hint>
             </button>
@@ -83,7 +134,7 @@ class CommentTools extends Component {
       } else {
         cells.push(
           <span className="PostTool ReplyTool" key={`ReplyTool_${comment.id}`}>
-            <button onClick={ this.replyToComment }>
+            <button onClick={ this.onClickReplyToComment }>
               <ReplyIcon />
               <Hint>Reply</Hint>
             </button>
@@ -91,7 +142,7 @@ class CommentTools extends Component {
         )
         cells.push(
           <span className="PostTool FlagTool ShyTool" key={`FlagTool_${comment.id}`}>
-            <button onClick={ this.flagComment }>
+            <button onClick={ this.onClickFlagComment }>
               <FlagIcon />
               <Hint>Flag</Hint>
             </button>
@@ -101,7 +152,7 @@ class CommentTools extends Component {
     }
     cells.push(
       <span className={"PostTool MoreTool"} key={`MoreTool_${comment.id}`}>
-        <button onClick={ this.toggleActiveMoreTool }>
+        <button onClick={ this.onClickMoreTool }>
           <ChevronIcon />
           <Hint>More</Hint>
         </button>
@@ -115,62 +166,11 @@ class CommentTools extends Component {
     dispatch(closeModal())
   };
 
-  toggleActiveMoreTool = () => {
-    this.setState({ isMoreToolActive: !this.state.isMoreToolActive })
-  };
-
   signUp() {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
     return dispatch(trackEvent('open-registration-request-post-tools'))
   }
-
-  replyToComment = () => {
-    const { author, dispatch, post } = this.props
-    dispatch({
-      type: ACTION_TYPES.EDITOR.APPEND_TEXT,
-      payload: {
-        editorId: getEditorId(post),
-        text: `@${author.username} `,
-      },
-    })
-  };
-
-  editComment = () => {
-    const { comment, dispatch } = this.props
-    dispatch(commentActions.toggleEditing(comment, true))
-    dispatch(commentActions.loadEditableComment(comment))
-  }
-
-  flagComment = () => {
-    const { dispatch } = this.props
-    dispatch(openModal(
-      <FlagDialog
-        onResponse={ this.commentWasFlagged }
-        onConfirm={ this.closeModal }
-      />))
-  };
-
-  commentWasFlagged = ({ flag }) => {
-    const { dispatch, comment } = this.props
-    dispatch(commentActions.flagComment(comment, flag))
-  };
-
-  deleteComment = () => {
-    const { dispatch } = this.props
-    dispatch(openModal(
-      <ConfirmDialog
-        title="Delete Comment?"
-        onConfirm={ this.deleteCommentConfirmed }
-        onRejected={ this.closeModal }
-      />))
-  };
-
-  deleteCommentConfirmed = () => {
-    const { comment, dispatch } = this.props
-    this.closeModal()
-    dispatch(commentActions.deleteComment(comment))
-  };
 
   render() {
     const { comment } = this.props

@@ -5,7 +5,7 @@ import Avatar from '../assets/Avatar'
 class Credits extends Component {
 
   static propTypes = {
-    clickAction: PropTypes.func,
+    onClick: PropTypes.func,
     user: PropTypes.shape({
       avatar: PropTypes.shape({}),
       username: PropTypes.string,
@@ -13,10 +13,10 @@ class Credits extends Component {
   };
 
   // Typically a passed through tracking event sent before following the link
-  handleClick = () => {
-    const { clickAction } = this.props
-    if (clickAction) {
-      clickAction()
+  onClickCredits = () => {
+    const { onClick } = this.props
+    if (onClick) {
+      onClick()
     }
   };
 
@@ -24,7 +24,7 @@ class Credits extends Component {
     const { user } = this.props
     const { username, avatar } = user
     return (
-      <Link className="Credits" onClick={ this.handleClick } to={`/${username}`}>
+      <Link className="Credits" onClick={ this.onClickCredits } to={`/${username}`}>
         <span className="CreditsBy">Posted by</span>
         <span className="CreditsAuthor">@{username}</span>
         <Avatar sources={avatar} />

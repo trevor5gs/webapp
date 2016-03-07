@@ -31,6 +31,11 @@ class Discover extends Component {
     }
   }
 
+  onClickTrackCredits = () => {
+    const { dispatch } = this.props
+    dispatch(trackEvent(`banderole-credits-clicked`))
+  };
+
   onDismissBeacon = () => {
     const { dispatch } = this.props
     this.setState({ isBeaconActive: false })
@@ -39,11 +44,6 @@ class Discover extends Component {
 
   static preRender = (store, routerState) =>
     store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'));
-
-  creditsTrackingEvent = () => {
-    const { dispatch } = this.props
-    dispatch(trackEvent(`banderole-credits-clicked`))
-  };
 
   renderBeacon() {
     return (
@@ -80,7 +80,7 @@ class Discover extends Component {
       <section className="Discover Panel" key={`discover_${type}`}>
         { isBeaconActive ? this.renderBeacon() : null }
         <Banderole
-          creditsClickAction={ this.creditsTrackingEvent }
+          creditsClickAction={ this.onClickTrackCredits }
           isLoggedIn={ isLoggedIn }
           userlist={ isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS }
         />

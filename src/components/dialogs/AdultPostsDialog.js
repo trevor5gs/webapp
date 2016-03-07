@@ -17,9 +17,9 @@ const AdultPostsDialog = ({ user, onConfirm }) =>
   </div>
 
 AdultPostsDialog.propTypes = {
-  user: PropTypes.shape({}),
   onConfirm: PropTypes.func,
-  onRejected: PropTypes.func,
+  onDismiss: PropTypes.func,
+  user: PropTypes.shape({}),
 }
 
 export default AdultPostsDialog

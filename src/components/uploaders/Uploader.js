@@ -25,11 +25,7 @@ class Uploader extends Component {
     }
   }
 
-  isLegitimateFileType(file) {
-    return (file && file.type && file.type.match(/^image\/(jpg|jpeg|gif|png|tiff|tif|bmp)/))
-  }
-
-  handleFileBrowser = (e) => {
+  onFileBrowse = (e) => {
     const file = e.target.files[0]
     if (this.isLegitimateFileType(file)) {
       return this.props.saveAction(file)
@@ -43,11 +39,11 @@ class Uploader extends Component {
     )
   };
 
-  triggerFileBrowser = () => {
+  onClickFileBrowser = () => {
     this.refs.FileBrowser.click()
   };
 
-  handleDrop = (e) => {
+  onDrop = (e) => {
     e.preventDefault()
     e.stopPropagation()
     const file = e.dataTransfer.files[0]
@@ -64,15 +60,19 @@ class Uploader extends Component {
     )
   };
 
-  handleDragOver = (e) => {
+  onDragOver = (e) => {
     e.preventDefault()
     this.setState({ hasDragOver: true })
   };
 
-  handleDragLeave = (e) => {
+  onDragLeave = (e) => {
     e.preventDefault()
     this.setState({ hasDragOver: false })
   };
+
+  isLegitimateFileType(file) {
+    return (file && file.type && file.type.match(/^image\/(jpg|jpeg|gif|png|tiff|tif|bmp)/))
+  }
 
   render() {
     const { title, message, recommend } = this.props
@@ -84,13 +84,13 @@ class Uploader extends Component {
     return (
       <div
         className={klassNames}
-        onDrop={ this.handleDrop }
-        onDragOver={ this.handleDragOver }
-        onDragLeave={ this.handleDragLeave }
+        onDrop={ this.onDrop }
+        onDragOver={ this.onDragOver }
+        onDragLeave={ this.onDragLeave }
       >
         <button
           className="UploaderButton"
-          onClick={ this.triggerFileBrowser }
+          onClick={ this.onClickFileBrowser }
         >
           {title}
         </button>
@@ -98,7 +98,7 @@ class Uploader extends Component {
         {recommend ? <p>{recommend}</p> : null}
         <input
           className="hidden"
-          onChange={ this.handleFileBrowser }
+          onChange={ this.onFileBrowse }
           ref="FileBrowser"
           type="file"
           accept="image/*"

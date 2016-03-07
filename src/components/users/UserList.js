@@ -34,7 +34,7 @@ class UserList extends Component {
     return true
   }
 
-  onShareProfile = () => {
+  onClickShareProfile = () => {
     const { dispatch, user } = this.props
     const action = bindActionCreators(trackEvent, dispatch)
     dispatch(openModal(<ShareDialog user={ user } trackEvent={ action } />))
@@ -52,7 +52,7 @@ class UserList extends Component {
         <UserNames user={ user }/>
         { stats }
         <UserInfo user={ user }/>
-        <ShareProfileButton onClick={ this.onShareProfile } >
+        <ShareProfileButton onClick={ this.onClickShareProfile } >
           Share Profile
         </ShareProfileButton>
       </div>

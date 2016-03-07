@@ -5,7 +5,7 @@ class DeleteAccountDialog extends Component {
   static propTypes = {
     user: PropTypes.shape({}),
     onConfirm: PropTypes.func,
-    onRejected: PropTypes.func,
+    onDismiss: PropTypes.func,
   };
 
   componentWillMount() {
@@ -19,19 +19,19 @@ class DeleteAccountDialog extends Component {
     clearInterval(this.interval)
   }
 
-  handleJustKidding = () => {
-    this.props.onRejected()
+  onClickJustKidding = () => {
+    this.props.onDismiss()
   };
 
-  handleNotKidding = () => {
+  onClickNotKidding = () => {
     this.props.onConfirm()
   };
 
-  handleConfirm = () => {
+  onClickConfirm = () => {
     this.setState({ scene: 'renderConfirmReally' })
   };
 
-  handleConfirmReally = () => {
+  onClickConfirmReally = () => {
     this.interval = setInterval(() => {
       this.setState({ scene: 'renderCountdown' })
     }, 1000)
@@ -41,8 +41,8 @@ class DeleteAccountDialog extends Component {
     return (
       <div className="Dialog DeleteAccountDialog">
         <h2>Delete account?</h2>
-        <button className="ConfirmDialogButton" onClick={ this.handleConfirm }>Yes</button>
-        <button className="ConfirmDialogButton" onClick={ this.handleJustKidding }>No</button>
+        <button className="ConfirmDialogButton" onClick={ this.onClickConfirm }>Yes</button>
+        <button className="ConfirmDialogButton" onClick={ this.onClickJustKidding }>No</button>
       </div>
     )
   }
@@ -51,8 +51,8 @@ class DeleteAccountDialog extends Component {
     return (
       <div className="Dialog DeleteAccountDialog">
         <h2>Are you serious?</h2>
-        <button className="ConfirmDialogButton" onClick={ this.handleConfirmReally }>Yes</button>
-        <button className="ConfirmDialogButton" onClick={ this.handleJustKidding }>No</button>
+        <button className="ConfirmDialogButton" onClick={ this.onClickConfirmReally }>Yes</button>
+        <button className="ConfirmDialogButton" onClick={ this.onClickJustKidding }>No</button>
         <p>
           * By deleting your account you remove your personal information from
           Ello. Your account cannot be restored.
@@ -64,7 +64,7 @@ class DeleteAccountDialog extends Component {
   renderCountdown() {
     this.counter -= 1
     if (this.counter < 0) {
-      this.handleNotKidding()
+      this.onClickNotKidding()
       return null
     }
     return (
@@ -72,7 +72,7 @@ class DeleteAccountDialog extends Component {
         <h2>{`You will be redirected in ${this.counter} ...`}</h2>
         <button
           className="ConfirmDialogButton"
-          onClick={ this.handleJustKidding }
+          onClick={ this.onClickJustKidding }
           style={{
             display: 'block',
             position: 'absolute',

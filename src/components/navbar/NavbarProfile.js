@@ -21,30 +21,30 @@ class NavbarProfile extends Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.onDocumentClick)
+    document.removeEventListener('click', this.onClickDocument)
   }
 
-  onAvatarClick = () => {
+  onClickAvatar = () => {
     const { isMenuOpen } = this.state
     if (isMenuOpen) { return this.hideMenu() }
     return this.showMenu()
   };
 
-  onDocumentClick = () => {
+  onClickDocument = () => {
     this.hideMenu()
   };
 
   showMenu() {
     if (this.state.isMenuOpen) { return }
     ReactDOM.findDOMNode(document.body).classList.add('profileMenuIsActive')
-    document.addEventListener('click', this.onDocumentClick)
+    document.addEventListener('click', this.onClickDocument)
     this.setState({ isMenuOpen: true })
   }
 
   hideMenu() {
     if (!this.state.isMenuOpen) { return }
     ReactDOM.findDOMNode(document.body).classList.remove('profileMenuIsActive')
-    document.removeEventListener('click', this.onDocumentClick)
+    document.removeEventListener('click', this.onClickDocument)
     this.setState({ isMenuOpen: false })
   }
 
@@ -54,7 +54,7 @@ class NavbarProfile extends Component {
     if (avatar && username) {
       return (
         <span className="NavbarProfile">
-          <Avatar sources={avatar} onClick={ this.onAvatarClick } />
+          <Avatar sources={avatar} onClick={ this.onClickAvatar } />
           <nav className={ classNames('NavbarProfileLinks', { active: isMenuOpen })}>
             <Link className="NavbarProfileLink" to={`/${username}`}>{`@${username}`}</Link>
             <Link className="NavbarProfileLink" to={`/${username}/loves`}>Loves</Link>

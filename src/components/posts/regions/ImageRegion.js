@@ -56,6 +56,26 @@ class ImageRegion extends Component {
     this.disposeLoader()
   }
 
+  onClickStaticImageRegion = () => {
+    const { scale } = this.state
+    if (scale) {
+      return this.resetImageScale()
+    } else if (!this.attachment) {
+      return null
+    }
+    return this.setImageScale()
+  };
+
+  onLoadSuccess = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.SUCCESS })
+  };
+
+  onLoadFailure = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.FAILURE })
+  };
+
   getAttachmentMetadata() {
     const { optimized, xhdpi, hdpi } = this.attachment
     let width = null
@@ -127,24 +147,22 @@ class ImageRegion extends Component {
     }
   }
 
+  resetImageScale() {
+    this.setState({ scale: null, marginBottom: null })
+  }
+
   isBasicAttachment() {
     const { assets, links } = this.props
     return !(links && links.assets && assets[links.assets] && assets[links.assets].attachment)
   }
 
-  resetImageScale() {
-    this.setState({ scale: null, marginBottom: null })
-  }
-
-  staticImageRegionWasClicked = () => {
-    const { scale } = this.state
-    if (scale) {
-      return this.resetImageScale()
-    } else if (!this.attachment) {
-      return null
+  isGif() {
+    const optimized = this.attachment.optimized
+    if (optimized && optimized.metadata) {
+      return optimized.metadata.type === 'image/gif'
     }
-    return this.setImageScale()
-  };
+    return false
+  }
 
   createLoader() {
     const isBasicAttachment = this.isBasicAttachment()
@@ -152,8 +170,8 @@ class ImageRegion extends Component {
     this.disposeLoader()
     if (sources) {
       this.img = new Image()
-      this.img.onload = this.loadDidSucceed
-      this.img.onerror = this.loadDidFail
+      this.img.onload = this.onLoadSuccess
+      this.img.onerror = this.onLoadFailure
       if (isBasicAttachment) {
         this.img.src = sources
       } else {
@@ -168,24 +186,6 @@ class ImageRegion extends Component {
       this.img.onerror = null
       this.img = null
     }
-  }
-
-  loadDidSucceed = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.SUCCESS })
-  };
-
-  loadDidFail = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.FAILURE })
-  };
-
-  isGif() {
-    const optimized = this.attachment.optimized
-    if (optimized && optimized.metadata) {
-      return optimized.metadata.type === 'image/gif'
-    }
-    return false
   }
 
   renderGifAttachment() {
@@ -252,7 +252,7 @@ class ImageRegion extends Component {
     return (
       <div
         className="RegionContent"
-        onClick={ this.staticImageRegionWasClicked }
+        onClick={ this.onClickStaticImageRegion }
         style={{ transform: scale ? `scale(${scale})` : null, marginBottom }}
       >
         { this.renderAttachment() }

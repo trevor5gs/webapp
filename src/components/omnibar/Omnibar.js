@@ -34,7 +34,7 @@ class Omnibar extends Component {
   }
 
   componentDidMount() {
-    Mousetrap.bind(SHORTCUT_KEYS.FULLSCREEN, () => { this.fullScreen() })
+    Mousetrap.bind(SHORTCUT_KEYS.FULLSCREEN, () => { this.toggleFullScreen() })
   }
 
   componentDidUpdate() {
@@ -52,7 +52,7 @@ class Omnibar extends Component {
     Mousetrap.unbind(SHORTCUT_KEYS.FULLSCREEN)
   }
 
-  fullScreen = () => {
+  toggleFullScreen = () => {
     const { isFullScreen } = this.state
     this.setState({ isFullScreen: !isFullScreen })
   };

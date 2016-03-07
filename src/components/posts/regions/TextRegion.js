@@ -12,7 +12,7 @@ class TextRegion extends Component {
     postDetailPath: PropTypes.string,
   };
 
-  handleRegionClick = (e) => {
+  onClickRegion = (e) => {
     const { dispatch, isGridLayout, postDetailPath } = this.props
     const { classList, dataset, nodeName } = e.target
     // Get the raw value instead of the property value which is always absolute
@@ -46,7 +46,7 @@ class TextRegion extends Component {
         <div
           className={classNames('RegionContent', { asHotRegion: isHotRegion })}
           dangerouslySetInnerHTML={{ __html: content }}
-          onClick={ this.handleRegionClick }
+          onClick={ this.onClickRegion }
         />
       </div>
     )

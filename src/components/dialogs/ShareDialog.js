@@ -45,6 +45,26 @@ class ShareDialog extends Component {
     return user ? this.getMountShareUser() : this.getMountSharePost()
   }
 
+  onClickOpenShareWindow = (e) => {
+    const type = e.target.dataset.type
+    const url = this.getUrl(type)
+    const { trackEvent, user } = this.props
+    if (url.indexOf('mailto') === 0) {
+      document.location.href = url
+    } else {
+      const width = SHARE_DIMENSIONS[type].width || 700
+      const height = SHARE_DIMENSIONS[type].height || 450
+      window.open(url, 'sharewindow', `width=${width}, height=${height}, left=${window.innerWidth / 2 - width / 2}, top=${window.innerHeight / 2 - height / 2}, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0`)
+    }
+    if (trackEvent) {
+      return user ? trackEvent(`share-user-to-${type}-profile`) : trackEvent(`share-to-${type}`)
+    }
+  };
+
+  onClickReadOnlyInput(e) {
+    e.target.select()
+  }
+
   getMountSharePost() {
     const { author, post } = this.props
     this.shareLink = `${window.location.protocol}//${window.location.host}/${author.username}/post/${post.token}`
@@ -114,26 +134,6 @@ class ShareDialog extends Component {
     }
   }
 
-  popShareWindow = (e) => {
-    const type = e.target.dataset.type
-    const url = this.getUrl(type)
-    const { trackEvent, user } = this.props
-    if (url.indexOf('mailto') === 0) {
-      document.location.href = url
-    } else {
-      const width = SHARE_DIMENSIONS[type].width || 700
-      const height = SHARE_DIMENSIONS[type].height || 450
-      window.open(url, 'sharewindow', `width=${width}, height=${height}, left=${window.innerWidth / 2 - width / 2}, top=${window.innerHeight / 2 - height / 2}, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0`)
-    }
-    if (trackEvent) {
-      return user ? trackEvent(`share-user-to-${type}-profile`) : trackEvent(`share-to-${type}`)
-    }
-  };
-
-  selectReadOnlyInput(e) {
-    e.target.select()
-  }
-
   render() {
     return (
       <div className="Dialog ShareDialog">
@@ -141,18 +141,18 @@ class ShareDialog extends Component {
           className="ShareControl"
           type="url"
           readOnly
-          onClick={this.selectReadOnlyInput}
+          onClick={this.onClickReadOnlyInput}
           value={this.shareLink}
         />
         <div className="ShareLinks">
-          <button className="ShareLink" data-type={SHARE_TYPES.EMAIL} onClick={this.popShareWindow}><MailIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.FACEBOOK} onClick={this.popShareWindow}><FacebookIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.TWITTER} onClick={this.popShareWindow}><TwitterIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.PINTEREST} onClick={this.popShareWindow}><PinterestIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.GOOGLE_PLUS} onClick={this.popShareWindow}><GooglePlusIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.TUMBLR} onClick={this.popShareWindow}><TumblrIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.REDDIT} onClick={this.popShareWindow}><RedditIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.LINKEDIN} onClick={this.popShareWindow}><LinkedInIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.EMAIL} onClick={this.onClickOpenShareWindow}><MailIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.FACEBOOK} onClick={this.onClickOpenShareWindow}><FacebookIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.TWITTER} onClick={this.onClickOpenShareWindow}><TwitterIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.PINTEREST} onClick={this.onClickOpenShareWindow}><PinterestIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.GOOGLE_PLUS} onClick={this.onClickOpenShareWindow}><GooglePlusIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.TUMBLR} onClick={this.onClickOpenShareWindow}><TumblrIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.REDDIT} onClick={this.onClickOpenShareWindow}><RedditIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.LINKEDIN} onClick={this.onClickOpenShareWindow}><LinkedInIcon/></button>
         </div>
       </div>
     )

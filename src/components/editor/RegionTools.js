@@ -29,7 +29,7 @@ class RegionTools extends Component {
       <ConfirmDialog
         title="Remove this content?"
         onConfirm={ this.deleteContentConfirmed }
-        onRejected={ this.closeModal }
+        onDismiss={ this.closeModal }
       />))
   };
 

@@ -33,14 +33,14 @@ class Footer extends Component {
     this.setState({ isGridMode: currentMode && currentMode.mode === 'grid' })
   }
 
-  scrollToTop = () => {
+  onClickScrollToTop = () => {
     if (typeof window === 'undefined') {
       return
     }
     window.scrollTo(0, 0)
   };
 
-  toggleLayoutMode = () => {
+  onClickToggleLayoutMode = () => {
     Mousetrap.trigger(SHORTCUT_KEYS.TOGGLE_LAYOUT)
   };
 
@@ -66,13 +66,13 @@ class Footer extends Component {
             className="TopTool"
             label="Top"
             icon={ <ChevronIcon/> }
-            onClick={ this.scrollToTop }
+            onClick={ this.onClickScrollToTop }
           />
           <FooterTool
             className="LayoutTool"
             label={ isGridMode ? 'List View' : 'Grid View' }
             icon={ isGridMode ? <ListIcon/> : <GridIcon/> }
-            onClick={ this.toggleLayoutMode }
+            onClick={ this.onClickToggleLayoutMode }
           />
         </div>
       </footer>

@@ -113,7 +113,7 @@ class Editor extends Component {
       <ConfirmDialog
         title={ `Cancel ${label}?` }
         onConfirm={ this.cancelConfirmed }
-        onRejected={ this.closeModal }
+        onDismiss={ this.closeModal }
       />))
   };
 

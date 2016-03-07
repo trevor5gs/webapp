@@ -27,14 +27,14 @@ class RegistrationRequestForm extends Component {
     }
   }
 
-  handleSubmit = (e) => {
+  onSubmit = (e) => {
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(requestInvite(this.emailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
   };
 
-  emailControlWasChanged = ({ email }) => {
+  onChangeEmailControl = ({ email }) => {
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -58,13 +58,13 @@ class RegistrationRequestForm extends Component {
         className="AuthenticationForm"
         id="RegistrationRequestForm"
         noValidate="novalidate"
-        onSubmit={ this.handleSubmit }
+        onSubmit={ this.onSubmit }
         role="form"
       >
         <EmailControl
           classList="asBoxControl"
           label={ `Email ${emailState.message}` }
-          onChange={ this.emailControlWasChanged }
+          onChange={ this.onChangeEmailControl }
           tabIndex="1"
         />
         <FormButton disabled={ !isValid } tabIndex="2">Sign up</FormButton>

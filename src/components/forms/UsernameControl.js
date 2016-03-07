@@ -16,9 +16,9 @@ class UsernameControl extends Component {
     suggestions: null,
   };
 
-  handleUsernameSuggestionClick = (e) => {
+  onClickUsernameSuggestion = (e) => {
     const val = e.target.title
-    this.refs.FormControl.handleChange({ target: { value: val } })
+    this.refs.FormControl.onChangeControl({ target: { value: val } })
   };
 
   renderSuggestions = () => {
@@ -30,7 +30,7 @@ class UsernameControl extends Component {
           { suggestions.map((suggestion, i) =>
             <button
               title={ suggestion }
-              onClick={ this.handleUsernameSuggestionClick }
+              onClick={ this.onClickUsernameSuggestion }
               key={ `suggestion_${i}` }
             >
               { suggestion }
