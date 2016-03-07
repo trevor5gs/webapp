@@ -30,6 +30,15 @@ class NotificationsContainer extends Component {
 
   componentDidMount() {
     document.addEventListener('click', this.onDocumentClick)
+
+    this.refs.streamComponent.refs.wrappedInstance.scrollContainer = this.refs.scrollable
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.activeTabType !== this.state.activeTabType && this.refs.scrollable) {
+      this.refs.streamComponent.refs.wrappedInstance.scrollContainer = this.refs.scrollable
+      this.refs.scrollable.scrollTop = 0
+    }
   }
 
   componentWillUnmount() {
@@ -53,6 +62,9 @@ class NotificationsContainer extends Component {
   onScrolled = () => {
     const { scrollable } = this.refs
     if (!scrollable) { return }
+
+    this.refs.streamComponent.refs.wrappedInstance.onScroll()
+
     const scrollY = Math.ceil(scrollable.scrollTop)
     const scrollHeight = Math.max(scrollable.scrollHeight, scrollable.offsetHeight)
     const scrollBottom = Math.round(scrollHeight - scrollable.offsetHeight)
@@ -96,6 +108,7 @@ class NotificationsContainer extends Component {
             className="asFullWidth"
             key={ `notificationPanel_${activeTabType}` }
             ref="streamComponent"
+            historyLocationPrefix={ `notifications_${activeTabType}` }
           />
         </div>
       </div>

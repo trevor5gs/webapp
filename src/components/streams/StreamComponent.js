@@ -72,6 +72,7 @@ export class StreamComponent extends Component {
     }),
     stream: PropTypes.object.isRequired,
     className: PropTypes.string,
+    historyLocationPrefix: PropTypes.string,
   };
 
   static defaultProps = {
@@ -92,13 +93,9 @@ export class StreamComponent extends Component {
       }
     }
     const unlisten = browserListen(location => {
-      this.state = { action, locationKey: location.key }
+      this.state = { action, locationKey: this.generateLocationKey(location.key) }
     })
     unlisten()
-
-    if (typeof window !== 'undefined') {
-      window.scrollTo(0, 0)
-    }
     this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
   }
 
@@ -106,7 +103,10 @@ export class StreamComponent extends Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    addScrollObject(this)
+    if (this.isPageLevelComponent()) {
+      addScrollObject(this)
+      window.scrollTo(0, 0)
+    }
     addResizeObject(this)
   }
 
@@ -141,9 +141,14 @@ export class StreamComponent extends Component {
     const { history, stream } = this.props
     if (stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
       prevProps.stream.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS) {
-      const historyKey = history[this.state.locationKey] || {}
-      const scrollTopValue = historyKey.scrollTop
-      if (scrollTopValue) {
+      const historyObj = history[this.state.locationKey] || {}
+      const scrollTopValue = historyObj.scrollTop
+
+      const scrollToTarget = typeof this.scrollContainer !== 'undefined' &&
+                             this.scrollContainer
+      if (scrollTopValue && scrollToTarget) {
+        scrollToTarget.scrollTop = scrollTopValue
+      } else if (!scrollToTarget && typeof window !== 'undefined') {
         window.scrollTo(0, scrollTopValue)
       }
     }
@@ -186,13 +191,30 @@ export class StreamComponent extends Component {
   }
 
   setScroll() {
+    let scrollTopValue
+    if (this.scrollContainer) {
+      scrollTopValue = scrollTop(this.scrollContainer)
+    } else {
+      scrollTopValue = scrollTop(window)
+    }
     this.props.dispatch({
       type: ACTION_TYPES.GUI.SET_SCROLL,
       payload: {
         key: this.state.locationKey,
-        scrollTop: scrollTop(window),
+        scrollTop: scrollTopValue,
       },
     })
+  }
+
+  isPageLevelComponent() {
+    return this.props.historyLocationPrefix === null
+  }
+
+  generateLocationKey(locationKey) {
+    if (this.props.historyLocationPrefix) {
+      return `${this.props.historyLocationPrefix}_${locationKey}`
+    }
+    return locationKey
   }
 
   loadPage(rel, scrolled = false) {
