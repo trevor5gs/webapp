@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { debounce } from 'lodash'
-import { TOGGLE_NOTIFICATIONS } from '../../constants/action_types'
+import { GUI } from '../../constants/action_types'
 import { connect } from 'react-redux'
 import { loadNotifications } from '../../actions/notifications'
 import StreamComponent from '../../components/streams/StreamComponent'
@@ -58,7 +58,7 @@ class NotificationsContainer extends Component {
        ) { return }
     const { dispatch } = this.props
     dispatch({
-      type: TOGGLE_NOTIFICATIONS,
+      type: GUI.TOGGLE_NOTIFICATIONS,
       payload: { isNotificationsActive: false },
     })
   };
