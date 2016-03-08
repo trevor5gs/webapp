@@ -4,6 +4,7 @@ import classNames from 'classnames'
 
 const highlightingRules = {
   '/': /^\/$|^\/trending$|^\/recent$/,
+  '/following': /^\/following/,
 }
 
 class NavbarLink extends Component {
