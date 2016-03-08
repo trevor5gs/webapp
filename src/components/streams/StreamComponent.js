@@ -21,10 +21,13 @@ export class StreamComponent extends Component {
   static propTypes = {
     action: PropTypes.object,
     children: PropTypes.any,
+    className: PropTypes.string,
     currentUser: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     mode: PropTypes.string.isRequired,
+    historyLocationPrefix: PropTypes.string,
+    ignoresScrollPosition: PropTypes.bool.isRequired,
     initModel: PropTypes.object,
     json: PropTypes.object.isRequired,
     paginatorText: PropTypes.string,
@@ -71,13 +74,11 @@ export class StreamComponent extends Component {
       type: PropTypes.string,
     }),
     stream: PropTypes.object.isRequired,
-    className: PropTypes.string,
-    historyLocationPrefix: PropTypes.string,
-    ignoresScrollPosition: PropTypes.bool,
   };
 
   static defaultProps = {
     paginatorText: 'Loading',
+    ignoresScrollPosition: false,
   };
 
   componentWillMount() {
@@ -98,7 +99,6 @@ export class StreamComponent extends Component {
     })
     unlisten()
     this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
-    this.ignoresScrollPosition = this.props.ignoresScrollPosition || false
   }
 
   componentDidMount() {
@@ -141,7 +141,7 @@ export class StreamComponent extends Component {
       window.embetter.reloadPlayers()
     }
     const { history, stream } = this.props
-    const shouldScroll = !this.ignoresScrollPosition &&
+    const shouldScroll = !this.props.ignoresScrollPosition &&
       stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
       prevProps.stream.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS
     if (shouldScroll) {
