@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { BEACONS } from '../../constants/action_types'
 import { loadFriends } from '../../actions/stream'
-import Beacon from '../../components/beacons/Beacon'
 import StreamComponent from '../../components/streams/StreamComponent'
+import { ZeroStream } from '../../components/zeros/Zeros'
 
 const BEACON_VERSION = '1'
 
@@ -21,7 +21,7 @@ class Following extends Component {
     }
   }
 
-  onDismissBeacon = () => {
+  onDismissZeroStream = () => {
     const { dispatch } = this.props
     this.setState({ isBeaconActive: false })
     dispatch({ type: BEACONS.LAST_FOLLOWING_VERSION, payload: { version: BEACON_VERSION } })
@@ -30,11 +30,11 @@ class Following extends Component {
   static preRender = (store) =>
     store.dispatch(loadFriends());
 
-  renderBeacon() {
+  renderZeroStream() {
     return (
-      <Beacon emoji="lollipop" onDismiss={ this.onDismissBeacon }>
+      <ZeroStream emoji="lollipop" onDismiss={ this.onDismissZeroStream }>
         Follow people and things that inspire you.
-      </Beacon>
+      </ZeroStream>
     )
   }
 
@@ -42,7 +42,7 @@ class Following extends Component {
     const { isBeaconActive } = this.state
     return (
       <section className="Following Panel">
-        { isBeaconActive ? this.renderBeacon() : null }
+        { isBeaconActive ? this.renderZeroStream() : null }
         <StreamComponent action={loadFriends()} />
       </section>
     )

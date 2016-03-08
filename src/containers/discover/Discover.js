@@ -6,9 +6,9 @@ import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import { loadCommunities, loadDiscoverUsers, loadFeaturedUsers } from '../../actions/discover'
 import { trackEvent } from '../../actions/tracking'
 import Promotion from '../../components/assets/Promotion'
-import Beacon from '../../components/beacons/Beacon'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { TabListLinks } from '../../components/tabs/TabList'
+import { ZeroStream } from '../../components/zeros/Zeros'
 
 const BEACON_VERSION = '1'
 
@@ -36,7 +36,7 @@ class Discover extends Component {
     dispatch(trackEvent(`banderole-credits-clicked`))
   };
 
-  onDismissBeacon = () => {
+  onDismissZeroStream = () => {
     const { dispatch } = this.props
     this.setState({ isBeaconActive: false })
     dispatch({ type: BEACONS.LAST_DISCOVER_VERSION, payload: { version: BEACON_VERSION } })
@@ -45,11 +45,11 @@ class Discover extends Component {
   static preRender = (store, routerState) =>
     store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'));
 
-  renderBeacon() {
+  renderZeroStream() {
     return (
-      <Beacon emoji="crystal_ball" onDismiss={ this.onDismissBeacon }>
+      <ZeroStream emoji="crystal_ball" onDismiss={ this.onDismissZeroStream }>
         Discover inspiring people and beautiful things you won’t find anywhere else.
-      </Beacon>
+      </ZeroStream>
     )
   }
 
@@ -78,7 +78,7 @@ class Discover extends Component {
       ]
     return (
       <section className="Discover Panel" key={`discover_${type}`}>
-        { isBeaconActive ? this.renderBeacon() : null }
+        { isBeaconActive ? this.renderZeroStream() : null }
         <Promotion
           creditsClickAction={ this.onClickTrackCredits }
           isLoggedIn={ isLoggedIn }
