@@ -29,6 +29,7 @@ export class StreamComponent extends Component {
     historyLocationPrefix: PropTypes.string,
     ignoresScrollPosition: PropTypes.bool.isRequired,
     initModel: PropTypes.object,
+    isUserDetail: PropTypes.bool.isRequired,
     json: PropTypes.object.isRequired,
     paginatorText: PropTypes.string,
     renderObj: PropTypes.shape({
@@ -79,6 +80,7 @@ export class StreamComponent extends Component {
   static defaultProps = {
     paginatorText: 'Loading',
     ignoresScrollPosition: false,
+    isUserDetail: false,
   };
 
   componentWillMount() {
@@ -105,10 +107,20 @@ export class StreamComponent extends Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
+
     if (this.isPageLevelComponent()) {
       addScrollObject(this)
       window.scrollTo(0, 0)
     }
+
+    if (this.props.isUserDetail) {
+      const offset = Math.round((window.innerWidth * 0.5625)) - 200
+      window.scrollTo(0, offset)
+      this.saveScroll = false
+    } else {
+      this.saveScroll = true
+    }
+
     addResizeObject(this)
   }
 
@@ -145,6 +157,7 @@ export class StreamComponent extends Component {
       stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
       prevProps.stream.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS
     if (shouldScroll) {
+      this.saveScroll = true
       const historyObj = history[this.state.locationKey] || {}
       const scrollTopValue = historyObj.scrollTop
 
@@ -197,6 +210,10 @@ export class StreamComponent extends Component {
   }
 
   setScroll() {
+    if (!this.saveScroll) {
+      return
+    }
+
     let scrollTopValue
     if (this.scrollContainer) {
       scrollTopValue = scrollTop(this.scrollContainer)
