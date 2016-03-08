@@ -74,6 +74,7 @@ export class StreamComponent extends Component {
       }),
       type: PropTypes.string,
     }),
+    resultPath: PropTypes.string,
     stream: PropTypes.object.isRequired,
   };
 
@@ -134,14 +135,20 @@ export class StreamComponent extends Component {
     }
   }
 
-  // this prevents nested stream components from clobbering parents
-  shouldComponentUpdate(prevProps) {
+  shouldComponentUpdate(prevProps, prevState) {
     const { stream } = this.props
-    if (_.isEqual(prevProps, this.props)) {
+    // this prevents nested stream components from clobbering parents
+    if (stream.meta &&
+        stream.meta.updateKey &&
+        !stream.payload.endpoint.path.match(stream.meta.updateKey)) {
       return false
-    } else if (stream.meta &&
-               stream.meta.updateKey &&
-               !stream.payload.endpoint.path.match(stream.meta.updateKey)) {
+    // when hitting the back button the result can update and
+    // try to feed wrong results to the actions render method
+    // thus causing errors when trying to render wrong results
+    } else if (prevProps.resultPath !== this.props.resultPath) {
+      return false
+    } else if (_.isEqual(prevState, this.state) &&
+               _.isEqual(prevProps, this.props)) {
       return false
     }
     return true
@@ -408,6 +415,7 @@ export function mapStateToProps(state, ownProps) {
     mode: findLayoutMode(state.gui.modes).mode,
     renderObj,
     result,
+    resultPath,
     stream: state.stream,
   }
 }
