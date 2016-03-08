@@ -77,3 +77,16 @@ export const LockIcon = () =>
     </g>
   </SVGIcon>
 
+export const ReplyAllIcon = () =>
+  <SVGIcon className="ReplyAllIcon">
+    <g>
+      <path d="M17.3,14.2c0-2.3-1.9-4.2-4.2-4.2H7.2" />
+    </g>
+    <g>
+      <polyline points="11.2,14 7.2,10 11.2,6" />
+    </g>
+    <g>
+      <polyline points="7,14 3,10 7,6" />
+    </g>
+  </SVGIcon>
+

@@ -31,6 +31,7 @@ class Editor extends Component {
     dispatch: PropTypes.func.isRequired,
     isComment: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
+    isOwnPost: PropTypes.bool,
     onSubmit: PropTypes.func,
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
@@ -138,6 +139,7 @@ class Editor extends Component {
       comment,
       isComment,
       isLoggedIn,
+      isOwnPost,
       post,
       shouldLoadFromState,
       shouldPersist,
@@ -182,7 +184,9 @@ class Editor extends Component {
         cancelAction={ this.cancel }
         editorId={ this.getEditorIdentifier() }
         isComment={ isComment }
+        isOwnPost={ isOwnPost }
         key={ key }
+        post={ post }
         ref="blockCollection"
         repostContent={ repostContent }
         shouldLoadFromState={ shouldLoadFromState }
@@ -194,10 +198,11 @@ class Editor extends Component {
   }
 }
 
-function mapStateToProps({ json, authentication }, ownProps) {
+function mapStateToProps({ authentication, json, profile }, ownProps) {
   return {
     isLoggedIn: authentication.isLoggedIn,
     post: ownProps.post ? json[MAPPING_TYPES.POSTS][ownProps.post.id] : null,
+    isOwnPost: ownProps.post && ownProps.post.authorId === profile.id,
   }
 }
 

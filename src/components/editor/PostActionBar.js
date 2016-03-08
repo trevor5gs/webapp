@@ -5,7 +5,7 @@ import { GUI } from '../../constants/gui_types'
 import { openAlert, closeAlert } from '../../actions/modals'
 import { savePostImage } from '../../actions/posts'
 import Dialog from '../../components/dialogs/Dialog'
-import { PostIcon, CancelIcon, BrowseIcon, CameraIcon } from './EditorIcons'
+import { BrowseIcon, CameraIcon, CancelIcon, PostIcon, ReplyAllIcon } from './EditorIcons'
 
 class PostActionBar extends Component {
 
@@ -14,6 +14,7 @@ class PostActionBar extends Component {
     dispatch: PropTypes.func.isRequired,
     disableSubmitAction: PropTypes.bool,
     editorId: PropTypes.string.isRequired,
+    replyAllAction: PropTypes.func,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
   };
@@ -21,12 +22,6 @@ class PostActionBar extends Component {
   submitted = () => {
     const { submitAction } = this.props
     submitAction()
-    // return if window.diddrag.dragged()
-    // return if @submitButton.classList.contains('sending')
-    // $hideSoftKeyboard()
-    // @editor.submit()
-    // @submitButton.setAttribute('disabled', 'disabled')
-    // @submitButton.classList.add('sending')
   };
 
   isLegitimateFileType(file) {
@@ -61,7 +56,7 @@ class PostActionBar extends Component {
   };
 
   render() {
-    const { disableSubmitAction, submitText } = this.props
+    const { disableSubmitAction, replyAllAction, submitText } = this.props
     return (
       <div className="editor-actions">
 
@@ -74,6 +69,15 @@ class PostActionBar extends Component {
           <span className="PostActionButtonLabel">Cancel</span>
           <CancelIcon/>
         </button>
+
+        {
+          replyAllAction ?
+            <button className="PostActionButton forReplyAll" onClick={ replyAllAction }>
+              <span className="PostActionButtonLabel">Reply All</span>
+              <ReplyAllIcon />
+            </button> :
+            null
+        }
 
         <button
           className={ `PostActionButton for${submitText}` }

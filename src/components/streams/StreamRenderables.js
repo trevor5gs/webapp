@@ -98,16 +98,12 @@ export function postsAsList(posts) {
   return (
     <div className="Posts asList">
       {posts.data.map((post) =>
-        <PostParser
-          post={ post }
-          isEditing={ post.isEditing }
-          isGridLayout={ false }
-          isReposting={ post.isReposting }
-          key={ `postParser_${post.id}` }
-          showComments={ post.showComments }
-          showLovers={ post.showLovers }
-          showReposters={ post.showReposters }
-        />
+        <article id={ `Post_${post.id}` } key={ `postsAsList_${post.id}` } className="PostList">
+          <PostParser
+            isGridLayout={ false }
+            post={ post }
+          />
+        </article>
       )}
     </div>
   )
@@ -152,12 +148,10 @@ export function postDetail(posts, json) {
   return (
     <div className="PostDetails Posts asList">
       <PostDetailHelmet post={ post } author={ author } />
-      <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList">
+      <article id={ `Post_${post.id}` } key={ `postDetail_${post.id}` } className="PostList">
         <PostParser
-          post={ post }
-          isEditing={ post.isEditing }
           isGridLayout={ false }
-          isReposting={ post.isReposting }
+          post={ post }
         />
         { avatarDrawers }
         <Editor post={ post } isComment/>

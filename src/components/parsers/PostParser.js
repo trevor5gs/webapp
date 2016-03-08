@@ -155,7 +155,7 @@ class PostParser extends Component {
     const showEditor = (post.isEditing || post.isReposting) && post.body
     return (
       <div className="Post">
-        {postHeader}
+        { postHeader }
         { showEditor ?
           <Editor post={ post }/> :
           parsePost(post, author, currentUser, isGridLayout)}
@@ -176,8 +176,9 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
     assets,
     author,
     currentUser,
-    isEditing: post.isEditing,
-    isReposting: post.isReposting,
+    isEditing: post.isEditing || false,
+    isReposting: post.isReposting || false,
+    showComments: post.showComments || false,
     showLovers: post.showLovers || false,
     showReposters: post.showReposters || false,
     post,

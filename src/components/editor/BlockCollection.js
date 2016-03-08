@@ -31,6 +31,8 @@ class BlockCollection extends Component {
     editorStore: PropTypes.object,
     emoji: PropTypes.object.isRequired,
     isComment: PropTypes.bool,
+    isOwnPost: PropTypes.bool,
+    postId: PropTypes.string,
     repostContent: PropTypes.array,
     shouldLoadFromState: PropTypes.bool,
     shouldPersist: PropTypes.bool,
@@ -408,6 +410,21 @@ class BlockCollection extends Component {
     this.persistBlocks()
   };
 
+  replyAll = () => {
+    const { postId } = this.props
+    if (!postId) { return }
+    const nameArr = []
+    const usernames = document.querySelectorAll(`#Post_${postId} .CommentUsername`)
+    for (const node of usernames) {
+      if (nameArr.indexOf(node.innerHTML) === -1) {
+        nameArr.push(node.innerHTML)
+      }
+    }
+    if (nameArr.length) {
+      this.appendText(`${nameArr.join(' ')} `)
+    }
+  };
+
   submit = () => {
     const { isComment, submitAction } = this.props
     const data = this.serialize()
@@ -472,7 +489,7 @@ class BlockCollection extends Component {
   }
 
   render() {
-    const { avatar, cancelAction, editorId, isComment, submitText } = this.props
+    const { avatar, cancelAction, editorId, isComment, isOwnPost, submitText } = this.props
     const { dragBlockTop, loadingImageBlocks, order } = this.state
     const hasMention = this.hasMention()
     const hasContent = this.hasContent()
@@ -500,13 +517,13 @@ class BlockCollection extends Component {
           disableSubmitAction={ loadingImageBlocks.length > 0 }
           editorId={ editorId }
           ref="postActionBar"
+          replyAllAction={ isComment && isOwnPost ? this.replyAll : null }
           submitAction={ this.submit }
           submitText={ submitText }
         />
       </div>
     )
   }
-
 }
 
 function mapStateToProps(state, ownProps) {
@@ -515,6 +532,7 @@ function mapStateToProps(state, ownProps) {
     completions: state.editor.completions,
     editorStore: state.editor.editors[ownProps.editorId],
     emoji: state.emoji,
+    postId: ownProps.post ? `${ownProps.post.id}` : null,
   }
 }
 
