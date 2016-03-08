@@ -20,6 +20,7 @@ class UserAvatars extends Component {
           ref="streamComponent"
           action={loadUserAvatars(endpoint, post, resultType)}
           paginatorText="+more.."
+          ignoresScrollPosition
         />
       </section>
     )

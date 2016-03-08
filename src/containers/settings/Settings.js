@@ -351,6 +351,7 @@ class Settings extends Component {
           <div className="SettingsPreferences">
             <StreamComponent
               action={availableToggles()}
+              ignoresScrollPosition
             />
 
             <TreeButton>NSFW</TreeButton>
@@ -379,6 +380,7 @@ class Settings extends Component {
                     className="BlockedUsers"
                     hasShowMoreButton
                     paginatorText="See more"
+                    ignoresScrollPosition
                   />
                 </TreePanel>
               </div> :
@@ -393,6 +395,7 @@ class Settings extends Component {
                     className="MutedUsers"
                     hasShowMoreButton
                     paginatorText="See more"
+                    ignoresScrollPosition
                   />
                 </TreePanel>
               </div> :
