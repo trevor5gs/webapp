@@ -120,7 +120,7 @@ class PostTools extends Component {
         </span>
       )
     }
-    if (author.hasRepostingEnabled) {
+    if (!isOwnPost && author.hasRepostingEnabled) {
       cells.push(
         <span
           className="PostTool RepostTool"
