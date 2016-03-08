@@ -4,6 +4,7 @@ import classNames from 'classnames'
 
 const highlightingRules = {
   '/': /^\/$|^\/trending$|^\/recent$/,
+  '/following': /^\/following/,
 }
 
 class NavbarLink extends Component {
@@ -28,7 +29,7 @@ class NavbarLink extends Component {
       modifiers,
       {
         active: highlightingRules[to] ?
-          pathname.match(NavbarLink.highlightingRules[to]) :
+          pathname.match(highlightingRules[to]) :
           pathname.match(to),
       },
     )
