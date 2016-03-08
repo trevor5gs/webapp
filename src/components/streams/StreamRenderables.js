@@ -2,10 +2,12 @@ import React from 'react'
 import { camelize } from 'humps'
 import { postLovers, postReposters } from '../../networking/api'
 import { getLinkArray, getLinkObject } from '../base/json_helper'
+import { USERS } from '../../constants/mapping_types'
 import PostParser from '../parsers/PostParser'
 import CommentParser from '../parsers/CommentParser'
 import NotificationParser from '../parsers/NotificationParser'
 import PostsAsGrid from '../posts/PostsAsGrid'
+import { PostDetailHelmet } from '../helmets/PostDetailHelmet'
 import { HeartIcon, RepostIcon } from '../posts/PostIcons'
 import UserAvatar from '../users/UserAvatar'
 import UserAvatars from '../users/UserAvatars'
@@ -137,6 +139,7 @@ export function postRepostersDrawer(post) {
 
 export function postDetail(posts, json) {
   const post = posts.data[0]
+  const author = json[USERS][post.authorId]
   let comments = getLinkArray(post, 'comments', json) || []
   comments = comments.concat(posts.nestedData)
   const avatarDrawers = []
@@ -148,7 +151,8 @@ export function postDetail(posts, json) {
   }
   return (
     <div className="PostDetails Posts asList">
-      <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList" >
+      <PostDetailHelmet post={ post } author={ author } />
+      <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList">
         <PostParser
           post={ post }
           isEditing={ post.isEditing }
@@ -210,7 +214,7 @@ export function notificationList(notifications, json) {
 export function userAvatars(users) {
   return (
     users.data.map((user) =>
-      <UserAvatar user={user} key={`userAvatar_${user.id}`}/>
+      <UserAvatar user={user} key={`userAvatar_${user.id}`} />
     )
   )
 }
