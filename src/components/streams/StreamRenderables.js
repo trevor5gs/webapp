@@ -1,4 +1,5 @@
 import React from 'react'
+import { uniqBy } from 'lodash'
 import { camelize } from 'humps'
 import { postLovers, postReposters } from '../../networking/api'
 import { getLinkArray, getLinkObject } from '../base/json_helper'
@@ -206,8 +207,9 @@ export function notificationList(notifications, json) {
 }
 
 export function userAvatars(users) {
+  const uniqUsers = uniqBy(users.data, (user) => user.id)
   return (
-    users.data.map((user) =>
+    uniqUsers.map((user) =>
       <UserAvatar user={user} key={`userAvatar_${user.id}`} />
     )
   )
