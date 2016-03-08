@@ -213,7 +213,7 @@ export class StreamComponent extends Component {
   }
 
   isPageLevelComponent() {
-    return this.props.historyLocationPrefix === null
+    return !this.props.historyLocationPrefix
   }
 
   generateLocationKey(locationKey) {
