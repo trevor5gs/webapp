@@ -21,7 +21,7 @@
 
 .PostHeaderAuthor,
 .RepostHeaderAuthor
-  max-width: calc(100% - #{rem(50)})
+  max-width: calc(100% - #{rem(80)})
 
 .PostHeader .RelationsGroup,
 .RepostHeader .RelationsGroup
@@ -48,6 +48,7 @@
   margin-top: rem(-12)
   margin-left: rem(40)
   line-height: rem(15)
+  max-width: calc(100% - #{rem(120)})
 
 .PostHeader .Avatar,
 .RepostHeader .Avatar
@@ -58,7 +59,14 @@
 .no-touch .PostHeaderLink:hover
   color: #535353
 
+.PostHeaderTimeAgoLink
+  position: absolute
+  top: rem(20)
+  right: 0
+.no-touch .PostHeaderTimeAgoLink:hover
+  color: #535353
 
+// MIN WIDTH!!!
 @media(min-width: #{$break-2})
   .PostHeader,
   .RepostHeader
@@ -76,6 +84,12 @@
   .PostHeader .Avatar,
   .RepostHeader .Avatar
     top: rem(20)
+  .PostHeaderTimeAgoLink
+    top: rem(30)
+
+@media(min-width: #{$break-3})
+  .Posts.asList .PostHeaderTimeAgoLink
+    display: none
 
 
 // Don't show the relationship buttons in these specific conditions
@@ -85,4 +99,15 @@
 .Panel.UserDetail .PostHeader .RelationsGroup[data-priority="noise"],
 .Panel.UserDetail .PostHeader .RelationsGroup[data-priority="self"]
   display: none
+
+// MAX WIDTH!!!
+@media(max-width: #{$break-2-max})
+  .Posts.asGrid .PostHeaderTimeAgoLink,
+  .Posts.asGrid .PostHeader .RelationsGroup,
+  .Posts.asGrid .RepostHeader .RelationsGroup
+    display: none
+  .Posts.asGrid .PostHeaderAuthor,
+  .Posts.asGrid .RepostHeaderAuthor,
+  .Posts.asGrid .RepostHeaderReposter
+    max-width: 100%
 

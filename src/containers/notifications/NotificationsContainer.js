@@ -51,7 +51,11 @@ class NotificationsContainer extends Component {
   };
 
   onDocumentClick = (e) => {
-    if (e.target.classList.contains('TabButton')) { return }
+    const classList = e.target.classList
+    if (classList.contains('TabButton') ||
+        classList.contains('RelationshipButton') ||
+        classList.contains('StarshipButton')
+       ) { return }
     const { dispatch } = this.props
     dispatch({
       type: TOGGLE_NOTIFICATIONS,

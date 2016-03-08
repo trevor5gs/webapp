@@ -23,8 +23,14 @@ function commentStream(post, author) {
   )
 }
 
+const PostHeaderTimeAgoLink = ({ to, createdAt }) =>
+  <Link className="PostHeaderTimeAgoLink" to={ to }>
+    <span>{new Date(createdAt).timeAgoInWords()}</span>
+  </Link>
+
 function header(post, author) {
   if (!post || !author) { return null }
+  const postDetailPath = getPostDetailPath(author, post)
   return (
     <header className="PostHeader" key={`PostHeader_${post.id}`}>
       <div className="PostHeaderAuthor">
@@ -34,12 +40,14 @@ function header(post, author) {
         </Link>
       </div>
       <RelationsGroup user={author} classList="inHeader" />
+      <PostHeaderTimeAgoLink to={ postDetailPath } createdAt={ post.createdAt }/>
     </header>
   )
 }
 
 function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   if (!post || !repostedBy) { return null }
+  const postDetailPath = getPostDetailPath(repostAuthor, post)
   return (
     <header className="RepostHeader" key={`RepostHeader_${post.id}`}>
       <div className="RepostHeaderAuthor">
@@ -55,6 +63,7 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
           {` by @${repostedBy.username}`}
         </Link>
       </div>
+      <PostHeaderTimeAgoLink to={ postDetailPath } createdAt={ post.createdAt }/>
     </header>
   )
 }
