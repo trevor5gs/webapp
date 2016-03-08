@@ -148,12 +148,14 @@ export class StreamComponent extends Component {
       const historyObj = history[this.state.locationKey] || {}
       const scrollTopValue = historyObj.scrollTop
 
-      const scrollToTarget = typeof this.scrollContainer !== 'undefined' &&
-                             this.scrollContainer
-      if (scrollTopValue && scrollToTarget) {
-        scrollToTarget.scrollTop = scrollTopValue
-      } else if (!scrollToTarget && typeof window !== 'undefined') {
-        window.scrollTo(0, scrollTopValue)
+      if (scrollTopValue) {
+        const scrollToTarget = typeof this.scrollContainer !== 'undefined' &&
+                               this.scrollContainer
+        if (scrollToTarget) {
+          scrollToTarget.scrollTop = scrollTopValue
+        } else if (!scrollToTarget && typeof window !== 'undefined') {
+          window.scrollTo(0, scrollTopValue)
+        }
       }
     }
   }
@@ -211,7 +213,7 @@ export class StreamComponent extends Component {
   }
 
   isPageLevelComponent() {
-    return this.props.historyLocationPrefix === null
+    return !this.props.historyLocationPrefix
   }
 
   generateLocationKey(locationKey) {
