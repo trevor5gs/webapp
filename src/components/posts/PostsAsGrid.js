@@ -44,7 +44,7 @@ class PostsAsGrid extends Component {
   };
 
   shouldComponentUpdate(prevProps) {
-    if (_.isEqual(prevProps.posts, this.props.posts)) {
+    if (_.isEqual(prevProps, this.props)) {
       return false
     }
     return true

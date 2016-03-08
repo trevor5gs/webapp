@@ -136,9 +136,8 @@ export class StreamComponent extends Component {
 
   // this prevents nested stream components from clobbering parents
   shouldComponentUpdate(prevProps) {
-    const { mode, renderObj, stream } = this.props
-    const { mode: prevMode, renderObj: prevRenderObj, stream: prevStream } = prevProps
-    if (mode === prevMode && _.isEqual(renderObj, prevRenderObj) && _.isEqual(stream, prevStream)) {
+    const { stream } = this.props
+    if (_.isEqual(prevProps, this.props)) {
       return false
     } else if (stream.meta &&
                stream.meta.updateKey &&
