@@ -5,7 +5,7 @@ import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import { loadCommunities, loadDiscoverUsers, loadFeaturedUsers } from '../../actions/discover'
 import { trackEvent } from '../../actions/tracking'
-import Banderole from '../../components/assets/Banderole'
+import Promotion from '../../components/assets/Promotion'
 import Beacon from '../../components/beacons/Beacon'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { TabListLinks } from '../../components/tabs/TabList'
@@ -79,7 +79,7 @@ class Discover extends Component {
     return (
       <section className="Discover Panel" key={`discover_${type}`}>
         { isBeaconActive ? this.renderBeacon() : null }
-        <Banderole
+        <Promotion
           creditsClickAction={ this.onClickTrackCredits }
           isLoggedIn={ isLoggedIn }
           userlist={ isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS }

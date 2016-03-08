@@ -7,7 +7,7 @@ import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import * as SearchActions from '../../actions/search'
 import { trackEvent } from '../../actions/tracking'
 import { updateQueryParams } from '../../components/base/uri_helper'
-import Banderole from '../../components/assets/Banderole'
+import Promotion from '../../components/assets/Promotion'
 import SearchControl from '../../components/forms/SearchControl'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { TabListButtons } from '../../components/tabs/TabList'
@@ -98,7 +98,7 @@ class Search extends Component {
     ]
     return (
       <section className="Search Panel">
-        <Banderole
+        <Promotion
           creditsClickAction={ this.onClickTrackCredits }
           isLoggedIn={ isLoggedIn }
           userlist={ isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS }

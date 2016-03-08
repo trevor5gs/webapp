@@ -12,7 +12,7 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
-class Banderole extends Component {
+class Promotion extends Component {
 
   static propTypes = {
     creditsClickAction: PropTypes.func,
@@ -89,13 +89,13 @@ class Banderole extends Component {
     if (!featuredUser) { return null }
     const { caption } = featuredUser
     const src = this.getCoverSource()
-    const klassNames = classNames('Banderole', status)
+    const klassNames = classNames('Promotion', status)
     const style = src ? { backgroundImage: `url(${src})` } : null
 
     return (
       <div className={klassNames}>
-        <figure className="BanderoleImage" style={style} />
-        <div className="BanderoleCaption">
+        <figure className="PromotionImage" style={style} />
+        <div className="PromotionCaption">
           { caption }
           { isLoggedIn ? null : <Link to="https://ello.co/signup">Sign Up</Link> }
         </div>
@@ -105,5 +105,5 @@ class Banderole extends Component {
   }
 }
 
-export default Banderole
+export default Promotion
 
