@@ -18,13 +18,17 @@ let ticking = false
 class NotificationsContainer extends Component {
 
   static propTypes = {
+    activeTabType: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    activeTabType: 'all',
   };
 
   componentWillMount() {
     this.body = ReactDOM.findDOMNode(document.body)
     this.body.classList.add('notificationsAreActive')
-    this.state = { activeTabType: 'all' }
     this.onScrolled = debounce(this.onScrolled, 300)
   }
 
@@ -35,7 +39,7 @@ class NotificationsContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.activeTabType !== this.state.activeTabType && this.refs.scrollable) {
+    if (prevProps.activeTabType !== this.props.activeTabType && this.refs.scrollable) {
       this.refs.streamComponent.refs.wrappedInstance.scrollContainer = this.refs.scrollable
       this.refs.scrollable.scrollTop = 0
     }
@@ -47,7 +51,11 @@ class NotificationsContainer extends Component {
   }
 
   onTabClick = ({ type }) => {
-    this.setState({ activeTabType: type })
+    const { dispatch } = this.props
+    dispatch({
+      type: GUI.NOTIFICATIONS_TAB,
+      payload: { activeTabType: type },
+    })
   };
 
   onDocumentClick = (e) => {
@@ -88,7 +96,7 @@ class NotificationsContainer extends Component {
   };
 
   render() {
-    const { activeTabType } = this.state
+    const { activeTabType } = this.props
     const tabs = [
       { type: 'all', children: 'All' },
       { type: 'comments', children: <BubbleIcon /> },
@@ -120,5 +128,11 @@ class NotificationsContainer extends Component {
   }
 }
 
-export default connect(null, null, null, { withRef: true })(NotificationsContainer)
+function mapStateToProps(state) {
+  return {
+    activeTabType: state.modal.activeNotificationsTabType,
+  }
+}
+
+export default connect(mapStateToProps, null, null, { withRef: true })(NotificationsContainer)
 
