@@ -49,6 +49,11 @@ function _updatePostLoves(state, newState, action) {
       return state
   }
 
+  // since we pull `model` out of payload, not state, we don't want to set
+  // or update the lovesCount during a LOVE_SUCCESS.
+  //
+  // During LOVE_REQUEST, model.lovesCount is incremented.
+  // In LOVE_SUCCESS, model.lovesCount is the *old* value, so just ignore it.
   if (delta !== 0) {
     newPost.lovesCount = Number(model.lovesCount) + delta
   }
