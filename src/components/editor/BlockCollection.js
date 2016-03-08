@@ -436,13 +436,13 @@ class BlockCollection extends Component {
     }
   };
 
-  clearBlocks() {
+  clearBlocks = () => {
     this.setState({ collection: {}, order: [] })
     requestAnimationFrame(() => {
       this.uid = 0
       this.addEmptyTextBlock()
     })
-  }
+  };
 
   serialize() {
     const { order } = this.state
@@ -536,5 +536,5 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export default connect(mapStateToProps)(BlockCollection)
+export default connect(mapStateToProps, null, null, { withRef: true })(BlockCollection)
 

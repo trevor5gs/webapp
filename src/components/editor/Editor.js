@@ -120,6 +120,7 @@ class Editor extends Component {
   cancelConfirmed = () => {
     const { comment, dispatch, post, shouldPersist } = this.props
     this.closeModal()
+    this.refs.blockCollection.refs.wrappedInstance.clearBlocks()
     dispatch(closeOmnibar())
     if (post) {
       dispatch(toggleEditing(post, false))
