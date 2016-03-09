@@ -20,6 +20,34 @@ function createRedirect(from, to) {
 }
 
 const routes = store => {
+  // Wrap up authenticated routes
+  const authenticate = (route) => {
+    const oldOnEnter = route.onEnter
+    if (typeof oldOnEnter === 'undefined') {
+      return {
+        ...route,
+        onEnter(nextState, replace) {
+          const { authentication: { isLoggedIn } } = store.getState()
+          if (!isLoggedIn) {
+            replace({ pathName: '/enter', state: nextState })
+          }
+        },
+      }
+    }
+
+    return {
+      ...route,
+      onEnter(nextState, replace) {
+        const { authentication: { isLoggedIn } } = store.getState()
+        if (!isLoggedIn) {
+          replace({ pathName: '/enter', state: nextState })
+        } else {
+          oldOnEnter(nextState, replace)
+        }
+      },
+    }
+  }
+
   const indexRoute = {
     getComponents: getDiscoverComponents,
 
@@ -44,13 +72,13 @@ const routes = store => {
       childRoutes: [
         PostDetailRoute,
         ...AuthenticationRoutes,
-        ...DiscoverRoutes,
-        ...StreamsRoutes,
-        NotificationsRoute,
-        ...InvitationsRoutes,
-        ...SettingsRoutes,
+        ...DiscoverRoutes.map(route => authenticate(route)),
+        ...StreamsRoutes.map(route => authenticate(route)),
+        authenticate(NotificationsRoute),
+        ...InvitationsRoutes.map(route => authenticate(route)),
+        ...SettingsRoutes.map(route => authenticate(route)),
         createRedirect('onboarding', '/onboarding/communities'),
-        OnboardingRoute,
+        authenticate(OnboardingRoute),
         ...SearchRoutes,
         UserDetailRoute,
       ],
