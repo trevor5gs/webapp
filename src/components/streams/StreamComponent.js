@@ -390,7 +390,7 @@ export function mapStateToProps(state, ownProps) {
     // since you can unblock/unmute them from here
     for (const id of result.ids) {
       if (_.get(state.json, [result.type, id]) &&
-          (state.routing.location.pathname === '/settings' ||
+          (document.location.pathname === '/settings' ||
           (!deletedCollection || deletedCollection.indexOf(id) === -1))) {
         renderObj.data.push(_.get(state.json, [result.type, id]))
       }
@@ -400,7 +400,7 @@ export function mapStateToProps(state, ownProps) {
       const dataProp = payload.endpoint.pagingPath ? 'nestedData' : 'data'
       for (const nextId of result.next.ids) {
         if (state.json[result.next.type][nextId] &&
-            (state.routing.location.pathname === '/settings' ||
+            (document.location.pathname === '/settings' ||
             (!nextDeletedCollection || nextDeletedCollection.indexOf(nextId) === -1))) {
           renderObj[dataProp].push(state.json[result.next.type][nextId])
         }
