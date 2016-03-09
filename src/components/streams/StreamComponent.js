@@ -25,7 +25,7 @@ export class StreamComponent extends Component {
     dispatch: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     mode: PropTypes.string.isRequired,
-    historyLocationPrefix: PropTypes.string,
+    historyLocationOverride: PropTypes.string,
     ignoresScrollPosition: PropTypes.bool.isRequired,
     initModel: PropTypes.object,
     isUserDetail: PropTypes.bool.isRequired,
@@ -110,7 +110,6 @@ export class StreamComponent extends Component {
 
     if (this.isPageLevelComponent()) {
       addScrollObject(this)
-      window.scrollTo(0, 0)
     }
 
     if (this.props.isUserDetail) {
@@ -235,12 +234,12 @@ export class StreamComponent extends Component {
   }
 
   isPageLevelComponent() {
-    return !this.props.historyLocationPrefix
+    return !this.props.historyLocationOverride
   }
 
   generateLocationKey(locationKey) {
-    if (this.props.historyLocationPrefix) {
-      return `${this.props.historyLocationPrefix}_${locationKey}`
+    if (this.props.historyLocationOverride) {
+      return this.props.historyLocationOverride
     }
     return locationKey
   }

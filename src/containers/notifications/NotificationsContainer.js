@@ -120,7 +120,7 @@ class NotificationsContainer extends Component {
             className="asFullWidth"
             key={ `notificationPanel_${activeTabType}` }
             ref="streamComponent"
-            historyLocationPrefix={ `notifications_${activeTabType}` }
+            historyLocationOverride={ `notifications_${activeTabType}` }
           />
         </div>
       </div>
