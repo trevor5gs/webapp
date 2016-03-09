@@ -15,27 +15,26 @@ let location = {}
 // order matters for matching routes
 const initialState = {
   modes: [
-    { label: 'discover', mode: 'grid', regex: /\/discover|\/explore/ },
-    { label: 'following', mode: 'grid', regex: /\/following/ },
-    { label: 'invitations', mode: 'list', regex: /\/invitations/ },
-    { label: 'onboarding', mode: 'grid', regex: /\/onboarding/ },
-    { label: 'search', mode: 'grid', regex: /\/search|\/find/ },
-    { label: 'starred', mode: 'list', regex: /\/starred/ },
-    { label: 'posts', mode: 'list', regex: /\/[\w\-]+\/post\/.+/ },
-    { label: 'users/following', mode: 'grid', regex: /\/[\w\-]+\/following/ },
-    { label: 'users/followers', mode: 'grid', regex: /\/[\w\-]+\/followers/ },
-    { label: 'users/loves', mode: 'grid', regex: /\/[\w\-]+\/loves/ },
-    { label: 'users', mode: 'list', regex: /\/[\w\-]+/ },
+    { label: 'discover', mode: 'grid', regex: '\/discover|\/explore' },
+    { label: 'following', mode: 'grid', regex: '\/following' },
+    { label: 'invitations', mode: 'list', regex: '\/invitations' },
+    { label: 'onboarding', mode: 'grid', regex: '\/onboarding' },
+    { label: 'search', mode: 'grid', regex: '\/search|\/find' },
+    { label: 'starred', mode: 'list', regex: '\/starred' },
+    { label: 'posts', mode: 'list', regex: '\/[\\w\\-]+\/post\/.+' },
+    { label: 'users/following', mode: 'grid', regex: '\/[\\w\\-]+\/following' },
+    { label: 'users/followers', mode: 'grid', regex: '\/[\\w\\-]+\/followers' },
+    { label: 'users/loves', mode: 'grid', regex: '\/[\\w\\-]+\/loves' },
+    { label: 'users', mode: 'list', regex: '\/[\\w\\-]+' },
   ],
   newNotificationContent: false,
   history: {},
 }
 
-// TODO: figure out why the users regex doesn't work properly
 export function findLayoutMode(modes) {
   for (const mode of modes) {
-    const regEx = new RegExp(mode.regex)
-    if (regEx.test(location.pathname)) {
+    const regex = new RegExp(mode.regex)
+    if (regex.test(location.pathname)) {
       return mode
     }
   }
