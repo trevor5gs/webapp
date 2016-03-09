@@ -21,7 +21,6 @@ export const HEAD_SUCCESS = 'HEAD_SUCCESS'
 export const HEAD_FAILURE = 'HEAD_FAILURE'
 
 export const SET_LAYOUT_MODE = 'SET_LAYOUT_MODE'
-export const TOGGLE_NOTIFICATIONS = 'TOGGLE_NOTIFICATIONS'
 
 export const ALERT = {
   OPEN: 'ALERT.OPEN',
@@ -95,6 +94,7 @@ export const INVITATIONS = {
 export const MODAL = {
   OPEN: 'MODAL.OPEN',
   CLOSE: 'MODAL.CLOSE',
+  TOGGLE_NOTIFICATIONS: 'MODAL.TOGGLE_NOTIFICATIONS',
 }
 
 export const OMNIBAR = {
@@ -231,5 +231,6 @@ export const TRACK = {
 }
 
 export const GUI = {
-  SET_SCROLL: 'SET_SCROLL',
+  SET_SCROLL: 'GUI.SET_SCROLL',
+  NOTIFICATIONS_TAB: 'GUI.NOTIFICATIONS_TAB',
 }
