@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { debounce } from 'lodash'
-import { GUI } from '../../constants/action_types'
+import { GUI, MODAL } from '../../constants/action_types'
 import { connect } from 'react-redux'
 import { loadNotifications } from '../../actions/notifications'
 import StreamComponent from '../../components/streams/StreamComponent'
@@ -66,7 +66,7 @@ class NotificationsContainer extends Component {
        ) { return }
     const { dispatch } = this.props
     dispatch({
-      type: GUI.TOGGLE_NOTIFICATIONS,
+      type: MODAL.TOGGLE_NOTIFICATIONS,
       payload: { isNotificationsActive: false },
     })
   };
@@ -130,7 +130,7 @@ class NotificationsContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    activeTabType: state.modal.activeNotificationsTabType,
+    activeTabType: state.gui.activeNotificationsTabType,
   }
 }
 

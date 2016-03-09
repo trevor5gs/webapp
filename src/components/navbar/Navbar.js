@@ -195,7 +195,7 @@ class Navbar extends Component {
     if (e) { e.preventDefault() }
     const { dispatch, isNotificationsActive } = this.props
     dispatch({
-      type: ACTION_TYPES.GUI.TOGGLE_NOTIFICATIONS,
+      type: ACTION_TYPES.MODAL.TOGGLE_NOTIFICATIONS,
       payload: { isNotificationsActive: !isNotificationsActive },
     })
   };

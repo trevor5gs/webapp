@@ -14,6 +14,7 @@ import {
 let location = {}
 // order matters for matching routes
 const initialState = {
+  activeNotificationsTabType: 'all',
   modes: [
     { label: 'discover', mode: 'grid', regex: /\/discover|\/explore/ },
     { label: 'following', mode: 'grid', regex: /\/following/ },
@@ -76,6 +77,8 @@ export function gui(state = initialState, action = { type: '' }) {
     case UPDATE_LOCATION:
       location = action.payload
       return state
+    case GUI.NOTIFICATIONS_TAB:
+      return { ...state, activeNotificationsTabType: action.payload.activeTabType }
     case GUI.SET_SCROLL:
       newState.history[action.payload.key] = { ...action.payload }
       return newState
