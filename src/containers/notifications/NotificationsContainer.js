@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { debounce } from 'lodash'
-import { TOGGLE_NOTIFICATIONS } from '../../constants/action_types'
+import { GUI, MODAL } from '../../constants/action_types'
 import { connect } from 'react-redux'
 import { loadNotifications } from '../../actions/notifications'
 import StreamComponent from '../../components/streams/StreamComponent'
@@ -18,18 +18,31 @@ let ticking = false
 class NotificationsContainer extends Component {
 
   static propTypes = {
+    activeTabType: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    activeTabType: 'all',
   };
 
   componentWillMount() {
     this.body = ReactDOM.findDOMNode(document.body)
     this.body.classList.add('notificationsAreActive')
-    this.state = { activeTabType: 'all' }
     this.onScrolled = debounce(this.onScrolled, 300)
   }
 
   componentDidMount() {
     document.addEventListener('click', this.onDocumentClick)
+
+    this.refs.streamComponent.refs.wrappedInstance.scrollContainer = this.refs.scrollable
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.activeTabType !== this.props.activeTabType && this.refs.scrollable) {
+      this.refs.streamComponent.refs.wrappedInstance.scrollContainer = this.refs.scrollable
+      this.refs.scrollable.scrollTop = 0
+    }
   }
 
   componentWillUnmount() {
@@ -38,14 +51,22 @@ class NotificationsContainer extends Component {
   }
 
   onTabClick = ({ type }) => {
-    this.setState({ activeTabType: type })
+    const { dispatch } = this.props
+    dispatch({
+      type: GUI.NOTIFICATIONS_TAB,
+      payload: { activeTabType: type },
+    })
   };
 
   onDocumentClick = (e) => {
-    if (e.target.classList.contains('TabButton')) { return }
+    const classList = e.target.classList
+    if (classList.contains('TabButton') ||
+        classList.contains('RelationshipButton') ||
+        classList.contains('StarshipButton')
+       ) { return }
     const { dispatch } = this.props
     dispatch({
-      type: TOGGLE_NOTIFICATIONS,
+      type: MODAL.TOGGLE_NOTIFICATIONS,
       payload: { isNotificationsActive: false },
     })
   };
@@ -53,6 +74,9 @@ class NotificationsContainer extends Component {
   onScrolled = () => {
     const { scrollable } = this.refs
     if (!scrollable) { return }
+
+    this.refs.streamComponent.refs.wrappedInstance.onScroll()
+
     const scrollY = Math.ceil(scrollable.scrollTop)
     const scrollHeight = Math.max(scrollable.scrollHeight, scrollable.offsetHeight)
     const scrollBottom = Math.round(scrollHeight - scrollable.offsetHeight)
@@ -72,7 +96,7 @@ class NotificationsContainer extends Component {
   };
 
   render() {
-    const { activeTabType } = this.state
+    const { activeTabType } = this.props
     const tabs = [
       { type: 'all', children: 'All' },
       { type: 'comments', children: <BubbleIcon /> },
@@ -96,6 +120,7 @@ class NotificationsContainer extends Component {
             className="asFullWidth"
             key={ `notificationPanel_${activeTabType}` }
             ref="streamComponent"
+            historyLocationPrefix={ `notifications_${activeTabType}` }
           />
         </div>
       </div>
@@ -103,5 +128,11 @@ class NotificationsContainer extends Component {
   }
 }
 
-export default connect(null, null, null, { withRef: true })(NotificationsContainer)
+function mapStateToProps(state) {
+  return {
+    activeTabType: state.gui.activeNotificationsTabType,
+  }
+}
+
+export default connect(mapStateToProps, null, null, { withRef: true })(NotificationsContainer)
 

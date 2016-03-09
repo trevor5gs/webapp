@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react'
-import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { findBy } from '../../components/base/json_helper'
 import { loadUserDetail, loadUserLoves, loadUserPosts, loadUserUsers } from '../../actions/user'
 import Cover from '../../components/assets/Cover'
+import { UserDetailHelmet } from '../../components/helmets/UserDetailHelmet'
 import StreamComponent from '../../components/streams/StreamComponent'
 import UserList from '../../components/users/UserList'
 import {
@@ -32,12 +32,6 @@ class UserDetail extends Component {
       saidHelloTo: false,
     }
     dispatch(loadUserDetail(`~${params.username}`))
-  }
-
-  componentDidMount() {
-    // Calculate the cover height (ResizeComponent isn't initialized yet)
-    const offset = Math.round((window.innerWidth * 0.5625)) - 200
-    window.scrollTo(0, offset)
   }
 
   onZeroStateHello = () => {
@@ -126,7 +120,7 @@ class UserDetail extends Component {
     }
     return (
       <section className="UserDetail Panel" key={ `userDetail_${type}` }>
-        <Helmet title={`${params.username}`} />
+        { user ? <UserDetailHelmet user={ user }/> : null }
         <div className="UserDetails">
           { userEls }
           { user && user.relationshipPriority === 'self' ?
@@ -137,6 +131,7 @@ class UserDetail extends Component {
             action={ streamAction }
             key={ params.username }
             ref="streamComponent"
+            isUserDetail
           />
         </div>
       </section>

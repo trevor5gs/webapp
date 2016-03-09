@@ -1,11 +1,14 @@
 import React from 'react'
+import { uniqBy } from 'lodash'
 import { camelize } from 'humps'
 import { postLovers, postReposters } from '../../networking/api'
 import { getLinkArray, getLinkObject } from '../base/json_helper'
+import { USERS } from '../../constants/mapping_types'
 import PostParser from '../parsers/PostParser'
 import CommentParser from '../parsers/CommentParser'
 import NotificationParser from '../parsers/NotificationParser'
 import PostsAsGrid from '../posts/PostsAsGrid'
+import { PostDetailHelmet } from '../helmets/PostDetailHelmet'
 import { HeartIcon, RepostIcon } from '../posts/PostIcons'
 import UserAvatar from '../users/UserAvatar'
 import UserAvatars from '../users/UserAvatars'
@@ -96,16 +99,12 @@ export function postsAsList(posts) {
   return (
     <div className="Posts asList">
       {posts.data.map((post) =>
-        <PostParser
-          post={ post }
-          isEditing={ post.isEditing }
-          isGridLayout={ false }
-          isReposting={ post.isReposting }
-          key={ `postParser_${post.id}` }
-          showComments={ post.showComments }
-          showLovers={ post.showLovers }
-          showReposters={ post.showReposters }
-        />
+        <article id={ `Post_${post.id}` } key={ `postsAsList_${post.id}` } className="PostList">
+          <PostParser
+            isGridLayout={ false }
+            post={ post }
+          />
+        </article>
       )}
     </div>
   )
@@ -116,6 +115,7 @@ export function postLoversDrawer(post) {
     <UserAvatars
       endpoint={ postLovers(post) }
       icon={ <HeartIcon /> }
+      key={ `userAvatarsLovers_${post.id}` }
       post={ post }
       resultType="love"
     />
@@ -127,6 +127,7 @@ export function postRepostersDrawer(post) {
     <UserAvatars
       endpoint={ postReposters(post) }
       icon={ <RepostIcon /> }
+      key={ `userAvatarsReposters_${post.id}` }
       post={ post }
       resultType="repost"
     />
@@ -135,6 +136,7 @@ export function postRepostersDrawer(post) {
 
 export function postDetail(posts, json) {
   const post = posts.data[0]
+  const author = json[USERS][post.authorId]
   let comments = getLinkArray(post, 'comments', json) || []
   comments = comments.concat(posts.nestedData)
   const avatarDrawers = []
@@ -146,12 +148,11 @@ export function postDetail(posts, json) {
   }
   return (
     <div className="PostDetails Posts asList">
-      <article ref={ `postList_${post.id}` } key={ post.id } className="Post PostList" >
+      <PostDetailHelmet post={ post } author={ author } />
+      <article id={ `Post_${post.id}` } key={ `postDetail_${post.id}` } className="PostList">
         <PostParser
-          post={ post }
-          isEditing={ post.isEditing }
           isGridLayout={ false }
-          isReposting={ post.isReposting }
+          post={ post }
         />
         { avatarDrawers }
         <Editor post={ post } isComment/>
@@ -195,7 +196,7 @@ export function notificationList(notifications, json) {
         return (
           <NotificationParser
             json={ json }
-            key={ `notificationParser_${subject.createdAt}` }
+            key={ `notificationParser_${notification.createdAt}` }
             notification={ notification }
             subject={ subject }
           />
@@ -206,9 +207,10 @@ export function notificationList(notifications, json) {
 }
 
 export function userAvatars(users) {
+  const uniqUsers = uniqBy(users.data, (user) => user.id)
   return (
-    users.data.map((user) =>
-      <UserAvatar user={user} key={`userAvatar_${user.id}`}/>
+    uniqUsers.map((user) =>
+      <UserAvatar user={user} key={`userAvatar_${user.id}`} />
     )
   )
 }

@@ -3,7 +3,6 @@ import {
   AUTHENTICATION,
   MODAL,
   PROFILE,
-  TOGGLE_NOTIFICATIONS,
 } from '../constants/action_types'
 
 const initialState = {
@@ -21,7 +20,7 @@ export function modal(state = initialState, action) {
     case MODAL.OPEN:
     case MODAL.CLOSE:
       return { ...state, ...action.payload }
-    case TOGGLE_NOTIFICATIONS:
+    case MODAL.TOGGLE_NOTIFICATIONS:
       return { ...state, isNotificationsActive: action.payload.isNotificationsActive }
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:

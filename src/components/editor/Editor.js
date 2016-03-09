@@ -30,6 +30,8 @@ class Editor extends Component {
     comment: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     isComment: PropTypes.bool,
+    isLoggedIn: PropTypes.bool,
+    isOwnPost: PropTypes.bool,
     onSubmit: PropTypes.func,
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
@@ -118,6 +120,7 @@ class Editor extends Component {
   cancelConfirmed = () => {
     const { comment, dispatch, post, shouldPersist } = this.props
     this.closeModal()
+    this.refs.blockCollection.refs.wrappedInstance.clearBlocks()
     dispatch(closeOmnibar())
     if (post) {
       dispatch(toggleEditing(post, false))
@@ -136,10 +139,13 @@ class Editor extends Component {
       autoPopulate,
       comment,
       isComment,
+      isLoggedIn,
+      isOwnPost,
       post,
       shouldLoadFromState,
       shouldPersist,
     } = this.props
+    if (!isLoggedIn) { return null }
     let blocks = []
     let repostContent = []
     let submitText
@@ -179,7 +185,9 @@ class Editor extends Component {
         cancelAction={ this.cancel }
         editorId={ this.getEditorIdentifier() }
         isComment={ isComment }
+        isOwnPost={ isOwnPost }
         key={ key }
+        post={ post }
         ref="blockCollection"
         repostContent={ repostContent }
         shouldLoadFromState={ shouldLoadFromState }
@@ -191,9 +199,11 @@ class Editor extends Component {
   }
 }
 
-function mapStateToProps({ json }, ownProps) {
+function mapStateToProps({ authentication, json, profile }, ownProps) {
   return {
+    isLoggedIn: authentication.isLoggedIn,
     post: ownProps.post ? json[MAPPING_TYPES.POSTS][ownProps.post.id] : null,
+    isOwnPost: ownProps.post && ownProps.post.authorId === profile.id,
   }
 }
 

@@ -16,30 +16,30 @@ import {
 let location = {}
 // order matters for matching routes
 const initialState = {
+  activeNotificationsTabType: 'all',
   modes: [
     { label: 'root', mode: 'grid', regex: /^\/$/ },
-    { label: 'discover', mode: 'grid', regex: /\/discover|\/explore/ },
-    { label: 'following', mode: 'grid', regex: /\/following/ },
-    { label: 'invitations', mode: 'list', regex: /\/invitations/ },
-    { label: 'onboarding', mode: 'grid', regex: /\/onboarding/ },
-    { label: 'search', mode: 'grid', regex: /\/search|\/find/ },
-    { label: 'starred', mode: 'list', regex: /\/starred/ },
-    { label: 'posts', mode: 'list', regex: /\/[\w\-]+\/post\/.+/ },
-    { label: 'users/following', mode: 'grid', regex: /\/[\w\-]+\/following/ },
-    { label: 'users/followers', mode: 'grid', regex: /\/[\w\-]+\/followers/ },
-    { label: 'users/loves', mode: 'grid', regex: /\/[\w\-]+\/loves/ },
-    { label: 'users', mode: 'list', regex: /\/[\w\-]+/ },
+    { label: 'discover', mode: 'grid', regex: '\/discover|\/explore' },
+    { label: 'following', mode: 'grid', regex: '\/following' },
+    { label: 'invitations', mode: 'list', regex: '\/invitations' },
+    { label: 'onboarding', mode: 'grid', regex: '\/onboarding' },
+    { label: 'search', mode: 'grid', regex: '\/search|\/find' },
+    { label: 'starred', mode: 'list', regex: '\/starred' },
+    { label: 'posts', mode: 'list', regex: '\/[\\w\\-]+\/post\/.+' },
+    { label: 'users/following', mode: 'grid', regex: '\/[\\w\\-]+\/following' },
+    { label: 'users/followers', mode: 'grid', regex: '\/[\\w\\-]+\/followers' },
+    { label: 'users/loves', mode: 'grid', regex: '\/[\\w\\-]+\/loves' },
+    { label: 'users', mode: 'list', regex: '\/[\\w\\-]+' },
   ],
   currentStream: '/following',
   newNotificationContent: false,
   history: {},
 }
 
-// TODO: figure out why the users regex doesn't work properly
 export function findLayoutMode(modes) {
   for (const mode of modes) {
-    const regEx = new RegExp(mode.regex)
-    if (regEx.test(location.pathname)) {
+    const regex = new RegExp(mode.regex)
+    if (regex.test(location.pathname)) {
       return mode
     }
   }
@@ -93,10 +93,17 @@ export function gui(state = initialState, action = { type: '' }) {
       }
 
       return state
+    case GUI.NOTIFICATIONS_TAB:
+      return { ...state, activeNotificationsTabType: action.payload.activeTabType }
     case GUI.SET_SCROLL:
       newState.history[action.payload.key] = { ...action.payload }
       return newState
     default:
       return state
   }
+}
+
+// this is used for testing in StreamComponent_test
+export function setLocation(loc) {
+  location = loc
 }

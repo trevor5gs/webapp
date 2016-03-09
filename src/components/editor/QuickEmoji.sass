@@ -2,6 +2,7 @@
   position: absolute
   white-space: nowrap
   color: #999
+  z-index: 2
 
 .QuickEmoji.isActive
   color: #535353
@@ -16,8 +17,10 @@
   transition: opacity $speed
   position: absolute
   top: 0
-  left: rem(-140)
+  left: rem(-150)
   opacity: 0
+  padding-left: rem(10)
+  background-color: #e5e5e5
 
 .QuickEmoji.isActive .QuickEmojiList
   opacity: 1
@@ -33,11 +36,11 @@
   margin-left: rem(20)
 
 .editor.isComment .QuickEmoji
-  top: rem(93)
+  top: rem(92)
   right: rem(30)
 
 @media(min-width: #{$break-2})
   .editor.isComment .QuickEmoji
-    top: rem(53)
+    top: rem(52)
     right: rem(30)
 

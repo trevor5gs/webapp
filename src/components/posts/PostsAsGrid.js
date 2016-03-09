@@ -1,12 +1,16 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 import PostParser from '../parsers/PostParser'
 
 const DumbGridPost = (props) => {
-  const { post, showComments } = props
+  const { post } = props
   return (
-    <article className="Post PostGrid">
-      <PostParser post={post} showComments={showComments} isGridLayout />
+    <article className="PostGrid" id={ `Post_${post.id}` }>
+      <PostParser
+        isGridLayout
+        post={post}
+      />
     </article>
   )
 }
@@ -22,8 +26,9 @@ function mapGridStateToProps(state, ownProps) {
   const post = state.json.posts[ownProps.post.id]
   return {
     currentUser: state.profile,
-    showComments: post.showComments,
+    isEditing: post.isEditing,
     isReposting: post.isReposting,
+    showComments: post.showComments,
   }
 }
 
@@ -38,16 +43,20 @@ class PostsAsGrid extends Component {
     posts: PropTypes.array.isRequired,
   };
 
+  shouldComponentUpdate(prevProps) {
+    if (_.isEqual(prevProps, this.props)) {
+      return false
+    }
+    return true
+  }
+
   renderColumn(posts, index) {
     return (
       <div className="Column" key={ `column_${index}` }>
         {posts.map((post) =>
            <GridPost
-             isEditing={ post.isEditing }
-             isReposting={ post.isReposting }
-             key={ post.id }
+             key={ `gridPost_${post.id}` }
              post={ post }
-             ref={ `postGrid_${post.id}` }
            />
         )}
       </div>

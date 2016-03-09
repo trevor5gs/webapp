@@ -8,39 +8,63 @@ const methods = {}
 
 function _updatePostLoves(state, newState, action) {
   const { method, model } = action.payload
-  const resultPath = jsonReducer.methods.pagesKey(action)
-  const currentUser = jsonReducer.methods.getCurrentUser(newState)
+
+  const newPost = {
+    id: model ? model.id : '',
+  }
 
   let delta = 0
-  let loved = false
+  let idAdded = false
   switch (action.type) {
     case ACTION_TYPES.POST.LOVE_REQUEST:
-      if (method === 'DELETE') {
-        delta = -1
-        loved = false
-      } else {
+      if (method === 'POST') {
         delta = 1
-        loved = true
+        newPost.loved = true
+        idAdded = true
+      } else {
+        delta = -1
+        newPost.loved = false
+        newPost.showLovers = false
       }
       break
     case ACTION_TYPES.POST.LOVE_FAILURE:
       if (method === 'POST') {
         delta = -1
-        loved = false
+        newPost.loved = false
       } else {
         delta = 1
-        loved = true
+        newPost.loved = true
+        idAdded = true
+      }
+      break
+    case ACTION_TYPES.POST.LOVE_SUCCESS:
+      if (method === 'POST') {
+        newPost.showLovers = true
+        idAdded = true
+      } else {
+        newPost.showLovers = false
       }
       break
     default:
       return state
   }
 
+  // since we pull `model` out of payload, not state, we don't want to set
+  // or update the lovesCount during a LOVE_SUCCESS.
+  //
+  // During LOVE_REQUEST, model.lovesCount is incremented.
+  // In LOVE_SUCCESS, model.lovesCount is the *old* value, so just ignore it.
+  if (delta !== 0) {
+    newPost.lovesCount = Number(model.lovesCount) + delta
+  }
+
+  const resultPath = jsonReducer.methods.pagesKey(action)
   const existingResult = newState.pages[resultPath] ||
     { type: 'users', ids: [], pagination: emptyPagination() }
   const existingIds = existingResult.ids
 
-  if (delta === 1) {
+  const currentUser = jsonReducer.methods.getCurrentUser(newState)
+  if (idAdded) {
     existingIds.unshift(currentUser.id)
   } else {
     const index = existingIds.indexOf(currentUser.id)
@@ -54,12 +78,7 @@ function _updatePostLoves(state, newState, action) {
   jsonReducer.methods.mergeModel(
     newState,
     MAPPING_TYPES.POSTS,
-    {
-      id: model.id,
-      lovesCount: Number(model.lovesCount) + delta,
-      loved,
-      showLovers: loved,
-    }
+    newPost
   )
 
   return newState

@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import Helmet from 'react-helmet'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { debounce } from 'lodash'
@@ -11,6 +10,7 @@ import { GUI } from '../constants/gui_types'
 import Analytics from '../components/analytics/Analytics'
 import DevTools from '../components/devtools/DevTools'
 import Footer from '../components/footer/Footer'
+import { AppHelmet } from '../components/helmets/AppHelmet'
 import Modal from '../components/modals/Modal'
 import Navbar from '../components/navbar/Navbar'
 import Omnibar from '../components/omnibar/Omnibar'
@@ -172,17 +172,7 @@ class App extends Component {
     )
     return (
       <section className={appClasses}>
-        <Helmet
-          title="Be inspired."
-          titleTemplate="Ello | %s"
-          meta={[
-            {
-              name: 'apple-itunes-app',
-              content: 'app-id=953614327',
-              'app-argument': pathname,
-            },
-          ]}
-        />
+        <AppHelmet pathname={ pathname }/>
         { isLoggedIn ? <Omnibar/> : null }
         <main className="Main" data-pathname={pathname} role="main">
           {children}

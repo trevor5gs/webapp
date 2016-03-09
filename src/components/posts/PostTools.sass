@@ -25,21 +25,25 @@
   height: rem(20)
   line-height: rem(20)
 
-.PostTool + .PostTool
+// .PostTool + .PostTool
   margin-left: rem(3)
 
 .PostTool > a,
 .PostTool > button
   transition: color $speed ease
-  padding-left: rem(10)
-  padding-right: rem(10)
+  padding-left: rem(8)
+  padding-right: rem(8)
   color: #aaa
 
-.PostTool > button.hasPostToolDrawer
-  padding-right: rem(5)
+
+.PostTool:not([data-count='0']) > button.hasPostToolDrawer
+  padding-right: rem(5) !important
 
 .PostTool > button.PostToolDrawerButton
-  padding-left: 0
+  padding-left: 0 !important
+
+.PostTool[data-count='0'] > button.PostToolDrawerButton
+  display: none
 
 .PostTool > a
   vertical-align: middle
@@ -53,8 +57,10 @@
   margin-left: rem(-10)
 .ViewsTool.asPill
   margin-left: 0
+  margin-right: rem(10)
   height: rem(22)
   line-height: rem(22)
+
 
 .ViewsTool.asPill > a
   transition: color $speed ease, background-color $speed ease
@@ -69,10 +75,6 @@
 
 .no-touch .LoveTool > button.active:hover
   color: #aaa
-
-.TimeAgoTool > a
-  padding-left: rem(15)
-  padding-right: rem(15)
 
 .PostTool .EyeIcon,
 .PostTool .BubbleIcon,
@@ -95,14 +97,17 @@
 .ViewsTool .Hint
   left: rem(10)
 
+.ShareTool
+  position: absolute
+  top: rem(19)
+  right: rem(-10)
+
+.ShareTool .Hint
+  left: calc(-100% - 2px)
+
 .ShareTool.asPill
   height: rem(22)
   line-height: rem(22)
-
-.PostGrid .ShareTool.asPill
-  position: absolute
-  top: rem(19)
-  right: 0
 
 .ShareTool.asPill > button
   transition: color $speed ease, background-color $speed ease
@@ -161,11 +166,10 @@
 .PostTools.isMoreToolActive .ShyTool
   +showTool
 
-.PostToolValue[data-count='0']
+.Posts .TimeAgoTool
   display: none
 
-
-// MAX width for hiding MOBILE in a GRID.
+// MAX WIDTH for hiding MOBILE in a GRID.
 @media(max-width: #{em(449)})
   .Posts.asGrid .ShareTool
     display: none
@@ -175,14 +179,12 @@
   .Posts.asGrid .ViewsTool
     display: none
 
-// MIN width
+// MIN WIDTH!!!
 @media(min-width: #{em(375)})
   .PostTools.isMoreToolActive
     transform: translate3d(rem(-70), 0, 0)
   .PostTools.isMoreToolActive .MoreTool
     transform: translate3d(rem(70), 0, 0)
-  .Posts.asList .TimeAgoTool.ShyTool
-    +showTool
 
 @media(min-width: #{em(450)})
   .Posts .MoreTool,
@@ -199,7 +201,21 @@
     +hideTool
   .no-touch .Posts.asList .PostTools:hover .ShyTool
     +showTool
-  // .Posts.asGrid .TimeAgoTool.ShyTool
-  //   display: inline-block
-  //   +showTool
+  .Posts.asList .TimeAgoTool
+    display: inline-block
+  .Posts.asList .ShareTool
+    position: static
+    top: auto
+    right: auto
+  .Posts.asList .ShareTool .Hint
+    left: 0
+
+
+@media(min-width: #{$break-3})
+  .Posts.asList .PostTool > a,
+  .Posts.asList .PostTool > button
+    padding-left: rem(12)
+    padding-right: rem(12)
+  .Posts.asList .ViewsTool.asPill
+    margin-right: rem(15)
 
