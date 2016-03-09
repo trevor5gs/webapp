@@ -152,6 +152,7 @@ export function postDetail(posts, json) {
       <article id={ `Post_${post.id}` } key={ `postDetail_${post.id}` } className="PostList">
         <PostParser
           isGridLayout={ false }
+          isPostDetail
           post={ post }
         />
         { avatarDrawers }
