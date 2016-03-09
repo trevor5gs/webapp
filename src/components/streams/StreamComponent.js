@@ -74,6 +74,7 @@ export class StreamComponent extends Component {
       type: PropTypes.string,
     }),
     resultPath: PropTypes.string,
+    routerState: PropTypes.object,
     stream: PropTypes.object.isRequired,
   };
 
@@ -111,7 +112,6 @@ export class StreamComponent extends Component {
     if (this.isPageLevelComponent()) {
       addScrollObject(this)
     }
-
     if (this.props.isUserDetail) {
       const offset = Math.round((window.innerWidth * 0.5625)) - 200
       window.scrollTo(0, offset)
@@ -156,23 +156,26 @@ export class StreamComponent extends Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    const { history, stream } = this.props
-    const shouldScroll = !this.props.ignoresScrollPosition &&
+    const { history, routerState, stream } = this.props
+    const shouldScroll = !routerState.didComeFromSeeMoeCommentsLink &&
+      !this.props.ignoresScrollPosition &&
       stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
       prevProps.stream.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS
     if (shouldScroll) {
       this.saveScroll = true
       const historyObj = history[this.state.locationKey] || {}
-      const scrollTopValue = historyObj.scrollTop
+      const scrollTopValue = routerState.didComeFromSeeMoreCommentsLink ?
+        document.body.scrollHeight :
+        historyObj.scrollTop
 
       if (scrollTopValue) {
-        const scrollToTarget = typeof this.scrollContainer !== 'undefined' &&
-                               this.scrollContainer
-        if (scrollToTarget) {
-          scrollToTarget.scrollTop = scrollTopValue
-        } else if (!scrollToTarget && typeof window !== 'undefined') {
-          window.scrollTo(0, scrollTopValue)
-        }
+        requestAnimationFrame(() => {
+          if (this.scrollContainer) {
+            this.scrollContainer.scrollTop = scrollTopValue
+          } else if (typeof window !== 'undefined') {
+            window.scrollTo(0, scrollTopValue)
+          }
+        })
       }
     }
   }
@@ -214,10 +217,7 @@ export class StreamComponent extends Component {
   }
 
   setScroll() {
-    if (!this.saveScroll) {
-      return
-    }
-
+    if (!this.saveScroll) { return }
     let scrollTopValue
     if (this.scrollContainer) {
       scrollTopValue = scrollTop(this.scrollContainer)
@@ -414,6 +414,7 @@ export function mapStateToProps(state, ownProps) {
     renderObj,
     result,
     resultPath,
+    routerState: state.routing.location.state || {},
     stream: state.stream,
   }
 }

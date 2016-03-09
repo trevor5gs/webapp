@@ -17,7 +17,10 @@ export default class CommentStream extends Component {
         <StreamComponent className="narrow" action={action} ignoresScrollPosition>
           {post.commentsCount > 10 ?
             <Link
-              to={`/${author.username}/post/${post.token}`}
+              to={{
+                pathname: `/${author.username}/post/${post.token}`,
+                state: { didComeFromSeeMoreCommentsLink: true },
+              }}
               className="CommentsLink"
             >
               See More
