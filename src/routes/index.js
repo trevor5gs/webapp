@@ -1,7 +1,11 @@
 import App from '../containers/App'
 import PostDetailRoute from './post_detail'
 import AuthenticationRoutes from './authentication'
-import DiscoverRoutes, { getComponents as getDiscoverComponents } from './discover'
+import DiscoverRoutes, {
+  getComponents as getDiscoverComponents,
+  discover as DiscoverRoute,
+  explore as ExploreRoute,
+} from './discover'
 import StreamsRoutes from './streams'
 import NotificationsRoute from './notifications'
 import InvitationsRoutes from './invitations'
@@ -72,7 +76,8 @@ const routes = store => {
       childRoutes: [
         PostDetailRoute,
         ...AuthenticationRoutes,
-        ...DiscoverRoutes.map(route => authenticate(route)),
+        authenticate(DiscoverRoute),
+        ExploreRoute,
         ...StreamsRoutes.map(route => authenticate(route)),
         authenticate(NotificationsRoute),
         ...InvitationsRoutes.map(route => authenticate(route)),
