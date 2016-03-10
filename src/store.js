@@ -11,12 +11,13 @@ const reducer = combineReducers({
   ...reducers,
 })
 
-const reduxRouterMiddleware = browserHistory ? routerMiddleware(browserHistory) : null
 
-let store = null
-if (typeof window !== 'undefined') {
+
+const createBrowserStore = (history = browserHistory) => {
   const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
-  store = compose(
+  const reduxRouterMiddleware = routerMiddleware(history)
+
+  const store = compose(
     autoRehydrate(),
     applyMiddleware(
       thunk,
@@ -28,10 +29,22 @@ if (typeof window !== 'undefined') {
       logger
     ),
   )(createStore)(reducer, window.__INITIAL_STATE__ || {})
-} else {
-  store = compose(
-    applyMiddleware(thunk, uploader, requester, analytics),
-  )(createStore)(reducer, {})
+
+  return store
 }
 
-export default store
+const createServerStore = (history) => {
+  const reduxRouterMiddleware = routerMiddleware(history)
+  const store = compose(
+    applyMiddleware(thunk, uploader, reduxRouterMiddleware, requester, analytics),
+  )(createStore)(reducer, {})
+
+  return store
+}
+
+const createElloStore = (history = null) => {
+  if (typeof window !== 'undefined') return createBrowserStore()
+  return createServerStore(history)
+}
+
+export default createElloStore

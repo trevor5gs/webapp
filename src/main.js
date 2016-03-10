@@ -10,7 +10,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import { persistStore } from 'redux-persist'
 import localforage from 'localforage'
-import store from './store'
+import createStore from './store'
 import { browserHistory } from 'react-router'
 import routes from './routes'
 
@@ -20,6 +20,8 @@ import './vendor/embetter_initializer'
 updateTimeAgoStrings({ about: '' })
 
 const APP_VERSION = '1.0.10'
+
+const store = createStore()
 
 const history = syncHistoryWithStore(browserHistory, store)
 const element = (
