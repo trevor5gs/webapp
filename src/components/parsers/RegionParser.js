@@ -44,18 +44,25 @@ function embedRegion(region, key) {
 }
 
 export function regionItemsForNotifications(content, postDetailPath = null) {
-  return content.map((region, i) => {
+  const assets = []
+  const texts = []
+
+  content.forEach((region, i) => {
     switch (region.kind) {
       case 'text':
-        return textRegion(region, `TextRegion_${i}`, false, postDetailPath)
+        texts.push(textRegion(region, `TextRegion_${i}`, false, postDetailPath))
+        break
       case 'image':
-        return imageRegion(region, `ImageRegion_${i}`, true, postDetailPath, true)
+        assets.push(imageRegion(region, `ImageRegion_${i}`, true, postDetailPath, true))
+        break
       case 'embed':
-        return embedRegion(region, `EmbedRegion_${i}`)
+        assets.push(embedRegion(region, `EmbedRegion_${i}`))
+        break
       default:
         throw new Error(`UNKNOWN NOTIFICATION REGION: ${region.kind}`)
     }
   })
+  return { assets, texts }
 }
 
 export function regionItems(content, only = null, isGridLayout = true, postDetailPath = null) {
