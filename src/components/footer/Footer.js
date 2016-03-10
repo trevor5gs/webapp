@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
 import Mousetrap from '../../vendor/mousetrap'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
+import { LOAD_NEXT_CONTENT_REQUEST } from '../../constants/action_types'
 import { PhoneIcon, ChevronIcon, ListIcon, GridIcon } from '../footer/FooterIcons'
 import FooterLabel from '../footer/FooterLabel'
 import FooterLink from '../footer/FooterLink'
@@ -11,6 +13,7 @@ import { findLayoutMode } from '../../reducers/gui'
 class Footer extends Component {
 
   static propTypes = {
+    isPaginatoring: PropTypes.bool,
     gui: PropTypes.object.isRequired,
     json: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
@@ -45,9 +48,13 @@ class Footer extends Component {
   };
 
   render() {
+    const { isPaginatoring } = this.props
     const { isAndroid, isGridMode } = this.state
     return (
-      <footer className="Footer" role="contentinfo">
+      <footer
+        className={classNames('Footer', { isPaginatoring })}
+        role="contentinfo"
+      >
         <div className="FooterLinks">
           <FooterLabel label="Beta 2.2"/>
           <FooterLink className="asLabel" href="/wtf" label="WTF"/>
@@ -83,6 +90,7 @@ class Footer extends Component {
 function mapStateToProps(state) {
   return {
     gui: state.gui,
+    isPaginatoring: state.stream.type === LOAD_NEXT_CONTENT_REQUEST,
     json: state.json,
     pathname: state.routing.location.pathname,
   }

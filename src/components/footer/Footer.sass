@@ -13,6 +13,10 @@
   background-color: white
   color: #aaa
 
+// Hide it when the Paginator is visible
+.Footer.isPaginatoring
+  transform: translate3d(0, 100%, 0)
+
 // Piggy back off of the Navbar for the moment
 .Navbar.asFixed.asHidden + .Footer
   transform: translate3d(0, 100%, 0)
