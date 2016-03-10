@@ -139,7 +139,6 @@ class BlockCollection extends Component {
         break
       case ACTION_TYPES.POST.POST_PREVIEW_SUCCESS:
         this.removeEmptyTextBlock()
-        console.log('embed?', editorStore.loadedContent[editorStore.index].postPreviews.body[0])
         this.add({ ...editorStore.loadedContent[editorStore.index].postPreviews.body[0] })
         break
       default:

@@ -55,7 +55,6 @@ function editorObject(state = { loadedContent: {} }, action) {
     case POST.POST_PREVIEW_SUCCESS:
     case POST.SAVE_IMAGE_SUCCESS:
       index = action.payload ? action.payload.index : null
-      console.log(action.type, index)
       if (typeof index !== 'undefined') {
         if (!newState.loadedContent) { newState.loadedContent = {} }
         newState.loadedContent[index] = imageBlockObject(newState.loadedContent[index], action)
