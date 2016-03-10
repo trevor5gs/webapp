@@ -43,6 +43,8 @@ class RelationshipButton extends Component {
     switch (priority) {
       case RELATIONSHIP_PRIORITY.INACTIVE:
       case RELATIONSHIP_PRIORITY.NOISE:
+      case RELATIONSHIP_PRIORITY.NONE:
+      case null:
         return RELATIONSHIP_PRIORITY.FRIEND
       default:
         return RELATIONSHIP_PRIORITY.INACTIVE
