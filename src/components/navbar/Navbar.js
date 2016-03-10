@@ -353,7 +353,7 @@ function mapStateToProps(state) {
     gui: state.gui,
     json: state.json,
     modalIsActive: state.modal.isActive,
-    pathname: document.location.pathname,
+    pathname: state.routing.location.pathname,
     profile: state.profile,
   }
 }

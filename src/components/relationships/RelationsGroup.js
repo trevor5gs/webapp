@@ -170,7 +170,7 @@ class RelationsGroup extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
-    pathname: document.location.pathname,
+    pathname: state.routing.location.pathname,
     previousPath: state.routing.previousPath,
   }
 }

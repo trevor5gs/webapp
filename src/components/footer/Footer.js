@@ -84,7 +84,7 @@ function mapStateToProps(state) {
   return {
     gui: state.gui,
     json: state.json,
-    pathname: document.location.pathname,
+    pathname: state.routing.location.pathname,
   }
 }
 

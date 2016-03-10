@@ -367,7 +367,7 @@ export class StreamComponent extends Component {
 
 export function mapStateToProps(state, ownProps) {
   let result
-  let resultPath = document.location.pathname
+  let resultPath = state.routing.location.pathname
   const { action } = ownProps
   const meta = action ? action.meta : null
   const payload = action ? action.payload : null
@@ -390,7 +390,7 @@ export function mapStateToProps(state, ownProps) {
     // since you can unblock/unmute them from here
     for (const id of result.ids) {
       if (_.get(state.json, [result.type, id]) &&
-          (document.location.pathname === '/settings' ||
+          (state.routing.location.pathname === '/settings' ||
           (!deletedCollection || deletedCollection.indexOf(id) === -1))) {
         renderObj.data.push(_.get(state.json, [result.type, id]))
       }
@@ -400,7 +400,7 @@ export function mapStateToProps(state, ownProps) {
       const dataProp = payload.endpoint.pagingPath ? 'nestedData' : 'data'
       for (const nextId of result.next.ids) {
         if (state.json[result.next.type][nextId] &&
-            (document.location.pathname === '/settings' ||
+            (state.routing.location.pathname === '/settings' ||
             (!nextDeletedCollection || nextDeletedCollection.indexOf(nextId) === -1))) {
           renderObj[dataProp].push(state.json[result.next.type][nextId])
         }
