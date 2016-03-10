@@ -1,10 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { GUI } from '../../constants/gui_types'
-import { openAlert, closeAlert } from '../../actions/modals'
-import { savePostImage } from '../../actions/posts'
-import Dialog from '../../components/dialogs/Dialog'
 import { BrowseIcon, CameraIcon, CancelIcon, PostIcon, ReplyAllIcon } from './EditorIcons'
 
 class PostActionBar extends Component {
@@ -14,6 +10,7 @@ class PostActionBar extends Component {
     dispatch: PropTypes.func.isRequired,
     disableSubmitAction: PropTypes.bool,
     editorId: PropTypes.string.isRequired,
+    handleFileAction: PropTypes.func.isRequired,
     replyAllAction: PropTypes.func,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
@@ -24,37 +21,14 @@ class PostActionBar extends Component {
     submitAction()
   };
 
-  isLegitFileType(file) {
-    return (file && file.type && file.type.match(/^image\/(jpg|jpeg|gif|png|tiff|tif|bmp)/))
-  }
-
   handleFileBrowser = (e) => {
-    const { dispatch, editorId } = this.props
-    for (const index in e.target.files) {
-      if (e.target.files.hasOwnProperty(index)) {
-        const file = e.target.files[index]
-        if (this.isLegitFileType(file)) {
-          dispatch(savePostImage(file, editorId, index))
-        } else {
-          dispatch(openAlert(
-            <Dialog
-              title="Invalid file type"
-              body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
-              onClick={ bindActionCreators(closeAlert, dispatch) }
-            />
-          ))
-          break
-        }
-      }
-    }
+    const { handleFileAction } = this.props
+    handleFileAction(e)
   };
 
   browse = () => {
     this.refs.browseButton.blur()
     this.refs.FileBrowser.click()
-    // return if window.diddrag.dragged()
-    // @browseButton.blur()
-    // @browseInput.click()
   };
 
   cancel = () => {

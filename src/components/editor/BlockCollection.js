@@ -1,16 +1,20 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
 import { debounce } from 'lodash'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
+import Dialog from '../../components/dialogs/Dialog'
 import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
 import QuickEmoji from './QuickEmoji'
 import RepostBlock from './RepostBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
+import { openAlert, closeAlert } from '../../actions/modals'
+import { savePostImage } from '../../actions/posts'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addInputObject, removeInputObject } from './InputComponent'
@@ -69,7 +73,9 @@ class BlockCollection extends Component {
       }
     } else if (shouldLoadFromState && editorStore.editorState) {
       this.state = { ...editorStore.editorState, hideTextTools: true, loadingImageBlocks: [] }
-      this.uid = Math.max(...editorStore.editorState.order) + 1
+      this.uid = editorStore.editorState.order.length ?
+        Math.max(...editorStore.editorState.order) + 1 :
+        0
     }
     this.persistBlocks = debounce(this.persistBlocks, 300)
   }
@@ -242,6 +248,34 @@ class BlockCollection extends Component {
     this.setState({ collection, dragBlockTop: null })
     this.addEmptyTextBlock(true)
   }
+
+  onDrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.dataTransfer.files.length) { this.acceptFiles(e.dataTransfer.files) }
+    // TODO: this is the implementation from the current
+    // mothership. it may need to be updated to work
+    // better with the webapp
+    if (e.dataTransfer.types.indexOf('application/json') > -1) {
+      const data = JSON.parse(e.dataTransfer.getData('application/json'))
+      if (data.username) {
+        this.appendText(`@${data.username} `)
+      }
+      if (data.emojiCode) {
+        this.appendText(`${data.emojiCode} `)
+      }
+      if (data.imgSrc) {
+        this.appendText(`![img-drop](${data.imgSrc})\n\n`)
+      }
+      if (data.href) {
+        if (data.href === data.linkText) {
+          this.appendText(`${data.href}`)
+        } else {
+          this.appendText(`[${data.linkText}](${data.href}) `)
+        }
+      }
+    }
+  };
 
   onSubmitPost() {
     const { editorId } = this.props
@@ -502,6 +536,35 @@ class BlockCollection extends Component {
     )
   }
 
+  isLegitFileType(file) {
+    return (file && file.type && file.type.match(/^image\/(jpg|jpeg|gif|png|tiff|tif|bmp)/))
+  }
+
+  handleFiles = (e) => {
+    if (e.target.files.length) { this.acceptFiles(e.target.files) }
+  };
+
+  acceptFiles(files) {
+    const { dispatch, editorId } = this.props
+    for (const index in files) {
+      if (files.hasOwnProperty(index)) {
+        const file = files[index]
+        if (this.isLegitFileType(file)) {
+          dispatch(savePostImage(file, editorId, index))
+        } else {
+          dispatch(openAlert(
+            <Dialog
+              title="Invalid file type"
+              body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
+              onClick={ bindActionCreators(closeAlert, dispatch) }
+            />
+          ))
+          break
+        }
+      }
+    }
+  }
+
   render() {
     const { avatar, cancelAction, editorId, isComment, isOwnPost, submitText } = this.props
     const { dragBlockTop, loadingImageBlocks, order } = this.state
@@ -511,6 +574,7 @@ class BlockCollection extends Component {
       <div
         className={ classNames('editor', { hasMention, hasContent, isComment }) }
         data-placeholder="Say Ello..."
+        onDrop={ this.onDrop }
       >
         { isComment ? <Avatar sources={ avatar }/> : null }
         <div
@@ -530,6 +594,7 @@ class BlockCollection extends Component {
           cancelAction={ cancelAction }
           disableSubmitAction={ loadingImageBlocks.length > 0 }
           editorId={ editorId }
+          handleFileAction={ this.handleFiles }
           ref="postActionBar"
           replyAllAction={ isComment && isOwnPost ? this.replyAll : null }
           submitAction={ this.submit }
