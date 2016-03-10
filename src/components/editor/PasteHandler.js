@@ -8,7 +8,7 @@ function checkForEmbeds(text) {
   for (const service of window.embetter.activeServices) {
     if (text.match(service.regex)) {
       const mediaUrl = service.link(text.match(service.regex)[1])
-      dispatch(postPreviews(mediaUrl, editorId))
+      dispatch(postPreviews(mediaUrl, editorId, 0))
     }
   }
 }
