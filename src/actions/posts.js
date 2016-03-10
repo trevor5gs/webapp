@@ -192,43 +192,45 @@ export function updatePost(post, body) {
   }
 }
 
-export function uploadAsset(type, file, editorId) {
+export function uploadAsset(type, file, editorId, index) {
   return {
     type,
     meta: {},
     payload: {
       editorId,
       file,
+      index,
     },
   }
 }
 
-export function temporaryPostImageCreated(b64Asset, editorId) {
+export function temporaryPostImageCreated(b64Asset, editorId, index) {
   return {
     type: ACTION_TYPES.POST.TMP_IMAGE_CREATED,
     meta: {},
-    payload: { url: b64Asset, editorId },
+    payload: { url: b64Asset, editorId, index },
   }
 }
 
-export function savePostImage(file, editorId) {
+export function savePostImage(file, editorId, index) {
   return dispatch => {
     const reader = new FileReader()
     reader.onloadend = () => {
-      dispatch(temporaryPostImageCreated(reader.result, editorId))
+      dispatch(temporaryPostImageCreated(reader.result, editorId, index))
     }
-    dispatch(uploadAsset(ACTION_TYPES.POST.SAVE_IMAGE, file, editorId))
+    dispatch(uploadAsset(ACTION_TYPES.POST.SAVE_IMAGE, file, editorId, index))
     reader.readAsDataURL(file)
   }
 }
 
-export function postPreviews(embedUrl, editorId) {
+export function postPreviews(embedUrl, editorId, index) {
   return {
     type: ACTION_TYPES.POST.POST_PREVIEW,
     payload: {
       body: { body: [{ kind: 'embed', data: { url: embedUrl } }] },
       editorId,
       endpoint: api.postPreviews(),
+      index,
       method: 'POST',
     },
   }

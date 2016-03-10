@@ -91,6 +91,7 @@ class BlockCollection extends Component {
     const { collection, loadingImageBlocks } = this.state
     let newBlock = null
     let index = -1
+    let loadedContentData = null
     switch (editorStore.type) {
       case ACTION_TYPES.EDITOR.APPEND_TEXT:
         if (editorStore.appendText && editorStore.appendText.length) {
@@ -100,12 +101,17 @@ class BlockCollection extends Component {
         break
       case ACTION_TYPES.POST.TMP_IMAGE_CREATED:
         this.removeEmptyTextBlock()
-        newBlock = this.add({ kind: 'image', data: { url: editorStore.url } })
+        newBlock = this.add({
+          kind: 'image',
+          data: { url: editorStore.loadedContent[editorStore.index].url },
+          index: editorStore.index,
+        })
         dispatch({
           type: ACTION_TYPES.POST.IMAGE_BLOCK_CREATED,
           payload: {
             editorId,
             uid: newBlock.uid,
+            index: editorStore.index,
           },
         })
         // we have one that is uploading to s3
@@ -113,26 +119,28 @@ class BlockCollection extends Component {
         this.setState({ loadingImageBlocks })
         break
       case ACTION_TYPES.POST.SAVE_IMAGE_SUCCESS:
-        newBlock = this.getBlockFromUid(editorStore.uid)
+        loadedContentData = editorStore.loadedContent[editorStore.index]
+        newBlock = this.getBlockFromUid(loadedContentData.uid)
         if (newBlock) {
-          collection[this.getBlockIdentifier(editorStore.uid)] = {
+          collection[this.getBlockIdentifier(loadedContentData.uid)] = {
             kind: 'image',
             data: {
-              url: editorStore.url,
+              url: loadedContentData.url,
             },
-            uid: editorStore.uid,
+            uid: loadedContentData.uid,
           }
           this.setState({ collection })
           this.persistBlocks()
           // can stop the uploading whatever
-          index = loadingImageBlocks.indexOf(editorStore.uid)
+          index = loadingImageBlocks.indexOf(loadedContentData.uid)
           loadingImageBlocks.splice(index, 1)
           this.setState({ loadingImageBlocks })
         }
         break
       case ACTION_TYPES.POST.POST_PREVIEW_SUCCESS:
         this.removeEmptyTextBlock()
-        this.add({ ...editorStore.postPreviews.body[0] })
+        console.log('embed?', editorStore.loadedContent[editorStore.index].postPreviews.body[0])
+        this.add({ ...editorStore.loadedContent[editorStore.index].postPreviews.body[0] })
         break
       default:
         break
@@ -329,7 +337,14 @@ class BlockCollection extends Component {
     const { collection, order } = this.state
     collection[this.getBlockIdentifier(this.uid)] = newBlock
     order.push(this.uid)
-    this.uid++
+    // this is so the uid remains unique even if image
+    // loads/embeds come back in a different order
+    // than they went out in.
+    if (typeof newBlock.index !== 'undefined') {
+      this.uid = this.uid + parseInt(newBlock.index, 10) + 1
+    } else {
+      this.uid++
+    }
     // order matters here
     this.setState({ collection, order })
     if (shouldCheckForEmpty) {

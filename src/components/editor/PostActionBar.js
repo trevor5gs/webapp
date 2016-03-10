@@ -24,23 +24,29 @@ class PostActionBar extends Component {
     submitAction()
   };
 
-  isLegitimateFileType(file) {
+  isLegitFileType(file) {
     return (file && file.type && file.type.match(/^image\/(jpg|jpeg|gif|png|tiff|tif|bmp)/))
   }
 
   handleFileBrowser = (e) => {
-    const file = e.target.files[0]
     const { dispatch, editorId } = this.props
-    if (this.isLegitimateFileType(file)) {
-      return dispatch(savePostImage(file, editorId))
+    for (const index in e.target.files) {
+      if (e.target.files.hasOwnProperty(index)) {
+        const file = e.target.files[index]
+        if (this.isLegitFileType(file)) {
+          dispatch(savePostImage(file, editorId, index))
+        } else {
+          dispatch(openAlert(
+            <Dialog
+              title="Invalid file type"
+              body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
+              onClick={ bindActionCreators(closeAlert, dispatch) }
+            />
+          ))
+          break
+        }
+      }
     }
-    return dispatch(openAlert(
-      <Dialog
-        title="Invalid file type"
-        body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
-        onClick={ bindActionCreators(closeAlert, dispatch) }
-      />
-    ))
   };
 
   browse = () => {
@@ -95,6 +101,7 @@ class PostActionBar extends Component {
           ref="FileBrowser"
           type="file"
           accept="image/*"
+          multiple
         />
       </div>
     )
