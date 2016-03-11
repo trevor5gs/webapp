@@ -1,7 +1,7 @@
 import App from '../containers/App'
 import PostDetailRoute from './post_detail'
 import AuthenticationRoutes from './authentication'
-import DiscoverRoutes, {
+import {
   getComponents as getDiscoverComponents,
   discover as DiscoverRoute,
   explore as ExploreRoute,
