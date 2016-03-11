@@ -28,6 +28,12 @@ const PostHeaderTimeAgoLink = ({ to, createdAt }) =>
     <span>{new Date(createdAt).timeAgoInWords()}</span>
   </Link>
 
+PostHeaderTimeAgoLink.propTypes = {
+  createdAt: PropTypes.string,
+  to: PropTypes.string,
+}
+
+
 function header(post, author) {
   if (!post || !author) { return null }
   const postDetailPath = getPostDetailPath(author, post)

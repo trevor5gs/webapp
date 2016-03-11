@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 
 export default function FooterLabel({ className, label }) {
@@ -7,5 +7,10 @@ export default function FooterLabel({ className, label }) {
       { label }
     </span>
   )
+}
+
+FooterLabel.propTypes = {
+  className: PropTypes.string,
+  label: PropTypes.string,
 }
 

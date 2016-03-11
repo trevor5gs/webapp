@@ -26,6 +26,12 @@ const UserStatsLink = ({ asDisabled = false, children, to }) =>
       { children }
     </Link>
 
+UserStatsLink.propTypes = {
+  asDisabled: PropTypes.bool,
+  children: PropTypes.node,
+  to: PropTypes.string,
+}
+
 export const UserStats = ({ user }) =>
   <div className="UserStats">
     <dl>

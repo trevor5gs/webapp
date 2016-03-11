@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 
 export default function FooterTool({ className, icon, label, onClick }) {
@@ -8,5 +8,12 @@ export default function FooterTool({ className, icon, label, onClick }) {
       <span>{ label }</span>
     </button>
   )
+}
+
+FooterTool.propTypes = {
+  className: PropTypes.string,
+  icon: PropTypes.node,
+  label: PropTypes.string,
+  onClick: PropTypes.func,
 }
 

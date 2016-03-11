@@ -21,6 +21,7 @@ const Dialog = ({ body, title, onClick }) =>
 
 Dialog.propTypes = {
   body: PropTypes.string,
+  onClick: PropTypes.func,
   title: PropTypes.string,
 }
 

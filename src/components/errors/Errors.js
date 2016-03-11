@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 
 const spinGif = '/static/images/support/ello-spin.gif'
 
@@ -10,6 +10,10 @@ export const ErrorState = ({ children = 'Something went wrong.' }) =>
     { children }
   </div>
 
+ErrorState.propTypes = {
+  children: PropTypes.node,
+}
+
 export const ErrorState4xx = ({ withImage = true }) =>
   <ErrorState>
     { withImage ? <ErrorStateImage /> : null }
@@ -18,6 +22,9 @@ export const ErrorState4xx = ({ withImage = true }) =>
     <p>If all else fails you can try checking out our <a href="http://ello.threadless.com/" target="_blank">Store</a> or the <a href="https://ello.co/wtf/post/communitydirectory">Community Directory</a>.</p>
   </ErrorState>
 
+ErrorState4xx.propTypes = {
+  withImage: PropTypes.bool,
+}
 
 export const ErrorState5xx = ({ withImage = true }) =>
   <ErrorState>
@@ -26,4 +33,9 @@ export const ErrorState5xx = ({ withImage = true }) =>
     <p>There might be more information on our <a href="http://status.ello.co/">status page</a>.</p>
     <p>If all else fails you can try checking out our <a href="http://ello.threadless.com/" target="_blank">Store</a> or the <a href="https://ello.co/wtf/post/communitydirectory">Community Directory</a>.</p>
   </ErrorState>
+
+ErrorState5xx.propTypes = {
+  withImage: PropTypes.bool,
+}
+
 

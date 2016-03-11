@@ -17,6 +17,7 @@ const Preference = ({ className, definition, id, isChecked, isDisabled, onToggle
   </form>
 
 Preference.propTypes = {
+  className: PropTypes.string,
   definition: PropTypes.shape({}).isRequired,
   id: PropTypes.string.isRequired,
   isChecked: PropTypes.bool,

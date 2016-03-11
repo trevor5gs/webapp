@@ -25,11 +25,16 @@ const MiniElloEmoji = () =>
     </g>
   </SVGIcon>
 
-
 const QuickEmojiChoiceButton = ({ name, onClick }) =>
   <button className="QuickEmojiChoiceButton" name={ name } onClick={ onClick }>
     <Emoji name={ name } />
   </button>
+
+QuickEmojiChoiceButton.propTypes = {
+  name: PropTypes.string,
+  onClick: PropTypes.func,
+}
+
 
 
 class QuickEmoji extends Component {

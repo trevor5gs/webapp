@@ -51,8 +51,11 @@ const BlockMuteDialog = ({
 }
 
 BlockMuteDialog.propTypes = {
+  blockIsActive: PropTypes.bool,
+  muteIsActive: PropTypes.bool,
   onBlock: PropTypes.func,
   onMute: PropTypes.func,
+  username: PropTypes.string,
 }
 
 export default BlockMuteDialog
