@@ -42,6 +42,35 @@ class FormControl extends Component {
     this.initialValue = text
   }
 
+  onFocusControl = (e) => {
+    this.setState({ hasFocus: true })
+    const { onFocus } = this.props
+    if (typeof onFocus === 'function') {
+      onFocus(e)
+    }
+  };
+
+  onBlurControl = (e) => {
+    this.setState({ hasFocus: false })
+    const { onBlur } = this.props
+    if (typeof onBlur === 'function') {
+      onBlur(e)
+    }
+  };
+
+  onChangeControl = (e) => {
+    const val = e.target.value
+    const { id, onChange } = this.props
+    this.setState({
+      text: val,
+      hasValue: val.length,
+      isInitialValue: val === this.initialValue,
+    })
+    if (id && typeof onChange === 'function') {
+      onChange({ [id]: val })
+    }
+  };
+
   getStatusAsClassName() {
     const { status } = this.props
     switch (status) {
@@ -102,43 +131,14 @@ class FormControl extends Component {
     }
   }
 
-  handleFocus = (e) => {
-    this.setState({ hasFocus: true })
-    const { onFocus } = this.props
-    if (typeof onFocus === 'function') {
-      onFocus(e)
-    }
-  };
-
-  handleBlur = (e) => {
-    this.setState({ hasFocus: false })
-    const { onBlur } = this.props
-    if (typeof onBlur === 'function') {
-      onBlur(e)
-    }
-  };
-
-  handleChange = (e) => {
-    const val = e.target.value
-    const { id, onChange } = this.props
-    this.setState({
-      text: val,
-      hasValue: val.length,
-      isInitialValue: val === this.initialValue,
-    })
-    if (id && typeof onChange === 'function') {
-      onChange({ [id]: val })
-    }
-  };
-
   renderTextArea(text, inputClassNames) {
     return (
       <textarea
         { ...this.props }
         className={ inputClassNames }
-        onFocus={ this.handleFocus }
-        onBlur={ this.handleBlur }
-        onChange={ this.handleChange }
+        onFocus={ this.onFocusControl }
+        onBlur={ this.onBlurControl }
+        onChange={ this.onChangeControl }
         ref="input"
         value={ text }
       />
@@ -150,9 +150,9 @@ class FormControl extends Component {
       <input
         { ...this.props }
         className={ inputClassNames }
-        onFocus={ this.handleFocus }
-        onBlur={ this.handleBlur }
-        onChange={ this.handleChange }
+        onFocus={ this.onFocusControl }
+        onBlur={ this.onBlurControl }
+        onChange={ this.onChangeControl }
         ref="input"
         value={ text }
       />

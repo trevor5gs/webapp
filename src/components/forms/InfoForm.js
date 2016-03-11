@@ -41,11 +41,19 @@ class InfoForm extends Component {
     })
   }
 
-  saveForm(vo) {
-    this.props.dispatch(saveProfile(vo))
-  }
+  onChangeNameControl = (vo) => {
+    this.controlWasChanged(vo, 'nameStatus')
+  };
 
-  handleSubmit(e) {
+  onChangeBioControl = (vo) => {
+    this.controlWasChanged(vo, 'bioStatus')
+  };
+
+  onChangeLinksControl = (vo) => {
+    this.controlWasChanged(vo, 'linksStatus')
+  };
+
+  onSubmit(e) {
     e.preventDefault()
   }
 
@@ -60,17 +68,9 @@ class InfoForm extends Component {
     this.saveForm(vo)
   }
 
-  nameControlWasChanged = (vo) => {
-    this.controlWasChanged(vo, 'nameStatus')
-  };
-
-  bioControlWasChanged = (vo) => {
-    this.controlWasChanged(vo, 'bioStatus')
-  };
-
-  linksControlWasChanged = (vo) => {
-    this.controlWasChanged(vo, 'linksStatus')
-  };
+  saveForm(vo) {
+    this.props.dispatch(saveProfile(vo))
+  }
 
   render() {
     const { bioStatus, linksStatus, nameStatus, showThenHideMessage } = this.state
@@ -82,26 +82,26 @@ class InfoForm extends Component {
       <form
         className={ classNames(className, 'InfoForm') }
         noValidate="novalidate"
-        onSubmit={ this.handleSubmit }
+        onSubmit={ this.onSubmit }
         role="form"
       >
         <NameControl
           classList={ controlClassModifiers }
-          onChange={ this.nameControlWasChanged }
+          onChange={ this.onChangeNameControl }
           status={ nameStatus }
           tabIndex={ `${tabIndexStart}` }
           text={ profile.name }
         />
         <BioControl
           classList={ controlClassModifiers }
-          onChange={ this.bioControlWasChanged }
+          onChange={ this.onChangeBioControl }
           status={ bioStatus }
           tabIndex={ `${tabIndexStart + 1}` }
           text={ profile.shortBio }
         />
         <LinksControl
           classList={ controlClassModifiers }
-          onChange={ this.linksControlWasChanged }
+          onChange={ this.onChangeLinksControl }
           status={ linksStatus }
           tabIndex={`${ tabIndexStart + 2 }`}
           text={ profile.externalLinksList }

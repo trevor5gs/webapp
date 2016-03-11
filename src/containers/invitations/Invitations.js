@@ -22,10 +22,7 @@ class Invitations extends Component {
     this.batchEmailValue = []
   }
 
-  static preRender = (store) =>
-    store.dispatch(loadInvitedUsers());
-
-  handleControlChange = ({ emails }) => {
+  onChangeControl = ({ emails }) => {
     this.batchEmailValue = emails.split(/[,\s]+/)
     const { batchEmailState } = this.state
     const currentStatus = batchEmailState.status
@@ -35,7 +32,7 @@ class Invitations extends Component {
     }
   };
 
-  handleSubmit = (e) => {
+  onSubmit = (e) => {
     e.preventDefault()
     const { batchEmailState } = this.state
     if (batchEmailState.status !== STATUS.SUCCESS) {
@@ -45,6 +42,9 @@ class Invitations extends Component {
     dispatch(inviteUsers(this.batchEmailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
   };
+
+  static preRender = (store) =>
+    store.dispatch(loadInvitedUsers());
 
   renderMessage() {
     const { formStatus } = this.state
@@ -79,13 +79,13 @@ class Invitations extends Component {
           <form
             className="InvitationForm"
             noValidate="novalidate"
-            onSubmit={ this.handleSubmit }
+            onSubmit={ this.onSubmit }
             role="form"
           >
             <BatchEmailControl
               classList="asBoxControl onWhite"
               label={ `Emails ${batchEmailState.message}` }
-              onChange={ this.handleControlChange }
+              onChange={ this.onChangeControl }
               tabIndex="1"
             />
             <FormButton

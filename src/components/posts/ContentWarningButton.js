@@ -16,7 +16,7 @@ export default class ContentWarningButton extends Component {
     }
   }
 
-  handleClick = (e) => {
+  onClickToggle = (e) => {
     const { onClick } = this.props
     const { isOpen } = this.state
     const newIsOpen = !isOpen
@@ -31,7 +31,7 @@ export default class ContentWarningButton extends Component {
     const { isOpen } = this.state
     const classes = classNames('ContentWarningButton', { isOpen })
     return (
-      <button className={ classes } onClick={ this.handleClick }>
+      <button className={ classes } onClick={ this.onClickToggle }>
         <span className="ContentWarningButtonMessage">
           { post.contentWarning }
         </span>

@@ -58,6 +58,16 @@ class Avatar extends Component {
     this.disposeLoader()
   }
 
+  onLoadSuccess = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.SUCCESS })
+  };
+
+  onLoadFailure = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.FAILURE })
+  };
+
   getClassNames() {
     const { classList, isModifiable, size } = this.props
     const { status } = this.state
@@ -85,8 +95,8 @@ class Avatar extends Component {
     this.disposeLoader()
     if (src) {
       this.img = new Image()
-      this.img.onload = this.loadDidSucceed
-      this.img.onerror = this.loadDidFail
+      this.img.onload = this.onLoadSuccess
+      this.img.onerror = this.onLoadFailure
       this.img.src = src
     }
   }
@@ -98,16 +108,6 @@ class Avatar extends Component {
       this.img = null
     }
   }
-
-  loadDidSucceed = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.SUCCESS })
-  };
-
-  loadDidFail = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.FAILURE })
-  };
 
   render() {
     const { onClick, to } = this.props

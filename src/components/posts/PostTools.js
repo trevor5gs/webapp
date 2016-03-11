@@ -44,6 +44,98 @@ class PostTools extends Component {
     }
   }
 
+  onClickMoreToggle = () => {
+    this.setState({ isMoreToolActive: !this.state.isMoreToolActive })
+  };
+
+  onClickToggleComments = () => {
+    const { dispatch, post } = this.props
+    const nextShowComments = !post.showComments
+    this.setState({ isCommentsActive: nextShowComments })
+    dispatch(postActions.toggleComments(post, nextShowComments))
+  };
+
+  onClickLovePost = () => {
+    const { dispatch, isLoggedIn, post } = this.props
+    if (!isLoggedIn) {
+      return this.signUp()
+    }
+    if (post.loved) {
+      dispatch(postActions.unlovePost(post))
+    } else {
+      dispatch(postActions.lovePost(post))
+    }
+  };
+
+  onClickToggleLovers = () => {
+    const { dispatch, post } = this.props
+    const showLovers = !post.showLovers
+    dispatch(postActions.toggleLovers(post, showLovers))
+  };
+
+  onClickToggleReposters = () => {
+    const { dispatch, post } = this.props
+    const showReposters = !post.showReposters
+    dispatch(postActions.toggleReposters(post, showReposters))
+  };
+
+  onClickSharePost = () => {
+    const { author, dispatch, post } = this.props
+    const action = bindActionCreators(trackEvent, dispatch)
+    dispatch(openModal(<ShareDialog author={author} post={post} trackEvent={action} />))
+    return dispatch(trackEvent('open-share-dialog'))
+  };
+
+  onClickFlagPost = () => {
+    const { dispatch } = this.props
+    dispatch(openModal(
+      <FlagDialog
+        onResponse={ this.onPostWasFlagged }
+        onConfirm={ this.closeModal }
+      />))
+  };
+
+  onPostWasFlagged = ({ flag }) => {
+    const { dispatch, post } = this.props
+    dispatch(postActions.flagPost(post, flag))
+  };
+
+  onClickEditPost = () => {
+    const { dispatch, post } = this.props
+    dispatch(postActions.toggleEditing(post, true))
+    dispatch(postActions.loadEditablePost(post))
+  };
+
+  onClickRepostPost = () => {
+    const { dispatch, isLoggedIn, post } = this.props
+    if (!isLoggedIn) {
+      return this.signUp()
+    }
+    if (!post.reposted) {
+      dispatch(postActions.toggleReposting(post, true))
+      dispatch(postActions.loadEditablePost(post))
+    }
+  };
+
+  onClickDeletePost = () => {
+    const { dispatch } = this.props
+    dispatch(openModal(
+      <ConfirmDialog
+        title="Delete Post?"
+        onConfirm={ this.onCofirmDeletePost }
+        onDismiss={ this.closeModal }
+      />))
+  };
+
+  onCofirmDeletePost = () => {
+    const { dispatch, pathname, post, previousPath } = this.props
+    this.closeModal()
+    dispatch(postActions.deletePost(post))
+    if (pathname.match(post.token)) {
+      dispatch(routeActions.replace(previousPath || '/'))
+    }
+  };
+
   getToolCells() {
     const { author, currentUser, isLoggedIn, post } = this.props
     const isOwnPost = currentUser && author.id === currentUser.id
@@ -76,7 +168,7 @@ class PostTools extends Component {
           key={`CommentTool_${post.id}`}
         >
           { isLoggedIn ?
-            <button onClick={ this.toggleComments } >
+            <button onClick={ this.onClickToggleComments } >
               <BubbleIcon />
               <span className="PostToolValue" >
                 {numberToHuman(post.commentsCount, false)}
@@ -103,14 +195,14 @@ class PostTools extends Component {
         >
           <button
             className={classNames({ active: post.loved, hasPostToolDrawer: post.lovesCount > 0 })}
-            onClick={ this.lovePost }
+            onClick={ this.onClickLovePost }
           >
             <HeartIcon />
             <Hint>Love</Hint>
           </button>
           <button
             className={classNames({ active: post.loved }, 'PostToolDrawerButton')}
-            onClick={ this.toggleLovers }
+            onClick={ this.onClickToggleLovers }
           >
             <span className="PostToolValue" >
               { numberToHuman(post.lovesCount, false) }
@@ -129,12 +221,12 @@ class PostTools extends Component {
         >
           <button
             className={classNames({ hasPostToolDrawer: post.repostsCount > 0 })}
-            onClick={ this.repostPost }
+            onClick={ this.onClickRepostPost }
           >
             <RepostIcon />
             <Hint>Repost</Hint>
           </button>
-          <button className="PostToolDrawerButton" onClick={ this.toggleReposters }>
+          <button className="PostToolDrawerButton" onClick={ this.onClickToggleReposters }>
             <span className="PostToolValue" >
               {numberToHuman(post.repostsCount, false)}
             </span>
@@ -149,7 +241,7 @@ class PostTools extends Component {
           className={classNames('PostTool', 'ShareTool', { asPill: !isLoggedIn })}
           key={`ShareTool_${post.id}`}
         >
-          <button onClick={ this.sharePost }>
+          <button onClick={ this.onClickSharePost }>
             <ShareIcon />
             <Hint>Share</Hint>
           </button>
@@ -160,7 +252,7 @@ class PostTools extends Component {
       if (isOwnPost) {
         cells.push(
           <span className="PostTool EditTool ShyTool" key={`EditTool_${post.id}`}>
-            <button onClick={ this.editPost }>
+            <button onClick={ this.onClickEditPost }>
               <PencilIcon />
               <Hint>Edit</Hint>
             </button>
@@ -168,7 +260,7 @@ class PostTools extends Component {
         )
         cells.push(
           <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${post.id}`}>
-            <button onClick={ this.deletePost }>
+            <button onClick={ this.onClickDeletePost }>
               <XBoxIcon />
               <Hint>Delete</Hint>
             </button>
@@ -177,7 +269,7 @@ class PostTools extends Component {
       } else {
         cells.push(
           <span className="PostTool FlagTool ShyTool" key={`FlagTool_${post.id}`}>
-            <button onClick={ this.flagPost }>
+            <button onClick={ this.onClickFlagPost }>
               <FlagIcon />
               <Hint>Flag</Hint>
             </button>
@@ -187,7 +279,7 @@ class PostTools extends Component {
     }
     cells.push(
       <span className={"PostTool MoreTool"} key={`MoreTool_${post.id}`}>
-        <button onClick={ this.toggleActiveMoreTool }>
+        <button onClick={ this.onClickMoreToggle }>
           <ChevronIcon />
         </button>
       </span>
@@ -200,100 +292,10 @@ class PostTools extends Component {
     dispatch(closeModal())
   };
 
-  toggleActiveMoreTool = () => {
-    this.setState({ isMoreToolActive: !this.state.isMoreToolActive })
-  };
-
-  toggleComments = () => {
-    const { dispatch, post } = this.props
-    const nextShowComments = !post.showComments
-    this.setState({ isCommentsActive: nextShowComments })
-    dispatch(postActions.toggleComments(post, nextShowComments))
-  };
-
-  lovePost = () => {
-    const { dispatch, isLoggedIn, post } = this.props
-    if (!isLoggedIn) {
-      return this.signUp()
-    }
-    if (post.loved) {
-      dispatch(postActions.unlovePost(post))
-    } else {
-      dispatch(postActions.lovePost(post))
-    }
-  };
-  toggleLovers = () => {
-    const { dispatch, post } = this.props
-    const showLovers = !post.showLovers
-    dispatch(postActions.toggleLovers(post, showLovers))
-  };
-  toggleReposters = () => {
-    const { dispatch, post } = this.props
-    const showReposters = !post.showReposters
-    dispatch(postActions.toggleReposters(post, showReposters))
-  };
-
-  sharePost = () => {
-    const { author, dispatch, post } = this.props
-    const action = bindActionCreators(trackEvent, dispatch)
-    dispatch(openModal(<ShareDialog author={author} post={post} trackEvent={action} />))
-    return dispatch(trackEvent('open-share-dialog'))
-  };
-
   signUp = () => {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
     return dispatch(trackEvent('open-registration-request-post-tools'))
-  };
-
-  flagPost = () => {
-    const { dispatch } = this.props
-    dispatch(openModal(
-      <FlagDialog
-        onResponse={ this.postWasFlagged }
-        onConfirm={ this.closeModal }
-      />))
-  };
-
-  postWasFlagged = ({ flag }) => {
-    const { dispatch, post } = this.props
-    dispatch(postActions.flagPost(post, flag))
-  };
-
-  editPost = () => {
-    const { dispatch, post } = this.props
-    dispatch(postActions.toggleEditing(post, true))
-    dispatch(postActions.loadEditablePost(post))
-  };
-
-  repostPost = () => {
-    const { dispatch, isLoggedIn, post } = this.props
-    if (!isLoggedIn) {
-      return this.signUp()
-    }
-    if (!post.reposted) {
-      dispatch(postActions.toggleReposting(post, true))
-      dispatch(postActions.loadEditablePost(post))
-    }
-  };
-
-  deletePost = () => {
-    const { dispatch } = this.props
-    dispatch(openModal(
-      <ConfirmDialog
-        title="Delete Post?"
-        onConfirm={ this.deletePostConfirmed }
-        onRejected={ this.closeModal }
-      />))
-  };
-
-  deletePostConfirmed = () => {
-    const { dispatch, pathname, post, previousPath } = this.props
-    this.closeModal()
-    dispatch(postActions.deletePost(post))
-    if (pathname.match(post.token)) {
-      dispatch(routeActions.replace(previousPath || '/'))
-    }
   };
 
   render() {

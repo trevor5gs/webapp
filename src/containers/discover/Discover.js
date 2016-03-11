@@ -5,10 +5,10 @@ import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import { loadCommunities, loadDiscoverUsers, loadFeaturedUsers } from '../../actions/discover'
 import { trackEvent } from '../../actions/tracking'
-import Banderole from '../../components/assets/Banderole'
-import Beacon from '../../components/beacons/Beacon'
+import Promotion from '../../components/assets/Promotion'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { TabListLinks } from '../../components/tabs/TabList'
+import { ZeroStream } from '../../components/zeros/Zeros'
 
 const BEACON_VERSION = '1'
 
@@ -31,7 +31,12 @@ class Discover extends Component {
     }
   }
 
-  onDismissBeacon = () => {
+  onClickTrackCredits = () => {
+    const { dispatch } = this.props
+    dispatch(trackEvent(`banderole-credits-clicked`))
+  };
+
+  onDismissZeroStream = () => {
     const { dispatch } = this.props
     this.setState({ isBeaconActive: false })
     dispatch({ type: BEACONS.LAST_DISCOVER_VERSION, payload: { version: BEACON_VERSION } })
@@ -40,16 +45,11 @@ class Discover extends Component {
   static preRender = (store, routerState) =>
     store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'));
 
-  creditsTrackingEvent = () => {
-    const { dispatch } = this.props
-    dispatch(trackEvent(`banderole-credits-clicked`))
-  };
-
-  renderBeacon() {
+  renderZeroStream() {
     return (
-      <Beacon emoji="crystal_ball" onDismiss={ this.onDismissBeacon }>
+      <ZeroStream emoji="crystal_ball" onDismiss={ this.onDismissZeroStream }>
         Discover inspiring people and beautiful things you won’t find anywhere else.
-      </Beacon>
+      </ZeroStream>
     )
   }
 
@@ -78,9 +78,9 @@ class Discover extends Component {
       ]
     return (
       <section className="Discover Panel" key={`discover_${type}`}>
-        { isBeaconActive ? this.renderBeacon() : null }
-        <Banderole
-          creditsClickAction={ this.creditsTrackingEvent }
+        { isBeaconActive ? this.renderZeroStream() : null }
+        <Promotion
+          creditsClickAction={ this.onClickTrackCredits }
           isLoggedIn={ isLoggedIn }
           userlist={ isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS }
         />

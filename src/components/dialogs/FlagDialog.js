@@ -28,14 +28,14 @@ class FlagDialog extends Component {
     }
   }
 
-  choiceWasMade = () => {
+  onClickChoiceWasMade = () => {
     const { onResponse } = this.props
     const { activeChoice } = this.state
     this.setState({ scene: 'renderConfirmationScreen' })
     onResponse({ flag: activeChoice })
   };
 
-  handleChoiceClick = (e) => {
+  onClickChoice = (e) => {
     const { activeChoice } = this.state
     const dataFlag = e.target.dataset.flag
     const newChoice = dataFlag === activeChoice ? null : dataFlag
@@ -53,7 +53,7 @@ class FlagDialog extends Component {
           className={ classNames({ isActive: activeChoice === choice }, 'FlagDialogChoice') }
           data-flag={ choice }
           key={ choice }
-          onClick={ this.handleChoiceClick }
+          onClick={ this.onClickChoice }
         >
           { flags[choice] }
         </button>
@@ -74,7 +74,7 @@ class FlagDialog extends Component {
 
           <button
             className="FlagDialogButton"
-            onClick={ this.choiceWasMade }
+            onClick={ this.onClickChoiceWasMade }
             style={ top ? { top, display: 'inline-block' } : { display: 'none' } }
           >
             Submit
@@ -89,7 +89,6 @@ class FlagDialog extends Component {
       </div>
     )
   }
-
 
   renderConfirmationScreen() {
     const { onConfirm } = this.props

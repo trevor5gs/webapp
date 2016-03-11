@@ -12,7 +12,7 @@ import {
 class RelationshipButton extends Component {
 
   static propTypes = {
-    buttonWasClicked: PropTypes.func,
+    onClick: PropTypes.func,
     classList: PropTypes.string,
     priority: PropTypes.oneOf([
       RELATIONSHIP_PRIORITY.INACTIVE,
@@ -53,9 +53,9 @@ class RelationshipButton extends Component {
 
   updatePriority = () => {
     const { nextPriority } = this.state
-    const { buttonWasClicked, priority, userId } = this.props
-    if (buttonWasClicked) {
-      buttonWasClicked({ userId, priority: nextPriority, existing: priority })
+    const { onClick, priority, userId } = this.props
+    if (onClick) {
+      onClick({ userId, priority: nextPriority, existing: priority })
     }
   };
 
@@ -74,12 +74,12 @@ class RelationshipButton extends Component {
   }
 
   renderAsLabelButton(label) {
-    const{ buttonWasClicked, priority, classList } = this.props
+    const{ onClick, priority, classList } = this.props
     return (
       <button
         className={ classNames('RelationshipButton', classList) }
         data-priority={ priority }
-        onClick={ buttonWasClicked }
+        onClick={ onClick }
       >
         <span>{ label }</span>
       </button>

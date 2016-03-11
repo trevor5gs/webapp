@@ -12,7 +12,7 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
-class Banderole extends Component {
+class Promotion extends Component {
 
   static propTypes = {
     creditsClickAction: PropTypes.func,
@@ -47,6 +47,16 @@ class Banderole extends Component {
     this.setState({ imageSize: coverImageSize })
   }
 
+  onLoadSuccess = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.SUCCESS })
+  };
+
+  onLoadFailure = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.FAILURE })
+  };
+
   getCoverSource() {
     const { featuredUser, imageSize } = this.state
     if (!featuredUser) { return null }
@@ -59,8 +69,8 @@ class Banderole extends Component {
     this.disposeLoader()
     if (src) {
       this.img = new Image()
-      this.img.onload = this.loadDidSucceed
-      this.img.onerror = this.loadDidFail
+      this.img.onload = this.onLoadSuccess
+      this.img.onerror = this.onLoadFailure
       this.img.src = src
     }
   }
@@ -73,37 +83,27 @@ class Banderole extends Component {
     }
   }
 
-  loadDidSucceed = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.SUCCESS })
-  };
-
-  loadDidFail = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.FAILURE })
-  };
-
   render() {
     const { featuredUser, status } = this.state
     const { creditsClickAction, isLoggedIn } = this.props
     if (!featuredUser) { return null }
     const { caption } = featuredUser
     const src = this.getCoverSource()
-    const klassNames = classNames('Banderole', status)
+    const klassNames = classNames('Promotion', status)
     const style = src ? { backgroundImage: `url(${src})` } : null
 
     return (
       <div className={klassNames}>
-        <figure className="BanderoleImage" style={style} />
-        <div className="BanderoleCaption">
+        <figure className="PromotionImage" style={style} />
+        <div className="PromotionCaption">
           { caption }
           { isLoggedIn ? null : <Link to="https://ello.co/signup">Sign Up</Link> }
         </div>
-        <Credits clickAction={creditsClickAction} user={featuredUser} />
+        <Credits onClick={creditsClickAction} user={featuredUser} />
       </div>
     )
   }
 }
 
-export default Banderole
+export default Promotion
 

@@ -15,7 +15,7 @@ class UserCard extends Component {
     }).isRequired,
   };
 
-  handleRelationshipUpdate(vo) {
+  onClickRelationshipUpdate(vo) {
     const { userId, priority, existing } = vo
     const { dispatch, pathname } = this.props
 
@@ -25,7 +25,7 @@ class UserCard extends Component {
     return dispatch(updateRelationship(userId, priority, existing))
   }
 
-  handleLaunchSignUpModal() {
+  onClickOpenSignupModal() {
     const { dispatch } = this.props
     return dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
   }
@@ -33,12 +33,12 @@ class UserCard extends Component {
   render() {
     const { isLoggedIn, user } = this.props
     const callback = isLoggedIn ?
-                     this.handleRelationshipUpdate.bind(this) :
-                     this.handleLaunchSignUpModal.bind(this)
+                     this.onClickRelationshipUpdate.bind(this) :
+                     this.onClickOpenSignupModal.bind(this)
     return (
       <div className="UserCard" >
         <RelationshipImageButton
-          buttonWasClicked={callback}
+          onClick={callback}
           coverSrc={user.coverImage.hdpi.url}
           isLoggedIn={isLoggedIn}
           priority={user.relationshipPriority}

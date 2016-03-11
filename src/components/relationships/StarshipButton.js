@@ -6,7 +6,7 @@ import { StarIcon } from '../relationships/RelationshipIcons'
 class StarshipButton extends Component {
 
   static propTypes = {
-    buttonWasClicked: PropTypes.func,
+    onClick: PropTypes.func,
     classList: PropTypes.string,
     priority: PropTypes.oneOf([
       RELATIONSHIP_PRIORITY.INACTIVE,
@@ -44,9 +44,9 @@ class StarshipButton extends Component {
 
   updatePriority = () => {
     const { nextPriority } = this.state
-    const { buttonWasClicked, priority, userId } = this.props
-    if (buttonWasClicked) {
-      buttonWasClicked({ userId, priority: nextPriority, existing: priority })
+    const { onClick, priority, userId } = this.props
+    if (onClick) {
+      onClick({ userId, priority: nextPriority, existing: priority })
     }
   };
 

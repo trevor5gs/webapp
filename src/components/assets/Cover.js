@@ -75,6 +75,16 @@ class Cover extends Component {
     }
   }
 
+  onLoadSuccess = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.SUCCESS })
+  };
+
+  onLoadFailure = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.FAILURE })
+  };
+
   getClassNames() {
     const { isModifiable, modifiers } = this.props
     const { status, asHidden } = this.state
@@ -103,8 +113,8 @@ class Cover extends Component {
     this.disposeLoader()
     if (src) {
       this.img = new Image()
-      this.img.onload = this.loadDidSucceed
-      this.img.onerror = this.loadDidFail
+      this.img.onload = this.onLoadSuccess
+      this.img.onerror = this.onLoadFailure
       this.img.src = src
     }
   }
@@ -116,16 +126,6 @@ class Cover extends Component {
       this.img = null
     }
   }
-
-  loadDidSucceed = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.SUCCESS })
-  };
-
-  loadDidFail = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.FAILURE })
-  };
 
   render() {
     const src = this.getCoverSource()

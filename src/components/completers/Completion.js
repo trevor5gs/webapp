@@ -11,22 +11,22 @@ export default class Completion extends Component {
     value: PropTypes.string,
   };
 
+  onClickCompletion = (e) => {
+    const { onClick } = this.props
+    onClick({ value: this.getValue(), e })
+  };
+
   getValue() {
     const { label, value } = this.props
     return value || label
   }
-
-  handleClick = (e) => {
-    const { onClick } = this.props
-    onClick({ value: this.getValue(), e })
-  };
 
   render() {
     const { asset, label, className } = this.props
     return (
       <button
         className={ classNames('Completion', className) }
-        onClick={ this.handleClick }
+        onClick={ this.onClickCompletion }
       >
         { asset }
         <span className="CompletionLabel">{ label }</span>

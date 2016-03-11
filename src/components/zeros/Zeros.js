@@ -1,19 +1,41 @@
 import React, { PropTypes } from 'react'
 import RelationsGroup from '../relationships/RelationsGroup'
-import Beacon from '../beacons/Beacon'
+import Emoji from '../assets/Emoji'
 import Editor from '../editor/Editor'
 
+export const ZeroStream = ({ children, emoji, onDismiss }) =>
+  <div className="ZeroStream">
+    { emoji ? <Emoji name={ emoji } size={ 32 } /> : null }
+    <h2 className="ZeroStreamHeading">
+      { children }
+    </h2>
+    { onDismiss ?
+      <button className="ZeroStreamButton" onClick={ onDismiss }>
+        <span>Close</span>
+      </button> :
+      null
+     }
+  </div>
+
+ZeroStream.propTypes = {
+  children: PropTypes.node.isRequired,
+  emoji: PropTypes.string,
+  onDismiss: PropTypes.func,
+}
+
+
 export const ZeroFollowingStream = () =>
-  <Beacon emoji="lollipop">
+  <ZeroStream emoji="lollipop">
     Follow people and things that inspire you.
-  </Beacon>
+  </ZeroStream>
 
 
 export const ZeroStarredStream = () =>
-  <Beacon emoji="star">
+  <ZeroStream emoji="star">
     When you Star someone their posts appear here. Star people to create a second stream.
-  </Beacon>
+  </ZeroStream>
 
+// -------------------------------------
 
 export const ZeroState = ({ children = 'Sorry, no results found.' }) =>
   <div className="ZeroState">
