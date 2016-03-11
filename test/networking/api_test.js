@@ -65,38 +65,37 @@ describe('api.js', () => {
   context('posts', () => {
     it('#postDetail', () => {
       expect(api.postDetail('~666').path).to.match(/\/posts\/~666\?/)
-      expect(api.postDetail('666').pagingPath).to.equal('comments')
     })
 
     it('#lovePost', () => {
-      expect(api.lovePost({ id: '666' }).path).to.match(/\/posts\/666\/loves/)
+      expect(api.lovePost('666').path).to.match(/\/posts\/666\/loves/)
     })
 
     it('#unlovePost', () => {
-      expect(api.unlovePost({ id: '666' }).path).to.match(/\/posts\/666\/love/)
+      expect(api.unlovePost('666').path).to.match(/\/posts\/666\/love/)
     })
 
     it('#deletePost', () => {
-      expect(api.deletePost({ id: '666' }).path).to.match(/\/posts\/666$/)
+      expect(api.deletePost('666').path).to.match(/\/posts\/666$/)
     })
 
     it('#flagPost', () => {
-      expect(api.flagPost({ id: '666' }, 'ants').path).to.match(/\/posts\/666\/flag\/ants$/)
+      expect(api.flagPost('666', 'ants').path).to.match(/\/posts\/666\/flag\/ants$/)
     })
 
     it('#postReposters', () => {
-      expect(api.postReposters({ id: '666' }).path).to.match(/\/posts\/666\/reposters$/)
+      expect(api.postReposters('666').path).to.match(/\/posts\/666\/reposters$/)
     })
 
     it('#postLovers', () => {
-      expect(api.postLovers({ id: '666' }).path).to.match(/\/posts\/666\/lovers/)
+      expect(api.postLovers('666').path).to.match(/\/posts\/666\/lovers/)
     })
   })
 
   context('comments', () => {
     it('#commentsForPost', () => {
-      expect(api.commentsForPost({ id: 'what' }).path).to.match(/\/posts\/what\/comments\?/)
-      expect(api.commentsForPost({ id: 'what' }).pagingPath).to.be.undefined
+      expect(api.commentsForPost('what').path).to.match(/\/posts\/what\/comments\?/)
+      expect(api.commentsForPost('what').pagingPath).to.be.undefined
     })
 
     it('#deleteComment', () => {

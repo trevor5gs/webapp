@@ -219,8 +219,8 @@ class Navbar extends Component {
   };
 
   checkForNotifications() {
-    const { dispatch } = this.props
-    dispatch(checkForNewNotifications())
+    const { dispatch, isLoggedIn } = this.props
+    if (isLoggedIn) { dispatch(checkForNewNotifications()) }
   }
 
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {

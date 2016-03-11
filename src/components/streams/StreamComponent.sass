@@ -6,7 +6,8 @@
   to
     transform: rotate(360deg) scale(0.5)
 
-.StreamComponent
+.StreamComponent,
+.StreamContainer
   padding: rem(10)
 
 .StreamComponent.narrow,
@@ -15,11 +16,13 @@
   padding-right: 0
 
 @media(min-width: #{$break-2})
-  .StreamComponent
+  .StreamComponent,
+  .StreamContainer
     padding: rem(20)
 
 @media(min-width: #{$break-4})
-  .StreamComponent
+  .StreamComponent,
+  .StreamContainer
     padding-left: rem(40)
     padding-right: rem(40)
 
@@ -39,7 +42,8 @@
 // -------------------------------------
 
 .Panel > .StreamComponent.hasErrored,
-.Panel > .UserDetails > .StreamComponent.hasErrored
+.Panel > .UserDetails > .StreamComponent.hasErrored,
+.Panel > .PostDetails > .StreamComponent.hasErrored
   margin: 0 auto
   max-width: rem(780)
 
