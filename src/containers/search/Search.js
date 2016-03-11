@@ -71,7 +71,7 @@ class Search extends Component {
       vo.type = null
     }
     if (typeof document !== 'undefined') {
-      const uri = state.routing.location.pathname + updateQueryParams(vo)
+      const uri = document.location.pathname + updateQueryParams(vo)
       dispatch(replace(uri))
     }
   }
