@@ -3,6 +3,16 @@ import 'newrelic'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
 
+function handleZlibError(error) {
+  if (error.code === 'Z_BUF_ERROR') {
+    console.error(error)
+  } else {
+    console.log(error.stack)
+    throw error
+  }
+}
+process.on('uncaughtException', handleZlibError)
+
 import express from 'express'
 import morgan from 'morgan'
 import throng from 'throng'
