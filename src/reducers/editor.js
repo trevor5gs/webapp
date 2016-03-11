@@ -12,8 +12,31 @@ const initialState = {
   editors: {},
 }
 
-function editorObject(state = {}, action) {
+function imageBlockObject(state = {}, action) {
+  switch (action.type) {
+    case POST.TMP_IMAGE_CREATED:
+    case POST.IMAGE_BLOCK_CREATED:
+      return {
+        ...state,
+        type: action.type,
+        ...action.payload,
+      }
+    case POST.POST_PREVIEW_SUCCESS:
+    case POST.SAVE_IMAGE_SUCCESS:
+      return {
+        ...state,
+        type: action.type,
+        ...action.payload.response,
+      }
+    default:
+      return state
+  }
+}
+
+function editorObject(state = { loadedContent: {} }, action) {
+  const newState = { ...state }
   let obj
+  let index
   switch (action.type) {
     case EDITOR.APPEND_TEXT:
       return {
@@ -29,18 +52,17 @@ function editorObject(state = {}, action) {
       }
     case POST.TMP_IMAGE_CREATED:
     case POST.IMAGE_BLOCK_CREATED:
-      return {
-        ...state,
-        type: action.type,
-        ...action.payload,
-      }
     case POST.POST_PREVIEW_SUCCESS:
     case POST.SAVE_IMAGE_SUCCESS:
-      return {
-        ...state,
-        type: action.type,
-        ...action.payload.response,
+      index = action.payload ? action.payload.index : null
+      if (typeof index !== 'undefined') {
+        if (!newState.loadedContent) { newState.loadedContent = {} }
+        newState.loadedContent[index] = imageBlockObject(newState.loadedContent[index], action)
+        newState.index = index
+        newState.type = action.type
+        return newState
       }
+      return state
     case POST.PERSIST:
       obj = {
         ...state,

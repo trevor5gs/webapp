@@ -8,7 +8,7 @@ import Avatar from '../assets/Avatar'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostTools from '../posts/PostTools'
 import CommentStream from '../streams/CommentStream'
-import { postLoversDrawer, postRepostersDrawer } from '../streams/StreamRenderables'
+import { postLoversDrawer, postRepostersDrawer } from '../../containers/details/PostDetail'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
 import Editor from '../../components/editor/Editor'
@@ -121,6 +121,7 @@ class PostParser extends Component {
     currentUser: PropTypes.object,
     isEditing: PropTypes.bool,
     isGridLayout: PropTypes.bool,
+    isPostDetail: PropTypes.bool,
     isReposting: PropTypes.bool,
     post: PropTypes.object,
     showComments: PropTypes.bool,
@@ -135,16 +136,17 @@ class PostParser extends Component {
       author,
       currentUser,
       isGridLayout,
+      isPostDetail,
       post,
-      showComments,
     } = this.props
-    const showLovers = !isGridLayout && this.props.showLovers
-    const showReposters = !isGridLayout && this.props.showReposters
     if (!post) { return null }
-
-    let postHeader;
-
     setModels({ assets })
+
+    const showLovers = !isGridLayout && !isPostDetail && this.props.showLovers
+    const showReposters = !isGridLayout && !isPostDetail && this.props.showReposters
+    const showComments = !isPostDetail && this.props.showComments
+
+    let postHeader
     if (isRepost(post)) {
       const { authorLinkObject, sourceLinkObject } = this.props
       postHeader = repostHeader(post, authorLinkObject, sourceLinkObject, author)

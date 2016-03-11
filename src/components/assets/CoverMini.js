@@ -49,6 +49,16 @@ class CoverMini extends Component {
     this.disposeLoader()
   }
 
+  onLoadSuccess = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.SUCCESS })
+  };
+
+  onLoadFailure = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.FAILURE })
+  };
+
   getCoverSource(props = this.props) {
     const { coverImage } = props
     if (!coverImage) {
@@ -65,8 +75,8 @@ class CoverMini extends Component {
     this.disposeLoader()
     if (src) {
       this.img = new Image()
-      this.img.onload = this.loadDidSucceed
-      this.img.onerror = this.loadDidFail
+      this.img.onload = this.onLoadSuccess
+      this.img.onerror = this.onLoadFailure
       this.img.src = src
     }
   }
@@ -78,16 +88,6 @@ class CoverMini extends Component {
       this.img = null
     }
   }
-
-  loadDidSucceed = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.SUCCESS })
-  };
-
-  loadDidFail = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.FAILURE })
-  };
 
   render() {
     const { to } = this.props

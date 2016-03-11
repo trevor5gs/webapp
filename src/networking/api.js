@@ -128,53 +128,46 @@ export function noiseStream() {
 }
 // Posts
 export function postDetail(idOrToken) {
-  const params = { comment_count: PER_PAGE }
+  const params = { comment_count: false }
   return {
     path: getAPIPath(`posts/${idOrToken}`, params),
-    pagingPath: 'comments',
-    params,
   }
 }
 export function editPostDetail(idOrToken) {
   const params = { comment_count: false }
   return {
     path: getAPIPath(`posts/${idOrToken}`, params),
-    params,
   }
 }
 // Loves
-export function lovePost(post) {
+export function lovePost(idOrToken) {
   return {
-    path: getAPIPath(`posts/${post.id}/loves`),
+    path: getAPIPath(`posts/${idOrToken}/loves`),
   }
 }
-export function unlovePost(post) {
+export function unlovePost(idOrToken) {
   return {
-    path: getAPIPath(`posts/${post.id}/love`),
+    path: getAPIPath(`posts/${idOrToken}/love`),
   }
 }
-export function deletePost(post) {
+export function deletePost(idOrToken) {
   return {
-    path: getAPIPath(`posts/${post.id}`),
+    path: getAPIPath(`posts/${idOrToken}`),
   }
 }
-export function flagPost(post, kind) {
+export function flagPost(idOrToken, kind) {
   return {
-    path: getAPIPath(`posts/${post.id}/flag/${kind}`),
+    path: getAPIPath(`posts/${idOrToken}/flag/${kind}`),
   }
 }
-export function postLovers(post) {
-  const params = { per_page: 10 }
+export function postLovers(idOrToken) {
   return {
-    path: getAPIPath(`posts/${post.id}/lovers`),
-    params,
+    path: getAPIPath(`posts/${idOrToken}/lovers`),
   }
 }
-export function postReposters(post) {
-  const params = { per_page: 10 }
+export function postReposters(idOrToken) {
   return {
-    path: getAPIPath(`posts/${post.id}/reposters`),
-    params,
+    path: getAPIPath(`posts/${idOrToken}/reposters`),
   }
 }
 export function createPost(repostId) {
@@ -185,9 +178,9 @@ export function createPost(repostId) {
     params,
   }
 }
-export function updatePost(post) {
+export function updatePost(idOrToken) {
   return {
-    path: getAPIPath(`posts/${post.id}`),
+    path: getAPIPath(`posts/${idOrToken}`),
   }
 }
 export function postPreviews() {
@@ -206,11 +199,10 @@ export function loadEmojis() {
   }
 }
 // Comments
-export function commentsForPost(post) {
+export function commentsForPost(idOrToken) {
   const params = { per_page: 10 }
   return {
-    path: getAPIPath(`posts/${post.id}/comments`, params),
-    params,
+    path: getAPIPath(`posts/${idOrToken}/comments`, params),
   }
 }
 export function createComment(postId) {
@@ -238,7 +230,6 @@ export function userDetail(idOrUsername) {
   const params = { post_count: false }
   return {
     path: getAPIPath(`users/${idOrUsername}`, params),
-    params,
   }
 }
 export function userResources(idOrUsername, resource) {

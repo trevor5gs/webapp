@@ -192,7 +192,7 @@ class Navbar extends Component {
     dispatch(push('/'))
   };
 
-  onNotificationToggle = (e) => {
+  onClickNotification = (e) => {
     if (e) { e.preventDefault() }
     const { dispatch, isNotificationsActive } = this.props
     dispatch({
@@ -201,27 +201,27 @@ class Navbar extends Component {
     })
   };
 
-  omniButtonWasClicked = () => {
+  onClickOmniButton = () => {
     const { dispatch } = this.props
     dispatch(openOmnibar())
     window.scrollTo(0, 0)
   };
 
-  loadMorePostsWasClicked = () => {
+  onClickLoadMorePosts = () => {
     const { dispatch } = this.props
     dispatch({
       type: ACTION_TYPES.ADD_NEW_IDS_TO_RESULT,
     })
   };
 
-  logInWasClicked = (e) => {
+  onClickLogInButton = (e) => {
     e.preventDefault()
     document.location.href = ENV.REDIRECT_URI + e.target.pathname
   };
 
   checkForNotifications() {
-    const { dispatch } = this.props
-    dispatch(checkForNewNotifications())
+    const { dispatch, isLoggedIn } = this.props
+    if (isLoggedIn) { dispatch(checkForNewNotifications()) }
   }
 
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
@@ -230,10 +230,10 @@ class Navbar extends Component {
     return (
       <nav className={klassNames} role="navigation">
         <NavbarMark />
-        <NavbarOmniButton callback={ this.omniButtonWasClicked } />
+        <NavbarOmniButton onClick={ this.onClickOmniButton } />
         {
           hasLoadMoreButton ?
-          <NavbarMorePostsButton callback={ this.loadMorePostsWasClicked } /> :
+          <NavbarMorePostsButton onClick={ this.onClickLoadMorePosts } /> :
           null
         }
         <div className="NavbarLinks">
@@ -264,7 +264,7 @@ class Navbar extends Component {
             modifiers={ classNames('IconOnly', { hasNotifications }) }
             pathname={pathname}
             icon={ <BoltIcon/> }
-            onClick={ viewportDeviceSize !== 'mobile' ? this.onNotificationToggle : null }
+            onClick={ viewportDeviceSize !== 'mobile' ? this.onClickNotification : null }
           />
           <NavbarLink
             to="/search"
@@ -293,7 +293,7 @@ class Navbar extends Component {
         <NavbarLabel />
         {
           hasLoadMoreButton ?
-            <NavbarMorePostsButton callback={ this.loadMorePostsWasClicked } /> :
+            <NavbarMorePostsButton onClick={ this.onClickLoadMorePosts } /> :
             null
         }
         <div className="NavbarLinks">

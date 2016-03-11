@@ -11,13 +11,16 @@ export default class CommentStream extends Component {
 
   render() {
     const { post, author } = this.props
-    const action = loadComments(post)
+    const action = loadComments(post.id)
     return (
       <div>
         <StreamComponent className="narrow" action={action} ignoresScrollPosition>
           {post.commentsCount > 10 ?
             <Link
-              to={`/${author.username}/post/${post.token}`}
+              to={{
+                pathname: `/${author.username}/post/${post.token}`,
+                state: { didComeFromSeeMoreCommentsLink: true },
+              }}
               className="CommentsLink"
             >
               See More

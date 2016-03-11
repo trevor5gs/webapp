@@ -93,6 +93,98 @@ class Settings extends Component {
     dispatch(push('/'))
   };
 
+  onChangeUsernameControl = ({ username }) => {
+    this.usernameValue = username
+    const { usernameState } = this.state
+    const currentStatus = usernameState.status
+    const clientState = getUsernameStateFromClient({ value: username, currentStatus })
+    if (clientState.status === STATUS.SUCCESS) {
+      if (currentStatus !== STATUS.REQUEST) {
+        this.setState({ usernameState: { status: STATUS.REQUEST, message: 'checking...' } })
+      }
+      // This will end up landing on `validateUsernameResponse` after fetching
+      return this.checkServerForAvailability({ username })
+    }
+    this.setState({ usernameState: clientState })
+  };
+
+  onChangeEmailControl = ({ email }) => {
+    this.emailValue = email
+    const { emailState } = this.state
+    const currentStatus = emailState.status
+    const clientState = getEmailStateFromClient({ value: email, currentStatus })
+    if (clientState.status === STATUS.SUCCESS) {
+      if (currentStatus !== STATUS.REQUEST) {
+        this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
+      }
+      // This will end up landing on `validateEmailResponse` after fetching
+      return this.checkServerForAvailability({ email })
+    }
+    this.setState({ emailState: clientState })
+  };
+
+  onChangePasswordControl = ({ password }) => {
+    this.passwordValue = password
+    const { passwordState } = this.state
+    const currentStatus = passwordState.status
+    const newState = getPasswordState({ value: password, currentStatus })
+    this.setState({ passwordState: newState })
+  };
+
+  onChangeCurrentPasswordControl = (vo) => {
+    this.passwordCurrentValue = vo.current_password
+  };
+
+  onClickRequestDataExport = () => {
+    const { dispatch } = this.props
+    dispatch(exportData())
+    this.refs.exportButton.disabled = true
+    this.refs.exportButton.innerHTML = 'Exported'
+  };
+
+  onClickDeleteAccountModal = () => {
+    const { dispatch, profile } = this.props
+    dispatch(openModal(
+      <DeleteAccountDialog
+        user={ profile }
+        onConfirm={ this.onConfirmAccountWasDeleted }
+        onDismiss={ this.closeModal }
+      />
+    , 'asDangerZone'))
+  };
+
+  onConfirmAccountWasDeleted = () => {
+    const { dispatch } = this.props
+    dispatch(deleteProfile())
+    this.closeModal()
+    dispatch(replace('/'))
+  };
+
+  onSubmit = (e) => {
+    e.preventDefault()
+    const formData = {
+      current_password: this.passwordCurrentValue,
+      email: this.emailValue,
+      password: this.passwordValue,
+      username: this.usernameValue,
+    }
+    // console.log(formData)
+    return formData
+  };
+
+  onTogglePostsAdultContent = (obj) => {
+    if (obj.postsAdultContent) {
+      const { dispatch, profile } = this.props
+      dispatch(openModal(
+        <AdultPostsDialog
+          onConfirm={ this.closeModal }
+          user={ profile }
+        />
+      ))
+    }
+    preferenceToggleChanged(obj)
+  };
+
   getExternalLinkListAsText() {
     const { profile } = this.props
     return (
@@ -128,42 +220,12 @@ class Settings extends Component {
     return this.props.dispatch(checkAvailability(vo))
   }
 
-  usernameControlWasChanged = ({ username }) => {
-    this.usernameValue = username
-    const { usernameState } = this.state
-    const currentStatus = usernameState.status
-    const clientState = getUsernameStateFromClient({ value: username, currentStatus })
-    if (clientState.status === STATUS.SUCCESS) {
-      if (currentStatus !== STATUS.REQUEST) {
-        this.setState({ usernameState: { status: STATUS.REQUEST, message: 'checking...' } })
-      }
-      // This will end up landing on `validateUsernameResponse` after fetching
-      return this.checkServerForAvailability({ username })
-    }
-    this.setState({ usernameState: clientState })
-  };
-
   validateUsernameResponse(availability) {
     const { usernameState } = this.state
     const currentStatus = usernameState.status
     const newState = getUsernameStateFromServer({ availability, currentStatus })
     this.setState({ usernameState: newState })
   }
-
-  emailControlWasChanged = ({ email }) => {
-    this.emailValue = email
-    const { emailState } = this.state
-    const currentStatus = emailState.status
-    const clientState = getEmailStateFromClient({ value: email, currentStatus })
-    if (clientState.status === STATUS.SUCCESS) {
-      if (currentStatus !== STATUS.REQUEST) {
-        this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
-      }
-      // This will end up landing on `validateEmailResponse` after fetching
-      return this.checkServerForAvailability({ email })
-    }
-    this.setState({ emailState: clientState })
-  };
 
   validateEmailResponse(availability) {
     const { emailState } = this.state
@@ -172,71 +234,9 @@ class Settings extends Component {
     this.setState({ emailState: newState })
   }
 
-  passwordControlWasChanged = ({ password }) => {
-    this.passwordValue = password
-    const { passwordState } = this.state
-    const currentStatus = passwordState.status
-    const newState = getPasswordState({ value: password, currentStatus })
-    this.setState({ passwordState: newState })
-  };
-
-  passwordCurrentControlWasChanged = (vo) => {
-    this.passwordCurrentValue = vo.current_password
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const formData = {
-      current_password: this.passwordCurrentValue,
-      email: this.emailValue,
-      password: this.passwordValue,
-      username: this.usernameValue,
-    }
-    // console.log(formData)
-    return formData
-  };
-
   closeModal = () => {
     const { dispatch } = this.props
     dispatch(closeModal())
-  };
-
-  accountWasDeleted = () => {
-    const { dispatch } = this.props
-    dispatch(deleteProfile())
-    this.closeModal()
-    dispatch(replace('/'))
-  };
-
-  launchAdultPostsPrompt = (obj) => {
-    if (obj.postsAdultContent) {
-      const { dispatch, profile } = this.props
-      dispatch(openModal(
-        <AdultPostsDialog
-          onConfirm={ this.closeModal }
-          user={ profile }
-        />
-      ))
-    }
-    preferenceToggleChanged(obj)
-  };
-
-  launchDeleteAccountModal = () => {
-    const { dispatch, profile } = this.props
-    dispatch(openModal(
-      <DeleteAccountDialog
-        user={ profile }
-        onConfirm={ this.accountWasDeleted }
-        onRejected={ this.closeModal }
-      />
-    , 'asDangerZone'))
-  };
-
-  requestDataExport = () => {
-    const { dispatch } = this.props
-    dispatch(exportData())
-    this.refs.exportButton.disabled = true
-    this.refs.exportButton.innerHTML = 'Exported'
   };
 
   render() {
@@ -295,13 +295,13 @@ class Settings extends Component {
           <form
             className="SettingsForm"
             noValidate="novalidate"
-            onSubmit={ this.handleSubmit }
+            onSubmit={ this.onSubmit }
             role="form"
           >
             <UsernameControl
               classList={ boxControlClassNames }
               label={`Username ${usernameState.message}`}
-              onChange={ this.usernameControlWasChanged }
+              onChange={ this.onChangeUsernameControl }
               status={ usernameState.status }
               suggestions={ usernameState.suggestions }
               tabIndex="1"
@@ -310,7 +310,7 @@ class Settings extends Component {
             <EmailControl
               classList={ boxControlClassNames }
               label={`Email ${emailState.message}`}
-              onChange={ this.emailControlWasChanged }
+              onChange={ this.onChangeEmailControl }
               status={ emailState.status }
               tabIndex="2"
               text={ profile.email }
@@ -318,7 +318,7 @@ class Settings extends Component {
             <PasswordControl
               classList={ boxControlClassNames }
               label={`Password ${passwordState.message}`}
-              onChange={ this.passwordControlWasChanged }
+              onChange={ this.onChangePasswordControl }
               placeholder="Set a new password"
               status={ passwordState.status }
               tabIndex="3"
@@ -330,7 +330,7 @@ class Settings extends Component {
                 id="current_password"
                 label="Password - Please enter your current one."
                 name="user[current_password]"
-                onChange={ this.passwordCurrentControlWasChanged }
+                onChange={ this.onChangeCurrentPasswordControl }
                 placeholder="Enter current password"
               />
               <FormButton disabled={ !requiresSave }>Save</FormButton>
@@ -366,7 +366,7 @@ class Settings extends Component {
                 definition={ PREFERENCES.NSFW_POST }
                 id="postsAdultContent"
                 isChecked={ profile.postsAdultContent }
-                onToggleChange={ this.launchAdultPostsPrompt }
+                onToggleChange={ this.onTogglePostsAdultContent }
               />
               <p><em>{ SETTINGS.NSFW_DISCLAIMER }</em></p>
             </TreePanel>
@@ -436,7 +436,7 @@ class Settings extends Component {
                   </a> :
                   <button
                     className="SettingsButton"
-                    onClick={ this.requestDataExport }
+                    onClick={ this.onClickRequestDataExport }
                     ref="exportButton"
                   >
                     Request Export
@@ -460,7 +460,7 @@ class Settings extends Component {
                     <dd>{SETTINGS.ACCOUNT_DELETION_DEFINITION.desc}</dd>
                     <button
                       className="SettingsButton asDangerous"
-                      onClick={ this.launchDeleteAccountModal }
+                      onClick={ this.onClickDeleteAccountModal }
                     >
                       Delete
                     </button>

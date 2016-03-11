@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import { GUI } from '../../../constants/gui_types'
+import { addResizeObject, removeResizeObject } from '../../interface/ResizeComponent'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -15,6 +16,7 @@ class ImageRegion extends Component {
   static propTypes = {
     assets: PropTypes.object.isRequired,
     content: PropTypes.object.isRequired,
+    isComment: PropTypes.bool,
     isGridLayout: PropTypes.bool.isRequired,
     isNotification: PropTypes.bool,
     links: PropTypes.object,
@@ -22,6 +24,8 @@ class ImageRegion extends Component {
   };
 
   static defaultProps = {
+    isComment: false,
+    isGridLayout: false,
     isNotification: false,
   };
 
@@ -30,10 +34,15 @@ class ImageRegion extends Component {
       marginBottom: null,
       scale: null,
       status: STATUS.REQUEST,
+      columnWidth: GUI.columnWidth,
+      contentWidth: GUI.contentWidth,
+      commentOffset: GUI.viewportDeviceSize === 'mobile' ? 40 : 60,
+      innerHeight: GUI.innerHeight,
     }
   }
 
   componentDidMount() {
+    addResizeObject(this)
     if (this.state.status === STATUS.REQUEST) {
       this.createLoader()
     }
@@ -54,7 +63,33 @@ class ImageRegion extends Component {
 
   componentWillUnmount() {
     this.disposeLoader()
+    removeResizeObject(this)
   }
+
+  onResize({ columnWidth, contentWidth, innerHeight, viewportDeviceSize }) {
+    const commentOffset = viewportDeviceSize === 'mobile' ? 40 : 60
+    this.setState({ columnWidth, contentWidth, innerHeight, commentOffset })
+  }
+
+  onClickStaticImageRegion = () => {
+    const { scale } = this.state
+    if (scale) {
+      return this.resetImageScale()
+    } else if (!this.attachment) {
+      return null
+    }
+    return this.setImageScale()
+  };
+
+  onLoadSuccess = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.SUCCESS })
+  };
+
+  onLoadFailure = () => {
+    this.disposeLoader()
+    this.setState({ status: STATUS.FAILURE })
+  };
 
   getAttachmentMetadata() {
     const { optimized, xhdpi, hdpi } = this.attachment
@@ -84,11 +119,14 @@ class ImageRegion extends Component {
   getImageDimensions() {
     const metadata = this.getAttachmentMetadata()
     if (!metadata) { return metadata }
-    const { isGridLayout } = this.props
+    const { isGridLayout, isComment } = this.props
+    const { columnWidth, contentWidth, commentOffset } = this.state
     const { height, ratio } = metadata
-    const columnWidth = isGridLayout ? GUI.columnWidth : GUI.contentWidth
+    const allowableWidth = isGridLayout ? columnWidth : contentWidth
+    const widthOffset = isGridLayout && isComment ? commentOffset : 0
+    const calculatedWidth = allowableWidth - widthOffset
     const maxCellHeight = isGridLayout ? 1200 : 7500
-    const widthConstrainedRelativeHeight = Math.round(columnWidth * (1 / ratio))
+    const widthConstrainedRelativeHeight = Math.round(calculatedWidth * (1 / ratio))
     const hv = Math.min(widthConstrainedRelativeHeight, height, maxCellHeight)
     const wv = Math.round(hv * ratio)
     return {
@@ -127,24 +165,22 @@ class ImageRegion extends Component {
     }
   }
 
+  resetImageScale() {
+    this.setState({ scale: null, marginBottom: null })
+  }
+
   isBasicAttachment() {
     const { assets, links } = this.props
     return !(links && links.assets && assets[links.assets] && assets[links.assets].attachment)
   }
 
-  resetImageScale() {
-    this.setState({ scale: null, marginBottom: null })
-  }
-
-  staticImageRegionWasClicked = () => {
-    const { scale } = this.state
-    if (scale) {
-      return this.resetImageScale()
-    } else if (!this.attachment) {
-      return null
+  isGif() {
+    const optimized = this.attachment.optimized
+    if (optimized && optimized.metadata) {
+      return optimized.metadata.type === 'image/gif'
     }
-    return this.setImageScale()
-  };
+    return false
+  }
 
   createLoader() {
     const isBasicAttachment = this.isBasicAttachment()
@@ -152,8 +188,8 @@ class ImageRegion extends Component {
     this.disposeLoader()
     if (sources) {
       this.img = new Image()
-      this.img.onload = this.loadDidSucceed
-      this.img.onerror = this.loadDidFail
+      this.img.onload = this.onLoadSuccess
+      this.img.onerror = this.onLoadFailure
       if (isBasicAttachment) {
         this.img.src = sources
       } else {
@@ -168,24 +204,6 @@ class ImageRegion extends Component {
       this.img.onerror = null
       this.img = null
     }
-  }
-
-  loadDidSucceed = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.SUCCESS })
-  };
-
-  loadDidFail = () => {
-    this.disposeLoader()
-    this.setState({ status: STATUS.FAILURE })
-  };
-
-  isGif() {
-    const optimized = this.attachment.optimized
-    if (optimized && optimized.metadata) {
-      return optimized.metadata.type === 'image/gif'
-    }
-    return false
   }
 
   renderGifAttachment() {
@@ -252,7 +270,7 @@ class ImageRegion extends Component {
     return (
       <div
         className="RegionContent"
-        onClick={ this.staticImageRegionWasClicked }
+        onClick={ this.onClickStaticImageRegion }
         style={{ transform: scale ? `scale(${scale})` : null, marginBottom }}
       >
         { this.renderAttachment() }

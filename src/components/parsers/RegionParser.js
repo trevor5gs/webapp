@@ -17,11 +17,12 @@ function textRegion(region, key, isGridLayout, postDetailPath) {
   )
 }
 
-function imageRegion(region, key, isGridLayout, postDetailPath, isNotification) {
+function imageRegion(region, key, isGridLayout, postDetailPath, isNotification, isComment) {
   return (
     <ImageRegion
       assets={models.assets}
       content={region.data}
+      isComment={isComment}
       isGridLayout={isGridLayout}
       isNotification={ isNotification }
       key={key}
@@ -44,28 +45,37 @@ function embedRegion(region, key) {
 }
 
 export function regionItemsForNotifications(content, postDetailPath = null) {
-  return content.map((region, i) => {
+  const assets = []
+  const texts = []
+
+  content.forEach((region, i) => {
     switch (region.kind) {
       case 'text':
-        return textRegion(region, `TextRegion_${i}`, false, postDetailPath)
+        texts.push(textRegion(region, `TextRegion_${i}`, false, postDetailPath))
+        break
       case 'image':
-        return imageRegion(region, `ImageRegion_${i}`, true, postDetailPath, true)
+        assets.push(imageRegion(region, `ImageRegion_${i}`, true, postDetailPath, true))
+        break
       case 'embed':
-        return embedRegion(region, `EmbedRegion_${i}`)
+        assets.push(embedRegion(region, `EmbedRegion_${i}`))
+        break
       default:
         throw new Error(`UNKNOWN NOTIFICATION REGION: ${region.kind}`)
     }
   })
+  return { assets, texts }
 }
 
-export function regionItems(content, only = null, isGridLayout = true, postDetailPath = null) {
+// TODO: Wrap all of these function arguments in an object and destructure so order doesn't matter.
+/* eslint-disable max-len */
+export function regionItems(content, only = null, isGridLayout = true, postDetailPath = null, isNotification = false, isComment = false) {
   return content.map((region, i) => {
     if (!only || only === region.kind) {
       switch (region.kind) {
         case 'text':
           return textRegion(region, `TextRegion_${i}`, isGridLayout, postDetailPath)
         case 'image':
-          return imageRegion(region, `ImageRegion_${i}`, isGridLayout, postDetailPath)
+          return imageRegion(region, `ImageRegion_${i}`, isGridLayout, postDetailPath, isNotification, isComment)
         case 'embed':
           return embedRegion(region, `EmbedRegion_${i}`)
         default:
@@ -75,10 +85,10 @@ export function regionItems(content, only = null, isGridLayout = true, postDetai
   })
 }
 
-export function body(content, id, isGridLayout, postDetailPath = null) {
+export function body(content, id, isGridLayout, postDetailPath = null, isComment = false) {
   return (
     <div className="PostBody" key={`PostBody_${id}`}>
-      {regionItems(content, null, isGridLayout, postDetailPath)}
+      {regionItems(content, null, isGridLayout, postDetailPath, isComment)}
     </div>
   )
 }

@@ -24,7 +24,7 @@ class SignUp extends Component {
     }
   }
 
-  creditsTrackingEvent = () => {
+  onClickTrackCredits = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
   };
@@ -42,7 +42,7 @@ class SignUp extends Component {
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>
         <AppleStoreLink/>
-        <Credits clickAction={ this.creditsTrackingEvent } user={ featuredUser } />
+        <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
       </section>
     )

@@ -19,18 +19,7 @@ class OnboardingHeader extends Component {
     trackingLabel: PropTypes.string.isRequired,
   };
 
-  getButtonClassNames() {
-    const { lockNext, relationshipMap } = this.props
-    if (lockNext && relationshipMap) {
-      return classNames(
-      'OnboardingNextButton',
-      { isDisabled: relationshipMap && !relationshipMap.following.length },
-      )
-    }
-    return classNames('OnboardingNextButton')
-  }
-
-  nextWasClicked = (e) => {
+  onClickNext = (e) => {
     const {
       dispatch,
       batchSave,
@@ -79,7 +68,7 @@ class OnboardingHeader extends Component {
     }
   };
 
-  skipWasClicked = (e) => {
+  onClickSkip = (e) => {
     const { dispatch, trackingLabel, nextPath, redirection } = this.props
     dispatch(trackEvent(`skipped-${trackingLabel}`))
     if (redirection) {
@@ -87,6 +76,17 @@ class OnboardingHeader extends Component {
       window.location = nextPath
     }
   };
+
+  getButtonClassNames() {
+    const { lockNext, relationshipMap } = this.props
+    if (lockNext && relationshipMap) {
+      return classNames(
+      'OnboardingNextButton',
+      { isDisabled: relationshipMap && !relationshipMap.following.length },
+      )
+    }
+    return classNames('OnboardingNextButton')
+  }
 
   render() {
     const { title, message, nextPath } = this.props
@@ -101,14 +101,14 @@ class OnboardingHeader extends Component {
           <Link
             className={ this.getButtonClassNames() }
             to={nextPath}
-            onClick={ this.nextWasClicked }
+            onClick={ this.onClickNext }
           >
             Next
           </Link>
           <Link
             className="OnboardingSkipButton"
             to={nextPath}
-            onClick={ this.skipWasClicked }
+            onClick={ this.onClickSkip }
           >
             Skip
           </Link>

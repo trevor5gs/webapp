@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
-import { findBy } from '../../components/base/json_helper'
+import { findModel } from '../../components/base/json_helper'
 import { loadUserDetail, loadUserLoves, loadUserPosts, loadUserUsers } from '../../actions/user'
 import Cover from '../../components/assets/Cover'
 import { UserDetailHelmet } from '../../components/helmets/UserDetailHelmet'
@@ -45,13 +45,6 @@ class UserDetail extends Component {
   static preRender = (store, routerState) =>
     store.dispatch(loadUserDetail(`~${routerState.params.username}`));
 
-  findModel(json, initModel) {
-    if (!initModel || !initModel.findObj || !initModel.collection) {
-      return null
-    }
-    return findBy(initModel.findObj, initModel.collection, json)
-  }
-
   renderZeroStates(user) {
     const { isLoggedIn } = this.props
     const { saidHelloTo } = this.state
@@ -91,19 +84,21 @@ class UserDetail extends Component {
   render() {
     const { json, params } = this.props
     const type = params.type || 'posts'
-    const user = this.findModel(json, {
+    const user = findModel(json, {
       collection: MAPPING_TYPES.USERS,
       findObj: { username: params.username },
     })
     const userEls = []
     if (user) {
       userEls.push(<Cover coverImage={ user.coverImage } key={ `userDetailCover_${user.id}` } />)
-      userEls.push(<UserList
-        classList="asUserDetailHeader"
-        key={ `userList_${user.id}` }
-        user={ user }
-        showBlockMuteButton
-      />)
+      userEls.push(
+        <UserList
+          classList="asUserDetailHeader"
+          key={ `userList_${user.id}` }
+          user={ user }
+          showBlockMuteButton
+        />
+      )
     }
     let streamAction = null
     switch (type) {

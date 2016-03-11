@@ -7,7 +7,7 @@ import _ from 'lodash'
 import { runningFetches } from '../../middleware/requester'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
-import { findBy } from '../base/json_helper'
+import { findModel } from '../base/json_helper'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import { ElloMark } from '../interface/ElloIcons'
@@ -25,7 +25,7 @@ export class StreamComponent extends Component {
     dispatch: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     mode: PropTypes.string.isRequired,
-    historyLocationPrefix: PropTypes.string,
+    historyLocationOverride: PropTypes.string,
     ignoresScrollPosition: PropTypes.bool.isRequired,
     initModel: PropTypes.object,
     isUserDetail: PropTypes.bool.isRequired,
@@ -74,6 +74,7 @@ export class StreamComponent extends Component {
       type: PropTypes.string,
     }),
     resultPath: PropTypes.string,
+    routerState: PropTypes.object,
     stream: PropTypes.object.isRequired,
   };
 
@@ -101,6 +102,7 @@ export class StreamComponent extends Component {
     })
     unlisten()
     this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
+    this.scrollToBottom = _.debounce(this.scrollToBottom, 300)
   }
 
   componentDidMount() {
@@ -108,14 +110,18 @@ export class StreamComponent extends Component {
       window.embetter.reloadPlayers()
     }
 
+    const { routerState } = this.props
+    const { action } = this.state
     if (this.isPageLevelComponent()) {
       addScrollObject(this)
-      window.scrollTo(0, 0)
     }
-
     if (this.props.isUserDetail) {
       const offset = Math.round((window.innerWidth * 0.5625)) - 200
       window.scrollTo(0, offset)
+      this.saveScroll = false
+    } else if (routerState.didComeFromSeeMoreCommentsLink &&
+               action && action.meta && action.meta.resultKey) {
+      this.scrollToBottom()
       this.saveScroll = false
     } else {
       this.saveScroll = true
@@ -153,28 +159,30 @@ export class StreamComponent extends Component {
     return true
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    const { history, stream } = this.props
-    const shouldScroll = !this.props.ignoresScrollPosition &&
+    const { history, routerState, stream } = this.props
+    const { action } = this.state
+    const shouldScroll = !routerState.didComeFromSeeMoeCommentsLink &&
+      !this.props.ignoresScrollPosition &&
       stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
-      prevProps.stream.type !== ACTION_TYPES.LOAD_STREAM_SUCCESS
+      action && action.payload &&
+      stream.payload.endpoint === action.payload.endpoint
     if (shouldScroll) {
       this.saveScroll = true
-      const historyObj = history[this.state.locationKey] || {}
-      const scrollTopValue = historyObj.scrollTop
-
-      if (scrollTopValue) {
-        const scrollToTarget = typeof this.scrollContainer !== 'undefined' &&
-                               this.scrollContainer
-        if (scrollToTarget) {
-          scrollToTarget.scrollTop = scrollTopValue
-        } else if (!scrollToTarget && typeof window !== 'undefined') {
-          window.scrollTo(0, scrollTopValue)
+      requestAnimationFrame(() => {
+        const historyObj = history[this.state.locationKey] || {}
+        const scrollTopValue = historyObj.scrollTop
+        if (scrollTopValue) {
+          if (this.scrollContainer) {
+            this.scrollContainer.scrollTop = scrollTopValue
+          } else if (typeof window !== 'undefined') {
+            window.scrollTo(0, scrollTopValue)
+          }
         }
-      }
+      })
     }
   }
 
@@ -215,10 +223,7 @@ export class StreamComponent extends Component {
   }
 
   setScroll() {
-    if (!this.saveScroll) {
-      return
-    }
-
+    if (!this.saveScroll) { return }
     let scrollTopValue
     if (this.scrollContainer) {
       scrollTopValue = scrollTop(this.scrollContainer)
@@ -234,13 +239,18 @@ export class StreamComponent extends Component {
     })
   }
 
+  scrollToBottom() {
+    const scrollTopValue = document.body.scrollHeight
+    window.scrollTo(0, scrollTopValue)
+  }
+
   isPageLevelComponent() {
-    return !this.props.historyLocationPrefix
+    return !this.props.historyLocationOverride
   }
 
   generateLocationKey(locationKey) {
-    if (this.props.historyLocationPrefix) {
-      return `${this.props.historyLocationPrefix}_${locationKey}`
+    if (this.props.historyLocationOverride) {
+      return this.props.historyLocationOverride
     }
     return locationKey
   }
@@ -250,7 +260,7 @@ export class StreamComponent extends Component {
     if (!result) { return }
     const { action } = this.state
     const { meta } = action
-    if (scrolled && meta && meta.resultKey) { return }
+    if (scrolled && meta && meta.resultKey && meta.updateKey) { return }
     const { pagination } = result
     if (!action.payload.endpoint ||
         !pagination[rel] ||
@@ -270,14 +280,12 @@ export class StreamComponent extends Component {
         resultKey: meta.resultKey,
       },
     }
-    dispatch(infiniteAction)
-  }
-
-  findModel(json, initModel) {
-    if (!initModel || !initModel.findObj || !initModel.collection) {
-      return null
+    // this is used for updating the postId on a comment
+    // so that the post exsists in the store after load
+    if (action.payload.postIdOrToken) {
+      infiniteAction.payload.postIdOrToken = action.payload.postIdOrToken
     }
-    return findBy(initModel.findObj, initModel.collection, json)
+    dispatch(infiniteAction)
   }
 
   renderError() {
@@ -321,7 +329,7 @@ export class StreamComponent extends Component {
       paginatorText, renderObj, result, stream } = this.props
     const { action, gridColumnCount, hidePaginator } = this.state
     if (!action) { return null }
-    const model = this.findModel(json, initModel)
+    const model = findModel(json, initModel)
     if (model && !result) {
       renderObj.data.push(model)
     } else if (!renderObj.data.length) {
@@ -353,7 +361,9 @@ export class StreamComponent extends Component {
         }
         {this.props.children}
         <Paginator
-          hasShowMoreButton={ typeof meta.resultKey !== 'undefined' }
+          hasShowMoreButton={
+            typeof meta.resultKey !== 'undefined' && typeof meta.updateKey !== 'undefined'
+          }
           isHidden={ hidePaginator }
           loadNextPage={ this.onLoadNextPage }
           messageText={ paginatorText }
@@ -415,6 +425,7 @@ export function mapStateToProps(state, ownProps) {
     renderObj,
     result,
     resultPath,
+    routerState: state.routing.location.state || {},
     stream: state.stream,
   }
 }

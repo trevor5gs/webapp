@@ -7,7 +7,7 @@ import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import * as SearchActions from '../../actions/search'
 import { trackEvent } from '../../actions/tracking'
 import { updateQueryParams } from '../../components/base/uri_helper'
-import Banderole from '../../components/assets/Banderole'
+import Promotion from '../../components/assets/Promotion'
 import SearchControl from '../../components/forms/SearchControl'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { TabListButtons } from '../../components/tabs/TabList'
@@ -30,13 +30,26 @@ class Search extends Component {
       terms: this.props.location.query.terms || '',
       type: this.props.location.query.type || 'posts',
     }
-    this.search = debounce(this.search, 300)
-    this.updateLocation = debounce(this.updateLocation, 300)
+    this.search = debounce(this.search, 666)
+    this.updateLocation = debounce(this.updateLocation, 666)
   }
 
   componentDidMount() {
     this.updateLocation({ ...this.state })
   }
+
+  onChangeControl = (vo) => {
+    // order is important here, need to update
+    // location so fetch has the correct path
+    this.updateLocation(vo)
+    this.setState(vo)
+    this.search()
+  };
+
+  onClickTrackCredits = () => {
+    const { dispatch } = this.props
+    dispatch(trackEvent(`banderole-credits-clicked`))
+  };
 
   getAction() {
     const { terms, type } = this.state
@@ -47,18 +60,6 @@ class Search extends Component {
       return SearchActions.searchForPosts(terms)
     }
     return null
-  }
-
-  search() {
-    const { dispatch, isLoggedIn } = this.props
-    const { type } = this.state
-    const action = this.getAction()
-    if (action) {
-      this.refs.streamComponent.refs.wrappedInstance.setAction(action)
-      const label = type === 'users' ? 'people' : 'posts'
-      const trackStr = `search-logged-${isLoggedIn ? 'in' : 'out'}-${label}`
-      dispatch(trackEvent(trackStr))
-    }
   }
 
   updateLocation(valueObject) {
@@ -76,18 +77,17 @@ class Search extends Component {
     }
   }
 
-  handleControlChange = (vo) => {
-    // order is important here, need to update
-    // location so fetch has the correct path
-    this.updateLocation(vo)
-    this.setState(vo)
-    this.search()
-  };
-
-  creditsTrackingEvent = () => {
-    const { dispatch } = this.props
-    dispatch(trackEvent(`banderole-credits-clicked`))
-  };
+  search() {
+    const { dispatch, isLoggedIn } = this.props
+    const { type } = this.state
+    const action = this.getAction()
+    if (action) {
+      this.refs.streamComponent.refs.wrappedInstance.setAction(action)
+      const label = type === 'users' ? 'people' : 'posts'
+      const trackStr = `search-logged-${isLoggedIn ? 'in' : 'out'}-${label}`
+      dispatch(trackEvent(trackStr))
+    }
+  }
 
   render() {
     const { isLoggedIn } = this.props
@@ -98,20 +98,20 @@ class Search extends Component {
     ]
     return (
       <section className="Search Panel">
-        <Banderole
-          creditsClickAction={ this.creditsTrackingEvent }
+        <Promotion
+          creditsClickAction={ this.onClickTrackCredits }
           isLoggedIn={ isLoggedIn }
           userlist={ isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS }
         />
         <div className="SearchBar">
           <SearchControl
-            onChange={ this.handleControlChange }
+            onChange={ this.onChangeControl }
             text={ terms }
           />
           <TabListButtons
             activeType={ type }
             className="SearchTabList"
-            onTabClick={ this.handleControlChange }
+            onTabClick={ this.onChangeControl }
             tabClasses="LabelTab"
             tabs={ tabs }
           />

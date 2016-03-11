@@ -33,7 +33,7 @@ class NotificationsContainer extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener('click', this.onDocumentClick)
+    document.addEventListener('click', this.onClickDocument)
 
     this.refs.streamComponent.refs.wrappedInstance.scrollContainer = this.refs.scrollable
   }
@@ -47,18 +47,19 @@ class NotificationsContainer extends Component {
 
   componentWillUnmount() {
     this.body.classList.remove('notificationsAreActive')
-    document.removeEventListener('click', this.onDocumentClick)
+    document.removeEventListener('click', this.onClickDocument)
   }
 
-  onTabClick = ({ type }) => {
+  onClickTab = ({ type }) => {
     const { dispatch } = this.props
     dispatch({
       type: GUI.NOTIFICATIONS_TAB,
       payload: { activeTabType: type },
     })
+    this.setState({ activeTabType: type })
   };
 
-  onDocumentClick = (e) => {
+  onClickDocument = (e) => {
     const classList = e.target.classList
     if (classList.contains('TabButton') ||
         classList.contains('RelationshipButton') ||
@@ -85,7 +86,7 @@ class NotificationsContainer extends Component {
     }
   };
 
-  elementWasScrolled = () => {
+  onScrollElement = () => {
     if (!ticking) {
       requestAnimationFrame(() => {
         this.onScrolled()
@@ -110,17 +111,17 @@ class NotificationsContainer extends Component {
         <TabListButtons
           activeType={ activeTabType }
           className="IconTabList NotificationsContainerTabs"
-          onTabClick={ this.onTabClick }
+          onTabClick={ this.onClickTab }
           tabClasses="IconTab"
           tabs={tabs}
         />
-        <div className="Scrollable" ref="scrollable" onScroll={ this.elementWasScrolled }>
+        <div className="Scrollable" ref="scrollable" onScroll={ this.onScrollElement }>
           <StreamComponent
             action={loadNotifications({ category: activeTabType })}
             className="asFullWidth"
             key={ `notificationPanel_${activeTabType}` }
             ref="streamComponent"
-            historyLocationPrefix={ `notifications_${activeTabType}` }
+            historyLocationOverride={ `notifications_${activeTabType}` }
           />
         </div>
       </div>

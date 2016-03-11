@@ -12,21 +12,22 @@ function renderHeader({ notifier }) {
   )
 }
 
-function renderBody({ children }) {
+function renderBody({ children, summary }) {
   if (!children) { return null }
   return (
     <div className="NotificationBody">
       { children }
+      { summary && summary.texts && summary.texts.length ?
+        <div className="NotificationSummaryTexts">{ summary.texts }</div> : null
+      }
     </div>
   )
 }
 
-function renderSummary({ summary }) {
-  if (!summary) { return null }
+function renderAssets({ summary }) {
   return (
-    <div className="NotificationSummary">
-      { summary }
-    </div>
+    summary && summary.assets && summary.assets.length ?
+      <div className="NotificationAsset">{ summary.assets[0] }</div> : null
   )
 }
 
@@ -50,13 +51,17 @@ export const Notification = ({
   notifier,
   retort,
   summary,
-  }) =>
-  <div className={ classNames('Notification', className) }>
-    { renderHeader({ notifier }) }
-    { renderBody({ children }) }
-    { renderSummary({ summary }) }
-    { renderFooter({ activityPath, createdAt, retort }) }
-  </div>
+  }) => {
+  const hasAsset = summary && summary.assets && summary.assets.length
+  return (
+    <div className={ classNames('Notification', className, { hasAsset }) }>
+      { renderHeader({ notifier }) }
+      { renderBody({ children, summary }) }
+      { renderAssets({ summary }) }
+      { renderFooter({ activityPath, createdAt, retort }) }
+    </div>
+  )
+}
 
 
 Notification.propTypes = {
@@ -65,6 +70,9 @@ Notification.propTypes = {
   className: PropTypes.string,
   createdAt: PropTypes.string,
   notifier: PropTypes.object,
-  summary: PropTypes.node,
+  summary: PropTypes.shape({
+    assets: PropTypes.arrayOf(PropTypes.node),
+    texts: PropTypes.arrayOf(PropTypes.node),
+  }),
 }
 

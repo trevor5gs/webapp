@@ -22,6 +22,13 @@ export function findBy(params, collection, json) {
   return null
 }
 
+export function findModel(json, initModel) {
+  if (!initModel || !initModel.findObj || !initModel.collection) {
+    return null
+  }
+  return findBy(initModel.findObj, initModel.collection, json)
+}
+
 export function getLinkObject(model, identifier, json) {
   if (!model.links || !model.links[identifier]) { return null }
   const key = model.links[identifier].id || model.links[identifier]

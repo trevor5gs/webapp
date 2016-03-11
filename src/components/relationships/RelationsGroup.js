@@ -33,6 +33,65 @@ class RelationsGroup extends Component {
     showBlockMuteButton: false,
   };
 
+  onRelationshipUpdate = (vo) => {
+    const { userId, priority, existing } = vo
+    const { dispatch, pathname } = this.props
+
+    if (pathname && (/^\/onboarding/).test(pathname)) {
+      return dispatch(updateRelationship(userId, priority, existing, true))
+    }
+    return dispatch(updateRelationship(userId, priority, existing))
+  };
+
+  onOpenSignupModal = () => {
+    const { dispatch } = this.props
+    dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
+    return dispatch(trackEvent('open-registration-request-follow-button'))
+  };
+
+  onOpenBlockMutePrompt = () => {
+    const { dispatch, user } = this.props
+    const priority = user.relationshipPriority
+    dispatch(openModal(
+      <BlockMuteDialog
+        onBlock={ this.onConfirmBlockUser }
+        onMute={ this.onConfirmMuteUser }
+        blockIsActive={ priority === RELATIONSHIP_PRIORITY.BLOCK }
+        muteIsActive={ priority === RELATIONSHIP_PRIORITY.MUTE }
+        username = { user.username }
+      />
+    , 'asDangerZone'))
+  };
+
+  onConfirmBlockUser = () => {
+    const { dispatch, previousPath } = this.props
+    const { user } = this.props
+    const priority = user.relationshipPriority
+    this.onRelationshipUpdate({
+      userId: user.id,
+      priority: this.getNextPriority(this.props, 'block'),
+      existing: priority,
+    })
+    this.closeModal()
+    // TODO: this should only go back if you are blocking
+    // on a profile page, if the previous page was search
+    // the terms should be restored in the url..
+    if (priority !== RELATIONSHIP_PRIORITY.BLOCK) {
+      dispatch(replace(previousPath || '/'))
+    }
+  };
+
+  onConfirmMuteUser = () => {
+    const { user } = this.props
+    const priority = user.relationshipPriority
+    this.onRelationshipUpdate({
+      userId: user.id,
+      priority: this.getNextPriority(this.props, 'mute'),
+      existing: priority,
+    })
+    this.closeModal()
+  };
+
   getNextPriority(props, btnId) {
     const { user } = props
     const priority = user.relationshipPriority
@@ -52,75 +111,16 @@ class RelationsGroup extends Component {
     }
   }
 
-  closeModal() {
-    const { dispatch } = this.props
-    dispatch(closeModal())
-  }
-
-  handleRelationshipUpdate = (vo) => {
-    const { userId, priority, existing } = vo
-    const { dispatch, pathname } = this.props
-
-    if (pathname && (/^\/onboarding/).test(pathname)) {
-      return dispatch(updateRelationship(userId, priority, existing, true))
-    }
-    return dispatch(updateRelationship(userId, priority, existing))
-  };
-
   isBlockedOrMuted() {
     const { user } = this.props
     const status = user.relationshipPriority
     return status && status === RELATIONSHIP_PRIORITY.BLOCK || status === RELATIONSHIP_PRIORITY.MUTE
   }
 
-  handleBlockUser = () => {
-    const { dispatch, previousPath } = this.props
-    const { user } = this.props
-    const priority = user.relationshipPriority
-    this.handleRelationshipUpdate({
-      userId: user.id,
-      priority: this.getNextPriority(this.props, 'block'),
-      existing: priority,
-    })
-    this.closeModal()
-    // TODO: this should only go back if you are blocking
-    // on a profile page, if the previous page was search
-    // the terms should be restored in the url..
-    if (priority !== RELATIONSHIP_PRIORITY.BLOCK) {
-      dispatch(replace(previousPath || '/'))
-    }
-  };
-
-  handleMuteUser = () => {
-    const { user } = this.props
-    const priority = user.relationshipPriority
-    this.handleRelationshipUpdate({
-      userId: user.id,
-      priority: this.getNextPriority(this.props, 'mute'),
-      existing: priority,
-    })
-    this.closeModal()
-  };
-
-  launchBlockMutePrompt = () => {
-    const { dispatch, user } = this.props
-    const priority = user.relationshipPriority
-    dispatch(openModal(
-      <BlockMuteDialog
-        onBlock={ this.handleBlockUser }
-        onMute={ this.handleMuteUser }
-        blockIsActive={ priority === RELATIONSHIP_PRIORITY.BLOCK }
-        muteIsActive={ priority === RELATIONSHIP_PRIORITY.MUTE }
-        username = { user.username }
-      />
-    , 'asDangerZone'))
-  };
-
-  handleLaunchSignUpModal = () => {
+  closeModal() {
     const { dispatch } = this.props
-    dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
-    return dispatch(trackEvent('open-registration-request-follow-button'))
-  };
+    dispatch(closeModal())
+  }
 
   shouldRenderBlockMute() {
     const { isLoggedIn, showBlockMuteButton, user } = this.props
@@ -132,7 +132,7 @@ class RelationsGroup extends Component {
     const { user } = this.props
     return (
       <BlockMuteButton
-        onClick={ this.launchBlockMutePrompt }
+        onClick={ this.onOpenBlockMutePrompt }
         priority={ user.relationshipPriority }
         userId={ user.id }
       />
@@ -142,21 +142,21 @@ class RelationsGroup extends Component {
   render() {
     const { isLoggedIn, user, classList } = this.props
     const callback = this.isBlockedOrMuted() ?
-                     (this.launchBlockMutePrompt) :
-                     (this.handleRelationshipUpdate)
+                     (this.onOpenBlockMutePrompt) :
+                     (this.onRelationshipUpdate)
 
     return (
       <div className="RelationsGroup" data-priority={ user.relationshipPriority }>
         { this.shouldRenderBlockMute() ? this.renderBlockMuteButton() : null }
         <RelationshipButton
-          buttonWasClicked={ isLoggedIn ? callback : this.handleLaunchSignUpModal }
+          onClick={ isLoggedIn ? callback : this.onOpenSignupModal }
           classList={ classList }
           priority={ user.relationshipPriority }
           ref="RelationshipButton"
           userId={ user.id }
         />
         <StarshipButton
-          buttonWasClicked={ isLoggedIn ? callback : this.handleLaunchSignUpModal }
+          onClick={ isLoggedIn ? callback : this.onOpenSignupModal }
           classList={ classList }
           priority={ user.relationshipPriority }
           ref="StarshipButton"

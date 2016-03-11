@@ -20,7 +20,7 @@ export function loadUserDetail(username) {
 export function loadUserPosts(username, type) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.userResources(username, type), vo: {} },
+    payload: { endpoint: api.userResources(username, type) },
     meta: {
       mappingType: MAPPING_TYPES.POSTS,
       renderStream: {
@@ -34,7 +34,7 @@ export function loadUserPosts(username, type) {
 export function loadUserLoves(username, type) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.userResources(username, type), vo: {} },
+    payload: { endpoint: api.userResources(username, type) },
     meta: {
       mappingType: MAPPING_TYPES.LOVES,
       renderStream: {
@@ -49,7 +49,7 @@ export function loadUserLoves(username, type) {
 export function loadUserUsers(username, type) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.userResources(username, type), vo: {} },
+    payload: { endpoint: api.userResources(username, type) },
     meta: {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
@@ -63,7 +63,7 @@ export function loadUserUsers(username, type) {
 export function loadUserAvatars(endpoint, post, resultType) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint, vo: {} },
+    payload: { endpoint },
     meta: {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {

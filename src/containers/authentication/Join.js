@@ -58,16 +58,7 @@ class Join extends Component {
     }
   }
 
-  creditsTrackingEvent = () => {
-    const { dispatch } = this.props
-    dispatch(trackEvent('authentication-credits-clicked'))
-  };
-
-  checkServerForAvailability(vo) {
-    return this.props.dispatch(checkAvailability(vo))
-  }
-
-  usernameControlWasChanged = ({ username }) => {
+  onChangeUsernameControl = ({ username }) => {
     this.usernameValue = username
     const { usernameState } = this.state
     const currentStatus = usernameState.status
@@ -86,16 +77,7 @@ class Join extends Component {
     }
   };
 
-  validateUsernameResponse(availability) {
-    const { usernameState } = this.state
-    const currentStatus = usernameState.status
-    const newState = getUsernameStateFromServer({ availability, currentStatus })
-    if (newState.status !== currentStatus) {
-      this.setState({ usernameState: newState })
-    }
-  }
-
-  emailControlWasChanged = ({ email }) => {
+  onChangeEmailControl = ({ email }) => {
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -112,16 +94,7 @@ class Join extends Component {
     }
   };
 
-  validateEmailResponse(availability) {
-    const { emailState } = this.state
-    const currentStatus = emailState.status
-    const newState = getEmailStateFromServer({ availability, currentStatus })
-    if (newState.status !== currentStatus) {
-      this.setState({ emailState: newState })
-    }
-  }
-
-  passwordControlWasChanged = ({ password }) => {
+  onChangePasswordControl = ({ password }) => {
     this.passwordValue = password
     const { passwordState } = this.state
     const currentStatus = passwordState.status
@@ -132,11 +105,38 @@ class Join extends Component {
   };
 
   // TODO: Still needs to be hooked up
-  handleSubmit = (e) => {
+  onSubmit = (e) => {
     e.preventDefault()
     // const { dispatch } = this.props
     // dispatch(someActionFunction(this.emailValue, this.usernameValue, this.passwordValue))
   };
+
+  onClickTrackCredits = () => {
+    const { dispatch } = this.props
+    dispatch(trackEvent('authentication-credits-clicked'))
+  };
+
+  checkServerForAvailability(vo) {
+    return this.props.dispatch(checkAvailability(vo))
+  }
+
+  validateUsernameResponse(availability) {
+    const { usernameState } = this.state
+    const currentStatus = usernameState.status
+    const newState = getUsernameStateFromServer({ availability, currentStatus })
+    if (newState.status !== currentStatus) {
+      this.setState({ usernameState: newState })
+    }
+  }
+
+  validateEmailResponse(availability) {
+    const { emailState } = this.state
+    const currentStatus = emailState.status
+    const newState = getEmailStateFromServer({ availability, currentStatus })
+    if (newState.status !== currentStatus) {
+      this.setState({ emailState: newState })
+    }
+  }
 
   render() {
     const { emailState, usernameState, passwordState, featuredUser } = this.state
@@ -154,20 +154,20 @@ class Join extends Component {
             className="AuthenticationForm"
             id="RegistrationForm"
             noValidate="novalidate"
-            onSubmit={ this.handleSubmit }
+            onSubmit={ this.onSubmit }
             role="form"
           >
             <EmailControl
               classList={ boxControlClassNames }
               label={`Email ${emailState.message}`}
-              onChange={ this.emailControlWasChanged }
+              onChange={ this.onChangeEmailControl }
               status={ emailState.status }
               tabIndex="1"
             />
             <UsernameControl
               classList={ boxControlClassNames }
               label={`Username ${usernameState.message}`}
-              onChange={ this.usernameControlWasChanged }
+              onChange={ this.onChangeUsernameControl }
               placeholder="Create your username"
               status={ usernameState.status }
               suggestions={ usernameState.suggestions }
@@ -176,7 +176,7 @@ class Join extends Component {
             <PasswordControl
               classList={ boxControlClassNames }
               label={`Password ${passwordState.message}`}
-              onChange={ this.passwordControlWasChanged }
+              onChange={ this.onChangePasswordControl }
               placeholder="Set your password"
               status={ passwordState.status }
               tabIndex="3"
@@ -188,7 +188,7 @@ class Join extends Component {
           </p>
         </div>
         <AppleStoreLink/>
-        <Credits clickAction={ this.creditsTrackingEvent } user={ featuredUser } />
+        <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
       </section>
     )

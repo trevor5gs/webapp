@@ -150,15 +150,15 @@ class App extends Component {
     this.setState({ hideCompleter: false })
   }
 
-  handleCompletion = ({ value }) => {
-    replaceWordFromSelection(value)
-    this.handleCancelAutoCompleter()
-  };
-
-  handleCancelAutoCompleter = () => {
+  onCancelAutoCompleter = () => {
     this.onHideCompleter()
     this.onHideTextTools()
     // TODO: maybe clear out the completions from the editor store
+  };
+
+  onCompletion = ({ value }) => {
+    replaceWordFromSelection(value)
+    this.onCancelAutoCompleter()
   };
 
   render() {
@@ -180,8 +180,8 @@ class App extends Component {
         { !hideCompleter && completions ?
           <Completer
             completions={ completions }
-            onCancel={ this.handleCancelAutoCompleter }
-            onCompletion={ this.handleCompletion }
+            onCancel={ this.onCancelAutoCompleter }
+            onCompletion={ this.onCompletion }
           /> :
           null
         }

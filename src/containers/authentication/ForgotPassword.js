@@ -30,19 +30,7 @@ class ForgotPassword extends Component {
     this.emailValue = ''
   }
 
-  creditsTrackingEvent = () => {
-    const { dispatch } = this.props
-    dispatch(trackEvent('authentication-credits-clicked'))
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const { dispatch } = this.props
-    dispatch(sendForgotPasswordRequest(this.emailValue))
-    this.setState({ formStatus: STATUS.SUBMITTED })
-  };
-
-  emailControlWasChanged = ({ email }) => {
+  onChangeControl = ({ email }) => {
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -50,6 +38,18 @@ class ForgotPassword extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
     }
+  };
+
+  onSubmit = (e) => {
+    e.preventDefault()
+    const { dispatch } = this.props
+    dispatch(sendForgotPasswordRequest(this.emailValue))
+    this.setState({ formStatus: STATUS.SUBMITTED })
+  };
+
+  onClickTrackCredits = () => {
+    const { dispatch } = this.props
+    dispatch(trackEvent('authentication-credits-clicked'))
   };
 
   renderSubmitted() {
@@ -69,13 +69,13 @@ class ForgotPassword extends Component {
         className="AuthenticationForm"
         id="ForgotPasswordForm"
         noValidate="novalidate"
-        onSubmit={ this.handleSubmit }
+        onSubmit={ this.onSubmit }
         role="form"
       >
         <EmailControl
           classList="asBoxControl"
           label={ `Email ${emailState.message}` }
-          onChange={ this.emailControlWasChanged }
+          onChange={ this.onChangeControl }
           tabIndex="1"
         />
         <FormButton disabled={ !isValid } tabIndex="2">Reset password</FormButton>
@@ -95,7 +95,7 @@ class ForgotPassword extends Component {
           { formStatus === STATUS.SUBMITTED ? this.renderSubmitted() : this.renderForm() }
         </div>
         <AppleStoreLink/>
-        <Credits clickAction={ this.creditsTrackingEvent } user={ featuredUser } />
+        <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen" />
       </section>
     )

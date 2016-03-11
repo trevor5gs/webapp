@@ -39,13 +39,27 @@ class SignIn extends Component {
     this.passwordValue = ''
   }
 
-  creditsTrackingEvent = () => {
-    const { dispatch } = this.props
-    dispatch(trackEvent('authentication-credits-clicked'))
+  onChangeEmailControl = ({ email }) => {
+    this.emailValue = email
+    const { emailState } = this.state
+    const currentStatus = emailState.status
+    const newState = getEmailStateFromClient({ value: email, currentStatus })
+    if (newState.status !== currentStatus) {
+      this.setState({ emailState: newState })
+    }
   };
 
-  // TODO: Need to handle the return error or success when this is submitted
-  handleSubmit = async (e) => {
+  onChangePasswordControl = ({ password }) => {
+    this.passwordValue = password
+    const { passwordState } = this.state
+    const currentStatus = passwordState.status
+    const newState = getPasswordState({ value: password, currentStatus })
+    if (newState.status !== currentStatus) {
+      this.setState({ passwordState: newState })
+    }
+  };
+
+  onSubmit = async (e) => {
     e.preventDefault()
 
     const { currentStream, dispatch } = this.props
@@ -60,35 +74,9 @@ class SignIn extends Component {
     }
   };
 
-  emailControlWasChanged = ({ email }) => {
-    this.emailValue = email
-    const { emailState } = this.state
-    const currentStatus = emailState.status
-    const newState = getEmailStateFromClient({ value: email, currentStatus })
-    if (newState.status !== currentStatus) {
-      this.setState({ emailState: newState })
-    }
-  };
-
-  passwordControlWasChanged = ({ password }) => {
-    this.passwordValue = password
-    const { passwordState } = this.state
-    const currentStatus = passwordState.status
-    const newState = getPasswordState({ value: password, currentStatus })
-    if (newState.status !== currentStatus) {
-      this.setState({ passwordState: newState })
-    }
-  };
-
-  renderError = () => {
-    const { failureMessage } = this.state
-    if (failureMessage) {
-      return (
-        <div className="AuthenticationError accessDenied">
-          {failureMessage}
-        </div>
-      )
-    }
+  onClickTrackCredits = () => {
+    const { dispatch } = this.props
+    dispatch(trackEvent('authentication-credits-clicked'))
   };
 
   render() {
@@ -105,20 +93,19 @@ class SignIn extends Component {
             className="AuthenticationForm"
             id="NewSessionForm"
             noValidate="novalidate"
-            onSubmit={ this.handleSubmit }
+            onSubmit={ this.onSubmit }
             role="form"
           >
             <EmailControl
               classList="asBoxControl"
               label={ `Email ${emailState.message}` }
-              onChange={ this.emailControlWasChanged }
+              onChange={ this.onChangeEmailControl }
               tabIndex="1"
             />
             <PasswordControl
               classList="asBoxControl"
               label={ `Password ${passwordState.message}` }
-              onChange={ this.passwordControlWasChanged }
-              renderFeedback={ this.renderError }
+              onChange={ this.onChangePasswordControl }
               tabIndex="2"
             />
             <FormButton disabled={ !isValid } tabIndex="3">Enter Ello</FormButton>
@@ -126,7 +113,7 @@ class SignIn extends Component {
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>
         <AppleStoreLink/>
-        <Credits clickAction={ this.creditsTrackingEvent } user={ featuredUser } />
+        <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
       </section>
     )
