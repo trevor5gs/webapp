@@ -3,6 +3,7 @@
 import { UPDATE_LOCATION } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
 import { uniq } from 'lodash'
+import { findModel } from '../components/base/json_helper'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
@@ -55,24 +56,34 @@ function _mergeModel(state, type, params) {
 methods.mergeModel = (state, type, params) =>
   _mergeModel(state, type, params)
 
-function _cleanUpModels(state, action) {
+function _addParentPostIdToComments(state, action) {
   // Kludge to abort for some tests
   if (!action || !action.meta) return null
 
-  const { mappingType: type } = action.meta
+  const { mappingType } = action.meta
 
-  if (type !== 'comments') return null
+  if (mappingType !== 'comments') return null
 
-  const { response: data, parentPostId } = action.payload
+  const { response, postIdOrToken } = action.payload
 
-  data[type].forEach(model => {
-    if (!state[MAPPING_TYPES.POSTS][model.postId] && parentPostId) {
-      model.postId = parentPostId
+  if (postIdOrToken) {
+    const post = parseInt(postIdOrToken, 10) > 0 ?
+      state[MAPPING_TYPES.POSTS][postIdOrToken] :
+      findModel(state, {
+        collection: MAPPING_TYPES.POSTS,
+        findObj: { token: postIdOrToken },
+      })
+    if (post) {
+      for (const model of response[mappingType]) {
+        if (!state[MAPPING_TYPES.POSTS][model.postId]) {
+          model.postId = post.id
+        }
+      }
     }
-  })
+  }
 }
-methods.cleanUpModels = (state, type, data) =>
-  _cleanUpModels(state, type, data)
+methods.addParentPostIdToComments = (state, type, data) =>
+  _addParentPostIdToComments(state, type, data)
 
 function _addModels(state, type, data) {
   // add state['modelType']
@@ -351,7 +362,7 @@ export default function json(state = {}, action = { type: '' }) {
     const { mappingType } = action.meta
     methods.addModels(newState, mappingType, response)
   } else {
-    methods.cleanUpModels(newState, action)
+    methods.addParentPostIdToComments(newState, action)
     methods.updateResult(response, newState, action)
   }
   hasLoadedFirstStream = true

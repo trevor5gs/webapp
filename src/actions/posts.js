@@ -3,24 +3,12 @@ import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
 
-export function loadPostDetail(token) {
+export function loadPostDetail(idOrToken) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.postDetail(token), vo: {} },
-    meta: {
-      mappingType: MAPPING_TYPES.POSTS,
-      renderStream: {
-        asList: StreamRenderables.postDetail,
-        asGrid: StreamRenderables.postDetail,
-      },
+    payload: {
+      endpoint: api.postDetail(idOrToken),
     },
-  }
-}
-
-export function loadEditablePost(post) {
-  return {
-    type: ACTION_TYPES.POST.EDITABLE,
-    payload: { endpoint: api.editPostDetail(post.id) },
     meta: {
       mappingType: MAPPING_TYPES.POSTS,
       updateResult: false,
@@ -28,25 +16,36 @@ export function loadEditablePost(post) {
   }
 }
 
-export function loadComments(post) {
+export function loadEditablePost(idOrToken) {
   return {
+    type: ACTION_TYPES.POST.EDITABLE,
+    payload: { endpoint: api.editPostDetail(idOrToken) },
+    meta: {
+      mappingType: MAPPING_TYPES.POSTS,
+    },
+  }
+}
+
+export function loadComments(idOrToken, addUpdateKey = true) {
+  const obj = {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: {
-      endpoint: api.commentsForPost(post),
-      parentPostId: post.id,
+      endpoint: api.commentsForPost(idOrToken),
+      postIdOrToken: idOrToken.replace('~', ''),
     },
     meta: {
-      defaultMode: 'list',
       mappingType: MAPPING_TYPES.COMMENTS,
       renderStream: {
         asList: StreamRenderables.commentsAsList,
         asGrid: StreamRenderables.commentsAsList,
-        asZero: null,
       },
-      resultKey: `/posts/${post.id}/comments`,
-      updateKey: `/posts/${post.id}/`,
+      resultKey: `/posts/${idOrToken}/comments`,
     },
   }
+  if (addUpdateKey) {
+    obj.meta.updateKey = `/posts/${idOrToken}/`
+  }
+  return obj
 }
 
 export function toggleComments(post, showComments) {
@@ -103,7 +102,7 @@ export function lovePost(post) {
   return {
     type: ACTION_TYPES.POST.LOVE,
     payload: {
-      endpoint: api.lovePost(post),
+      endpoint: api.lovePost(post.id),
       method: 'POST',
       model: post,
     },
@@ -119,7 +118,7 @@ export function unlovePost(post) {
   return {
     type: ACTION_TYPES.POST.LOVE,
     payload: {
-      endpoint: api.unlovePost(post),
+      endpoint: api.unlovePost(post.id),
       method: 'DELETE',
       model: post,
     },
@@ -134,7 +133,7 @@ export function deletePost(post) {
   return {
     type: ACTION_TYPES.POST.DELETE,
     payload: {
-      endpoint: api.deletePost(post),
+      endpoint: api.deletePost(post.id),
       method: 'DELETE',
       model: post,
     },
@@ -146,7 +145,7 @@ export function flagPost(post, kind) {
   return {
     type: ACTION_TYPES.POST.FLAG,
     payload: {
-      endpoint: api.flagPost(post, kind),
+      endpoint: api.flagPost(post.id, kind),
       method: 'POST',
     },
     meta: {},
@@ -174,7 +173,7 @@ export function createComment(body, editorId, postId) {
       editorId,
       endpoint: api.createComment(postId),
       method: 'POST',
-      postId: editorId,
+      postId,
     },
     meta: {},
   }
