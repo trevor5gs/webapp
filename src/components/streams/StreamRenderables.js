@@ -122,7 +122,7 @@ export function notificationList(notifications, json) {
   return (
     <div className="Notifications">
       {notifications.data.map((notification) => {
-        const subject = getLinkObject(notification, `subject`, json)
+        const subject = getLinkObject(notification, 'subject', json)
         return (
           <NotificationParser
             json={ json }

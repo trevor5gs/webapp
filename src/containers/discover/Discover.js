@@ -35,7 +35,7 @@ export class Discover extends Component {
 
   onClickTrackCredits = () => {
     const { dispatch } = this.props
-    dispatch(trackEvent(`banderole-credits-clicked`))
+    dispatch(trackEvent('banderole-credits-clicked'))
   };
 
   onDismissZeroStream = () => {

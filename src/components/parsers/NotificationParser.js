@@ -72,9 +72,9 @@ function commentNotification(comment, createdAt) {
     >
       <p>
         { userTextLink(author) }
-        { ` commented on your ` }
+        { ' commented on your ' }
         { postTextLink(parentPost) }
-        { `.` }
+        { '.' }
       </p>
     </Notification>
   )
@@ -96,9 +96,9 @@ function commentMentionNotification(comment, createdAt) {
     >
       <p>
         { userTextLink(author) }
-        { ` mentioned you in a ` }
+        { ' mentioned you in a ' }
         { postTextLink(parentPost, 'comment') }
-        { `.` }
+        { '.' }
       </p>
     </Notification>
   )
@@ -122,13 +122,13 @@ function commentOnOriginalPostNotification(comment, createdAt) {
     >
       <p>
         { userTextLink(author) }
-        { ` commented on ` }
+        { ' commented on ' }
         { userTextLink(repostAuthor) }
-        {`'s `}
+        {'\'s '}
         { postTextLink(repost, 'repost') }
-        {` of your `}
+        {' of your '}
         { postTextLink(repostedSource) }
-        { `.` }
+        { '.' }
       </p>
     </Notification>
   )
@@ -150,9 +150,9 @@ function commentOnRepostNotification(comment, createdAt) {
     >
       <p>
         { userTextLink(author) }
-        { ` commented on your ` }
+        { ' commented on your ' }
         { postTextLink(repost, 'repost') }
-        { `.` }
+        { '.' }
       </p>
     </Notification>
   )
@@ -169,7 +169,7 @@ function invitationAcceptedNotification(user, createdAt) {
     >
       <p>
         { userTextLink(user) }
-        { ` accepted your invitation.` }
+        { ' accepted your invitation.' }
       </p>
     </Notification>
   )
@@ -192,9 +192,9 @@ function loveNotification(love, createdAt) {
     >
       <p>
         { userTextLink(user) }
-        { ` loved your ` }
+        { ' loved your ' }
         { postTextLink(post) }
-        { `.` }
+        { '.' }
       </p>
     </Notification>
   )
@@ -216,9 +216,9 @@ function loveOnRepostNotification(love, createdAt) {
     >
       <p>
         { userTextLink(user) }
-        { ` loved your ` }
+        { ' loved your ' }
         { postTextLink(repost, 'repost') }
-        { `.` }
+        { '.' }
       </p>
     </Notification>
   )
@@ -242,13 +242,13 @@ function loveOnOriginalPostNotification(love, createdAt) {
     >
       <p>
         {userTextLink(user)}
-        {` loved `}
+        {' loved '}
         {userTextLink(repostAuthor)}
-        {`'s `}
+        {'\'s '}
         {postTextLink(repost, 'repost')}
-        {` of your `}
+        {' of your '}
         {postTextLink(repostedSource)}
-        { `.` }
+        { '.' }
       </p>
     </Notification>
   )
@@ -270,9 +270,9 @@ function postMentionNotification(post, createdAt) {
     >
       <p>
         { userTextLink(author) }
-        { ` mentioned you in a ` }
+        { ' mentioned you in a ' }
         { postTextLink(post) }
-        { `.` }
+        { '.' }
       </p>
     </Notification>
   )
@@ -290,7 +290,7 @@ function newFollowerPost(user, createdAt) {
     >
       <p>
         { userTextLink(user) }
-        { ` started following you.` }
+        { ' started following you.' }
       </p>
     </Notification>
   )
@@ -305,9 +305,9 @@ function newFollowedUserPost(user, createdAt) {
       notifier={ user }
     >
       <p>
-        { `You started following ` }
+        { 'You started following ' }
         { userTextLink(user) }
-        { `.` }
+        { '.' }
       </p>
     </Notification>
   )
@@ -329,9 +329,9 @@ function repostNotification(post, createdAt) {
     >
       <p>
         { userTextLink(author) }
-        { ` reposted your `}
+        { ' reposted your '}
         { postTextLink(post) }
-        { `.` }
+        { '.' }
       </p>
     </Notification>
   )

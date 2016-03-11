@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react'
 import Helmet from 'react-helmet'
 
-const title = `Ello | Be inspired.`
-const image = `/apple-touch-icon-precomposed.png`
+const title = 'Ello | Be inspired.'
+const image = '/apple-touch-icon-precomposed.png'
 
 const description =
   `Ello is a place to discover beautiful art, be inspired by meaningful
@@ -15,7 +15,7 @@ const keywords =
   friends, noise, friends and noise, Youtube, Vimeo, Facebook, Tumblr, Twitter,
   Instagram, App.net, Pinterest, Path`
 
-const viewport = `width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no`
+const viewport = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
 
 export const AppHelmet = ({ pathname }) =>
   <Helmet
