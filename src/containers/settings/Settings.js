@@ -95,6 +95,16 @@ class Settings extends Component {
 
   onChangeUsernameControl = ({ username }) => {
     this.usernameValue = username
+    const { profile } = this.props
+    if (username === profile.username) {
+      return this.setState({
+        usernameState: {
+          status: STATUS.INDETERMINATE,
+          suggestions: null,
+          message: '',
+        },
+      })
+    }
     const { usernameState } = this.state
     const currentStatus = usernameState.status
     const clientState = getUsernameStateFromClient({ value: username, currentStatus })
@@ -110,6 +120,10 @@ class Settings extends Component {
 
   onChangeEmailControl = ({ email }) => {
     this.emailValue = email
+    const { profile } = this.props
+    if (email === profile.email) {
+      return this.setState({ emailState: { status: STATUS.INDETERMINATE, message: '' } })
+    }
     const { emailState } = this.state
     const currentStatus = emailState.status
     const clientState = getEmailStateFromClient({ value: email, currentStatus })
