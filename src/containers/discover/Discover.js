@@ -25,6 +25,9 @@ export class Discover extends Component {
     pathname: PropTypes.string.isRequired,
   };
 
+  static preRender = (store, routerState) =>
+    store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'));
+
   componentWillMount() {
     const { lastDiscoverBeaconVersion, isLoggedIn } = this.props
 
@@ -43,9 +46,6 @@ export class Discover extends Component {
     this.setState({ isBeaconActive: false })
     dispatch({ type: BEACONS.LAST_DISCOVER_VERSION, payload: { version: BEACON_VERSION } })
   };
-
-  static preRender = (store, routerState) =>
-    store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'));
 
   renderZeroStream() {
     return (

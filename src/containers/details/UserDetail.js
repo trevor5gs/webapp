@@ -25,6 +25,9 @@ class UserDetail extends Component {
     }).isRequired,
   };
 
+  static preRender = (store, routerState) =>
+    store.dispatch(loadUserDetail(`~${routerState.params.username}`));
+
   componentWillMount() {
     const { dispatch, params } = this.props
     this.state = {
@@ -41,9 +44,6 @@ class UserDetail extends Component {
   onZeroStateFirstPost = () => {
     this.setState({ madeFirstPost: true })
   };
-
-  static preRender = (store, routerState) =>
-    store.dispatch(loadUserDetail(`~${routerState.params.username}`));
 
   renderZeroStates(user) {
     const { isLoggedIn } = this.props

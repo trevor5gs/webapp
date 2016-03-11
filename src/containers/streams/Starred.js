@@ -14,6 +14,9 @@ class Starred extends Component {
     lastStarredBeaconVersion: PropTypes.string,
   };
 
+  static preRender = (store) =>
+    store.dispatch(loadNoise());
+
   componentWillMount() {
     const { lastStarredBeaconVersion } = this.props
     this.state = {
@@ -26,9 +29,6 @@ class Starred extends Component {
     this.setState({ isBeaconActive: false })
     dispatch({ type: BEACONS.LAST_STARRED_VERSION, payload: { version: BEACON_VERSION } })
   };
-
-  static preRender = (store) =>
-    store.dispatch(loadNoise());
 
   renderZeroStream() {
     return (

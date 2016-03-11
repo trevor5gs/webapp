@@ -48,7 +48,7 @@ class Search extends Component {
 
   onClickTrackCredits = () => {
     const { dispatch } = this.props
-    dispatch(trackEvent(`banderole-credits-clicked`))
+    dispatch(trackEvent('banderole-credits-clicked'))
   };
 
   getAction() {

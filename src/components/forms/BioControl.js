@@ -46,7 +46,7 @@ class BioControl extends Component {
   render() {
     const { textLength } = this.state
     const hasExceeded = this.isValidBioLength()
-    const label = hasExceeded ? `Bio ${textLength}` : `Bio`
+    const label = hasExceeded ? `Bio ${textLength}` : 'Bio'
     return (
       <FormControl
         { ...this.props }

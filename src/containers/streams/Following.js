@@ -14,6 +14,9 @@ class Following extends Component {
     lastFollowingBeaconVersion: PropTypes.string,
   };
 
+  static preRender = (store) =>
+    store.dispatch(loadFriends());
+
   componentWillMount() {
     const { lastFollowingBeaconVersion } = this.props
     this.state = {
@@ -26,9 +29,6 @@ class Following extends Component {
     this.setState({ isBeaconActive: false })
     dispatch({ type: BEACONS.LAST_FOLLOWING_VERSION, payload: { version: BEACON_VERSION } })
   };
-
-  static preRender = (store) =>
-    store.dispatch(loadFriends());
 
   renderZeroStream() {
     return (

@@ -14,6 +14,9 @@ class Invitations extends Component {
     dispatch: PropTypes.func.isRequired,
   };
 
+  static preRender = (store) =>
+    store.dispatch(loadInvitedUsers());
+
   componentWillMount() {
     this.state = {
       formStatus: STATUS.INDETERMINATE,
@@ -42,9 +45,6 @@ class Invitations extends Component {
     dispatch(inviteUsers(this.batchEmailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
   };
-
-  static preRender = (store) =>
-    store.dispatch(loadInvitedUsers());
 
   renderMessage() {
     const { formStatus } = this.state
