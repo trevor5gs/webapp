@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { routeActions } from 'react-router-redux'
+import { push } from 'react-router-redux'
 import classNames from 'classnames'
+import { logout } from '../../actions/authentication'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { openModal, closeModal } from '../../actions/modals'
@@ -82,7 +83,7 @@ class Navbar extends Component {
     const { dispatch, isLoggedIn, shortcuts } = this.props
     if (isLoggedIn) {
       Mousetrap.bind(Object.keys(shortcuts), (event, shortcut) => {
-        dispatch(routeActions.push(shortcuts[shortcut]))
+        dispatch(push(shortcuts[shortcut]))
       })
 
       Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
@@ -185,10 +186,10 @@ class Navbar extends Component {
   }
 
   // TODO: probably need to handle this a bit better
-  onLogOut = () => {
+  onLogOut = async() => {
     const { dispatch } = this.props
-    dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
-    dispatch(routeActions.push('/'))
+    await dispatch(logout())
+    dispatch(push('/'))
   };
 
   onClickNotification = (e) => {
@@ -315,7 +316,6 @@ class Navbar extends Component {
             label="Log in"
             modifiers="LabelOnly"
             pathname={pathname}
-            onClick={ this.onClickLogInButton }
           />
           <NavbarLink
             to="/signup"
@@ -359,4 +359,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Navbar)
-

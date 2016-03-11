@@ -2,8 +2,13 @@
 import { camelizeKeys } from 'humps'
 import * as ACTION_TYPES from '../constants/action_types'
 import { resetAuth } from '../networking/auth'
+import { get } from 'lodash'
 
 const runningFetches = {}
+
+let requesterIsPaused = false
+let requestQueue = []
+
 const defaultHeaders = {
   Accept: 'application/json',
   'Content-Type': 'application/json',
@@ -64,14 +69,43 @@ function parseLink(linksHeader) {
   return result
 }
 
+const forwardableActions = [
+  ACTION_TYPES.AUTHENTICATION.LOGOUT,
+]
+
+const shouldForwardAction = ({ type }) =>
+      forwardableActions.indexOf(type) !== -1
+
+const processQueue = (queue, handler) => {
+  if (queue.length === 0) return queue
+
+  const [action, ...tail] = queue
+  handler(action)
+  return processQueue(tail, handler)
+}
+
 export const requester = store => next => action => {
   const { payload, type, meta } = action
+  if (type === ACTION_TYPES.REQUESTER.PAUSE) {
+    requesterIsPaused = true
+    return next(action)
+  }
+
+  if (type === ACTION_TYPES.REQUESTER.UNPAUSE) {
+    requesterIsPaused = false
+    requestQueue = processQueue(requestQueue, queuedAction => {
+      store.dispatch(queuedAction)
+    })
+    return next(action)
+  }
 
   // This is problematic... :(
   if ((type !== ACTION_TYPES.LOAD_STREAM &&
         type !== ACTION_TYPES.LOAD_NEXT_CONTENT &&
         type !== ACTION_TYPES.AUTHENTICATION.FORGOT_PASSWORD &&
         type !== ACTION_TYPES.AUTHENTICATION.USER &&
+        type !== ACTION_TYPES.AUTHENTICATION.LOGOUT &&
+        type !== ACTION_TYPES.AUTHENTICATION.REFRESH &&
         type !== ACTION_TYPES.COMMENT.CREATE &&
         type !== ACTION_TYPES.COMMENT.DELETE &&
         type !== ACTION_TYPES.COMMENT.EDITABLE &&
@@ -102,6 +136,14 @@ export const requester = store => next => action => {
     return next(action)
   }
 
+  if (requesterIsPaused) {
+    requestQueue = [...requestQueue, action]
+    return next(action)
+  }
+
+  if (shouldForwardAction(action)) {
+    next(action)
+  }
   // TODO: I think the body should actually come
   // from the endpoint instead of the payload
   const { endpoint, method, body } = payload
@@ -117,10 +159,10 @@ export const requester = store => next => action => {
 
   const state = store.getState()
   // this allows us to set the proper result in the json reducer
-  payload.pathname = state.routing.location.pathname
+  payload.pathname = get(state, 'routing.location.pathname', '')
 
   // dispatch the start of the request
-  next({ type: REQUEST, payload, meta })
+  store.dispatch({ type: REQUEST, payload, meta })
 
   function fetchCredentials() {
     if (state.authentication && state.authentication.accessToken) {
@@ -194,17 +236,17 @@ export const requester = store => next => action => {
                     linkPagination.totalPagesRemaining = parseInt(response.headers.get('X-Total-Pages-Remaining'), 10)
                     payload.pagination = linkPagination
                   }
-                  next({ meta, payload, type: SUCCESS })
+                  store.dispatch({ meta, payload, type: SUCCESS })
                   fireSuccessAction()
                   return true
                 })
               } else if (response.ok) {
                 // TODO: handle a 204 properly so that we know to stop paging
-                next({ meta, payload, type: SUCCESS })
+                store.dispatch({ meta, payload, type: SUCCESS })
                 fireSuccessAction()
               } else {
                 // TODO: is this what should be happening here?
-                next({ meta, payload, type: SUCCESS })
+                store.dispatch({ meta, payload, type: SUCCESS })
                 fireSuccessAction()
               }
               return Promise.resolve(true);
@@ -214,11 +256,11 @@ export const requester = store => next => action => {
                 delete runningFetches[error.response.url]
               }
               if ((error.response.status === 401 || error.response.status === 403) &&
-                  state.routing.location.pathname.indexOf('/onboarding') === 0 &&
+                  get(state, 'routing.location.pathname', '').indexOf('/onboarding') === 0 &&
                   typeof document !== 'undefined') {
                 resetAuth(store.dispatch, document.location)
               }
-              next({ error, meta, payload, type: FAILURE })
+              store.dispatch({ error, meta, payload, type: FAILURE })
               fireFailureAction()
               return false
             })
@@ -227,4 +269,3 @@ export const requester = store => next => action => {
 }
 
 export { runningFetches }
-

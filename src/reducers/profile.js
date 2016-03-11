@@ -49,4 +49,3 @@ export function profile(state = {}, action) {
       return state
   }
 }
-

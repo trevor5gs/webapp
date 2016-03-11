@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { routeActions } from 'react-router-redux'
+import { replace } from 'react-router-redux'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { openModal, closeModal } from '../../actions/modals'
 import { updateRelationship } from '../../actions/relationships'
@@ -77,7 +77,7 @@ class RelationsGroup extends Component {
     // on a profile page, if the previous page was search
     // the terms should be restored in the url..
     if (priority !== RELATIONSHIP_PRIORITY.BLOCK) {
-      dispatch(routeActions.replace(previousPath || '/'))
+      dispatch(replace(previousPath || '/'))
     }
   };
 
@@ -176,4 +176,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, null, null, { withRef: true })(RelationsGroup)
-

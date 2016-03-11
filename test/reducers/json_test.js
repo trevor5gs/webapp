@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { UPDATE_LOCATION } from 'react-router-redux'
+import { LOCATION_CHANGE } from 'react-router-redux'
 import { expect, stub, isValidResult, json, clearJSON, sinon } from '../spec_helper'
 import * as subject from '../../src/reducers/json'
 import * as ACTION_TYPES from '../../src/constants/action_types'
@@ -347,16 +347,16 @@ describe('json reducer', () => {
       })
     })
 
-    context('when the action is UPDATE_LOCATION', () => {
+    context('when the action is LOCATION_CHANGE', () => {
       it('sets the path to the payload.pathname', () => {
-        subject.json(json, { type: UPDATE_LOCATION, payload: { pathname: 'kgb', query: {} } })
+        subject.json(json, { type: LOCATION_CHANGE, payload: { pathname: 'kgb', query: {} } })
         expect(subject.path).to.equal('kgb')
       })
 
       it('calls #methods.clearSearchResults if query params are different', () => {
         const spy = sinon.stub(subject.methods, 'clearSearchResults')
         const action = {
-          type: UPDATE_LOCATION,
+          type: LOCATION_CHANGE,
           payload: {
             pathname: 'ants',
             query: { terms: 'awesome search' },
@@ -390,4 +390,3 @@ describe('json reducer', () => {
     })
   })
 })
-

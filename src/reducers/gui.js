@@ -1,4 +1,6 @@
-import { UPDATE_LOCATION } from 'react-router-redux'
+import _ from 'lodash'
+
+import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   BEACONS,
   GUI,
@@ -16,6 +18,7 @@ let location = {}
 const initialState = {
   activeNotificationsTabType: 'all',
   modes: [
+    { label: 'root', mode: 'grid', regex: '^\/$' },
     { label: 'discover', mode: 'grid', regex: '\/discover|\/explore' },
     { label: 'following', mode: 'grid', regex: '\/following' },
     { label: 'invitations', mode: 'list', regex: '\/invitations' },
@@ -28,6 +31,7 @@ const initialState = {
     { label: 'users/loves', mode: 'grid', regex: '\/[\\w\\-]+\/loves' },
     { label: 'users', mode: 'list', regex: '\/[\\w\\-]+' },
   ],
+  currentStream: '/following',
   newNotificationContent: false,
   history: {},
 }
@@ -42,9 +46,16 @@ export function findLayoutMode(modes) {
   return modes[modes.length - 1]
 }
 
+const STREAMS_WHITELIST = [
+  /discover/,
+  /following/,
+  /starred/,
+]
+
 export function gui(state = initialState, action = { type: '' }) {
   const newState = { ...state }
   let mode = null
+  let pathname = null
   switch (action.type) {
     case BEACONS.LAST_DISCOVER_VERSION:
       return { ...state, lastDiscoverBeaconVersion: action.payload.version }
@@ -73,8 +84,14 @@ export function gui(state = initialState, action = { type: '' }) {
       if (mode.mode === action.payload.mode) return state
       mode.mode = action.payload.mode
       return newState
-    case UPDATE_LOCATION:
+    case LOCATION_CHANGE:
       location = action.payload
+      pathname = location.pathname
+
+      if (_.some(STREAMS_WHITELIST, re => re.test(pathname))) {
+        return { ...state, currentStream: pathname }
+      }
+
       return state
     case GUI.NOTIFICATIONS_TAB:
       return { ...state, activeNotificationsTabType: action.payload.activeTabType }
@@ -90,4 +107,3 @@ export function gui(state = initialState, action = { type: '' }) {
 export function setLocation(loc) {
   location = loc
 }
-

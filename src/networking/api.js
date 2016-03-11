@@ -28,11 +28,35 @@ export function accessTokens() {
     path: `${basePath()}/oauth/token`,
   }
 }
+
+export function loginToken(email, password) {
+  const params = { email, password }
+  return {
+    path: `${basePath()}/oauth/login`,
+    params,
+  }
+}
+
+export function logout() {
+  return {
+    path: `${basePath()}/oauth/logout`,
+  }
+}
+
 export function forgotPassword() {
   return {
     path: getAPIPath('forgot-password'),
   }
 }
+
+export function refreshAuthToken(refreshToken) {
+  const params = { refresh_token: refreshToken }
+  return {
+    path: `${basePath()}/oauth/refresh`,
+    params,
+  }
+}
+
 // Current User Profile
 export function profilePath() {
   return {
@@ -264,4 +288,3 @@ export function relationshipAdd(userId, priority) {
 }
 
 export { API_VERSION, getAPIPath, PER_PAGE }
-

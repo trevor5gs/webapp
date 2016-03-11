@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { replace } from 'react-router-redux'
 import { random } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
@@ -23,6 +24,7 @@ class SignIn extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    currentStream: PropTypes.string,
   };
 
   componentWillMount() {
@@ -57,11 +59,19 @@ class SignIn extends Component {
     }
   };
 
-  // TODO: Need to handle the return error or success when this is submitted
-  onSubmit = (e) => {
+  onSubmit = async (e) => {
     e.preventDefault()
-    const { dispatch } = this.props
-    dispatch(getUserCredentials(this.emailValue, this.passwordValue))
+
+    const { currentStream, dispatch } = this.props
+    const action = getUserCredentials(this.emailValue, this.passwordValue)
+
+    const success = await dispatch(action)
+
+    if (success) {
+      dispatch(replace({ pathname: currentStream }))
+    } else {
+      this.setState({ failureMessage: 'No dice. Access denied.' })
+    }
   };
 
   onClickTrackCredits = () => {
@@ -110,5 +120,8 @@ class SignIn extends Component {
   }
 }
 
-export default connect()(SignIn)
+const mapStateToProps = state => ({
+  currentStream: state.gui.currentStream,
+})
 
+export default connect(mapStateToProps)(SignIn)

@@ -12,20 +12,22 @@ import { ZeroStream } from '../../components/zeros/Zeros'
 
 const BEACON_VERSION = '1'
 
-class Discover extends Component {
+export class Discover extends Component {
 
   static propTypes = {
+    currentStream: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     lastDiscoverBeaconVersion: PropTypes.string,
     params: PropTypes.shape({
       type: PropTypes.string,
-    }),
+    }).isRequired,
     pathname: PropTypes.string.isRequired,
   };
 
   componentWillMount() {
     const { lastDiscoverBeaconVersion, isLoggedIn } = this.props
+
     this.state = {
       isBeaconActive: isLoggedIn && lastDiscoverBeaconVersion !== BEACON_VERSION,
     }
@@ -72,7 +74,7 @@ class Discover extends Component {
         // { to: '/discover/featured-users', children: 'Featured Users' },
       ] :
       [
-        { to: '/explore', children: 'Trending' },
+        { to: '/explore', children: 'Trending', activePattern: /^\/(?:explore)?$/ },
         { to: '/explore/recommended', children: 'Recommended' },
         { to: '/explore/recent', children: 'Recent' },
       ]
@@ -96,13 +98,13 @@ class Discover extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
+    currentStream: state.gui.currentStream,
     isLoggedIn: state.authentication.isLoggedIn,
     lastDiscoverBeaconVersion: state.gui.lastDiscoverBeaconVersion,
-    pathname: state.routing.location.pathname,
+    pathname: ownProps.location.pathname,
   }
 }
 
 export default connect(mapStateToProps)(Discover)
-

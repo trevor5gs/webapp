@@ -6,36 +6,43 @@ const TYPES = [
   'trending',
 ]
 
-export default [
-  {
-    path: 'discover(/:type)',
-    getComponents(location, cb) {
-      // require.ensure([], (require) => {
-      cb(null, require('../../containers/discover/Discover').default)
-      // })
-    },
-    onEnter(nextState, replaceState) {
-      const type = nextState.params.type
-      // redirect back to /discover if type is unrecognized
-      if (type && TYPES.indexOf(type) === -1) {
-        replaceState(nextState, '/discover')
-      }
-    },
-  },
-  {
-    path: 'explore(/:type)',
-    getComponents(location, cb) {
-      // require.ensure([], (require) => {
-      cb(null, require('../../containers/discover/Discover').default)
-      // })
-    },
-    onEnter(nextState, replaceState) {
-      const type = nextState.params.type
-      // redirect back to /explore if type is unrecognized
-      if (type && TYPES.indexOf(type) === -1) {
-        replaceState(nextState, '/explore')
-      }
-    },
-  },
-]
+const getComponents = (location, cb) => {
+  cb(null, require('../../containers/discover/Discover').default)
+}
 
+const bindOnEnter = path => (nextState, replaceState) => {
+  const type = nextState.params.type
+
+  // redirect back to root path if type is unrecognized
+  if (type && TYPES.indexOf(type) === -1) {
+    replaceState(nextState, path)
+  }
+}
+
+const indexRoute = {
+  getComponents,
+}
+
+const explore = {
+  path: 'explore(/:type)',
+  getComponents,
+  onEnter: bindOnEnter('/explore'),
+}
+
+const discover = {
+  path: 'discover(/:type)',
+  getComponents,
+  onEnter: bindOnEnter('/discover'),
+}
+
+export {
+  indexRoute,
+  getComponents,
+  discover,
+  explore,
+}
+
+export default [
+  discover,
+  explore,
+]
