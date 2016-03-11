@@ -113,7 +113,6 @@ function _addOrUpdatePost(newState, action) {
     default:
       return newState
   }
-  return newState
 }
 methods.addOrUpdatePost = (newState, action) =>
   _addOrUpdatePost(newState, action)

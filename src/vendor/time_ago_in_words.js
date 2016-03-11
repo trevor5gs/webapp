@@ -47,7 +47,6 @@ Date.prototype.distanceOfTimeInWords = function distanceOfTimeInWords(toDate) {
         default:
           return '1' + timeAgoInWordsStrings.minute
       }
-      break
     case (distanceInMinutes >= 2 && distanceInMinutes <= 45):
       return distanceInMinutes + timeAgoInWordsStrings.minutes
     case (distanceInMinutes >= 45 && distanceInMinutes <= 90):
