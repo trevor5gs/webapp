@@ -112,7 +112,6 @@ export function commentsAsList(comments) {
           key={ `commentParser_${comment.id}` }
           comment={ comment }
           isEditing={ comment.isEditing }
-          isGridLayout={ false }
         />
       )}
     </div>
