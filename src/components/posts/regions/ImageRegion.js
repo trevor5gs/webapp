@@ -16,6 +16,7 @@ class ImageRegion extends Component {
   static propTypes = {
     assets: PropTypes.object.isRequired,
     content: PropTypes.object.isRequired,
+    isComment: PropTypes.bool,
     isGridLayout: PropTypes.bool.isRequired,
     isNotification: PropTypes.bool,
     links: PropTypes.object,
@@ -23,6 +24,8 @@ class ImageRegion extends Component {
   };
 
   static defaultProps = {
+    isComment: false,
+    isGridLayout: false,
     isNotification: false,
   };
 
@@ -33,6 +36,7 @@ class ImageRegion extends Component {
       status: STATUS.REQUEST,
       columnWidth: GUI.columnWidth,
       contentWidth: GUI.contentWidth,
+      commentOffset: GUI.viewportDeviceSize === 'mobile' ? 40 : 60,
       innerHeight: GUI.innerHeight,
     }
   }
@@ -62,8 +66,9 @@ class ImageRegion extends Component {
     removeResizeObject(this)
   }
 
-  onResize({ columnWidth, contentWidth, innerHeight }) {
-    this.setState({ columnWidth, contentWidth, innerHeight })
+  onResize({ columnWidth, contentWidth, innerHeight, viewportDeviceSize }) {
+    const commentOffset = viewportDeviceSize === 'mobile' ? 40 : 60
+    this.setState({ columnWidth, contentWidth, innerHeight, commentOffset })
   }
 
   getAttachmentMetadata() {
@@ -94,12 +99,14 @@ class ImageRegion extends Component {
   getImageDimensions() {
     const metadata = this.getAttachmentMetadata()
     if (!metadata) { return metadata }
-    const { isGridLayout } = this.props
-    const { columnWidth, contentWidth } = this.state
+    const { isGridLayout, isComment } = this.props
+    const { columnWidth, contentWidth, commentOffset } = this.state
     const { height, ratio } = metadata
     const allowableWidth = isGridLayout ? columnWidth : contentWidth
+    const widthOffset = isGridLayout && isComment ? commentOffset : 0
+    const calculatedWidth = allowableWidth - widthOffset
     const maxCellHeight = isGridLayout ? 1200 : 7500
-    const widthConstrainedRelativeHeight = Math.round(columnWidth * (1 / ratio))
+    const widthConstrainedRelativeHeight = Math.round(calculatedWidth * (1 / ratio))
     const hv = Math.min(widthConstrainedRelativeHeight, height, maxCellHeight)
     const wv = Math.round(hv * ratio)
     return {

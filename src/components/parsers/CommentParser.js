@@ -39,7 +39,7 @@ function parseComment(comment, author, currentUser, post, isGridLayout = true) {
   cells.push(header(comment, author))
   cells.push(
     <div className="CommentBody" key={ `CommentBody${comment.id}` } >
-      { body(comment.content, comment.id, isGridLayout) }
+      { body(comment.content, comment.id, isGridLayout, null, true) }
     </div>
   )
   cells.push(footer(comment, author, currentUser, post))
