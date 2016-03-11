@@ -117,19 +117,19 @@ class Avatar extends Component {
     if (to) {
       return (
         <Link className={klassNames} to={to}>
-          <div className="AvatarImage" style={style}/>
+          <div className="AvatarImage" style={style} />
         </Link>
       )
     } else if (onClick) {
       return (
         <button className={klassNames} onClick={ onClick }>
-          <div className="AvatarImage" style={style}/>
+          <div className="AvatarImage" style={style} />
         </button>
       )
     }
     return (
       <span className={klassNames}>
-        <div className="AvatarImage" style={style}/>
+        <div className="AvatarImage" style={style} />
       </span>
     )
   }

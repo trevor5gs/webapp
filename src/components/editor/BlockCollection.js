@@ -576,7 +576,7 @@ class BlockCollection extends Component {
         data-placeholder="Say Ello..."
         onDrop={ this.onDrop }
       >
-        { isComment ? <Avatar sources={ avatar }/> : null }
+        { isComment ? <Avatar sources={ avatar } /> : null }
         <div
           className="editor-region"
           data-num-blocks={ order.length }
@@ -589,7 +589,7 @@ class BlockCollection extends Component {
             null
           }
         </div>
-        { isComment ? <QuickEmoji onAddEmoji={ this.onInsertEmoji }/> : null }
+        { isComment ? <QuickEmoji onAddEmoji={ this.onInsertEmoji } /> : null }
         <PostActionBar
           cancelAction={ cancelAction }
           disableSubmitAction={ loadingImageBlocks.length > 0 }

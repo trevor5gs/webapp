@@ -50,7 +50,7 @@ class Block extends Component {
         >
           { children }
         </div>
-        <RegionTools editorId={ editorId } onRemoveBlock={ this.removeBlock }/>
+        <RegionTools editorId={ editorId } onRemoveBlock={ this.removeBlock } />
       </div>
     )
   }

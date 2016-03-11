@@ -44,14 +44,14 @@ class UserList extends Component {
   render() {
     const { classList, isLoggedIn, user, showBlockMuteButton } = this.props
     const userPath = `/${user.username}`
-    const stats = isLoggedIn ? <UserStats user={ user }/> : <LoggedOutUserStats user={ user }/>
+    const stats = isLoggedIn ? <UserStats user={ user } /> : <LoggedOutUserStats user={ user } />
     return (
       <div className={ classNames(classList, 'UserList') }>
-        <Avatar to={ userPath } sources={ user.avatar } size="large"/>
-        <RelationsGroup user={ user } showBlockMuteButton={ showBlockMuteButton }/>
-        <UserNames user={ user }/>
+        <Avatar to={ userPath } sources={ user.avatar } size="large" />
+        <RelationsGroup user={ user } showBlockMuteButton={ showBlockMuteButton } />
+        <UserNames user={ user } />
         { stats }
-        <UserInfo user={ user }/>
+        <UserInfo user={ user } />
         <ShareProfileButton onClick={ this.onClickShareProfile } >
           Share Profile
         </ShareProfileButton>

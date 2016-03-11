@@ -146,7 +146,7 @@ class Join extends Component {
       <section className="Authentication Panel">
         <div className="AuthenticationFormDialog">
           <h1>
-            <Emoji name="muscle" title="Welcome!" size={ 32 }/>
+            <Emoji name="muscle" title="Welcome!" size={ 32 } />
             Be inspired.
           </h1>
 
@@ -187,7 +187,7 @@ class Join extends Component {
             By clicking Create Account you are agreeing to our <a href="https://ello.co/wtf/post/policies">Terms</a>.
           </p>
         </div>
-        <AppleStoreLink/>
+        <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
       </section>

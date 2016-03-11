@@ -94,14 +94,14 @@ class RelationshipButton extends Component {
         to="/settings"
         data-priority={ priority }
       >
-        { classList === 'inHeader' ? <HeaderPlusIcon/> : <MiniPlusIcon/> }
+        { classList === 'inHeader' ? <HeaderPlusIcon /> : <MiniPlusIcon /> }
         <span>Edit Profile</span>
       </Link>
     )
   }
 
   renderAsInactive() {
-    const icon = this.props.classList === 'inHeader' ? <HeaderPlusIcon/> : <MiniPlusIcon/>
+    const icon = this.props.classList === 'inHeader' ? <HeaderPlusIcon /> : <MiniPlusIcon />
     return this.renderAsToggleButton('Follow', icon)
   }
 
@@ -110,12 +110,12 @@ class RelationshipButton extends Component {
   }
 
   renderAsFriend() {
-    const icon = this.props.classList === 'inHeader' ? <HeaderCheckIcon/> : <MiniCheckIcon/>
+    const icon = this.props.classList === 'inHeader' ? <HeaderCheckIcon /> : <MiniCheckIcon />
     return this.renderAsToggleButton('Following', icon)
   }
 
   renderAsNoise() {
-    const icon = this.props.classList === 'inHeader' ? <HeaderCheckIcon/> : <MiniCheckIcon/>
+    const icon = this.props.classList === 'inHeader' ? <HeaderCheckIcon /> : <MiniCheckIcon />
     return this.renderAsToggleButton('Starred', icon)
   }
 

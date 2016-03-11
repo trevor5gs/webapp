@@ -12,7 +12,7 @@ import Mousetrap from '../../vendor/mousetrap'
 const ChevronIcon = () =>
   <SVGIcon className="ChevronIcon">
     <g>
-      <polyline points="6,16 12,10 6,4"/>
+      <polyline points="6,16 12,10 6,4" />
     </g>
   </SVGIcon>
 
@@ -70,12 +70,12 @@ class Omnibar extends Component {
     const { isFullScreen } = this.state
     const { isActive, classList } = omnibar
     if (!isActive) {
-      return <div className={classNames('Omnibar', { isActive }, classList)}/>
+      return <div className={classNames('Omnibar', { isActive }, classList)} />
     }
     return (
       <div className={classNames('Omnibar', { isActive, isFullScreen }, classList)} >
         <Avatar sources={avatar} />
-        <Editor shouldLoadFromState shouldPersist/>
+        <Editor shouldLoadFromState shouldPersist />
         <button className="OmnibarRevealNavbar" onClick={ this.close }>
           <ChevronIcon />
           Navigation

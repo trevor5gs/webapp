@@ -40,7 +40,7 @@ function header(post, author) {
         </Link>
       </div>
       <RelationsGroup user={author} classList="inHeader" />
-      <PostHeaderTimeAgoLink to={ postDetailPath } createdAt={ post.createdAt }/>
+      <PostHeaderTimeAgoLink to={ postDetailPath } createdAt={ post.createdAt } />
     </header>
   )
 }
@@ -63,7 +63,7 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
           {` by @${repostedBy.username}`}
         </Link>
       </div>
-      <PostHeaderTimeAgoLink to={ postDetailPath } createdAt={ post.createdAt }/>
+      <PostHeaderTimeAgoLink to={ postDetailPath } createdAt={ post.createdAt } />
     </header>
   )
 }
@@ -86,7 +86,7 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
   const postDetailPath = getPostDetailPath(author, post)
 
   if (post.contentWarning) {
-    cells.push(<ContentWarningButton post={post}/>)
+    cells.push(<ContentWarningButton post={post} />)
   }
 
   if (post.repostContent && post.repostContent.length) {
@@ -159,11 +159,11 @@ class PostParser extends Component {
       <div className="Post">
         { postHeader }
         { showEditor ?
-          <Editor post={ post }/> :
+          <Editor post={ post } /> :
           parsePost(post, author, currentUser, isGridLayout)}
         { showLovers ? postLoversDrawer(post) : null }
         { showReposters ? postRepostersDrawer(post) : null }
-        { showComments ? <Editor post={ post } isComment/> : null }
+        { showComments ? <Editor post={ post } isComment /> : null }
         { showComments && post.commentsCount > 0 ? commentStream(post, author, currentUser) : null }
       </div>)
   }

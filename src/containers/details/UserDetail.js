@@ -115,7 +115,7 @@ class UserDetail extends Component {
     }
     return (
       <section className="UserDetail Panel" key={ `userDetail_${type}` }>
-        { user ? <UserDetailHelmet user={ user }/> : null }
+        { user ? <UserDetailHelmet user={ user } /> : null }
         <div className="UserDetails">
           { userEls }
           { user && user.relationshipPriority === 'self' ?

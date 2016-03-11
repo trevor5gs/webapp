@@ -3,7 +3,7 @@ import { ArrowIcon } from '../navbar/NavbarIcons'
 
 const NavbarMorePostsButton = ({ onClick }) =>
   <button onClick={onClick} className="NavbarMorePostsButton">
-    <ArrowIcon/>
+    <ArrowIcon />
     <span>More Posts</span>
   </button>
 

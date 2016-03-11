@@ -5,7 +5,7 @@ import classNames from 'classnames'
 const TreeIcon = () =>
   <SVGIcon className="TreeIcon">
     <g>
-      <circle cx="10" cy="10" r="7"/>
+      <circle cx="10" cy="10" r="7" />
     </g>
     <g>
       <polyline points="8.2,6.5 11.8,10 8.2,13.5" />
@@ -51,7 +51,7 @@ class TreeButton extends Component {
         className={classNames(className, 'TreeButton', { isCollapsed: collapsed })}
         onClick={ this.onClickTreeButton }
       >
-        <TreeIcon/>
+        <TreeIcon />
         {children}
       </button>
     )

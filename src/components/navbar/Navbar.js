@@ -91,7 +91,7 @@ class Navbar extends Component {
         if (modalIsActive) {
           return dispatch(closeModal())
         }
-        return dispatch(openModal(<HelpDialog/>))
+        return dispatch(openModal(<HelpDialog />))
       })
     }
 
@@ -242,28 +242,28 @@ class Navbar extends Component {
             label="Discover"
             modifiers="LabelOnly"
             pathname={pathname}
-            icon={ <SparklesIcon/> }
+            icon={ <SparklesIcon /> }
           />
           <NavbarLink
             to="/following"
             label="Following"
             modifiers="LabelOnly"
             pathname={pathname}
-            icon={ <CircleIcon/> }
+            icon={ <CircleIcon /> }
           />
           <NavbarLink
             to="/starred"
             label="Starred"
             modifiers=""
             pathname={pathname}
-            icon={ <StarIcon/> }
+            icon={ <StarIcon /> }
           />
           <NavbarLink
             to="/notifications"
             label="Notifications"
             modifiers={ classNames('IconOnly', { hasNotifications }) }
             pathname={pathname}
-            icon={ <BoltIcon/> }
+            icon={ <BoltIcon /> }
             onClick={ viewportDeviceSize !== 'mobile' ? this.onClickNotification : null }
           />
           <NavbarLink
@@ -271,7 +271,7 @@ class Navbar extends Component {
             label="Search"
             modifiers="IconOnly"
             pathname={pathname}
-            icon={ <SearchIcon/> }
+            icon={ <SearchIcon /> }
           />
         </div>
         <NavbarProfile
@@ -280,7 +280,7 @@ class Navbar extends Component {
           username={ profile.username }
         />
         { viewportDeviceSize !== 'mobile' && isNotificationsActive ?
-          <NotificationsContainer/> : null
+          <NotificationsContainer /> : null
         }
       </nav>
     )
@@ -302,14 +302,14 @@ class Navbar extends Component {
             label="Discover"
             modifiers="LabelOnly"
             pathname={pathname}
-            icon={ <SparklesIcon/> }
+            icon={ <SparklesIcon /> }
           />
           <NavbarLink
             to="/find"
             label="Search"
             modifiers="IconOnly"
             pathname={pathname}
-            icon={ <SearchIcon/> }
+            icon={ <SearchIcon /> }
           />
           <NavbarLink
             to="/enter"

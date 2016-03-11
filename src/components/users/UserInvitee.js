@@ -27,7 +27,7 @@ class UserInvitee extends Component {
     return (
       <div className="UserInviteeHeader">
         <a className="UserInviteeUserLink" href={ `mailto: ${email}` }>
-          <Avatar/>
+          <Avatar />
           <span className="UserInviteeEmail">{ email }</span>
         </a>
       </div>

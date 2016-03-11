@@ -174,7 +174,7 @@ export function profileToggles(categories, json, currentUser) {
 export function blockedMutedUserList(users) {
   return (
     users.data.map((user) =>
-      <UserCompact user={user} key={`userCompact_${user.id}`}/>
+      <UserCompact user={user} key={`userCompact_${user.id}`} />
     )
   )
 }

@@ -7,7 +7,7 @@ const BlockMuteButton = ({ onClick }) =>
       className={"BlockMuteButton"}
       onClick={ onClick }
     >
-      <DotsIcon/>
+      <DotsIcon />
       <Hint>Block or Mute</Hint>
     </button>
 

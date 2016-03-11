@@ -69,7 +69,7 @@ class DevTools extends Component {
 
   renderGrid(isVisible, type) {
     return (
-      isVisible ? <div className={type}></div> : <span/>
+      isVisible ? <div className={type}></div> : <span />
     )
   }
 

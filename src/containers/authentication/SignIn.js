@@ -86,7 +86,7 @@ class SignIn extends Component {
       <section className="Authentication Panel">
         <div className="AuthenticationFormDialog">
           <h1>
-            <Emoji name="v" title="Hi!" size={ 32 }/>
+            <Emoji name="v" title="Hi!" size={ 32 } />
             Welcome back.
           </h1>
           <form
@@ -112,7 +112,7 @@ class SignIn extends Component {
           </form>
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>
-        <AppleStoreLink/>
+        <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
       </section>

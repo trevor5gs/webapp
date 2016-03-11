@@ -42,12 +42,12 @@ class PostActionBar extends Component {
 
         <button className="PostActionButton forUpload" ref="browseButton" onClick={ this.browse }>
           <span className="PostActionButtonLabel">Upload</span>
-          { GUI.viewportDeviceSize === 'mobile' ? <CameraIcon/> : <BrowseIcon /> }
+          { GUI.viewportDeviceSize === 'mobile' ? <CameraIcon /> : <BrowseIcon /> }
         </button>
 
         <button className="PostActionButton forCancel" ref="cancelButton" onClick={ this.cancel }>
           <span className="PostActionButtonLabel">Cancel</span>
-          <CancelIcon/>
+          <CancelIcon />
         </button>
 
         {
@@ -66,7 +66,7 @@ class PostActionBar extends Component {
           onClick={ this.submitted }
         >
           <span className="PostActionButtonLabel">{ submitText }</span>
-          <PostIcon/>
+          <PostIcon />
         </button>
 
         <input

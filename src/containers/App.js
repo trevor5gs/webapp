@@ -172,8 +172,8 @@ class App extends Component {
     )
     return (
       <section className={appClasses}>
-        <AppHelmet pathname={ pathname }/>
-        { isLoggedIn ? <Omnibar/> : null }
+        <AppHelmet pathname={ pathname } />
+        { isLoggedIn ? <Omnibar /> : null }
         <main className="Main" data-pathname={pathname} role="main">
           {children}
         </main>
@@ -194,11 +194,11 @@ class App extends Component {
           /> :
           null
         }
-        <Navbar/>
-        <Footer/>
-        <Modal/>
-        <DevTools/>
-        <Analytics isLoggedIn={isLoggedIn}/>
+        <Navbar />
+        <Footer />
+        <Modal />
+        <DevTools />
+        <Analytics isLoggedIn={isLoggedIn} />
       </section>
     )
   }

@@ -16,7 +16,7 @@ export const BubbleIcon = () =>
 export const ChevronIcon = () =>
   <SVGIcon className="ChevronIcon">
     <g>
-      <polyline points="6,16 12,10 6,4"/>
+      <polyline points="6,16 12,10 6,4" />
     </g>
   </SVGIcon>
 

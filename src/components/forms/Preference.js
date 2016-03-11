@@ -6,7 +6,7 @@ const Preference = ({ className, definition, id, isChecked, isDisabled, onToggle
   <form className={ classNames(className, 'Preference') }>
     <dl>
       <dt>{definition.term ? definition.term : ''}</dt>
-      <dd dangerouslySetInnerHTML={{ __html: definition.desc ? definition.desc : '' }}/>
+      <dd dangerouslySetInnerHTML={{ __html: definition.desc ? definition.desc : '' }} />
     </dl>
     <ToggleControl
       id={ id }

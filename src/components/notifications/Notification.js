@@ -7,7 +7,7 @@ function renderHeader({ notifier }) {
   if (!notifier) { return null }
   return (
     <header className="NotificationHeader">
-      <Avatar to={`/${notifier.username}`} sources={notifier.avatar}/>
+      <Avatar to={`/${notifier.username}`} sources={notifier.avatar} />
     </header>
   )
 }

@@ -94,7 +94,7 @@ class ForgotPassword extends Component {
           </h1>
           { formStatus === STATUS.SUBMITTED ? this.renderSubmitted() : this.renderForm() }
         </div>
-        <AppleStoreLink/>
+        <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen" />
       </section>

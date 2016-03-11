@@ -120,11 +120,11 @@ class FormControl extends Component {
     const { status } = this.props
     switch (status) {
       case STATUS.REQUEST:
-        return <RequestIcon/>
+        return <RequestIcon />
       case STATUS.FAILURE:
-        return <FailureIcon/>
+        return <FailureIcon />
       case STATUS.SUCCESS:
-        return <SuccessIcon/>
+        return <SuccessIcon />
       case STATUS.INDETERMINATE:
       default:
         return null
