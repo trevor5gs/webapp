@@ -18,7 +18,7 @@ let location = {}
 const initialState = {
   activeNotificationsTabType: 'all',
   modes: [
-    { label: 'root', mode: 'grid', regex: /^\/$/ },
+    { label: 'root', mode: 'grid', regex: '^\/$' },
     { label: 'discover', mode: 'grid', regex: '\/discover|\/explore' },
     { label: 'following', mode: 'grid', regex: '\/following' },
     { label: 'invitations', mode: 'list', regex: '\/invitations' },
