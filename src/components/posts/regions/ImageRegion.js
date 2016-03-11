@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import { GUI } from '../../../constants/gui_types'
+import { addResizeObject, removeResizeObject } from '../../interface/ResizeComponent'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -30,10 +31,14 @@ class ImageRegion extends Component {
       marginBottom: null,
       scale: null,
       status: STATUS.REQUEST,
+      columnWidth: GUI.columnWidth,
+      contentWidth: GUI.contentWidth,
+      innerHeight: GUI.innerHeight,
     }
   }
 
   componentDidMount() {
+    addResizeObject(this)
     if (this.state.status === STATUS.REQUEST) {
       this.createLoader()
     }
@@ -54,6 +59,11 @@ class ImageRegion extends Component {
 
   componentWillUnmount() {
     this.disposeLoader()
+    removeResizeObject(this)
+  }
+
+  onResize({ columnWidth, contentWidth, innerHeight }) {
+    this.setState({ columnWidth, contentWidth, innerHeight })
   }
 
   getAttachmentMetadata() {
@@ -85,8 +95,9 @@ class ImageRegion extends Component {
     const metadata = this.getAttachmentMetadata()
     if (!metadata) { return metadata }
     const { isGridLayout } = this.props
+    const { columnWidth, contentWidth } = this.state
     const { height, ratio } = metadata
-    const columnWidth = isGridLayout ? GUI.columnWidth : GUI.contentWidth
+    const allowableWidth = isGridLayout ? columnWidth : contentWidth
     const maxCellHeight = isGridLayout ? 1200 : 7500
     const widthConstrainedRelativeHeight = Math.round(columnWidth * (1 / ratio))
     const hv = Math.min(widthConstrainedRelativeHeight, height, maxCellHeight)
