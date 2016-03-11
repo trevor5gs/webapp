@@ -71,9 +71,9 @@
   "devDependencies": {
     "babel-plugin-react-transform": "2.0.2",
     "chai": "3.5.0",
-    "eslint": "1.10.3",
-    "eslint-config-airbnb": "5.0.1",
-    "eslint-plugin-react": "3.16.1",
+    "eslint": "2.2.0",
+    "eslint-config-airbnb": "6.1.0",
+    "eslint-plugin-react": "4.2.1",
     "jsdom": "8.1.0",
     "mocha": "2.4.5",
     "mocha-jsdom": "1.1.0",
