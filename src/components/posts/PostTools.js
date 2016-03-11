@@ -103,7 +103,7 @@ class PostTools extends Component {
   onClickEditPost = () => {
     const { dispatch, post } = this.props
     dispatch(postActions.toggleEditing(post, true))
-    dispatch(postActions.loadEditablePost(post))
+    dispatch(postActions.loadEditablePost(post.id))
   };
 
   onClickRepostPost = () => {
@@ -113,7 +113,7 @@ class PostTools extends Component {
     }
     if (!post.reposted) {
       dispatch(postActions.toggleReposting(post, true))
-      dispatch(postActions.loadEditablePost(post))
+      dispatch(postActions.loadEditablePost(post.id))
     }
   };
 
