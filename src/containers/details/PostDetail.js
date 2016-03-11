@@ -11,7 +11,7 @@ import UserAvatars from '../../components/users/UserAvatars'
 import Editor from '../../components/editor/Editor'
 import StreamComponent from '../../components/streams/StreamComponent'
 
-function postLoversDrawer(post) {
+export function postLoversDrawer(post) {
   return (
     <UserAvatars
       endpoint={ postLovers(post.id) }
@@ -23,7 +23,7 @@ function postLoversDrawer(post) {
   )
 }
 
-function postRepostersDrawer(post) {
+export function postRepostersDrawer(post) {
   return (
     <UserAvatars
       endpoint={ postReposters(post.id) }

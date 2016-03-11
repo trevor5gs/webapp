@@ -184,7 +184,7 @@ export function updatePost(post, body) {
     type: ACTION_TYPES.POST.UPDATE,
     payload: {
       body: { body },
-      endpoint: api.updatePost(post),
+      endpoint: api.updatePost(post.id),
       method: 'PATCH',
     },
     meta: {},

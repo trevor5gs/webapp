@@ -30,8 +30,8 @@ class Search extends Component {
       terms: this.props.location.query.terms || '',
       type: this.props.location.query.type || 'posts',
     }
-    this.search = debounce(this.search, 300)
-    this.updateLocation = debounce(this.updateLocation, 300)
+    this.search = debounce(this.search, 666)
+    this.updateLocation = debounce(this.updateLocation, 666)
   }
 
   componentDidMount() {

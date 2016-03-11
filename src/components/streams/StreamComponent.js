@@ -168,6 +168,7 @@ export class StreamComponent extends Component {
     const shouldScroll = !routerState.didComeFromSeeMoeCommentsLink &&
       !this.props.ignoresScrollPosition &&
       stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
+      action && action.payload &&
       stream.payload.endpoint === action.payload.endpoint
     if (shouldScroll) {
       this.saveScroll = true
