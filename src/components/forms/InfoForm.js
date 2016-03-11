@@ -103,7 +103,7 @@ class InfoForm extends Component {
           classList={ controlClassModifiers }
           onChange={ this.onChangeLinksControl }
           status={ linksStatus }
-          tabIndex={`${ tabIndexStart + 2 }`}
+          tabIndex={`${tabIndexStart + 2}`}
           text={ profile.externalLinksList }
         />
         <span
