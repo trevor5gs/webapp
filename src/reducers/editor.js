@@ -35,8 +35,8 @@ function imageBlockObject(state = {}, action) {
 
 function editorObject(state = { loadedContent: {} }, action) {
   const newState = { ...state }
-  let obj
-  let index
+  let obj = null
+  let index = null
   switch (action.type) {
     case EDITOR.APPEND_TEXT:
       return {
@@ -81,8 +81,8 @@ function editorObject(state = { loadedContent: {} }, action) {
 
 export function editor(state = initialState, action) {
   const newState = { ...state }
-  let editorId
-  let obj
+  let editorId = null
+  let obj = null
   switch (action.type) {
     case EDITOR.APPEND_TEXT:
     case EDITOR.CLEAR_APPENDED_TEXT:

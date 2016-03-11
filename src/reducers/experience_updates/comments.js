@@ -22,8 +22,8 @@ methods.updateCommentsCount = (newState, postId, delta) =>
 
 function _addOrUpdateComment(newState, action) {
   const { postId } = action.payload
-  let post
-  let response
+  let post = null
+  let response = null
   switch (action.type) {
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:

@@ -28,9 +28,9 @@ Date.prototype.distanceOfTimeInWords = function distanceOfTimeInWords(toDate) {
   const distanceInSeconds = Math.round(Math.abs((toDate.getTime() - this.getTime()) / 1000))
   const distanceInMinutes = Math.round(distanceInSeconds / 60)
 
-  let remainder
-  let distanceInYears
-  let yearProp
+  let remainder = null
+  let distanceInYears = null
+  let yearProp = null
   switch (true) {
     case (distanceInMinutes <= 1):
       switch (true) {

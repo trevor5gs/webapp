@@ -2,8 +2,8 @@ import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, PROFILE } from '../constants/action_types'
 
 export function profile(state = {}, action) {
-  let assetState
-  let assetType
+  let assetState = null
+  let assetType = null
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
