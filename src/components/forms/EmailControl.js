@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import FormControl from './FormControl'
 
+/* eslint-disable react/prefer-stateless-function */
 class EmailControl extends Component {
 
   static defaultProps = {

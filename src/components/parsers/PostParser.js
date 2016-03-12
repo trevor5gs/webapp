@@ -119,6 +119,7 @@ function isRepost(post) {
   return post.repostContent && post.repostContent.length
 }
 
+/* eslint-disable react/prefer-stateless-function */
 class PostParser extends Component {
   static propTypes = {
     assets: PropTypes.any,

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import classNames from 'classnames'
 
+/* eslint-disable react/prefer-stateless-function */
 class TextRegion extends Component {
 
   static propTypes = {

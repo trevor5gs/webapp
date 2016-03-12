@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { trackEvent } from '../../actions/tracking'
 import { ElloMark } from '../interface/ElloIcons'
 
+/* eslint-disable react/prefer-stateless-function */
 class OnboardingHeader extends Component {
 
   static propTypes = {

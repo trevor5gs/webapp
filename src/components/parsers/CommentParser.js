@@ -47,6 +47,7 @@ function parseComment(comment, author, currentUser, post, isGridLayout = true) {
   return cells
 }
 
+/* eslint-disable react/prefer-stateless-function */
 class CommentParser extends Component {
   static propTypes = {
     assets: PropTypes.any,

@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import StreamComponent from './StreamComponent'
 import { loadComments } from '../../actions/posts'
 
+/* eslint-disable react/prefer-stateless-function */
 export default class CommentStream extends Component {
   static propTypes = {
     post: PropTypes.object.isRequired,

@@ -10,6 +10,7 @@ import {
 } from '../../components/notifications/NotificationIcons'
 import { TabListLinks } from '../../components/tabs/TabList'
 
+/* eslint-disable react/prefer-stateless-function */
 class Notifications extends Component {
 
   static propTypes = {
@@ -68,3 +69,4 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps)(Notifications)
+

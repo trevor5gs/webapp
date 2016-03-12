@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 
+/* eslint-disable react/prefer-stateless-function */
 export default class Completion extends Component {
 
   static propTypes = {

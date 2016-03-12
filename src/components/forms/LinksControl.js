@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import FormControl from './FormControl'
 
+/* eslint-disable react/prefer-stateless-function */
 class LinksControl extends Component {
 
   static propTypes = {

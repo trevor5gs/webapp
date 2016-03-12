@@ -4,6 +4,7 @@ import { openModal, closeModal } from '../../actions/modals'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
 import { DragIcon, DeleteIcon } from './EditorIcons'
 
+/* eslint-disable react/prefer-stateless-function */
 class RegionTools extends Component {
 
   static propTypes = {

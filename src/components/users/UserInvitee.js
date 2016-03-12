@@ -7,6 +7,7 @@ import Avatar from '../assets/Avatar'
 import RelationsGroup from '../relationships/RelationsGroup'
 import { getLinkObject } from '../base/json_helper'
 
+/* eslint-disable react/prefer-stateless-function */
 class UserInvitee extends Component {
 
   static propTypes = {
