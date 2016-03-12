@@ -81,6 +81,7 @@ function _addParentPostIdToComments(state, action) {
       }
     }
   }
+  return null
 }
 methods.addParentPostIdToComments = (state, type, data) =>
   _addParentPostIdToComments(state, type, data)
@@ -95,13 +96,13 @@ function _addModels(state, type, data) {
       const id = index + 1
       newType[id] = category
       state[type] = newType
-      ids.push(id)
+      return ids.push(id)
     })
   } else if (data[type] && data[type].length) {
     // add arrays of models to state['modelType']['id']
     data[type].map((model) => {
       methods.mergeModel(state, type, model)
-      ids.push(model.id)
+      return ids.push(model.id)
     })
   } else if (data[type] && typeof data[type] === 'object') {
     // add single model objects to state['modelType']['id']

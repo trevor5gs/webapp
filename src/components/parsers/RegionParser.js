@@ -82,6 +82,7 @@ export function regionItems(content, only = null, isGridLayout = true, postDetai
           throw new Error(`UNKNOWN REGION: ${region.kind}`)
       }
     }
+    return null
   })
 }
 

@@ -42,7 +42,7 @@ class Modal extends Component {
     if (classList.contains('Modal') ||
         classList.contains('Alert') ||
         classList.contains('CloseModal')) {
-      return this.close()
+      this.close()
     }
   };
 

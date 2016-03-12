@@ -207,7 +207,7 @@ class App extends Component {
 App.preRender = (store) => {
   const state = store.getState()
   if (state.authentication && state.authentication.isLoggedIn) {
-    return store.dispatch(loadProfile())
+    store.dispatch(loadProfile())
   }
 }
 

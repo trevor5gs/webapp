@@ -36,6 +36,7 @@ class TextRegion extends Component {
     }
     // The alternative is it's either in list and we ignore it or it's an
     // absolute link and we allow it's default behavior.
+    return null
   };
 
   render() {

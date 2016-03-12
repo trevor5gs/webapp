@@ -44,6 +44,7 @@ export function getUsernameStateFromServer({ availability, currentStatus }) {
     const list = suggestions.username && suggestions.username.length ? suggestions.username : null
     return { status: STATUS.FAILURE, suggestions: list, message: 'already exists.' }
   }
+  return null
 }
 
 export function isValidEmail(value) {
@@ -77,6 +78,7 @@ export function getEmailStateFromServer({ availability, currentStatus }) {
   } else if (!email && currentStatus !== STATUS.FAILURE) {
     return { status: STATUS.FAILURE, message }
   }
+  return null
 }
 
 export function isValidPassword(value) {

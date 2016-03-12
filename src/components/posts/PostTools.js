@@ -65,6 +65,7 @@ class PostTools extends Component {
     } else {
       dispatch(postActions.lovePost(post))
     }
+    return null
   };
 
   onClickToggleLovers = () => {
@@ -115,6 +116,7 @@ class PostTools extends Component {
       dispatch(postActions.toggleReposting(post, true))
       dispatch(postActions.loadEditablePost(post.id))
     }
+    return null
   };
 
   onClickDeletePost = () => {

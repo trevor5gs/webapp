@@ -105,7 +105,7 @@ class Settings extends Component {
       // This will end up landing on `validateUsernameResponse` after fetching
       return this.checkServerForAvailability({ username })
     }
-    this.setState({ usernameState: clientState })
+    return this.setState({ usernameState: clientState })
   };
 
   onChangeEmailControl = ({ email }) => {
@@ -120,7 +120,7 @@ class Settings extends Component {
       // This will end up landing on `validateEmailResponse` after fetching
       return this.checkServerForAvailability({ email })
     }
-    this.setState({ emailState: clientState })
+    return this.setState({ emailState: clientState })
   };
 
   onChangePasswordControl = ({ password }) => {

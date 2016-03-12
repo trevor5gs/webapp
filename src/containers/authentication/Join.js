@@ -75,6 +75,7 @@ class Join extends Component {
     if (clientState.status !== currentStatus && clientState.message !== currentMessage) {
       this.setState({ usernameState: clientState })
     }
+    return null
   };
 
   onChangeEmailControl = ({ email }) => {
@@ -92,6 +93,7 @@ class Join extends Component {
     if (clientState.status !== currentStatus) {
       this.setState({ emailState: clientState })
     }
+    return null
   };
 
   onChangePasswordControl = ({ password }) => {

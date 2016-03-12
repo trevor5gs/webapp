@@ -400,8 +400,9 @@ class BlockCollection extends Component {
       }
       if (!order.length ||
           this.getBlockFromUid(order[order.length - 1]).kind !== 'text') {
-        this.add({ kind: 'text', data: '' }, false)
+        return this.add({ kind: 'text', data: '' }, false)
       }
+      return null
     })
   }
 

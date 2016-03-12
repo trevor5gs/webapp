@@ -73,6 +73,7 @@ class Cover extends Component {
     } else if (scrollY < offset && asHidden) {
       return this.setState({ asHidden: false })
     }
+    return null
   }
 
   onLoadSuccess = () => {

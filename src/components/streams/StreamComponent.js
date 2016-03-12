@@ -138,6 +138,7 @@ export class StreamComponent extends Component {
     if (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.setState({ hidePaginator: true })
     }
+    return null
   }
 
   shouldComponentUpdate(prevProps, prevState) {

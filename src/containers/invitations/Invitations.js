@@ -44,6 +44,7 @@ class Invitations extends Component {
     const { dispatch } = this.props
     dispatch(inviteUsers(this.batchEmailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
+    return null
   };
 
   renderMessage() {

@@ -57,7 +57,8 @@ class ShareDialog extends Component {
       window.open(url, 'sharewindow', `width=${width}, height=${height}, left=${window.innerWidth / 2 - width / 2}, top=${window.innerHeight / 2 - height / 2}, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0`)
     }
     if (trackEvent) {
-      return user ? trackEvent(`share-user-to-${type}-profile`) : trackEvent(`share-to-${type}`)
+      const eventType = user ? `share-user-to-${type}-profile` : `share-to-${type}`
+      trackEvent(eventType)
     }
   };
 
