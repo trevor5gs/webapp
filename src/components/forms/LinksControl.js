@@ -8,7 +8,7 @@ class LinksControl extends Component {
       PropTypes.string,
       PropTypes.array,
     ]),
-  };
+  }
 
   static defaultProps = {
     className: 'LinksControl',
@@ -16,7 +16,7 @@ class LinksControl extends Component {
     label: 'Links',
     name: 'user[links]',
     placeholder: 'Links (optional)',
-  };
+  }
 
   getLinks() {
     const { text } = this.props

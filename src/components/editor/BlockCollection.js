@@ -42,7 +42,7 @@ class BlockCollection extends Component {
     shouldPersist: PropTypes.bool,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
-  };
+  }
 
   static defaultProps = {
     blocks: [],
@@ -52,7 +52,7 @@ class BlockCollection extends Component {
     shouldLoadFromState: false,
     shouldPersist: false,
     submitText: 'Post',
-  };
+  }
 
   componentWillMount() {
     const { blocks, editorStore, repostContent, shouldLoadFromState } = this.props
@@ -275,7 +275,7 @@ class BlockCollection extends Component {
         }
       }
     }
-  };
+  }
 
   onSubmitPost() {
     const { editorId } = this.props
@@ -286,7 +286,7 @@ class BlockCollection extends Component {
 
   onInsertEmoji = ({ value }) => {
     this.appendText(value)
-  };
+  }
 
   getBlockIdentifier(uid) {
     const { editorId } = this.props
@@ -414,7 +414,7 @@ class BlockCollection extends Component {
       lastBlock.data += content
       this.setState({ collection })
     }
-  };
+  }
 
   remove = (uid, shouldCheckForEmpty = true) => {
     const { collection, order } = this.state
@@ -426,7 +426,7 @@ class BlockCollection extends Component {
       this.addEmptyTextBlock()
     }
     this.persistBlocks()
-  };
+  }
 
   persistBlocks() {
     const { dispatch, editorId, shouldPersist } = this.props
@@ -457,7 +457,7 @@ class BlockCollection extends Component {
     collection[this.getBlockIdentifier(vo.uid)] = vo
     this.setState({ collection })
     this.persistBlocks()
-  };
+  }
 
   replyAll = () => {
     const { postId } = this.props
@@ -472,7 +472,7 @@ class BlockCollection extends Component {
     if (nameArr.length) {
       this.appendText(`${nameArr.join(' ')} `)
     }
-  };
+  }
 
   submit = () => {
     const { isComment, submitAction } = this.props
@@ -483,7 +483,7 @@ class BlockCollection extends Component {
     if (isComment) {
       this.clearBlocks()
     }
-  };
+  }
 
   clearBlocks = () => {
     this.setState({ collection: {}, order: [] })
@@ -491,7 +491,7 @@ class BlockCollection extends Component {
       this.uid = 0
       this.addEmptyTextBlock()
     })
-  };
+  }
 
   serialize() {
     const { order } = this.state
@@ -543,7 +543,7 @@ class BlockCollection extends Component {
 
   handleFiles = (e) => {
     if (e.target.files.length) { this.acceptFiles(e.target.files) }
-  };
+  }
 
   acceptFiles(files) {
     const { dispatch, editorId } = this.props

@@ -17,7 +17,7 @@ class Footer extends Component {
     gui: PropTypes.object.isRequired,
     json: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -41,11 +41,11 @@ class Footer extends Component {
       return
     }
     window.scrollTo(0, 0)
-  };
+  }
 
   onClickToggleLayoutMode = () => {
     Mousetrap.trigger(SHORTCUT_KEYS.TOGGLE_LAYOUT)
-  };
+  }
 
   render() {
     const { isPaginatoring } = this.props

@@ -16,11 +16,11 @@ class InfoForm extends Component {
     dispatch: PropTypes.func.isRequired,
     profile: PropTypes.object,
     tabIndexStart: PropTypes.number,
-  };
+  }
 
   static defaultProps = {
     tabIndexStart: 0,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -43,15 +43,15 @@ class InfoForm extends Component {
 
   onChangeNameControl = (vo) => {
     this.controlWasChanged(vo, 'nameStatus')
-  };
+  }
 
   onChangeBioControl = (vo) => {
     this.controlWasChanged(vo, 'bioStatus')
-  };
+  }
 
   onChangeLinksControl = (vo) => {
     this.controlWasChanged(vo, 'linksStatus')
-  };
+  }
 
   onSubmit(e) {
     e.preventDefault()

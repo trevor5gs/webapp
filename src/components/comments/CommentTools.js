@@ -27,7 +27,7 @@ class CommentTools extends Component {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     post: PropTypes.object.isRequired,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -37,7 +37,7 @@ class CommentTools extends Component {
 
   onClickMoreTool = () => {
     this.setState({ isMoreToolActive: !this.state.isMoreToolActive })
-  };
+  }
 
   onClickReplyToComment = () => {
     const { author, dispatch, post } = this.props
@@ -48,13 +48,13 @@ class CommentTools extends Component {
         text: `@${author.username} `,
       },
     })
-  };
+  }
 
   onClickEditComment = () => {
     const { comment, dispatch } = this.props
     dispatch(commentActions.toggleEditing(comment, true))
     dispatch(commentActions.loadEditableComment(comment))
-  };
+  }
 
   onClickFlagComment = () => {
     const { dispatch } = this.props
@@ -63,12 +63,12 @@ class CommentTools extends Component {
         onResponse={ this.onCommentWasFlagged }
         onConfirm={ this.closeModal }
       />))
-  };
+  }
 
   onCommentWasFlagged = ({ flag }) => {
     const { dispatch, comment } = this.props
     dispatch(commentActions.flagComment(comment, flag))
-  };
+  }
 
   onClickDeleteComment = () => {
     const { dispatch } = this.props
@@ -78,13 +78,13 @@ class CommentTools extends Component {
         onConfirm={ this.onConfirmDeleteComment }
         onDismiss={ this.closeModal }
       />))
-  };
+  }
 
   onConfirmDeleteComment = () => {
     const { comment, dispatch } = this.props
     this.closeModal()
     dispatch(commentActions.deleteComment(comment))
-  };
+  }
 
   getToolCells() {
     const { author, comment, currentUser, isLoggedIn, post } = this.props
@@ -164,7 +164,7 @@ class CommentTools extends Component {
   closeModal = () => {
     const { dispatch } = this.props
     dispatch(closeModal())
-  };
+  }
 
   signUp() {
     const { dispatch } = this.props

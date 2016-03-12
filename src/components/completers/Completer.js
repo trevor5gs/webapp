@@ -17,7 +17,7 @@ export default class Completer extends Component {
     completions: PropTypes.object.isRequired,
     onCancel: PropTypes.func.isRequired,
     onCompletion: PropTypes.func.isRequired,
-  };
+  }
 
   componentWillMount() {
     this.state = {

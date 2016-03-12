@@ -8,7 +8,7 @@ class RepostBlock extends Component {
   static propTypes = {
     currentUser: PropTypes.object.isRequired,
     data: PropTypes.array.isRequired,
-  };
+  }
 
   shouldComponentUpdate() {
     return false

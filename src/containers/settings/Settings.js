@@ -51,7 +51,7 @@ class Settings extends Component {
     dispatch: PropTypes.func.isRequired,
     mutedCount: PropTypes.number.isRequired,
     profile: PropTypes.object,
-  };
+  }
 
   componentWillMount() {
     const { dispatch, profile } = this.props
@@ -91,7 +91,7 @@ class Settings extends Component {
     const { dispatch } = this.props
     dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
     dispatch(push('/'))
-  };
+  }
 
   onChangeUsernameControl = ({ username }) => {
     this.usernameValue = username
@@ -106,7 +106,7 @@ class Settings extends Component {
       return this.checkServerForAvailability({ username })
     }
     return this.setState({ usernameState: clientState })
-  };
+  }
 
   onChangeEmailControl = ({ email }) => {
     this.emailValue = email
@@ -121,7 +121,7 @@ class Settings extends Component {
       return this.checkServerForAvailability({ email })
     }
     return this.setState({ emailState: clientState })
-  };
+  }
 
   onChangePasswordControl = ({ password }) => {
     this.passwordValue = password
@@ -129,18 +129,18 @@ class Settings extends Component {
     const currentStatus = passwordState.status
     const newState = getPasswordState({ value: password, currentStatus })
     this.setState({ passwordState: newState })
-  };
+  }
 
   onChangeCurrentPasswordControl = (vo) => {
     this.passwordCurrentValue = vo.current_password
-  };
+  }
 
   onClickRequestDataExport = () => {
     const { dispatch } = this.props
     dispatch(exportData())
     this.refs.exportButton.disabled = true
     this.refs.exportButton.innerHTML = 'Exported'
-  };
+  }
 
   onClickDeleteAccountModal = () => {
     const { dispatch, profile } = this.props
@@ -151,14 +151,14 @@ class Settings extends Component {
         onDismiss={ this.closeModal }
       />
     , 'asDangerZone'))
-  };
+  }
 
   onConfirmAccountWasDeleted = () => {
     const { dispatch } = this.props
     dispatch(deleteProfile())
     this.closeModal()
     dispatch(replace('/'))
-  };
+  }
 
   onSubmit = (e) => {
     e.preventDefault()
@@ -170,7 +170,7 @@ class Settings extends Component {
     }
     // console.log(formData)
     return formData
-  };
+  }
 
   onTogglePostsAdultContent = (obj) => {
     if (obj.postsAdultContent) {
@@ -183,7 +183,7 @@ class Settings extends Component {
       ))
     }
     preferenceToggleChanged(obj)
-  };
+  }
 
   getExternalLinkListAsText() {
     const { profile } = this.props
@@ -237,7 +237,7 @@ class Settings extends Component {
   closeModal = () => {
     const { dispatch } = this.props
     dispatch(closeModal())
-  };
+  }
 
   render() {
     const { blockedCount, dispatch, mutedCount, profile } = this.props

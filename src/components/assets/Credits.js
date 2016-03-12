@@ -10,7 +10,7 @@ class Credits extends Component {
       avatar: PropTypes.shape({}),
       username: PropTypes.string,
     }).isRequired,
-  };
+  }
 
   // Typically a passed through tracking event sent before following the link
   onClickCredits = () => {
@@ -18,7 +18,7 @@ class Credits extends Component {
     if (onClick) {
       onClick()
     }
-  };
+  }
 
   render() {
     const { user } = this.props

@@ -116,7 +116,7 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
 }
 
 function isRepost(post) {
-  return post.repostContent && post.repostContent.length;
+  return post.repostContent && post.repostContent.length
 }
 
 class PostParser extends Component {
@@ -134,7 +134,7 @@ class PostParser extends Component {
     showLovers: PropTypes.bool,
     showReposters: PropTypes.bool,
     sourceLinkObject: PropTypes.object,
-  };
+  }
 
   render() {
     const {

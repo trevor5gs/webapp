@@ -20,11 +20,11 @@ class TreeButton extends Component {
     className: PropTypes.string,
     isCollapsed: PropTypes.bool,
     onClick: PropTypes.func,
-  };
+  }
 
   static defaultProps = {
     isCollapsed: true,
-  };
+  }
 
   componentWillMount() {
     const { isCollapsed } = this.props
@@ -41,7 +41,7 @@ class TreeButton extends Component {
     if (typeof onClick === 'function') {
       onClick(...rest)
     }
-  };
+  }
 
   render() {
     const { children, className } = this.props

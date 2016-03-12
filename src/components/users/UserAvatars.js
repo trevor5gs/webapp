@@ -9,7 +9,7 @@ class UserAvatars extends Component {
     icon: PropTypes.element.isRequired,
     post: PropTypes.object.isRequired,
     resultType: PropTypes.string.isRequired,
-  };
+  }
 
   render() {
     const { endpoint, icon, post, resultType } = this.props

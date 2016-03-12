@@ -45,10 +45,10 @@ class PostDetail extends Component {
       token: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired,
     }).isRequired,
-  };
+  }
 
   static preRender = (store, routerState) =>
-    store.dispatch(loadPostDetail(`~${routerState.params.token}`));
+    store.dispatch(loadPostDetail(`~${routerState.params.token}`))
 
   componentWillMount() {
     const { dispatch, params } = this.props

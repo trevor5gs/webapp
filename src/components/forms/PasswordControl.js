@@ -9,7 +9,7 @@ class PasswordControl extends Component {
     label: 'Password',
     name: 'user[password]',
     placeholder: 'Enter your password',
-  };
+  }
 
   render() {
     return (

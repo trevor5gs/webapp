@@ -13,7 +13,7 @@ class UserCard extends Component {
     pathname: PropTypes.string,
     user: PropTypes.shape({
     }).isRequired,
-  };
+  }
 
   onClickRelationshipUpdate(vo) {
     const { userId, priority, existing } = vo

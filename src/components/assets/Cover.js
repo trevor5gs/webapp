@@ -16,11 +16,11 @@ class Cover extends Component {
     coverImage: PropTypes.object,
     isModifiable: PropTypes.bool,
     modifiers: PropTypes.string,
-  };
+  }
 
   static defaultProps = {
     modifiers: '',
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -79,12 +79,12 @@ class Cover extends Component {
   onLoadSuccess = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  };
+  }
 
   onLoadFailure = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  };
+  }
 
   getClassNames() {
     const { isModifiable, modifiers } = this.props

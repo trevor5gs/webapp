@@ -14,13 +14,13 @@ class UserInvitee extends Component {
     dispatch: PropTypes.func.isRequired,
     invitation: PropTypes.shape({}).isRequired,
     json: PropTypes.object.isRequired,
-  };
+  }
 
   onClickReInvite = () => {
     const { dispatch, invitation } = this.props
     const emails = [invitation.email]
     dispatch(inviteUsers(emails))
-  };
+  }
 
   renderMailtoUserHeader(invitation) {
     const { email } = invitation

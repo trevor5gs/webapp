@@ -9,7 +9,7 @@ class SearchControl extends Component {
     label: 'Search',
     name: 'search[terms]',
     placeholder: 'Search',
-  };
+  }
 
   render() {
     return (

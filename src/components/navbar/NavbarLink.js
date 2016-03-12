@@ -16,11 +16,11 @@ class NavbarLink extends Component {
     onClick: PropTypes.func,
     pathname: PropTypes.string.isRequired,
     to: PropTypes.string.isRequired,
-  };
+  }
 
   static defaultProps = {
     modifiers: '',
-  };
+  }
 
   render() {
     const { icon, label, modifiers, onClick, pathname, to } = this.props

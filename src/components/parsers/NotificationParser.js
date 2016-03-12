@@ -342,7 +342,7 @@ class NotificationParser extends Component {
     notification: PropTypes.object,
     json: PropTypes.object,
     subject: PropTypes.object.isRequired,
-  };
+  }
 
   render() {
     const { notification, json, subject } = this.props

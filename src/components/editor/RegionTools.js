@@ -10,18 +10,18 @@ class RegionTools extends Component {
     dispatch: PropTypes.func.isRequired,
     editorId: PropTypes.string.isRequired,
     onRemoveBlock: PropTypes.func.isRequired,
-  };
+  }
 
   closeModal = () => {
     const { dispatch } = this.props
     dispatch(closeModal())
-  };
+  }
 
   deleteContentConfirmed = () => {
     const { onRemoveBlock } = this.props
     this.closeModal()
     onRemoveBlock()
-  };
+  }
 
   handleDeleteBlock = () => {
     const { dispatch } = this.props
@@ -31,7 +31,7 @@ class RegionTools extends Component {
         onConfirm={ this.deleteContentConfirmed }
         onDismiss={ this.closeModal }
       />))
-  };
+  }
 
   render() {
     const { editorId } = this.props

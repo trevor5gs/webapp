@@ -14,26 +14,26 @@ class PostActionBar extends Component {
     replyAllAction: PropTypes.func,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
-  };
+  }
 
   submitted = () => {
     const { submitAction } = this.props
     submitAction()
-  };
+  }
 
   handleFileBrowser = (e) => {
     const { handleFileAction } = this.props
     handleFileAction(e)
-  };
+  }
 
   browse = () => {
     this.refs.browseButton.blur()
     this.refs.FileBrowser.click()
-  };
+  }
 
   cancel = () => {
     this.props.cancelAction()
-  };
+  }
 
   render() {
     const { disableSubmitAction, replyAllAction, submitText } = this.props

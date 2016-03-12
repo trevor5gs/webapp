@@ -16,7 +16,7 @@ class Modal extends Component {
       kind: PropTypes.string,
       classList: PropTypes.string,
     }).isRequired,
-  };
+  }
 
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => { this.close() })
@@ -44,7 +44,7 @@ class Modal extends Component {
         classList.contains('CloseModal')) {
       this.close()
     }
-  };
+  }
 
   close() {
     const { modal, dispatch } = this.props

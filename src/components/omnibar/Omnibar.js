@@ -25,7 +25,7 @@ class Omnibar extends Component {
       isActive: PropTypes.bool,
       classList: PropTypes.string,
     }).isRequired,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -55,7 +55,7 @@ class Omnibar extends Component {
   toggleFullScreen = () => {
     const { isFullScreen } = this.state
     this.setState({ isFullScreen: !isFullScreen })
-  };
+  }
 
   close = () => {
     const { omnibar, dispatch } = this.props
@@ -63,7 +63,7 @@ class Omnibar extends Component {
     if (isActive) {
       dispatch(closeOmnibar())
     }
-  };
+  }
 
   render() {
     const { avatar, omnibar } = this.props

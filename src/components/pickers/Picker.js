@@ -8,11 +8,11 @@ class Picker extends React.Component {
     dispatch: React.PropTypes.func.isRequired,
     relationshipMap: React.PropTypes.any.isRequired,
     shouldAutoFollow: React.PropTypes.bool,
-  };
+  }
 
   static defaultProps = {
     shouldAutoFollow: false,
-  };
+  }
 
   componentWillMount() {
     this.hasAutoFollowed = false
@@ -51,7 +51,7 @@ class Picker extends React.Component {
       const { dispatch } = this.props
       dispatch(batchUpdateRelationship(userIds, relationship))
     }
-  };
+  }
 
   isFollowingAll() {
     const { following, inactive } = this.props.relationshipMap

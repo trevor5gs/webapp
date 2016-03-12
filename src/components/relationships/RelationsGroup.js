@@ -27,11 +27,11 @@ class RelationsGroup extends Component {
       ]),
       relationshipPriority: PropTypes.string,
     }).isRequired,
-  };
+  }
 
   static defaultProps = {
     showBlockMuteButton: false,
-  };
+  }
 
   onRelationshipUpdate = (vo) => {
     const { userId, priority, existing } = vo
@@ -41,13 +41,13 @@ class RelationsGroup extends Component {
       return dispatch(updateRelationship(userId, priority, existing, true))
     }
     return dispatch(updateRelationship(userId, priority, existing))
-  };
+  }
 
   onOpenSignupModal = () => {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
     return dispatch(trackEvent('open-registration-request-follow-button'))
-  };
+  }
 
   onOpenBlockMutePrompt = () => {
     const { dispatch, user } = this.props
@@ -61,7 +61,7 @@ class RelationsGroup extends Component {
         username = { user.username }
       />
     , 'asDangerZone'))
-  };
+  }
 
   onConfirmBlockUser = () => {
     const { dispatch, previousPath } = this.props
@@ -79,7 +79,7 @@ class RelationsGroup extends Component {
     if (priority !== RELATIONSHIP_PRIORITY.BLOCK) {
       dispatch(replace(previousPath || '/'))
     }
-  };
+  }
 
   onConfirmMuteUser = () => {
     const { user } = this.props
@@ -90,7 +90,7 @@ class RelationsGroup extends Component {
       existing: priority,
     })
     this.closeModal()
-  };
+  }
 
   getNextPriority(props, btnId) {
     const { user } = props

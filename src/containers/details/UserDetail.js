@@ -23,10 +23,10 @@ class UserDetail extends Component {
       type: PropTypes.string,
       username: PropTypes.string.isRequired,
     }).isRequired,
-  };
+  }
 
   static preRender = (store, routerState) =>
-    store.dispatch(loadUserDetail(`~${routerState.params.username}`));
+    store.dispatch(loadUserDetail(`~${routerState.params.username}`))
 
   componentWillMount() {
     const { dispatch, params } = this.props
@@ -39,11 +39,11 @@ class UserDetail extends Component {
 
   onZeroStateHello = () => {
     this.setState({ saidHelloTo: true })
-  };
+  }
 
   onZeroStateFirstPost = () => {
     this.setState({ madeFirstPost: true })
-  };
+  }
 
   renderZeroStates(user) {
     const { isLoggedIn } = this.props

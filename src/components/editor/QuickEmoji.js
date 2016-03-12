@@ -7,7 +7,7 @@ import { SVGIcon } from '../interface/SVGComponents'
 
 // onInsertEmoji = ({ value }) => {
 //   console.log('insert the value', value)
-// };
+// }
 
 // <QuickEmoji onAddEmoji={ this.onInsertEmoji }/>
 
@@ -41,7 +41,7 @@ class QuickEmoji extends Component {
 
   static propTypes = {
     onAddEmoji: PropTypes.func.isRequired,
-  };
+  }
 
   componentWillMount() {
     this.state = { isActive: false }
@@ -53,23 +53,23 @@ class QuickEmoji extends Component {
 
   onDocumentClick = () => {
     this.hide()
-  };
+  }
 
   show = () => {
     this.setState({ isActive: true })
     document.addEventListener('click', this.onDocumentClick)
-  };
+  }
 
   hide = () => {
     this.setState({ isActive: false })
     document.removeEventListener('click', this.onDocumentClick)
-  };
+  }
 
   emojiWasClicked = (e) => {
     const { onAddEmoji } = this.props
     onAddEmoji({ value: `:${e.target.name}:` })
     this.hide()
-  };
+  }
 
   renderEmojis() {
     const samples = sampleSize(options, 4)

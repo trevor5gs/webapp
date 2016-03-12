@@ -10,7 +10,7 @@ class TextRegion extends Component {
     dispatch: PropTypes.func.isRequired,
     isGridLayout: PropTypes.bool.isRequired,
     postDetailPath: PropTypes.string,
-  };
+  }
 
   onClickRegion = (e) => {
     const { dispatch, isGridLayout, postDetailPath } = this.props
@@ -37,7 +37,7 @@ class TextRegion extends Component {
     // The alternative is it's either in list and we ignore it or it's an
     // absolute link and we allow it's default behavior.
     return null
-  };
+  }
 
   render() {
     const { content, isGridLayout, postDetailPath } = this.props

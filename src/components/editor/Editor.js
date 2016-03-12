@@ -36,14 +36,14 @@ class Editor extends Component {
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
     shouldPersist: PropTypes.bool,
-  };
+  }
 
   static defaultProps = {
     autoPopulate: null,
     isComment: false,
     shouldLoadFromState: false,
     shouldPersist: false,
-  };
+  }
 
   getEditorIdentifier() {
     const { comment, post } = this.props
@@ -83,7 +83,7 @@ class Editor extends Component {
     }
     if (onSubmit) { onSubmit() }
     this.clearPersistedData()
-  };
+  }
 
   cancel = () => {
     const { comment, isComment, post } = this.props
@@ -100,12 +100,12 @@ class Editor extends Component {
     } else if (post.isReposting) {
       this.launchCancelConfirm('repost')
     }
-  };
+  }
 
   closeModal = () => {
     const { dispatch } = this.props
     dispatch(closeModal())
-  };
+  }
 
   launchCancelConfirm = (label) => {
     const { dispatch } = this.props
@@ -115,7 +115,7 @@ class Editor extends Component {
         onConfirm={ this.cancelConfirmed }
         onDismiss={ this.closeModal }
       />))
-  };
+  }
 
   cancelConfirmed = () => {
     const { comment, dispatch, post, shouldPersist } = this.props
@@ -132,7 +132,7 @@ class Editor extends Component {
     if (shouldPersist) {
       this.clearPersistedData()
     }
-  };
+  }
 
   render() {
     const {

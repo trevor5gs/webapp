@@ -12,10 +12,10 @@ class Invitations extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-  };
+  }
 
   static preRender = (store) =>
-    store.dispatch(loadInvitedUsers());
+    store.dispatch(loadInvitedUsers())
 
   componentWillMount() {
     this.state = {
@@ -33,7 +33,7 @@ class Invitations extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ batchEmailState: newState })
     }
-  };
+  }
 
   onSubmit = (e) => {
     e.preventDefault()
@@ -45,7 +45,7 @@ class Invitations extends Component {
     dispatch(inviteUsers(this.batchEmailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
     return null
-  };
+  }
 
   renderMessage() {
     const { formStatus } = this.state

@@ -25,7 +25,7 @@ class SignIn extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     currentStream: PropTypes.string,
-  };
+  }
 
   componentWillMount() {
     const userlist = AUTHENTICATION_PROMOTIONS
@@ -47,7 +47,7 @@ class SignIn extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
     }
-  };
+  }
 
   onChangePasswordControl = ({ password }) => {
     this.passwordValue = password
@@ -57,7 +57,7 @@ class SignIn extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ passwordState: newState })
     }
-  };
+  }
 
   onSubmit = async (e) => {
     e.preventDefault()
@@ -72,12 +72,12 @@ class SignIn extends Component {
     } else {
       this.setState({ failureMessage: 'No dice. Access denied.' })
     }
-  };
+  }
 
   onClickTrackCredits = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
-  };
+  }
 
   render() {
     const { emailState, passwordState, featuredUser } = this.state

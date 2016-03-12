@@ -17,7 +17,7 @@ class Notifications extends Component {
     params: PropTypes.shape({
       category: PropTypes.string,
     }),
-  };
+  }
 
   static preRender = (store, routerState) => {
     const { category } = routerState.params
@@ -26,7 +26,7 @@ class Notifications extends Component {
       params.category = category
     }
     return store.dispatch(loadNotifications(params))
-  };
+  }
 
   render() {
     const { pathname } = this.props

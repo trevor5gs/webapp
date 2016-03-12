@@ -12,7 +12,7 @@ class NavbarProfile extends Component {
     avatar: PropTypes.object,
     onLogOut: PropTypes.func,
     username: PropTypes.string,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -28,11 +28,11 @@ class NavbarProfile extends Component {
     const { isMenuOpen } = this.state
     if (isMenuOpen) { return this.hideMenu() }
     return this.showMenu()
-  };
+  }
 
   onClickDocument = () => {
     this.hideMenu()
-  };
+  }
 
   showMenu() {
     if (this.state.isMenuOpen) { return }

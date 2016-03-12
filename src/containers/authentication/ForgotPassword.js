@@ -17,7 +17,7 @@ class ForgotPassword extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-  };
+  }
 
   componentWillMount() {
     const userlist = AUTHENTICATION_PROMOTIONS
@@ -38,19 +38,19 @@ class ForgotPassword extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
     }
-  };
+  }
 
   onSubmit = (e) => {
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(sendForgotPasswordRequest(this.emailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
-  };
+  }
 
   onClickTrackCredits = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
-  };
+  }
 
   renderSubmitted() {
     return (

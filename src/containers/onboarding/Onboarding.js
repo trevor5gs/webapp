@@ -25,7 +25,7 @@ class Onboarding extends Component {
     profile: PropTypes.object,
     route: PropTypes.object,
     stream: PropTypes.object,
-  };
+  }
 
   componentWillMount() {
     // check auth

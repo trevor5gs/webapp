@@ -38,7 +38,7 @@ class ShareDialog extends Component {
     post: PropTypes.object,
     user: PropTypes.object,
     trackEvent: PropTypes.func,
-  };
+  }
 
   componentWillMount() {
     const { user } = this.props
@@ -60,7 +60,7 @@ class ShareDialog extends Component {
       const eventType = user ? `share-user-to-${type}-profile` : `share-to-${type}`
       trackEvent(eventType)
     }
-  };
+  }
 
   onClickReadOnlyInput(e) {
     e.target.select()

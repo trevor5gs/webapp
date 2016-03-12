@@ -20,12 +20,12 @@ class UserList extends Component {
     showBlockMuteButton: PropTypes.bool,
     user: PropTypes.shape({
     }).isRequired,
-  };
+  }
 
   static defaultProps = {
     classList: '',
     showBlockMuteButton: false,
-  };
+  }
 
   shouldComponentUpdate(prevProps) {
     if (_.isEqual(prevProps, this.props)) {
@@ -39,7 +39,7 @@ class UserList extends Component {
     const action = bindActionCreators(trackEvent, dispatch)
     dispatch(openModal(<ShareDialog user={ user } trackEvent={ action } />))
     return dispatch(trackEvent('open-share-dialog-profile'))
-  };
+  }
 
   render() {
     const { classList, isLoggedIn, user, showBlockMuteButton } = this.props

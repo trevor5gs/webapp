@@ -53,7 +53,7 @@ class Navbar extends Component {
     pathname: PropTypes.string.isRequired,
     profile: PropTypes.object,
     shortcuts: PropTypes.object.isRequired,
-  };
+  }
 
   static defaultProps = {
     shortcuts: {
@@ -63,7 +63,7 @@ class Navbar extends Component {
       [SHORTCUT_KEYS.STARRED]: '/starred',
       [SHORTCUT_KEYS.NOTIFICATIONS]: '/notifications',
     },
-  };
+  }
 
   componentWillMount() {
     const { pathname } = this.props
@@ -190,7 +190,7 @@ class Navbar extends Component {
     const { dispatch } = this.props
     await dispatch(logout())
     dispatch(push('/'))
-  };
+  }
 
   onClickNotification = (e) => {
     if (e) { e.preventDefault() }
@@ -199,25 +199,25 @@ class Navbar extends Component {
       type: ACTION_TYPES.MODAL.TOGGLE_NOTIFICATIONS,
       payload: { isNotificationsActive: !isNotificationsActive },
     })
-  };
+  }
 
   onClickOmniButton = () => {
     const { dispatch } = this.props
     dispatch(openOmnibar())
     window.scrollTo(0, 0)
-  };
+  }
 
   onClickLoadMorePosts = () => {
     const { dispatch } = this.props
     dispatch({
       type: ACTION_TYPES.ADD_NEW_IDS_TO_RESULT,
     })
-  };
+  }
 
   onClickLogInButton = (e) => {
     e.preventDefault()
     document.location.href = ENV.REDIRECT_URI + e.target.pathname
-  };
+  }
 
   checkForNotifications() {
     const { dispatch, isLoggedIn } = this.props

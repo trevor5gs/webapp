@@ -76,13 +76,13 @@ export class StreamComponent extends Component {
     resultPath: PropTypes.string,
     routerState: PropTypes.object,
     stream: PropTypes.object.isRequired,
-  };
+  }
 
   static defaultProps = {
     paginatorText: 'Loading',
     ignoresScrollPosition: false,
     isUserDetail: false,
-  };
+  }
 
   componentWillMount() {
     const { action, dispatch } = this.props
@@ -212,7 +212,7 @@ export class StreamComponent extends Component {
 
   onLoadNextPage = () => {
     this.loadPage('next')
-  };
+  }
 
   setAction(action) {
     this.setState({ action })

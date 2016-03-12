@@ -41,7 +41,7 @@ class PostsAsGrid extends Component {
     gridColumnCount: PropTypes.number,
     json: PropTypes.object,
     posts: PropTypes.array.isRequired,
-  };
+  }
 
   shouldComponentUpdate(prevProps) {
     if (_.isEqual(prevProps, this.props)) {

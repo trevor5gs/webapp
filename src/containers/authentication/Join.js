@@ -28,7 +28,7 @@ class Join extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-  };
+  }
 
   componentWillMount() {
     const userlist = AUTHENTICATION_PROMOTIONS
@@ -76,7 +76,7 @@ class Join extends Component {
       this.setState({ usernameState: clientState })
     }
     return null
-  };
+  }
 
   onChangeEmailControl = ({ email }) => {
     this.emailValue = email
@@ -94,7 +94,7 @@ class Join extends Component {
       this.setState({ emailState: clientState })
     }
     return null
-  };
+  }
 
   onChangePasswordControl = ({ password }) => {
     this.passwordValue = password
@@ -104,19 +104,19 @@ class Join extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ passwordState: newState })
     }
-  };
+  }
 
   // TODO: Still needs to be hooked up
   onSubmit = (e) => {
     e.preventDefault()
     // const { dispatch } = this.props
     // dispatch(someActionFunction(this.emailValue, this.usernameValue, this.passwordValue))
-  };
+  }
 
   onClickTrackCredits = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
-  };
+  }
 
   checkServerForAvailability(vo) {
     return this.props.dispatch(checkAvailability(vo))

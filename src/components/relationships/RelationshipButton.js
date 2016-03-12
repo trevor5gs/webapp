@@ -28,7 +28,7 @@ class RelationshipButton extends Component {
       PropTypes.number,
       PropTypes.string,
     ]),
-  };
+  }
 
   componentWillMount() {
     this.state = { nextPriority: this.getNextPriority(this.props) }
@@ -57,7 +57,7 @@ class RelationshipButton extends Component {
     if (onClick) {
       onClick({ userId, priority: nextPriority, existing: priority })
     }
-  };
+  }
 
   renderAsToggleButton(label, icon = null) {
     const { classList, priority } = this.props

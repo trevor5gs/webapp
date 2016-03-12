@@ -35,7 +35,7 @@ class PostTools extends Component {
     pathname: PropTypes.string.isRequired,
     post: PropTypes.object.isRequired,
     previousPath: PropTypes.string,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -46,14 +46,14 @@ class PostTools extends Component {
 
   onClickMoreToggle = () => {
     this.setState({ isMoreToolActive: !this.state.isMoreToolActive })
-  };
+  }
 
   onClickToggleComments = () => {
     const { dispatch, post } = this.props
     const nextShowComments = !post.showComments
     this.setState({ isCommentsActive: nextShowComments })
     dispatch(postActions.toggleComments(post, nextShowComments))
-  };
+  }
 
   onClickLovePost = () => {
     const { dispatch, isLoggedIn, post } = this.props
@@ -66,26 +66,26 @@ class PostTools extends Component {
       dispatch(postActions.lovePost(post))
     }
     return null
-  };
+  }
 
   onClickToggleLovers = () => {
     const { dispatch, post } = this.props
     const showLovers = !post.showLovers
     dispatch(postActions.toggleLovers(post, showLovers))
-  };
+  }
 
   onClickToggleReposters = () => {
     const { dispatch, post } = this.props
     const showReposters = !post.showReposters
     dispatch(postActions.toggleReposters(post, showReposters))
-  };
+  }
 
   onClickSharePost = () => {
     const { author, dispatch, post } = this.props
     const action = bindActionCreators(trackEvent, dispatch)
     dispatch(openModal(<ShareDialog author={author} post={post} trackEvent={action} />))
     return dispatch(trackEvent('open-share-dialog'))
-  };
+  }
 
   onClickFlagPost = () => {
     const { dispatch } = this.props
@@ -94,18 +94,18 @@ class PostTools extends Component {
         onResponse={ this.onPostWasFlagged }
         onConfirm={ this.closeModal }
       />))
-  };
+  }
 
   onPostWasFlagged = ({ flag }) => {
     const { dispatch, post } = this.props
     dispatch(postActions.flagPost(post, flag))
-  };
+  }
 
   onClickEditPost = () => {
     const { dispatch, post } = this.props
     dispatch(postActions.toggleEditing(post, true))
     dispatch(postActions.loadEditablePost(post.id))
-  };
+  }
 
   onClickRepostPost = () => {
     const { dispatch, isLoggedIn, post } = this.props
@@ -117,7 +117,7 @@ class PostTools extends Component {
       dispatch(postActions.loadEditablePost(post.id))
     }
     return null
-  };
+  }
 
   onClickDeletePost = () => {
     const { dispatch } = this.props
@@ -127,7 +127,7 @@ class PostTools extends Component {
         onConfirm={ this.onCofirmDeletePost }
         onDismiss={ this.closeModal }
       />))
-  };
+  }
 
   onCofirmDeletePost = () => {
     const { dispatch, pathname, post, previousPath } = this.props
@@ -136,7 +136,7 @@ class PostTools extends Component {
     if (pathname.match(post.token)) {
       dispatch(replace(previousPath || '/'))
     }
-  };
+  }
 
   getToolCells() {
     const { author, currentUser, isLoggedIn, post } = this.props
@@ -292,13 +292,13 @@ class PostTools extends Component {
   closeModal = () => {
     const { dispatch } = this.props
     dispatch(closeModal())
-  };
+  }
 
   signUp = () => {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
     return dispatch(trackEvent('open-registration-request-post-tools'))
-  };
+  }
 
   render() {
     const { post } = this.props

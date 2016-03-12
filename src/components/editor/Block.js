@@ -20,17 +20,17 @@ class Block extends Component {
     ]).isRequired,
     onRemoveBlock: PropTypes.func.isRequired,
     uid: PropTypes.number.isRequired,
-  };
+  }
 
   static defaultProps = {
     data: '',
     ref: 'editable',
-  };
+  }
 
   removeBlock = () => {
     const { onRemoveBlock, uid } = this.props
     onRemoveBlock(uid)
-  };
+  }
 
   render() {
     const { children, className, data, kind, editorId, uid } = this.props

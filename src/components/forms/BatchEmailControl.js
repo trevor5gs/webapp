@@ -9,7 +9,7 @@ class BatchEmailControl extends Component {
     label: 'Emails',
     name: 'invitations[email]',
     placeholder: 'Enter email addresses',
-  };
+  }
 
   render() {
     return (

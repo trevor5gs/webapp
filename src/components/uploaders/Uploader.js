@@ -11,13 +11,13 @@ class Uploader extends Component {
     recommend: PropTypes.string,
     saveAction: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
-  };
+  }
 
   static defaultProps = {
     message: null,
     recommend: null,
     title: '',
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -37,11 +37,11 @@ class Uploader extends Component {
         onClick={ this.props.closeAlert }
       />
     )
-  };
+  }
 
   onClickFileBrowser = () => {
     this.refs.FileBrowser.click()
-  };
+  }
 
   onDrop = (e) => {
     e.preventDefault()
@@ -58,17 +58,17 @@ class Uploader extends Component {
         onDismiss={ this.onDismissAlert }
       />
     )
-  };
+  }
 
   onDragOver = (e) => {
     e.preventDefault()
     this.setState({ hasDragOver: true })
-  };
+  }
 
   onDragLeave = (e) => {
     e.preventDefault()
     this.setState({ hasDragOver: false })
-  };
+  }
 
   isLegitimateFileType(file) {
     return (file && file.type && file.type.match(/^image\/(jpg|jpeg|gif|png|tiff|tif|bmp)/))

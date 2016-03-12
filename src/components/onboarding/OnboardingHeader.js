@@ -17,7 +17,7 @@ class OnboardingHeader extends Component {
     relationshipMap: PropTypes.object,
     title: PropTypes.string.isRequired,
     trackingLabel: PropTypes.string.isRequired,
-  };
+  }
 
   onClickNext = (e) => {
     const {
@@ -66,7 +66,7 @@ class OnboardingHeader extends Component {
     } else {
       dispatch(trackEvent(`followed-some-${trackingLabel}`))
     }
-  };
+  }
 
   onClickSkip = (e) => {
     const { dispatch, trackingLabel, nextPath, redirection } = this.props
@@ -75,7 +75,7 @@ class OnboardingHeader extends Component {
       e.preventDefault()
       window.location = nextPath
     }
-  };
+  }
 
   getButtonClassNames() {
     const { lockNext, relationshipMap } = this.props

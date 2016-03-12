@@ -18,7 +18,7 @@ class Promotion extends Component {
     creditsClickAction: PropTypes.func,
     isLoggedIn: PropTypes.bool.isRequired,
     userlist: PropTypes.array.isRequired,
-  };
+  }
 
   componentWillMount() {
     const { userlist } = this.props
@@ -50,12 +50,12 @@ class Promotion extends Component {
   onLoadSuccess = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  };
+  }
 
   onLoadFailure = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  };
+  }
 
   getCoverSource() {
     const { featuredUser, imageSize } = this.state

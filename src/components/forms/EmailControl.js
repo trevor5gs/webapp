@@ -9,7 +9,7 @@ class EmailControl extends Component {
     label: 'Email',
     name: 'user[email]',
     placeholder: 'Enter your email',
-  };
+  }
 
   render() {
     return (

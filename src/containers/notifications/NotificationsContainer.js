@@ -20,11 +20,11 @@ class NotificationsContainer extends Component {
   static propTypes = {
     activeTabType: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-  };
+  }
 
   static defaultProps = {
     activeTabType: 'all',
-  };
+  }
 
   componentWillMount() {
     this.body = ReactDOM.findDOMNode(document.body)
@@ -57,7 +57,7 @@ class NotificationsContainer extends Component {
       payload: { activeTabType: type },
     })
     this.setState({ activeTabType: type })
-  };
+  }
 
   onClickDocument = (e) => {
     const classList = e.target.classList
@@ -70,7 +70,7 @@ class NotificationsContainer extends Component {
       type: MODAL.TOGGLE_NOTIFICATIONS,
       payload: { isNotificationsActive: false },
     })
-  };
+  }
 
   onScrolled = () => {
     const { scrollable } = this.refs
@@ -84,7 +84,7 @@ class NotificationsContainer extends Component {
     if (Math.abs(scrollY - scrollBottom) < 5) {
       this.refs.streamComponent.refs.wrappedInstance.onLoadNextPage()
     }
-  };
+  }
 
   onScrollElement = () => {
     if (!ticking) {
@@ -94,7 +94,7 @@ class NotificationsContainer extends Component {
       })
       ticking = true
     }
-  };
+  }
 
   render() {
     const { activeTabType } = this.props

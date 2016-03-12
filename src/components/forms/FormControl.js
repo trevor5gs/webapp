@@ -20,7 +20,7 @@ class FormControl extends Component {
     status: PropTypes.string,
     tabIndex: PropTypes.string.isRequired,
     text: PropTypes.string,
-  };
+  }
 
   static defaultProps = {
     kind: 'input',
@@ -29,7 +29,7 @@ class FormControl extends Component {
     tabIndex: '0',
     text: '',
     type: 'text',
-  };
+  }
 
   componentWillMount() {
     const { text } = this.props
@@ -48,7 +48,7 @@ class FormControl extends Component {
     if (typeof onFocus === 'function') {
       onFocus(e)
     }
-  };
+  }
 
   onBlurControl = (e) => {
     this.setState({ hasFocus: false })
@@ -56,7 +56,7 @@ class FormControl extends Component {
     if (typeof onBlur === 'function') {
       onBlur(e)
     }
-  };
+  }
 
   onChangeControl = (e) => {
     const val = e.target.value
@@ -69,7 +69,7 @@ class FormControl extends Component {
     if (id && typeof onChange === 'function') {
       onChange({ [id]: val })
     }
-  };
+  }
 
   getStatusAsClassName() {
     const { status } = this.props

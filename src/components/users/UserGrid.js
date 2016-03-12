@@ -10,7 +10,7 @@ class UserGrid extends Component {
   static propTypes = {
     user: PropTypes.shape({
     }).isRequired,
-  };
+  }
 
   shouldComponentUpdate(prevProps) {
     if (_.isEqual(prevProps, this.props)) {

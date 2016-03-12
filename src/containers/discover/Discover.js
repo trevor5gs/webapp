@@ -23,10 +23,10 @@ export class Discover extends Component {
       type: PropTypes.string,
     }).isRequired,
     pathname: PropTypes.string.isRequired,
-  };
+  }
 
   static preRender = (store, routerState) =>
-    store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'));
+    store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
 
   componentWillMount() {
     const { lastDiscoverBeaconVersion, isLoggedIn } = this.props
@@ -39,13 +39,13 @@ export class Discover extends Component {
   onClickTrackCredits = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('banderole-credits-clicked'))
-  };
+  }
 
   onDismissZeroStream = () => {
     const { dispatch } = this.props
     this.setState({ isBeaconActive: false })
     dispatch({ type: BEACONS.LAST_DISCOVER_VERSION, payload: { version: BEACON_VERSION } })
-  };
+  }
 
   renderZeroStream() {
     return (

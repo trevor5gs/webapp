@@ -11,7 +11,7 @@ class TextBlock extends Component {
     dispatch: PropTypes.func.isRequired,
     editorId: PropTypes.string.isRequired,
     onInput: PropTypes.func.isRequired,
-  };
+  }
 
   componentDidMount() {
     placeCaretAtEnd(this.refs.block.refs.text)
@@ -33,7 +33,7 @@ class TextBlock extends Component {
     const { onInput } = this.props
     const uid = this.refs.block.props.uid
     onInput({ kind: 'text', data: this.getData(), uid })
-  };
+  }
 
   handlePaste = (e) => {
     const { dispatch, editorId, onInput } = this.props
@@ -41,7 +41,7 @@ class TextBlock extends Component {
     // order matters here!
     pasted(e, dispatch, editorId)
     onInput({ kind: 'text', data: this.getData(), uid })
-  };
+  }
 
   render() {
     const { data } = this.props

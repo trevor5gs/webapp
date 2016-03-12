@@ -19,7 +19,7 @@ class FlagDialog extends Component {
   static propTypes = {
     onResponse: PropTypes.func,
     onConfirm: PropTypes.func,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -33,7 +33,7 @@ class FlagDialog extends Component {
     const { activeChoice } = this.state
     this.setState({ scene: 'renderConfirmationScreen' })
     onResponse({ flag: activeChoice })
-  };
+  }
 
   onClickChoice = (e) => {
     const { activeChoice } = this.state
@@ -42,7 +42,7 @@ class FlagDialog extends Component {
     this.setState(
       { activeChoice: newChoice },
     )
-  };
+  }
 
   renderFlagChoices() {
     const { activeChoice } = this.state

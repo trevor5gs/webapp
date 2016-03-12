@@ -8,7 +8,7 @@ class BioControl extends Component {
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func,
     text: PropTypes.string,
-  };
+  }
 
   static defaultProps = {
     className: 'BioControl',
@@ -16,7 +16,7 @@ class BioControl extends Component {
     label: 'Bio',
     name: 'user[unsanitized_short_bio]',
     placeholder: 'Bio (optional)',
-  };
+  }
 
   componentWillMount() {
     const { text } = this.props
@@ -33,7 +33,7 @@ class BioControl extends Component {
     if (id && typeof onChange === 'function') {
       onChange(vo)
     }
-  };
+  }
 
   isValidBioLength() {
     const { textLength } = this.state

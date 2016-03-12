@@ -14,7 +14,7 @@ class SignUp extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-  };
+  }
 
   componentWillMount() {
     const userlist = AUTHENTICATION_PROMOTIONS
@@ -27,7 +27,7 @@ class SignUp extends Component {
   onClickTrackCredits = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
-  };
+  }
 
   render() {
     const { featuredUser } = this.state
