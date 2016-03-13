@@ -432,3 +432,4 @@ export function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps, null, null, { withRef: true })(StreamComponent)
+

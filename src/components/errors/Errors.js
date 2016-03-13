@@ -38,4 +38,3 @@ ErrorState5xx.propTypes = {
   withImage: PropTypes.bool,
 }
 
-

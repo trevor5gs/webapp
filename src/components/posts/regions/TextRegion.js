@@ -56,3 +56,4 @@ class TextRegion extends Component {
 }
 
 export default connect()(TextRegion)
+

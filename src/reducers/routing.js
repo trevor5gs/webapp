@@ -24,3 +24,4 @@ export function routeReducer(state = initialState, { type, payload: location }) 
     previousPath: get(state, 'locationBeforeTransitions.pathname'),
   }
 }
+

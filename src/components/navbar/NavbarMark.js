@@ -32,4 +32,6 @@ const mapStateToProps = (state) => {
     markTarget: isLoggedIn ? currentStream : '/',
   }
 }
+
 export default connect(mapStateToProps)(NavbarMark)
+

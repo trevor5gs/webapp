@@ -53,3 +53,4 @@ TabListButtons.propTypes = {
   tabClasses: PropTypes.string,
   tabs: PropTypes.array.isRequired,
 }
+

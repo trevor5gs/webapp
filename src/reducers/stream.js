@@ -18,3 +18,4 @@ export function stream(state = {}, action = { type: '' }) {
   }
   return state
 }
+

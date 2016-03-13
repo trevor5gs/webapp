@@ -38,3 +38,4 @@ export const RelationshipIcon = () =>
       <path d="M7.5 8.6c-1.9 0-3.5 1.6-3.5 3.5v2.9h7v-2.9M12.7 6.1v5M15.2 8.6h-5" />
     </g>
   </SVGIcon>
+

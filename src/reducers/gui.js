@@ -107,3 +107,4 @@ export function gui(state = initialState, action = { type: '' }) {
 export function setLocation(loc) {
   location = loc
 }
+
