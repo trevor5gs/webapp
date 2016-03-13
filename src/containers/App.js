@@ -171,11 +171,11 @@ class App extends Component {
       { isLoggedOut: !isLoggedIn },
     )
     return (
-      <section className={appClasses}>
+      <section className={ appClasses }>
         <AppHelmet pathname={ pathname } />
         { isLoggedIn ? <Omnibar /> : null }
-        <main className="Main" data-pathname={pathname} role="main">
-          {children}
+        <main className="Main" data-pathname={ pathname } role="main">
+          { children }
         </main>
         { !hideCompleter && completions ?
           <Completer
@@ -198,7 +198,7 @@ class App extends Component {
         <Footer />
         <Modal />
         <DevTools />
-        <Analytics isLoggedIn={isLoggedIn} />
+        <Analytics isLoggedIn={ isLoggedIn } />
       </section>
     )
   }

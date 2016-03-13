@@ -15,10 +15,10 @@ class UserAvatars extends Component {
     const { endpoint, icon, post, resultType } = this.props
     return (
       <section className="UserAvatars">
-        {icon}
+        { icon }
         <StreamComponent
           ref="streamComponent"
-          action={loadUserAvatars(endpoint, post, resultType)}
+          action={ loadUserAvatars(endpoint, post, resultType) }
           paginatorText="+more.."
           ignoresScrollPosition
         />

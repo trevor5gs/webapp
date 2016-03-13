@@ -133,8 +133,8 @@ class Cover extends Component {
     const klassNames = this.getClassNames()
     const style = src ? { backgroundImage: `url(${src})` } : null
     return (
-      <div className={klassNames}>
-        <figure className="CoverImage" style={style} />
+      <div className={ klassNames }>
+        <figure className="CoverImage" style={ style } />
       </div>
     )
   }

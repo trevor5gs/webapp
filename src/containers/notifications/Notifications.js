@@ -47,13 +47,13 @@ class Notifications extends Component {
     return (
       <section className="Notifications Panel">
         <TabListLinks
-          activePath={pathname}
+          activePath={ pathname }
           className="IconTabList NotificationsContainerTabs"
           tabClasses="IconTab"
-          tabs={tabs}
+          tabs={ tabs }
         />
         <StreamComponent
-          action={loadNotifications(params)}
+          action={ loadNotifications(params) }
           className="asFullWidth"
           key={ `notificationPanel_${params.category}` }
         />

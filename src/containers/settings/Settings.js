@@ -190,7 +190,7 @@ class Settings extends Component {
     return (
       profile.externalLinksList.map((link, i) =>
         <a
-          href={link.url}
+          href={ link.url }
           target="_blank"
           key={ `settingslinks_${i}` }
           style={{ marginRight: `${5 / 16}rem` }}
@@ -300,7 +300,7 @@ class Settings extends Component {
           >
             <UsernameControl
               classList={ boxControlClassNames }
-              label={`Username ${usernameState.message}`}
+              label={ `Username ${usernameState.message}` }
               onChange={ this.onChangeUsernameControl }
               status={ usernameState.status }
               suggestions={ usernameState.suggestions }
@@ -309,7 +309,7 @@ class Settings extends Component {
             />
             <EmailControl
               classList={ boxControlClassNames }
-              label={`Email ${emailState.message}`}
+              label={ `Email ${emailState.message}` }
               onChange={ this.onChangeEmailControl }
               status={ emailState.status }
               tabIndex="2"
@@ -317,7 +317,7 @@ class Settings extends Component {
             />
             <PasswordControl
               classList={ boxControlClassNames }
-              label={`Password ${passwordState.message}`}
+              label={ `Password ${passwordState.message}` }
               onChange={ this.onChangePasswordControl }
               placeholder="Set a new password"
               status={ passwordState.status }
@@ -350,7 +350,7 @@ class Settings extends Component {
 
           <div className="SettingsPreferences">
             <StreamComponent
-              action={availableToggles()}
+              action={ availableToggles() }
               ignoresScrollPosition
             />
 
@@ -376,7 +376,7 @@ class Settings extends Component {
                 <TreeButton>Blocked users</TreeButton>
                 <TreePanel>
                   <StreamComponent
-                    action={blockedUsers()}
+                    action={ blockedUsers() }
                     className="BlockedUsers"
                     hasShowMoreButton
                     paginatorText="See more"
@@ -391,7 +391,7 @@ class Settings extends Component {
                 <TreeButton>Muted users</TreeButton>
                 <TreePanel>
                   <StreamComponent
-                    action={mutedUsers()}
+                    action={ mutedUsers() }
                     className="MutedUsers"
                     hasShowMoreButton
                     paginatorText="See more"
@@ -457,7 +457,7 @@ class Settings extends Component {
                         style={{ marginTop: `-${5 / 16}rem`, marginLeft: `${5 / 16}rem` }}
                       />
                     </dt>
-                    <dd>{SETTINGS.ACCOUNT_DELETION_DEFINITION.desc}</dd>
+                    <dd>{ SETTINGS.ACCOUNT_DELETION_DEFINITION.desc }</dd>
                     <button
                       className="SettingsButton asDangerous"
                       onClick={ this.onClickDeleteAccountModal }

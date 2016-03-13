@@ -44,7 +44,7 @@ class Block extends Component {
       >
         <div
           { ...this.props }
-          className={classNames('editable', kind, className)}
+          className={ classNames('editable', kind, className) }
           style={{ width, height }}
           ref={ kind }
         >

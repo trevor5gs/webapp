@@ -142,8 +142,8 @@ class ShareDialog extends Component {
           className="ShareControl"
           type="url"
           readOnly
-          onClick={this.onClickReadOnlyInput}
-          value={this.shareLink}
+          onClick={ this.onClickReadOnlyInput }
+          value={ this.shareLink }
         />
         <div className="ShareLinks">
           <button className="ShareLink" data-type={SHARE_TYPES.EMAIL} onClick={this.onClickOpenShareWindow}><MailIcon /></button>

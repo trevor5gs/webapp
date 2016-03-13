@@ -5,14 +5,14 @@ import Avatar from '../assets/Avatar'
 import RelationsGroup from '../relationships/RelationsGroup'
 
 const UserCompact = ({ user, className }) =>
-  <div className={classNames(className, 'UserCompact')}>
+  <div className={ classNames(className, 'UserCompact') }>
     <div className="UserCompactHeader">
-      <Link className="UserCompactUserLink" to={`/${user.username}`}>
-        <Avatar sources={user.avatar} />
-        <span className="UserCompactUsername">{`@${user.username}`}</span>
+      <Link className="UserCompactUserLink" to={ `/${user.username}` }>
+        <Avatar sources={ user.avatar } />
+        <span className="UserCompactUsername">{ `@${user.username}` }</span>
       </Link>
     </div>
-    <RelationsGroup user={user} />
+    <RelationsGroup user={ user } />
   </div>
 
 UserCompact.propTypes = {

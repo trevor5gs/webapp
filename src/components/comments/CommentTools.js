@@ -92,14 +92,14 @@ class CommentTools extends Component {
     const isOwnPost = currentUser && post.authorId === currentUser.id
     const cells = []
     cells.push(
-      <span className="PostTool TimeAgoTool" key={`TimeAgoTool_${comment.id}`}>
-        <span className="PostToolValue">{new Date(comment.createdAt).timeAgoInWords()}</span>
+      <span className="PostTool TimeAgoTool" key={ `TimeAgoTool_${comment.id}` }>
+        <span className="PostToolValue">{ new Date(comment.createdAt).timeAgoInWords() }</span>
       </span>
     )
     if (isLoggedIn) {
       if (isOwnComment) {
         cells.push(
-          <span className="PostTool EditTool ShyTool" key={`EditTool_${comment.id}`}>
+          <span className="PostTool EditTool ShyTool" key={ `EditTool_${comment.id}` }>
             <button onClick={ this.onClickEditComment }>
               <PencilIcon />
               <Hint>Edit</Hint>
@@ -107,7 +107,7 @@ class CommentTools extends Component {
           </span>
         )
         cells.push(
-          <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${comment.id}`}>
+          <span className="PostTool DeleteTool ShyTool" key={ `DeleteTool_${comment.id}` }>
             <button onClick={ this.onClickDeleteComment }>
               <XBoxIcon />
               <Hint>Delete</Hint>
@@ -116,7 +116,7 @@ class CommentTools extends Component {
         )
       } else if (isOwnPost) {
         cells.push(
-          <span className="PostTool ReplyTool" key={`ReplyTool_${comment.id}`}>
+          <span className="PostTool ReplyTool" key={ `ReplyTool_${comment.id}` }>
             <button onClick={ this.onClickReplyToComment }>
               <ReplyIcon />
               <Hint>Reply</Hint>
@@ -124,7 +124,7 @@ class CommentTools extends Component {
           </span>
         )
         cells.push(
-          <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${comment.id}`}>
+          <span className="PostTool DeleteTool ShyTool" key={ `DeleteTool_${comment.id}` }>
             <button onClick={ this.onClickDeleteComment }>
               <XBoxIcon />
               <Hint>Delete</Hint>
@@ -133,7 +133,7 @@ class CommentTools extends Component {
         )
       } else {
         cells.push(
-          <span className="PostTool ReplyTool" key={`ReplyTool_${comment.id}`}>
+          <span className="PostTool ReplyTool" key={ `ReplyTool_${comment.id}` }>
             <button onClick={ this.onClickReplyToComment }>
               <ReplyIcon />
               <Hint>Reply</Hint>
@@ -141,7 +141,7 @@ class CommentTools extends Component {
           </span>
         )
         cells.push(
-          <span className="PostTool FlagTool ShyTool" key={`FlagTool_${comment.id}`}>
+          <span className="PostTool FlagTool ShyTool" key={ `FlagTool_${comment.id}` }>
             <button onClick={ this.onClickFlagComment }>
               <FlagIcon />
               <Hint>Flag</Hint>
@@ -151,7 +151,7 @@ class CommentTools extends Component {
       }
     }
     cells.push(
-      <span className={"PostTool MoreTool"} key={`MoreTool_${comment.id}`}>
+      <span className={ "PostTool MoreTool" } key={ `MoreTool_${comment.id}` }>
         <button onClick={ this.onClickMoreTool }>
           <ChevronIcon />
           <Hint>More</Hint>
@@ -181,8 +181,8 @@ class CommentTools extends Component {
       { isMoreToolActive: this.state.isMoreToolActive },
     )
     return (
-      <footer className={classes}>
-        {this.getToolCells()}
+      <footer className={ classes }>
+        { this.getToolCells() }
       </footer>
     )
   }

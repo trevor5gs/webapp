@@ -83,7 +83,7 @@ class PostTools extends Component {
   onClickSharePost = () => {
     const { author, dispatch, post } = this.props
     const action = bindActionCreators(trackEvent, dispatch)
-    dispatch(openModal(<ShareDialog author={author} post={post} trackEvent={action} />))
+    dispatch(openModal(<ShareDialog author={ author } post={ post } trackEvent={ action } />))
     return dispatch(trackEvent('open-share-dialog'))
   }
 
@@ -144,20 +144,20 @@ class PostTools extends Component {
     const cells = []
     cells.push(
       <span
-        className={classNames('PostTool', 'ViewsTool', { asPill: isLoggedIn })}
-        key={`ViewsTool_${post.id}`}
+        className={ classNames('PostTool', 'ViewsTool', { asPill: isLoggedIn }) }
+        key={ `ViewsTool_${post.id}` }
       >
-        <Link to={`/${author.username}/post/${post.token}`}>
+        <Link to={ `/${author.username}/post/${post.token}` }>
           <EyeIcon />
-          <span className="PostToolValue">{post.viewsCountRounded}</span>
+          <span className="PostToolValue">{ post.viewsCountRounded }</span>
           <Hint>Views</Hint>
         </Link>
       </span>
     )
     cells.push(
-      <span className="PostTool TimeAgoTool" key={`TimeAgoTool_${post.id}`}>
-        <Link to={`/${author.username}/post/${post.token}`}>
-          <span className="PostToolValue">{new Date(post.createdAt).timeAgoInWords()}</span>
+      <span className="PostTool TimeAgoTool" key={ `TimeAgoTool_${post.id}` }>
+        <Link to={ `/${author.username}/post/${post.token}` }>
+          <span className="PostToolValue">{ new Date(post.createdAt).timeAgoInWords() }</span>
           <Hint>Visit</Hint>
         </Link>
       </span>
@@ -167,20 +167,20 @@ class PostTools extends Component {
         <span
           className="PostTool CommentTool"
           data-count={ post.commentsCount }
-          key={`CommentTool_${post.id}`}
+          key={ `CommentTool_${post.id}` }
         >
           { isLoggedIn ?
             <button onClick={ this.onClickToggleComments } >
               <BubbleIcon />
               <span className="PostToolValue" >
-                {numberToHuman(post.commentsCount, false)}
+                { numberToHuman(post.commentsCount, false) }
               </span>
               <Hint>Comment</Hint>
             </button> :
-            <Link to={`/${author.username}/post/${post.token}`}>
+            <Link to={ `/${author.username}/post/${post.token}` }>
               <BubbleIcon />
               <span className="PostToolValue" >
-                {numberToHuman(post.commentsCount, false)}
+                { numberToHuman(post.commentsCount, false) }
               </span>
               <Hint>Comment</Hint>
             </Link>
@@ -193,17 +193,17 @@ class PostTools extends Component {
         <span
           className="PostTool LoveTool"
           data-count={ post.lovesCount }
-          key={`LoveTool_${post.id}`}
+          key={ `LoveTool_${post.id}` }
         >
           <button
-            className={classNames({ active: post.loved, hasPostToolDrawer: post.lovesCount > 0 })}
+            className={ classNames({ active: post.loved, hasPostToolDrawer: post.lovesCount > 0 }) }
             onClick={ this.onClickLovePost }
           >
             <HeartIcon />
             <Hint>Love</Hint>
           </button>
           <button
-            className={classNames({ active: post.loved }, 'PostToolDrawerButton')}
+            className={ classNames({ active: post.loved }, 'PostToolDrawerButton') }
             onClick={ this.onClickToggleLovers }
           >
             <span className="PostToolValue" >
@@ -218,11 +218,11 @@ class PostTools extends Component {
       cells.push(
         <span
           className="PostTool RepostTool"
-          data-count={post.repostsCount}
-          key={`RepostTool_${post.id}`}
+          data-count={ post.repostsCount }
+          key={ `RepostTool_${post.id}` }
         >
           <button
-            className={classNames({ hasPostToolDrawer: post.repostsCount > 0 })}
+            className={ classNames({ hasPostToolDrawer: post.repostsCount > 0 }) }
             onClick={ this.onClickRepostPost }
           >
             <RepostIcon />
@@ -230,7 +230,7 @@ class PostTools extends Component {
           </button>
           <button className="PostToolDrawerButton" onClick={ this.onClickToggleReposters }>
             <span className="PostToolValue" >
-              {numberToHuman(post.repostsCount, false)}
+              { numberToHuman(post.repostsCount, false) }
             </span>
             <Hint>Reposted by</Hint>
           </button>
@@ -240,8 +240,8 @@ class PostTools extends Component {
     if (author.hasSharingEnabled) {
       cells.push(
         <span
-          className={classNames('PostTool', 'ShareTool', { asPill: !isLoggedIn })}
-          key={`ShareTool_${post.id}`}
+          className={ classNames('PostTool', 'ShareTool', { asPill: !isLoggedIn }) }
+          key={ `ShareTool_${post.id}` }
         >
           <button onClick={ this.onClickSharePost }>
             <ShareIcon />
@@ -253,7 +253,7 @@ class PostTools extends Component {
     if (isLoggedIn) {
       if (isOwnPost) {
         cells.push(
-          <span className="PostTool EditTool ShyTool" key={`EditTool_${post.id}`}>
+          <span className="PostTool EditTool ShyTool" key={ `EditTool_${post.id}` }>
             <button onClick={ this.onClickEditPost }>
               <PencilIcon />
               <Hint>Edit</Hint>
@@ -270,7 +270,7 @@ class PostTools extends Component {
         )
       } else {
         cells.push(
-          <span className="PostTool FlagTool ShyTool" key={`FlagTool_${post.id}`}>
+          <span className="PostTool FlagTool ShyTool" key={ `FlagTool_${post.id}` }>
             <button onClick={ this.onClickFlagPost }>
               <FlagIcon />
               <Hint>Flag</Hint>
@@ -280,7 +280,7 @@ class PostTools extends Component {
       }
     }
     cells.push(
-      <span className={"PostTool MoreTool"} key={`MoreTool_${post.id}`}>
+      <span className={ "PostTool MoreTool" } key={ `MoreTool_${post.id}` }>
         <button onClick={ this.onClickMoreToggle }>
           <ChevronIcon />
         </button>
@@ -309,8 +309,8 @@ class PostTools extends Component {
       { isCommentsActive: this.state.isCommentsActive },
     )
     return (
-      <footer className={classes}>
-        {this.getToolCells()}
+      <footer className={ classes }>
+        { this.getToolCells() }
       </footer>
     )
   }

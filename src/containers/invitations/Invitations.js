@@ -103,7 +103,7 @@ class Invitations extends Component {
 
         </div>
         <h2 className="InvitationsStreamHeading">Friends you've invited</h2>
-        <StreamComponent action={loadInvitedUsers()} />
+        <StreamComponent action={ loadInvitedUsers() } />
       </section>
     )
   }

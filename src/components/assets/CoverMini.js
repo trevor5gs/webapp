@@ -97,11 +97,11 @@ class CoverMini extends Component {
     const style = src ? { backgroundImage: `url(${src})` } : null
 
     return to ?
-      <Link to={to} className={klassNames}>
-        <figure className="CoverMiniImage" style={style} />
+      <Link to={ to } className={ klassNames }>
+        <figure className="CoverMiniImage" style={ style } />
       </Link> :
-      <span className={klassNames}>
-        <figure className="CoverMiniImage" style={style} />
+      <span className={ klassNames }>
+        <figure className="CoverMiniImage" style={ style } />
       </span>
   }
 }

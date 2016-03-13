@@ -43,7 +43,7 @@ class Starred extends Component {
     return (
       <section className="Starred Panel">
         { isBeaconActive ? this.renderZeroStream() : null }
-        <StreamComponent action={loadNoise()} />
+        <StreamComponent action={ loadNoise() } />
       </section>
     )
   }

@@ -113,11 +113,11 @@ class NotificationsContainer extends Component {
           className="IconTabList NotificationsContainerTabs"
           onTabClick={ this.onClickTab }
           tabClasses="IconTab"
-          tabs={tabs}
+          tabs={ tabs }
         />
         <div className="Scrollable" ref="scrollable" onScroll={ this.onScrollElement }>
           <StreamComponent
-            action={loadNotifications({ category: activeTabType })}
+            action={ loadNotifications({ category: activeTabType }) }
             className="asFullWidth"
             key={ `notificationPanel_${activeTabType}` }
             ref="streamComponent"

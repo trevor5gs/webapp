@@ -183,7 +183,7 @@ class Join extends Component {
               status={ passwordState.status }
               tabIndex="3"
             />
-            <FormButton tabIndex="4" disabled={!isValid}>Create Account</FormButton>
+            <FormButton tabIndex="4" disabled={ !isValid }>Create Account</FormButton>
           </form>
           <p className="AuthenticationTermsCopy">
             By clicking Create Account you are agreeing to our <a href="https://ello.co/wtf/post/policies">Terms</a>.

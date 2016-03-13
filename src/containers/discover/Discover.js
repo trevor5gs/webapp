@@ -79,7 +79,7 @@ export class Discover extends Component {
         { to: '/explore/recent', children: 'Recent' },
       ]
     return (
-      <section className="Discover Panel" key={`discover_${type}`}>
+      <section className="Discover Panel" key={ `discover_${type}` }>
         { isBeaconActive ? this.renderZeroStream() : null }
         <Promotion
           creditsClickAction={ this.onClickTrackCredits }
@@ -92,7 +92,7 @@ export class Discover extends Component {
           tabClasses="LabelTab"
           tabs={ tabs }
         />
-        <StreamComponent action={action} ref="streamComponent" />
+        <StreamComponent action={ action } ref="streamComponent" />
       </section>
     )
   }

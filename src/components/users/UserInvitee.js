@@ -37,7 +37,7 @@ class UserInvitee extends Component {
 
   renderSending(invitation) {
     return (
-      <div className={classNames(this.props.className, 'UserInvitee')}>
+      <div className={ classNames(this.props.className, 'UserInvitee') }>
         { this.renderMailtoUserHeader(invitation) }
         <span className="UserInviteeStatusLabel">Sending</span>
       </div>
@@ -46,7 +46,7 @@ class UserInvitee extends Component {
 
   renderReInvite(invitation) {
     return (
-      <div className={classNames(this.props.className, 'UserInvitee')}>
+      <div className={ classNames(this.props.className, 'UserInvitee') }>
         { this.renderMailtoUserHeader(invitation) }
         <button className="UserInviteeAction" onClick={ this.onClickReInvite }>Re-Invite</button>
       </div>
@@ -57,14 +57,14 @@ class UserInvitee extends Component {
     const { json } = this.props
     const user = getLinkObject(invitation, 'acceptedBy', json)
     return (
-      <div className={classNames(this.props.className, 'UserInvitee')}>
+      <div className={ classNames(this.props.className, 'UserInvitee') }>
         <div className="UserInviteeHeader">
-          <Link className="UserInviteeUserLink" to={`/${user.username}`}>
-            <Avatar sources={user.avatar} />
-            <span className="UserInviteeUsername">{`@${user.username}`}</span>
+          <Link className="UserInviteeUserLink" to={ `/${user.username}` }>
+            <Avatar sources={ user.avatar } />
+            <span className="UserInviteeUsername">{ `@${user.username}` }</span>
           </Link>
         </div>
-        <RelationsGroup user={user} />
+        <RelationsGroup user={ user } />
       </div>
     )
   }

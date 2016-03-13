@@ -54,7 +54,7 @@ class NavbarProfile extends Component {
     if (avatar && username) {
       return (
         <span className="NavbarProfile">
-          <Avatar sources={avatar} onClick={ this.onClickAvatar } />
+          <Avatar sources={ avatar } onClick={ this.onClickAvatar } />
           <nav className={ classNames('NavbarProfileLinks', { active: isMenuOpen })}>
             <Link className="NavbarProfileLink" to={`/${username}`}>{`@${username}`}</Link>
             <Link className="NavbarProfileLink" to={`/${username}/loves`}>Loves</Link>

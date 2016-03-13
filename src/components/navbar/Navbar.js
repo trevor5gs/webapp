@@ -228,7 +228,7 @@ class Navbar extends Component {
     const { profile, isNotificationsActive } = this.props
     const { hasNotifications, viewportDeviceSize } = this.state
     return (
-      <nav className={klassNames} role="navigation">
+      <nav className={ klassNames } role="navigation">
         <NavbarMark />
         <NavbarOmniButton onClick={ this.onClickOmniButton } />
         {
@@ -241,28 +241,28 @@ class Navbar extends Component {
             to="/discover"
             label="Discover"
             modifiers="LabelOnly"
-            pathname={pathname}
+            pathname={ pathname }
             icon={ <SparklesIcon /> }
           />
           <NavbarLink
             to="/following"
             label="Following"
             modifiers="LabelOnly"
-            pathname={pathname}
+            pathname={ pathname }
             icon={ <CircleIcon /> }
           />
           <NavbarLink
             to="/starred"
             label="Starred"
             modifiers=""
-            pathname={pathname}
+            pathname={ pathname }
             icon={ <StarIcon /> }
           />
           <NavbarLink
             to="/notifications"
             label="Notifications"
             modifiers={ classNames('IconOnly', { hasNotifications }) }
-            pathname={pathname}
+            pathname={ pathname }
             icon={ <BoltIcon /> }
             onClick={ viewportDeviceSize !== 'mobile' ? this.onClickNotification : null }
           />
@@ -270,7 +270,7 @@ class Navbar extends Component {
             to="/search"
             label="Search"
             modifiers="IconOnly"
-            pathname={pathname}
+            pathname={ pathname }
             icon={ <SearchIcon /> }
           />
         </div>
@@ -288,7 +288,7 @@ class Navbar extends Component {
 
   renderLoggedOutNavbar(klassNames, hasLoadMoreButton, pathname) {
     return (
-      <nav className={klassNames} role="navigation">
+      <nav className={ klassNames } role="navigation">
         <NavbarMark />
         <NavbarLabel />
         {
@@ -301,27 +301,27 @@ class Navbar extends Component {
             to="/explore"
             label="Discover"
             modifiers="LabelOnly"
-            pathname={pathname}
+            pathname={ pathname }
             icon={ <SparklesIcon /> }
           />
           <NavbarLink
             to="/find"
             label="Search"
             modifiers="IconOnly"
-            pathname={pathname}
+            pathname={ pathname }
             icon={ <SearchIcon /> }
           />
           <NavbarLink
             to="/enter"
             label="Log in"
             modifiers="LabelOnly"
-            pathname={pathname}
+            pathname={ pathname }
           />
           <NavbarLink
             to="/signup"
             label="Sign up"
             modifiers="LabelOnly"
-            pathname={pathname}
+            pathname={ pathname }
           />
         </div>
       </nav>

@@ -21,11 +21,11 @@ class CommunityPicker extends Picker {
       { isFollowingAll: this.isFollowingAll() },
     )
     return (
-      <div className={klassNames}>
+      <div className={ klassNames }>
         <button className="PickerButton" ref="followAllButton" onClick={ this.followAll }>
-          <span>{this.renderBigButtonText()}</span>
+          <span>{ this.renderBigButtonText() }</span>
         </button>
-        <StreamComponent ref="streamComponent" action={loadCommunities()} />
+        <StreamComponent ref="streamComponent" action={ loadCommunities() } />
       </div>
     )
   }

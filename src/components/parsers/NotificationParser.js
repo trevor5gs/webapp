@@ -241,13 +241,13 @@ function loveOnOriginalPostNotification(love, createdAt) {
       summary={ summary }
     >
       <p>
-        {userTextLink(user)}
-        {' loved '}
-        {userTextLink(repostAuthor)}
-        {'\'s '}
-        {postTextLink(repost, 'repost')}
-        {' of your '}
-        {postTextLink(repostedSource)}
+        { userTextLink(user) }
+        { ' loved ' }
+        { userTextLink(repostAuthor) }
+        { '\'s ' }
+        { postTextLink(repost, 'repost') }
+        { ' of your ' }
+        { postTextLink(repostedSource) }
         { '.' }
       </p>
     </Notification>

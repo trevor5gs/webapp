@@ -16,9 +16,9 @@ const NavbarLink = ({ icon, label, modifiers = '', onClick, pathname, to }) => {
     },
   )
   return (
-    <Link to={to} onClick={onClick} className={klassNames}>
+    <Link to={ to } onClick={ onClick } className={ klassNames }>
       { icon || null }
-      <span className="NavbarLinkLabel">{label}</span>
+      <span className="NavbarLinkLabel">{ label }</span>
     </Link>
   )
 }

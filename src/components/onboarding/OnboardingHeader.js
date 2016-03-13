@@ -95,20 +95,20 @@ class OnboardingHeader extends Component {
       <header className="OnboardingHeader">
         <div className="OnboardingColumn">
           <ElloMark />
-          <h1>{title}</h1>
-          <p>{message}</p>
+          <h1>{ title }</h1>
+          <p>{ message }</p>
         </div>
         <div className="OnboardingColumn">
           <Link
             className={ this.getButtonClassNames() }
-            to={nextPath}
+            to={ nextPath }
             onClick={ this.onClickNext }
           >
             Next
           </Link>
           <Link
             className="OnboardingSkipButton"
-            to={nextPath}
+            to={ nextPath }
             onClick={ this.onClickSkip }
           >
             Skip

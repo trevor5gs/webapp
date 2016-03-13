@@ -352,7 +352,7 @@ export class StreamComponent extends Component {
     const renderMethod = mode === 'grid' ? 'asGrid' : 'asList'
     const pagination = result && result.pagination ? result.pagination : emptyPagination()
     return (
-      <section className={classNames('StreamComponent', className)}>
+      <section className={ classNames('StreamComponent', className) }>
         {
           meta.renderStream[renderMethod](
             renderObj,
@@ -360,7 +360,7 @@ export class StreamComponent extends Component {
             currentUser,
             gridColumnCount)
         }
-        {this.props.children}
+        { this.props.children }
         <Paginator
           hasShowMoreButton={
             typeof meta.resultKey !== 'undefined' && typeof meta.updateKey !== 'undefined'

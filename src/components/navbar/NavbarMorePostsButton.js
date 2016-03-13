@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { ArrowIcon } from '../navbar/NavbarIcons'
 
 const NavbarMorePostsButton = ({ onClick }) =>
-  <button onClick={onClick} className="NavbarMorePostsButton">
+  <button onClick={ onClick } className="NavbarMorePostsButton">
     <ArrowIcon />
     <span>More Posts</span>
   </button>

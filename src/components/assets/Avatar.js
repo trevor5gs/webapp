@@ -116,20 +116,20 @@ class Avatar extends Component {
     const style = src ? { backgroundImage: `url(${src})` } : null
     if (to) {
       return (
-        <Link className={klassNames} to={to}>
+        <Link className={ klassNames } to={ to }>
           <div className="AvatarImage" style={style} />
         </Link>
       )
     } else if (onClick) {
       return (
-        <button className={klassNames} onClick={ onClick }>
-          <div className="AvatarImage" style={style} />
+        <button className={ klassNames } onClick={ onClick }>
+          <div className="AvatarImage" style={ style } />
         </button>
       )
     }
     return (
-      <span className={klassNames}>
-        <div className="AvatarImage" style={style} />
+      <span className={ klassNames }>
+        <div className="AvatarImage" style={ style } />
       </span>
     )
   }

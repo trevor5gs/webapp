@@ -94,12 +94,12 @@ class Promotion extends Component {
 
     return (
       <div className={klassNames}>
-        <figure className="PromotionImage" style={style} />
+        <figure className="PromotionImage" style={ style } />
         <div className="PromotionCaption">
           { caption }
           { isLoggedIn ? null : <Link to="https://ello.co/signup">Sign Up</Link> }
         </div>
-        <Credits onClick={creditsClickAction} user={featuredUser} />
+        <Credits onClick={ creditsClickAction } user={ featuredUser } />
       </div>
     )
   }

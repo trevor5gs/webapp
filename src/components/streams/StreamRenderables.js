@@ -22,7 +22,7 @@ import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 export function usersAsCards(users) {
   return (
     <div className="Cards">
-      {users.data.map((user) =>
+      { users.data.map((user) =>
         <UserCard user={ user } key={ `userCard_${user.id}` } />
       )}
     </div>
@@ -32,7 +32,7 @@ export function usersAsCards(users) {
 export function usersAsGrid(users) {
   return (
     <div className="Users asGrid">
-      {users.data.map((user) =>
+      { users.data.map((user) =>
         <UserGrid user={ user } key={ `userGrid_${user.id}` } />
       )}
     </div>
@@ -42,7 +42,7 @@ export function usersAsGrid(users) {
 export function usersAsList(users) {
   return (
     <div className="Users asList">
-      {users.data.map((user) =>
+      { users.data.map((user) =>
         <UserList user={ user } key={ `userList_${user.id}` } />
       )}
     </div>
@@ -52,7 +52,7 @@ export function usersAsList(users) {
 export function usersAsInviteeList(invitations, json) {
   return (
     <div className="Users asInviteeList">
-      {invitations.data.map((invitation) =>
+      { invitations.data.map((invitation) =>
         <UserInvitee
           invitation={ invitation }
           json={ json }
@@ -66,7 +66,7 @@ export function usersAsInviteeList(invitations, json) {
 export function usersAsInviteeGrid(invitations, json) {
   return (
     <div className="Users asInviteeGrid">
-      {invitations.data.map((invitation) =>
+      { invitations.data.map((invitation) =>
           <UserInvitee
             className="UserInviteeGrid"
             invitation={ invitation }
@@ -81,10 +81,10 @@ export function usersAsInviteeGrid(invitations, json) {
 export function postsAsGrid(posts, json, currentUser, gridColumnCount) {
   return (
     <PostsAsGrid
-      posts={posts.data}
-      json={json}
-      currentUser={currentUser}
-      gridColumnCount={gridColumnCount}
+      posts={ posts.data }
+      json={ json }
+      currentUser={ currentUser }
+      gridColumnCount={ gridColumnCount }
     />
   )
 }
@@ -92,7 +92,7 @@ export function postsAsGrid(posts, json, currentUser, gridColumnCount) {
 export function postsAsList(posts) {
   return (
     <div className="Posts asList">
-      {posts.data.map((post) =>
+      { posts.data.map((post) =>
         <article id={ `Post_${post.id}` } key={ `postsAsList_${post.id}` } className="PostList">
           <PostParser
             isGridLayout={ false }
@@ -107,7 +107,7 @@ export function postsAsList(posts) {
 export function commentsAsList(comments) {
   return (
     <div>
-      {comments.data.map(comment =>
+      { comments.data.map(comment =>
         <CommentParser
           key={ `commentParser_${comment.id}` }
           comment={ comment }
@@ -121,7 +121,7 @@ export function commentsAsList(comments) {
 export function notificationList(notifications, json) {
   return (
     <div className="Notifications">
-      {notifications.data.map((notification) => {
+      { notifications.data.map((notification) => {
         const subject = getLinkObject(notification, 'subject', json)
         return (
           <NotificationParser
@@ -149,9 +149,9 @@ export function profileToggles(categories, json, currentUser) {
   return (
     categories.data.map((category, index) => {
       if (category.label.toLowerCase().indexOf('push') === 0) { return null }
-      const arr = [<TreeButton key={`categoryLabel${index}`}>{category.label}</TreeButton>]
+      const arr = [<TreeButton key={ `categoryLabel${index}` }>{ category.label }</TreeButton>]
       arr.push(
-        <TreePanel key={`categoryItems${index}`}>
+        <TreePanel key={ `categoryItems${index}` }>
           {
             category.items.map((item) =>
               <Preference

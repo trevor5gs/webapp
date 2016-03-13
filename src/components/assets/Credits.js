@@ -5,10 +5,10 @@ import Avatar from '../assets/Avatar'
 const Credits = ({ user, onClick }) => {
   const { username, avatar } = user
   return (
-    <Link className="Credits" onClick={ onClick } to={`/${username}`}>
+    <Link className="Credits" onClick={ onClick } to={ `/${username}` }>
       <span className="CreditsBy">Posted by</span>
-      <span className="CreditsAuthor">@{username}</span>
-      <Avatar sources={avatar} />
+      <span className="CreditsAuthor">@{ username }</span>
+      <Avatar sources={ avatar } />
     </Link>
   )
 }

@@ -56,7 +56,7 @@ class StarshipButton extends Component {
       <button
         className={ classNames('StarshipButton', classList) }
         onClick={ this.updatePriority }
-        data-priority={priority}
+        data-priority={ priority }
       >
         <StarIcon />
       </button>
