@@ -5,8 +5,8 @@
   "scripts": {
     "clean": "rm -f public/index.html public/static/*.js public/static/*.css",
     "build": "npm run build:web && npm run build:server",
-    "build:server": "NODE_ENV=production node node_modules/webpack/bin/webpack.js -p --colors --progress --config=webpack.server.config.js",
-    "build:web": "NODE_ENV=production node node_modules/webpack/bin/webpack.js -p --colors --progress --config=webpack.prod.config.js",
+    "build:server": "NODE_ENV=production node node_modules/webpack/bin/webpack.js -p --config=webpack.server.config.js",
+    "build:web": "NODE_ENV=production node node_modules/webpack/bin/webpack.js -p --config=webpack.prod.config.js",
     "dev": "npm run clean && node_modules/jade/bin/jade.js dev/dev.jade --pretty && DEBUG=express:* NODE_ENV=development babel-node dev/dev-server.js",
     "lint": "eslint src test",
     "spec": "NODE_ENV=test mocha --compilers js:babel-core/register test/*.js test/**/*.js test/**/**/*.js",
