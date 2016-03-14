@@ -169,7 +169,7 @@ export class StreamComponent extends Component {
 
     const { action } = this.state
     const { routerState, stream } = this.props
-    const shouldScroll = !routerState.didComeFromSeeMoeCommentsLink &&
+    const shouldScroll = !routerState.didComeFromSeeMoreCommentsLink &&
       !this.props.ignoresScrollPosition &&
       stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
       action && action.payload &&
@@ -246,7 +246,7 @@ export class StreamComponent extends Component {
 
   attemptToRestoreScroll() {
     const { history, routerState } = this.props
-    const shouldScroll = !routerState.didComeFromSeeMoeCommentsLink &&
+    const shouldScroll = !routerState.didComeFromSeeMoreCommentsLink &&
       !this.props.ignoresScrollPosition
     if (shouldScroll) {
       this.saveScroll = true
