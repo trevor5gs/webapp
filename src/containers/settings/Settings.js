@@ -19,6 +19,7 @@ import {
   mutedUsers,
   saveAvatar,
   saveCover,
+  saveProfile,
 } from '../../actions/profile'
 import Emoji from '../../components/assets/Emoji'
 import AdultPostsDialog from '../../components/dialogs/AdultPostsDialog'
@@ -64,7 +65,7 @@ class Settings extends Component {
     this.passwordCurrentValue = ''
     this.emailValue = profile.email
     this.usernameValue = profile.username
-    this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
+    this.checkServerForAvailability = debounce(this.checkServerForAvailability, 666)
     dispatch(loadProfile())
   }
 
@@ -76,9 +77,7 @@ class Settings extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
-    if (!availability) {
-      return
-    }
+    if (!availability) { return }
     if (availability.hasOwnProperty('username')) {
       this.validateUsernameResponse(availability)
     }
@@ -179,6 +178,7 @@ class Settings extends Component {
   }
 
   onSubmit = (e) => {
+    const { dispatch } = this.props
     e.preventDefault()
     const formData = {
       current_password: this.passwordCurrentValue,
@@ -186,8 +186,7 @@ class Settings extends Component {
       password: this.passwordValue,
       username: this.usernameValue,
     }
-    // console.log(formData)
-    return formData
+    dispatch(saveProfile(formData))
   }
 
   onTogglePostsAdultContent = (obj) => {
