@@ -97,13 +97,14 @@ class Settings extends Component {
     this.usernameValue = username
     const { profile } = this.props
     if (username === profile.username) {
-      return this.setState({
+      this.setState({
         usernameState: {
           status: STATUS.INDETERMINATE,
           suggestions: null,
           message: '',
         },
       })
+      return
     }
     const { usernameState } = this.state
     const currentStatus = usernameState.status
@@ -123,7 +124,8 @@ class Settings extends Component {
     this.emailValue = email
     const { profile } = this.props
     if (email === profile.email) {
-      return this.setState({ emailState: { status: STATUS.INDETERMINATE, message: '' } })
+      this.setState({ emailState: { status: STATUS.INDETERMINATE, message: '' } })
+      return
     }
     const { emailState } = this.state
     const currentStatus = emailState.status
