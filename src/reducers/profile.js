@@ -33,7 +33,7 @@ export function profile(state = {}, action) {
       }
     case REHYDRATE:
       if (action.key === 'profile') {
-        return { ...action.payload, dataExport: null }
+        return { ...action.payload, availability: null, dataExport: null }
       }
       return state
     // TODO: This isn't really working, it's still pulling the previous image here?
