@@ -52,14 +52,14 @@ export const SparklesIcon = () =>
 export const StarIcon = () =>
   <SVGIcon className="StarIcon">
     <g>
-      <polygon points="10,14 13.7,16 13,11.7 16,8.6 11.9,8 10,4 8.1,8 4,8.6 7,11.7 6.3,16 "/>
+      <polygon points="10,14 13.7,16 13,11.7 16,8.6 11.9,8 10,4 8.1,8 4,8.6 7,11.7 6.3,16 " />
     </g>
   </SVGIcon>
 
 export const ArrowIcon = () =>
   <SVGIcon className="ArrowIcon">
     <g>
-      <line x1="14.5" y1="10" x2="4.5" y2="10"/>
+      <line x1="14.5" y1="10" x2="4.5" y2="10" />
     </g>
     <g>
       <polyline points="10,5.5 14.5,10 10,14.5" />
@@ -69,8 +69,8 @@ export const ArrowIcon = () =>
 export const ExIcon = () =>
   <SVGIcon className="ArrowIcon">
     <g>
-      <line x1="4" y1="4" x2="16" y2="16"/>
-      <line x1="16" y1="4" x2="4" y2="16"/>
+      <line x1="4" y1="4" x2="16" y2="16" />
+      <line x1="16" y1="4" x2="4" y2="16" />
     </g>
   </SVGIcon>
 

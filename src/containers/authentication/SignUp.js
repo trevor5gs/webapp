@@ -14,7 +14,7 @@ class SignUp extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-  };
+  }
 
   componentWillMount() {
     const userlist = AUTHENTICATION_PROMOTIONS
@@ -27,7 +27,7 @@ class SignUp extends Component {
   onClickTrackCredits = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
-  };
+  }
 
   render() {
     const { featuredUser } = this.state
@@ -35,13 +35,13 @@ class SignUp extends Component {
       <section className="Authentication Panel">
         <div className="AuthenticationFormDialog">
           <h1>
-            <Emoji name="v" title="Awesome!" size={ 32 }/>
+            <Emoji name="v" title="Awesome!" size={ 32 } />
             Be inspired.
           </h1>
-          <RegistrationRequestForm/>
+          <RegistrationRequestForm />
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>
-        <AppleStoreLink/>
+        <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
       </section>

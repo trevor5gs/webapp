@@ -92,3 +92,4 @@ const routes = store => {
 }
 
 export default routes
+

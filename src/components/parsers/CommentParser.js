@@ -47,6 +47,7 @@ function parseComment(comment, author, currentUser, post, isGridLayout = true) {
   return cells
 }
 
+/* eslint-disable react/prefer-stateless-function */
 class CommentParser extends Component {
   static propTypes = {
     assets: PropTypes.any,
@@ -56,7 +57,7 @@ class CommentParser extends Component {
     isEditing: PropTypes.bool,
     isGridLayout: PropTypes.bool,
     post: PropTypes.object,
-  };
+  }
 
   render() {
     const { comment, author, assets, currentUser, isGridLayout, post } = this.props
@@ -77,7 +78,7 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
   const comment = json[MAPPING_TYPES.COMMENTS][ownProps.comment.id]
   const author = json[MAPPING_TYPES.USERS][comment.authorId]
   const post = ownProps.post || json[MAPPING_TYPES.POSTS][comment.postId]
-  const assets = json.assets;
+  const assets = json.assets
   return {
     assets,
     isEditing: comment.isEditing,

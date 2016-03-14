@@ -76,13 +76,13 @@ export class StreamComponent extends Component {
     resultPath: PropTypes.string,
     routerState: PropTypes.object,
     stream: PropTypes.object.isRequired,
-  };
+  }
 
   static defaultProps = {
     paginatorText: 'Loading',
     ignoresScrollPosition: false,
     isUserDetail: false,
-  };
+  }
 
   componentWillMount() {
     const { action, dispatch } = this.props
@@ -133,7 +133,7 @@ export class StreamComponent extends Component {
   componentWillReceiveProps(nextProps) {
     const { stream } = nextProps
     const { action } = this.state
-    if (!action) { return null }
+    if (!action) { return }
 
     if (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.setState({ hidePaginator: true })
@@ -211,7 +211,7 @@ export class StreamComponent extends Component {
 
   onLoadNextPage = () => {
     this.loadPage('next')
-  };
+  }
 
   setAction(action) {
     this.setState({ action })
@@ -295,7 +295,7 @@ export class StreamComponent extends Component {
       <section className="StreamComponent hasErrored">
         { meta && meta.renderStream && meta.renderStream.asError ?
           meta.renderStream.asError :
-          <ErrorState4xx/>
+          <ErrorState4xx />
         }
       </section>
     )
@@ -351,7 +351,7 @@ export class StreamComponent extends Component {
     const renderMethod = mode === 'grid' ? 'asGrid' : 'asList'
     const pagination = result && result.pagination ? result.pagination : emptyPagination()
     return (
-      <section className={classNames('StreamComponent', className)}>
+      <section className={ classNames('StreamComponent', className) }>
         {
           meta.renderStream[renderMethod](
             renderObj,
@@ -359,7 +359,7 @@ export class StreamComponent extends Component {
             currentUser,
             gridColumnCount)
         }
-        {this.props.children}
+        { this.props.children }
         <Paginator
           hasShowMoreButton={
             typeof meta.resultKey !== 'undefined' && typeof meta.updateKey !== 'undefined'
@@ -431,3 +431,4 @@ export function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps, null, null, { withRef: true })(StreamComponent)
+

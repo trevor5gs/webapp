@@ -48,5 +48,5 @@ Paginator.propTypes = {
   messageText: PropTypes.string,
   totalPages: PropTypes.number.isRequired,
   totalPagesRemaining: PropTypes.number.isRequired,
-};
+}
 

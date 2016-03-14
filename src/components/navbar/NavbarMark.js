@@ -18,7 +18,7 @@ function getLogoMarkFromEnvironment() {
 }
 
 const NavbarMark = (props) =>
-  <Link className="NavbarMark" to={props.markTarget}>
+  <Link className="NavbarMark" to={ props.markTarget }>
     { getLogoMarkFromEnvironment() }
   </Link>
 
@@ -32,4 +32,6 @@ const mapStateToProps = (state) => {
     markTarget: isLoggedIn ? currentStream : '/',
   }
 }
+
 export default connect(mapStateToProps)(NavbarMark)
+

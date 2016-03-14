@@ -48,7 +48,7 @@ export function availableToggles() {
       renderStream: {
         asList: StreamRenderables.profileToggles,
         asGrid: StreamRenderables.profileToggles,
-        asError: <ErrorState/>,
+        asError: <ErrorState />,
       },
     },
     payload: {

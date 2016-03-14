@@ -33,12 +33,12 @@ class App extends Component {
     editorStore: PropTypes.object.isRequired,
     emoji: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
-  };
+  }
 
   static defaultProps = {
     editorStore: {},
     lastLocation: '',
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -154,12 +154,12 @@ class App extends Component {
     this.onHideCompleter()
     this.onHideTextTools()
     // TODO: maybe clear out the completions from the editor store
-  };
+  }
 
   onCompletion = ({ value }) => {
     replaceWordFromSelection(value)
     this.onCancelAutoCompleter()
-  };
+  }
 
   render() {
     const { authentication, children, completions, pathname } = this.props
@@ -171,11 +171,11 @@ class App extends Component {
       { isLoggedOut: !isLoggedIn },
     )
     return (
-      <section className={appClasses}>
-        <AppHelmet pathname={ pathname }/>
-        { isLoggedIn ? <Omnibar/> : null }
-        <main className="Main" data-pathname={pathname} role="main">
-          {children}
+      <section className={ appClasses }>
+        <AppHelmet pathname={ pathname } />
+        { isLoggedIn ? <Omnibar /> : null }
+        <main className="Main" data-pathname={ pathname } role="main">
+          { children }
         </main>
         { !hideCompleter && completions ?
           <Completer
@@ -194,11 +194,11 @@ class App extends Component {
           /> :
           null
         }
-        <Navbar/>
-        <Footer/>
-        <Modal/>
-        <DevTools/>
-        <Analytics isLoggedIn={isLoggedIn}/>
+        <Navbar />
+        <Footer />
+        <Modal />
+        <DevTools />
+        <Analytics isLoggedIn={ isLoggedIn } />
       </section>
     )
   }
@@ -207,7 +207,7 @@ class App extends Component {
 App.preRender = (store) => {
   const state = store.getState()
   if (state.authentication && state.authentication.isLoggedIn) {
-    return store.dispatch(loadProfile())
+    store.dispatch(loadProfile())
   }
 }
 
@@ -221,3 +221,4 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps)(App)
+

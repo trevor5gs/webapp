@@ -4,3 +4,4 @@ export default {
     cb(null, require('../../containers/details/PostDetail').default)
   },
 }
+

@@ -12,7 +12,7 @@ class NavbarProfile extends Component {
     avatar: PropTypes.object,
     onLogOut: PropTypes.func,
     username: PropTypes.string,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -26,13 +26,16 @@ class NavbarProfile extends Component {
 
   onClickAvatar = () => {
     const { isMenuOpen } = this.state
-    if (isMenuOpen) { return this.hideMenu() }
-    return this.showMenu()
-  };
+    if (isMenuOpen) {
+      this.hideMenu()
+      return
+    }
+    this.showMenu()
+  }
 
   onClickDocument = () => {
     this.hideMenu()
-  };
+  }
 
   showMenu() {
     if (this.state.isMenuOpen) { return }
@@ -54,19 +57,19 @@ class NavbarProfile extends Component {
     if (avatar && username) {
       return (
         <span className="NavbarProfile">
-          <Avatar sources={avatar} onClick={ this.onClickAvatar } />
+          <Avatar sources={ avatar } onClick={ this.onClickAvatar } />
           <nav className={ classNames('NavbarProfileLinks', { active: isMenuOpen })}>
             <Link className="NavbarProfileLink" to={`/${username}`}>{`@${username}`}</Link>
             <Link className="NavbarProfileLink" to={`/${username}/loves`}>Loves</Link>
             <Link className="NavbarProfileLink" to="/invitations">Invite</Link>
             <Link className="NavbarProfileLink" to="/settings">Settings</Link>
-            <hr className="NavbarProfileLinkDivider"/>
+            <hr className="NavbarProfileLinkDivider" />
             <a className="NavbarProfileLink" href="https://ello.co/wtf/resources/community-directory/" target="_blank">Communities</a>
             <a className="NavbarProfileLink" href="/wtf" target="_blank">Help</a>
             <a className="NavbarProfileLink" href={ threadlessLink } target="_blank">Store</a>
             <button className="NavbarProfileLink" onClick={ onLogOut }>Logout</button>
             <button className="NavbarProfileCloseButton">
-              <ExIcon/>
+              <ExIcon />
             </button>
           </nav>
 
@@ -75,7 +78,7 @@ class NavbarProfile extends Component {
     }
     return (
       <span className="NavbarProfile">
-        <Avatar/>
+        <Avatar />
       </span>
     )
   }

@@ -10,7 +10,7 @@ class RegistrationRequestForm extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -32,7 +32,7 @@ class RegistrationRequestForm extends Component {
     const { dispatch } = this.props
     dispatch(requestInvite(this.emailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
-  };
+  }
 
   onChangeEmailControl = ({ email }) => {
     this.emailValue = email
@@ -42,7 +42,7 @@ class RegistrationRequestForm extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
     }
-  };
+  }
 
   renderSubmitted() {
     return (

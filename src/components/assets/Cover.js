@@ -16,11 +16,11 @@ class Cover extends Component {
     coverImage: PropTypes.object,
     isModifiable: PropTypes.bool,
     modifiers: PropTypes.string,
-  };
+  }
 
   static defaultProps = {
     modifiers: '',
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -69,21 +69,21 @@ class Cover extends Component {
     const { scrollY } = scrollProperties
     const { offset, asHidden } = this.state
     if (scrollY >= offset && !asHidden) {
-      return this.setState({ asHidden: true })
+      this.setState({ asHidden: true })
     } else if (scrollY < offset && asHidden) {
-      return this.setState({ asHidden: false })
+      this.setState({ asHidden: false })
     }
   }
 
   onLoadSuccess = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  };
+  }
 
   onLoadFailure = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  };
+  }
 
   getClassNames() {
     const { isModifiable, modifiers } = this.props
@@ -132,8 +132,8 @@ class Cover extends Component {
     const klassNames = this.getClassNames()
     const style = src ? { backgroundImage: `url(${src})` } : null
     return (
-      <div className={klassNames}>
-        <figure className="CoverImage" style={style} />
+      <div className={ klassNames }>
+        <figure className="CoverImage" style={ style } />
       </div>
     )
   }

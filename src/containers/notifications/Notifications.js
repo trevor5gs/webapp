@@ -10,6 +10,7 @@ import {
 } from '../../components/notifications/NotificationIcons'
 import { TabListLinks } from '../../components/tabs/TabList'
 
+/* eslint-disable react/prefer-stateless-function */
 class Notifications extends Component {
 
   static propTypes = {
@@ -17,7 +18,7 @@ class Notifications extends Component {
     params: PropTypes.shape({
       category: PropTypes.string,
     }),
-  };
+  }
 
   static preRender = (store, routerState) => {
     const { category } = routerState.params
@@ -26,7 +27,7 @@ class Notifications extends Component {
       params.category = category
     }
     return store.dispatch(loadNotifications(params))
-  };
+  }
 
   render() {
     const { pathname } = this.props
@@ -46,13 +47,13 @@ class Notifications extends Component {
     return (
       <section className="Notifications Panel">
         <TabListLinks
-          activePath={pathname}
+          activePath={ pathname }
           className="IconTabList NotificationsContainerTabs"
           tabClasses="IconTab"
-          tabs={tabs}
+          tabs={ tabs }
         />
         <StreamComponent
-          action={loadNotifications(params)}
+          action={ loadNotifications(params) }
           className="asFullWidth"
           key={ `notificationPanel_${params.category}` }
         />
@@ -68,3 +69,4 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps)(Notifications)
+

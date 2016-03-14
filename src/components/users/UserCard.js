@@ -13,21 +13,22 @@ class UserCard extends Component {
     pathname: PropTypes.string,
     user: PropTypes.shape({
     }).isRequired,
-  };
+  }
 
   onClickRelationshipUpdate(vo) {
     const { userId, priority, existing } = vo
     const { dispatch, pathname } = this.props
 
     if (pathname && (/^\/onboarding/).test(pathname)) {
-      return dispatch(updateRelationship(userId, priority, existing, true))
+      dispatch(updateRelationship(userId, priority, existing, true))
+      return
     }
-    return dispatch(updateRelationship(userId, priority, existing))
+    dispatch(updateRelationship(userId, priority, existing))
   }
 
   onClickOpenSignupModal() {
     const { dispatch } = this.props
-    return dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
+    dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
   }
 
   render() {
@@ -38,12 +39,12 @@ class UserCard extends Component {
     return (
       <div className="UserCard" >
         <RelationshipImageButton
-          onClick={callback}
-          coverSrc={user.coverImage.hdpi.url}
-          isLoggedIn={isLoggedIn}
-          priority={user.relationshipPriority}
+          onClick={ callback }
+          coverSrc={ user.coverImage.hdpi.url }
+          isLoggedIn={ isLoggedIn }
+          priority={ user.relationshipPriority }
           ref="RelationshipImageButton"
-          userId={user.id}
+          userId={ user.id }
           username={ `@${user.username}` }
         />
       </div>
@@ -59,3 +60,4 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps, null, null, { withRef: true })(UserCard)
+

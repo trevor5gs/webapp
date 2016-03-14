@@ -48,3 +48,4 @@ const createElloStore = (history = null) => {
 }
 
 export default createElloStore
+

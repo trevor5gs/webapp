@@ -69,7 +69,7 @@ export function loadUserAvatars(endpoint, post, resultType) {
       renderStream: {
         asList: StreamRenderables.userAvatars,
         asGrid: StreamRenderables.userAvatars,
-        asError: <ErrorState/>,
+        asError: <ErrorState />,
       },
       resultKey: `/posts/${post.id}/${resultType}`,
       updateKey: `/posts/${post.id}/`,

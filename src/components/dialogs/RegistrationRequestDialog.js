@@ -6,11 +6,11 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 const RegistrationRequestDialog = () =>
   <div className="FormDialog">
     <h1>
-      <Emoji name="muscle" title="Nice!" size={ 32 } style={{ marginRight: `${ 10 / 16 }rem` }}/>
+      <Emoji name="muscle" title="Nice!" size={ 32 } style={{ marginRight: `${10 / 16}rem` }} />
       Be inspired.
     </h1>
-    <RegistrationRequestForm/>
-    <AppleStoreLink/>
+    <RegistrationRequestForm />
+    <AppleStoreLink />
   </div>
 
 export default RegistrationRequestDialog

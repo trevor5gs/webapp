@@ -20,12 +20,12 @@ class UserList extends Component {
     showBlockMuteButton: PropTypes.bool,
     user: PropTypes.shape({
     }).isRequired,
-  };
+  }
 
   static defaultProps = {
     classList: '',
     showBlockMuteButton: false,
-  };
+  }
 
   shouldComponentUpdate(prevProps) {
     if (_.isEqual(prevProps, this.props)) {
@@ -38,20 +38,20 @@ class UserList extends Component {
     const { dispatch, user } = this.props
     const action = bindActionCreators(trackEvent, dispatch)
     dispatch(openModal(<ShareDialog user={ user } trackEvent={ action } />))
-    return dispatch(trackEvent('open-share-dialog-profile'))
-  };
+    dispatch(trackEvent('open-share-dialog-profile'))
+  }
 
   render() {
     const { classList, isLoggedIn, user, showBlockMuteButton } = this.props
     const userPath = `/${user.username}`
-    const stats = isLoggedIn ? <UserStats user={ user }/> : <LoggedOutUserStats user={ user }/>
+    const stats = isLoggedIn ? <UserStats user={ user } /> : <LoggedOutUserStats user={ user } />
     return (
       <div className={ classNames(classList, 'UserList') }>
-        <Avatar to={ userPath } sources={ user.avatar } size="large"/>
-        <RelationsGroup user={ user } showBlockMuteButton={ showBlockMuteButton }/>
-        <UserNames user={ user }/>
+        <Avatar to={ userPath } sources={ user.avatar } size="large" />
+        <RelationsGroup user={ user } showBlockMuteButton={ showBlockMuteButton } />
+        <UserNames user={ user } />
         { stats }
-        <UserInfo user={ user }/>
+        <UserInfo user={ user } />
         <ShareProfileButton onClick={ this.onClickShareProfile } >
           Share Profile
         </ShareProfileButton>

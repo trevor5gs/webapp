@@ -12,7 +12,7 @@ import Mousetrap from '../../vendor/mousetrap'
 const ChevronIcon = () =>
   <SVGIcon className="ChevronIcon">
     <g>
-      <polyline points="6,16 12,10 6,4"/>
+      <polyline points="6,16 12,10 6,4" />
     </g>
   </SVGIcon>
 
@@ -25,7 +25,7 @@ class Omnibar extends Component {
       isActive: PropTypes.bool,
       classList: PropTypes.string,
     }).isRequired,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -55,7 +55,7 @@ class Omnibar extends Component {
   toggleFullScreen = () => {
     const { isFullScreen } = this.state
     this.setState({ isFullScreen: !isFullScreen })
-  };
+  }
 
   close = () => {
     const { omnibar, dispatch } = this.props
@@ -63,19 +63,19 @@ class Omnibar extends Component {
     if (isActive) {
       dispatch(closeOmnibar())
     }
-  };
+  }
 
   render() {
     const { avatar, omnibar } = this.props
     const { isFullScreen } = this.state
     const { isActive, classList } = omnibar
     if (!isActive) {
-      return <div className={classNames('Omnibar', { isActive }, classList)}/>
+      return <div className={classNames('Omnibar', { isActive }, classList)} />
     }
     return (
-      <div className={classNames('Omnibar', { isActive, isFullScreen }, classList)} >
-        <Avatar sources={avatar} />
-        <Editor shouldLoadFromState shouldPersist/>
+      <div className={ classNames('Omnibar', { isActive, isFullScreen }, classList) } >
+        <Avatar sources={ avatar } />
+        <Editor shouldLoadFromState shouldPersist />
         <button className="OmnibarRevealNavbar" onClick={ this.close }>
           <ChevronIcon />
           Navigation

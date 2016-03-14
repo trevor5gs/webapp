@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import FormControl from './FormControl'
 
+/* eslint-disable react/prefer-stateless-function */
 class PasswordControl extends Component {
 
   static defaultProps = {
@@ -9,7 +10,7 @@ class PasswordControl extends Component {
     label: 'Password',
     name: 'user[password]',
     placeholder: 'Enter your password',
-  };
+  }
 
   render() {
     return (

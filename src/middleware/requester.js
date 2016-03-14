@@ -148,7 +148,7 @@ export const requester = store => next => action => {
   // from the endpoint instead of the payload
   const { endpoint, method, body } = payload
 
-  if (!endpoint) return next(action);
+  if (!endpoint) { return next(action) }
 
   if (runningFetches[endpoint.path]) { return next(action) }
   runningFetches[endpoint.path] = true
@@ -249,7 +249,7 @@ export const requester = store => next => action => {
                 store.dispatch({ meta, payload, type: SUCCESS })
                 fireSuccessAction()
               }
-              return Promise.resolve(true);
+              return Promise.resolve(true)
             })
             .catch(error => {
               if (error.response) {
@@ -269,3 +269,4 @@ export const requester = store => next => action => {
 }
 
 export { runningFetches }
+

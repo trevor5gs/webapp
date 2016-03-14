@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import FormControl from './FormControl'
 
+/* eslint-disable react/prefer-stateless-function */
 class SearchControl extends Component {
 
   static defaultProps = {
@@ -9,7 +10,7 @@ class SearchControl extends Component {
     label: 'Search',
     name: 'search[terms]',
     placeholder: 'Search',
-  };
+  }
 
   render() {
     return (

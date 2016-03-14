@@ -11,11 +11,11 @@ class EmbedBlock extends Component {
       thumbnailLargeUrl: PropTypes.string,
       thumbnailSmallUrl: PropTypes.string,
     }),
-  };
+  }
 
   static defaultProps = {
     data: {},
-  };
+  }
 
   render() {
     const { data } = this.props

@@ -79,7 +79,10 @@ function checkForImages(e) {
 export function pasted(e, d, id) {
   dispatch = d
   editorId = id
-  if (window.$isAndroid) return handleAndroidBrokenPaste()
+  if (window.$isAndroid) {
+    handleAndroidBrokenPaste()
+    return
+  }
   const text = e.clipboardData.getData('text/plain')
   const items = e.clipboardData.items
   if (text.length) {

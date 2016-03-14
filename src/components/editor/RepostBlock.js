@@ -8,7 +8,7 @@ class RepostBlock extends Component {
   static propTypes = {
     currentUser: PropTypes.object.isRequired,
     data: PropTypes.array.isRequired,
-  };
+  }
 
   shouldComponentUpdate() {
     return false
@@ -18,15 +18,15 @@ class RepostBlock extends Component {
     switch (block.kind) {
       case 'embed':
         return (
-          <img key={ `repostEmbed_${uid}` } src={ block.data.thumbnailLargeUrl }/>
+          <img key={ `repostEmbed_${uid}` } src={ block.data.thumbnailLargeUrl } />
         )
       case 'image':
         return (
-          <img key={ `repostImage_${uid}` } src={ block.data.url } alt={ block.data.alt }/>
+          <img key={ `repostImage_${uid}` } src={ block.data.url } alt={ block.data.alt } />
         )
       case 'text':
         return (
-          <div key={ `repostText_${uid}` } dangerouslySetInnerHTML={{ __html: block.data }}/>
+          <div key={ `repostText_${uid}` } dangerouslySetInnerHTML={{ __html: block.data }} />
         )
       default:
         return null
@@ -43,7 +43,7 @@ class RepostBlock extends Component {
         </div>
         { data.map((block, i) => this.getBlockElement(block, i)) }
         <div className="RegionTools">
-          <LockIcon/>
+          <LockIcon />
         </div>
       </div>
     )

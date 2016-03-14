@@ -28,7 +28,7 @@ class Join extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-  };
+  }
 
   componentWillMount() {
     const userlist = AUTHENTICATION_PROMOTIONS
@@ -70,12 +70,13 @@ class Join extends Component {
         this.setState({ usernameState: { status: STATUS.REQUEST, message: 'checking...' } })
       }
       // This will end up landing on `validateUsernameResponse` after fetching
-      return this.checkServerForAvailability({ username })
+      this.checkServerForAvailability({ username })
+      return
     }
     if (clientState.status !== currentStatus && clientState.message !== currentMessage) {
       this.setState({ usernameState: clientState })
     }
-  };
+  }
 
   onChangeEmailControl = ({ email }) => {
     this.emailValue = email
@@ -87,12 +88,13 @@ class Join extends Component {
         this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
       }
       // This will end up landing on `validateEmailResponse` after fetching
-      return this.checkServerForAvailability({ email })
+      this.checkServerForAvailability({ email })
+      return
     }
     if (clientState.status !== currentStatus) {
       this.setState({ emailState: clientState })
     }
-  };
+  }
 
   onChangePasswordControl = ({ password }) => {
     this.passwordValue = password
@@ -102,22 +104,22 @@ class Join extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ passwordState: newState })
     }
-  };
+  }
 
   // TODO: Still needs to be hooked up
   onSubmit = (e) => {
     e.preventDefault()
     // const { dispatch } = this.props
     // dispatch(someActionFunction(this.emailValue, this.usernameValue, this.passwordValue))
-  };
+  }
 
   onClickTrackCredits = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
-  };
+  }
 
   checkServerForAvailability(vo) {
-    return this.props.dispatch(checkAvailability(vo))
+    this.props.dispatch(checkAvailability(vo))
   }
 
   validateUsernameResponse(availability) {
@@ -146,7 +148,7 @@ class Join extends Component {
       <section className="Authentication Panel">
         <div className="AuthenticationFormDialog">
           <h1>
-            <Emoji name="muscle" title="Welcome!" size={ 32 }/>
+            <Emoji name="muscle" title="Welcome!" size={ 32 } />
             Be inspired.
           </h1>
 
@@ -181,13 +183,13 @@ class Join extends Component {
               status={ passwordState.status }
               tabIndex="3"
             />
-            <FormButton tabIndex="4" disabled={!isValid}>Create Account</FormButton>
+            <FormButton tabIndex="4" disabled={ !isValid }>Create Account</FormButton>
           </form>
           <p className="AuthenticationTermsCopy">
             By clicking Create Account you are agreeing to our <a href="https://ello.co/wtf/post/policies">Terms</a>.
           </p>
         </div>
-        <AppleStoreLink/>
+        <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
       </section>

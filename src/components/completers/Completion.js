@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 
+/* eslint-disable react/prefer-stateless-function */
 export default class Completion extends Component {
 
   static propTypes = {
@@ -9,12 +10,12 @@ export default class Completion extends Component {
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     value: PropTypes.string,
-  };
+  }
 
   onClickCompletion = (e) => {
     const { onClick } = this.props
     onClick({ value: this.getValue(), e })
-  };
+  }
 
   getValue() {
     const { label, value } = this.props

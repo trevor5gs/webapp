@@ -53,7 +53,7 @@ class Navbar extends Component {
     pathname: PropTypes.string.isRequired,
     profile: PropTypes.object,
     shortcuts: PropTypes.object.isRequired,
-  };
+  }
 
   static defaultProps = {
     shortcuts: {
@@ -63,7 +63,7 @@ class Navbar extends Component {
       [SHORTCUT_KEYS.STARRED]: '/starred',
       [SHORTCUT_KEYS.NOTIFICATIONS]: '/notifications',
     },
-  };
+  }
 
   componentWillMount() {
     const { pathname } = this.props
@@ -89,9 +89,10 @@ class Navbar extends Component {
       Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
         const { modalIsActive } = this.props
         if (modalIsActive) {
-          return dispatch(closeModal())
+          dispatch(closeModal())
+          return
         }
-        return dispatch(openModal(<HelpDialog/>))
+        dispatch(openModal(<HelpDialog />))
       })
     }
 
@@ -190,7 +191,7 @@ class Navbar extends Component {
     const { dispatch } = this.props
     await dispatch(logout())
     dispatch(push('/'))
-  };
+  }
 
   onClickNotification = (e) => {
     if (e) { e.preventDefault() }
@@ -199,25 +200,25 @@ class Navbar extends Component {
       type: ACTION_TYPES.MODAL.TOGGLE_NOTIFICATIONS,
       payload: { isNotificationsActive: !isNotificationsActive },
     })
-  };
+  }
 
   onClickOmniButton = () => {
     const { dispatch } = this.props
     dispatch(openOmnibar())
     window.scrollTo(0, 0)
-  };
+  }
 
   onClickLoadMorePosts = () => {
     const { dispatch } = this.props
     dispatch({
       type: ACTION_TYPES.ADD_NEW_IDS_TO_RESULT,
     })
-  };
+  }
 
   onClickLogInButton = (e) => {
     e.preventDefault()
     document.location.href = ENV.REDIRECT_URI + e.target.pathname
-  };
+  }
 
   checkForNotifications() {
     const { dispatch, isLoggedIn } = this.props
@@ -228,7 +229,7 @@ class Navbar extends Component {
     const { profile, isNotificationsActive } = this.props
     const { hasNotifications, viewportDeviceSize } = this.state
     return (
-      <nav className={klassNames} role="navigation">
+      <nav className={ klassNames } role="navigation">
         <NavbarMark />
         <NavbarOmniButton onClick={ this.onClickOmniButton } />
         {
@@ -241,37 +242,37 @@ class Navbar extends Component {
             to="/discover"
             label="Discover"
             modifiers="LabelOnly"
-            pathname={pathname}
-            icon={ <SparklesIcon/> }
+            pathname={ pathname }
+            icon={ <SparklesIcon /> }
           />
           <NavbarLink
             to="/following"
             label="Following"
             modifiers="LabelOnly"
-            pathname={pathname}
-            icon={ <CircleIcon/> }
+            pathname={ pathname }
+            icon={ <CircleIcon /> }
           />
           <NavbarLink
             to="/starred"
             label="Starred"
             modifiers=""
-            pathname={pathname}
-            icon={ <StarIcon/> }
+            pathname={ pathname }
+            icon={ <StarIcon /> }
           />
           <NavbarLink
             to="/notifications"
             label="Notifications"
             modifiers={ classNames('IconOnly', { hasNotifications }) }
-            pathname={pathname}
-            icon={ <BoltIcon/> }
+            pathname={ pathname }
+            icon={ <BoltIcon /> }
             onClick={ viewportDeviceSize !== 'mobile' ? this.onClickNotification : null }
           />
           <NavbarLink
             to="/search"
             label="Search"
             modifiers="IconOnly"
-            pathname={pathname}
-            icon={ <SearchIcon/> }
+            pathname={ pathname }
+            icon={ <SearchIcon /> }
           />
         </div>
         <NavbarProfile
@@ -280,7 +281,7 @@ class Navbar extends Component {
           username={ profile.username }
         />
         { viewportDeviceSize !== 'mobile' && isNotificationsActive ?
-          <NotificationsContainer/> : null
+          <NotificationsContainer /> : null
         }
       </nav>
     )
@@ -288,7 +289,7 @@ class Navbar extends Component {
 
   renderLoggedOutNavbar(klassNames, hasLoadMoreButton, pathname) {
     return (
-      <nav className={klassNames} role="navigation">
+      <nav className={ klassNames } role="navigation">
         <NavbarMark />
         <NavbarLabel />
         {
@@ -301,27 +302,27 @@ class Navbar extends Component {
             to="/explore"
             label="Discover"
             modifiers="LabelOnly"
-            pathname={pathname}
-            icon={ <SparklesIcon/> }
+            pathname={ pathname }
+            icon={ <SparklesIcon /> }
           />
           <NavbarLink
             to="/find"
             label="Search"
             modifiers="IconOnly"
-            pathname={pathname}
-            icon={ <SearchIcon/> }
+            pathname={ pathname }
+            icon={ <SearchIcon /> }
           />
           <NavbarLink
             to="/enter"
             label="Log in"
             modifiers="LabelOnly"
-            pathname={pathname}
+            pathname={ pathname }
           />
           <NavbarLink
             to="/signup"
             label="Sign up"
             modifiers="LabelOnly"
-            pathname={pathname}
+            pathname={ pathname }
           />
         </div>
       </nav>
@@ -359,3 +360,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Navbar)
+

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import FormControl from './FormControl'
 
+/* eslint-disable react/prefer-stateless-function */
 class NameControl extends Component {
 
   static defaultProps = {
@@ -9,7 +10,7 @@ class NameControl extends Component {
     label: 'Name',
     name: 'user[name]',
     placeholder: 'Name (optional)',
-  };
+  }
 
   render() {
     return (

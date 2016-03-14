@@ -7,10 +7,14 @@ function renderHeader({ notifier }) {
   if (!notifier) { return null }
   return (
     <header className="NotificationHeader">
-      <Avatar to={`/${notifier.username}`} sources={notifier.avatar}/>
+      <Avatar to={ `/${notifier.username}` } sources={ notifier.avatar } />
     </header>
   )
 }
+renderHeader.propTypes = {
+  notifier: PropTypes.object,
+}
+
 
 function renderBody({ children, summary }) {
   if (!children) { return null }
@@ -23,12 +27,27 @@ function renderBody({ children, summary }) {
     </div>
   )
 }
+renderBody.propTypes = {
+  children: PropTypes.node,
+  summary: PropTypes.shape({
+    assets: PropTypes.arrayOf(PropTypes.node),
+    texts: PropTypes.arrayOf(PropTypes.node),
+  }),
+}
+
 
 function renderAssets({ summary }) {
   return (
     summary && summary.assets && summary.assets.length ?
       <div className="NotificationAsset">{ summary.assets[0] }</div> : null
   )
+}
+
+renderAssets.propTypes = {
+  summary: PropTypes.shape({
+    assets: PropTypes.arrayOf(PropTypes.node),
+    texts: PropTypes.arrayOf(PropTypes.node),
+  }),
 }
 
 function renderFooter({ activityPath, createdAt, retort }) {
@@ -41,6 +60,12 @@ function renderFooter({ activityPath, createdAt, retort }) {
       { retort }
     </footer>
   )
+}
+
+renderFooter.propTypes = {
+  activityPath: PropTypes.string.isRequired,
+  createdAt: PropTypes.string,
+  retort: PropTypes.any,
 }
 
 export const Notification = ({
@@ -70,6 +95,7 @@ Notification.propTypes = {
   className: PropTypes.string,
   createdAt: PropTypes.string,
   notifier: PropTypes.object,
+  retort: PropTypes.any,
   summary: PropTypes.shape({
     assets: PropTypes.arrayOf(PropTypes.node),
     texts: PropTypes.arrayOf(PropTypes.node),

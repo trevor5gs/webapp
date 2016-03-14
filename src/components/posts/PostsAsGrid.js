@@ -9,7 +9,7 @@ const DumbGridPost = (props) => {
     <article className="PostGrid" id={ `Post_${post.id}` }>
       <PostParser
         isGridLayout
-        post={post}
+        post={ post }
       />
     </article>
   )
@@ -41,7 +41,7 @@ class PostsAsGrid extends Component {
     gridColumnCount: PropTypes.number,
     json: PropTypes.object,
     posts: PropTypes.array.isRequired,
-  };
+  }
 
   shouldComponentUpdate(prevProps) {
     if (_.isEqual(prevProps, this.props)) {
@@ -53,7 +53,7 @@ class PostsAsGrid extends Component {
   renderColumn(posts, index) {
     return (
       <div className="Column" key={ `column_${index}` }>
-        {posts.map((post) =>
+        { posts.map((post) =>
            <GridPost
              key={ `gridPost_${post.id}` }
              post={ post }
@@ -77,7 +77,7 @@ class PostsAsGrid extends Component {
     }
     return (
       <div className="Posts asGrid">
-        {columns.map((columnPosts, index) => this.renderColumn(columnPosts, index))}
+        { columns.map((columnPosts, index) => this.renderColumn(columnPosts, index)) }
       </div>
     )
   }

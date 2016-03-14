@@ -38,7 +38,7 @@ class ShareDialog extends Component {
     post: PropTypes.object,
     user: PropTypes.object,
     trackEvent: PropTypes.func,
-  };
+  }
 
   componentWillMount() {
     const { user } = this.props
@@ -57,9 +57,10 @@ class ShareDialog extends Component {
       window.open(url, 'sharewindow', `width=${width}, height=${height}, left=${window.innerWidth / 2 - width / 2}, top=${window.innerHeight / 2 - height / 2}, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0`)
     }
     if (trackEvent) {
-      return user ? trackEvent(`share-user-to-${type}-profile`) : trackEvent(`share-to-${type}`)
+      const eventType = user ? `share-user-to-${type}-profile` : `share-to-${type}`
+      trackEvent(eventType)
     }
-  };
+  }
 
   onClickReadOnlyInput(e) {
     e.target.select()
@@ -141,18 +142,18 @@ class ShareDialog extends Component {
           className="ShareControl"
           type="url"
           readOnly
-          onClick={this.onClickReadOnlyInput}
-          value={this.shareLink}
+          onClick={ this.onClickReadOnlyInput }
+          value={ this.shareLink }
         />
         <div className="ShareLinks">
-          <button className="ShareLink" data-type={SHARE_TYPES.EMAIL} onClick={this.onClickOpenShareWindow}><MailIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.FACEBOOK} onClick={this.onClickOpenShareWindow}><FacebookIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.TWITTER} onClick={this.onClickOpenShareWindow}><TwitterIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.PINTEREST} onClick={this.onClickOpenShareWindow}><PinterestIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.GOOGLE_PLUS} onClick={this.onClickOpenShareWindow}><GooglePlusIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.TUMBLR} onClick={this.onClickOpenShareWindow}><TumblrIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.REDDIT} onClick={this.onClickOpenShareWindow}><RedditIcon/></button>
-          <button className="ShareLink" data-type={SHARE_TYPES.LINKEDIN} onClick={this.onClickOpenShareWindow}><LinkedInIcon/></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.EMAIL} onClick={this.onClickOpenShareWindow}><MailIcon /></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.FACEBOOK} onClick={this.onClickOpenShareWindow}><FacebookIcon /></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.TWITTER} onClick={this.onClickOpenShareWindow}><TwitterIcon /></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.PINTEREST} onClick={this.onClickOpenShareWindow}><PinterestIcon /></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.GOOGLE_PLUS} onClick={this.onClickOpenShareWindow}><GooglePlusIcon /></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.TUMBLR} onClick={this.onClickOpenShareWindow}><TumblrIcon /></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.REDDIT} onClick={this.onClickOpenShareWindow}><RedditIcon /></button>
+          <button className="ShareLink" data-type={SHARE_TYPES.LINKEDIN} onClick={this.onClickOpenShareWindow}><LinkedInIcon /></button>
         </div>
       </div>
     )

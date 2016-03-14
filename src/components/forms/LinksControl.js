@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import FormControl from './FormControl'
 
+/* eslint-disable react/prefer-stateless-function */
 class LinksControl extends Component {
 
   static propTypes = {
@@ -8,7 +9,7 @@ class LinksControl extends Component {
       PropTypes.string,
       PropTypes.array,
     ]),
-  };
+  }
 
   static defaultProps = {
     className: 'LinksControl',
@@ -16,7 +17,7 @@ class LinksControl extends Component {
     label: 'Links',
     name: 'user[links]',
     placeholder: 'Links (optional)',
-  };
+  }
 
   getLinks() {
     const { text } = this.props

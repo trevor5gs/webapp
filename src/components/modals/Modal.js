@@ -16,7 +16,7 @@ class Modal extends Component {
       kind: PropTypes.string,
       classList: PropTypes.string,
     }).isRequired,
-  };
+  }
 
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => { this.close() })
@@ -42,9 +42,9 @@ class Modal extends Component {
     if (classList.contains('Modal') ||
         classList.contains('Alert') ||
         classList.contains('CloseModal')) {
-      return this.close()
+      this.close()
     }
-  };
+  }
 
   close() {
     const { modal, dispatch } = this.props
@@ -59,7 +59,7 @@ class Modal extends Component {
     const { isActive, classList, component, kind } = modal
     return (
       <div
-        className={classNames({ isActive }, kind, classList)}
+        className={ classNames({ isActive }, kind, classList) }
         onClick={ isActive ? this.onClickModal : null }
       >
         { component }

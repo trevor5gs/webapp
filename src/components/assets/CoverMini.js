@@ -14,7 +14,7 @@ class CoverMini extends Component {
   static propTypes = {
     coverImage: PropTypes.any,
     to: PropTypes.string,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -52,12 +52,12 @@ class CoverMini extends Component {
   onLoadSuccess = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  };
+  }
 
   onLoadFailure = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  };
+  }
 
   getCoverSource(props = this.props) {
     const { coverImage } = props
@@ -97,11 +97,11 @@ class CoverMini extends Component {
     const style = src ? { backgroundImage: `url(${src})` } : null
 
     return to ?
-      <Link to={to} className={klassNames}>
-        <figure className="CoverMiniImage" style={style} />
+      <Link to={ to } className={ klassNames }>
+        <figure className="CoverMiniImage" style={ style } />
       </Link> :
-      <span className={klassNames}>
-        <figure className="CoverMiniImage" style={style} />
+      <span className={ klassNames }>
+        <figure className="CoverMiniImage" style={ style } />
       </span>
   }
 }

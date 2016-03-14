@@ -16,7 +16,7 @@ export default class TextTools extends Component {
     }),
     isHidden: PropTypes.bool,
     text: PropTypes.string,
-  };
+  }
 
   static defaultProps = {
     isHidden: true,
@@ -26,7 +26,7 @@ export default class TextTools extends Component {
       isLinkActive: false,
     },
     text: '',
-  };
+  }
 
   componentWillMount() {
     const { activeTools, text } = this.props
@@ -46,11 +46,11 @@ export default class TextTools extends Component {
 
   handleFocus = () => {
     this.setState({ hasFocus: true })
-  };
+  }
 
   handleBlur = () => {
     this.setState({ hasFocus: false })
-  };
+  }
 
   handleChange = (e) => {
     const val = e.target.value
@@ -59,7 +59,7 @@ export default class TextTools extends Component {
       isInitialValue: val === this.initialValue,
       text: val,
     })
-  };
+  }
 
   handleSubmit = (e) => {
     e.preventDefault()
@@ -70,21 +70,21 @@ export default class TextTools extends Component {
     } else {
       this.removeLink()
     }
-  };
+  }
 
   handleBoldToggle = () => {
     const { isBoldActive } = this.state
     this.setState({ isBoldActive: !isBoldActive })
     document.execCommand('bold', false, true)
     this.saveSelection()
-  };
+  }
 
   handleItalicToggle = () => {
     const { isItalicActive } = this.state
     this.setState({ isItalicActive: !isItalicActive })
     document.execCommand('italic', false, true)
     this.saveSelection()
-  };
+  }
 
   handleLinkToggle = () => {
     const { isLinkActive, isLinkInputOpen } = this.state
@@ -94,7 +94,7 @@ export default class TextTools extends Component {
       this.setState({ isLinkInputOpen: !isLinkInputOpen })
     }
     this.saveSelection()
-  };
+  }
 
   createLink(text) {
     this.setState({ isLinkActive: true, isLinkInputOpen: false })

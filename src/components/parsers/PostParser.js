@@ -19,7 +19,11 @@ function getPostDetailPath(author, post) {
 
 function commentStream(post, author) {
   return (
-    <CommentStream key={`Comments_${post.id}_${post.commentsCount}`} post={post} author={author} />
+    <CommentStream
+      key={ `Comments_${post.id}_${post.commentsCount}` }
+      post={ post }
+      author={ author }
+    />
   )
 }
 
@@ -28,19 +32,25 @@ const PostHeaderTimeAgoLink = ({ to, createdAt }) =>
     <span>{new Date(createdAt).timeAgoInWords()}</span>
   </Link>
 
+PostHeaderTimeAgoLink.propTypes = {
+  createdAt: PropTypes.string,
+  to: PropTypes.string,
+}
+
+
 function header(post, author) {
   if (!post || !author) { return null }
   const postDetailPath = getPostDetailPath(author, post)
   return (
-    <header className="PostHeader" key={`PostHeader_${post.id}`}>
+    <header className="PostHeader" key={ `PostHeader_${post.id}` }>
       <div className="PostHeaderAuthor">
-        <Link className="PostHeaderLink" to={`/${author.username}`}>
-          <Avatar sources={author.avatar} />
-          <span>{`@${author.username}`}</span>
+        <Link className="PostHeaderLink" to={ `/${author.username}` }>
+          <Avatar sources={ author.avatar } />
+          <span>{ `@${author.username}` }</span>
         </Link>
       </div>
-      <RelationsGroup user={author} classList="inHeader" />
-      <PostHeaderTimeAgoLink to={ postDetailPath } createdAt={ post.createdAt }/>
+      <RelationsGroup user={ author } classList="inHeader" />
+      <PostHeaderTimeAgoLink to={ postDetailPath } createdAt={ post.createdAt } />
     </header>
   )
 }
@@ -49,21 +59,21 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   if (!post || !repostedBy) { return null }
   const postDetailPath = getPostDetailPath(repostAuthor, post)
   return (
-    <header className="RepostHeader" key={`RepostHeader_${post.id}`}>
+    <header className="RepostHeader" key={ `RepostHeader_${post.id}` }>
       <div className="RepostHeaderAuthor">
-        <Link className="PostHeaderLink" to={`/${repostAuthor.username}`}>
-          <Avatar sources={repostAuthor.avatar} />
-          <span>{`@${repostAuthor.username}`}</span>
+        <Link className="PostHeaderLink" to={ `/${repostAuthor.username}` }>
+          <Avatar sources={ repostAuthor.avatar } />
+          <span>{ `@${repostAuthor.username}` }</span>
         </Link>
       </div>
-      <RelationsGroup user={repostAuthor} classList="inHeader" />
+      <RelationsGroup user={ repostAuthor } classList="inHeader" />
       <div className="RepostHeaderReposter">
-        <Link className="PostHeaderLink" to={`/${repostedBy.username}`}>
+        <Link className="PostHeaderLink" to={ `/${repostedBy.username}` }>
           <RepostIcon />
-          {` by @${repostedBy.username}`}
+          { ` by @${repostedBy.username}` }
         </Link>
       </div>
-      <PostHeaderTimeAgoLink to={ postDetailPath } createdAt={ post.createdAt }/>
+      <PostHeaderTimeAgoLink to={ postDetailPath } createdAt={ post.createdAt } />
     </header>
   )
 }
@@ -72,10 +82,10 @@ function footer(post, author, currentUser) {
   if (!author) { return null }
   return (
     <PostTools
-      author={author}
-      post={post}
-      currentUser={currentUser}
-      key={`PostTools_${post.id}`}
+      author={ author }
+      post={ post }
+      currentUser={ currentUser }
+      key={ `PostTools_${post.id}` }
     />
   )
 }
@@ -86,7 +96,7 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
   const postDetailPath = getPostDetailPath(author, post)
 
   if (post.contentWarning) {
-    cells.push(<ContentWarningButton post={post}/>)
+    cells.push(<ContentWarningButton post={ post } />)
   }
 
   if (post.repostContent && post.repostContent.length) {
@@ -110,9 +120,10 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
 }
 
 function isRepost(post) {
-  return post.repostContent && post.repostContent.length;
+  return post.repostContent && post.repostContent.length
 }
 
+/* eslint-disable react/prefer-stateless-function */
 class PostParser extends Component {
   static propTypes = {
     assets: PropTypes.any,
@@ -128,7 +139,7 @@ class PostParser extends Component {
     showLovers: PropTypes.bool,
     showReposters: PropTypes.bool,
     sourceLinkObject: PropTypes.object,
-  };
+  }
 
   render() {
     const {
@@ -159,11 +170,11 @@ class PostParser extends Component {
       <div className="Post">
         { postHeader }
         { showEditor ?
-          <Editor post={ post }/> :
+          <Editor post={ post } /> :
           parsePost(post, author, currentUser, isGridLayout)}
         { showLovers ? postLoversDrawer(post) : null }
         { showReposters ? postRepostersDrawer(post) : null }
-        { showComments ? <Editor post={ post } isComment/> : null }
+        { showComments ? <Editor post={ post } isComment /> : null }
         { showComments && post.commentsCount > 0 ? commentStream(post, author, currentUser) : null }
       </div>)
   }

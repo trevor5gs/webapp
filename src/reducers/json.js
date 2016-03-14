@@ -81,6 +81,7 @@ function _addParentPostIdToComments(state, action) {
       }
     }
   }
+  return null
 }
 methods.addParentPostIdToComments = (state, type, data) =>
   _addParentPostIdToComments(state, type, data)
@@ -90,7 +91,7 @@ function _addModels(state, type, data) {
   if (!state[type]) { state[type] = {} }
   const ids = []
   if (type === MAPPING_TYPES.CATEGORIES) {
-    data[type].map((category, index) => {
+    data[type].forEach((category, index) => {
       const newType = { ...state[type] }
       const id = index + 1
       newType[id] = category
@@ -99,7 +100,7 @@ function _addModels(state, type, data) {
     })
   } else if (data[type] && data[type].length) {
     // add arrays of models to state['modelType']['id']
-    data[type].map((model) => {
+    data[type].forEach((model) => {
       methods.mergeModel(state, type, model)
       ids.push(model.id)
     })

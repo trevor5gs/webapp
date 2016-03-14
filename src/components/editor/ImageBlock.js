@@ -5,11 +5,11 @@ class ImageBlock extends Component {
 
   static propTypes = {
     data: PropTypes.object,
-  };
+  }
 
   static defaultProps = {
     data: {},
-  };
+  }
 
   render() {
     const { data } = this.props

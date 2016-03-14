@@ -23,7 +23,10 @@ class UserDetail extends Component {
       type: PropTypes.string,
       username: PropTypes.string.isRequired,
     }).isRequired,
-  };
+  }
+
+  static preRender = (store, routerState) =>
+    store.dispatch(loadUserDetail(`~${routerState.params.username}`))
 
   componentWillMount() {
     const { dispatch, params } = this.props
@@ -36,14 +39,11 @@ class UserDetail extends Component {
 
   onZeroStateHello = () => {
     this.setState({ saidHelloTo: true })
-  };
+  }
 
   onZeroStateFirstPost = () => {
     this.setState({ madeFirstPost: true })
-  };
-
-  static preRender = (store, routerState) =>
-    store.dispatch(loadUserDetail(`~${routerState.params.username}`));
+  }
 
   renderZeroStates(user) {
     const { isLoggedIn } = this.props
@@ -115,7 +115,7 @@ class UserDetail extends Component {
     }
     return (
       <section className="UserDetail Panel" key={ `userDetail_${type}` }>
-        { user ? <UserDetailHelmet user={ user }/> : null }
+        { user ? <UserDetailHelmet user={ user } /> : null }
         <div className="UserDetails">
           { userEls }
           { user && user.relationshipPriority === 'self' ?

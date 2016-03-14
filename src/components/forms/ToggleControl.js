@@ -9,7 +9,7 @@ class ToggleControl extends Component {
     isChecked: PropTypes.bool,
     isDisabled: PropTypes.bool,
     onChange: PropTypes.func,
-  };
+  }
 
   componentWillMount() {
     const { isChecked } = this.props
@@ -36,7 +36,7 @@ class ToggleControl extends Component {
     if (typeof onChange === 'function') {
       onChange({ [id]: newCheckedState })
     }
-  };
+  }
 
   render() {
     const { className, id, isDisabled } = this.props

@@ -15,7 +15,7 @@ export function loadFriends() {
       renderStream: {
         asList: StreamRenderables.postsAsList,
         asGrid: StreamRenderables.postsAsGrid,
-        asZero: <ZeroFollowingStream/>,
+        asZero: <ZeroFollowingStream />,
       },
       resultFilter: StreamFilters.postsFromActivities,
     },
@@ -31,7 +31,7 @@ export function loadNoise() {
       renderStream: {
         asList: StreamRenderables.postsAsList,
         asGrid: StreamRenderables.postsAsGrid,
-        asZero: <ZeroStarredStream/>,
+        asZero: <ZeroStarredStream />,
       },
       resultFilter: StreamFilters.postsFromActivities,
     },

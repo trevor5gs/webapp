@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { trackEvent } from '../../actions/tracking'
 import { ElloMark } from '../interface/ElloIcons'
 
+/* eslint-disable react/prefer-stateless-function */
 class OnboardingHeader extends Component {
 
   static propTypes = {
@@ -17,7 +18,7 @@ class OnboardingHeader extends Component {
     relationshipMap: PropTypes.object,
     title: PropTypes.string.isRequired,
     trackingLabel: PropTypes.string.isRequired,
-  };
+  }
 
   onClickNext = (e) => {
     const {
@@ -66,7 +67,7 @@ class OnboardingHeader extends Component {
     } else {
       dispatch(trackEvent(`followed-some-${trackingLabel}`))
     }
-  };
+  }
 
   onClickSkip = (e) => {
     const { dispatch, trackingLabel, nextPath, redirection } = this.props
@@ -75,7 +76,7 @@ class OnboardingHeader extends Component {
       e.preventDefault()
       window.location = nextPath
     }
-  };
+  }
 
   getButtonClassNames() {
     const { lockNext, relationshipMap } = this.props
@@ -94,20 +95,20 @@ class OnboardingHeader extends Component {
       <header className="OnboardingHeader">
         <div className="OnboardingColumn">
           <ElloMark />
-          <h1>{title}</h1>
-          <p>{message}</p>
+          <h1>{ title }</h1>
+          <p>{ message }</p>
         </div>
         <div className="OnboardingColumn">
           <Link
             className={ this.getButtonClassNames() }
-            to={nextPath}
+            to={ nextPath }
             onClick={ this.onClickNext }
           >
             Next
           </Link>
           <Link
             className="OnboardingSkipButton"
-            to={nextPath}
+            to={ nextPath }
             onClick={ this.onClickSkip }
           >
             Skip

@@ -8,7 +8,7 @@ export default class ContentWarningButton extends Component {
     post: PropTypes.shape({
       contentWarning: PropTypes.string,
     }).isRequired,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -24,7 +24,7 @@ export default class ContentWarningButton extends Component {
     if (onClick) {
       onClick({ isOpen: newIsOpen }, e)
     }
-  };
+  }
 
   render() {
     const { post } = this.props

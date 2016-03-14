@@ -23,7 +23,7 @@ class Search extends Component {
         type: PropTypes.string,
       }).isRequired,
     }).isRequired,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -44,12 +44,12 @@ class Search extends Component {
     this.updateLocation(vo)
     this.setState(vo)
     this.search()
-  };
+  }
 
   onClickTrackCredits = () => {
     const { dispatch } = this.props
-    dispatch(trackEvent(`banderole-credits-clicked`))
-  };
+    dispatch(trackEvent('banderole-credits-clicked'))
+  }
 
   getAction() {
     const { terms, type } = this.state
@@ -130,3 +130,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Search)
+

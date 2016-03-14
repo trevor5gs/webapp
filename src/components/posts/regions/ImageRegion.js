@@ -21,13 +21,13 @@ class ImageRegion extends Component {
     isNotification: PropTypes.bool,
     links: PropTypes.object,
     postDetailPath: PropTypes.string,
-  };
+  }
 
   static defaultProps = {
     isComment: false,
     isGridLayout: false,
     isNotification: false,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -79,17 +79,17 @@ class ImageRegion extends Component {
       return null
     }
     return this.setImageScale()
-  };
+  }
 
   onLoadSuccess = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  };
+  }
 
   onLoadFailure = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  };
+  }
 
   getAttachmentMetadata() {
     const { optimized, xhdpi, hdpi } = this.attachment

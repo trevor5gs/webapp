@@ -5,7 +5,7 @@ class UsernameControl extends Component {
 
   static propTypes = {
     suggestions: PropTypes.array,
-  };
+  }
 
   static defaultProps = {
     className: 'UsernameControl',
@@ -14,12 +14,12 @@ class UsernameControl extends Component {
     name: 'user[username]',
     placeholder: 'Enter your username',
     suggestions: null,
-  };
+  }
 
   onClickUsernameSuggestion = (e) => {
     const val = e.target.title
     this.refs.FormControl.onChangeControl({ target: { value: val } })
-  };
+  }
 
   renderSuggestions = () => {
     const { suggestions } = this.props
@@ -44,7 +44,7 @@ class UsernameControl extends Component {
         <span></span>
       </p>
     )
-  };
+  }
 
   render() {
     return (

@@ -48,7 +48,7 @@ function toggleTools(input) {
 
 function onKeyUp(e) {
   // Handles text tools show/hide and position
-  if (!e.target.classList || !e.target.classList.contains('text')) return false
+  if (!e.target.classList || !e.target.classList.contains('text')) { return }
   toggleTools(window.getSelection().toString())
   // Handles autocompletion stuff
   // check for autocompletable strings: currently usernames and emoji codes
@@ -58,7 +58,7 @@ function onKeyUp(e) {
     case 27: // esc
     case 38: // up
     case 40: // down
-      return false
+      return
     default:
       break
   }
@@ -76,7 +76,7 @@ methods.onKeyUp = (e) =>
   onKeyUp(e)
 
 function onKeyDown(e) {
-  if (!e.target.classList || !e.target.classList.contains('text')) return false
+  if (!e.target.classList || !e.target.classList.contains('text')) { return }
   // b or i for key commands
   if ((e.keyCode === 66 || e.keyCode === 73) && (e.metaKey || e.ctrlKey)) {
     requestAnimationFrame(() => {

@@ -18,13 +18,13 @@ class Avatar extends Component {
     size: PropTypes.string,
     sources: PropTypes.object,
     to: PropTypes.string,
-  };
+  }
 
   static defaultProps = {
     classList: '',
     isModifiable: false,
     size: 'regular',
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -61,12 +61,12 @@ class Avatar extends Component {
   onLoadSuccess = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
-  };
+  }
 
   onLoadFailure = () => {
     this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
-  };
+  }
 
   getClassNames() {
     const { classList, isModifiable, size } = this.props
@@ -116,20 +116,20 @@ class Avatar extends Component {
     const style = src ? { backgroundImage: `url(${src})` } : null
     if (to) {
       return (
-        <Link className={klassNames} to={to}>
-          <div className="AvatarImage" style={style}/>
+        <Link className={ klassNames } to={ to }>
+          <div className="AvatarImage" style={style} />
         </Link>
       )
     } else if (onClick) {
       return (
-        <button className={klassNames} onClick={ onClick }>
-          <div className="AvatarImage" style={style}/>
+        <button className={ klassNames } onClick={ onClick }>
+          <div className="AvatarImage" style={ style } />
         </button>
       )
     }
     return (
-      <span className={klassNames}>
-        <div className="AvatarImage" style={style}/>
+      <span className={ klassNames }>
+        <div className="AvatarImage" style={ style } />
       </span>
     )
   }

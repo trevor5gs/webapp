@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import FormControl from './FormControl'
 
+/* eslint-disable react/prefer-stateless-function */
 class BatchEmailControl extends Component {
 
   static defaultProps = {
@@ -9,7 +10,7 @@ class BatchEmailControl extends Component {
     label: 'Emails',
     name: 'invitations[email]',
     placeholder: 'Enter email addresses',
-  };
+  }
 
   render() {
     return (

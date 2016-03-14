@@ -22,7 +22,7 @@ class StarshipButton extends Component {
       PropTypes.number,
       PropTypes.string,
     ]),
-  };
+  }
 
   componentWillMount() {
     this.state = { nextPriority: this.getNextPriority(this.props) }
@@ -48,7 +48,7 @@ class StarshipButton extends Component {
     if (onClick) {
       onClick({ userId, priority: nextPriority, existing: priority })
     }
-  };
+  }
 
   renderStar() {
     const { classList, priority } = this.props
@@ -56,9 +56,9 @@ class StarshipButton extends Component {
       <button
         className={ classNames('StarshipButton', classList) }
         onClick={ this.updatePriority }
-        data-priority={priority}
+        data-priority={ priority }
       >
-        <StarIcon/>
+        <StarIcon />
       </button>
     )
   }

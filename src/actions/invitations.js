@@ -14,7 +14,7 @@ export function loadInvitedUsers() {
       renderStream: {
         asList: StreamRenderables.usersAsInviteeList,
         asGrid: StreamRenderables.usersAsInviteeGrid,
-        asError: <ErrorState/>,
+        asError: <ErrorState />,
       },
     },
   }

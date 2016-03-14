@@ -12,7 +12,10 @@ class Following extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     lastFollowingBeaconVersion: PropTypes.string,
-  };
+  }
+
+  static preRender = (store) =>
+    store.dispatch(loadFriends())
 
   componentWillMount() {
     const { lastFollowingBeaconVersion } = this.props
@@ -25,10 +28,7 @@ class Following extends Component {
     const { dispatch } = this.props
     this.setState({ isBeaconActive: false })
     dispatch({ type: BEACONS.LAST_FOLLOWING_VERSION, payload: { version: BEACON_VERSION } })
-  };
-
-  static preRender = (store) =>
-    store.dispatch(loadFriends());
+  }
 
   renderZeroStream() {
     return (
@@ -43,7 +43,7 @@ class Following extends Component {
     return (
       <section className="Following Panel">
         { isBeaconActive ? this.renderZeroStream() : null }
-        <StreamComponent action={loadFriends()} />
+        <StreamComponent action={ loadFriends() } />
       </section>
     )
   }

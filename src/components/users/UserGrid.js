@@ -10,7 +10,7 @@ class UserGrid extends Component {
   static propTypes = {
     user: PropTypes.shape({
     }).isRequired,
-  };
+  }
 
   shouldComponentUpdate(prevProps) {
     if (_.isEqual(prevProps, this.props)) {
@@ -24,12 +24,12 @@ class UserGrid extends Component {
     const userPath = `/${user.username}`
     return (
       <div className="UserGrid" >
-        <CoverMini to={userPath} coverImage={user.coverImage} />
-        <Avatar to={userPath} sources={user.avatar} />
-        <RelationsGroup user={user} ref="RelationsGroup" />
-        <UserStats user={user} />
-        <UserNames user={user} />
-        <UserInfo user={user} />
+        <CoverMini to={ userPath } coverImage={ user.coverImage } />
+        <Avatar to={ userPath } sources={ user.avatar } />
+        <RelationsGroup user={ user } ref="RelationsGroup" />
+        <UserStats user={ user } />
+        <UserNames user={ user } />
+        <UserInfo user={ user } />
       </div>
     )
   }

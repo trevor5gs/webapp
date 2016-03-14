@@ -9,10 +9,10 @@ let models = {}
 function textRegion(region, key, isGridLayout, postDetailPath) {
   return (
     <TextRegion
-      content={region.data}
-      isGridLayout={isGridLayout}
-      key={key}
-      postDetailPath={postDetailPath}
+      content={ region.data }
+      isGridLayout={ isGridLayout }
+      key={ key }
+      postDetailPath={ postDetailPath }
     />
   )
 }
@@ -20,14 +20,14 @@ function textRegion(region, key, isGridLayout, postDetailPath) {
 function imageRegion(region, key, isGridLayout, postDetailPath, isNotification, isComment) {
   return (
     <ImageRegion
-      assets={models.assets}
-      content={region.data}
-      isComment={isComment}
-      isGridLayout={isGridLayout}
+      assets={ models.assets }
+      content={ region.data }
+      isComment={ isComment }
+      isGridLayout={ isGridLayout }
       isNotification={ isNotification }
-      key={key}
-      links={region.links}
-      postDetailPath={postDetailPath}
+      key={ key }
+      links={ region.links }
+      postDetailPath={ postDetailPath }
     />
   )
 }
@@ -36,9 +36,9 @@ function embedRegion(region, key) {
   const data = {}
   data[`data-${region.data.service}-id`] = region.data.id
   return (
-    <div className="EmbedRegion embetter" {...data} key={key}>
-      <Link className="RegionContent" to={region.data.url}>
-        <img src={region.data.thumbnailLargeUrl} />
+    <div className="EmbedRegion embetter" { ...data } key={ key }>
+      <Link className="RegionContent" to={ region.data.url }>
+        <img src={ region.data.thumbnailLargeUrl } />
       </Link>
     </div>
   )
@@ -60,10 +60,10 @@ export function regionItemsForNotifications(content, postDetailPath = null) {
         assets.push(embedRegion(region, `EmbedRegion_${i}`))
         break
       default:
-        throw new Error(`UNKNOWN NOTIFICATION REGION: ${region.kind}`)
+        return { assets, texts }
     }
+    return { assets, texts }
   })
-  return { assets, texts }
 }
 
 // TODO: Wrap all of these function arguments in an object and destructure so order doesn't matter.
@@ -79,25 +79,26 @@ export function regionItems(content, only = null, isGridLayout = true, postDetai
         case 'embed':
           return embedRegion(region, `EmbedRegion_${i}`)
         default:
-          throw new Error(`UNKNOWN REGION: ${region.kind}`)
+          return null
       }
     }
+    return null
   })
 }
 
 export function body(content, id, isGridLayout, postDetailPath = null, isComment = false) {
   return (
-    <div className="PostBody" key={`PostBody_${id}`}>
-      {regionItems(content, null, isGridLayout, postDetailPath, isComment)}
+    <div className="PostBody" key={ `PostBody_${id}` }>
+      { regionItems(content, null, isGridLayout, postDetailPath, isComment) }
     </div>
   )
 }
 
 export function repostedBody(author, content, id, isGridLayout, postDetailPath = null) {
   return (
-    <div className="PostBody RepostedBody" key={`RepostedBody_${id}`}>
-      <Avatar sources={author.avatar} to={`/${author.username}`} />
-      {regionItems(content, null, isGridLayout, postDetailPath)}
+    <div className="PostBody RepostedBody" key={ `RepostedBody_${id}` }>
+      <Avatar sources={ author.avatar } to={ `/${author.username}` } />
+      { regionItems(content, null, isGridLayout, postDetailPath) }
     </div>
   )
 }

@@ -4,9 +4,9 @@ import Avatar from '../assets/Avatar'
 import Hint from '../hints/Hint'
 
 const UserAvatar = ({ user }) =>
-  <Link className="UserAvatar" to={`/${user.username}`}>
-    <Avatar sources={user.avatar} />
-    <Hint>{`@${user.username}`}</Hint>
+  <Link className="UserAvatar" to={ `/${user.username}` }>
+    <Avatar sources={ user.avatar } />
+    <Hint>{ `@${user.username}` }</Hint>
   </Link>
 
 UserAvatar.propTypes = {

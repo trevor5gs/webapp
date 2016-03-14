@@ -25,7 +25,7 @@ class Onboarding extends Component {
     profile: PropTypes.object,
     route: PropTypes.object,
     stream: PropTypes.object,
-  };
+  }
 
   componentWillMount() {
     // check auth
@@ -73,7 +73,7 @@ class Onboarding extends Component {
         return (
           <section className="CommunityPicker Panel">
             <OnboardingHeader
-              relationshipMap={this.getRelationshipMap()}
+              relationshipMap={ this.getRelationshipMap() }
               nextPath="/onboarding/awesome-people"
               trackingLabel="community-picker"
               batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
@@ -96,7 +96,7 @@ class Onboarding extends Component {
         return (
           <section className="PeoplePicker Panel">
             <OnboardingHeader
-              relationshipMap={rm}
+              relationshipMap={ rm }
               nextPath="/onboarding/profile-header"
               trackingLabel="people-picker"
               batchSave={ bindActionCreators(relationshipBatchSave, dispatch) }
@@ -171,7 +171,7 @@ class Onboarding extends Component {
           <section className="InfoPicker Panel">
             <OnboardingHeader
               redirection
-              nextPath={ENV.REDIRECT_URI}
+              nextPath={ ENV.REDIRECT_URI }
               trackingLabel="info-picker"
               title="Customize your profile."
               message="Fill out your bio."
@@ -208,3 +208,4 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps)(Onboarding)
+

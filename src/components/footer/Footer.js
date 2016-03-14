@@ -17,7 +17,7 @@ class Footer extends Component {
     gui: PropTypes.object.isRequired,
     json: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -41,11 +41,11 @@ class Footer extends Component {
       return
     }
     window.scrollTo(0, 0)
-  };
+  }
 
   onClickToggleLayoutMode = () => {
     Mousetrap.trigger(SHORTCUT_KEYS.TOGGLE_LAYOUT)
-  };
+  }
 
   render() {
     const { isPaginatoring } = this.props
@@ -56,14 +56,14 @@ class Footer extends Component {
         role="contentinfo"
       >
         <div className="FooterLinks">
-          <FooterLabel label="Beta 2.2"/>
-          <FooterLink className="asLabel" href="/wtf" label="WTF"/>
+          <FooterLabel label="Beta 2.2" />
+          <FooterLink className="asLabel" href="/wtf" label="WTF" />
           { isAndroid ?
             null :
             <FooterLink
               href="http://appstore.com/ello/ello"
               label="Get the app"
-              icon={ <PhoneIcon/> }
+              icon={ <PhoneIcon /> }
             />
           }
         </div>
@@ -72,13 +72,13 @@ class Footer extends Component {
           <FooterTool
             className="TopTool"
             label="Top"
-            icon={ <ChevronIcon/> }
+            icon={ <ChevronIcon /> }
             onClick={ this.onClickScrollToTop }
           />
           <FooterTool
             className="LayoutTool"
             label={ isGridMode ? 'List View' : 'Grid View' }
-            icon={ isGridMode ? <ListIcon/> : <GridIcon/> }
+            icon={ isGridMode ? <ListIcon /> : <GridIcon /> }
             onClick={ this.onClickToggleLayoutMode }
           />
         </div>
@@ -97,3 +97,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Footer)
+

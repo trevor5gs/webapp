@@ -12,7 +12,10 @@ class Invitations extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-  };
+  }
+
+  static preRender = (store) =>
+    store.dispatch(loadInvitedUsers())
 
   componentWillMount() {
     this.state = {
@@ -30,21 +33,19 @@ class Invitations extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ batchEmailState: newState })
     }
-  };
+  }
 
   onSubmit = (e) => {
     e.preventDefault()
     const { batchEmailState } = this.state
     if (batchEmailState.status !== STATUS.SUCCESS) {
-      return this.setState({ formStatus: STATUS.FAILURE })
+      this.setState({ formStatus: STATUS.FAILURE })
+      return
     }
     const { dispatch } = this.props
     dispatch(inviteUsers(this.batchEmailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
-  };
-
-  static preRender = (store) =>
-    store.dispatch(loadInvitedUsers());
+  }
 
   renderMessage() {
     const { formStatus } = this.state
@@ -102,7 +103,7 @@ class Invitations extends Component {
 
         </div>
         <h2 className="InvitationsStreamHeading">Friends you've invited</h2>
-        <StreamComponent action={loadInvitedUsers()} />
+        <StreamComponent action={ loadInvitedUsers() } />
       </section>
     )
   }

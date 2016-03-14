@@ -6,7 +6,7 @@ class DeleteAccountDialog extends Component {
     user: PropTypes.shape({}),
     onConfirm: PropTypes.func,
     onDismiss: PropTypes.func,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -21,21 +21,21 @@ class DeleteAccountDialog extends Component {
 
   onClickJustKidding = () => {
     this.props.onDismiss()
-  };
+  }
 
   onClickNotKidding = () => {
     this.props.onConfirm()
-  };
+  }
 
   onClickConfirm = () => {
     this.setState({ scene: 'renderConfirmReally' })
-  };
+  }
 
   onClickConfirmReally = () => {
     this.interval = setInterval(() => {
       this.setState({ scene: 'renderCountdown' })
     }, 1000)
-  };
+  }
 
   renderConfirm() {
     return (

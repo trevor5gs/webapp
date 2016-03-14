@@ -17,7 +17,7 @@ export default class Completer extends Component {
     completions: PropTypes.object.isRequired,
     onCancel: PropTypes.func.isRequired,
     onCompletion: PropTypes.func.isRequired,
-  };
+  }
 
   componentWillMount() {
     this.state = {
@@ -86,7 +86,7 @@ export default class Completer extends Component {
         <Completion
           className={ i === selectedIndex ? 'active' : null }
           key={ `completion_${i}` }
-          asset={ <Avatar classList="tiny" sources={{ tmp: { url: completion.imageUrl } }}/>}
+          asset={ <Avatar classList="tiny" sources={{ tmp: { url: completion.imageUrl } }} />}
           label={ `@${completion.name}` }
           ref={ `completion_${i}` }
           onClick={ onCompletion }
@@ -103,7 +103,7 @@ export default class Completer extends Component {
         <Completion
           className={ i === selectedIndex ? 'active' : null }
           key={ `completion_${i}` }
-          asset={ <Emoji key={ completion.name } src={ completion.imageUrl }/>}
+          asset={ <Emoji key={ completion.name } src={ completion.imageUrl } />}
           label={ `:${completion.name}:` }
           ref={ `completion_${i}` }
           onClick={ onCompletion }
