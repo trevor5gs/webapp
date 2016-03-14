@@ -38,15 +38,16 @@ class RelationsGroup extends Component {
     const { dispatch, pathname } = this.props
 
     if (pathname && (/^\/onboarding/).test(pathname)) {
-      return dispatch(updateRelationship(userId, priority, existing, true))
+      dispatch(updateRelationship(userId, priority, existing, true))
+      return
     }
-    return dispatch(updateRelationship(userId, priority, existing))
+    dispatch(updateRelationship(userId, priority, existing))
   }
 
   onOpenSignupModal = () => {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
-    return dispatch(trackEvent('open-registration-request-follow-button'))
+    dispatch(trackEvent('open-registration-request-follow-button'))
   }
 
   onOpenBlockMutePrompt = () => {

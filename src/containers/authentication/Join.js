@@ -70,12 +70,12 @@ class Join extends Component {
         this.setState({ usernameState: { status: STATUS.REQUEST, message: 'checking...' } })
       }
       // This will end up landing on `validateUsernameResponse` after fetching
-      return this.checkServerForAvailability({ username })
+      this.checkServerForAvailability({ username })
+      return
     }
     if (clientState.status !== currentStatus && clientState.message !== currentMessage) {
       this.setState({ usernameState: clientState })
     }
-    return null
   }
 
   onChangeEmailControl = ({ email }) => {
@@ -88,12 +88,12 @@ class Join extends Component {
         this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
       }
       // This will end up landing on `validateEmailResponse` after fetching
-      return this.checkServerForAvailability({ email })
+      this.checkServerForAvailability({ email })
+      return
     }
     if (clientState.status !== currentStatus) {
       this.setState({ emailState: clientState })
     }
-    return null
   }
 
   onChangePasswordControl = ({ password }) => {
@@ -119,7 +119,7 @@ class Join extends Component {
   }
 
   checkServerForAvailability(vo) {
-    return this.props.dispatch(checkAvailability(vo))
+    this.props.dispatch(checkAvailability(vo))
   }
 
   validateUsernameResponse(availability) {

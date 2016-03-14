@@ -39,12 +39,12 @@ class Invitations extends Component {
     e.preventDefault()
     const { batchEmailState } = this.state
     if (batchEmailState.status !== STATUS.SUCCESS) {
-      return this.setState({ formStatus: STATUS.FAILURE })
+      this.setState({ formStatus: STATUS.FAILURE })
+      return
     }
     const { dispatch } = this.props
     dispatch(inviteUsers(this.batchEmailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
-    return null
   }
 
   renderMessage() {

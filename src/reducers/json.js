@@ -91,18 +91,18 @@ function _addModels(state, type, data) {
   if (!state[type]) { state[type] = {} }
   const ids = []
   if (type === MAPPING_TYPES.CATEGORIES) {
-    data[type].map((category, index) => {
+    data[type].forEach((category, index) => {
       const newType = { ...state[type] }
       const id = index + 1
       newType[id] = category
       state[type] = newType
-      return ids.push(id)
+      ids.push(id)
     })
   } else if (data[type] && data[type].length) {
     // add arrays of models to state['modelType']['id']
-    data[type].map((model) => {
+    data[type].forEach((model) => {
       methods.mergeModel(state, type, model)
-      return ids.push(model.id)
+      ids.push(model.id)
     })
   } else if (data[type] && typeof data[type] === 'object') {
     // add single model objects to state['modelType']['id']

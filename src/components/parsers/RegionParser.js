@@ -60,10 +60,10 @@ export function regionItemsForNotifications(content, postDetailPath = null) {
         assets.push(embedRegion(region, `EmbedRegion_${i}`))
         break
       default:
-        throw new Error(`UNKNOWN NOTIFICATION REGION: ${region.kind}`)
+        return { assets, texts }
     }
+    return { assets, texts }
   })
-  return { assets, texts }
 }
 
 // TODO: Wrap all of these function arguments in an object and destructure so order doesn't matter.
@@ -79,7 +79,7 @@ export function regionItems(content, only = null, isGridLayout = true, postDetai
         case 'embed':
           return embedRegion(region, `EmbedRegion_${i}`)
         default:
-          throw new Error(`UNKNOWN REGION: ${region.kind}`)
+          return null
       }
     }
     return null

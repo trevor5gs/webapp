@@ -26,8 +26,11 @@ class NavbarProfile extends Component {
 
   onClickAvatar = () => {
     const { isMenuOpen } = this.state
-    if (isMenuOpen) { return this.hideMenu() }
-    return this.showMenu()
+    if (isMenuOpen) {
+      this.hideMenu()
+      return
+    }
+    this.showMenu()
   }
 
   onClickDocument = () => {

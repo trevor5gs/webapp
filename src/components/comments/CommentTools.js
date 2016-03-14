@@ -169,7 +169,7 @@ class CommentTools extends Component {
   signUp() {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
-    return dispatch(trackEvent('open-registration-request-post-tools'))
+    dispatch(trackEvent('open-registration-request-post-tools'))
   }
 
   render() {

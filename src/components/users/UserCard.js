@@ -20,14 +20,15 @@ class UserCard extends Component {
     const { dispatch, pathname } = this.props
 
     if (pathname && (/^\/onboarding/).test(pathname)) {
-      return dispatch(updateRelationship(userId, priority, existing, true))
+      dispatch(updateRelationship(userId, priority, existing, true))
+      return
     }
-    return dispatch(updateRelationship(userId, priority, existing))
+    dispatch(updateRelationship(userId, priority, existing))
   }
 
   onClickOpenSignupModal() {
     const { dispatch } = this.props
-    return dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
+    dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
   }
 
   render() {

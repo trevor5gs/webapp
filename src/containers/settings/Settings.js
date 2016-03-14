@@ -103,9 +103,10 @@ class Settings extends Component {
         this.setState({ usernameState: { status: STATUS.REQUEST, message: 'checking...' } })
       }
       // This will end up landing on `validateUsernameResponse` after fetching
-      return this.checkServerForAvailability({ username })
+      this.checkServerForAvailability({ username })
+      return
     }
-    return this.setState({ usernameState: clientState })
+    this.setState({ usernameState: clientState })
   }
 
   onChangeEmailControl = ({ email }) => {
@@ -118,9 +119,10 @@ class Settings extends Component {
         this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
       }
       // This will end up landing on `validateEmailResponse` after fetching
-      return this.checkServerForAvailability({ email })
+      this.checkServerForAvailability({ email })
+      return
     }
-    return this.setState({ emailState: clientState })
+    this.setState({ emailState: clientState })
   }
 
   onChangePasswordControl = ({ password }) => {
@@ -217,7 +219,7 @@ class Settings extends Component {
   }
 
   checkServerForAvailability(vo) {
-    return this.props.dispatch(checkAvailability(vo))
+    this.props.dispatch(checkAvailability(vo))
   }
 
   validateUsernameResponse(availability) {

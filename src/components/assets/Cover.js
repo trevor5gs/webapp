@@ -69,11 +69,10 @@ class Cover extends Component {
     const { scrollY } = scrollProperties
     const { offset, asHidden } = this.state
     if (scrollY >= offset && !asHidden) {
-      return this.setState({ asHidden: true })
+      this.setState({ asHidden: true })
     } else if (scrollY < offset && asHidden) {
-      return this.setState({ asHidden: false })
+      this.setState({ asHidden: false })
     }
-    return null
   }
 
   onLoadSuccess = () => {

@@ -395,14 +395,14 @@ class BlockCollection extends Component {
         const secondToLast = this.getBlockFromUid(order[order.length - 2])
         if (secondToLast.kind === 'text' &&
             last.kind === 'text' && !last.data.length) {
-          return this.remove(last.uid, shouldCheckForEmpty)
+          this.remove(last.uid, shouldCheckForEmpty)
+          return
         }
       }
       if (!order.length ||
           this.getBlockFromUid(order[order.length - 1]).kind !== 'text') {
-        return this.add({ kind: 'text', data: '' }, false)
+        this.add({ kind: 'text', data: '' }, false)
       }
-      return null
     })
   }
 

@@ -58,14 +58,14 @@ class PostTools extends Component {
   onClickLovePost = () => {
     const { dispatch, isLoggedIn, post } = this.props
     if (!isLoggedIn) {
-      return this.signUp()
+      this.signUp()
+      return
     }
     if (post.loved) {
       dispatch(postActions.unlovePost(post))
     } else {
       dispatch(postActions.lovePost(post))
     }
-    return null
   }
 
   onClickToggleLovers = () => {
@@ -84,7 +84,7 @@ class PostTools extends Component {
     const { author, dispatch, post } = this.props
     const action = bindActionCreators(trackEvent, dispatch)
     dispatch(openModal(<ShareDialog author={ author } post={ post } trackEvent={ action } />))
-    return dispatch(trackEvent('open-share-dialog'))
+    dispatch(trackEvent('open-share-dialog'))
   }
 
   onClickFlagPost = () => {
@@ -110,13 +110,13 @@ class PostTools extends Component {
   onClickRepostPost = () => {
     const { dispatch, isLoggedIn, post } = this.props
     if (!isLoggedIn) {
-      return this.signUp()
+      this.signUp()
+      return
     }
     if (!post.reposted) {
       dispatch(postActions.toggleReposting(post, true))
       dispatch(postActions.loadEditablePost(post.id))
     }
-    return null
   }
 
   onClickDeletePost = () => {
@@ -297,7 +297,7 @@ class PostTools extends Component {
   signUp = () => {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
-    return dispatch(trackEvent('open-registration-request-post-tools'))
+    dispatch(trackEvent('open-registration-request-post-tools'))
   }
 
   render() {

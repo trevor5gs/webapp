@@ -89,9 +89,10 @@ class Navbar extends Component {
       Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
         const { modalIsActive } = this.props
         if (modalIsActive) {
-          return dispatch(closeModal())
+          dispatch(closeModal())
+          return
         }
-        return dispatch(openModal(<HelpDialog />))
+        dispatch(openModal(<HelpDialog />))
       })
     }
 
