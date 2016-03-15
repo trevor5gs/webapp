@@ -40,6 +40,14 @@ export class Notifications extends Component {
     }
   }
 
+  onClickTab = ({ type }) => {
+    if (this.refs.streamComponent) {
+      this.refs.streamComponent.refs.wrappedInstance.setAction(
+        loadNotifications({ category: type })
+      )
+    }
+  }
+
   render() {
     const { pathname } = this.props
     const { category } = this.props.params
@@ -48,18 +56,19 @@ export class Notifications extends Component {
       params.category = category
     }
     const tabs = [
-      { to: '/notifications', children: 'All' },
-      { to: '/notifications/comments', children: <BubbleIcon /> },
-      { to: '/notifications/loves', children: <HeartIcon /> },
-      { to: '/notifications/mentions', children: '@' },
-      { to: '/notifications/reposts', children: <RepostIcon /> },
-      { to: '/notifications/relationships', children: <RelationshipIcon /> },
+      { to: '/notifications', type: 'all', children: 'All' },
+      { to: '/notifications/comments', type: 'comments', children: <BubbleIcon /> },
+      { to: '/notifications/loves', type: 'loves', children: <HeartIcon /> },
+      { to: '/notifications/mentions', type: 'mentions', children: '@' },
+      { to: '/notifications/reposts', type: 'reposts', children: <RepostIcon /> },
+      { to: '/notifications/relationships', type: 'relationships', children: <RelationshipIcon /> },
     ]
     return (
       <section className="Notifications Panel">
         <TabListLinks
           activePath={ pathname }
           className="IconTabList NotificationsContainerTabs"
+          onTabClick={ this.onClickTab }
           tabClasses="IconTab"
           tabs={ tabs }
         />
@@ -68,6 +77,7 @@ export class Notifications extends Component {
           className="asFullWidth"
           key={ `notificationPanel_${params.category}` }
           historyLocationOverride={ `notifications_${pathname}` }
+          ref="streamComponent"
         />
       </section>
     )

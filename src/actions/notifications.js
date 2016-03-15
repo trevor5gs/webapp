@@ -7,6 +7,7 @@ import * as StreamRenderables from '../components/streams/StreamRenderables'
 import { ZeroState } from '../components/zeros/Zeros'
 
 export function loadNotifications(params = {}) {
+  const categoryResult = params.category ? `/${params.category}` : ''
   return {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.notifications(params), vo: {} },
@@ -18,7 +19,8 @@ export function loadNotifications(params = {}) {
         asZero: <ZeroState>Sorry, no notifications found.</ZeroState>,
       },
       resultFilter: StreamFilters.notificationsFromActivities,
-      resultKey: `/notifications/${params.category}`,
+      resultKey: `/notifications${categoryResult}`,
+      updateKey: '/notifications',
     },
   }
 }
