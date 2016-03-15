@@ -330,8 +330,9 @@ export class StreamComponent extends Component {
   }
 
   renderLoading() {
+    const { className } = this.props
     return (
-      <section className="StreamComponent isBusy">
+      <section className={ classNames('StreamComponent isBusy', className)} >
         <div className="StreamBusyIndicator">
           <ElloMark />
         </div>

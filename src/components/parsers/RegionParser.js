@@ -60,10 +60,10 @@ export function regionItemsForNotifications(content, postDetailPath = null) {
         assets.push(embedRegion(region, `EmbedRegion_${i}`))
         break
       default:
-        return { assets, texts }
+        break
     }
-    return { assets, texts }
   })
+  return { assets, texts }
 }
 
 // TODO: Wrap all of these function arguments in an object and destructure so order doesn't matter.

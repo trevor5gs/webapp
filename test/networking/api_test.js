@@ -84,7 +84,7 @@ describe('api.js', () => {
     })
 
     it('#postReposters', () => {
-      expect(api.postReposters('666').path).to.match(/\/posts\/666\/reposters$/)
+      expect(api.postReposters('666').path).to.match(/\/posts\/666\/reposters\?per_page=/)
     })
 
     it('#postLovers', () => {
