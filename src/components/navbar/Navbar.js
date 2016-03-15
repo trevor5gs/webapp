@@ -228,6 +228,18 @@ class Navbar extends Component {
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
     const { profile, isNotificationsActive } = this.props
     const { hasNotifications, viewportDeviceSize } = this.state
+
+    // if we're viewing notifications, don't change the lightning-bolt link.
+    // on any other page, we have the notifications link go back to whatever
+    // category you were viewing last.
+    let notificationCategory
+    if (this.props.pathname.match(/^\/notifications\b/)) {
+      notificationCategory = ''
+    } else {
+      notificationCategory = (sessionStorage.getItem('notifications_filter') ?
+        `/${sessionStorage.getItem('notifications_filter')}` :
+        '')
+    }
     return (
       <nav className={ klassNames } role="navigation">
         <NavbarMark />
@@ -260,7 +272,7 @@ class Navbar extends Component {
             icon={ <StarIcon /> }
           />
           <NavbarLink
-            to="/notifications"
+            to={ `/notifications${notificationCategory}` }
             label="Notifications"
             modifiers={ classNames('IconOnly', { hasNotifications }) }
             pathname={ pathname }

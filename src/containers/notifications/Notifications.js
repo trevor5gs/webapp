@@ -11,7 +11,7 @@ import {
 import { TabListLinks } from '../../components/tabs/TabList'
 
 /* eslint-disable react/prefer-stateless-function */
-class Notifications extends Component {
+export class Notifications extends Component {
 
   static propTypes = {
     pathname: PropTypes.string,
@@ -27,6 +27,15 @@ class Notifications extends Component {
       params.category = category
     }
     return store.dispatch(loadNotifications(params))
+  }
+
+  componentWillMount() {
+    const { category } = this.props.params
+    if (category) {
+      sessionStorage.setItem('notifications_filter', category)
+    } else {
+      sessionStorage.removeItem('notifications_filter')
+    }
   }
 
   render() {
@@ -56,6 +65,7 @@ class Notifications extends Component {
           action={ loadNotifications(params) }
           className="asFullWidth"
           key={ `notificationPanel_${params.category}` }
+          historyLocationOverride={ `notifications_${pathname}` }
         />
       </section>
     )
