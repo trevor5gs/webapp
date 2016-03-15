@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { loadNotifications } from '../../actions/notifications'
 import StreamComponent from '../../components/streams/StreamComponent'
+import { SESSION_KEYS } from '../../constants/gui_types'
 import {
   BubbleIcon,
   HeartIcon,
@@ -9,9 +10,10 @@ import {
   RelationshipIcon,
 } from '../../components/notifications/NotificationIcons'
 import { TabListLinks } from '../../components/tabs/TabList'
+import Session from '../../../src/vendor/session'
 
 /* eslint-disable react/prefer-stateless-function */
-class Notifications extends Component {
+export class Notifications extends Component {
 
   static propTypes = {
     pathname: PropTypes.string,
@@ -27,6 +29,15 @@ class Notifications extends Component {
       params.category = category
     }
     return store.dispatch(loadNotifications(params))
+  }
+
+  componentWillMount() {
+    const { category } = this.props.params
+    if (category) {
+      Session.setItem(SESSION_KEYS.NOTIFICATIONS_FILTER, category)
+    } else {
+      Session.removeItem(SESSION_KEYS.NOTIFICATIONS_FILTER)
+    }
   }
 
   render() {
@@ -56,6 +67,7 @@ class Notifications extends Component {
           action={ loadNotifications(params) }
           className="asFullWidth"
           key={ `notificationPanel_${params.category}` }
+          historyLocationOverride={ `notifications_${pathname}` }
         />
       </section>
     )
