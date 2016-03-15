@@ -162,12 +162,12 @@ export function flagPost(idOrToken, kind) {
 }
 export function postLovers(idOrToken) {
   return {
-    path: getAPIPath(`posts/${idOrToken}/lovers`),
+    path: getAPIPath(`posts/${idOrToken}/lovers`, { per_page: 10 }),
   }
 }
 export function postReposters(idOrToken) {
   return {
-    path: getAPIPath(`posts/${idOrToken}/reposters`),
+    path: getAPIPath(`posts/${idOrToken}/reposters`, { per_page: 10 }),
   }
 }
 export function createPost(repostId) {
