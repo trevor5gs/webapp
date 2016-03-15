@@ -22,6 +22,7 @@ export function loadEditablePost(idOrToken) {
     payload: { endpoint: api.editPostDetail(idOrToken) },
     meta: {
       mappingType: MAPPING_TYPES.POSTS,
+      updateResult: false,
     },
   }
 }
