@@ -269,6 +269,14 @@ function _deleteModel(state, newState, action, mappingType) {
 methods.deleteModel = (state, newState, action, mappingType) =>
   _deleteModel(state, newState, action, mappingType)
 
+function _updateCurrentUser(newState, action) {
+  const { response } = action.payload
+  newState[MAPPING_TYPES.USERS][response.id] = response
+  return newState
+}
+methods.updateCurrentUser = (newState, action) =>
+  _updateCurrentUser(newState, action)
+
 export default function json(state = {}, action = { type: '' }) {
   let newState = { ...state }
   // whitelist actions
@@ -309,6 +317,8 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.POST.LOVE_SUCCESS:
     case ACTION_TYPES.POST.LOVE_FAILURE:
       return postMethods.updatePostLoves(state, newState, action)
+    case ACTION_TYPES.PROFILE.SAVE_SUCCESS:
+      return methods.updateCurrentUser(newState, action)
     case ACTION_TYPES.POST.TOGGLE_COMMENTS:
       return postMethods.toggleComments(state, newState, action)
     case ACTION_TYPES.POST.TOGGLE_EDITING:

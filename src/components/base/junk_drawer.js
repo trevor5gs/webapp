@@ -1,4 +1,4 @@
-import { decamelize } from 'humps'
+import { decamelizeKeys } from 'humps'
 import store from '../../store'
 import { saveProfile } from '../../actions/profile'
 
@@ -9,7 +9,7 @@ export function preferenceToggleChanged(obj) {
       newObj.has_reposting_enabled = false
       newObj.has_sharing_enabled = false
     }
-    store.dispatch(saveProfile(decamelize(newObj)))
   }
+  store.dispatch(saveProfile(decamelizeKeys(newObj)))
 }
 

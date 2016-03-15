@@ -47,5 +47,5 @@ const createElloStore = (history = null) => {
   return createServerStore(history)
 }
 
-export default createElloStore
+export default createElloStore()
 
