@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { loadNotifications } from '../../actions/notifications'
 import StreamComponent from '../../components/streams/StreamComponent'
+import { SESSION_KEYS } from '../../constants/gui_types'
 import {
   BubbleIcon,
   HeartIcon,
@@ -33,9 +34,9 @@ export class Notifications extends Component {
   componentWillMount() {
     const { category } = this.props.params
     if (category) {
-      Session.setItem('notifications_filter', category)
+      Session.setItem(SESSION_KEYS.NOTIFICATIONS_FILTER, category)
     } else {
-      Session.removeItem('notifications_filter')
+      Session.removeItem(SESSION_KEYS.NOTIFICATIONS_FILTER)
     }
   }
 

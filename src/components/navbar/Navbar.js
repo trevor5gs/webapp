@@ -4,7 +4,7 @@ import { push } from 'react-router-redux'
 import classNames from 'classnames'
 import { logout } from '../../actions/authentication'
 import * as ACTION_TYPES from '../../constants/action_types'
-import { SHORTCUT_KEYS } from '../../constants/gui_types'
+import { SHORTCUT_KEYS, SESSION_KEYS } from '../../constants/gui_types'
 import { openModal, closeModal } from '../../actions/modals'
 import { openOmnibar } from '../../actions/omnibar'
 import { checkForNewNotifications } from '../../actions/notifications'
@@ -237,8 +237,8 @@ class Navbar extends Component {
     if (this.props.pathname.match(/^\/notifications\b/)) {
       notificationCategory = ''
     } else {
-      notificationCategory = (Session.getItem('notifications_filter') ?
-        `/${Session.getItem('notifications_filter')}` :
+      notificationCategory = (Session.getItem(SESSION_KEYS.NOTIFICATIONS_FILTER) ?
+        `/${Session.getItem(SESSION_KEYS.NOTIFICATIONS_FILTER)}` :
         '')
     }
     return (

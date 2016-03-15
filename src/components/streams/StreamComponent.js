@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import _ from 'lodash'
 import { runningFetches } from '../../middleware/requester'
 import * as ACTION_TYPES from '../../constants/action_types'
+import { SESSION_KEYS } from '../../constants/gui_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { findModel } from '../base/json_helper'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
@@ -14,7 +15,7 @@ import { ElloMark } from '../interface/ElloIcons'
 import { Paginator, emptyPagination } from '../streams/Paginator'
 import { findLayoutMode } from '../../reducers/gui'
 import { ErrorState4xx } from '../errors/Errors'
-import Session from '../vendor/sessh'
+import Session from '../../vendor/sessh'
 
 export class StreamComponent extends Component {
 
@@ -227,7 +228,7 @@ export class StreamComponent extends Component {
     }
 
     if (this.props.scrollSessionKey) {
-      const sessionStorageKey = `scrollLocations.${this.props.scrollSessionKey}`
+      const sessionStorageKey = SESSION_KEYS.generateScrollLocationKey(this.props.scrollSessionKey)
       Session.setItem(sessionStorageKey, scrollTopValue)
     }
 
@@ -254,7 +255,7 @@ export class StreamComponent extends Component {
 
       let sessionScrollLocation = null
       if (this.props.scrollSessionKey) {
-        const sessionStorageKey = `scrollLocations.${this.props.scrollSessionKey}`
+        const sessionStorageKey = SESSION_KEYS.generateScrollLocationKey(this.props.scrollSessionKey)
         sessionScrollLocation = parseInt(Session.getItem(sessionStorageKey), 10)
       }
 
