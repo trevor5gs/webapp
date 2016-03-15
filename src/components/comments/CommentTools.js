@@ -124,6 +124,14 @@ class CommentTools extends Component {
           </span>
         )
         cells.push(
+          <span className="PostTool FlagTool ShyTool" key={ `FlagTool_${comment.id}` }>
+            <button onClick={ this.onClickFlagComment }>
+              <FlagIcon />
+              <Hint>Flag</Hint>
+            </button>
+          </span>
+        )
+        cells.push(
           <span className="PostTool DeleteTool ShyTool" key={ `DeleteTool_${comment.id}` }>
             <button onClick={ this.onClickDeleteComment }>
               <XBoxIcon />
