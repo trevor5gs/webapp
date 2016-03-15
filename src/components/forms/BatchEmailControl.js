@@ -12,6 +12,12 @@ class BatchEmailControl extends Component {
     placeholder: 'Enter email addresses',
   }
 
+  clear() {
+    if (this.refs.Control.clear) {
+      this.refs.Control.clear()
+    }
+  }
+
   render() {
     return (
       <FormControl
@@ -20,6 +26,7 @@ class BatchEmailControl extends Component {
         autoCorrect="off"
         kind="textarea"
         type="text"
+        ref="Control"
       />
     )
   }
