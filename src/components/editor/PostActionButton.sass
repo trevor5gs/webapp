@@ -34,23 +34,28 @@
 
 @media(min-width: #{$break-2})
   .no-touch .PostActionButton:hover
+    color: white
     background-color: black
   .no-touch .PostActionButton:hover > .SVGIcon > g
     stroke: white
   .no-touch .PostActionButton:hover > .BrowseIcon > g
     fill: black
 
-  .no-touch .PostList .PostActionButton:hover
-    color: white
+  .no-touch .PostActionButton:hover
     width: rem(105)
-  .no-touch .PostList .PostActionButton.forUpload:hover
+  .no-touch .PostActionButton.forUpload:hover
     width: rem(110)
-  .no-touch .PostList .PostActionButton.forPost:hover
+  .no-touch .PostActionButton.forPost:hover
     width: rem(85)
-  .no-touch .PostList .PostActionButton.forComment:hover
+  .no-touch .PostActionButton.forComment:hover
     width: rem(125)
-  .no-touch .PostList .PostActionButton.forReplyAll:hover
+  .no-touch .PostActionButton.forReplyAll:hover
     width: rem(115)
+
+  // Don't do it in grid
+  .no-touch .PostGrid .PostActionButton:hover
+    color: transparent
+    width: rem(40)
 
   // Cancel animation
   .no-touch .PostActionButton > .CancelIcon
