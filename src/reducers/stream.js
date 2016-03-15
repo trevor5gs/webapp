@@ -5,8 +5,8 @@ export function stream(state = {}, action = { type: '' }) {
     return {}
   } else if (action && action.meta && action.meta.updateResult === false) {
     return state
-  } else if (action.type.indexOf('LOAD_STREAM') === 0 ||
-      action.type.indexOf('LOAD_NEXT_CONTENT') === 0 ||
+  } else if (action.type.indexOf('LOAD_STREAM_') === 0 ||
+      action.type.indexOf('LOAD_NEXT_CONTENT_') === 0 ||
       (action.type.indexOf('POST.') === 0 && action.type.indexOf('SUCCESS') > -1)) {
     return {
       ...state,

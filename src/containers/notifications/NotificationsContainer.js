@@ -56,6 +56,11 @@ class NotificationsContainer extends Component {
       type: GUI.NOTIFICATIONS_TAB,
       payload: { activeTabType: type },
     })
+    if (this.refs.streamComponent) {
+      this.refs.streamComponent.refs.wrappedInstance.setAction(
+        loadNotifications({ category: type })
+      )
+    }
     this.setState({ activeTabType: type })
   }
 

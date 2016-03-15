@@ -1,3 +1,5 @@
+// TODO: There are only 3 of these at one time but still...
+/* eslint-disable react/jsx-no-bind */
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
@@ -9,12 +11,13 @@ function isActive(tab, activePath) {
   return tab.activePattern.test(activePath)
 }
 
-export const TabListLinks = ({ activePath, className, tabClasses, tabs }) =>
+export const TabListLinks = ({ activePath, className, onTabClick, tabClasses, tabs }) =>
   <nav className={ classNames(className, 'TabListLinks') } role="tablist">
     { tabs.map((tab) =>
       <Link
         className={ classNames(tabClasses, 'TabLink', { active: isActive(tab, activePath) }) }
         key={ `TabLink-${tab.to.replace('/', '_')}` }
+        onClick={ () => { onTabClick({ type: tab.type }) } }
         to={ tab.to }
       >
         { tab.children }
@@ -25,14 +28,13 @@ export const TabListLinks = ({ activePath, className, tabClasses, tabs }) =>
 TabListLinks.propTypes = {
   activePath: PropTypes.string,
   className: PropTypes.string,
+  onTabClick: PropTypes.func,
   tabClasses: PropTypes.string,
   tabs: PropTypes.array.isRequired,
 }
 
 // -------------------------------------
 
-// TODO: There are only 3 of these at one time but still...
-/* eslint-disable react/jsx-no-bind */
 export const TabListButtons = ({ activeType, className, onTabClick, tabClasses, tabs }) =>
   <nav className={ classNames(className, 'TabListButtons') } role="tablist">
     { tabs.map((tab) =>
