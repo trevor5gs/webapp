@@ -57,5 +57,5 @@ export const PREFERENCES = {
 
 export const SESSION_KEYS = {
   NOTIFICATIONS_FILTER: 'KEYS.NOTIFICATIONS_FILTER',
-  generateScrollLocationKey: (key) => `scrollLocations.${key}`,
+  scrollLocationKey: (key) => `scrollLocations.${key}`,
 }

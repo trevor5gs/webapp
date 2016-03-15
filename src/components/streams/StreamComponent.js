@@ -228,7 +228,7 @@ export class StreamComponent extends Component {
     }
 
     if (this.props.scrollSessionKey) {
-      const sessionStorageKey = SESSION_KEYS.generateScrollLocationKey(this.props.scrollSessionKey)
+      const sessionStorageKey = SESSION_KEYS.scrollLocationKey(this.props.scrollSessionKey)
       Session.setItem(sessionStorageKey, scrollTopValue)
     }
 
@@ -255,7 +255,7 @@ export class StreamComponent extends Component {
 
       let sessionScrollLocation = null
       if (this.props.scrollSessionKey) {
-        const sessionStorageKey = SESSION_KEYS.generateScrollLocationKey(this.props.scrollSessionKey)
+        const sessionStorageKey = SESSION_KEYS.scrollLocationKey(this.props.scrollSessionKey)
         sessionScrollLocation = parseInt(Session.getItem(sessionStorageKey), 10)
       }
 
