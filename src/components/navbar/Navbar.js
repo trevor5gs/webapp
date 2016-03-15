@@ -21,6 +21,7 @@ import NavbarProfile from '../navbar/NavbarProfile'
 import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
 import Mousetrap from '../../vendor/mousetrap'
 import { findLayoutMode } from '../../reducers/gui'
+import Session from '../../../src/vendor/sessh'
 
 const whitelist = [
   '',
@@ -236,8 +237,8 @@ class Navbar extends Component {
     if (this.props.pathname.match(/^\/notifications\b/)) {
       notificationCategory = ''
     } else {
-      notificationCategory = (sessionStorage.getItem('notifications_filter') ?
-        `/${sessionStorage.getItem('notifications_filter')}` :
+      notificationCategory = (Session.getItem('notifications_filter') ?
+        `/${Session.getItem('notifications_filter')}` :
         '')
     }
     return (

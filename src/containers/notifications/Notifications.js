@@ -9,6 +9,7 @@ import {
   RelationshipIcon,
 } from '../../components/notifications/NotificationIcons'
 import { TabListLinks } from '../../components/tabs/TabList'
+import Session from '../../../src/vendor/sessh'
 
 /* eslint-disable react/prefer-stateless-function */
 export class Notifications extends Component {
@@ -32,9 +33,9 @@ export class Notifications extends Component {
   componentWillMount() {
     const { category } = this.props.params
     if (category) {
-      sessionStorage.setItem('notifications_filter', category)
+      Session.setItem('notifications_filter', category)
     } else {
-      sessionStorage.removeItem('notifications_filter')
+      Session.removeItem('notifications_filter')
     }
   }
 

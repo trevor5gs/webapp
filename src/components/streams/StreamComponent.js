@@ -14,6 +14,7 @@ import { ElloMark } from '../interface/ElloIcons'
 import { Paginator, emptyPagination } from '../streams/Paginator'
 import { findLayoutMode } from '../../reducers/gui'
 import { ErrorState4xx } from '../errors/Errors'
+import Session from '../vendor/sessh'
 
 export class StreamComponent extends Component {
 
@@ -227,7 +228,7 @@ export class StreamComponent extends Component {
 
     if (this.props.scrollSessionKey) {
       const sessionStorageKey = `scrollLocations.${this.props.scrollSessionKey}`
-      sessionStorage.setItem(sessionStorageKey, scrollTopValue)
+      Session.setItem(sessionStorageKey, scrollTopValue)
     }
 
     this.props.dispatch({
@@ -254,7 +255,7 @@ export class StreamComponent extends Component {
       let sessionScrollLocation = null
       if (this.props.scrollSessionKey) {
         const sessionStorageKey = `scrollLocations.${this.props.scrollSessionKey}`
-        sessionScrollLocation = Number(sessionStorage.getItem(sessionStorageKey))
+        sessionScrollLocation = parseInt(Session.getItem(sessionStorageKey), 10)
       }
 
       let scrollTopValue
