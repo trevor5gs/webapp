@@ -44,7 +44,7 @@ const routes = store => {
       onEnter(nextState, replace) {
         const { authentication: { isLoggedIn } } = store.getState()
         if (!isLoggedIn) {
-          replace({ pathName: '/enter', state: nextState })
+          replace({ pathname: '/enter', state: nextState })
         } else {
           oldOnEnter(nextState, replace)
         }
