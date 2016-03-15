@@ -21,7 +21,7 @@ import NavbarProfile from '../navbar/NavbarProfile'
 import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
 import Mousetrap from '../../vendor/mousetrap'
 import { findLayoutMode } from '../../reducers/gui'
-import Session from '../../../src/vendor/sessh'
+import Session from '../../../src/vendor/session'
 
 const whitelist = [
   '',

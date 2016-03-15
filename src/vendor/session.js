@@ -1,6 +1,6 @@
-let sessh
+let session
 if (typeof sessionStorage !== 'undefined') {
-  sessh = sessionStorage
+  session = sessionStorage
 } else {
   const storage = {}
   class Sessh {
@@ -14,7 +14,7 @@ if (typeof sessionStorage !== 'undefined') {
       delete storage[key]
     }
   }
-  sessh = new Sessh()
+  session = new Sessh()
 }
 
-export default sessh
+export default session

@@ -1,5 +1,5 @@
 import { expect } from '../spec_helper'
-import Session from '../../src/vendor/sessh'
+import Session from '../../src/vendor/session'
 
 describe('Sessh', () => {
   it('can store values', () => {

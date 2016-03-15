@@ -10,7 +10,7 @@ import {
   RelationshipIcon,
 } from '../../components/notifications/NotificationIcons'
 import { TabListLinks } from '../../components/tabs/TabList'
-import Session from '../../../src/vendor/sessh'
+import Session from '../../../src/vendor/session'
 
 /* eslint-disable react/prefer-stateless-function */
 export class Notifications extends Component {

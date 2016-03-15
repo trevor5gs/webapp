@@ -15,7 +15,7 @@ import { ElloMark } from '../interface/ElloIcons'
 import { Paginator, emptyPagination } from '../streams/Paginator'
 import { findLayoutMode } from '../../reducers/gui'
 import { ErrorState4xx } from '../errors/Errors'
-import Session from '../../vendor/sessh'
+import Session from '../../vendor/session'
 
 export class StreamComponent extends Component {
 
