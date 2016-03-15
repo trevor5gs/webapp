@@ -60,6 +60,7 @@ class Settings extends Component {
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
       emailState: { status: STATUS.INDETERMINATE, message: '' },
+      showSaveMessage: false,
     }
     this.passwordValue = ''
     this.passwordCurrentValue = ''
@@ -187,6 +188,12 @@ class Settings extends Component {
       username: this.usernameValue,
     }
     dispatch(saveProfile(formData))
+    this.setState({
+      passwordState: { status: STATUS.INDETERMINATE, message: '' },
+      usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
+      emailState: { status: STATUS.INDETERMINATE, message: '' },
+      showSaveMessage: true,
+    })
   }
 
   onTogglePostsAdultContent = (obj) => {
@@ -258,7 +265,7 @@ class Settings extends Component {
 
   render() {
     const { blockedCount, dispatch, mutedCount, profile } = this.props
-    const { emailState, passwordState, usernameState } = this.state
+    const { emailState, passwordState, usernameState, showSaveMessage } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
 
     if (!profile) {
@@ -356,6 +363,7 @@ class Settings extends Component {
 
           <InfoForm
             controlClassModifiers={ boxControlClassNames }
+            showSaveMessage={ showSaveMessage }
             tabIndexStart={ 4 }
           />
 

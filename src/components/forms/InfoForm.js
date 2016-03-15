@@ -32,12 +32,12 @@ class InfoForm extends Component {
     this.saveForm = debounce(this.saveForm, 300)
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
     this.setState({
       bioStatus: STATUS.INDETERMINATE,
       linksStatus: STATUS.INDETERMINATE,
       nameStatus: STATUS.INDETERMINATE,
-      showThenHideMessage: true,
+      showThenHideMessage: nextProps.showSaveMessage,
     })
   }
 
