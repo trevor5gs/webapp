@@ -61,6 +61,10 @@ export const authentication = store => next => action => {
         toMilliseconds(7100)
       ))
       return result
+    case AUTHENTICATION.USER_FAILURE:
+      result = next(action)
+      store.dispatch(unpauseRequester())
+      return result
     default:
       break
   }
