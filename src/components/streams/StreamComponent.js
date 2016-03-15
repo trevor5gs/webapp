@@ -75,6 +75,7 @@ export class StreamComponent extends Component {
     }),
     resultPath: PropTypes.string,
     routerState: PropTypes.object,
+    scrollSessionKey: PropTypes.string,
     stream: PropTypes.object.isRequired,
   }
 
@@ -128,6 +129,8 @@ export class StreamComponent extends Component {
     }
 
     addResizeObject(this)
+
+    this.attemptToRestoreScroll()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -163,26 +166,16 @@ export class StreamComponent extends Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    const { history, routerState, stream } = this.props
+
     const { action } = this.state
-    const shouldScroll = !routerState.didComeFromSeeMoeCommentsLink &&
+    const { routerState, stream } = this.props
+    const shouldScroll = !routerState.didComeFromSeeMoreCommentsLink &&
       !this.props.ignoresScrollPosition &&
       stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
       action && action.payload &&
       stream.payload.endpoint === action.payload.endpoint
     if (shouldScroll) {
-      this.saveScroll = true
-      requestAnimationFrame(() => {
-        const historyObj = history[this.state.locationKey] || {}
-        const scrollTopValue = historyObj.scrollTop
-        if (scrollTopValue) {
-          if (this.scrollContainer) {
-            this.scrollContainer.scrollTop = scrollTopValue
-          } else if (typeof window !== 'undefined') {
-            window.scrollTo(0, scrollTopValue)
-          }
-        }
-      })
+      this.attemptToRestoreScroll()
     }
   }
 
@@ -224,12 +217,19 @@ export class StreamComponent extends Component {
 
   setScroll() {
     if (!this.saveScroll) { return }
+
     let scrollTopValue
     if (this.scrollContainer) {
       scrollTopValue = scrollTop(this.scrollContainer)
     } else {
       scrollTopValue = scrollTop(window)
     }
+
+    if (this.props.scrollSessionKey) {
+      const sessionStorageKey = `scrollLocations.${this.props.scrollSessionKey}`
+      sessionStorage.setItem(sessionStorageKey, scrollTopValue)
+    }
+
     this.props.dispatch({
       type: ACTION_TYPES.GUI.SET_SCROLL,
       payload: {
@@ -242,6 +242,42 @@ export class StreamComponent extends Component {
   scrollToBottom() {
     const scrollTopValue = document.body.scrollHeight
     window.scrollTo(0, scrollTopValue)
+  }
+
+  attemptToRestoreScroll() {
+    const { history, routerState } = this.props
+    const shouldScroll = !routerState.didComeFromSeeMoreCommentsLink &&
+      !this.props.ignoresScrollPosition
+    if (shouldScroll) {
+      this.saveScroll = true
+
+      let sessionScrollLocation = null
+      if (this.props.scrollSessionKey) {
+        const sessionStorageKey = `scrollLocations.${this.props.scrollSessionKey}`
+        sessionScrollLocation = Number(sessionStorage.getItem(sessionStorageKey))
+      }
+
+      let scrollTopValue
+      if (routerState.didComeFromSeeMoreCommentsLink) {
+        scrollTopValue = document.body.scrollHeight
+      } else if (sessionScrollLocation) {
+        scrollTopValue = sessionScrollLocation
+      } else if (history[this.state.locationKey]) {
+        const historyObj = history[this.state.locationKey]
+        scrollTopValue = historyObj.scrollTop
+      }
+
+
+      if (scrollTopValue) {
+        requestAnimationFrame(() => {
+          if (this.scrollContainer) {
+            this.scrollContainer.scrollTop = scrollTopValue
+          } else if (typeof window !== 'undefined') {
+            window.scrollTo(0, scrollTopValue)
+          }
+        })
+      }
+    }
   }
 
   isPageLevelComponent() {

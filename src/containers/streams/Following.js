@@ -43,7 +43,10 @@ class Following extends Component {
     return (
       <section className="Following Panel">
         { isBeaconActive ? this.renderZeroStream() : null }
-        <StreamComponent action={ loadFriends() } />
+        <StreamComponent
+          action={loadFriends()}
+          scrollSessionKey="/following"
+        />
       </section>
     )
   }
