@@ -55,11 +55,14 @@
   width: calc(100% - #{rem(140)})
   margin-right: rem(10)
 
-.Notification.hasAsset .NotificationBody > p a
+.Notification .NotificationBody > p a
   overflow: hidden
   text-overflow: ellipsis
   white-space: nowrap
   max-width: rem(150)
+  display: inline-block
+  vertical-align: middle
+  line-height: 1.2
 
 .NotificationAsset
   display: inline-block
