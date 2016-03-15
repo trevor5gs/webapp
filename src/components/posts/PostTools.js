@@ -214,7 +214,7 @@ class PostTools extends Component {
         </span>
       )
     }
-    if (!isOwnPost && author.hasRepostingEnabled) {
+    if (author.hasRepostingEnabled && !(isOwnPost && parseInt(post.repostsCount, 10) === 0)) {
       cells.push(
         <span
           className="PostTool RepostTool"
@@ -223,7 +223,8 @@ class PostTools extends Component {
         >
           <button
             className={ classNames({ hasPostToolDrawer: post.repostsCount > 0 }) }
-            onClick={ this.onClickRepostPost }
+            onClick={ !isOwnPost ? this.onClickRepostPost : null }
+            style={{ pointerEvents: isOwnPost ? 'none' : null }}
           >
             <RepostIcon />
             <Hint>Repost</Hint>
