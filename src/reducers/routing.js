@@ -12,7 +12,6 @@ const initialState = {
 
 export function routeReducer(state = initialState, { type, payload: location }) {
   const newState = routerReducer(state, { type, payload: location })
-
   if (type !== LOCATION_CHANGE) {
     return newState
   }
@@ -20,6 +19,7 @@ export function routeReducer(state = initialState, { type, payload: location }) 
     ...newState,
     location: {
       pathname: get(newState, 'locationBeforeTransitions.pathname'),
+      state: get(newState, 'locationBeforeTransitions.state'),
     },
     previousPath: get(state, 'locationBeforeTransitions.pathname'),
   }

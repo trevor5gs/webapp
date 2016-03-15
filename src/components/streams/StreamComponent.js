@@ -107,12 +107,10 @@ export class StreamComponent extends Component {
   }
 
   componentDidMount() {
+    const { routerState } = this.props
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-
-    const { routerState } = this.props
-    const { action } = this.state
     if (this.isPageLevelComponent()) {
       addScrollObject(this)
     }
@@ -120,9 +118,7 @@ export class StreamComponent extends Component {
       const offset = Math.round((window.innerWidth * 0.5625)) - 200
       window.scrollTo(0, offset)
       this.saveScroll = false
-    } else if (routerState.didComeFromSeeMoreCommentsLink &&
-               action && action.meta && action.meta.resultKey) {
-      this.scrollToBottom()
+    } else if (routerState.didComeFromSeeMoreCommentsLink) {
       this.saveScroll = false
     } else {
       this.saveScroll = true
@@ -168,12 +164,9 @@ export class StreamComponent extends Component {
     }
 
     const { action } = this.state
-    const { routerState, stream } = this.props
-    const shouldScroll = !routerState.didComeFromSeeMoreCommentsLink &&
-      !this.props.ignoresScrollPosition &&
-      stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
-      action && action.payload &&
-      stream.payload.endpoint === action.payload.endpoint
+    const { stream } = this.props
+    const shouldScroll = stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
+      action && action.payload && stream.payload.endpoint === action.payload.endpoint
     if (shouldScroll) {
       this.attemptToRestoreScroll()
     }
@@ -246,9 +239,8 @@ export class StreamComponent extends Component {
 
   attemptToRestoreScroll() {
     const { history, routerState } = this.props
-    const shouldScroll = !routerState.didComeFromSeeMoreCommentsLink &&
-      !this.props.ignoresScrollPosition
-    if (shouldScroll) {
+    let scrollTopValue = null
+    if (!routerState.didComeFromSeeMoreCommentsLink && !this.props.ignoresScrollPosition) {
       this.saveScroll = true
 
       let sessionScrollLocation = null
@@ -257,26 +249,24 @@ export class StreamComponent extends Component {
         sessionScrollLocation = Number(sessionStorage.getItem(sessionStorageKey))
       }
 
-      let scrollTopValue
-      if (routerState.didComeFromSeeMoreCommentsLink) {
-        scrollTopValue = document.body.scrollHeight
-      } else if (sessionScrollLocation) {
+      if (sessionScrollLocation) {
         scrollTopValue = sessionScrollLocation
       } else if (history[this.state.locationKey]) {
         const historyObj = history[this.state.locationKey]
         scrollTopValue = historyObj.scrollTop
       }
-
-
-      if (scrollTopValue) {
-        requestAnimationFrame(() => {
-          if (this.scrollContainer) {
-            this.scrollContainer.scrollTop = scrollTopValue
-          } else if (typeof window !== 'undefined') {
-            window.scrollTo(0, scrollTopValue)
-          }
-        })
-      }
+    } else if (routerState.didComeFromSeeMoreCommentsLink) {
+      this.saveScroll = true
+      scrollTopValue = document.body.scrollHeight - window.innerHeight
+    }
+    if (scrollTopValue) {
+      requestAnimationFrame(() => {
+        if (this.scrollContainer) {
+          this.scrollContainer.scrollTop = scrollTopValue
+        } else if (typeof window !== 'undefined') {
+          window.scrollTo(0, scrollTopValue)
+        }
+      })
     }
   }
 
