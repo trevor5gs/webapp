@@ -70,7 +70,7 @@ class SignIn extends Component {
     if (success) {
       dispatch(replace({ pathname: currentStream }))
     } else {
-      this.setState({ failureMessage: 'No dice. Access denied.' })
+      this.setState({ failureMessage: 'Your email or password were incorrect.' })
     }
   }
 
@@ -80,7 +80,7 @@ class SignIn extends Component {
   }
 
   render() {
-    const { emailState, passwordState, featuredUser } = this.state
+    const { emailState, passwordState, failureMessage, featuredUser } = this.state
     const isValid = isFormValid([emailState, passwordState])
     return (
       <section className="Authentication Panel">
@@ -108,6 +108,7 @@ class SignIn extends Component {
               onChange={ this.onChangePasswordControl }
               tabIndex="2"
             />
+            {failureMessage ? <p>{failureMessage}</p> : ''}
             <FormButton disabled={ !isValid } tabIndex="3">Enter Ello</FormButton>
           </form>
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
