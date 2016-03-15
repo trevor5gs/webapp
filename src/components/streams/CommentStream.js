@@ -15,7 +15,11 @@ export default class CommentStream extends Component {
     const action = loadComments(`${post.id}`)
     return (
       <div>
-        <StreamComponent className="narrow" action={ action } ignoresScrollPosition >
+        <StreamComponent
+          className="CommentStreamComponent asFullWidth"
+          action={ action }
+          ignoresScrollPosition
+        >
           {post.commentsCount > 10 ?
             <Link
               to={{
