@@ -110,6 +110,9 @@ function _addOrUpdatePost(newState, action) {
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', -1)
       }
       return newState
+    case ACTION_TYPES.POST.UPDATE_SUCCESS:
+      newState[MAPPING_TYPES.POSTS][response.id] = response
+      return newState
     default:
       return newState
   }

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { openModal, closeModal } from '../../actions/modals'
@@ -15,12 +16,25 @@ import { closeOmnibar } from '../../actions/omnibar'
 import BlockCollection from './BlockCollection'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
 
-export function getEditorId(post, comment) {
-  if (comment) {
-    return `${comment.postId}_${comment.id}`
+const editorUniqueIdentifiers = {}
+export function getEditorId(post, comment, isComment) {
+  const prefix = isComment ? 'commentEditor' : 'postEditor'
+  let modelId = ''
+  if (post) {
+    modelId = post.id
+  } else if (comment) {
+    modelId = `${comment.postId}_${comment.id}`
+  } else {
+    // TODO: make this unique for zero states too
+    modelId = '0'
   }
-  // TODO: make this unique for zero states too
-  return `${post ? post.id : 0}`
+  const fullPrefix = `${prefix}${modelId}`
+  if (editorUniqueIdentifiers.hasOwnProperty(fullPrefix)) {
+    return editorUniqueIdentifiers[fullPrefix]
+  }
+  const uniqueId = _.uniqueId(fullPrefix)
+  editorUniqueIdentifiers[fullPrefix] = uniqueId
+  return uniqueId
 }
 
 class Editor extends Component {
@@ -46,8 +60,8 @@ class Editor extends Component {
   }
 
   getEditorIdentifier() {
-    const { comment, post } = this.props
-    return getEditorId(post, comment)
+    const { comment, isComment, post } = this.props
+    return getEditorId(post, comment, isComment)
   }
 
   clearPersistedData() {
@@ -177,13 +191,13 @@ class Editor extends Component {
         blocks = post.body
       }
     }
-    // TODO: update this to work with comment editing
-    const key = `editor${submitText}_${post ? post.id : 0}_${blocks.length + repostContent.length}`
+    const editorId = this.getEditorIdentifier()
+    const key = `${editorId}_${blocks.length + repostContent.length}`
     return (
       <BlockCollection
         blocks={ blocks }
         cancelAction={ this.cancel }
-        editorId={ this.getEditorIdentifier() }
+        editorId={ editorId }
         isComment={ isComment }
         isOwnPost={ isOwnPost }
         key={ key }

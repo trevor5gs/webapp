@@ -295,8 +295,10 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
       // fall through to parse the rest
       break
+    case ACTION_TYPES.POST.CREATE_REQUEST:
     case ACTION_TYPES.POST.CREATE_FAILURE:
     case ACTION_TYPES.POST.CREATE_SUCCESS:
+    case ACTION_TYPES.POST.UPDATE_REQUEST:
     case ACTION_TYPES.POST.UPDATE_SUCCESS:
       return postMethods.addOrUpdatePost(newState, action)
     case ACTION_TYPES.POST.DELETE_REQUEST:

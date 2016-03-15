@@ -94,7 +94,7 @@ class PostDetail extends Component {
               { postEls }
             </div>
             <StreamComponent
-              action={ loadComments(post ? post.id : `~${params.token}`, false) }
+              action={ loadComments((post ? `${post.id}` : `~${params.token}`), false) }
               key={ params.token }
             />
           </article>
