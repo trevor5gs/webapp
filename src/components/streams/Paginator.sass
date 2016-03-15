@@ -35,11 +35,14 @@
 
 // Position to the right for Lovers/Reposter drawers
 .UserAvatars .Paginator
-  transform: translate3d(0,0,0)
-  left: auto
+  position: static
+  transform: none
+  display: inline-block
+  width: auto
   height: auto
-  right: rem(-40)
-  bottom: rem(30)
+.UserAvatars .Paginator:not(.isBusy) .ElloMark
+  display: none
+
 
 // Position bottom left for see more on settings
 .BlockedUsers .Paginator,
