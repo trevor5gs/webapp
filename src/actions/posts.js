@@ -186,6 +186,7 @@ export function updatePost(post, body) {
       body: { body },
       endpoint: api.updatePost(post.id),
       method: 'PATCH',
+      model: post,
     },
     meta: {},
   }

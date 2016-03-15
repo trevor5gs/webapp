@@ -28,6 +28,8 @@ function _addOrUpdateComment(newState, action) {
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
       response = action.payload.response
+      // the comments wouldn't exist if you refreshed
+      // on a post detail that didn't have any comments
       if (!newState[MAPPING_TYPES.COMMENTS]) {
         newState[MAPPING_TYPES.COMMENTS] = {}
       }
