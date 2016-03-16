@@ -37,7 +37,7 @@ function embedRegion(region, key) {
   data[`data-${region.data.service}-id`] = region.data.id
   return (
     <div className="EmbedRegion embetter" { ...data } key={ key }>
-      <Link className="RegionContent" to={ region.data.url }>
+      <Link className="EmbedRegionContent" to={ region.data.url }>
         <img src={ region.data.thumbnailLargeUrl } />
       </Link>
     </div>

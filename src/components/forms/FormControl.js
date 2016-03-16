@@ -131,6 +131,10 @@ class FormControl extends Component {
     }
   }
 
+  clear() {
+    this.setState({ text: '' })
+  }
+
   renderTextArea(text, inputClassNames) {
     return (
       <textarea

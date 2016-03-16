@@ -552,7 +552,9 @@ class BlockCollection extends Component {
         const file = files[index]
         if (this.isLegitFileType(file)) {
           dispatch(savePostImage(file, editorId, index))
-        } else {
+        // Test to make sure we have a file and file.type (real failure) Safari
+        // sometimes reports the length of the array as well.. wtf?
+        } else if (file && file.type) {
           dispatch(openAlert(
             <Dialog
               title="Invalid file type"
@@ -560,7 +562,6 @@ class BlockCollection extends Component {
               onClick={ bindActionCreators(closeAlert, dispatch) }
             />
           ))
-          break
         }
       }
     }

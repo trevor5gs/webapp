@@ -115,7 +115,7 @@ class RelationshipButton extends Component {
   }
 
   renderAsNoise() {
-    const icon = this.props.classList === 'inHeader' ? <HeaderCheckIcon /> : <MiniCheckIcon />
+    const icon = this.props.classList === 'inHeader' ? <HeaderPlusIcon /> : <MiniCheckIcon />
     return this.renderAsToggleButton('Starred', icon)
   }
 
