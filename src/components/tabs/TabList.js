@@ -17,7 +17,7 @@ export const TabListLinks = ({ activePath, className, onTabClick, tabClasses, ta
       <Link
         className={ classNames(tabClasses, 'TabLink', { active: isActive(tab, activePath) }) }
         key={ `TabLink-${tab.to.replace('/', '_')}` }
-        onClick={ () => { onTabClick({ type: tab.type }) } }
+        onClick={ onTabClick ? () => { onTabClick({ type: tab.type }) } : null }
         to={ tab.to }
       >
         { tab.children }
