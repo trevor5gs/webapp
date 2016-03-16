@@ -78,13 +78,14 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   )
 }
 
-function footer(post, author, currentUser) {
+function footer(post, author, currentUser, isGridLayout) {
   if (!author) { return null }
   return (
     <PostTools
       author={ author }
       post={ post }
       currentUser={ currentUser }
+      isGridLayout={ isGridLayout }
       key={ `PostTools_${post.id}` }
     />
   )
@@ -114,7 +115,7 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
     const content = isGridLayout ? post.summary : post.content
     cells.push(body(content, post.id, isGridLayout, postDetailPath))
   }
-  cells.push(footer(post, author, currentUser))
+  cells.push(footer(post, author, currentUser, isGridLayout))
   setModels({})
   return cells
 }
