@@ -5,16 +5,41 @@ import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { getLinkObject } from '../base/json_helper'
 import { body, repostedBody, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
+import UserAvatars from '../../components/users/UserAvatars'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostTools from '../posts/PostTools'
 import CommentStream from '../streams/CommentStream'
-import { postLoversDrawer, postRepostersDrawer } from '../../containers/details/PostDetail'
-import { RepostIcon } from '../posts/PostIcons'
+import { HeartIcon, RepostIcon } from '../posts/PostIcons'
 import RelationsGroup from '../relationships/RelationsGroup'
 import Editor from '../../components/editor/Editor'
+import { postLovers, postReposters } from '../../networking/api'
 
 function getPostDetailPath(author, post) {
   return `/${author.username}/post/${post.token}`
+}
+
+function postLoversDrawer(post) {
+  return (
+    <UserAvatars
+      endpoint={ postLovers(post.id) }
+      icon={ <HeartIcon /> }
+      key={ `userAvatarsLovers_${post.id}` }
+      post={ post }
+      resultType="love"
+    />
+  )
+}
+
+function postRepostersDrawer(post) {
+  return (
+    <UserAvatars
+      endpoint={ postReposters(post.id) }
+      icon={ <RepostIcon /> }
+      key={ `userAvatarsReposters_${post.id}` }
+      post={ post }
+      resultType="repost"
+    />
+  )
 }
 
 function commentStream(post, author) {
@@ -154,8 +179,8 @@ class PostParser extends Component {
     if (!post) { return null }
     setModels({ assets })
 
-    const showLovers = !isGridLayout && !isPostDetail && this.props.showLovers
-    const showReposters = !isGridLayout && !isPostDetail && this.props.showReposters
+    const showLovers = !isGridLayout && this.props.showLovers
+    const showReposters = !isGridLayout && this.props.showReposters
     const showComments = !isPostDetail && this.props.showComments
 
     let postHeader

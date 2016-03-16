@@ -56,6 +56,17 @@ function _mergeModel(state, type, params) {
 methods.mergeModel = (state, type, params) =>
   _mergeModel(state, type, params)
 
+function _findPostFromIdOrToken(state, postIdOrToken) {
+  return parseInt(postIdOrToken, 10) > 0 ?
+    state[MAPPING_TYPES.POSTS][postIdOrToken] :
+    findModel(state, {
+      collection: MAPPING_TYPES.POSTS,
+      findObj: { token: postIdOrToken },
+    })
+}
+methods.findPostFromIdOrToken = (state, postIdOrToken) =>
+  _findPostFromIdOrToken(state, postIdOrToken)
+
 function _addParentPostIdToComments(state, action) {
   // Kludge to abort for some tests
   if (!action || !action.meta) return null
@@ -67,12 +78,7 @@ function _addParentPostIdToComments(state, action) {
   const { response, postIdOrToken } = action.payload
 
   if (postIdOrToken) {
-    const post = parseInt(postIdOrToken, 10) > 0 ?
-      state[MAPPING_TYPES.POSTS][postIdOrToken] :
-      findModel(state, {
-        collection: MAPPING_TYPES.POSTS,
-        findObj: { token: postIdOrToken },
-      })
+    const post = methods.findPostFromIdOrToken(state, postIdOrToken)
     if (post) {
       for (const model of response[mappingType]) {
         if (!state[MAPPING_TYPES.POSTS][model.postId]) {
@@ -277,6 +283,19 @@ function _updateCurrentUser(newState, action) {
 methods.updateCurrentUser = (newState, action) =>
   _updateCurrentUser(newState, action)
 
+function _updatePostDetail(newState, action) {
+  const post = action.payload.response.posts
+  methods.parseLinked(action.payload.response.linked, newState)
+  methods.addModels(newState, action.meta.mappingType, action.payload.response)
+  return methods.mergeModel(
+    newState,
+    action.meta.mappingType,
+    { id: post.id, showLovers: parseInt(post.lovesCount, 10) > 0, showReposters: parseInt(post.repostsCount, 10) > 0 }
+  )
+}
+methods.updatePostDetail = (newState, post) =>
+  _updatePostDetail(newState, post)
+
 export default function json(state = {}, action = { type: '' }) {
   let newState = { ...state }
   // whitelist actions
@@ -295,7 +314,7 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.COMMENT.DELETE_FAILURE:
       return methods.deleteModel(state, newState, action, MAPPING_TYPES.COMMENTS)
     case ACTION_TYPES.COMMENT.TOGGLE_EDITING:
-      return commentMethods.toggleEditing(state, newState, action)
+      return commentMethods.toggleEditing(newState, action)
     case ACTION_TYPES.COMMENT.EDITABLE_SUCCESS:
     case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
@@ -313,6 +332,8 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.POST.DELETE_SUCCESS:
     case ACTION_TYPES.POST.DELETE_FAILURE:
       return methods.deleteModel(state, newState, action, MAPPING_TYPES.POSTS)
+    case ACTION_TYPES.POST.DETAIL_SUCCESS:
+      return methods.updatePostDetail(newState, action)
     case ACTION_TYPES.POST.LOVE_REQUEST:
     case ACTION_TYPES.POST.LOVE_SUCCESS:
     case ACTION_TYPES.POST.LOVE_FAILURE:
@@ -320,15 +341,15 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.PROFILE.SAVE_SUCCESS:
       return methods.updateCurrentUser(newState, action)
     case ACTION_TYPES.POST.TOGGLE_COMMENTS:
-      return postMethods.toggleComments(state, newState, action)
+      return postMethods.toggleComments(newState, action)
     case ACTION_TYPES.POST.TOGGLE_EDITING:
-      return postMethods.toggleEditing(state, newState, action)
+      return postMethods.toggleEditing(newState, action)
     case ACTION_TYPES.POST.TOGGLE_LOVERS:
-      return postMethods.toggleLovers(state, newState, action)
+      return postMethods.toggleLovers(newState, action)
     case ACTION_TYPES.POST.TOGGLE_REPOSTERS:
-      return postMethods.toggleReposters(state, newState, action)
+      return postMethods.toggleReposters(newState, action)
     case ACTION_TYPES.POST.TOGGLE_REPOSTING:
-      return postMethods.toggleReposting(state, newState, action)
+      return postMethods.toggleReposting(newState, action)
     case ACTION_TYPES.RELATIONSHIPS.BATCH_UPDATE_INTERNAL:
       return relationshipMethods.batchUpdateRelationship(newState, action)
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL:

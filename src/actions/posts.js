@@ -5,9 +5,10 @@ import * as StreamRenderables from '../components/streams/StreamRenderables'
 
 export function loadPostDetail(idOrToken) {
   return {
-    type: ACTION_TYPES.LOAD_STREAM,
+    type: ACTION_TYPES.POST.DETAIL,
     payload: {
       endpoint: api.postDetail(idOrToken),
+      postIdOrToken: idOrToken,
     },
     meta: {
       mappingType: MAPPING_TYPES.POSTS,

@@ -120,45 +120,45 @@ function _addOrUpdatePost(newState, action) {
 methods.addOrUpdatePost = (newState, action) =>
   _addOrUpdatePost(newState, action)
 
-function _toggleComments(state, newState, action) {
+function _toggleComments(newState, action) {
   const { model, showComments } = action.payload
   newState[MAPPING_TYPES.POSTS][model.id].showComments = showComments
   return newState
 }
-methods.toggleComments = (state, newState, action) =>
-  _toggleComments(state, newState, action)
+methods.toggleComments = (newState, action) =>
+  _toggleComments(newState, action)
 
-function _toggleEditing(state, newState, action) {
+function _toggleEditing(newState, action) {
   const { model, isEditing } = action.payload
   newState[MAPPING_TYPES.POSTS][model.id].isEditing = isEditing
   return newState
 }
-methods.toggleEditing = (state, newState, action) =>
-  _toggleEditing(state, newState, action)
+methods.toggleEditing = (newState, action) =>
+  _toggleEditing(newState, action)
 
-function _toggleLovers(state, newState, action) {
+function _toggleLovers(newState, action) {
   const { model, showLovers } = action.payload
   newState[MAPPING_TYPES.POSTS][model.id].showLovers = showLovers
   return newState
 }
-methods.toggleLovers = (state, newState, action) =>
-  _toggleLovers(state, newState, action)
+methods.toggleLovers = (newState, action) =>
+  _toggleLovers(newState, action)
 
-function _toggleReposting(state, newState, action) {
+function _toggleReposting(newState, action) {
   const { model, isReposting } = action.payload
   newState[MAPPING_TYPES.POSTS][model.id].isReposting = isReposting
   return newState
 }
-methods.toggleReposting = (state, newState, action) =>
-  _toggleReposting(state, newState, action)
+methods.toggleReposting = (newState, action) =>
+  _toggleReposting(newState, action)
 
-function _toggleReposters(state, newState, action) {
+function _toggleReposters(newState, action) {
   const { model, showReposters } = action.payload
   newState[MAPPING_TYPES.POSTS][model.id].showReposters = showReposters
   return newState
 }
-methods.toggleReposters = (state, newState, action) =>
-  _toggleReposters(state, newState, action)
+methods.toggleReposters = (newState, action) =>
+  _toggleReposters(newState, action)
 
 export default methods
 
