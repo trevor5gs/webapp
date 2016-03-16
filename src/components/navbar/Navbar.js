@@ -24,22 +24,27 @@ import { findLayoutMode } from '../../reducers/gui'
 import Session from '../../../src/vendor/session'
 
 const whitelist = [
-  '',
-  'discover',
-  'explore',
-  'find',
-  'following',
-  'invitations',
-  'notifications',
-  'onboarding',
-  'search',
-  'staff',
-  'starred',
+  /^\//,
+  /^\/[\w\-]+\/post\/.+/,
+  /^\/discover\b/,
+  /^\/explore\b/,
+  /^\/find\b/,
+  /^\/following\b/,
+  /^\/invitations\b/,
+  /^\/notifications\b/,
+  /^\/onboarding\b/,
+  /^\/search\b/,
+  /^\/staff\b/,
+  /^\/starred\b/,
 ]
 
 function isBlacklistedRoute(pathname) {
-  const pathnames = pathname.split('/').slice(1)
-  return !(whitelist.indexOf(pathnames[0]) >= 0)
+  for (const regex of whitelist) {
+    if (regex.test(pathname)) {
+      return false
+    }
+  }
+  return true
 }
 
 class Navbar extends Component {
