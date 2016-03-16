@@ -54,6 +54,13 @@ function parseSummary(post, path) {
   return regionItemsForNotifications(post.summary, path)
 }
 
+function parseSummaryForCommentNotification(post, comment, path) {
+  const postContent = post && post.content ? post.content : []
+  const commentContent = comment && comment.content ? comment.content : []
+  const divider = [{ kind: 'text', data: '<hr class="CommentNotificationDivider"/>' }]
+  const combined = postContent.concat(divider, commentContent)
+  return regionItemsForNotifications(combined, path)
+}
 
 // COMMENTS
 function commentNotification(comment, createdAt) {
@@ -61,7 +68,7 @@ function commentNotification(comment, createdAt) {
   const parentPost = getLinkObject(comment, 'parentPost', models)
   if (!author || !parentPost) { return null }
   const activityPath = getActivityPath(author, parentPost)
-  const summary = parseSummary(comment, activityPath)
+  const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath)
   return (
     <Notification
       activityPath={ activityPath }
@@ -85,7 +92,7 @@ function commentMentionNotification(comment, createdAt) {
   const parentPost = getLinkObject(comment, 'parentPost', models)
   if (!author || !parentPost) { return null }
   const activityPath = getActivityPath(author, parentPost)
-  const summary = parseSummary(comment, activityPath)
+  const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath)
   return (
     <Notification
       activityPath={ activityPath }
@@ -111,7 +118,7 @@ function commentOnOriginalPostNotification(comment, createdAt) {
   const repostedSource = getLinkObject(repost, 'repostedSource', models)
   if (!author || !repost || !repostAuthor || !repostedSource) { return null }
   const activityPath = getActivityPath(author, repostedSource)
-  const summary = parseSummary(comment, activityPath)
+  const summary = parseSummaryForCommentNotification(repostedSource, comment, activityPath)
   return (
     <Notification
       activityPath={ activityPath }
@@ -139,7 +146,7 @@ function commentOnRepostNotification(comment, createdAt) {
   const repost = getLinkObject(comment, 'parentPost', models)
   if (!author || !repost) { return null }
   const activityPath = getActivityPath(author, repost)
-  const summary = parseSummary(comment, activityPath)
+  const summary = parseSummaryForCommentNotification(repost, comment, activityPath)
   return (
     <Notification
       activityPath={ activityPath }
