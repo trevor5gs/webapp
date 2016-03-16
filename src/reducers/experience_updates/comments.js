@@ -40,6 +40,9 @@ function _addOrUpdateComment(newState, action) {
       if (post.links && post.links.comments) {
         post.links.comments.ids.unshift(`${action.payload.response.id}`)
       }
+      if (newState.pages[`/posts/${post.id}/comments`]) {
+        newState.pages[`/posts/${post.id}/comments`].ids.unshift(response.id)
+      }
       return methods.updateCommentsCount(newState, postId, 1)
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
