@@ -35,11 +35,9 @@ class SignUp extends Component {
       <section className="Authentication Panel">
         <div className="AuthenticationFormDialog">
           <h1>
-            <Emoji name="v" title="Awesome!" size={ 32 } />
-            Be inspired.
+            Create. Share. Connect.
           </h1>
           <RegistrationRequestForm />
-          <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>
         <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />

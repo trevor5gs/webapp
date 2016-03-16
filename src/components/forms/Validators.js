@@ -59,7 +59,7 @@ export function getEmailStateFromClient({ currentStatus, value }) {
   return (
     isValidEmail(value) ?
       { status: STATUS.SUCCESS, message: '' } :
-      { status: STATUS.FAILURE, message: 'appears to be invalid.' }
+      { status: STATUS.FAILURE, message: 'That email is invalid. Please try again.' }
   )
 }
 
