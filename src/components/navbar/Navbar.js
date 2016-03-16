@@ -24,7 +24,7 @@ import { findLayoutMode } from '../../reducers/gui'
 import Session from '../../../src/vendor/session'
 
 const whitelist = [
-  /^\//,
+  /^\/$/,
   /^\/[\w\-]+\/post\/.+/,
   /^\/discover\b/,
   /^\/explore\b/,
