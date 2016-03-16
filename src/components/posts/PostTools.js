@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { replace } from 'react-router-redux'
+import { push, replace } from 'react-router-redux'
 import classNames from 'classnames'
 import { openModal, closeModal } from '../../actions/modals'
 import * as postActions from '../../actions/posts'
@@ -31,6 +31,7 @@ class PostTools extends Component {
     author: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    isGridLayout: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     pathname: PropTypes.string.isRequired,
     post: PropTypes.object.isRequired,
@@ -69,15 +70,33 @@ class PostTools extends Component {
   }
 
   onClickToggleLovers = () => {
-    const { dispatch, post } = this.props
-    const showLovers = !post.showLovers
-    dispatch(postActions.toggleLovers(post, showLovers))
+    const { dispatch, isGridLayout, isLoggedIn, pathname, post } = this.props
+    if (!isLoggedIn) {
+      this.signUp()
+      return
+    }
+    const detailLink = this.getPostDetailLink()
+    if (isGridLayout && pathname !== detailLink) {
+      dispatch(push(detailLink))
+    } else {
+      const showLovers = !post.showLovers
+      dispatch(postActions.toggleLovers(post, showLovers))
+    }
   }
 
   onClickToggleReposters = () => {
-    const { dispatch, post } = this.props
-    const showReposters = !post.showReposters
-    dispatch(postActions.toggleReposters(post, showReposters))
+    const { dispatch, isGridLayout, isLoggedIn, pathname, post } = this.props
+    if (!isLoggedIn) {
+      this.signUp()
+      return
+    }
+    const detailLink = this.getPostDetailLink()
+    if (isGridLayout && pathname !== detailLink) {
+      dispatch(push(detailLink))
+    } else {
+      const showReposters = !post.showReposters
+      dispatch(postActions.toggleReposters(post, showReposters))
+    }
   }
 
   onClickSharePost = () => {
@@ -138,6 +157,11 @@ class PostTools extends Component {
     }
   }
 
+  getPostDetailLink() {
+    const { author, post } = this.props
+    return `/${author.username}/post/${post.token}`
+  }
+
   getToolCells() {
     const { author, currentUser, isLoggedIn, post } = this.props
     const isOwnPost = currentUser && author.id === currentUser.id
@@ -147,7 +171,7 @@ class PostTools extends Component {
         className={ classNames('PostTool', 'ViewsTool', { asPill: isLoggedIn }) }
         key={ `ViewsTool_${post.id}` }
       >
-        <Link to={ `/${author.username}/post/${post.token}` }>
+        <Link to={ this.getPostDetailLink() }>
           <EyeIcon />
           <span className="PostToolValue">{ post.viewsCountRounded }</span>
           <Hint>Views</Hint>
@@ -156,7 +180,7 @@ class PostTools extends Component {
     )
     cells.push(
       <span className="PostTool TimeAgoTool" key={ `TimeAgoTool_${post.id}` }>
-        <Link to={ `/${author.username}/post/${post.token}` }>
+        <Link to={ this.getPostDetailLink() }>
           <span className="PostToolValue">{ new Date(post.createdAt).timeAgoInWords() }</span>
           <Hint>Visit</Hint>
         </Link>
@@ -177,7 +201,7 @@ class PostTools extends Component {
               </span>
               <Hint>Comment</Hint>
             </button> :
-            <Link to={ `/${author.username}/post/${post.token}` }>
+            <Link to={ this.getPostDetailLink() }>
               <BubbleIcon />
               <span className="PostToolValue" >
                 { numberToHuman(post.commentsCount, false) }

@@ -2,38 +2,11 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { findModel } from '../../components/base/json_helper'
-import { loadComments, loadPostDetail } from '../../actions/posts'
-import { postLovers, postReposters } from '../../networking/api'
+import { loadComments, loadPostDetail, toggleLovers, toggleReposters } from '../../actions/posts'
 import { PostDetailHelmet } from '../../components/helmets/PostDetailHelmet'
-import { HeartIcon, RepostIcon } from '../../components/posts/PostIcons'
 import PostParser from '../../components/parsers/PostParser'
-import UserAvatars from '../../components/users/UserAvatars'
 import Editor from '../../components/editor/Editor'
 import StreamComponent from '../../components/streams/StreamComponent'
-
-export function postLoversDrawer(post) {
-  return (
-    <UserAvatars
-      endpoint={ postLovers(post.id) }
-      icon={ <HeartIcon /> }
-      key={ `userAvatarsLovers_${post.id}` }
-      post={ post }
-      resultType="love"
-    />
-  )
-}
-
-export function postRepostersDrawer(post) {
-  return (
-    <UserAvatars
-      endpoint={ postReposters(post.id) }
-      icon={ <RepostIcon /> }
-      key={ `userAvatarsReposters_${post.id}` }
-      post={ post }
-      resultType="repost"
-    />
-  )
-}
 
 class PostDetail extends Component {
 
@@ -51,17 +24,39 @@ class PostDetail extends Component {
     store.dispatch(loadPostDetail(`~${routerState.params.token}`))
 
   componentWillMount() {
-    const { dispatch, params } = this.props
+    const { dispatch, json, params } = this.props
+    this.initPost = findModel(json, {
+      collection: MAPPING_TYPES.POSTS,
+      findObj: { token: params.token },
+    })
+    if (this.initPost) {
+      this.lovesWasOpen = this.initPost.showLovers
+      this.repostsWasOpen = this.initPost.showReposters
+    }
     dispatch(loadPostDetail(`~${params.token}`))
   }
 
-  render() {
-    const { json, params } = this.props
+  componentWillUnmount() {
+    const { dispatch, json, params } = this.props
     const post = findModel(json, {
       collection: MAPPING_TYPES.POSTS,
       findObj: { token: params.token },
     })
+    if (!this.lovesWasOpen) {
+      dispatch(toggleLovers(post, false))
+    }
+    if (!this.repostsWasOpen) {
+      dispatch(toggleReposters(post, false))
+    }
+  }
+
+  render() {
+    const { json, params } = this.props
     const postEls = []
+    const post = findModel(json, {
+      collection: MAPPING_TYPES.POSTS,
+      findObj: { token: params.token },
+    })
     let author
     if (post) {
       author = json[MAPPING_TYPES.USERS][post.authorId]
@@ -73,12 +68,6 @@ class PostDetail extends Component {
           post={ post }
         />
       )
-      if (Number(post.lovesCount) > 0) {
-        postEls.push(postLoversDrawer(post))
-      }
-      if (Number(post.repostsCount) > 0) {
-        postEls.push(postRepostersDrawer(post))
-      }
       postEls.push(<Editor key={ `editor_${post.id}` } post={ post } isComment />)
     }
     return (
