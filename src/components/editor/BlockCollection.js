@@ -36,6 +36,7 @@ class BlockCollection extends Component {
     emoji: PropTypes.object.isRequired,
     isComment: PropTypes.bool,
     isOwnPost: PropTypes.bool,
+    pathname: PropTypes.string.isRequired,
     postId: PropTypes.string,
     repostContent: PropTypes.array,
     shouldLoadFromState: PropTypes.bool,
@@ -338,11 +339,18 @@ class BlockCollection extends Component {
           <TextBlock
             { ...blockProps }
             onInput={ this.handleTextBlockInput }
+            shouldAutofocus={ this.shouldAutofocus() }
           />
         )
       default:
         return null
     }
+  }
+
+  shouldAutofocus() {
+    const { pathname, isComment } = this.props
+    const postRegex = /^\/[\w\-]+\/post\/.+/
+    return !(isComment && postRegex.test(pathname))
   }
 
   // TODO: probably should have the completer
@@ -613,6 +621,7 @@ function mapStateToProps(state, ownProps) {
     editorStore: state.editor.editors[ownProps.editorId],
     emoji: state.emoji,
     postId: ownProps.post ? `${ownProps.post.id}` : null,
+    pathname: state.routing.location.pathname,
   }
 }
 

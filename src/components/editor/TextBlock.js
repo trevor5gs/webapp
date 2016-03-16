@@ -11,10 +11,13 @@ class TextBlock extends Component {
     dispatch: PropTypes.func.isRequired,
     editorId: PropTypes.string.isRequired,
     onInput: PropTypes.func.isRequired,
+    shouldAutofocus: PropTypes.bool.isRequired,
   }
 
   componentDidMount() {
-    placeCaretAtEnd(this.refs.block.refs.text)
+    if (this.props.shouldAutofocus) {
+      placeCaretAtEnd(this.refs.block.refs.text)
+    }
   }
 
   shouldComponentUpdate(nextProps) {
