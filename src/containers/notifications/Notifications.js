@@ -32,12 +32,11 @@ export class Notifications extends Component {
   }
 
   componentWillMount() {
-    const { category } = this.props.params
-    if (category) {
-      Session.setItem(SESSION_KEYS.NOTIFICATIONS_FILTER, category)
-    } else {
-      Session.removeItem(SESSION_KEYS.NOTIFICATIONS_FILTER)
-    }
+    this.saveCategory()
+  }
+
+  componentDidUpdate() {
+    this.saveCategory()
   }
 
   onClickTab = ({ type }) => {
@@ -45,6 +44,15 @@ export class Notifications extends Component {
       this.refs.streamComponent.refs.wrappedInstance.setAction(
         loadNotifications({ category: type })
       )
+    }
+  }
+
+  saveCategory() {
+    const { category } = this.props.params
+    if (category) {
+      Session.setItem(SESSION_KEYS.NOTIFICATIONS_FILTER, category)
+    } else {
+      Session.removeItem(SESSION_KEYS.NOTIFICATIONS_FILTER)
     }
   }
 
@@ -76,7 +84,7 @@ export class Notifications extends Component {
           action={ loadNotifications(params) }
           className="asFullWidth"
           key={ `notificationPanel_${params.category}` }
-          historyLocationOverride={ `notifications_${pathname}` }
+          historyLocationOverride={ `notifications_${category || 'all'}` }
           ref="streamComponent"
         />
       </section>
