@@ -135,6 +135,16 @@ class FormControl extends Component {
     this.setState({ text: '' })
   }
 
+  renderLabel() {
+    const { id, label } = this.props
+    const labelClassNames = this.getLabelClassNames()
+    return (
+      <label className={ labelClassNames } htmlFor={ id }>
+        { label }
+      </label>
+    )
+  }
+
   renderTextArea(text, inputClassNames) {
     return (
       <textarea
@@ -164,17 +174,14 @@ class FormControl extends Component {
   }
 
   render() {
-    const { id, kind, label, renderFeedback } = this.props
+    const { kind, label, renderFeedback } = this.props
     const { text } = this.state
     const groupClassNames = this.getGroupClassNames()
-    const labelClassNames = this.getLabelClassNames()
     const inputClassNames = this.getInputClassNames()
     const statusClassNames = this.getStatusClassNames()
     return (
       <div className={ groupClassNames }>
-        <label className={ labelClassNames } htmlFor={ id }>
-          { label }
-        </label>
+        { label && this.renderLabel() }
         {
           kind === 'textarea' ?
             this.renderTextArea(text, inputClassNames) :
@@ -190,4 +197,3 @@ class FormControl extends Component {
 }
 
 export default FormControl
-
