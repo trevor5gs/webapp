@@ -580,6 +580,7 @@ class BlockCollection extends Component {
     const { dragBlockTop, loadingImageBlocks, order } = this.state
     const hasMention = this.hasMention()
     const hasContent = this.hasContent()
+    const firstBlockIsText = this.getBlockFromUid(order[0]).kind === 'text'
     return (
       <div
         className={ classNames('editor', { hasMention, hasContent, isComment }) }
@@ -599,7 +600,7 @@ class BlockCollection extends Component {
             null
           }
         </div>
-        { isComment ? <QuickEmoji onAddEmoji={ this.onInsertEmoji } /> : null }
+        { isComment && firstBlockIsText ? <QuickEmoji onAddEmoji={ this.onInsertEmoji } /> : null }
         <PostActionBar
           cancelAction={ cancelAction }
           disableSubmitAction={ loadingImageBlocks.length > 0 }
