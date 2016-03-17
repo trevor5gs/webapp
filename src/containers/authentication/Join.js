@@ -11,6 +11,7 @@ import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
 import Emoji from '../../components/assets/Emoji'
 import EmailControl from '../../components/forms/EmailControl'
+import InvitationCodeControl from '../../components/forms/InvitationCodeControl'
 import FormButton from '../../components/forms/FormButton'
 import PasswordControl from '../../components/forms/PasswordControl'
 import UsernameControl from '../../components/forms/UsernameControl'
@@ -18,6 +19,8 @@ import {
   isFormValid,
   getUsernameStateFromClient,
   getUsernameStateFromServer,
+  getInvitationCodeStateFromClient,
+  getInvitationCodeStateFromServer,
   getEmailStateFromClient,
   getEmailStateFromServer,
   getPasswordState,
@@ -35,10 +38,12 @@ class Join extends Component {
     const index = random(0, userlist.length - 1)
     this.state = {
       featuredUser: userlist[index],
+      invitationCodeState: { status: STATUS.INDETERMINATE, message: '' },
       emailState: { status: STATUS.INDETERMINATE, message: '' },
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
     }
+    this.invitationCodeValue = ''
     this.emailValue = ''
     this.usernameValue = ''
     this.passwordValue = ''
@@ -55,6 +60,27 @@ class Join extends Component {
     }
     if (availability.hasOwnProperty('email')) {
       this.validateEmailResponse(availability)
+    }
+    if (availability.hasOwnProperty('invitationCode')) {
+      this.validateInvitationCodeResponse(availability)
+    }
+  }
+
+  onChangeInvitationCodeControl = ({ invitationCode }) => {
+    this.invitationCodeValue = invitationCode
+    const { invitationCodeState } = this.state
+    const currentStatus = invitationCodeState.status
+    const clientState = getInvitationCodeStateFromClient({ value: invitationCode, currentStatus })
+    if (clientState.status === STATUS.SUCCESS) {
+      if (currentStatus !== STATUS.REQUEST) {
+        this.setState({ invitationCodeState: { status: STATUS.REQUEST, message: 'checking...' } })
+      }
+      // This will end up landing on `validateEmailResponse` after fetching
+      this.checkServerForAvailability({ invitation_code: invitationCode })
+      return
+    }
+    if (clientState.status !== currentStatus) {
+      this.setState({ invitationCodeState: clientState })
     }
   }
 
@@ -140,8 +166,16 @@ class Join extends Component {
     }
   }
 
+  validateInvitationCodeResponse(availability) {
+    const { invitationCodeState } = this.state
+    const currentStatus = invitationCodeState.status
+    const newState = getInvitationCodeStateFromServer({ availability, currentStatus })
+    if (newState.status !== currentStatus) {
+      this.setState({ invitationCodeState: newState })
+    }
+  }
   render() {
-    const { emailState, usernameState, passwordState, featuredUser } = this.state
+    const { emailState, usernameState, invitationCodeState, passwordState, featuredUser } = this.state
     const isValid = isFormValid([emailState, usernameState, passwordState])
     const boxControlClassNames = 'asBoxControl'
     return (
@@ -159,6 +193,14 @@ class Join extends Component {
             onSubmit={ this.onSubmit }
             role="form"
           >
+            <InvitationCodeControl
+              classList={ boxControlClassNames }
+              label="Invitation Code"
+              onChange={ this.onChangeInvitationCodeControl }
+              status={ invitationCodeState.status }
+              tabIndex="5"
+            />
+            { invitationCodeState.status === STATUS.FAILURE && <p>{invitationCodeState.message}</p> }
             <EmailControl
               classList={ boxControlClassNames }
               label={`Email ${emailState.message}`}

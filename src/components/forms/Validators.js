@@ -63,6 +63,33 @@ export function getEmailStateFromClient({ currentStatus, value }) {
   )
 }
 
+export const isValidInvitationCode = (value) => value.match(/^\S+$/)
+
+export function getInvitationCodeStateFromClient({ currentStatus, value }) {
+  if (!value && !value.length && currentStatus) {
+    return { status: STATUS.INDETERMINATE, message: '' }
+  }
+  return (
+    isValidInvitationCode(value) ?
+      { status: STATUS.SUCCESS, message: '' } :
+      { status: STATUS.FAILURE, message: 'That code is invalid. Please try again.' }
+  )
+}
+
+export function getInvitationCodeStateFromServer({ availability, currentStatus }) {
+  if (!availability && currentStatus !== STATUS.FAILURE) {
+    return { status: STATUS.FAILURE, message: 'That code is invalid. Please try again.' }
+  }
+
+  const { invitationCode } = availability
+  if (invitationCode && currentStatus !== STATUS.SUCCESS) {
+    return { status: STATUS.SUCCESS, message: '' }
+  } else if (!invitationCode && currentStatus !== STATUS.FAILURE) {
+    return { status: STATUS.FAILURE, message: 'That code is invalid. Please try again' }
+  }
+  return { status: STATUS.INDETERMINATE, message: '' }
+}
+
 // Validate and normalize the response from the API's validation
 export function getEmailStateFromServer({ availability, currentStatus }) {
   if (!availability && currentStatus !== STATUS.FAILURE) {
