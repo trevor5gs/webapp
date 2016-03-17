@@ -217,7 +217,7 @@ function mapStateToProps({ authentication, json, profile }, ownProps) {
   return {
     isLoggedIn: authentication.isLoggedIn,
     post: ownProps.post ? json[MAPPING_TYPES.POSTS][ownProps.post.id] : null,
-    isOwnPost: ownProps.post && ownProps.post.authorId === profile.id,
+    isOwnPost: ownProps.post && `${ownProps.post.authorId}` === `${profile.id}`,
   }
 }
 
