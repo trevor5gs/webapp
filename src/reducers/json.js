@@ -48,7 +48,13 @@ methods.getCurrentUser = (state) =>
 function _mergeModel(state, type, params) {
   if (params.id) {
     const newType = { ...state[type] }
-    newType[params.id] = { ...newType[params.id], ...params }
+    let links = null
+    if (newType[params.id]) {
+      links = { ...newType[params.id].links, ...params.links }
+      newType[params.id] = { ...newType[params.id], ...params, links }
+    } else {
+      newType[params.id] = { ...newType[params.id], ...params }
+    }
     state[type] = newType
   }
   return state
