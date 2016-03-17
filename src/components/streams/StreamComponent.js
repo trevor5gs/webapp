@@ -27,7 +27,7 @@ export class StreamComponent extends Component {
     dispatch: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     mode: PropTypes.string.isRequired,
-    historyLocationOverride: PropTypes.string,
+    isModalComponent: PropTypes.bool,
     ignoresScrollPosition: PropTypes.bool.isRequired,
     initModel: PropTypes.object,
     isUserDetail: PropTypes.bool.isRequired,
@@ -85,6 +85,7 @@ export class StreamComponent extends Component {
     paginatorText: 'Loading',
     ignoresScrollPosition: false,
     isUserDetail: false,
+    isModalComponent: false,
   }
 
   componentWillMount() {
@@ -101,7 +102,7 @@ export class StreamComponent extends Component {
       }
     }
     const unlisten = browserListen(location => {
-      this.state = { action, locationKey: this.generateLocationKey(location.key) }
+      this.state = { action, locationKey: location.key }
     })
     unlisten()
     this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
@@ -113,7 +114,7 @@ export class StreamComponent extends Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    if (this.isPageLevelComponent()) {
+    if (!this.props.isModalComponent) {
       addScrollObject(this)
     }
     if (this.props.isUserDetail) {
@@ -280,17 +281,6 @@ export class StreamComponent extends Component {
       return true
     }
     return false
-  }
-
-  isPageLevelComponent() {
-    return !this.props.historyLocationOverride
-  }
-
-  generateLocationKey(locationKey) {
-    if (this.props.historyLocationOverride) {
-      return this.props.historyLocationOverride
-    }
-    return locationKey
   }
 
   loadPage(rel, scrolled = false) {

@@ -126,7 +126,8 @@ class NotificationsContainer extends Component {
             className="asFullWidth"
             key={ `notificationPanel_${activeTabType}` }
             ref="streamComponent"
-            historyLocationOverride={ `notifications_${activeTabType}` }
+            scrollSessionKey={ `notifications_${activeTabType}` }
+            isModalComponent
           />
         </div>
       </div>
