@@ -409,15 +409,13 @@ export class StreamComponent extends Component {
 
 export function mapStateToProps(state, ownProps) {
   let result
-  let resultPath = state.routing.location.pathname
+
   const { action } = ownProps
   const meta = action ? action.meta : null
+  const resultPath = (meta && meta.resultKey) ? meta.resultKey : state.routing.location.pathname
   const payload = action ? action.payload : null
   const renderObj = { data: [], nestedData: [] }
   if (state.json.pages) {
-    if (meta && meta.resultKey) {
-      resultPath = meta.resultKey
-    }
     result = state.json.pages[resultPath]
   }
   if (result && result.type === MAPPING_TYPES.NOTIFICATIONS) {
