@@ -117,9 +117,12 @@ export class StreamComponent extends Component {
     if (!this.props.isModalComponent) {
       addScrollObject(this)
     }
+
+    let shouldScrollToTop = true
     if (this.props.isUserDetail) {
       const offset = Math.round((window.innerWidth * 0.5625)) - 200
       window.scrollTo(0, offset)
+      shouldScrollToTop = false
       this.saveScroll = false
     } else if (routerState.didComeFromSeeMoreCommentsLink) {
       this.saveScroll = false
@@ -129,7 +132,7 @@ export class StreamComponent extends Component {
 
     addResizeObject(this)
 
-    this.attemptToRestoreScroll(true)
+    this.attemptToRestoreScroll(shouldScrollToTop)
   }
 
   componentWillReceiveProps(nextProps) {
