@@ -84,7 +84,7 @@ export class Notifications extends Component {
           action={ loadNotifications(params) }
           className="asFullWidth"
           key={ `notificationPanel_${params.category}` }
-          historyLocationOverride={ `notifications_${category || 'all'}` }
+          scrollSessionKey={ `notifications_${category || 'all'}` }
           ref="streamComponent"
         />
       </section>

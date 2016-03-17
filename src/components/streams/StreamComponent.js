@@ -27,7 +27,7 @@ export class StreamComponent extends Component {
     dispatch: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     mode: PropTypes.string.isRequired,
-    historyLocationOverride: PropTypes.string,
+    isModalComponent: PropTypes.bool,
     ignoresScrollPosition: PropTypes.bool.isRequired,
     initModel: PropTypes.object,
     isUserDetail: PropTypes.bool.isRequired,
@@ -85,6 +85,7 @@ export class StreamComponent extends Component {
     paginatorText: 'Loading',
     ignoresScrollPosition: false,
     isUserDetail: false,
+    isModalComponent: false,
   }
 
   componentWillMount() {
@@ -101,7 +102,7 @@ export class StreamComponent extends Component {
       }
     }
     const unlisten = browserListen(location => {
-      this.state = { action, locationKey: this.generateLocationKey(location.key) }
+      this.state = { action, locationKey: location.key }
     })
     unlisten()
     this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
@@ -113,12 +114,15 @@ export class StreamComponent extends Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    if (this.isPageLevelComponent()) {
+    if (!this.props.isModalComponent) {
       addScrollObject(this)
     }
+
+    let shouldScrollToTop = true
     if (this.props.isUserDetail) {
       const offset = Math.round((window.innerWidth * 0.5625)) - 200
       window.scrollTo(0, offset)
+      shouldScrollToTop = false
       this.saveScroll = false
     } else if (routerState.didComeFromSeeMoreCommentsLink) {
       this.saveScroll = false
@@ -128,7 +132,7 @@ export class StreamComponent extends Component {
 
     addResizeObject(this)
 
-    this.attemptToRestoreScroll(true)
+    this.attemptToRestoreScroll(shouldScrollToTop)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -280,17 +284,6 @@ export class StreamComponent extends Component {
       return true
     }
     return false
-  }
-
-  isPageLevelComponent() {
-    return !this.props.historyLocationOverride
-  }
-
-  generateLocationKey(locationKey) {
-    if (this.props.historyLocationOverride) {
-      return this.props.historyLocationOverride
-    }
-    return locationKey
   }
 
   loadPage(rel, scrolled = false) {
