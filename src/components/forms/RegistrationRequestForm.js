@@ -46,7 +46,11 @@ class RegistrationRequestForm extends Component {
 
   renderSubmitted() {
     return (
-      <div>Please check your email to join Ello</div>
+      <div className="RegistrationSuccess">
+        Rad.<br />
+        You're almost there.<br />
+        Check your email to join Ello.
+      </div>
     )
   }
 
