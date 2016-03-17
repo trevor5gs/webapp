@@ -8,7 +8,14 @@ describe('gui reducer', () => {
     it('sets up a default initialState', () => {
       expect(
         subject.gui(undefined, {})
-      ).to.have.keys('activeNotificationsTabType', 'modes', 'history', 'currentStream', 'newNotificationContent')
+      ).to.have.keys(
+        'activeNotificationsTabType',
+        'currentStream',
+        'history',
+        'lastNotificationCheck',
+        'modes',
+        'newNotificationContent',
+      )
     })
   })
   describe('LOCATION_CHANGE', () => {
