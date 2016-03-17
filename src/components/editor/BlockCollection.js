@@ -397,21 +397,19 @@ class BlockCollection extends Component {
 
   addEmptyTextBlock(shouldCheckForEmpty = false) {
     const { order } = this.state
-    requestAnimationFrame(() => {
-      if (order.length > 1) {
-        const last = this.getBlockFromUid(order[order.length - 1])
-        const secondToLast = this.getBlockFromUid(order[order.length - 2])
-        if (secondToLast.kind === 'text' &&
-            last.kind === 'text' && !last.data.length) {
-          this.remove(last.uid, shouldCheckForEmpty)
-          return
-        }
+    if (order.length > 1) {
+      const last = this.getBlockFromUid(order[order.length - 1])
+      const secondToLast = this.getBlockFromUid(order[order.length - 2])
+      if (secondToLast.kind === 'text' &&
+          last.kind === 'text' && !last.data.length) {
+        this.remove(last.uid, shouldCheckForEmpty)
+        return
       }
-      if (!order.length ||
-          this.getBlockFromUid(order[order.length - 1]).kind !== 'text') {
-        this.add({ kind: 'text', data: '' }, false)
-      }
-    })
+    }
+    if (!order.length ||
+        this.getBlockFromUid(order[order.length - 1]).kind !== 'text') {
+      this.add({ kind: 'text', data: '' }, false)
+    }
   }
 
   appendText = (content) => {
@@ -485,20 +483,19 @@ class BlockCollection extends Component {
   submit = () => {
     const { isComment, submitAction } = this.props
     const data = this.serialize()
-    // prevent submit from happening until all
-    // embeds have data and all images have urls
-    submitAction(data)
+    // the order of the clear and submit matters
+    // it will throw a setState error if submitAction
+    // is fired before the blocks are cleared
     if (isComment) {
       this.clearBlocks()
     }
+    submitAction(data)
   }
 
   clearBlocks = () => {
     this.setState({ collection: {}, order: [] })
-    requestAnimationFrame(() => {
-      this.uid = 0
-      this.addEmptyTextBlock()
-    })
+    this.uid = 0
+    this.addEmptyTextBlock()
   }
 
   serialize() {
