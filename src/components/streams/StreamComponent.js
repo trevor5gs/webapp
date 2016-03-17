@@ -105,6 +105,7 @@ export class StreamComponent extends Component {
     })
     unlisten()
     this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
+    this.shouldScroll = true
   }
 
   componentDidMount() {
@@ -166,11 +167,14 @@ export class StreamComponent extends Component {
 
     const { action } = this.state
     const { stream } = this.props
-    const shouldScroll = stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
+    const shouldScroll = this.shouldScroll &&
+      stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
       action && action.payload &&
       stream.payload.endpoint.path === action.payload.endpoint.path
     if (shouldScroll) {
-      this.attemptToRestoreScroll()
+      if (this.attemptToRestoreScroll()) {
+        this.shouldScroll = false
+      }
     }
   }
 
@@ -239,7 +243,7 @@ export class StreamComponent extends Component {
     if (!routerState.didComeFromSeeMoreCommentsLink && !this.props.ignoresScrollPosition) {
       if (fromMount) {
         window.scrollTo(0, 0)
-        return
+        return false
       }
 
       this.saveScroll = true
@@ -260,6 +264,7 @@ export class StreamComponent extends Component {
       this.saveScroll = true
       scrollTopValue = document.body.scrollHeight - window.innerHeight
     }
+
     if (scrollTopValue) {
       requestAnimationFrame(() => {
         if (!this.saveScroll) {
@@ -272,7 +277,9 @@ export class StreamComponent extends Component {
           window.scrollTo(0, scrollTopValue)
         }
       })
+      return true
     }
+    return false
   }
 
   isPageLevelComponent() {
