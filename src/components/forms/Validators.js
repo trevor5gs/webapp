@@ -1,4 +1,4 @@
-import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
+import { ERROR_MESSAGES as ERROR, FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 
 export function isFormValid(states) {
   return states.every((state) => state.status === STATUS.SUCCESS)
@@ -20,13 +20,13 @@ export function getUsernameStateFromClient({ currentStatus, value }) {
     return {
       status: STATUS.FAILURE,
       suggestions: null,
-      message: 'must not contain a space.',
+      message: ERROR.USERNAME.SPACES,
     }
   } else if (containsInvalidUsernameCharacters(value)) {
     return {
       status: STATUS.FAILURE,
       suggestions: null,
-      message: 'must only contain letters, numbers, underscores & dashes.',
+      message: ERROR.USERNAME.INVALID_CHARACTERS,
     }
   }
   return { status: STATUS.SUCCESS, message: '' }
@@ -35,17 +35,17 @@ export function getUsernameStateFromClient({ currentStatus, value }) {
 // Validate and normalize the response from the API's validation
 export function getUsernameStateFromServer({ availability, currentStatus }) {
   if (!availability && currentStatus !== STATUS.FAILURE) {
-    return { status: STATUS.FAILURE, suggestions: null, message: 'is invalid.' }
+    return { status: STATUS.FAILURE, suggestions: null, message: ERROR.USERNAME.INVALID }
   }
   const { username, suggestions } = availability
   if (username && currentStatus !== STATUS.SUCCESS) {
-    return { status: STATUS.SUCCESS, suggestions: null, message: '' }
+    return { status: STATUS.SUCCESS, suggestions: null, message: ERROR.NONE }
   } else if (!username && currentStatus !== STATUS.FAILURE) {
     const list = suggestions.username && suggestions.username.length ? suggestions.username : null
     return {
       status: STATUS.FAILURE,
       suggestions: list,
-      message: 'Username already exists. Please try a new one. You can change your username at any time'
+      message: ERROR.USERNAME.EXISTS,
     }
   }
   return { status: STATUS.INDETERMINATE, suggestions: null, message: '' }
@@ -62,8 +62,8 @@ export function getEmailStateFromClient({ currentStatus, value }) {
   }
   return (
     isValidEmail(value) ?
-      { status: STATUS.SUCCESS, message: '' } :
-      { status: STATUS.FAILURE, message: 'That email is invalid. Please try again.' }
+      { status: STATUS.SUCCESS, message: ERROR.NONE } :
+      { status: STATUS.FAILURE, message: ERROR.EMAIL.INVALID }
   )
 }
 
@@ -75,21 +75,21 @@ export function getInvitationCodeStateFromClient({ currentStatus, value }) {
   }
   return (
     isValidInvitationCode(value) ?
-      { status: STATUS.SUCCESS, message: '' } :
-      { status: STATUS.FAILURE, message: 'That code is invalid. Please try again.' }
+      { status: STATUS.SUCCESS, message: ERROR.NONE } :
+      { status: STATUS.FAILURE, message: ERROR.INVITATION_CODE.INVALID }
   )
 }
 
 export function getInvitationCodeStateFromServer({ availability, currentStatus }) {
   if (!availability && currentStatus !== STATUS.FAILURE) {
-    return { status: STATUS.FAILURE, message: 'That code is invalid. Please try again.' }
+    return { status: STATUS.FAILURE, message: ERROR.INVITATION_CODE.INVALID }
   }
 
   const { invitationCode } = availability
   if (invitationCode && currentStatus !== STATUS.SUCCESS) {
     return { status: STATUS.SUCCESS, message: '' }
   } else if (!invitationCode && currentStatus !== STATUS.FAILURE) {
-    return { status: STATUS.FAILURE, message: 'That code is invalid. Please try again' }
+    return { status: STATUS.FAILURE, message: ERROR.INVITATION_CODE.INVALID }
   }
   return { status: STATUS.INDETERMINATE, message: '' }
 }
@@ -97,7 +97,7 @@ export function getInvitationCodeStateFromServer({ availability, currentStatus }
 // Validate and normalize the response from the API's validation
 export function getEmailStateFromServer({ availability, currentStatus }) {
   if (!availability && currentStatus !== STATUS.FAILURE) {
-    return { status: STATUS.FAILURE, message: 'is invalid.' }
+    return { status: STATUS.FAILURE, message: ERROR.EMAIL.INVALID }
   }
   const { email, suggestions } = availability
   const full = suggestions.email && suggestions.email.full && suggestions.email.full.length ?
@@ -123,7 +123,7 @@ export function getPasswordState({ currentStatus, value }) {
   return (
     isValidPassword(value) ?
       { status: STATUS.SUCCESS, message: '' } :
-      { status: STATUS.FAILURE, message: 'must be at least 8 characters.' }
+      { status: STATUS.FAILURE, message: ERROR.PASSWORD.TOO_SHORT }
   )
 }
 
