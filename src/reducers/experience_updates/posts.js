@@ -91,6 +91,7 @@ function _addOrUpdatePost(newState, action) {
   const user = model ?
     newState[MAPPING_TYPES.USERS][model.authorId] :
     jsonReducer.methods.getCurrentUser(newState)
+  let index = null
   switch (action.type) {
     case ACTION_TYPES.POST.CREATE_SUCCESS:
       newState[MAPPING_TYPES.POSTS][response.id] = response
@@ -105,6 +106,22 @@ function _addOrUpdatePost(newState, action) {
       }
       return newState
     case ACTION_TYPES.POST.DELETE_SUCCESS:
+      if (user) {
+        if (newState.pages['/following']) {
+          index = newState.pages['/following'].ids.indexOf(user.id)
+          if (index > -1) {
+            newState.pages['/following'].ids.splice(index, 1)
+          }
+        }
+        jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', -1)
+        if (newState.pages[`/${user.username}`]) {
+          index = newState.pages[`/${user.username}`].ids.indexOf(model.id)
+          if (index > -1) {
+            newState.pages[`/${user.username}`].ids.splice(index, 1)
+          }
+        }
+      }
+      return newState
     case ACTION_TYPES.POST.CREATE_FAILURE:
       if (user) {
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', -1)
