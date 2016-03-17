@@ -9,7 +9,6 @@ import { checkAvailability } from '../../actions/profile'
 import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
-import Emoji from '../../components/assets/Emoji'
 import EmailControl from '../../components/forms/EmailControl'
 import InvitationCodeControl from '../../components/forms/InvitationCodeControl'
 import FormButton from '../../components/forms/FormButton'
@@ -193,8 +192,7 @@ class Join extends Component {
       <section className="Authentication Panel">
         <div className="AuthenticationFormDialog">
           <h1>
-            <Emoji name="muscle" title="Welcome!" size={ 32 } />
-            Be inspired.
+            Welcome to Ello.
           </h1>
 
           <form

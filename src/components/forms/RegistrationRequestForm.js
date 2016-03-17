@@ -57,28 +57,28 @@ class RegistrationRequestForm extends Component {
   renderForm() {
     const { emailState } = this.state
     const isValid = isFormValid([emailState])
-      return (
-        <div>
-          <h1>
-            Create. Share. Connect.
-          </h1>
-          <form
-            className="AuthenticationForm"
-            id="RegistrationRequestForm"
-            noValidate="novalidate"
-            onSubmit={ this.onSubmit }
-            role="form"
-          >
-            <EmailControl
-              classList="asBoxControl"
-              onChange={ this.onChangeEmailControl }
-              tabIndex="1"
-            />
-            { emailState.status !== STATUS.INDETERMINATE && <p>{emailState.message}</p>}
-            <FormButton disabled={ !isValid } tabIndex="2">Sign up</FormButton>
-          </form>
-        </div>
-      )
+    return (
+      <div>
+        <h1>
+          Create. Share. Connect.
+        </h1>
+        <form
+          className="AuthenticationForm"
+          id="RegistrationRequestForm"
+          noValidate="novalidate"
+          onSubmit={ this.onSubmit }
+          role="form"
+        >
+          <EmailControl
+            classList="asBoxControl"
+            onChange={ this.onChangeEmailControl }
+            tabIndex="1"
+          />
+          { emailState.status !== STATUS.INDETERMINATE && <p>{emailState.message}</p>}
+          <FormButton disabled={ !isValid } tabIndex="2">Sign up</FormButton>
+        </form>
+      </div>
+    )
   }
 
   render() {
