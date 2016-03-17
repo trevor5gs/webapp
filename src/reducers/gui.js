@@ -5,7 +5,6 @@ import {
   BEACONS,
   GUI,
   HEAD_FAILURE,
-  HEAD_REQUEST,
   HEAD_SUCCESS,
   LOAD_STREAM_SUCCESS,
   PROFILE,
@@ -14,9 +13,14 @@ import {
 
 
 let location = {}
+const oldDate = new Date()
+oldDate.setFullYear(oldDate.getFullYear() - 2)
 // order matters for matching routes
 const initialState = {
   activeNotificationsTabType: 'all',
+  currentStream: '/following',
+  history: {},
+  lastNotificationCheck: oldDate.toUTCString(),
   modes: [
     { label: 'root', mode: 'grid', regex: '^\/$' },
     { label: 'discover', mode: 'grid', regex: '\/discover|\/explore' },
@@ -31,9 +35,7 @@ const initialState = {
     { label: 'users/loves', mode: 'grid', regex: '\/[\\w\\-]+\/loves' },
     { label: 'users', mode: 'list', regex: '\/[\\w\\-]+' },
   ],
-  currentStream: '/following',
   newNotificationContent: false,
-  history: {},
 }
 
 export function findLayoutMode(modes) {
@@ -65,8 +67,6 @@ export function gui(state = initialState, action = { type: '' }) {
       return { ...state, lastStarredBeaconVersion: action.payload.version }
     case HEAD_FAILURE:
       return { ...state, newNotificationContent: false }
-    case HEAD_REQUEST:
-      return { ...state, lastNotificationCheck: new Date() }
     case HEAD_SUCCESS:
       if (action.payload.serverResponse.status === 204) {
         return { ...state, newNotificationContent: true }
@@ -74,7 +74,11 @@ export function gui(state = initialState, action = { type: '' }) {
       return state
     case LOAD_STREAM_SUCCESS:
       if (action.meta && /\/notifications/.test(action.meta.resultKey)) {
-        return { ...state, newNotificationContent: false }
+        return {
+          ...state,
+          newNotificationContent: false,
+          lastNotificationCheck: new Date().toUTCString(),
+        }
       }
       return state
     case PROFILE.DELETE_SUCCESS:
