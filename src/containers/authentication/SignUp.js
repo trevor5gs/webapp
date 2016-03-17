@@ -34,9 +34,6 @@ class SignUp extends Component {
     return (
       <section className="Authentication Panel">
         <div className="AuthenticationFormDialog">
-          <h1>
-            Create. Share. Connect.
-          </h1>
           <RegistrationRequestForm />
         </div>
         <AppleStoreLink />
