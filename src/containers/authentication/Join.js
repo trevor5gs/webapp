@@ -209,22 +209,25 @@ class Join extends Component {
               label="Invitation Code"
               onChange={ this.onChangeInvitationCodeControl }
               status={ invitationCodeState.status }
+              renderStatus={ this.renderStatus(invitationCodeState) }
               tabIndex="5"
             />
-            { invitationCodeState.status === STATUS.FAILURE && <p>{invitationCodeState.message}</p> }
             <EmailControl
               classList={ boxControlClassNames }
-              label={`Email ${emailState.message}`}
+              label="Email"
               onChange={ this.onChangeEmailControl }
               status={ emailState.status }
+              renderStatus={ this.renderStatus(emailState) }
               tabIndex="1"
             />
+            { this.renderStatus(emailState) }
             <UsernameControl
               classList={ boxControlClassNames }
-              label={`Username ${usernameState.message}`}
+              label="Username"
               onChange={ this.onChangeUsernameControl }
               placeholder="Create your username"
               status={ usernameState.status }
+              renderStatus={ this.renderStatus(usernameState) }
               suggestions={ usernameState.suggestions }
               tabIndex="2"
             />
@@ -234,6 +237,7 @@ class Join extends Component {
               onChange={ this.onChangePasswordControl }
               placeholder="Set your password"
               status={ passwordState.status }
+              renderStatus={ this.renderStatus(passwordState) }
               tabIndex="3"
             />
             <FormButton tabIndex="4" disabled={ !isValid }>Create Account</FormButton>

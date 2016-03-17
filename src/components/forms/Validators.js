@@ -42,7 +42,11 @@ export function getUsernameStateFromServer({ availability, currentStatus }) {
     return { status: STATUS.SUCCESS, suggestions: null, message: '' }
   } else if (!username && currentStatus !== STATUS.FAILURE) {
     const list = suggestions.username && suggestions.username.length ? suggestions.username : null
-    return { status: STATUS.FAILURE, suggestions: list, message: 'already exists.' }
+    return {
+      status: STATUS.FAILURE,
+      suggestions: list,
+      message: 'Username already exists. Please try a new one. You can change your username at any time'
+    }
   }
   return { status: STATUS.INDETERMINATE, suggestions: null, message: '' }
 }
