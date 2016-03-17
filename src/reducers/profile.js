@@ -6,6 +6,8 @@ export function profile(state = {}, action) {
   let assetType = null
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:
+    case PROFILE.AVAILABILITY_SUCCESS:
+      return { ...state, ...action.payload.response }
     case PROFILE.DELETE_SUCCESS:
       return {}
     case PROFILE.EXPORT_SUCCESS:
@@ -18,11 +20,8 @@ export function profile(state = {}, action) {
       delete assetState.avatar.tmp
       delete assetState.coverImage.tmp
       return assetState
-
     case PROFILE.SAVE_SUCCESS:
-    case PROFILE.AVAILABILITY_SUCCESS:
-      return { ...state, ...action.payload.response }
-
+      return { ...state, ...action.payload.response, availability: null }
     // Store a base64 reprensentation of the asset in `tmp` while uploading
     case PROFILE.TMP_AVATAR_CREATED:
     case PROFILE.TMP_COVER_CREATED:
