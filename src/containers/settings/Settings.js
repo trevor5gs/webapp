@@ -187,13 +187,14 @@ class Settings extends Component {
       password: this.passwordValue,
       username: this.usernameValue,
     }
-    dispatch(saveProfile(formData))
+    this.clearPasswords()
     this.setState({
+      emailState: { status: STATUS.INDETERMINATE, message: '' },
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
-      emailState: { status: STATUS.INDETERMINATE, message: '' },
       showSaveMessage: true,
     })
+    dispatch(saveProfile(formData))
   }
 
   onTogglePostsAdultContent = (obj) => {
@@ -238,6 +239,11 @@ class Settings extends Component {
     return [emailState, passwordState, usernameState].some((state) =>
       state.status === STATUS.SUCCESS
     )
+  }
+
+  clearPasswords() {
+    this.refs.newPasswordControl.clear()
+    this.refs.currentPasswordControl.clear()
   }
 
   checkServerForAvailability(vo) {
@@ -344,6 +350,7 @@ class Settings extends Component {
               label={ `Password ${passwordState.message}` }
               onChange={ this.onChangePasswordControl }
               placeholder="Set a new password"
+              ref="newPasswordControl"
               status={ passwordState.status }
               tabIndex="3"
             />
@@ -356,6 +363,7 @@ class Settings extends Component {
                 name="user[current_password]"
                 onChange={ this.onChangeCurrentPasswordControl }
                 placeholder="Enter current password"
+                ref="currentPasswordControl"
               />
               <FormButton disabled={ !requiresSave }>Save</FormButton>
             </div>

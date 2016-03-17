@@ -12,6 +12,12 @@ class PasswordControl extends Component {
     placeholder: 'Enter your password',
   }
 
+  clear() {
+    if (this.refs.Control.clear) {
+      this.refs.Control.clear()
+    }
+  }
+
   render() {
     return (
       <FormControl
@@ -19,6 +25,7 @@ class PasswordControl extends Component {
         autoCapitalize="off"
         autoCorrect="off"
         type="password"
+        ref="Control"
       />
     )
   }

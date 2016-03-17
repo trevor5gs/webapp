@@ -24,7 +24,7 @@ export function saveProfile(params) {
     payload: {
       method: 'PATCH',
       endpoint: api.profilePath(),
-      body: JSON.stringify(params),
+      body: params,
     },
   }
 }
