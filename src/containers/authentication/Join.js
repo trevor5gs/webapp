@@ -174,6 +174,17 @@ class Join extends Component {
       this.setState({ invitationCodeState: newState })
     }
   }
+
+  renderStatus(state) {
+    return () => {
+      if (state.status === STATUS.FAILURE) {
+        return <p>{state.message}</p>
+      }
+
+      return ''
+    }
+  }
+
   render() {
     const { emailState, usernameState, invitationCodeState, passwordState, featuredUser } = this.state
     const isValid = isFormValid([emailState, usernameState, passwordState])
