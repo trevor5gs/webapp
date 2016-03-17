@@ -63,10 +63,10 @@ class RegistrationRequestForm extends Component {
       >
         <EmailControl
           classList="asBoxControl"
-          label={ `Email ${emailState.message}` }
           onChange={ this.onChangeEmailControl }
           tabIndex="1"
         />
+        { emailState.status !== STATUS.INDETERMINATE && <p>{emailState.message}</p>}
         <FormButton disabled={ !isValid } tabIndex="2">Sign up</FormButton>
       </form>
     )
