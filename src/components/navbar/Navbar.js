@@ -4,6 +4,7 @@ import { push } from 'react-router-redux'
 import classNames from 'classnames'
 import { logout } from '../../actions/authentication'
 import * as ACTION_TYPES from '../../constants/action_types'
+import { GUI } from '../../constants/gui_types'
 import { SHORTCUT_KEYS, SESSION_KEYS } from '../../constants/gui_types'
 import { openModal, closeModal } from '../../actions/modals'
 import { openOmnibar } from '../../actions/omnibar'
@@ -80,13 +81,18 @@ class Navbar extends Component {
       asLocked: isBlacklisted,
       hasNotifications: false,
       skipTransition: false,
+      offset: this.calculateOffset(GUI.coverOffset),
+      viewportDeviceSize: GUI.viewportDeviceSize,
     }
     this.scrollYAtDirectionChange = null
     this.checkForNotifications()
   }
 
   componentDidMount() {
-    const { dispatch, isLoggedIn, shortcuts } = this.props
+    const { dispatch, isLoggedIn, pathname, shortcuts } = this.props
+    if (isBlacklistedRoute(pathname)) {
+      window.scrollTo(0, this.state.offset - 120)
+    }
     if (isLoggedIn) {
       Mousetrap.bind(Object.keys(shortcuts), (event, shortcut) => {
         dispatch(push(shortcuts[shortcut]))
@@ -130,12 +136,6 @@ class Navbar extends Component {
   // scrollTo when they are mounted.
   componentDidUpdate(prevProps) {
     if (typeof window === 'undefined' || !prevProps.pathname || !this.props.pathname) { return }
-    const { pathname } = this.props
-    if (pathname !== prevProps.pathname) {
-      if (isBlacklistedRoute(pathname)) {
-        window.scrollTo(0, this.state.offset - 120)
-      }
-    }
     if (prevProps.pathname !== this.props.pathname) {
       this.checkForNotifications()
     }
@@ -153,7 +153,7 @@ class Navbar extends Component {
   }
 
   onResize({ coverOffset, viewportDeviceSize }) {
-    this.setState({ offset: coverOffset - 80, viewportDeviceSize })
+    this.setState({ offset: this.calculateOffset(coverOffset), viewportDeviceSize })
   }
 
   onScrollTop() {
@@ -224,6 +224,10 @@ class Navbar extends Component {
   onClickLogInButton = (e) => {
     e.preventDefault()
     document.location.href = ENV.REDIRECT_URI + e.target.pathname
+  }
+
+  calculateOffset(coverOffset) {
+    return coverOffset - 80
   }
 
   checkForNotifications() {

@@ -105,7 +105,6 @@ export function removeResizeObject(obj) {
   }
 }
 
-export function triggerResize() {
+if (typeof window !== 'undefined') {
   resized()
 }
-

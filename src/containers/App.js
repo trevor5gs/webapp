@@ -6,7 +6,6 @@ import { autoCompleteUsers, loadEmojis } from '../actions/posts'
 import { loadProfile } from '../actions/profile'
 import { trackPageView } from '../actions/tracking'
 import * as ACTION_TYPES from '../constants/action_types'
-import { GUI } from '../constants/gui_types'
 import Analytics from '../components/analytics/Analytics'
 import DevTools from '../components/devtools/DevTools'
 import Footer from '../components/footer/Footer'
@@ -18,7 +17,6 @@ import Completer from '../components/completers/Completer'
 import TextTools from '../components/editor/TextTools'
 import { addInputObject, removeInputObject } from '../components/editor/InputComponent'
 import { replaceWordFromSelection } from '../components/editor/SelectionUtil'
-import { triggerResize } from '../components/interface/ResizeComponent'
 
 class App extends Component {
 
@@ -78,7 +76,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    if (!GUI.innerWidth) { triggerResize() }
     addInputObject(this)
   }
 
