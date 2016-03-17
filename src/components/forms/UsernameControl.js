@@ -25,18 +25,21 @@ class UsernameControl extends Component {
     const { suggestions } = this.props
     if (suggestions && suggestions.length) {
       return (
-        <div className="FormControlSuggestionList hasSuggestions">
+        <ul className="FormControlSuggestionList hasSuggestions">
           <p>Here are some available usernames &mdash;</p>
           { suggestions.map((suggestion, i) =>
-            <button
-              title={ suggestion }
-              onClick={ this.onClickUsernameSuggestion }
-              key={ `suggestion_${i}` }
-            >
-              { suggestion }
-            </button>
-          )}
-        </div>
+            <li>
+              <button
+                className="FormControlSuggestionButton"
+                title={ suggestion }
+                onClick={ this.onClickUsernameSuggestion }
+                key={ `suggestion_${i}` }
+              >
+                { suggestion }
+              </button>
+            </li>
+            )}
+        </ul>
       )
     }
     return (

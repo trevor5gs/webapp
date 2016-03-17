@@ -125,21 +125,21 @@ textarea.FormControlInput.asBoxControl
   height: 0
   margin: 0
 .FormControlSuggestionList.hasSuggestions
-  height: rem(75)
+  height: max-content
 
 .FormControlSuggestionList > p
   margin: rem(5) 0 0
 
-.FormControlSuggestionList > button
+.FormControlSuggestionButton
   +sans-typeset
   transition: color $speed
   margin-right: rem(10)
   border-bottom: 1px solid
 
-.no-touch .FormControlSuggestionList > button:hover
+.no-touch .FormControlSuggestionButton:hover
   color: #aaa
 
-.FormControlSuggestionList > button:last-of-type
+.FormControlSuggestionButton:last-of-type
   margin-right: 0
 
 // -------------------------------------
