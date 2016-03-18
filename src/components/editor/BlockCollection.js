@@ -89,7 +89,8 @@ class BlockCollection extends Component {
     // happens in add, but is triggered from this method since
     // commenting it out gets rid of the issue
     this.addEmptyTextBlock()
-    addDragObject({ component: this, dragId: editorId })
+    this.dragObject = { component: this, dragId: editorId }
+    addDragObject(this.dragObject)
     addInputObject(this)
   }
 
@@ -165,7 +166,9 @@ class BlockCollection extends Component {
 
   componentWillUnmount() {
     // this.onHideCompleter()
-    removeDragObject(this)
+    if (this.dragObject) {
+      removeDragObject(this.dragObject)
+    }
     removeInputObject(this)
   }
 
