@@ -445,7 +445,11 @@ class Settings extends Component {
                 <dt>Short Bio:</dt>
                 <dd>{ profile.shortBio || mdash }</dd>
                 <dt>Links:</dt>
-                <dd>{ !isEmpty(profile.externalLinksList) ? this.getExternalLinkListAsText() : mdash }</dd>
+                <dd>
+                  { !isEmpty(profile.externalLinksList) ?
+                    this.getExternalLinkListAsText() :
+                    mdash }
+                </dd>
                 <dt>Avatar:</dt>
                 <dd>{ this.getOriginalAssetUrl(profile.avatar) }</dd>
                 <dt>Header:</dt>
