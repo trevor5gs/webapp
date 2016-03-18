@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
-import { uniq } from 'lodash'
+import { merge, uniq } from 'lodash'
 import { findModel } from '../components/base/json_helper'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
@@ -47,15 +47,7 @@ methods.getCurrentUser = (state) =>
 
 function _mergeModel(state, type, params) {
   if (params.id) {
-    const newType = { ...state[type] }
-    let links = null
-    if (newType[params.id]) {
-      links = { ...newType[params.id].links, ...params.links }
-      newType[params.id] = { ...newType[params.id], ...params, links }
-    } else {
-      newType[params.id] = { ...newType[params.id], ...params }
-    }
-    state[type] = newType
+    state[type][params.id] = merge(state[type][params.id], params)
   }
   return state
 }
@@ -75,12 +67,9 @@ methods.findPostFromIdOrToken = (state, postIdOrToken) =>
 
 function _addParentPostIdToComments(state, action) {
   // Kludge to abort for some tests
-  if (!action || !action.meta) return null
-
+  if (!action || !action.meta) { return null }
   const { mappingType } = action.meta
-
-  if (mappingType !== 'comments') return null
-
+  if (mappingType !== 'comments') { return null }
   const { response, postIdOrToken } = action.payload
 
   if (postIdOrToken) {
