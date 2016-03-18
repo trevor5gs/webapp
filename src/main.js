@@ -28,21 +28,35 @@ const element = (
   </Provider>
 )
 
-const storage = localforage.createInstance({ name: 'ello-webapp' })
 const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
-const persistor = persistStore(store, { storage, whitelist }, () => {
-  ReactDOM.render(element, document.getElementById('root'))
-})
 
-// check and update current version and
-// only kill off the persisted reducers
-storage.getItem('APP_VERSION')
-  .then((curVersion) => {
-    if (curVersion && curVersion !== APP_VERSION) {
-      // we can't use purgeAll since localforage
-      // doesn't implement the getAllKeys method
-      persistor.purge(whitelist)
-    }
-    storage.setItem('APP_VERSION', APP_VERSION)
+const launchApplication = (storage) => {
+  const persistor = persistStore(store, { storage, whitelist }, () => {
+    ReactDOM.render(element, document.getElementById('root'))
   })
 
+  // check and update current version and
+  // only kill off the persisted reducers
+  storage.getItem('APP_VERSION')
+    .then((curVersion) => {
+      if (curVersion && curVersion !== APP_VERSION) {
+        // we can't use purgeAll since localforage
+        // doesn't implement the getAllKeys method
+        persistor.purge(whitelist)
+      }
+      storage.setItem('APP_VERSION', APP_VERSION)
+    })
+}
+
+const dbRequest = window.indexedDB.open('ello-webapp')
+dbRequest.onsuccess = () => {
+  const storage = localforage.createInstance({ name: 'ello-webapp' })
+  launchApplication(storage)
+}
+dbRequest.onerror = () => {
+  const storage = localforage.createInstance({
+    name: 'ello-webapp',
+    driver: localforage.LOCALSTORAGE,
+  })
+  launchApplication(storage)
+}
