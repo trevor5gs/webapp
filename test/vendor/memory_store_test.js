@@ -2,13 +2,13 @@ import { expect, sinon } from '../spec_helper'
 import MemoryStore from '../../src/vendor/memory_store'
 
 describe('MemoryStore', () => {
-  beforeEach(function (done) {
+  beforeEach((done) => {
     // done() accepts an error as the first argument
     // It should never get one
     MemoryStore.setItem('test', 1, done)
   })
 
-  afterEach(function (done) {
+  afterEach((done) => {
     MemoryStore.clear(done)
   })
 

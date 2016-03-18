@@ -14,6 +14,8 @@ import store from './store'
 import { browserHistory } from 'react-router'
 import routes from './routes'
 
+import MemoryStore from './vendor/memory_store'
+
 import './vendor/embetter'
 import './vendor/embetter_initializer'
 
@@ -48,16 +50,22 @@ const launchApplication = (storage) => {
     })
 }
 
-const dbRequest = window.indexedDB.open('ello-webapp')
-dbRequest.onsuccess = () => {
-  const storage = localforage.createInstance({ name: 'ello-webapp' })
+try {
+  const dbRequest = window.indexedDB.open('ello-webapp')
+  dbRequest.onsuccess = () => {
+    const storage = localforage.createInstance({ name: 'ello-webapp' })
+    launchApplication(storage)
+  }
+  dbRequest.onerror = () => {
+    const storage = localforage.createInstance({
+      name: 'ello-webapp',
+      driver: localforage.LOCALSTORAGE,
+    })
+    launchApplication(storage)
+    return true
+  }
+} catch (e) {
+  // If all else fails, use in-memory store
+  const storage = MemoryStore
   launchApplication(storage)
-}
-dbRequest.onerror = () => {
-  const storage = localforage.createInstance({
-    name: 'ello-webapp',
-    driver: localforage.LOCALSTORAGE,
-  })
-  launchApplication(storage)
-  return true
 }
