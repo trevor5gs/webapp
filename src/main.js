@@ -59,4 +59,5 @@ dbRequest.onerror = () => {
     driver: localforage.LOCALSTORAGE,
   })
   launchApplication(storage)
+  return true
 }
