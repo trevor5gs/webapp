@@ -51,6 +51,11 @@ const launchApplication = (storage) => {
 }
 
 try {
+  // Test access to indexedDB
+  // if it fails, explicitly set up localStorage as
+  // localForage's storage driver.  This prevents a situation where
+  // firefox in private mode technically has indexedDB, but exceptions are thrown
+  // when it's accessed
   const dbRequest = window.indexedDB.open('ello-webapp')
   dbRequest.onsuccess = () => {
     const storage = localforage.createInstance({ name: 'ello-webapp' })
@@ -65,7 +70,7 @@ try {
     return true
   }
 } catch (e) {
-  // If all else fails, use in-memory store
+  // If even localStorage fails, use an in-memory store
   const storage = MemoryStore
   launchApplication(storage)
 }
