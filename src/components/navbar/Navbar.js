@@ -21,6 +21,7 @@ import NavbarOmniButton from '../navbar/NavbarOmniButton'
 import NavbarProfile from '../navbar/NavbarProfile'
 import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
 import Mousetrap from '../../vendor/mousetrap'
+import { scrollToTop } from '../../vendor/scrollTop'
 import { findLayoutMode } from '../../reducers/gui'
 import Session from '../../../src/vendor/session'
 
@@ -216,7 +217,7 @@ class Navbar extends Component {
 
   onClickLoadMorePosts = () => {
     const { dispatch } = this.props
-    window.scrollTo(0, 0)
+    scrollToTop()
     dispatch({
       type: ACTION_TYPES.ADD_NEW_IDS_TO_RESULT,
     })
@@ -383,4 +384,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Navbar)
-
