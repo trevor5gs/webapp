@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { push, replace } from 'react-router-redux'
 import classNames from 'classnames'
-import { debounce } from 'lodash'
+import { debounce, isEmpty } from 'lodash'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
@@ -445,7 +445,7 @@ class Settings extends Component {
                 <dt>Short Bio:</dt>
                 <dd>{ profile.shortBio || mdash }</dd>
                 <dt>Links:</dt>
-                <dd>{ profile.externalLinksList ? this.getExternalLinkListAsText() : mdash }</dd>
+                <dd>{ !isEmpty(profile.externalLinksList) ? this.getExternalLinkListAsText() : mdash }</dd>
                 <dt>Avatar:</dt>
                 <dd>{ this.getOriginalAssetUrl(profile.avatar) }</dd>
                 <dt>Header:</dt>
