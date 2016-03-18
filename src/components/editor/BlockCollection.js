@@ -580,7 +580,8 @@ class BlockCollection extends Component {
     const { dragBlockTop, loadingImageBlocks, order } = this.state
     const hasMention = this.hasMention()
     const hasContent = this.hasContent()
-    const firstBlockIsText = this.getBlockFromUid(order[0]).kind === 'text'
+    const firstBlockIsText = this.getBlockFromUid(order[0]) ?
+      this.getBlockFromUid(order[0]).kind === 'text' : true
     return (
       <div
         className={ classNames('editor', { hasMention, hasContent, isComment }) }
