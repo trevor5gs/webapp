@@ -5,28 +5,36 @@ class MemoryStore {
 
   static setItem(key, value, callback) {
     this.store[key] = value
-    callback(null)
+    if (callback) callback(null)
+    return Promise.resolve(null)
   }
 
   static getItem(key, callback) {
-    callback(null, get(this.store, key, null))
+    const item = get(this.store, key, null)
+    if (callback) callback(null, item)
+    return Promise.resolve(item)
   }
 
   static getAllKeys(callback) {
-    callback(null, Object.keys(this.store))
+    const keys = Object.keys(this.store)
+    if (callback) callback(null, keys)
+    return Promise.resolve(keys)
   }
 
   static removeItem(key, callback) {
     delete this.store[key]
-    callback(null)
+    if (callback) callback(null)
+    return Promise.resolve(null)
   }
 
   static clear(callback) {
     try {
       Object.keys(this.store).forEach(key => delete this.store[key])
-      callback(null)
+      if (callback) callback(null)
+      return Promise.resolve(null)
     } catch (error) {
       callback(error)
+      return Promise.reject(error)
     }
   }
 }

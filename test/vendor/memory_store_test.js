@@ -22,11 +22,27 @@ describe('MemoryStore', () => {
     expect(getCallback).to.have.been.calledWith(null, 2)
   })
 
+  it('can store with promises', (done) => {
+    MemoryStore.setItem('test', 2).then(() => {
+      MemoryStore.getItem('test').then(val => {
+        expect(val).to.eq(2)
+        done()
+      })
+    })
+  })
+
   it('can retrieve what you stored', () => {
     const fetchCallback = sinon.spy()
 
     MemoryStore.getItem('test', fetchCallback)
     expect(fetchCallback).to.have.been.calledWith(null, 1)
+  })
+
+  it('also knows promises', (done) => {
+    MemoryStore.getItem('test').then((val) => {
+      expect(val).to.eq(1)
+      done()
+    })
   })
 
   it('can remove an item', () => {
