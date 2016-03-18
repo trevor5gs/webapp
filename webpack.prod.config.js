@@ -8,6 +8,8 @@ var jade = require('jade')
 // load env vars first
 require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
 
+const nodeEnv = process.env.NODE_ENV || 'development'
+
 module.exports = {
   entry: {
     main: './src/main',
@@ -23,6 +25,7 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       ENV: JSON.stringify(require(path.join(__dirname, './env.js'))),
+      'process.env': { NODE_ENV: JSON.stringify(nodeEnv) },
     }),
     new ExtractTextPlugin('bundle.css'),
     new webpack.optimize.CommonsChunkPlugin('commons'),
