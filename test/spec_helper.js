@@ -5,10 +5,13 @@ global.ENV = JSON.stringify(require('../env'))
 
 import React from 'react/addons'
 import jsdom from 'mocha-jsdom'
-
-export { expect as expect } from 'chai'
+import chai, { expect } from 'chai'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
+chai.use(sinonChai)
+export { sinon }
+export { expect }
 export { React as React }
-export sinon from 'sinon'
 export { clearJSON, json, stub } from './stubs'
 
 export const TestUtils = React.addons.TestUtils
