@@ -74,6 +74,20 @@ function touchMove(e) {
   dragMove(e.touches[0].clientX, e.touches[0].clientY)
 }
 
+function dragEnd() {
+  if (!isDragging) return
+  callMethod('onDragEnd')
+  document.removeEventListener('mousemove', mouseMove)
+  document.removeEventListener('touchmove', touchMove)
+  document.removeEventListener('mouseup', dragEnd)
+  document.removeEventListener('touchend', dragEnd)
+  // this gives us enough time to respond on the frame
+  // of the mouse/touch event to know if we dragged when it fired.
+  requestAnimationFrame(() => {
+    reset()
+  })
+}
+
 function dragStart(x, y, t) {
   reset()
   target = t
@@ -83,6 +97,8 @@ function dragStart(x, y, t) {
   callMethod('onDragStart')
   document.addEventListener('mousemove', mouseMove)
   document.addEventListener('touchmove', touchMove)
+  document.addEventListener('mouseup', dragEnd)
+  document.addEventListener('touchend', dragEnd)
 }
 
 function mouseDown(e) {
@@ -99,23 +115,9 @@ function touchStart(e) {
   dragStart(e.touches[0].clientX, e.touches[0].clientY)
 }
 
-function dragEnd() {
-  if (!isDragging) return
-  callMethod('onDragEnd')
-  document.removeEventListener('mousemove', mouseMove)
-  document.removeEventListener('touchmove', touchMove)
-  // this gives us enough time to respond on the frame
-  // of the mouse/touch event to know if we dragged when it fired.
-  requestAnimationFrame(() => {
-    reset()
-  })
-}
-
 function addListeners() {
   document.addEventListener('mousedown', mouseDown)
   document.addEventListener('touchstart', touchStart)
-  document.addEventListener('mouseup', dragEnd)
-  document.addEventListener('touchend', dragEnd)
 }
 
 function removeListeners() {
