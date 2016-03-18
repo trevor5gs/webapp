@@ -158,7 +158,7 @@ export function createPost(body, editorId, repostId) {
   return {
     type: ACTION_TYPES.POST.CREATE,
     payload: {
-      body: { body },
+      body: body.length ? { body } : null,
       editorId,
       endpoint: api.createPost(repostId),
       method: 'POST',
