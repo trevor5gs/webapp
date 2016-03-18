@@ -216,6 +216,7 @@ class Navbar extends Component {
 
   onClickLoadMorePosts = () => {
     const { dispatch } = this.props
+    window.scrollTo(0, 0)
     dispatch({
       type: ACTION_TYPES.ADD_NEW_IDS_TO_RESULT,
     })
