@@ -52,10 +52,10 @@ class UserCard extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
-    pathname: ownProps.location.pathname,
+    pathname: state.routing.location.pathname,
   }
 }
 

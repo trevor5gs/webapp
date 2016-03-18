@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { push } from 'react-router-redux'
 import classNames from 'classnames'
 import { trackEvent } from '../../actions/tracking'
 import { ElloMark } from '../interface/ElloIcons'
@@ -20,7 +21,7 @@ class OnboardingHeader extends Component {
     trackingLabel: PropTypes.string.isRequired,
   }
 
-  onClickNext = (e) => {
+  onClickNext = () => {
     const {
       dispatch,
       batchSave,
@@ -31,21 +32,12 @@ class OnboardingHeader extends Component {
     } = this.props
     dispatch(trackEvent(`completed-${trackingLabel}`))
 
-    if (redirection) {
-      e.preventDefault()
-      window.location = nextPath
-    }
-
     // Save any relationships created...
-    if (!batchSave && !relationshipMap) {
-      return
-    }
+    if (!batchSave && !relationshipMap) { return }
 
     const { following, inactive } = relationshipMap
 
-    if (!following && !inactive) {
-      return
-    }
+    if (!following && !inactive) { return }
 
     const followingLength = following.length
     const inactiveLength = inactive.length
@@ -67,14 +59,17 @@ class OnboardingHeader extends Component {
     } else {
       dispatch(trackEvent(`followed-some-${trackingLabel}`))
     }
+
+    if (redirection) {
+      dispatch(push(nextPath))
+    }
   }
 
-  onClickSkip = (e) => {
+  onClickSkip = () => {
     const { dispatch, trackingLabel, nextPath, redirection } = this.props
     dispatch(trackEvent(`skipped-${trackingLabel}`))
     if (redirection) {
-      e.preventDefault()
-      window.location = nextPath
+      dispatch(push(nextPath))
     }
   }
 
