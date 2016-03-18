@@ -14,6 +14,8 @@ import store from './store'
 import { browserHistory } from 'react-router'
 import routes from './routes'
 
+import MemoryStore from './vendor/memory_store'
+
 import './vendor/embetter'
 import './vendor/embetter_initializer'
 
@@ -28,21 +30,47 @@ const element = (
   </Provider>
 )
 
-const storage = localforage.createInstance({ name: 'ello-webapp' })
 const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
-const persistor = persistStore(store, { storage, whitelist }, () => {
-  ReactDOM.render(element, document.getElementById('root'))
-})
 
-// check and update current version and
-// only kill off the persisted reducers
-storage.getItem('APP_VERSION')
-  .then((curVersion) => {
-    if (curVersion && curVersion !== APP_VERSION) {
-      // we can't use purgeAll since localforage
-      // doesn't implement the getAllKeys method
-      persistor.purge(whitelist)
-    }
-    storage.setItem('APP_VERSION', APP_VERSION)
+const launchApplication = (storage) => {
+  const persistor = persistStore(store, { storage, whitelist }, () => {
+    ReactDOM.render(element, document.getElementById('root'))
   })
 
+  // check and update current version and
+  // only kill off the persisted reducers
+  storage.getItem('APP_VERSION')
+    .then((curVersion) => {
+      if (curVersion && curVersion !== APP_VERSION) {
+        // we can't use purgeAll since localforage
+        // doesn't implement the getAllKeys method
+        persistor.purge(whitelist)
+      }
+      storage.setItem('APP_VERSION', APP_VERSION)
+    })
+}
+
+try {
+  // Test access to indexedDB
+  // if it fails, explicitly set up localStorage as
+  // localForage's storage driver.  This prevents a situation where
+  // firefox in private mode technically has indexedDB, but exceptions are thrown
+  // when it's accessed
+  const dbRequest = window.indexedDB.open('ello-webapp')
+  dbRequest.onsuccess = () => {
+    const storage = localforage.createInstance({ name: 'ello-webapp' })
+    launchApplication(storage)
+  }
+  dbRequest.onerror = () => {
+    const storage = localforage.createInstance({
+      name: 'ello-webapp',
+      driver: localforage.LOCALSTORAGE,
+    })
+    launchApplication(storage)
+    return true
+  }
+} catch (e) {
+  // If even localStorage fails, use an in-memory store
+  const storage = MemoryStore
+  launchApplication(storage)
+}

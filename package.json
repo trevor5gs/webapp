@@ -81,6 +81,7 @@
     "react-transform-hmr": "1.0.4",
     "redbox-react": "1.2.2",
     "sinon": "1.17.3",
+    "sinon-chai": "^2.8.0",
     "source-map-support": "^0.4.0",
     "webpack-dev-middleware": "1.5.1",
     "webpack-hot-middleware": "2.10.0"
