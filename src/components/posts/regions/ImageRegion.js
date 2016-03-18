@@ -14,7 +14,7 @@ const STATUS = {
 class ImageRegion extends Component {
 
   static propTypes = {
-    assets: PropTypes.object.isRequired,
+    assets: PropTypes.object,
     content: PropTypes.object.isRequired,
     isComment: PropTypes.bool,
     isGridLayout: PropTypes.bool.isRequired,
@@ -171,6 +171,10 @@ class ImageRegion extends Component {
 
   isBasicAttachment() {
     const { assets, links } = this.props
+    // notifications don't supply the linked assets in a response
+    // so we need to see if the asset actually exists here so we
+    // can fall back to using just the url
+    if (!assets || (assets && !assets[links.assets])) { return true }
     return !(links && links.assets && assets[links.assets] && assets[links.assets].attachment)
   }
 
@@ -249,7 +253,7 @@ class ImageRegion extends Component {
 
   renderAttachment() {
     const { assets, links } = this.props
-    if (links && links.assets && assets[links.assets] && assets[links.assets].attachment) {
+    if (!this.isBasicAttachment()) {
       this.attachment = assets[links.assets].attachment
       return this.isGif() ? this.renderGifAttachment() : this.renderImageAttachment()
     }
