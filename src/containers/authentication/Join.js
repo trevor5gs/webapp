@@ -9,8 +9,8 @@ import { checkAvailability } from '../../actions/profile'
 import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
-import Emoji from '../../components/assets/Emoji'
 import EmailControl from '../../components/forms/EmailControl'
+import InvitationCodeControl from '../../components/forms/InvitationCodeControl'
 import FormButton from '../../components/forms/FormButton'
 import PasswordControl from '../../components/forms/PasswordControl'
 import UsernameControl from '../../components/forms/UsernameControl'
@@ -18,6 +18,8 @@ import {
   isFormValid,
   getUsernameStateFromClient,
   getUsernameStateFromServer,
+  getInvitationCodeStateFromClient,
+  getInvitationCodeStateFromServer,
   getEmailStateFromClient,
   getEmailStateFromServer,
   getPasswordState,
@@ -35,10 +37,12 @@ class Join extends Component {
     const index = random(0, userlist.length - 1)
     this.state = {
       featuredUser: userlist[index],
+      invitationCodeState: { status: STATUS.INDETERMINATE, message: '' },
       emailState: { status: STATUS.INDETERMINATE, message: '' },
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
     }
+    this.invitationCodeValue = ''
     this.emailValue = ''
     this.usernameValue = ''
     this.passwordValue = ''
@@ -55,6 +59,27 @@ class Join extends Component {
     }
     if (availability.hasOwnProperty('email')) {
       this.validateEmailResponse(availability)
+    }
+    if (availability.hasOwnProperty('invitationCode')) {
+      this.validateInvitationCodeResponse(availability)
+    }
+  }
+
+  onChangeInvitationCodeControl = ({ invitationCode }) => {
+    this.invitationCodeValue = invitationCode
+    const { invitationCodeState } = this.state
+    const currentStatus = invitationCodeState.status
+    const clientState = getInvitationCodeStateFromClient({ value: invitationCode, currentStatus })
+    if (clientState.status === STATUS.SUCCESS) {
+      if (currentStatus !== STATUS.REQUEST) {
+        this.setState({ invitationCodeState: { status: STATUS.REQUEST, message: 'checking...' } })
+      }
+      // This will end up landing on `validateEmailResponse` after fetching
+      this.checkServerForAvailability({ invitation_code: invitationCode })
+      return
+    }
+    if (clientState.status !== currentStatus) {
+      this.setState({ invitationCodeState: clientState })
     }
   }
 
@@ -140,16 +165,34 @@ class Join extends Component {
     }
   }
 
+  validateInvitationCodeResponse(availability) {
+    const { invitationCodeState } = this.state
+    const currentStatus = invitationCodeState.status
+    const newState = getInvitationCodeStateFromServer({ availability, currentStatus })
+    if (newState.status !== currentStatus) {
+      this.setState({ invitationCodeState: newState })
+    }
+  }
+
+  renderStatus(state) {
+    return () => {
+      if (state.status === STATUS.FAILURE) {
+        return <p>{state.message}</p>
+      }
+
+      return ''
+    }
+  }
+
   render() {
-    const { emailState, usernameState, passwordState, featuredUser } = this.state
+    const { emailState, usernameState, invitationCodeState, passwordState, featuredUser } = this.state
     const isValid = isFormValid([emailState, usernameState, passwordState])
     const boxControlClassNames = 'asBoxControl'
     return (
       <section className="Authentication Panel">
         <div className="AuthenticationFormDialog">
           <h1>
-            <Emoji name="muscle" title="Welcome!" size={ 32 } />
-            Be inspired.
+            Welcome to Ello.
           </h1>
 
           <form
@@ -159,19 +202,30 @@ class Join extends Component {
             onSubmit={ this.onSubmit }
             role="form"
           >
+            <InvitationCodeControl
+              classList={ boxControlClassNames }
+              label="Invitation Code"
+              onChange={ this.onChangeInvitationCodeControl }
+              status={ invitationCodeState.status }
+              renderStatus={ this.renderStatus(invitationCodeState) }
+              tabIndex="5"
+            />
             <EmailControl
               classList={ boxControlClassNames }
-              label={`Email ${emailState.message}`}
+              label="Email"
               onChange={ this.onChangeEmailControl }
               status={ emailState.status }
+              renderStatus={ this.renderStatus(emailState) }
               tabIndex="1"
             />
+            { this.renderStatus(emailState) }
             <UsernameControl
               classList={ boxControlClassNames }
-              label={`Username ${usernameState.message}`}
+              label="Username"
               onChange={ this.onChangeUsernameControl }
               placeholder="Create your username"
               status={ usernameState.status }
+              renderStatus={ this.renderStatus(usernameState) }
               suggestions={ usernameState.suggestions }
               tabIndex="2"
             />
@@ -181,6 +235,7 @@ class Join extends Component {
               onChange={ this.onChangePasswordControl }
               placeholder="Set your password"
               status={ passwordState.status }
+              renderStatus={ this.renderStatus(passwordState) }
               tabIndex="3"
             />
             <FormButton tabIndex="4" disabled={ !isValid }>Create Account</FormButton>

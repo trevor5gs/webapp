@@ -59,3 +59,22 @@ export const SESSION_KEYS = {
   NOTIFICATIONS_FILTER: 'KEYS.NOTIFICATIONS_FILTER',
   scrollLocationKey: (key) => `scrollLocations.${key}`,
 }
+
+export const ERROR_MESSAGES = {
+  NONE: '',
+  EMAIL: {
+    INVALID: 'That email is invalid. Please try again.',
+  },
+  INVITATION_CODE: {
+    INVALID: 'That code is invalid. Please try again.',
+  },
+  PASSWORD: {
+    TOO_SHORT: 'must be at least 8 characters.',
+  },
+  USERNAME: {
+    EXISTS: 'Username already exists. Please try a new one. You can change your username at any time',
+    INVALID_CHARACTERS: 'Username must only contain letters, numbers, underscores & dashes.',
+    INVALID: 'That username is invalid. Please try again.',
+    SPACES: 'Username must not contain a space.',
+  },
+}

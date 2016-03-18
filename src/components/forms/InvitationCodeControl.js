@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import FormControl from './FormControl'
 
 /* eslint-disable react/prefer-stateless-function */
-class EmailControl extends Component {
+class InvitationCodeControl extends Component {
 
   static defaultProps = {
-    className: 'EmailControl',
-    id: 'email',
-    name: 'user[email]',
-    placeholder: 'Enter your email',
+    className: 'InvitationCodeControl',
+    id: 'invitationCode',
+    name: 'user[invitation_code]',
+    placeholder: 'Enter code',
   }
 
   render() {
@@ -17,11 +17,9 @@ class EmailControl extends Component {
         { ...this.props }
         autoCapitalize="off"
         autoCorrect="off"
-        type="email"
       />
     )
   }
 }
 
-export default EmailControl
-
+export default InvitationCodeControl

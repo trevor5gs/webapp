@@ -9,7 +9,6 @@ import { getUserCredentials } from '../../actions/authentication'
 import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
-import Emoji from '../../components/assets/Emoji'
 import EmailControl from '../../components/forms/EmailControl'
 import PasswordControl from '../../components/forms/PasswordControl'
 import FormButton from '../../components/forms/FormButton'
@@ -79,6 +78,16 @@ class SignIn extends Component {
     dispatch(trackEvent('authentication-credits-clicked'))
   }
 
+  renderStatus(state) {
+    return () => {
+      if (state.status === STATUS.FAILURE) {
+        return <p>{state.message}</p>
+      }
+
+      return ''
+    }
+  }
+
   render() {
     const { emailState, passwordState, failureMessage, featuredUser } = this.state
     const isValid = isFormValid([emailState, passwordState])
@@ -86,7 +95,6 @@ class SignIn extends Component {
       <section className="Authentication Panel">
         <div className="AuthenticationFormDialog">
           <h1>
-            <Emoji name="v" title="Hi!" size={ 32 } />
             Welcome back.
           </h1>
           <form
@@ -98,14 +106,16 @@ class SignIn extends Component {
           >
             <EmailControl
               classList="asBoxControl"
-              label={ `Email ${emailState.message}` }
+              label="Email"
               onChange={ this.onChangeEmailControl }
+              renderStatus={ this.renderStatus(emailState) }
               tabIndex="1"
             />
             <PasswordControl
               classList="asBoxControl"
               label={ `Password ${passwordState.message}` }
               onChange={ this.onChangePasswordControl }
+              renderStatus={ this.renderStatus(passwordState) }
               tabIndex="2"
             />
             {failureMessage ? <p>{failureMessage}</p> : ''}

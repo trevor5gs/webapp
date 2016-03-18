@@ -99,17 +99,17 @@ textarea.FormControlInput.asBoxControl
   font-size: rem(11)
   top: rem(20)
   bottom: auto
-  left: rem(11)
-  right: auto
+  left: auto
+  right: rem(11)
 
 .isFailing > .FormControlLabel,
-.hasFocus.hasValue > .FormControlLabel
+.hasValue > .FormControlLabel
   transform: translate3d(0,rem(10),0)
   opacity: 1
 
 .isFailing > .FormControlLabel.asBoxControl,
-.hasFocus.hasValue > .FormControlLabel.asBoxControl
-  transform: translate3d(0,rem(-17),0)
+.hasValue > .FormControlLabel.asBoxControl
+  transform: translate3d(0,rem(-13),0)
 
 .isFailing > .FormControlLabel
   color: $danger !important
@@ -125,21 +125,21 @@ textarea.FormControlInput.asBoxControl
   height: 0
   margin: 0
 .FormControlSuggestionList.hasSuggestions
-  height: rem(75)
+  height: max-content
 
 .FormControlSuggestionList > p
   margin: rem(5) 0 0
 
-.FormControlSuggestionList > button
+.FormControlSuggestionButton
   +sans-typeset
   transition: color $speed
   margin-right: rem(10)
   border-bottom: 1px solid
 
-.no-touch .FormControlSuggestionList > button:hover
+.no-touch .FormControlSuggestionButton:hover
   color: #aaa
 
-.FormControlSuggestionList > button:last-of-type
+.FormControlSuggestionButton:last-of-type
   margin-right: 0
 
 // -------------------------------------
@@ -147,7 +147,7 @@ textarea.FormControlInput.asBoxControl
 .FormControlStatus
   transition: opacity $speed2
   position: absolute
-  top: rem(15)
+  top: rem(28)
   right: rem(10)
 .FormControlStatus:empty
   opacity: 0
