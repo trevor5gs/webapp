@@ -103,7 +103,7 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   )
 }
 
-function footer(post, author, currentUser, isGridLayout) {
+function footer(post, author, currentUser, isGridLayout, isRepostAnimating) {
   if (!author) { return null }
   return (
     <PostTools
@@ -111,12 +111,15 @@ function footer(post, author, currentUser, isGridLayout) {
       post={ post }
       currentUser={ currentUser }
       isGridLayout={ isGridLayout }
+      isRepostAnimating={ isRepostAnimating }
       key={ `PostTools_${post.id}` }
     />
   )
 }
 
-export function parsePost(post, author, currentUser, isGridLayout = true) {
+export function parsePost(post, author, currentUser,
+  isGridLayout = true, isRepostAnimating = false
+) {
   if (!post) { return null }
   const cells = []
   const postDetailPath = getPostDetailPath(author, post)
@@ -140,7 +143,7 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
     const content = isGridLayout ? post.summary : post.content
     cells.push(body(content, post.id, isGridLayout, postDetailPath))
   }
-  cells.push(footer(post, author, currentUser, isGridLayout))
+  cells.push(footer(post, author, currentUser, isGridLayout, isRepostAnimating))
   setModels({})
   return cells
 }
@@ -196,12 +199,13 @@ class PostParser extends Component {
     }
 
     const showEditor = (isEditing || isReposting) && postBody
+    const isRepostAnimating = isReposting && !postBody
     return (
       <div className="Post">
         { postHeader }
         { showEditor ?
           <Editor post={ post } /> :
-          parsePost(post, author, currentUser, isGridLayout)}
+          parsePost(post, author, currentUser, isGridLayout, isRepostAnimating)}
         { showLovers ? postLoversDrawer(post) : null }
         { showReposters ? postRepostersDrawer(post) : null }
         { showComments ? <Editor post={ post } isComment /> : null }
