@@ -204,12 +204,12 @@ App.preRender = (store) => {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     authentication: state.authentication,
     completions: state.editor.completions,
     emoji: state.emoji,
-    pathname: state.routing.location.pathname,
+    pathname: ownProps.location.pathname,
   }
 }
 
