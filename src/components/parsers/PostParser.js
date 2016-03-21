@@ -103,7 +103,7 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   )
 }
 
-function footer(post, author, currentUser, isGridLayout) {
+function footer(post, author, currentUser, isGridLayout, isRepostAnimating) {
   if (!author) { return null }
   return (
     <PostTools
@@ -111,12 +111,15 @@ function footer(post, author, currentUser, isGridLayout) {
       post={ post }
       currentUser={ currentUser }
       isGridLayout={ isGridLayout }
+      isRepostAnimating={ isRepostAnimating }
       key={ `PostTools_${post.id}` }
     />
   )
 }
 
-export function parsePost(post, author, currentUser, isGridLayout = true) {
+export function parsePost(post, author, currentUser,
+  isGridLayout = true, isRepostAnimating = false
+) {
   if (!post) { return null }
   const cells = []
   const postDetailPath = getPostDetailPath(author, post)
@@ -140,7 +143,7 @@ export function parsePost(post, author, currentUser, isGridLayout = true) {
     const content = isGridLayout ? post.summary : post.content
     cells.push(body(content, post.id, isGridLayout, postDetailPath))
   }
-  cells.push(footer(post, author, currentUser, isGridLayout))
+  cells.push(footer(post, author, currentUser, isGridLayout, isRepostAnimating))
   setModels({})
   return cells
 }
@@ -161,6 +164,7 @@ class PostParser extends Component {
     isPostDetail: PropTypes.bool,
     isReposting: PropTypes.bool,
     post: PropTypes.object,
+    postBody: PropTypes.array,
     showComments: PropTypes.bool,
     showLovers: PropTypes.bool,
     showReposters: PropTypes.bool,
@@ -172,9 +176,12 @@ class PostParser extends Component {
       assets,
       author,
       currentUser,
+      isEditing,
       isGridLayout,
       isPostDetail,
+      isReposting,
       post,
+      postBody,
     } = this.props
     if (!post) { return null }
     setModels({ assets })
@@ -191,13 +198,14 @@ class PostParser extends Component {
       postHeader = header(post, author)
     }
 
-    const showEditor = (post.isEditing || post.isReposting) && post.body
+    const showEditor = (isEditing || isReposting) && postBody
+    const isRepostAnimating = isReposting && !postBody
     return (
       <div className="Post">
         { postHeader }
         { showEditor ?
           <Editor post={ post } /> :
-          parsePost(post, author, currentUser, isGridLayout)}
+          parsePost(post, author, currentUser, isGridLayout, isRepostAnimating)}
         { showLovers ? postLoversDrawer(post) : null }
         { showReposters ? postRepostersDrawer(post) : null }
         { showComments ? <Editor post={ post } isComment /> : null }
@@ -220,6 +228,7 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
     showComments: post.showComments || false,
     showLovers: post.showLovers || false,
     showReposters: post.showReposters || false,
+    postBody: post.body,
     post,
   }
 

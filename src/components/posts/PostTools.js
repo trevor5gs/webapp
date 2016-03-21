@@ -33,6 +33,7 @@ class PostTools extends Component {
     dispatch: PropTypes.func.isRequired,
     isGridLayout: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
+    isRepostAnimating: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
     post: PropTypes.object.isRequired,
     previousPath: PropTypes.string,
@@ -42,6 +43,7 @@ class PostTools extends Component {
     this.state = {
       isMoreToolActive: false,
       isCommentsActive: false,
+      isRepostAnimating: false,
     }
   }
 
@@ -163,7 +165,7 @@ class PostTools extends Component {
   }
 
   getToolCells() {
-    const { author, currentUser, isLoggedIn, post } = this.props
+    const { author, currentUser, isLoggedIn, isRepostAnimating, post } = this.props
     const isOwnPost = currentUser && author.id === currentUser.id
     const cells = []
     cells.push(
@@ -239,6 +241,7 @@ class PostTools extends Component {
       )
     }
     if (author.hasRepostingEnabled && !(isOwnPost && parseInt(post.repostsCount, 10) === 0)) {
+      const repostIcon = <RepostIcon className={ classNames({ isRepostAnimating })} />
       cells.push(
         <span
           className="PostTool RepostTool"
@@ -250,7 +253,7 @@ class PostTools extends Component {
             onClick={ !isOwnPost ? this.onClickRepostPost : null }
             style={{ pointerEvents: isOwnPost ? 'none' : null }}
           >
-            <RepostIcon />
+            { repostIcon }
             <Hint>Repost</Hint>
           </button>
           <button className="PostToolDrawerButton" onClick={ this.onClickToggleReposters }>
