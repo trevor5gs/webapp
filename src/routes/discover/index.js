@@ -10,12 +10,12 @@ const getComponents = (location, cb) => {
   cb(null, require('../../containers/discover/Discover').default)
 }
 
-const bindOnEnter = path => (nextState, replaceState) => {
+const bindOnEnter = path => (nextState, replace) => {
   const type = nextState.params.type
 
   // redirect back to root path if type is unrecognized
   if (type && TYPES.indexOf(type) === -1) {
-    replaceState(nextState, path)
+    replace({ state: nextState, pathname: path })
   }
 }
 
