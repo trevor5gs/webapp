@@ -3,8 +3,9 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { replace } from 'react-router-redux'
 import { random } from 'lodash'
-import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
+import { FORM_CONTROL_STATUS as STATUS, ONBOARDING_VERSION } from '../../constants/gui_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
+import { loadProfile, saveProfile } from '../../actions/profile'
 import { getUserCredentials } from '../../actions/authentication'
 import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
@@ -24,6 +25,7 @@ class SignIn extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     currentStream: PropTypes.string,
+    webOnboardingVersionSeen: PropTypes.string,
   }
 
   componentWillMount() {
@@ -36,6 +38,23 @@ class SignIn extends Component {
     }
     this.emailValue = ''
     this.passwordValue = ''
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (typeof this.props.webOnboardingVersionSeen === 'undefined' &&
+        this.props.webOnboardingVersionSeen !== nextProps.webOnboardingVersionSeen) {
+      const { currentStream, dispatch } = this.props
+      if (nextProps.webOnboardingVersionSeen &&
+          nextProps.webOnboardingVersionSeen !== ONBOARDING_VERSION) {
+        dispatch(replace({ pathname: '/onboarding' }))
+        dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
+      } else if (!nextProps.webOnboardingVersionSeen) {
+        dispatch(replace({ pathname: currentStream }))
+        dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
+      } else {
+        dispatch(replace({ pathname: currentStream }))
+      }
+    }
   }
 
   onChangeEmailControl = ({ email }) => {
@@ -67,7 +86,10 @@ class SignIn extends Component {
     const success = await dispatch(action)
 
     if (success) {
-      dispatch(replace({ pathname: currentStream }))
+      const profileSuccess = await dispatch(loadProfile())
+      if (!profileSuccess) {
+        dispatch(replace({ pathname: currentStream }))
+      }
     } else {
       this.setState({ failureMessage: 'Your email or password were incorrect.' })
     }
@@ -133,6 +155,7 @@ class SignIn extends Component {
 
 const mapStateToProps = state => ({
   currentStream: state.gui.currentStream,
+  webOnboardingVersionSeen: state.profile.webOnboardingVersion,
 })
 
 export default connect(mapStateToProps)(SignIn)

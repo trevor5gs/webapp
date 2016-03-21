@@ -79,11 +79,10 @@ class App extends Component {
 
   componentWillReceiveProps(nextProps) {
     const prevAuthentication = this.props.authentication
-    const { authentication, dispatch, location } = nextProps
+    const { authentication, dispatch } = nextProps
     if (authentication &&
         !prevAuthentication.isLoggedIn &&
-        authentication.isLoggedIn &&
-        location.pathname !== '/') {
+        authentication.isLoggedIn) {
       dispatch(loadProfile())
     }
   }

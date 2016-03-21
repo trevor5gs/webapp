@@ -5,9 +5,9 @@ export function profile(state = {}, action) {
   let assetState = null
   let assetType = null
   switch (action.type) {
-    case AUTHENTICATION.LOGOUT:
     case PROFILE.AVAILABILITY_SUCCESS:
       return { ...state, ...action.payload.response }
+    case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
       return {}
     case PROFILE.EXPORT_SUCCESS:
