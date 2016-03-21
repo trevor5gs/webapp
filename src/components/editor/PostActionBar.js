@@ -24,6 +24,7 @@ class PostActionBar extends Component {
   handleFileBrowser = (e) => {
     const { handleFileAction } = this.props
     handleFileAction(e)
+    this.refs.FileBrowser.value = ''
   }
 
   browse = () => {
