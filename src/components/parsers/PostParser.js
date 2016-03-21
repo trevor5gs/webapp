@@ -161,6 +161,7 @@ class PostParser extends Component {
     isPostDetail: PropTypes.bool,
     isReposting: PropTypes.bool,
     post: PropTypes.object,
+    postBody: PropTypes.array,
     showComments: PropTypes.bool,
     showLovers: PropTypes.bool,
     showReposters: PropTypes.bool,
@@ -175,6 +176,7 @@ class PostParser extends Component {
       isGridLayout,
       isPostDetail,
       post,
+      postBody,
     } = this.props
     if (!post) { return null }
     setModels({ assets })
@@ -191,7 +193,7 @@ class PostParser extends Component {
       postHeader = header(post, author)
     }
 
-    const showEditor = (post.isEditing || post.isReposting) && post.body
+    const showEditor = (post.isEditing || post.isReposting) && postBody
     return (
       <div className="Post">
         { postHeader }
@@ -220,6 +222,7 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
     showComments: post.showComments || false,
     showLovers: post.showLovers || false,
     showReposters: post.showReposters || false,
+    postBody: post.body,
     post,
   }
 
