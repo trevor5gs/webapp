@@ -23,14 +23,8 @@ const indexRoute = {
   getComponents,
 }
 
-const explore = {
-  path: 'explore(/:type)',
-  getComponents,
-  onEnter: bindOnEnter('/explore'),
-}
-
-const exploreRoot = store => ({
-  path: '/explore',
+const explore = store => ({
+  path: '/explore(/:type)',
   getComponents,
   onEnter: (nextState, replace) => {
     const { params: { type } } = nextState
@@ -59,7 +53,6 @@ export {
   getComponents,
   discover,
   explore,
-  exploreRoot,
 }
 
 export default [
