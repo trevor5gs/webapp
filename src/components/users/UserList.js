@@ -17,6 +17,7 @@ class UserList extends Component {
     classList: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool,
+    relationshipPriority: PropTypes.string,
     showBlockMuteButton: PropTypes.bool,
     user: PropTypes.shape({
     }).isRequired,
@@ -42,13 +43,17 @@ class UserList extends Component {
   }
 
   render() {
-    const { classList, isLoggedIn, user, showBlockMuteButton } = this.props
+    const { classList, isLoggedIn, relationshipPriority, user, showBlockMuteButton } = this.props
     const userPath = `/${user.username}`
     const stats = isLoggedIn ? <UserStats user={ user } /> : <LoggedOutUserStats user={ user } />
     return (
       <div className={ classNames(classList, 'UserList') }>
         <Avatar to={ userPath } sources={ user.avatar } size="large" />
-        <RelationsGroup user={ user } showBlockMuteButton={ showBlockMuteButton } />
+        <RelationsGroup
+          user={ user }
+          relationshipPriority={ relationshipPriority }
+          showBlockMuteButton={ showBlockMuteButton }
+        />
         <UserNames user={ user } />
         { stats }
         <UserInfo user={ user } />
@@ -60,9 +65,12 @@ class UserList extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  const user = state.json.users[ownProps.user.id]
   return {
     isLoggedIn: state.authentication.isLoggedIn,
+    relationshipPriority: user.relationshipPriority,
+    user,
   }
 }
 
