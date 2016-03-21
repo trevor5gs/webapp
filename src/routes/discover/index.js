@@ -29,6 +29,25 @@ const explore = {
   onEnter: bindOnEnter('/explore'),
 }
 
+const exploreRoot = store => ({
+  path: '/explore',
+  getComponents,
+  onEnter: (nextState, replace) => {
+    const { params: { type } } = nextState
+    const { authentication } = store.getState()
+
+    const rootPath = authentication.isLoggedIn ? '/discover' : '/'
+
+    if (type && TYPES.indexOf(type) === -1) {
+      replace({ state: nextState, pathname: rootPath })
+    } else if (authentication.isLoggedIn) {
+      replace({ state: nextState, pathname: '/discover' })
+    } else {
+      replace({ state: nextState, pathname: '/' })
+    }
+  },
+})
+
 const discover = {
   path: 'discover(/:type)',
   getComponents,
@@ -40,10 +59,10 @@ export {
   getComponents,
   discover,
   explore,
+  exploreRoot,
 }
 
 export default [
   discover,
   explore,
 ]
-
