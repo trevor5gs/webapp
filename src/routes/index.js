@@ -4,7 +4,7 @@ import AuthenticationRoutes from './authentication'
 import {
   getComponents as getDiscoverComponents,
   discover as DiscoverRoute,
-  explore as ExploreRoute,
+  exploreRoot as ExploreRoute,
 } from './discover'
 import StreamsRoutes from './streams'
 import NotificationsRoute from './notifications'
@@ -77,7 +77,7 @@ const routes = store => {
         PostDetailRoute,
         ...AuthenticationRoutes,
         authenticate(DiscoverRoute),
-        ExploreRoute,
+        ExploreRoute(store),
         ...StreamsRoutes.map(route => authenticate(route)),
         authenticate(NotificationsRoute),
         ...InvitationsRoutes.map(route => authenticate(route)),
@@ -92,4 +92,3 @@ const routes = store => {
 }
 
 export default routes
-
