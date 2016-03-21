@@ -173,8 +173,10 @@ class PostParser extends Component {
       assets,
       author,
       currentUser,
+      isEditing,
       isGridLayout,
       isPostDetail,
+      isReposting,
       post,
       postBody,
     } = this.props
@@ -193,7 +195,7 @@ class PostParser extends Component {
       postHeader = header(post, author)
     }
 
-    const showEditor = (post.isEditing || post.isReposting) && postBody
+    const showEditor = (isEditing || isReposting) && postBody
     return (
       <div className="Post">
         { postHeader }
