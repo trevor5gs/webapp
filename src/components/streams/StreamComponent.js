@@ -242,10 +242,10 @@ export class StreamComponent extends Component {
   }
 
   attemptToRestoreScroll(fromMount = false) {
-    const { history, routerState } = this.props
+    const { history, routerState, isModalComponent } = this.props
     let scrollTopValue = null
     if (!routerState.didComeFromSeeMoreCommentsLink && !this.props.ignoresScrollPosition) {
-      if (fromMount) {
+      if (fromMount && !isModalComponent) {
         window.scrollTo(0, 0)
         return false
       }
