@@ -3,15 +3,8 @@ import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
 
-let cachedCommunity
-let cachedUsers
-
 export function loadCommunities() {
-  if (cachedCommunity) {
-    cachedCommunity.payload.endpoint = null
-    return cachedCommunity
-  }
-  const cache = {
+  return {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.communitiesPath(), vo: {} },
     meta: {
@@ -22,20 +15,10 @@ export function loadCommunities() {
       },
     },
   }
-
-  cachedCommunity = {
-    ...cache,
-    ...{ type: ACTION_TYPES.LOAD_STREAM_SUCCESS },
-  }
-  return cache
 }
 
 export function loadAwesomePeople() {
-  if (cachedUsers) {
-    cachedUsers.payload.endpoint = null
-    return cachedUsers
-  }
-  const cache = {
+  return {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.awesomePeoplePath(), vo: {} },
     meta: {
@@ -46,12 +29,6 @@ export function loadAwesomePeople() {
       },
     },
   }
-
-  cachedUsers = {
-    ...cache,
-    ...{ type: ACTION_TYPES.LOAD_STREAM_SUCCESS },
-  }
-  return cache
 }
 
 export function relationshipBatchSave(ids, priority = 'friend') {
@@ -61,7 +38,7 @@ export function relationshipBatchSave(ids, priority = 'friend') {
     payload: {
       method: 'POST',
       endpoint: api.relationshipBatchPath(),
-      body: JSON.stringify({ user_ids: ids, priority }),
+      body: { user_ids: ids, priority },
     },
   }
 }

@@ -35,7 +35,6 @@ class App extends Component {
 
   static defaultProps = {
     editorStore: {},
-    lastLocation: '',
   }
 
   componentWillMount() {
@@ -53,7 +52,6 @@ class App extends Component {
       forgot_password: /^\/forgot-password/,
       signup: /^\/signup/,
     }
-    this.lastLocation = ''
     // need to clear out the authentication for the case of
     // when you are on ello.co and go to /onboarding (logging in)
     // then logging out of the mothership wouldn't clear out the
@@ -90,10 +88,9 @@ class App extends Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { pathname, dispatch } = this.props
-    if (pathname !== this.lastLocation) {
-      this.lastLocation = pathname
+    if (pathname !== prevProps.pathname) {
       dispatch(trackPageView())
     }
   }
@@ -208,12 +205,12 @@ App.preRender = (store) => {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     authentication: state.authentication,
     completions: state.editor.completions,
     emoji: state.emoji,
-    pathname: ownProps.location.pathname,
+    pathname: state.routing.location.pathname,
   }
 }
 

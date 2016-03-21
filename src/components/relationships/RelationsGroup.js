@@ -19,13 +19,13 @@ class RelationsGroup extends Component {
     isLoggedIn: PropTypes.bool.isRequired,
     pathname: PropTypes.string,
     previousPath: PropTypes.string,
+    relationshipPriority: PropTypes.string,
     showBlockMuteButton: PropTypes.bool,
     user: PropTypes.shape({
       id: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
       ]),
-      relationshipPriority: PropTypes.string,
     }).isRequired,
   }
 
@@ -51,52 +51,48 @@ class RelationsGroup extends Component {
   }
 
   onOpenBlockMutePrompt = () => {
-    const { dispatch, user } = this.props
-    const priority = user.relationshipPriority
+    const { dispatch, relationshipPriority, user } = this.props
     dispatch(openModal(
       <BlockMuteDialog
         onBlock={ this.onConfirmBlockUser }
         onMute={ this.onConfirmMuteUser }
-        blockIsActive={ priority === RELATIONSHIP_PRIORITY.BLOCK }
-        muteIsActive={ priority === RELATIONSHIP_PRIORITY.MUTE }
+        blockIsActive={ relationshipPriority === RELATIONSHIP_PRIORITY.BLOCK }
+        muteIsActive={ relationshipPriority === RELATIONSHIP_PRIORITY.MUTE }
         username = { user.username }
       />
     , 'asDangerZone'))
   }
 
   onConfirmBlockUser = () => {
-    const { dispatch, previousPath } = this.props
+    const { dispatch, previousPath, relationshipPriority } = this.props
     const { user } = this.props
-    const priority = user.relationshipPriority
     this.onRelationshipUpdate({
       userId: user.id,
       priority: this.getNextPriority(this.props, 'block'),
-      existing: priority,
+      existing: relationshipPriority,
     })
     this.closeModal()
     // TODO: this should only go back if you are blocking
     // on a profile page, if the previous page was search
     // the terms should be restored in the url..
-    if (priority !== RELATIONSHIP_PRIORITY.BLOCK) {
+    if (relationshipPriority !== RELATIONSHIP_PRIORITY.BLOCK) {
       dispatch(replace(previousPath || '/'))
     }
   }
 
   onConfirmMuteUser = () => {
-    const { user } = this.props
-    const priority = user.relationshipPriority
+    const { relationshipPriority, user } = this.props
     this.onRelationshipUpdate({
       userId: user.id,
       priority: this.getNextPriority(this.props, 'mute'),
-      existing: priority,
+      existing: relationshipPriority,
     })
     this.closeModal()
   }
 
   getNextPriority(props, btnId) {
-    const { user } = props
-    const priority = user.relationshipPriority
-    switch (priority) {
+    const { relationshipPriority } = props
+    switch (relationshipPriority) {
       case RELATIONSHIP_PRIORITY.BLOCK:
       case RELATIONSHIP_PRIORITY.MUTE:
         return RELATIONSHIP_PRIORITY.INACTIVE
@@ -113,9 +109,10 @@ class RelationsGroup extends Component {
   }
 
   isBlockedOrMuted() {
-    const { user } = this.props
-    const status = user.relationshipPriority
-    return status && status === RELATIONSHIP_PRIORITY.BLOCK || status === RELATIONSHIP_PRIORITY.MUTE
+    const { relationshipPriority } = this.props
+    return relationshipPriority &&
+      relationshipPriority === RELATIONSHIP_PRIORITY.BLOCK ||
+      relationshipPriority === RELATIONSHIP_PRIORITY.MUTE
   }
 
   closeModal() {
@@ -124,42 +121,41 @@ class RelationsGroup extends Component {
   }
 
   shouldRenderBlockMute() {
-    const { isLoggedIn, showBlockMuteButton, user } = this.props
-    const { relationshipPriority } = user
+    const { isLoggedIn, showBlockMuteButton, relationshipPriority } = this.props
     return isLoggedIn && showBlockMuteButton && relationshipPriority !== RELATIONSHIP_PRIORITY.SELF
   }
 
   renderBlockMuteButton() {
-    const { user } = this.props
+    const { relationshipPriority, user } = this.props
     return (
       <BlockMuteButton
         onClick={ this.onOpenBlockMutePrompt }
-        priority={ user.relationshipPriority }
+        priority={ relationshipPriority }
         userId={ user.id }
       />
     )
   }
 
   render() {
-    const { isLoggedIn, user, classList } = this.props
+    const { isLoggedIn, relationshipPriority, user, classList } = this.props
     const callback = this.isBlockedOrMuted() ?
                      (this.onOpenBlockMutePrompt) :
                      (this.onRelationshipUpdate)
 
     return (
-      <div className="RelationsGroup" data-priority={ user.relationshipPriority }>
+      <div className="RelationsGroup" data-priority={ relationshipPriority }>
         { this.shouldRenderBlockMute() ? this.renderBlockMuteButton() : null }
         <RelationshipButton
           onClick={ isLoggedIn ? callback : this.onOpenSignupModal }
           classList={ classList }
-          priority={ user.relationshipPriority }
+          priority={ relationshipPriority }
           ref="RelationshipButton"
           userId={ user.id }
         />
         <StarshipButton
           onClick={ isLoggedIn ? callback : this.onOpenSignupModal }
           classList={ classList }
-          priority={ user.relationshipPriority }
+          priority={ relationshipPriority }
           ref="StarshipButton"
           userId={ user.id }
         />
@@ -168,11 +164,14 @@ class RelationsGroup extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  const user = state.json.users[ownProps.user.id]
   return {
     isLoggedIn: state.authentication.isLoggedIn,
     pathname: state.routing.location.pathname,
     previousPath: state.routing.previousPath,
+    relationshipPriority: user.relationshipPriority,
+    user,
   }
 }
 

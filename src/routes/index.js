@@ -10,7 +10,7 @@ import StreamsRoutes from './streams'
 import NotificationsRoute from './notifications'
 import InvitationsRoutes from './invitations'
 import SettingsRoutes from './settings'
-import OnboardingRoute from './onboarding'
+import OnboardingRoutes from './onboarding'
 import SearchRoutes from './search'
 import UserDetailRoute from './user_detail'
 
@@ -83,7 +83,7 @@ const routes = store => {
         ...InvitationsRoutes.map(route => authenticate(route)),
         ...SettingsRoutes.map(route => authenticate(route)),
         createRedirect('onboarding', '/onboarding/communities'),
-        authenticate(OnboardingRoute),
+        ...OnboardingRoutes.map(route => authenticate(route)),
         ...SearchRoutes,
         UserDetailRoute,
       ],
