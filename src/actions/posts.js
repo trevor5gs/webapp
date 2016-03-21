@@ -3,6 +3,10 @@ import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
 
+const PLACEHOLDER_B64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAJYAQMAAACguBAzAAAAA1B'+
+  'MVEXf398xY1lCAAAAUElEQVR4Xu3AAQEAAACCoP6vboiwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'+
+  'AAAAAAAAAAAAAAAAAAAAAAAAAAAAA47LgAARkTcJoAAAAASUVORK5CYII='
+
 export function loadPostDetail(idOrToken) {
   return {
     type: ACTION_TYPES.POST.DETAIL,
@@ -210,7 +214,11 @@ export function temporaryPostImageCreated(b64Asset, editorId, index) {
   return {
     type: ACTION_TYPES.POST.TMP_IMAGE_CREATED,
     meta: {},
-    payload: { url: b64Asset, editorId, index },
+    payload: {
+      url: (b64Asset.length > 900000) ? PLACEHOLDER_B64 : b64Asset,
+      editorId,
+      index,
+    },
   }
 }
 
