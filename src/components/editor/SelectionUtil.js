@@ -75,11 +75,9 @@ export function replaceWordFromSelection(word) {
   range.insertNode(node)
   range.setEndAfter(node)
   const selection = document.getSelection()
+  selection.removeAllRanges()
   selection.addRange(range)
   selection.collapseToEnd()
-  // this is a fix for safari not placing the cursor at the end of the initial text node..
-  // if (document.activeElement.textContent.split(' ').length == 1)
-  //   placeCursorAtEndOfContent(document.activeElement)
   range.detach()
 }
 
