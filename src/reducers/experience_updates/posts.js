@@ -10,7 +10,7 @@ function _updatePostLoves(state, newState, action) {
   const { method, model } = action.payload
 
   const newPost = {
-    id: model ? model.id : '',
+    id: model ? `${model.id}` : '',
   }
 
   let delta = 0
@@ -65,9 +65,9 @@ function _updatePostLoves(state, newState, action) {
 
   const currentUser = jsonReducer.methods.getCurrentUser(newState)
   if (idAdded) {
-    existingIds.unshift(currentUser.id)
+    existingIds.unshift(`${currentUser.id}`)
   } else {
-    const index = existingIds.indexOf(currentUser.id)
+    const index = existingIds.indexOf(`${currentUser.id}`)
     if (index !== -1) {
       existingIds.splice(index, 1)
     }
@@ -89,14 +89,15 @@ methods.updatePostLoves = (state, newState, action) =>
 function _addOrUpdatePost(newState, action) {
   const { model, response } = action.payload
   const user = model ?
-    newState[MAPPING_TYPES.USERS][model.authorId] :
+    newState[MAPPING_TYPES.USERS][`${model.authorId}`] :
     jsonReducer.methods.getCurrentUser(newState)
   let index = null
   switch (action.type) {
     case ACTION_TYPES.POST.CREATE_SUCCESS:
-      newState[MAPPING_TYPES.POSTS][response.id] = response
+      if (!newState[MAPPING_TYPES.POSTS]) { newState[MAPPING_TYPES.POSTS] = {} }
+      newState[MAPPING_TYPES.POSTS][`${response.id}`] = response
       if (newState.pages['/following']) {
-        newState.pages['/following'].ids.unshift(response.id)
+        newState.pages['/following'].ids.unshift(`${response.id}`)
       }
       if (action.meta.repostId) {
         jsonReducer.updatePostCount(newState, action.meta.repostId, 'repostsCount', 1)
@@ -107,21 +108,25 @@ function _addOrUpdatePost(newState, action) {
       if (user) {
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', 1)
         if (newState.pages[`/${user.username}`]) {
-          newState.pages[`/${user.username}`].ids.unshift(response.id)
+          newState.pages[`/${user.username}`].ids.unshift(`${response.id}`)
+        } else {
+          newState.pages[`/${user.username}`] = {
+            ids: [`${response.id}`], type: MAPPING_TYPES.POSTS, pagination: emptyPagination(),
+          }
         }
       }
       return newState
     case ACTION_TYPES.POST.DELETE_SUCCESS:
       if (user) {
         if (newState.pages['/following']) {
-          index = newState.pages['/following'].ids.indexOf(user.id)
+          index = newState.pages['/following'].ids.indexOf(`${user.id}`)
           if (index > -1) {
             newState.pages['/following'].ids.splice(index, 1)
           }
         }
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', -1)
         if (newState.pages[`/${user.username}`]) {
-          index = newState.pages[`/${user.username}`].ids.indexOf(model.id)
+          index = newState.pages[`/${user.username}`].ids.indexOf(`${model.id}`)
           if (index > -1) {
             newState.pages[`/${user.username}`].ids.splice(index, 1)
           }
@@ -134,7 +139,7 @@ function _addOrUpdatePost(newState, action) {
       }
       return newState
     case ACTION_TYPES.POST.UPDATE_SUCCESS:
-      newState[MAPPING_TYPES.POSTS][response.id] = response
+      newState[MAPPING_TYPES.POSTS][`${response.id}`] = response
       return newState
     default:
       return newState
@@ -145,7 +150,7 @@ methods.addOrUpdatePost = (newState, action) =>
 
 function _toggleComments(newState, action) {
   const { model, showComments } = action.payload
-  newState[MAPPING_TYPES.POSTS][model.id].showComments = showComments
+  newState[MAPPING_TYPES.POSTS][`${model.id}`].showComments = showComments
   return newState
 }
 methods.toggleComments = (newState, action) =>
@@ -153,7 +158,7 @@ methods.toggleComments = (newState, action) =>
 
 function _toggleEditing(newState, action) {
   const { model, isEditing } = action.payload
-  newState[MAPPING_TYPES.POSTS][model.id].isEditing = isEditing
+  newState[MAPPING_TYPES.POSTS][`${model.id}`].isEditing = isEditing
   return newState
 }
 methods.toggleEditing = (newState, action) =>
@@ -161,7 +166,7 @@ methods.toggleEditing = (newState, action) =>
 
 function _toggleLovers(newState, action) {
   const { model, showLovers } = action.payload
-  newState[MAPPING_TYPES.POSTS][model.id].showLovers = showLovers
+  newState[MAPPING_TYPES.POSTS][`${model.id}`].showLovers = showLovers
   return newState
 }
 methods.toggleLovers = (newState, action) =>
@@ -169,7 +174,7 @@ methods.toggleLovers = (newState, action) =>
 
 function _toggleReposting(newState, action) {
   const { model, isReposting } = action.payload
-  newState[MAPPING_TYPES.POSTS][model.id].isReposting = isReposting
+  newState[MAPPING_TYPES.POSTS][`${model.id}`].isReposting = isReposting
   return newState
 }
 methods.toggleReposting = (newState, action) =>
@@ -177,7 +182,7 @@ methods.toggleReposting = (newState, action) =>
 
 function _toggleReposters(newState, action) {
   const { model, showReposters } = action.payload
-  newState[MAPPING_TYPES.POSTS][model.id].showReposters = showReposters
+  newState[MAPPING_TYPES.POSTS][`${model.id}`].showReposters = showReposters
   return newState
 }
 methods.toggleReposters = (newState, action) =>

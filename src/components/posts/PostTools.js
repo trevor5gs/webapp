@@ -31,11 +31,11 @@ class PostTools extends Component {
 
   static propTypes = {
     author: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     isCommentsRequesting: PropTypes.bool,
     isGridLayout: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
+    isOwnPost: PropTypes.bool.isRequired,
     isRepostAnimating: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
     postCommentsCount: PropTypes.number.isRequired,
@@ -177,10 +177,9 @@ class PostTools extends Component {
   }
 
   getToolCells() {
-    const { author, currentUser, isLoggedIn, isRepostAnimating, post,
+    const { author, isLoggedIn, isOwnPost, isRepostAnimating, post,
       postViewsCountRounded, postCommentsCount, postLovesCount, postLoved, postRepostsCount,
     } = this.props
-    const isOwnPost = currentUser && author.id === currentUser.id
     const cells = []
     cells.push(
       <span
@@ -359,7 +358,7 @@ class PostTools extends Component {
   }
 }
 
-const mapStateToProps = ({ authentication, json, routing, stream }, ownProps) => {
+const mapStateToProps = ({ authentication, json, profile, routing, stream }, ownProps) => {
   const post = json[POSTS][ownProps.post.id]
   const isCommentsRequesting = stream.type === LOAD_STREAM_REQUEST &&
                                stream.meta.mappingType === COMMENTS &&
@@ -368,6 +367,7 @@ const mapStateToProps = ({ authentication, json, routing, stream }, ownProps) =>
   return {
     isCommentsRequesting,
     isLoggedIn: authentication.isLoggedIn,
+    isOwnPost: profile && ownProps.post.authorId === profile.id,
     pathname: routing.location.pathname,
     previousPath: routing.previousPath,
     postCommentsCount: post.commentsCount,

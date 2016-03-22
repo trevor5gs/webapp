@@ -41,10 +41,6 @@ class UserDetail extends Component {
     this.setState({ saidHelloTo: true })
   }
 
-  onZeroStateFirstPost = () => {
-    this.setState({ madeFirstPost: true })
-  }
-
   renderZeroStates(user) {
     const { isLoggedIn } = this.props
     const { saidHelloTo } = this.state
@@ -67,14 +63,11 @@ class UserDetail extends Component {
   }
 
   renderZeroStatesForCurrentUser(user) {
-    const { madeFirstPost } = this.state
     const cells = []
     if (!user.postsCount) {
       cells.push(
         <ZeroStateFirstPost
-          hasPosted={ madeFirstPost }
           key="zero3"
-          onSubmit={ this.onZeroStateFirstPost }
         />
       )
     }
