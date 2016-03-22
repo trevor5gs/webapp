@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
+import { getSelectionContainerElement } from '../editor/SelectionUtil'
 
 /* eslint-disable react/prefer-stateless-function */
 export default class Completion extends Component {
@@ -14,7 +15,9 @@ export default class Completion extends Component {
 
   onClickCompletion = (e) => {
     const { onClick } = this.props
+    const node = getSelectionContainerElement()
     onClick({ value: this.getValue(), e })
+    node.focus()
   }
 
   getValue() {
