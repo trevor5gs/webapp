@@ -8,7 +8,7 @@ import { ErrorState } from '../components/errors/Errors'
 
 export function loadUserDetail(username) {
   return {
-    type: ACTION_TYPES.LOAD_STREAM,
+    type: ACTION_TYPES.PROFILE.DETAIL,
     payload: { endpoint: api.userDetail(username) },
     meta: {
       mappingType: MAPPING_TYPES.USERS,
