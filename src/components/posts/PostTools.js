@@ -351,7 +351,8 @@ class PostTools extends Component {
 const mapStateToProps = ({ authentication, routing, stream }, ownProps) => {
   const isCommentsRequesting = stream.type === LOAD_STREAM_REQUEST &&
                                stream.meta.mappingType === COMMENTS &&
-                               stream.payload.postIdOrToken === ownProps.post.id
+                               (stream.payload.postIdOrToken === ownProps.post.id ||
+                                stream.payload.postIdOrToken === ownProps.post.token)
   return {
     isCommentsRequesting,
     isLoggedIn: authentication.isLoggedIn,
