@@ -98,6 +98,12 @@ function _addOrUpdatePost(newState, action) {
       if (newState.pages['/following']) {
         newState.pages['/following'].ids.unshift(response.id)
       }
+      if (action.meta.repostId) {
+        jsonReducer.updatePostCount(newState, action.meta.repostId, 'repostsCount', 1)
+      }
+      if (action.meta.repostedFromId) {
+        jsonReducer.updatePostCount(newState, action.meta.repostedFromId, 'repostsCount', 1)
+      }
       if (user) {
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', 1)
         if (newState.pages[`/${user.username}`]) {

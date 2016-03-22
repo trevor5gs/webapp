@@ -11,11 +11,12 @@ function stubJSONStore() {
   stub('user', { id: '2', username: 'lana' })
   stub('user', { id: '3', username: 'cyril' })
   stub('user', { id: '4', username: 'pam' })
+  stub('user', { id: 'inf', followersCount: '∞', username: 'ello' })
   // add some posts
-  stub('post', { id: '1', token: 'token1', authorId: '1' })
-  stub('post', { id: '2', token: 'token2', authorId: '2' })
-  stub('post', { id: '3', token: 'token3', authorId: '3' })
-  stub('post', { id: '4', token: 'token4', authorId: '4' })
+  stub('post', { id: '1', repostsCount: 1, token: 'token1', authorId: '1' })
+  stub('post', { id: '2', repostsCount: 1, token: 'token2', authorId: '2' })
+  stub('post', { id: '3', repostsCount: 1, token: 'token3', authorId: '3' })
+  stub('post', { id: '4', repostsCount: 1, token: 'token4', authorId: '4' })
 }
 
 describe('json reducer', () => {
@@ -37,6 +38,61 @@ describe('json reducer', () => {
         {
           id: '1',
           followersCount: 2,
+        }
+      ))
+      spy.restore()
+    })
+    it('should set the count', () => {
+      const spy = sinon.stub(subject.methods, 'mergeModel')
+      subject.methods.updateUserCount(json, '1', 'undefinedCount', 1)
+      expect(spy.calledWith(
+        json,
+        MAPPING_TYPES.USERS,
+        {
+          id: '1',
+          undefinedCount: 1,
+        }
+      ))
+      spy.restore()
+    })
+    it('should ignore ∞', () => {
+      const spy = sinon.stub(subject.methods, 'mergeModel')
+      subject.methods.updateUserCount(json, 'inf', 'followersCount', 1)
+      expect(spy.calledWith(
+        json,
+        MAPPING_TYPES.USERS,
+        {
+          id: '1',
+          followersCount: '∞',
+        }
+      ))
+      spy.restore()
+    })
+  })
+
+  describe('#updatePostCount', () => {
+    it('should update the count', () => {
+      const spy = sinon.stub(subject.methods, 'mergeModel')
+      subject.methods.updatePostCount(json, '1', 'repostsCount', 1)
+      expect(spy.calledWith(
+        json,
+        MAPPING_TYPES.POSTS,
+        {
+          id: '1',
+          repostsCount: 2,
+        }
+      ))
+      spy.restore()
+    })
+    it('should set the count', () => {
+      const spy = sinon.stub(subject.methods, 'mergeModel')
+      subject.methods.updatePostCount(json, '1', 'undefinedCount', 1)
+      expect(spy.calledWith(
+        json,
+        MAPPING_TYPES.POSTS,
+        {
+          id: '1',
+          undefinedCount: 2,
         }
       ))
       spy.restore()

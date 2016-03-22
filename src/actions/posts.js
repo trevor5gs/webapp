@@ -158,7 +158,7 @@ export function flagPost(post, kind) {
   }
 }
 
-export function createPost(body, editorId, repostId) {
+export function createPost(body, editorId, repostId, repostedFromId) {
   return {
     type: ACTION_TYPES.POST.CREATE,
     payload: {
@@ -167,7 +167,10 @@ export function createPost(body, editorId, repostId) {
       endpoint: api.createPost(repostId),
       method: 'POST',
     },
-    meta: {},
+    meta: {
+      repostId,
+      repostedFromId,
+    },
   }
 }
 
