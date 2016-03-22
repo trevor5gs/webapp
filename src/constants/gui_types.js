@@ -79,5 +79,5 @@ export const ERROR_MESSAGES = {
   },
 }
 
-export const ONBOARDING_VERSION = '1.1'
+export const ONBOARDING_VERSION = '1'
 
