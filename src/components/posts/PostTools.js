@@ -178,7 +178,7 @@ class PostTools extends Component {
 
   getToolCells() {
     const { author, currentUser, isLoggedIn, isRepostAnimating, post,
-      postViewsCountRounded, postCommentsCount, postLovesCount, postLoved, postRepostsCount
+      postViewsCountRounded, postCommentsCount, postLovesCount, postLoved, postRepostsCount,
     } = this.props
     const isOwnPost = currentUser && author.id === currentUser.id
     const cells = []
