@@ -134,3 +134,39 @@ export function getLastWordPasted() {
 //   M.splice 1, 1, tem[1]  if (tem = ua.match(/version\/(\d+)/i))?
 //   return browser: M[0], version: parseFloat(M[1])
 
+export function getSelectionContainerElement() {
+  if (document.selection && document.selection.createRange) {
+    // IE case
+    const range = document.selection.createRange()
+    return range.parentElement()
+  } else if (window.getSelection) {
+    const sel = window.getSelection()
+    let range
+    if (sel.getRangeAt) {
+      if (sel.rangeCount > 0) {
+        range = sel.getRangeAt(0)
+      }
+    } else {
+      // Old WebKit selection object has no getRangeAt, so
+      // create a range from other selection properties
+      range = document.createRange()
+      range.setStart(sel.anchorNode, sel.anchorOffset)
+      range.setEnd(sel.focusNode, sel.focusOffset)
+
+      // Handle the case when the selection was selected backwards (from the end
+      // to the start in the document)
+      if (range.collapsed !== sel.isCollapsed) {
+        range.setStart(sel.focusNode, sel.focusOffset)
+        range.setEnd(sel.anchorNode, sel.anchorOffset)
+      }
+    }
+
+    if (range) {
+      const container = range.commonAncestorContainer
+
+      // Check if the container is a text node and return its parent if so
+      return container.nodeType === 3 ? container.parentNode : container
+    }
+  }
+  return null
+}
