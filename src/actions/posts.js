@@ -215,7 +215,7 @@ export function temporaryPostImageCreated(b64Asset, editorId, index) {
     type: ACTION_TYPES.POST.TMP_IMAGE_CREATED,
     meta: {},
     payload: {
-      url: (b64Asset.length > 900000) ? PLACEHOLDER_B64 : b64Asset,
+      url: (b64Asset.length > 2500000) ? PLACEHOLDER_B64 : b64Asset,
       editorId,
       index,
     },
