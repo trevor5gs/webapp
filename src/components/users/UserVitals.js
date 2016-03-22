@@ -83,49 +83,6 @@ UserStats.propTypes = {
   }).isRequired,
 }
 
-export const LoggedOutUserStats = ({ user }) =>
-  <div className="UserStats">
-    <dl>
-      <UserStatsLink to={ `/${user.username}` }>
-        <dt>{ numberToHuman(user.postsCount) }</dt>
-        <dd>Posts</dd>
-      </UserStatsLink>
-    </dl>
-    <dl>
-      <UserStatsLink to={ `/${user.username}/following` }>
-        <dt>{ numberToHuman(user.followingCount) }</dt>
-        <dd>Following</dd>
-      </UserStatsLink>
-    </dl>
-    <dl>
-      <UserStatsLink to={ `/${user.username}/followers` }>
-        <dt>
-          {
-            typeof user.followersCount === 'string' ?
-              user.followersCount :
-              numberToHuman(user.followersCount)
-          }
-        </dt>
-        <dd>Followers</dd>
-      </UserStatsLink>
-    </dl>
-    <dl>
-      <UserStatsLink to={ `/${user.username}/loves` }>
-        <dt>{ numberToHuman(user.lovesCount) }</dt>
-        <dd>Loves</dd>
-      </UserStatsLink>
-    </dl>
-  </div>
-
-LoggedOutUserStats.propTypes = {
-  user: PropTypes.shape({
-    followersCount: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]).isRequired,
-    lovesCountRounded: PropTypes.string.isRequired,
-  }).isRequired,
-}
 
 export const UserInfo = ({ user }) => {
   let externalLinks = []
