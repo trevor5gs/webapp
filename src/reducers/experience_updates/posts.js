@@ -99,24 +99,10 @@ function _addOrUpdatePost(newState, action) {
         newState.pages['/following'].ids.unshift(response.id)
       }
       if (action.meta.repostId) {
-        const repostId = action.meta.repostId
-        const post = newState[MAPPING_TYPES.POSTS][repostId]
-        if (post) {
-          newState[MAPPING_TYPES.POSTS][repostId] = {
-            ...post,
-            repostsCount: (post.repostsCount || 0) + 1,
-          }
-        }
+        updatePostCount(newState, action.meta.repostId, 'repostsCount', 1)
       }
       if (action.meta.repostedFromId) {
-        const repostId = action.meta.repostedFromId
-        const post = newState[MAPPING_TYPES.POSTS][repostId]
-        if (post) {
-          newState[MAPPING_TYPES.POSTS][repostId] = {
-            ...post,
-            repostsCount: (post.repostsCount || 0) + 1,
-          }
-        }
+        updatePostCount(newState, action.meta.repostedFromId, 'repostsCount', 1)
       }
       if (user) {
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', 1)

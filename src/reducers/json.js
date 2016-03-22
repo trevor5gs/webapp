@@ -31,6 +31,19 @@ function _updateUserCount(newState, userId, prop, delta) {
 methods.updateUserCount = (newState, userId, prop, delta) =>
   _updateUserCount(newState, userId, prop, delta)
 
+function _updatePostCount(newState, postId, prop, delta) {
+  const count = newState[MAPPING_TYPES.POST][postId][prop]
+  const obj = { id: postId }
+  obj[prop] = parseInt(count, 10) + delta
+  return methods.mergeModel(
+    newState,
+    MAPPING_TYPES.USERS,
+    obj,
+  )
+}
+methods.updatePostCount = (newState, postId, prop, delta) =>
+  _updatePostCount(newState, postId, prop, delta)
+
 function _getCurrentUser(state) {
   for (const id in state[MAPPING_TYPES.USERS]) {
     if (state[MAPPING_TYPES.USERS].hasOwnProperty(id)) {
