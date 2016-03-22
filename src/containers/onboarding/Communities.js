@@ -22,7 +22,7 @@ class Communities extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { dispatch } = this.props
-    if (!this.hasAutoFollowed && nextProps.shouldFollowAll && nextProps.inactive.length > 0) {
+    if (!this.hasAutoFollowed && nextProps.followAll && nextProps.inactive.length > 0) {
       this.hasAutoFollowed = true
       const userIds = this.getUserIds()
       if (userIds.length) {
