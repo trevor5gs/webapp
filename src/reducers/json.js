@@ -19,10 +19,10 @@ let prevTerms = null
 let hasLoadedFirstStream = false
 
 function _updateUserCount(newState, userId, prop, delta) {
-  const count = newState[MAPPING_TYPES.USERS][`${userId}`][prop] || 0
+  const count = newState[MAPPING_TYPES.USERS][prop] || 0
   if (count === '∞') { return newState }
 
-  const obj = { id: `${userId}` }
+  const obj = { id: userId }
   obj[prop] = parseInt(count, 10) + delta
   return methods.mergeModel(
     newState,
@@ -34,10 +34,10 @@ methods.updateUserCount = (newState, userId, prop, delta) =>
   _updateUserCount(newState, userId, prop, delta)
 
 function _updatePostCount(newState, postId, prop, delta) {
-  const count = newState[MAPPING_TYPES.POSTS][`${postId}`][prop] || 0
+  const count = newState[MAPPING_TYPES.POSTS][postId][prop] || 0
   if (count === '∞') { return newState }
 
-  const obj = { id: `${postId}` }
+  const obj = { id: postId }
   obj[prop] = parseInt(count, 10) + delta
   return methods.mergeModel(
     newState,
@@ -50,8 +50,8 @@ methods.updatePostCount = (newState, postId, prop, delta) =>
 
 function _getCurrentUser(state) {
   for (const id in state[MAPPING_TYPES.USERS]) {
-    if (state[MAPPING_TYPES.USERS].hasOwnProperty(`${id}`)) {
-      const user = state[MAPPING_TYPES.USERS][`${id}`]
+    if (state[MAPPING_TYPES.USERS].hasOwnProperty(id)) {
+      const user = state[MAPPING_TYPES.USERS][id]
       if (user.relationshipPriority === RELATIONSHIP_PRIORITY.SELF) {
         return user
       }
@@ -64,7 +64,10 @@ methods.getCurrentUser = (state) =>
 
 function _mergeModel(state, type, params) {
   if (params.id) {
-    state[type][`${params.id}`] = merge(state[type][`${params.id}`], params)
+    // make the model's id a string for later comparisons
+    // sometimes the API sends them back as a number
+    params.id = `${params.id}`
+    state[type][params.id] = merge(state[type][params.id], params)
   }
   return state
 }
@@ -73,7 +76,7 @@ methods.mergeModel = (state, type, params) =>
 
 function _findPostFromIdOrToken(state, postIdOrToken) {
   return parseInt(postIdOrToken, 10) > 0 ?
-    state[MAPPING_TYPES.POSTS][`${postIdOrToken}`] :
+    state[MAPPING_TYPES.POSTS][postIdOrToken] :
     findModel(state, {
       collection: MAPPING_TYPES.POSTS,
       findObj: { token: postIdOrToken },
@@ -93,7 +96,7 @@ function _addParentPostIdToComments(state, action) {
     const post = methods.findPostFromIdOrToken(state, postIdOrToken)
     if (post) {
       for (const model of response[mappingType]) {
-        if (!state[MAPPING_TYPES.POSTS][`${model.postId}`]) {
+        if (!state[MAPPING_TYPES.POSTS][model.postId]) {
           model.postId = post.id
         }
       }
@@ -271,7 +274,7 @@ function _deleteModel(state, newState, action, mappingType) {
   } else if (action.type.indexOf('_FAILURE') !== -1) {
     // TODO: pop an alert or modal saying 'something went wrong'
     // and we couldn't delete this model?
-    newState[mappingType][`${model.id}`] = model
+    newState[mappingType][model.id] = model
     newState[`deleted_${mappingType}`].splice(
       newState[`deleted_${mappingType}`].indexOf(`${model.id}`),
       1
@@ -285,7 +288,7 @@ methods.deleteModel = (state, newState, action, mappingType) =>
 
 function _updateCurrentUser(newState, action) {
   const { response } = action.payload
-  newState[MAPPING_TYPES.USERS][`${response.id}`] = response
+  newState[MAPPING_TYPES.USERS][response.id] = response
   return newState
 }
 methods.updateCurrentUser = (newState, action) =>
@@ -298,7 +301,7 @@ function _updatePostDetail(newState, action) {
   return methods.mergeModel(
     newState,
     action.meta.mappingType,
-    { id: `${post.id}`, showLovers: parseInt(post.lovesCount, 10) > 0, showReposters: parseInt(post.repostsCount, 10) > 0 }
+    { id: post.id, showLovers: parseInt(post.lovesCount, 10) > 0, showReposters: parseInt(post.repostsCount, 10) > 0 }
   )
 }
 methods.updatePostDetail = (newState, post) =>

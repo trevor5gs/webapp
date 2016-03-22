@@ -22,8 +22,8 @@ methods.removeIdFromDeletedArray = (newState, id, type) =>
 function _relationshipUpdateSuccess(newState, action) {
   const { response } = action.payload
   const { owner, subject } = response
-  if (owner) { newState[MAPPING_TYPES.USERS][`${owner.id}`] = owner }
-  if (subject) { newState[MAPPING_TYPES.USERS][`${subject.id}`] = subject }
+  if (owner) { newState[MAPPING_TYPES.USERS][owner.id] = owner }
+  if (subject) { newState[MAPPING_TYPES.USERS][subject.id] = subject }
   return newState
 }
 methods.relationshipUpdateSuccess = (newState, action) =>
@@ -32,7 +32,7 @@ methods.relationshipUpdateSuccess = (newState, action) =>
 function _addItemsForAuthor(newState, mappingType, authorId) {
   for (const itemId in newState[mappingType]) {
     if (newState[mappingType].hasOwnProperty(itemId)) {
-      const item = newState[mappingType][`${itemId}`]
+      const item = newState[mappingType][itemId]
       if (item.hasOwnProperty('authorId') && item.authorId === authorId) {
         methods.removeIdFromDeletedArray(newState, mappingType, itemId)
       }
@@ -46,7 +46,7 @@ methods.addItemsForAuthor = (newState, mappingType, authorId) =>
 function _removeItemsForAuthor(newState, mappingType, authorId) {
   for (const itemId in newState[mappingType]) {
     if (newState[mappingType].hasOwnProperty(itemId)) {
-      const item = newState[mappingType][`${itemId}`]
+      const item = newState[mappingType][itemId]
       if (item.hasOwnProperty('authorId') && item.authorId === authorId) {
         const action = {
           type: '_REQUEST',
@@ -101,7 +101,7 @@ function _updateRelationship(newState, action) {
     return methods.relationshipUpdateSuccess(newState, action)
   }
   const { userId, priority } = action.payload
-  const user = newState[MAPPING_TYPES.USERS][`${userId}`]
+  const user = newState[MAPPING_TYPES.USERS][userId]
   const prevPriority = user.relationshipPriority
   switch (prevPriority) {
     case RELATIONSHIP_PRIORITY.BLOCK:
