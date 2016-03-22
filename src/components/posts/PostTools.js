@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { push, replace } from 'react-router-redux'
 import classNames from 'classnames'
 import { LOAD_STREAM_REQUEST } from '../../constants/action_types'
-import { COMMENTS } from '../../constants/mapping_types'
+import { COMMENTS, POSTS } from '../../constants/mapping_types'
 import { openModal, closeModal } from '../../actions/modals'
 import * as postActions from '../../actions/posts'
 import { trackEvent } from '../../actions/tracking'
@@ -38,6 +38,15 @@ class PostTools extends Component {
     isLoggedIn: PropTypes.bool.isRequired,
     isRepostAnimating: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
+    postCommentsCount: PropTypes.number.isRequired,
+    postLoved: PropTypes.bool.isRequired,
+    postLovesCount: PropTypes.number.isRequired,
+    postReposted: PropTypes.bool.isRequired,
+    postRepostsCount: PropTypes.number.isRequired,
+    postShowComments: PropTypes.bool.isRequired,
+    postShowLovers: PropTypes.bool.isRequired,
+    postShowReposters: PropTypes.bool.isRequired,
+    postViewsCountRounded: PropTypes.string.isRequired,
     post: PropTypes.object.isRequired,
     previousPath: PropTypes.string,
   }
@@ -55,19 +64,19 @@ class PostTools extends Component {
   }
 
   onClickToggleComments = () => {
-    const { dispatch, post } = this.props
-    const nextShowComments = !post.showComments
+    const { dispatch, post, postShowComments } = this.props
+    const nextShowComments = !postShowComments
     this.setState({ isCommentsActive: nextShowComments })
     dispatch(postActions.toggleComments(post, nextShowComments))
   }
 
   onClickLovePost = () => {
-    const { dispatch, isLoggedIn, post } = this.props
+    const { dispatch, isLoggedIn, post, postLoved } = this.props
     if (!isLoggedIn) {
       this.signUp()
       return
     }
-    if (post.loved) {
+    if (postLoved) {
       dispatch(postActions.unlovePost(post))
     } else {
       dispatch(postActions.lovePost(post))
@@ -75,7 +84,7 @@ class PostTools extends Component {
   }
 
   onClickToggleLovers = () => {
-    const { dispatch, isGridLayout, isLoggedIn, pathname, post } = this.props
+    const { dispatch, isGridLayout, isLoggedIn, pathname, post, postShowLovers } = this.props
     if (!isLoggedIn) {
       this.signUp()
       return
@@ -84,13 +93,13 @@ class PostTools extends Component {
     if (isGridLayout && pathname !== detailLink) {
       dispatch(push(detailLink))
     } else {
-      const showLovers = !post.showLovers
+      const showLovers = !postShowLovers
       dispatch(postActions.toggleLovers(post, showLovers))
     }
   }
 
   onClickToggleReposters = () => {
-    const { dispatch, isGridLayout, isLoggedIn, pathname, post } = this.props
+    const { dispatch, isGridLayout, isLoggedIn, pathname, post, postShowReposters } = this.props
     if (!isLoggedIn) {
       this.signUp()
       return
@@ -99,7 +108,7 @@ class PostTools extends Component {
     if (isGridLayout && pathname !== detailLink) {
       dispatch(push(detailLink))
     } else {
-      const showReposters = !post.showReposters
+      const showReposters = !postShowReposters
       dispatch(postActions.toggleReposters(post, showReposters))
     }
   }
@@ -132,12 +141,12 @@ class PostTools extends Component {
   }
 
   onClickRepostPost = () => {
-    const { dispatch, isLoggedIn, post } = this.props
+    const { dispatch, isLoggedIn, post, postReposted } = this.props
     if (!isLoggedIn) {
       this.signUp()
       return
     }
-    if (!post.reposted) {
+    if (!postReposted) {
       dispatch(postActions.toggleReposting(post, true))
       dispatch(postActions.loadEditablePost(post.id))
     }
@@ -168,7 +177,9 @@ class PostTools extends Component {
   }
 
   getToolCells() {
-    const { author, currentUser, isLoggedIn, isRepostAnimating, post } = this.props
+    const { author, currentUser, isLoggedIn, isRepostAnimating, post,
+      postViewsCountRounded, postCommentsCount, postLovesCount, postLoved, postRepostsCount,
+    } = this.props
     const isOwnPost = currentUser && author.id === currentUser.id
     const cells = []
     cells.push(
@@ -178,7 +189,7 @@ class PostTools extends Component {
       >
         <Link to={ this.getPostDetailLink() }>
           <EyeIcon />
-          <span className="PostToolValue">{ post.viewsCountRounded }</span>
+          <span className="PostToolValue">{ postViewsCountRounded }</span>
           <Hint>Views</Hint>
         </Link>
       </span>
@@ -195,21 +206,21 @@ class PostTools extends Component {
       cells.push(
         <span
           className="PostTool CommentTool"
-          data-count={ post.commentsCount }
+          data-count={ postCommentsCount }
           key={ `CommentTool_${post.id}` }
         >
           { isLoggedIn ?
             <button onClick={ this.onClickToggleComments } >
               <BubbleIcon />
               <span className="PostToolValue" >
-                { numberToHuman(post.commentsCount, false) }
+                { numberToHuman(postCommentsCount, false) }
               </span>
               <Hint>Comment</Hint>
             </button> :
             <Link to={ this.getPostDetailLink() }>
               <BubbleIcon />
               <span className="PostToolValue" >
-                { numberToHuman(post.commentsCount, false) }
+                { numberToHuman(postCommentsCount, false) }
               </span>
               <Hint>Comment</Hint>
             </Link>
@@ -221,38 +232,38 @@ class PostTools extends Component {
       cells.push(
         <span
           className="PostTool LoveTool"
-          data-count={ post.lovesCount }
+          data-count={ postLovesCount }
           key={ `LoveTool_${post.id}` }
         >
           <button
-            className={ classNames({ active: post.loved, hasPostToolDrawer: post.lovesCount > 0 }) }
+            className={ classNames({ active: postLoved, hasPostToolDrawer: postLovesCount > 0 }) }
             onClick={ this.onClickLovePost }
           >
             <HeartIcon />
             <Hint>Love</Hint>
           </button>
           <button
-            className={ classNames({ active: post.loved }, 'PostToolDrawerButton') }
+            className={ classNames({ active: postLoved }, 'PostToolDrawerButton') }
             onClick={ this.onClickToggleLovers }
           >
             <span className="PostToolValue" >
-              { numberToHuman(post.lovesCount, false) }
+              { numberToHuman(postLovesCount, false) }
             </span>
             <Hint>Loved by</Hint>
           </button>
         </span>
       )
     }
-    if (author.hasRepostingEnabled && !(isOwnPost && parseInt(post.repostsCount, 10) === 0)) {
+    if (author.hasRepostingEnabled && !(isOwnPost && parseInt(postRepostsCount, 10) === 0)) {
       const repostIcon = <RepostIcon className={ classNames({ isRepostAnimating })} />
       cells.push(
         <span
           className="PostTool RepostTool"
-          data-count={ post.repostsCount }
+          data-count={ postRepostsCount }
           key={ `RepostTool_${post.id}` }
         >
           <button
-            className={ classNames({ hasPostToolDrawer: post.repostsCount > 0 }) }
+            className={ classNames({ hasPostToolDrawer: postRepostsCount > 0 }) }
             onClick={ !isOwnPost ? this.onClickRepostPost : null }
             style={{ pointerEvents: isOwnPost ? 'none' : null }}
           >
@@ -261,7 +272,7 @@ class PostTools extends Component {
           </button>
           <button className="PostToolDrawerButton" onClick={ this.onClickToggleReposters }>
             <span className="PostToolValue" >
-              { numberToHuman(post.repostsCount, false) }
+              { numberToHuman(postRepostsCount, false) }
             </span>
             <Hint>Reposted by</Hint>
           </button>
@@ -348,7 +359,8 @@ class PostTools extends Component {
   }
 }
 
-const mapStateToProps = ({ authentication, routing, stream }, ownProps) => {
+const mapStateToProps = ({ authentication, json, routing, stream }, ownProps) => {
+  const post = json[POSTS][ownProps.post.id]
   const isCommentsRequesting = stream.type === LOAD_STREAM_REQUEST &&
                                stream.meta.mappingType === COMMENTS &&
                                (stream.payload.postIdOrToken === ownProps.post.id ||
@@ -358,6 +370,15 @@ const mapStateToProps = ({ authentication, routing, stream }, ownProps) => {
     isLoggedIn: authentication.isLoggedIn,
     pathname: routing.location.pathname,
     previousPath: routing.previousPath,
+    postCommentsCount: post.commentsCount,
+    postLoved: post.loved,
+    postLovesCount: post.lovesCount,
+    postReposted: post.reposted,
+    postRepostsCount: post.repostsCount,
+    postShowComments: post.showComments,
+    postShowLovers: post.showLovers,
+    postShowReposters: post.showReposters,
+    postViewsCountRounded: post.viewsCountRounded,
   }
 }
 
