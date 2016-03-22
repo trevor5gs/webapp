@@ -108,15 +108,6 @@ function footer(post, author, currentUser, isGridLayout, isRepostAnimating) {
   return (
     <PostTools
       author={ author }
-      postCommentsCount={ post.commentsCount }
-      postLoved={ post.loved }
-      postLovesCount={ post.lovesCount }
-      postReposted={ post.reposted }
-      postRepostsCount={ post.repostsCount }
-      postShowComments={ post.showComments }
-      postShowLovers={ post.showLovers }
-      postShowReposters={ post.showReposters }
-      postViewsCountRounded={ post.viewsCountRounded }
       post={ post }
       currentUser={ currentUser }
       isGridLayout={ isGridLayout }
@@ -239,15 +230,6 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
     showReposters: post.showReposters || false,
     postBody: post.body,
     post,
-    postCommentsCount: post.commentsCount,
-    postLoved: post.loved,
-    postLovesCount: post.lovesCount,
-    postReposted: post.reposted,
-    postRepostsCount: post.repostsCount,
-    postShowComments: post.showComments,
-    postShowLovers: post.showLovers,
-    postShowReposters: post.showReposters,
-    postViewsCountRounded: post.viewsCountRounded,
   }
 
   if (isRepost(post)) {
