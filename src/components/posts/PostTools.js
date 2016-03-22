@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { push, replace } from 'react-router-redux'
 import classNames from 'classnames'
+import { LOAD_STREAM_REQUEST } from '../../constants/action_types'
+import { COMMENTS } from '../../constants/mapping_types'
 import { openModal, closeModal } from '../../actions/modals'
 import * as postActions from '../../actions/posts'
 import { trackEvent } from '../../actions/tracking'
@@ -31,6 +33,7 @@ class PostTools extends Component {
     author: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    isCommentsRequesting: PropTypes.bool,
     isGridLayout: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     isRepostAnimating: PropTypes.bool,
@@ -329,10 +332,11 @@ class PostTools extends Component {
   }
 
   render() {
-    const { post } = this.props
+    const { post, isCommentsRequesting } = this.props
     if (!post) { return null }
     const classes = classNames(
       'PostTools',
+      { isCommentsRequesting },
       { isMoreToolActive: this.state.isMoreToolActive },
       { isCommentsActive: this.state.isCommentsActive },
     )
@@ -344,12 +348,15 @@ class PostTools extends Component {
   }
 }
 
-
-function mapStateToProps(state) {
+const mapStateToProps = ({ authentication, routing, stream }, ownProps) => {
+  const isCommentsRequesting = stream.type === LOAD_STREAM_REQUEST &&
+                               stream.meta.mappingType === COMMENTS &&
+                               stream.payload.postIdOrToken === ownProps.post.id
   return {
-    isLoggedIn: state.authentication.isLoggedIn,
-    pathname: state.routing.location.pathname,
-    previousPath: state.routing.previousPath,
+    isCommentsRequesting,
+    isLoggedIn: authentication.isLoggedIn,
+    pathname: routing.location.pathname,
+    previousPath: routing.previousPath,
   }
 }
 

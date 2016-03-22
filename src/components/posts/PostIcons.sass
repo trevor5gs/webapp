@@ -1,5 +1,6 @@
 @import ../../styles/lib
 
+
 .Post .BubbleIcon > g,
 .Post .FlagIcon > g,
 .Post .RepostIcon > g,
@@ -57,4 +58,24 @@
 
 .no-touch .DeleteTool > button:hover > .XBoxIcon > g:nth-of-type(2)
   transform: rotate(90deg)
+
+// -------------------------------------
+// Swim fishy swim!
+
+@keyframes animateCommentsLoading
+  0%
+    transform: translateX(0)
+  50%
+    transform: translateX(rem(9))
+  100%
+    transform: translateX(0)
+
+.Post .isCommentsRequesting .BubbleIcon > g:nth-child(1)
+  display: none
+
+.Post .isCommentsRequesting .BubbleIcon > g:nth-child(2)
+  display: inline
+
+.Post .isCommentsRequesting .BubbleIcon polygon
+  animation: animateCommentsLoading 0.75s infinite $ease-in-out-quart
 
