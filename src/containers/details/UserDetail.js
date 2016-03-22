@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { findModel } from '../../components/base/json_helper'
 import { loadUserDetail, loadUserLoves, loadUserPosts, loadUserUsers } from '../../actions/user'
 import Cover from '../../components/assets/Cover'
 import { UserDetailHelmet } from '../../components/helmets/UserDetailHelmet'
+import { ErrorState4xx } from '../../components/errors/Errors'
 import StreamComponent from '../../components/streams/StreamComponent'
 import UserList from '../../components/users/UserList'
 import {
@@ -23,6 +25,10 @@ class UserDetail extends Component {
       type: PropTypes.string,
       username: PropTypes.string.isRequired,
     }).isRequired,
+    stream: PropTypes.shape({
+      type: PropTypes.string,
+      error: PropTypes.object,
+    }),
   }
 
   static preRender = (store, routerState) =>
@@ -82,12 +88,28 @@ class UserDetail extends Component {
   }
 
   render() {
-    const { json, params } = this.props
+    const { json, params, stream } = this.props
     const type = params.type || 'posts'
+
     const user = findModel(json, {
       collection: MAPPING_TYPES.USERS,
       findObj: { username: params.username },
     })
+    switch (stream.type) {
+      case ACTION_TYPES.PROFILE.DETAIL_FAILURE:
+        if (!user && stream.error) {
+          return (
+            <section className="Panel" key={ `userDetail_${type}` }>
+              <section className="StreamComponent hasErrored">
+                <ErrorState4xx />
+              </section>
+            </section>
+          )
+        }
+        break
+      default:
+        break
+    }
     const userEls = []
     if (user) {
       userEls.push(<Cover coverImage={ user.coverImage } key={ `userDetailCover_${user.id}` } />)
@@ -142,6 +164,7 @@ function mapStateToProps(state) {
   return {
     json: state.json,
     isLoggedIn: state.authentication.isLoggedIn,
+    stream: state.stream,
   }
 }
 

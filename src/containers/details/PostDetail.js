@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { findModel } from '../../components/base/json_helper'
 import { loadComments, loadPostDetail, toggleLovers, toggleReposters } from '../../actions/posts'
 import { PostDetailHelmet } from '../../components/helmets/PostDetailHelmet'
+import { ErrorState4xx } from '../../components/errors/Errors'
 import PostParser from '../../components/parsers/PostParser'
 import Editor from '../../components/editor/Editor'
 import StreamComponent from '../../components/streams/StreamComponent'
@@ -18,6 +20,10 @@ class PostDetail extends Component {
       token: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired,
     }).isRequired,
+    stream: PropTypes.shape({
+      type: PropTypes.string,
+      error: PropTypes.object,
+    }),
   }
 
   static preRender = (store, routerState) =>
@@ -51,12 +57,27 @@ class PostDetail extends Component {
   }
 
   render() {
-    const { json, params } = this.props
-    const postEls = []
+    const { json, params, stream } = this.props
     const post = findModel(json, {
       collection: MAPPING_TYPES.POSTS,
       findObj: { token: params.token },
     })
+    switch (stream.type) {
+      case ACTION_TYPES.POST.DETAIL_FAILURE:
+        if (!post && stream.error) {
+          return (
+            <section className="Panel">
+              <section className="StreamComponent hasErrored">
+                <ErrorState4xx />
+              </section>
+            </section>
+          )
+        }
+        break
+      default:
+        break
+    }
+    const postEls = []
     let author
     if (post) {
       author = json[MAPPING_TYPES.USERS][post.authorId]
@@ -104,6 +125,7 @@ function mapStateToProps(state) {
   return {
     json: state.json,
     isLoggedIn: state.authentication.isLoggedIn,
+    stream: state.stream,
   }
 }
 

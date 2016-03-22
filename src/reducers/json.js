@@ -331,6 +331,7 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
     case ACTION_TYPES.POST.EDITABLE_SUCCESS:
+    case ACTION_TYPES.PROFILE.DETAIL_SUCCESS:
     case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
       // fall through to parse the rest
       break
