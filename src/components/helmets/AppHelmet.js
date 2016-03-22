@@ -8,13 +8,6 @@ const description =
   `Ello is a place to discover beautiful art, be inspired by meaningful
   stories, and connect with creators around the world.`
 
-const keywords =
-  `Ello, Ello.co, Social Network, Ad-free, No ads, no advertising, message
-  service, data mining, free, instant message, message, messaging, private
-  messaging, text messaging, text post, image post, sound file, video, words,
-  friends, noise, friends and noise, Youtube, Vimeo, Facebook, Tumblr, Twitter,
-  Instagram, App.net, Pinterest, Path`
-
 const viewport = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
 
 export const AppHelmet = ({ pathname }) =>
@@ -32,7 +25,6 @@ export const AppHelmet = ({ pathname }) =>
       { name: 'image', itemprop: 'image', content: image },
       { name: 'author', itemprop: 'author', content: 'Ello PBC USA' },
       { name: 'copyright', itemprop: 'copyrightHolder', content: 'Ello PBC USA' },
-      { name: 'keywords', content: keywords },
       { name: 'referrer', content: 'always' },
       { name: 'revisit-after', content: '1 day' },
       { name: 'viewport', content: viewport },
