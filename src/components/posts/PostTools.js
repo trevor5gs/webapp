@@ -43,9 +43,9 @@ class PostTools extends Component {
     postLovesCount: PropTypes.number.isRequired,
     postReposted: PropTypes.bool.isRequired,
     postRepostsCount: PropTypes.number.isRequired,
-    postShowComments: PropTypes.bool.isRequired,
-    postShowLovers: PropTypes.bool.isRequired,
-    postShowReposters: PropTypes.bool.isRequired,
+    postShowComments: PropTypes.bool,
+    postShowLovers: PropTypes.bool,
+    postShowReposters: PropTypes.bool,
     postViewsCountRounded: PropTypes.string.isRequired,
     post: PropTypes.object.isRequired,
     previousPath: PropTypes.string,
@@ -56,6 +56,9 @@ class PostTools extends Component {
       isMoreToolActive: false,
       isCommentsActive: false,
       isRepostAnimating: false,
+      postShowComments: false,
+      postShowLovers: false,
+      postShowReposters: false,
     }
   }
 
