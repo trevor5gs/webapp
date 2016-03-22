@@ -17,12 +17,26 @@ class EmbedBlock extends Component {
     data: {},
   }
 
+  componentDidUpdate() {
+    if (window.embetter) {
+      window.embetter.reloadPlayers()
+    }
+  }
+
   render() {
-    const { data } = this.props
+    const { data: { service, url, thumbnailLargeUrl, id } } = this.props
+    const children = typeof window !== 'undefined' ?
+      window.embetter.utils.playerHTML(
+        window.embetter.services[service],
+        url,
+        thumbnailLargeUrl,
+        id
+      ) :
+      null
     return (
       <Block
         { ...this.props }
-        children={ <img src={ data.thumbnailLargeUrl } /> }
+        dangerouslySetInnerHTML={{ __html: children }}
         ref="block"
       />
     )
