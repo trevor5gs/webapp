@@ -78,3 +78,6 @@ export const ERROR_MESSAGES = {
     SPACES: 'Username must not contain a space.',
   },
 }
+
+export const ONBOARDING_VERSION = '1.1'
+

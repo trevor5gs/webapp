@@ -35,7 +35,6 @@ class App extends Component {
 
   static defaultProps = {
     editorStore: {},
-    lastLocation: '',
   }
 
   componentWillMount() {
@@ -53,7 +52,6 @@ class App extends Component {
       forgot_password: /^\/forgot-password/,
       signup: /^\/signup/,
     }
-    this.lastLocation = ''
     // need to clear out the authentication for the case of
     // when you are on ello.co and go to /onboarding (logging in)
     // then logging out of the mothership wouldn't clear out the
@@ -81,19 +79,17 @@ class App extends Component {
 
   componentWillReceiveProps(nextProps) {
     const prevAuthentication = this.props.authentication
-    const { authentication, dispatch, location } = nextProps
+    const { authentication, dispatch } = nextProps
     if (authentication &&
         !prevAuthentication.isLoggedIn &&
-        authentication.isLoggedIn &&
-        location.pathname !== '/') {
+        authentication.isLoggedIn) {
       dispatch(loadProfile())
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { pathname, dispatch } = this.props
-    if (pathname !== this.lastLocation) {
-      this.lastLocation = pathname
+    if (pathname !== prevProps.pathname) {
       dispatch(trackPageView())
     }
   }

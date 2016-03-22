@@ -13,6 +13,7 @@ class UserCard extends Component {
     pathname: PropTypes.string,
     user: PropTypes.shape({
     }).isRequired,
+    relationshipPriority: PropTypes.string,
   }
 
   onClickRelationshipUpdate(vo) {
@@ -32,7 +33,7 @@ class UserCard extends Component {
   }
 
   render() {
-    const { isLoggedIn, user } = this.props
+    const { isLoggedIn, relationshipPriority, user } = this.props
     const callback = isLoggedIn ?
                      this.onClickRelationshipUpdate.bind(this) :
                      this.onClickOpenSignupModal.bind(this)
@@ -42,7 +43,7 @@ class UserCard extends Component {
           onClick={ callback }
           coverSrc={ user.coverImage.hdpi.url }
           isLoggedIn={ isLoggedIn }
-          priority={ user.relationshipPriority }
+          priority={ relationshipPriority }
           ref="RelationshipImageButton"
           userId={ user.id }
           username={ `@${user.username}` }
@@ -53,11 +54,14 @@ class UserCard extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  const user = state.json.users[ownProps.user.id]
   return {
     isLoggedIn: state.authentication.isLoggedIn,
-    pathname: ownProps.location.pathname,
+    pathname: state.routing.location.pathname,
+    relationshipPriority: user.relationshipPriority,
+    user,
   }
 }
 
-export default connect(mapStateToProps, null, null, { withRef: true })(UserCard)
+export default connect(mapStateToProps)(UserCard)
 

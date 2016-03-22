@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import { camelizeKeys } from 'humps'
 import * as ACTION_TYPES from '../constants/action_types'
-import { resetAuth } from '../networking/auth'
 import { get } from 'lodash'
 
 const runningFetches = {}
@@ -256,11 +255,6 @@ export const requester = store => next => action => {
             .catch(error => {
               if (error.response) {
                 delete runningFetches[error.response.url]
-              }
-              if ((error.response.status === 401 || error.response.status === 403) &&
-                  get(state, 'routing.location.pathname', '').indexOf('/onboarding') === 0 &&
-                  typeof document !== 'undefined') {
-                resetAuth(store.dispatch, document.location)
               }
               store.dispatch({ error, meta, payload, type: FAILURE })
               fireFailureAction()
