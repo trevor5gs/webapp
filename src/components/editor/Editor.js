@@ -93,7 +93,11 @@ class Editor extends Component {
       dispatch(updatePost(post, data))
     } else if (post.isReposting) {
       dispatch(toggleReposting(post, false))
-      dispatch(createPost(data, this.getEditorIdentifier(), post.repostId || post.id))
+      const repostId = post.repostId || post.id
+      const repostedFromId = post.repostId ? post.id : null
+      dispatch(createPost(data, this.getEditorIdentifier(),
+        repostId, repostedFromId)
+      )
     }
     if (onSubmit) { onSubmit() }
     this.clearPersistedData()
