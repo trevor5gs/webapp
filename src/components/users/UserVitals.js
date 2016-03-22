@@ -86,19 +86,19 @@ UserStats.propTypes = {
 export const LoggedOutUserStats = ({ user }) =>
   <div className="UserStats">
     <dl>
-      <UserStatsLink asDisabled >
+      <UserStatsLink to={ `/${user.username}` }>
         <dt>{ numberToHuman(user.postsCount) }</dt>
         <dd>Posts</dd>
       </UserStatsLink>
     </dl>
     <dl>
-      <UserStatsLink asDisabled >
+      <UserStatsLink to={ `/${user.username}/following` }>
         <dt>{ numberToHuman(user.followingCount) }</dt>
         <dd>Following</dd>
       </UserStatsLink>
     </dl>
     <dl>
-      <UserStatsLink asDisabled >
+      <UserStatsLink to={ `/${user.username}/followers` }>
         <dt>
           {
             typeof user.followersCount === 'string' ?
@@ -110,7 +110,7 @@ export const LoggedOutUserStats = ({ user }) =>
       </UserStatsLink>
     </dl>
     <dl>
-      <UserStatsLink asDisabled >
+      <UserStatsLink to={ `/${user.username}/loves` }>
         <dt>{ numberToHuman(user.lovesCount) }</dt>
         <dd>Loves</dd>
       </UserStatsLink>
