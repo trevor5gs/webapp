@@ -58,7 +58,7 @@ export class Discover extends Component {
   render() {
     const { isLoggedIn, params, pathname } = this.props
     const { isBeaconActive } = this.state
-    const type = params.type || (isLoggedIn ? 'recommended' : 'trending')
+    const type = params.type || 'recommended'
     let action = loadDiscoverUsers(type)
     if (type === 'communities') {
       action = loadCommunities()
@@ -74,8 +74,8 @@ export class Discover extends Component {
         // { to: '/discover/featured-users', children: 'Featured Users' },
       ] :
       [
-        { to: '/explore', children: 'Trending', activePattern: /^\/(?:explore)?$/ },
-        { to: '/explore/recommended', children: 'Recommended' },
+        { to: '/explore', children: 'Recommended', activePattern: /^\/(?:explore)?$/ },
+        { to: '/explore/trending', children: 'Trending' },
         { to: '/explore/recent', children: 'Recent' },
       ]
     return (

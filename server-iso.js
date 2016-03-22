@@ -23,7 +23,7 @@ import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { Provider } from 'react-redux'
-import createStore from './src/store'
+import { createElloStore } from './src/store'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
 import addOauthRoute from './oauth'
 import createRoutes from './src/routes'
@@ -72,18 +72,21 @@ function preRender(renderProps, store) {
 
 function renderFromServer(req, res) {
   const memoryHistory = createMemoryHistory(req.originalUrl)
-  const store = createStore(memoryHistory)
+  const store = createElloStore(memoryHistory)
   const routes = createRoutes(store)
   const history = syncHistoryWithStore(memoryHistory, store)
 
   match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
     // populate the rouer store object for initial render
-    store.dispatch(replace(renderProps.location.pathname))
     if (error) {
       console.log('ELLO MATCH ERROR', error)
     } else if (redirectLocation) {
       console.log('ELLO HANDLE REDIRECT', redirectLocation)
+      res.redirect(redirectLocation.pathname)
+      return
     } else if (!renderProps) { return }
+    store.dispatch(replace(renderProps.location.pathname))
+
     preRender(renderProps, store).then(() => {
       const InitialComponent = (
         <Provider store={store}>
