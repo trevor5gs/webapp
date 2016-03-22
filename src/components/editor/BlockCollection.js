@@ -604,7 +604,7 @@ class BlockCollection extends Component {
         { isComment && firstBlockIsText ? <QuickEmoji onAddEmoji={ this.onInsertEmoji } /> : null }
         <PostActionBar
           cancelAction={ cancelAction }
-          disableSubmitAction={ loadingImageBlocks.length > 0 }
+          disableSubmitAction={ loadingImageBlocks.length > 0 || !hasContent }
           editorId={ editorId }
           handleFileAction={ this.handleFiles }
           ref="postActionBar"
