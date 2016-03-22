@@ -22,10 +22,12 @@ function stubJSONStore() {
 describe('json reducer', () => {
   beforeEach(() => {
     stubJSONStore()
+    json.pages = {}
   })
 
   afterEach(() => {
     clearJSON()
+    delete json.pages
   })
 
   describe('#updateUserCount', () => {
@@ -144,11 +146,6 @@ describe('json reducer', () => {
 
 
   describe('#addNewIdsToResult', () => {
-    it('returns the original state if no result', () => {
-      const state = { yo: 'yo', mama: 'mama' }
-      expect(subject.methods.addNewIdsToResult(state, json)).to.equal(state)
-    })
-
     it('returns the original state if no result.newIds', () => {
       const state = { yo: 'yo', mama: 'mama' }
       json.pages = { sweetpath: { } }
@@ -222,7 +219,7 @@ describe('json reducer', () => {
         const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
         action.meta.mappingType = MAPPING_TYPES.USERS
         subject.setPath('sweetness')
-        expect(json.pages).to.be.undefined
+        expect(json.pages.sweetness).to.be.undefined
         subject.methods.updateResult({}, json, action)
         expect(json.pages.sweetness).to.equal(result)
       })
@@ -262,7 +259,7 @@ describe('json reducer', () => {
         const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { resultKey: 'yo' } }
         action.meta.mappingType = MAPPING_TYPES.USERS
         subject.setPath('sweetness')
-        expect(json.pages).to.be.undefined
+        expect(json.pages.yo).to.be.undefined
         subject.methods.updateResult({}, json, action)
         expect(json.pages.yo).to.equal(result)
       })

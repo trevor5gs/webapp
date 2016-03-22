@@ -16,12 +16,21 @@ export function profile(state = {}, action) {
       }
       return { ...state, dataExport: null }
     case PROFILE.LOAD_SUCCESS:
-      assetState = { ...state, ...action.payload.response.users }
+      assetState = {
+        ...state,
+        ...action.payload.response.users,
+        id: `${action.payload.response.users.id}`,
+      }
       delete assetState.avatar.tmp
       delete assetState.coverImage.tmp
       return assetState
     case PROFILE.SAVE_SUCCESS:
-      return { ...state, ...action.payload.response, availability: null }
+      return {
+        ...state,
+        ...action.payload.response,
+        availability: null,
+        id: `${action.payload.response.id}`,
+      }
     // Store a base64 reprensentation of the asset in `tmp` while uploading
     case PROFILE.TMP_AVATAR_CREATED:
     case PROFILE.TMP_COVER_CREATED:

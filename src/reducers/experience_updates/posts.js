@@ -65,9 +65,9 @@ function _updatePostLoves(state, newState, action) {
 
   const currentUser = jsonReducer.methods.getCurrentUser(newState)
   if (idAdded) {
-    existingIds.unshift(currentUser.id)
+    existingIds.unshift(`${currentUser.id}`)
   } else {
-    const index = existingIds.indexOf(currentUser.id)
+    const index = existingIds.indexOf(`${currentUser.id}`)
     if (index !== -1) {
       existingIds.splice(index, 1)
     }
@@ -94,9 +94,10 @@ function _addOrUpdatePost(newState, action) {
   let index = null
   switch (action.type) {
     case ACTION_TYPES.POST.CREATE_SUCCESS:
+      if (!newState[MAPPING_TYPES.POSTS]) { newState[MAPPING_TYPES.POSTS] = {} }
       newState[MAPPING_TYPES.POSTS][response.id] = response
       if (newState.pages['/following']) {
-        newState.pages['/following'].ids.unshift(response.id)
+        newState.pages['/following'].ids.unshift(`${response.id}`)
       }
       if (action.meta.repostId) {
         jsonReducer.updatePostCount(newState, action.meta.repostId, 'repostsCount', 1)
@@ -107,21 +108,25 @@ function _addOrUpdatePost(newState, action) {
       if (user) {
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', 1)
         if (newState.pages[`/${user.username}`]) {
-          newState.pages[`/${user.username}`].ids.unshift(response.id)
+          newState.pages[`/${user.username}`].ids.unshift(`${response.id}`)
+        } else {
+          newState.pages[`/${user.username}`] = {
+            ids: [response.id], type: MAPPING_TYPES.POSTS, pagination: emptyPagination(),
+          }
         }
       }
       return newState
     case ACTION_TYPES.POST.DELETE_SUCCESS:
       if (user) {
         if (newState.pages['/following']) {
-          index = newState.pages['/following'].ids.indexOf(user.id)
+          index = newState.pages['/following'].ids.indexOf(`${user.id}`)
           if (index > -1) {
             newState.pages['/following'].ids.splice(index, 1)
           }
         }
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', -1)
         if (newState.pages[`/${user.username}`]) {
-          index = newState.pages[`/${user.username}`].ids.indexOf(model.id)
+          index = newState.pages[`/${user.username}`].ids.indexOf(`${model.id}`)
           if (index > -1) {
             newState.pages[`/${user.username}`].ids.splice(index, 1)
           }

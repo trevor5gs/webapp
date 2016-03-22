@@ -42,7 +42,7 @@ function _addOrUpdateComment(newState, action) {
         post.links.comments.ids.unshift(`${response.id}`)
       }
       if (newState.pages[`/posts/${postId}/comments`]) {
-        newState.pages[`/posts/${postId}/comments`].ids.unshift(response.id)
+        newState.pages[`/posts/${postId}/comments`].ids.unshift(`${response.id}`)
       } else {
         newState.pages[`/posts/${postId}/comments`] = {
           ids: [response.id], type: MAPPING_TYPES.COMMENTS, pagination: emptyPagination(),
@@ -52,13 +52,13 @@ function _addOrUpdateComment(newState, action) {
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
       // add the comment to the linked array
       if (post.links && post.links.comments) {
-        index = post.links.comments.ids.indexOf(model.id)
+        index = post.links.comments.ids.indexOf(`${model.id}`)
         if (index > -1) {
           post.links.comments.ids.splice(index, 1)
         }
       }
       if (newState.pages[`/posts/${postId}/comments`]) {
-        index = newState.pages[`/posts/${postId}/comments`].ids.indexOf(model.id)
+        index = newState.pages[`/posts/${postId}/comments`].ids.indexOf(`${model.id}`)
         if (index > -1) {
           newState.pages[`/posts/${postId}/comments`].ids.splice(index, 1)
         }

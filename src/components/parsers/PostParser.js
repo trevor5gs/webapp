@@ -109,7 +109,6 @@ function footer(post, author, currentUser, isGridLayout, isRepostAnimating) {
     <PostTools
       author={ author }
       post={ post }
-      currentUser={ currentUser }
       isGridLayout={ isGridLayout }
       isRepostAnimating={ isRepostAnimating }
       key={ `PostTools_${post.id}` }

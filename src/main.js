@@ -21,7 +21,7 @@ import './vendor/embetter_initializer'
 
 updateTimeAgoStrings({ about: '' })
 
-const APP_VERSION = '1.0.12'
+const APP_VERSION = '1.0.13'
 
 const history = syncHistoryWithStore(browserHistory, store)
 const element = (

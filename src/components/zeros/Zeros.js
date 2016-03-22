@@ -81,25 +81,13 @@ ZeroStateSayHello.propTypes = {
 }
 
 
-export const ZeroStateFirstPost = ({ hasPosted = false, onSubmit }) => {
-  if (hasPosted) {
-    return (
-      <ZeroState>
-        <h2 className="ZeroStateTitle">
-          Posted! Don't forget, you can always use the Omnibar above to create a post.
-        </h2>
-      </ZeroState>
-    )
-  }
-  return (
-    <ZeroState>
-      <h2 className="ZeroStateTitle">
-        It doesn’t look like you’ve posted yet, why don’t you give it a shot.
-      </h2>
-      <Editor autoPopulate="Ello World!, My first post on :ello:!" onSubmit={ onSubmit } />
-    </ZeroState>
-  )
-}
+export const ZeroStateFirstPost = () =>
+  <ZeroState>
+    <h2 className="ZeroStateTitle">
+      It doesn’t look like you’ve posted yet, why don’t you give it a shot.
+    </h2>
+    <Editor autoPopulate="Ello World!, My first post on :ello:!" />
+  </ZeroState>
 
 ZeroStateFirstPost.propTypes = {
   hasPosted: PropTypes.bool,

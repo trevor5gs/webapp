@@ -19,7 +19,7 @@ let prevTerms = null
 let hasLoadedFirstStream = false
 
 function _updateUserCount(newState, userId, prop, delta) {
-  const count = newState[MAPPING_TYPES.USERS][userId][prop] || 0
+  const count = newState[MAPPING_TYPES.USERS][prop] || 0
   if (count === '∞') { return newState }
 
   const obj = { id: userId }
@@ -64,6 +64,9 @@ methods.getCurrentUser = (state) =>
 
 function _mergeModel(state, type, params) {
   if (params.id) {
+    // make the model's id a string for later comparisons
+    // sometimes the API sends them back as a number
+    params.id = `${params.id}`
     state[type][params.id] = merge(state[type][params.id], params)
   }
   return state
@@ -120,13 +123,13 @@ function _addModels(state, type, data) {
     // add arrays of models to state['modelType']['id']
     data[type].forEach((model) => {
       methods.mergeModel(state, type, model)
-      ids.push(model.id)
+      ids.push(`${model.id}`)
     })
   } else if (data[type] && typeof data[type] === 'object') {
     // add single model objects to state['modelType']['id']
     const model = data[type]
     methods.mergeModel(state, type, model)
-    ids.push(model.id)
+    ids.push(`${model.id}`)
   }
   return ids
 }
@@ -134,7 +137,6 @@ methods.addModels = (state, type, data) =>
   _addModels(state, type, data)
 
 function _addNewIdsToResult(state, newState) {
-  if (!newState.pages) { newState.pages = {} }
   const result = newState.pages[path]
   if (!result || !result.newIds) { return state }
   result.ids = result.newIds.concat(result.ids)
@@ -145,7 +147,6 @@ methods.addNewIdsToResult = (state, newState) =>
   _addNewIdsToResult(state, newState)
 
 function _setLayoutMode(action, state, newState) {
-  if (!newState.pages) { newState.pages = {} }
   const result = newState.pages[path]
   if (!result || (result && result.mode === action.payload.mode)) { return state }
   result.mode = action.payload.mode
@@ -190,7 +191,6 @@ methods.pagesKey = (action) =>
 
 // TODO: need to test the existingResult conditional logic!!!!
 function _updateResult(response, newState, action) {
-  if (!newState.pages) { newState.pages = {} }
   const result = methods.getResult(response, newState, action)
   const { resultKey } = action.meta
   // the action payload pathname comes from before the fetch so that
@@ -237,7 +237,6 @@ methods.updateResult = (response, newState, action) =>
   _updateResult(response, newState, action)
 
 function _clearSearchResults(state, newState, action) {
-  if (!newState.pages) return state
   const pathname = action.payload.pathname
   const existingResult = newState.pages[pathname]
   if (existingResult) {
@@ -310,6 +309,7 @@ methods.updatePostDetail = (newState, post) =>
 
 export default function json(state = {}, action = { type: '' }) {
   let newState = { ...state }
+  if (!newState.pages) { newState.pages = {} }
   // whitelist actions
   switch (action.type) {
     case ACTION_TYPES.ADD_NEW_IDS_TO_RESULT:
