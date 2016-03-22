@@ -190,7 +190,7 @@ export function postPreviews() {
 }
 export function userAutocompleter(word) {
   return {
-    path: getAPIPath('users/autocomplete', { terms: word.replace(/@|:/ig, '') }),
+    path: getAPIPath('users/autocomplete', { terms: word.replace(/@|:/ig, ''), per_page: 10 }),
   }
 }
 export function loadEmojis() {

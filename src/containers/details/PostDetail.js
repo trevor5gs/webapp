@@ -68,7 +68,9 @@ class PostDetail extends Component {
           post={ post }
         />
       )
-      postEls.push(<Editor key={ `editor_${post.id}` } post={ post } isComment />)
+      if (author && author.hasCommentingEnabled) {
+        postEls.push(<Editor key={ `editor_${post.id}` } post={ post } isComment />)
+      }
     }
     return (
       <section className="PostDetail Panel">
@@ -83,7 +85,7 @@ class PostDetail extends Component {
               { postEls }
             </div>
             {
-              post ?
+              post && author && author.hasCommentingEnabled ?
                 <StreamComponent
                   action={ loadComments((post ? `${post.id}` : `~${params.token}`), false) }
                   className="CommentStreamComponent"
