@@ -19,7 +19,9 @@ let prevTerms = null
 let hasLoadedFirstStream = false
 
 function _updateUserCount(newState, userId, prop, delta) {
-  const count = newState[MAPPING_TYPES.USERS][userId][prop]
+  const count = newState[MAPPING_TYPES.USERS][userId][prop] || 0
+  if (count === '∞') { return newState }
+
   const obj = { id: userId }
   obj[prop] = parseInt(count, 10) + delta
   return methods.mergeModel(
@@ -32,7 +34,9 @@ methods.updateUserCount = (newState, userId, prop, delta) =>
   _updateUserCount(newState, userId, prop, delta)
 
 function _updatePostCount(newState, postId, prop, delta) {
-  const count = newState[MAPPING_TYPES.POST][postId][prop]
+  const count = newState[MAPPING_TYPES.POSTS][postId][prop] || 0
+  if (count === '∞') { return newState }
+
   const obj = { id: postId }
   obj[prop] = parseInt(count, 10) + delta
   return methods.mergeModel(
