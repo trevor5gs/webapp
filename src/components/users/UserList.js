@@ -9,7 +9,7 @@ import { trackEvent } from '../../actions/tracking'
 import RelationsGroup from '../relationships/RelationsGroup'
 import ShareProfileButton from './ShareProfileButton'
 import ShareDialog from '../dialogs/ShareDialog'
-import { LoggedOutUserStats, UserNames, UserStats, UserInfo } from '../users/UserVitals'
+import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
 
 class UserList extends Component {
 
@@ -43,9 +43,8 @@ class UserList extends Component {
   }
 
   render() {
-    const { classList, isLoggedIn, relationshipPriority, user, showBlockMuteButton } = this.props
+    const { classList, relationshipPriority, user, showBlockMuteButton } = this.props
     const userPath = `/${user.username}`
-    const stats = isLoggedIn ? <UserStats user={ user } /> : <LoggedOutUserStats user={ user } />
     return (
       <div className={ classNames(classList, 'UserList') }>
         <Avatar to={ userPath } sources={ user.avatar } size="large" />
@@ -55,7 +54,7 @@ class UserList extends Component {
           showBlockMuteButton={ showBlockMuteButton }
         />
         <UserNames user={ user } />
-        { stats }
+        <UserStats user={ user } />
         <UserInfo user={ user } />
         <ShareProfileButton onClick={ this.onClickShareProfile } >
           Share Profile
