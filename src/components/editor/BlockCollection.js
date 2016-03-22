@@ -486,13 +486,13 @@ class BlockCollection extends Component {
   submit = () => {
     const { isComment, submitAction } = this.props
     const data = this.serialize()
-    // the order of the clear and submit matters
-    // it will throw a setState error if submitAction
-    // is fired before the blocks are cleared
-    if (isComment) {
-      this.clearBlocks()
-    }
     submitAction(data)
+    // For whatever reason this needs to happen in a rAF otherwise we end up
+    // with an editor with a collection of 1 but no editor blocks in the DOM?
+    // This also seems to scoot around the `setState` error.
+    if (isComment) {
+      requestAnimationFrame(() => { this.clearBlocks() })
+    }
   }
 
   clearBlocks = () => {
