@@ -174,7 +174,7 @@ class ImageRegion extends Component {
     // notifications don't supply the linked assets in a response
     // so we need to see if the asset actually exists here so we
     // can fall back to using just the url
-    if (!assets || (assets && !assets[links.assets])) { return true }
+    if (!assets || (assets && links && links.assets && !assets[links.assets])) { return true }
     return !(links && links.assets && assets[links.assets] && assets[links.assets].attachment)
   }
 
