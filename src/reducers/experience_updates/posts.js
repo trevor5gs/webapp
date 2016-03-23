@@ -100,10 +100,20 @@ function _addOrUpdatePost(newState, action) {
         newState.pages['/following'].ids.unshift(`${response.id}`)
       }
       if (action.meta.repostId) {
-        jsonReducer.updatePostCount(newState, action.meta.repostId, 'repostsCount', 1)
+        jsonReducer.methods.updatePostCount(newState, action.meta.repostId, 'repostsCount', 1)
+        jsonReducer.methods.mergeModel(
+          newState,
+          MAPPING_TYPES.POSTS,
+          { id: action.meta.repostId, reposted: true }
+        )
       }
       if (action.meta.repostedFromId) {
-        jsonReducer.updatePostCount(newState, action.meta.repostedFromId, 'repostsCount', 1)
+        jsonReducer.methods.updatePostCount(newState, action.meta.repostedFromId, 'repostsCount', 1)
+        jsonReducer.methods.mergeModel(
+          newState,
+          MAPPING_TYPES.POSTS,
+          { id: action.meta.repostedFromId, reposted: true }
+        )
       }
       if (user) {
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', 1)

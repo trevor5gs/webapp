@@ -181,7 +181,9 @@ class PostTools extends Component {
 
   getToolCells() {
     const { author, isLoggedIn, isOwnPost, isRepostAnimating, post,
-      postViewsCountRounded, postCommentsCount, postLovesCount, postLoved, postRepostsCount,
+      postReposted, postRepostsCount,
+      postLoved, postLovesCount,
+      postViewsCountRounded, postCommentsCount,
     } = this.props
     const cells = []
     cells.push(
@@ -267,7 +269,7 @@ class PostTools extends Component {
           <button
             className={ classNames({ hasPostToolDrawer: postRepostsCount > 0 }) }
             onClick={ !isOwnPost ? this.onClickRepostPost : null }
-            style={{ pointerEvents: isOwnPost ? 'none' : null }}
+            style={{ pointerEvents: isOwnPost || postReposted ? 'none' : null }}
           >
             { repostIcon }
             <Hint>Repost</Hint>
