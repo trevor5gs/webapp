@@ -37,7 +37,11 @@ function getViewportDeviceSize(gridColumnCount, innerWidth) {
 function getProbeProperties() {
   const probeElement = document.getElementById('root')
   const styles = window.getComputedStyle(probeElement, ':after')
-  const gridColumnCount = parseInt(styles.getPropertyValue('z-index'), 10)
+  // this is in here because for some reason the 
+  // htc one returns 'auto' for the z-index
+  let zIndex = styles.getPropertyValue('z-index')
+  if (isNaN(zIndex)) { zIndex = 2 }
+  const gridColumnCount = parseInt(zIndex, 10)
   return { gridColumnCount }
 }
 
