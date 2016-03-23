@@ -294,6 +294,21 @@ function _updateCurrentUser(newState, action) {
 methods.updateCurrentUser = (newState, action) =>
   _updateCurrentUser(newState, action)
 
+// TODO: This has the same issues as /reducers/profile.js (line ~38) by pulling
+// the previous image. Less so on production than staging I believe?
+function _updateCurrentUserTmpAsset(newState, action) {
+  const assetType = action.type === ACTION_TYPES.PROFILE.TMP_AVATAR_CREATED ? 'avatar' : 'coverImage'
+  const currentUser = methods.getCurrentUser(newState)
+  const modifiedUser = {
+    ...currentUser,
+    [assetType]: { ...currentUser[assetType], ...action.payload },
+  }
+  newState[MAPPING_TYPES.USERS][currentUser.id] = modifiedUser
+  return newState
+}
+methods.updateCurrentUserTmpAsset = (newState, action) =>
+  _updateCurrentUserTmpAsset(newState, action)
+
 function _updatePostDetail(newState, action) {
   const post = action.payload.response.posts
   methods.parseLinked(action.payload.response.linked, newState)
@@ -351,8 +366,16 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.POST.LOVE_SUCCESS:
     case ACTION_TYPES.POST.LOVE_FAILURE:
       return postMethods.updatePostLoves(state, newState, action)
+    // TODO: These two case statements are commented out per the note above,
+    // once we don't pull the previous image, we can send these through
+    // `updateCurrentUser` and blow away the base64 assets :boom:
+    // case ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS:
+    // case ACTION_TYPES.PROFILE.SAVE_COVER_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_SUCCESS:
       return methods.updateCurrentUser(newState, action)
+    case ACTION_TYPES.PROFILE.TMP_AVATAR_CREATED:
+    case ACTION_TYPES.PROFILE.TMP_COVER_CREATED:
+      return methods.updateCurrentUserTmpAsset(newState, action)
     case ACTION_TYPES.POST.TOGGLE_COMMENTS:
       return postMethods.toggleComments(newState, action)
     case ACTION_TYPES.POST.TOGGLE_EDITING:
