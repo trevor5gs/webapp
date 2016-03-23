@@ -64,7 +64,16 @@ class NotificationsContainer extends Component {
     this.setState({ activeTabType: type })
   }
 
+  onClickSelf = (e) => {
+    e.preventDefault()
+    this.ignoreNext = true
+    setTimeout(() => { this.ignoreNext = false }, 1)
+  }
+
   onClickDocument = (e) => {
+    if (this.ignoreNext) {
+      return
+    }
     const classList = e.target.classList
     if (classList.contains('TabButton') ||
         classList.contains('RelationshipButton') ||
@@ -112,7 +121,7 @@ class NotificationsContainer extends Component {
       { type: 'relationships', children: <RelationshipIcon /> },
     ]
     return (
-      <div className="NotificationsContainer">
+      <div className="NotificationsContainer" onClick={ this.onClickSelf }>
         <TabListButtons
           activeType={ activeTabType }
           className="IconTabList NotificationsContainerTabs"
