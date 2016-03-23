@@ -19,7 +19,7 @@ let prevTerms = null
 let hasLoadedFirstStream = false
 
 function _updateUserCount(newState, userId, prop, delta) {
-  const count = newState[MAPPING_TYPES.USERS][prop] || 0
+  const count = newState[MAPPING_TYPES.USERS][userId][prop] || 0
   if (count === '∞') { return newState }
 
   const obj = { id: userId }
