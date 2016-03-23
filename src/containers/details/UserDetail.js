@@ -1,10 +1,14 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { findModel } from '../../components/base/json_helper'
 import { loadUserDetail, loadUserLoves, loadUserPosts, loadUserUsers } from '../../actions/user'
+import { openAlert, closeAlert } from '../../actions/modals'
+import { saveAvatar, saveCover } from '../../actions/profile'
 import Cover from '../../components/assets/Cover'
+import Uploader from '../../components/uploaders/Uploader'
 import { UserDetailHelmet } from '../../components/helmets/UserDetailHelmet'
 import { ErrorState4xx } from '../../components/errors/Errors'
 import StreamComponent from '../../components/streams/StreamComponent'
@@ -80,8 +84,23 @@ class UserDetail extends Component {
     return cells.length ? <div className="ZeroStates">{ cells }</div> : cells
   }
 
+  renderAvatarUploader() {
+    const { dispatch } = this.props
+    return (
+      <Uploader
+        className="UserDetailAvatarUploader"
+        closeAlert={ bindActionCreators(closeAlert, dispatch) }
+        message="Or drag & drop it"
+        openAlert={ bindActionCreators(openAlert, dispatch) }
+        recommend="Recommended image size: 360 x 360"
+        saveAction={ bindActionCreators(saveAvatar, dispatch) }
+        title="Pick an Avatar"
+      />
+    )
+  }
+
   render() {
-    const { json, params, stream } = this.props
+    const { dispatch, isLoggedIn, json, params, stream } = this.props
     const type = params.type || 'posts'
 
     const user = findModel(json, {
@@ -105,13 +124,34 @@ class UserDetail extends Component {
     }
     const userEls = []
     if (user) {
-      userEls.push(<Cover coverImage={ user.coverImage } key={ `userDetailCover_${user.id}` } />)
+      if (isLoggedIn && user.relationshipPriority === 'self') {
+        userEls.push(
+          <Uploader
+            className="UserDetailCoverUploader"
+            closeAlert={ bindActionCreators(closeAlert, dispatch) }
+            key={ `userDetailUploader_${user.id}` }
+            message="Or drag & drop"
+            openAlert={ bindActionCreators(openAlert, dispatch) }
+            recommend="Recommended image size: 2560 x 1440"
+            saveAction={ bindActionCreators(saveCover, dispatch) }
+            title="Upload a header image"
+          />
+        )
+      }
+      userEls.push(
+        <Cover
+          isModifiable={ user.relationshipPriority === 'self' }
+          coverImage={ user.coverImage }
+          key={ `userDetailCover_${user.id}` }
+        />
+      )
       userEls.push(
         <UserList
           classList="asUserDetailHeader"
           key={ `userList_${user.id}` }
-          user={ user }
           showBlockMuteButton
+          uploader={ user.relationshipPriority === 'self' && this.renderAvatarUploader() }
+          user={ user }
         />
       )
     }

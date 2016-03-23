@@ -5,6 +5,7 @@ import Dialog from '../dialogs/Dialog'
 class Uploader extends Component {
 
   static propTypes = {
+    className: PropTypes.string,
     message: PropTypes.string,
     openAlert: PropTypes.func.isRequired,
     closeAlert: PropTypes.func.isRequired,
@@ -14,6 +15,7 @@ class Uploader extends Component {
   }
 
   static defaultProps = {
+    className: '',
     message: null,
     recommend: null,
     title: '',
@@ -75,9 +77,10 @@ class Uploader extends Component {
   }
 
   render() {
-    const { title, message, recommend } = this.props
+    const { className, title, message, recommend } = this.props
     const klassNames = classNames(
       'Uploader',
+      className,
       { hasDragOver: this.state.hasDragOver },
     )
 

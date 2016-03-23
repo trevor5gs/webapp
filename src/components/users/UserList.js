@@ -19,6 +19,10 @@ class UserList extends Component {
     isLoggedIn: PropTypes.bool,
     relationshipPriority: PropTypes.string,
     showBlockMuteButton: PropTypes.bool,
+    uploader: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.bool,
+    ]),
     user: PropTypes.shape({
     }).isRequired,
   }
@@ -43,11 +47,18 @@ class UserList extends Component {
   }
 
   render() {
-    const { classList, relationshipPriority, user, showBlockMuteButton } = this.props
+    const { classList, relationshipPriority, user, uploader, showBlockMuteButton } = this.props
     const userPath = `/${user.username}`
+    const isModifiable = typeof uploader !== 'undefined'
     return (
       <div className={ classNames(classList, 'UserList') }>
-        <Avatar to={ userPath } sources={ user.avatar } size="large" />
+        { uploader }
+        <Avatar
+          isModifiable={ isModifiable }
+          size="large"
+          sources={ user.avatar }
+          to={ isModifiable ? null : userPath }
+        />
         <RelationsGroup
           user={ user }
           relationshipPriority={ relationshipPriority }

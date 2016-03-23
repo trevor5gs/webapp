@@ -6,7 +6,7 @@
   top: 0
   left: 0
   right: 0
-  z-index: -1
+  z-index: -2
   padding-bottom: 56.25%
   text-align: center
   background: rgba(black, 0.2) no-repeat 50% 50%
@@ -55,6 +55,9 @@
 
 .Cover.isModifiable:before
   background-color: rgba(black, 0.1)
+
+.UserDetailCoverUploader + .Cover.isModifiable:before
+  background-color: transparent
 
 .hasDragOver + .Cover.isModifiable:before
   background-color: rgba(black, 0.4)
