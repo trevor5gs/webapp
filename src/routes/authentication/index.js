@@ -6,7 +6,7 @@ export default [
     },
   },
   {
-    path: 'join',
+    path: 'join(/:invitationCode)',
     getComponents(location, cb) {
       cb(null, require('../../containers/authentication/Join').default)
     },

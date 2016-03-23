@@ -23,6 +23,7 @@ export function authentication(state = initialState, action) {
       return { ...initialState }
     case ACTION_TYPES.AUTHENTICATION.USER_SUCCESS:
     case ACTION_TYPES.AUTHENTICATION.REFRESH_SUCCESS:
+    case ACTION_TYPES.PROFILE.SIGNUP_SUCCESS:
       return { ...state, ...action.payload.response, isLoggedIn: true }
     case REHYDRATE:
       if (action.key === 'authentication') {

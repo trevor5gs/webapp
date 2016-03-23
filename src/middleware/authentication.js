@@ -8,7 +8,7 @@ import {
   unpauseRequester,
 } from '../actions/api'
 
-import { AUTHENTICATION } from '../constants/action_types'
+import { AUTHENTICATION, PROFILE } from '../constants/action_types'
 
 const toMilliseconds = seconds => seconds * 1000
 
@@ -54,6 +54,7 @@ export const authentication = store => next => action => {
       return result
     case AUTHENTICATION.REFRESH_SUCCESS:
     case AUTHENTICATION.USER_SUCCESS:
+    case PROFILE.SIGNUP_SUCCESS:
       result = next(action)
       store.dispatch(unpauseRequester())
       store.dispatch(scheduleAuthRefresh(

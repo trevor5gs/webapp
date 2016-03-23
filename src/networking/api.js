@@ -57,6 +57,14 @@ export function refreshAuthToken(refreshToken) {
   }
 }
 
+export function signupPath(email, username, password, invitationCode) {
+  const params = { email, username, password, invitationCode }
+  return {
+    path: `${basePath()}/v2/signup`,
+    params,
+  }
+}
+
 // Current User Profile
 export function profilePath() {
   return {

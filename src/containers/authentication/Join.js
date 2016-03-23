@@ -3,9 +3,10 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { debounce } from 'lodash'
 import { random } from 'lodash'
+import { replace } from 'react-router-redux'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
-import { checkAvailability } from '../../actions/profile'
+import { checkAvailability, signUpUser } from '../../actions/profile'
 import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
@@ -30,9 +31,11 @@ class Join extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    invitationCode: PropTypes.string,
   }
 
   componentWillMount() {
+    const { invitationCode } = this.props
     const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
     this.state = {
@@ -42,11 +45,14 @@ class Join extends Component {
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
     }
-    this.invitationCodeValue = ''
+
     this.emailValue = ''
     this.usernameValue = ''
     this.passwordValue = ''
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
+    if (invitationCode) {
+      this.onChangeInvitationCodeControl({ invitationCode })
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -131,11 +137,13 @@ class Join extends Component {
     }
   }
 
-  // TODO: Still needs to be hooked up
-  onSubmit = (e) => {
+  onSubmit = async (e) => {
     e.preventDefault()
-    // const { dispatch } = this.props
-    // dispatch(someActionFunction(this.emailValue, this.usernameValue, this.passwordValue))
+    const { dispatch } = this.props
+    const success = await dispatch(signUpUser(this.emailValue, this.usernameValue, this.passwordValue, this.invitationCodeValue))
+    if (success) {
+      dispatch(replace({ pathname: '/onboarding' }))
+    }
   }
 
   onClickTrackCredits = () => {
@@ -208,6 +216,7 @@ class Join extends Component {
               onChange={ this.onChangeInvitationCodeControl }
               status={ invitationCodeState.status }
               renderStatus={ this.renderStatus(invitationCodeState) }
+              text={ this.invitationCodeValue }
               tabIndex="5"
             />
             <EmailControl
@@ -252,9 +261,10 @@ class Join extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     availability: state.profile.availability,
+    invitationCode: ownProps.params.invitationCode,
   }
 }
 
