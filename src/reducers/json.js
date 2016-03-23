@@ -41,7 +41,7 @@ function _updatePostCount(newState, postId, prop, delta) {
   obj[prop] = parseInt(count, 10) + delta
   return methods.mergeModel(
     newState,
-    MAPPING_TYPES.USERS,
+    MAPPING_TYPES.POSTS,
     obj,
   )
 }
