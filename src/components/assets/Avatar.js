@@ -113,23 +113,30 @@ class Avatar extends Component {
     const { onClick, to } = this.props
     const src = this.getAvatarSource()
     const klassNames = this.getClassNames()
-    const style = src ? { backgroundImage: `url(${src})` } : null
     if (to) {
       return (
-        <Link className={ klassNames } to={ to }>
-          <div className="AvatarImage" style={style} />
+        <Link
+          className={ klassNames }
+          to={ to }
+        >
+          <img className="AvatarImage" src={ src } />
         </Link>
       )
     } else if (onClick) {
       return (
-        <button className={ klassNames } onClick={ onClick }>
-          <div className="AvatarImage" style={ style } />
+        <button
+          className={ klassNames }
+          onClick={ onClick }
+        >
+          <img className="AvatarImage" src={ src } />
         </button>
       )
     }
     return (
-      <span className={ klassNames }>
-        <div className="AvatarImage" style={ style } />
+      <span
+        className={ klassNames }
+      >
+        <img className="AvatarImage" src={ src } />
       </span>
     )
   }
