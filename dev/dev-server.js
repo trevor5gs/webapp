@@ -33,7 +33,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dev.html'))
 })
 
-app.listen(6660, 'localhost', (err) => {
+app.listen(6660, '0.0.0.0', (err) => {
   if (err) {
     console.log(err)
     return
