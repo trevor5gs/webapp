@@ -97,7 +97,13 @@ export function body(content, id, isGridLayout, postDetailPath = null, isComment
 export function repostedBody(author, content, id, isGridLayout, postDetailPath = null) {
   return (
     <div className="PostBody RepostedBody" key={ `RepostedBody_${id}` }>
-      <Avatar sources={ author.avatar } to={ `/${author.username}` } />
+      <Avatar
+        priority={ author.relationshipPriority }
+        sources={ author.avatar }
+        to={ `/${author.username}` }
+        userId={ `${author.id}` }
+        username={ author.username }
+      />
       { regionItems(content, null, isGridLayout, postDetailPath) }
     </div>
   )

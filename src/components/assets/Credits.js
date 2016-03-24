@@ -8,7 +8,12 @@ const Credits = ({ user, onClick }) => {
     <Link className="Credits" onClick={ onClick } to={ `/${username}` }>
       <span className="CreditsBy">Posted by</span>
       <span className="CreditsAuthor">@{ username }</span>
-      <Avatar sources={ avatar } />
+      <Avatar
+        priority={ user.relationshipPriority }
+        sources={ avatar }
+        userId={ `${user.id}` }
+        username={ username }
+      />
     </Link>
   )
 }

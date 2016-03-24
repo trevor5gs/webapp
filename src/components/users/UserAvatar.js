@@ -5,7 +5,12 @@ import Hint from '../hints/Hint'
 
 const UserAvatar = ({ user }) =>
   <Link className="UserAvatar" to={ `/${user.username}` }>
-    <Avatar sources={ user.avatar } />
+    <Avatar
+      priority={ user.relationshipPriority }
+      sources={ user.avatar }
+      userId={ `${user.id}` }
+      username={ user.username }
+    />
     <Hint>{ `@${user.username}` }</Hint>
   </Link>
 
