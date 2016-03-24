@@ -1,5 +1,5 @@
 const API_VERSION = 'v2'
-const PER_PAGE = 10
+const PER_PAGE = 25
 const basePath = () => `${ENV.AUTH_DOMAIN}/api`
 
 function getAPIPath(relPath, queryParams = {}) {
@@ -233,7 +233,7 @@ export function userDetail(idOrUsername) {
   }
 }
 export function userResources(idOrUsername, resource) {
-  const params = { per_page: PER_PAGE }
+  const params = { per_page: 10 }
   return {
     path: getAPIPath(`users/${idOrUsername}/${resource}`, params),
     params,
