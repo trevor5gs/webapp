@@ -12,6 +12,18 @@ const onDragStart = (e) => {
   const classList = target.classList
   const nodeName = target.nodeName.toLowerCase()
 
+  const avatar = classList.contains('Avatar') ? target : null
+  if (avatar) {
+    const priority = target.getAttribute('data-priority')
+    const userId = target.getAttribute('data-userid')
+    const username = target.getAttribute('data-username')
+    setDragData(e, { priority, userId, username })
+    if (priority) {
+      document.documentElement.setAttribute('data-dragging-priority', priority)
+    }
+    return
+  }
+
   // @mention (from the pipeline)
   const mention = classList.contains('user-mention') ? target : null
   if (mention) {
@@ -56,14 +68,14 @@ const onDragEnd = () => {
   // console.log('onDragEnd', e.target)
 }
 
-export function addGlobalDrag() {
+export const addGlobalDrag = () => {
   if (isListening || !document || !document.body) { return }
   document.body.addEventListener('dragstart', onDragStart)
   document.body.addEventListener('dragend', onDragEnd)
   isListening = true
 }
 
-export function removeGlobalDrag() {
+export const removeGlobalDrag = () => {
   if (!isListening || !document || !document.body) { return }
   document.body.removeEventListener('dragstart', onDragStart)
   document.body.removeEventListener('dragend', onDragEnd)
