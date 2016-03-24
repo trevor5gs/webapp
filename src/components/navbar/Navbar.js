@@ -215,6 +215,11 @@ class Navbar extends Component {
     window.scrollTo(0, 0)
   }
 
+  onDragOverOmniButton = (e) => {
+    e.preventDefault()
+    this.onClickOmniButton()
+  }
+
   onClickLoadMorePosts = () => {
     const { dispatch } = this.props
     scrollToTop()
@@ -255,7 +260,10 @@ class Navbar extends Component {
     return (
       <nav className={ klassNames } role="navigation">
         <NavbarMark />
-        <NavbarOmniButton onClick={ this.onClickOmniButton } />
+        <NavbarOmniButton
+          onClick={ this.onClickOmniButton }
+          onDragOver={ this.onDragOverOmniButton }
+        />
         {
           hasLoadMoreButton ?
           <NavbarMorePostsButton onClick={ this.onClickLoadMorePosts } /> :
