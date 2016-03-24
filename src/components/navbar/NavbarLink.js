@@ -7,7 +7,17 @@ const highlightingRules = {
   '/following': /^\/following/,
 }
 
-const NavbarLink = ({ icon, label, modifiers = '', onClick, pathname, to }) => {
+const NavbarLink = ({
+    icon,
+    label,
+    modifiers = '',
+    onClick,
+    onDragLeave,
+    onDragOver,
+    onDrop,
+    pathname,
+    to,
+  }) => {
   const klassNames = classNames(
     'NavbarLink',
     modifiers,
@@ -16,7 +26,14 @@ const NavbarLink = ({ icon, label, modifiers = '', onClick, pathname, to }) => {
     },
   )
   return (
-    <Link to={ to } onClick={ onClick } className={ klassNames }>
+    <Link
+      className={ klassNames }
+      onClick={ onClick }
+      onDragLeave={ onDragLeave }
+      onDragOver={ onDragOver }
+      onDrop={ onDrop }
+      to={ to }
+    >
       { icon || null }
       <span className="NavbarLinkLabel">{ label }</span>
     </Link>
@@ -28,6 +45,9 @@ NavbarLink.propTypes = {
   label: PropTypes.string.isRequired,
   modifiers: PropTypes.string,
   onClick: PropTypes.func,
+  onDragLeave: PropTypes.func,
+  onDragOver: PropTypes.func,
+  onDrop: PropTypes.func,
   pathname: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
 }

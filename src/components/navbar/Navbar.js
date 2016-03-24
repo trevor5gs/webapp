@@ -2,13 +2,14 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import classNames from 'classnames'
-import { logout } from '../../actions/authentication'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { GUI } from '../../constants/gui_types'
 import { SHORTCUT_KEYS, SESSION_KEYS } from '../../constants/gui_types'
+import { logout } from '../../actions/authentication'
 import { openModal, closeModal } from '../../actions/modals'
 import { openOmnibar } from '../../actions/omnibar'
 import { checkForNewNotifications } from '../../actions/notifications'
+import { updateRelationship } from '../../actions/relationships'
 import NotificationsContainer from '../../containers/notifications/NotificationsContainer'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
@@ -132,9 +133,6 @@ class Navbar extends Component {
     })
   }
 
-  // @mkitt would like to ~kick~ marry this thing extremely hard.
-  // The blacklisted view's (UserDetail and Settings) will also call the same
-  // scrollTo when they are mounted.
   componentDidUpdate(prevProps) {
     if (typeof window === 'undefined' || !prevProps.pathname || !this.props.pathname) { return }
     if (prevProps.pathname !== this.props.pathname) {
@@ -233,6 +231,28 @@ class Navbar extends Component {
     document.location.href = ENV.REDIRECT_URI + e.target.pathname
   }
 
+  onDragOverStreamLink = (e) => {
+    e.preventDefault()
+    e.target.classList.add('hasDragOver')
+  }
+
+  onDragLeaveStreamLink = (e) => {
+    e.target.classList.remove('hasDragOver')
+  }
+
+  onDropStreamLink = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    e.target.classList.remove('hasDragOver')
+    if (e.dataTransfer.types.indexOf('application/json') > -1) {
+      const data = JSON.parse(e.dataTransfer.getData('application/json'))
+      if (data.userId && data.priority) {
+        const newPriority = e.target.getAttribute('href') === '/starred' ? 'noise' : 'friend'
+        this.props.dispatch(updateRelationship(data.userId, newPriority, data.priority))
+      }
+    }
+  }
+
   calculateOffset(coverOffset) {
     return coverOffset - 80
   }
@@ -283,6 +303,9 @@ class Navbar extends Component {
             modifiers="LabelOnly"
             pathname={ pathname }
             icon={ <CircleIcon /> }
+            onDragLeave={ this.onDragLeaveStreamLink }
+            onDragOver={ this.onDragOverStreamLink }
+            onDrop={ this.onDropStreamLink }
           />
           <NavbarLink
             to="/starred"
@@ -290,6 +313,9 @@ class Navbar extends Component {
             modifiers=""
             pathname={ pathname }
             icon={ <StarIcon /> }
+            onDragLeave={ this.onDragLeaveStreamLink }
+            onDragOver={ this.onDragOverStreamLink }
+            onDrop={ this.onDropStreamLink }
           />
           <NavbarLink
             to={ `/notifications${notificationCategory}` }

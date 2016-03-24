@@ -64,8 +64,10 @@ const onDragStart = (e) => {
   e.stopPropagation()
 }
 
-const onDragEnd = () => {
-  // console.log('onDragEnd', e.target)
+const onDragEnd = (e) => {
+  if (e.target.getAttribute('data-priority')) {
+    document.documentElement.removeAttribute('data-dragging-priority')
+  }
 }
 
 export const addGlobalDrag = () => {
