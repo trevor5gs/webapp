@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+/* eslint-disable no-confusing-arrow */
 import { camelizeKeys } from 'humps'
 import * as ACTION_TYPES from '../constants/action_types'
 import { get } from 'lodash'

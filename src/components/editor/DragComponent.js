@@ -103,7 +103,7 @@ function dragStart(x, y, t) {
 
 function mouseDown(e) {
   // return if not the drag handler || fix android exception
-  if (e.target.className.indexOf('DragHandler') === -1 ||
+  if ((e.target && typeof e.target.className === 'string' && e.target.className.indexOf('DragHandler') === -1) ||
       !e.target.classList) return
   dragStart(e.clientX, e.clientY, e.target)
 }
