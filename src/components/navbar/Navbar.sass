@@ -64,6 +64,12 @@
   left: rem(10)
   z-index: 3
 
+.NavbarLayoutTool
+  position: absolute
+  top: rem(15)
+  left: rem(125)
+  color: #aaa
+
 // MAX-WIDTH!
 @media(max-width: #{$break-2-max})
   .isLoggedIn .NavbarLink[href^="/notifications"]
@@ -74,6 +80,7 @@
     position: absolute
     top: rem(-30)
     left: rem(60)
+
 
 @media(min-width: #{$break-2})
   .Navbar
