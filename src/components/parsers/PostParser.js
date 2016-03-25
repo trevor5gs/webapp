@@ -70,7 +70,12 @@ function header(post, author) {
     <header className="PostHeader" key={ `PostHeader_${post.id}` }>
       <div className="PostHeaderAuthor">
         <Link className="PostHeaderLink" to={ `/${author.username}` }>
-          <Avatar sources={ author.avatar } />
+          <Avatar
+            priority={ author.relationshipPriority }
+            sources={ author.avatar }
+            userId={ `${author.id}` }
+            username={ author.username }
+          />
           <span>{ `@${author.username}` }</span>
         </Link>
       </div>
@@ -87,7 +92,12 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
     <header className="RepostHeader" key={ `RepostHeader_${post.id}` }>
       <div className="RepostHeaderAuthor">
         <Link className="PostHeaderLink" to={ `/${repostAuthor.username}` }>
-          <Avatar sources={ repostAuthor.avatar } />
+          <Avatar
+            priority={ repostAuthor.relationshipPriority }
+            sources={ repostAuthor.avatar }
+            userId={ `${repostAuthor.id}` }
+            username={ repostAuthor.username }
+          />
           <span>{ `@${repostAuthor.username}` }</span>
         </Link>
       </div>

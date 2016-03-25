@@ -15,8 +15,11 @@ class Avatar extends Component {
     classList: PropTypes.string,
     isModifiable: PropTypes.bool,
     onClick: PropTypes.func,
+    priority: PropTypes.string,
     size: PropTypes.string,
     sources: PropTypes.object,
+    userId: PropTypes.string,
+    username: PropTypes.string,
     to: PropTypes.string,
   }
 
@@ -110,26 +113,46 @@ class Avatar extends Component {
   }
 
   render() {
-    const { onClick, to } = this.props
+    const { onClick, priority, to, userId, username } = this.props
     const src = this.getAvatarSource()
     const klassNames = this.getClassNames()
-    const style = src ? { backgroundImage: `url(${src})` } : null
+    const isDraggable = username && username.length > 1 || priority && priority.length
     if (to) {
       return (
-        <Link className={ klassNames } to={ to }>
-          <div className="AvatarImage" style={style} />
+        <Link
+          className={ klassNames }
+          data-priority={ priority }
+          data-userid={ userId }
+          data-username={ username }
+          to={ to }
+          draggable={ isDraggable }
+        >
+          <img className="AvatarImage" src={ src } />
         </Link>
       )
     } else if (onClick) {
       return (
-        <button className={ klassNames } onClick={ onClick }>
-          <div className="AvatarImage" style={ style } />
+        <button
+          className={ klassNames }
+          data-priority={ priority }
+          data-userid={ userId }
+          data-username={ username }
+          onClick={ onClick }
+          draggable={ isDraggable }
+        >
+          <img className="AvatarImage" src={ src } />
         </button>
       )
     }
     return (
-      <span className={ klassNames }>
-        <div className="AvatarImage" style={ style } />
+      <span
+        className={ klassNames }
+        data-priority={ priority }
+        data-userid={ userId }
+        data-username={ username }
+        draggable={ isDraggable }
+      >
+        <img className="AvatarImage" src={ src } />
       </span>
     )
   }

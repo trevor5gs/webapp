@@ -60,7 +60,12 @@ class UserInvitee extends Component {
       <div className={ classNames(this.props.className, 'UserInvitee') }>
         <div className="UserInviteeHeader">
           <Link className="UserInviteeUserLink" to={ `/${user.username}` }>
-            <Avatar sources={ user.avatar } />
+            <Avatar
+              priority={ user.relationshipPriority }
+              sources={ user.avatar }
+              userId={ `${user.id}` }
+              username={ user.username }
+            />
             <span className="UserInviteeUsername">{ `@${user.username}` }</span>
           </Link>
         </div>

@@ -13,7 +13,12 @@ function header(comment, author) {
     <header className="CommentHeader" key={ `CommentHeader_${comment.id}` }>
       <div className="CommentHeaderAuthor">
         <Link className="CommentHeaderLink" to={ `/${author.username}` }>
-          <Avatar sources={ author.avatar } />
+          <Avatar
+            priority={ author.relationshipPriority }
+            sources={ author.avatar }
+            userId={ `${author.id}` }
+            username={ author.username }
+          />
           <span className="CommentUsername">{ `@${author.username}` }</span>
         </Link>
       </div>

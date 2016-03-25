@@ -72,11 +72,11 @@ body.isDragging .editor-block
   border-right-color: #ffffcc
 
 // editor is dragged over with a droppable element - turn background green
-.editor-drop-ready .editor-region
-  background-color: #ccffcc
-
-.editor-drop-ready:before
+.editor.hasDragOver:before
   border-right-color: #ccffcc
+
+.editor.hasDragOver > .editor-region
+  background-color: #ccffcc
 
 // -------------------------------------
 

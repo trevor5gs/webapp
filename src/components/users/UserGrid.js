@@ -27,7 +27,13 @@ class UserGrid extends Component {
     return (
       <div className="UserGrid" >
         <CoverMini to={ userPath } coverImage={ user.coverImage } />
-        <Avatar to={ userPath } sources={ user.avatar } />
+        <Avatar
+          priority={ relationshipPriority }
+          sources={ user.avatar }
+          to={ userPath }
+          userId={ `${user.id}` }
+          username={ user.username }
+        />
         <RelationsGroup
           user={ user }
           relationshipPriority={ relationshipPriority }

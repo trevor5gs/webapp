@@ -60,6 +60,7 @@ class BlockCollection extends Component {
     this.state = {
       collection: {},
       hideTextTools: true,
+      hasDragOver: false,
       loadingImageBlocks: [],
       order: [],
     }
@@ -253,9 +254,23 @@ class BlockCollection extends Component {
     this.addEmptyTextBlock(true)
   }
 
+  onDragOver = (e) => {
+    e.preventDefault()
+    if (!this.state.hasDragOver) {
+      this.setState({ hasDragOver: true })
+    }
+  }
+
+  onDragLeave = () => {
+    if (this.state.hasDragOver) {
+      this.setState({ hasDragOver: false })
+    }
+  }
+
   onDrop = (e) => {
     e.preventDefault()
     e.stopPropagation()
+    this.setState({ hasDragOver: false })
     if (e.dataTransfer.files.length) { this.acceptFiles(e.dataTransfer.files) }
     // TODO: this is the implementation from the current
     // mothership. it may need to be updated to work
@@ -577,15 +592,17 @@ class BlockCollection extends Component {
 
   render() {
     const { avatar, cancelAction, editorId, isComment, isOwnPost, submitText } = this.props
-    const { dragBlockTop, loadingImageBlocks, order } = this.state
+    const { dragBlockTop, loadingImageBlocks, order, hasDragOver } = this.state
     const hasMention = this.hasMention()
     const hasContent = this.hasContent()
     const firstBlockIsText = this.getBlockFromUid(order[0]) ?
       this.getBlockFromUid(order[0]).kind === 'text' : true
     return (
       <div
-        className={ classNames('editor', { hasMention, hasContent, isComment }) }
+        className={ classNames('editor', { hasDragOver, hasMention, hasContent, isComment }) }
         data-placeholder="Say Ello..."
+        onDragLeave={ this.onDragLeave }
+        onDragOver={ this.onDragOver }
         onDrop={ this.onDrop }
       >
         { isComment ? <Avatar sources={ avatar } /> : null }

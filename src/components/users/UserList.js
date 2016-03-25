@@ -49,15 +49,18 @@ class UserList extends Component {
   render() {
     const { classList, relationshipPriority, user, uploader, showBlockMuteButton } = this.props
     const userPath = `/${user.username}`
-    const isModifiable = typeof uploader !== 'undefined'
+    const isModifiable = uploader ? true : undefined
     return (
       <div className={ classNames(classList, 'UserList') }>
         { uploader }
         <Avatar
           isModifiable={ isModifiable }
+          priority={ !isModifiable && relationshipPriority ? relationshipPriority : null }
           size="large"
           sources={ user.avatar }
           to={ isModifiable ? null : userPath }
+          userId={ !isModifiable ? `${user.id}` : null }
+          username={ !isModifiable ? user.username : null }
         />
         <RelationsGroup
           user={ user }

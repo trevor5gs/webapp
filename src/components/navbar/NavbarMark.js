@@ -18,7 +18,7 @@ function getLogoMarkFromEnvironment() {
 }
 
 const NavbarMark = (props) =>
-  <Link className="NavbarMark" to={ props.markTarget }>
+  <Link className="NavbarMark" to={ props.markTarget } draggable>
     { getLogoMarkFromEnvironment() }
   </Link>
 
