@@ -167,6 +167,7 @@ class PostParser extends Component {
     assets: PropTypes.any,
     author: PropTypes.object,
     authorLinkObject: PropTypes.object,
+    commentsCount: PropTypes.number,
     currentUser: PropTypes.object,
     isEditing: PropTypes.bool,
     isGridLayout: PropTypes.bool,
@@ -184,6 +185,7 @@ class PostParser extends Component {
     const {
       assets,
       author,
+      commentsCount,
       currentUser,
       isEditing,
       isGridLayout,
@@ -218,7 +220,7 @@ class PostParser extends Component {
         { showLovers ? postLoversDrawer(post) : null }
         { showReposters ? postRepostersDrawer(post) : null }
         { showComments ? <Editor post={ post } isComment /> : null }
-        { showComments && post.commentsCount > 0 ? commentStream(post, author, currentUser) : null }
+        { showComments && commentsCount > 0 ? commentStream(post, author, currentUser) : null }
       </div>)
   }
 }
@@ -231,6 +233,7 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
   let newProps = {
     assets,
     author,
+    commentsCount: post.commentsCount,
     currentUser,
     isEditing: post.isEditing || false,
     isReposting: post.isReposting || false,
