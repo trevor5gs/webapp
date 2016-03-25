@@ -2,7 +2,7 @@
 
 .UploaderButton
   +sans-typeset
-  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease
+  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease, opacity $speed
   min-width: rem(280)
   height: rem(60)
   padding: 0 rem(30)
@@ -19,10 +19,13 @@
   color: white
 
 .Uploader > p
+  transition: opacity $speed
   margin-bottom: 0
 
 .Uploader > p + p
   margin-top: 0
+
+// -------------------------------------
 
 .UserDetailAvatarUploader
   position: absolute
@@ -32,6 +35,30 @@
   height: rem(120)
   border-radius: 50%
   z-index: 5
+  color: white
+  text-align: center
+  padding-left: rem(5)
+  padding-right: rem(5)
+  overflow: hidden
+
+.UserDetailAvatarUploader > .UploaderButton
+  min-width: rem(120)
+  margin-top: rem(35)
+  height: rem(40)
+  padding: 0 rem(20)
+  line-height: rem(40)
+
+.UserDetailAvatarUploader > .UploaderButton,
+.UserDetailAvatarUploader > p
+  opacity: 0
+
+.hasDragOver.UserDetailAvatarUploader > .UploaderButton,
+.hasDragOver.UserDetailAvatarUploader > p,
+.no-touch .UserDetailAvatarUploader:hover > .UploaderButton,
+.no-touch .UserDetailAvatarUploader:hover > p
+  opacity: 1
+
+// -------------------------------------
 
 .UserDetailCoverUploader
   position: fixed
@@ -39,15 +66,28 @@
   left: 0
   right: 0
   z-index: -1
+  padding-top: rem(100)
   padding-bottom: 56.25%
   text-align: center
   background: transparent
+  color: white
 
-.UserDetailAvatarUploader > *,
-.UserDetailCoverUploader > *
-  display: none
+.UserDetailCoverUploader > .UploaderButton,
+.UserDetailCoverUploader > p
+  opacity: 0
+
+.hasDragOver.UserDetailCoverUploader > .UploaderButton,
+.hasDragOver.UserDetailCoverUploader > p,
+.no-touch .UserDetailCoverUploader:hover > .UploaderButton,
+.no-touch .UserDetailCoverUploader:hover > p
+  opacity: 1
+
+// -------------------------------------
 
 @media(min-width: #{$break-2})
+  .UserDetailCoverUploader
+    padding-top: rem(180)
+
   .UserDetailAvatarUploader
     width: rem(180)
     height: rem(180)
