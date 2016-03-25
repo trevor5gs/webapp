@@ -11,8 +11,6 @@ let hasListeners = false
 function getPositionFromSelection() {
   range = window.getSelection().getRangeAt(0)
   const pos = range.getBoundingClientRect()
-  // TODO: magic number of -60 should be tested
-  // in multiple browsers, this works for safari
   return { left: Math.round(pos.left), top: Math.round(pos.top) }
 }
 

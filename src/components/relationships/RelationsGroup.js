@@ -72,9 +72,6 @@ class RelationsGroup extends Component {
       existing: relationshipPriority,
     })
     this.closeModal()
-    // TODO: this should only go back if you are blocking
-    // on a profile page, if the previous page was search
-    // the terms should be restored in the url..
     if (relationshipPriority !== RELATIONSHIP_PRIORITY.BLOCK) {
       dispatch(replace(previousPath || '/'))
     }

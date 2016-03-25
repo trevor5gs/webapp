@@ -17,15 +17,16 @@ import BlockCollection from './BlockCollection'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
 
 const editorUniqueIdentifiers = {}
-export function getEditorId(post, comment, isComment) {
+export function getEditorId(post, comment, isComment, isZero) {
   const prefix = isComment ? 'commentEditor' : 'postEditor'
   let modelId = ''
   if (post) {
     modelId = post.id
   } else if (comment) {
     modelId = `${comment.postId}_${comment.id}`
+  } else if (isZero) {
+    modelId = 'Zero'
   } else {
-    // TODO: make this unique for zero states too
     modelId = '0'
   }
   const fullPrefix = `${prefix}${modelId}`
@@ -60,8 +61,8 @@ class Editor extends Component {
   }
 
   getEditorIdentifier() {
-    const { comment, isComment, post } = this.props
-    return getEditorId(post, comment, isComment)
+    const { autoPopulate, comment, isComment, post, shouldPersist } = this.props
+    return getEditorId(post, comment, isComment, autoPopulate && !shouldPersist)
   }
 
   clearPersistedData() {
