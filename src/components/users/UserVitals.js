@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import { numberToHuman } from '../../vendor/number_to_human'
