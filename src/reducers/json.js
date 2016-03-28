@@ -319,8 +319,8 @@ function _updatePostDetail(newState, action) {
     { id: post.id, showLovers: parseInt(post.lovesCount, 10) > 0, showReposters: parseInt(post.repostsCount, 10) > 0 }
   )
 }
-methods.updatePostDetail = (newState, post) =>
-  _updatePostDetail(newState, post)
+methods.updatePostDetail = (newState, action) =>
+  _updatePostDetail(newState, action)
 
 export default function json(state = {}, action = { type: '' }) {
   let newState = { ...state }

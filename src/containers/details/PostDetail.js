@@ -42,6 +42,13 @@ class PostDetail extends Component {
     dispatch(loadPostDetail(`~${params.token}`))
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { dispatch, params } = this.props
+    if (params.token !== nextProps.params.token) {
+      dispatch(loadPostDetail(`~${nextProps.params.token}`))
+    }
+  }
+
   componentWillUnmount() {
     const { dispatch, json, params } = this.props
     const post = findModel(json, {
@@ -56,12 +63,17 @@ class PostDetail extends Component {
     }
   }
 
+  getPost() {
+    const { json, params } = this.props
+    return findModel(json, {
+      collection: MAPPING_TYPES.POSTS,
+      findObj: { token: params.token.toLowerCase() },
+    })
+  }
+
   render() {
     const { json, params, stream } = this.props
-    const post = findModel(json, {
-      collection: MAPPING_TYPES.POSTS,
-      findObj: { token: params.token },
-    })
+    const post = this.getPost()
     switch (stream.type) {
       case ACTION_TYPES.POST.DETAIL_FAILURE:
         if (!post && stream.error) {
@@ -121,8 +133,15 @@ class PostDetail extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  const { json } = state
+  const { params } = ownProps
+  const post = findModel(json, {
+    collection: MAPPING_TYPES.POSTS,
+    findObj: { token: params.token.toLowerCase() },
+  })
   return {
+    token: post ? post.token : null,
     json: state.json,
     isLoggedIn: state.authentication.isLoggedIn,
     stream: state.stream,
