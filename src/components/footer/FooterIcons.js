@@ -24,22 +24,18 @@ export const ChevronIcon = () =>
 export const ListIcon = () =>
   <SVGIcon className="ListIcon">
     <g>
-      <rect height="12" width="12" x="4.5" y="4.5" />
-    </g>
-    <g>
-      <line x1="4.5" x2="16.5" y1="12.5" y2="12.5" />
-      <line x1="4.5" x2="16.5" y1="8.5" y2="8.5" />
+      <path d="M6.2,8.8c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5h7.5c1.4,0,2.5,1.1,2.5,2.5s-1.1,2.5-2.5,2.5H6.2z" />
+      <path d="M6.2,16.2c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5h7.5c1.4,0,2.5,1.1,2.5,2.5s-1.1,2.5-2.5,2.5H6.2z" />
     </g>
   </SVGIcon>
 
 export const GridIcon = () =>
   <SVGIcon className="GridIcon">
     <g>
-      <rect height="12" width="12" x="4.5" y="4.5" />
-    </g>
-    <g>
-      <line x1="4.5" x2="16.5" y1="10.5" y2="10.5" />
-      <line x1="10.5" x2="10.5" y1="4.5" y2="16.5" />
+      <circle cx="6.2" cy="6.2" r="2.5" />
+      <circle cx="13.8" cy="6.2" r="2.5" />
+      <circle cx="6.2" cy="13.8" r="2.5" />
+      <circle cx="13.8" cy="13.8" r="2.5" />
     </g>
   </SVGIcon>
 

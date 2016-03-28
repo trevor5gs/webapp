@@ -49,6 +49,10 @@
 .CommentTools .TimeAgoTool
   color: #aaa
 
+// TODO: Need to really separate CommentTools from PostTools.
+// Override the hiding of this thing from bad the PostTools
+.Posts .CommentTools .TimeAgoTool
+  display: inline-block
 
 @media(min-width: #{$break-2})
   .CommentHeader

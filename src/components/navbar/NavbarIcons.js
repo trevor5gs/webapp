@@ -74,3 +74,21 @@ export const ExIcon = () =>
     </g>
   </SVGIcon>
 
+export const ListIcon = () =>
+  <SVGIcon className="ListIcon">
+    <g>
+      <path d="M6.2,8.8c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5h7.5c1.4,0,2.5,1.1,2.5,2.5s-1.1,2.5-2.5,2.5H6.2z" />
+      <path d="M6.2,16.2c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5h7.5c1.4,0,2.5,1.1,2.5,2.5s-1.1,2.5-2.5,2.5H6.2z" />
+    </g>
+  </SVGIcon>
+
+export const GridIcon = () =>
+  <SVGIcon className="GridIcon">
+    <g>
+      <circle cx="6.2" cy="6.2" r="2.5" />
+      <circle cx="13.8" cy="6.2" r="2.5" />
+      <circle cx="6.2" cy="13.8" r="2.5" />
+      <circle cx="13.8" cy="13.8" r="2.5" />
+    </g>
+  </SVGIcon>
+

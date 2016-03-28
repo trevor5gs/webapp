@@ -100,7 +100,7 @@
 .ShareTool
   position: absolute
   top: rem(19)
-  right: rem(-10)
+  right: rem(10)
 
 .ShareTool .Hint
   left: calc(-100% - 2px)
@@ -123,17 +123,16 @@
 .ShareTool.asPill .ShareIcon
   display: none
 
-@media(min-width: #{em(560)})
-  .ShareTool.asPill >  button > .Hint
-    display: inline-block
-    position: static
-    padding: 0
-    visibility: visible
-    opacity: 1
-    background-color: transparent
-    border-radius: none
-    border: 0
-    color: #535353
+.ShareTool.asPill >  button > .Hint
+  display: inline-block
+  position: static
+  padding: 0
+  visibility: visible
+  opacity: 1
+  background-color: transparent
+  border-radius: none
+  border: 0
+  color: #535353
 
 .no-touch .ShareTool.asPill >  button:hover > .Hint
   color: black
@@ -158,6 +157,7 @@
 .PostTools.isMoreToolActive
   transform: translate3d(rem(-120), 0, 0)
 
+.PostTools.isMoreToolActive .ShareTool,
 .PostTools.isMoreToolActive .MoreTool
   transform: translate3d(rem(120), 0, 0)
 
@@ -184,14 +184,18 @@
 @media(min-width: #{em(375)})
   .PostTools.isMoreToolActive
     transform: translate3d(rem(-70), 0, 0)
+  .PostTools.isMoreToolActive .ShareTool,
   .PostTools.isMoreToolActive .MoreTool
     transform: translate3d(rem(70), 0, 0)
 
 @media(min-width: #{em(450)})
+  .ShareTool
+    right: rem(-10)
   .Posts .MoreTool,
   .Posts.asGrid .ShyTool
     display: none
   .PostTools.isMoreToolActive,
+  .PostTools.isMoreToolActive .ShareTool,
   .PostTools.isMoreToolActive .MoreTool
     transform: none
   .Posts.asList .ShyTool

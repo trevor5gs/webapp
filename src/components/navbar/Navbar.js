@@ -15,12 +15,15 @@ import { addScrollObject, removeScrollObject } from '../interface/ScrollComponen
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import HelpDialog from '../dialogs/HelpDialog'
 import NavbarLabel from '../navbar/NavbarLabel'
+import NavbarLayoutTool from '../navbar/NavbarLayoutTool'
 import NavbarLink from '../navbar/NavbarLink'
 import NavbarMark from '../navbar/NavbarMark'
 import NavbarMorePostsButton from '../navbar/NavbarMorePostsButton'
 import NavbarOmniButton from '../navbar/NavbarOmniButton'
 import NavbarProfile from '../navbar/NavbarProfile'
-import { BoltIcon, CircleIcon, SearchIcon, SparklesIcon, StarIcon } from '../navbar/NavbarIcons'
+import {
+  BoltIcon, CircleIcon, GridIcon, ListIcon, SearchIcon, SparklesIcon, StarIcon,
+} from '../navbar/NavbarIcons'
 import Mousetrap from '../../vendor/mousetrap'
 import { scrollToTop } from '../../vendor/scrollTop'
 import { findLayoutMode } from '../../reducers/gui'
@@ -82,6 +85,7 @@ class Navbar extends Component {
       asHidden: false,
       asLocked: isBlacklisted,
       hasNotifications: false,
+      isGridMode: true,
       skipTransition: false,
       offset: this.calculateOffset(GUI.coverOffset),
       viewportDeviceSize: GUI.viewportDeviceSize,
@@ -126,9 +130,11 @@ class Navbar extends Component {
   componentWillReceiveProps(nextProps) {
     const { gui, pathname } = nextProps
     const isBlacklisted = isBlacklistedRoute(pathname)
+    const currentMode = findLayoutMode(gui.modes)
     this.setState({
       asFixed: true,
       asLocked: isBlacklisted,
+      isGridMode: currentMode && currentMode.mode === 'grid',
       hasNotifications: gui.newNotificationContent,
     })
   }
@@ -253,6 +259,10 @@ class Navbar extends Component {
     }
   }
 
+  onClickToggleLayoutMode = () => {
+    Mousetrap.trigger(SHORTCUT_KEYS.TOGGLE_LAYOUT)
+  }
+
   calculateOffset(coverOffset) {
     return coverOffset - 80
   }
@@ -264,7 +274,7 @@ class Navbar extends Component {
 
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
     const { profile, isNotificationsActive } = this.props
-    const { hasNotifications, viewportDeviceSize } = this.state
+    const { hasNotifications, isGridMode, viewportDeviceSize } = this.state
 
     // if we're viewing notifications, don't change the lightning-bolt link.
     // on any other page, we have the notifications link go back to whatever
@@ -338,6 +348,12 @@ class Navbar extends Component {
           onLogOut={ this.onLogOut }
           username={ profile.username }
         />
+        { viewportDeviceSize === 'mobile' ?
+          <NavbarLayoutTool
+            icon={ isGridMode ? <ListIcon /> : <GridIcon /> }
+            onClick={ this.onClickToggleLayoutMode }
+          /> : null
+        }
         { viewportDeviceSize !== 'mobile' && isNotificationsActive ?
           <NotificationsContainer /> : null
         }

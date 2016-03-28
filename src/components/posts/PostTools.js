@@ -324,14 +324,14 @@ class PostTools extends Component {
           </span>
         )
       }
+      cells.push(
+        <span className={ "PostTool MoreTool" } key={ `MoreTool_${post.id}` }>
+          <button onClick={ this.onClickMoreToggle }>
+            <ChevronIcon />
+          </button>
+        </span>
+      )
     }
-    cells.push(
-      <span className={ "PostTool MoreTool" } key={ `MoreTool_${post.id}` }>
-        <button onClick={ this.onClickMoreToggle }>
-          <ChevronIcon />
-        </button>
-      </span>
-    )
     return cells
   }
 

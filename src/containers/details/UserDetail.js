@@ -90,7 +90,7 @@ class UserDetail extends Component {
       <Uploader
         className="UserDetailAvatarUploader"
         closeAlert={ bindActionCreators(closeAlert, dispatch) }
-        message="Or drag & drop it"
+        message="Or drag & drop"
         openAlert={ bindActionCreators(openAlert, dispatch) }
         recommend="Recommended image size: 360 x 360"
         saveAction={ bindActionCreators(saveAvatar, dispatch) }
