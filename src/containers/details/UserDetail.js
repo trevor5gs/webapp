@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import classNames from 'classnames'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { findModel } from '../../components/base/json_helper'
@@ -29,6 +30,9 @@ class UserDetail extends Component {
       type: PropTypes.string,
       username: PropTypes.string.isRequired,
     }).isRequired,
+    omnibar: PropTypes.shape({
+      isActive: PropTypes.bool,
+    }),
     stream: PropTypes.shape({
       type: PropTypes.string,
       error: PropTypes.object,
@@ -100,7 +104,7 @@ class UserDetail extends Component {
   }
 
   render() {
-    const { dispatch, isLoggedIn, json, params, stream } = this.props
+    const { dispatch, isLoggedIn, json, omnibar, params, stream } = this.props
     const type = params.type || 'posts'
 
     const user = findModel(json, {
@@ -138,13 +142,15 @@ class UserDetail extends Component {
           />
         )
       }
-      userEls.push(
-        <Cover
-          isModifiable={ user.relationshipPriority === 'self' }
-          coverImage={ user.coverImage }
-          key={ `userDetailCover_${user.id}` }
-        />
-      )
+      if (!omnibar.isActive) {
+        userEls.push(
+          <Cover
+            isModifiable={ user.relationshipPriority === 'self' }
+            coverImage={ user.coverImage }
+            key={ `userDetailCover_${user.id}` }
+          />
+        )
+      }
       userEls.push(
         <UserList
           classList="asUserDetailHeader"
@@ -169,7 +175,10 @@ class UserDetail extends Component {
         break
     }
     return (
-      <section className="UserDetail Panel" key={ `userDetail_${type}` }>
+      <section
+        className={ classNames('UserDetail', 'Panel', omnibar.isActive ? 'OmnibarActive' : null) }
+        key={ `userDetail_${type}` }
+      >
         { user ? <UserDetailHelmet user={ user } /> : null }
         <div className="UserDetails">
           { userEls }
@@ -195,6 +204,7 @@ class UserDetail extends Component {
 
 function mapStateToProps(state) {
   return {
+    omnibar: state.omnibar,
     json: state.json,
     isLoggedIn: state.authentication.isLoggedIn,
     stream: state.stream,
