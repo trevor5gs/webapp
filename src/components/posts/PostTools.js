@@ -16,7 +16,6 @@ import ShareDialog from '../dialogs/ShareDialog'
 import Hint from '../hints/Hint'
 import {
   BubbleIcon,
-  ChevronIcon,
   EyeIcon,
   FlagIcon,
   HeartIcon,
