@@ -32,6 +32,9 @@ export class StreamComponent extends Component {
     initModel: PropTypes.object,
     isUserDetail: PropTypes.bool.isRequired,
     json: PropTypes.object.isRequired,
+    omnibar: PropTypes.shape({
+      isActive: PropTypes.bool,
+    }),
     paginatorText: PropTypes.string,
     renderObj: PropTypes.shape({
       data: PropTypes.array.isRequired,
@@ -89,7 +92,7 @@ export class StreamComponent extends Component {
   }
 
   componentWillMount() {
-    const { action, dispatch } = this.props
+    const { action, dispatch, omnibar } = this.props
     if (action) { dispatch(action) }
 
     let browserListen
@@ -107,6 +110,7 @@ export class StreamComponent extends Component {
     unlisten()
     this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
     this.shouldScroll = true
+    this.wasOmnibarActive = omnibar.isActive
   }
 
   componentDidMount() {
@@ -120,8 +124,7 @@ export class StreamComponent extends Component {
 
     let shouldScrollToTop = true
     if (this.props.isUserDetail) {
-      const offset = Math.round((window.innerWidth * 0.5625)) - 200
-      window.scrollTo(0, offset)
+      this.scrollToUserDetail()
       shouldScrollToTop = false
       this.saveScroll = false
     } else if (routerState.didComeFromSeeMoreCommentsLink) {
@@ -170,7 +173,7 @@ export class StreamComponent extends Component {
     }
 
     const { action } = this.state
-    const { stream } = this.props
+    const { stream, omnibar, isUserDetail } = this.props
     const shouldScroll = this.shouldScroll &&
       stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
       action && action.payload &&
@@ -180,6 +183,11 @@ export class StreamComponent extends Component {
         this.shouldScroll = false
       }
     }
+
+    if (isUserDetail && !omnibar.isActive && this.wasOmnibarActive) {
+      this.scrollToUserDetail()
+    }
+    this.wasOmnibarActive = omnibar.isActive
   }
 
   componentWillUnmount() {
@@ -239,6 +247,11 @@ export class StreamComponent extends Component {
         scrollTop: scrollTopValue,
       },
     })
+  }
+
+  scrollToUserDetail() {
+    const offset = Math.round((window.innerWidth * 0.5625)) - 200
+    window.scrollTo(0, offset)
   }
 
   attemptToRestoreScroll(fromMount = false) {
@@ -452,6 +465,7 @@ export function mapStateToProps(state, ownProps) {
     history: state.gui.history,
     json: state.json,
     mode: findLayoutMode(state.gui.modes).mode,
+    omnibar: state.omnibar,
     renderObj,
     result,
     resultPath,
