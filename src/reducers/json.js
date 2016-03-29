@@ -240,10 +240,7 @@ function _clearSearchResults(state, newState, action) {
   const pathname = action.payload.pathname
   const existingResult = newState.pages[pathname]
   if (existingResult) {
-    existingResult.ids = []
-    if (existingResult.next) {
-      existingResult.next.ids = []
-    }
+    newState.pages[pathname] = null
     return newState
   }
   return state

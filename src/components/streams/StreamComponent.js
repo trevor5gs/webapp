@@ -12,7 +12,7 @@ import { findModel } from '../base/json_helper'
 import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
 import { ElloMark } from '../interface/ElloIcons'
-import { Paginator, emptyPagination } from '../streams/Paginator'
+import { Paginator, emptyPagination } from './Paginator'
 import { findLayoutMode } from '../../reducers/gui'
 import { ErrorState4xx } from '../errors/Errors'
 import Session from '../../vendor/session'
@@ -358,6 +358,7 @@ export class StreamComponent extends Component {
 
   renderZeroState() {
     const { action } = this.props
+    if (!action) { return null }
     const { meta } = action
     return (
       <section className="StreamComponent">
