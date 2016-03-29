@@ -53,6 +53,21 @@ function isBlacklistedRoute(pathname) {
   return true
 }
 
+function showNavbarLayoutTool(pathname) {
+  const noShows = [
+    /^\/[\w\-]+\/post\/.+/,
+    /^\/notifications\b/,
+    /^\/settings\b/,
+    /^\/onboarding\b/,
+  ]
+  for (const regex of noShows) {
+    if (regex.test(pathname)) {
+      return false
+    }
+  }
+  return true
+}
+
 class Navbar extends Component {
 
   static propTypes = {
@@ -348,7 +363,7 @@ class Navbar extends Component {
           onLogOut={ this.onLogOut }
           username={ profile.username }
         />
-        { viewportDeviceSize === 'mobile' ?
+        { viewportDeviceSize === 'mobile' && showNavbarLayoutTool(pathname) ?
           <NavbarLayoutTool
             icon={ isGridMode ? <ListIcon /> : <GridIcon /> }
             onClick={ this.onClickToggleLayoutMode }
