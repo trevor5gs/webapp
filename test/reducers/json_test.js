@@ -206,7 +206,6 @@ describe('json reducer', () => {
     })
   })
 
-  // TODO: test the isInitialLoad piece of this more
   describe('#updateResult', () => {
     afterEach(() => {
       subject.methods.getResult.restore()

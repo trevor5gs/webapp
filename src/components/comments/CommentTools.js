@@ -44,7 +44,7 @@ class CommentTools extends Component {
     dispatch({
       type: ACTION_TYPES.EDITOR.APPEND_TEXT,
       payload: {
-        editorId: getEditorId(post, null, true),
+        editorId: getEditorId(post, null, true, false),
         text: `@${author.username} `,
       },
     })

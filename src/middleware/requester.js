@@ -146,8 +146,6 @@ export const requester = store => next => action => {
   if (shouldForwardAction(action)) {
     next(action)
   }
-  // TODO: I think the body should actually come
-  // from the endpoint instead of the payload
   const { endpoint, method, body } = payload
 
   if (!endpoint) { return next(action) }
