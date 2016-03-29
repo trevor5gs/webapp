@@ -40,9 +40,9 @@ function userTextLink(user) {
 }
 
 function postTextLink(post, text = 'post') {
-  if (!post) { return null }
+  if (!post) { return text }
   const author = models[MAPPING_TYPES.USERS][post.authorId]
-  if (!author) { return null }
+  if (!author) { return text }
   return (
     <Link to={ getActivityPath(author, post) }>
       { text }
