@@ -41,6 +41,7 @@
   border-bottom: 1px solid #aaa
   line-height: rem(10)
 
+// TODO: Need to really separate CommentTools from PostTools.
 .CommentTools
   padding-left: rem(40)
 
@@ -48,10 +49,16 @@
 .CommentTools .TimeAgoTool
   color: #aaa
 
-// TODO: Need to really separate CommentTools from PostTools.
 // Override the hiding of this thing from bad the PostTools
 .Posts .CommentTools .TimeAgoTool
   display: inline-block
+
+.CommentTools .ReplyTool
+  margin-left: rem(10)
+
+.CommentTools .ReplyTool .SVGIcon
+  margin-top: rem(-2)
+
 
 .CommentTools .MoreTool
   transition: transform $speed $ease
