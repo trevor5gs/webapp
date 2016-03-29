@@ -3,6 +3,12 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import classNames from 'classnames'
 
+const isLink = (target) => {
+  if (target.nodeName.toLowerCase() === 'a') { return true }
+  const parent = target.closest ? target.closest('a') : target.parentNode
+  return parent && parent.nodeName.toLowerCase() === 'a'
+}
+
 /* eslint-disable react/prefer-stateless-function */
 class TextRegion extends Component {
 
@@ -15,7 +21,7 @@ class TextRegion extends Component {
 
   onClickRegion = (e) => {
     const { dispatch, isGridLayout, postDetailPath } = this.props
-    const { classList, dataset, nodeName } = e.target
+    const { classList, dataset } = e.target
     // Get the raw value instead of the property value which is always absolute
     const href = e.target.getAttribute('href')
 
@@ -32,7 +38,7 @@ class TextRegion extends Component {
       return
 
     // Treat non links within grid layouts as a push to it's detail path
-    } else if (isGridLayout && postDetailPath && nodeName !== 'A') {
+    } else if (isGridLayout && postDetailPath && !isLink(e.target)) {
       e.preventDefault()
       dispatch(push(postDetailPath))
       return
