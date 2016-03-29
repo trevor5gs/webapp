@@ -121,7 +121,7 @@ class Avatar extends Component {
       return (
         <Link
           className={ klassNames }
-          data-priority={ priority }
+          data-priority={ priority || 'inactive' }
           data-userid={ userId }
           data-username={ username }
           to={ to }
@@ -134,7 +134,7 @@ class Avatar extends Component {
       return (
         <button
           className={ klassNames }
-          data-priority={ priority }
+          data-priority={ priority || 'inactive' }
           data-userid={ userId }
           data-username={ username }
           onClick={ onClick }
@@ -147,7 +147,7 @@ class Avatar extends Component {
     return (
       <span
         className={ klassNames }
-        data-priority={ priority }
+        data-priority={ priority || 'inactive' }
         data-userid={ userId }
         data-username={ username }
         draggable={ isDraggable }
