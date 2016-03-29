@@ -10,6 +10,7 @@ import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
 import commentMethods from './experience_updates/comments'
 import postMethods from './experience_updates/posts'
 import relationshipMethods from './experience_updates/relationships'
+import { emptyPagination } from '../components/streams/Paginator'
 
 // adding methods and accessing them from this object
 // allows the unit tests to stub methods in this module
@@ -240,10 +241,7 @@ function _clearSearchResults(state, newState, action) {
   const pathname = action.payload.pathname
   const existingResult = newState.pages[pathname]
   if (existingResult) {
-    existingResult.ids = []
-    if (existingResult.next) {
-      existingResult.next.ids = []
-    }
+    newState.pages[pathname] = null
     return newState
   }
   return state
