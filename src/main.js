@@ -69,9 +69,6 @@ try {
     launchApplication(storage)
     return true
   }
-  // call this again to get the handlers to
-  // fire consistently in private browsers?
-  dbRequest()
 } catch (e) {
   // If even localStorage fails, use an in-memory store
   const storage = MemoryStore
