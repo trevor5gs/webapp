@@ -74,10 +74,11 @@ class ForgotPassword extends Component {
       >
         <EmailControl
           classList="asBoxControl"
-          label={ `Email ${emailState.message}` }
+          label="Email"
           onChange={ this.onChangeControl }
           tabIndex="1"
         />
+        {emailState.message ? <p>{emailState.message}</p> : null}
         <FormButton disabled={ !isValid } tabIndex="2">Reset password</FormButton>
       </form>
     )
