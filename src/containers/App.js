@@ -102,11 +102,12 @@ class App extends Component {
   }
 
   onHideCompleter() {
-    const { completions, dispatch } = this.props
-    this.setState({ hideCompleter: true })
-    if (completions) {
-      dispatch({ type: ACTION_TYPES.POST.AUTO_COMPLETE_CLEAR })
-    }
+    console.log('onHideCompleter')
+    // const { completions, dispatch } = this.props
+    // this.setState({ hideCompleter: true })
+    // if (completions) {
+    //   dispatch({ type: ACTION_TYPES.POST.AUTO_COMPLETE_CLEAR })
+    // }
   }
 
   onPositionChange(props) {

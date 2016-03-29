@@ -119,6 +119,7 @@ export default class Completer extends Component {
       return null
     }
     const pos = getPositionFromSelection()
+    console.log('pos', pos)
     const coords = pos || { top: 0, left: 0 }
     const top = viewportDeviceSize === 'mobile' ? coords.top + 45 : coords.top + 20
     const left = viewportDeviceSize === 'mobile' ? 0 : coords.left
