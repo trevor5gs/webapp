@@ -41,7 +41,6 @@
   border-bottom: 1px solid #aaa
   line-height: rem(10)
 
-
 .CommentTools
   padding-left: rem(40)
 
@@ -54,6 +53,39 @@
 .Posts .CommentTools .TimeAgoTool
   display: inline-block
 
+.CommentTools .MoreTool
+  transition: transform $speed $ease
+  position: absolute
+  right: 0
+
+.CommentTools .MoreTool > button
+  padding-right: 0
+
+// MAX WIDTH!
+@media(max-width: #{$break-2-max})
+  .CommentTools.isMoreToolActive
+    transform: translate3d(-80px, 0, 0)
+
+  .CommentTools .MoreTool .SVGIcon > g
+    transform: rotate(180deg)
+
+  .CommentTools.isMoreToolActive .MoreTool .SVGIcon > g
+    stroke: black
+    transform: none
+
+  .CommentTools .ShyTool
+    position: absolute
+    right: rem(-50)
+
+  .CommentTools .ShyTool + .ShyTool
+    right: rem(-90)
+
+  .CommentTools.isMoreToolActive .ShyTool
+    pointer-events: auto
+    opacity: 1
+
+
+// MIN WIDTH!
 @media(min-width: #{$break-2})
   .CommentHeader
     height: rem(25)
@@ -64,6 +96,8 @@
     padding-left: rem(60)
   .CommentTools
     padding-left: rem(60)
+  .CommentTools .MoreTool
+    display: none
   .no-touch .CommentTools .ShyTool
     display: inline-block !important
     pointer-events: none
