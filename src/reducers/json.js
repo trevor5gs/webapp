@@ -10,7 +10,6 @@ import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
 import commentMethods from './experience_updates/comments'
 import postMethods from './experience_updates/posts'
 import relationshipMethods from './experience_updates/relationships'
-import { emptyPagination } from '../components/streams/Paginator'
 
 // adding methods and accessing them from this object
 // allows the unit tests to stub methods in this module
