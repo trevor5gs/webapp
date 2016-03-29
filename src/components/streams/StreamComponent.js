@@ -358,6 +358,7 @@ export class StreamComponent extends Component {
 
   renderZeroState() {
     const { action } = this.props
+    if (!action) { return null }
     const { meta } = action
     return (
       <section className="StreamComponent">
