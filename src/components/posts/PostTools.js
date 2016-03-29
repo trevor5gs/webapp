@@ -53,17 +53,12 @@ class PostTools extends Component {
 
   componentWillMount() {
     this.state = {
-      isMoreToolActive: false,
       isCommentsActive: false,
       isRepostAnimating: false,
       postShowComments: false,
       postShowLovers: false,
       postShowReposters: false,
     }
-  }
-
-  onClickMoreToggle = () => {
-    this.setState({ isMoreToolActive: !this.state.isMoreToolActive })
   }
 
   onClickToggleComments = () => {
@@ -324,13 +319,6 @@ class PostTools extends Component {
           </span>
         )
       }
-      cells.push(
-        <span className={ "PostTool MoreTool" } key={ `MoreTool_${post.id}` }>
-          <button onClick={ this.onClickMoreToggle }>
-            <ChevronIcon />
-          </button>
-        </span>
-      )
     }
     return cells
   }
@@ -352,7 +340,6 @@ class PostTools extends Component {
     const classes = classNames(
       'PostTools',
       { isCommentsRequesting },
-      { isMoreToolActive: this.state.isMoreToolActive },
       { isCommentsActive: this.state.isCommentsActive },
     )
     return (

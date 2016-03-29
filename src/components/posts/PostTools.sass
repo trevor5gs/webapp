@@ -100,7 +100,7 @@
 .ShareTool
   position: absolute
   top: rem(19)
-  right: rem(10)
+  right: rem(-10)
 
 .ShareTool .Hint
   left: calc(-100% - 2px)
@@ -139,33 +139,9 @@
   transition-duration: $speed
   transition-delay: 0s
 
-.MoreTool
-  transition: transform $speed $ease
-  position: absolute
-  z-index: 2
-.Posts.asList .MoreTool
-  right: rem(-7)
-.Posts.asGrid .MoreTool
-  left: rem(270)
-.MoreTool > button
-  padding-right: 0
-
 .ShyTool
   +hideTool
   transition: opacity $speed ease
-
-.PostTools.isMoreToolActive
-  transform: translate3d(rem(-120), 0, 0)
-
-.PostTools.isMoreToolActive .ShareTool,
-.PostTools.isMoreToolActive .MoreTool
-  transform: translate3d(rem(120), 0, 0)
-
-.PostTools.isMoreToolActive .MoreTool .SVGIcon > g
-  stroke: black
-
-.PostTools.isMoreToolActive .ShyTool
-  +showTool
 
 .Posts .TimeAgoTool
   display: none
@@ -174,30 +150,19 @@
 @media(max-width: #{em(449)})
   .Posts.asGrid .ShareTool
     display: none
+
 @media(max-width: #{$break-2-max})
   .Posts.asGrid .CommentTool
     margin-left: rem(-10)
   .Posts.asGrid .ViewsTool
     display: none
+  .PostDetail .Posts.asList .PostTools.ShyTool
+    +showTool
 
-// MIN WIDTH!!!
-@media(min-width: #{em(375)})
-  .PostTools.isMoreToolActive
-    transform: translate3d(rem(-70), 0, 0)
-  .PostTools.isMoreToolActive .ShareTool,
-  .PostTools.isMoreToolActive .MoreTool
-    transform: translate3d(rem(70), 0, 0)
-
+// MIN WIDTH
 @media(min-width: #{em(450)})
-  .ShareTool
-    right: rem(-10)
-  .Posts .MoreTool,
   .Posts.asGrid .ShyTool
     display: none
-  .PostTools.isMoreToolActive,
-  .PostTools.isMoreToolActive .ShareTool,
-  .PostTools.isMoreToolActive .MoreTool
-    transform: none
   .Posts.asList .ShyTool
     +showTool
 
@@ -214,7 +179,6 @@
     right: auto
   .Posts.asList .ShareTool .Hint
     left: 0
-
 
 @media(min-width: #{$break-3})
   .Posts.asList .PostTool > a,
