@@ -3,6 +3,7 @@ import { postPreviews, savePostImage } from '../../actions/posts'
 
 let dispatch = null
 let editorId = null
+let index = null
 
 function checkForEmbeds(text) {
   for (const service of window.embetter.activeServices) {
@@ -31,7 +32,7 @@ function handleClipboardItems(items) {
     if (items.hasOwnProperty(key)) {
       const item = items[key]
       if (item.type.indexOf('image') === 0) {
-        dispatch(savePostImage(item.getAsFile(), editorId))
+        dispatch(savePostImage(item.getAsFile(), editorId, index))
       }
     }
   }
@@ -63,7 +64,9 @@ function checkForImages(e) {
   if (image) {
     // this works on FF paste of clipboard data
     if (image.src.match(/;base64,/)) {
-      dispatch(savePostImage(getBlobFromBase64(image.src.split(',')[1], 'image/png'), editorId))
+      dispatch(savePostImage(
+        getBlobFromBase64(image.src.split(',')[1], 'image/png'), editorId, index
+      ))
     } else if (image.src.indexOf('webkit-fake-url') === 0) {
       // safari adds 'webkit-fake-url://' to image src and throws security
       // violations when trying to access the data of the image
@@ -76,9 +79,10 @@ function checkForImages(e) {
   }
 }
 
-export function pasted(e, d, id) {
+export function pasted(e, d, id, i) {
   dispatch = d
   editorId = id
+  index = i
   if (window.$isAndroid) {
     handleAndroidBrokenPaste()
     return
