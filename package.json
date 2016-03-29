@@ -43,7 +43,6 @@
     "isomorphic-fetch": "2.2.1",
     "jade": "1.11.0",
     "librato-node": "4.1.0",
-    "localforage": "1.4.0",
     "lodash": "4.6.1",
     "morgan": "1.7.0",
     "mousetrap": "1.5.3",

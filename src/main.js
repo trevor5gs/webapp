@@ -8,8 +8,7 @@ import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
-import { persistStore } from 'redux-persist'
-import localforage from 'localforage'
+import { persistStore, storages } from 'redux-persist'
 import store from './store'
 import { browserHistory } from 'react-router'
 import routes from './routes'
@@ -21,7 +20,7 @@ import './vendor/embetter_initializer'
 
 updateTimeAgoStrings({ about: '' })
 
-const APP_VERSION = '1.0.13'
+const APP_VERSION = '1.0.14'
 
 const history = syncHistoryWithStore(browserHistory, store)
 const element = (
@@ -39,38 +38,34 @@ const launchApplication = (storage) => {
 
   // check and update current version and
   // only kill off the persisted reducers
-  storage.getItem('APP_VERSION')
-    .then((curVersion) => {
-      if (curVersion && curVersion !== APP_VERSION) {
-        // we can't use purgeAll since localforage
-        // doesn't implement the getAllKeys method
-        persistor.purge(whitelist)
-      }
-      storage.setItem('APP_VERSION', APP_VERSION)
-    })
+  storage.getItem('APP_VERSION', (error, result) => {
+    storage.setItem('APP_VERSION', APP_VERSION, () => {})
+    if (result && result !== APP_VERSION) {
+      persistor.purge(whitelist)
+    }
+  })
 }
 
-try {
-  // Test access to indexedDB
-  // if it fails, explicitly set up localStorage as
-  // localForage's storage driver.  This prevents a situation where
-  // firefox in private mode technically has indexedDB, but exceptions are thrown
-  // when it's accessed
-  const dbRequest = window.indexedDB.open('ello-webapp')
-  dbRequest.onsuccess = () => {
-    const storage = localforage.createInstance({ name: 'ello-webapp' })
-    launchApplication(storage)
-  }
-  dbRequest.onerror = () => {
-    const storage = localforage.createInstance({
-      name: 'ello-webapp',
-      driver: localforage.LOCALSTORAGE,
-    })
-    launchApplication(storage)
+// this will fail in a safari private window
+function isLocalStorageSupported() {
+  if (typeof window === 'undefined') { return false }
+  const testKey = 'test-localStorage'
+  const storage = window.localStorage
+  try {
+    storage.setItem(testKey, '1')
+    storage.removeItem(testKey)
     return true
+  } catch (error) {
+    return false
   }
-} catch (e) {
-  // If even localStorage fails, use an in-memory store
-  const storage = MemoryStore
-  launchApplication(storage)
 }
+
+if (isLocalStorageSupported()) {
+  // use localStorage as indexedDB seems to
+  // have issues in chrome and firefox private
+  launchApplication(storages.asyncLocalStorage)
+} else {
+  // localStorage fails, use an in-memory store
+  launchApplication(MemoryStore)
+}
+
