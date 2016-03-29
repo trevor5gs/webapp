@@ -20,7 +20,7 @@ import './vendor/embetter_initializer'
 
 updateTimeAgoStrings({ about: '' })
 
-const APP_VERSION = '1.0.14'
+const APP_VERSION = '1.0.15'
 
 const history = syncHistoryWithStore(browserHistory, store)
 const element = (
@@ -41,7 +41,7 @@ const launchApplication = (storage) => {
   storage.getItem('APP_VERSION', (error, result) => {
     storage.setItem('APP_VERSION', APP_VERSION, () => {})
     if (result && result !== APP_VERSION) {
-      persistor.purge(whitelist)
+      persistor.purgeAll()
     }
   })
 }
