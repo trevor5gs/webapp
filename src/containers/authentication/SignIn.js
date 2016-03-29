@@ -135,7 +135,7 @@ class SignIn extends Component {
             />
             <PasswordControl
               classList="asBoxControl"
-              label={ `Password ${passwordState.message}` }
+              label="Password"
               onChange={ this.onChangePasswordControl }
               renderStatus={ this.renderStatus(passwordState) }
               tabIndex="2"
