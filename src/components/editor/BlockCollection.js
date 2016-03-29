@@ -598,9 +598,16 @@ class BlockCollection extends Component {
     const firstBlockIsText = this.getBlockFromUid(order[0]) ?
       this.getBlockFromUid(order[0]).kind === 'text' : true
     const showQuickEmoji = isComment && firstBlockIsText
+    const editorClassNames = classNames('editor', {
+      withQuickEmoji: showQuickEmoji,
+      hasDragOver,
+      hasMention,
+      hasContent,
+      isComment,
+    })
     return (
       <div
-        className={ classNames('editor', { withQuickEmoji: showQuickEmoji, hasDragOver, hasMention, hasContent, isComment }) }
+        className={ editorClassNames }
         data-placeholder="Say Ello..."
         onDragLeave={ this.onDragLeave }
         onDragOver={ this.onDragOver }
