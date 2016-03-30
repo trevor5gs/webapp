@@ -36,7 +36,7 @@ const explore = store => ({
       replace({ state: nextState, pathname: rootPath })
     } else if (authentication.isLoggedIn) {
       replace({ state: nextState, pathname: '/discover' })
-    } else {
+    } else if (!type) {
       replace({ state: nextState, pathname: '/' })
     }
   },
