@@ -391,7 +391,7 @@ class Navbar extends Component {
             to="/explore"
             label="Discover"
             modifiers="LabelOnly"
-            pathname={ pathname }
+            pathname={ pathname === '/' ? '/explore' : pathname }
             icon={ <SparklesIcon /> }
           />
           <NavbarLink
