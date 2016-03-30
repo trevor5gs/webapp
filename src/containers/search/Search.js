@@ -7,6 +7,7 @@ import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import * as SearchActions from '../../actions/search'
 import { trackEvent } from '../../actions/tracking'
 import { updateQueryParams } from '../../components/base/uri_helper'
+import { hideSoftKeyboard } from '../../components/interface/Viewport'
 import Promotion from '../../components/assets/Promotion'
 import SearchControl from '../../components/forms/SearchControl'
 import StreamComponent from '../../components/streams/StreamComponent'
@@ -44,6 +45,11 @@ class Search extends Component {
     this.updateLocation(vo)
     this.setState(vo)
     this.search()
+  }
+
+  onSubmit = (e) => {
+    e.preventDefault()
+    hideSoftKeyboard()
   }
 
   onClickTrackCredits = () => {
@@ -103,7 +109,7 @@ class Search extends Component {
           isLoggedIn={ isLoggedIn }
           userlist={ isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS }
         />
-        <div className="SearchBar">
+        <form className="SearchBar" onSubmit={ this.onSubmit }>
           <SearchControl
             onChange={ this.onChangeControl }
             text={ terms }
@@ -115,7 +121,7 @@ class Search extends Component {
             tabClasses="LabelTab"
             tabs={ tabs }
           />
-        </div>
+        </form>
         <StreamComponent ref="streamComponent" action={ this.getAction() } />
       </section>
     )
