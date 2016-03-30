@@ -42,7 +42,7 @@ class TextBlock extends Component {
     const { dispatch, editorId, onInput } = this.props
     const uid = this.refs.block.props.uid
     // order matters here!
-    pasted(e, dispatch, editorId)
+    pasted(e, dispatch, editorId, uid)
     onInput({ kind: 'text', data: this.getData(), uid })
   }
 

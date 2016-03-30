@@ -115,7 +115,7 @@ export default class Completer extends Component {
   render() {
     const { className, completions } = this.props
     const { viewportDeviceSize } = this.state
-    if (!completions || !completions.data.length) {
+    if (!completions || !completions.data || !completions.data.length) {
       return null
     }
     const pos = getPositionFromSelection()
