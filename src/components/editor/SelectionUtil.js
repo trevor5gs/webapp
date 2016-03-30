@@ -32,8 +32,8 @@ export function getWordFromSelection() {
 }
 
 export function getPositionFromSelection() {
-  getWordFromSelection()
-  if (!node) return null
+  const word = getWordFromSelection()
+  if (!node || /^\s*$/.test(word)) { return null }
   const range = document.createRange()
   range.setStart(node, startIndex)
   range.setEnd(node, endIndex + 1)
