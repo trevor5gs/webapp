@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import { debounce } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { saveProfile } from '../../actions/profile'
+import { hideSoftKeyboard } from '../interface/Viewport'
 import BioControl from '../forms/BioControl'
 import NameControl from '../forms/NameControl'
 import LinksControl from '../forms/LinksControl'
@@ -55,6 +56,7 @@ class InfoForm extends Component {
 
   onSubmit(e) {
     e.preventDefault()
+    hideSoftKeyboard()
   }
 
   controlWasChanged(vo, prop) {
