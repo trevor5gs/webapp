@@ -20,6 +20,7 @@ import librato from 'librato-node'
 import path from 'path'
 import fs from 'fs'
 import React from 'react'
+import Helmet from 'react-helmet'
 import { renderToString } from 'react-dom/server'
 import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { Provider } from 'react-redux'
@@ -94,10 +95,30 @@ function renderFromServer(req, res) {
         </Provider>
       )
       const componentHTML = renderToString(InitialComponent)
+      const head = Helmet.rewind()
       const state = store.getState()
       const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
-      indexStr = indexStr.replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
-      res.send(indexStr)
+      const html = `
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    ${head.title.toString()}
+    ${head.meta.toString()}
+    ${head.link.toString()}
+    <script>
+      (function(){var cn="",es=document.createElement("div").style,ft=[{p:"position",v:"sticky"}],fp,fv,_i,_l;for(_i=0,_l=ft.length;_l>_i;_i++)fp=ft[_i].p,fv=ft[_i].v,es.cssText=fp+":"+["-webkit-","-moz-","-ms-","-o-",""].join(fv+";"+fp+":")+fv+";",cn+=-1!==es[fp].indexOf(fv)?" has-"+fv:" no-"+fv;var addClasses=cn.trim().split(" ");for(_i=0,_l=addClasses.length;_l>_i;_i++)document.documentElement.classList.add(cn.trim());})();
+      (function(){var cl=document.documentElement.classList;cl.add('no-touch');var detectTouchScreenHandler=function(){document.removeEventListener("touchstart",detectTouchScreenHandler);cl.remove('no-touch');cl.add('has-touch');};document.addEventListener("touchstart",detectTouchScreenHandler,false);})();
+    </script>
+  <link href="/static/bundle.css?6af200e078361dc409c0" rel="stylesheet"></head>
+  <body>
+    <div id="root">${componentHTML}</div>
+    ${initialStateTag}
+  <script src="/static/commons.entry.js?6af200e078361dc409c0"></script><script src="/static/main.entry.js?6af200e078361dc409c0"></script></body>
+</html>
+`
+      res.send(html)
     }).catch((err) => {
       // this will give you a js error like:
       // `window is not defined`
