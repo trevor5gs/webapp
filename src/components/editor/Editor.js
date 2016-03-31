@@ -140,7 +140,9 @@ class Editor extends Component {
     const { comment, dispatch, post, shouldPersist } = this.props
     this.closeModal()
     requestAnimationFrame(() => {
-      this.refs.blockCollection.refs.wrappedInstance.clearBlocks()
+      if (this.refs.blockCollection) {
+        this.refs.blockCollection.refs.wrappedInstance.clearBlocks()
+      }
     })
     dispatch(closeOmnibar())
     if (post) {

@@ -92,19 +92,19 @@ export function uploadAsset(type, file) {
   }
 }
 
-export function temporaryAvatarCreated(b64Asset) {
+export function temporaryAvatarCreated(objectURL) {
   return {
     type: PROFILE.TMP_AVATAR_CREATED,
     meta: {},
-    payload: { tmp: { url: b64Asset } },
+    payload: { tmp: { url: objectURL } },
   }
 }
 
-export function temporaryCoverCreated(b64Asset) {
+export function temporaryCoverCreated(objectURL) {
   return {
     type: PROFILE.TMP_COVER_CREATED,
     meta: {},
-    payload: { tmp: { url: b64Asset } },
+    payload: { tmp: { url: objectURL } },
   }
 }
 
@@ -112,24 +112,16 @@ export function temporaryCoverCreated(b64Asset) {
 // feedback. The other sends it off to S3 and friends.
 export function saveAvatar(file) {
   return dispatch => {
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      dispatch(temporaryAvatarCreated(reader.result))
-    }
+    dispatch(temporaryAvatarCreated(URL.createObjectURL(file)))
     dispatch(uploadAsset(PROFILE.SAVE_AVATAR, file))
-    reader.readAsDataURL(file)
   }
 }
 
 // Basically the same things as saveAvatar above
 export function saveCover(file) {
   return dispatch => {
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      dispatch(temporaryCoverCreated(reader.result))
-    }
+    dispatch(temporaryCoverCreated(URL.createObjectURL(file)))
     dispatch(uploadAsset(PROFILE.SAVE_COVER, file))
-    reader.readAsDataURL(file)
   }
 }
 
