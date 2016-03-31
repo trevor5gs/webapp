@@ -271,7 +271,7 @@ export class StreamComponent extends Component {
         sessionScrollLocation = parseInt(Session.getItem(sessionStorageKey), 10)
       }
 
-      if (sessionScrollLocation) {
+      if (sessionScrollLocation !== null) {
         scrollTopValue = sessionScrollLocation
       } else if (history[this.state.locationKey]) {
         const historyObj = history[this.state.locationKey]
