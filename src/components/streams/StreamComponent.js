@@ -148,20 +148,25 @@ export class StreamComponent extends Component {
     }
   }
 
-  shouldComponentUpdate(prevProps, prevState) {
-    const { stream } = this.props
+  shouldComponentUpdate(nextProps, nextState) {
+    const { stream } = nextProps
+    const { action } = nextState
+    const updateKey = _.get(action, 'meta.updateKey')
+    // prevent successes from other streams from trying to render
+    // which could show the zero state in certain cases
+    if (stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
+        _.get(stream, 'payload.endpoint.path') !== _.get(action, 'payload.endpoint.path')) {
+      return false
     // this prevents nested stream components from clobbering parents
-    if (stream.meta &&
-        stream.meta.updateKey &&
-        !stream.payload.endpoint.path.match(stream.meta.updateKey)) {
+    } else if (updateKey && !stream.payload.endpoint.path.match(updateKey)) {
       return false
     // when hitting the back button the result can update and
     // try to feed wrong results to the actions render method
     // thus causing errors when trying to render wrong results
-    } else if (prevProps.resultPath !== this.props.resultPath) {
+    } else if (nextProps.resultPath !== this.props.resultPath) {
       return false
-    } else if (_.isEqual(prevState, this.state) &&
-               _.isEqual(prevProps, this.props)) {
+    } else if (_.isEqual(nextState, this.state) &&
+               _.isEqual(nextProps, this.props)) {
       return false
     }
     return true

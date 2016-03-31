@@ -32,8 +32,8 @@ class UserList extends Component {
     showBlockMuteButton: false,
   }
 
-  shouldComponentUpdate(prevProps) {
-    if (_.isEqual(prevProps, this.props)) {
+  shouldComponentUpdate(nextProps) {
+    if (_.isEqual(nextProps, this.props)) {
       return false
     }
     return true
