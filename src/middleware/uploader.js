@@ -136,7 +136,7 @@ export const uploader = store => next => action => {
     // TODO: send this image up as the tmp for profiles
     .then(saveLocationToApi)
     .then(response => {
-      payload.response = camelizeKeys(response)
+      payload.response = { ...camelizeKeys(response), assetUrl }
       next({ meta, payload, type: SUCCESS })
       return true
     })

@@ -44,15 +44,13 @@ export function profile(state = {}, action) {
         return { ...action.payload, availability: null, dataExport: null }
       }
       return state
-    // TODO: This isn't really working, it's still pulling the previous image here?
-    // Once the asset is uploaded, remove `tmp` which will trigger a load of the new image
-    // case PROFILE.SAVE_AVATAR_SUCCESS:
-    // case PROFILE.SAVE_COVER_SUCCESS:
-    //   assetType = action.type === PROFILE.SAVE_AVATAR_SUCCESS ? 'avatar' : 'coverImage'
-    //   const assetState = { ...state, ...action.payload.response }
-    //   delete assetState[assetType].tmp
-    //   return assetState
-
+    case PROFILE.SAVE_AVATAR_SUCCESS:
+    case PROFILE.SAVE_COVER_SUCCESS:
+      assetType = action.type === PROFILE.SAVE_AVATAR_SUCCESS ? 'avatar' : 'coverImage'
+      return {
+        ...state,
+        [assetType]: { ...state[assetType], tmp: { url: action.payload.response.assetUrl } },
+      }
     default:
       return state
   }
