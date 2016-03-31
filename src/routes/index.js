@@ -1,5 +1,6 @@
 import App from '../containers/App'
 import PostDetailRoute from './post_detail'
+import WTFRoute from './wtf'
 import AuthenticationRoutes from './authentication'
 import {
   getComponents as getDiscoverComponents,
@@ -75,6 +76,7 @@ const routes = store => {
       // order matters, so less specific routes should go at the bottom
       childRoutes: [
         PostDetailRoute,
+        WTFRoute,
         ...AuthenticationRoutes,
         authenticate(DiscoverRoute),
         exploreRoute(store),

@@ -57,7 +57,7 @@ class Footer extends Component {
       >
         <div className="FooterLinks">
           <FooterLabel label="Beta 2.2" />
-          <FooterLink className="asLabel" href="/wtf" label="WTF" />
+          <FooterLink className="asLabel" href={ `${ENV.AUTH_DOMAIN}/wtf` } label="WTF" />
           { isAndroid ?
             null :
             <FooterLink

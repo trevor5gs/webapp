@@ -64,8 +64,20 @@ class NavbarProfile extends Component {
             <Link className="NavbarProfileLink" to="/invitations">Invite</Link>
             <Link className="NavbarProfileLink" to="/settings">Settings</Link>
             <hr className="NavbarProfileLinkDivider" />
-            <a className="NavbarProfileLink" href="https://ello.co/wtf/resources/community-directory/" target="_blank">Communities</a>
-            <a className="NavbarProfileLink" href="/wtf" target="_blank">Help</a>
+            <a
+              className="NavbarProfileLink"
+              href={ `${ENV.AUTH_DOMAIN}/wtf/resources/community-directory/` }
+              target="_blank"
+            >
+              Communities
+            </a>
+            <a
+              className="NavbarProfileLink"
+              href={ `${ENV.AUTH_DOMAIN}/wtf` }
+              target="_blank"
+            >
+              Help
+            </a>
             <a className="NavbarProfileLink" href={ threadlessLink } target="_blank">Store</a>
             <button className="NavbarProfileLink" onClick={ onLogOut }>Logout</button>
             <button className="NavbarProfileCloseButton">

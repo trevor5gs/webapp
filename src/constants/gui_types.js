@@ -47,11 +47,11 @@ export const SETTINGS = {
 export const PREFERENCES = {
   NSFW_VIEW: {
     term: 'View Adult Content',
-    desc: '<a href="https://ello.co/wtf/post/rules" target="_blank">What does this mean?</a>',
+    desc: `<a href="${ENV.AUTH_DOMAIN}/wtf/post/rules" target="_blank">What does this mean?</a>`,
   },
   NSFW_POST: {
     term: 'Post Adult Content',
-    desc: '<a href="https://ello.co/wtf/post/rules" target="_blank">What does this mean?</a>',
+    desc: `<a href="${ENV.AUTH_DOMAIN}/wtf/post/rules" target="_blank">What does this mean?</a>`,
   },
 }
 
