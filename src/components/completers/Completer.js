@@ -118,11 +118,21 @@ export default class Completer extends Component {
     if (!completions || !completions.data || !completions.data.length) {
       return null
     }
+
+    let style = null
     const pos = getPositionFromSelection()
-    const coords = pos || { top: 0, left: 0 }
-    const top = viewportDeviceSize === 'mobile' ? coords.top + 45 : coords.top + 20
-    const left = viewportDeviceSize === 'mobile' ? 0 : coords.left
-    const style = pos ? { top, left } : null
+    if (viewportDeviceSize === 'mobile') {
+      const height = 41
+      const halfHeight = 21
+      const numCompletions = completions.data.length
+      if (numCompletions < 4) {
+        style = { bottom: -halfHeight - height * (3 - numCompletions) }
+      } else {
+        style = { bottom: 0 }
+      }
+    } else if (pos) {
+      style = { top: pos.top + 20, left: pos.left }
+    }
     return (
       <div style={ style } className={ classNames(className, 'Completer') }>
         { completions.type === 'user' ? this.renderUsers() : this.renderEmoji() }
