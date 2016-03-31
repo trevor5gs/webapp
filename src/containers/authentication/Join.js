@@ -241,7 +241,7 @@ class Join extends Component {
             <FormButton tabIndex="4" disabled={ !isValid }>Create Account</FormButton>
           </form>
           <p className="AuthenticationTermsCopy">
-            By clicking Create Account you are agreeing to our <a href="https://ello.co/wtf/post/policies">Terms</a>.
+            By clicking Create Account you are agreeing to our <a href={ `${ENV.AUTH_DOMAIN}/wtf/post/policies` }>Terms</a>.
           </p>
         </div>
         <AppleStoreLink />
