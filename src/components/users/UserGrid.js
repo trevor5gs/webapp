@@ -14,8 +14,8 @@ class UserGrid extends Component {
     }).isRequired,
   }
 
-  shouldComponentUpdate(prevProps) {
-    if (_.isEqual(prevProps, this.props)) {
+  shouldComponentUpdate(nextProps) {
+    if (_.isEqual(nextProps, this.props)) {
       return false
     }
     return true
