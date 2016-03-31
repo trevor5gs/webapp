@@ -174,10 +174,11 @@ export class StreamComponent extends Component {
 
     const { action } = this.state
     const { stream, omnibar, isUserDetail } = this.props
-    const shouldScroll = this.shouldScroll &&
+    const canScroll = document.body.scrollHeight > window.innerHeight
+    const shouldScroll = this.shouldScroll && (canScroll ||
       stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
       action && action.payload &&
-      stream.payload.endpoint.path === action.payload.endpoint.path
+      stream.payload.endpoint.path === action.payload.endpoint.path)
     if (shouldScroll) {
       if (this.attemptToRestoreScroll()) {
         this.shouldScroll = false
