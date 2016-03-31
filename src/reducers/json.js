@@ -286,6 +286,25 @@ methods.deleteModel = (state, newState, action, mappingType) =>
 function _updateCurrentUser(newState, action) {
   const { response } = action.payload
   newState[MAPPING_TYPES.USERS][response.id] = response
+  let assetType = null
+  switch (action.type) {
+    case ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS:
+      assetType = 'avatar'
+      break
+    case ACTION_TYPES.PROFILE.SAVE_COVER_SUCCESS:
+      assetType = 'coverImage'
+      break
+    default:
+      assetType = null
+      break
+  }
+  if (assetType) {
+    newState[MAPPING_TYPES.USERS][response.id][assetType] = {
+      ...newState[MAPPING_TYPES.USERS][response.id][assetType],
+      tmp: { url: action.payload.response.assetUrl },
+    }
+  }
+
   return newState
 }
 methods.updateCurrentUser = (newState, action) =>
@@ -363,11 +382,8 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.POST.LOVE_SUCCESS:
     case ACTION_TYPES.POST.LOVE_FAILURE:
       return postMethods.updatePostLoves(state, newState, action)
-    // TODO: These two case statements are commented out per the note above,
-    // once we don't pull the previous image, we can send these through
-    // `updateCurrentUser` and blow away the base64 assets :boom:
-    // case ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS:
-    // case ACTION_TYPES.PROFILE.SAVE_COVER_SUCCESS:
+    case ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS:
+    case ACTION_TYPES.PROFILE.SAVE_COVER_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_SUCCESS:
       return methods.updateCurrentUser(newState, action)
     case ACTION_TYPES.PROFILE.TMP_AVATAR_CREATED:

@@ -11,12 +11,17 @@ class ImageBlock extends Component {
     data: {},
   }
 
+  onLoadImage = () => {
+    const { data } = this.props
+    URL.revokeObjectURL(data.src)
+  }
+
   render() {
     const { data } = this.props
     return (
       <Block
         { ...this.props }
-        children={ <img src={ data.url } alt={ data.alt } /> }
+        children={ <img onLoad={ this.onLoadImage } src={ data.url } alt={ data.alt } /> }
         ref="block"
       />
     )

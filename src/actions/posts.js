@@ -3,10 +3,6 @@ import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
 
-const PLACEHOLDER_B64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAJYAQMAAACguBAzAAAAA1' +
-  'BMVEXf398xY1lCAAAAUElEQVR4Xu3AAQEAAACCoP6vboiwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' +
-  'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA47LgAARkTcJoAAAAASUVORK5CYII='
-
 export function loadPostDetail(idOrToken) {
   return {
     type: ACTION_TYPES.POST.DETAIL,
@@ -213,12 +209,12 @@ export function uploadAsset(type, file, editorId, index) {
   }
 }
 
-export function temporaryPostImageCreated(b64Asset, editorId, index) {
+export function temporaryPostImageCreated(objectURL, editorId, index) {
   return {
     type: ACTION_TYPES.POST.TMP_IMAGE_CREATED,
     meta: {},
     payload: {
-      url: (b64Asset.length > 2500000) ? PLACEHOLDER_B64 : b64Asset,
+      url: objectURL,
       editorId,
       index,
     },
@@ -227,12 +223,8 @@ export function temporaryPostImageCreated(b64Asset, editorId, index) {
 
 export function savePostImage(file, editorId, index) {
   return dispatch => {
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      dispatch(temporaryPostImageCreated(reader.result, editorId, index))
-    }
+    dispatch(temporaryPostImageCreated(URL.createObjectURL(file), editorId, index))
     dispatch(uploadAsset(ACTION_TYPES.POST.SAVE_IMAGE, file, editorId, index))
-    reader.readAsDataURL(file)
   }
 }
 
