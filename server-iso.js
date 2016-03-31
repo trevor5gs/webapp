@@ -121,21 +121,27 @@ const loggedOutPaths = {
   signup: /^\/signup/,
 }
 
-app.use((req, res) => {
-  let isLoggedOutPath = false
-  for (const re in loggedOutPaths) {
-    if (req.url.match(loggedOutPaths[re])) {
-      isLoggedOutPath = true
-      break
+if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
+  app.use((req, res) => {
+    let isLoggedOutPath = false
+    for (const re in loggedOutPaths) {
+      if (req.url.match(loggedOutPaths[re])) {
+        isLoggedOutPath = true
+        break
+      }
     }
-  }
-  console.log('ELLO START URL', req.url, isLoggedOutPath)
-  if (isLoggedOutPath) {
-    renderFromServer(req, res)
-  } else {
+    console.log('ELLO START URL', req.url, isLoggedOutPath)
+    if (isLoggedOutPath) {
+      renderFromServer(req, res)
+    } else {
+      res.send(indexStr)
+    }
+  })
+} else {
+  app.use((req, res) => {
     res.send(indexStr)
-  }
-})
+  })
+}
 
 const port = process.env.PORT || 6660
 const workers = process.env.WEB_CONCURRENCY || 1;
