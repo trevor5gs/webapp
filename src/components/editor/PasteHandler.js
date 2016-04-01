@@ -1,5 +1,6 @@
 import { getLastWordPasted, replaceSelectionWithText } from './SelectionUtil'
 import { postPreviews, savePostImage } from '../../actions/posts'
+import { isAndroid } from '../interface/Viewport'
 
 let dispatch = null
 let editorId = null
@@ -83,7 +84,7 @@ export function pasted(e, d, id, i) {
   dispatch = d
   editorId = id
   index = i
-  if (window.$isAndroid) {
+  if (isAndroid()) {
     handleAndroidBrokenPaste()
     return
   }

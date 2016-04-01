@@ -8,6 +8,7 @@ import { PhoneIcon, ChevronIcon, ListIcon, GridIcon } from '../footer/FooterIcon
 import FooterLabel from '../footer/FooterLabel'
 import FooterLink from '../footer/FooterLink'
 import FooterTool from '../footer/FooterTool'
+import { isAndroid as getIsAndroid } from '../interface/Viewport'
 import { findLayoutMode } from '../../reducers/gui'
 
 class Footer extends Component {
@@ -27,7 +28,7 @@ class Footer extends Component {
     if (typeof window === 'undefined') {
       return
     }
-    this.setState({ isAndroid: !(navigator.userAgent.match(/Android/i) === null) })
+    this.setState({ isAndroid: getIsAndroid() })
   }
 
   componentWillReceiveProps() {

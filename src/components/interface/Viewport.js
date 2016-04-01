@@ -1,3 +1,6 @@
+export const isAndroid = () =>
+  !(navigator.userAgent.match(/Android/i) === null)
+
 export const hideSoftKeyboard = () => {
   if (document.activeElement) {
     document.activeElement.blur()
