@@ -152,13 +152,8 @@ export class StreamComponent extends Component {
     const { stream } = nextProps
     const { action } = nextState
     const updateKey = _.get(action, 'meta.updateKey')
-    // prevent successes from other streams from trying to render
-    // which could show the zero state in certain cases
-    if (stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
-        _.get(stream, 'payload.endpoint.path') !== _.get(action, 'payload.endpoint.path')) {
-      return false
     // this prevents nested stream components from clobbering parents
-    } else if (updateKey && !stream.payload.endpoint.path.match(updateKey)) {
+    if (updateKey && !stream.payload.endpoint.path.match(updateKey)) {
       return false
     // when hitting the back button the result can update and
     // try to feed wrong results to the actions render method
@@ -467,6 +462,13 @@ export function mapStateToProps(state, ownProps) {
       }
     }
   }
+
+  let stream = ownProps.stream
+  if (!stream ||
+    _.get(state.stream, 'payload.endpoint.path') === _.get(action, 'payload.endpoint.path')
+  ) {
+    stream = state.stream
+  }
   return {
     currentUser: state.profile,
     history: state.gui.history,
@@ -477,7 +479,7 @@ export function mapStateToProps(state, ownProps) {
     result,
     resultPath,
     routerState: state.routing.location.state || {},
-    stream: state.stream,
+    stream,
   }
 }
 
