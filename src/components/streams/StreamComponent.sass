@@ -14,10 +14,6 @@
   padding-left: 0
   padding-right: 0
 
-// Comments in a post detail
-.StreamContainer
-  margin-bottom: rem(40)
-
 @media(min-width: #{$break-2})
   .StreamComponent,
   .StreamContainer
@@ -33,6 +29,9 @@
 
 .StreamComponent.isBusy
   text-align: center
+
+.PostList .CommentStreamComponent
+  padding-top: 0
 
 .PostList .CommentStreamComponent.isBusy
   max-width: rem(720)

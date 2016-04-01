@@ -11,7 +11,10 @@ import Emoji from '../../components/assets/Emoji'
 import EmailControl from '../../components/forms/EmailControl'
 import FormButton from '../../components/forms/FormButton'
 import { isFormValid, getEmailStateFromClient } from '../../components/forms/Validators'
+import { isAndroid } from '../../components/interface/Viewport'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
+
+let _isAndroid
 
 class ForgotPassword extends Component {
 
@@ -30,6 +33,16 @@ class ForgotPassword extends Component {
     this.emailValue = ''
   }
 
+  componentDidMount() {
+    _isAndroid = isAndroid()
+  }
+
+  onBlurControl = () => {
+    if (_isAndroid) {
+      document.body.classList.remove('hideCredits')
+    }
+  }
+
   onChangeControl = ({ email }) => {
     this.emailValue = email
     const { emailState } = this.state
@@ -37,6 +50,12 @@ class ForgotPassword extends Component {
     const newState = getEmailStateFromClient({ value: email, currentStatus })
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
+    }
+  }
+
+  onFocusControl = () => {
+    if (_isAndroid) {
+      document.body.classList.add('hideCredits')
     }
   }
 
@@ -75,7 +94,9 @@ class ForgotPassword extends Component {
         <EmailControl
           classList="asBoxControl"
           label="Email"
+          onBlur={ this.onBlurControl }
           onChange={ this.onChangeControl }
+          onFocus={ this.onFocusControl }
           tabIndex="1"
         />
         {emailState.message ? <p>{emailState.message}</p> : null}

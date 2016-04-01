@@ -18,7 +18,10 @@ import {
   getEmailStateFromClient,
   getPasswordState,
 } from '../../components/forms/Validators'
+import { isAndroid } from '../../components/interface/Viewport'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
+
+let _isAndroid
 
 class SignIn extends Component {
 
@@ -40,6 +43,10 @@ class SignIn extends Component {
     this.passwordValue = ''
   }
 
+  componentDidMount() {
+    _isAndroid = isAndroid()
+  }
+
   componentWillReceiveProps(nextProps) {
     if (typeof this.props.webOnboardingVersionSeen === 'undefined' &&
         this.props.webOnboardingVersionSeen !== nextProps.webOnboardingVersionSeen) {
@@ -54,6 +61,12 @@ class SignIn extends Component {
       } else {
         dispatch(replace({ pathname: currentStream }))
       }
+    }
+  }
+
+  onBlurControl = () => {
+    if (_isAndroid) {
+      document.body.classList.remove('hideCredits')
     }
   }
 
@@ -74,6 +87,12 @@ class SignIn extends Component {
     const newState = getPasswordState({ value: password, currentStatus })
     if (newState.status !== currentStatus) {
       this.setState({ passwordState: newState })
+    }
+  }
+
+  onFocusControl = () => {
+    if (_isAndroid) {
+      document.body.classList.add('hideCredits')
     }
   }
 
@@ -129,14 +148,18 @@ class SignIn extends Component {
             <EmailControl
               classList="asBoxControl"
               label="Email"
+              onBlur={ this.onBlurControl }
               onChange={ this.onChangeEmailControl }
+              onFocus={ this.onFocusControl }
               renderStatus={ this.renderStatus(emailState) }
               tabIndex="1"
             />
             <PasswordControl
               classList="asBoxControl"
               label="Password"
+              onBlur={ this.onBlurControl }
               onChange={ this.onChangePasswordControl }
+              onFocus={ this.onFocusControl }
               renderStatus={ this.renderStatus(passwordState) }
               tabIndex="2"
             />

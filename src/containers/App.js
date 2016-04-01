@@ -16,6 +16,7 @@ import Omnibar from '../components/omnibar/Omnibar'
 import Completer from '../components/completers/Completer'
 import TextTools from '../components/editor/TextTools'
 import { addInputObject, removeInputObject } from '../components/editor/InputComponent'
+import { addFeatureDetection } from '../components/interface/Viewport'
 import { addGlobalDrag, removeGlobalDrag } from '../components/interface/GlobalDrag'
 import { replaceWordFromSelection } from '../components/editor/SelectionUtil'
 
@@ -75,6 +76,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    addFeatureDetection()
     addInputObject(this)
     addGlobalDrag()
   }

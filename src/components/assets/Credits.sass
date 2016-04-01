@@ -2,6 +2,7 @@
 
 .Credits
   +sans-typeset
+  transition: color $speed ease, opacity $speed ease
   position: absolute
   bottom: rem(10)
   right: rem(10)
@@ -16,6 +17,9 @@
   margin-right: rem(15)
   border-bottom: 1px solid
 
+.hideCredits .Credits
+  opacity: 0
+  pointer-events: none
 
 @media(min-width: #{$break-2})
   .Credits
