@@ -5,6 +5,9 @@ import { requestInvite } from '../../actions/profile'
 import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 import { isFormValid, getEmailStateFromClient } from '../forms/Validators'
+import { isAndroid } from '../interface/Viewport'
+
+let _isAndroid
 
 class RegistrationRequestForm extends Component {
 
@@ -20,6 +23,10 @@ class RegistrationRequestForm extends Component {
     this.emailValue = ''
   }
 
+  componentDidMount() {
+    _isAndroid = isAndroid()
+  }
+
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
     if (availability && availability.hasOwnProperty('email')) {
@@ -27,11 +34,10 @@ class RegistrationRequestForm extends Component {
     }
   }
 
-  onSubmit = (e) => {
-    e.preventDefault()
-    const { dispatch } = this.props
-    dispatch(requestInvite(this.emailValue))
-    this.setState({ formStatus: STATUS.SUBMITTED })
+  onBlurControl = () => {
+    if (_isAndroid) {
+      document.body.classList.remove('hideCredits')
+    }
   }
 
   onChangeEmailControl = ({ email }) => {
@@ -42,6 +48,19 @@ class RegistrationRequestForm extends Component {
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
     }
+  }
+
+  onFocusControl = () => {
+    if (_isAndroid) {
+      document.body.classList.add('hideCredits')
+    }
+  }
+
+  onSubmit = (e) => {
+    e.preventDefault()
+    const { dispatch } = this.props
+    dispatch(requestInvite(this.emailValue))
+    this.setState({ formStatus: STATUS.SUBMITTED })
   }
 
   renderSubmitted() {
@@ -71,7 +90,9 @@ class RegistrationRequestForm extends Component {
         >
           <EmailControl
             classList="asBoxControl"
+            onBlur={ this.onBlurControl }
             onChange={ this.onChangeEmailControl }
+            onFocus={ this.onFocusControl }
             tabIndex="1"
           />
           { emailState.status !== STATUS.INDETERMINATE && <p>{emailState.message}</p>}
