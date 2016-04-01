@@ -19,6 +19,20 @@ export function loadDiscoverUsers(type) {
   }
 }
 
+export function loadDiscoverPosts(type) {
+  return {
+    type: ACTION_TYPES.LOAD_STREAM,
+    payload: { endpoint: api.discoverPosts(type) },
+    meta: {
+      mappingType: MAPPING_TYPES.POSTS,
+      renderStream: {
+        asList: StreamRenderables.postsAsList,
+        asGrid: StreamRenderables.postsAsGrid,
+      },
+    },
+  }
+}
+
 export function loadCommunities() {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
