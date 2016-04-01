@@ -75,8 +75,8 @@ const routes = store => {
       indexRoute,
       // order matters, so less specific routes should go at the bottom
       childRoutes: [
-        PostDetailRoute,
         WTFRoute,
+        PostDetailRoute,
         ...AuthenticationRoutes,
         authenticate(DiscoverRoute),
         exploreRoute(store),
