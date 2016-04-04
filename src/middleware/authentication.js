@@ -29,8 +29,8 @@ export const authentication = store => next => action => {
   let result = null
   switch (type) {
     case REHYDRATE:
-      if (action.key === 'authentication') {
-        const { createdAt, expiresIn, refreshToken } = payload
+      if (payload.authentication) {
+        const { createdAt, expiresIn, refreshToken } = payload.authentication
 
         if (!refreshToken) break
 

@@ -23,8 +23,10 @@ describe('authentication reducer', () => {
         key: 'authentication',
         type: REHYDRATE,
         payload: {
-          accessToken: '1234',
-          refreshTimeoutId: 99,
+          authentication: {
+            accessToken: '1234',
+            refreshTimeoutId: 99,
+          },
         },
       }
 
