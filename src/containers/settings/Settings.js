@@ -330,7 +330,7 @@ class Settings extends Component {
           >
             <UsernameControl
               classList={ boxControlClassNames }
-              label={ `Username ${usernameState.message}` }
+              label={ usernameState.message.length ? `${usernameState.message}` : 'Username' }
               onChange={ this.onChangeUsernameControl }
               status={ usernameState.status }
               suggestions={ usernameState.suggestions }
@@ -339,7 +339,7 @@ class Settings extends Component {
             />
             <EmailControl
               classList={ boxControlClassNames }
-              label={ `Email ${emailState.message}` }
+              label={ emailState.message.length ? `${emailState.message}` : 'Email' }
               onChange={ this.onChangeEmailControl }
               status={ emailState.status }
               tabIndex="2"
