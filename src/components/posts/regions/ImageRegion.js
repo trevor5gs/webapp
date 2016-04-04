@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
+import _ from 'lodash'
 import classNames from 'classnames'
 import { GUI } from '../../../constants/gui_types'
 import { addResizeObject, removeResizeObject } from '../../interface/ResizeComponent'
@@ -247,11 +248,8 @@ class ImageRegion extends Component {
     if (assetMatch && assets) {
       const assetId = assetMatch[1]
       const asset = this.props.assets[assetId] || this.props.assets[parseInt(assetId, 10)]
-      const attachment = asset && asset.attachment ? asset.attachment.optimized : null
-      if (attachment) {
-        attrs.width = attachment.metadata.width
-        attrs.height = attachment.metadata.height
-      }
+      attrs.width = _.get(asset, 'attachment.optimized.metadata.width')
+      attrs.height = _.get(asset, 'attachment.optimized.metadata.height')
     }
     return (
       <img
