@@ -77,7 +77,6 @@ UserStats.propTypes = {
       PropTypes.string,
       PropTypes.number,
     ]).isRequired,
-    followersCountRounded: PropTypes.string.isRequired,
     lovesCount: PropTypes.number.isRequired,
     postsCount: PropTypes.number.isRequired,
     username: PropTypes.string.isRequired,
