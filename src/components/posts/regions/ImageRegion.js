@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
+import _ from 'lodash'
 import classNames from 'classnames'
 import { GUI } from '../../../constants/gui_types'
 import { addResizeObject, removeResizeObject } from '../../interface/ResizeComponent'
@@ -241,12 +242,20 @@ class ImageRegion extends Component {
   }
 
   renderLegacyImageAttachment() {
-    const { content } = this.props
+    const { content, assets } = this.props
+    const attrs = { src: content.url }
+    const assetMatch = content.url && content.url.match(/asset\/attachment\/(\d+)\//)
+    if (assetMatch && assets) {
+      const assetId = assetMatch[1]
+      const asset = this.props.assets[assetId] || this.props.assets[parseInt(assetId, 10)]
+      attrs.width = _.get(asset, 'attachment.optimized.metadata.width')
+      attrs.height = _.get(asset, 'attachment.optimized.metadata.height')
+    }
     return (
       <img
         alt={ content.alt ? content.alt.replace('.jpg', '') : null }
         className="ImageAttachment"
-        src={ content.url }
+        { ...attrs }
       />
     )
   }
