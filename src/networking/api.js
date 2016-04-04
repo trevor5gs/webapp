@@ -255,6 +255,9 @@ export function searchUsers(params) {
 // Notifications
 export function notifications(params = {}) {
   const newParams = { per_page: PER_PAGE, ...params }
+  if (newParams.category && newParams.category === 'all') {
+    delete newParams.category
+  }
   return {
     path: getAPIPath('notifications', newParams),
     newParams,
