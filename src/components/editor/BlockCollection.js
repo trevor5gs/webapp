@@ -501,12 +501,16 @@ class BlockCollection extends Component {
   submit = () => {
     const { isComment, submitAction } = this.props
     const data = this.serialize()
-    submitAction(data)
     // For whatever reason this needs to happen in a rAF otherwise we end up
     // with an editor with a collection of 1 but no editor blocks in the DOM?
     // This also seems to scoot around the `setState` error.
     if (isComment) {
-      requestAnimationFrame(() => { this.clearBlocks() })
+      requestAnimationFrame(() => {
+        this.clearBlocks()
+        submitAction(data)
+      })
+    } else {
+      submitAction(data)
     }
   }
 
