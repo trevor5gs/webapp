@@ -50,7 +50,10 @@ class PostDetail extends Component {
   }
 
   componentWillUnmount() {
-    const { dispatch, json, params } = this.props
+    const { dispatch, isLoggedIn, json, params } = this.props
+    // this prevents the lover/reposters from firing
+    // since logout clears the json store
+    if (!isLoggedIn) { return }
     const post = findModel(json, {
       collection: MAPPING_TYPES.POSTS,
       findObj: { token: params.token },
