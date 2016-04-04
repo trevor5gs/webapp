@@ -197,9 +197,9 @@ class PostParser extends Component {
     if (!post) { return null }
     setModels({ assets })
 
-    const showLovers = !isGridLayout && this.props.showLovers
-    const showReposters = !isGridLayout && this.props.showReposters
-    const showComments = !isPostDetail && this.props.showComments
+    const showLovers = !(isEditing || isReposting) && !isGridLayout && this.props.showLovers
+    const showReposters = !(isEditing || isReposting) && !isGridLayout && this.props.showReposters
+    const showComments = !(isEditing || isReposting) && !isPostDetail && this.props.showComments
 
     let postHeader
     if (isRepost(post)) {
