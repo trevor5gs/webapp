@@ -134,7 +134,7 @@ export function parsePost(post, author, currentUser,
   const postDetailPath = getPostDetailPath(author, post)
 
   if (post.contentWarning) {
-    cells.push(<ContentWarningButton post={ post } />)
+    cells.push(<ContentWarningButton key={ `contentWarning_${post.id}` } post={ post } />)
   }
 
   if (post.repostContent && post.repostContent.length) {
