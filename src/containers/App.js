@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { debounce } from 'lodash'
 import { autoCompleteUsers, loadEmojis } from '../actions/posts'
 import { loadProfile } from '../actions/profile'
-import { trackPageView } from '../actions/tracking'
 import * as ACTION_TYPES from '../constants/action_types'
 import Analytics from '../components/analytics/Analytics'
 import DevTools from '../components/devtools/DevTools'
@@ -88,13 +87,6 @@ class App extends Component {
         !prevAuthentication.isLoggedIn &&
         authentication.isLoggedIn) {
       dispatch(loadProfile())
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { pathname, dispatch } = this.props
-    if (pathname !== prevProps.pathname) {
-      dispatch(trackPageView())
     }
   }
 

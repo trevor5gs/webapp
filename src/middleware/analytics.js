@@ -1,15 +1,19 @@
-import { TRACK } from '..//constants/action_types'
+import { LOCATION_CHANGE } from 'react-router-redux'
+import * as ACTION_TYPES from '../constants/action_types'
 
 export function analytics() {
   return next => action => {
     const { payload, type } = action
 
-    if ((type !== TRACK.EVENT && type !== TRACK.PAGE_VIEW) || !payload || !window) {
+    if ((type !== ACTION_TYPES.TRACK.EVENT &&
+         type !== LOCATION_CHANGE &&
+         type !== ACTION_TYPES.LOAD_NEXT_CONTENT_REQUEST) ||
+        !payload || !window) {
       return next(action)
     }
 
     // Track Event
-    if (type === TRACK.EVENT) {
+    if (type === ACTION_TYPES.TRACK.EVENT) {
       const { label, options } = payload
       if (window.analytics) {
         window.analytics.track(label, options)
@@ -21,14 +25,14 @@ export function analytics() {
     }
 
     // Track Page Views
-    if (type === TRACK.PAGE_VIEW) {
+    if (type === LOCATION_CHANGE || type === ACTION_TYPES.LOAD_NEXT_CONTENT_REQUEST) {
       if (window.analytics) {
         window.analytics.page()
       }
       if (window.ga) {
         window.ga('send', 'pageview')
       }
-      return next({ payload: {}, type: action.type })
+      return next(action)
     }
 
     return next(action)
