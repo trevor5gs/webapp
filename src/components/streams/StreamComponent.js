@@ -302,16 +302,16 @@ export class StreamComponent extends Component {
   }
 
   loadPage(rel, scrolled = false) {
-    const { dispatch, result } = this.props
+    const { dispatch, result, stream } = this.props
     if (!result) { return }
     const { action } = this.state
     const { meta } = action
     if (scrolled && meta && meta.resultKey && meta.updateKey) { return }
     const { pagination } = result
-    if (!action.payload.endpoint ||
-        !pagination[rel] ||
-        parseInt(pagination.totalPagesRemaining, 10) === 0 ||
-        !action) { return }
+    if (!action.payload.endpoint || !pagination[rel] ||
+        parseInt(pagination.totalPagesRemaining, 10) === 0 || !action ||
+        (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS &&
+         _.get(stream, 'payload.serverResponse.status', 0) === 204)) { return }
     if (runningFetches[pagination[rel]]) { return }
     this.setState({ hidePaginator: false })
     const infiniteAction = {
