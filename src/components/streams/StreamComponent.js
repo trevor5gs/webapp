@@ -152,8 +152,9 @@ export class StreamComponent extends Component {
     const { stream } = nextProps
     const { action } = nextState
     const updateKey = _.get(action, 'meta.updateKey')
+    const streamPath = _.get(stream, 'payload.endpoint.path', '')
     // this prevents nested stream components from clobbering parents
-    if (updateKey && !stream.payload.endpoint.path.match(updateKey)) {
+    if (updateKey && !streamPath.match(updateKey)) {
       return false
     // when hitting the back button the result can update and
     // try to feed wrong results to the actions render method
