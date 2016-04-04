@@ -241,12 +241,23 @@ class ImageRegion extends Component {
   }
 
   renderLegacyImageAttachment() {
-    const { content } = this.props
+    const { content, assets } = this.props
+    const attrs = { src: content.url }
+    const assetMatch = content.url && content.url.match(/asset\/attachment\/(\d+)\//)
+    if (assetMatch && assets) {
+      const assetId = assetMatch[1]
+      const asset = this.props.assets[assetId] || this.props.assets[parseInt(assetId, 10)]
+      const attachment = asset && asset.attachment ? asset.attachment.optimized : null
+      if (attachment) {
+        attrs.width = attachment.metadata.width
+        attrs.height = attachment.metadata.height
+      }
+    }
     return (
       <img
         alt={ content.alt ? content.alt.replace('.jpg', '') : null }
         className="ImageAttachment"
-        src={ content.url }
+        { ...attrs }
       />
     )
   }
