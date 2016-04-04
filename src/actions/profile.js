@@ -17,6 +17,23 @@ export function loadProfile() {
   }
 }
 
+export function signUpUser(email, username, password, invitationCode) {
+  return {
+    type: PROFILE.SIGNUP,
+    meta: {},
+    payload: {
+      method: 'POST',
+      endpoint: api.signupPath(),
+      body: {
+        email,
+        username,
+        password,
+        invitation_code: invitationCode,
+      },
+    },
+  }
+}
+
 export function saveProfile(params) {
   return {
     type: PROFILE.SAVE,
