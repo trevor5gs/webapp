@@ -288,7 +288,7 @@ class Navbar extends Component {
   }
 
   renderLoggedInNavbar(klassNames, hasLoadMoreButton, pathname) {
-    const { profile, isNotificationsActive } = this.props
+    const { profile, isNotificationsActive, isLoggedIn } = this.props
     const { hasNotifications, isGridMode, viewportDeviceSize } = this.state
 
     // if we're viewing notifications, don't change the lightning-bolt link.
@@ -316,7 +316,7 @@ class Navbar extends Component {
         }
         <div className="NavbarLinks">
           <NavbarLink
-            to="/discover"
+            to={ isLoggedIn ? '/discover' : '/'}
             label="Discover"
             modifiers="LabelOnly"
             pathname={ pathname }
