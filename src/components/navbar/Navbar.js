@@ -216,7 +216,7 @@ class Navbar extends Component {
   onLogOut = async() => {
     const { dispatch } = this.props
     await dispatch(logout())
-    dispatch(push('/'))
+    dispatch(push('/enter'))
   }
 
   onClickNotification = (e) => {

@@ -5,10 +5,10 @@ import { Link } from 'react-router'
 import { push, replace } from 'react-router-redux'
 import classNames from 'classnames'
 import { debounce, isEmpty } from 'lodash'
-import * as ACTION_TYPES from '../../constants/action_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
 import { openModal, closeModal, openAlert, closeAlert } from '../../actions/modals'
+import { logout } from '../../actions/authentication'
 import {
   availableToggles,
   blockedUsers,
@@ -87,10 +87,10 @@ class Settings extends Component {
     }
   }
 
-  onLogOut = () => {
+  onLogOut = async() => {
     const { dispatch } = this.props
-    dispatch({ type: ACTION_TYPES.AUTHENTICATION.LOGOUT })
-    dispatch(push('/'))
+    await dispatch(logout())
+    dispatch(push('/enter'))
   }
 
   onChangeUsernameControl = ({ username }) => {
