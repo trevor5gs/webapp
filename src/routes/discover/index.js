@@ -10,38 +10,40 @@ const getComponents = (location, cb) => {
   cb(null, require('../../containers/discover/Discover').default)
 }
 
-const bindOnEnter = path => (nextState, replace) => {
-  const type = nextState.params.type
-
-  // redirect back to root path if type is unrecognized
-  if (type && TYPES.indexOf(type) === -1) {
-    replace({ state: nextState, pathname: path })
-  }
-}
-
 const indexRoute = {
   getComponents,
 }
 
-const explore = {
+const explore = store => ({
   path: '/explore(/:type)',
   getComponents,
   onEnter: (nextState, replace) => {
     const { params: { type } } = nextState
+    const { authentication } = store.getState()
+    const rootPath = authentication.isLoggedIn ? '/discover' : '/'
 
     if (!type || TYPES.indexOf(type) === -1) {
-      replace({ state: nextState, pathname: '/' })
+      replace({ state: nextState, pathname: rootPath })
     } else {
       replace({ state: nextState, pathname: `/discover/${type}` })
     }
   },
-}
+})
 
-const discover = {
+const discover = store => ({
   path: 'discover(/:type)',
   getComponents,
-  onEnter: bindOnEnter('/discover'),
-}
+  onEnter: (nextState, replace) => {
+    const type = nextState.params.type
+    const { authentication } = store.getState()
+    const rootPath = authentication.isLoggedIn ? '/discover' : '/'
+
+    // redirect back to root path if type is unrecognized
+    if (type && TYPES.indexOf(type) === -1 || !type && !authentication.isLoggedIn) {
+      replace({ state: nextState, pathname: rootPath })
+    }
+  },
+})
 
 export {
   indexRoute,
