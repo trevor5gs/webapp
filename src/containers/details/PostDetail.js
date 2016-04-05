@@ -104,7 +104,7 @@ class PostDetail extends Component {
           post={ post }
         />
       )
-      if (author && author.hasCommentingEnabled) {
+      if (author && author.hasCommentingEnabled && !(post.isReposting || post.isEditing)) {
         postEls.push(<Editor key={ `editor_${post.id}` } post={ post } isComment />)
       }
     }
