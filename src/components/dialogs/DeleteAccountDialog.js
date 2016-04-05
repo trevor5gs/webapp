@@ -50,7 +50,7 @@ class DeleteAccountDialog extends Component {
   renderConfirmReally() {
     return (
       <div className="Dialog DeleteAccountDialog">
-        <h2>Are you serious?</h2>
+        <h2>Are you sure?</h2>
         <button className="ConfirmDialogButton" onClick={ this.onClickConfirmReally }>Yes</button>
         <button className="ConfirmDialogButton" onClick={ this.onClickJustKidding }>No</button>
         <p>
