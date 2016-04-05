@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 import { loadNotifications } from '../../actions/notifications'
 import StreamComponent from '../../components/streams/StreamComponent'
+import { LOAD_STREAM_SUCCESS } from '../../constants/action_types'
 import { SESSION_KEYS } from '../../constants/gui_types'
 import {
   BubbleIcon,
@@ -10,6 +12,8 @@ import {
   RelationshipIcon,
 } from '../../components/notifications/NotificationIcons'
 import { TabListLinks } from '../../components/tabs/TabList'
+import { scrollToTop } from '../../vendor/scrollTop'
+import { Paginator } from '../../components/streams/Paginator'
 import Session from '../../../src/vendor/session'
 
 /* eslint-disable react/prefer-stateless-function */
@@ -33,6 +37,13 @@ export class Notifications extends Component {
 
   componentWillMount() {
     this.saveCategory()
+    this.state = { isReloading: false }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.streamType === LOAD_STREAM_SUCCESS) {
+      this.setState({ isReloading: false })
+    }
   }
 
   componentDidUpdate() {
@@ -40,11 +51,16 @@ export class Notifications extends Component {
   }
 
   onClickTab = ({ type }) => {
+    if (this.state.activeTabType === type) {
+      scrollToTop()
+      this.setState({ isReloading: true })
+    }
     if (this.refs.streamComponent) {
       this.refs.streamComponent.refs.wrappedInstance.setAction(
         loadNotifications({ category: type })
       )
     }
+    this.setState({ activeTabType: type })
   }
 
   saveCategory() {
@@ -59,6 +75,7 @@ export class Notifications extends Component {
   render() {
     const { pathname } = this.props
     const { category } = this.props.params
+    const { isReloading } = this.state
     const params = {}
     if (category) {
       params.category = category
@@ -80,6 +97,16 @@ export class Notifications extends Component {
           tabClasses="IconTab"
           tabs={ tabs }
         />
+        {
+          isReloading ?
+            <Paginator
+              className="NotificationReload"
+              isHidden={ false }
+              totalPages={ 0 }
+              totalPagesRemaining={ 0 }
+            /> :
+            null
+        }
         <StreamComponent
           action={ loadNotifications(params) }
           className="asFullWidth"
@@ -95,6 +122,7 @@ export class Notifications extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     pathname: ownProps.location.pathname,
+    streamType: _.get(state, 'stream.type'),
   }
 }
 
