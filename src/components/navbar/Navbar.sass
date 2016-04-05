@@ -45,18 +45,17 @@
 
 .NavbarLinks
   position: absolute
+  top: rem(7)
   white-space: nowrap
 
 .isLoggedIn .NavbarLinks
-  bottom: 0
   left: rem(10)
 
 .isLoggedOut .NavbarLinks
-  top: rem(7)
   right: rem(10)
 
 .NavbarLinks > .NavbarLink + .NavbarLink
-  margin-left: rem(20)
+  margin-left: rem(30)
 
 .NavbarProfile
   position: absolute
@@ -67,19 +66,23 @@
 .NavbarLayoutTool
   position: absolute
   top: rem(15)
-  left: rem(125)
+  left: rem(155)
   color: #aaa
 
 // MAX-WIDTH!
 @media(max-width: #{$break-2-max})
+  .isLoggedIn .NavbarLink
+    margin-top: rem(40)
   .isLoggedIn .NavbarLink[href^="/notifications"]
     position: absolute
-    top: rem(-30)
-    left: rem(28)
+    top: 0
+    left: rem(55)
+    margin: 0
   .isLoggedIn .NavbarLink[href="/search"]
     position: absolute
-    top: rem(-30)
-    left: rem(60)
+    top: 0
+    left: rem(100)
+    margin: 0
 
 
 @media(min-width: #{$break-2})
@@ -94,7 +97,6 @@
   .isLoggedIn .NavbarLinks,
   .isLoggedOut .NavbarLinks
     top: 50%
-    bottom: auto
     margin-top: rem(-20)
   .isLoggedIn .NavbarLinks
     left: auto
