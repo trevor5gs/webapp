@@ -39,6 +39,7 @@ const discover = store => ({
     const rootPath = authentication.isLoggedIn ? '/discover' : '/'
 
     // redirect back to root path if type is unrecognized
+    // or, if a logged out user is visiting /discover, redirect to /
     if ((type && TYPES.indexOf(type) === -1) || (!type && !authentication.isLoggedIn)) {
       replace({ state: nextState, pathname: rootPath })
     }
