@@ -115,9 +115,9 @@ class NotificationsContainer extends Component {
     const tabs = [
       { type: 'all', children: 'All' },
       { type: 'comments', children: <BubbleIcon /> },
-      { type: 'loves', children: <HeartIcon /> },
       { type: 'mentions', children: '@' },
       { type: 'reposts', children: <RepostIcon /> },
+      { type: 'loves', children: <HeartIcon /> },
       { type: 'relationships', children: <RelationshipIcon /> },
     ]
     return (

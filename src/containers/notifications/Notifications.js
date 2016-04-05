@@ -66,9 +66,9 @@ export class Notifications extends Component {
     const tabs = [
       { to: '/notifications', type: 'all', children: 'All' },
       { to: '/notifications/comments', type: 'comments', children: <BubbleIcon /> },
-      { to: '/notifications/loves', type: 'loves', children: <HeartIcon /> },
       { to: '/notifications/mentions', type: 'mentions', children: '@' },
       { to: '/notifications/reposts', type: 'reposts', children: <RepostIcon /> },
+      { to: '/notifications/loves', type: 'loves', children: <HeartIcon /> },
       { to: '/notifications/relationships', type: 'relationships', children: <RelationshipIcon /> },
     ]
     return (
