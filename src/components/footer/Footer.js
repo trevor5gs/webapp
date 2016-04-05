@@ -18,6 +18,7 @@ class Footer extends Component {
     gui: PropTypes.object.isRequired,
     json: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
+    username: PropTypes.string,
   }
 
   componentWillMount() {
@@ -38,10 +39,13 @@ class Footer extends Component {
   }
 
   onClickScrollToTop = () => {
-    if (typeof window === 'undefined') {
-      return
+    if (typeof window === 'undefined') { return }
+    const { pathname, username } = this.props
+    let offset = 0
+    if (username || /\/settings/.test(pathname)) {
+      offset = Math.round((window.innerWidth * 0.5625)) - 200
     }
-    window.scrollTo(0, 0)
+    window.scrollTo(0, offset)
   }
 
   onClickToggleLayoutMode = () => {

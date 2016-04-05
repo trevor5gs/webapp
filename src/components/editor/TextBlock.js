@@ -28,22 +28,30 @@ class TextBlock extends Component {
     placeCaretAtEnd(this.refs.block.refs.text)
   }
 
-  getData() {
-    return this.refs.block.refs.text.innerHTML
+  onBlurText = () => {
+    document.body.classList.remove('hideFooter')
   }
 
-  handleInput = () => {
+  onFocusText = () => {
+    document.body.classList.add('hideFooter')
+  }
+
+  onInputText = () => {
     const { onInput } = this.props
     const uid = this.refs.block.props.uid
     onInput({ kind: 'text', data: this.getData(), uid })
   }
 
-  handlePaste = (e) => {
+  onPasteText = (e) => {
     const { dispatch, editorId, onInput } = this.props
     const uid = this.refs.block.props.uid
     // order matters here!
     pasted(e, dispatch, editorId, uid)
     onInput({ kind: 'text', data: this.getData(), uid })
+  }
+
+  getData() {
+    return this.refs.block.refs.text.innerHTML
   }
 
   render() {
@@ -53,8 +61,10 @@ class TextBlock extends Component {
         { ...this.props }
         contentEditable
         dangerouslySetInnerHTML={{ __html: data }}
-        onInput={ this.handleInput }
-        onPaste={ this.handlePaste }
+        onBlur={ this.onBlurText }
+        onFocus={ this.onFocusText }
+        onInput={ this.onInputText }
+        onPaste={ this.onPasteText }
         ref="block"
       />
     )

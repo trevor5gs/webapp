@@ -364,6 +364,7 @@ class Settings extends Component {
                 onChange={ this.onChangeCurrentPasswordControl }
                 placeholder="Enter current password"
                 ref="currentPasswordControl"
+                tabIndex={ requiresSave ? '4' : '0' }
               />
               <FormButton disabled={ !requiresSave }>Save</FormButton>
             </div>
@@ -372,7 +373,7 @@ class Settings extends Component {
           <InfoForm
             controlClassModifiers={ boxControlClassNames }
             showSaveMessage={ showSaveMessage }
-            tabIndexStart={ 4 }
+            tabIndexStart={ requiresSave ? 5 : 4 }
           />
 
           <p className="SettingsLinks">
