@@ -50,7 +50,7 @@
 .Notification.hasAsset .NotificationBody
   display: inline-block
   vertical-align: top
-  width: calc(100% - #{rem(140)})
+  width: calc(100% - #{rem(100)})
   margin-right: rem(10)
 
 .Notification .NotificationBody > p a
@@ -65,7 +65,9 @@
 .NotificationAsset
   display: inline-block
   vertical-align: top
-  width: rem(120)
+  width: rem(80)
+  max-height: rem(80)
+  overflow: hidden
   text-align: right
 
 .NotificationAsset > *
