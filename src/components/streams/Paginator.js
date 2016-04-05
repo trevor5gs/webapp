@@ -21,6 +21,7 @@ function getMessage({ hasShowMoreButton, messageText, totalPages, totalPagesRema
 }
 
 export const Paginator = ({
+    className = null,
     hasShowMoreButton = false,
     isHidden = true,
     loadNextPage,
@@ -30,7 +31,7 @@ export const Paginator = ({
   }) => {
   const message = getMessage({ hasShowMoreButton, messageText, totalPages, totalPagesRemaining })
   return (
-    <div className={ classNames('Paginator', { isBusy: !isHidden }) }>
+    <div className={ classNames('Paginator', { isBusy: !isHidden }, className) }>
       <ElloMark />
       {
         hasShowMoreButton ?
@@ -42,6 +43,7 @@ export const Paginator = ({
 }
 
 Paginator.propTypes = {
+  className: PropTypes.string,
   hasShowMoreButton: PropTypes.bool,
   isHidden: PropTypes.bool,
   loadNextPage: PropTypes.func,
