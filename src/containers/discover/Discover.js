@@ -66,7 +66,7 @@ export class Discover extends Component {
       action = loadFeaturedUsers()
     }
     const tabs = [
-      { to: '/discover', children: 'Recommended' },
+      { to: '/discover', children: 'Recommended', activePattern: /^\/(?:discover)?$/ },
       { to: '/discover/trending', children: 'Trending' },
       { to: '/discover/recent', children: 'Recent' },
       // { to: '/discover/communities', children: 'Communities' },
