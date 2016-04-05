@@ -364,7 +364,7 @@ class Settings extends Component {
                 onChange={ this.onChangeCurrentPasswordControl }
                 placeholder="Enter current password"
                 ref="currentPasswordControl"
-                tabIndex={ requiresSave ? '4' : null }
+                tabIndex={ requiresSave ? '4' : '0' }
               />
               <FormButton disabled={ !requiresSave }>Save</FormButton>
             </div>
