@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import classNames from 'classnames'
 
 const highlightingRules = {
-  '/': /^\/$|^\/trending$|^\/recent$/,
+  '/': /^\/$|^\/discover\/trending$|^\/discover\/recent$/,
   '/following': /^\/following/,
 }
 

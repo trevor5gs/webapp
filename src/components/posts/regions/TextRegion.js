@@ -34,7 +34,7 @@ class TextRegion extends Component {
     // for. Once we change this back to an `<a> element we can rip this out.
     } else if (classList.contains('hashtag-link')) {
       e.preventDefault()
-      dispatch(push(dataset.href.replace(/^\/search/, '/find')))
+      dispatch(push(dataset.href))
       return
 
     // Treat non links within grid layouts as a push to it's detail path

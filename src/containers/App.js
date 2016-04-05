@@ -48,32 +48,6 @@ class App extends Component {
       hideCompleter: true,
       hideTextTools: true,
     }
-    const loggedOutPaths = {
-      explore: /^\/explore/,
-      explore_recent: /^\/explore\/recent/,
-      explore_trending: /^\/explore\/trending/,
-      find: /^\/find$/,
-      forgot_password: /^\/forgot-password/,
-      signup: /^\/signup/,
-    }
-    // need to clear out the authentication for the case of
-    // when you are on ello.co and go to /onboarding (logging in)
-    // then logging out of the mothership wouldn't clear out the
-    // authentication here and would show you the wrong navbar
-    // and the links would be wrong for user/post detail pages
-    const { pathname } = this.props
-    let isLoggedOutPath = false
-    for (const re in loggedOutPaths) {
-      if (pathname.match(loggedOutPaths[re])) {
-        isLoggedOutPath = true
-        break
-      }
-    }
-    if (isLoggedOutPath) {
-      /* eslint-disable no-console */
-      console.log('logged out page')
-      /* eslint-enable no-console */
-    }
     this.onUserCompleter = debounce(this.onUserCompleter, 300)
   }
 

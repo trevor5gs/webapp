@@ -4,7 +4,7 @@ import WTFRoute from './wtf'
 import AuthenticationRoutes from './authentication'
 import {
   getComponents as getDiscoverComponents,
-  discover as DiscoverRoute,
+  discover as discoverRoute,
   explore as exploreRoute,
 } from './discover'
 import StreamsRoutes from './streams'
@@ -78,7 +78,7 @@ const routes = store => {
         WTFRoute,
         PostDetailRoute,
         ...AuthenticationRoutes,
-        authenticate(DiscoverRoute),
+        discoverRoute(store),
         exploreRoute(store),
         ...StreamsRoutes.map(route => authenticate(route)),
         authenticate(NotificationsRoute),
