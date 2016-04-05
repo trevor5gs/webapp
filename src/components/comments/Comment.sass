@@ -64,7 +64,7 @@
   transition: transform $speed $ease
   position: absolute
   right: 0
-  z-index: 10
+  z-index: 4
 
 .CommentTools .MoreTool > button
   padding-right: 0
@@ -72,7 +72,7 @@
 // MAX WIDTH!
 @media(max-width: #{$break-2-max})
   .CommentTools.isMoreToolActive > .PostTool
-    transform: translate3d(-80px, 0, 0)
+    transform: translate3d(#{rem(-80)}, 0, 0)
 
   .CommentTools:not(.isMoreToolActive) > .ShyTool
     display: none
@@ -85,16 +85,24 @@
   .CommentTools .ShyTool + .ShyTool
     right: rem(-90)
 
+  // This is kind of weird
+  .CommentTools.isMoreToolActive .ShyTool.asSolo + .MoreTool
+    transform: translate3d(#{rem(-40)}, 0, 0)
+
+  // also weird
+  .CommentTools .ShyTool.asSolo
+    right: rem(-90)
+
   .CommentTools.isMoreToolActive .ShyTool
     pointer-events: auto
     opacity: 1
 
-  .CommentTools .MoreTool .SVGIcon > g
+  .CommentTools .MoreTool .SVGIcon
     transform: rotate(180deg)
 
-  .CommentTools.isMoreToolActive .MoreTool .SVGIcon > g
-    stroke: black
+  .CommentTools.isMoreToolActive .MoreTool .SVGIcon
     transform: none
+    color: black
 
 
 // MIN WIDTH!

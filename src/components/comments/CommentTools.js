@@ -149,7 +149,7 @@ class CommentTools extends Component {
           </span>
         )
         cells.push(
-          <span className="PostTool FlagTool ShyTool" key={ `FlagTool_${comment.id}` }>
+          <span className="PostTool FlagTool ShyTool asSolo" key={ `FlagTool_${comment.id}` }>
             <button onClick={ this.onClickFlagComment }>
               <FlagIcon />
               <Hint>Flag</Hint>
