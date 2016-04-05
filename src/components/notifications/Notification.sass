@@ -3,7 +3,7 @@
 .Notification
   position: relative
   overflow: hidden
-  padding: rem(20) rem(10) rem(10) rem(50)
+  padding: rem(10) rem(10) rem(5) rem(60)
   min-height: rem(80)
   line-height: rem(20)
   background-color: white
@@ -13,11 +13,11 @@
 
 .NotificationHeader
   position: absolute
-  top: rem(20)
+  top: rem(10)
   left: rem(10)
 
 .NotificationBody
-  margin-bottom: rem(20)
+  margin-bottom: rem(15)
   word-wrap: break-word
 
 .NotificationFooter
@@ -30,13 +30,15 @@
   +sans-typeset
 
 .NotificationFooterTimestamp + *
-  margin-top: rem(20)
+  margin-top: rem(15)
+  margin-bottom: rem(5)
 
 .Notification .RelationsGroup
   color: black
 
 .NotificationBody > p
   margin-top: 0
+  margin-bottom: rem(5)
   color: #aaa
 
 .NotificationBody a
@@ -54,7 +56,7 @@
 .Notification.hasAsset .NotificationBody
   display: inline-block
   vertical-align: top
-  width: calc(100% - #{rem(100)})
+  width: calc(100% - #{rem(90)})
   margin-right: rem(10)
 
 .Notification .NotificationBody > p a
@@ -87,8 +89,4 @@
 .Notification .Avatar
   width: rem(30)
   height: rem(30)
-
-@media(min-width: #{$break-2})
-  .Notification
-    padding-left: rem(60)
 
