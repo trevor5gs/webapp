@@ -23,24 +23,19 @@ const indexRoute = {
   getComponents,
 }
 
-const explore = store => ({
+const explore = {
   path: '/explore(/:type)',
   getComponents,
   onEnter: (nextState, replace) => {
     const { params: { type } } = nextState
-    const { authentication } = store.getState()
 
-    const rootPath = authentication.isLoggedIn ? '/discover' : '/'
-
-    if (type && TYPES.indexOf(type) === -1) {
-      replace({ state: nextState, pathname: rootPath })
-    } else if (authentication.isLoggedIn) {
-      replace({ state: nextState, pathname: '/discover' })
-    } else if (!type) {
+    if (!type || TYPES.indexOf(type) === -1) {
       replace({ state: nextState, pathname: '/' })
+    } else {
+      replace({ state: nextState, pathname: `/discover/${type}` })
     }
   },
-})
+}
 
 const discover = {
   path: 'discover(/:type)',

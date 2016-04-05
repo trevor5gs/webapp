@@ -65,18 +65,12 @@ export class Discover extends Component {
     } else if (type === 'featured-users') {
       action = loadFeaturedUsers()
     }
-    const tabs = isLoggedIn ?
-    [
+    const tabs = [
       { to: '/discover', children: 'Recommended' },
       { to: '/discover/trending', children: 'Trending' },
       { to: '/discover/recent', children: 'Recent' },
       // { to: '/discover/communities', children: 'Communities' },
       // { to: '/discover/featured-users', children: 'Featured Users' },
-    ] :
-    [
-      { to: '/explore', children: 'Recommended', activePattern: /^\/(?:explore)?$/ },
-      { to: '/explore/trending', children: 'Trending' },
-      { to: '/explore/recent', children: 'Recent' },
     ]
     return (
       <section className="Discover Panel" key={ `discover_${type}` }>

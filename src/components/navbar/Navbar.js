@@ -388,14 +388,14 @@ class Navbar extends Component {
         }
         <div className="NavbarLinks">
           <NavbarLink
-            to="/explore"
+            to="/"
             label="Discover"
             modifiers="LabelOnly"
-            pathname={ pathname === '/' ? '/explore' : pathname }
+            pathname={ pathname }
             icon={ <SparklesIcon /> }
           />
           <NavbarLink
-            to="/find"
+            to="/search"
             label="Search"
             modifiers="IconOnly"
             pathname={ pathname }
