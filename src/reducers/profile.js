@@ -40,10 +40,7 @@ export function profile(state = {}, action) {
         [assetType]: { ...state[assetType], ...action.payload },
       }
     case REHYDRATE:
-      if (action.key === 'profile') {
-        return { ...action.payload, availability: null, dataExport: null }
-      }
-      return state
+      return { ...action.payload.profile, availability: null, dataExport: null }
     case PROFILE.SAVE_AVATAR_SUCCESS:
     case PROFILE.SAVE_COVER_SUCCESS:
       assetType = action.type === PROFILE.SAVE_AVATAR_SUCCESS ? 'avatar' : 'coverImage'

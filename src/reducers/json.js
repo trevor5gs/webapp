@@ -408,16 +408,17 @@ export default function json(state = {}, action = { type: '' }) {
     case REHYDRATE:
       // only keep the items that have been deleted
       // so we can still filter them out if needed
-      if (action.key === 'json') {
+      if (action.payload.json) {
         const keepers = {}
-        for (const collection in action.payload) {
+        for (const collection in action.payload.json) {
           if (collection.match('deleted_')) {
-            keepers[collection] = action.payload[collection]
+            keepers[collection] = action.payload.json[collection]
           }
         }
         return { ...state, ...keepers }
-      } else if (action.key === 'profile') {
-        methods.addModels(newState, MAPPING_TYPES.USERS, { users: action.payload })
+      }
+      if (action.payload.profile) {
+        methods.addModels(newState, MAPPING_TYPES.USERS, { users: action.payload.profile })
         return newState
       }
       return state

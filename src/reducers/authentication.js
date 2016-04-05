@@ -26,14 +26,13 @@ export function authentication(state = initialState, action) {
     case ACTION_TYPES.PROFILE.SIGNUP_SUCCESS:
       return { ...state, ...action.payload.response, isLoggedIn: true }
     case REHYDRATE:
-      if (action.key === 'authentication') {
-        // Don't take the timeout ID from localstorage
+      // Don't take the timeout ID from localstorage
+      if (action.payload.authentication) {
         return {
-          ...action.payload,
+          ...action.payload.authentication,
           refreshTimeoutId: state.refreshTimeoutId,
         }
       }
-
       return state
     default:
       return state
