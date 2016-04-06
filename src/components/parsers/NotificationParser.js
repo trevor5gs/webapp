@@ -3,7 +3,6 @@ import { Link } from 'react-router'
 import { getLinkObject } from '../base/json_helper'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { regionItemsForNotifications, setModels } from '../parsers/RegionParser'
-import RelationsGroup from '../relationships/RelationsGroup'
 import { Notification } from '../notifications/Notification'
 
 const NOTIFICATION_KIND = {
@@ -293,7 +292,6 @@ function newFollowerPost(user, createdAt) {
       className="NewFollowerPostNotification"
       createdAt={ createdAt }
       notifier={ user }
-      retort={ <RelationsGroup user={ user } /> }
     >
       <p>
         { userTextLink(user) }
