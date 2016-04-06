@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import classNames from 'classnames'
@@ -420,11 +421,15 @@ class Navbar extends Component {
 
   render() {
     const { isLoggedIn, json, pathname } = this.props
+    const notificationsAreActive = ReactDOM.findDOMNode(document.body)
+                                    .classList.contains('notificationsAreActive')
+    const asHidden = this.state.asHidden && !notificationsAreActive
+
     const klassNames = classNames(
       'Navbar',
       { asLocked: this.state.asLocked },
       { asFixed: this.state.asFixed },
-      { asHidden: this.state.asHidden },
+      { asHidden },
       { skipTransition: this.state.skipTransition },
     )
     const result = json.pages ? json.pages[pathname] : null
