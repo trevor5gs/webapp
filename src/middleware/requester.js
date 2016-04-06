@@ -3,6 +3,7 @@
 import { camelizeKeys } from 'humps'
 import * as ACTION_TYPES from '../constants/action_types'
 import { get } from 'lodash'
+import { refreshAuthenticationToken } from '../actions/authentication'
 
 const runningFetches = {}
 
@@ -256,6 +257,9 @@ export const requester = store => next => action => {
             .catch(error => {
               if (error.response) {
                 delete runningFetches[error.response.url]
+              }
+              if (error.response.status === 401 && state.authentication.isLoggedIn && state.authentication.refreshToken) {
+                store.dispatch(refreshAuthenticationToken(state.authentication.refreshToken))
               }
               store.dispatch({ error, meta, payload, type: FAILURE })
               fireFailureAction()
