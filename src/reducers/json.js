@@ -363,9 +363,12 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
     case ACTION_TYPES.POST.EDITABLE_SUCCESS:
     case ACTION_TYPES.PROFILE.DETAIL_SUCCESS:
-    case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
       // fall through to parse the rest
       break
+    case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
+      methods.parseLinked(action.payload.linked, newState)
+      methods.updateResult(action.payload.response, newState, action)
+      return newState
     case ACTION_TYPES.POST.CREATE_REQUEST:
     case ACTION_TYPES.POST.CREATE_FAILURE:
     case ACTION_TYPES.POST.CREATE_SUCCESS:
