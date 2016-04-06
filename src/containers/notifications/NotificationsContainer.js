@@ -143,7 +143,11 @@ class NotificationsContainer extends Component {
       { type: 'relationships', children: <RelationshipIcon /> },
     ]
     return (
-      <div className="NotificationsContainer" onClick={ this.onClickSelf } onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut }>
+      <div className="NotificationsContainer"
+        onClick={ this.onClickSelf }
+        onMouseOver={ this.onMouseOver }
+        onMouseOut={ this.onMouseOut }
+      >
         <TabListButtons
           activeType={ activeTabType }
           className="IconTabList NotificationsContainerTabs"
