@@ -58,6 +58,14 @@ class NotificationsContainer extends Component {
     document.removeEventListener('click', this.onClickDocument)
   }
 
+  onMouseOver = () => {
+    this.body.classList.add('notificationsAreScrolling')
+  }
+
+  onMouseOut = () => {
+    this.body.classList.remove('notificationsAreScrolling')
+  }
+
   onClickTab = ({ type }) => {
     const { dispatch } = this.props
     if (this.state.activeTabType === type) {
@@ -135,7 +143,7 @@ class NotificationsContainer extends Component {
       { type: 'relationships', children: <RelationshipIcon /> },
     ]
     return (
-      <div className="NotificationsContainer" onClick={ this.onClickSelf }>
+      <div className="NotificationsContainer" onClick={ this.onClickSelf } onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut }>
         <TabListButtons
           activeType={ activeTabType }
           className="IconTabList NotificationsContainerTabs"
