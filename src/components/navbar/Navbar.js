@@ -112,6 +112,7 @@ class Navbar extends Component {
 
   componentDidMount() {
     const { dispatch, isLoggedIn, pathname, shortcuts } = this.props
+    this.body = ReactDOM.findDOMNode(document.body)
     if (isBlacklistedRoute(pathname)) {
       window.scrollTo(0, this.state.offset - 120)
     }
@@ -421,8 +422,8 @@ class Navbar extends Component {
 
   render() {
     const { isLoggedIn, json, pathname } = this.props
-    const notificationsAreActive = ReactDOM.findDOMNode(document.body)
-                                    .classList.contains('notificationsAreActive')
+    const notificationsAreActive = this.body &&
+      this.body.classList.contains('notificationsAreActive')
     const asHidden = this.state.asHidden && !notificationsAreActive
 
     const klassNames = classNames(

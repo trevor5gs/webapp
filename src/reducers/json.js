@@ -363,9 +363,12 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
     case ACTION_TYPES.POST.EDITABLE_SUCCESS:
     case ACTION_TYPES.PROFILE.DETAIL_SUCCESS:
-    case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
       // fall through to parse the rest
       break
+    case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
+      methods.parseLinked(action.payload.linked, newState)
+      methods.updateResult(action.payload.response, newState, action)
+      return newState
     case ACTION_TYPES.POST.CREATE_REQUEST:
     case ACTION_TYPES.POST.CREATE_FAILURE:
     case ACTION_TYPES.POST.CREATE_SUCCESS:
@@ -415,13 +418,12 @@ export default function json(state = {}, action = { type: '' }) {
             keepers[collection] = action.payload.json[collection]
           }
         }
-        return { ...state, ...keepers }
+        newState = { ...newState, ...keepers }
       }
       if (action.payload.profile) {
-        methods.addModels(newState, MAPPING_TYPES.USERS, { users: action.payload.profile })
-        return newState
+        methods.addModels(newState, MAPPING_TYPES.USERS, { users: [action.payload.profile] })
       }
-      return state
+      return newState
     case LOCATION_CHANGE:
       path = action.payload.pathname
       if (action.payload.query.terms && prevTerms !== action.payload.query.terms) {
