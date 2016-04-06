@@ -59,6 +59,9 @@ export function regionItemsForNotifications(content, postDetailPath = null) {
       case 'embed':
         assets.push(embedRegion(region, `EmbedRegion_${i}`))
         break
+      case 'rule':
+        texts.push(<hr className="NotificationRule" />)
+        break
       default:
         break
     }

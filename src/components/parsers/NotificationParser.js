@@ -56,7 +56,7 @@ function parseSummary(post, path) {
 function parseSummaryForCommentNotification(post, comment, path) {
   const postContent = post && post.summary ? post.summary : []
   const commentContent = comment && comment.summary ? comment.summary : []
-  const divider = [{ kind: 'text', data: '<hr class="CommentNotificationDivider"/>' }]
+  const divider = [{ kind: 'rule' }]
   const combined = postContent.concat(divider, commentContent)
   return regionItemsForNotifications(combined, path)
 }
