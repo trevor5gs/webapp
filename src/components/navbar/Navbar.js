@@ -218,6 +218,7 @@ class Navbar extends Component {
   onLogOut = async() => {
     const { dispatch } = this.props
     await dispatch(logout())
+    document.body.classList.remove('profileMenuIsActive')
     dispatch(push('/enter'))
   }
 
