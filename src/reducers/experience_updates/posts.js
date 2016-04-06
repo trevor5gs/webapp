@@ -64,12 +64,14 @@ function _updatePostLoves(state, newState, action) {
   const existingIds = existingResult.ids
 
   const currentUser = jsonReducer.methods.getCurrentUser(newState)
-  if (idAdded) {
-    existingIds.unshift(`${currentUser.id}`)
-  } else {
-    const index = existingIds.indexOf(`${currentUser.id}`)
-    if (index !== -1) {
-      existingIds.splice(index, 1)
+  if (currentUser) {
+    if (idAdded) {
+      existingIds.unshift(`${currentUser.id}`)
+    } else {
+      const index = existingIds.indexOf(`${currentUser.id}`)
+      if (index !== -1) {
+        existingIds.splice(index, 1)
+      }
     }
   }
   newState.pages[resultPath] = existingResult
