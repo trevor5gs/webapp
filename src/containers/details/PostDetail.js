@@ -96,16 +96,18 @@ class PostDetail extends Component {
     let author
     if (post) {
       author = json[MAPPING_TYPES.USERS][post.authorId]
-      postEls.push(
-        <PostParser
-          isGridLayout={ false }
-          isPostDetail
-          key={ `postParser_${post.id}` }
-          post={ post }
-        />
-      )
-      if (author && author.hasCommentingEnabled && !(post.isReposting || post.isEditing)) {
-        postEls.push(<Editor key={ `editor_${post.id}` } post={ post } isComment />)
+      if (author) {
+        postEls.push(
+          <PostParser
+            isGridLayout={ false }
+            isPostDetail
+            key={ `postParser_${post.id}` }
+            post={ post }
+          />
+        )
+        if (author.hasCommentingEnabled && !(post.isReposting || post.isEditing)) {
+          postEls.push(<Editor key={ `editor_${post.id}` } post={ post } isComment />)
+        }
       }
     }
     return (

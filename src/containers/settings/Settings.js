@@ -515,8 +515,8 @@ class Settings extends Component {
 function mapStateToProps(state) {
   return {
     availability: state.profile.availability,
-    blockedCount: state.profile.blockedCount,
-    mutedCount: state.profile.mutedCount,
+    blockedCount: state.profile.blockedCount || 0,
+    mutedCount: state.profile.mutedCount || 0,
     profile: state.profile,
   }
 }
