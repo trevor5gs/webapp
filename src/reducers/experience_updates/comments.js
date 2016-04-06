@@ -45,7 +45,7 @@ function _addOrUpdateComment(newState, action) {
         newState.pages[`/posts/${postId}/comments`].ids.unshift(`${response.id}`)
       } else {
         newState.pages[`/posts/${postId}/comments`] = {
-          ids: [response.id], type: MAPPING_TYPES.COMMENTS, pagination: emptyPagination(),
+          ids: [`${response.id}`], type: MAPPING_TYPES.COMMENTS, pagination: emptyPagination(),
         }
       }
       return methods.updateCommentsCount(newState, postId, 1)

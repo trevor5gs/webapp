@@ -121,7 +121,7 @@ function _addOrUpdatePost(newState, action) {
           newState.pages[`/${user.username}`].ids.unshift(`${response.id}`)
         } else {
           newState.pages[`/${user.username}`] = {
-            ids: [response.id], type: MAPPING_TYPES.POSTS, pagination: emptyPagination(),
+            ids: [`${response.id}`], type: MAPPING_TYPES.POSTS, pagination: emptyPagination(),
           }
         }
       }
