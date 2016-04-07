@@ -3,7 +3,6 @@ import { Link } from 'react-router'
 import { getLinkObject } from '../base/json_helper'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { regionItemsForNotifications, setModels } from '../parsers/RegionParser'
-import RelationsGroup from '../relationships/RelationsGroup'
 import { Notification } from '../notifications/Notification'
 
 const NOTIFICATION_KIND = {
@@ -57,7 +56,7 @@ function parseSummary(post, path) {
 function parseSummaryForCommentNotification(post, comment, path) {
   const postContent = post && post.summary ? post.summary : []
   const commentContent = comment && comment.summary ? comment.summary : []
-  const divider = [{ kind: 'text', data: '<hr class="CommentNotificationDivider"/>' }]
+  const divider = [{ kind: 'rule' }]
   const combined = postContent.concat(divider, commentContent)
   return regionItemsForNotifications(combined, path)
 }
@@ -293,7 +292,6 @@ function newFollowerPost(user, createdAt) {
       className="NewFollowerPostNotification"
       createdAt={ createdAt }
       notifier={ user }
-      retort={ <RelationsGroup user={ user } /> }
     >
       <p>
         { userTextLink(user) }

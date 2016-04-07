@@ -87,8 +87,8 @@ export const Notification = ({
   return (
     <div className={ classNames('Notification', className, { hasAsset }) }>
       { renderHeader({ notifier }) }
-      { renderBody({ children, summary }) }
       { renderAssets({ summary }) }
+      { renderBody({ children, summary }) }
       { renderFooter({ activityPath, createdAt, retort }) }
     </div>
   )
