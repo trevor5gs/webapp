@@ -78,7 +78,10 @@ class Editor extends Component {
   }
 
   submit = (data) => {
+    if (this.submitted) { return }
+    this.submitted = true
     const { comment, dispatch, isComment, onSubmit, post } = this.props
+
     if (isComment) {
       if (comment && comment.isEditing) {
         dispatch(toggleCommentEditing(comment, false))
