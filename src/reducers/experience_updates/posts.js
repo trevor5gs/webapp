@@ -2,7 +2,6 @@
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as jsonReducer from '../../reducers/json'
-import { emptyPagination } from '../../components/streams/Paginator'
 import _ from 'lodash'
 
 const methods = {}
