@@ -53,7 +53,7 @@ function _appendPageId(newState, pageName, mappingType, id) {
   let page = get(newState, ['pages', pageName])
   if (page) {
     const ids = get(page, 'ids', [])
-    if (!ids.includes(`${id}`)) {
+    if (ids.indexOf(`${id}`) === -1) {
       ids.unshift(`${id}`)
       page.ids = ids
     }
