@@ -122,10 +122,9 @@ class SignIn extends Component {
   renderStatus(state) {
     return () => {
       if (state.status === STATUS.FAILURE) {
-        return <p>{state.message}</p>
+        return <p className="HoppyStatusMessage hasContent">{state.message}</p>
       }
-
-      return ''
+      return <p className="HoppyStatusMessage"><span /></p>
     }
   }
 

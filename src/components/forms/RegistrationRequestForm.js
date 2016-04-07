@@ -96,7 +96,10 @@ class RegistrationRequestForm extends Component {
             onFocus={ this.onFocusControl }
             tabIndex="1"
           />
-          { emailState.status !== STATUS.INDETERMINATE && <p>{emailState.message}</p>}
+          { emailState.status !== STATUS.INDETERMINATE ?
+            <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
+            <p className="HoppyStatusMessage"><span /></p>
+          }
           <FormButton disabled={ !isValid } tabIndex="2">Sign up</FormButton>
         </form>
       </div>

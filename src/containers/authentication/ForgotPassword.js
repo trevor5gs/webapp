@@ -99,7 +99,10 @@ class ForgotPassword extends Component {
           onFocus={ this.onFocusControl }
           tabIndex="1"
         />
-        {emailState.message ? <p>{emailState.message}</p> : null}
+        { emailState.message ?
+            <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
+            <p className="HoppyStatusMessage"><span /></p>
+        }
         <FormButton disabled={ !isValid } tabIndex="2">Reset password</FormButton>
       </form>
     )
