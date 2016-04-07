@@ -2,6 +2,7 @@
 import 'newrelic'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
+import heapdump from 'heapdump'
 
 function handleZlibError(error) {
   if (error.code === 'Z_BUF_ERROR') {
@@ -143,6 +144,17 @@ if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
   })
 }
 
+if (process.env.ENABLE_HEAPDUMP) {
+  process.on('SIGUSR2', function () {
+    try {
+      global.gc()
+    } catch (e) {
+      process.exit()
+    }
+    heapdump.writeSnapshot()
+  })
+}
+
 const port = process.env.PORT || 6660
 const workers = process.env.WEB_CONCURRENCY || 1;
 const start = (workerId) => {
@@ -150,6 +162,16 @@ const start = (workerId) => {
     if (err) {
       console.log(err)
       return
+    }
+    if (process.env.ENABLE_HEAPDUMP) {
+      try {
+        global.gc()
+      } catch (e) {
+        console.log('need to run with --expose-gc')
+        process.exit()
+      }
+
+      heapdump.writeSnapshot()
     }
     console.log('Worker ' + workerId + ' listening at http://localhost:' + port)
   })
