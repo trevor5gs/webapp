@@ -67,7 +67,7 @@ function _appendPageId(newState, pageName, mappingType, id) {
 }
 methods.appendPageId = _appendPageId
 
-function _removePageId(newState, pageName, mappingType, id) {
+function _removePageId(newState, pageName, id) {
   const existingIds = get(newState, ['pages', pageName, 'ids'])
   if (existingIds) {
     const index = existingIds.indexOf(`${id}`)

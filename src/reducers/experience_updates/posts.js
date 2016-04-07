@@ -68,7 +68,7 @@ function _updatePostLoves(state, newState, action) {
     } else {
       jsonReducer.methods.removePageId(
         newState, resultPath,
-        MAPPING_TYPES.USERS, currentUser.id)
+        currentUser.id)
     }
   }
 
