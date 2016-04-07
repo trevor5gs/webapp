@@ -209,8 +209,6 @@ class PostParser extends Component {
     const reallyShowReposters = !showEditor && !isGridLayout && showReposters && repostsCount > 0
     const reallyShowComments = !showEditor && !isPostDetail && showComments && commentsCount > 0
 
-    console.log('reallyShowReposters', reallyShowReposters)
-
     let postHeader
     if (isRepost(post)) {
       const { authorLinkObject, sourceLinkObject } = this.props
