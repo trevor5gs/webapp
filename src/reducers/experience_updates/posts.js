@@ -3,6 +3,7 @@ import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as jsonReducer from '../../reducers/json'
 import { emptyPagination } from '../../components/streams/Paginator'
+import _ from 'lodash'
 
 const methods = {}
 
@@ -97,9 +98,7 @@ function _addOrUpdatePost(newState, action) {
   let index = null
   switch (action.type) {
     case ACTION_TYPES.POST.CREATE_SUCCESS:
-      if (!newState[MAPPING_TYPES.POSTS]) { newState[MAPPING_TYPES.POSTS] = {} }
-      newState[MAPPING_TYPES.POSTS][response.id] = response
-
+      _.set(newState, [MAPPING_TYPES.POSTS, response.id], response)
       jsonReducer.methods.appendPageId(
         newState, '/following',
         MAPPING_TYPES.POSTS, response.id)
