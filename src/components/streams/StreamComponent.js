@@ -240,15 +240,15 @@ export class StreamComponent extends Component {
     if (this.props.scrollSessionKey) {
       const sessionStorageKey = SESSION_KEYS.scrollLocationKey(this.props.scrollSessionKey)
       Session.setItem(sessionStorageKey, scrollTopValue)
+    } else {
+      this.props.dispatch({
+        type: ACTION_TYPES.GUI.SET_SCROLL,
+        payload: {
+          key: this.state.locationKey,
+          scrollTop: scrollTopValue,
+        },
+      })
     }
-
-    this.props.dispatch({
-      type: ACTION_TYPES.GUI.SET_SCROLL,
-      payload: {
-        key: this.state.locationKey,
-        scrollTop: scrollTopValue,
-      },
-    })
   }
 
   scrollToUserDetail() {
