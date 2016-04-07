@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import Mousetrap from '../../vendor/mousetrap'
-import { SHORTCUT_KEYS } from '../../constants/gui_types'
+import { GUI, SHORTCUT_KEYS } from '../../constants/gui_types'
 import { LOAD_NEXT_CONTENT_REQUEST } from '../../constants/action_types'
 import { PhoneIcon, ChevronIcon, ListIcon, GridIcon } from '../footer/FooterIcons'
 import FooterLabel from '../footer/FooterLabel'
@@ -93,9 +93,11 @@ class Footer extends Component {
 }
 
 function mapStateToProps(state) {
+  const isPaginatoring = state.stream.type === LOAD_NEXT_CONTENT_REQUEST &&
+    GUI.viewportDeviceSize === 'mobile'
   return {
     gui: state.gui,
-    isPaginatoring: state.stream.type === LOAD_NEXT_CONTENT_REQUEST,
+    isPaginatoring,
     json: state.json,
     pathname: state.routing.location.pathname,
   }
