@@ -371,7 +371,6 @@ describe('json reducer', () => {
 
       it('calls #postMethods.updatePostLoves', () => {
         methodCalledWithActions(subject.postMethods, 'updatePostLoves', [
-          ACTION_TYPES.POST.LOVE_REQUEST,
           ACTION_TYPES.POST.LOVE_SUCCESS,
           ACTION_TYPES.POST.LOVE_FAILURE,
         ])
