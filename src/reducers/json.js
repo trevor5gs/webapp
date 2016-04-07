@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
-import { merge, uniq } from 'lodash'
+import { merge, uniq, set, get } from 'lodash'
 import { findModel } from '../components/base/json_helper'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
@@ -10,6 +10,7 @@ import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
 import commentMethods from './experience_updates/comments'
 import postMethods from './experience_updates/posts'
 import relationshipMethods from './experience_updates/relationships'
+import { emptyPagination } from '../components/streams/Paginator'
 
 // adding methods and accessing them from this object
 // allows the unit tests to stub methods in this module
@@ -47,6 +48,37 @@ function _updatePostCount(newState, postId, prop, delta) {
 }
 methods.updatePostCount = (newState, postId, prop, delta) =>
   _updatePostCount(newState, postId, prop, delta)
+
+function _appendPageId(newState, pageName, mappingType, id) {
+  let page = get(newState, ['pages', pageName])
+  if (page) {
+    const ids = get(page, 'ids', [])
+    if (ids.indexOf(`${id}`) === -1) {
+      ids.unshift(`${id}`)
+      page.ids = ids
+    }
+  } else {
+    page = {
+      ids: [`${id}`], type: mappingType, pagination: emptyPagination(),
+    }
+  }
+  set(newState, ['pages', pageName], page)
+  return newState
+}
+methods.appendPageId = _appendPageId
+
+function _removePageId(newState, pageName, id) {
+  const existingIds = get(newState, ['pages', pageName, 'ids'])
+  if (existingIds) {
+    const index = existingIds.indexOf(`${id}`)
+    if (index !== -1) {
+      existingIds.splice(index, 1)
+    }
+    set(newState, ['pages', pageName, 'ids'], existingIds)
+  }
+  return newState
+}
+methods.removePageId = _removePageId
 
 function _getCurrentUser(state) {
   for (const id in state[MAPPING_TYPES.USERS]) {

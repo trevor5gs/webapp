@@ -2,7 +2,7 @@
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as jsonReducer from '../../reducers/json'
-import { emptyPagination } from '../../components/streams/Paginator'
+import _ from 'lodash'
 
 const methods = {}
 
@@ -59,22 +59,18 @@ function _updatePostLoves(state, newState, action) {
   }
 
   const resultPath = jsonReducer.methods.pagesKey(action)
-  const existingResult = newState.pages[resultPath] ||
-    { type: 'users', ids: [], pagination: emptyPagination() }
-  const existingIds = existingResult.ids
-
   const currentUser = jsonReducer.methods.getCurrentUser(newState)
   if (currentUser) {
     if (idAdded) {
-      existingIds.unshift(`${currentUser.id}`)
+      jsonReducer.methods.appendPageId(
+        newState, resultPath,
+        MAPPING_TYPES.USERS, currentUser.id)
     } else {
-      const index = existingIds.indexOf(`${currentUser.id}`)
-      if (index !== -1) {
-        existingIds.splice(index, 1)
-      }
+      jsonReducer.methods.removePageId(
+        newState, resultPath,
+        currentUser.id)
     }
   }
-  newState.pages[resultPath] = existingResult
 
   jsonReducer.methods.updateUserCount(newState, model.authorId, 'lovesCount', delta)
   jsonReducer.methods.mergeModel(
@@ -90,19 +86,23 @@ methods.updatePostLoves = (state, newState, action) =>
 
 function _addOrUpdatePost(newState, action) {
   const { model, response } = action.payload
+
   const user = model ?
     newState[MAPPING_TYPES.USERS][model.authorId] :
     jsonReducer.methods.getCurrentUser(newState)
   let index = null
   switch (action.type) {
     case ACTION_TYPES.POST.CREATE_SUCCESS:
-      if (!newState[MAPPING_TYPES.POSTS]) { newState[MAPPING_TYPES.POSTS] = {} }
-      newState[MAPPING_TYPES.POSTS][response.id] = response
-      if (newState.pages['/following']) {
-        newState.pages['/following'].ids.unshift(`${response.id}`)
-      }
+      _.set(newState, [MAPPING_TYPES.POSTS, response.id], response)
+      jsonReducer.methods.appendPageId(
+        newState, '/following',
+        MAPPING_TYPES.POSTS, response.id)
+
       if (action.meta.repostId) {
         jsonReducer.methods.updatePostCount(newState, action.meta.repostId, 'repostsCount', 1)
+        jsonReducer.methods.appendPageId(
+          newState, `/posts/${action.meta.repostId}/repost`,
+          MAPPING_TYPES.USERS, user.id)
         jsonReducer.methods.mergeModel(
           newState,
           MAPPING_TYPES.POSTS,
@@ -111,6 +111,9 @@ function _addOrUpdatePost(newState, action) {
       }
       if (action.meta.repostedFromId) {
         jsonReducer.methods.updatePostCount(newState, action.meta.repostedFromId, 'repostsCount', 1)
+        jsonReducer.methods.appendPageId(
+          newState, `/posts/${action.meta.repostedFromId}/repost`,
+          MAPPING_TYPES.USERS, user.id)
         jsonReducer.methods.mergeModel(
           newState,
           MAPPING_TYPES.POSTS,
@@ -119,13 +122,9 @@ function _addOrUpdatePost(newState, action) {
       }
       if (user) {
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', 1)
-        if (newState.pages[`/${user.username}`]) {
-          newState.pages[`/${user.username}`].ids.unshift(`${response.id}`)
-        } else {
-          newState.pages[`/${user.username}`] = {
-            ids: [`${response.id}`], type: MAPPING_TYPES.POSTS, pagination: emptyPagination(),
-          }
-        }
+        jsonReducer.methods.appendPageId(
+          newState, `/${user.username}`,
+          MAPPING_TYPES.POSTS, response.id)
       }
       return newState
     case ACTION_TYPES.POST.DELETE_SUCCESS:

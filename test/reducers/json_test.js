@@ -101,6 +101,54 @@ describe('json reducer', () => {
     })
   })
 
+  describe('#appendPageId', () => {
+    it('should add the id to null', () => {
+      const store = {}
+      subject.methods.appendPageId(store, '/page', 'users', 'foo')
+      expect(store.pages['/page'].ids.indexOf('foo')).not.to.equal(-1)
+    })
+    it('should add the type to null', () => {
+      const store = {}
+      subject.methods.appendPageId(store, '/page', 'users', 'foo')
+      expect(store.pages['/page'].type).to.equal('users')
+    })
+    it('should add the id to []', () => {
+      const store = { pages: { '/page': { ids: [] } } }
+      subject.methods.appendPageId(store, '/page', 'users', 'foo')
+      expect(store.pages['/page'].ids.indexOf('foo')).not.to.equal(-1)
+    })
+    it('should add the id to [1,2,3]', () => {
+      const store = { pages: { '/page': { ids: [1, 2, 3] } } }
+      subject.methods.appendPageId(store, '/page', 'users', 'foo')
+      expect(store.pages['/page'].ids.indexOf('foo')).not.to.equal(-1)
+      expect(store.pages['/page'].ids.indexOf(1)).not.to.equal(-1)
+      expect(store.pages['/page'].ids.indexOf(2)).not.to.equal(-1)
+      expect(store.pages['/page'].ids.indexOf(3)).not.to.equal(-1)
+      expect(store.pages['/page'].ids.indexOf(4)).to.equal(-1)
+    })
+  })
+  describe('#removePageId', () => {
+    it('should do nothing to null', () => {
+      const store = {}
+      subject.methods.removePageId(store, '/page', 'foo')
+      expect(store.pages).to.be.undefined
+    })
+    it('should do nothing to []', () => {
+      const store = { pages: { '/page': { ids: [] } } }
+      subject.methods.removePageId(store, '/page', 'foo')
+      expect(store.pages['/page'].ids.length).to.equal(0)
+    })
+    it('should remove the id from [foo]', () => {
+      const store = { pages: { '/page': { ids: [1, 'foo', 2, 3] } } }
+      subject.methods.removePageId(store, '/page', 'foo')
+      expect(store.pages['/page'].ids.indexOf('foo')).to.equal(-1)
+      expect(store.pages['/page'].ids.indexOf(1)).not.to.equal(-1)
+      expect(store.pages['/page'].ids.indexOf(2)).not.to.equal(-1)
+      expect(store.pages['/page'].ids.indexOf(3)).not.to.equal(-1)
+      expect(store.pages['/page'].ids.indexOf(4)).to.equal(-1)
+    })
+  })
+
   describe('#mergeModel', () => {
     it('does not modify state if there is no id in params', () => {
       subject.methods.mergeModel(json, MAPPING_TYPES.USERS, { username: 'new' })

@@ -2,7 +2,6 @@
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as jsonReducer from '../../reducers/json'
-import { emptyPagination } from '../../components/streams/Paginator'
 
 const methods = {}
 
@@ -41,13 +40,9 @@ function _addOrUpdateComment(newState, action) {
       if (post.links && post.links.comments) {
         post.links.comments.ids.unshift(`${response.id}`)
       }
-      if (newState.pages[`/posts/${postId}/comments`]) {
-        newState.pages[`/posts/${postId}/comments`].ids.unshift(`${response.id}`)
-      } else {
-        newState.pages[`/posts/${postId}/comments`] = {
-          ids: [`${response.id}`], type: MAPPING_TYPES.COMMENTS, pagination: emptyPagination(),
-        }
-      }
+      jsonReducer.methods.appendPageId(
+        newState, `/posts/${postId}/comments`,
+        MAPPING_TYPES.COMMENTS, response.id)
       return methods.updateCommentsCount(newState, postId, 1)
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
       // add the comment to the linked array
