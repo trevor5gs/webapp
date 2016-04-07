@@ -62,7 +62,7 @@ function _appendPageId(newState, pageName, mappingType, id) {
       ids: [`${id}`], type: mappingType, pagination: emptyPagination(),
     }
   }
-  newState.pages[pageName] = page
+  set(newState, ['pages', pageName], page)
   return newState
 }
 methods.appendPageId = _appendPageId
