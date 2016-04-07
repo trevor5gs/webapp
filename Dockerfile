@@ -1,4 +1,4 @@
-FROM node:5.2
+FROM node:5.10.1
 
 # Set up working directory
 RUN mkdir /app
