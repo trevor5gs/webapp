@@ -36,7 +36,7 @@ const createBrowserStore = (history = browserHistory) => {
 const createServerStore = (history) => {
   const reduxRouterMiddleware = routerMiddleware(history)
   const store = compose(
-    applyMiddleware(thunk, uploader, reduxRouterMiddleware, requester, analytics),
+    applyMiddleware(thunk, uploader, reduxRouterMiddleware, requester),
   )(createStore)(reducer, {})
 
   return store
