@@ -164,7 +164,7 @@ class SignIn extends Component {
               tabIndex="2"
             />
             {failureMessage ? <p>{failureMessage}</p> : ''}
-            <FormButton disabled={ !isValid } tabIndex="3">Enter Ello</FormButton>
+            <FormButton disabled={ !isValid } tabIndex="3">Log in</FormButton>
           </form>
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>
