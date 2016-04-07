@@ -272,7 +272,7 @@ class PostTools extends Component {
             <span className="PostToolValue" >
               { numberToHuman(postRepostsCount, false) }
             </span>
-            <Hint>Reposted by</Hint>
+            <Hint className="RepostedByHint">Reposted by</Hint>
           </button>
         </span>
       )
