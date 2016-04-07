@@ -122,10 +122,9 @@ class SignIn extends Component {
   renderStatus(state) {
     return () => {
       if (state.status === STATUS.FAILURE) {
-        return <p>{state.message}</p>
+        return <p className="HoppyStatusMessage hasContent">{state.message}</p>
       }
-
-      return ''
+      return <p className="HoppyStatusMessage"><span /></p>
     }
   }
 
@@ -164,7 +163,7 @@ class SignIn extends Component {
               tabIndex="2"
             />
             {failureMessage ? <p>{failureMessage}</p> : ''}
-            <FormButton disabled={ !isValid } tabIndex="3">Enter Ello</FormButton>
+            <FormButton disabled={ !isValid } tabIndex="3">Log in</FormButton>
           </form>
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>

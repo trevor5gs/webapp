@@ -175,3 +175,13 @@ textarea.FormControlInput.asBoxControl
 [data-pathname^="/onboarding"] .FormControlStatus
   display: none
 
+.HoppyStatusMessage
+  transition: max-height $speed2 $ease, margin $speed2 $ease
+  overflow: hidden
+  margin: 0
+
+.HoppyStatusMessage.hasContent
+  transition-delay: 1s
+  max-height: rem(40)
+  margin: rem(10) 0
+
