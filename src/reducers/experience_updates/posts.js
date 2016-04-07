@@ -60,22 +60,18 @@ function _updatePostLoves(state, newState, action) {
   }
 
   const resultPath = jsonReducer.methods.pagesKey(action)
-  const existingResult = newState.pages[resultPath] ||
-    { type: 'users', ids: [], pagination: emptyPagination() }
-  const existingIds = existingResult.ids
-
   const currentUser = jsonReducer.methods.getCurrentUser(newState)
   if (currentUser) {
     if (idAdded) {
-      existingIds.unshift(`${currentUser.id}`)
+      jsonReducer.methods.appendPageId(
+        newState, resultPath,
+        MAPPING_TYPES.USERS, currentUser.id)
     } else {
-      const index = existingIds.indexOf(`${currentUser.id}`)
-      if (index !== -1) {
-        existingIds.splice(index, 1)
-      }
+      jsonReducer.methods.removePageId(
+        newState, resultPath,
+        MAPPING_TYPES.USERS, currentUser.id)
     }
   }
-  newState.pages[resultPath] = existingResult
 
   jsonReducer.methods.updateUserCount(newState, model.authorId, 'lovesCount', delta)
   jsonReducer.methods.mergeModel(
