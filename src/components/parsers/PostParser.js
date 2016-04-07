@@ -23,7 +23,7 @@ function postLoversDrawer(post) {
     <UserAvatars
       endpoint={ postLovers(post.id) }
       icon={ <HeartIcon /> }
-      key={ `userAvatarsLovers_${post.id}` }
+      key={ `userAvatarsLovers_${post.id}${post.lovesCount}` }
       post={ post }
       resultType="love"
     />
@@ -35,7 +35,7 @@ function postRepostersDrawer(post) {
     <UserAvatars
       endpoint={ postReposters(post.id) }
       icon={ <RepostIcon /> }
-      key={ `userAvatarsReposters_${post.id}` }
+      key={ `userAvatarsReposters_${post.id}${post.repostsCount}` }
       post={ post }
       resultType="repost"
     />
@@ -45,7 +45,7 @@ function postRepostersDrawer(post) {
 function commentStream(post, author) {
   return (
     <CommentStream
-      key={ `Comments_${post.id}_${post.commentsCount}` }
+      key={ `commentStream_${post.id}${post.commentsCount}` }
       post={ post }
       author={ author }
     />
@@ -173,6 +173,8 @@ class PostParser extends Component {
     isGridLayout: PropTypes.bool,
     isPostDetail: PropTypes.bool,
     isReposting: PropTypes.bool,
+    lovesCount: PropTypes.number,
+    repostsCount: PropTypes.number,
     post: PropTypes.object,
     postBody: PropTypes.array,
     showComments: PropTypes.bool,
@@ -191,16 +193,23 @@ class PostParser extends Component {
       isGridLayout,
       isPostDetail,
       isReposting,
+      lovesCount,
       post,
       postBody,
+      repostsCount,
+      showComments,
+      showLovers,
+      showReposters,
     } = this.props
     if (!post) { return null }
     setModels({ assets })
 
     const showEditor = (isEditing || isReposting) && postBody
-    const showLovers = !showEditor && !isGridLayout && this.props.showLovers
-    const showReposters = !showEditor && !isGridLayout && this.props.showReposters
-    const showComments = !showEditor && !isPostDetail && this.props.showComments
+    const reallyShowLovers = !showEditor && !isGridLayout && showLovers && lovesCount > 0
+    const reallyShowReposters = !showEditor && !isGridLayout && showReposters && repostsCount > 0
+    const reallyShowComments = !showEditor && !isPostDetail && showComments && commentsCount > 0
+
+    console.log('reallyShowReposters', reallyShowReposters)
 
     let postHeader
     if (isRepost(post)) {
@@ -217,10 +226,10 @@ class PostParser extends Component {
         { showEditor ?
           <Editor post={ post } /> :
           parsePost(post, author, currentUser, isGridLayout, isRepostAnimating)}
-        { showLovers ? postLoversDrawer(post) : null }
-        { showReposters ? postRepostersDrawer(post) : null }
-        { showComments ? <Editor post={ post } isComment /> : null }
-        { showComments && commentsCount > 0 ? commentStream(post, author, currentUser) : null }
+        { reallyShowLovers ? postLoversDrawer(post) : null }
+        { reallyShowReposters ? postRepostersDrawer(post) : null }
+        { reallyShowComments ? <Editor post={ post } isComment /> : null }
+        { reallyShowComments ? commentStream(post, author, currentUser) : null }
       </div>)
   }
 }
@@ -237,6 +246,8 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
     currentUser,
     isEditing: post.isEditing || false,
     isReposting: post.isReposting || false,
+    lovesCount: post.lovesCount,
+    repostsCount: post.repostsCount,
     showComments: post.showComments || false,
     showLovers: post.showLovers || false,
     showReposters: post.showReposters || false,
