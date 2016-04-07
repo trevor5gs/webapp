@@ -132,11 +132,7 @@ if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
       }
     }
     console.log('ELLO START URL', req.url, isLoggedOutPath)
-    if (isLoggedOutPath) {
-      renderFromServer(req, res)
-    } else {
-      res.send(indexStr)
-    }
+    renderFromServer(req, res)
   })
 } else {
   app.use((req, res) => {
