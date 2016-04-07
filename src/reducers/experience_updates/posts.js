@@ -90,6 +90,7 @@ methods.updatePostLoves = (state, newState, action) =>
 
 function _addOrUpdatePost(newState, action) {
   const { model, response } = action.payload
+
   const user = model ?
     newState[MAPPING_TYPES.USERS][model.authorId] :
     jsonReducer.methods.getCurrentUser(newState)
@@ -98,11 +99,16 @@ function _addOrUpdatePost(newState, action) {
     case ACTION_TYPES.POST.CREATE_SUCCESS:
       if (!newState[MAPPING_TYPES.POSTS]) { newState[MAPPING_TYPES.POSTS] = {} }
       newState[MAPPING_TYPES.POSTS][response.id] = response
-      if (newState.pages['/following']) {
-        newState.pages['/following'].ids.unshift(`${response.id}`)
-      }
+
+      jsonReducer.methods.appendPageId(
+        newState, '/following',
+        MAPPING_TYPES.POSTS, response.id)
+
       if (action.meta.repostId) {
         jsonReducer.methods.updatePostCount(newState, action.meta.repostId, 'repostsCount', 1)
+        jsonReducer.methods.appendPageId(
+          newState, `/posts/${action.meta.repostId}/repost`,
+          MAPPING_TYPES.USERS, user.id)
         jsonReducer.methods.mergeModel(
           newState,
           MAPPING_TYPES.POSTS,
@@ -111,6 +117,9 @@ function _addOrUpdatePost(newState, action) {
       }
       if (action.meta.repostedFromId) {
         jsonReducer.methods.updatePostCount(newState, action.meta.repostedFromId, 'repostsCount', 1)
+        jsonReducer.methods.appendPageId(
+          newState, `/posts/${action.meta.repostedFromId}/repost`,
+          MAPPING_TYPES.USERS, user.id)
         jsonReducer.methods.mergeModel(
           newState,
           MAPPING_TYPES.POSTS,
@@ -119,13 +128,9 @@ function _addOrUpdatePost(newState, action) {
       }
       if (user) {
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', 1)
-        if (newState.pages[`/${user.username}`]) {
-          newState.pages[`/${user.username}`].ids.unshift(`${response.id}`)
-        } else {
-          newState.pages[`/${user.username}`] = {
-            ids: [`${response.id}`], type: MAPPING_TYPES.POSTS, pagination: emptyPagination(),
-          }
-        }
+        jsonReducer.methods.appendPageId(
+          newState, `/${user.username}`,
+          MAPPING_TYPES.POSTS, response.id)
       }
       return newState
     case ACTION_TYPES.POST.DELETE_SUCCESS:
