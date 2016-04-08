@@ -564,8 +564,48 @@ class BlockCollection extends Component {
     )
   }
 
-  isLegitFileType(file) {
-    return (file && file.type && file.type.match(/^image\/(jpg|jpeg|gif|png|tiff|tif|bmp)/))
+  sendFileOrAlert(file, index) {
+    const { dispatch, editorId } = this.props
+    const fr = new FileReader()
+    let shouldSendToServer = false
+    fr.onloadend = (e) => {
+      const arr = (new Uint8Array(e.target.result)).subarray(0, 4)
+      let header = ''
+      for (const value of arr) {
+        header += value.toString(16)
+      }
+      if (/ffd8ff/.test(header)) {
+        shouldSendToServer = true // image/jpeg
+      } else if (/424D/.test(header)) {
+        shouldSendToServer = true // image/bmp
+      } else {
+        switch (header) {
+          case '47494638': // image/gif
+          case '89504e47': // image/png
+          case '49492a00': // image/tiff - little endian
+          case '4d4d002a': // image/tiff - big endian
+            shouldSendToServer = true
+            break
+          default:
+            shouldSendToServer = false
+            break
+        }
+      }
+      if (shouldSendToServer) {
+        dispatch(savePostImage(file, editorId, index))
+      // Test to make sure we have a file and file.type (real failure) Safari
+      // sometimes reports the length of the array as well.. wtf?
+      } else if (file && file.type) {
+        dispatch(openAlert(
+          <Dialog
+            title="Invalid file type"
+            body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
+            onClick={ bindActionCreators(closeAlert, dispatch) }
+          />
+        ))
+      }
+    }
+    fr.readAsArrayBuffer(file)
   }
 
   handleFiles = (e) => {
@@ -573,23 +613,9 @@ class BlockCollection extends Component {
   }
 
   acceptFiles(files) {
-    const { dispatch, editorId } = this.props
     for (const index in files) {
       if (files.hasOwnProperty(index)) {
-        const file = files[index]
-        if (this.isLegitFileType(file)) {
-          dispatch(savePostImage(file, editorId, index))
-        // Test to make sure we have a file and file.type (real failure) Safari
-        // sometimes reports the length of the array as well.. wtf?
-        } else if (file && file.type) {
-          dispatch(openAlert(
-            <Dialog
-              title="Invalid file type"
-              body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
-              onClick={ bindActionCreators(closeAlert, dispatch) }
-            />
-          ))
-        }
+        this.sendFileOrAlert(files[index], index)
       }
     }
   }
