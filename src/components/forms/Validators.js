@@ -103,7 +103,7 @@ export function getEmailStateFromServer({ availability, currentStatus }) {
   const full = suggestions.email && suggestions.email.full && suggestions.email.full.length ?
     suggestions.email.full :
     null
-  const message = full && full.length ? `Email - did you mean ${full}?` : ''
+  const message = full && full.length ? `Did you mean ${full}?` : 'That email is invalid'
   if (email && currentStatus !== STATUS.SUCCESS) {
     return { status: STATUS.SUCCESS, message }
   } else if (!email && currentStatus !== STATUS.FAILURE) {

@@ -6,7 +6,15 @@ export function profile(state = {}, action) {
   let assetType = null
   switch (action.type) {
     case PROFILE.AVAILABILITY_SUCCESS:
-      return { ...state, ...action.payload.response }
+      return {
+        ...state,
+        ...{
+          availability: {
+            original: action.meta.original,
+            ...action.payload.response.availability,
+          },
+        },
+      }
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
       return {}

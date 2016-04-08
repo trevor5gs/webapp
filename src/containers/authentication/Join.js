@@ -227,7 +227,6 @@ class Join extends Component {
               renderStatus={ this.renderStatus(emailState) }
               tabIndex="1"
             />
-            { this.renderStatus(emailState) }
             <UsernameControl
               classList={ boxControlClassNames }
               label="Username"
