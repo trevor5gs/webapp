@@ -271,6 +271,13 @@ class Settings extends Component {
     dispatch(closeModal())
   }
 
+  renderStatus(message) {
+    if (message) {
+      return () => <p>{ message }</p>
+    }
+    return null
+  }
+
   render() {
     const { blockedCount, dispatch, mutedCount, profile } = this.props
     const { emailState, passwordState, usernameState, showSaveMessage } = this.state
@@ -332,8 +339,9 @@ class Settings extends Component {
           >
             <UsernameControl
               classList={ boxControlClassNames }
-              label={ usernameState.message.length ? `${usernameState.message}` : 'Username' }
+              label="Username"
               onChange={ this.onChangeUsernameControl }
+              renderStatus={ this.renderStatus(usernameState.message) }
               status={ usernameState.status }
               suggestions={ usernameState.suggestions }
               tabIndex="1"
@@ -341,17 +349,19 @@ class Settings extends Component {
             />
             <EmailControl
               classList={ boxControlClassNames }
-              label={ emailState.message.length ? `${emailState.message}` : 'Email' }
+              label="Email"
               onChange={ this.onChangeEmailControl }
+              renderStatus={ this.renderStatus(emailState.message) }
               status={ emailState.status }
               tabIndex="2"
               text={ profile.email }
             />
             <PasswordControl
               classList={ boxControlClassNames }
-              label={ `Password ${passwordState.message}` }
+              label="Password"
               onChange={ this.onChangePasswordControl }
               placeholder="Set a new password"
+              renderStatus={ this.renderStatus(passwordState.message) }
               ref="newPasswordControl"
               status={ passwordState.status }
               tabIndex="3"
