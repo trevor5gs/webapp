@@ -31,13 +31,16 @@
   background-color: #d8d8d8
   border: 1px solid #d8d8d8
   color: black
+.FormControlInput.asBoxControl.onWhite
+  background-color: white
+  border: 1px solid #ccc
 .FormControlInput.asBoxControl:focus
   background-color: white
   border-color: white
 .FormControlInput.asBoxControl.onWhite:focus
-  background-color: #666
-  border-color: #666
-  color: white
+  background-color: #ccc
+  border-color: #ccc
+  color: black
 
 .hasValue:not(.isInitialValue) > .FormControlInput
   border-color: black
@@ -46,9 +49,9 @@
   background-color: white
   border-color: white
 .hasValue:not(.isInitialValue) > .FormControlInput.asBoxControl.onWhite
-  background-color: #666
-  border-color: #666
-  color: white
+  background-color: #ccc
+  border-color: #ccc
+  color: black
 
 .isFailing > .FormControlInput,
 .isFailing > .FormControlInput.asBoxControl,
