@@ -250,11 +250,6 @@ class Navbar extends Component {
     })
   }
 
-  onClickLogInButton = (e) => {
-    e.preventDefault()
-    document.location.href = ENV.REDIRECT_URI + e.target.pathname
-  }
-
   onDragOverStreamLink = (e) => {
     e.preventDefault()
     e.target.classList.add('hasDragOver')
