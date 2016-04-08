@@ -162,7 +162,7 @@ class SignIn extends Component {
               renderStatus={ this.renderStatus(passwordState) }
               tabIndex="2"
             />
-            {failureMessage ? <p>{failureMessage}</p> : ''}
+            {failureMessage ? <p>{failureMessage}</p> : null}
             <FormButton disabled={ !isValid } tabIndex="3">Log in</FormButton>
           </form>
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
