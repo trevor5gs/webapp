@@ -16,10 +16,12 @@ class Cover extends Component {
     coverImage: PropTypes.object,
     isModifiable: PropTypes.bool,
     modifiers: PropTypes.string,
+    useGif: PropTypes.bool,
   }
 
   static defaultProps = {
     modifiers: '',
+    useGif: false,
   }
 
   componentWillMount() {
@@ -98,14 +100,21 @@ class Cover extends Component {
   }
 
   getCoverSource(props = this.props) {
-    const { coverImage } = props
+    const { coverImage, useGif } = props
     if (!coverImage) {
       return ''
     } else if (coverImage.tmp && coverImage.tmp.url) {
       return coverImage.tmp.url
     }
     const { imageSize } = this.state
+    if (useGif && this.isGif()) {
+      return coverImage.original.url
+    }
     return coverImage[imageSize] ? coverImage[imageSize].url : null
+  }
+
+  isGif() {
+    return /gif$/.test(this.props.coverImage.original.url)
   }
 
   createLoader() {

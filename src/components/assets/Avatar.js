@@ -18,15 +18,17 @@ class Avatar extends Component {
     priority: PropTypes.string,
     size: PropTypes.string,
     sources: PropTypes.object,
+    to: PropTypes.string,
+    useGif: PropTypes.bool,
     userId: PropTypes.string,
     username: PropTypes.string,
-    to: PropTypes.string,
   }
 
   static defaultProps = {
     classList: '',
     isModifiable: false,
     size: 'regular',
+    useGif: false,
   }
 
   componentWillMount() {
@@ -84,13 +86,20 @@ class Avatar extends Component {
   }
 
   getAvatarSource(props = this.props) {
-    const { sources, size } = props
+    const { sources, size, useGif } = props
     if (!sources) {
       return ''
     } else if (sources.tmp && sources.tmp.url) {
       return sources.tmp.url
     }
+    if (useGif && this.isGif()) {
+      return sources.original.url
+    }
     return sources[size] ? sources[size].url : null
+  }
+
+  isGif() {
+    return /gif$/.test(this.props.sources.original.url)
   }
 
   createLoader() {
