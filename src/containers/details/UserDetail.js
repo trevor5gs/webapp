@@ -148,6 +148,7 @@ class UserDetail extends Component {
             isModifiable={ user.relationshipPriority === 'self' }
             coverImage={ user.coverImage }
             key={ `userDetailCover_${user.id}` }
+            useGif
           />
         )
       }
@@ -157,6 +158,7 @@ class UserDetail extends Component {
           key={ `userList_${user.id}` }
           showBlockMuteButton
           uploader={ user.relationshipPriority === 'self' && this.renderAvatarUploader() }
+          useGif
           user={ user }
         />
       )

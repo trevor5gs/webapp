@@ -23,6 +23,7 @@ class UserList extends Component {
       PropTypes.object,
       PropTypes.bool,
     ]),
+    useGif: PropTypes.bool,
     user: PropTypes.shape({
     }).isRequired,
   }
@@ -30,6 +31,7 @@ class UserList extends Component {
   static defaultProps = {
     classList: '',
     showBlockMuteButton: false,
+    useGif: false,
   }
 
   shouldComponentUpdate(nextProps) {
@@ -47,7 +49,8 @@ class UserList extends Component {
   }
 
   render() {
-    const { classList, relationshipPriority, user, uploader, showBlockMuteButton } = this.props
+    const { classList, relationshipPriority, useGif,
+      user, uploader, showBlockMuteButton } = this.props
     const userPath = `/${user.username}`
     const isModifiable = uploader ? true : undefined
     return (
@@ -59,6 +62,7 @@ class UserList extends Component {
           size="large"
           sources={ user.avatar }
           to={ isModifiable ? null : userPath }
+          useGif={ useGif }
           userId={ !isModifiable ? `${user.id}` : null }
           username={ !isModifiable ? user.username : null }
         />
