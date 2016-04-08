@@ -3,7 +3,7 @@
 require('dotenv').load()
 global.ENV = JSON.stringify(require('../env'))
 
-import React from 'react/addons'
+import React from 'react'
 import jsdom from 'mocha-jsdom'
 import chai, { expect } from 'chai'
 import sinon from 'sinon'
@@ -14,7 +14,8 @@ export { expect }
 export { React as React }
 export { clearJSON, json, stub } from './stubs'
 
-export const TestUtils = React.addons.TestUtils
+import TestUtils from 'react-addons-test-utils'
+export { TestUtils }
 
 // create a js document
 export function jsdomReact() {
