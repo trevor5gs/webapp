@@ -53,15 +53,27 @@ const routes = store => {
     }
   }
 
+  const deauthenticate = (route) =>
+    ({
+      ...route,
+      onEnter(nextState, replace) {
+        const {
+          authentication: { isLoggedIn },
+          gui: { currentStream },
+        } = store.getState()
+        if (isLoggedIn) {
+          replace({ pathname: currentStream, state: nextState })
+        }
+      },
+    })
+
   const indexRoute = {
     getComponents: getDiscoverComponents,
-
     onEnter(nextState, replace) {
       const {
         authentication: { isLoggedIn },
         gui: { currentStream },
       } = store.getState()
-
       if (isLoggedIn) {
         replace({ pathname: currentStream, state: nextState })
       }
@@ -77,7 +89,7 @@ const routes = store => {
       childRoutes: [
         WTFRoute,
         PostDetailRoute,
-        ...AuthenticationRoutes,
+        ...AuthenticationRoutes.map(route => deauthenticate(route)),
         discoverRoute(store),
         exploreRoute(store),
         ...StreamsRoutes.map(route => authenticate(route)),
@@ -94,3 +106,4 @@ const routes = store => {
 }
 
 export default routes
+
