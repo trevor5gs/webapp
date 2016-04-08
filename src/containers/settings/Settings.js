@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { push, replace } from 'react-router-redux'
 import classNames from 'classnames'
-import { debounce, isEmpty } from 'lodash'
+import { debounce, isEmpty, get } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
 import { openModal, closeModal, openAlert, closeAlert } from '../../actions/modals'
@@ -79,10 +79,12 @@ class Settings extends Component {
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
     if (!availability) { return }
-    if (availability.hasOwnProperty('username')) {
+    const prevUsername = get(availability, 'original.username', this.usernameValue)
+    const prevEmail = get(availability, 'original.email', this.emailValue)
+    if (availability.hasOwnProperty('username') && prevUsername === this.usernameValue) {
       this.validateUsernameResponse(availability)
     }
-    if (availability.hasOwnProperty('email')) {
+    if (availability.hasOwnProperty('email') && prevEmail === this.emailValue) {
       this.validateEmailResponse(availability)
     }
   }

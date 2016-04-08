@@ -77,7 +77,7 @@ export function availableToggles() {
 export function checkAvailability(vo) {
   return {
     type: PROFILE.AVAILABILITY,
-    meta: {},
+    meta: { original: vo },
     payload: {
       method: 'POST',
       body: JSON.stringify(vo),
