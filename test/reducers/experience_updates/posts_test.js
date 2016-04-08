@@ -30,7 +30,7 @@ describe('posts experience update', () => {
   })
 
   describe('#updatePostLoves', () => {
-    it('returns original state if action is not love request or fail', () => {
+    it('returns original state if action is not love success or fail', () => {
       expect(subject.updatePostLoves(
         { state: 'yo' },
         json,
@@ -38,12 +38,12 @@ describe('posts experience update', () => {
       )).to.deep.equal({ state: 'yo' })
     })
 
-    context('on love request', () => {
+    context('on love success', () => {
       it('handles POST', () => {
         const post = json.posts['1']
         expect(post.lovesCount).to.equal(0)
         expect(post.loved).to.be.false
-        const action = { type: ACTION_TYPES.POST.LOVE_REQUEST }
+        const action = { type: ACTION_TYPES.POST.LOVE_SUCCESS }
         action.payload = { method: 'POST', model: post }
         action.meta = { resultKey: 'love', updateKey: 'post' }
 
@@ -60,7 +60,7 @@ describe('posts experience update', () => {
         const post = json.posts['1']
         expect(post.lovesCount).to.equal(0)
         expect(post.loved).to.be.false
-        const action = { type: ACTION_TYPES.POST.LOVE_REQUEST }
+        const action = { type: ACTION_TYPES.POST.LOVE_SUCCESS }
         action.payload = { method: 'DELETE', model: post }
         action.meta = { resultKey: 'love', updateKey: 'post' }
 
