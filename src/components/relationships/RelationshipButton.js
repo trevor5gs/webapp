@@ -68,7 +68,7 @@ class RelationshipButton extends Component {
         data-priority={ priority }
       >
         { icon }
-        <span>{ label }</span>
+        <span className="RelationshipButtonLabel">{ label }</span>
       </button>
     )
   }
@@ -116,7 +116,8 @@ class RelationshipButton extends Component {
 
   renderAsNoise() {
     const icon = this.props.classList === 'inHeader' ? <HeaderPlusIcon /> : <MiniCheckIcon />
-    return this.renderAsToggleButton('Starred', icon)
+    const label = this.props.classList === 'inHeader' ? 'Follow' : 'Starred'
+    return this.renderAsToggleButton(label, icon)
   }
 
   renderAsMute() {

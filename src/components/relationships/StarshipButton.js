@@ -59,6 +59,7 @@ class StarshipButton extends Component {
         data-priority={ priority }
       >
         <StarIcon />
+        <span className="StarshipButtonLabel">{ priority === 'noise' ? 'Starred' : 'Star' }</span>
       </button>
     )
   }

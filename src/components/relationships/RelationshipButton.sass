@@ -73,3 +73,26 @@
   fill: #535353
   stroke: #535353
 
+@media(min-width: #{$break-2})
+  // Hints
+  .no-touch .RelationshipButton.inHeader
+    font-size: 0.75rem
+    overflow: visible
+  .no-touch .RelationshipButton.inHeader .RelationshipButtonLabel
+    transition: opacity $speed ease, visibility 0s ease $speed
+    visibility: hidden
+    position: absolute
+    top: rem(-25)
+    left: -50%
+    height: rem(22)
+    padding: 0 rem(11)
+    line-height: rem(22)
+    border-radius: rem(11)
+    opacity: 0
+    white-space: nowrap
+    background-color: black
+  .no-touch .RelationshipButton.inHeader:hover .RelationshipButtonLabel
+    transition-delay: 0.5s, 0s
+    visibility: visible
+    opacity: 1
+
