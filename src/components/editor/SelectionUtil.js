@@ -15,12 +15,11 @@ export function getWordFromSelection() {
   let index = endIndex
   while (index > -1) {
     const letter = wordArr[index]
-    const prevLetter = index > 0 ? wordArr[index - 1] : null
     index--
     if (!letter) break
     if (letter.match(/\s/)) {
       break
-    } else if (letter.match(/:/) && (!prevLetter || prevLetter.match(/(\s|:)+/))) {
+    } else if (letter.match(/:/)) {
       letters.unshift(letter)
       break
     } else {
