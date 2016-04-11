@@ -31,9 +31,19 @@ class ImageRegion extends Component {
   }
 
   componentWillMount() {
+    const { assets, content } = this.props
+    let scale = null
+    const assetMatch = content.url && content.url.match(/asset\/attachment\/(\d+)\//)
+    if (assetMatch && assets) {
+      const assetId = assetMatch[1]
+      const asset = this.props.assets[assetId] || this.props.assets[parseInt(assetId, 10)]
+      const imageHeight = parseInt(_.get(asset, 'attachment.original.metadata.height'), 10)
+      scale = GUI.innerHeight / imageHeight
+    }
+
     this.state = {
       marginBottom: null,
-      scale: null,
+      scale,
       status: STATUS.REQUEST,
       columnWidth: GUI.columnWidth,
       contentWidth: GUI.contentWidth,
@@ -242,15 +252,8 @@ class ImageRegion extends Component {
   }
 
   renderLegacyImageAttachment() {
-    const { content, assets } = this.props
+    const { content } = this.props
     const attrs = { src: content.url }
-    const assetMatch = content.url && content.url.match(/asset\/attachment\/(\d+)\//)
-    if (assetMatch && assets) {
-      const assetId = assetMatch[1]
-      const asset = this.props.assets[assetId] || this.props.assets[parseInt(assetId, 10)]
-      attrs.width = _.get(asset, 'attachment.optimized.metadata.width')
-      attrs.height = _.get(asset, 'attachment.optimized.metadata.height')
-    }
     return (
       <img
         alt={ content.alt ? content.alt.replace('.jpg', '') : null }
