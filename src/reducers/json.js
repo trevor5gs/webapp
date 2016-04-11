@@ -242,11 +242,21 @@ function _updateResult(response, newState, action) {
   } else if (existingResult &&
              (typeof existingResult.ids[0] === 'string' || typeof existingResult.ids[0] === 'number') &&
              existingResult.ids[0] !== result.ids[0]) {
-    const existingIndex = result.ids.indexOf(existingResult.ids[0])
     // only do this for top level streams, nested ones like lovers/reposters
     // should just update with the new results
-    if (hasLoadedFirstStream && !resultKey && existingIndex > 0 && !pathname.match(/\/(find|search)/)) {
-      existingResult.newIds = result.ids.slice(0, existingIndex)
+    if (hasLoadedFirstStream && !resultKey && !pathname.match(/\/(find|search)/)) {
+      let existingIndex = -1
+      if (existingResult.newIds && existingResult.newIds.length) {
+        existingIndex = result.ids.indexOf(existingResult.newIds[0])
+        if (existingIndex > 0) {
+          existingResult.newIds = result.ids.slice(0, existingIndex).concat(existingResult.newIds)
+        }
+      } else {
+        existingIndex = result.ids.indexOf(existingResult.ids[0])
+        if (existingIndex > 0) {
+          existingResult.newIds = result.ids.slice(0, existingIndex)
+        }
+      }
     } else {
       // this condition should only happen if there was an existingResult
       // and the new result is more than one page away from the existingResult
