@@ -207,7 +207,7 @@ class PostParser extends Component {
     const showEditor = (isEditing || isReposting) && postBody
     const reallyShowLovers = !showEditor && !isGridLayout && showLovers && lovesCount > 0
     const reallyShowReposters = !showEditor && !isGridLayout && showReposters && repostsCount > 0
-    const reallyShowComments = !showEditor && !isPostDetail && showComments && commentsCount > 0
+    const reallyShowComments = !showEditor && !isPostDetail && showComments
 
     let postHeader
     if (isRepost(post)) {
@@ -227,7 +227,11 @@ class PostParser extends Component {
         { reallyShowLovers ? postLoversDrawer(post) : null }
         { reallyShowReposters ? postRepostersDrawer(post) : null }
         { reallyShowComments ? <Editor post={ post } isComment /> : null }
-        { reallyShowComments ? commentStream(post, author, currentUser) : null }
+        {
+          reallyShowComments && commentsCount > 0 ?
+            commentStream(post, author, currentUser) :
+            null
+        }
       </div>)
   }
 }
