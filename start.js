@@ -2,6 +2,7 @@ var pm2 = require('pm2')
 
 var instances = process.env.WEB_CONCURRENCY || 2
 var maxMemory = process.env.WEB_MEMORY || 400
+var killTimeout = process.env.KILL_TIMEOUT || 1600
 
 pm2.connect(true, function () {
   pm2.start({
@@ -9,6 +10,7 @@ pm2.connect(true, function () {
     name: 'web',
     exec_mode: 'cluster',
     instances,
+    kill_timeout: killTimeout,
     max_memory_restart: maxMemory + 'M',
     env: {
       "NODE_ENV": "production",
