@@ -62,8 +62,8 @@ fs.readFile(path.join(__dirname, './public/index.html'), 'utf-8', (err, data) =>
 addOauthRoute(app)
 
 // Assets
-app.use(express.static('public'))
-app.use('/static', express.static('public/static'))
+app.use(express.static('public', { maxAge: '1y' }))
+app.use('/static', express.static('public/static', { maxAge: '1y' }))
 
 // Return promises for initial loads
 function preRender(renderProps, store) {
@@ -127,6 +127,8 @@ if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
       }
     }
     console.log('ELLO START URL', req.url, isLoggedInPath)
+    res.setHeader('Cache-Control', 'public, max-age=60');
+    res.setHeader('Expires', new Date(Date.now() + 1000 * 60).toUTCString());
     if (isLoggedInPath) {
       res.send(indexStr)
     } else {

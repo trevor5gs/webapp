@@ -35,6 +35,8 @@ export default function addOauthRoute(app) {
     })
 
   app.get('/api/webapp-token', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
+    res.setHeader('Expires', '0')
     if (!token || token.expired()) {
       oauth2.client
         .getToken(tokenConfig)
