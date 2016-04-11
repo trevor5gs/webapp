@@ -4,7 +4,7 @@ import { ArrowIcon } from '../navbar/NavbarIcons'
 const NavbarMorePostsButton = ({ onClick }) =>
   <button onClick={ onClick } className="NavbarMorePostsButton">
     <ArrowIcon />
-    <span>More Posts</span>
+    <span>New Posts</span>
   </button>
 
 NavbarMorePostsButton.propTypes = {
