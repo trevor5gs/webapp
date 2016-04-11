@@ -61,10 +61,14 @@ class PostTools extends Component {
   }
 
   onClickToggleComments = () => {
-    const { dispatch, post, postShowComments } = this.props
-    const nextShowComments = !postShowComments
-    this.setState({ isCommentsActive: nextShowComments })
-    dispatch(postActions.toggleComments(post, nextShowComments))
+    const { author, dispatch, isLoggedIn, post, postShowComments } = this.props
+    if (isLoggedIn) {
+      const nextShowComments = !postShowComments
+      this.setState({ isCommentsActive: nextShowComments })
+      dispatch(postActions.toggleComments(post, nextShowComments))
+    } else {
+      dispatch(push(`/${author.username}/post/${post.token}`))
+    }
   }
 
   onClickLovePost = () => {
