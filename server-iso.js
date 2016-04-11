@@ -112,29 +112,25 @@ function renderFromServer(req, res) {
   })
 }
 
-const loggedOutPaths = {
-  explore: /^\/explore/,
-  explore_recent: /^\/explore\/recent/,
-  explore_trending: /^\/explore\/trending/,
-  find: /^\/find$/,
-  forgot_password: /^\/forgot-password/,
-  signup: /^\/signup/,
+const loggedInPaths = {
+  following: /^\/following/,
+  settings: /^\/settings/,
 }
 
 if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
   app.use((req, res) => {
-    let isLoggedOutPath = false
-    for (const re in loggedOutPaths) {
-      if (req.url.match(loggedOutPaths[re])) {
-        isLoggedOutPath = true
+    let isLoggedInPath = false
+    for (const re in loggedInPaths) {
+      if (req.url.match(loggedInPaths[re])) {
+        isLoggedInPath = true
         break
       }
     }
-    console.log('ELLO START URL', req.url, isLoggedOutPath)
-    if (isLoggedOutPath) {
-      renderFromServer(req, res)
-    } else {
+    console.log('ELLO START URL', req.url, isLoggedInPath)
+    if (isLoggedInPath) {
       res.send(indexStr)
+    } else {
+      renderFromServer(req, res)
     }
   })
 } else {
@@ -146,20 +142,19 @@ if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
 const port = process.env.PORT || 6660
 const workers = process.env.WEB_CONCURRENCY || 1;
 const start = (workerId) => {
-  app.listen(port, (err) => {
+  const server = app.listen(port, (err) => {
     if (err) {
       console.log(err)
       return
     }
     console.log('Worker ' + workerId + ' listening at http://localhost:' + port)
   })
+
+  process.on('SIGINT', () => {
+    server.close(() => {
+      process.exit(0)
+    })
+  })
 }
 
-if (workers > 1) {
-  throng(start, {
-    workers: workers,
-    lifetime: Infinity,
-  })
-} else {
-  start(1)
-}
+start(1)
