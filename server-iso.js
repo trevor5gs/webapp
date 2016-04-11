@@ -141,8 +141,10 @@ if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
 
 const port = process.env.PORT || 6660
 const workers = process.env.WEB_CONCURRENCY || 1;
+const backlog = process.env.BACKLOG || 511
+
 const start = (workerId) => {
-  const server = app.listen(port, (err) => {
+  const server = app.listen(port, backlog, (err) => {
     if (err) {
       console.log(err)
       return
