@@ -112,26 +112,26 @@ function renderFromServer(req, res) {
   })
 }
 
-const loggedOutPaths = {
-  explore: /^\/explore/,
-  explore_recent: /^\/explore\/recent/,
-  explore_trending: /^\/explore\/trending/,
-  find: /^\/find$/,
-  forgot_password: /^\/forgot-password/,
-  signup: /^\/signup/,
+const loggedInPaths = {
+  following: /^\/following/,
+  settings: /^\/settings/,
 }
 
 if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
   app.use((req, res) => {
-    let isLoggedOutPath = false
-    for (const re in loggedOutPaths) {
-      if (req.url.match(loggedOutPaths[re])) {
-        isLoggedOutPath = true
+    let isLoggedInPath = false
+    for (const re in loggedInPaths) {
+      if (req.url.match(loggedInPaths[re])) {
+        isLoggedInPath = true
         break
       }
     }
-    console.log('ELLO START URL', req.url, isLoggedOutPath)
-    renderFromServer(req, res)
+    console.log('ELLO START URL', req.url, isLoggedInPath)
+    if (isLoggedInPath) {
+      res.send(indexStr)
+    } else {
+      renderFromServer(req, res)
+    }
   })
 } else {
   app.use((req, res) => {
