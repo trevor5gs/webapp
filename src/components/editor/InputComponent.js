@@ -44,9 +44,20 @@ function toggleTools(input) {
   }
 }
 
+function selectionIsText() {
+  let parent = window.getSelection().focusNode
+  while (parent) {
+    if (parent.classList && parent.classList.contains('text')) {
+      return true
+    }
+    parent = parent.parentElement
+  }
+  return false
+}
+
 function onKeyUp(e) {
   // Handles text tools show/hide and position
-  if (!e.target.classList || !e.target.classList.contains('text')) { return }
+  if (!selectionIsText()) { return }
   toggleTools(window.getSelection().toString())
   // Handles autocompletion stuff
   // check for autocompletable strings: currently usernames and emoji codes
@@ -97,7 +108,7 @@ methods.onKeyDown = (e) =>
 function onClick(e) {
   callMethod('onHideCompleter')
   const classList = e.target.classList
-  if (classList.contains('text')) {
+  if (selectionIsText()) {
     requestAnimationFrame(() => {
       onKeyUp(e)
     })
@@ -109,12 +120,12 @@ function onClick(e) {
 }
 
 function addListeners() {
-  document.addEventListener('click', onClick)
+  document.addEventListener('mouseup', onClick)
   addKeyObject(methods)
 }
 
 function removeListeners() {
-  document.removeEventListener('click', onClick)
+  document.removeEventListener('mouseup', onClick)
   removeKeyObject(methods)
 }
 
