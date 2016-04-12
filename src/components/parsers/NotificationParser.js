@@ -65,8 +65,9 @@ function parseSummaryForCommentNotification(post, comment, path) {
 function commentNotification(comment, createdAt) {
   const author = getLinkObject(comment, 'author', models)
   const parentPost = getLinkObject(comment, 'parentPost', models)
-  if (!author || !parentPost) { return null }
-  const activityPath = getActivityPath(author, parentPost)
+  const parentPostAuthor = models[MAPPING_TYPES.USERS][parentPost.authorId]
+  if (!author || !parentPost || !parentPostAuthor) { return null }
+  const activityPath = getActivityPath(parentPostAuthor, parentPost)
   const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath)
   return (
     <Notification
@@ -89,8 +90,9 @@ function commentNotification(comment, createdAt) {
 function commentMentionNotification(comment, createdAt) {
   const author = getLinkObject(comment, 'author', models)
   const parentPost = getLinkObject(comment, 'parentPost', models)
-  if (!author || !parentPost) { return null }
-  const activityPath = getActivityPath(author, parentPost)
+  const parentPostAuthor = models[MAPPING_TYPES.USERS][parentPost.authorId]
+  if (!author || !parentPost || !parentPostAuthor) { return null }
+  const activityPath = getActivityPath(parentPostAuthor, parentPost)
   const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath)
   return (
     <Notification

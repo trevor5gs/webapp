@@ -260,7 +260,7 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
   if (isRepost(post)) {
     newProps = {
       ...newProps,
-      authorLinkObject: post.repostAuthor || getLinkObject(post, 'repostAuthor', json),
+      authorLinkObject: post.repostAuthor || getLinkObject(post, 'repostAuthor', json) || author,
       sourceLinkObject: getLinkObject(post, 'repostedSource', json),
     }
   }
