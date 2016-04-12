@@ -93,7 +93,9 @@ export class StreamComponent extends Component {
 
   componentWillMount() {
     const { action, dispatch, omnibar } = this.props
-    if (action) { dispatch(action) }
+    if (typeof window !== 'undefined' && action) {
+      dispatch(action)
+    }
 
     let browserListen
     if (browserHistory) {
@@ -405,7 +407,7 @@ export class StreamComponent extends Component {
             renderObj,
             json,
             currentUser,
-            gridColumnCount)
+            gridColumnCount || 2)
         }
         { this.props.children }
         <Paginator
