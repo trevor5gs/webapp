@@ -1,5 +1,7 @@
-export const isAndroid = () =>
-  !(navigator.userAgent.match(/Android/i) === null)
+export const isAndroid = () => {
+  if (typeof window === 'undefined') { return false }
+  return !(navigator.userAgent.match(/Android/i) === null)
+}
 
 export const hideSoftKeyboard = () => {
   if (document.activeElement) {
