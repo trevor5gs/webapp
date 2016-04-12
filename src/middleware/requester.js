@@ -257,12 +257,24 @@ export const requester = store => next => action => {
             .catch(error => {
               if (error.response) {
                 delete runningFetches[error.response.url]
+                if (error.response.status === 401 && state.authentication.isLoggedIn && state.authentication.refreshToken) {
+                  store.dispatch(refreshAuthenticationToken(state.authentication.refreshToken))
+                }
+                const contentType = error.response.headers.get('content-type')
+                if (contentType && contentType.indexOf('application/json') > -1) {
+                  error.response.json().then((json) => {
+                    payload.response = camelizeKeys(json)
+                    store.dispatch({ error, meta, payload, type: FAILURE })
+                    fireFailureAction()
+                  })
+                } else {
+                  store.dispatch({ error, meta, payload, type: FAILURE })
+                  fireFailureAction()
+                }
+              } else {
+                store.dispatch({ error, meta, payload, type: FAILURE })
+                fireFailureAction()
               }
-              if (error.response.status === 401 && state.authentication.isLoggedIn && state.authentication.refreshToken) {
-                store.dispatch(refreshAuthenticationToken(state.authentication.refreshToken))
-              }
-              store.dispatch({ error, meta, payload, type: FAILURE })
-              fireFailureAction()
               return false
             })
       })
