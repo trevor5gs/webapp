@@ -7,7 +7,6 @@ import { loadProfile } from '../actions/profile'
 import * as ACTION_TYPES from '../constants/action_types'
 import Analytics from '../components/analytics/Analytics'
 import DevTools from '../components/devtools/DevTools'
-import Footer from '../components/footer/Footer'
 import { AppHelmet } from '../components/helmets/AppHelmet'
 import Modal from '../components/modals/Modal'
 import Navbar from '../components/navbar/Navbar'
@@ -18,6 +17,7 @@ import { addInputObject, removeInputObject } from '../components/editor/InputCom
 import { addFeatureDetection } from '../components/interface/Viewport'
 import { addGlobalDrag, removeGlobalDrag } from '../components/interface/GlobalDrag'
 import { replaceWordFromSelection } from '../components/editor/SelectionUtil'
+import FooterContainer from '../containers/FooterContainer'
 
 class App extends Component {
 
@@ -162,7 +162,7 @@ class App extends Component {
           null
         }
         <Navbar />
-        <Footer username={ params.username } />
+        <FooterContainer username={ params.username } />
         <Modal />
         <DevTools />
         <Analytics isLoggedIn={ isLoggedIn } />
