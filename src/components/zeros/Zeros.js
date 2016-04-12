@@ -86,7 +86,7 @@ export const ZeroStateFirstPost = () =>
     <h2 className="ZeroStateTitle">
       It doesn’t look like you’ve posted yet, why don’t you give it a shot.
     </h2>
-    <Editor autoPopulate="Ello World!, My first post on :ello:!" />
+    <Editor autoPopulate="Ello World! My first post on :ello:!" />
   </ZeroState>
 
 ZeroStateFirstPost.propTypes = {
