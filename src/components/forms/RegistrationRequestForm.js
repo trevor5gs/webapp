@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { debounce } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { requestInvite } from '../../actions/profile'
 import FormButton from '../forms/FormButton'
@@ -17,10 +18,13 @@ class RegistrationRequestForm extends Component {
 
   componentWillMount() {
     this.state = {
+      showEmailError: false,
       formStatus: STATUS.INDETERMINATE,
       emailState: { status: STATUS.INDETERMINATE, message: '' },
     }
     this.emailValue = ''
+
+    this.delayedShowEmailError = debounce(this.delayedShowEmailError, 1000)
   }
 
   componentDidMount() {
@@ -41,6 +45,8 @@ class RegistrationRequestForm extends Component {
   }
 
   onChangeEmailControl = ({ email }) => {
+    this.setState({ showEmailError: false })
+    this.delayedShowEmailError()
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -63,6 +69,10 @@ class RegistrationRequestForm extends Component {
     this.setState({ formStatus: STATUS.SUBMITTED })
   }
 
+  delayedShowEmailError = () => {
+    this.setState({ showEmailError: true })
+  }
+
   renderSubmitted() {
     return (
       <div className="RegistrationSuccess">
@@ -74,7 +84,7 @@ class RegistrationRequestForm extends Component {
   }
 
   renderForm() {
-    const { emailState } = this.state
+    const { emailState, showEmailError } = this.state
     const isValid = isFormValid([emailState])
     return (
       <div>
@@ -96,7 +106,7 @@ class RegistrationRequestForm extends Component {
             onFocus={ this.onFocusControl }
             tabIndex="1"
           />
-          { emailState.status !== STATUS.INDETERMINATE ?
+          { (showEmailError && emailState.status !== STATUS.INDETERMINATE) ?
             <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
             <p className="HoppyStatusMessage"><span /></p>
           }
