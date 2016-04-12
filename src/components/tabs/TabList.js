@@ -42,6 +42,7 @@ export const TabListButtons = ({ activeType, className, onTabClick, tabClasses, 
         className={ classNames(tabClasses, 'TabButton', { active: tab.type === activeType }) }
         key={ `TabButton-${tab.type}` }
         onClick={ () => { onTabClick({ type: tab.type }) } }
+        type="button"
       >
         { tab.children }
       </button>
