@@ -3,7 +3,7 @@ import RegistrationRequestForm from '../../components/forms/RegistrationRequestF
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 const RegistrationRequestDialog = () =>
-  <div className="FormDialog">
+  <div className="AuthenticationFormDialog">
     <RegistrationRequestForm />
     <AppleStoreLink />
   </div>
