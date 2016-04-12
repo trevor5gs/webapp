@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
@@ -13,6 +14,10 @@ class FooterContainer extends Component {
     isGridMode: PropTypes.bool.isRequired,
     isOffsetLayout: PropTypes.bool.isRequired,
     isPaginatoring: PropTypes.bool,
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   // TODO: Should just dispatch a scrollToTop action and let some other object
