@@ -69,7 +69,7 @@ export const ERROR_MESSAGES = {
     INVALID: 'That code is invalid. Please try again.',
   },
   PASSWORD: {
-    TOO_SHORT: 'must be at least 8 characters.',
+    TOO_SHORT: 'Password must be at least 8 characters.',
   },
   USERNAME: {
     EXISTS: 'Username already exists. Please try a new one. You can change your username at any time',

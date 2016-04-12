@@ -1,8 +1,7 @@
 /* eslint-disable max-len */
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { debounce } from 'lodash'
-import { random } from 'lodash'
+import { random, debounce } from 'lodash'
 import { replace } from 'react-router-redux'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
@@ -39,6 +38,10 @@ class Join extends Component {
     const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
     this.state = {
+      showInvitationError: false,
+      showEmailError: false,
+      showPasswordError: false,
+      showUsernameError: false,
       featuredUser: userlist[index],
       invitationCodeState: { status: STATUS.INDETERMINATE, message: '' },
       emailState: { status: STATUS.INDETERMINATE, message: '' },
@@ -49,6 +52,12 @@ class Join extends Component {
     this.emailValue = ''
     this.usernameValue = ''
     this.passwordValue = ''
+
+    this.delayedShowInvitationError = debounce(this.delayedShowInvitationError, 1000)
+    this.delayedShowEmailError = debounce(this.delayedShowEmailError, 1000)
+    this.delayedShowUsernameError = debounce(this.delayedShowUsernameError, 1000)
+    this.delayedShowPasswordError = debounce(this.delayedShowPasswordError, 1000)
+
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
     if (invitationCode) {
       this.onChangeInvitationCodeControl({ invitationCode })
@@ -72,6 +81,8 @@ class Join extends Component {
   }
 
   onChangeInvitationCodeControl = ({ invitationCode }) => {
+    this.setState({ showInvitationError: false })
+    this.delayedShowInvitationError()
     this.invitationCodeValue = invitationCode
     const { invitationCodeState } = this.state
     const currentStatus = invitationCodeState.status
@@ -89,7 +100,29 @@ class Join extends Component {
     }
   }
 
+  onChangeEmailControl = ({ email }) => {
+    this.setState({ showEmailError: false })
+    this.delayedShowEmailError()
+    this.emailValue = email
+    const { emailState } = this.state
+    const currentStatus = emailState.status
+    const clientState = getEmailStateFromClient({ value: email, currentStatus })
+    if (clientState.status === STATUS.SUCCESS) {
+      if (currentStatus !== STATUS.REQUEST) {
+        this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
+      }
+      // This will end up landing on `validateEmailResponse` after fetching
+      this.checkServerForAvailability({ email })
+      return
+    }
+    if (clientState.status !== currentStatus) {
+      this.setState({ emailState: clientState })
+    }
+  }
+
   onChangeUsernameControl = ({ username }) => {
+    this.setState({ showUsernameError: false })
+    this.delayedShowUsernameError()
     this.usernameValue = username
     const { usernameState } = this.state
     const currentStatus = usernameState.status
@@ -109,25 +142,9 @@ class Join extends Component {
     }
   }
 
-  onChangeEmailControl = ({ email }) => {
-    this.emailValue = email
-    const { emailState } = this.state
-    const currentStatus = emailState.status
-    const clientState = getEmailStateFromClient({ value: email, currentStatus })
-    if (clientState.status === STATUS.SUCCESS) {
-      if (currentStatus !== STATUS.REQUEST) {
-        this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
-      }
-      // This will end up landing on `validateEmailResponse` after fetching
-      this.checkServerForAvailability({ email })
-      return
-    }
-    if (clientState.status !== currentStatus) {
-      this.setState({ emailState: clientState })
-    }
-  }
-
   onChangePasswordControl = ({ password }) => {
+    this.setState({ showPasswordError: false })
+    this.delayedShowPasswordError()
     this.passwordValue = password
     const { passwordState } = this.state
     const currentStatus = passwordState.status
@@ -182,6 +199,22 @@ class Join extends Component {
     }
   }
 
+  delayedShowInvitationError = () => {
+    this.setState({ showInvitationError: true })
+  }
+
+  delayedShowEmailError = () => {
+    this.setState({ showEmailError: true })
+  }
+
+  delayedShowPasswordError = () => {
+    this.setState({ showPasswordError: true })
+  }
+
+  delayedShowUsernameError = () => {
+    this.setState({ showUsernameError: true })
+  }
+
   renderStatus(state) {
     return () => {
       if (state.status === STATUS.FAILURE) {
@@ -193,7 +226,12 @@ class Join extends Component {
   }
 
   render() {
-    const { emailState, usernameState, invitationCodeState, passwordState, featuredUser } = this.state
+    const {
+      invitationCodeState, showPasswordError,
+      emailState, showInvitationError,
+      usernameState, showEmailError,
+      passwordState, showUsernameError,
+      featuredUser } = this.state
     const isValid = isFormValid([emailState, usernameState, passwordState])
     const boxControlClassNames = 'asBoxControl'
     return (
@@ -215,7 +253,7 @@ class Join extends Component {
               label="Invitation Code"
               onChange={ this.onChangeInvitationCodeControl }
               status={ invitationCodeState.status }
-              renderStatus={ this.renderStatus(invitationCodeState) }
+              renderStatus={ showInvitationError ? this.renderStatus(invitationCodeState) : null }
               text={ this.invitationCodeValue }
               tabIndex="5"
             />
@@ -224,7 +262,7 @@ class Join extends Component {
               label="Email"
               onChange={ this.onChangeEmailControl }
               status={ emailState.status }
-              renderStatus={ this.renderStatus(emailState) }
+              renderStatus={ showEmailError ? this.renderStatus(emailState) : null }
               tabIndex="1"
             />
             <UsernameControl
@@ -233,17 +271,17 @@ class Join extends Component {
               onChange={ this.onChangeUsernameControl }
               placeholder="Create your username"
               status={ usernameState.status }
-              renderStatus={ this.renderStatus(usernameState) }
+              renderStatus={ showUsernameError ? this.renderStatus(usernameState) : null }
               suggestions={ usernameState.suggestions }
               tabIndex="2"
             />
             <PasswordControl
               classList={ boxControlClassNames }
-              label={`Password ${passwordState.message}`}
+              label="Password"
               onChange={ this.onChangePasswordControl }
               placeholder="Set your password"
               status={ passwordState.status }
-              renderStatus={ this.renderStatus(passwordState) }
+              renderStatus={ showPasswordError ? this.renderStatus(passwordState) : null }
               tabIndex="3"
             />
             <FormButton tabIndex="4" disabled={ !isValid }>Create Account</FormButton>

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { replace } from 'react-router-redux'
-import { random } from 'lodash'
+import { random, debounce } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS, ONBOARDING_VERSION } from '../../constants/gui_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { loadProfile, saveProfile } from '../../actions/profile'
@@ -35,12 +35,17 @@ class SignIn extends Component {
     const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
     this.state = {
+      showEmailError: false,
+      showPasswordError: false,
       emailState: { status: STATUS.INDETERMINATE, message: '' },
       featuredUser: userlist[index],
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
     }
     this.emailValue = ''
     this.passwordValue = ''
+
+    this.delayedShowEmailError = debounce(this.delayedShowEmailError, 1000)
+    this.delayedShowPasswordError = debounce(this.delayedShowPasswordError, 1000)
   }
 
   componentDidMount() {
@@ -71,6 +76,8 @@ class SignIn extends Component {
   }
 
   onChangeEmailControl = ({ email }) => {
+    this.setState({ showEmailError: false })
+    this.delayedShowEmailError()
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -81,6 +88,8 @@ class SignIn extends Component {
   }
 
   onChangePasswordControl = ({ password }) => {
+    this.setState({ showPasswordError: false })
+    this.delayedShowPasswordError()
     this.passwordValue = password
     const { passwordState } = this.state
     const currentStatus = passwordState.status
@@ -119,6 +128,14 @@ class SignIn extends Component {
     dispatch(trackEvent('authentication-credits-clicked'))
   }
 
+  delayedShowEmailError = () => {
+    this.setState({ showEmailError: true })
+  }
+
+  delayedShowPasswordError = () => {
+    this.setState({ showPasswordError: true })
+  }
+
   renderStatus(state) {
     return () => {
       if (state.status === STATUS.FAILURE) {
@@ -129,7 +146,11 @@ class SignIn extends Component {
   }
 
   render() {
-    const { emailState, passwordState, failureMessage, featuredUser } = this.state
+    const {
+      emailState, showEmailError,
+      passwordState, showPasswordError,
+      failureMessage, featuredUser,
+    } = this.state
     const isValid = isFormValid([emailState, passwordState])
     return (
       <section className="Authentication Panel">
@@ -150,7 +171,7 @@ class SignIn extends Component {
               onBlur={ this.onBlurControl }
               onChange={ this.onChangeEmailControl }
               onFocus={ this.onFocusControl }
-              renderStatus={ this.renderStatus(emailState) }
+              renderStatus={ showEmailError ? this.renderStatus(emailState) : null }
               tabIndex="1"
             />
             <PasswordControl
@@ -159,7 +180,7 @@ class SignIn extends Component {
               onBlur={ this.onBlurControl }
               onChange={ this.onChangePasswordControl }
               onFocus={ this.onFocusControl }
-              renderStatus={ this.renderStatus(passwordState) }
+              renderStatus={ showPasswordError ? this.renderStatus(passwordState) : null }
               tabIndex="2"
             />
             {failureMessage ? <p>{failureMessage}</p> : null}
