@@ -38,12 +38,13 @@ class FooterContainer extends Component {
 
   render() {
     const { isGridMode, isPaginatoring } = this.props
-    return React.createElement(Footer, {
+    const props = {
       isGridMode,
       isPaginatoring,
       onClickScrollToTop: this.onClickScrollToTop,
       onClickToggleLayoutMode: this.onClickToggleLayoutMode,
-    })
+    }
+    return <Footer { ...props } />
   }
 }
 
