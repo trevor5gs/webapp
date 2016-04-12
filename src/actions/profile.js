@@ -62,6 +62,7 @@ export function availableToggles() {
     type: LOAD_STREAM,
     meta: {
       mappingType: MAPPING_TYPES.CATEGORIES,
+      resultKey: '/settings/available-toggles',
       renderStream: {
         asList: StreamRenderables.profileToggles,
         asGrid: StreamRenderables.profileToggles,

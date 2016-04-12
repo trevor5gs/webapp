@@ -441,8 +441,13 @@ export function mapStateToProps(state, ownProps) {
     if (result.next) {
       renderObj.data = renderObj.data.concat(result.next.ids)
     }
-  } else if (meta && result && result.type === meta.mappingType ||
-            (meta && meta.resultFilter && result && result.type !== meta.mappingType)) {
+  } else if (
+    meta && result &&
+    (
+      result.type === meta.mappingType ||
+      (meta.resultFilter && result.type !== meta.mappingType)
+    )
+  ) {
     const deletedCollection = state.json[`deleted_${result.type}`]
     // don't filter out blocked ids if we are in settings
     // since you can unblock/unmute them from here
