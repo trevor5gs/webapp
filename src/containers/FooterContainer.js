@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { get } from 'lodash'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { GUI } from '../constants/gui_types'
 import { findLayoutMode } from '../reducers/gui'
@@ -13,10 +14,6 @@ class FooterContainer extends Component {
     isPaginatoring: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
     username: PropTypes.string,
-  }
-
-  static defaultProps = {
-    isGridMode: true,
   }
 
   // TODO: Should the container just dispatch a scrollToTop action and let some
@@ -55,7 +52,7 @@ const mapStateToProps = (state) => {
     GUI.viewportDeviceSize === 'mobile'
   const currentMode = findLayoutMode(state.gui.modes)
   return {
-    isGridMode: currentMode && currentMode.mode === 'grid',
+    isGridMode: get(currentMode, 'mode', true) === 'grid',
     isPaginatoring,
     pathname: state.routing.location.pathname,
   }
