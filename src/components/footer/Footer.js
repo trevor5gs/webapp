@@ -5,9 +5,6 @@ import Mousetrap from '../../vendor/mousetrap'
 import { GUI, SHORTCUT_KEYS } from '../../constants/gui_types'
 import { LOAD_NEXT_CONTENT_REQUEST } from '../../constants/action_types'
 import { PhoneIcon, ChevronIcon, ListIcon, GridIcon } from '../footer/FooterIcons'
-import FooterLabel from '../footer/FooterLabel'
-import FooterLink from '../footer/FooterLink'
-import FooterTool from '../footer/FooterTool'
 import { isAndroid as getIsAndroid } from '../interface/Viewport'
 import { findLayoutMode } from '../../reducers/gui'
 
@@ -79,6 +76,9 @@ class Footer extends Component {
             label="Top"
             icon={ <ChevronIcon /> }
             onClick={ this.onClickScrollToTop }
+import { FooterLabel } from '../footer/FooterLabel'
+import { FooterLink } from '../footer/FooterLink'
+import { FooterTool } from '../footer/FooterTool'
           />
           <FooterTool
             className="LayoutTool"
