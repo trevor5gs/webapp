@@ -11,22 +11,16 @@ class FooterContainer extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     isGridMode: PropTypes.bool.isRequired,
+    isOffsetLayout: PropTypes.bool.isRequired,
     isPaginatoring: PropTypes.bool,
-    pathname: PropTypes.string.isRequired,
-    username: PropTypes.string,
   }
 
-  // TODO: Should the container just dispatch a scrollToTop action and let some
-  // other object which keeps track of the current template deal with the
-  // offset? We then wouldn't have to deal with the offset in here. It would
-  // also mean we wouldn't have to pass in username from App or listen to
-  // state.routing.location.pathname in mapStateToProps. We could then call
-  // scrollToTop from anywhere (home key, from the Navbar, etc.).
+  // TODO: Should just dispatch a scrollToTop action and let some other object
+  // deal with scrolling. We could then call the scrollToTop action from
+  // anywhere (home key, from the Navbar, etc.).
   onClickScrollToTop = () => {
-    const { pathname, username } = this.props
     if (typeof window === 'undefined') { return }
-    const offset = (username || /\/settings/.test(pathname)) ?
-      Math.round((window.innerWidth * 0.5625)) - 200 : 0
+    const offset = (this.props.isOffsetLayout) ? Math.round((window.innerWidth * 0.5625)) - 200 : 0
     window.scrollTo(0, offset)
   }
 
@@ -54,8 +48,8 @@ const mapStateToProps = (state) => {
   const currentMode = findLayoutMode(state.gui.modes)
   return {
     isGridMode: get(currentMode, 'mode', true) === 'grid',
+    isOffsetLayout: state.gui.isOffsetLayout,
     isPaginatoring,
-    pathname: state.routing.location.pathname,
   }
 }
 

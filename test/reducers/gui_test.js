@@ -12,6 +12,7 @@ describe('gui reducer', () => {
         'activeNotificationsTabType',
         'currentStream',
         'history',
+        'isOffsetLayout',
         'lastNotificationCheck',
         'modes',
         'newNotificationContent',

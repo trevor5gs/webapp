@@ -31,9 +31,6 @@ class App extends Component {
     dispatch: PropTypes.func.isRequired,
     editorStore: PropTypes.object.isRequired,
     emoji: PropTypes.object.isRequired,
-    params: PropTypes.shape({
-      username: PropTypes.string,
-    }).isRequired,
     pathname: PropTypes.string.isRequired,
   }
 
@@ -129,7 +126,7 @@ class App extends Component {
   }
 
   render() {
-    const { authentication, children, completions, params, pathname } = this.props
+    const { authentication, children, completions, pathname } = this.props
     const { activeTools, coordinates, hideCompleter, hideTextTools } = this.state
     const { isLoggedIn } = authentication
     const appClasses = classNames(
@@ -162,7 +159,7 @@ class App extends Component {
           null
         }
         <Navbar />
-        <FooterContainer username={ params.username } />
+        <FooterContainer />
         <Modal />
         <DevTools />
         <Analytics isLoggedIn={ isLoggedIn } />
