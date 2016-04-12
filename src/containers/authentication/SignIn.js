@@ -99,16 +99,13 @@ class SignIn extends Component {
   onSubmit = async (e) => {
     e.preventDefault()
 
-    const { currentStream, dispatch } = this.props
+    const { dispatch } = this.props
     const action = getUserCredentials(this.emailValue, this.passwordValue)
 
     const success = await dispatch(action)
 
     if (success) {
-      const profileSuccess = await dispatch(loadProfile())
-      if (!profileSuccess) {
-        dispatch(replace({ pathname: currentStream }))
-      }
+      dispatch(loadProfile())
     } else {
       this.setState({ failureMessage: 'Your email or password were incorrect.' })
     }

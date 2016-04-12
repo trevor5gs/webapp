@@ -1,6 +1,16 @@
+import { camelizeKeys } from 'humps'
+import jwt from 'jsonwebtoken'
 import _ from 'lodash'
 import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, PROFILE } from '../constants/action_types'
+
+function parseJWT(token) {
+  const decoded = jwt.decode(token)
+  if (decoded && decoded.data) {
+    return { ...(camelizeKeys(decoded.data)) }
+  }
+  return {}
+}
 
 export function profile(state = {}, action) {
   let assetState = null
@@ -68,6 +78,13 @@ export function profile(state = {}, action) {
       return {
         ...state,
         [assetType]: { ...state[assetType], tmp: { url: action.payload.response.assetUrl } },
+      }
+    case AUTHENTICATION.USER_SUCCESS:
+    case AUTHENTICATION.REFRESH_SUCCESS:
+    case PROFILE.SIGNUP_SUCCESS:
+      return {
+        ...state,
+        ...parseJWT(action.payload.response.accessToken),
       }
     default:
       return state
