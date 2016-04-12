@@ -1,4 +1,5 @@
 import React from 'react'
+import { replace } from 'react-router-redux'
 import { LOAD_STREAM, PROFILE } from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
@@ -49,7 +50,9 @@ export function saveProfile(params) {
 export function deleteProfile() {
   return {
     type: PROFILE.DELETE,
-    meta: {},
+    meta: {
+      successAction: replace('/'),
+    },
     payload: {
       method: 'DELETE',
       endpoint: api.profilePath(),

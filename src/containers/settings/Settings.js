@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { push, replace } from 'react-router-redux'
+import { push } from 'react-router-redux'
 import classNames from 'classnames'
 import { debounce, isEmpty, get } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
@@ -196,7 +196,6 @@ class Settings extends Component {
     const { dispatch } = this.props
     dispatch(deleteProfile())
     this.closeModal()
-    dispatch(replace('/'))
   }
 
   onSubmit = (e) => {
