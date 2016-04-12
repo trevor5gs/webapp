@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, PROFILE } from '../constants/action_types'
 
@@ -32,12 +33,24 @@ export function profile(state = {}, action) {
       delete assetState.avatar.tmp
       delete assetState.coverImage.tmp
       return assetState
+    case PROFILE.SAVE_REQUEST:
+      return {
+        ...state,
+        errors: null,
+      }
     case PROFILE.SAVE_SUCCESS:
       return {
         ...state,
         ...action.payload.response,
         availability: null,
         id: `${action.payload.response.id}`,
+      }
+    // should only happen if we get a 422 meaning
+    // the current password entered was wrong
+    case PROFILE.SAVE_FAILURE:
+      return {
+        ...state,
+        errors: _.get(action, 'payload.response.errors'),
       }
     // Store a base64 reprensentation of the asset in `tmp` while uploading
     case PROFILE.TMP_AVATAR_CREATED:

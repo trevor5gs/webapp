@@ -57,6 +57,7 @@ class Settings extends Component {
   componentWillMount() {
     const { dispatch, profile } = this.props
     this.state = {
+      currentPasswordState: { status: STATUS.INDETERMINATE, message: '' },
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
       emailState: { status: STATUS.INDETERMINATE, message: '' },
@@ -77,6 +78,24 @@ class Settings extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!this.props.profile.errors && nextProps.profile.errors) {
+      const attrs = get(nextProps, 'profile.errors.attrs')
+      if (attrs) {
+        const obj = {}
+        for (const attr in attrs) {
+          if (attrs.hasOwnProperty(attr)) {
+            obj[`${attr}State`] = { status: STATUS.FAILURE, message: attrs[attr] }
+          }
+        }
+        this.setState(obj)
+      }
+    } else if (this.props.profile.errors && !nextProps.profile.errors) {
+      const obj = {}
+      for (const attr of ['currentPassword', 'email', 'password', 'username']) {
+        obj[`${attr}State`] = { status: STATUS.INDETERMINATE, message: '', suggestions: [] }
+      }
+      this.setState(obj)
+    }
     const { availability } = nextProps
     if (!availability) { return }
     const prevUsername = get(availability, 'original.username', this.usernameValue)
@@ -237,10 +256,11 @@ class Settings extends Component {
   }
 
   shouldRequireCredentialsSave() {
-    const { emailState, passwordState, usernameState } = this.state
-    return [emailState, passwordState, usernameState].some((state) =>
+    const { currentPasswordState, emailState, passwordState, usernameState } = this.state
+    const credentialsSuccess = [emailState, passwordState, usernameState].some((state) =>
       state.status === STATUS.SUCCESS
     )
+    return currentPasswordState.status === STATUS.FAILURE || credentialsSuccess
   }
 
   clearPasswords() {
@@ -280,7 +300,8 @@ class Settings extends Component {
 
   render() {
     const { blockedCount, dispatch, mutedCount, profile } = this.props
-    const { emailState, passwordState, usernameState, showSaveMessage } = this.state
+    const { currentPasswordState, emailState, passwordState,
+      usernameState, showSaveMessage } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
 
     if (!profile) {
@@ -376,6 +397,7 @@ class Settings extends Component {
                 onChange={ this.onChangeCurrentPasswordControl }
                 placeholder="Enter current password"
                 ref="currentPasswordControl"
+                status={ currentPasswordState.status }
                 tabIndex={ requiresSave ? '4' : '0' }
               />
               <FormButton disabled={ !requiresSave }>Save</FormButton>
