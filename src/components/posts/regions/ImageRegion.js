@@ -252,8 +252,14 @@ class ImageRegion extends Component {
   }
 
   renderLegacyImageAttachment() {
-    const { content } = this.props
+    const { content, isNotification } = this.props
+    const dimensions = this.getImageDimensions()
     const attrs = { src: content.url }
+    if (isNotification) {
+      dimensions.height = 'auto'
+    }
+    attrs.width = dimensions.width
+    attrs.height = dimensions.height
     return (
       <img
         alt={ content.alt ? content.alt.replace('.jpg', '') : null }
