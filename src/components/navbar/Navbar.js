@@ -113,7 +113,7 @@ class Navbar extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, isLoggedIn, pathname, shortcuts } = this.props
+    const { dispatch, pathname } = this.props
     this.body = ReactDOM.findDOMNode(document.body)
     if (isBlacklistedRoute(pathname)) {
       window.scrollTo(0, this.state.offset - 120)
