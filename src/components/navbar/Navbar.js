@@ -74,6 +74,7 @@ class Navbar extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    discoverKeyType: PropTypes.string,
     isLoggedIn: PropTypes.bool.isRequired,
     isNotificationsActive: PropTypes.bool.isRequired,
     gui: PropTypes.object.isRequired,
@@ -267,7 +268,13 @@ class Navbar extends Component {
       this.mousetrapBound = true
 
       Mousetrap.bind(Object.keys(shortcuts), (event, shortcut) => {
-        dispatch(push(shortcuts[shortcut]))
+        if (shortcut === SHORTCUT_KEYS.DISCOVER) {
+          const { discoverKeyType } = this.props
+          const location = discoverKeyType ? `/discover/${discoverKeyType}` : '/discover'
+          dispatch(push(location))
+        } else {
+          dispatch(push(shortcuts[shortcut]))
+        }
       })
 
       Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
@@ -455,6 +462,7 @@ class Navbar extends Component {
 
 function mapStateToProps(state) {
   return {
+    discoverKeyType: state.gui.discoverKeyType,
     isLoggedIn: state.authentication.isLoggedIn,
     isNotificationsActive: state.modal.isNotificationsActive,
     gui: state.gui,

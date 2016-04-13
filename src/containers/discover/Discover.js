@@ -3,7 +3,9 @@ import { connect } from 'react-redux'
 import { BEACONS } from '../../constants/action_types'
 import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
-import { loadCommunities, loadDiscoverUsers, loadFeaturedUsers } from '../../actions/discover'
+import {
+  loadCommunities, loadDiscoverUsers, loadFeaturedUsers, bindDiscoverKey,
+} from '../../actions/discover'
 import { trackEvent } from '../../actions/tracking'
 import Promotion from '../../components/assets/Promotion'
 import StreamComponent from '../../components/streams/StreamComponent'
@@ -29,11 +31,18 @@ export class Discover extends Component {
     store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
 
   componentWillMount() {
-    const { lastDiscoverBeaconVersion, isLoggedIn } = this.props
-
+    const { lastDiscoverBeaconVersion, isLoggedIn, dispatch, params } = this.props
+    const type = params.type || 'recommended'
     this.state = {
       isBeaconActive: isLoggedIn && lastDiscoverBeaconVersion !== BEACON_VERSION,
     }
+    dispatch(bindDiscoverKey(type))
+  }
+
+  componentDidUpdate() {
+    const { dispatch, params } = this.props
+    const type = params.type || 'recommended'
+    dispatch(bindDiscoverKey(type))
   }
 
   onClickTrackCredits = () => {

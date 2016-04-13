@@ -108,6 +108,8 @@ export function gui(state = initialState, action = { type: '' }) {
       return newState
     case GUI.SET_IS_OFFSET_LAYOUT:
       return { ...state, isOffsetLayout: action.payload.isOffsetLayout }
+    case GUI.BIND_DISCOVER_KEY:
+      return { ...newState, discoverKeyType: action.payload.type }
     default:
       return state
   }
