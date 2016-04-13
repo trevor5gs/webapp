@@ -5,6 +5,7 @@ import { random, debounce } from 'lodash'
 import { replace } from 'react-router-redux'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
+import { getInviteEmail } from '../../actions/invitations'
 import { checkAvailability, signUpUser } from '../../actions/profile'
 import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
@@ -30,6 +31,7 @@ class Join extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    email: PropTypes.string,
     invitationCode: PropTypes.string,
   }
 
@@ -65,10 +67,13 @@ class Join extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { availability } = nextProps
-    if (!availability) {
-      return
+    const { availability, dispatch, email, invitationCode } = nextProps
+    if (invitationCode && !email) {
+      dispatch(getInviteEmail(invitationCode))
+    } else if (email) {
+      this.setState({ emailState: { status: STATUS.SUCCESS } })
     }
+    if (!availability) { return }
     if (availability.hasOwnProperty('username')) {
       this.validateUsernameResponse(availability)
     }
@@ -232,6 +237,7 @@ class Join extends Component {
       usernameState, showEmailError,
       passwordState, showUsernameError,
       featuredUser } = this.state
+    const { email } = this.props
     const isValid = isFormValid([emailState, usernameState, passwordState])
     const boxControlClassNames = 'asBoxControl'
     return (
@@ -254,18 +260,22 @@ class Join extends Component {
               onChange={ this.onChangeInvitationCodeControl }
               status={ invitationCodeState.status }
               renderStatus={ showInvitationError ? this.renderStatus(invitationCodeState) : null }
-              text={ this.invitationCodeValue }
               tabIndex="5"
+              text={ this.invitationCodeValue }
             />
             <EmailControl
+              autoFocus={ !email }
               classList={ boxControlClassNames }
+              key={ email }
               label="Email"
               onChange={ this.onChangeEmailControl }
               status={ emailState.status }
               renderStatus={ showEmailError ? this.renderStatus(emailState) : null }
               tabIndex="1"
+              text={ email }
             />
             <UsernameControl
+              autoFocus={ email && email.length }
               classList={ boxControlClassNames }
               label="Username"
               onChange={ this.onChangeUsernameControl }
@@ -301,6 +311,7 @@ class Join extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     availability: state.profile.availability,
+    email: state.profile.email,
     invitationCode: ownProps.params.invitationCode,
   }
 }

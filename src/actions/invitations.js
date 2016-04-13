@@ -34,3 +34,12 @@ export function inviteUsers(emails) {
   }
 }
 
+export function getInviteEmail(code) {
+  return {
+    type: ACTION_TYPES.INVITATIONS.GET_EMAIL,
+    payload: {
+      endpoint: api.getInviteEmail(code),
+    },
+  }
+}
+

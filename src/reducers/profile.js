@@ -2,7 +2,7 @@ import { camelizeKeys } from 'humps'
 import jwt from 'jsonwebtoken'
 import _ from 'lodash'
 import { REHYDRATE } from 'redux-persist/constants'
-import { AUTHENTICATION, PROFILE } from '../constants/action_types'
+import { AUTHENTICATION, INVITATIONS, PROFILE } from '../constants/action_types'
 
 function parseJWT(token) {
   const decoded = jwt.decode(token)
@@ -85,6 +85,11 @@ export function profile(state = {}, action) {
       return {
         ...state,
         ...parseJWT(action.payload.response.accessToken),
+      }
+    case INVITATIONS.GET_EMAIL_SUCCESS:
+      return {
+        ...state,
+        email: _.get(action, 'payload.response.invitations.email'),
       }
     default:
       return state

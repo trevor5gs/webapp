@@ -290,6 +290,11 @@ export function invite() {
     path: getAPIPath('invitations', { per_page: 100 }),
   }
 }
+export function getInviteEmail(code) {
+  return {
+    path: getAPIPath(`invitations/${code}`),
+  }
+}
 
 // RELATIONSHIPS
 export function relationshipAdd(userId, priority) {
