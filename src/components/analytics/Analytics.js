@@ -9,7 +9,7 @@ export function addSegment(uid, createdAt) {
       analytics.SNIPPET_VERSION="3.0.1";
       analytics.load(ENV.SEGMENT_WRITE_KEY);
       if (uid) {
-        analytics.identify(uid, { createdAt: createdAt, ui_version: ENV.UI_VERSION });
+        analytics.identify(uid, { createdAt: createdAt });
       }
       }}();
   }
@@ -38,39 +38,20 @@ class Analytics extends Component {
 
   componentDidMount() {
     const { isLoggedIn } = this.props
-    if (this.hasLoadedTracking) {
-      return
-    }
+    if (this.hasLoadedTracking) { return }
     if (!isLoggedIn && doesAllowTracking()) {
       this.hasLoadedTracking = true
       return addSegment()
     }
   }
 
-  componentDidUpdate() {
-    if (this.hasLoadedTracking) {
-      return
-    }
-    const { profile } = this.props
-    if (profile.type === PROFILE.LOAD_SUCCESS) {
-      this.profileDidLoad()
-    } else if (profile.type === PROFILE.LOAD_FAILURE) {
-      this.profileDidFail()
-    }
-  }
-
-  profileDidLoad() {
-    const { gaUniqueId, createdAt, allowsAnalytics } = this.props.profile.payload
-    if (allowsAnalytics) {
+  componentWillReceiveProps(nextProps) {
+    // TODO: check if user doesn't allow analytics and reload page
+    if (this.hasLoadedTracking) { return }
+    const { analyticsId, createdAt, allowsAnalytics } = nextProps
+    if (this.props.analyticsId && analyticsId && allowsAnalytics) {
       this.hasLoadedTracking = true
-      addSegment(gaUniqueId, createdAt)
-    }
-  }
-
-  profileDidFail() {
-    if (doesAllowTracking() && !this.hasLoadedTracking) {
-      this.hasLoadedTracking = true
-      addSegment()
+      addSegment(analyticsId, createdAt)
     }
   }
 
@@ -81,7 +62,10 @@ class Analytics extends Component {
 
 function mapStateToProps(state) {
   return {
-    profile: state.profile,
+    allowsAnalytics: state.profile.allowsAnalytics,
+    analyticsId: state.profile.analyticsId,
+    createdAt: state.profile.createdAt,
+    profileType: state.profile.type,
   }
 }
 
