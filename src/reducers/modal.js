@@ -1,3 +1,4 @@
+import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   ALERT,
   AUTHENTICATION,
@@ -25,6 +26,11 @@ export function modal(state = initialState, action) {
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
+    case LOCATION_CHANGE:
+      if (state.isActive) {
+        return initialState
+      }
+      return state
     default:
       return state
   }
