@@ -44,6 +44,10 @@ class FormControl extends Component {
     this.timer = setTimeout(this.checkValue, 250)
   }
 
+  componentWillUnmount() {
+    clearTimeout()
+  }
+
   onFocusControl = (e) => {
     this.setState({ hasFocus: true })
     const { onFocus } = this.props
