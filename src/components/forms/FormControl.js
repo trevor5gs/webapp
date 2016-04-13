@@ -41,6 +41,13 @@ class FormControl extends Component {
       text,
     }
     this.initialValue = text
+    this.timer = setTimeout(this.checkValue, 250)
+  }
+
+  componentWillUnmount() {
+    if (this.timer) {
+      clearTimeout(this.timer)
+    }
   }
 
   onFocusControl = (e) => {
@@ -60,7 +67,10 @@ class FormControl extends Component {
   }
 
   onChangeControl = (e) => {
-    const val = e.target.value
+    this.onChangeValue(e.target.value)
+  }
+
+  onChangeValue = (val) => {
     const { id, onChange } = this.props
     this.setState({
       text: val,
@@ -130,6 +140,15 @@ class FormControl extends Component {
       default:
         return null
     }
+  }
+
+  checkValue = () => {
+    const inputControl = this.refs.input
+    const { text } = this.state
+    if (inputControl.value !== text) {
+      this.onChangeValue(inputControl.value)
+    }
+    this.timer = setTimeout(this.checkValue, 250)
   }
 
   clear() {
