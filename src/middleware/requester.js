@@ -114,6 +114,7 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.COMMENT.FLAG &&
         type !== ACTION_TYPES.EMOJI.LOAD &&
         type !== ACTION_TYPES.HEAD &&
+        type !== ACTION_TYPES.INVITATIONS.GET_EMAIL &&
         type !== ACTION_TYPES.INVITATIONS.INVITE &&
         type !== ACTION_TYPES.POST.AUTO_COMPLETE &&
         type !== ACTION_TYPES.POST.COMMENT &&

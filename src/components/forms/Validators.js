@@ -86,7 +86,7 @@ export function getInvitationCodeStateFromServer({ availability, currentStatus }
   }
 
   const { invitationCode } = availability
-  if (invitationCode && currentStatus !== STATUS.SUCCESS) {
+  if (invitationCode) {
     return { status: STATUS.SUCCESS, message: '' }
   } else if (!invitationCode && currentStatus !== STATUS.FAILURE) {
     return { status: STATUS.FAILURE, message: ERROR.INVITATION_CODE.INVALID }
