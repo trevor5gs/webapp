@@ -144,6 +144,7 @@ class FormControl extends Component {
 
   checkValue = () => {
     const inputControl = this.refs.input
+    const text = ""
     this.timer = setTimeout(this.checkValue, 250)
   }
 
