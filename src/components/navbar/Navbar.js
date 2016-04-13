@@ -30,6 +30,7 @@ import { scrollToTop } from '../../vendor/scrollTop'
 import { findLayoutMode } from '../../reducers/gui'
 import Session from '../../../src/vendor/session'
 
+// See TODO in src/reducers/gui.js
 const whitelist = [
   /^\/$/,
   /^\/[\w\-]+\/post\/.+/,

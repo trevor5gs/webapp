@@ -19,6 +19,7 @@ oldDate.setFullYear(oldDate.getFullYear() - 2)
 const initialState = {
   activeNotificationsTabType: 'all',
   currentStream: '/following',
+  isOffsetLayout: false,
   history: {},
   lastNotificationCheck: oldDate.toUTCString(),
   modes: [
@@ -27,8 +28,11 @@ const initialState = {
     { label: 'following', mode: 'grid', regex: '\/following' },
     { label: 'invitations', mode: 'list', regex: '\/invitations' },
     { label: 'onboarding', mode: 'grid', regex: '\/onboarding' },
+    { label: 'notifications', mode: 'list', regex: '\/notifications' },
     { label: 'search', mode: 'grid', regex: '\/search|\/find' },
+    { label: 'settings', mode: 'list', regex: '\/settings' },
     { label: 'starred', mode: 'list', regex: '\/starred' },
+    { label: 'staff', mode: 'list', regex: '\/staff' },
     { label: 'posts', mode: 'list', regex: '\/[\\w\\-]+\/post\/.+' },
     { label: 'users/following', mode: 'grid', regex: '\/[\\w\\-]+\/following' },
     { label: 'users/followers', mode: 'grid', regex: '\/[\\w\\-]+\/followers' },
@@ -96,12 +100,14 @@ export function gui(state = initialState, action = { type: '' }) {
         return { ...state, currentStream: pathname }
       }
 
-      return state
+      return { ...state }
     case GUI.NOTIFICATIONS_TAB:
       return { ...state, activeNotificationsTabType: action.payload.activeTabType }
     case GUI.SET_SCROLL:
       newState.history[action.payload.key] = { ...action.payload }
       return newState
+    case GUI.SET_IS_OFFSET_LAYOUT:
+      return { ...state, isOffsetLayout: action.payload.isOffsetLayout }
     default:
       return state
   }
