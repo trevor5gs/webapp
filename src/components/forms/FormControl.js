@@ -45,7 +45,8 @@ class FormControl extends Component {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.timer)
+    if (this.timer) {
+    }
   }
 
   onFocusControl = (e) => {
