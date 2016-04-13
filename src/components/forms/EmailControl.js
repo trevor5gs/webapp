@@ -18,7 +18,6 @@ class EmailControl extends Component {
         autoCapitalize="off"
         autoCorrect="off"
         type="email"
-        ref=""
       />
     )
   }
