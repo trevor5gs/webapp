@@ -143,7 +143,7 @@ class FormControl extends Component {
   }
 
   checkValue = () => {
-    setTimeout(this.checkValue, 250)
+    this.timer = setTimeout(this.checkValue, 250)
   }
 
   clear() {
