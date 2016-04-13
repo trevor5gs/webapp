@@ -60,7 +60,10 @@ class FormControl extends Component {
   }
 
   onChangeControl = (e) => {
-    const val = e.target.value
+    this.onChangeValue(e.target.value)
+  }
+
+  onChangeValue = (val) => {
     const { id, onChange } = this.props
     this.setState({
       text: val,
