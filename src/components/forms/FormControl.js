@@ -41,6 +41,7 @@ class FormControl extends Component {
       text,
     }
     this.initialValue = text
+    this.timer = setTimeout(this.checkValue, 250)
   }
 
   onFocusControl = (e) => {
@@ -133,6 +134,9 @@ class FormControl extends Component {
       default:
         return null
     }
+  }
+
+  checkValue = () => {
   }
 
   clear() {
