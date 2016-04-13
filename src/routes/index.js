@@ -1,4 +1,5 @@
 import App from '../containers/App'
+import { refreshAuthenticationToken } from '../actions/authentication'
 import PostDetailRoute from './post_detail'
 import WTFRoute from './wtf'
 import AuthenticationRoutes from './authentication'
@@ -101,6 +102,13 @@ const routes = store => {
         ...SearchRoutes,
         UserDetailRoute,
       ],
+      onEnter(nextState, replace) {
+        console.log('enter')
+        const { authentication: { isLoggedIn } } = store.getState()
+        if (!isLoggedIn) {
+          store.dispatch(refreshAuthenticationToken())
+        }
+      },
     },
   ]
 }

@@ -177,7 +177,7 @@ export const requester = store => next => action => {
     const tokenPath = (typeof window === 'undefined') ?
       `http://localhost:${process.env.PORT}/api/webapp-token` :
       `${document.location.protocol}//${document.location.host}/api/webapp-token`
-    return fetch(tokenPath)
+    return fetch(tokenPath, { credentials: 'same-origin' })
       .then((response) =>
         response.ok ? response.json() : response
       )
@@ -259,8 +259,12 @@ export const requester = store => next => action => {
             .catch(error => {
               if (error.response) {
                 delete runningFetches[error.response.url]
-                if (error.response.status === 401 && state.authentication.isLoggedIn && state.authentication.refreshToken) {
-                  store.dispatch(refreshAuthenticationToken(state.authentication.refreshToken))
+                if (error.response.status === 401) {
+                  if (state.authentication.isLoggedIn && state.authentication.refreshToken) {
+                    store.dispatch(refreshAuthenticationToken(state.authentication.refreshToken))
+                  } else if (!state.authentication.isLoggedIn) {
+                    store.dispatch({ type: ACTION_TYPES.REQUESTER.UNPAUSE })
+                  }
                 }
                 const contentType = error.response.headers.get('content-type')
                 if (contentType && contentType.indexOf('application/json') > -1) {
