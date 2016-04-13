@@ -102,8 +102,7 @@ const routes = store => {
         ...SearchRoutes,
         UserDetailRoute,
       ],
-      onEnter(nextState, replace) {
-        console.log('enter')
+      onEnter() {
         const { authentication: { isLoggedIn } } = store.getState()
         if (!isLoggedIn) {
           store.dispatch(refreshAuthenticationToken())
