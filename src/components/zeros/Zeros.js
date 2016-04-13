@@ -32,7 +32,7 @@ export const ZeroFollowingStream = () =>
 
 export const ZeroStarredStream = () =>
   <ZeroStream emoji="star">
-    When you Star someone their posts appear here. Star people to create a second stream.
+    Star creators and communities to curate your second stream.
   </ZeroStream>
 
 // -------------------------------------
