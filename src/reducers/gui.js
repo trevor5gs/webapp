@@ -2,6 +2,7 @@ import _ from 'lodash'
 
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
+  AUTHENTICATION,
   BEACONS,
   GUI,
   HEAD_FAILURE,
@@ -76,6 +77,8 @@ export function gui(state = initialState, action = { type: '' }) {
         return { ...state, newNotificationContent: true }
       }
       return state
+    case AUTHENTICATION.LOGOUT:
+      return { ...state, discoverKeyType: null }
     case LOAD_STREAM_SUCCESS:
       if (action.meta && /\/notifications/.test(action.meta.resultKey)) {
         return {
