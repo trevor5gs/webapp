@@ -33,7 +33,7 @@ class Starred extends Component {
   renderZeroStream() {
     return (
       <ZeroStream emoji="star" onDismiss={ this.onDismissZeroStream }>
-        When you Star someone their posts appear here. Star people to create a second stream.
+       Star creators and communities to curate your second stream.
       </ZeroStream>
     )
   }
