@@ -33,7 +33,7 @@ class Following extends Component {
   renderZeroStream() {
     return (
       <ZeroStream emoji="lollipop" onDismiss={ this.onDismissZeroStream }>
-        Follow people and things that inspire you.
+        Follow the creators and communities that inspire you.
       </ZeroStream>
     )
   }
