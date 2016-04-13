@@ -59,6 +59,9 @@ function onKeyUp(e) {
   // Handles text tools show/hide and position
   if (!selectionIsText()) { return }
   toggleTools(window.getSelection().toString())
+  if (e.which === 27) {
+    callMethod('onCloseOmnibar')
+  }
   // Handles autocompletion stuff
   // check for autocompletable strings: currently usernames and emoji codes
   switch (e.which) {
