@@ -14,6 +14,7 @@ import RepostBlock from './RepostBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
 import { openAlert, closeAlert } from '../../actions/modals'
+import { closeOmnibar } from '../../actions/omnibar'
 import { savePostImage } from '../../actions/posts'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
@@ -171,6 +172,13 @@ class BlockCollection extends Component {
       removeDragObject(this.dragObject)
     }
     removeInputObject(this)
+  }
+
+  onCloseOmnibar() {
+    const { dispatch, isComment } = this.props
+    if (!isComment) {
+      dispatch(closeOmnibar())
+    }
   }
 
   onDragStart(props) {
