@@ -42,31 +42,6 @@ const initialState = {
   newNotificationContent: false,
 }
 
-// All routes but `/settings` and `/username/posts|following|followers|loves`
-// TODO: Move the stuff out of Navbar eventually (and anywhere else these reside)
-// TODO: I'm sure we can clean the regexes from this and modes up some?
-const nonOffsetLayouts = [
-  /^\/$/,
-  /^\/[\w\-]+\/post\/.+/,
-  /^\/discover\b/,
-  /^\/explore\b/,
-  /^\/find\b/,
-  /^\/following\b/,
-  /^\/invitations\b/,
-  /^\/notifications\b/,
-  /^\/onboarding\b/,
-  /^\/search\b/,
-  /^\/staff\b/,
-  /^\/starred\b/,
-]
-
-export const getIsOffsetLayout = () => {
-  for (const regex of nonOffsetLayouts) {
-    if (regex.test(location.pathname)) { return false }
-  }
-  return true
-}
-
 export function findLayoutMode(modes) {
   for (const mode of modes) {
     const regex = new RegExp(mode.regex)
@@ -87,7 +62,6 @@ export function gui(state = initialState, action = { type: '' }) {
   const newState = { ...state }
   let mode = null
   let pathname = null
-  let isOffsetLayout = null
   switch (action.type) {
     case BEACONS.LAST_DISCOVER_VERSION:
       return { ...state, lastDiscoverBeaconVersion: action.payload.version }
@@ -121,18 +95,19 @@ export function gui(state = initialState, action = { type: '' }) {
     case LOCATION_CHANGE:
       location = action.payload
       pathname = location.pathname
-      isOffsetLayout = getIsOffsetLayout()
 
       if (_.some(STREAMS_WHITELIST, re => re.test(pathname))) {
-        return { ...state, currentStream: pathname, isOffsetLayout }
+        return { ...state, currentStream: pathname }
       }
 
-      return { ...state, isOffsetLayout }
+      return { ...state }
     case GUI.NOTIFICATIONS_TAB:
       return { ...state, activeNotificationsTabType: action.payload.activeTabType }
     case GUI.SET_SCROLL:
       newState.history[action.payload.key] = { ...action.payload }
       return newState
+    case GUI.SET_IS_OFFSET_LAYOUT:
+      return { ...state, isOffsetLayout: action.payload.isOffsetLayout }
     default:
       return state
   }

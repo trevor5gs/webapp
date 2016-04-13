@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { debounce } from 'lodash'
 import { autoCompleteUsers, loadEmojis } from '../actions/posts'
 import { loadProfile } from '../actions/profile'
+import { setIsOffsetLayout } from '../actions/gui'
 import * as ACTION_TYPES from '../constants/action_types'
 import Analytics from '../components/analytics/Analytics'
 import DevTools from '../components/devtools/DevTools'
@@ -31,7 +32,15 @@ class App extends Component {
     dispatch: PropTypes.func.isRequired,
     editorStore: PropTypes.object.isRequired,
     emoji: PropTypes.object.isRequired,
+    isOffsetLayout: PropTypes.bool,
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }).isRequired,
     pathname: PropTypes.string.isRequired,
+    params: PropTypes.shape({
+      username: PropTypes.string,
+      token: PropTypes.string,
+    }).isRequired,
   }
 
   static defaultProps = {
@@ -52,6 +61,7 @@ class App extends Component {
     addFeatureDetection()
     addInputObject(this)
     addGlobalDrag()
+    this.updateIsOffsetLayout()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -62,6 +72,11 @@ class App extends Component {
         authentication.isLoggedIn) {
       dispatch(loadProfile())
     }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.pathname === this.props.location.pathname) { return }
+    this.updateIsOffsetLayout()
   }
 
   componentWillUnmount() {
@@ -125,6 +140,15 @@ class App extends Component {
     this.onCancelAutoCompleter()
   }
 
+  // TODO: Maybe move this out to a Viewport object?
+  updateIsOffsetLayout() {
+    const { isOffsetLayout, location: { pathname }, params: { username, token } } = this.props
+    const isUserDetailOrSettings = (username && !token) || pathname === '/settings'
+    if (isOffsetLayout !== isUserDetailOrSettings) {
+      this.props.dispatch(setIsOffsetLayout({ isOffsetLayout: isUserDetailOrSettings }))
+    }
+  }
+
   render() {
     const { authentication, children, completions, pathname } = this.props
     const { activeTools, coordinates, hideCompleter, hideTextTools } = this.state
@@ -181,6 +205,7 @@ function mapStateToProps(state, ownProps) {
     completions: state.editor.completions,
     emoji: state.emoji,
     pathname: ownProps.location.pathname,
+    isOffsetLayout: state.gui.isOffsetLayout,
   }
 }
 

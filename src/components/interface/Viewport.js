@@ -22,3 +22,12 @@ export const addFeatureDetection = () => {
   document.addEventListener('touchstart', onTouchStart)
 }
 
+export const scrollToTop = ({ isOffsetLayout = false, left = 0, top = 0 }) => {
+  if (typeof window === 'undefined') { return }
+  if (isOffsetLayout && !top) {
+    window.scrollTo(0, Math.round((window.innerWidth * 0.5625)) - 200)
+    return
+  }
+  window.scrollTo(left, top)
+}
+

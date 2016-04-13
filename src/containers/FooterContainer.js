@@ -5,6 +5,7 @@ import { get } from 'lodash'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { GUI } from '../constants/gui_types'
 import { findLayoutMode } from '../reducers/gui'
+import { scrollToTop } from '../components/interface/Viewport'
 import { Footer } from '../components/footer/Footer'
 
 class FooterContainer extends Component {
@@ -20,13 +21,9 @@ class FooterContainer extends Component {
     return shallowCompare(this, nextProps, nextState)
   }
 
-  // TODO: Should just dispatch a scrollToTop action and let some other object
-  // deal with scrolling. We could then call the scrollToTop action from
-  // anywhere (home key, from the Navbar, etc.).
   onClickScrollToTop = () => {
-    if (typeof window === 'undefined') { return }
-    const offset = (this.props.isOffsetLayout) ? Math.round((window.innerWidth * 0.5625)) - 200 : 0
-    window.scrollTo(0, offset)
+    const { isOffsetLayout } = this.props
+    scrollToTop({ isOffsetLayout })
   }
 
   onClickToggleLayoutMode = () => {
