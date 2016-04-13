@@ -46,6 +46,7 @@ class FormControl extends Component {
 
   componentWillUnmount() {
     if (this.timer) {
+      clearTimeout(this.timer)
     }
   }
 
