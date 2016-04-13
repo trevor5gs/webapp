@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react'
 import Helmet from 'react-helmet'
 
-const title = 'Ello | Be inspired.'
+const title = 'Ello | Create. Share. Connect.'
 const image = '/apple-touch-icon-precomposed.png'
 
 const description =
-  `Ello is a place to discover beautiful art, be inspired by meaningful
-  stories, and connect with creators around the world.`
+  `Welcome to the Creators Network. Ello is a community to discover,
+  discuss, publish, share and promote the things you are passionate about.`
 
 const viewport = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
 
