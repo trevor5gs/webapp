@@ -117,20 +117,7 @@ class Navbar extends Component {
     if (isBlacklistedRoute(pathname)) {
       window.scrollTo(0, this.state.offset - 120)
     }
-    if (isLoggedIn) {
-      Mousetrap.bind(Object.keys(shortcuts), (event, shortcut) => {
-        dispatch(push(shortcuts[shortcut]))
-      })
-
-      Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
-        const { modalIsActive } = this.props
-        if (modalIsActive) {
-          dispatch(closeModal())
-          return
-        }
-        dispatch(openModal(<HelpDialog />))
-      })
-    }
+    this.bindMousetrap()
 
     Mousetrap.bind(SHORTCUT_KEYS.TOGGLE_LAYOUT, () => {
       const { gui } = this.props
@@ -158,6 +145,7 @@ class Navbar extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    this.bindMousetrap()
     if (typeof window === 'undefined' || !prevProps.pathname || !this.props.pathname) { return }
     if (prevProps.pathname !== this.props.pathname) {
       this.checkForNotifications()
@@ -165,11 +153,7 @@ class Navbar extends Component {
   }
 
   componentWillUnmount() {
-    const { isLoggedIn, shortcuts } = this.props
-    if (isLoggedIn) {
-      Mousetrap.unbind(Object.keys(shortcuts))
-      Mousetrap.unbind(SHORTCUT_KEYS.HELP)
-    }
+    this.unbindMousetrap()
     Mousetrap.unbind(SHORTCUT_KEYS.TOGGLE_LAYOUT)
     removeResizeObject(this)
     removeScrollObject(this)
@@ -275,6 +259,36 @@ class Navbar extends Component {
 
   onClickToggleLayoutMode = () => {
     Mousetrap.trigger(SHORTCUT_KEYS.TOGGLE_LAYOUT)
+  }
+
+  bindMousetrap() {
+    const { isLoggedIn, shortcuts, dispatch } = this.props
+    if (isLoggedIn && !this.mousetrapBound) {
+      this.mousetrapBound = true
+
+      Mousetrap.bind(Object.keys(shortcuts), (event, shortcut) => {
+        dispatch(push(shortcuts[shortcut]))
+      })
+
+      Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
+        const { modalIsActive } = this.props
+        if (modalIsActive) {
+          dispatch(closeModal())
+          return
+        }
+        dispatch(openModal(<HelpDialog />))
+      })
+    }
+  }
+
+  unbindMousetrap() {
+    const { isLoggedIn, shortcuts } = this.props
+    if (isLoggedIn && this.mousetrapBound) {
+      this.mousetrapBound = false
+
+      Mousetrap.unbind(Object.keys(shortcuts))
+      Mousetrap.unbind(SHORTCUT_KEYS.HELP)
+    }
   }
 
   calculateOffset(coverOffset) {
