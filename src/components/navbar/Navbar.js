@@ -74,6 +74,7 @@ class Navbar extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    discoverKeyType: PropTypes.string,
     isLoggedIn: PropTypes.bool.isRequired,
     isNotificationsActive: PropTypes.bool.isRequired,
     gui: PropTypes.object.isRequired,
@@ -112,25 +113,12 @@ class Navbar extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, isLoggedIn, pathname, shortcuts } = this.props
+    const { dispatch, pathname } = this.props
     this.body = ReactDOM.findDOMNode(document.body)
     if (isBlacklistedRoute(pathname)) {
       window.scrollTo(0, this.state.offset - 120)
     }
-    if (isLoggedIn) {
-      Mousetrap.bind(Object.keys(shortcuts), (event, shortcut) => {
-        dispatch(push(shortcuts[shortcut]))
-      })
-
-      Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
-        const { modalIsActive } = this.props
-        if (modalIsActive) {
-          dispatch(closeModal())
-          return
-        }
-        dispatch(openModal(<HelpDialog />))
-      })
-    }
+    this.bindMousetrap()
 
     Mousetrap.bind(SHORTCUT_KEYS.TOGGLE_LAYOUT, () => {
       const { gui } = this.props
@@ -158,6 +146,7 @@ class Navbar extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    this.bindMousetrap()
     if (typeof window === 'undefined' || !prevProps.pathname || !this.props.pathname) { return }
     if (prevProps.pathname !== this.props.pathname) {
       this.checkForNotifications()
@@ -165,11 +154,7 @@ class Navbar extends Component {
   }
 
   componentWillUnmount() {
-    const { isLoggedIn, shortcuts } = this.props
-    if (isLoggedIn) {
-      Mousetrap.unbind(Object.keys(shortcuts))
-      Mousetrap.unbind(SHORTCUT_KEYS.HELP)
-    }
+    this.unbindMousetrap()
     Mousetrap.unbind(SHORTCUT_KEYS.TOGGLE_LAYOUT)
     removeResizeObject(this)
     removeScrollObject(this)
@@ -275,6 +260,42 @@ class Navbar extends Component {
 
   onClickToggleLayoutMode = () => {
     Mousetrap.trigger(SHORTCUT_KEYS.TOGGLE_LAYOUT)
+  }
+
+  bindMousetrap() {
+    const { isLoggedIn, shortcuts, dispatch } = this.props
+    if (isLoggedIn && !this.mousetrapBound) {
+      this.mousetrapBound = true
+
+      Mousetrap.bind(Object.keys(shortcuts), (event, shortcut) => {
+        if (shortcut === SHORTCUT_KEYS.DISCOVER) {
+          const { discoverKeyType } = this.props
+          const location = discoverKeyType ? `/discover/${discoverKeyType}` : '/discover'
+          dispatch(push(location))
+        } else {
+          dispatch(push(shortcuts[shortcut]))
+        }
+      })
+
+      Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
+        const { modalIsActive } = this.props
+        if (modalIsActive) {
+          dispatch(closeModal())
+          return
+        }
+        dispatch(openModal(<HelpDialog />))
+      })
+    }
+  }
+
+  unbindMousetrap() {
+    const { isLoggedIn, shortcuts } = this.props
+    if (isLoggedIn && this.mousetrapBound) {
+      this.mousetrapBound = false
+
+      Mousetrap.unbind(Object.keys(shortcuts))
+      Mousetrap.unbind(SHORTCUT_KEYS.HELP)
+    }
   }
 
   calculateOffset(coverOffset) {
@@ -441,6 +462,7 @@ class Navbar extends Component {
 
 function mapStateToProps(state) {
   return {
+    discoverKeyType: state.gui.discoverKeyType,
     isLoggedIn: state.authentication.isLoggedIn,
     isNotificationsActive: state.modal.isNotificationsActive,
     gui: state.gui,

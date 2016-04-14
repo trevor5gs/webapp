@@ -47,3 +47,9 @@ export function loadFeaturedUsers() {
   }
 }
 
+export function bindDiscoverKey(type) {
+  return {
+    type: ACTION_TYPES.GUI.BIND_DISCOVER_KEY,
+    payload: { type },
+  }
+}
