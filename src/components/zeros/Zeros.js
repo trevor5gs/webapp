@@ -1,11 +1,9 @@
 import React, { PropTypes } from 'react'
 import RelationsGroup from '../relationships/RelationsGroup'
-import Emoji from '../assets/Emoji'
 import Editor from '../editor/Editor'
 
-export const ZeroStream = ({ children, emoji, onDismiss }) =>
+export const ZeroStream = ({ children, onDismiss }) =>
   <div className="ZeroStream">
-    { emoji ? <Emoji name={ emoji } size={ 32 } /> : null }
     <h2 className="ZeroStreamHeading">
       { children }
     </h2>
@@ -19,7 +17,6 @@ export const ZeroStream = ({ children, emoji, onDismiss }) =>
 
 ZeroStream.propTypes = {
   children: PropTypes.node.isRequired,
-  emoji: PropTypes.string,
   onDismiss: PropTypes.func,
 }
 

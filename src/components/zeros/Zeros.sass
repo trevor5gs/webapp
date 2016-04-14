@@ -2,7 +2,7 @@
 
 .ZeroStream
   position: relative
-  max-width: rem(680)
+  max-width: rem(540)
   margin: 0 auto
   padding: rem(20) rem(10)
   background-color: white
@@ -19,12 +19,6 @@
 .no-touch .ZeroStreamButton:hover
   color: black
 
-.ZeroStream > .Emoji
-  display: none
-  position: absolute
-  top: rem(20)
-  left: 0
-
 // Deal with the rare case of double zero streams.
 .Panel.Following .ZeroStream + .StreamComponent > .ZeroStream,
 .Panel.Starred .ZeroStream + .StreamComponent > .ZeroStream
@@ -32,12 +26,8 @@
 
 
 @media(min-width: #{$break-2})
-  .ZeroStream
-    padding-left: rem(70)
   .ZeroStreamHeading
     font-size: rem(24)
-  .ZeroStream > .Emoji
-    display: block
 
 
 // -------------------------------------
