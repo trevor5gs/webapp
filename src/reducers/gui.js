@@ -54,9 +54,9 @@ export function findLayoutMode(modes) {
 }
 
 const STREAMS_WHITELIST = [
-  /discover/,
-  /following/,
-  /starred/,
+  /^\/discover/,
+  /^\/following$/,
+  /^\/starred$/,
 ]
 
 export function gui(state = initialState, action = { type: '' }) {
@@ -98,11 +98,9 @@ export function gui(state = initialState, action = { type: '' }) {
     case LOCATION_CHANGE:
       location = action.payload
       pathname = location.pathname
-
       if (_.some(STREAMS_WHITELIST, re => re.test(pathname))) {
         return { ...state, currentStream: pathname }
       }
-
       return { ...state }
     case GUI.NOTIFICATIONS_TAB:
       return { ...state, activeNotificationsTabType: action.payload.activeTabType }
