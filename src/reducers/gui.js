@@ -54,7 +54,7 @@ export function findLayoutMode(modes) {
 }
 
 const STREAMS_WHITELIST = [
-  /^\/discover$/,
+  /^\/discover/,
   /^\/following$/,
   /^\/starred$/,
 ]
