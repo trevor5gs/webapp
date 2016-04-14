@@ -103,6 +103,7 @@ class ImageRegion extends Component {
   }
 
   getAttachmentMetadata() {
+    if (!this.attachment) { return {} }
     const { optimized, xhdpi, hdpi } = this.attachment
     let width = null
     let height = null
@@ -254,12 +255,10 @@ class ImageRegion extends Component {
   renderLegacyImageAttachment() {
     const { content, isNotification } = this.props
     const dimensions = this.getImageDimensions()
-    const attrs = { src: content.url }
+    const attrs = { src: content.url, ...dimensions }
     if (isNotification) {
-      dimensions.height = 'auto'
+      attrs.height = 'auto'
     }
-    attrs.width = dimensions.width
-    attrs.height = dimensions.height
     return (
       <img
         alt={ content.alt ? content.alt.replace('.jpg', '') : null }
