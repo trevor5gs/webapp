@@ -58,7 +58,7 @@ export class Discover extends Component {
 
   renderZeroStream() {
     return (
-      <ZeroStream emoji="crystal_ball" onDismiss={ this.onDismissZeroStream }>
+      <ZeroStream onDismiss={ this.onDismissZeroStream }>
         Explore creators and communities. Realize the promise of the internet.
       </ZeroStream>
     )
