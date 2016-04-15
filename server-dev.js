@@ -1,9 +1,9 @@
 import path from 'path'
 import express from 'express'
 import webpack from 'webpack'
-import config from '../webpack.dev.config'
-import addOauthRoute from '../oauth'
-import { updateStrings as updateTimeAgoStrings } from '../src/vendor/time_ago_in_words'
+import config from './webpack.dev.config'
+import addOauthRoute from './oauth'
+import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
 
 const app = express()
 const compiler = webpack(config)
@@ -24,13 +24,13 @@ app.use('/static', express.static('public/static'))
 
 // Main entry for app
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dev.html'))
+  res.sendFile(path.join(__dirname, './public/dev.html'))
 })
 
 
 // Catchall for any requests like /onboarding
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dev.html'))
+  res.sendFile(path.join(__dirname, './public/dev.html'))
 })
 
 app.listen(6660, '0.0.0.0', (err) => {

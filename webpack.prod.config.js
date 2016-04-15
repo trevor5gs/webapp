@@ -3,7 +3,6 @@ var path = require('path')
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
-var jade = require('jade')
 
 // load env vars first
 require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
@@ -32,8 +31,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: '../index.html',
       chunks: ['commons', 'main'],
-      templateContent: jade.renderFile('public/template.jade', { pretty: true }),
       hash:true,
+      template: 'public/template.html',
       inject: 'body',
     }),
     new webpack.optimize.DedupePlugin(),
