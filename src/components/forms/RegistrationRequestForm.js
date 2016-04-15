@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import { debounce } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { requestInvite } from '../../actions/profile'
@@ -112,6 +113,7 @@ class RegistrationRequestForm extends Component {
           }
           <FormButton disabled={ !isValid } tabIndex="2">Sign up</FormButton>
         </form>
+        <Link className="HaveAccountLink" to="/enter">Have an account?</Link>
       </div>
     )
   }
