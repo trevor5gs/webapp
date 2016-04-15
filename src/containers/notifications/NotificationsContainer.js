@@ -138,8 +138,8 @@ class NotificationsContainer extends Component {
       { type: 'all', children: 'All' },
       { type: 'comments', children: <BubbleIcon /> },
       { type: 'mentions', children: '@' },
-      { type: 'reposts', children: <RepostIcon /> },
       { type: 'loves', children: <HeartIcon /> },
+      { type: 'reposts', children: <RepostIcon /> },
       { type: 'relationships', children: <RelationshipIcon /> },
     ]
     return (
