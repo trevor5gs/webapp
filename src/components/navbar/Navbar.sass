@@ -13,16 +13,16 @@
 [data-pathname^="/onboarding"] + .Navbar
   display: none
 
-.Navbar.asFixed,
-.Navbar.asLocked
+.isNavbarFixed ~ .Navbar,
+.isOffsetLayout ~ .Navbar
   position: fixed
 
-.Navbar.asFixed.asHidden
+.isNavbarFixed.isNavbarHidden ~ .Navbar
   transform: translate3d(0, -100%, 0)
   transition-delay: 0s $speed 0s
   visibility: hidden
 
-.Navbar.skipTransition:not(.asLocked)
+.isNavbarSkippingTransition:not(.isOffsetLayout) ~ .Navbar
   transition: none !important
 
 .isLoggedIn .Navbar

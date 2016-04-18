@@ -1,7 +1,5 @@
 import React from 'react'
 
-const NavbarLabel = () =>
+export const NavbarLabel = () =>
   <h2 className="NavbarLabel">Ello</h2>
-
-export default NavbarLabel
 

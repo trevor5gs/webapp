@@ -7,7 +7,7 @@ const highlightingRules = {
   '/following': /^\/following/,
 }
 
-const NavbarLink = ({
+export const NavbarLink = ({
     icon,
     label,
     modifiers = '',
@@ -51,6 +51,4 @@ NavbarLink.propTypes = {
   pathname: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
 }
-
-export default NavbarLink
 
