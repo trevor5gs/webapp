@@ -61,7 +61,6 @@ class Settings extends Component {
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
       emailState: { status: STATUS.INDETERMINATE, message: '' },
-      showSaveMessage: false,
     }
     this.passwordValue = ''
     this.passwordCurrentValue = ''
@@ -212,7 +211,6 @@ class Settings extends Component {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
-      showSaveMessage: true,
     })
     dispatch(saveProfile(formData))
   }
@@ -299,8 +297,7 @@ class Settings extends Component {
 
   render() {
     const { blockedCount, dispatch, mutedCount, profile } = this.props
-    const { currentPasswordState, emailState, passwordState,
-      usernameState, showSaveMessage } = this.state
+    const { currentPasswordState, emailState, passwordState, usernameState } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
 
     if (!profile) {
@@ -405,7 +402,7 @@ class Settings extends Component {
 
           <InfoForm
             controlClassModifiers={ boxControlClassNames }
-            showSaveMessage={ showSaveMessage }
+            showSaveMessage
             tabIndexStart={ requiresSave ? 5 : 4 }
           />
 
