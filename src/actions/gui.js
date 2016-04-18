@@ -9,3 +9,10 @@ export function setIsOffsetLayout({ isOffsetLayout }) {
   }
 }
 
+export function setFollowingTab(followingTab) {
+  return {
+    type: GUI.SET_FOLLOWING_TAB,
+    payload: { tab: followingTab },
+  }
+}
+

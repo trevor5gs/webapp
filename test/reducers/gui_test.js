@@ -16,6 +16,7 @@ describe('gui reducer', () => {
         'lastNotificationCheck',
         'modes',
         'newNotificationContent',
+        'userFollowingTab',
       )
     })
   })

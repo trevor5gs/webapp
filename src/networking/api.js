@@ -240,6 +240,18 @@ export function userDetail(idOrUsername) {
     path: getAPIPath(`users/${idOrUsername}`, params),
   }
 }
+export function userFollowing(idOrUsername, priority) {
+  const params = {
+    per_page: 10,
+  }
+
+  if (priority) params.priority = priority
+
+  return {
+    path: getAPIPath(`users/${idOrUsername}/following`, params),
+  }
+}
+
 export function userResources(idOrUsername, resource) {
   const params = { per_page: 10 }
   return {

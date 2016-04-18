@@ -46,6 +46,22 @@ export function loadUserLoves(username, type) {
   }
 }
 
+export function loadUserFollowing(username, priority) {
+  const endpoint = api.userFollowing(username, priority)
+  return {
+    type: ACTION_TYPES.LOAD_STREAM,
+    payload: { endpoint },
+    meta: {
+      mappingType: MAPPING_TYPES.USERS,
+      renderStream: {
+        asList: StreamRenderables.usersAsList,
+        asGrid: StreamRenderables.usersAsGrid,
+      },
+      resultKey: `/${username}/following?per_page=10&priority=${priority}`,
+      updateKey: `${priority}`,
+    },
+  }
+}
 export function loadUserUsers(username, type) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
@@ -76,4 +92,3 @@ export function loadUserAvatars(endpoint, post, resultType) {
     },
   }
 }
-

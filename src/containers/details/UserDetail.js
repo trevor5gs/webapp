@@ -1,18 +1,27 @@
 import React, { Component, PropTypes } from 'react'
+import { get } from 'lodash'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { findModel } from '../../components/base/json_helper'
-import { loadUserDetail, loadUserLoves, loadUserPosts, loadUserUsers } from '../../actions/user'
+import {
+  loadUserDetail,
+  loadUserLoves,
+  loadUserPosts,
+  loadUserUsers,
+  loadUserFollowing,
+} from '../../actions/user'
 import { openAlert, closeAlert } from '../../actions/modals'
 import { saveAvatar, saveCover } from '../../actions/profile'
+import { setFollowingTab } from '../../actions/gui'
 import Cover from '../../components/assets/Cover'
 import Uploader from '../../components/uploaders/Uploader'
 import { UserDetailHelmet } from '../../components/helmets/UserDetailHelmet'
 import { ErrorState4xx } from '../../components/errors/Errors'
 import StreamComponent from '../../components/streams/StreamComponent'
+import { TabListButtons } from '../../components/tabs/TabList'
 import UserList from '../../components/users/UserList'
 import {
   ZeroStateCreateRelationship,
@@ -21,11 +30,10 @@ import {
 } from '../../components/zeros/Zeros'
 
 class UserDetail extends Component {
-
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    json: PropTypes.object.isRequired,
+    followingTab: PropTypes.func,
     params: PropTypes.shape({
       type: PropTypes.string,
       username: PropTypes.string.isRequired,
@@ -37,7 +45,9 @@ class UserDetail extends Component {
       type: PropTypes.string,
       error: PropTypes.object,
     }),
-  }
+    user: PropTypes.object,
+    userFollowingTab: PropTypes.string,
+  };
 
   static preRender = (store, routerState) =>
     store.dispatch(loadUserDetail(`~${routerState.params.username}`))
@@ -51,7 +61,7 @@ class UserDetail extends Component {
     dispatch(loadUserDetail(`~${params.username}`))
   }
 
-  onZeroStateHello = () => {
+  onZeroStateHello() {
     this.setState({ saidHelloTo: true })
   }
 
@@ -104,13 +114,19 @@ class UserDetail extends Component {
   }
 
   render() {
-    const { dispatch, isLoggedIn, json, omnibar, params, stream } = this.props
+    const {
+      dispatch,
+      isLoggedIn,
+      omnibar,
+      params,
+      stream,
+      userFollowingTab,
+      user,
+    } = this.props
+
+    const { followingTab } = this.props
     const type = params.type || 'posts'
 
-    const user = findModel(json, {
-      collection: MAPPING_TYPES.USERS,
-      findObj: { username: params.username },
-    })
     switch (stream.type) {
       case ACTION_TYPES.PROFILE.DETAIL_FAILURE:
         if (!user && stream.error) {
@@ -163,9 +179,29 @@ class UserDetail extends Component {
         />
       )
     }
+    if (type === 'following') {
+      if (isLoggedIn && get(user, 'relationshipPriority') === 'self') {
+        const tabs = [
+          { type: 'friend', children: 'Following' },
+          { type: 'noise', children: 'Starred' },
+        ]
+        userEls.push(
+          <TabListButtons
+            className="LabelTabList"
+            tabClasses="LabelTab no-underline"
+            key={ `tabList_${user.id}` }
+            activeType={ userFollowingTab }
+            tabs={ tabs }
+            onTabClick={ ({ type: tab }) => followingTab(tab) }
+          />
+        )
+      }
+    }
     let streamAction = null
     switch (type) {
       case 'following':
+        streamAction = loadUserFollowing(`~${params.username}`, userFollowingTab)
+        break
       case 'followers':
         streamAction = loadUserUsers(`~${params.username}`, type)
         break
@@ -176,6 +212,7 @@ class UserDetail extends Component {
         streamAction = loadUserPosts(`~${params.username}`, type)
         break
     }
+    const streamKey = `${params.username}${type === 'following' ? userFollowingTab : ''}`
     return (
       <section
         className={ classNames('UserDetail', 'Panel', omnibar.isActive ? 'OmnibarActive' : null) }
@@ -192,7 +229,7 @@ class UserDetail extends Component {
             user ?
               <StreamComponent
                 action={ streamAction }
-                key={ params.username }
+                key={ streamKey }
                 ref="streamComponent"
                 isUserDetail
               /> :
@@ -204,14 +241,28 @@ class UserDetail extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  const { json } = state;
+  const { params } = ownProps
+  const user = findModel(json, {
+    collection: MAPPING_TYPES.USERS,
+    findObj: { username: params.username },
+  })
   return {
     omnibar: state.omnibar,
-    json: state.json,
     isLoggedIn: state.authentication.isLoggedIn,
+    userFollowingTab: get(state, 'gui.userFollowingTab'),
+    params,
+    user,
     stream: state.stream,
   }
 }
 
-export default connect(mapStateToProps, null, null, { withRef: true })(UserDetail)
+function mapDispatchToProps(dispatch) {
+  return {
+    followingTab: bindActionCreators(setFollowingTab, dispatch),
+    dispatch,
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(UserDetail)
 
