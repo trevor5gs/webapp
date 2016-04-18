@@ -28,24 +28,27 @@ export function loadEditablePost(idOrToken) {
   }
 }
 
-export function loadComments(idOrToken, addUpdateKey = true) {
+// commentsAsList needs the "parent post" so that the correct editor is referenced when replying to
+// a comment.
+export function loadComments(post, addUpdateKey = true) {
+  const postId = `${post.id}`
   const obj = {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: {
-      endpoint: api.commentsForPost(idOrToken),
-      postIdOrToken: idOrToken.replace('~', ''),
+      endpoint: api.commentsForPost(postId),
+      postIdOrToken: postId,
     },
     meta: {
       mappingType: MAPPING_TYPES.COMMENTS,
       renderStream: {
-        asList: StreamRenderables.commentsAsList,
-        asGrid: StreamRenderables.commentsAsList,
+        asList: StreamRenderables.commentsAsList(post),
+        asGrid: StreamRenderables.commentsAsList(post),
       },
-      resultKey: `/posts/${idOrToken}/comments`,
+      resultKey: `/posts/${postId}/comments`,
     },
   }
   if (addUpdateKey) {
-    obj.meta.updateKey = `/posts/${idOrToken}/`
+    obj.meta.updateKey = `/posts/${postId}/`
   }
   return obj
 }

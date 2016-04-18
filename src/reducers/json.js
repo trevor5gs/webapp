@@ -119,15 +119,14 @@ methods.findPostFromIdOrToken = (state, postIdOrToken) =>
 
 function _addParentPostIdToComments(state, action) {
   // Kludge to abort for some tests
-  if (!action || !action.meta) { return null }
-  const { mappingType } = action.meta
-  if (mappingType !== 'comments') { return null }
+  const { mappingType } = get(action, 'meta')
+  if (mappingType !== MAPPING_TYPES.COMMENTS) { return null }
   const { response, postIdOrToken } = action.payload
 
   if (postIdOrToken) {
     const post = methods.findPostFromIdOrToken(state, postIdOrToken)
     if (post) {
-      for (const model of response[mappingType]) {
+      for (const model of response[MAPPING_TYPES.COMMENTS]) {
         if (!state[MAPPING_TYPES.POSTS][model.postId]) {
           model.postId = post.id
         }

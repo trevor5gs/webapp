@@ -125,7 +125,7 @@ class PostDetail extends Component {
             {
               post && author && author.hasCommentingEnabled ?
                 <StreamComponent
-                  action={ loadComments((post ? `${post.id}` : `~${params.token}`), false) }
+                  action={ loadComments(post, false) }
                   className="CommentStreamComponent"
                   key={ params.token }
                 /> :

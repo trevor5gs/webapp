@@ -104,18 +104,19 @@ export function postsAsList(posts) {
   )
 }
 
-export function commentsAsList(comments) {
-  return (
-    <div>
-      { comments.data.map(comment =>
-        <CommentParser
-          key={ `commentParser_${comment.id}` }
-          comment={ comment }
-          isEditing={ comment.isEditing }
-        />
-      )}
-    </div>
-  )
+export function commentsAsList(post) {
+  return comments => (
+      <div>
+        { comments.data.map(comment =>
+          <CommentParser
+            key={ `commentParser_${comment.id}` }
+            comment={ comment }
+            post={ post }
+            isEditing={ comment.isEditing }
+          />
+        )}
+      </div>
+    )
 }
 
 export function notificationList(notifications, json) {
