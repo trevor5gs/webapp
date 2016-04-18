@@ -127,13 +127,13 @@ function footer(post, author, currentUser, isGridLayout, isRepostAnimating) {
 }
 
 export function parsePost(post, author, currentUser,
-  isGridLayout = true, isRepostAnimating = false
+  isGridLayout = true, isRepostAnimating = false, contentWarning = null,
 ) {
   if (!post) { return null }
   const cells = []
   const postDetailPath = getPostDetailPath(author, post)
 
-  if (post.contentWarning) {
+  if (contentWarning) {
     cells.push(<ContentWarningButton key={ `contentWarning_${post.id}` } post={ post } />)
   }
 
@@ -168,6 +168,7 @@ class PostParser extends Component {
     author: PropTypes.object,
     authorLinkObject: PropTypes.object,
     commentsCount: PropTypes.number,
+    contentWarning: PropTypes.string,
     currentUser: PropTypes.object,
     isEditing: PropTypes.bool,
     isGridLayout: PropTypes.bool,
@@ -188,6 +189,7 @@ class PostParser extends Component {
       assets,
       author,
       commentsCount,
+      contentWarning,
       currentUser,
       isEditing,
       isGridLayout,
@@ -223,7 +225,7 @@ class PostParser extends Component {
         { postHeader }
         { showEditor ?
           <Editor post={ post } /> :
-          parsePost(post, author, currentUser, isGridLayout, isRepostAnimating)}
+          parsePost(post, author, currentUser, isGridLayout, isRepostAnimating, contentWarning)}
         { reallyShowLovers ? postLoversDrawer(post) : null }
         { reallyShowReposters ? postRepostersDrawer(post) : null }
         { reallyShowComments ? <Editor post={ post } isComment /> : null }
@@ -245,6 +247,7 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
     assets,
     author,
     commentsCount: post.commentsCount,
+    contentWarning: post.contentWarning,
     currentUser,
     isEditing: post.isEditing || false,
     isReposting: post.isReposting || false,
