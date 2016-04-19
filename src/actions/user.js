@@ -58,7 +58,6 @@ export function loadUserFollowing(username, priority) {
         asGrid: StreamRenderables.usersAsGrid,
       },
       resultKey: `/${username}/following?per_page=10&priority=${priority}`,
-      updateKey: `${priority}`,
     },
   }
 }
