@@ -41,6 +41,9 @@ class FormControl extends Component {
       text,
     }
     this.initialValue = text
+  }
+
+  componentDidMount() {
     this.timer = setTimeout(this.checkValue, 250)
   }
 
@@ -145,7 +148,7 @@ class FormControl extends Component {
   checkValue = () => {
     const inputControl = this.refs.input
     const { text } = this.state
-    if (inputControl.value !== text) {
+    if (inputControl && inputControl.value !== text) {
       this.onChangeValue(inputControl.value)
     }
     this.timer = setTimeout(this.checkValue, 250)
