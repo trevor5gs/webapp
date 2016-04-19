@@ -41,6 +41,9 @@ class FormControl extends Component {
       text,
     }
     this.initialValue = text
+  }
+
+  componentDidMount() {
     this.timer = setTimeout(this.checkValue, 250)
   }
 
