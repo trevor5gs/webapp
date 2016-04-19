@@ -77,7 +77,7 @@ class Search extends Component {
     if (typeof vo.type === 'string' && vo.type === 'posts') {
       vo.type = null
     }
-    if (typeof document !== 'undefined') {
+    if (typeof window !== 'undefined') {
       const uri = document.location.pathname + updateQueryParams(vo)
       dispatch(replace(uri))
     }
