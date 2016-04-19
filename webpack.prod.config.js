@@ -18,7 +18,7 @@ module.exports = {
     filename: '[name].entry.js',
     chunkFilename: '[id].chunk.js',
     hash: true,
-    publicPath: '/static/',
+    publicPath: (process.env.CDN || '') + '/static/',
   },
   plugins: [
     new webpack.NoErrorsPlugin(),
