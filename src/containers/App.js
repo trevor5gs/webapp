@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import { debounce } from 'lodash'
+import { debounce, get } from 'lodash'
 import { autoCompleteUsers, loadEmojis } from '../actions/posts'
 import { loadProfile } from '../actions/profile'
 import { setIsOffsetLayout } from '../actions/gui'
@@ -62,6 +62,10 @@ class App extends Component {
     addInputObject(this)
     addGlobalDrag()
     this.updateIsOffsetLayout()
+    if (get(this.props, 'authentication.isLoggedIn')) {
+      const { dispatch } = this.props
+      dispatch(loadProfile())
+    }
   }
 
   componentWillReceiveProps(nextProps) {
