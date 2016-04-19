@@ -207,7 +207,7 @@ export const AUTHENTICATION_PROMOTIONS = [
     username: 'tommooreillustration',
 
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/177893/ello-regular-06334f0b.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/177893/ello-large-11885bbb.png' },
     },
     coverImage: {
       hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3783342/ello-hdpi-1a628ee4.jpg' },
