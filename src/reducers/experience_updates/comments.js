@@ -17,8 +17,7 @@ function _updateCommentsCount(newState, postId, delta) {
   )
   return newState
 }
-methods.updateCommentsCount = (newState, postId, delta) =>
-  _updateCommentsCount(newState, postId, delta)
+methods.updateCommentsCount = _updateCommentsCount
 
 function _addOrUpdateComment(newState, action) {
   const { model, postId } = action.payload
@@ -52,12 +51,7 @@ function _addOrUpdateComment(newState, action) {
           post.links.comments.ids.splice(index, 1)
         }
       }
-      if (newState.pages[`/posts/${postId}/comments`]) {
-        index = newState.pages[`/posts/${postId}/comments`].ids.indexOf(`${model.id}`)
-        if (index > -1) {
-          newState.pages[`/posts/${postId}/comments`].ids.splice(index, 1)
-        }
-      }
+      jsonReducer.removePageId(newState, `/posts/${postId}/comments`, model.id)
       return methods.updateCommentsCount(newState, postId, -1)
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
       return methods.updateCommentsCount(newState, postId, -1)
@@ -65,16 +59,14 @@ function _addOrUpdateComment(newState, action) {
       return newState
   }
 }
-methods.addOrUpdateComment = (newState, action) =>
-  _addOrUpdateComment(newState, action)
+methods.addOrUpdateComment = _addOrUpdateComment
 
 function _toggleEditing(newState, action) {
   const { model, isEditing } = action.payload
   newState[MAPPING_TYPES.COMMENTS][model.id].isEditing = isEditing
   return newState
 }
-methods.toggleEditing = (newState, action) =>
-  _toggleEditing(newState, action)
+methods.toggleEditing = _toggleEditing
 
 export default methods
 
