@@ -17,10 +17,10 @@ class NavbarContainer extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    isGridMode: PropTypes.bool.isRequired,
-    isProfileMenuActive: PropTypes.bool.isRequired,
+    isGridMode: PropTypes.bool,
+    isProfileMenuActive: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
-    isNotificationsActive: PropTypes.bool.isRequired,
+    isNotificationsActive: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
   }
 

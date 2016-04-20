@@ -31,14 +31,14 @@ const NO_LAYOUT_TOOLS = [
 ]
 
 const initialSizeState = {
-  columnWidth: null,
-  contentWidth: null,
-  coverImageSize: null,
-  coverOffset: null,
-  gridColumnCount: null,
-  innerHeight: null,
-  innerWidth: null,
-  viewportDeviceSize: null,
+  columnWidth: 0,
+  contentWidth: 0,
+  coverImageSize: 'xhdpi',
+  coverOffset: 0,
+  gridColumnCount: 2,
+  innerHeight: 0,
+  innerWidth: 0,
+  viewportDeviceSize: 'tablet',
 }
 
 const initialNavbarState = {
