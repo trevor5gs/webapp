@@ -2,9 +2,9 @@
 
 @keyframes animateStreamIsBusy
   from
-    transform: rotate(0deg) scale(0.5)
+    transform: rotate(0deg)
   to
-    transform: rotate(360deg) scale(0.5)
+    transform: rotate(720deg)
 
 .StreamComponent,
 .StreamContainer
@@ -41,8 +41,13 @@
   top: rem(20)
 
 .StreamBusyIndicator .ElloMark
-  transform: scale(0.5)
-  animation: animateStreamIsBusy 0.3s infinite linear
+  animation: animateStreamIsBusy 1.03333s infinite $ease-in-out-cubic
+
+.StreamBusyIndicator .ElloMark .FillPath
+  fill: transparent
+
+.StreamBusyIndicator .ElloMark .SmilePath
+  fill: #aaa
 
 // -------------------------------------
 
@@ -51,4 +56,15 @@
 .Panel > .PostDetails > .StreamComponent.hasErrored
   margin: 0 auto
   max-width: rem(780)
+
+.Panel > .StreamComponent .StreamBusyIndicator
+  top: rem(80)
+
+@media(min-width: #{$break-2})
+  .Panel > .StreamComponent .StreamBusyIndicator
+    top: rem(120)
+
+@media(min-width: #{$break-5})
+  .Panel > .StreamComponent .StreamBusyIndicator
+    top: rem(240)
 
