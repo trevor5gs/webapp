@@ -11,7 +11,7 @@ export function searchForPosts(terms) {
     payload: {
       endpoint: api.searchPosts({
         per_page: api.PER_PAGE,
-        terms: window.encodeURIComponent(terms),
+        terms: encodeURIComponent(terms),
       }),
     },
     meta: {
@@ -31,7 +31,7 @@ export function searchForUsers(terms) {
     payload: {
       endpoint: api.searchUsers({
         per_page: api.PER_PAGE,
-        terms: window.encodeURIComponent(terms),
+        terms: encodeURIComponent(terms),
       }),
     },
     meta: {
