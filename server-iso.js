@@ -62,7 +62,7 @@ fs.readFile(path.join(__dirname, './public/index.html'), 'utf-8', (err, data) =>
 addOauthRoute(app)
 
 // Assets
-app.use(express.static('public', { maxAge: '1y' }))
+app.use(express.static('public', { maxAge: '1y', index: false }))
 app.use('/static', express.static('public/static', { maxAge: '1y' }))
 
 // Return promises for initial loads
@@ -85,7 +85,10 @@ function renderFromServer(req, res) {
       console.log('ELLO HANDLE REDIRECT', redirectLocation)
       res.redirect(redirectLocation.pathname)
       return
-    } else if (!renderProps) { return }
+    } else if (!renderProps) {
+      console.log('NO RENDER PROPS')
+      return
+    }
     store.dispatch(replace(renderProps.location.pathname))
 
     preRender(renderProps, store).then(() => {
@@ -118,6 +121,7 @@ const loggedInPaths = {
 }
 
 if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
+  console.log('Isomorphic rendering enabled, serving prerendered pages')
   app.use((req, res) => {
     let isLoggedInPath = false
     for (const re in loggedInPaths) {
@@ -126,16 +130,18 @@ if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
         break
       }
     }
-    console.log('ELLO START URL', req.url, isLoggedInPath)
     res.setHeader('Cache-Control', 'public, max-age=60');
     res.setHeader('Expires', new Date(Date.now() + 1000 * 60).toUTCString());
     if (isLoggedInPath) {
+      console.log('Serving static markup for logged-in path', req.url)
       res.send(indexStr)
     } else {
+      console.log('Serving prerendered markup for logged-out path', req.url)
       renderFromServer(req, res)
     }
   })
 } else {
+  console.log('Isomorphic rendering disabled, serving static HTML')
   app.use((req, res) => {
     res.send(indexStr)
   })
