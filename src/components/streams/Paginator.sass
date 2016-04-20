@@ -2,9 +2,9 @@
 
 @keyframes animatePaginatorSpinner
   from
-    transform: rotate(0deg) scale(0.5)
+    transform: rotate(0deg)
   to
-    transform: rotate(360deg) scale(0.5)
+    transform: rotate(720deg)
 
 .Paginator
   +sans-typeset
@@ -34,9 +34,17 @@
 .Paginator .ElloMark
   transform: scale(0)
 
+.PaginatorMessage
+  margin-left: rem(10)
+
+.Paginator .ElloMark .FillPath
+  fill: transparent
+
+.Paginator .ElloMark .SmilePath
+  fill: #aaa
+
 .Paginator.isBusy .ElloMark
-  transform: scale(0.5)
-  animation: animatePaginatorSpinner 0.3s infinite linear
+  animation: animatePaginatorSpinner 1.03333s infinite $ease-in-out-cubic
 
 // Position to the right for Lovers/Reposter drawers
 .UserAvatars .Paginator
