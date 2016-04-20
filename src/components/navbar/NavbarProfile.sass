@@ -47,12 +47,12 @@
   right: rem(5)
 
 @media(max-width: #{$break-2-max})
-  .isProfileMenuActive + .Main,
-  .isProfileMenuActive + .Footer
+  .isProfileMenuActive ~ .Main,
+  .isProfileMenuActive ~ .Footer
     display: none
-  .isProfileMenuActive + .Navbar > *:not(.NavbarProfile)
+  .isProfileMenuActive ~ .Navbar > *:not(.NavbarProfile)
     display: none
-  .isProfileMenuActive + .NavbarProfile > .Avatar
+  .isProfileMenuActive ~ .NavbarProfile > .Avatar
     pointer-events: none
   .NavbarProfileLinks
     top: rem(-10)
