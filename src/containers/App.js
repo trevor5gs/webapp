@@ -17,8 +17,9 @@ import { addInputObject, removeInputObject } from '../components/editor/InputCom
 import { addFeatureDetection } from '../components/interface/Viewport'
 import { addGlobalDrag, removeGlobalDrag } from '../components/interface/GlobalDrag'
 import { replaceWordFromSelection } from '../components/editor/SelectionUtil'
-import NavbarContainer from '../containers/NavbarContainer'
 import FooterContainer from '../containers/FooterContainer'
+import KeyboardContainer from '../containers/KeyboardContainer'
+import NavbarContainer from '../containers/NavbarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
 
 class App extends Component {
@@ -192,6 +193,7 @@ class App extends Component {
         <FooterContainer />
         <Modal />
         <DevTools />
+        <KeyboardContainer />
         <Analytics isLoggedIn={ isLoggedIn } />
       </section>
     )
