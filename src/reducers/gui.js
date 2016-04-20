@@ -23,6 +23,24 @@ const STREAMS_WHITELIST = [
   /^\/starred$/,
 ]
 
+const NO_LAYOUT_TOOLS = [
+  /^\/[\w\-]+\/post\/.+/,
+  /^\/notifications\b/,
+  /^\/settings\b/,
+  /^\/onboarding\b/,
+]
+
+const initialSizeState = {
+  columnWidth: null,
+  contentWidth: null,
+  coverImageSize: null,
+  coverOffset: null,
+  gridColumnCount: null,
+  innerHeight: null,
+  innerWidth: null,
+  viewportDeviceSize: null,
+}
+
 const initialNavbarState = {
   isNavbarFixed: false,
   isNavbarHidden: false,
@@ -33,8 +51,11 @@ const initialNavbarState = {
 const initialState = {
   activeNotificationsTabType: 'all',
   currentStream: '/discover',
+  hasLayoutTool: true,
   isGridMode: true,
+  isProfileMenuActive: false,
   isOffsetLayout: false,
+  ...initialSizeState,
   ...initialNavbarState,
   history: {},
   lastNotificationCheck: oldDate.toUTCString(),
@@ -81,6 +102,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
   const newState = { ...state }
   let mode = null
   let pathname = null
+  let hasLayoutTool = null
   switch (action.type) {
     case BEACONS.LAST_DISCOVER_VERSION:
       return { ...state, lastDiscoverBeaconVersion: action.payload.version }
@@ -116,15 +138,22 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case LOCATION_CHANGE:
       location = action.payload
       pathname = location.pathname
+      hasLayoutTool = !_.some(NO_LAYOUT_TOOLS, pagex => pagex.test(pathname))
       if (_.some(STREAMS_WHITELIST, re => re.test(pathname))) {
         return {
           ...state,
           ...initialNavbarState,
           currentStream: pathname,
+          hasLayoutTool,
           isGridMode: _isGridMode(state.modes),
         }
       }
-      return { ...state, ...initialNavbarState, isGridMode: _isGridMode(state.modes) }
+      return {
+        ...state,
+        ...initialNavbarState,
+        hasLayoutTool,
+        isGridMode: _isGridMode(state.modes),
+      }
     case GUI.NOTIFICATIONS_TAB:
       return { ...state, activeNotificationsTabType: action.payload.activeTabType }
     case GUI.SET_SCROLL:
@@ -143,10 +172,15 @@ export const gui = (state = initialState, action = { type: '' }) => {
         isNavbarSkippingTransition:
           _.get(action.payload, 'isNavbarSkippingTransition', newState.isNavbarSkippingTransition),
       }
-    case GUI.SET_VIEWPORT_DEVICE_SIZE:
+    case GUI.SET_PROFILE_MENU_STATE:
       return {
         ...state,
-        viewportDeviceSize: action.payload.viewportDeviceSize,
+        isProfileMenuActive: action.payload.isProfileMenuActive,
+      }
+    case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
+      return {
+        ...state,
+        ...action.payload,
       }
     case GUI.BIND_DISCOVER_KEY:
       return { ...newState, discoverKeyType: action.payload.type }

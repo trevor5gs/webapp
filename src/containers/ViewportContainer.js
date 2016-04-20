@@ -1,31 +1,34 @@
 import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
-import { setNavbarState, setViewportDeviceSize } from '../actions/gui'
+import { setNavbarState, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/interface/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../components/interface/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
+import { scrollToTop } from '../components/interface/Viewport'
 
 class ViewportContainer extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
     isNavbarFixed: PropTypes.bool.isRequired,
     isNavbarHidden: PropTypes.bool.isRequired,
     isNavbarSkippingTransition: PropTypes.bool.isRequired,
+    isNotificationsActive: PropTypes.bool.isRequired,
     isOffsetLayout: PropTypes.bool.isRequired,
+    isProfileMenuActive: PropTypes.bool.isRequired,
+    offset: PropTypes.number.isRequired,
     pathname: PropTypes.string.isRequired,
   }
 
   componentWillMount() {
     this.scrollYAtDirectionChange = null
-    this.offset = -80
-    this.viewportDeviceSize = 'mobile'
   }
 
   componentDidMount() {
+    const { isOffsetLayout } = this.props
     addResizeObject(this)
     addScrollObject(this)
+    scrollToTop({ isOffsetLayout })
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -37,9 +40,8 @@ class ViewportContainer extends Component {
     removeScrollObject(this)
   }
 
-  onResize({ coverOffset, viewportDeviceSize }) {
-    this.offset = coverOffset - 80
-    this.props.dispatch(setViewportDeviceSize({ size: viewportDeviceSize }))
+  onResize(resizeAttributes) {
+    this.props.dispatch(setViewportSizeAttributes(resizeAttributes))
   }
 
   onScrollTop() {
@@ -55,7 +57,7 @@ class ViewportContainer extends Component {
 
   onScrollDirectionChange(scrollProperties) {
     const { scrollY } = scrollProperties
-    if (scrollY >= this.offset) {
+    if (scrollY >= this.props.offset) {
       this.scrollYAtDirectionChange = scrollY
     }
   }
@@ -68,14 +70,14 @@ class ViewportContainer extends Component {
     let nextIsSkippingTransition = isNavbarSkippingTransition
 
     // Going from absolute to fixed positioning
-    if (scrollY >= this.offset && !isNavbarFixed) {
+    if (scrollY >= this.props.offset && !isNavbarFixed) {
       nextIsFixed = true
       nextIsHidden = true
       nextIsSkippingTransition = true
     }
 
     // Scroll just changed directions so it's about to either be shown or hidden
-    if (scrollY >= this.offset && this.scrollYAtDirectionChange) {
+    if (scrollY >= this.props.offset && this.scrollYAtDirectionChange) {
       const distance = Math.abs(scrollY - this.scrollYAtDirectionChange)
       const delay = scrollDirection === 'down' ? 20 : 80
       const isScrollingDown = scrollDirection === 'down'
@@ -103,13 +105,17 @@ class ViewportContainer extends Component {
   }
 
 }
+
 const mapStateToProps = (state) => {
-  const { gui, routing } = state
+  const { gui, modal, routing } = state
   return {
+    offset: gui.coverOffset ? gui.coverOffset - 80 : 160,
     isNavbarFixed: gui.isNavbarFixed,
     isNavbarHidden: gui.isNavbarHidden,
     isNavbarSkippingTransition: gui.isNavbarSkippingTransition,
+    isNotificationsActive: modal.isNotificationsActive,
     isOffsetLayout: gui.isOffsetLayout,
+    isProfileMenuActive: gui.isProfileMenuActive,
     pathname: routing.location.pathname,
   }
 }
