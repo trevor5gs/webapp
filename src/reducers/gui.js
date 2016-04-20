@@ -49,14 +49,14 @@ const initialNavbarState = {
 
 // order matters for matching routes
 const initialState = {
+  ...initialSizeState,
+  ...initialNavbarState,
   activeNotificationsTabType: 'all',
   currentStream: '/discover',
   hasLayoutTool: true,
   isGridMode: true,
   isProfileMenuActive: false,
   isOffsetLayout: false,
-  ...initialSizeState,
-  ...initialNavbarState,
   history: {},
   lastNotificationCheck: oldDate.toUTCString(),
   modes: [
@@ -78,7 +78,6 @@ const initialState = {
   ],
   newNotificationContent: false,
   userFollowingTab: 'friend',
-  viewportDeviceSize: 'mobile',
 }
 
 export const findLayoutMode = (modes) => {

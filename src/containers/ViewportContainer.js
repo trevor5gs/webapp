@@ -104,8 +104,6 @@ class ViewportContainer extends Component {
     }
   }
 
-  // Add the viewport component then things like scrolling,
-  // resizing, etc.
   render() {
     return <Viewport { ...this.props } />
   }

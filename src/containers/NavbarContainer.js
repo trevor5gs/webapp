@@ -16,7 +16,6 @@ import { scrollToTop } from '../vendor/scrollTop'
 class NavbarContainer extends Component {
 
   static propTypes = {
-    currentStream: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isProfileMenuActive: PropTypes.bool.isRequired,
@@ -26,7 +25,6 @@ class NavbarContainer extends Component {
   }
 
   componentWillMount() {
-    this.deactivateProfileMenu()
     this.checkForNotifications()
   }
 
@@ -39,6 +37,10 @@ class NavbarContainer extends Component {
     if (prevProps.pathname !== this.props.pathname) {
       this.checkForNotifications()
     }
+  }
+
+  componentWillUnmount() {
+    this.deactivateProfileMenu()
   }
 
   onClickAvatar = () => {
