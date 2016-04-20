@@ -17,7 +17,7 @@ export const NavbarProfile = ({
     return (
       <span className="NavbarProfile">
         <Avatar sources={ avatar } onClick={ onClickAvatar } />
-        <nav className={ classNames('NavbarProfileLinks', { active: isProfileMenuActive })} >
+        <nav className={ classNames('NavbarProfileLinks', { isActive: isProfileMenuActive })} >
           <Link className="NavbarProfileLink" to={`/${username}`}>{`@${username}`}</Link>
           <Link className="NavbarProfileLink" to={`/${username}/loves`}>Loves</Link>
           <Link className="NavbarProfileLink" to="/invitations">Invite</Link>
