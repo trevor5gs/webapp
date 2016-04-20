@@ -2,7 +2,7 @@ import path from 'path'
 import express from 'express'
 import webpack from 'webpack'
 import config from './webpack.dev.config'
-import addOauthRoute from './oauth'
+import { addOauthRoute, fetchOauthToken } from './oauth'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
 
 const app = express()
@@ -33,10 +33,12 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './public/dev.html'))
 })
 
-app.listen(6660, '0.0.0.0', (err) => {
-  if (err) {
-    console.log(err)
-    return
-  }
-  console.log('Listening at http://localhost:6660')
+fetchOauthToken(() => {
+  app.listen(6660, '0.0.0.0', (err) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+    console.log('Listening at http://localhost:6660')
+  })
 })
