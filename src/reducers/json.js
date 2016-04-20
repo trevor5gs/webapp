@@ -31,8 +31,7 @@ function _updateUserCount(newState, userId, prop, delta) {
     obj,
   )
 }
-methods.updateUserCount = (newState, userId, prop, delta) =>
-  _updateUserCount(newState, userId, prop, delta)
+methods.updateUserCount = _updateUserCount
 
 function _updatePostCount(newState, postId, prop, delta) {
   const count = newState[MAPPING_TYPES.POSTS][postId][prop] || 0
@@ -46,10 +45,9 @@ function _updatePostCount(newState, postId, prop, delta) {
     obj,
   )
 }
-methods.updatePostCount = (newState, postId, prop, delta) =>
-  _updatePostCount(newState, postId, prop, delta)
+methods.updatePostCount = _updatePostCount
 
-function _appendPageId(newState, pageName, mappingType, id) {
+function _appendPageId(newState, pageName, mappingType, id, addNewResult = true) {
   let page = get(newState, ['pages', pageName])
   if (page) {
     const ids = get(page, 'ids', [])
@@ -57,7 +55,7 @@ function _appendPageId(newState, pageName, mappingType, id) {
       ids.unshift(`${id}`)
       page.ids = ids
     }
-  } else {
+  } else if (addNewResult) {
     page = {
       ids: [`${id}`], type: mappingType, pagination: emptyPagination(),
     }
@@ -91,8 +89,7 @@ function _getCurrentUser(state) {
   }
   return null
 }
-methods.getCurrentUser = (state) =>
-  _getCurrentUser(state)
+methods.getCurrentUser = _getCurrentUser
 
 function _mergeModel(state, type, params) {
   if (params.id) {
@@ -103,8 +100,7 @@ function _mergeModel(state, type, params) {
   }
   return state
 }
-methods.mergeModel = (state, type, params) =>
-  _mergeModel(state, type, params)
+methods.mergeModel = _mergeModel
 
 function _findPostFromIdOrToken(state, postIdOrToken) {
   return parseInt(postIdOrToken, 10) > 0 ?
@@ -114,8 +110,7 @@ function _findPostFromIdOrToken(state, postIdOrToken) {
       findObj: { token: postIdOrToken },
     })
 }
-methods.findPostFromIdOrToken = (state, postIdOrToken) =>
-  _findPostFromIdOrToken(state, postIdOrToken)
+methods.findPostFromIdOrToken = _findPostFromIdOrToken
 
 function _addParentPostIdToComments(state, action) {
   // Kludge to abort for some tests
@@ -135,8 +130,7 @@ function _addParentPostIdToComments(state, action) {
   }
   return null
 }
-methods.addParentPostIdToComments = (state, type, data) =>
-  _addParentPostIdToComments(state, type, data)
+methods.addParentPostIdToComments = _addParentPostIdToComments
 
 function _addModels(state, type, data) {
   // add state['modelType']
@@ -164,8 +158,7 @@ function _addModels(state, type, data) {
   }
   return ids
 }
-methods.addModels = (state, type, data) =>
-  _addModels(state, type, data)
+methods.addModels = _addModels
 
 function _addNewIdsToResult(state, newState) {
   const result = newState.pages[path]
@@ -174,8 +167,7 @@ function _addNewIdsToResult(state, newState) {
   delete result.newIds
   return newState
 }
-methods.addNewIdsToResult = (state, newState) =>
-  _addNewIdsToResult(state, newState)
+methods.addNewIdsToResult = _addNewIdsToResult
 
 function _setLayoutMode(action, state, newState) {
   const result = newState.pages[path]
@@ -183,8 +175,7 @@ function _setLayoutMode(action, state, newState) {
   result.mode = action.payload.mode
   return newState
 }
-methods.setLayoutMode = (action, state, newState) =>
-  _setLayoutMode(action, state, newState)
+methods.setLayoutMode = _setLayoutMode
 
 // parses the 'linked' node of the JSON
 // api responses into the json store
@@ -196,8 +187,7 @@ function _parseLinked(linked, newState) {
     }
   }
 }
-methods.parseLinked = (linked, newState) =>
-  _parseLinked(linked, newState)
+methods.parseLinked = _parseLinked
 
 // parse main part of request into the state and
 // pull out the ids as this is the main payload
@@ -209,16 +199,14 @@ function _getResult(response, newState, action) {
   result.pagination = action.payload.pagination
   return result
 }
-methods.getResult = (response, newState, action) =>
-  _getResult(response, newState, action)
+methods.getResult = _getResult
 
 function _pagesKey(action) {
   const pathname = action.payload && action.payload.pathname ? action.payload.pathname : path
   const { resultKey } = action.meta || {}
   return resultKey || pathname
 }
-methods.pagesKey = (action) =>
-  _pagesKey(action)
+methods.pagesKey = _pagesKey
 
 // TODO: need to test the existingResult conditional logic!!!!
 function _updateResult(response, newState, action) {
@@ -274,8 +262,7 @@ function _updateResult(response, newState, action) {
     newState.pages[resultPath] = result
   }
 }
-methods.updateResult = (response, newState, action) =>
-  _updateResult(response, newState, action)
+methods.updateResult = _updateResult
 
 function _clearSearchResults(state, newState, action) {
   const pathname = action.payload.pathname
@@ -286,8 +273,7 @@ function _clearSearchResults(state, newState, action) {
   }
   return state
 }
-methods.clearSearchResults = (state, newState, action) =>
-  _clearSearchResults(state, newState, action)
+methods.clearSearchResults = _clearSearchResults
 
 function _deleteModel(state, newState, action, mappingType) {
   const { model } = action.payload
@@ -321,8 +307,7 @@ function _deleteModel(state, newState, action, mappingType) {
   }
   return state
 }
-methods.deleteModel = (state, newState, action, mappingType) =>
-  _deleteModel(state, newState, action, mappingType)
+methods.deleteModel = _deleteModel
 
 function _updateCurrentUser(newState, action) {
   const { response } = action.payload
@@ -348,8 +333,7 @@ function _updateCurrentUser(newState, action) {
 
   return newState
 }
-methods.updateCurrentUser = (newState, action) =>
-  _updateCurrentUser(newState, action)
+methods.updateCurrentUser = _updateCurrentUser
 
 // TODO: This has the same issues as /reducers/profile.js (line ~38) by pulling
 // the previous image. Less so on production than staging I believe?
@@ -363,8 +347,7 @@ function _updateCurrentUserTmpAsset(newState, action) {
   newState[MAPPING_TYPES.USERS][currentUser.id] = modifiedUser
   return newState
 }
-methods.updateCurrentUserTmpAsset = (newState, action) =>
-  _updateCurrentUserTmpAsset(newState, action)
+methods.updateCurrentUserTmpAsset = _updateCurrentUserTmpAsset
 
 function _updatePostDetail(newState, action) {
   const post = action.payload.response.posts
@@ -376,8 +359,7 @@ function _updatePostDetail(newState, action) {
     { id: post.id, showLovers: parseInt(post.lovesCount, 10) > 0, showReposters: parseInt(post.repostsCount, 10) > 0 }
   )
 }
-methods.updatePostDetail = (newState, action) =>
-  _updatePostDetail(newState, action)
+methods.updatePostDetail = _updatePostDetail
 
 export default function json(state = {}, action = { type: '' }) {
   let newState = { ...state }
