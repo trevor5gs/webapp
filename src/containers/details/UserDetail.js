@@ -188,7 +188,7 @@ class UserDetail extends Component {
         userEls.push(
           <TabListButtons
             className="LabelTabList"
-            tabClasses="LabelTab no-underline"
+            tabClasses="LabelTab"
             key={ `tabList_${user.id}` }
             activeType={ userFollowingTab }
             tabs={ tabs }
