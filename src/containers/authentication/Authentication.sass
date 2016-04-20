@@ -39,11 +39,10 @@
 .no-touch .AuthenticationFormDialog a:hover
   color: white
 
-// Bit of a hammer, but the PR that @mk will eventually make this obsolete
-[data-pathname="/forgot-password"] ~ .Navbar.asFixed.asHidden,
-[data-pathname="/signup"] ~ .Navbar.asFixed.asHidden,
-[data-pathname="/enter"] ~ .Navbar.asFixed.asHidden,
-[data-pathname="/join"] ~ .Navbar.asFixed.asHidden,
+.isNavbarFixed.isNavbarHidden[data-pathname="/forgot-password"] ~ .Navbar,
+.isNavbarFixed.isNavbarHidden[data-pathname="/signup"] ~ .Navbar,
+.isNavbarFixed.isNavbarHidden[data-pathname="/enter"] ~ .Navbar,
+.isNavbarFixed.isNavbarHidden[data-pathname="/join"] ~ .Navbar
   transform: translate3d(0, 0, 0)
   visibility: visible
 
