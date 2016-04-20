@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react'
 import { ArrowIcon } from '../navbar/NavbarIcons'
 
-const NavbarMorePostsButton = ({ onClick }) =>
-  <button onClick={ onClick } className="NavbarMorePostsButton">
+export const NavbarMorePostsButton = ({ onClick }) =>
+  <button className="NavbarMorePostsButton" onClick={ onClick } >
     <ArrowIcon />
     <span>New Posts</span>
   </button>
@@ -10,6 +10,4 @@ const NavbarMorePostsButton = ({ onClick }) =>
 NavbarMorePostsButton.propTypes = {
   onClick: PropTypes.func,
 }
-
-export default NavbarMorePostsButton
 

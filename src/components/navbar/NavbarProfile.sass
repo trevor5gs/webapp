@@ -16,7 +16,7 @@
   border-top: 0
   color: #aaa
 
-.NavbarProfileLinks.active
+.NavbarProfileLinks.isActive
   pointer-events: auto
   opacity: 1
 
@@ -47,12 +47,12 @@
   right: rem(5)
 
 @media(max-width: #{$break-2-max})
-  body.profileMenuIsActive .Main,
-  body.profileMenuIsActive .Footer
+  .isProfileMenuActive ~ .Main,
+  .isProfileMenuActive ~ .Footer
     display: none
-  body.profileMenuIsActive .Navbar > *:not(.NavbarProfile)
+  .isProfileMenuActive ~ .Navbar > *:not(.NavbarProfile)
     display: none
-  body.profileMenuIsActive .NavbarProfile > .Avatar
+  .isProfileMenuActive ~ .NavbarProfile > .Avatar
     pointer-events: none
   .NavbarProfileLinks
     top: rem(-10)

@@ -6,48 +6,53 @@ import { FooterLink } from '../footer/FooterLink'
 import { FooterTool } from '../footer/FooterTool'
 import { isAndroid } from '../interface/Viewport'
 
-export const Footer = (props) => {
-  const { isPaginatoring, isGridMode, onClickScrollToTop, onClickToggleLayoutMode } = props
-  return (
-    <footer
-      className={classNames('Footer', { isPaginatoring })}
-      role="contentinfo"
-    >
-      <div className="FooterLinks">
-        <FooterLabel label="Beta 2.2" />
-        <FooterLink
-          className="asLabel"
-          href={ `${ENV.AUTH_DOMAIN}/wtf` }
-          label="WTF"
-        />
-        { isAndroid() ?
-          null :
-          <FooterLink
-            href="http://appstore.com/ello/ello"
-            icon={ <PhoneIcon /> }
-            label="Get the app"
-          />
-        }
-      </div>
-      <div className="FooterTools">
-        <FooterTool
-          className="TopTool"
-          label="Top"
-          icon={ <ChevronIcon /> }
-          onClick={ onClickScrollToTop }
-        />
-        <FooterTool
-          className="LayoutTool"
-          label={ isGridMode ? 'List View' : 'Grid View' }
-          icon={ isGridMode ? <ListIcon /> : <GridIcon /> }
-          onClick={ onClickToggleLayoutMode }
-        />
-      </div>
-    </footer>
-  )
-}
+export const Footer = ({
+  hasLayoutTool,
+  isPaginatoring,
+  isGridMode,
+  onClickScrollToTop,
+  onClickToggleLayoutMode,
+}) =>
+<footer
+  className={classNames('Footer', { isPaginatoring })}
+  role="contentinfo"
+>
+  <div className="FooterLinks">
+    <FooterLabel label="Beta 2.2" />
+    <FooterLink
+      className="asLabel"
+      href={ `${ENV.AUTH_DOMAIN}/wtf` }
+      label="WTF"
+    />
+    { isAndroid() ?
+      null :
+      <FooterLink
+        href="http://appstore.com/ello/ello"
+        icon={ <PhoneIcon /> }
+        label="Get the app"
+      />
+    }
+  </div>
+  <div className="FooterTools">
+    <FooterTool
+      className="TopTool"
+      icon={ <ChevronIcon /> }
+      label="Top"
+      onClick={ onClickScrollToTop }
+    />
+    { hasLayoutTool ?
+      <FooterTool
+        className="LayoutTool"
+        icon={ isGridMode ? <ListIcon /> : <GridIcon /> }
+        label={ isGridMode ? 'List View' : 'Grid View' }
+        onClick={ onClickToggleLayoutMode }
+      /> : null
+    }
+  </div>
+</footer>
 
 Footer.propTypes = {
+  hasLayoutTool: PropTypes.bool.isRequired,
   isGridMode: PropTypes.bool.isRequired,
   isPaginatoring: PropTypes.bool.isRequired,
   onClickScrollToTop: PropTypes.func.isRequired,

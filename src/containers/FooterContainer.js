@@ -1,10 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
-import { GUI } from '../constants/gui_types'
-import { findLayoutMode } from '../reducers/gui'
 import { scrollToTop } from '../components/interface/Viewport'
 import { Footer } from '../components/footer/Footer'
 
@@ -12,6 +9,7 @@ class FooterContainer extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    hasLayoutTool: PropTypes.bool.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isOffsetLayout: PropTypes.bool.isRequired,
     isPaginatoring: PropTypes.bool,
@@ -33,8 +31,9 @@ class FooterContainer extends Component {
   }
 
   render() {
-    const { isGridMode, isPaginatoring } = this.props
+    const { hasLayoutTool, isGridMode, isPaginatoring } = this.props
     const props = {
+      hasLayoutTool,
       isGridMode,
       isPaginatoring,
       onClickScrollToTop: this.onClickScrollToTop,
@@ -45,12 +44,13 @@ class FooterContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const isPaginatoring = state.stream.type === LOAD_NEXT_CONTENT_REQUEST &&
-    GUI.viewportDeviceSize === 'mobile'
-  const currentMode = findLayoutMode(state.gui.modes)
+  const { gui, stream } = state
+  const isPaginatoring = stream.type === LOAD_NEXT_CONTENT_REQUEST &&
+    gui.viewportDeviceSize === 'mobile'
   return {
-    isGridMode: get(currentMode, 'mode', true) === 'grid',
-    isOffsetLayout: state.gui.isOffsetLayout,
+    hasLayoutTool: gui.hasLayoutTool,
+    isGridMode: gui.isGridMode,
+    isOffsetLayout: gui.isOffsetLayout,
     isPaginatoring,
   }
 }

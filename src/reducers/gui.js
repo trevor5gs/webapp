@@ -16,10 +16,46 @@ import {
 let location = {}
 const oldDate = new Date()
 oldDate.setFullYear(oldDate.getFullYear() - 2)
+
+const STREAMS_WHITELIST = [
+  /^\/discover/,
+  /^\/following$/,
+  /^\/starred$/,
+]
+
+const NO_LAYOUT_TOOLS = [
+  /^\/[\w\-]+\/post\/.+/,
+  /^\/notifications\b/,
+  /^\/settings\b/,
+  /^\/onboarding\b/,
+]
+
+const initialSizeState = {
+  columnWidth: null,
+  contentWidth: null,
+  coverImageSize: null,
+  coverOffset: null,
+  gridColumnCount: null,
+  innerHeight: null,
+  innerWidth: null,
+  viewportDeviceSize: null,
+}
+
+const initialNavbarState = {
+  isNavbarFixed: false,
+  isNavbarHidden: false,
+  isNavbarSkippingTransition: false,
+}
+
 // order matters for matching routes
 const initialState = {
+  ...initialSizeState,
+  ...initialNavbarState,
   activeNotificationsTabType: 'all',
-  currentStream: '/following',
+  currentStream: '/discover',
+  hasLayoutTool: true,
+  isGridMode: true,
+  isProfileMenuActive: false,
   isOffsetLayout: false,
   history: {},
   lastNotificationCheck: oldDate.toUTCString(),
@@ -44,7 +80,7 @@ const initialState = {
   userFollowingTab: 'friend',
 }
 
-export function findLayoutMode(modes) {
+export const findLayoutMode = (modes) => {
   for (const mode of modes) {
     const regex = new RegExp(mode.regex)
     if (regex.test(location.pathname)) {
@@ -54,16 +90,18 @@ export function findLayoutMode(modes) {
   return modes[modes.length - 1]
 }
 
-const STREAMS_WHITELIST = [
-  /^\/discover/,
-  /^\/following$/,
-  /^\/starred$/,
-]
+const _isGridMode = (modes) => {
+  const mode = findLayoutMode(modes)
+  if (!mode) { return null }
+  return mode.mode === 'grid'
+}
 
-export function gui(state = initialState, action = { type: '' }) {
+
+export const gui = (state = initialState, action = { type: '' }) => {
   const newState = { ...state }
   let mode = null
   let pathname = null
+  let hasLayoutTool = null
   switch (action.type) {
     case BEACONS.LAST_DISCOVER_VERSION:
       return { ...state, lastDiscoverBeaconVersion: action.payload.version }
@@ -95,21 +133,54 @@ export function gui(state = initialState, action = { type: '' }) {
       mode = findLayoutMode(newState.modes)
       if (mode.mode === action.payload.mode) return state
       mode.mode = action.payload.mode
-      return newState
+      return { ...newState, isGridMode: action.payload.mode === 'grid' }
     case LOCATION_CHANGE:
       location = action.payload
       pathname = location.pathname
+      hasLayoutTool = !_.some(NO_LAYOUT_TOOLS, pagex => pagex.test(pathname))
       if (_.some(STREAMS_WHITELIST, re => re.test(pathname))) {
-        return { ...state, currentStream: pathname }
+        return {
+          ...state,
+          ...initialNavbarState,
+          currentStream: pathname,
+          hasLayoutTool,
+          isGridMode: _isGridMode(state.modes),
+        }
       }
-      return { ...state }
+      return {
+        ...state,
+        ...initialNavbarState,
+        hasLayoutTool,
+        isGridMode: _isGridMode(state.modes),
+      }
     case GUI.NOTIFICATIONS_TAB:
       return { ...state, activeNotificationsTabType: action.payload.activeTabType }
     case GUI.SET_SCROLL:
       newState.history[action.payload.key] = { ...action.payload }
       return newState
     case GUI.SET_IS_OFFSET_LAYOUT:
-      return { ...state, isOffsetLayout: action.payload.isOffsetLayout }
+      return {
+        ...state,
+        isOffsetLayout: action.payload.isOffsetLayout,
+      }
+    case GUI.SET_NAVBAR_STATE:
+      return {
+        ...state,
+        isNavbarFixed: _.get(action.payload, 'isNavbarFixed', newState.isNavbarFixed),
+        isNavbarHidden: _.get(action.payload, 'isNavbarHidden', newState.isNavbarHidden),
+        isNavbarSkippingTransition:
+          _.get(action.payload, 'isNavbarSkippingTransition', newState.isNavbarSkippingTransition),
+      }
+    case GUI.SET_PROFILE_MENU_STATE:
+      return {
+        ...state,
+        isProfileMenuActive: action.payload.isProfileMenuActive,
+      }
+    case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
+      return {
+        ...state,
+        ...action.payload,
+      }
     case GUI.BIND_DISCOVER_KEY:
       return { ...newState, discoverKeyType: action.payload.type }
     case GUI.SET_FOLLOWING_TAB:
@@ -120,7 +191,7 @@ export function gui(state = initialState, action = { type: '' }) {
 }
 
 // this is used for testing in StreamComponent_test
-export function setLocation(loc) {
+export const setLocation = (loc) => {
   location = loc
 }
 

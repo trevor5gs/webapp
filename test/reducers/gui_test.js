@@ -9,14 +9,28 @@ describe('gui reducer', () => {
       expect(
         subject.gui(undefined, {})
       ).to.have.keys(
-        'activeNotificationsTabType',
-        'currentStream',
-        'history',
-        'isOffsetLayout',
-        'lastNotificationCheck',
-        'modes',
-        'newNotificationContent',
-        'userFollowingTab',
+      'activeNotificationsTabType',
+      'columnWidth',
+      'contentWidth',
+      'coverImageSize',
+      'coverOffset',
+      'currentStream',
+      'gridColumnCount',
+      'hasLayoutTool',
+      'history',
+      'innerHeight',
+      'innerWidth',
+      'isGridMode',
+      'isNavbarFixed',
+      'isNavbarHidden',
+      'isNavbarSkippingTransition',
+      'isOffsetLayout',
+      'isProfileMenuActive',
+      'lastNotificationCheck',
+      'modes',
+      'newNotificationContent',
+      'userFollowingTab',
+      'viewportDeviceSize',
       )
     })
   })
@@ -35,3 +49,4 @@ describe('gui reducer', () => {
     })
   })
 })
+

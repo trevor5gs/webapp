@@ -7,10 +7,10 @@ const highlightingRules = {
   '/following': /^\/following/,
 }
 
-const NavbarLink = ({
+export const NavbarLink = ({
+    className = '',
     icon,
     label,
-    modifiers = '',
     onClick,
     onDragLeave,
     onDragOver,
@@ -20,9 +20,9 @@ const NavbarLink = ({
   }) => {
   const klassNames = classNames(
     'NavbarLink',
-    modifiers,
+    className,
     {
-      active: highlightingRules[to] ? pathname.match(highlightingRules[to]) : pathname.match(to),
+      isActive: highlightingRules[to] ? pathname.match(highlightingRules[to]) : pathname.match(to),
     },
   )
   return (
@@ -41,9 +41,9 @@ const NavbarLink = ({
 }
 
 NavbarLink.propTypes = {
+  className: PropTypes.string,
   icon: PropTypes.element,
   label: PropTypes.string.isRequired,
-  modifiers: PropTypes.string,
   onClick: PropTypes.func,
   onDragLeave: PropTypes.func,
   onDragOver: PropTypes.func,
@@ -51,6 +51,4 @@ NavbarLink.propTypes = {
   pathname: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
 }
-
-export default NavbarLink
 

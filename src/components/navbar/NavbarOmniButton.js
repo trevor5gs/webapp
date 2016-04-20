@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { PencilIcon } from '../navbar/NavbarIcons'
 
-const NavbarOmniButton = ({ onClick, onDragOver }) =>
+export const NavbarOmniButton = ({ onClick, onDragOver }) =>
   <button className="NavbarOmniButton" onClick={ onClick } onDragOver={ onDragOver }>
     <PencilIcon />
     <span>Post</span>
@@ -11,6 +11,4 @@ NavbarOmniButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   onDragOver: PropTypes.func.isRequired,
 }
-
-export default NavbarOmniButton
 

@@ -10,7 +10,6 @@ import Analytics from '../components/analytics/Analytics'
 import DevTools from '../components/devtools/DevTools'
 import { AppHelmet } from '../components/helmets/AppHelmet'
 import Modal from '../components/modals/Modal'
-import Navbar from '../components/navbar/Navbar'
 import Omnibar from '../components/omnibar/Omnibar'
 import Completer from '../components/completers/Completer'
 import TextTools from '../components/editor/TextTools'
@@ -19,6 +18,9 @@ import { addFeatureDetection } from '../components/interface/Viewport'
 import { addGlobalDrag, removeGlobalDrag } from '../components/interface/GlobalDrag'
 import { replaceWordFromSelection } from '../components/editor/SelectionUtil'
 import FooterContainer from '../containers/FooterContainer'
+import KeyboardContainer from '../containers/KeyboardContainer'
+import NavbarContainer from '../containers/NavbarContainer'
+import ViewportContainer from '../containers/ViewportContainer'
 
 class App extends Component {
 
@@ -165,6 +167,7 @@ class App extends Component {
     return (
       <section className={ appClasses }>
         <AppHelmet pathname={ pathname } />
+        <ViewportContainer />
         { isLoggedIn ? <Omnibar /> : null }
         <main className="Main" data-pathname={ pathname } role="main">
           { children }
@@ -186,10 +189,11 @@ class App extends Component {
           /> :
           null
         }
-        <Navbar />
+        <NavbarContainer />
         <FooterContainer />
         <Modal />
         <DevTools />
+        <KeyboardContainer />
         <Analytics isLoggedIn={ isLoggedIn } />
       </section>
     )
