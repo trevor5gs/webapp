@@ -30,7 +30,6 @@ class NotificationsContainer extends Component {
 
   componentWillMount() {
     this.body = ReactDOM.findDOMNode(document.body)
-    this.body.classList.add('notificationsAreActive')
     this.onScrolled = _.debounce(this.onScrolled, 300)
     this.state = { isReloading: false }
   }
@@ -54,7 +53,6 @@ class NotificationsContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.body.classList.remove('notificationsAreActive')
     document.removeEventListener('click', this.onClickDocument)
   }
 
