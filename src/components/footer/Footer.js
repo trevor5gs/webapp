@@ -36,15 +36,15 @@ export const Footer = ({
   <div className="FooterTools">
     <FooterTool
       className="TopTool"
-      label="Top"
       icon={ <ChevronIcon /> }
+      label="Top"
       onClick={ onClickScrollToTop }
     />
     { hasLayoutTool ?
       <FooterTool
         className="LayoutTool"
-        label={ isGridMode ? 'List View' : 'Grid View' }
         icon={ isGridMode ? <ListIcon /> : <GridIcon /> }
+        label={ isGridMode ? 'List View' : 'Grid View' }
         onClick={ onClickToggleLayoutMode }
       /> : null
     }
