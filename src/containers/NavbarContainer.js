@@ -9,19 +9,27 @@ import { setProfileMenuState } from '../actions/gui'
 import { checkForNewNotifications } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
+import { loadFriends, loadNoise } from '../actions/stream'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/Navbar'
+import { getDiscoverAction } from '../containers/discover/Discover'
 import Session from '../vendor/session'
 import { scrollToTop } from '../vendor/scrollTop'
 
 class NavbarContainer extends Component {
 
   static propTypes = {
+    currentStream: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     isGridMode: PropTypes.bool,
     isProfileMenuActive: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     isNotificationsActive: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
+    routerParams: PropTypes.shape({
+      username: PropTypes.string,
+      token: PropTypes.string,
+      type: PropTypes.string,
+    }).isRequired,
   }
 
   componentWillMount() {
@@ -65,6 +73,22 @@ class NavbarContainer extends Component {
     const { dispatch } = this.props
     dispatch({ type: ADD_NEW_IDS_TO_RESULT })
     scrollToTop()
+  }
+
+  onClickNavbarMark = () => {
+    const { currentStream, dispatch, pathname, routerParams } = this.props
+    if (currentStream === pathname) {
+      if (/^\/discover/.test(pathname)) {
+        if (routerParams.type) {
+          dispatch(getDiscoverAction(routerParams.type))
+        }
+      } else if (/^\/following$/.test(pathname)) {
+        dispatch(loadFriends())
+      } else if (/^\/starred/.test(pathname)) {
+        dispatch(loadNoise())
+      }
+      scrollToTop()
+    }
   }
 
   onClickOmniButton = () => {
@@ -155,6 +179,7 @@ class NavbarContainer extends Component {
           onClickAvatar={ this.onClickAvatar }
           onClickDocument={ this.onClickDocument }
           onClickLoadMorePosts={ this.onClickLoadMorePosts }
+          onClickNavbarMark={ this.onClickNavbarMark }
           onClickNotification={ this.onClickNotification }
           onClickOmniButton={ this.onClickOmniButton }
           onClickToggleLayoutMode={ this.onClickToggleLayoutMode }
@@ -170,6 +195,7 @@ class NavbarContainer extends Component {
       <NavbarLoggedOut
         { ...this.props }
         onClickLoadMorePosts={ this.onClickLoadMorePosts }
+        onClickNavbarMark={ this.onClickNavbarMark }
       />
     )
   }
@@ -177,7 +203,6 @@ class NavbarContainer extends Component {
 
 const mapStateToProps = (state) => {
   const { authentication, gui, json, modal, profile, routing } = state
-
   const currentStream = gui.currentStream
   const isLoggedIn = authentication.isLoggedIn
   const pathname = routing.location.pathname

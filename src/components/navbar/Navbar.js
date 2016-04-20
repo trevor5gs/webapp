@@ -18,12 +18,14 @@ export const NavbarLoggedOut = ({
   hasLoadMoreButton,
   isLoggedIn,
   onClickLoadMorePosts,
+  onClickNavbarMark,
   pathname,
 }) =>
 <nav className="Navbar" role="navigation" >
   <NavbarMark
     currentStream={ currentStream }
     isLoggedIn={ isLoggedIn }
+    onClick={ onClickNavbarMark }
   />
   <NavbarLabel />
   { hasLoadMoreButton ? <NavbarMorePostsButton onClick={ onClickLoadMorePosts } /> : null }
@@ -62,6 +64,7 @@ NavbarLoggedOut.propTypes = {
   hasLoadMoreButton: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   onClickLoadMorePosts: PropTypes.func.isRequired,
+  onClickNavbarMark: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
 }
 
@@ -78,6 +81,7 @@ export const NavbarLoggedIn = ({
   notificationCategory,
   onClickAvatar,
   onClickLoadMorePosts,
+  onClickNavbarMark,
   onClickNotification,
   onClickOmniButton,
   onClickToggleLayoutMode,
@@ -94,6 +98,7 @@ export const NavbarLoggedIn = ({
   <NavbarMark
     currentStream={ currentStream }
     isLoggedIn={ isLoggedIn }
+    onClick={ onClickNavbarMark }
   />
   <NavbarOmniButton
     onClick={ onClickOmniButton }
@@ -175,6 +180,7 @@ NavbarLoggedIn.propTypes = {
   notificationCategory: PropTypes.string.isRequired,
   onClickAvatar: PropTypes.func.isRequired,
   onClickLoadMorePosts: PropTypes.func.isRequired,
+  onClickNavbarMark: PropTypes.func.isRequired,
   onClickNotification: PropTypes.func.isRequired,
   onClickOmniButton: PropTypes.func.isRequired,
   onClickToggleLayoutMode: PropTypes.func.isRequired,
