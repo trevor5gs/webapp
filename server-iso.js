@@ -114,7 +114,9 @@ function renderFromServer(req, res) {
 
 const loggedInPaths = {
   following: /^\/following/,
+  invitations: /^\/invitations/,
   settings: /^\/settings/,
+  starred: /^\/starred/,
 }
 
 if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
