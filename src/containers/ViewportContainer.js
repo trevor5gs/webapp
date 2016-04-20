@@ -10,6 +10,8 @@ import { scrollToTop } from '../components/interface/Viewport'
 class ViewportContainer extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    innerHeight: PropTypes.number.isRequired,
+    innerWidth: PropTypes.number.isRequired,
     isNavbarFixed: PropTypes.bool.isRequired,
     isNavbarHidden: PropTypes.bool.isRequired,
     isNavbarSkippingTransition: PropTypes.bool.isRequired,
@@ -41,7 +43,11 @@ class ViewportContainer extends Component {
   }
 
   onResize(resizeAttributes) {
-    this.props.dispatch(setViewportSizeAttributes(resizeAttributes))
+    const { innerHeight: prevHeight, innerWidth: prevWidth } = this.props
+    const { innerHeight: nextHeight, innerWidth: nextWidth } = resizeAttributes
+    if (prevHeight !== nextHeight || prevWidth !== nextWidth) {
+      this.props.dispatch(setViewportSizeAttributes(resizeAttributes))
+    }
   }
 
   onScrollTop() {
@@ -109,13 +115,15 @@ class ViewportContainer extends Component {
 const mapStateToProps = (state) => {
   const { gui, modal, routing } = state
   return {
-    offset: gui.coverOffset ? gui.coverOffset - 80 : 160,
+    innerHeight: gui.innerHeight,
+    innerWidth: gui.innerWidth,
     isNavbarFixed: gui.isNavbarFixed,
     isNavbarHidden: gui.isNavbarHidden,
     isNavbarSkippingTransition: gui.isNavbarSkippingTransition,
     isNotificationsActive: modal.isNotificationsActive,
     isOffsetLayout: gui.isOffsetLayout,
     isProfileMenuActive: gui.isProfileMenuActive,
+    offset: gui.coverOffset ? gui.coverOffset - 80 : 160,
     pathname: routing.location.pathname,
   }
 }
