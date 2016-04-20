@@ -55,7 +55,7 @@ class UserDetail extends Component {
     let streamAction
     switch (type) {
       case 'following':
-        streamAction = loadUserFollowing(`~${routerState.params.username}`, type)
+        streamAction = loadUserFollowing(`~${routerState.params.username}`, 'friend')
         break
       case 'followers':
         streamAction = loadUserUsers(`~${routerState.params.username}`, type)
