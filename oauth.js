@@ -1,24 +1,24 @@
 // load env vars first
 require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
 
-export default function addOauthRoute(app) {
-  // Auth token
-  // Get the access token object.
-  const credentials = {
-    clientID: process.env.AUTH_CLIENT_ID,
-    clientSecret: process.env.AUTH_CLIENT_SECRET,
-    site: process.env.AUTH_DOMAIN,
-    tokenPath: '/api/oauth/token',
-    headers: {
-      Accept: 'application/json',
-    },
-  }
+// Auth token
+// Get the access token object.
+const credentials = {
+  clientID: process.env.AUTH_CLIENT_ID,
+  clientSecret: process.env.AUTH_CLIENT_SECRET,
+  site: process.env.AUTH_DOMAIN,
+  tokenPath: '/api/oauth/token',
+  headers: {
+    Accept: 'application/json',
+  },
+}
 
-  // Initialize the OAuth2 Library
-  const oauth2 = require('simple-oauth2')(credentials)
-  const tokenConfig = { scope: 'public scoped_refresh_token' }
-  let token = null
+// Initialize the OAuth2 Library
+const oauth2 = require('simple-oauth2')(credentials)
+const tokenConfig = { scope: 'public scoped_refresh_token' }
+let token = null
 
+export function fetchOauthToken(callback) {
   // Get the access token object for the client
   oauth2.client
     .getToken(tokenConfig)
@@ -28,12 +28,15 @@ export default function addOauthRoute(app) {
         process.exit(1)
       }
       token = oauth2.accessToken.create(result)
+      callback()
     })
     .catch((error) => {
       console.log('Access Token error getToken', error.message)
       process.exit(1)
     })
+}
 
+export function addOauthRoute(app) {
   app.get('/api/webapp-token', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
     res.setHeader('Expires', '0')

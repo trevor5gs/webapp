@@ -26,7 +26,7 @@ import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { Provider } from 'react-redux'
 import { createElloStore } from './src/store'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
-import addOauthRoute from './oauth'
+import { addOauthRoute, fetchOauthToken } from './oauth'
 import createRoutes from './src/routes'
 import { replace, syncHistoryWithStore } from 'react-router-redux'
 
@@ -78,7 +78,7 @@ function renderFromServer(req, res) {
   const history = syncHistoryWithStore(memoryHistory, store)
 
   match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
-    // populate the rouer store object for initial render
+    // populate the router store object for initial render
     if (error) {
       console.log('ELLO MATCH ERROR', error)
     } else if (redirectLocation) {
@@ -89,6 +89,7 @@ function renderFromServer(req, res) {
       console.log('NO RENDER PROPS')
       return
     }
+
     store.dispatch(replace(renderProps.location.pathname))
 
     preRender(renderProps, store).then(() => {
@@ -172,4 +173,7 @@ const start = (workerId) => {
   })
 }
 
-start(1)
+// Kick off token fetch
+fetchOauthToken(() => {
+  start(1)
+})
