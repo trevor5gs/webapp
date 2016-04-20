@@ -26,7 +26,7 @@ import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { Provider } from 'react-redux'
 import { createElloStore } from './src/store'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
-import addOauthRoute from './oauth'
+import { addOauthRoute, fetchOauthToken } from './oauth'
 import createRoutes from './src/routes'
 import { replace, syncHistoryWithStore } from 'react-router-redux'
 
@@ -62,7 +62,7 @@ fs.readFile(path.join(__dirname, './public/index.html'), 'utf-8', (err, data) =>
 addOauthRoute(app)
 
 // Assets
-app.use(express.static('public', { maxAge: '1y' }))
+app.use(express.static('public', { maxAge: '1y', index: false }))
 app.use('/static', express.static('public/static', { maxAge: '1y' }))
 
 // Return promises for initial loads
@@ -78,14 +78,18 @@ function renderFromServer(req, res) {
   const history = syncHistoryWithStore(memoryHistory, store)
 
   match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
-    // populate the rouer store object for initial render
+    // populate the router store object for initial render
     if (error) {
       console.log('ELLO MATCH ERROR', error)
     } else if (redirectLocation) {
       console.log('ELLO HANDLE REDIRECT', redirectLocation)
       res.redirect(redirectLocation.pathname)
       return
-    } else if (!renderProps) { return }
+    } else if (!renderProps) {
+      console.log('NO RENDER PROPS')
+      return
+    }
+
     store.dispatch(replace(renderProps.location.pathname))
 
     preRender(renderProps, store).then(() => {
@@ -108,6 +112,7 @@ function renderFromServer(req, res) {
       // this will give you a js error like:
       // `window is not defined`
       console.log('ELLO CATCH ERROR', err)
+      res.status(500).end()
     })
   })
 }
@@ -120,6 +125,7 @@ const loggedInPaths = {
 }
 
 if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
+  console.log('Isomorphic rendering enabled, serving prerendered pages')
   app.use((req, res) => {
     let isLoggedInPath = false
     for (const re in loggedInPaths) {
@@ -128,16 +134,18 @@ if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
         break
       }
     }
-    console.log('ELLO START URL', req.url, isLoggedInPath)
     res.setHeader('Cache-Control', 'public, max-age=60');
     res.setHeader('Expires', new Date(Date.now() + 1000 * 60).toUTCString());
     if (isLoggedInPath) {
+      console.log('Serving static markup for logged-in path', req.url)
       res.send(indexStr)
     } else {
+      console.log('Serving prerendered markup for logged-out path', req.url)
       renderFromServer(req, res)
     }
   })
 } else {
+  console.log('Isomorphic rendering disabled, serving static HTML')
   app.use((req, res) => {
     res.send(indexStr)
   })
@@ -157,10 +165,18 @@ const start = (workerId) => {
   })
 
   process.on('SIGINT', () => {
+    console.log('Caught SIGINT, exiting...')
+    setTimeout(() => {
+      console.log('Server did not drain connections within 5 seconds. Forcing shutdown...')
+      process.exit(0)
+    }, 5000)
     server.close(() => {
       process.exit(0)
     })
   })
 }
 
-start(1)
+// Kick off token fetch
+fetchOauthToken(() => {
+  start(1)
+})

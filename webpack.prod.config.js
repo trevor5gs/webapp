@@ -27,10 +27,9 @@ module.exports = {
       'process.env': { NODE_ENV: JSON.stringify(nodeEnv) },
     }),
     new ExtractTextPlugin('bundle.css'),
-    new webpack.optimize.CommonsChunkPlugin('commons'),
     new HtmlWebpackPlugin({
       filename: '../index.html',
-      chunks: ['commons', 'main'],
+      chunks: ['main'],
       hash:true,
       template: 'public/template.html',
       inject: 'body',
