@@ -92,7 +92,7 @@ export const requester = store => next => action => {
     return next(action)
   }
 
-  if (type === ACTION_TYPES.REQUESTER.UNPAUSE) {
+  if (type === ACTION_TYPES.REQUESTER.UNPAUSE || (type === ACTION_TYPES.AUTHENTICATION.REFRESH_SUCCESS && requestQueue.length)) {
     requesterIsPaused = false
     requestQueue = processQueue(requestQueue, queuedAction => {
       store.dispatch(queuedAction)
@@ -261,7 +261,8 @@ export const requester = store => next => action => {
                 delete runningFetches[error.response.url]
                 if (error.response.status === 401) {
                   if (state.authentication.isLoggedIn && state.authentication.refreshToken) {
-                    store.dispatch(refreshAuthenticationToken(state.authentication.refreshToken))
+                    requestQueue = [...requestQueue, action]
+                    return next(store.dispatch(refreshAuthenticationToken(state.authentication.refreshToken)))
                   } else if (!state.authentication.isLoggedIn) {
                     store.dispatch({ type: ACTION_TYPES.REQUESTER.UNPAUSE })
                   }
