@@ -12,7 +12,7 @@ export function updateQueryParams(params) {
   // set/delete params
   for (const param in params) {
     if (params[param] !== null) {
-      queryObj[param] = window.encodeURIComponent(params[param])
+      queryObj[param] = encodeURIComponent(params[param])
     } else {
       delete queryObj[param]
     }
