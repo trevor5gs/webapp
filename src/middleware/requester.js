@@ -175,7 +175,7 @@ export const requester = store => next => action => {
     }
 
     const tokenPath = (typeof window === 'undefined') ?
-      `http://localhost:${process.env.PORT}/api/webapp-token` :
+      `http://localhost:${process.env.PORT || 6660}/api/webapp-token` :
       `${document.location.protocol}//${document.location.host}/api/webapp-token`
     return fetch(tokenPath, { credentials: 'same-origin' })
       .then((response) =>
