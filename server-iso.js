@@ -122,6 +122,7 @@ const loggedInPaths = {
   invitations: /^\/invitations/,
   settings: /^\/settings/,
   starred: /^\/starred/,
+  notifications: /^\/notifications/,
 }
 
 if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
