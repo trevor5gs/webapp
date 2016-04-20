@@ -29,30 +29,30 @@ export const NavbarLoggedOut = ({
   { hasLoadMoreButton ? <NavbarMorePostsButton onClick={ onClickLoadMorePosts } /> : null }
   <div className="NavbarLinks">
     <NavbarLink
-      to="/"
-      label="Discover"
-      modifiers="LabelOnly"
-      pathname={ pathname }
+      className="LabelOnly"
       icon={ <SparklesIcon /> }
+      label="Discover"
+      pathname={ pathname }
+      to="/"
     />
     <NavbarLink
-      to="/search"
-      label="Search"
-      modifiers="IconOnly"
-      pathname={ pathname }
+      className="IconOnly"
       icon={ <SearchIcon /> }
+      label="Search"
+      pathname={ pathname }
+      to="/search"
     />
     <NavbarLink
-      to="/enter"
+      className="LabelOnly"
       label="Log in"
-      modifiers="LabelOnly"
       pathname={ pathname }
+      to="/enter"
     />
     <NavbarLink
-      to="/signup"
+      className="LabelOnly"
       label="Sign up"
-      modifiers="LabelOnly"
       pathname={ pathname }
+      to="/signup"
     />
   </div>
 </nav>
@@ -75,6 +75,7 @@ export const NavbarLoggedIn = ({
   isLoggedIn,
   isNotificationsActive,
   isProfileMenuActive,
+  notificationCategory,
   onClickAvatar,
   onClickLoadMorePosts,
   onClickNotification,
@@ -85,7 +86,6 @@ export const NavbarLoggedIn = ({
   onDragOverStreamLink,
   onDropStreamLink,
   onLogOut,
-  notificationCategory,
   pathname,
   username,
   viewportDeviceSize,
@@ -102,46 +102,46 @@ export const NavbarLoggedIn = ({
   { hasLoadMoreButton ? <NavbarMorePostsButton onClick={ onClickLoadMorePosts } /> : null }
   <div className="NavbarLinks">
     <NavbarLink
-      to="/discover"
-      label="Discover"
-      modifiers="LabelOnly"
-      pathname={ pathname }
+      className="LabelOnly"
       icon={ <SparklesIcon /> }
+      label="Discover"
+      pathname={ pathname }
+      to="/discover"
     />
     <NavbarLink
-      to="/following"
-      label="Following"
-      modifiers="LabelOnly"
-      pathname={ pathname }
+      className="LabelOnly"
       icon={ <CircleIcon /> }
+      label="Following"
       onDragLeave={ onDragLeaveStreamLink }
       onDragOver={ onDragOverStreamLink }
       onDrop={ onDropStreamLink }
+      pathname={ pathname }
+      to="/following"
     />
     <NavbarLink
-      to="/starred"
-      label="Starred"
-      modifiers=""
-      pathname={ pathname }
+      className=""
       icon={ <StarIcon /> }
+      label="Starred"
       onDragLeave={ onDragLeaveStreamLink }
       onDragOver={ onDragOverStreamLink }
       onDrop={ onDropStreamLink }
+      pathname={ pathname }
+      to="/starred"
     />
     <NavbarLink
-      to={ `/notifications${notificationCategory}` }
-      label="Notifications"
-      modifiers={ classNames('IconOnly', { hasNotifications }) }
-      pathname={ pathname }
+      className={ classNames('IconOnly', { hasNotifications }) }
       icon={ <BoltIcon /> }
+      label="Notifications"
       onClick={ viewportDeviceSize !== 'mobile' ? onClickNotification : null }
+      pathname={ pathname }
+      to={ `/notifications${notificationCategory}` }
     />
     <NavbarLink
-      to="/search"
-      label="Search"
-      modifiers="IconOnly"
-      pathname={ pathname }
+      className="IconOnly"
       icon={ <SearchIcon /> }
+      label="Search"
+      pathname={ pathname }
+      to="/search"
     />
   </div>
   <NavbarProfile

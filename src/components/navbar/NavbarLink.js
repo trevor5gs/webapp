@@ -8,9 +8,9 @@ const highlightingRules = {
 }
 
 export const NavbarLink = ({
+    className = '',
     icon,
     label,
-    modifiers = '',
     onClick,
     onDragLeave,
     onDragOver,
@@ -20,7 +20,7 @@ export const NavbarLink = ({
   }) => {
   const klassNames = classNames(
     'NavbarLink',
-    modifiers,
+    className,
     {
       active: highlightingRules[to] ? pathname.match(highlightingRules[to]) : pathname.match(to),
     },
@@ -41,9 +41,9 @@ export const NavbarLink = ({
 }
 
 NavbarLink.propTypes = {
+  className: PropTypes.string,
   icon: PropTypes.element,
   label: PropTypes.string.isRequired,
-  modifiers: PropTypes.string,
   onClick: PropTypes.func,
   onDragLeave: PropTypes.func,
   onDragOver: PropTypes.func,
