@@ -100,7 +100,6 @@ class BlockCollection extends Component {
     const { dispatch, editorId, editorStore } = nextProps
     const { collection, loadingImageBlocks } = this.state
     let newBlock = null
-    let index = -1
     let loadedContentData = null
     switch (editorStore.type) {
       case ACTION_TYPES.EDITOR.APPEND_TEXT:
@@ -131,8 +130,18 @@ class BlockCollection extends Component {
       case ACTION_TYPES.POST.SAVE_IMAGE_SUCCESS:
         loadedContentData = editorStore.loadedContent[editorStore.index]
         newBlock = this.getBlockFromUid(loadedContentData.uid)
-        if (newBlock) {
-          collection[this.getBlockIdentifier(loadedContentData.uid)] = {
+        // the kind should only be 'block' when it is
+        // dragBlock's placeholder so update it's data
+        if (newBlock.kind === 'block') {
+          this.dragBlock = {
+            kind: 'image',
+            data: {
+              url: loadedContentData.url,
+            },
+            uid: loadedContentData.uid,
+          }
+        } else if (newBlock) {
+          newBlock = {
             kind: 'image',
             data: {
               url: loadedContentData.url,
@@ -141,10 +150,7 @@ class BlockCollection extends Component {
           }
           this.setState({ collection })
           this.persistBlocks()
-          // can stop the uploading whatever
-          index = loadingImageBlocks.indexOf(loadedContentData.uid)
-          loadingImageBlocks.splice(index, 1)
-          this.setState({ loadingImageBlocks })
+          this.removeUploadIndicator(loadedContentData.uid)
         }
         break
       case ACTION_TYPES.POST.POST_PREVIEW_SUCCESS:
@@ -260,6 +266,7 @@ class BlockCollection extends Component {
     this.dragBlock = null
     this.setState({ collection, dragBlockTop: null })
     this.addEmptyTextBlock(true)
+    this.removeUploadIndicator(dragUid)
   }
 
   onDragOver = (e) => {
@@ -458,6 +465,13 @@ class BlockCollection extends Component {
       this.addEmptyTextBlock()
     }
     this.persistBlocks()
+  }
+
+  removeUploadIndicator(uid) {
+    const { loadingImageBlocks } = this.state
+    const index = loadingImageBlocks.indexOf(uid)
+    loadingImageBlocks.splice(index, 1)
+    this.setState({ loadingImageBlocks })
   }
 
   persistBlocks() {
