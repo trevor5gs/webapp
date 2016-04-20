@@ -49,8 +49,29 @@ class UserDetail extends Component {
     userFollowingTab: PropTypes.string,
   };
 
-  static preRender = (store, routerState) =>
-    store.dispatch(loadUserDetail(`~${routerState.params.username}`))
+  static preRender = (store, routerState) => {
+    const type = routerState.params.type || 'posts'
+    const profileAction = loadUserDetail(`~${routerState.params.username}`)
+    let streamAction
+    switch (type) {
+      case 'following':
+        streamAction = loadUserFollowing(`~${routerState.params.username}`, 'friend')
+        break
+      case 'followers':
+        streamAction = loadUserUsers(`~${routerState.params.username}`, type)
+        break
+      case 'loves':
+        streamAction = loadUserLoves(`~${routerState.params.username}`, type)
+        break
+      default:
+        streamAction = loadUserPosts(`~${routerState.params.username}`, type)
+        break
+    }
+    return Promise.all([
+      store.dispatch(profileAction),
+      store.dispatch(streamAction),
+    ])
+  }
 
   componentWillMount() {
     const { dispatch, params } = this.props
