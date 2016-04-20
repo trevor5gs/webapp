@@ -31,7 +31,6 @@ class KeyboardContainer extends Component {
 
   componentDidMount() {
     this.bindMousetrap()
-
     Mousetrap.bind(SHORTCUT_KEYS.TOGGLE_LAYOUT, () => {
       const { dispatch, isGridMode } = this.props
       const newMode = isGridMode ? 'list' : 'grid'
