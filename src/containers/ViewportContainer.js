@@ -10,15 +10,15 @@ import { scrollToTop } from '../components/interface/Viewport'
 class ViewportContainer extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    innerHeight: PropTypes.number.isRequired,
-    innerWidth: PropTypes.number.isRequired,
-    isNavbarFixed: PropTypes.bool.isRequired,
-    isNavbarHidden: PropTypes.bool.isRequired,
-    isNavbarSkippingTransition: PropTypes.bool.isRequired,
-    isNotificationsActive: PropTypes.bool.isRequired,
-    isOffsetLayout: PropTypes.bool.isRequired,
-    isProfileMenuActive: PropTypes.bool.isRequired,
-    offset: PropTypes.number.isRequired,
+    innerHeight: PropTypes.number,
+    innerWidth: PropTypes.number,
+    isNavbarFixed: PropTypes.bool,
+    isNavbarHidden: PropTypes.bool,
+    isNavbarSkippingTransition: PropTypes.bool,
+    isNotificationsActive: PropTypes.bool,
+    isOffsetLayout: PropTypes.bool,
+    isProfileMenuActive: PropTypes.bool,
+    offset: PropTypes.number,
     pathname: PropTypes.string.isRequired,
   }
 
