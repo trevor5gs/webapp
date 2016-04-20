@@ -122,14 +122,7 @@ export default class Completer extends Component {
     let style = null
     const pos = getPositionFromSelection()
     if (viewportDeviceSize === 'mobile') {
-      const height = 41
-      const halfHeight = 21
-      const numCompletions = completions.data.length
-      if (numCompletions < 4) {
-        style = { bottom: -halfHeight - height * (3 - numCompletions) }
-      } else {
-        style = { bottom: 0 }
-      }
+      style = { top: pos.top + 20 }
     } else if (pos) {
       style = { top: pos.top + 20, left: pos.left }
     }
