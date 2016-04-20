@@ -112,6 +112,7 @@ function renderFromServer(req, res) {
       // this will give you a js error like:
       // `window is not defined`
       console.log('ELLO CATCH ERROR', err)
+      res.status(500).end()
     })
   })
 }
