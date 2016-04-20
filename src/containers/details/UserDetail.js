@@ -68,8 +68,8 @@ class UserDetail extends Component {
         break
     }
     return Promise.all([
-      new Promise((resolve) => resolve(store.dispatch(profileAction))),
-      new Promise((resolve) => resolve(store.dispatch(streamAction))),
+      store.dispatch(profileAction),
+      store.dispatch(streamAction),
     ])
   }
 
