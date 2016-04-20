@@ -118,7 +118,7 @@ class Search extends Component {
             activeType={ type }
             className="SearchTabList"
             onTabClick={ this.onChangeControl }
-            tabClasses="LabelTab"
+            tabClasses="LabelTab SearchLabelTab"
             tabs={ tabs }
           />
         </form>
