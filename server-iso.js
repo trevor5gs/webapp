@@ -161,6 +161,11 @@ const start = (workerId) => {
   })
 
   process.on('SIGINT', () => {
+    console.log('Caught SIGINT, exiting...')
+    setTimeout(() => {
+      console.log('Server did not drain connections within 5 seconds. Forcing shutdown...')
+      process.exit(0)
+    }, 5000)
     server.close(() => {
       process.exit(0)
     })
