@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { replace } from 'react-router-redux'
 import { random, debounce } from 'lodash'
+import { isAndroid } from '../../vendor/jello'
 import { FORM_CONTROL_STATUS as STATUS, ONBOARDING_VERSION } from '../../constants/gui_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { loadProfile, saveProfile } from '../../actions/profile'
@@ -18,7 +19,6 @@ import {
   getEmailStateFromClient,
   getPasswordState,
 } from '../../components/forms/Validators'
-import { isAndroid } from '../../components/interface/Viewport'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 let _isAndroid

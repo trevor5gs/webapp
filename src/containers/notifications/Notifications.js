@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import { scrollToTop } from '../../vendor/scrollTop'
 import { loadNotifications } from '../../actions/notifications'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { LOAD_STREAM_SUCCESS } from '../../constants/action_types'
@@ -12,7 +13,6 @@ import {
   RelationshipIcon,
 } from '../../components/notifications/NotificationIcons'
 import { TabListLinks } from '../../components/tabs/TabList'
-import { scrollToTop } from '../../vendor/scrollTop'
 import { Paginator } from '../../components/streams/Paginator'
 import Session from '../../../src/vendor/session'
 

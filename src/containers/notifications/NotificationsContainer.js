@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import { GUI, LOAD_STREAM_SUCCESS, MODAL } from '../../constants/action_types'
 import { connect } from 'react-redux'
+import { scrollElToTop } from '../../vendor/scrollTop'
 import { loadNotifications } from '../../actions/notifications'
 import StreamComponent from '../../components/streams/StreamComponent'
 import {
@@ -12,7 +13,6 @@ import {
   RelationshipIcon,
 } from '../../components/notifications/NotificationIcons'
 import { TabListButtons } from '../../components/tabs/TabList'
-import { scrollElToTop } from '../../vendor/scrollTop'
 import { Paginator } from '../../components/streams/Paginator'
 
 let ticking = false

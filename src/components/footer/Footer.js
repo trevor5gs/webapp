@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
+import { isAndroid } from '../../vendor/jello'
 import { PhoneIcon, ChevronIcon, ListIcon, GridIcon } from '../footer/FooterIcons'
 import { FooterLabel } from '../footer/FooterLabel'
 import { FooterLink } from '../footer/FooterLink'
 import { FooterTool } from '../footer/FooterTool'
-import { isAndroid } from '../interface/Viewport'
 
 export const Footer = ({
   hasLayoutTool,

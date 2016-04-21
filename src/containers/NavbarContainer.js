@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
+import { scrollToTop } from '../vendor/scrollTop'
 import { ADD_NEW_IDS_TO_RESULT, MODAL, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/gui_types'
 import { logout } from '../actions/authentication'
@@ -11,7 +12,6 @@ import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/Navbar'
 import Session from '../vendor/session'
-import { scrollToTop } from '../vendor/scrollTop'
 
 class NavbarContainer extends Component {
 
