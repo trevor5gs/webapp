@@ -1,19 +1,16 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
 import { debounce } from 'lodash'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
-import Dialog from '../../components/dialogs/Dialog'
 import EmbedBlock from './EmbedBlock'
 import ImageBlock from './ImageBlock'
 import QuickEmoji from './QuickEmoji'
 import RepostBlock from './RepostBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
-import { openAlert, closeAlert } from '../../actions/modals'
 import { closeOmnibar } from '../../actions/omnibar'
 import { savePostImage } from '../../actions/posts'
 import * as ACTION_TYPES from '../../constants/action_types'
@@ -586,58 +583,15 @@ class BlockCollection extends Component {
     )
   }
 
-  sendFileOrAlert(file, index) {
-    const { dispatch, editorId } = this.props
-    const fr = new FileReader()
-    let shouldSendToServer = false
-    fr.onloadend = (e) => {
-      const arr = (new Uint8Array(e.target.result)).subarray(0, 4)
-      let header = ''
-      for (const value of arr) {
-        header += value.toString(16)
-      }
-      if (/ffd8ff/.test(header)) {
-        shouldSendToServer = true // image/jpeg
-      } else if (/424D/.test(header)) {
-        shouldSendToServer = true // image/bmp
-      } else {
-        switch (header) {
-          case '47494638': // image/gif
-          case '89504e47': // image/png
-          case '49492a00': // image/tiff - little endian
-          case '4d4d002a': // image/tiff - big endian
-            shouldSendToServer = true
-            break
-          default:
-            shouldSendToServer = false
-            break
-        }
-      }
-      if (shouldSendToServer) {
-        dispatch(savePostImage(file, editorId, index))
-      // Test to make sure we have a file and file.type (real failure) Safari
-      // sometimes reports the length of the array as well.. wtf?
-      } else if (file && file.type) {
-        dispatch(openAlert(
-          <Dialog
-            title="Invalid file type"
-            body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
-            onClick={ bindActionCreators(closeAlert, dispatch) }
-          />
-        ))
-      }
-    }
-    fr.readAsArrayBuffer(file)
-  }
-
   handleFiles = (e) => {
     if (e.target.files.length) { this.acceptFiles(e.target.files) }
   }
 
   acceptFiles(files) {
+    const { dispatch, editorId } = this.props
     for (const index in files) {
       if (files.hasOwnProperty(index)) {
-        this.sendFileOrAlert(files[index], index)
+        dispatch(savePostImage(files[index], editorId, index))
       }
     }
   }
