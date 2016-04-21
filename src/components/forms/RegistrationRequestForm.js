@@ -78,8 +78,7 @@ class RegistrationRequestForm extends Component {
     return (
       <div className="RegistrationSuccess">
         Rad.<br />
-        You're almost there.<br />
-        Check your email to join Ello.
+        Check your email to complete sign-up.
       </div>
     )
   }
