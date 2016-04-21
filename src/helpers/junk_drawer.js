@@ -1,6 +1,6 @@
 import { decamelizeKeys } from 'humps'
-import store from '../../store'
-import { saveProfile } from '../../actions/profile'
+import store from '../store'
+import { saveProfile } from '../actions/profile'
 
 export function preferenceToggleChanged(obj) {
   const newObj = { ...obj }
