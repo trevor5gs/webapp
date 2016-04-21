@@ -77,7 +77,7 @@ class Search extends Component {
   }
 
   updateLocation(valueObject) {
-    const { dispatch } = this.props
+    const { dispatch, location } = this.props
     const vo = valueObject
     if (typeof vo.terms === 'string' && vo.terms.length < 2) {
       vo.terms = null
@@ -85,10 +85,8 @@ class Search extends Component {
     if (typeof vo.type === 'string' && vo.type === 'posts') {
       vo.type = null
     }
-    if (typeof window !== 'undefined') {
-      const uri = document.location.pathname + updateQueryParams(vo)
-      dispatch(replace(uri))
-    }
+    const uri = location.pathname + updateQueryParams(vo)
+    dispatch(replace(uri))
   }
 
   search() {
