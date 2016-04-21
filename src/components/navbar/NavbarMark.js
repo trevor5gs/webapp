@@ -1,11 +1,13 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-import { ElloMark, ElloRainbowMark, ElloDonutMark } from '../svg/ElloIcons'
+import { ElloMark, ElloDonutMark, ElloPurpleRainMark, ElloRainbowMark } from '../svg/ElloIcons'
 
 const getLogoMarkFromEnvironment = () => {
   switch (ENV.LOGO_MARK) {
     case 'rainbow':
       return <ElloRainbowMark />
+    case 'purplerain':
+      return <ElloPurpleRainMark />
     case 'donut':
       return <ElloDonutMark />
     case 'none':
