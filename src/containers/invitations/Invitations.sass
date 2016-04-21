@@ -22,8 +22,9 @@
   min-width: rem(120)
   float: right
 
+
 .InvitationForm .BatchEmailControlSuggestions
-  max-width: rem(380)
+  max-width: calc(100% - #{rem(120)})
 
 @media(min-width: #{$break-2})
   .InvitationsHeader
@@ -40,6 +41,9 @@
   .InvitationsStreamHeading
     margin-left: rem(20)
     margin-right: rem(20)
+  .InvitationForm .BatchEmailControlSuggestions
+    max-width: rem(380)
+
 
 @media(min-width: #{$break-4})
   .InvitationsForm,
