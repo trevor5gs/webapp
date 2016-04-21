@@ -6,7 +6,7 @@ var killTimeout = process.env.KILL_TIMEOUT || 1600
 
 pm2.connect(true, function () {
   pm2.start({
-    script: 'dist/server-iso.js',
+    script: 'dist/server-iso-entrypoint.js',
     name: 'web',
     exec_mode: 'cluster',
     instances,

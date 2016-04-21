@@ -73,3 +73,7 @@ export function addOauthRoute(app) {
     }
   })
 }
+
+export function currentToken() {
+  return token
+}
