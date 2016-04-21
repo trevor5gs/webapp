@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
-import { findModel } from '../../components/base/json_helper'
+import { findModel } from '../../helpers/json_helper'
 import {
   loadUserDetail,
   loadUserLoves,

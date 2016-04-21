@@ -7,6 +7,7 @@ import classNames from 'classnames'
 import { debounce, isEmpty, get } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { PREFERENCES, SETTINGS } from '../../constants/gui_types'
+import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import { openModal, closeModal, openAlert, closeAlert } from '../../actions/modals'
 import { logout } from '../../actions/authentication'
 import {
@@ -42,7 +43,6 @@ import Cover from '../../components/assets/Cover'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
 import StreamComponent from '../../components/streams/StreamComponent'
-import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 import InfoForm from '../../components/forms/InfoForm'
 
 class Settings extends Component {

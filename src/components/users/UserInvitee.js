@@ -2,10 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import classNames from 'classnames'
+import { getLinkObject } from '../../helpers/json_helper'
 import { inviteUsers } from '../../actions/invitations'
 import Avatar from '../assets/Avatar'
 import RelationsGroup from '../relationships/RelationsGroup'
-import { getLinkObject } from '../base/json_helper'
 
 /* eslint-disable react/prefer-stateless-function */
 class UserInvitee extends Component {

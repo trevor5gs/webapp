@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
-import { getLinkObject } from '../base/json_helper'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
+import { getLinkObject } from '../../helpers/json_helper'
 import { regionItemsForNotifications, setModels } from '../parsers/RegionParser'
 import { Notification } from '../notifications/Notification'
 

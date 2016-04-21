@@ -1,7 +1,8 @@
 import React from 'react'
 import { uniqBy } from 'lodash'
 import { camelize } from 'humps'
-import { getLinkObject } from '../base/json_helper'
+import { getLinkObject } from '../../helpers/json_helper'
+import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import PostParser from '../parsers/PostParser'
 import CommentParser from '../parsers/CommentParser'
 import NotificationParser from '../parsers/NotificationParser'
@@ -15,7 +16,6 @@ import UserList from '../users/UserList'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
-import { preferenceToggleChanged } from '../../components/base/junk_drawer'
 
 // TODO: convert these into react components (@see UserVitals)
 // to hopefully get better errors out of rendering streams
