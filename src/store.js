@@ -17,6 +17,12 @@ const createBrowserStore = (history = browserHistory) => {
   const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
   const reduxRouterMiddleware = routerMiddleware(history)
 
+  const initialState = window.__INITIAL_STATE__ || {}
+  // react-router-redux doesn't know how to serialize
+  // query params from server-side rendering, so we just kill it
+  // and let the browser reconstruct the router state
+  initialState.routing = {}
+
   const store = compose(
     autoRehydrate(),
     applyMiddleware(
@@ -28,7 +34,7 @@ const createBrowserStore = (history = browserHistory) => {
       analytics,
       logger
     ),
-  )(createStore)(reducer, window.__INITIAL_STATE__ || {})
+  )(createStore)(reducer, initialState || {})
 
   return store
 }
