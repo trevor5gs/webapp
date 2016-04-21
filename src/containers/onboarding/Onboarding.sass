@@ -82,16 +82,18 @@ main[data-pathname^="/onboarding"] .Panel
 .InfoPickerBody
   min-height: calc(100vh - #{rem(270)})
   margin-top: rem(110)
-  padding: rem(10)
+  padding: rem(100) rem(10) rem(10)
   background-color: white
 
 
 .AvatarPickerBody > .Avatar,
 .InfoPickerBody > .Avatar
   pointer-events: none
+  position: absolute
+  top: rem(180)
+  left: rem(20)
   width: rem(160)
   height: rem(160)
-  margin-top: rem(-90)
 
 .AvatarPickerBody > .Uploader
   position: relative
@@ -105,10 +107,10 @@ main[data-pathname^="/onboarding"] .Panel
   .AvatarPickerBody,
   .InfoPickerBody
     min-height: calc(100vh - #{rem(320)})
+    padding-top: rem(10)
     margin-top: rem(320)
   .AvatarPickerBody > .Avatar,
   .InfoPickerBody > .Avatar
-    position: absolute
     top: rem(20)
     left: 0
     margin-top: 0
