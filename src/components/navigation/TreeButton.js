@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { SVGIcon } from '../interface/SVGComponents'
+import { SVGIcon } from '../svg/SVGComponents'
 import classNames from 'classnames'
 
 const TreeIcon = () =>

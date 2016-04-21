@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react'
-import { SVGBoxMedium } from '../interface/SVGComponents'
+import { SVGBoxMedium } from '../svg/SVGComponents'
 
 export const FacebookIcon = () =>
   <SVGBoxMedium className="FacebookIcon">

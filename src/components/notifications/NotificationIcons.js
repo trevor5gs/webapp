@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react'
-import { SVGIcon } from '../interface/SVGComponents'
+import { SVGIcon } from '../svg/SVGComponents'
 
 export const BubbleIcon = () =>
   <SVGIcon className="BubbleIcon">
