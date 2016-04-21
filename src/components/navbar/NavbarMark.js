@@ -16,13 +16,19 @@ const getLogoMarkFromEnvironment = () => {
   }
 }
 
-export const NavbarMark = ({ currentStream, isLoggedIn }) =>
-  <Link className="NavbarMark" to={ isLoggedIn ? currentStream : '/' } draggable >
+export const NavbarMark = ({ currentStream, isLoggedIn, onClick }) =>
+<Link
+  className="NavbarMark"
+  draggable
+  onClick={ onClick }
+  to={ isLoggedIn ? currentStream : '/' }
+>
     { getLogoMarkFromEnvironment() }
   </Link>
 
 NavbarMark.propTypes = {
   currentStream: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 

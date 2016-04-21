@@ -42,6 +42,7 @@ class App extends Component {
     params: PropTypes.shape({
       username: PropTypes.string,
       token: PropTypes.string,
+      type: PropTypes.string,
     }).isRequired,
   }
 
@@ -156,7 +157,7 @@ class App extends Component {
   }
 
   render() {
-    const { authentication, children, completions, pathname } = this.props
+    const { authentication, children, completions, params, pathname } = this.props
     const { activeTools, coordinates, hideCompleter, hideTextTools } = this.state
     const { isLoggedIn } = authentication
     const appClasses = classNames(
@@ -189,7 +190,7 @@ class App extends Component {
           /> :
           null
         }
-        <NavbarContainer />
+        <NavbarContainer routerParams={ params } />
         <FooterContainer />
         <Modal />
         <DevTools />

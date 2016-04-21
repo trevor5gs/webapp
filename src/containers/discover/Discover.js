@@ -14,6 +14,16 @@ import { ZeroStream } from '../../components/zeros/Zeros'
 
 const BEACON_VERSION = '1'
 
+export function getDiscoverAction(type) {
+  let action = loadDiscoverUsers(type || 'recommended')
+  if (type === 'communities') {
+    action = loadCommunities()
+  } else if (type === 'featured-users') {
+    action = loadFeaturedUsers()
+  }
+  return action
+}
+
 export class Discover extends Component {
 
   static propTypes = {
@@ -67,13 +77,7 @@ export class Discover extends Component {
   render() {
     const { isLoggedIn, params, pathname } = this.props
     const { isBeaconActive } = this.state
-    const type = params.type || 'recommended'
-    let action = loadDiscoverUsers(type)
-    if (type === 'communities') {
-      action = loadCommunities()
-    } else if (type === 'featured-users') {
-      action = loadFeaturedUsers()
-    }
+    const action = getDiscoverAction(params.type)
     const tabs = [
       { to: '/discover', children: 'Recommended', activePattern: /^\/(?:discover)?$/ },
       { to: '/discover/trending', children: 'Trending' },
@@ -82,7 +86,7 @@ export class Discover extends Component {
       // { to: '/discover/featured-users', children: 'Featured Users' },
     ]
     return (
-      <section className="Discover Panel" key={ `discover_${type}` }>
+      <section className="Discover Panel" key={ `discover_${params.type || 'recommended'}` }>
         { isBeaconActive ? this.renderZeroStream() : null }
         <Promotion
           creditsClickAction={ this.onClickTrackCredits }
