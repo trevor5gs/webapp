@@ -141,7 +141,7 @@ class BlockCollection extends Component {
             uid: loadedContentData.uid,
           }
         } else if (newBlock) {
-          newBlock = {
+          collection[this.getBlockIdentifier(loadedContentData.uid)] = {
             kind: 'image',
             data: {
               url: loadedContentData.url,
