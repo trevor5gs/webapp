@@ -12,6 +12,7 @@ import Promotion from '../../components/assets/Promotion'
 import SearchControl from '../../components/forms/SearchControl'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { TabListButtons } from '../../components/tabs/TabList'
+import _ from 'lodash'
 
 class Search extends Component {
 
@@ -24,6 +25,13 @@ class Search extends Component {
         type: PropTypes.string,
       }).isRequired,
     }).isRequired,
+  }
+
+  static preRender = (store, routerState) => {
+    const term = _.get(routerState, 'location.query.terms', '')
+    const type = _.get(routerState, 'location.query.type', 'posts')
+    const action = type === 'users' ? SearchActions.searchForUsers : SearchActions.searchForPosts
+    return store.dispatch(action(term))
   }
 
   componentWillMount() {
@@ -69,7 +77,7 @@ class Search extends Component {
   }
 
   updateLocation(valueObject) {
-    const { dispatch } = this.props
+    const { dispatch, location } = this.props
     const vo = valueObject
     if (typeof vo.terms === 'string' && vo.terms.length < 2) {
       vo.terms = null
@@ -77,10 +85,8 @@ class Search extends Component {
     if (typeof vo.type === 'string' && vo.type === 'posts') {
       vo.type = null
     }
-    if (typeof window !== 'undefined') {
-      const uri = document.location.pathname + updateQueryParams(vo)
-      dispatch(replace(uri))
-    }
+    const uri = location.pathname + updateQueryParams(vo)
+    dispatch(replace(uri))
   }
 
   search() {
