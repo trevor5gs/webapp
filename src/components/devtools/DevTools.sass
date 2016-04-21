@@ -1,5 +1,13 @@
 @import ../../styles/lib
 
+$_SVGHeadT: "<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'>"
+$_SVGHeadG: "<g fill='none' stroke-miter-limit='10'>"
+$_SVGVertL: "<line stroke='rgba(255,0,255,0.5)' stroke-dasharray='8, 2' x1='19.5' y1='0' x2='19.5' y2='40'/><line stroke='rgb(255,0,255)' x1='39.5' y1='0' x2='39.5' y2='40'/>"
+$_SVGHorzL: "<line stroke='rgba(255,0,255,0.5)' stroke-dasharray='8, 2' x1='0' y1='19.5' x2='40' y2='19.5'/><line stroke='rgb(255,0,255)' x1='0' y1='39.5' x2='40' y2='39.5'/>"
+$_SVGTailG: "</g>"
+$_SVGTailT: "</svg>"
+
+
 .DT-vertical-grid,
 .DT-horizontal-grid
   pointer-events: none
@@ -13,9 +21,9 @@
   background: transparent 0 0 repeat
 
 .DT-vertical-grid
-  background-image: url("/static/images/devtools/grid-vertical.svg")
+  background-image: url('data:image/svg+xml;charset=utf8,#{$_SVGHeadT}#{$_SVGHeadG}#{$_SVGVertL}#{$_SVGTailG}#{$_SVGTailT}')
 .DT-horizontal-grid
-  background-image: url("/static/images/devtools/grid-horizontal.svg")
+  background-image: url('data:image/svg+xml;charset=utf8,#{$_SVGHeadT}#{$_SVGHeadG}#{$_SVGHorzL}#{$_SVGTailG}#{$_SVGTailT}')
 
 // -------------------------------------
 // Background Colors
