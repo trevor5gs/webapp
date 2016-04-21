@@ -18,7 +18,7 @@ export const Footer = ({
   role="contentinfo"
 >
   <div className="FooterLinks">
-    <FooterLabel label="Beta 2.2" />
+    <FooterLabel label="Beta 3.0" />
     <FooterLink
       className="asLabel"
       href={ `${ENV.AUTH_DOMAIN}/wtf` }
