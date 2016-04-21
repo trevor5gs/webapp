@@ -29,6 +29,18 @@ export const ElloRainbowMark = () =>
     { fortyPointSmilePath() }
   </SVGBox>
 
+export const ElloPurpleRainMark = () =>
+  <SVGBox className="ElloPurpleRainMark">
+    <defs>
+      <linearGradient id="PurpleRainGradient" gradientUnits="userSpaceOnUse" x1="20" y1="40" x2="20" y2="0">
+        <stop offset="0" stopColor="#b4a4dc" />
+        <stop offset="1" stopColor="#624d93" />
+      </linearGradient>
+    </defs>
+    <path className="FillPath" d="M0 0h40v40h-40z" style={{ fill: 'url(#PurpleRainGradient)' }} />
+    { fortyPointSmilePath() }
+  </SVGBox>
+
 export const ElloDonutMark = () =>
   <SVGBox className="ElloDonutMark">
     <rect style={{ fill: '#fcc688' }} width="40" height="40" />
