@@ -3,8 +3,8 @@ import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { scrollToTop, scrollToOffsetTop } from '../vendor/scrollTop'
 import { setNavbarState, setViewportSizeAttributes } from '../actions/gui'
-import { addScrollObject, removeScrollObject } from '../components/interface/ScrollComponent'
-import { addResizeObject, removeResizeObject } from '../components/interface/ResizeComponent'
+import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
+import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
 
 class ViewportContainer extends Component {

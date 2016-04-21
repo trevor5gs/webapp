@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import _ from 'lodash'
 import classNames from 'classnames'
 import { GUI } from '../../../constants/gui_types'
-import { addResizeObject, removeResizeObject } from '../../interface/ResizeComponent'
+import { addResizeObject, removeResizeObject } from '../../viewport/ResizeComponent'
 
 const STATUS = {
   PENDING: 'isPending',

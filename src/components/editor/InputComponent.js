@@ -1,4 +1,4 @@
-import { addKeyObject, removeKeyObject } from '../interface/KeyComponent'
+import { addKeyObject, removeKeyObject } from '../viewport/KeyComponent'
 import { getWordFromSelection } from './SelectionUtil'
 import { emojiRegex, userRegex } from '../completers/Completer'
 

@@ -4,8 +4,8 @@ import Avatar from '../assets/Avatar'
 import Emoji from '../assets/Emoji'
 import Completion from './Completion'
 import { getPositionFromSelection } from '../editor/SelectionUtil'
-import { addKeyObject, removeKeyObject } from '../interface/KeyComponent'
-import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
+import { addKeyObject, removeKeyObject } from '../viewport/KeyComponent'
+import { addResizeObject, removeResizeObject } from '../viewport/ResizeComponent'
 
 export const emojiRegex = /\s?:{1}(\w+|\+|-):{0}$/
 export const userRegex = /\s?@{1}\w+/
