@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
+import { scrollToTop, scrollToOffsetTop } from '../vendor/scrollTop'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
-import { scrollToTop } from '../components/interface/Viewport'
 import { Footer } from '../components/footer/Footer'
 
 class FooterContainer extends Component {
@@ -21,7 +21,7 @@ class FooterContainer extends Component {
 
   onClickScrollToTop = () => {
     const { isOffsetLayout } = this.props
-    scrollToTop({ isOffsetLayout })
+    return isOffsetLayout ? scrollToOffsetTop() : scrollToTop()
   }
 
   onClickToggleLayoutMode = () => {

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { addScrollObject, removeScrollObject } from '../interface/ScrollComponent'
-import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
+import { addScrollObject, removeScrollObject } from '../viewport/ScrollComponent'
+import { addResizeObject, removeResizeObject } from '../viewport/ResizeComponent'
 
 const STATUS = {
   PENDING: 'isPending',

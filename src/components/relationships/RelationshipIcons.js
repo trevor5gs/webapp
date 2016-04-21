@@ -1,5 +1,5 @@
 import React from 'react'
-import { SVGIcon } from '../interface/SVGComponents'
+import { SVGIcon } from '../svg/SVGComponents'
 
 export const MiniPlusIcon = () =>
   <SVGIcon className="MiniPlusIcon">

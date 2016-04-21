@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import { random } from 'lodash'
-import { addResizeObject, removeResizeObject } from '../interface/ResizeComponent'
+import { addResizeObject, removeResizeObject } from '../viewport/ResizeComponent'
 import Credits from '../assets/Credits'
 
 const STATUS = {

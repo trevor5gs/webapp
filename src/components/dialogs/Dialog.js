@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { SVGIcon } from '../interface/SVGComponents'
+import { SVGIcon } from '../svg/SVGComponents'
 
 const DismissIcon = () =>
   <SVGIcon className="DialogDismissIcon">

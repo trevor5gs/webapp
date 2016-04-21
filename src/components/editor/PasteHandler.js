@@ -1,6 +1,6 @@
+import { isAndroid } from '../../vendor/jello'
 import { getLastWordPasted, replaceSelectionWithText } from './SelectionUtil'
 import { postPreviews, savePostImage } from '../../actions/posts'
-import { isAndroid } from '../interface/Viewport'
 
 let dispatch = null
 let editorId = null

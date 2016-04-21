@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
+import { scrollToTop, scrollToOffsetTop } from '../vendor/scrollTop'
 import { setNavbarState, setViewportSizeAttributes } from '../actions/gui'
-import { addScrollObject, removeScrollObject } from '../components/interface/ScrollComponent'
-import { addResizeObject, removeResizeObject } from '../components/interface/ResizeComponent'
+import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
+import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
-import { scrollToTop } from '../components/interface/Viewport'
 
 class ViewportContainer extends Component {
   static propTypes = {
@@ -30,7 +30,7 @@ class ViewportContainer extends Component {
     const { isOffsetLayout } = this.props
     addResizeObject(this)
     addScrollObject(this)
-    scrollToTop({ isOffsetLayout })
+    return isOffsetLayout ? scrollToOffsetTop() : scrollToTop()
   }
 
   shouldComponentUpdate(nextProps, nextState) {

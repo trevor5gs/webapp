@@ -6,7 +6,7 @@ import { SHORTCUT_KEYS } from '../../constants/gui_types'
 import { closeOmnibar } from '../../actions/omnibar'
 import Avatar from '../assets/Avatar'
 import Editor from '../editor/Editor'
-import { SVGIcon } from '../interface/SVGComponents'
+import { SVGIcon } from '../svg/SVGComponents'
 import Mousetrap from '../../vendor/mousetrap'
 
 const ChevronIcon = () =>

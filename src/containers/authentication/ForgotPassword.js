@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { random } from 'lodash'
+import { isAndroid } from '../../vendor/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { sendForgotPasswordRequest } from '../../actions/authentication'
@@ -11,7 +12,6 @@ import Emoji from '../../components/assets/Emoji'
 import EmailControl from '../../components/forms/EmailControl'
 import FormButton from '../../components/forms/FormButton'
 import { isFormValid, getEmailStateFromClient } from '../../components/forms/Validators'
-import { isAndroid } from '../../components/interface/Viewport'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 let _isAndroid

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
-import { ElloMark } from '../interface/ElloIcons'
+import { ElloMark } from '../svg/ElloIcons'
 
 export function emptyPagination() {
   return {

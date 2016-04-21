@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { sampleSize } from 'lodash'
 import Emoji from '../assets/Emoji'
-import { SVGIcon } from '../interface/SVGComponents'
+import { SVGIcon } from '../svg/SVGComponents'
 
 // Usage:
 

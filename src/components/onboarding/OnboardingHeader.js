@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { ElloMark } from '../interface/ElloIcons'
+import { ElloMark } from '../svg/ElloIcons'
 
 /* eslint-disable react/prefer-stateless-function */
 class OnboardingHeader extends Component {
