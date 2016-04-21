@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
-  <g fill="none" stroke-miter-limit="10">
-    <line stroke="rgba(255,0,255,0.5)" stroke-dasharray="8, 2" x1="19.5" y1="0" x2="19.5" y2="40"/>
-    <line stroke="rgb(255,0,255)" x1="39.5" y1="0" x2="39.5" y2="40"/>
-  </g>
-</svg>
-
