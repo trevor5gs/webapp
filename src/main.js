@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
+import { addFeatureDetection } from './vendor/jello'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import { persistStore, storages } from 'redux-persist'
 import store from './store'
@@ -32,6 +33,7 @@ const element = (
 const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
 
 const launchApplication = (storage) => {
+  addFeatureDetection()
   const persistor = persistStore(store, { storage, whitelist }, () => {
     ReactDOM.render(element, document.getElementById('root'))
   })
