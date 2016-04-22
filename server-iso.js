@@ -125,32 +125,32 @@ const loggedInPaths = {
   notifications: /^\/notifications/,
 }
 
-if (process.env['ENABLE_ISOMORPHIC_RENDERING']) {
-  console.log('Isomorphic rendering enabled, serving prerendered pages')
-  app.use((req, res) => {
-    let isLoggedInPath = false
-    for (const re in loggedInPaths) {
-      if (req.url.match(loggedInPaths[re])) {
-        isLoggedInPath = true
-        break
-      }
+function canPrerenderRequest(req) {
+  if(!process.env['ENABLE_ISOMORPHIC_RENDERING']) {
+    return false
+  }
+  if (req.get('X-Skip-Prerender') === 'true') {
+    return false
+  }
+  for (const re in loggedInPaths) {
+    if (req.url.match(loggedInPaths[re])) {
+      return false
     }
-    res.setHeader('Cache-Control', 'public, max-age=60');
-    res.setHeader('Expires', new Date(Date.now() + 1000 * 60).toUTCString());
-    if (isLoggedInPath) {
-      console.log('Serving static markup for logged-in path', req.url)
-      res.send(indexStr)
-    } else {
-      console.log('Serving prerendered markup for logged-out path', req.url)
-      renderFromServer(req, res)
-    }
-  })
-} else {
-  console.log('Isomorphic rendering disabled, serving static HTML')
-  app.use((req, res) => {
-    res.send(indexStr)
-  })
+  }
+  return true
 }
+
+app.use((req, res) => {
+  res.setHeader('Cache-Control', 'public, max-age=60');
+  res.setHeader('Expires', new Date(Date.now() + 1000 * 60).toUTCString());
+  if (canPrerenderRequest(req)) {
+    console.log('Serving pre-rendered markup for path', req.url)
+    renderFromServer(req, res)
+  } else {
+    console.log('Serving static markup for path', req.url)
+    res.send(indexStr)
+  }
+})
 
 const port = process.env.PORT || 6660
 const workers = process.env.WEB_CONCURRENCY || 1;
