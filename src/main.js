@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { addFeatureDetection } from './vendor/jello'
+import { scrollToOffsetTop } from './vendor/scrollTop'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import { persistStore, storages } from 'redux-persist'
 import store from './store'
@@ -35,7 +36,17 @@ const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
 const launchApplication = (storage) => {
   addFeatureDetection()
   const persistor = persistStore(store, { storage, whitelist }, () => {
-    ReactDOM.render(element, document.getElementById('root'))
+    const root = document.getElementById('root')
+    ReactDOM.render(element, root)
+
+    // Scroll fix for layouts with Covers and universal rendering Normally we
+    // call this in componentDidMount, but for the server rendered pages that
+    // happens well after the page has drawn. Calling it here tries to prevent
+    // the jumpiness for the initial page load.
+    const viewport = root.querySelector('.Viewport.isOffsetLayout')
+    if (viewport) {
+      scrollToOffsetTop()
+    }
   })
 
   // check and update current version and
