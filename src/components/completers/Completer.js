@@ -8,7 +8,7 @@ import { addKeyObject, removeKeyObject } from '../viewport/KeyComponent'
 import { addResizeObject, removeResizeObject } from '../viewport/ResizeComponent'
 
 export const emojiRegex = /\s?:{1}(\w+|\+|-):{0}$/
-export const userRegex = /\s?@{1}\w+/
+export const userRegex = /(\s|^)@{1}\w+/
 
 export default class Completer extends Component {
 
