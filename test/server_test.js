@@ -2,6 +2,7 @@
 import { chai, expect } from './spec_helper'
 import app from '../src/server-iso'
 import { fetchOauthToken } from '../oauth'
+import jsdom from 'jsdom'
 
 describe('isomorphically rendering on the server', function () {
   this.timeout(5000)
@@ -15,8 +16,8 @@ describe('isomorphically rendering on the server', function () {
         expect(err).to.be.null
         expect(res).to.have.status(200)
         expect(res).to.be.html
-        // This gets rendered in with iso, not as part of the template
-        expect(res.text).to.contain('<main')
+        const document = jsdom.jsdom(res.text)
+        expect(document.querySelectorAll('main')).to.have.lengthOf(1)
         done()
       })
     })
@@ -32,7 +33,8 @@ describe('isomorphically rendering on the server', function () {
         expect(err).to.be.null
         expect(res).to.have.status(200)
         expect(res).to.be.html
-        expect(res.text).to.contain('<div id="root"></div>')
+        const document = jsdom.jsdom(res.text)
+        expect(document.querySelectorAll('main')).to.have.lengthOf(0)
         done()
       })
     })
