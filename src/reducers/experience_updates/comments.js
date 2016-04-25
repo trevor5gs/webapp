@@ -51,7 +51,7 @@ function _addOrUpdateComment(newState, action) {
           post.links.comments.ids.splice(index, 1)
         }
       }
-      jsonReducer.removePageId(newState, `/posts/${postId}/comments`, model.id)
+      jsonReducer.methods.removePageId(newState, `/posts/${postId}/comments`, model.id)
       return methods.updateCommentsCount(newState, postId, -1)
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
       return methods.updateCommentsCount(newState, postId, -1)
