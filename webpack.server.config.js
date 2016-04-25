@@ -21,10 +21,10 @@ module.exports = {
   context: __dirname,
   debug:   false,
   devtool: "source-map",
-  entry:   ["./server-iso"],
+  entry:   ["./server-iso-entrypoint"],
   output:  {
     path:          path.join(__dirname, "./dist"),
-    filename:      "server-iso.js"
+    filename:      "server-iso-entrypoint.js"
   },
   plugins: [
     new webpack.DefinePlugin({

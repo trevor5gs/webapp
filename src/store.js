@@ -13,11 +13,11 @@ const reducer = combineReducers({
 
 
 
-const createBrowserStore = (history = browserHistory) => {
+const createBrowserStore = (history = browserHistory, passedInitialState = {}) => {
   const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
   const reduxRouterMiddleware = routerMiddleware(history)
 
-  const initialState = window.__INITIAL_STATE__ || {}
+  const initialState = window.__INITIAL_STATE__ || passedInitialState
   // react-router-redux doesn't know how to serialize
   // query params from server-side rendering, so we just kill it
   // and let the browser reconstruct the router state
@@ -34,23 +34,23 @@ const createBrowserStore = (history = browserHistory) => {
       analytics,
       logger
     ),
-  )(createStore)(reducer, initialState || {})
+  )(createStore)(reducer, initialState)
 
   return store
 }
 
-const createServerStore = (history) => {
+const createServerStore = (history, initialState = {}) => {
   const reduxRouterMiddleware = routerMiddleware(history)
   const store = compose(
     applyMiddleware(thunk, uploader, reduxRouterMiddleware, requester),
-  )(createStore)(reducer, {})
+  )(createStore)(reducer, initialState)
 
   return store
 }
 
-const createElloStore = (history = null) => {
-  if (typeof window !== 'undefined') return createBrowserStore()
-  return createServerStore(history)
+const createElloStore = (history = null, initialState = {}) => {
+  if (typeof window !== 'undefined') return createBrowserStore(null, initialState)
+  return createServerStore(history, initialState)
 }
 
 export { createElloStore }

@@ -9,6 +9,9 @@ import chai, { expect } from 'chai'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 chai.use(sinonChai)
+import chaiHttp from 'chai-http'
+chai.use(chaiHttp)
+export { chai }
 export { sinon }
 export { expect }
 export { React as React }
