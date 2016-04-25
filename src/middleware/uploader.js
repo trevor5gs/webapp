@@ -126,7 +126,7 @@ export const uploader = store => next => action => {
       store.dispatch(openAlert(
         <Dialog
           title="Invalid file type"
-          body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
+          body="We support .jpg, .gif, .png, .tif and .bmp files."
           onClick={ bindActionCreators(closeAlert, store.dispatch) }
         />
       ))
