@@ -129,25 +129,27 @@ class BlockCollection extends Component {
         newBlock = this.getBlockFromUid(loadedContentData.uid)
         // the kind should only be 'block' when it is
         // dragBlock's placeholder so update it's data
-        if (newBlock.kind === 'block') {
-          this.dragBlock = {
-            kind: 'image',
-            data: {
-              url: loadedContentData.url,
-            },
-            uid: loadedContentData.uid,
+        if (newBlock) {
+          if (newBlock.kind === 'block') {
+            this.dragBlock = {
+              kind: 'image',
+              data: {
+                url: loadedContentData.url,
+              },
+              uid: loadedContentData.uid,
+            }
+          } else {
+            collection[this.getBlockIdentifier(loadedContentData.uid)] = {
+              kind: 'image',
+              data: {
+                url: loadedContentData.url,
+              },
+              uid: loadedContentData.uid,
+            }
+            this.setState({ collection })
+            this.persistBlocks()
+            this.removeUploadIndicator(loadedContentData.uid)
           }
-        } else if (newBlock) {
-          collection[this.getBlockIdentifier(loadedContentData.uid)] = {
-            kind: 'image',
-            data: {
-              url: loadedContentData.url,
-            },
-            uid: loadedContentData.uid,
-          }
-          this.setState({ collection })
-          this.persistBlocks()
-          this.removeUploadIndicator(loadedContentData.uid)
         }
         break
       case ACTION_TYPES.POST.POST_PREVIEW_SUCCESS:
@@ -591,7 +593,9 @@ class BlockCollection extends Component {
     const { dispatch, editorId } = this.props
     for (const index in files) {
       if (files.hasOwnProperty(index)) {
-        dispatch(savePostImage(files[index], editorId, index))
+        requestAnimationFrame(() => {
+          dispatch(savePostImage(files[index], editorId, index))
+        })
       }
     }
   }
