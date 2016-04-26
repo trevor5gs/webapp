@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import { debounce } from 'lodash'
+import { debounce, delay } from 'lodash'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
@@ -593,9 +593,8 @@ class BlockCollection extends Component {
     const { dispatch, editorId } = this.props
     for (const index in files) {
       if (files.hasOwnProperty(index)) {
-        requestAnimationFrame(() => {
-          dispatch(savePostImage(files[index], editorId, index))
-        })
+        // need to delay a bit or else the images clobber each other
+        delay(dispatch, 100 * index, savePostImage(files[index], editorId, index))
       }
     }
   }
