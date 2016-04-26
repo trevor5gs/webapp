@@ -11,9 +11,7 @@ const reducer = combineReducers({
   ...reducers,
 })
 
-
-
-const createBrowserStore = (history = browserHistory, passedInitialState = {}) => {
+const createBrowserStore = (history, passedInitialState = {}) => {
   const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
   const reduxRouterMiddleware = routerMiddleware(history)
 
@@ -48,8 +46,8 @@ const createServerStore = (history, initialState = {}) => {
   return store
 }
 
-const createElloStore = (history = null, initialState = {}) => {
-  if (typeof window !== 'undefined') return createBrowserStore(null, initialState)
+const createElloStore = (history, initialState = {}) => {
+  if (typeof window !== 'undefined') return createBrowserStore(browserHistory, initialState)
   return createServerStore(history, initialState)
 }
 

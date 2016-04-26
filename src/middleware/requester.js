@@ -262,7 +262,9 @@ export const requester = store => next => action => {
                 if (error.response.status === 401) {
                   if (state.authentication.isLoggedIn && state.authentication.refreshToken) {
                     requestQueue = [...requestQueue, action]
-                    return next(store.dispatch(refreshAuthenticationToken(state.authentication.refreshToken)))
+                    if (Object.keys(runningFetches).length === 0) {
+                      store.dispatch(refreshAuthenticationToken(state.authentication.refreshToken))
+                    }
                   } else if (!state.authentication.isLoggedIn) {
                     store.dispatch({ type: ACTION_TYPES.REQUESTER.UNPAUSE })
                   }
