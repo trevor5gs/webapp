@@ -82,10 +82,10 @@ class UserDetail extends Component {
     dispatch(loadUserDetail(`~${params.username}`))
   }
 
-  componentDidUpdate(prevProps) {
+  componentWillReceiveProps(nextProps) {
     const { dispatch, params } = this.props
-    if (prevProps.params.username !== params.username) {
-      dispatch(loadUserDetail(`~${params.username}`))
+    if (params.username !== nextProps.params.username) {
+      dispatch(loadUserDetail(`~${nextProps.params.username}`))
     }
   }
 
