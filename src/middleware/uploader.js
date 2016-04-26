@@ -1,7 +1,12 @@
 import 'isomorphic-fetch'
+import React from 'react'
+import { bindActionCreators } from 'redux'
 import { camelizeKeys } from 'humps'
 import * as ACTION_TYPES from '../constants/action_types'
+import Dialog from '../components/dialogs/Dialog'
 import { s3CredentialsPath } from '../networking/api'
+import { closeAlert, openAlert } from '../actions/modals'
+import { isValidFileType, SUPPORTED_IMAGE_TYPES } from '../helpers/file_helper'
 
 function checkStatus(response) {
   if (response.ok) {
@@ -74,12 +79,12 @@ export const uploader = store => next => action => {
   const REQUEST = `${type}_REQUEST`
   const SUCCESS = `${type}_SUCCESS`
   const FAILURE = `${type}_FAILURE`
-
-  // dispatch the start of the request
-  next({ type: REQUEST, payload, meta })
   const state = store.getState()
   const { accessToken } = state.authentication
+
   function fetchCredentials() {
+    // dispatch the start of the request
+    next({ type: REQUEST, payload, meta })
     return fetch(s3CredentialsPath().path, {
       method: 'GET',
       headers: getCredentialsHeader(accessToken),
@@ -101,9 +106,39 @@ export const uploader = store => next => action => {
       .then(checkStatus)
   }
 
+  function popAlertsForFile({ fileType, isValid }) {
+    return new Promise((resolve, reject) => {
+      if (isValid) {
+        if (fileType === SUPPORTED_IMAGE_TYPES.GIF &&
+            (type === ACTION_TYPES.PROFILE.SAVE_AVATAR ||
+             type === ACTION_TYPES.PROFILE.SAVE_COVER)) {
+          // .gif and cover/avatar upload
+          store.dispatch(openAlert(
+            <Dialog
+              title="Looks like you uploaded a .gif."
+              body="If it’s animated people will only see the animation on your profile page."
+              onClick={ bindActionCreators(closeAlert, store.dispatch) }
+            />
+          ))
+        }
+        return resolve()
+      }
+      store.dispatch(openAlert(
+        <Dialog
+          title="Invalid file type"
+          body="We support .jpg, .gif, .png, .tif and .bmp files."
+          onClick={ bindActionCreators(closeAlert, store.dispatch) }
+        />
+      ))
+      return reject()
+    })
+  }
+
   if (!endpoint) {
     return (
-      fetchCredentials()
+      isValidFileType(file)
+      .then(popAlertsForFile)
+      .then(fetchCredentials)
       .then(postAsset)
       .then(() => {
         payload.response = { url: assetUrl }
@@ -131,9 +166,10 @@ export const uploader = store => next => action => {
   }
 
   return (
-    fetchCredentials()
+    isValidFileType(file)
+    .then(popAlertsForFile)
+    .then(fetchCredentials)
     .then(postAsset)
-    // TODO: send this image up as the tmp for profiles
     .then(saveLocationToApi)
     .then(response => {
       payload.response = { ...camelizeKeys(response), assetUrl }
@@ -146,4 +182,3 @@ export const uploader = store => next => action => {
     })
   )
 }
-
