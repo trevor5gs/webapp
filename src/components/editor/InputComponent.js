@@ -114,7 +114,9 @@ function onClick(e) {
     return
   }
   callMethod('onHideCompleter')
-  if (selectionIsText()) {
+  if (classList.contains('PostActionButton')) {
+    callMethod('onHideTextTools', { activeTools: null })
+  } else if (selectionIsText()) {
     requestAnimationFrame(() => {
       onKeyUp(e)
     })
