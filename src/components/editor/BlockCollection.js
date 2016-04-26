@@ -13,6 +13,7 @@ import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
 import { closeOmnibar } from '../../actions/omnibar'
 import { savePostImage } from '../../actions/posts'
+import { scrollToTop } from '../../vendor/scrollTop'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addInputObject, removeInputObject } from './InputComponent'
@@ -34,6 +35,7 @@ class BlockCollection extends Component {
     emoji: PropTypes.object.isRequired,
     isComment: PropTypes.bool,
     isOwnPost: PropTypes.bool,
+    isNavbarHidden: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
     postId: PropTypes.string,
     repostContent: PropTypes.array,
@@ -103,6 +105,7 @@ class BlockCollection extends Component {
         if (editorStore.appendText && editorStore.appendText.length) {
           this.appendText(editorStore.appendText)
           dispatch({ type: ACTION_TYPES.EDITOR.CLEAR_APPENDED_TEXT, payload: { editorId } })
+          this.scrollToLastTextBlock()
         }
         break
       case ACTION_TYPES.POST.TMP_IMAGE_CREATED:
@@ -376,6 +379,25 @@ class BlockCollection extends Component {
         )
       default:
         return null
+    }
+  }
+
+  isElementInViewport(el, topOffset = 0) {
+    const rect = el.getBoundingClientRect()
+    return (
+      rect.top >= topOffset && rect.left >= 0 &&
+      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    )
+  }
+
+  scrollToLastTextBlock() {
+    const { editorId, isNavbarHidden } = this.props
+    const textBlocks = document.querySelectorAll(`[data-editor-id='${editorId}'] div.text`)
+    const lastTextBlock = textBlocks[textBlocks.length - 1]
+    if (lastTextBlock && !this.isElementInViewport(lastTextBlock, isNavbarHidden ? 0 : 80)) {
+      const pos = lastTextBlock.getBoundingClientRect()
+      scrollToTop(window.scrollY + (pos.top - 100))
     }
   }
 
@@ -657,6 +679,7 @@ function mapStateToProps(state, ownProps) {
     completions: state.editor.completions,
     editorStore: state.editor.editors[ownProps.editorId],
     emoji: state.emoji,
+    isNavbarHidden: state.gui.isNavbarHidden,
     postId: ownProps.post ? `${ownProps.post.id}` : null,
     pathname: state.routing.location.pathname,
   }

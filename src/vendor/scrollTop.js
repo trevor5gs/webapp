@@ -21,13 +21,13 @@ function scrollToFn(top) {
   }
 }
 
-export function scrollToTop() {
+export function scrollToTop(pos = 0) {
   let top = scrollTop()
   let up = 10
   let timeout = 10
   const max = 1000
 
-  while (top > 0) {
+  while (top > pos) {
     timeout += 10
     up = up * 1.1 < max ? up * 1.1 : max
     top -= up
