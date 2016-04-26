@@ -82,6 +82,13 @@ class UserDetail extends Component {
     dispatch(loadUserDetail(`~${params.username}`))
   }
 
+  componentDidUpdate(prevProps) {
+    const { dispatch, params } = this.props
+    if (prevProps.params.username !== params.username) {
+      dispatch(loadUserDetail(`~${params.username}`))
+    }
+  }
+
   onZeroStateHello() {
     this.setState({ saidHelloTo: true })
   }
