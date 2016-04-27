@@ -18,6 +18,9 @@
   .StreamComponent,
   .StreamContainer
     padding: rem(20)
+  .PostList .CommentStreamComponent
+    padding-top: 0
+
 
 @media(min-width: #{$break-4})
   .StreamComponent,
@@ -29,9 +32,6 @@
 
 .StreamComponent.isBusy
   text-align: center
-
-.PostList .CommentStreamComponent
-  padding-top: 0
 
 .PostList .CommentStreamComponent.isBusy
   max-width: rem(720)
