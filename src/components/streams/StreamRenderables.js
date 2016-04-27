@@ -122,12 +122,12 @@ export function commentsAsList(post) {
 export function notificationList(notifications, json) {
   return (
     <div className="Notifications">
-      { notifications.data.map((notification) => {
+      { notifications.data.map((notification, index) => {
         const subject = getLinkObject(notification, 'subject', json)
         return (
           <NotificationParser
             json={ json }
-            key={ `notificationParser_${notification.createdAt}` }
+            key={ `notificationParser${index}_${notification.createdAt}` }
             notification={ notification }
             subject={ subject }
           />
