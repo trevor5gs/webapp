@@ -58,6 +58,7 @@ class CommentParser extends Component {
     assets: PropTypes.any,
     author: PropTypes.object,
     comment: PropTypes.object,
+    commentBody: PropTypes.array,
     currentUser: PropTypes.object,
     isEditing: PropTypes.bool,
     isGridLayout: PropTypes.bool,
@@ -65,12 +66,13 @@ class CommentParser extends Component {
   }
 
   render() {
-    const { comment, author, assets, currentUser, isGridLayout, post } = this.props
+    const { comment, author, assets, commentBody,
+      currentUser, isEditing, isGridLayout, post } = this.props
     if (!comment) { return null }
     setModels({ assets })
     return (
       <div>
-        { comment.isEditing && comment.body ?
+        { isEditing && commentBody ?
           <Editor isComment comment={ comment } /> :
           parseComment(comment, author, currentUser, post, isGridLayout)
         }
@@ -87,6 +89,7 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
   return {
     assets,
     isEditing: comment.isEditing,
+    commentBody: comment.body,
     currentUser,
     author,
     post,
