@@ -69,6 +69,7 @@ class Join extends Component {
   componentWillReceiveProps(nextProps) {
     const { availability, dispatch, email, invitationCode } = nextProps
     if (invitationCode && !email) {
+      this.invitationCodeValue = invitationCode
       dispatch(getInviteEmail(invitationCode))
     } else if (email) {
       this.emailValue = email
