@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { debounce, get } from 'lodash'
-import { addFeatureDetection } from '../vendor/jello'
 import { autoCompleteUsers, loadEmojis } from '../actions/posts'
 import { loadProfile } from '../actions/profile'
 import { setIsOffsetLayout } from '../actions/gui'
@@ -61,7 +60,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    addFeatureDetection()
     addInputObject(this)
     addGlobalDrag()
     this.updateIsOffsetLayout()
