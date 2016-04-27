@@ -71,6 +71,7 @@ class Join extends Component {
     if (invitationCode && !email) {
       dispatch(getInviteEmail(invitationCode))
     } else if (email) {
+      this.emailValue = email
       this.setState({ emailState: { status: STATUS.SUCCESS } })
     }
     if (!availability) { return }
