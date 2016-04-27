@@ -73,7 +73,9 @@ class Join extends Component {
       dispatch(getInviteEmail(invitationCode))
     } else if (email) {
       this.emailValue = email
-      this.setState({ emailState: { status: STATUS.SUCCESS } })
+      requestAnimationFrame(() => {
+        this.setState({ emailState: { status: STATUS.SUCCESS } })
+      })
     }
     if (!availability) { return }
     if (availability.hasOwnProperty('username')) {
@@ -184,7 +186,9 @@ class Join extends Component {
     const currentStatus = usernameState.status
     const newState = getUsernameStateFromServer({ availability, currentStatus })
     if (newState.status !== currentStatus) {
-      this.setState({ usernameState: newState })
+      requestAnimationFrame(() => {
+        this.setState({ usernameState: newState })
+      })
     }
   }
 
@@ -193,7 +197,9 @@ class Join extends Component {
     const currentStatus = emailState.status
     const newState = getEmailStateFromServer({ availability, currentStatus })
     if (newState.status !== currentStatus) {
-      this.setState({ emailState: newState })
+      requestAnimationFrame(() => {
+        this.setState({ emailState: newState })
+      })
     }
   }
 
@@ -202,7 +208,9 @@ class Join extends Component {
     const currentStatus = invitationCodeState.status
     const newState = getInvitationCodeStateFromServer({ availability, currentStatus })
     if (newState.status !== currentStatus) {
-      this.setState({ invitationCodeState: newState })
+      requestAnimationFrame(() => {
+        this.setState({ invitationCodeState: newState })
+      })
     }
   }
 
