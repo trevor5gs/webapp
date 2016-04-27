@@ -27,9 +27,9 @@ const getLogoModifier = (mods) => {
 
 
 export const NavbarMark = ({ currentStream, isLoggedIn, onClick }) => {
-  const list = ENV.LOGO_MARK.split('.')
+  const list = ENV.LOGO_MARK ? ENV.LOGO_MARK.split('.') : ['normal']
   const mark = list[0]
-  const mods = list.slice(1).join(' ')
+  const mods = list.length > 1 ? list.slice(1).join(' ') : ''
   return (
     <Link
       className="NavbarMark"
