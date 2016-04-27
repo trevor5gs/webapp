@@ -3,7 +3,6 @@ import { Link } from 'react-router'
 import { ElloMark, ElloRainbowMark, ElloDonutMark, ElloNinjaSuit } from '../svg/ElloIcons'
 
 const getLogoMark = (mark) => {
-  console.log(mark)
   switch (mark) {
     case 'rainbow':
       return <ElloRainbowMark />
