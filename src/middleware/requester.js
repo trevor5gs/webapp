@@ -260,7 +260,9 @@ export const requester = store => next => action => {
               if (error.response) {
                 delete runningFetches[error.response.url]
                 if (error.response.status === 401) {
-                  if (state.authentication.isLoggedIn && state.authentication.refreshToken) {
+                  if (type !== ACTION_TYPES.AUTHENTICATION.LOGOUT &&
+                      type !== ACTION_TYPES.AUTHENTICATION.REFRESH &&
+                      state.authentication.isLoggedIn && state.authentication.refreshToken) {
                     requestQueue = [...requestQueue, action]
                     // waiting for the running fetches to finish erroring out
                     // seems to be the only way to get all of the 401 requests
