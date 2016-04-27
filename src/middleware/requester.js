@@ -262,9 +262,16 @@ export const requester = store => next => action => {
                 if (error.response.status === 401) {
                   if (state.authentication.isLoggedIn && state.authentication.refreshToken) {
                     requestQueue = [...requestQueue, action]
+                    // waiting for the running fetches to finish erroring out
+                    // seems to be the only way to get all of the 401 requests
+                    // to fire again once the token has been refreshed
                     if (Object.keys(runningFetches).length === 0) {
-                      store.dispatch(refreshAuthenticationToken(state.authentication.refreshToken))
+                      return store.dispatch(refreshAuthenticationToken(state.authentication.refreshToken))
                     }
+                    // returning true here keeps the error screen from showing
+                    // for a split second while the other requests are erroring
+                    // out since the token needs to be refreshed
+                    return true
                   } else if (!state.authentication.isLoggedIn) {
                     store.dispatch({ type: ACTION_TYPES.REQUESTER.UNPAUSE })
                   }
