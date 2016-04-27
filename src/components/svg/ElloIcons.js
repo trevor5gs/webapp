@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react'
-import { SVGBox } from './SVGComponents'
+import { SVGComponent, SVGBox } from './SVGComponents'
 
 // )
 const fortyPointSmilePath = () =>
@@ -37,4 +37,10 @@ export const ElloDonutMark = () =>
     <path style={{ fill: '#fb9a4a' }} d="M20,14.1c3.6,0,6.5,2.7,6.9,6.1c0-0.3,0.1-0.6,0.1-0.9c0-3.9-3.1-7-7-7c-3.9,0-7,3.1-7,7c0,0.3,0,0.6,0.1,0.9 C13.5,16.8,16.4,14.1,20,14.1z" />
     { fortyPointSmilePath() }
   </SVGBox>
+
+
+export const ElloNinjaSuit = () =>
+  <SVGComponent className="ElloNinjaSuit" height="40" width="48">
+    <path d="M5.6,6.2C3.8,8,2.4,10.2,1.4,12.7h44.2l-3.1-3.2l3.1-3.2H5.6z" />
+  </SVGComponent>
 

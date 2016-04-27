@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-import { ElloMark, ElloRainbowMark, ElloDonutMark } from '../svg/ElloIcons'
+import { ElloMark, ElloRainbowMark, ElloDonutMark, ElloNinjaSuit } from '../svg/ElloIcons'
 
-const getLogoMarkFromEnvironment = () => {
-  switch (ENV.LOGO_MARK) {
+const getLogoMark = (mark) => {
+  switch (mark) {
     case 'rainbow':
       return <ElloRainbowMark />
     case 'donut':
@@ -16,15 +16,32 @@ const getLogoMarkFromEnvironment = () => {
   }
 }
 
-export const NavbarMark = ({ currentStream, isLoggedIn, onClick }) =>
-<Link
-  className="NavbarMark"
-  draggable
-  onClick={ onClick }
-  to={ isLoggedIn ? currentStream : '/' }
->
-    { getLogoMarkFromEnvironment() }
-  </Link>
+const getLogoModifier = (mods) => {
+  switch (mods) {
+    case 'isNinja':
+      return <ElloNinjaSuit />
+    default:
+      return null
+  }
+}
+
+
+export const NavbarMark = ({ currentStream, isLoggedIn, onClick }) => {
+  const list = ENV.LOGO_MARK ? ENV.LOGO_MARK.split('.') : ['normal']
+  const mark = list[0]
+  const mods = list.length > 1 ? list.slice(1).join(' ') : ''
+  return (
+    <Link
+      className="NavbarMark"
+      draggable
+      onClick={ onClick }
+      to={ isLoggedIn ? currentStream : '/' }
+    >
+      { getLogoModifier(mods) }
+      { getLogoMark(mark) }
+    </Link>
+  )
+}
 
 NavbarMark.propTypes = {
   currentStream: PropTypes.string.isRequired,
