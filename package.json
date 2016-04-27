@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -f public/index.html public/static/*.js public/static/*.css",
     "build": "npm run build:web && npm run build:server",
-    "build:server": "NODE_ENV=production node node_modules/webpack/bin/webpack.js -p --config=webpack.server.config.js",
+    "build:server": "NODE_ENV=production node node_modules/webpack/bin/webpack.js --config=webpack.server.config.js",
     "build:web": "NODE_ENV=production node node_modules/webpack/bin/webpack.js -p --config=webpack.prod.config.js",
     "dev": "npm run clean && DEBUG=express:* NODE_ENV=development babel-node server-dev.js",
     "lint": "eslint src test",
