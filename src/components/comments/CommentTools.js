@@ -88,8 +88,8 @@ class CommentTools extends Component {
 
   getToolCells() {
     const { author, comment, currentUser, isLoggedIn, post } = this.props
-    const isOwnComment = currentUser && author.id === currentUser.id
-    const isOwnPost = currentUser && post.authorId === currentUser.id
+    const isOwnComment = currentUser && `${author.id}` === `${currentUser.id}`
+    const isOwnPost = currentUser && `${post.authorId}` === `${currentUser.id}`
     const cells = []
     cells.push(
       <span className="PostTool TimeAgoTool" key={ `TimeAgoTool_${comment.id}` }>
