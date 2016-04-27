@@ -6,25 +6,30 @@
 
 .Panel.UserDetail,
 .Panel.Settings
-  margin-top: 56.25%
+  padding-top: rem(40)
+  margin-top: calc(56.25% + #{rem(40)})
   min-height: 100vh
 
 .Panel.UserDetail.OmnibarActive
   margin-top: 0
 
-.Panel.Settings,
-.Panel.UserDetail
-  padding-top: rem(40)
-
 @media(max-width: #{$break-2-max})
   .isLoggedOut .Panel
     padding-top: rem(50)
+
+@media(min-width: #{em(375)})
+  .Panel.UserDetail,
+  .Panel.Settings
+    margin-top: calc(56.25% + #{rem(20)})
 
 @media(min-width: #{$break-2})
   .Panel
     padding-top: rem(80)
   .Panel.Authentication
     padding-top: 0
+  .Panel.UserDetail,
+  .Panel.Settings
+    margin-top: 56.25%
 
 
 // -------------------------------------
