@@ -357,12 +357,12 @@ const mapStateToProps = ({ authentication, json, profile, routing, stream }, own
   const post = json[POSTS][ownProps.post.id]
   const isCommentsRequesting = stream.type === LOAD_STREAM_REQUEST &&
                                stream.meta.mappingType === COMMENTS &&
-                               (stream.payload.postIdOrToken === ownProps.post.id ||
-                                stream.payload.postIdOrToken === ownProps.post.token)
+                               (`${stream.payload.postIdOrToken}` === `${ownProps.post.id}` ||
+                                `${stream.payload.postIdOrToken}` === `${ownProps.post.token}`)
   return {
     isCommentsRequesting,
     isLoggedIn: authentication.isLoggedIn,
-    isOwnPost: profile && ownProps.post.authorId === profile.id,
+    isOwnPost: profile && `${ownProps.post.authorId}` === `${profile.id}`,
     pathname: routing.location.pathname,
     previousPath: routing.previousPath,
     postCommentsCount: post.commentsCount,
