@@ -344,7 +344,7 @@ function repostNotification(post, createdAt) {
   )
 }
 
-/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable react/prefer-stateless-function, react/require-render-return */
 class NotificationParser extends Component {
   static propTypes = {
     notification: PropTypes.object,

@@ -136,7 +136,7 @@ class Avatar extends Component {
           to={ to }
           draggable={ isDraggable }
         >
-          <img className="AvatarImage" src={ src } />
+          <img className="AvatarImage" src={ src } alt={ username } />
         </Link>
       )
     } else if (onClick) {
@@ -149,7 +149,7 @@ class Avatar extends Component {
           onClick={ onClick }
           draggable={ isDraggable }
         >
-          <img className="AvatarImage" src={ src } />
+          <img className="AvatarImage" src={ src } alt={ username } />
         </button>
       )
     }
@@ -161,7 +161,7 @@ class Avatar extends Component {
         data-username={ username }
         draggable={ isDraggable }
       >
-        <img className="AvatarImage" src={ src } />
+        <img className="AvatarImage" src={ src } alt={ username } />
       </span>
     )
   }

@@ -123,7 +123,7 @@ export default class TextTools extends Component {
   }
 
   prefixLink(text) {
-    const linkPrefix = /((ftp|http|https):\/\/.)|mailto(?=\:[-\.\w]+@)/
+    const linkPrefix = /((ftp|http|https):\/\/.)|mailto(?=:[-\.\w]+@)/
     if (!linkPrefix.test(text)) return `http://${text}`
     return text
   }
