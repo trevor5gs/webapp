@@ -75,52 +75,54 @@ function preRender(renderProps, store) {
 }
 
 function renderFromServer(req, res) {
-  const memoryHistory = createMemoryHistory(req.originalUrl)
-  const store = createElloStore(memoryHistory, {
-    authentication: {
-      accessToken: currentToken().token.access_token,
-      isLoggedIn: false,
-    },
-  })
-  const routes = createRoutes(store)
-  const history = syncHistoryWithStore(memoryHistory, store)
+  currentToken().then((token) => {
+    const memoryHistory = createMemoryHistory(req.originalUrl)
+    const store = createElloStore(memoryHistory, {
+      authentication: {
+        accessToken: token.access_token,
+        isLoggedIn: false,
+      },
+    })
+    const routes = createRoutes(store)
+    const history = syncHistoryWithStore(memoryHistory, store)
 
-  match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
-    // populate the router store object for initial render
-    if (error) {
-      console.log('ELLO MATCH ERROR', error)
-    } else if (redirectLocation) {
-      console.log('ELLO HANDLE REDIRECT', redirectLocation)
-      res.redirect(redirectLocation.pathname)
-      return
-    } else if (!renderProps) {
-      console.log('NO RENDER PROPS')
-      return
-    }
+    match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
+      // populate the router store object for initial render
+      if (error) {
+        console.log('ELLO MATCH ERROR', error)
+      } else if (redirectLocation) {
+        console.log('ELLO HANDLE REDIRECT', redirectLocation)
+        res.redirect(redirectLocation.pathname)
+        return
+      } else if (!renderProps) {
+        console.log('NO RENDER PROPS')
+        return
+      }
 
-    store.dispatch(replace(renderProps.location.pathname))
+      store.dispatch(replace(renderProps.location.pathname))
 
-    preRender(renderProps, store).then(() => {
-      const InitialComponent = (
-        <Provider store={store}>
-          <RouterContext {...renderProps} />
-        </Provider>
-      )
-      const componentHTML = renderToString(InitialComponent)
-      const head = Helmet.rewind()
-      const state = store.getState()
-      const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
-      // Add helmet's stuff after the last statically rendered meta tag
-      const html = indexStr.replace(
-        'content="ie=edge">',
-        `content="ie=edge">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()}`
-      ).replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
-      res.send(html)
-    }).catch((err) => {
-      // this will give you a js error like:
-      // `window is not defined`
-      console.log('ELLO CATCH ERROR', err)
-      res.status(500).end()
+      preRender(renderProps, store).then(() => {
+        const InitialComponent = (
+          <Provider store={store}>
+            <RouterContext {...renderProps} />
+          </Provider>
+        )
+        const componentHTML = renderToString(InitialComponent)
+        const head = Helmet.rewind()
+        const state = store.getState()
+        const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
+        // Add helmet's stuff after the last statically rendered meta tag
+        const html = indexStr.replace(
+          'content="ie=edge">',
+          `content="ie=edge">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()}`
+        ).replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
+        res.send(html)
+      }).catch((err) => {
+        // this will give you a js error like:
+        // `window is not defined`
+        console.log('ELLO CATCH ERROR', err)
+        res.status(500).end()
+      })
     })
   })
 }

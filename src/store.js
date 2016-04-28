@@ -39,8 +39,16 @@ const createBrowserStore = (history, passedInitialState = {}) => {
 
 const createServerStore = (history, initialState = {}) => {
   const reduxRouterMiddleware = routerMiddleware(history)
+  const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
   const store = compose(
-    applyMiddleware(thunk, uploader, reduxRouterMiddleware, requester),
+                    applyMiddleware(
+                      thunk,
+                      authentication,
+                      uploader,
+                      reduxRouterMiddleware,
+                      requester,
+                      logger
+                    ),
   )(createStore)(reducer, initialState)
 
   return store
