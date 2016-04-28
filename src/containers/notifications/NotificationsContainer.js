@@ -84,7 +84,9 @@ class NotificationsContainer extends Component {
   }
 
   onClickSelf = (e) => {
-    e.preventDefault()
+    if (!e.metaKey && !e.which === 2) {
+      e.preventDefault()
+    }
     this.ignoreNext = true
     setTimeout(() => { this.ignoreNext = false }, 1)
   }
