@@ -1,3 +1,6 @@
+let _isAndroid = undefined
+let _isFirefox = undefined
+
 export const addFeatureDetection = () => {
   const cl = document.documentElement.classList
   if (!('ontouchstart' in document.documentElement)) {
@@ -19,6 +22,15 @@ export const hideSoftKeyboard = () => {
 
 export const isAndroid = () => {
   if (typeof window === 'undefined') { return false }
-  return !(navigator.userAgent.match(/Android/i) === null)
+  if (typeof _isAndroid !== 'undefined') { return _isAndroid }
+  _isAndroid = /Android/gi.test(navigator.userAgent)
+  return _isAndroid
+}
+
+export const isFirefox = () => {
+  if (typeof window === 'undefined') { return false }
+  if (typeof _isFirefox !== 'undefined') { return _isFirefox }
+  _isFirefox = /Firefox/gi.test(navigator.userAgent)
+  return _isFirefox
 }
 
