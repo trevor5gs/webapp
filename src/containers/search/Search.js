@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
-import { debounce } from 'lodash'
+import { debounce, get } from 'lodash'
 import { hideSoftKeyboard } from '../../vendor/jello'
 import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
@@ -12,7 +12,6 @@ import Promotion from '../../components/assets/Promotion'
 import SearchControl from '../../components/forms/SearchControl'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { TabListButtons } from '../../components/tabs/TabList'
-import _ from 'lodash'
 
 class Search extends Component {
 
@@ -28,8 +27,8 @@ class Search extends Component {
   }
 
   static preRender = (store, routerState) => {
-    const term = _.get(routerState, 'location.query.terms', '')
-    const type = _.get(routerState, 'location.query.type', 'posts')
+    const term = get(routerState, 'location.query.terms', '')
+    const type = get(routerState, 'location.query.type', 'posts')
     const action = type === 'users' ? SearchActions.searchForUsers : SearchActions.searchForPosts
     return store.dispatch(action(term))
   }

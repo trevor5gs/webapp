@@ -229,9 +229,10 @@ class ImageRegion extends Component {
       <img
         alt={ content.alt ? content.alt.replace('.gif', '') : null }
         className="ImageAttachment"
+        height={ isNotification ? 'auto' : dimensions.height }
+        role="presentation"
         src={ this.attachment.optimized.url }
         width={ dimensions.width }
-        height={ isNotification ? 'auto' : dimensions.height }
       />
     )
   }
@@ -244,10 +245,11 @@ class ImageRegion extends Component {
       <img
         alt={ content.alt ? content.alt.replace('.jpg', '') : null }
         className="ImageAttachment"
+        height={ isNotification ? 'auto' : dimensions.height }
+        role="presentation"
         src={ this.attachment.hdpi.url }
         srcSet={ srcset }
         width={ dimensions.width }
-        height={ isNotification ? 'auto' : dimensions.height }
       />
     )
   }
@@ -263,6 +265,7 @@ class ImageRegion extends Component {
       <img
         alt={ content.alt ? content.alt.replace('.jpg', '') : null }
         className="ImageAttachment"
+        role="presentation"
         { ...attrs }
       />
     )

@@ -1,6 +1,5 @@
 import { get } from 'lodash'
-import { LOCATION_CHANGE } from 'react-router-redux'
-import { routerReducer } from 'react-router-redux'
+import { LOCATION_CHANGE, routerReducer } from 'react-router-redux'
 
 const previousPath = typeof document === 'undefined' ? '/' : document.location.pathname
 

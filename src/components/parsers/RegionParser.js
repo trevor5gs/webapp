@@ -39,7 +39,7 @@ function embedRegion(region, key) {
     <div className="EmbedRegion" key={ key }>
       <div className="embetter" { ...data }>
         <Link className="EmbedRegionContent" to={ region.data.url }>
-          <img src={ region.data.thumbnailLargeUrl } />
+          <img src={ region.data.thumbnailLargeUrl } alt={ region.data.service } />
         </Link>
       </div>
     </div>
