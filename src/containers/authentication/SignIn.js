@@ -15,7 +15,6 @@ import EmailControl from '../../components/forms/EmailControl'
 import PasswordControl from '../../components/forms/PasswordControl'
 import FormButton from '../../components/forms/FormButton'
 import {
-  isFormValid,
   getEmailStateFromClient,
   getPasswordState,
 } from '../../components/forms/Validators'
@@ -148,7 +147,6 @@ class SignIn extends Component {
       passwordState, showPasswordError,
       failureMessage, featuredUser,
     } = this.state
-    const isValid = isFormValid([emailState, passwordState])
     return (
       <section className="Authentication Panel">
         <div className="AuthenticationFormDialog">
@@ -181,7 +179,7 @@ class SignIn extends Component {
               tabIndex="2"
             />
             {failureMessage ? <p>{failureMessage}</p> : null}
-            <FormButton disabled={ !isValid } tabIndex="3">Log in</FormButton>
+            <FormButton tabIndex="3">Log in</FormButton>
           </form>
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>

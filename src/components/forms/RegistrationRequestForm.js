@@ -7,7 +7,7 @@ import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
 import { requestInvite } from '../../actions/profile'
 import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
-import { isFormValid, getEmailStateFromClient } from '../forms/Validators'
+import { getEmailStateFromClient } from '../forms/Validators'
 
 let _isAndroid
 
@@ -85,7 +85,6 @@ class RegistrationRequestForm extends Component {
 
   renderForm() {
     const { emailState, showEmailError } = this.state
-    const isValid = isFormValid([emailState])
     return (
       <div>
         <h1>
@@ -110,7 +109,7 @@ class RegistrationRequestForm extends Component {
             <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
             <p className="HoppyStatusMessage"><span /></p>
           }
-          <FormButton disabled={ !isValid } tabIndex="2">Sign up</FormButton>
+          <FormButton tabIndex="2">Sign up</FormButton>
         </form>
         <Link className="HaveAccountLink" to="/enter">Have an account?</Link>
       </div>
