@@ -1,11 +1,11 @@
 import { camelizeKeys } from 'humps'
-import jwt from 'jsonwebtoken'
+import jwtDecode from 'jwt-decode'
 import _ from 'lodash'
 import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, INVITATIONS, PROFILE } from '../constants/action_types'
 
 function parseJWT(token) {
-  const decoded = jwt.decode(token)
+  const decoded = jwtDecode(token)
   if (decoded && decoded.data) {
     return { ...(camelizeKeys(decoded.data)) }
   }
