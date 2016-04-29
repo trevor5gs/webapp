@@ -66,8 +66,15 @@ class RegistrationRequestForm extends Component {
   onSubmit = (e) => {
     e.preventDefault()
     const { dispatch } = this.props
-    dispatch(requestInvite(this.emailValue))
-    this.setState({ formStatus: STATUS.SUBMITTED })
+    const { emailState } = this.state
+    const currentStatus = emailState.status
+    const newState = getEmailStateFromClient({ value: this.emailValue, currentStatus })
+    if (newState.status === STATUS.SUCCESS) {
+      dispatch(requestInvite(this.emailValue))
+      this.setState({ formStatus: STATUS.SUBMITTED })
+    } else if (newState.status !== currentStatus) {
+      this.setState({ emailState: newState })
+    }
   }
 
   delayedShowEmailError = () => {
