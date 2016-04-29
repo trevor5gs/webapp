@@ -28,12 +28,16 @@ class TextBlock extends Component {
     placeCaretAtEnd(this.refs.block.refs.text)
   }
 
+  // TODO: Send `isEditorFocused` through the modal reducer
+  // instead once PR #577 is merged: ag isEditorFocused
   onBlurText = () => {
-    document.body.classList.remove('hideFooter')
+    document.body.classList.remove('isEditorFocused')
   }
 
+  // TODO: Send `isEditorFocused` through the modal reducer
+  // instead once PR #577 is merged: ag isEditorFocused
   onFocusText = () => {
-    document.body.classList.add('hideFooter')
+    document.body.classList.add('isEditorFocused')
   }
 
   onInputText = () => {

@@ -33,6 +33,11 @@
 .FooterTools > .FooterTool:last-child
   margin-right: rem(-8)
 
+// MAX-WIDTH!
+@media(max-width: #{$break-2-max})
+  body.isEditorFocused .Footer
+    display: none
+
 @media(min-width: #{$break-2})
   .Footer
     padding: 0 rem(20)
@@ -49,7 +54,6 @@
   .FooterLinks > .FooterLink
     margin-left: rem(40)
 
-body.hideFooter .Footer,
 [data-pathname="/forgot-password"] ~ .Footer,
 [data-pathname="/signup"] ~ .Footer,
 [data-pathname="/enter"] ~ .Footer,
