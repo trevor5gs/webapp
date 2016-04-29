@@ -79,7 +79,11 @@ export class Discover extends Component {
     const { isBeaconActive } = this.state
     const action = getDiscoverAction(params.type)
     const tabs = [
-      { to: '/discover', children: 'Recommended', activePattern: /^\/(?:discover)?$/ },
+      {
+        to: '/discover',
+        children: 'Recommended',
+        activePattern: /^\/(?:discover(\/recommended)?)?$/,
+      },
       { to: '/discover/trending', children: 'Trending' },
       { to: '/discover/recent', children: 'Recent' },
       // { to: '/discover/communities', children: 'Communities' },
