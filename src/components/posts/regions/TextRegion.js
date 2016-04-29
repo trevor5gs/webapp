@@ -26,24 +26,33 @@ class TextRegion extends Component {
     const href = e.target.getAttribute('href')
 
     // Relative links get sent to push (usernames, raw links, hashtags)
-    if (!e.metaKey && !e.which === 2) {
-      if (href && href[0] === '/') {
-        e.preventDefault()
-        dispatch(push(href))
-        return
-      // TODO: We have a special `span` based fake link at the moment we have to test
-      // for. Once we change this back to an `<a> element we can rip this out.
-      } else if (classList.contains('hashtag-link')) {
-        e.preventDefault()
-        dispatch(push(dataset.href))
-        return
+    if (href && href[0] === '/') {
+      e.preventDefault()
+      dispatch(push(href))
+      return
+    // TODO: We have a special `span` based fake link at the moment we have to test
+    // for. Once we change this back to an `<a> element we can rip this out.
+    } else if (classList.contains('hashtag-link')) {
+      e.preventDefault()
+      dispatch(push(dataset.href))
+      return
 
-      // Treat non links within grid layouts as a push to it's detail path
-      } else if (isGridLayout && postDetailPath && !isLink(e.target)) {
-        e.preventDefault()
-        dispatch(push(postDetailPath))
+    // Treat non links within grid layouts as a push to it's detail path
+    } else if (isGridLayout && postDetailPath && !isLink(e.target)) {
+      e.preventDefault()
+
+      // if it's a command / control click or middle mouse fake a link and
+      // click it... I'm serious.
+      if (e.metaKey || e.ctrlKey || e.which === 2) {
+        const a = document.createElement('a')
+        a.href = postDetailPath
+        a.target = '_blank'
+        a.click()
         return
       }
+      // ..otherwise just push it through..
+      dispatch(push(postDetailPath))
+      return
     }
     // The alternative is it's either in list and we ignore it or it's an
     // absolute link and we allow it's default behavior.
