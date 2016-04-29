@@ -48,3 +48,31 @@ export function closeAlert() {
   }
 }
 
+export function setIsCompleterActive({ isCompleterActive }) {
+  return {
+    type: MODAL.SET_IS_COMPLETER_ACTIVE,
+    payload: {
+      isCompleterActive,
+    },
+  }
+}
+
+export function setIsTextToolsActive({ isTextToolsActive, textToolsStates = {} }) {
+  return {
+    type: MODAL.SET_IS_TEXT_TOOLS_ACTIVE,
+    payload: {
+      isTextToolsActive,
+      textToolsStates,
+    },
+  }
+}
+
+export function setTextToolsCoordinates({ textToolsCoordinates = { top: -200, left: -666 } }) {
+  return {
+    type: MODAL.SET_TEXT_TOOLS_COORDINATES,
+    payload: {
+      textToolsCoordinates,
+    },
+  }
+}
+
