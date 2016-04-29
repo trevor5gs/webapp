@@ -27,7 +27,7 @@ class Cover extends Component {
   componentWillMount() {
     this.state = {
       asHidden: false,
-      imageSize: 'hdpi',
+      imageSize: 'xhdpi',
       status: STATUS.REQUEST,
     }
   }

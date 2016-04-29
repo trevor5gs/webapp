@@ -16,9 +16,9 @@ function callMethod(method, resizeProperties) {
 // This is very rudimentary. needs things like 1x, 2x calculating the set
 // Used for background images in Cover and Promotions
 function getCoverImageSize(innerWidth) {
-  if (innerWidth < 1500) {
+  if (innerWidth < 750) {
     return 'hdpi'
-  } else if (innerWidth >= 1500 && innerWidth < 1920) {
+  } else if (innerWidth >= 750 && innerWidth < 1920) {
     return 'xhdpi'
   }
   return 'optimized'

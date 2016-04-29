@@ -25,7 +25,7 @@ class Promotion extends Component {
     const index = random(0, userlist.length - 1)
     this.state = {
       featuredUser: userlist[index],
-      imageSize: 'hdpi',
+      imageSize: 'xhdpi',
       status: STATUS.REQUEST,
     }
   }
