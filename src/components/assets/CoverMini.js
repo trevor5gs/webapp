@@ -18,7 +18,7 @@ class CoverMini extends Component {
 
   componentWillMount() {
     this.state = {
-      imageSize: 'hdpi',
+      imageSize: 'xhdpi',
       status: STATUS.REQUEST,
     }
   }
