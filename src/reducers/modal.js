@@ -12,6 +12,7 @@ const initialState = {
   isActive: false,
   isCompleterActive: false,
   isNotificationsActive: false,
+  isProfileMenuActive: false,
   isTextToolsActive: false,
   kind: 'Modal',
   textToolsCoordinates: { top: -200, left: -666 },
@@ -37,6 +38,11 @@ export function modal(state = initialState, action) {
       return {
         ...state,
         isCompleterActive: action.payload.isCompleterActive,
+      }
+    case MODAL.SET_IS_PROFILE_MENU_ACTIVE:
+      return {
+        ...state,
+        isProfileMenuActive: action.payload.isProfileMenuActive,
       }
     case MODAL.SET_IS_TEXT_TOOLS_ACTIVE:
       return {

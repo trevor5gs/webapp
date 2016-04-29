@@ -6,7 +6,7 @@ import { scrollToTop } from '../vendor/scrollTop'
 import { ADD_NEW_IDS_TO_RESULT, MODAL, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/gui_types'
 import { logout } from '../actions/authentication'
-import { setProfileMenuState } from '../actions/gui'
+import { setIsProfileMenuActive } from '../actions/modals'
 import { checkForNewNotifications } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
@@ -159,14 +159,14 @@ class NavbarContainer extends Component {
     const { dispatch, isProfileMenuActive } = this.props
     if (isProfileMenuActive) { return }
     document.addEventListener('click', this.onClickDocument)
-    dispatch(setProfileMenuState({ isActive: true }))
+    dispatch(setIsProfileMenuActive({ isActive: true }))
   }
 
   deactivateProfileMenu() {
     const { dispatch, isProfileMenuActive } = this.props
     if (!isProfileMenuActive) { return }
     document.removeEventListener('click', this.onClickDocument)
-    dispatch(setProfileMenuState({ isActive: false }))
+    dispatch(setIsProfileMenuActive({ isActive: false }))
   }
 
   render() {
@@ -219,7 +219,7 @@ const mapStateToProps = (state) => {
       isGridMode: gui.isGridMode,
       isLoggedIn,
       isNotificationsActive: modal.isNotificationsActive,
-      isProfileMenuActive: gui.isProfileMenuActive,
+      isProfileMenuActive: modal.isProfileMenuActive,
       pathname,
       username: profile.username,
       viewportDeviceSize: gui.viewportDeviceSize,

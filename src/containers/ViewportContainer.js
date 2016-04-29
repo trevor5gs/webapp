@@ -136,7 +136,7 @@ const mapStateToProps = (state) => {
     isNavbarSkippingTransition: gui.isNavbarSkippingTransition,
     isNotificationsActive: modal.isNotificationsActive,
     isOffsetLayout: gui.isOffsetLayout,
-    isProfileMenuActive: gui.isProfileMenuActive,
+    isProfileMenuActive: modal.isProfileMenuActive,
     offset: gui.coverOffset ? gui.coverOffset - 80 : 160,
     pathname: routing.location.pathname,
   }

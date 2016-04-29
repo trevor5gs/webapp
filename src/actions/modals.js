@@ -57,6 +57,15 @@ export function setIsCompleterActive({ isCompleterActive }) {
   }
 }
 
+export function setIsProfileMenuActive({ isActive }) {
+  return {
+    type: MODAL.SET_IS_PROFILE_MENU_ACTIVE,
+    payload: {
+      isProfileMenuActive: isActive,
+    },
+  }
+}
+
 export function setIsTextToolsActive({ isTextToolsActive, textToolsStates = {} }) {
   return {
     type: MODAL.SET_IS_TEXT_TOOLS_ACTIVE,
