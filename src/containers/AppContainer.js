@@ -3,12 +3,12 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
 import { loadProfile } from '../actions/profile'
-import AnalyticsContainer from '../containers/AnalyticsContainer'
 import DevTools from '../components/devtools/DevTools'
 import { AppHelmet } from '../components/helmets/AppHelmet'
 import Modal from '../components/modals/Modal'
 import Omnibar from '../components/omnibar/Omnibar'
 import { addGlobalDrag, removeGlobalDrag } from '../components/viewport/GlobalDrag'
+import AnalyticsContainer from '../containers/AnalyticsContainer'
 import EditorToolsContainer from '../containers/EditorToolsContainer'
 import FooterContainer from '../containers/FooterContainer'
 import KeyboardContainer from '../containers/KeyboardContainer'
@@ -94,9 +94,10 @@ AppContainer.preRender = (store) => {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+const mapStateToProps = (state, ownProps) => {
+  const { authentication } = state
   return {
-    authentication: state.authentication,
+    authentication,
     pathname: ownProps.location.pathname,
   }
 }

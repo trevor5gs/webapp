@@ -9,10 +9,10 @@ import {
   setTextToolsCoordinates,
 } from '../actions/modals'
 import { autoCompleteUsers, loadEmojis } from '../actions/posts'
-import { replaceWordFromSelection } from '../components/editor/SelectionUtil'
 import Completer from '../components/completers/Completer'
 import TextTools from '../components/editor/TextTools'
 import { addInputObject, removeInputObject } from '../components/editor/InputComponent'
+import { replaceWordFromSelection } from '../components/editor/SelectionUtil'
 
 class EditorToolsContainer extends Component {
 
