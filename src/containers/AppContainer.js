@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
 import { loadProfile } from '../actions/profile'
-import { setIsOffsetLayout } from '../actions/gui'
 import AnalyticsContainer from '../containers/AnalyticsContainer'
 import DevTools from '../components/devtools/DevTools'
 import { AppHelmet } from '../components/helmets/AppHelmet'
@@ -23,7 +22,6 @@ class AppContainer extends Component {
     children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
     editorStore: PropTypes.object.isRequired,
-    isOffsetLayout: PropTypes.bool,
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }).isRequired,
@@ -41,7 +39,6 @@ class AppContainer extends Component {
 
   componentDidMount() {
     addGlobalDrag()
-    this.updateIsOffsetLayout()
     if (get(this.props, 'authentication.isLoggedIn')) {
       const { dispatch } = this.props
       dispatch(loadProfile())
@@ -58,22 +55,8 @@ class AppContainer extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.location.pathname === this.props.location.pathname) { return }
-    this.updateIsOffsetLayout()
-  }
-
   componentWillUnmount() {
     removeGlobalDrag()
-  }
-
-  // TODO: Maybe move this out to a Viewport object?
-  updateIsOffsetLayout() {
-    const { isOffsetLayout, location: { pathname }, params: { username, token } } = this.props
-    const isUserDetailOrSettings = (username && !token) || pathname === '/settings'
-    if (isOffsetLayout !== isUserDetailOrSettings) {
-      this.props.dispatch(setIsOffsetLayout({ isOffsetLayout: isUserDetailOrSettings }))
-    }
   }
 
   render() {
@@ -87,7 +70,7 @@ class AppContainer extends Component {
     return (
       <section className={ appClasses }>
         <AppHelmet pathname={ pathname } />
-        <ViewportContainer />
+        <ViewportContainer routerParams={ params } />
         { isLoggedIn ? <Omnibar /> : null }
         { children }
         <NavbarContainer routerParams={ params } />
@@ -115,7 +98,6 @@ function mapStateToProps(state, ownProps) {
   return {
     authentication: state.authentication,
     pathname: ownProps.location.pathname,
-    isOffsetLayout: state.gui.isOffsetLayout,
   }
 }
 

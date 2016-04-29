@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
-import { setNavbarState, setViewportSizeAttributes } from '../actions/gui'
+import { setIsOffsetLayout, setNavbarState, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
@@ -19,6 +19,11 @@ class ViewportContainer extends Component {
     isProfileMenuActive: PropTypes.bool,
     offset: PropTypes.number,
     pathname: PropTypes.string.isRequired,
+    routerParams: PropTypes.shape({
+      username: PropTypes.string,
+      token: PropTypes.string,
+      type: PropTypes.string,
+    }).isRequired,
   }
 
   componentWillMount() {
@@ -28,10 +33,16 @@ class ViewportContainer extends Component {
   componentDidMount() {
     addResizeObject(this)
     addScrollObject(this)
+    this.updateIsOffsetLayout()
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.pathname === this.props.pathname) { return }
+    this.updateIsOffsetLayout()
   }
 
   componentWillUnmount() {
@@ -98,6 +109,14 @@ class ViewportContainer extends Component {
         isHidden: nextIsHidden,
         isSkippingTransition: nextIsSkippingTransition,
       }))
+    }
+  }
+
+  updateIsOffsetLayout() {
+    const { isOffsetLayout, pathname, routerParams: { username, token } } = this.props
+    const isUserDetailOrSettings = (username && !token) || pathname === '/settings'
+    if (isOffsetLayout !== isUserDetailOrSettings) {
+      this.props.dispatch(setIsOffsetLayout({ isOffsetLayout: isUserDetailOrSettings }))
     }
   }
 
