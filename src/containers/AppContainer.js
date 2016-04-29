@@ -190,8 +190,10 @@ class AppContainer extends Component {
         <FooterContainer />
         <Modal />
         <DevTools />
-        <KeyboardContainer />
-        <AnalyticsContainer />
+        <template>
+          <KeyboardContainer />
+          <AnalyticsContainer />
+        </template>
       </section>
     )
   }
