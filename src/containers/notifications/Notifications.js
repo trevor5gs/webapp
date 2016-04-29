@@ -89,7 +89,7 @@ export class Notifications extends Component {
       { to: '/notifications/relationships', type: 'relationships', children: <RelationshipIcon /> },
     ]
     return (
-      <section className="Notifications Panel">
+      <main className="Notifications View" role="main">
         <TabListLinks
           activePath={ pathname }
           className="IconTabList NotificationsContainerTabs"
@@ -110,11 +110,11 @@ export class Notifications extends Component {
         <StreamComponent
           action={ loadNotifications(params) }
           className="asFullWidth"
-          key={ `notificationPanel_${params.category}` }
+          key={ `notificationView_${params.category}` }
           scrollSessionKey={ `notifications_${category || 'all'}` }
           ref="streamComponent"
         />
-      </section>
+      </main>
     )
   }
 }

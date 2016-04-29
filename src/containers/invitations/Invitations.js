@@ -67,7 +67,7 @@ class Invitations extends Component {
     const { batchEmailState } = this.state
     const isValid = batchEmailState.status === STATUS.SUCCESS
     return (
-      <section className="Invitations Panel">
+      <main className="Invitations View" role="main">
         <header className="InvitationsHeader">
           <h1 className="InvitationsHeading">Invite your friends</h1>
           <p>
@@ -105,7 +105,7 @@ class Invitations extends Component {
         </div>
         <h2 className="InvitationsStreamHeading">Friends you've invited</h2>
         <StreamComponent action={ loadInvitedUsers() } />
-      </section>
+      </main>
     )
   }
 }

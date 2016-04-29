@@ -86,7 +86,11 @@ export class Discover extends Component {
       // { to: '/discover/featured-users', children: 'Featured Users' },
     ]
     return (
-      <section className="Discover Panel" key={ `discover_${params.type || 'recommended'}` }>
+      <main
+        className="Discover View"
+        key={ `discover_${params.type || 'recommended'}` }
+        role="main"
+      >
         { isBeaconActive ? this.renderZeroStream() : null }
         <Promotion
           creditsClickAction={ this.onClickTrackCredits }
@@ -100,7 +104,7 @@ export class Discover extends Component {
           tabs={ tabs }
         />
         <StreamComponent action={ action } ref="streamComponent" />
-      </section>
+      </main>
     )
   }
 }

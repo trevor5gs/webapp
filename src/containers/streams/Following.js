@@ -41,13 +41,13 @@ class Following extends Component {
   render() {
     const { isBeaconActive } = this.state
     return (
-      <section className="Following Panel">
+      <main className="Following View" role="main">
         { isBeaconActive ? this.renderZeroStream() : null }
         <StreamComponent
           action={loadFriends()}
           scrollSessionKey="/following"
         />
-      </section>
+      </main>
     )
   }
 }

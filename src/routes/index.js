@@ -1,4 +1,4 @@
-import App from '../containers/App'
+import AppContainer from '../containers/AppContainer'
 import { refreshAuthenticationToken } from '../actions/authentication'
 import PostDetailRoute from './post_detail'
 import WTFRoute from './wtf'
@@ -84,7 +84,7 @@ const routes = store => {
   return [
     {
       path: '/',
-      component: App,
+      component: AppContainer,
       indexRoute,
       // order matters, so less specific routes should go at the bottom
       childRoutes: [

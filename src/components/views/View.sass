@@ -1,0 +1,36 @@
+@import ../../styles/lib
+
+.View
+  padding-top: rem(85)
+  background-color: white
+
+.UserDetail.View,
+.Settings.View
+  padding-top: rem(40)
+  margin-top: calc(56.25% + #{rem(40)})
+  min-height: 100vh
+
+.PostDetail.View,
+  padding-bottom: rem(30)
+
+.UserDetail.View.OmnibarActive
+  margin-top: 0
+
+@media(max-width: #{$break-2-max})
+  .isLoggedOut .View
+    padding-top: rem(50)
+
+@media(min-width: #{em(375)})
+  .UserDetail.View,
+  .Settings.View
+    margin-top: calc(56.25% + #{rem(20)})
+
+@media(min-width: #{$break-2})
+  .View
+    padding-top: rem(80)
+  .Authentication.View
+    padding-top: 0
+  .UserDetail.View,
+  .Settings.View
+    margin-top: 56.25%
+

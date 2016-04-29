@@ -32,7 +32,7 @@ class ProfileHeader extends Component {
   render() {
     const { dispatch, profile } = this.props
     return (
-      <section className="CoverPicker Panel">
+      <main className="CoverPicker View" role="main">
         <OnboardingHeader
           message="Choose a header image."
           nextPath="/onboarding/profile-avatar"
@@ -52,7 +52,7 @@ class ProfileHeader extends Component {
           isModifiable
           coverImage={ profile.coverImage }
         />
-      </section>
+      </main>
     )
   }
 }

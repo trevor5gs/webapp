@@ -21,7 +21,7 @@ import KeyboardContainer from '../containers/KeyboardContainer'
 import NavbarContainer from '../containers/NavbarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
 
-class App extends Component {
+class AppContainer extends Component {
 
   static propTypes = {
     authentication: PropTypes.object.isRequired,
@@ -159,7 +159,7 @@ class App extends Component {
     const { activeTools, coordinates, hideCompleter, hideTextTools } = this.state
     const { isLoggedIn } = authentication
     const appClasses = classNames(
-      'App',
+      'AppContainer',
       { isLoggedIn },
       { isLoggedOut: !isLoggedIn },
     )
@@ -168,9 +168,7 @@ class App extends Component {
         <AppHelmet pathname={ pathname } />
         <ViewportContainer />
         { isLoggedIn ? <Omnibar /> : null }
-        <main className="Main" data-pathname={ pathname } role="main">
-          { children }
-        </main>
+        { children }
         { !hideCompleter && completions ?
           <Completer
             completions={ completions }
@@ -199,7 +197,7 @@ class App extends Component {
   }
 }
 
-App.preRender = (store) => {
+AppContainer.preRender = (store) => {
   const state = store.getState()
   if (state.authentication && state.authentication.isLoggedIn) {
     store.dispatch(loadProfile())
@@ -216,5 +214,5 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(AppContainer)
 

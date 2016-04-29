@@ -150,7 +150,7 @@ class SignIn extends Component {
     } = this.state
     const isValid = isFormValid([emailState, passwordState])
     return (
-      <section className="Authentication Panel">
+      <main className="Authentication View" role="main">
         <div className="AuthenticationFormDialog">
           <h1>
             Welcome back.
@@ -188,7 +188,7 @@ class SignIn extends Component {
         <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
-      </section>
+      </main>
     )
   }
 }

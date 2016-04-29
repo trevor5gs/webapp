@@ -159,11 +159,11 @@ class UserDetail extends Component {
       case ACTION_TYPES.PROFILE.DETAIL_FAILURE:
         if (!user && stream.error) {
           return (
-            <section className="Panel" key={ `userDetail_${type}` }>
+            <main className="UserDetail View" key={ `userDetail_${type}` } role="main">
               <section className="StreamComponent hasErrored">
                 <ErrorState4xx />
               </section>
-            </section>
+            </main>
           )
         }
         break
@@ -242,9 +242,10 @@ class UserDetail extends Component {
     }
     const streamKey = `${params.username}${type === 'following' ? userFollowingTab : ''}`
     return (
-      <section
-        className={ classNames('UserDetail', 'Panel', omnibar.isActive ? 'OmnibarActive' : null) }
+      <main
+        className={ classNames('UserDetail', 'View', omnibar.isActive ? 'OmnibarActive' : null) }
         key={ `userDetail_${type}` }
+        role="main"
       >
         { user ? <UserDetailHelmet user={ user } /> : null }
         <div className="UserDetails">
@@ -264,7 +265,7 @@ class UserDetail extends Component {
               null
           }
         </div>
-      </section>
+      </main>
     )
   }
 }
