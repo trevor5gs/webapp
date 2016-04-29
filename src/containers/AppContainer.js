@@ -6,7 +6,7 @@ import { autoCompleteUsers, loadEmojis } from '../actions/posts'
 import { loadProfile } from '../actions/profile'
 import { setIsOffsetLayout } from '../actions/gui'
 import * as ACTION_TYPES from '../constants/action_types'
-import Analytics from '../components/analytics/Analytics'
+import AnalyticsContainer from '../containers/AnalyticsContainer'
 import DevTools from '../components/devtools/DevTools'
 import { AppHelmet } from '../components/helmets/AppHelmet'
 import Modal from '../components/modals/Modal'
@@ -191,7 +191,7 @@ class AppContainer extends Component {
         <Modal />
         <DevTools />
         <KeyboardContainer />
-        <Analytics isLoggedIn={ isLoggedIn } />
+        <AnalyticsContainer />
       </section>
     )
   }
