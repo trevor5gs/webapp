@@ -29,7 +29,6 @@ export const doesAllowTracking = () => {
 class AnalyticsContainer extends Component {
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     allowsAnalytics: PropTypes.bool,
     analyticsId: PropTypes.string,
     isLoggedIn: PropTypes.bool.isRequired,
@@ -72,13 +71,13 @@ class AnalyticsContainer extends Component {
   }
 }
 
-function mapStateToProps({ authentication, profile }) {
+const mapStateToProps = (state) => {
+  const { authentication, profile } = state
   return {
     allowsAnalytics: profile.allowsAnalytics,
     analyticsId: profile.analyticsId,
     createdAt: profile.createdAt,
     isLoggedIn: authentication.isLoggedIn,
-    profileType: profile.type,
   }
 }
 
