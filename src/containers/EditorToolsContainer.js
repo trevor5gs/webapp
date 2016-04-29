@@ -68,7 +68,7 @@ class EditorToolsContainer extends Component {
   onHideCompleter() {
     const { completions, dispatch, isCompleterActive } = this.props
     if (isCompleterActive) {
-      dispatch(setIsCompleterActive({ isCompleterActive: false }))
+      dispatch(setIsCompleterActive({ isActive: false }))
     }
     if (completions) {
       dispatch({ type: POST.AUTO_COMPLETE_CLEAR })
@@ -78,7 +78,7 @@ class EditorToolsContainer extends Component {
   onUserCompleter({ word }) {
     const { dispatch, isCompleterActive } = this.props
     if (!isCompleterActive) {
-      dispatch(setIsCompleterActive({ isCompleterActive: true }))
+      dispatch(setIsCompleterActive({ isActive: true }))
     }
     dispatch(autoCompleteUsers('user', word))
   }
@@ -86,7 +86,7 @@ class EditorToolsContainer extends Component {
   onEmojiCompleter({ word }) {
     const { dispatch, emojis, isCompleterActive } = this.props
     if (!isCompleterActive) {
-      dispatch(setIsCompleterActive({ isCompleterActive: true }))
+      dispatch(setIsCompleterActive({ isActive: true }))
     }
     if (emojis && emojis.length) {
       dispatch({
@@ -110,14 +110,14 @@ class EditorToolsContainer extends Component {
   onHideTextTools() {
     const { dispatch, isTextToolsActive } = this.props
     if (isTextToolsActive) {
-      dispatch(setIsTextToolsActive({ isTextToolsActive: false }))
+      dispatch(setIsTextToolsActive({ isActive: false }))
     }
   }
 
   onShowTextTools({ activeTools }) {
     const { dispatch, isTextToolsActive, textToolsStates } = this.props
     if (!isTextToolsActive && activeTools !== textToolsStates) {
-      dispatch(setIsTextToolsActive({ isTextToolsActive: true, textToolsStates: activeTools }))
+      dispatch(setIsTextToolsActive({ isActive: true, textToolsStates: activeTools }))
     }
   }
 

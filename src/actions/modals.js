@@ -48,11 +48,11 @@ export function closeAlert() {
   }
 }
 
-export function setIsCompleterActive({ isCompleterActive }) {
+export function setIsCompleterActive({ isActive }) {
   return {
     type: MODAL.SET_IS_COMPLETER_ACTIVE,
     payload: {
-      isCompleterActive,
+      isCompleterActive: isActive,
     },
   }
 }
@@ -66,11 +66,11 @@ export function setIsProfileMenuActive({ isActive }) {
   }
 }
 
-export function setIsTextToolsActive({ isTextToolsActive, textToolsStates = {} }) {
+export function setIsTextToolsActive({ isActive, textToolsStates = {} }) {
   return {
     type: MODAL.SET_IS_TEXT_TOOLS_ACTIVE,
     payload: {
-      isTextToolsActive,
+      isTextToolsActive: isActive,
       textToolsStates,
     },
   }
