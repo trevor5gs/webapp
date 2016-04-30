@@ -11,7 +11,7 @@ import Credits from '../../components/assets/Credits'
 import Emoji from '../../components/assets/Emoji'
 import EmailControl from '../../components/forms/EmailControl'
 import FormButton from '../../components/forms/FormButton'
-import { getEmailStateFromClient } from '../../components/forms/Validators'
+import { isFormValid, getEmailStateFromClient } from '../../components/forms/Validators'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
 let _isAndroid
@@ -89,6 +89,7 @@ class ForgotPassword extends Component {
 
   renderForm() {
     const { emailState } = this.state
+    const isValid = isFormValid([emailState])
     return (
       <form
         className="AuthenticationForm"
@@ -109,7 +110,7 @@ class ForgotPassword extends Component {
             <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
             <p className="HoppyStatusMessage"><span /></p>
         }
-        <FormButton tabIndex="2">Reset password</FormButton>
+        <FormButton disabled={ !isValid } tabIndex="2">Reset password</FormButton>
       </form>
     )
   }
