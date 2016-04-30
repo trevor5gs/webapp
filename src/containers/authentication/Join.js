@@ -16,6 +16,7 @@ import FormButton from '../../components/forms/FormButton'
 import PasswordControl from '../../components/forms/PasswordControl'
 import UsernameControl from '../../components/forms/UsernameControl'
 import {
+  isFormValid,
   getUsernameStateFromClient,
   getUsernameStateFromServer,
   getInvitationCodeStateFromClient,
@@ -247,6 +248,7 @@ class Join extends Component {
       passwordState, showUsernameError,
       featuredUser } = this.state
     const { email } = this.props
+    const isValid = isFormValid([emailState, usernameState, passwordState])
     const boxControlClassNames = 'asBoxControl'
     return (
       <section className="Authentication Panel">
@@ -302,7 +304,7 @@ class Join extends Component {
               renderStatus={ showPasswordError ? this.renderStatus(passwordState) : null }
               tabIndex="3"
             />
-            <FormButton tabIndex="4">Create Account</FormButton>
+            <FormButton tabIndex="4" disabled={ !isValid }>Create Account</FormButton>
           </form>
           <p className="AuthenticationTermsCopy">
             By clicking Create Account you are agreeing to our <a href={ `${ENV.AUTH_DOMAIN}/wtf/post/policies` }>Terms</a>.
