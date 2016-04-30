@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
@@ -53,6 +54,10 @@ class AppContainer extends Component {
         authentication.isLoggedIn) {
       dispatch(loadProfile())
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {
