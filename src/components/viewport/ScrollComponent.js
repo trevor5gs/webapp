@@ -62,7 +62,7 @@ function getScrollAction(scrollProperties) {
   const { scrollY, scrollBottom, scrollDirection } = scrollProperties
   if (scrollY === 0) {
     return 'onScrollTop'
-  } else if (Math.abs(scrollY - scrollBottom) < 5) {
+  } else if (Math.abs(scrollY - scrollBottom) < 11) {
     return 'onScrollBottom'
   } else if (scrollY < 0) {
     return 'onScrollPull'
