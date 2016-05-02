@@ -5,10 +5,9 @@ import * as ACTION_TYPES from '../constants/action_types'
 import { get } from 'lodash'
 import { refreshAuthenticationToken } from '../actions/authentication'
 
-const runningFetches = {}
-
 let requesterIsPaused = false
 let requestQueue = []
+let runningFetches = {}
 
 const defaultHeaders = {
   Accept: 'application/json',
@@ -39,7 +38,16 @@ function getHeadHeader(accessToken, lastCheck) {
   }
 }
 
+function updateRunningFetches(response) {
+  if (runningFetches[response.url]) {
+    delete runningFetches[response.url]
+  } else {
+    runningFetches = {}
+  }
+}
+
 function checkStatus(response) {
+  updateRunningFetches(response)
   if (response.ok) {
     return response
   }
@@ -227,7 +235,6 @@ export const requester = store => next => action => {
         return fetch(endpoint.path, options)
             .then(checkStatus)
             .then(response => {
-              delete runningFetches[response.url]
               payload.serverResponse = response
               if (response.status === 200 || response.status === 201) {
                 return response.json().then((json) => {
@@ -258,7 +265,6 @@ export const requester = store => next => action => {
             })
             .catch(error => {
               if (error.response) {
-                delete runningFetches[error.response.url]
                 if (error.response.status === 401) {
                   if (type !== ACTION_TYPES.AUTHENTICATION.LOGOUT &&
                       type !== ACTION_TYPES.AUTHENTICATION.REFRESH &&
