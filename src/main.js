@@ -13,6 +13,7 @@ import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_word
 import { persistStore, storages } from 'redux-persist'
 import store from './store'
 import routes from './routes'
+import session from './vendor/session'
 
 import MemoryStore from './vendor/memory_store'
 
@@ -54,6 +55,7 @@ const launchApplication = (storage) => {
     storage.setItem('APP_VERSION', APP_VERSION, () => {})
     if (result && result !== APP_VERSION) {
       persistor.purgeAll()
+      session.clear()
     }
   })
 }

@@ -13,6 +13,13 @@ if (typeof sessionStorage !== 'undefined') {
     removeItem(key) {
       delete storage[key]
     }
+    clear() {
+      for (const key in storage) {
+        if (storage.hasOwnProperty(key)) {
+          this.removeItem(key)
+        }
+      }
+    }
   }
   session = new Sessh()
 }
