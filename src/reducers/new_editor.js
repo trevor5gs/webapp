@@ -28,17 +28,13 @@ const initialEditorState = {
 }
 
 // TODO:
-// dragging
-// has content
-// image loaders
 // cancel
 // clear block x button
-// paste of images/text
+// paste of text
 // initializing block and repost content
 // persisting only the main editor
 // make sure embeds work
 // autocompleters
-//
 
 function editorObject(state = initialEditorState, action) {
   let newState = { ...state }
@@ -47,6 +43,8 @@ function editorObject(state = initialEditorState, action) {
   const lastTextBlock = collection[textBlocks[textBlocks.length - 1]]
 
   switch (action.type) {
+    case EDITOR.ADD_EMPTY_TEXT_BLOCK:
+      return editorMethods.addEmptyTextBlock(newState)
     case EDITOR.APPEND_TEXT:
       if (lastTextBlock) {
         lastTextBlock.data += action.payload.text
@@ -76,8 +74,8 @@ function editorObject(state = initialEditorState, action) {
       return newState
     case EDITOR.PERSIST:
       return { ...state, ...action.payload }
-    case EDITOR.UPDATE_DRAG_BLOCK:
-      return editorMethods.updateDragBlock(newState, action)
+    case EDITOR.UPDATE_BLOCK:
+      return editorMethods.updateBlock(newState, action)
     case POST.CREATE_SUCCESS:
       return {}
     // case REHYDRATE:
@@ -94,10 +92,11 @@ export function editor(state = initialState, action) {
   const editorId = get(action, 'payload.editorId')
   if (editorId) {
     newState[editorId] = editorObject(newState[editorId], action)
-    if (action.type === 'INIT_EDITOR_ID') {
+    if (action.type === EDITOR.INITIALIZE) {
       newState[editorId].shouldPersist = get(action, 'payload.shouldPersist', false)
     }
     newState[editorId] = editorMethods.addDataKey(newState[editorId])
+    newState[editorId] = editorMethods.addHasContent(newState[editorId])
     return newState
   } else if (action.type === AUTHENTICATION.LOGOUT ||
              action.type === PROFILE.DELETE_SUCCESS) {

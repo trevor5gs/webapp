@@ -16,6 +16,22 @@ function _addDataKey(state) {
 }
 methods.addDataKey = _addDataKey
 
+function _addHasContent(state) {
+  const newState = { ...state }
+  const { collection, order } = newState
+  const firstBlock = collection[order[0]]
+  if (!firstBlock) { return false }
+  const hasContent = Boolean(
+    order.length > 1 ||
+    firstBlock &&
+    firstBlock.data.length &&
+    firstBlock.data !== '<br>'
+  )
+  newState.hasContent = hasContent
+  return newState
+}
+methods.addHasContent = _addHasContent
+
 function _add({ block, shouldCheckForEmpty = true, state }) {
   const newState = { ...state }
   const { collection, order } = newState
@@ -30,15 +46,14 @@ methods.add = _add
 function _addEmptyTextBlock(state, shouldCheckForEmpty = false) {
   let newState = { ...state }
   const { collection, order } = newState
-  if (order && order.length > 1) {
+  if (order.length > 1) {
     const last = collection[order[order.length - 1]]
     const secondToLast = collection[order[order.length - 2]]
-    // debugger
-    if (secondToLast.kind === 'text' && last.kind === 'text' && last.data && !last.data.length) {
+    if (secondToLast.kind === 'text' && last.kind === 'text' && !last.data.length) {
       return methods.remove({ shouldCheckForEmpty, state: newState, uid: last.uid })
     }
   }
-  if (order && !order.length || collection[order[order.length - 1]].kind !== 'text') {
+  if (!order.length || collection[order[order.length - 1]].kind !== 'text') {
     newState = methods.add({ block: { data: '', kind: 'text' }, state: newState })
   }
   return newState
@@ -69,12 +84,12 @@ function _removeEmptyTextBlock(state) {
 }
 methods.removeEmptyTextBlock = _removeEmptyTextBlock
 
-function _updateDragBlock(newState, action) {
+function _updateBlock(newState, action) {
   const { block, uid } = action.payload
   newState.collection[uid] = block
   return newState
 }
-methods.updateDragBlock = _updateDragBlock
+methods.updateBlock = _updateBlock
 
 function _reorderBlocks(newState, action) {
   const { order } = newState

@@ -1,12 +1,31 @@
 import * as ACTION_TYPES from '../constants/action_types'
 import * as api from '../networking/api'
 
+export function addEmptyTextBlock(editorId) {
+  return {
+    type: ACTION_TYPES.EDITOR.ADD_EMPTY_TEXT_BLOCK,
+    payload: {
+      editorId,
+    },
+  }
+}
+
 export function autoCompleteUsers(type, word) {
   return {
     type: ACTION_TYPES.EDITOR.USER_COMPLETER,
     payload: {
       endpoint: api.userAutocompleter(word),
       type,
+    },
+  }
+}
+
+export function initializeEditor(editorId, shouldPersist) {
+  return {
+    type: ACTION_TYPES.EDITOR.INITIALIZE,
+    payload: {
+      editorId,
+      shouldPersist,
     },
   }
 }
@@ -56,9 +75,9 @@ export function saveAsset(file, editorId) {
   }
 }
 
-export function updateDragBlock(block, uid, editorId) {
+export function updateBlock(block, uid, editorId) {
   return {
-    type: ACTION_TYPES.EDITOR.UPDATE_DRAG_BLOCK,
+    type: ACTION_TYPES.EDITOR.UPDATE_BLOCK,
     payload: {
       block,
       editorId,

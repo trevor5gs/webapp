@@ -11,6 +11,7 @@ import {
   toggleReposting,
   updatePost,
 } from '../../actions/posts'
+import { initializeEditor } from '../../actions/editor'
 import { closeOmnibar } from '../../actions/omnibar'
 import BlockCollection from './BlockCollection'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
@@ -59,16 +60,7 @@ class Editor extends Component {
 
   componentWillMount() {
     const { dispatch, shouldPersist } = this.props
-    // TODO: Maybe move this into the action_types constants
-    // this will cause an editor object to have an initial state
-    // or get populated with it's previous state
-    dispatch({
-      type: 'INIT_EDITOR_ID',
-      payload: {
-        editorId: this.getEditorIdentifier(),
-        shouldPersist,
-      },
-    })
+    dispatch(initializeEditor(this.getEditorIdentifier(), shouldPersist))
   }
 
   getEditorIdentifier() {
