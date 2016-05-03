@@ -106,6 +106,10 @@ export const EDITOR = {
 
   REORDER_BLOCKS: 'EDITOR.REORDER_BLOCKS',
 
+  REMOVE_BLOCK: 'EDITOR.REMOVE_BLOCK',
+
+  RESET: 'EDITOR.RESET',
+
   // kicks off a post image upload
   SAVE_ASSET: 'EDITOR.SAVE_ASSET',
 

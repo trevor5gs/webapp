@@ -54,6 +54,16 @@ export function postPreviews(embedUrl, editorId, uid) {
   }
 }
 
+export function removeBlock(uid, editorId) {
+  return {
+    type: ACTION_TYPES.EDITOR.REMOVE_BLOCK,
+    payload: {
+      editorId,
+      uid,
+    },
+  }
+}
+
 export function reorderBlocks(uid, delta, editorId) {
   return {
     type: ACTION_TYPES.EDITOR.REORDER_BLOCKS,
@@ -61,6 +71,15 @@ export function reorderBlocks(uid, delta, editorId) {
       delta,
       editorId,
       uid,
+    },
+  }
+}
+
+export function resetEditor(editorId) {
+  return {
+    type: ACTION_TYPES.EDITOR.RESET,
+    payload: {
+      editorId,
     },
   }
 }

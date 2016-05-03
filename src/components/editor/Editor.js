@@ -11,7 +11,7 @@ import {
   toggleReposting,
   updatePost,
 } from '../../actions/posts'
-import { initializeEditor } from '../../actions/editor'
+import { resetEditor, initializeEditor } from '../../actions/editor'
 import { closeOmnibar } from '../../actions/omnibar'
 import BlockCollection from './BlockCollection'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
@@ -142,11 +142,7 @@ class Editor extends Component {
   cancelConfirmed = () => {
     const { comment, dispatch, post, shouldPersist } = this.props
     this.closeModal()
-    requestAnimationFrame(() => {
-      if (this.refs.blockCollection) {
-        this.refs.blockCollection.refs.wrappedInstance.clearBlocks()
-      }
-    })
+    dispatch(resetEditor(this.getEditorIdentifier()))
     dispatch(closeOmnibar())
     if (post) {
       dispatch(toggleEditing(post, false))

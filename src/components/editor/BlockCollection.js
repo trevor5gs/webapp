@@ -13,6 +13,7 @@ import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
 import {
   addEmptyTextBlock,
+  removeBlock,
   reorderBlocks,
   saveAsset,
   updateBlock,
@@ -351,64 +352,16 @@ class BlockCollection extends Component {
         }
       }
     }
-    // this.setState({ collection })
   }
-
-  add(block, shouldCheckForEmpty = true) {
-    const newBlock = { ...block, uid: this.uid }
-    const { collection, order } = this.props
-    collection[this.uid] = newBlock
-    order.push(this.uid)
-    this.uid++
-    // order matters here
-    // this.setState({ collection, order })
-    if (shouldCheckForEmpty) {
-      // this.addEmptyTextBlock()
-    }
-    return newBlock
-  }
-
-  // addEmptyTextBlock(shouldCheckForEmpty = false) {
-  //   const { collection, order } = this.state
-  //   if (order.length > 1) {
-  //     const last = collection[order[order.length - 1]]
-  //     const secondToLast = collection[order[order.length - 2]]
-  //     if (secondToLast.kind === 'text' &&
-  //         last.kind === 'text' && !last.data.length) {
-  //       this.remove(last.uid, shouldCheckForEmpty)
-  //       return
-  //     }
-  //   }
-  //   if (!order.length ||
-  //       this.getBlockFromUid(order[order.length - 1]).kind !== 'text') {
-  //     this.add({ kind: 'text', data: '' }, false)
-  //   }
-  // }
 
   appendText = (content) => {
     const { dispatch, editorId } = this.props
     dispatch({ type: ACTION_TYPES.EDITOR.APPEND_TEXT, payload: { editorId, text: content } })
   }
 
-  remove = (uid, shouldCheckForEmpty = true) => {
-    const { collection, order } = this.props
-    delete collection[uid]
-    order.splice(order.indexOf(uid), 1)
-    // order matters here
-    // this.setState({ collection, order })
-    if (shouldCheckForEmpty) {
-      // this.addEmptyTextBlock()
-    }
-  }
-
-  removeEmptyTextBlock() {
-    const { order } = this.props
-    if (order.length > 0) {
-      const last = this.getBlockFromUid(order[order.length - 1])
-      if (last && last.kind === 'text' && !last.data.length) {
-        this.remove(last.uid, false)
-      }
-    }
+  remove = (uid) => {
+    const { dispatch, editorId } = this.props
+    dispatch(removeBlock(uid, editorId))
   }
 
   handleTextBlockInput = (vo) => {
@@ -432,25 +385,9 @@ class BlockCollection extends Component {
   }
 
   submit = () => {
-    const { isComment, submitAction } = this.props
+    const { submitAction } = this.props
     const data = this.serialize()
-    // For whatever reason this needs to happen in a rAF otherwise we end up
-    // with an editor with a collection of 1 but no editor blocks in the DOM?
-    // This also seems to scoot around the `setState` error.
-    if (isComment) {
-      requestAnimationFrame(() => {
-        this.clearBlocks()
-        submitAction(data)
-      })
-    } else {
-      submitAction(data)
-    }
-  }
-
-  clearBlocks = () => {
-    // this.setState({ collection: {}, order: [] })
-    this.uid = 0
-    // this.addEmptyTextBlock()
+    submitAction(data)
   }
 
   serialize() {

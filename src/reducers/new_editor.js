@@ -28,8 +28,6 @@ const initialEditorState = {
 }
 
 // TODO:
-// cancel
-// clear block x button
 // paste of text
 // initializing block and repost content
 // persisting only the main editor
@@ -51,8 +49,12 @@ function editorObject(state = initialEditorState, action) {
         collection[lastTextBlock.uid] = lastTextBlock
       }
       return newState
+    case EDITOR.REMOVE_BLOCK:
+      return editorMethods.remove({ state: newState, uid: action.payload.uid })
     case EDITOR.REORDER_BLOCKS:
       return editorMethods.reorderBlocks(newState, action)
+    case EDITOR.RESET:
+      return initialEditorState
     case EDITOR.TMP_IMAGE_CREATED:
       newState = editorMethods.removeEmptyTextBlock(newState)
       newState = editorMethods.add({
