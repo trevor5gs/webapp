@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 
 import { get } from 'lodash'
 import {
@@ -6,9 +7,8 @@ import {
   POST,
   PROFILE,
 } from '../constants/action_types'
-import EditorHelper from '../helpers/editor_helper'
+import editorMethods from '../helpers/editor_helper'
 
-const editorHelper = new EditorHelper()
 const initialState = {}
 
 const initialEditorState = {
@@ -20,8 +20,9 @@ const initialEditorState = {
     },
   },
   completions: {},
+  dataKey: '',
   hasContent: false,
-  loadedContent: {},
+  isSubmitDisabled: false,
   order: [0],
   uid: 0,
 }
@@ -37,6 +38,7 @@ const initialEditorState = {
 // persisting only the main editor
 // make sure embeds work
 // autocompleters
+//
 
 function editorObject(state = initialEditorState, action) {
   let newState = { ...state }
@@ -52,9 +54,10 @@ function editorObject(state = initialEditorState, action) {
       }
       return newState
     case EDITOR.REORDER_BLOCKS:
+      return editorMethods.reorderBlocks(newState, action)
     case EDITOR.TMP_IMAGE_CREATED:
-      newState = editorHelper.removeEmptyTextBlock(newState)
-      newState = editorHelper.add({
+      newState = editorMethods.removeEmptyTextBlock(newState)
+      newState = editorMethods.add({
         block: {
           kind: 'image',
           data: { url: action.payload.url },
@@ -73,6 +76,8 @@ function editorObject(state = initialEditorState, action) {
       return newState
     case EDITOR.PERSIST:
       return { ...state, ...action.payload }
+    case EDITOR.UPDATE_DRAG_BLOCK:
+      return editorMethods.updateDragBlock(newState, action)
     case POST.CREATE_SUCCESS:
       return {}
     // case REHYDRATE:
@@ -92,6 +97,7 @@ export function editor(state = initialState, action) {
     if (action.type === 'INIT_EDITOR_ID') {
       newState[editorId].shouldPersist = get(action, 'payload.shouldPersist', false)
     }
+    newState[editorId] = editorMethods.addDataKey(newState[editorId])
     return newState
   } else if (action.type === AUTHENTICATION.LOGOUT ||
              action.type === PROFILE.DELETE_SUCCESS) {

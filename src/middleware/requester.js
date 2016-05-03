@@ -121,11 +121,12 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.COMMENT.EDITABLE &&
         type !== ACTION_TYPES.COMMENT.UPDATE &&
         type !== ACTION_TYPES.COMMENT.FLAG &&
-        type !== ACTION_TYPES.EMOJI.LOAD &&
+        type !== ACTION_TYPES.EDITOR.EMOJI_COMPLETER &&
+        type !== ACTION_TYPES.EDITOR.POST_PREVIEW &&
+        type !== ACTION_TYPES.EDITOR.USER_COMPLETER &&
         type !== ACTION_TYPES.HEAD &&
         type !== ACTION_TYPES.INVITATIONS.GET_EMAIL &&
         type !== ACTION_TYPES.INVITATIONS.INVITE &&
-        type !== ACTION_TYPES.POST.AUTO_COMPLETE &&
         type !== ACTION_TYPES.POST.COMMENT &&
         type !== ACTION_TYPES.POST.CREATE &&
         type !== ACTION_TYPES.POST.DELETE &&
@@ -133,7 +134,6 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.POST.EDITABLE &&
         type !== ACTION_TYPES.POST.FLAG &&
         type !== ACTION_TYPES.POST.LOVE &&
-        type !== ACTION_TYPES.POST.POST_PREVIEW &&
         type !== ACTION_TYPES.POST.UPDATE &&
         type !== ACTION_TYPES.POST_FORM &&
         type !== ACTION_TYPES.POST_JSON &&

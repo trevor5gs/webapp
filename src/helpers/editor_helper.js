@@ -1,55 +1,92 @@
 /* eslint-disable no-param-reassign */
 
-export default class EditorHelper {
+const methods = {}
 
-  add({ block, shouldCheckForEmpty = true, state }) {
-    const newState = { ...state }
-    const { collection, order } = newState
-    newState.uid++
-    collection[newState.uid] = { ...block, uid: newState.uid }
-    order.push(newState.uid)
-    if (shouldCheckForEmpty) { return this.addEmptyTextBlock(newState) }
-    return newState
-  }
-
-  addEmptyTextBlock(state, shouldCheckForEmpty = false) {
-    let newState = { ...state }
-    const { collection, order } = newState
-    if (order && order.length > 1) {
-      const last = collection[order[order.length - 1]]
-      const secondToLast = collection[order[order.length - 2]]
-      // debugger
-      if (secondToLast.kind === 'text' && last.kind === 'text' && last.data && !last.data.length) {
-        return this.remove({ shouldCheckForEmpty, state: newState, uid: last.uid })
-      }
+function _addDataKey(state) {
+  const newState = { ...state }
+  const { collection, order } = newState
+  let dataKey = ''
+  for (const key in collection) {
+    if (collection.hasOwnProperty(key)) {
+      dataKey += JSON.stringify(collection[key].data)
     }
-    if (order && !order.length || collection[order[order.length - 1]].kind !== 'text') {
-      newState = this.add({ block: { data: '', kind: 'text' }, state: newState })
-    }
-    return newState
   }
-
-  remove({ shouldCheckForEmpty = true, state, uid }) {
-    const newState = { ...state }
-    const { collection, order } = newState
-    delete collection[uid]
-    order.splice(order.indexOf(uid), 1)
-    if (shouldCheckForEmpty) { return this.addEmptyTextBlock(newState) }
-    return newState
-  }
-
-  removeEmptyTextBlock(state) {
-    const newState = { ...state }
-    const { collection, order } = newState
-    if (order.length > 0) {
-      const last = collection[order[order.length - 1]]
-      if (last && last.kind === 'text' && !last.data.length) {
-        delete collection[last.uid]
-        order.splice(order.indexOf(last.uid), 1)
-      }
-    }
-    return newState
-  }
-
+  newState.dataKey = dataKey + order.join('')
+  return newState
 }
+methods.addDataKey = _addDataKey
+
+function _add({ block, shouldCheckForEmpty = true, state }) {
+  const newState = { ...state }
+  const { collection, order } = newState
+  newState.uid++
+  collection[newState.uid] = { ...block, uid: newState.uid }
+  order.push(newState.uid)
+  if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(newState) }
+  return newState
+}
+methods.add = _add
+
+function _addEmptyTextBlock(state, shouldCheckForEmpty = false) {
+  let newState = { ...state }
+  const { collection, order } = newState
+  if (order && order.length > 1) {
+    const last = collection[order[order.length - 1]]
+    const secondToLast = collection[order[order.length - 2]]
+    // debugger
+    if (secondToLast.kind === 'text' && last.kind === 'text' && last.data && !last.data.length) {
+      return methods.remove({ shouldCheckForEmpty, state: newState, uid: last.uid })
+    }
+  }
+  if (order && !order.length || collection[order[order.length - 1]].kind !== 'text') {
+    newState = methods.add({ block: { data: '', kind: 'text' }, state: newState })
+  }
+  return newState
+}
+methods.addEmptyTextBlock = _addEmptyTextBlock
+
+function _remove({ shouldCheckForEmpty = true, state, uid }) {
+  const newState = { ...state }
+  const { collection, order } = newState
+  delete collection[uid]
+  order.splice(order.indexOf(uid), 1)
+  if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(newState) }
+  return newState
+}
+methods.remove = _remove
+
+function _removeEmptyTextBlock(state) {
+  const newState = { ...state }
+  const { collection, order } = newState
+  if (order.length > 0) {
+    const last = collection[order[order.length - 1]]
+    if (last && last.kind === 'text' && !last.data.length) {
+      delete collection[last.uid]
+      order.splice(order.indexOf(last.uid), 1)
+    }
+  }
+  return newState
+}
+methods.removeEmptyTextBlock = _removeEmptyTextBlock
+
+function _updateDragBlock(newState, action) {
+  const { block, uid } = action.payload
+  newState.collection[uid] = block
+  return newState
+}
+methods.updateDragBlock = _updateDragBlock
+
+function _reorderBlocks(newState, action) {
+  const { order } = newState
+  const { delta, uid } = action.payload
+  const index = order.indexOf(uid)
+  // remove from old spot
+  order.splice(index, 1)
+  // add to new spot
+  order.splice(index + delta, 0, uid)
+  return newState
+}
+methods.reorderBlocks = _reorderBlocks
+
+export default methods
 

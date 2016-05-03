@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import { debounce, delay, isEqual } from 'lodash'
+import { delay, isEqual } from 'lodash'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
@@ -11,7 +11,7 @@ import QuickEmoji from './QuickEmoji'
 import RepostBlock from './RepostBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
-import { saveAsset } from '../../actions/editor'
+import { reorderBlocks, saveAsset, updateDragBlock } from '../../actions/editor'
 import { closeOmnibar } from '../../actions/omnibar'
 import { scrollToTop } from '../../vendor/scrollTop'
 import * as ACTION_TYPES from '../../constants/action_types'
@@ -62,7 +62,6 @@ class BlockCollection extends Component {
     this.state = {
       hideTextTools: true,
       hasDragOver: false,
-      loadingImageBlocks: [],
     }
     this.uid = 0
 
@@ -74,10 +73,9 @@ class BlockCollection extends Component {
         this.add(block, false)
       }
     } else if (shouldLoadFromState) {
-      this.state = { hideTextTools: true, loadingImageBlocks: [] }
+      this.state = { hideTextTools: true }
       // was setting the collection/order previously
     }
-    this.persistBlocks = debounce(this.persistBlocks, 300)
   }
 
   componentDidMount() {
@@ -186,7 +184,7 @@ class BlockCollection extends Component {
   }
 
   onDragStart(props) {
-    const { collection } = this.props
+    const { collection, dispatch, editorId } = this.props
     this.blockNode = props.target.parentNode.parentNode
     this.startOffset = this.blockNode.offsetTop
     this.startHeight = this.blockNode.offsetHeight
@@ -196,7 +194,7 @@ class BlockCollection extends Component {
     this.dragBlock = collection[dragUid]
     // swap the dragging block for a
     // normal block and set the height/width
-    collection[dragUid] = {
+    const block = {
       data: {
         width: this.blockNode.offsetWidth,
         height: this.blockNode.offsetHeight,
@@ -204,8 +202,8 @@ class BlockCollection extends Component {
       kind: 'block',
       uid: this.dragBlock.uid,
     }
+    dispatch(updateDragBlock(block, dragUid, editorId))
     this.onDragMove(props)
-    // this.setState({ collection })
     ReactDOM.findDOMNode(document.body).classList.add('isDragging')
   }
 
@@ -239,14 +237,8 @@ class BlockCollection extends Component {
 
   onMoveBlock(delta) {
     if (!this.refs.blockPlaceholder) return
-    const { order } = this.props
-    const dragUid = this.dragBlock.uid
-    const index = order.indexOf(dragUid)
-    // remove from old spot
-    order.splice(index, 1)
-    // add to new spot
-    order.splice(index + delta, 0, dragUid)
-    // this.setState({ order })
+    const { dispatch, editorId } = this.props
+    dispatch(reorderBlocks(this.dragBlock.uid, delta, editorId))
     const placeholder = this.refs.blockPlaceholder.refs.editorBlock
     // update prev/next blocks
     this.prevBlock = placeholder.previousSibling
@@ -254,18 +246,16 @@ class BlockCollection extends Component {
   }
 
   onDragEnd() {
-    const { collection } = this.props
+    const { dispatch, editorId } = this.props
     // swap the normal block out for
     // the one that was removed initially
     const dragUid = this.dragBlock.uid
-    collection[dragUid] = this.dragBlock
+    dispatch(updateDragBlock(this.dragBlock, dragUid, editorId))
     // order matters here so the dragBlock gets removed
     ReactDOM.findDOMNode(document.body).classList.remove('isDragging')
     this.dragBlock = null
     this.setState({ dragBlockTop: null })
-    // this.setState({ collection, dragBlockTop: null })
     // this.addEmptyTextBlock(true)
-    this.removeUploadIndicator(dragUid)
   }
 
   onDragOver = (e) => {
@@ -328,8 +318,7 @@ class BlockCollection extends Component {
 
   getBlockElement(block) {
     const { editorId } = this.props
-    const { loadingImageBlocks } = this.state
-    const isUploading = loadingImageBlocks.indexOf(block.uid) !== -1
+    const isUploading = block.isLoading
     const blockProps = {
       data: block.data,
       editorId,
@@ -429,7 +418,7 @@ class BlockCollection extends Component {
     if (shouldCheckForEmpty) {
       // this.addEmptyTextBlock()
     }
-    this.persistBlocks()
+    // this.persistBlocks()
     return newBlock
   }
 
@@ -464,28 +453,21 @@ class BlockCollection extends Component {
     if (shouldCheckForEmpty) {
       // this.addEmptyTextBlock()
     }
-    this.persistBlocks()
+    // this.persistBlocks()
   }
 
-  removeUploadIndicator(uid) {
-    const { loadingImageBlocks } = this.state
-    const index = loadingImageBlocks.indexOf(uid)
-    loadingImageBlocks.splice(index, 1)
-    // this.setState({ loadingImageBlocks })
-  }
-
-  persistBlocks() {
-    const { dispatch, collection, order, editorId, shouldPersist } = this.props
-    if (!shouldPersist) { return }
-    dispatch({
-      type: ACTION_TYPES.POST.PERSIST,
-      payload: {
-        collection,
-        editorId,
-        order,
-      },
-    })
-  }
+  // persistBlocks() {
+  //   const { dispatch, collection, order, editorId, shouldPersist } = this.props
+  //   if (!shouldPersist) { return }
+  //   dispatch({
+  //     type: ACTION_TYPES.POST.PERSIST,
+  //     payload: {
+  //       collection,
+  //       editorId,
+  //       order,
+  //     },
+  //   })
+  // }
 
   removeEmptyTextBlock() {
     const { order } = this.props
@@ -501,7 +483,7 @@ class BlockCollection extends Component {
     const { collection } = this.props
     collection[vo.uid] = vo
     // this.setState({ collection })
-    this.persistBlocks()
+    // this.persistBlocks()
   }
 
   replyAll = () => {
@@ -603,8 +585,7 @@ class BlockCollection extends Component {
   render() {
     const { avatar, cancelAction, collection, editorId,
       isComment, isOwnPost, order, submitText } = this.props
-    console.log('!~~~~~~~~~~~~~~~~~~~~~~~~~~~RENDER~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-    const { dragBlockTop, loadingImageBlocks, hasDragOver } = this.state
+    const { dragBlockTop, hasDragOver } = this.state
     const hasMention = this.hasMention()
     const hasContent = this.hasContent()
     const firstBlockIsText = this.getBlockFromUid(order[0]) ?
@@ -617,6 +598,8 @@ class BlockCollection extends Component {
       hasContent,
       isComment,
     })
+    // TODO: hook up isSubmitDisabled for disable action
+    // loadingImageBlocks.length > 0 ||
     return (
       <div
         className={ editorClassNames }
@@ -641,7 +624,7 @@ class BlockCollection extends Component {
         { showQuickEmoji ? <QuickEmoji onAddEmoji={ this.onInsertEmoji } /> : null }
         <PostActionBar
           cancelAction={ cancelAction }
-          disableSubmitAction={ loadingImageBlocks.length > 0 || !hasContent }
+          disableSubmitAction={ !hasContent }
           editorId={ editorId }
           handleFileAction={ this.handleFiles }
           ref="postActionBar"
@@ -656,11 +639,11 @@ class BlockCollection extends Component {
 
 function mapStateToProps(state, ownProps) {
   const editor = state.editor[ownProps.editorId]
-  console.log('editor', editor)
   return {
     avatar: state.profile.avatar,
     completions: state.editor.completions,
     collection: editor.collection,
+    dataKey: editor.dataKey,
     order: editor.order,
     hasContent: editor.hasContent,
     orderLength: editor.order.length,
