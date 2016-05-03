@@ -27,12 +27,16 @@ const initialEditorState = {
 }
 
 // TODO:
-// hook up dragging
-// hook up has content
-// hook up image loaders
-// hook up cancel
-// hook up clear block x button
-// hook up paste of images/text
+// dragging
+// has content
+// image loaders
+// cancel
+// clear block x button
+// paste of images/text
+// initializing block and repost content
+// persisting only the main editor
+// make sure embeds work
+// autocompleters
 
 function editorObject(state = initialEditorState, action) {
   let newState = { ...state }
@@ -42,15 +46,13 @@ function editorObject(state = initialEditorState, action) {
 
   switch (action.type) {
     case EDITOR.APPEND_TEXT:
-      // find last text block
-      // += the text returned on the data
       if (lastTextBlock) {
         lastTextBlock.data += action.payload.text
         collection[lastTextBlock.uid] = lastTextBlock
       }
       return newState
-    case POST.TMP_IMAGE_CREATED:
-      // remove text block
+    case EDITOR.REORDER_BLOCKS:
+    case EDITOR.TMP_IMAGE_CREATED:
       newState = editorHelper.removeEmptyTextBlock(newState)
       newState = editorHelper.add({
         block: {
@@ -61,15 +63,15 @@ function editorObject(state = initialEditorState, action) {
         state: newState,
       })
       return newState
-    case POST.POST_PREVIEW_SUCCESS:
-    case POST.SAVE_IMAGE_SUCCESS:
+    case EDITOR.POST_PREVIEW_SUCCESS:
+    case EDITOR.SAVE_IMAGE_SUCCESS:
       newState.collection[action.payload.uid] = {
         ...newState.collection[action.payload.uid],
         data: { url: action.payload.response.url },
         isLoading: false,
       }
       return newState
-    case POST.PERSIST:
+    case EDITOR.PERSIST:
       return { ...state, ...action.payload }
     case POST.CREATE_SUCCESS:
       return {}

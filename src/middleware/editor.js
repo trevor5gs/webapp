@@ -15,7 +15,7 @@ function uploadAsset(type, file, editorId, uid) {
 
 function temporaryPostImageCreated(objectURL, editorId) {
   return {
-    type: ACTION_TYPES.POST.TMP_IMAGE_CREATED,
+    type: ACTION_TYPES.EDITOR.TMP_IMAGE_CREATED,
     meta: {},
     payload: {
       url: objectURL,
@@ -26,14 +26,14 @@ function temporaryPostImageCreated(objectURL, editorId) {
 
 export const editor = store => next => action => {
   const { payload, type } = action
-  if (type === ACTION_TYPES.POST.SAVE_ASSET) {
+  if (type === ACTION_TYPES.EDITOR.SAVE_ASSET) {
     const editorId = get(payload, 'editorId')
     const file = get(payload, 'file')
 
     if (editorId && file) {
       store.dispatch(temporaryPostImageCreated(URL.createObjectURL(file), editorId))
       const uid = store.getState().editor[editorId].uid - 1
-      store.dispatch(uploadAsset(ACTION_TYPES.POST.SAVE_IMAGE, file, editorId, uid))
+      store.dispatch(uploadAsset(ACTION_TYPES.EDITOR.SAVE_IMAGE, file, editorId, uid))
     }
   }
   return next(action)

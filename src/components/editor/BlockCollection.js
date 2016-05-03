@@ -11,8 +11,8 @@ import QuickEmoji from './QuickEmoji'
 import RepostBlock from './RepostBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
+import { saveAsset } from '../../actions/editor'
 import { closeOmnibar } from '../../actions/omnibar'
-import { saveAsset } from '../../actions/posts'
 import { scrollToTop } from '../../vendor/scrollTop'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
@@ -559,7 +559,6 @@ class BlockCollection extends Component {
           break
       }
     }
-    console.log('results', results)
     return results
   }
 
@@ -663,6 +662,7 @@ function mapStateToProps(state, ownProps) {
     completions: state.editor.completions,
     collection: editor.collection,
     order: editor.order,
+    hasContent: editor.hasContent,
     orderLength: editor.order.length,
     emoji: state.emoji,
     isNavbarHidden: state.gui.isNavbarHidden,
