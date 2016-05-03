@@ -17,8 +17,16 @@ class EmbedBlock extends Component {
     data: {},
   }
 
+  componentDidMount() {
+    this.reloadPlayers()
+  }
+
   componentDidUpdate() {
-    if (window.embetter) {
+    this.reloadPlayers()
+  }
+
+  reloadPlayers() {
+    if (typeof window !== 'undefined' && window.embetter) {
       window.embetter.reloadPlayers()
     }
   }

@@ -28,10 +28,8 @@ const initialEditorState = {
 }
 
 // TODO:
-// paste of text
 // initializing block and repost content
 // persisting only the main editor
-// make sure embeds work
 // autocompleters
 
 function editorObject(state = initialEditorState, action) {
@@ -67,6 +65,12 @@ function editorObject(state = initialEditorState, action) {
       })
       return newState
     case EDITOR.POST_PREVIEW_SUCCESS:
+      newState = editorMethods.removeEmptyTextBlock(newState)
+      newState = editorMethods.add({
+        block: { ...action.payload.response.postPreviews.body[0] },
+        state: newState,
+      })
+      return newState
     case EDITOR.SAVE_IMAGE_SUCCESS:
       newState.collection[action.payload.uid] = {
         ...newState.collection[action.payload.uid],
@@ -99,6 +103,7 @@ export function editor(state = initialState, action) {
     }
     newState[editorId] = editorMethods.addDataKey(newState[editorId])
     newState[editorId] = editorMethods.addHasContent(newState[editorId])
+    newState[editorId] = editorMethods.addHasMention(newState[editorId])
     return newState
   } else if (action.type === AUTHENTICATION.LOGOUT ||
              action.type === PROFILE.DELETE_SUCCESS) {

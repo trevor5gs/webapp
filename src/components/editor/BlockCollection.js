@@ -23,7 +23,6 @@ import { scrollToTop } from '../../vendor/scrollTop'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addInputObject, removeInputObject } from './InputComponent'
-import { userRegex } from '../completers/Completer'
 
 class BlockCollection extends Component {
 
@@ -41,6 +40,7 @@ class BlockCollection extends Component {
     editorStore: PropTypes.object,
     emoji: PropTypes.object.isRequired,
     hasContent: PropTypes.bool,
+    hasMention: PropTypes.bool,
     isComment: PropTypes.bool,
     isOwnPost: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
@@ -96,21 +96,6 @@ class BlockCollection extends Component {
     return !isEqual(nextProps, this.props) || !isEqual(nextState, this.state)
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   const { dispatch, editorId, editorStore } = nextProps
-  //   const { collection, loadingImageBlocks } = this.state
-  //   let newBlock = null
-  //   let loadedContentData = null
-  //   switch (editorStore.type) {
-  //     case ACTION_TYPES.POST.POST_PREVIEW_SUCCESS:
-  //       this.removeEmptyTextBlock()
-  //       this.add({ ...editorStore.loadedContent[editorStore.index].postPreviews.body[0] })
-  //       break
-  //     default:
-  //       break
-  //   }
-  // }
-
   componentDidUpdate(prevProps) {
     const { completions } = this.props
     const prevCompletions = prevProps.completions
@@ -122,7 +107,6 @@ class BlockCollection extends Component {
   }
 
   componentWillUnmount() {
-    // this.onHideCompleter()
     if (this.dragObject) {
       removeDragObject(this.dragObject)
     }
@@ -270,7 +254,7 @@ class BlockCollection extends Component {
     const blockProps = {
       data: block.data,
       editorId,
-      key: block.uid,
+      key: `${JSON.stringify(block.data)}_${block.uid}`,
       kind: block.kind,
       onRemoveBlock: this.remove,
       ref: `block${block.uid}`,
@@ -411,17 +395,6 @@ class BlockCollection extends Component {
     return results
   }
 
-  hasMention() {
-    const { order } = this.props
-    for (const uid of order) {
-      const block = this.getBlockFromUid(uid)
-      if (block && block.kind === 'text' && block.data.match(userRegex)) {
-        return true
-      }
-    }
-    return false
-  }
-
   handleFiles = (e) => {
     if (e.target.files.length) { this.acceptFiles(e.target.files) }
   }
@@ -438,10 +411,10 @@ class BlockCollection extends Component {
   }
 
   render() {
+    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~RENDER~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     const { avatar, cancelAction, collection, editorId, hasContent,
-      isComment, isOwnPost, order, submitText } = this.props
+      hasMention, isComment, isOwnPost, order, submitText } = this.props
     const { dragBlockTop, hasDragOver } = this.state
-    const hasMention = this.hasMention()
     const firstBlockIsText = this.getBlockFromUid(order[0]) ?
       this.getBlockFromUid(order[0]).kind === 'text' : true
     const showQuickEmoji = isComment && firstBlockIsText
@@ -500,6 +473,7 @@ function mapStateToProps(state, ownProps) {
     dataKey: editor.dataKey,
     order: editor.order,
     hasContent: editor.hasContent,
+    hasMention: editor.hasMention,
     orderLength: editor.order.length,
     emoji: state.emoji,
     isNavbarHidden: state.gui.isNavbarHidden,

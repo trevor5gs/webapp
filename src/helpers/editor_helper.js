@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import { userRegex } from '../components/completers/Completer'
 
 const methods = {}
 
@@ -31,6 +32,22 @@ function _addHasContent(state) {
   return newState
 }
 methods.addHasContent = _addHasContent
+
+function _addHasMention(state) {
+  const newState = { ...state }
+  const { collection, order } = newState
+  let hasMention = false
+  for (const uid of order) {
+    const block = collection[uid]
+    if (block && block.kind === 'text' && userRegex.test(block.data)) {
+      hasMention = true
+      break
+    }
+  }
+  newState.hasMention = hasMention
+  return newState
+}
+methods.addHasMention = _addHasMention
 
 function _add({ block, shouldCheckForEmpty = true, state }) {
   const newState = { ...state }
