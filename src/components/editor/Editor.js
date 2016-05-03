@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import _ from 'lodash'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { openModal, closeModal } from '../../actions/modals'
@@ -33,9 +32,7 @@ export function getEditorId(post, comment, isComment, isZero) {
   if (editorUniqueIdentifiers.hasOwnProperty(fullPrefix)) {
     return editorUniqueIdentifiers[fullPrefix]
   }
-  const uniqueId = _.uniqueId(fullPrefix)
-  editorUniqueIdentifiers[fullPrefix] = uniqueId
-  return uniqueId
+  return fullPrefix
 }
 
 class Editor extends Component {
@@ -58,6 +55,20 @@ class Editor extends Component {
     isComment: false,
     shouldLoadFromState: false,
     shouldPersist: false,
+  }
+
+  componentWillMount() {
+    const { dispatch, shouldPersist } = this.props
+    // TODO: Maybe move this into the action_types constants
+    // this will cause an editor object to have an initial state
+    // or get populated with it's previous state
+    dispatch({
+      type: 'INIT_EDITOR_ID',
+      payload: {
+        editorId: this.getEditorIdentifier(),
+        shouldPersist,
+      },
+    })
   }
 
   getEditorIdentifier() {

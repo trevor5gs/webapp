@@ -200,45 +200,24 @@ export function updatePost(post, body) {
   }
 }
 
-export function uploadAsset(type, file, editorId, index) {
+export function saveAsset(file, editorId) {
   return {
-    type,
-    meta: {},
+    type: ACTION_TYPES.POST.SAVE_ASSET,
     payload: {
       editorId,
       file,
-      index,
     },
   }
 }
 
-export function temporaryPostImageCreated(objectURL, editorId, index) {
-  return {
-    type: ACTION_TYPES.POST.TMP_IMAGE_CREATED,
-    meta: {},
-    payload: {
-      url: objectURL,
-      editorId,
-      index,
-    },
-  }
-}
-
-export function savePostImage(file, editorId, index) {
-  return dispatch => {
-    dispatch(temporaryPostImageCreated(URL.createObjectURL(file), editorId, index))
-    dispatch(uploadAsset(ACTION_TYPES.POST.SAVE_IMAGE, file, editorId, index))
-  }
-}
-
-export function postPreviews(embedUrl, editorId, index) {
+export function postPreviews(embedUrl, editorId, uid) {
   return {
     type: ACTION_TYPES.POST.POST_PREVIEW,
     payload: {
       body: { body: [{ kind: 'embed', data: { url: embedUrl } }] },
       editorId,
       endpoint: api.postPreviews(),
-      index,
+      uid,
       method: 'POST',
     },
   }

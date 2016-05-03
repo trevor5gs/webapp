@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import { debounce, delay } from 'lodash'
+import { debounce, delay, isEqual } from 'lodash'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
@@ -12,7 +12,7 @@ import RepostBlock from './RepostBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
 import { closeOmnibar } from '../../actions/omnibar'
-import { savePostImage } from '../../actions/posts'
+import { saveAsset } from '../../actions/posts'
 import { scrollToTop } from '../../vendor/scrollTop'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
@@ -25,6 +25,7 @@ class BlockCollection extends Component {
     avatar: PropTypes.object.isRequired,
     blocks: PropTypes.array,
     cancelAction: PropTypes.func.isRequired,
+    collection: PropTypes.object.isRequired,
     completions: PropTypes.shape({
       data: PropTypes.array,
       type: PropTypes.string,
@@ -36,6 +37,7 @@ class BlockCollection extends Component {
     isComment: PropTypes.bool,
     isOwnPost: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
+    order: PropTypes.array.isRequired,
     pathname: PropTypes.string.isRequired,
     postId: PropTypes.string,
     repostContent: PropTypes.array,
@@ -56,13 +58,11 @@ class BlockCollection extends Component {
   }
 
   componentWillMount() {
-    const { blocks, editorStore, repostContent, shouldLoadFromState } = this.props
+    const { blocks, repostContent, shouldLoadFromState } = this.props
     this.state = {
-      collection: {},
       hideTextTools: true,
       hasDragOver: false,
       loadingImageBlocks: [],
-      order: [],
     }
     this.uid = 0
 
@@ -73,96 +73,92 @@ class BlockCollection extends Component {
       for (const block of blocks) {
         this.add(block, false)
       }
-    } else if (shouldLoadFromState && editorStore.editorState) {
-      this.state = { ...editorStore.editorState, hideTextTools: true, loadingImageBlocks: [] }
-      this.uid = editorStore.editorState.order.length ?
-        Math.max(...editorStore.editorState.order) + 1 :
-        0
+    } else if (shouldLoadFromState) {
+      this.state = { hideTextTools: true, loadingImageBlocks: [] }
+      // was setting the collection/order previously
     }
     this.persistBlocks = debounce(this.persistBlocks, 300)
   }
 
   componentDidMount() {
     const { editorId } = this.props
-    // TODO: figure out why this is causing a setState warning
-    // you can get the error to happen by going to a profile page
-    // visiting a post detail and then hitting back, the setState
-    // happens in add, but is triggered from this method since
-    // commenting it out gets rid of the issue
-    this.addEmptyTextBlock()
     this.dragObject = { component: this, dragId: editorId }
     addDragObject(this.dragObject)
     addInputObject(this)
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { dispatch, editorId, editorStore } = nextProps
-    const { collection, loadingImageBlocks } = this.state
-    let newBlock = null
-    let loadedContentData = null
-    switch (editorStore.type) {
-      case ACTION_TYPES.EDITOR.APPEND_TEXT:
-        if (editorStore.appendText && editorStore.appendText.length) {
-          this.appendText(editorStore.appendText)
-          dispatch({ type: ACTION_TYPES.EDITOR.CLEAR_APPENDED_TEXT, payload: { editorId } })
-          this.scrollToLastTextBlock()
-        }
-        break
-      case ACTION_TYPES.POST.TMP_IMAGE_CREATED:
-        this.removeEmptyTextBlock()
-        newBlock = this.add({
-          kind: 'image',
-          data: { url: editorStore.loadedContent[editorStore.index].url },
-          index: editorStore.index,
-        })
-        dispatch({
-          type: ACTION_TYPES.POST.IMAGE_BLOCK_CREATED,
-          payload: {
-            editorId,
-            uid: newBlock.uid,
-            index: editorStore.index,
-          },
-        })
-        // we have one that is uploading to s3
-        loadingImageBlocks.push(newBlock.uid)
-        this.setState({ loadingImageBlocks })
-        break
-      case ACTION_TYPES.POST.SAVE_IMAGE_SUCCESS:
-        loadedContentData = editorStore.loadedContent[editorStore.index]
-        newBlock = this.getBlockFromUid(loadedContentData.uid)
-        // the kind should only be 'block' when it is
-        // dragBlock's placeholder so update it's data
-        if (newBlock) {
-          if (newBlock.kind === 'block') {
-            this.dragBlock = {
-              kind: 'image',
-              data: {
-                url: loadedContentData.url,
-              },
-              uid: loadedContentData.uid,
-            }
-          } else {
-            collection[this.getBlockIdentifier(loadedContentData.uid)] = {
-              kind: 'image',
-              data: {
-                url: loadedContentData.url,
-              },
-              uid: loadedContentData.uid,
-            }
-            this.setState({ collection })
-            this.persistBlocks()
-            this.removeUploadIndicator(loadedContentData.uid)
-          }
-        }
-        break
-      case ACTION_TYPES.POST.POST_PREVIEW_SUCCESS:
-        this.removeEmptyTextBlock()
-        this.add({ ...editorStore.loadedContent[editorStore.index].postPreviews.body[0] })
-        break
-      default:
-        break
-    }
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(nextProps, this.props) || !isEqual(nextState, this.state)
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   const { dispatch, editorId, editorStore } = nextProps
+  //   const { collection, loadingImageBlocks } = this.state
+  //   let newBlock = null
+  //   let loadedContentData = null
+  //   switch (editorStore.type) {
+  //     // case ACTION_TYPES.EDITOR.APPEND_TEXT:
+  //     //   if (editorStore.appendText && editorStore.appendText.length) {
+  //     //     this.appendText(editorStore.appendText)
+  //     //     dispatch({ type: ACTION_TYPES.EDITOR.CLEAR_APPENDED_TEXT, payload: { editorId } })
+  //     //     this.scrollToLastTextBlock()
+  //     //   }
+  //     //   break
+  //     case ACTION_TYPES.POST.TMP_IMAGE_CREATED:
+  //       this.removeEmptyTextBlock()
+  //       newBlock = this.add({
+  //         kind: 'image',
+  //         data: { url: editorStore.loadedContent[editorStore.index].url },
+  //         index: editorStore.index,
+  //       })
+  //       // dispatch({
+  //       //   type: ACTION_TYPES.POST.IMAGE_BLOCK_CREATED,
+  //       //   payload: {
+  //       //     editorId,
+  //       //     uid: newBlock.uid,
+  //       //     index: editorStore.index,
+  //       //   },
+  //       // })
+  //       // we have one that is uploading to s3
+  //       loadingImageBlocks.push(newBlock.uid)
+  //       this.setState({ loadingImageBlocks })
+  //       break
+  //     case ACTION_TYPES.POST.SAVE_IMAGE_SUCCESS:
+  //       loadedContentData = editorStore.loadedContent[editorStore.index]
+  //       newBlock = this.getBlockFromUid(loadedContentData.uid)
+  //       // the kind should only be 'block' when it is
+  //       // dragBlock's placeholder so update it's data
+  //       if (newBlock) {
+  //         if (newBlock.kind === 'block') {
+  //           this.dragBlock = {
+  //             kind: 'image',
+  //             data: {
+  //               url: loadedContentData.url,
+  //             },
+  //             uid: loadedContentData.uid,
+  //           }
+  //         } else {
+  //           collection[loadedContentData.uid] = {
+  //             kind: 'image',
+  //             data: {
+  //               url: loadedContentData.url,
+  //             },
+  //             uid: loadedContentData.uid,
+  //           }
+  //           this.setState({ collection })
+  //           this.persistBlocks()
+  //           this.removeUploadIndicator(loadedContentData.uid)
+  //         }
+  //       }
+  //       break
+  //     case ACTION_TYPES.POST.POST_PREVIEW_SUCCESS:
+  //       this.removeEmptyTextBlock()
+  //       this.add({ ...editorStore.loadedContent[editorStore.index].postPreviews.body[0] })
+  //       break
+  //     default:
+  //       break
+  //   }
+  // }
 
   componentDidUpdate(prevProps) {
     const { completions } = this.props
@@ -190,17 +186,17 @@ class BlockCollection extends Component {
   }
 
   onDragStart(props) {
-    const { collection } = this.state
+    const { collection } = this.props
     this.blockNode = props.target.parentNode.parentNode
     this.startOffset = this.blockNode.offsetTop
     this.startHeight = this.blockNode.offsetHeight
     this.prevBlock = this.blockNode.previousSibling
     this.nextBlock = this.blockNode.nextSibling
     const dragUid = this.blockNode.dataset.collectionId
-    this.dragBlock = collection[this.getBlockIdentifier(dragUid)]
+    this.dragBlock = collection[dragUid]
     // swap the dragging block for a
     // normal block and set the height/width
-    collection[this.getBlockIdentifier(dragUid)] = {
+    collection[dragUid] = {
       data: {
         width: this.blockNode.offsetWidth,
         height: this.blockNode.offsetHeight,
@@ -209,7 +205,7 @@ class BlockCollection extends Component {
       uid: this.dragBlock.uid,
     }
     this.onDragMove(props)
-    this.setState({ collection })
+    // this.setState({ collection })
     ReactDOM.findDOMNode(document.body).classList.add('isDragging')
   }
 
@@ -243,14 +239,14 @@ class BlockCollection extends Component {
 
   onMoveBlock(delta) {
     if (!this.refs.blockPlaceholder) return
-    const { order } = this.state
+    const { order } = this.props
     const dragUid = this.dragBlock.uid
     const index = order.indexOf(dragUid)
     // remove from old spot
     order.splice(index, 1)
     // add to new spot
     order.splice(index + delta, 0, dragUid)
-    this.setState({ order })
+    // this.setState({ order })
     const placeholder = this.refs.blockPlaceholder.refs.editorBlock
     // update prev/next blocks
     this.prevBlock = placeholder.previousSibling
@@ -258,16 +254,17 @@ class BlockCollection extends Component {
   }
 
   onDragEnd() {
-    const { collection } = this.state
+    const { collection } = this.props
     // swap the normal block out for
     // the one that was removed initially
     const dragUid = this.dragBlock.uid
-    collection[this.getBlockIdentifier(dragUid)] = this.dragBlock
+    collection[dragUid] = this.dragBlock
     // order matters here so the dragBlock gets removed
     ReactDOM.findDOMNode(document.body).classList.remove('isDragging')
     this.dragBlock = null
-    this.setState({ collection, dragBlockTop: null })
-    this.addEmptyTextBlock(true)
+    this.setState({ dragBlockTop: null })
+    // this.setState({ collection, dragBlockTop: null })
+    // this.addEmptyTextBlock(true)
     this.removeUploadIndicator(dragUid)
   }
 
@@ -324,14 +321,9 @@ class BlockCollection extends Component {
     this.appendText(value)
   }
 
-  getBlockIdentifier(uid) {
-    const { editorId } = this.props
-    return `${editorId}_${uid}`
-  }
-
   getBlockFromUid(uid) {
-    const { collection } = this.state
-    return collection[this.getBlockIdentifier(uid)]
+    const { collection } = this.props
+    return collection[uid]
   }
 
   getBlockElement(block) {
@@ -412,10 +404,9 @@ class BlockCollection extends Component {
   // and then we can listen to that instead
   // of brute forcing it with dom lookups
   updateTextCollectionData() {
-    const { editorId } = this.props
-    const { collection, order } = this.state
+    const { editorId, collection, order } = this.props
     for (const uid of order) {
-      const block = this.getBlockFromUid(uid)
+      const block = collection[uid]
       if (block && block.kind === 'text') {
         const selector = `[data-editor-id="${editorId}"][data-collection-id="${uid}"]`
         const elem = document.querySelector(selector)
@@ -424,66 +415,54 @@ class BlockCollection extends Component {
         }
       }
     }
-    this.setState({ collection })
+    // this.setState({ collection })
   }
 
   add(block, shouldCheckForEmpty = true) {
     const newBlock = { ...block, uid: this.uid }
-    const { collection, order } = this.state
-    collection[this.getBlockIdentifier(this.uid)] = newBlock
+    const { collection, order } = this.props
+    collection[this.uid] = newBlock
     order.push(this.uid)
-    // this is so the uid remains unique even if image
-    // loads/embeds come back in a different order
-    // than they went out in.
-    if (typeof newBlock.index !== 'undefined') {
-      this.uid = this.uid + parseInt(newBlock.index, 10) + 1
-    } else {
-      this.uid++
-    }
+    this.uid++
     // order matters here
-    this.setState({ collection, order })
+    // this.setState({ collection, order })
     if (shouldCheckForEmpty) {
-      this.addEmptyTextBlock()
+      // this.addEmptyTextBlock()
     }
     this.persistBlocks()
     return newBlock
   }
 
-  addEmptyTextBlock(shouldCheckForEmpty = false) {
-    const { order } = this.state
-    if (order.length > 1) {
-      const last = this.getBlockFromUid(order[order.length - 1])
-      const secondToLast = this.getBlockFromUid(order[order.length - 2])
-      if (secondToLast.kind === 'text' &&
-          last.kind === 'text' && !last.data.length) {
-        this.remove(last.uid, shouldCheckForEmpty)
-        return
-      }
-    }
-    if (!order.length ||
-        this.getBlockFromUid(order[order.length - 1]).kind !== 'text') {
-      this.add({ kind: 'text', data: '' }, false)
-    }
-  }
+  // addEmptyTextBlock(shouldCheckForEmpty = false) {
+  //   const { collection, order } = this.state
+  //   if (order.length > 1) {
+  //     const last = collection[order[order.length - 1]]
+  //     const secondToLast = collection[order[order.length - 2]]
+  //     if (secondToLast.kind === 'text' &&
+  //         last.kind === 'text' && !last.data.length) {
+  //       this.remove(last.uid, shouldCheckForEmpty)
+  //       return
+  //     }
+  //   }
+  //   if (!order.length ||
+  //       this.getBlockFromUid(order[order.length - 1]).kind !== 'text') {
+  //     this.add({ kind: 'text', data: '' }, false)
+  //   }
+  // }
 
   appendText = (content) => {
-    const { collection, order } = this.state
-    const textBlocks = order.filter((uid) => this.getBlockFromUid(uid).kind === 'text')
-    const lastBlock = this.getBlockFromUid(textBlocks[textBlocks.length - 1])
-    if (lastBlock) {
-      lastBlock.data += content
-      this.setState({ collection })
-    }
+    const { dispatch, editorId } = this.props
+    dispatch({ type: ACTION_TYPES.EDITOR.APPEND_TEXT, payload: { editorId, text: content } })
   }
 
   remove = (uid, shouldCheckForEmpty = true) => {
-    const { collection, order } = this.state
-    delete collection[this.getBlockIdentifier(uid)]
+    const { collection, order } = this.props
+    delete collection[uid]
     order.splice(order.indexOf(uid), 1)
     // order matters here
-    this.setState({ collection, order })
+    // this.setState({ collection, order })
     if (shouldCheckForEmpty) {
-      this.addEmptyTextBlock()
+      // this.addEmptyTextBlock()
     }
     this.persistBlocks()
   }
@@ -492,13 +471,12 @@ class BlockCollection extends Component {
     const { loadingImageBlocks } = this.state
     const index = loadingImageBlocks.indexOf(uid)
     loadingImageBlocks.splice(index, 1)
-    this.setState({ loadingImageBlocks })
+    // this.setState({ loadingImageBlocks })
   }
 
   persistBlocks() {
-    const { dispatch, editorId, shouldPersist } = this.props
+    const { dispatch, collection, order, editorId, shouldPersist } = this.props
     if (!shouldPersist) { return }
-    const { collection, order } = this.state
     dispatch({
       type: ACTION_TYPES.POST.PERSIST,
       payload: {
@@ -510,7 +488,7 @@ class BlockCollection extends Component {
   }
 
   removeEmptyTextBlock() {
-    const { order } = this.state
+    const { order } = this.props
     if (order.length > 0) {
       const last = this.getBlockFromUid(order[order.length - 1])
       if (last && last.kind === 'text' && !last.data.length) {
@@ -520,9 +498,9 @@ class BlockCollection extends Component {
   }
 
   handleTextBlockInput = (vo) => {
-    const { collection } = this.state
-    collection[this.getBlockIdentifier(vo.uid)] = vo
-    this.setState({ collection })
+    const { collection } = this.props
+    collection[vo.uid] = vo
+    // this.setState({ collection })
     this.persistBlocks()
   }
 
@@ -558,13 +536,13 @@ class BlockCollection extends Component {
   }
 
   clearBlocks = () => {
-    this.setState({ collection: {}, order: [] })
+    // this.setState({ collection: {}, order: [] })
     this.uid = 0
-    this.addEmptyTextBlock()
+    // this.addEmptyTextBlock()
   }
 
   serialize() {
-    const { order } = this.state
+    const { order } = this.props
     const results = []
     for (const uid of order) {
       const block = this.getBlockFromUid(uid)
@@ -581,11 +559,12 @@ class BlockCollection extends Component {
           break
       }
     }
+    console.log('results', results)
     return results
   }
 
   hasMention() {
-    const { order } = this.state
+    const { order } = this.props
     for (const uid of order) {
       const block = this.getBlockFromUid(uid)
       if (block && block.kind === 'text' && block.data.match(userRegex)) {
@@ -596,7 +575,7 @@ class BlockCollection extends Component {
   }
 
   hasContent() {
-    const { order } = this.state
+    const { order } = this.props
     const firstBlock = this.getBlockFromUid(order[0])
     if (!firstBlock) { return false }
     return (
@@ -617,14 +596,16 @@ class BlockCollection extends Component {
       // This guard may not be necessary
       if (files.item(index)) {
         // need to delay a bit or else the images clobber each other
-        delay(dispatch, 100 * index, savePostImage(files.item(index), editorId, index))
+        delay(dispatch, 100 * index, saveAsset(files[index], editorId))
       }
     }
   }
 
   render() {
-    const { avatar, cancelAction, editorId, isComment, isOwnPost, submitText } = this.props
-    const { dragBlockTop, loadingImageBlocks, order, hasDragOver } = this.state
+    const { avatar, cancelAction, collection, editorId,
+      isComment, isOwnPost, order, submitText } = this.props
+    console.log('!~~~~~~~~~~~~~~~~~~~~~~~~~~~RENDER~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    const { dragBlockTop, loadingImageBlocks, hasDragOver } = this.state
     const hasMention = this.hasMention()
     const hasContent = this.hasContent()
     const firstBlockIsText = this.getBlockFromUid(order[0]) ?
@@ -650,7 +631,7 @@ class BlockCollection extends Component {
           className="editor-region"
           data-num-blocks={ order.length }
         >
-          { order.map((uid) => this.getBlockElement(this.getBlockFromUid(uid))) }
+          { order.map((uid) => this.getBlockElement(collection[uid])) }
           { this.dragBlock ?
             <div className="DragBlock" style={{ top: dragBlockTop }}>
               { this.getBlockElement(this.dragBlock) }
@@ -675,10 +656,14 @@ class BlockCollection extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  const editor = state.editor[ownProps.editorId]
+  console.log('editor', editor)
   return {
     avatar: state.profile.avatar,
     completions: state.editor.completions,
-    editorStore: state.editor.editors[ownProps.editorId],
+    collection: editor.collection,
+    order: editor.order,
+    orderLength: editor.order.length,
     emoji: state.emoji,
     isNavbarHidden: state.gui.isNavbarHidden,
     postId: ownProps.post ? `${ownProps.post.id}` : null,

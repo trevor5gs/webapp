@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
 import { combineReducers, compose, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
-import { analytics, authentication, requester, uploader } from './middleware'
+import { analytics, authentication, editor, requester, uploader } from './middleware'
 import * as reducers from './reducers'
 
 const reducer = combineReducers({
@@ -29,6 +29,7 @@ const createBrowserStore = (history, passedInitialState = {}) => {
       reduxRouterMiddleware,
       uploader,
       requester,
+      editor,
       analytics,
       logger
     ),
