@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import React, { PropTypes } from 'react'
-import { Link } from 'react-router'
 
 const AppleStoreLink = ({ to }) =>
   <a href={ to } target="_blank" className="AppleStoreLink">
