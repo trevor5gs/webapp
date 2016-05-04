@@ -1,4 +1,45 @@
+@import ../../styles/lib
+
 .Viewport
   display: none !important
   visibility: hidden
+
+// -------------------------------------
+// A probe into CSS used by the ResizeComponent
+// z-index is related to number of columns for grid mode
+
+// TODO: Eventually we can move probe from #root to .Viewport once it's the
+// only object listening to resize events from the ResizeComponent. The
+// ResizeComponent's getProbeProperties function would need to be updated.
+#root:after
+  display: none !important
+  visibility: hidden
+  position: absolute
+  z-index: 2
+  width: 0
+  height: 0
+
+@media(min-width: #{$break-2})
+  #root:after
+    z-index: 2
+
+@media(min-width: #{$break-3})
+  #root:after
+    z-index: 3
+
+@media(min-width: #{$break-4})
+  #root:after
+    z-index: 4
+
+@media(min-width: #{$break-5})
+  #root:after
+    z-index: 5
+
+@media(min-width: #{$break-6})
+  #root:after
+    z-index: 6
+
+@media(min-width: #{$break-7})
+  #root:after
+    z-index: 7
 

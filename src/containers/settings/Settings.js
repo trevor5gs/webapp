@@ -308,7 +308,7 @@ class Settings extends Component {
     const boxControlClassNames = 'asBoxControl onWhite'
 
     return (
-      <section className="Settings Panel">
+      <main className="Settings View" role="main">
         <div className="SettingsCoverPicker">
           <Uploader
             title="Upload a header image"
@@ -536,7 +536,7 @@ class Settings extends Component {
             </TreePanel>
           </div>
         </div>
-      </section>
+      </main>
     )
   }
 }

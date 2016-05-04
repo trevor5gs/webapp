@@ -108,7 +108,7 @@ class AwesomePeople extends Component {
     const { following } = this.props
     const userIds = this.getUserIds()
     return (
-      <section className="PeoplePicker Panel">
+      <main className="PeoplePicker View" role="main">
         <OnboardingHeader
           title="Follow some awesome people."
           message="Ello is full of interesting and creative people committed to building a positive community."
@@ -126,7 +126,7 @@ class AwesomePeople extends Component {
           }
           <StreamComponent ref="streamComponent" action={ loadAwesomePeople() } />
         </div>
-      </section>
+      </main>
     )
   }
 }

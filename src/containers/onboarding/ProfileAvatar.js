@@ -33,7 +33,7 @@ class ProfileAvatar extends Component {
   render() {
     const { dispatch, profile } = this.props
     return (
-      <section className="AvatarPicker Panel">
+      <main className="AvatarPicker View" role="main">
         <OnboardingHeader
           message="Choose an avatar."
           title="Customize your profile."
@@ -57,7 +57,7 @@ class ProfileAvatar extends Component {
           />
         </div>
         <Cover coverImage={ profile.coverImage } />
-      </section>
+      </main>
     )
   }
 }

@@ -38,7 +38,7 @@
 // This is sort of gnarly and should get moved to the
 // component level
 
-body.omnibarIsActive .Panel
+body.omnibarIsActive .View
   padding-top: 0
 
 body.omnibarIsActive .Navbar
@@ -55,7 +55,7 @@ body.omnibarIsActive .Navbar
   .Omnibar > .editor:after
     left: rem(51)
 
-  body.omnibarIsActive .Main,
+  body.omnibarIsActive .View,
   body.omnibarIsActive .Footer
     display: none
 
@@ -79,7 +79,7 @@ body.omnibarIsActive .Navbar
     position: absolute
     transform: translate3d(#{rem(400)}, 0, 0)
 
-  body.omnibarIsActive .Omnibar.isFullScreen ~ .Main,
+  body.omnibarIsActive .Omnibar.isFullScreen ~ .View,
   body.omnibarIsActive .Omnibar.isFullScreen ~ .Footer
     display: none
 

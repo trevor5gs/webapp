@@ -27,15 +27,6 @@ export function setNavbarState({ isFixed, isHidden, isSkippingTransition }) {
   }
 }
 
-export function setProfileMenuState({ isActive }) {
-  return {
-    type: GUI.SET_PROFILE_MENU_STATE,
-    payload: {
-      isProfileMenuActive: isActive,
-    },
-  }
-}
-
 export function setViewportSizeAttributes(resizeAttributes) {
   return {
     type: GUI.SET_VIEWPORT_SIZE_ATTRIBUTES,

@@ -25,7 +25,6 @@ describe('gui reducer', () => {
       'isNavbarHidden',
       'isNavbarSkippingTransition',
       'isOffsetLayout',
-      'isProfileMenuActive',
       'lastNotificationCheck',
       'modes',
       'newNotificationContent',

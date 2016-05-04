@@ -48,3 +48,40 @@ export function closeAlert() {
   }
 }
 
+export function setIsCompleterActive({ isActive }) {
+  return {
+    type: MODAL.SET_IS_COMPLETER_ACTIVE,
+    payload: {
+      isCompleterActive: isActive,
+    },
+  }
+}
+
+export function setIsProfileMenuActive({ isActive }) {
+  return {
+    type: MODAL.SET_IS_PROFILE_MENU_ACTIVE,
+    payload: {
+      isProfileMenuActive: isActive,
+    },
+  }
+}
+
+export function setIsTextToolsActive({ isActive, textToolsStates = {} }) {
+  return {
+    type: MODAL.SET_IS_TEXT_TOOLS_ACTIVE,
+    payload: {
+      isTextToolsActive: isActive,
+      textToolsStates,
+    },
+  }
+}
+
+export function setTextToolsCoordinates({ textToolsCoordinates = { top: -200, left: -666 } }) {
+  return {
+    type: MODAL.SET_TEXT_TOOLS_COORDINATES,
+    payload: {
+      textToolsCoordinates,
+    },
+  }
+}
+

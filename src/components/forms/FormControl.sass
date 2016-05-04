@@ -81,7 +81,7 @@ textarea.FormControlInput.asBoxControl
 .BatchEmailControl .FormControlInput.asBoxControl
   height: rem(160)
 
-[data-pathname^="/onboarding"] .NameControl > .FormControlInput
+[data-pathname^="/onboarding"] ~ .View .NameControl > .FormControlInput
   +sans-bold-family
   font-size: 1rem
 
@@ -122,7 +122,7 @@ textarea.FormControlInput.asBoxControl
   color: $danger
 
 // Use the older hiding label pattern just for on-boarding
-[data-pathname^="/onboarding"] .InfoForm .hasValue:not(.hasFocus) > .FormControlLabel
+[data-pathname^="/onboarding"] ~ .View .InfoForm .hasValue:not(.hasFocus) > .FormControlLabel
   transform: translate3d(0,rem(-10),0)
   opacity: 0
 
@@ -175,7 +175,7 @@ textarea.FormControlInput.asBoxControl
 .FormControlStatus > .FailureIcon > g
   stroke: $danger
 
-[data-pathname^="/onboarding"] .FormControlStatus
+[data-pathname^="/onboarding"] ~ .View .FormControlStatus
   display: none
 
 .HoppyStatusMessage

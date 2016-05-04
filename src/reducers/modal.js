@@ -10,8 +10,13 @@ const initialState = {
   classList: null,
   component: null,
   isActive: false,
+  isCompleterActive: false,
   isNotificationsActive: false,
+  isProfileMenuActive: false,
+  isTextToolsActive: false,
   kind: 'Modal',
+  textToolsCoordinates: { top: -200, left: -666 },
+  textToolsStates: {},
 }
 
 export function modal(state = initialState, action) {
@@ -27,10 +32,29 @@ export function modal(state = initialState, action) {
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
     case LOCATION_CHANGE:
-      if (state.isActive) {
-        return initialState
-      }
+      if (state.isActive) { return initialState }
       return state
+    case MODAL.SET_IS_COMPLETER_ACTIVE:
+      return {
+        ...state,
+        isCompleterActive: action.payload.isCompleterActive,
+      }
+    case MODAL.SET_IS_PROFILE_MENU_ACTIVE:
+      return {
+        ...state,
+        isProfileMenuActive: action.payload.isProfileMenuActive,
+      }
+    case MODAL.SET_IS_TEXT_TOOLS_ACTIVE:
+      return {
+        ...state,
+        isTextToolsActive: action.payload.isTextToolsActive,
+        textToolsStates: action.payload.textToolsStates,
+      }
+    case MODAL.SET_TEXT_TOOLS_COORDINATES:
+      return {
+        ...state,
+        textToolsCoordinates: action.payload.textToolsCoordinates,
+      }
     default:
       return state
   }

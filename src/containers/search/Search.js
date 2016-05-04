@@ -108,7 +108,7 @@ class Search extends Component {
       { type: 'users', children: 'People' },
     ]
     return (
-      <section className="Search Panel">
+      <main className="Search View" role="main">
         <Promotion
           creditsClickAction={ this.onClickTrackCredits }
           isLoggedIn={ isLoggedIn }
@@ -128,7 +128,7 @@ class Search extends Component {
           />
         </form>
         <StreamComponent ref="streamComponent" action={ this.getAction() } />
-      </section>
+      </main>
     )
   }
 }

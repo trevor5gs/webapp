@@ -169,7 +169,7 @@ class NotificationsContainer extends Component {
           <StreamComponent
             action={ loadNotifications({ category: activeTabType }) }
             className="asFullWidth"
-            key={ `notificationPanel_${activeTabType}` }
+            key={ `notificationView_${activeTabType}` }
             ref="streamComponent"
             scrollSessionKey={ `notifications_${activeTabType}` }
             isModalComponent

@@ -30,14 +30,14 @@ class SignUp extends Component {
   render() {
     const { featuredUser } = this.state
     return (
-      <section className="Authentication Panel">
+      <main className="Authentication View" role="main">
         <div className="AuthenticationFormDialog">
           <RegistrationRequestForm />
         </div>
         <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
-      </section>
+      </main>
     )
   }
 }

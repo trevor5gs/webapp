@@ -30,7 +30,7 @@ class ProfileBio extends Component {
   render() {
     const { profile } = this.props
     return (
-      <section className="InfoPicker Panel">
+      <main className="InfoPicker View" role="main">
         <OnboardingHeader
           title="Customize your profile."
           message="Fill out your bio."
@@ -49,7 +49,7 @@ class ProfileBio extends Component {
 
         </div>
         <Cover coverImage={ profile.coverImage } />
-      </section>
+      </main>
     )
   }
 }

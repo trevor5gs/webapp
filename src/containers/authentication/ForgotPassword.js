@@ -118,7 +118,7 @@ class ForgotPassword extends Component {
   render() {
     const { featuredUser, formStatus } = this.state
     return (
-      <section className="Authentication Panel">
+      <main className="Authentication View" role="main">
         <div className="AuthenticationFormDialog">
           <h1>
             <Emoji name="hot_shit" title="It really does" size={ 32 } />
@@ -129,7 +129,7 @@ class ForgotPassword extends Component {
         <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
-      </section>
+      </main>
     )
   }
 }

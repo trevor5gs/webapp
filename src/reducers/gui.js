@@ -55,7 +55,6 @@ const initialState = {
   currentStream: '/discover',
   hasLayoutTool: true,
   isGridMode: true,
-  isProfileMenuActive: false,
   isOffsetLayout: false,
   history: {},
   lastNotificationCheck: oldDate.toUTCString(),
@@ -170,11 +169,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
         isNavbarHidden: _.get(action.payload, 'isNavbarHidden', newState.isNavbarHidden),
         isNavbarSkippingTransition:
           _.get(action.payload, 'isNavbarSkippingTransition', newState.isNavbarSkippingTransition),
-      }
-    case GUI.SET_PROFILE_MENU_STATE:
-      return {
-        ...state,
-        isProfileMenuActive: action.payload.isProfileMenuActive,
       }
     case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
       return {

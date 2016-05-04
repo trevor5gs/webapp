@@ -81,11 +81,11 @@ class PostDetail extends Component {
       case ACTION_TYPES.POST.DETAIL_FAILURE:
         if (!post && stream.error) {
           return (
-            <section className="Panel">
+            <main className="PostDetail View" role="main">
               <section className="StreamComponent hasErrored">
                 <ErrorState4xx />
               </section>
-            </section>
+            </main>
           )
         }
         break
@@ -111,7 +111,7 @@ class PostDetail extends Component {
       }
     }
     return (
-      <section className="PostDetail Panel">
+      <main className="PostDetail View" role="main">
         { post && author ? <PostDetailHelmet post={ post } author={ author } /> : null }
         <div className="PostDetails Posts asList">
           <article
@@ -133,7 +133,7 @@ class PostDetail extends Component {
             }
           </article>
         </div>
-      </section>
+      </main>
     )
   }
 }

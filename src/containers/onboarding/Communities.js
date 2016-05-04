@@ -107,7 +107,7 @@ class Communities extends Component {
     const { following } = this.props
     const userIds = this.getUserIds()
     return (
-      <section className="CommunityPicker Panel">
+      <main className="CommunityPicker View" role="main">
         <OnboardingHeader
           title="What are you interested in?"
           message="Follow the Ello Communities that you find most inspiring."
@@ -125,7 +125,7 @@ class Communities extends Component {
           }
           <StreamComponent ref="streamComponent" action={ loadCommunities() } />
         </div>
-      </section>
+      </main>
     )
   }
 }

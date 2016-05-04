@@ -41,13 +41,13 @@ class Starred extends Component {
   render() {
     const { isBeaconActive } = this.state
     return (
-      <section className="Starred Panel">
+      <main className="Starred View" role="main">
         { isBeaconActive ? this.renderZeroStream() : null }
         <StreamComponent
           action={loadNoise()}
           scrollSessionKey="/starred"
         />
-      </section>
+      </main>
     )
   }
 }
