@@ -39,8 +39,9 @@ function getHeadHeader(accessToken, lastCheck) {
 }
 
 function updateRunningFetches(response) {
-  if (runningFetches[response.url]) {
-    delete runningFetches[response.url]
+  const responseUrl = response.url && response.url.length ? response.url : response.headers.get('X-Request-Url')
+  if (runningFetches[responseUrl]) {
+    delete runningFetches[responseUrl]
   } else {
     runningFetches = {}
   }
