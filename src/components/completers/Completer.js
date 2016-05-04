@@ -121,7 +121,9 @@ export default class Completer extends Component {
 
     let style = null
     const pos = getPositionFromSelection()
-    if (viewportDeviceSize === 'mobile') {
+    if (!pos) {
+      style = { top: -200, left: -666 }
+    } else if (viewportDeviceSize === 'mobile') {
       style = { top: pos.top + 20 }
     } else if (pos) {
       style = { top: pos.top + 20, left: pos.left }

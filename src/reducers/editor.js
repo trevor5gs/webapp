@@ -24,9 +24,6 @@ const initialEditorState = {
   uid: 0,
 }
 
-// TODO:
-// completer jump
-
 function addCompletions(payload) {
   if (payload && payload.response) {
     const { type = 'user', word } = payload
@@ -134,6 +131,9 @@ export function editor(state = initialState, action) {
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
+    case EDITOR.CLEAR_AUTO_COMPLETERS:
+      delete newState.completions
+      return newState
     case EDITOR.EMOJI_COMPLETER_SUCCESS:
     case EDITOR.USER_COMPLETER_SUCCESS:
       newState.completions = addCompletions(action.payload)
