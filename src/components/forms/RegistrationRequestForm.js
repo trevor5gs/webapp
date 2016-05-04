@@ -96,7 +96,7 @@ class RegistrationRequestForm extends Component {
     return (
       <div>
         <h1>
-          Create. Share. Connect.
+          Join The Creators Network.
         </h1>
         <form
           className="AuthenticationForm"
