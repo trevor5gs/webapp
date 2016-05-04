@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import Helmet from 'react-helmet'
 
-const title = 'Ello | Create. Share. Connect.'
+const title = 'Ello | The Creators Network.'
 const image = '/apple-touch-icon-precomposed.png'
 
 const description =
