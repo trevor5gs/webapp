@@ -27,7 +27,7 @@ export const Footer = ({
     { isAndroid() ?
       null :
       <FooterLink
-        href="http://appstore.com/ello/ello"
+        href="https://itunes.apple.com/app/apple-store/id953614327?pt=117139389&ct=webfooter&mt=8"
         icon={ <PhoneIcon /> }
         label="Get the app"
       />
