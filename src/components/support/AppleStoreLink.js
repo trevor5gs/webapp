@@ -15,7 +15,7 @@ AppleStoreLink.propTypes = {
 }
 
 AppleStoreLink.defaultProps = {
-  to: 'http://appstore.com/ello/ello',
+  to: 'https://itunes.apple.com/app/apple-store/id953614327?pt=117139389&ct=webapp&mt=8',
 }
 
 export default AppleStoreLink
