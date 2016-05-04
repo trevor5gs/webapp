@@ -12,8 +12,11 @@ import RepostBlock from './RepostBlock'
 import TextBlock from './TextBlock'
 import PostActionBar from './PostActionBar'
 import {
+  addBlock,
+  addDragBlock,
   addEmptyTextBlock,
   removeBlock,
+  removeDragBlock,
   reorderBlocks,
   saveAsset,
   updateBlock,
@@ -31,79 +34,53 @@ class BlockCollection extends Component {
     blocks: PropTypes.array,
     cancelAction: PropTypes.func.isRequired,
     collection: PropTypes.object.isRequired,
-    completions: PropTypes.shape({
-      data: PropTypes.array,
-      type: PropTypes.string,
-    }),
     dispatch: PropTypes.func.isRequired,
+    dragBlock: PropTypes.object,
     editorId: PropTypes.string.isRequired,
-    editorStore: PropTypes.object,
-    emoji: PropTypes.object.isRequired,
     hasContent: PropTypes.bool,
     hasMention: PropTypes.bool,
     isComment: PropTypes.bool,
+    isLoading: PropTypes.bool,
     isOwnPost: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
     order: PropTypes.array.isRequired,
     pathname: PropTypes.string.isRequired,
     postId: PropTypes.string,
     repostContent: PropTypes.array,
-    shouldLoadFromState: PropTypes.bool,
-    shouldPersist: PropTypes.bool,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
   }
 
   static defaultProps = {
     blocks: [],
-    editorStore: {},
     isComment: false,
     repostContent: [],
-    shouldLoadFromState: false,
-    shouldPersist: false,
     submitText: 'Post',
   }
 
   componentWillMount() {
-    const { blocks, repostContent, shouldLoadFromState } = this.props
-    this.state = {
-      hideTextTools: true,
-      hasDragOver: false,
-    }
-    this.uid = 0
-
+    const { blocks, dispatch, editorId, repostContent } = this.props
+    this.state = { hasDragOver: false }
     if (repostContent.length) {
-      this.add({ kind: 'repost', data: repostContent })
+      dispatch(addBlock({ kind: 'repost', data: repostContent }, editorId))
     }
     if (blocks.length) {
       for (const block of blocks) {
-        this.add(block, false)
+        dispatch(addBlock(block, editorId))
       }
-    } else if (shouldLoadFromState) {
-      this.state = { hideTextTools: true }
-      // was setting the collection/order previously
     }
   }
 
   componentDidMount() {
-    const { editorId } = this.props
+    const { dispatch, editorId } = this.props
     this.dragObject = { component: this, dragId: editorId }
+    dispatch(addEmptyTextBlock(editorId))
     addDragObject(this.dragObject)
     addInputObject(this)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return !isEqual(nextProps, this.props) || !isEqual(nextState, this.state)
-  }
-
-  componentDidUpdate(prevProps) {
-    const { completions } = this.props
-    const prevCompletions = prevProps.completions
-    if (prevCompletions && !completions) {
-      requestAnimationFrame(() => {
-        this.updateTextCollectionData()
-      })
-    }
   }
 
   componentWillUnmount() {
@@ -128,7 +105,7 @@ class BlockCollection extends Component {
     this.prevBlock = this.blockNode.previousSibling
     this.nextBlock = this.blockNode.nextSibling
     const dragUid = this.blockNode.dataset.collectionId
-    this.dragBlock = collection[dragUid]
+    dispatch(addDragBlock(collection[dragUid], editorId))
     // swap the dragging block for a
     // normal block and set the height/width
     const block = {
@@ -137,9 +114,9 @@ class BlockCollection extends Component {
         height: this.blockNode.offsetHeight,
       },
       kind: 'block',
-      uid: this.dragBlock.uid,
+      uid: collection[dragUid].uid,
     }
-    dispatch(updateBlock(block, dragUid, editorId))
+    dispatch(updateBlock(block, dragUid, editorId, true))
     this.onDragMove(props)
     ReactDOM.findDOMNode(document.body).classList.add('isDragging')
   }
@@ -174,21 +151,21 @@ class BlockCollection extends Component {
 
   onMoveBlock(delta) {
     if (!this.refs.blockPlaceholder) return
-    const { dispatch, editorId } = this.props
-    dispatch(reorderBlocks(this.dragBlock.uid, delta, editorId))
+    const { dispatch, dragBlock, editorId } = this.props
+    dispatch(reorderBlocks(dragBlock.uid, delta, editorId))
     const placeholder = this.refs.blockPlaceholder.refs.editorBlock
     this.prevBlock = placeholder.previousSibling
     this.nextBlock = placeholder.nextSibling
   }
 
   onDragEnd() {
-    const { dispatch, editorId } = this.props
+    const { dispatch, dragBlock, editorId } = this.props
     // swap the normal block out for
     // the one that was removed initially
-    const dragUid = this.dragBlock.uid
-    dispatch(updateBlock(this.dragBlock, dragUid, editorId))
+    const dragUid = dragBlock.uid
+    dispatch(updateBlock(dragBlock, dragUid, editorId))
+    dispatch(removeDragBlock(editorId))
     ReactDOM.findDOMNode(document.body).classList.remove('isDragging')
-    this.dragBlock = null
     this.setState({ dragBlockTop: null })
     dispatch(addEmptyTextBlock(editorId))
   }
@@ -243,11 +220,6 @@ class BlockCollection extends Component {
     this.appendText(value)
   }
 
-  getBlockFromUid(uid) {
-    const { collection } = this.props
-    return collection[uid]
-  }
-
   getBlockElement(block) {
     const { editorId } = this.props
     const isUploading = block.isLoading
@@ -257,7 +229,6 @@ class BlockCollection extends Component {
       key: `${JSON.stringify(block.data)}_${block.uid}`,
       kind: block.kind,
       onRemoveBlock: this.remove,
-      ref: `block${block.uid}`,
       uid: block.uid,
       className: classNames({ isUploading }),
     }
@@ -276,7 +247,7 @@ class BlockCollection extends Component {
         )
       case 'image':
         return (
-          <ImageBlock { ...blockProps } />
+          <ImageBlock blob={ block.blob } { ...blockProps } />
         )
       case 'repost':
         return (
@@ -320,27 +291,10 @@ class BlockCollection extends Component {
     return !(isComment && postRegex.test(pathname))
   }
 
-  // TODO: probably should have the completer
-  // dispatch an action that updates the gui
-  // and then we can listen to that instead
-  // of brute forcing it with dom lookups
-  updateTextCollectionData() {
-    const { editorId, collection, order } = this.props
-    for (const uid of order) {
-      const block = collection[uid]
-      if (block && block.kind === 'text') {
-        const selector = `[data-editor-id="${editorId}"][data-collection-id="${uid}"]`
-        const elem = document.querySelector(selector)
-        if (elem && elem.firstChild) {
-          block.data = elem.firstChild.innerHTML
-        }
-      }
-    }
-  }
-
   appendText = (content) => {
     const { dispatch, editorId } = this.props
     dispatch({ type: ACTION_TYPES.EDITOR.APPEND_TEXT, payload: { editorId, text: content } })
+    this.scrollToLastTextBlock()
   }
 
   remove = (uid) => {
@@ -375,10 +329,10 @@ class BlockCollection extends Component {
   }
 
   serialize() {
-    const { order } = this.props
+    const { collection, order } = this.props
     const results = []
     for (const uid of order) {
-      const block = this.getBlockFromUid(uid)
+      const block = collection[uid]
       switch (block.kind) {
         case 'text':
           if (block.data.length) {
@@ -411,12 +365,10 @@ class BlockCollection extends Component {
   }
 
   render() {
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~RENDER~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-    const { avatar, cancelAction, collection, editorId, hasContent,
-      hasMention, isComment, isOwnPost, order, submitText } = this.props
+    const { avatar, cancelAction, collection, dragBlock, editorId, hasContent,
+      hasMention, isComment, isLoading, isOwnPost, order, submitText } = this.props
     const { dragBlockTop, hasDragOver } = this.state
-    const firstBlockIsText = this.getBlockFromUid(order[0]) ?
-      this.getBlockFromUid(order[0]).kind === 'text' : true
+    const firstBlockIsText = collection[order[0]] ? collection[order[0]].kind === 'text' : true
     const showQuickEmoji = isComment && firstBlockIsText
     const editorClassNames = classNames('editor', {
       withQuickEmoji: showQuickEmoji,
@@ -424,9 +376,8 @@ class BlockCollection extends Component {
       hasMention,
       hasContent,
       isComment,
+      isLoading,
     })
-    // TODO: hook up isSubmitDisabled for disable action
-    // loadingImageBlocks.length > 0 ||
     return (
       <div
         className={ editorClassNames }
@@ -441,9 +392,9 @@ class BlockCollection extends Component {
           data-num-blocks={ order.length }
         >
           { order.map((uid) => this.getBlockElement(collection[uid])) }
-          { this.dragBlock ?
+          { dragBlock ?
             <div className="DragBlock" style={{ top: dragBlockTop }}>
-              { this.getBlockElement(this.dragBlock) }
+              { this.getBlockElement(dragBlock) }
             </div> :
             null
           }
@@ -451,7 +402,7 @@ class BlockCollection extends Component {
         { showQuickEmoji ? <QuickEmoji onAddEmoji={ this.onInsertEmoji } /> : null }
         <PostActionBar
           cancelAction={ cancelAction }
-          disableSubmitAction={ !hasContent }
+          disableSubmitAction={ isLoading || !hasContent }
           editorId={ editorId }
           handleFileAction={ this.handleFiles }
           ref="postActionBar"
@@ -468,17 +419,16 @@ function mapStateToProps(state, ownProps) {
   const editor = state.editor[ownProps.editorId]
   return {
     avatar: state.profile.avatar,
-    completions: state.editor.completions,
     collection: editor.collection,
-    dataKey: editor.dataKey,
-    order: editor.order,
+    dragBlock: editor.dragBlock,
     hasContent: editor.hasContent,
     hasMention: editor.hasMention,
-    orderLength: editor.order.length,
-    emoji: state.emoji,
+    isLoading: editor.isLoading,
     isNavbarHidden: state.gui.isNavbarHidden,
-    postId: ownProps.post ? `${ownProps.post.id}` : null,
+    order: editor.order,
+    orderLength: editor.order.length,
     pathname: state.routing.location.pathname,
+    postId: ownProps.post ? `${ownProps.post.id}` : null,
   }
 }
 

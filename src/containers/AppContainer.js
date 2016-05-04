@@ -22,7 +22,6 @@ class AppContainer extends Component {
     authentication: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
-    editorStore: PropTypes.object.isRequired,
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }).isRequired,
@@ -32,10 +31,6 @@ class AppContainer extends Component {
       token: PropTypes.string,
       type: PropTypes.string,
     }).isRequired,
-  }
-
-  static defaultProps = {
-    editorStore: {},
   }
 
   componentDidMount() {

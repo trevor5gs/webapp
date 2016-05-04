@@ -32,7 +32,7 @@ export const editor = store => next => action => {
 
     if (editorId && file) {
       store.dispatch(temporaryPostImageCreated(URL.createObjectURL(file), editorId))
-      const uid = store.getState().editor[editorId].uid - 1
+      const uid = store.getState().editor[editorId].uid - 2
       store.dispatch(uploadAsset(ACTION_TYPES.EDITOR.SAVE_IMAGE, file, editorId, uid))
     }
   }

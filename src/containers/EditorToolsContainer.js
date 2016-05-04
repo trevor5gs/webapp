@@ -2,13 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { debounce } from 'lodash'
-import { EMOJI, POST } from '../constants/action_types'
+import { EDITOR } from '../constants/action_types'
 import {
   setIsCompleterActive,
   setIsTextToolsActive,
   setTextToolsCoordinates,
 } from '../actions/modals'
-import { autoCompleteUsers, loadEmojis } from '../actions/posts'
+import { autoCompleteUsers, loadEmojis } from '../actions/editor'
 import Completer from '../components/completers/Completer'
 import TextTools from '../components/editor/TextTools'
 import { addInputObject, removeInputObject } from '../components/editor/InputComponent'
@@ -50,14 +50,14 @@ class EditorToolsContainer extends Component {
 
   componentWillUnmount() {
     removeInputObject(this)
-    this.onHideCompleter()
-    this.onHideTextTools()
+    this.onCancelAutoCompleter()
   }
 
   onCancelAutoCompleter = () => {
+    const { dispatch } = this.props
+    dispatch({ type: EDITOR.CLEAR_AUTO_COMPLETERS })
     this.onHideCompleter()
     this.onHideTextTools()
-    // TODO: maybe clear out the completions from the editor store?
   }
 
   onCompletion = ({ value }) => {
@@ -71,7 +71,7 @@ class EditorToolsContainer extends Component {
       dispatch(setIsCompleterActive({ isActive: false }))
     }
     if (completions) {
-      dispatch({ type: POST.AUTO_COMPLETE_CLEAR })
+      dispatch({ type: EDITOR.CLEAR_AUTO_COMPLETERS })
     }
   }
 
@@ -90,7 +90,7 @@ class EditorToolsContainer extends Component {
     }
     if (emojis && emojis.length) {
       dispatch({
-        type: EMOJI.LOAD_SUCCESS,
+        type: EDITOR.EMOJI_COMPLETER_SUCCESS,
         payload: {
           response: { emojis },
           type: 'emoji',

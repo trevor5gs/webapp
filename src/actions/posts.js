@@ -2,6 +2,7 @@ import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
+import { resetEditor } from '../actions/editor'
 
 export function loadPostDetail(idOrToken) {
   return {
@@ -169,6 +170,7 @@ export function createPost(body, editorId, repostId, repostedFromId) {
     meta: {
       repostId,
       repostedFromId,
+      successAction: resetEditor(editorId),
     },
   }
 }
@@ -183,7 +185,9 @@ export function createComment(body, editorId, postId) {
       method: 'POST',
       postId,
     },
-    meta: {},
+    meta: {
+      successAction: resetEditor(editorId),
+    },
   }
 }
 

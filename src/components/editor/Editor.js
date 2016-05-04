@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { openModal, closeModal } from '../../actions/modals'
 import { toggleEditing as toggleCommentEditing, updateComment } from '../../actions/comments'
@@ -68,18 +67,6 @@ class Editor extends Component {
     return getEditorId(post, comment, isComment, autoPopulate && !shouldPersist)
   }
 
-  clearPersistedData() {
-    const { dispatch } = this.props
-    dispatch({
-      type: ACTION_TYPES.POST.PERSIST,
-      payload: {
-        editorId: this.getEditorIdentifier(),
-        collection: {},
-        order: [],
-      },
-    })
-  }
-
   submit = (data) => {
     const { comment, dispatch, isComment, onSubmit, post } = this.props
     if (isComment) {
@@ -104,7 +91,6 @@ class Editor extends Component {
       )
     }
     if (onSubmit) { onSubmit() }
-    this.clearPersistedData()
   }
 
   cancel = () => {

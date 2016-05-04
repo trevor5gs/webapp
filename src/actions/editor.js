@@ -1,6 +1,27 @@
 import * as ACTION_TYPES from '../constants/action_types'
 import * as api from '../networking/api'
 
+
+export function addBlock(block, editorId) {
+  return {
+    type: ACTION_TYPES.EDITOR.ADD_BLOCK,
+    payload: {
+      block,
+      editorId,
+    },
+  }
+}
+
+export function addDragBlock(block, editorId) {
+  return {
+    type: ACTION_TYPES.EDITOR.ADD_DRAG_BLOCK,
+    payload: {
+      block,
+      editorId,
+    },
+  }
+}
+
 export function addEmptyTextBlock(editorId) {
   return {
     type: ACTION_TYPES.EDITOR.ADD_EMPTY_TEXT_BLOCK,
@@ -60,6 +81,15 @@ export function removeBlock(uid, editorId) {
     payload: {
       editorId,
       uid,
+    },
+  }
+}
+
+export function removeDragBlock(editorId) {
+  return {
+    type: ACTION_TYPES.EDITOR.REMOVE_DRAG_BLOCK,
+    payload: {
+      editorId,
     },
   }
 }

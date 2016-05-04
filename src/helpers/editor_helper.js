@@ -1,27 +1,13 @@
-/* eslint-disable no-param-reassign */
+import { cloneDeep } from 'lodash'
 import { userRegex } from '../components/completers/Completer'
 
 const methods = {}
 
-function _addDataKey(state) {
-  const newState = { ...state }
-  const { collection, order } = newState
-  let dataKey = ''
-  for (const key in collection) {
-    if (collection.hasOwnProperty(key)) {
-      dataKey += JSON.stringify(collection[key].data)
-    }
-  }
-  newState.dataKey = dataKey + order.join('')
-  return newState
-}
-methods.addDataKey = _addDataKey
-
 function _addHasContent(state) {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
   const firstBlock = collection[order[0]]
-  if (!firstBlock) { return false }
+  if (!firstBlock) { return state }
   const hasContent = Boolean(
     order.length > 1 ||
     firstBlock &&
@@ -34,7 +20,7 @@ function _addHasContent(state) {
 methods.addHasContent = _addHasContent
 
 function _addHasMention(state) {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
   let hasMention = false
   for (const uid of order) {
@@ -49,19 +35,38 @@ function _addHasMention(state) {
 }
 methods.addHasMention = _addHasMention
 
+function _addIsLoading(state) {
+  const newState = cloneDeep(state)
+  const { collection } = newState
+  let isLoading = false
+  for (const uid in collection) {
+    if (collection.hasOwnProperty(uid)) {
+      const block = collection[uid]
+      if (block && block.kind === 'image' && block.isLoading) {
+        isLoading = true
+        break
+      }
+    }
+  }
+  if (!isLoading && newState.dragBlock) { isLoading = newState.dragBlock.isLoading }
+  newState.isLoading = isLoading
+  return newState
+}
+methods.addIsLoading = _addIsLoading
+
 function _add({ block, shouldCheckForEmpty = true, state }) {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
-  newState.uid++
   collection[newState.uid] = { ...block, uid: newState.uid }
   order.push(newState.uid)
+  newState.uid++
   if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(newState) }
   return newState
 }
 methods.add = _add
 
 function _addEmptyTextBlock(state, shouldCheckForEmpty = false) {
-  let newState = { ...state }
+  let newState = cloneDeep(state)
   const { collection, order } = newState
   if (order.length > 1) {
     const last = collection[order[order.length - 1]]
@@ -78,7 +83,7 @@ function _addEmptyTextBlock(state, shouldCheckForEmpty = false) {
 methods.addEmptyTextBlock = _addEmptyTextBlock
 
 function _remove({ shouldCheckForEmpty = true, state, uid }) {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
   delete collection[uid]
   order.splice(order.indexOf(uid), 1)
@@ -88,7 +93,7 @@ function _remove({ shouldCheckForEmpty = true, state, uid }) {
 methods.remove = _remove
 
 function _removeEmptyTextBlock(state) {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
   if (order.length > 0) {
     const last = collection[order[order.length - 1]]
@@ -101,14 +106,16 @@ function _removeEmptyTextBlock(state) {
 }
 methods.removeEmptyTextBlock = _removeEmptyTextBlock
 
-function _updateBlock(newState, action) {
+function _updateBlock(state, action) {
+  const newState = cloneDeep(state)
   const { block, uid } = action.payload
   newState.collection[uid] = block
   return newState
 }
 methods.updateBlock = _updateBlock
 
-function _reorderBlocks(newState, action) {
+function _reorderBlocks(state, action) {
+  const newState = cloneDeep(state)
   const { order } = newState
   const { delta, uid } = action.payload
   const index = order.indexOf(uid)
@@ -119,6 +126,19 @@ function _reorderBlocks(newState, action) {
   return newState
 }
 methods.reorderBlocks = _reorderBlocks
+
+function _appendText(state, text) {
+  const newState = cloneDeep(state)
+  const { collection, order } = newState
+  const textBlocks = order.filter((orderUid) => collection[orderUid].kind === 'text')
+  const lastTextBlock = collection[textBlocks[textBlocks.length - 1]]
+  if (lastTextBlock) {
+    lastTextBlock.data += text
+    collection[lastTextBlock.uid] = lastTextBlock
+  }
+  return newState
+}
+methods.appendText = _appendText
 
 export default methods
 

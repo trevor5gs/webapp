@@ -4,6 +4,7 @@ import Block from './Block'
 class ImageBlock extends Component {
 
   static propTypes = {
+    blob: PropTypes.string,
     data: PropTypes.object,
   }
 
@@ -17,11 +18,11 @@ class ImageBlock extends Component {
   }
 
   render() {
-    const { data } = this.props
+    const { blob, data } = this.props
     return (
       <Block
         { ...this.props }
-        children={ <img onLoad={ this.onLoadImage } src={ data.url } alt={ data.alt } /> }
+        children={ <img onLoad={ this.onLoadImage } src={ blob || data.url } alt={ data.alt } /> }
         ref="block"
       />
     )
