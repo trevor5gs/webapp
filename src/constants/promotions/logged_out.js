@@ -15,15 +15,15 @@ export const LOGGED_OUT_PROMOTIONS = [
     },
   },
   {
-    username: 'damien',
+    username: 'baysanyuksel',
     caption: <h1>The Creators Network.</h1>,
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/14994/ello-regular-d2efd436.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2760117/ello-regular-a44a6a5d.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3900705/ello-hdpi-0ae2dc09.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3900705/ello-xhdpi-0ae2dc09.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/3900705/ello-optimized-0ae2dc09.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3901185/ello-hdpi-53049ef3.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3901185/ello-xhdpi-53049ef3.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/3901185/ello-optimized-53049ef3.jpg' },
     },
   },
   {

@@ -1,14 +1,14 @@
 export const AUTHENTICATION_PROMOTIONS = [
   {
-    username: 'zckrf',
+    username: 'folar',
 
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/4569/ello-regular-42293606.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/1707388/ello-regular-032b9f98.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3900700/ello-hdpi-700d2f80.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3900700/ello-xhdpi-700d2f80.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/3900700/ello-optimized-700d2f80.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3901184/ello-hdpi-47b9951a.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3901184/ello-xhdpi-47b9951a.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/3901184/ello-optimized-47b9951a.jpg' },
     },
   },
   {
@@ -48,15 +48,15 @@ export const AUTHENTICATION_PROMOTIONS = [
     },
   },
   {
-    username: 'letasobierajski',
+    username: 'andreirobu',
 
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/904309/ello-regular-9a48768f.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/11060/ello-regular-e4d4fc2c.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3900693/ello-hdpi-ecd0d6ef.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3900693/ello-xhdpi-ecd0d6ef.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/3900693/ello-optimized-ecd0d6ef.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3901187/ello-hdpi-4337d532.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3901187/ello-xhdpi-4337d532.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/3901187/ello-optimized-4337d532.jpg' },
     },
   },
 ]
