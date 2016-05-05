@@ -1,5 +1,4 @@
 import { debounce } from 'lodash'
-import { GUI } from '../../constants/gui_types'
 
 const resizeObjects = []
 let ticking = false
@@ -46,28 +45,28 @@ function getProbeProperties() {
 }
 
 
-// Todo: Externalize padding out to the probe so I don't have to do things like
-// I'm about to do next :point_down:
-
-/* eslint-disable no-nested-ternary */
 function setResizeProperties() {
   const wiw = window.innerWidth
   const probe = getProbeProperties()
   const gridColumnCount = parseInt(probe.gridColumnCount, 10)
   const viewportDeviceSize = getViewportDeviceSize(gridColumnCount, wiw)
+  // Todo: Externalize padding out to the probe so I don't have to do things like
+  // I'm about to do next :point_down:
+  /* eslint-disable no-nested-ternary */
   const padding = viewportDeviceSize === 'mobile' ? 10 : (gridColumnCount >= 4 ? 40 : 20)
+  /* eslint-enable no-nested-ternary */
   const columnWidth = Math.round((wiw - ((gridColumnCount + 1) * padding)) / gridColumnCount)
   const contentWidth = Math.round(wiw - (padding * 2))
-
-  GUI.innerWidth = wiw
-  GUI.innerHeight = window.innerHeight
-  GUI.coverOffset = Math.round((wiw * 0.5625))
-  GUI.coverImageSize = getCoverImageSize(wiw)
-  GUI.viewportDeviceSize = viewportDeviceSize
-  GUI.gridColumnCount = gridColumnCount
-  GUI.columnWidth = columnWidth
-  GUI.contentWidth = contentWidth
-  return GUI
+  return {
+    columnWidth,
+    contentWidth,
+    coverImageSize: getCoverImageSize(wiw),
+    coverOffset: Math.round((wiw * 0.5625)),
+    gridColumnCount,
+    innerHeight: window.innerHeight,
+    innerWidth: wiw,
+    viewportDeviceSize,
+  }
 }
 
 function resized() {

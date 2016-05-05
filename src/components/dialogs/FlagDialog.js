@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { GUI } from '../../constants/gui_types'
 
 const flags = {
   spam: 'Spam',
@@ -19,6 +18,7 @@ class FlagDialog extends Component {
   static propTypes = {
     onResponse: PropTypes.func,
     onConfirm: PropTypes.func,
+    viewportDeviceSize: PropTypes.string,
   }
 
   componentWillMount() {
@@ -65,7 +65,7 @@ class FlagDialog extends Component {
   renderChoicesScreen() {
     const { activeChoice } = this.state
     const index = Object.keys(flags).indexOf(activeChoice)
-    const top = index < 0 ? null : (70 * index) + _offsets[GUI.viewportDeviceSize]
+    const top = index < 0 ? null : (70 * index) + _offsets[this.props.viewportDeviceSize]
     return (
       <div className="Dialog FlagDialog">
         <h2>Would you like to flag this content as:</h2>

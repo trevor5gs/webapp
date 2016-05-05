@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { GUI } from '../../constants/gui_types'
 import { BrowseIcon, CameraIcon, CancelIcon, PostIcon, ReplyAllIcon } from './EditorIcons'
 
 class PostActionBar extends Component {
@@ -14,6 +13,7 @@ class PostActionBar extends Component {
     replyAllAction: PropTypes.func,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
+    viewportDeviceSize: PropTypes.string,
   }
 
   submitted = () => {
@@ -37,13 +37,13 @@ class PostActionBar extends Component {
   }
 
   render() {
-    const { disableSubmitAction, replyAllAction, submitText } = this.props
+    const { disableSubmitAction, replyAllAction, submitText, viewportDeviceSize } = this.props
     return (
       <div className="editor-actions">
 
         <button className="PostActionButton forUpload" ref="browseButton" onClick={ this.browse }>
           <span className="PostActionButtonLabel">Upload</span>
-          { GUI.viewportDeviceSize === 'mobile' ? <CameraIcon /> : <BrowseIcon /> }
+          { viewportDeviceSize === 'mobile' ? <CameraIcon /> : <BrowseIcon /> }
         </button>
 
         <button className="PostActionButton forCancel" ref="cancelButton" onClick={ this.cancel }>
@@ -83,6 +83,12 @@ class PostActionBar extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  const { gui } = state
+  return {
+    viewportDeviceSize: gui.viewportDeviceSize,
+  }
+}
 
-export default connect()(PostActionBar)
+export default connect(mapStateToProps)(PostActionBar)
 

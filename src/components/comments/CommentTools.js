@@ -27,6 +27,7 @@ class CommentTools extends Component {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     post: PropTypes.object.isRequired,
+    viewportDeviceSize: PropTypes.string,
   }
 
   componentWillMount() {
@@ -57,9 +58,10 @@ class CommentTools extends Component {
   }
 
   onClickFlagComment = () => {
-    const { dispatch } = this.props
+    const { dispatch, viewportDeviceSize } = this.props
     dispatch(openModal(
       <FlagDialog
+        viewportDeviceSize={ viewportDeviceSize }
         onResponse={ this.onCommentWasFlagged }
         onConfirm={ this.closeModal }
       />))
@@ -200,6 +202,7 @@ class CommentTools extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.authentication.isLoggedIn,
+    viewportDeviceSize: state.gui.viewportDeviceSize,
   }
 }
 

@@ -48,6 +48,7 @@ class PostTools extends Component {
     postViewsCountRounded: PropTypes.string,
     post: PropTypes.object.isRequired,
     previousPath: PropTypes.string,
+    viewportDeviceSize: PropTypes.string,
   }
 
   componentWillMount() {
@@ -122,9 +123,10 @@ class PostTools extends Component {
   }
 
   onClickFlagPost = () => {
-    const { dispatch } = this.props
+    const { dispatch, viewportDeviceSize } = this.props
     dispatch(openModal(
       <FlagDialog
+        viewportDeviceSize={ viewportDeviceSize }
         onResponse={ this.onPostWasFlagged }
         onConfirm={ this.closeModal }
       />))
@@ -353,7 +355,7 @@ class PostTools extends Component {
   }
 }
 
-const mapStateToProps = ({ authentication, json, profile, routing, stream }, ownProps) => {
+const mapStateToProps = ({ authentication, gui, json, profile, routing, stream }, ownProps) => {
   const post = json[POSTS][ownProps.post.id]
   const isCommentsRequesting = stream.type === LOAD_STREAM_REQUEST &&
                                stream.meta.mappingType === COMMENTS &&
@@ -374,6 +376,7 @@ const mapStateToProps = ({ authentication, json, profile, routing, stream }, own
     postShowLovers: post.showLovers,
     postShowReposters: post.showReposters,
     postViewsCountRounded: post.viewsCountRounded,
+    viewportDeviceSize: gui.viewportDeviceSize,
   }
 }
 
