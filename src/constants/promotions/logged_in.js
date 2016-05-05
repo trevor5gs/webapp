@@ -90,7 +90,7 @@ export const LOGGED_IN_PROMOTIONS = [
     username: 'begraphc',
     caption: <h1>Always ad-free.</h1>,
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2378644/ello-regular-7f5c32ee.png },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2378644/ello-regular-7f5c32ee.png' },
     },
     coverImage: {
       hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3900642/ello-hdpi-333a79b5.jpg' },
