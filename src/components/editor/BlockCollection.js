@@ -33,6 +33,7 @@ class BlockCollection extends Component {
     avatar: PropTypes.object,
     blocks: PropTypes.array,
     cancelAction: PropTypes.func.isRequired,
+    currentUsername: PropTypes.string,
     collection: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     dragBlock: PropTypes.object,
@@ -308,12 +309,12 @@ class BlockCollection extends Component {
   }
 
   replyAll = () => {
-    const { postId } = this.props
+    const { currentUsername, postId } = this.props
     if (!postId) { return }
     const nameArr = []
     const usernames = document.querySelectorAll(`#Post_${postId} .CommentUsername`)
     for (const node of usernames) {
-      if (nameArr.indexOf(node.innerHTML) === -1) {
+      if (nameArr.indexOf(node.innerHTML) === -1 && node.innerHTML !== `@${currentUsername}`) {
         nameArr.push(node.innerHTML)
       }
     }
@@ -420,6 +421,7 @@ function mapStateToProps(state, ownProps) {
   return {
     avatar: state.profile.avatar,
     collection: editor.collection,
+    currentUsername: state.profile.username,
     dragBlock: editor.dragBlock,
     hasContent: editor.hasContent,
     hasMention: editor.hasMention,
