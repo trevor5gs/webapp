@@ -1,10 +1,10 @@
-import * as ACTION_TYPES from '../constants/action_types'
+import { EDITOR } from '../constants/action_types'
 import * as api from '../networking/api'
 
 
 export function addBlock(block, editorId) {
   return {
-    type: ACTION_TYPES.EDITOR.ADD_BLOCK,
+    type: EDITOR.ADD_BLOCK,
     payload: {
       block,
       editorId,
@@ -14,7 +14,7 @@ export function addBlock(block, editorId) {
 
 export function addDragBlock(block, editorId) {
   return {
-    type: ACTION_TYPES.EDITOR.ADD_DRAG_BLOCK,
+    type: EDITOR.ADD_DRAG_BLOCK,
     payload: {
       block,
       editorId,
@@ -24,7 +24,7 @@ export function addDragBlock(block, editorId) {
 
 export function addEmptyTextBlock(editorId) {
   return {
-    type: ACTION_TYPES.EDITOR.ADD_EMPTY_TEXT_BLOCK,
+    type: EDITOR.ADD_EMPTY_TEXT_BLOCK,
     payload: {
       editorId,
     },
@@ -33,7 +33,7 @@ export function addEmptyTextBlock(editorId) {
 
 export function autoCompleteUsers(type, word) {
   return {
-    type: ACTION_TYPES.EDITOR.USER_COMPLETER,
+    type: EDITOR.USER_COMPLETER,
     payload: {
       endpoint: api.userAutocompleter(word),
       type,
@@ -43,7 +43,7 @@ export function autoCompleteUsers(type, word) {
 
 export function initializeEditor(editorId, shouldPersist) {
   return {
-    type: ACTION_TYPES.EDITOR.INITIALIZE,
+    type: EDITOR.INITIALIZE,
     payload: {
       editorId,
       shouldPersist,
@@ -53,7 +53,7 @@ export function initializeEditor(editorId, shouldPersist) {
 
 export function loadEmojis(type, word) {
   return {
-    type: ACTION_TYPES.EDITOR.EMOJI_COMPLETER,
+    type: EDITOR.EMOJI_COMPLETER,
     payload: {
       endpoint: api.loadEmojis(),
       type,
@@ -64,7 +64,7 @@ export function loadEmojis(type, word) {
 
 export function postPreviews(embedUrl, editorId, uid) {
   return {
-    type: ACTION_TYPES.EDITOR.POST_PREVIEW,
+    type: EDITOR.POST_PREVIEW,
     payload: {
       body: { body: [{ kind: 'embed', data: { url: embedUrl } }] },
       editorId,
@@ -77,7 +77,7 @@ export function postPreviews(embedUrl, editorId, uid) {
 
 export function removeBlock(uid, editorId) {
   return {
-    type: ACTION_TYPES.EDITOR.REMOVE_BLOCK,
+    type: EDITOR.REMOVE_BLOCK,
     payload: {
       editorId,
       uid,
@@ -87,7 +87,7 @@ export function removeBlock(uid, editorId) {
 
 export function removeDragBlock(editorId) {
   return {
-    type: ACTION_TYPES.EDITOR.REMOVE_DRAG_BLOCK,
+    type: EDITOR.REMOVE_DRAG_BLOCK,
     payload: {
       editorId,
     },
@@ -96,7 +96,7 @@ export function removeDragBlock(editorId) {
 
 export function reorderBlocks(uid, delta, editorId) {
   return {
-    type: ACTION_TYPES.EDITOR.REORDER_BLOCKS,
+    type: EDITOR.REORDER_BLOCKS,
     payload: {
       delta,
       editorId,
@@ -105,9 +105,19 @@ export function reorderBlocks(uid, delta, editorId) {
   }
 }
 
+export function replaceText(uid, editorId) {
+  return {
+    type: EDITOR.REPLACE_TEXT,
+    payload: {
+      editorId,
+      uid,
+    },
+  }
+}
+
 export function resetEditor(editorId) {
   return {
-    type: ACTION_TYPES.EDITOR.RESET,
+    type: EDITOR.RESET,
     payload: {
       editorId,
     },
@@ -116,7 +126,7 @@ export function resetEditor(editorId) {
 
 export function saveAsset(file, editorId) {
   return {
-    type: ACTION_TYPES.EDITOR.SAVE_ASSET,
+    type: EDITOR.SAVE_ASSET,
     payload: {
       editorId,
       file,
@@ -126,7 +136,7 @@ export function saveAsset(file, editorId) {
 
 export function updateBlock(block, uid, editorId) {
   return {
-    type: ACTION_TYPES.EDITOR.UPDATE_BLOCK,
+    type: EDITOR.UPDATE_BLOCK,
     payload: {
       block,
       editorId,

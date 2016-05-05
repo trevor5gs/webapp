@@ -8,7 +8,7 @@ import {
   setIsTextToolsActive,
   setTextToolsCoordinates,
 } from '../actions/modals'
-import { autoCompleteUsers, loadEmojis } from '../actions/editor'
+import { autoCompleteUsers, loadEmojis, replaceText } from '../actions/editor'
 import Completer from '../components/completers/Completer'
 import TextTools from '../components/editor/TextTools'
 import { addInputObject, removeInputObject } from '../components/editor/InputComponent'
@@ -61,8 +61,13 @@ class EditorToolsContainer extends Component {
   }
 
   onCompletion = ({ value }) => {
-    replaceWordFromSelection(value)
-    this.onCancelAutoCompleter()
+    if (document.activeElement.classList.contains('text')) {
+      const { dispatch } = this.props
+      const { collectionId, editorId } = document.activeElement.parentNode.dataset
+      replaceWordFromSelection(value)
+      dispatch(replaceText(collectionId, editorId))
+      this.onCancelAutoCompleter()
+    }
   }
 
   onHideCompleter() {

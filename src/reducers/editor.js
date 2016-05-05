@@ -75,6 +75,8 @@ function editorObject(state = initialEditorState, action) {
       return newState
     case EDITOR.REORDER_BLOCKS:
       return editorMethods.reorderBlocks(newState, action)
+    case EDITOR.REPLACE_TEXT:
+      return editorMethods.replaceText(newState, action)
     case EDITOR.RESET:
       return initialEditorState
     case EDITOR.SAVE_IMAGE_SUCCESS:

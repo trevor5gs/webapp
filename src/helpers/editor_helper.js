@@ -140,5 +140,20 @@ function _appendText(state, text) {
 }
 methods.appendText = _appendText
 
+function _replaceText(state, action) {
+  const newState = cloneDeep(state)
+  const { collection } = newState
+  const { editorId, uid } = action.payload
+  if (collection[uid].kind === 'text') {
+    const selector = `[data-editor-id="${editorId}"][data-collection-id="${uid}"]`
+    const elem = document.querySelector(selector)
+    if (elem && elem.firstChild) {
+      collection[uid].data = elem.firstChild.innerHTML
+    }
+  }
+  return newState
+}
+methods.replaceText = _replaceText
+
 export default methods
 
