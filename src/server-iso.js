@@ -13,6 +13,7 @@ function handleZlibError(error) {
 }
 process.on('uncaughtException', handleZlibError)
 
+import Honeybadger from 'honeybadger'
 import express from 'express'
 import morgan from 'morgan'
 import librato from 'librato-node'
@@ -35,6 +36,9 @@ global.ENV = require('../env')
 updateTimeAgoStrings({ about: '' })
 
 const app = express()
+
+// Honeybadger "before everything" middleware
+app.use(Honeybadger.requestHandler);
 
 // Log requests with Morgan
 app.use(morgan('combined'))
@@ -152,5 +156,8 @@ app.use((req, res) => {
     res.send(indexStr)
   }
 })
+
+// Honeybadger "after everything" middleware
+app.use(Honeybadger.errorHandler);
 
 module.exports = app
