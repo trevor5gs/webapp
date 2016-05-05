@@ -78,7 +78,8 @@ function editorObject(state = initialEditorState, action) {
     case EDITOR.REPLACE_TEXT:
       return editorMethods.replaceText(newState, action)
     case EDITOR.RESET:
-      return initialEditorState
+      newState = initialEditorState
+      return editorMethods.addEmptyTextBlock(newState)
     case EDITOR.SAVE_IMAGE_SUCCESS:
       if (newState.dragBlock && newState.dragBlock.uid === action.payload.uid) {
         newState.dragBlock = {
