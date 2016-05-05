@@ -120,8 +120,6 @@ export function editor(state = initialState, action) {
     newState[editorId] = editorObject(newState[editorId], action)
     if (action.type === EDITOR.INITIALIZE) {
       newState[editorId].shouldPersist = get(action, 'payload.shouldPersist', false)
-    } else if (!newState[editorId].shouldPersist && action.type === EDITOR.RESET) {
-      delete newState[editorId]
     } else if (newState[editorId]) {
       newState[editorId] = editorMethods.addHasContent(newState[editorId])
       newState[editorId] = editorMethods.addHasMention(newState[editorId])
