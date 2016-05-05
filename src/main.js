@@ -2,6 +2,7 @@ import './main.sass'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
 
+import Honeybadger from 'honeybadger-js'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
@@ -19,6 +20,11 @@ import MemoryStore from './vendor/memory_store'
 
 import './vendor/embetter'
 import './vendor/embetter_initializer'
+
+Honeybadger.configure({
+  api_key: ENV.HONEYBADGER_API_KEY,
+  environment: ENV.HONEYBADGER_ENVIRONMENT,
+});
 
 updateTimeAgoStrings({ about: '' })
 

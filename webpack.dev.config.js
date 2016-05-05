@@ -6,7 +6,7 @@ var webpack = require('webpack')
 require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
 
 module.exports = {
-  devtool: 'sourcemap',
+  devtool: 'source-map',
   entry: {
     main: [ './src/main', 'webpack-hot-middleware/client' ]
   },
