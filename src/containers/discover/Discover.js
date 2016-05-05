@@ -4,7 +4,7 @@ import { BEACONS } from '../../constants/action_types'
 import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import {
-  loadCommunities, loadDiscoverUsers, loadFeaturedUsers, bindDiscoverKey,
+  loadCommunities, loadDiscoverUsers, loadDiscoverPosts, loadFeaturedUsers, bindDiscoverKey,
 } from '../../actions/discover'
 import { trackEvent } from '../../actions/tracking'
 import Promotion from '../../components/assets/Promotion'
@@ -15,11 +15,13 @@ import { ZeroStream } from '../../components/zeros/Zeros'
 const BEACON_VERSION = '1'
 
 export function getDiscoverAction(type) {
-  let action = loadDiscoverUsers(type || 'recommended')
+  let action = loadDiscoverPosts(type || 'recommended')
   if (type === 'communities') {
     action = loadCommunities()
   } else if (type === 'featured-users') {
     action = loadFeaturedUsers()
+  } else if (type === 'trending') {
+    action = loadDiscoverUsers(type)
   }
   return action
 }

@@ -119,6 +119,13 @@ export function discoverUsers(type) {
     params,
   }
 }
+export function discoverPosts(type) {
+  const params = { per_page: PER_PAGE }
+  return {
+    path: getAPIPath(`discover/posts/${type}`, params),
+    params,
+  }
+}
 // Streams
 export function friendStream() {
   const params = { per_page: PER_PAGE }
