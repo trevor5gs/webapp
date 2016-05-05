@@ -83,10 +83,8 @@ class AppContainer extends Component {
         { isLoggedIn ? <EditorToolsContainer /> : null }
         <Modal />
         <DevTools />
-        <template>
-          <KeyboardContainer />
-          <AnalyticsContainer />
-        </template>
+        <KeyboardContainer />
+        <AnalyticsContainer />
       </section>
     )
   }
