@@ -210,6 +210,7 @@ class ImageRegion extends Component {
         this.img.src = sources
       } else {
         this.img.srcset = sources
+        this.img.src = this.attachment.hdpi.url
       }
     }
   }
