@@ -209,6 +209,11 @@ export function userAutocompleter(word) {
   }
 }
 export function loadEmojis() {
+  if (ENV.USE_LOCAL_EMOJI) {
+    return {
+      path: '/static/emojis.json',
+    }
+  }
   return {
     path: `${ENV.AUTH_DOMAIN}/emojis.json`,
   }

@@ -51,6 +51,12 @@ syntax](http://sass-lang.com/documentation/file.INDENTED_SYNTAX.html) and sent
 through [Autoprefixer][autoprefixer] for taking care of the missing vendor
 prefixes.
 
+## Emoji autocompleter in dev
+To get the emojis.json file run:
+`curl -o public/static/emojis.json https://ello.co/emojis.json`
+To turn it on add this to your `.env`:
+`USE_LOCAL_EMOJI=true`
+
 :metal:
 
 
