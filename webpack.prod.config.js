@@ -10,6 +10,7 @@ require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
 const nodeEnv = process.env.NODE_ENV || 'development'
 
 module.exports = {
+  devtool: 'source-map',
   entry: {
     main: './src/main',
   },
