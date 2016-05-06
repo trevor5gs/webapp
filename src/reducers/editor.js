@@ -66,6 +66,8 @@ function editorObject(state = initialEditorState, action) {
       return editorMethods.addEmptyTextBlock(newState)
     case EDITOR.APPEND_TEXT:
       return editorMethods.appendText(newState, action.payload.text)
+    case EDITOR.INITIALIZE:
+      return initialEditorState
     case EDITOR.POST_PREVIEW_SUCCESS:
       newState = editorMethods.removeEmptyTextBlock(newState)
       newState = editorMethods.add({
@@ -82,13 +84,9 @@ function editorObject(state = initialEditorState, action) {
       return editorMethods.reorderBlocks(newState, action)
     case EDITOR.REPLACE_TEXT:
       return editorMethods.replaceText(newState, action)
-    case EDITOR.INITIALIZE:
     case EDITOR.RESET:
     case POST.CREATE_SUCCESS:
     case POST.UPDATE_SUCCESS:
-      if (newState.hasContent || action.type === EDITOR.INITIALIZE) {
-        return initialEditorState
-      }
       return editorMethods.addEmptyTextBlock(initialEditorState)
     case EDITOR.SAVE_IMAGE_SUCCESS:
       if (newState.dragBlock && newState.dragBlock.uid === action.payload.uid) {
