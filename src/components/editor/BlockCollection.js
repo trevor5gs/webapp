@@ -67,7 +67,7 @@ class BlockCollection extends Component {
     }
     if (blocks.length) {
       for (const block of blocks) {
-        dispatch(addBlock(block, editorId))
+        dispatch(addBlock(block, editorId, false))
       }
     }
   }

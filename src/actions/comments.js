@@ -23,11 +23,12 @@ export function loadEditableComment(comment) {
   }
 }
 
-export function updateComment(comment, body) {
+export function updateComment(comment, body, editorId) {
   return {
     type: ACTION_TYPES.COMMENT.UPDATE,
     payload: {
       body: { body },
+      editorId,
       endpoint: api.editComment(comment),
       method: 'PATCH',
     },

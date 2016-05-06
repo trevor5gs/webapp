@@ -72,7 +72,7 @@ class Editor extends Component {
     if (isComment) {
       if (comment && comment.isEditing) {
         dispatch(toggleCommentEditing(comment, false))
-        dispatch(updateComment(comment, data))
+        dispatch(updateComment(comment, data, this.getEditorIdentifier()))
       } else {
         dispatch(createComment(data, this.getEditorIdentifier(), post.id))
       }
@@ -81,7 +81,7 @@ class Editor extends Component {
       dispatch(createPost(data, this.getEditorIdentifier()))
     } else if (post.isEditing) {
       dispatch(toggleEditing(post, false))
-      dispatch(updatePost(post, data))
+      dispatch(updatePost(post, data, this.getEditorIdentifier()))
     } else if (post.isReposting) {
       dispatch(toggleReposting(post, false))
       const repostId = post.repostId || post.id

@@ -3,6 +3,7 @@ import { cloneDeep, get } from 'lodash'
 import {
   AUTHENTICATION,
   EDITOR,
+  POST,
   PROFILE,
 } from '../constants/action_types'
 import editorMethods from '../helpers/editor_helper'
@@ -53,7 +54,11 @@ function editorObject(state = initialEditorState, action) {
   let newState = cloneDeep(state)
   switch (action.type) {
     case EDITOR.ADD_BLOCK:
-      return editorMethods.add({ block: action.payload.block, state: newState })
+      return editorMethods.add({
+        block: action.payload.block,
+        state: newState,
+        shouldCheckForEmpty: action.payload.shouldCheckForEmpty,
+      })
     case EDITOR.ADD_DRAG_BLOCK:
       newState.dragBlock = action.payload.block
       return newState
@@ -77,9 +82,14 @@ function editorObject(state = initialEditorState, action) {
       return editorMethods.reorderBlocks(newState, action)
     case EDITOR.REPLACE_TEXT:
       return editorMethods.replaceText(newState, action)
+    case EDITOR.INITIALIZE:
     case EDITOR.RESET:
-      newState = initialEditorState
-      return editorMethods.addEmptyTextBlock(newState)
+    case POST.CREATE_SUCCESS:
+    case POST.UPDATE_SUCCESS:
+      if (newState.hasContent || action.type === EDITOR.INITIALIZE) {
+        return initialEditorState
+      }
+      return editorMethods.addEmptyTextBlock(initialEditorState)
     case EDITOR.SAVE_IMAGE_SUCCESS:
       if (newState.dragBlock && newState.dragBlock.uid === action.payload.uid) {
         newState.dragBlock = {

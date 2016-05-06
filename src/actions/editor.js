@@ -2,12 +2,13 @@ import { EDITOR } from '../constants/action_types'
 import * as api from '../networking/api'
 
 
-export function addBlock(block, editorId) {
+export function addBlock(block, editorId, shouldCheckForEmpty = true) {
   return {
     type: EDITOR.ADD_BLOCK,
     payload: {
       block,
       editorId,
+      shouldCheckForEmpty,
     },
   }
 }

@@ -191,11 +191,12 @@ export function createComment(body, editorId, postId) {
   }
 }
 
-export function updatePost(post, body) {
+export function updatePost(post, body, editorId) {
   return {
     type: ACTION_TYPES.POST.UPDATE,
     payload: {
       body: { body },
+      editorId,
       endpoint: api.updatePost(post.id),
       method: 'PATCH',
       model: post,
