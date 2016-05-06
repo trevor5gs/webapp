@@ -67,6 +67,9 @@ function editorObject(state = initialEditorState, action) {
     case EDITOR.APPEND_TEXT:
       return editorMethods.appendText(newState, action.payload.text)
     case EDITOR.INITIALIZE:
+      if (newState.shouldPersist) {
+        return newState
+      }
       return initialEditorState
     case EDITOR.POST_PREVIEW_SUCCESS:
       newState = editorMethods.removeEmptyTextBlock(newState)
