@@ -5,7 +5,6 @@ import Emoji from '../assets/Emoji'
 import Completion from './Completion'
 import { getPositionFromSelection } from '../editor/SelectionUtil'
 import { addKeyObject, removeKeyObject } from '../viewport/KeyComponent'
-import { addResizeObject, removeResizeObject } from '../viewport/ResizeComponent'
 
 export const emojiRegex = /\s?:{1}(\w+|\+|-):{0}$/
 export const userRegex = /(\s|^)@{1}\w+/
@@ -17,23 +16,21 @@ export default class Completer extends Component {
     completions: PropTypes.object.isRequired,
     onCancel: PropTypes.func.isRequired,
     onCompletion: PropTypes.func.isRequired,
+    viewportDeviceSize: PropTypes.string,
   }
 
   componentWillMount() {
     this.state = {
       selectedIndex: 0,
-      viewportDeviceSize: null,
     }
   }
 
   componentDidMount() {
     addKeyObject(this)
-    addResizeObject(this)
   }
 
   componentWillUnmount() {
     removeKeyObject(this)
-    removeResizeObject(this)
   }
 
   onKeyDown(e) {
@@ -50,10 +47,6 @@ export default class Completer extends Component {
       e.preventDefault()
       this.props.onCancel()
     }
-  }
-
-  onResize({ viewportDeviceSize }) {
-    this.setState({ viewportDeviceSize })
   }
 
   nextSelection() {
@@ -113,8 +106,7 @@ export default class Completer extends Component {
   }
 
   render() {
-    const { className, completions } = this.props
-    const { viewportDeviceSize } = this.state
+    const { className, completions, viewportDeviceSize } = this.props
     if (!completions || !completions.data || !completions.data.length) {
       return null
     }
@@ -125,8 +117,10 @@ export default class Completer extends Component {
       style = { top: -200, left: -666 }
     } else if (viewportDeviceSize === 'mobile') {
       style = { top: pos.top + 20 }
+      console.log('mobile')
     } else if (pos) {
       style = { top: pos.top + 20, left: pos.left }
+      console.log('not mobile')
     }
     return (
       <div style={ style } className={ classNames(className, 'Completer') }>

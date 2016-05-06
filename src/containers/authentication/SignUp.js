@@ -11,6 +11,8 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 class SignUp extends Component {
 
   static propTypes = {
+    coverImageSize: PropTypes.string,
+    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
   }
 
@@ -28,6 +30,7 @@ class SignUp extends Component {
   }
 
   render() {
+    const { coverImageSize, coverOffset } = this.props
     const { featuredUser } = this.state
     return (
       <main className="Authentication View" role="main">
@@ -36,11 +39,24 @@ class SignUp extends Component {
         </div>
         <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
-        <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
+        <Cover
+          coverImage={ featuredUser.coverImage }
+          coverImageSize={ coverImageSize }
+          coverOffset={ coverOffset }
+          modifiers="asFullScreen withOverlay"
+        />
       </main>
     )
   }
 }
 
-export default connect()(SignUp)
+const mapStateToProps = (state) => {
+  const { gui } = state
+  return {
+    coverImageSize: gui.coverImageSize,
+    coverOffset: gui.coverOffset,
+  }
+}
+
+export default connect(mapStateToProps)(SignUp)
 

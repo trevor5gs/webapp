@@ -19,6 +19,8 @@ let _isAndroid
 class ForgotPassword extends Component {
 
   static propTypes = {
+    coverImageSize: PropTypes.string,
+    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
   }
 
@@ -116,6 +118,7 @@ class ForgotPassword extends Component {
   }
 
   render() {
+    const { coverImageSize, coverOffset } = this.props
     const { featuredUser, formStatus } = this.state
     return (
       <main className="Authentication View" role="main">
@@ -128,11 +131,24 @@ class ForgotPassword extends Component {
         </div>
         <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
-        <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
+        <Cover
+          coverImage={ featuredUser.coverImage }
+          coverImageSize={ coverImageSize }
+          coverOffset={ coverOffset }
+          modifiers="asFullScreen withOverlay"
+        />
       </main>
     )
   }
 }
 
-export default connect()(ForgotPassword)
+const mapStateToProps = (state) => {
+  const { gui } = state
+  return {
+    coverImageSize: gui.coverImageSize,
+    coverOffset: gui.coverOffset,
+  }
+}
+
+export default connect(mapStateToProps)(ForgotPassword)
 

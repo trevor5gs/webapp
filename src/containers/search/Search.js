@@ -16,6 +16,7 @@ import { TabListButtons } from '../../components/tabs/TabList'
 class Search extends Component {
 
   static propTypes = {
+    coverImageSize: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     location: PropTypes.shape({
@@ -101,7 +102,7 @@ class Search extends Component {
   }
 
   render() {
-    const { isLoggedIn } = this.props
+    const { coverImageSize, isLoggedIn } = this.props
     const { terms, type } = this.state
     const tabs = [
       { type: 'posts', children: 'Posts' },
@@ -110,6 +111,7 @@ class Search extends Component {
     return (
       <main className="Search View" role="main">
         <Promotion
+          coverImageSize={ coverImageSize }
           creditsClickAction={ this.onClickTrackCredits }
           isLoggedIn={ isLoggedIn }
           userlist={ isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS }
@@ -136,6 +138,7 @@ class Search extends Component {
 
 function mapStateToProps(state) {
   return {
+    coverImageSize: state.gui.coverImageSize,
     isLoggedIn: state.authentication.isLoggedIn,
   }
 }

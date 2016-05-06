@@ -26,8 +26,10 @@ let _isAndroid
 class SignIn extends Component {
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    coverImageSize: PropTypes.string,
+    coverOffset: PropTypes.number,
     currentStream: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
     webOnboardingVersionSeen: PropTypes.string,
   }
 
@@ -142,6 +144,7 @@ class SignIn extends Component {
   }
 
   render() {
+    const { coverImageSize, coverOffset } = this.props
     const {
       emailState, showEmailError,
       passwordState, showPasswordError,
@@ -186,7 +189,12 @@ class SignIn extends Component {
         </div>
         <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
-        <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
+        <Cover
+          coverImage={ featuredUser.coverImage }
+          coverImageSize={ coverImageSize }
+          coverOffset={ coverOffset }
+          modifiers="asFullScreen withOverlay"
+        />
       </main>
     )
   }
@@ -194,6 +202,8 @@ class SignIn extends Component {
 
 const mapStateToProps = state => ({
   currentStream: state.gui.currentStream,
+  coverImageSize: state.gui.coverImageSize,
+  coverOffset: state.gui.coverOffset,
   webOnboardingVersionSeen: state.profile.webOnboardingVersion,
 })
 

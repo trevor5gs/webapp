@@ -10,7 +10,6 @@ import { SESSION_KEYS } from '../../constants/gui_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { findModel } from '../../helpers/json_helper'
 import { addScrollObject, removeScrollObject } from '../viewport/ScrollComponent'
-import { addResizeObject, removeResizeObject } from '../viewport/ResizeComponent'
 import { ElloMark } from '../svg/ElloIcons'
 import { Paginator, emptyPagination } from './Paginator'
 import { findLayoutMode } from '../../reducers/gui'
@@ -25,13 +24,16 @@ export class StreamComponent extends Component {
     className: PropTypes.string,
     currentUser: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
+    gridColumnCount: PropTypes.number,
     history: PropTypes.object.isRequired,
-    mode: PropTypes.string.isRequired,
-    isModalComponent: PropTypes.bool,
     ignoresScrollPosition: PropTypes.bool.isRequired,
     initModel: PropTypes.object,
+    innerHeight: PropTypes.number,
+    innerWidth: PropTypes.number,
+    isModalComponent: PropTypes.bool,
     isUserDetail: PropTypes.bool.isRequired,
     json: PropTypes.object.isRequired,
+    mode: PropTypes.string.isRequired,
     omnibar: PropTypes.shape({
       isActive: PropTypes.bool,
     }),
@@ -135,9 +137,6 @@ export class StreamComponent extends Component {
     } else {
       this.saveScroll = true
     }
-
-    addResizeObject(this)
-
     this.attemptToRestoreScroll(shouldScrollToTop)
   }
 
@@ -177,8 +176,8 @@ export class StreamComponent extends Component {
     }
 
     const { action } = this.state
-    const { stream, omnibar, isUserDetail } = this.props
-    const canScroll = document.body.scrollHeight > window.innerHeight
+    const { innerHeight, stream, omnibar, isUserDetail } = this.props
+    const canScroll = document.body.scrollHeight > innerHeight
     const shouldScroll = this.shouldScroll && (canScroll ||
       stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
       action && action.payload &&
@@ -200,8 +199,6 @@ export class StreamComponent extends Component {
       window.embetter.stopPlayers()
     }
     removeScrollObject(this)
-    removeResizeObject(this)
-
     this.saveScroll = false
   }
 
@@ -211,10 +208,6 @@ export class StreamComponent extends Component {
 
   onScrollBottom() {
     this.loadPage('next', true)
-  }
-
-  onResize(resizeProps) {
-    this.setState(resizeProps)
   }
 
   onLoadNextPage = () => {
@@ -255,12 +248,13 @@ export class StreamComponent extends Component {
   }
 
   scrollToUserDetail() {
-    const offset = Math.round((window.innerWidth * 0.5625)) - 200
+    const { innerWidth } = this.props
+    const offset = Math.round((innerWidth * 0.5625)) - 200
     window.scrollTo(0, offset)
   }
 
   attemptToRestoreScroll(fromMount = false) {
-    const { history, routerState, isModalComponent } = this.props
+    const { innerHeight, history, routerState, isModalComponent } = this.props
     let scrollTopValue = null
     if (!routerState.didComeFromSeeMoreCommentsLink && !this.props.ignoresScrollPosition) {
       if (fromMount && !isModalComponent) {
@@ -284,7 +278,7 @@ export class StreamComponent extends Component {
       }
     } else if (routerState.didComeFromSeeMoreCommentsLink) {
       this.saveScroll = true
-      scrollTopValue = document.body.scrollHeight - window.innerHeight
+      scrollTopValue = document.body.scrollHeight - innerHeight
     }
 
     if (scrollTopValue) {
@@ -382,9 +376,9 @@ export class StreamComponent extends Component {
   }
 
   render() {
-    const { className, currentUser, initModel, json, mode,
+    const { className, currentUser, gridColumnCount, initModel, json, mode,
       paginatorText, renderObj, result, stream } = this.props
-    const { action, gridColumnCount, hidePaginator } = this.state
+    const { action, hidePaginator } = this.state
     if (!action) { return null }
     const model = findModel(json, initModel)
     if (model && !result) {
@@ -486,7 +480,10 @@ export function mapStateToProps(state, ownProps) {
   }
   return {
     currentUser: state.profile,
+    gridColumnCount: state.gui.gridColumnCount,
     history: state.gui.history,
+    innerHeight: state.gui.innerHeight,
+    innerWidth: state.gui.innerWidth,
     json: state.json,
     mode: findLayoutMode(state.gui.modes).mode,
     omnibar: state.omnibar,

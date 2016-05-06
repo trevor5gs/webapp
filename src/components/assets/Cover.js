@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { addScrollObject, removeScrollObject } from '../viewport/ScrollComponent'
-import { addResizeObject, removeResizeObject } from '../viewport/ResizeComponent'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -14,6 +13,8 @@ class Cover extends Component {
 
   static propTypes = {
     coverImage: PropTypes.object,
+    coverImageSize: PropTypes.string,
+    coverOffset: PropTypes.number,
     isModifiable: PropTypes.bool,
     modifiers: PropTypes.string,
     useGif: PropTypes.bool,
@@ -22,18 +23,17 @@ class Cover extends Component {
   static defaultProps = {
     modifiers: '',
     useGif: false,
+    coverImageSize: 'xhdpi',
   }
 
   componentWillMount() {
     this.state = {
       asHidden: false,
-      imageSize: 'xhdpi',
       status: STATUS.REQUEST,
     }
   }
 
   componentDidMount() {
-    addResizeObject(this)
     addScrollObject(this)
     if (this.state.status === STATUS.REQUEST) {
       this.createLoader()
@@ -57,22 +57,17 @@ class Cover extends Component {
   }
 
   componentWillUnmount() {
-    removeResizeObject(this)
     removeScrollObject(this)
     this.disposeLoader()
   }
 
-  onResize(resizeProperties) {
-    const { coverOffset, coverImageSize } = resizeProperties
-    this.setState({ offset: coverOffset, imageSize: coverImageSize })
-  }
-
   onScroll(scrollProperties) {
     const { scrollY } = scrollProperties
-    const { offset, asHidden } = this.state
-    if (scrollY >= offset && !asHidden) {
+    const { coverOffset } = this.props
+    const { asHidden } = this.state
+    if (scrollY >= coverOffset && !asHidden) {
       this.setState({ asHidden: true })
-    } else if (scrollY < offset && asHidden) {
+    } else if (scrollY < coverOffset && asHidden) {
       this.setState({ asHidden: false })
     }
   }
@@ -100,17 +95,16 @@ class Cover extends Component {
   }
 
   getCoverSource(props = this.props) {
-    const { coverImage, useGif } = props
+    const { coverImage, coverImageSize, useGif } = props
     if (!coverImage) {
       return ''
     } else if (coverImage.tmp && coverImage.tmp.url) {
       return coverImage.tmp.url
     }
-    const { imageSize } = this.state
     if (useGif && this.isGif()) {
       return coverImage.original.url
     }
-    return coverImage[imageSize] ? coverImage[imageSize].url : null
+    return coverImage[coverImageSize] ? coverImage[coverImageSize].url : null
   }
 
   isGif() {

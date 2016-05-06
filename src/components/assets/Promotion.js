@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import { random } from 'lodash'
-import { addResizeObject, removeResizeObject } from '../viewport/ResizeComponent'
 import Credits from '../assets/Credits'
 
 const STATUS = {
@@ -15,9 +14,14 @@ const STATUS = {
 class Promotion extends Component {
 
   static propTypes = {
+    coverImageSize: PropTypes.string,
     creditsClickAction: PropTypes.func,
     isLoggedIn: PropTypes.bool.isRequired,
     userlist: PropTypes.array.isRequired,
+  }
+
+  static defaultProps = {
+    coverImageSize: 'xhdpi',
   }
 
   componentWillMount() {
@@ -25,26 +29,18 @@ class Promotion extends Component {
     const index = random(0, userlist.length - 1)
     this.state = {
       featuredUser: userlist[index],
-      imageSize: 'xhdpi',
       status: STATUS.REQUEST,
     }
   }
 
   componentDidMount() {
-    addResizeObject(this)
     if (this.state.status === STATUS.REQUEST) {
       this.createLoader()
     }
   }
 
   componentWillUnmount() {
-    removeResizeObject(this)
     this.disposeLoader()
-  }
-
-  onResize(resizeProperties) {
-    const { coverImageSize } = resizeProperties
-    this.setState({ imageSize: coverImageSize })
   }
 
   onLoadSuccess = () => {
@@ -58,10 +54,11 @@ class Promotion extends Component {
   }
 
   getCoverSource() {
-    const { featuredUser, imageSize } = this.state
+    const { coverImageSize } = this.props
+    const { featuredUser } = this.state
     if (!featuredUser) { return null }
     const { coverImage } = featuredUser
-    return coverImage[imageSize].url
+    return coverImage[coverImageSize].url
   }
 
   createLoader() {

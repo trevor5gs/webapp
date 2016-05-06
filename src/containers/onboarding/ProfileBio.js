@@ -14,6 +14,8 @@ class ProfileBio extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    coverImageSize: PropTypes.string,
+    coverOffset: PropTypes.number,
     profile: PropTypes.object.isRequired,
   }
 
@@ -35,7 +37,7 @@ class ProfileBio extends Component {
   }
 
   render() {
-    const { profile } = this.props
+    const { coverImageSize, coverOffset, profile } = this.props
     return (
       <main className="InfoPicker View" role="main">
         <OnboardingHeader
@@ -55,15 +57,22 @@ class ProfileBio extends Component {
           />
 
         </div>
-        <Cover coverImage={ profile.coverImage } />
+        <Cover
+          coverImage={ profile.coverImage }
+          coverImageSize={ coverImageSize }
+          coverOffset={ coverOffset }
+        />
       </main>
     )
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
+  const { gui, profile } = state
   return {
-    profile: state.profile,
+    coverImageSize: gui.coverImageSize,
+    coverOffset: gui.coverOffset,
+    profile,
   }
 }
 

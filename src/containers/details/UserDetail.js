@@ -31,6 +31,8 @@ import {
 
 class UserDetail extends Component {
   static propTypes = {
+    coverImageSize: PropTypes.string,
+    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     followingTab: PropTypes.func,
@@ -143,6 +145,8 @@ class UserDetail extends Component {
 
   render() {
     const {
+      coverImageSize,
+      coverOffset,
       dispatch,
       isLoggedIn,
       omnibar,
@@ -191,6 +195,8 @@ class UserDetail extends Component {
           <Cover
             isModifiable={ user.relationshipPriority === 'self' }
             coverImage={ user.coverImage }
+            coverImageSize={ coverImageSize }
+            coverOffset={ coverOffset }
             key={ `userDetailCover_${user.id}` }
             useGif
           />
@@ -271,13 +277,15 @@ class UserDetail extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { json } = state;
+  const { gui, json } = state
   const { params } = ownProps
   const user = findModel(json, {
     collection: MAPPING_TYPES.USERS,
     findObj: { username: params.username },
   })
   return {
+    coverImageSize: gui.coverImageSize,
+    coverOffset: gui.coverOffset,
     omnibar: state.omnibar,
     isLoggedIn: state.authentication.isLoggedIn,
     userFollowingTab: get(state, 'gui.userFollowingTab'),

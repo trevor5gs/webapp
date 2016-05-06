@@ -49,6 +49,8 @@ class Settings extends Component {
   static propTypes = {
     blockedCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
+    coverImageSize: PropTypes.string,
+    coverOffset: PropTypes.number,
     mutedCount: PropTypes.number.isRequired,
     profile: PropTypes.object,
   }
@@ -295,7 +297,7 @@ class Settings extends Component {
   }
 
   render() {
-    const { blockedCount, dispatch, mutedCount, profile } = this.props
+    const { blockedCount, coverImageSize, coverOffset, dispatch, mutedCount, profile } = this.props
     const { currentPasswordState, emailState, passwordState, usernameState } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
 
@@ -318,7 +320,12 @@ class Settings extends Component {
             closeAlert={ bindActionCreators(closeAlert, dispatch) }
             saveAction={ bindActionCreators(saveCover, dispatch) }
           />
-          <Cover isModifiable coverImage={ profile.coverImage } />
+          <Cover
+            coverImage={ profile.coverImage }
+            coverImageSize={ coverImageSize }
+            coverOffset={ coverOffset }
+            isModifiable
+          />
         </div>
         <button className="SettingsLogoutButton" onClick={ this.onLogOut }>Logout</button>
 
@@ -545,6 +552,8 @@ function mapStateToProps(state) {
   return {
     availability: state.profile.availability,
     blockedCount: state.profile.blockedCount || 0,
+    coverImageSize: state.gui.coverImageSize,
+    coverOffset: state.gui.coverOffset,
     mutedCount: state.profile.mutedCount || 0,
     profile: state.profile,
   }

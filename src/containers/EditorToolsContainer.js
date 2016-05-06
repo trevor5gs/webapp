@@ -34,6 +34,7 @@ class EditorToolsContainer extends Component {
       isItalicActive: PropTypes.bool,
       isLinkActive: PropTypes.bool,
     }),
+    viewportDeviceSize: PropTypes.string,
   }
 
   componentWillMount() {
@@ -133,7 +134,7 @@ class EditorToolsContainer extends Component {
   }
 
   render() {
-    const { completions, isCompleterActive } = this.props
+    const { completions, isCompleterActive, viewportDeviceSize } = this.props
     const { isTextToolsActive, textToolsStates, textToolsCoordinates } = this.props
     return (
       <div className="EditorTools">
@@ -142,6 +143,7 @@ class EditorToolsContainer extends Component {
             completions={ completions }
             onCancel={ this.onCancelAutoCompleter }
             onCompletion={ this.onCompletion }
+            viewportDeviceSize= { viewportDeviceSize }
           /> :
           null
         }
@@ -160,7 +162,7 @@ class EditorToolsContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { editor, emoji, modal } = state
+  const { editor, emoji, gui, modal } = state
   return {
     completions: editor.completions,
     emojis: emoji.emojis,
@@ -168,6 +170,7 @@ const mapStateToProps = (state) => {
     isTextToolsActive: modal.isTextToolsActive,
     textToolsStates: modal.textToolsStates,
     textToolsCoordinates: modal.textToolsCoordinates,
+    viewportDeviceSize: gui.viewportDeviceSize,
   }
 }
 
