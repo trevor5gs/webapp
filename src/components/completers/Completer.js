@@ -117,10 +117,8 @@ export default class Completer extends Component {
       style = { top: -200, left: -666 }
     } else if (viewportDeviceSize === 'mobile') {
       style = { top: pos.top + 20 }
-      console.log('mobile')
     } else if (pos) {
       style = { top: pos.top + 20, left: pos.left }
-      console.log('not mobile')
     }
     return (
       <div style={ style } className={ classNames(className, 'Completer') }>
