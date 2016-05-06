@@ -227,7 +227,7 @@ class BlockCollection extends Component {
     const blockProps = {
       data: block.data,
       editorId,
-      key: `${JSON.stringify(block.data)}_${block.uid}`,
+      key: block.uid,
       kind: block.kind,
       onRemoveBlock: this.remove,
       uid: block.uid,

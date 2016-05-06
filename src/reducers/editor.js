@@ -87,7 +87,7 @@ function editorObject(state = initialEditorState, action) {
     case EDITOR.RESET:
     case POST.CREATE_SUCCESS:
     case POST.UPDATE_SUCCESS:
-      return editorMethods.addEmptyTextBlock(initialEditorState)
+      return editorMethods.addEmptyTextBlock({ ...initialEditorState, uid: newState.uid })
     case EDITOR.SAVE_IMAGE_SUCCESS:
       if (newState.dragBlock && newState.dragBlock.uid === action.payload.uid) {
         newState.dragBlock = {
