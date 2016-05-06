@@ -20,60 +20,38 @@ let token = null
 
 export function fetchOauthToken(callback) {
   // Get the access token object for the client
-  oauth2.client
-    .getToken(tokenConfig)
-    .then((result) => {
-      if (result.errors) {
-        console.log('Unable to get access token', result)
-        process.exit(1)
-      }
-      token = oauth2.accessToken.create(result)
-      callback()
-    })
-    .catch((error) => {
-      console.log('Access Token error getToken', error.message)
-      process.exit(1)
-    })
+  currentToken().then(() => {
+    callback()
+  })
 }
 
 export function addOauthRoute(app) {
   app.get('/api/webapp-token', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
     res.setHeader('Expires', '0')
-    if (!token || token.expired()) {
-      oauth2.client
-        .getToken(tokenConfig)
-        .then((result) => {
-          if (result.errors) {
-            console.log('Unable to get access token', result)
-            process.exit(1)
-          }
-          token = oauth2.accessToken.create(result)
-          res.status(200).send(token)
-        })
-        .catch((error) => {
-          console.log('Access Token error getToken', error.message)
-          process.exit(1)
-        })
-      // we don't have a refresh token for client credentials
-      // token.refresh().then((result) => {
-      //   if (result.errors) {
-      //     console.log('Access Token error token', result)
-      //     res.status(401).send(result.errors)
-      //   } else {
-      //     token = result
-      //     res.status(200).send(token)
-      //   }
-      // }).catch((error) => {
-      //   console.log('Access Token error catch token', error.message)
-      //   res.status(401).send()
-      // })
-    } else {
+    currentToken().then((token) => {
       res.status(200).send(token)
-    }
+    })
   })
 }
 
 export function currentToken() {
-  return token
+  if (!token || token.expired()) {
+    return new Promise((resolve) => {
+      oauth2.client
+      .getToken(tokenConfig)
+      .then((result) => {
+        if (result.errors) {
+          console.log('Unable to get access token', result)
+          process.exit(1)
+        }
+        token = oauth2.accessToken.create(result)
+        resolve(token)
+      }).catch((err) => {
+          console.log('Unable to get access token', err)
+          process.exit(1)
+      })
+    })
+  }
+  return new Promise((resolve) => { resolve(token) })
 }
