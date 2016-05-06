@@ -66,7 +66,6 @@ class EditorToolsContainer extends Component {
       requestAnimationFrame(() => {
         const { dispatch } = this.props
         const { collectionId, editorId } = document.activeElement.parentNode.dataset
-        console.log('complete', collectionId, editorId)
         replaceWordFromSelection(value)
         dispatch(replaceText(collectionId, editorId))
         this.onCancelAutoCompleter()
