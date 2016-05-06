@@ -61,16 +61,15 @@ class EditorToolsContainer extends Component {
   }
 
   onCompletion = ({ value }) => {
-    const classList = document.activeElement.classList
-    if (classList.contains('text') || classList.contains('Completion')) {
-      requestAnimationFrame(() => {
-        const { dispatch } = this.props
-        const { collectionId, editorId } = document.activeElement.parentNode.dataset
+    const { dispatch } = this.props
+    requestAnimationFrame(() => {
+      const { collectionId, editorId } = document.activeElement.parentNode.dataset
+      if (collectionId && editorId) {
         replaceWordFromSelection(value)
         dispatch(replaceText(collectionId, editorId))
-        this.onCancelAutoCompleter()
-      })
-    }
+      }
+    })
+    this.onCancelAutoCompleter()
   }
 
   onHideCompleter() {
