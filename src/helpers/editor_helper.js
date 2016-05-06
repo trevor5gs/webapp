@@ -1,7 +1,39 @@
 import { cloneDeep } from 'lodash'
+import { suggestEmoji } from '../components/completers/EmojiSuggester'
 import { userRegex } from '../components/completers/Completer'
 
 const methods = {}
+
+function _addCompletions(state, action) {
+  const newState = cloneDeep(state)
+  const { payload } = action
+  if (payload && payload.response) {
+    const { type = 'user', word } = payload
+    if (type === 'user') {
+      newState.completions = { data: payload.response.autocompleteResults, type }
+    } else if (type === 'emoji') {
+      newState.completions = { data: suggestEmoji(word, payload.response.emojis), type }
+    }
+  } else {
+    newState.completions = null
+  }
+  return newState
+}
+methods.addCompletions = _addCompletions
+
+function _rehydrateEditors(persistedEditors) {
+  const editors = {}
+  for (const item in persistedEditors) {
+    if (persistedEditors.hasOwnProperty(item)) {
+      const pe = persistedEditors[item]
+      if (pe.shouldPersist) {
+        editors[item] = pe
+      }
+    }
+  }
+  return editors
+}
+methods.rehydrateEditors = _rehydrateEditors
 
 function _addHasContent(state) {
   const newState = cloneDeep(state)

@@ -7,7 +7,6 @@ import {
   PROFILE,
 } from '../constants/action_types'
 import editorMethods from '../helpers/editor_helper'
-import { suggestEmoji } from '../components/completers/EmojiSuggester'
 
 const initialState = {
   completions: {},
@@ -23,31 +22,6 @@ const initialEditorState = {
   order: [],
   shouldPersist: false,
   uid: 0,
-}
-
-function addCompletions(payload) {
-  if (payload && payload.response) {
-    const { type = 'user', word } = payload
-    if (type === 'user') {
-      return { data: payload.response.autocompleteResults, type }
-    } else if (type === 'emoji') {
-      return { data: suggestEmoji(word, payload.response.emojis), type }
-    }
-  }
-  return null
-}
-
-function rehydrateEditors(persistedEditors) {
-  const editors = {}
-  for (const item in persistedEditors) {
-    if (persistedEditors.hasOwnProperty(item)) {
-      const pe = persistedEditors[item]
-      if (pe.shouldPersist) {
-        editors[item] = pe
-      }
-    }
-  }
-  return editors
 }
 
 function editorObject(state = initialEditorState, action) {
@@ -148,10 +122,9 @@ export function editor(state = initialState, action) {
       return newState
     case EDITOR.EMOJI_COMPLETER_SUCCESS:
     case EDITOR.USER_COMPLETER_SUCCESS:
-      newState.completions = addCompletions(action.payload)
-      return newState
+      return editorMethods.addCompletions(newState, action)
     case REHYDRATE:
-      return rehydrateEditors(action.payload.editor)
+      return editorMethods.rehydrateEditors(action.payload.editor)
     default:
       return state
   }
