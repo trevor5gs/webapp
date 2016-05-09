@@ -3,6 +3,7 @@ import { debounce } from 'lodash'
 const resizeObjects = []
 let ticking = false
 let hasListeners = false
+let _probe = undefined
 
 function callMethod(method, resizeProperties) {
   for (const obj of resizeObjects) {
@@ -11,6 +12,13 @@ function callMethod(method, resizeProperties) {
     }
   }
 }
+
+function getProbeElement() {
+  if (typeof _probe !== 'undefined') { return _probe }
+  _probe = document.getElementById('root')
+  return _probe
+}
+
 
 // This is very rudimentary. needs things like 1x, 2x calculating the set
 // Used for background images in Cover and Promotions
@@ -34,7 +42,7 @@ function getViewportDeviceSize(gridColumnCount, innerWidth) {
 }
 
 function getProbeProperties() {
-  const probeElement = document.getElementById('root')
+  const probeElement = getProbeElement()
   const styles = window.getComputedStyle(probeElement, ':after')
   // this is in here because for some reason the
   // htc one returns 'auto' for the z-index

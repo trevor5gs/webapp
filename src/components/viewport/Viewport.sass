@@ -7,11 +7,10 @@
 
 // -------------------------------------
 // A probe into CSS used by the ResizeComponent
-// z-index is related to number of columns for grid mode
-
-// TODO: Eventually we can move probe from #root to .Viewport once it's the
-// only object listening to resize events from the ResizeComponent. The
-// ResizeComponent's getProbeProperties function would need to be updated.
+//
+// Has to be the #root element since it is already present in the DOM. Would be
+// nice to stick it on Viewport but it would be null on the first hit. The
+// z-index is related to number of columns for grid mode.
 #root:after
   display: none !important
   visibility: hidden
