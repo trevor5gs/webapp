@@ -34,7 +34,6 @@ class LinksControl extends Component {
         { ...this.props }
         autoCapitalize="off"
         autoCorrect="off"
-        maxLength="50"
         text={ this.getLinks() }
         type="text"
       />
