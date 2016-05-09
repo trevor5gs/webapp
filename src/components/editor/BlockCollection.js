@@ -42,6 +42,7 @@ class BlockCollection extends Component {
     hasMention: PropTypes.bool,
     isComment: PropTypes.bool,
     isLoading: PropTypes.bool,
+    isMobileGridStream: PropTypes.bool,
     isOwnPost: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
     order: PropTypes.array.isRequired,
@@ -366,8 +367,10 @@ class BlockCollection extends Component {
   }
 
   render() {
-    const { avatar, cancelAction, collection, dragBlock, editorId, hasContent,
-      hasMention, isComment, isLoading, isOwnPost, order, submitText } = this.props
+    const {
+      avatar, cancelAction, collection, dragBlock, editorId, hasContent,
+      hasMention, isComment, isLoading, isMobileGridStream, isOwnPost, order, submitText,
+    } = this.props
     const { dragBlockTop, hasDragOver } = this.state
     const firstBlockIsText = collection[order[0]] ? collection[order[0]].kind === 'text' : true
     const showQuickEmoji = isComment && firstBlockIsText
@@ -407,7 +410,7 @@ class BlockCollection extends Component {
           editorId={ editorId }
           handleFileAction={ this.handleFiles }
           ref="postActionBar"
-          replyAllAction={ isComment && isOwnPost ? this.replyAll : null }
+          replyAllAction={ isComment && isOwnPost && !isMobileGridStream ? this.replyAll : null }
           submitAction={ this.submit }
           submitText={ submitText }
         />
@@ -426,6 +429,7 @@ function mapStateToProps(state, ownProps) {
     hasContent: editor.hasContent,
     hasMention: editor.hasMention,
     isLoading: editor.isLoading,
+    isMobileGridStream: state.gui.viewportDeviceSize === 'mobile' && state.gui.isGridMode,
     isNavbarHidden: state.gui.isNavbarHidden,
     order: editor.order,
     orderLength: editor.order.length,
