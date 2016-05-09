@@ -37,7 +37,7 @@ class BioControl extends Component {
 
   isValidBioLength() {
     const { textLength } = this.state
-    return textLength > 192
+    return textLength > 200
   }
 
   // For consistency we should probably move the checks up to Validators and
