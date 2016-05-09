@@ -59,7 +59,6 @@ class SignIn extends Component {
       if (nextProps.webOnboardingVersionSeen &&
           nextProps.webOnboardingVersionSeen !== ONBOARDING_VERSION) {
         dispatch(replace({ pathname: '/onboarding' }))
-        dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
       } else if (!nextProps.webOnboardingVersionSeen) {
         dispatch(replace({ pathname: currentStream }))
         dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
