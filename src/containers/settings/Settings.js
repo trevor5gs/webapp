@@ -51,6 +51,7 @@ class Settings extends Component {
     dispatch: PropTypes.func.isRequired,
     coverImageSize: PropTypes.string,
     coverOffset: PropTypes.number,
+    isCoverHidden: PropTypes.bool,
     mutedCount: PropTypes.number.isRequired,
     profile: PropTypes.object,
   }
@@ -297,7 +298,9 @@ class Settings extends Component {
   }
 
   render() {
-    const { blockedCount, coverImageSize, coverOffset, dispatch, mutedCount, profile } = this.props
+    const {
+      blockedCount, coverImageSize, coverOffset, dispatch, isCoverHidden, mutedCount, profile,
+    } = this.props
     const { currentPasswordState, emailState, passwordState, usernameState } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
 
@@ -324,6 +327,7 @@ class Settings extends Component {
             coverImage={ profile.coverImage }
             coverImageSize={ coverImageSize }
             coverOffset={ coverOffset }
+            isHidden={ isCoverHidden }
             isModifiable
           />
         </div>
@@ -554,6 +558,7 @@ function mapStateToProps(state) {
     blockedCount: state.profile.blockedCount || 0,
     coverImageSize: state.gui.coverImageSize,
     coverOffset: state.gui.coverOffset,
+    isCoverHidden: state.gui.isCoverHidden,
     mutedCount: state.profile.mutedCount || 0,
     profile: state.profile,
   }

@@ -1,16 +1,18 @@
 import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
-import { setIsOffsetLayout, setNavbarState, setViewportSizeAttributes } from '../actions/gui'
+import { setIsOffsetLayout, setScrollState, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
 
 class ViewportContainer extends Component {
   static propTypes = {
+    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     innerHeight: PropTypes.number,
     innerWidth: PropTypes.number,
+    isCoverHidden: PropTypes.bool,
     isNavbarFixed: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
     isNavbarSkippingTransition: PropTypes.bool,
@@ -61,7 +63,8 @@ class ViewportContainer extends Component {
   onScrollTop() {
     const { dispatch, isNavbarFixed } = this.props
     if (isNavbarFixed) {
-      dispatch(setNavbarState({
+      dispatch(setScrollState({
+        isCoverHidden: false,
         isFixed: false,
         isHidden: false,
         isSkippingTransition: false,
@@ -76,12 +79,23 @@ class ViewportContainer extends Component {
     }
   }
 
+  // TODO: Lots of optimizations here I'm sure
   onScroll(scrollProperties) {
     const { scrollY, scrollDirection } = scrollProperties
-    const { dispatch, isNavbarFixed, isNavbarHidden, isNavbarSkippingTransition } = this.props
+    const {
+      dispatch,
+      coverOffset,
+      isCoverHidden,
+      isNavbarFixed,
+      isNavbarHidden,
+      isNavbarSkippingTransition,
+    } = this.props
     let nextIsFixed = isNavbarFixed
     let nextIsHidden = isNavbarHidden
     let nextIsSkippingTransition = isNavbarSkippingTransition
+
+    // Whether scroll has surpassed the height of the cover offset
+    const nextIsCoverHidden = scrollY >= coverOffset
 
     // Going from absolute to fixed positioning
     if (scrollY >= this.props.offset && !isNavbarFixed) {
@@ -102,9 +116,12 @@ class ViewportContainer extends Component {
         this.scrollYAtDirectionChange = null
       }
     }
-    if (isNavbarFixed !== nextIsFixed || isNavbarHidden !== nextIsHidden ||
+    // If something changed dispatch it for the reducer
+    if (isCoverHidden !== nextIsCoverHidden ||
+        isNavbarFixed !== nextIsFixed || isNavbarHidden !== nextIsHidden ||
         isNavbarSkippingTransition !== nextIsSkippingTransition) {
-      dispatch(setNavbarState({
+      dispatch(setScrollState({
+        isCoverHidden: nextIsCoverHidden,
         isFixed: nextIsFixed,
         isHidden: nextIsHidden,
         isSkippingTransition: nextIsSkippingTransition,
@@ -129,8 +146,10 @@ class ViewportContainer extends Component {
 const mapStateToProps = (state) => {
   const { gui, modal, routing } = state
   return {
+    coverOffset: gui.coverOffset,
     innerHeight: gui.innerHeight,
     innerWidth: gui.innerWidth,
+    isCoverHidden: gui.isCoverHidden,
     isNavbarFixed: gui.isNavbarFixed,
     isNavbarHidden: gui.isNavbarHidden,
     isNavbarSkippingTransition: gui.isNavbarSkippingTransition,

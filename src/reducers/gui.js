@@ -41,7 +41,8 @@ const initialSizeState = {
   viewportDeviceSize: 'tablet',
 }
 
-const initialNavbarState = {
+const initialScrollState = {
+  isCoverHidden: false,
   isNavbarFixed: false,
   isNavbarHidden: false,
   isNavbarSkippingTransition: false,
@@ -50,7 +51,7 @@ const initialNavbarState = {
 // order matters for matching routes
 const initialState = {
   ...initialSizeState,
-  ...initialNavbarState,
+  ...initialScrollState,
   activeNotificationsTabType: 'all',
   currentStream: '/discover',
   hasLayoutTool: true,
@@ -140,7 +141,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
       if (_.some(STREAMS_WHITELIST, re => re.test(pathname))) {
         return {
           ...state,
-          ...initialNavbarState,
+          ...initialScrollState,
           currentStream: pathname,
           hasLayoutTool,
           isGridMode: _isGridMode(state.modes),
@@ -148,7 +149,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
       }
       return {
         ...state,
-        ...initialNavbarState,
+        ...initialScrollState,
         hasLayoutTool,
         isGridMode: _isGridMode(state.modes),
       }
@@ -162,9 +163,10 @@ export const gui = (state = initialState, action = { type: '' }) => {
         ...state,
         isOffsetLayout: action.payload.isOffsetLayout,
       }
-    case GUI.SET_NAVBAR_STATE:
+    case GUI.SET_SCROLL_STATE:
       return {
         ...state,
+        isCoverHidden: _.get(action.payload, 'isCoverHidden', newState.isCoverHidden),
         isNavbarFixed: _.get(action.payload, 'isNavbarFixed', newState.isNavbarFixed),
         isNavbarHidden: _.get(action.payload, 'isNavbarHidden', newState.isNavbarHidden),
         isNavbarSkippingTransition:

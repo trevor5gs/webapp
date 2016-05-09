@@ -34,6 +34,7 @@ class UserDetail extends Component {
     coverImageSize: PropTypes.string,
     coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
+    isCoverHidden: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     followingTab: PropTypes.func,
     params: PropTypes.shape({
@@ -148,6 +149,7 @@ class UserDetail extends Component {
       coverImageSize,
       coverOffset,
       dispatch,
+      isCoverHidden,
       isLoggedIn,
       omnibar,
       params,
@@ -193,6 +195,7 @@ class UserDetail extends Component {
       if (!omnibar.isActive) {
         userEls.push(
           <Cover
+            isHidden={ isCoverHidden }
             isModifiable={ user.relationshipPriority === 'self' }
             coverImage={ user.coverImage }
             coverImageSize={ coverImageSize }
@@ -287,6 +290,7 @@ function mapStateToProps(state, ownProps) {
     coverImageSize: gui.coverImageSize,
     coverOffset: gui.coverOffset,
     omnibar: state.omnibar,
+    isCoverHidden: gui.isCoverHidden,
     isLoggedIn: state.authentication.isLoggedIn,
     userFollowingTab: get(state, 'gui.userFollowingTab'),
     params,

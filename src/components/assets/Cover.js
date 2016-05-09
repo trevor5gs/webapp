@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { addScrollObject, removeScrollObject } from '../viewport/ScrollComponent'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -15,6 +14,7 @@ class Cover extends Component {
     coverImage: PropTypes.object,
     coverImageSize: PropTypes.string,
     coverOffset: PropTypes.number,
+    isHidden: PropTypes.bool,
     isModifiable: PropTypes.bool,
     modifiers: PropTypes.string,
     useGif: PropTypes.bool,
@@ -24,17 +24,16 @@ class Cover extends Component {
     modifiers: '',
     useGif: false,
     coverImageSize: 'xhdpi',
+    isHidden: false,
   }
 
   componentWillMount() {
     this.state = {
-      asHidden: false,
       status: STATUS.REQUEST,
     }
   }
 
   componentDidMount() {
-    addScrollObject(this)
     if (this.state.status === STATUS.REQUEST) {
       this.createLoader()
     }
@@ -57,19 +56,7 @@ class Cover extends Component {
   }
 
   componentWillUnmount() {
-    removeScrollObject(this)
     this.disposeLoader()
-  }
-
-  onScroll(scrollProperties) {
-    const { scrollY } = scrollProperties
-    const { coverOffset } = this.props
-    const { asHidden } = this.state
-    if (scrollY >= coverOffset && !asHidden) {
-      this.setState({ asHidden: true })
-    } else if (scrollY < coverOffset && asHidden) {
-      this.setState({ asHidden: false })
-    }
   }
 
   onLoadSuccess = () => {
@@ -83,13 +70,13 @@ class Cover extends Component {
   }
 
   getClassNames() {
-    const { isModifiable, modifiers } = this.props
-    const { status, asHidden } = this.state
+    const { isHidden, isModifiable, modifiers } = this.props
+    const { status } = this.state
     return classNames(
       'Cover',
       status,
       modifiers,
-      { asHidden },
+      { isHidden },
       { isModifiable },
     )
   }

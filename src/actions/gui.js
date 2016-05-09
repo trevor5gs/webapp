@@ -16,10 +16,11 @@ export function setFollowingTab(followingTab) {
   }
 }
 
-export function setNavbarState({ isFixed, isHidden, isSkippingTransition }) {
+export function setScrollState({ isCoverHidden, isFixed, isHidden, isSkippingTransition }) {
   return {
-    type: GUI.SET_NAVBAR_STATE,
+    type: GUI.SET_SCROLL_STATE,
     payload: {
+      isCoverHidden,
       isNavbarFixed: isFixed,
       isNavbarHidden: isHidden,
       isNavbarSkippingTransition: isSkippingTransition,
