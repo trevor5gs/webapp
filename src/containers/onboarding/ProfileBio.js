@@ -2,6 +2,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
+import { ONBOARDING_VERSION } from '../../constants/gui_types'
+import { saveProfile } from '../../actions/profile'
 import { trackEvent } from '../../actions/tracking'
 import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
 import Avatar from '../../components/assets/Avatar'
@@ -13,6 +15,11 @@ class ProfileBio extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     profile: PropTypes.object.isRequired,
+  }
+
+  componentWillUnmount() {
+    const { dispatch } = this.props
+    dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
   }
 
   onClickNext = () => {
