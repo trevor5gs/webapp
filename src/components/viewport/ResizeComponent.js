@@ -32,10 +32,10 @@ function getCoverImageSize(innerWidth) {
 }
 
 // This could be anything really, baby, momma, poppa bear would work too.
-function getViewportDeviceSize(gridColumnCount, innerWidth) {
-  if (gridColumnCount >= 4) {
+function getViewportDeviceSize(columnCount, innerWidth) {
+  if (columnCount >= 4) {
     return 'desktop'
-  } else if (gridColumnCount >= 2 && innerWidth >= 640) {
+  } else if (columnCount >= 2 && innerWidth >= 640) {
     return 'tablet'
   }
   return 'mobile'
@@ -48,29 +48,29 @@ function getProbeProperties() {
   // htc one returns 'auto' for the z-index
   let zIndex = styles.getPropertyValue('z-index')
   if (isNaN(zIndex)) { zIndex = 2 }
-  const gridColumnCount = parseInt(zIndex, 10)
-  return { gridColumnCount }
+  const columnCount = parseInt(zIndex, 10)
+  return { columnCount }
 }
 
 
 function setResizeProperties() {
   const wiw = window.innerWidth
   const probe = getProbeProperties()
-  const gridColumnCount = parseInt(probe.gridColumnCount, 10)
-  const viewportDeviceSize = getViewportDeviceSize(gridColumnCount, wiw)
+  const columnCount = parseInt(probe.columnCount, 10)
+  const viewportDeviceSize = getViewportDeviceSize(columnCount, wiw)
   // Todo: Externalize padding out to the probe so I don't have to do things like
   // I'm about to do next :point_down:
   /* eslint-disable no-nested-ternary */
-  const padding = viewportDeviceSize === 'mobile' ? 10 : (gridColumnCount >= 4 ? 40 : 20)
+  const padding = viewportDeviceSize === 'mobile' ? 10 : (columnCount >= 4 ? 40 : 20)
   /* eslint-enable no-nested-ternary */
-  const columnWidth = Math.round((wiw - ((gridColumnCount + 1) * padding)) / gridColumnCount)
+  const columnWidth = Math.round((wiw - ((columnCount + 1) * padding)) / columnCount)
   const contentWidth = Math.round(wiw - (padding * 2))
   return {
+    columnCount,
     columnWidth,
     contentWidth,
     coverImageSize: getCoverImageSize(wiw),
     coverOffset: Math.round((wiw * 0.5625)),
-    gridColumnCount,
     innerHeight: window.innerHeight,
     innerWidth: wiw,
     viewportDeviceSize,

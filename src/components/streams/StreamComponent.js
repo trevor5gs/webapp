@@ -23,7 +23,7 @@ export class StreamComponent extends Component {
     className: PropTypes.string,
     currentUser: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
-    gridColumnCount: PropTypes.number,
+    columnCount: PropTypes.number,
     history: PropTypes.object.isRequired,
     ignoresScrollPosition: PropTypes.bool.isRequired,
     initModel: PropTypes.object,
@@ -375,7 +375,7 @@ export class StreamComponent extends Component {
   }
 
   render() {
-    const { className, currentUser, gridColumnCount, initModel, isGridMode, json,
+    const { className, columnCount, currentUser, initModel, isGridMode, json,
       paginatorText, renderObj, result, stream } = this.props
     const { action, hidePaginator } = this.state
     if (!action) { return null }
@@ -407,7 +407,7 @@ export class StreamComponent extends Component {
             renderObj,
             json,
             currentUser,
-            gridColumnCount || 2)
+            columnCount || 2)
         }
         { this.props.children }
         <Paginator
@@ -478,8 +478,8 @@ export function mapStateToProps(state, ownProps) {
     stream = state.stream
   }
   return {
+    columnCount: state.gui.columnCount,
     currentUser: state.profile,
-    gridColumnCount: state.gui.gridColumnCount,
     history: state.gui.history,
     innerHeight: state.gui.innerHeight,
     innerWidth: state.gui.innerWidth,

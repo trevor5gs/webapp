@@ -10,12 +10,12 @@ describe('gui reducer', () => {
         subject.gui(undefined, {})
       ).to.have.keys(
       'activeNotificationsTabType',
+      'columnCount',
       'columnWidth',
       'contentWidth',
       'coverImageSize',
       'coverOffset',
       'currentStream',
-      'gridColumnCount',
       'hasLayoutTool',
       'history',
       'innerHeight',

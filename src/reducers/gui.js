@@ -47,11 +47,11 @@ const _isGridMode = (modes) => {
 }
 
 const initialSizeState = {
+  columnCount: 2,
   columnWidth: 0,
   contentWidth: 0,
   coverImageSize: 'xhdpi',
   coverOffset: 0,
-  gridColumnCount: 2,
   innerHeight: 0,
   innerWidth: 0,
   viewportDeviceSize: 'tablet',
