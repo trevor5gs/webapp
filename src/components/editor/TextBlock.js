@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { pasted } from './PasteHandler'
 import Block from './Block'
 import { placeCaretAtEnd } from './SelectionUtil'
+import { addKeyObject, removeKeyObject } from '../viewport/KeyComponent'
 
 class TextBlock extends Component {
 
@@ -18,6 +19,8 @@ class TextBlock extends Component {
     if (this.props.shouldAutofocus) {
       placeCaretAtEnd(this.refs.block.refs.text)
     }
+    addKeyObject(this)
+    document.addEventListener('click', this.onClickDocument, false)
   }
 
   shouldComponentUpdate(nextProps) {
@@ -26,6 +29,11 @@ class TextBlock extends Component {
 
   componentDidUpdate() {
     placeCaretAtEnd(this.refs.block.refs.text)
+  }
+
+  componentWillUnmount() {
+    removeKeyObject(this)
+    document.removeEventListener('click', this.onClickDocument, false)
   }
 
   // TODO: Send `isEditorFocused` through the modal reducer
@@ -40,22 +48,34 @@ class TextBlock extends Component {
     document.body.classList.add('isEditorFocused')
   }
 
-  onInputText = () => {
-    const { onInput } = this.props
-    const uid = this.refs.block.props.uid
-    onInput({ kind: 'text', data: this.getData(), uid })
+  onClickDocument = (e) => {
+    if (e.target.classList.contains('TextToolButton')) {
+      this.updateTextBlock()
+    }
+  }
+
+  // need to use onKeyUp instead of onInput due to IE
+  // and Edge not supporting the input event
+  onKeyUp() {
+    this.updateTextBlock()
   }
 
   onPasteText = (e) => {
-    const { dispatch, editorId, onInput } = this.props
-    const uid = this.refs.block.props.uid
+    const { dispatch, editorId } = this.props
     // order matters here!
+    const uid = this.refs.block.props.uid
     pasted(e, dispatch, editorId, uid)
-    onInput({ kind: 'text', data: this.getData(), uid })
+    this.updateTextBlock()
   }
 
   getData() {
     return this.refs.block.refs.text.innerHTML
+  }
+
+  updateTextBlock() {
+    const { onInput } = this.props
+    const uid = this.refs.block.props.uid
+    onInput({ kind: 'text', data: this.getData(), uid })
   }
 
   render() {
@@ -67,7 +87,7 @@ class TextBlock extends Component {
         dangerouslySetInnerHTML={{ __html: data }}
         onBlur={ this.onBlurText }
         onFocus={ this.onFocusText }
-        onInput={ this.onInputText }
+        onInput={ null }
         onPaste={ this.onPasteText }
         ref="block"
       />
