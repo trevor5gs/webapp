@@ -51,7 +51,7 @@ function selectionIsText() {
     if (parent.classList && parent.classList.contains('text')) {
       return true
     }
-    parent = parent.parentElement
+    parent = parent.parentNode
   }
   return false
 }
