@@ -312,7 +312,7 @@ export class StreamComponent extends Component {
     if (scrolled && meta && meta.resultKey && meta.updateKey) {
       // WTF?: Not sure why but when at `/notifications` is in mobile we have to
       // let this pass otherwise scrolling doesn't work. [#119054249]
-      if (viewportDeviceSize !== 'mobile' && !/notifications/.test('notifications')) {
+      if (viewportDeviceSize !== 'mobile' && !/notifications/.test(meta.updateKey)) {
         return
       }
     }
