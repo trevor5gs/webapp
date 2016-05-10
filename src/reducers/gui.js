@@ -30,6 +30,22 @@ const NO_LAYOUT_TOOLS = [
   /^\/onboarding\b/,
 ]
 
+const findLayoutMode = (modes) => {
+  for (const mode of modes) {
+    const regex = new RegExp(mode.regex)
+    if (regex.test(location.pathname)) {
+      return mode
+    }
+  }
+  return modes[modes.length - 1]
+}
+
+const _isGridMode = (modes) => {
+  const mode = findLayoutMode(modes)
+  if (!mode) { return null }
+  return mode.mode === 'grid'
+}
+
 const initialSizeState = {
   columnWidth: 0,
   contentWidth: 0,
@@ -48,7 +64,6 @@ const initialScrollState = {
   isNavbarSkippingTransition: false,
 }
 
-// order matters for matching routes
 const initialState = {
   ...initialSizeState,
   ...initialScrollState,
@@ -59,6 +74,7 @@ const initialState = {
   isOffsetLayout: false,
   history: {},
   lastNotificationCheck: oldDate.toUTCString(),
+  // order matters for matching routes
   modes: [
     { label: 'root', mode: 'grid', regex: '^/$' },
     { label: 'discover', mode: 'grid', regex: '/discover|/explore' },
@@ -79,23 +95,6 @@ const initialState = {
   newNotificationContent: false,
   userFollowingTab: 'friend',
 }
-
-export const findLayoutMode = (modes) => {
-  for (const mode of modes) {
-    const regex = new RegExp(mode.regex)
-    if (regex.test(location.pathname)) {
-      return mode
-    }
-  }
-  return modes[modes.length - 1]
-}
-
-const _isGridMode = (modes) => {
-  const mode = findLayoutMode(modes)
-  if (!mode) { return null }
-  return mode.mode === 'grid'
-}
-
 
 export const gui = (state = initialState, action = { type: '' }) => {
   const newState = { ...state }

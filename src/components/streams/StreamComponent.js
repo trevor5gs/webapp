@@ -12,7 +12,6 @@ import { findModel } from '../../helpers/json_helper'
 import { addScrollObject, removeScrollObject } from '../viewport/ScrollComponent'
 import { ElloMark } from '../svg/ElloIcons'
 import { Paginator, emptyPagination } from './Paginator'
-import { findLayoutMode } from '../../reducers/gui'
 import { ErrorState4xx } from '../errors/Errors'
 import Session from '../../vendor/session'
 
@@ -30,10 +29,10 @@ export class StreamComponent extends Component {
     initModel: PropTypes.object,
     innerHeight: PropTypes.number,
     innerWidth: PropTypes.number,
+    isGridMode: PropTypes.bool,
     isModalComponent: PropTypes.bool,
     isUserDetail: PropTypes.bool.isRequired,
     json: PropTypes.object.isRequired,
-    mode: PropTypes.string.isRequired,
     omnibar: PropTypes.shape({
       isActive: PropTypes.bool,
     }),
@@ -376,7 +375,7 @@ export class StreamComponent extends Component {
   }
 
   render() {
-    const { className, currentUser, gridColumnCount, initModel, json, mode,
+    const { className, currentUser, gridColumnCount, initModel, isGridMode, json,
       paginatorText, renderObj, result, stream } = this.props
     const { action, hidePaginator } = this.state
     if (!action) { return null }
@@ -399,7 +398,7 @@ export class StreamComponent extends Component {
       }
     }
     const { meta } = action
-    const renderMethod = mode === 'grid' ? 'asGrid' : 'asList'
+    const renderMethod = isGridMode ? 'asGrid' : 'asList'
     const pagination = result && result.pagination ? result.pagination : emptyPagination()
     return (
       <section className={ classNames('StreamComponent', className) }>
@@ -485,7 +484,7 @@ export function mapStateToProps(state, ownProps) {
     innerHeight: state.gui.innerHeight,
     innerWidth: state.gui.innerWidth,
     json: state.json,
-    mode: findLayoutMode(state.gui.modes).mode,
+    isGridMode: state.gui.isGridMode,
     omnibar: state.omnibar,
     renderObj,
     result,

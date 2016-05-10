@@ -20,7 +20,7 @@ function createPropsForStream(ownProps = {}) {
         what: { ids: [], pagination: {}, type: 'what' },
       },
     },
-    mode: 'grid',
+    isGridMode: true,
     renderObj: { data: [], nestedData: [] },
     result: {
       type: 'posts',
@@ -65,6 +65,7 @@ function createStateForStream(ownState = {}) {
           scrolltop: 666,
         },
       },
+      isGridMode: false,
       modes: [
         { label: 'discover', mode: 'list', regex: /\/discover|\/explore/ },
         { label: 'following', mode: 'grid', regex: /\/following/ },
@@ -121,12 +122,13 @@ describe('StreamComponent', () => {
       })
     })
 
+    // TODO: This should be moved off to the reducer/gui spec
     context('mode', () => {
       it('sets mode', () => {
         state = createStateForStream({ routing: { location: { pathname: '/discover' } } })
         props = createPropsForStream()
         setLocation({ pathname: '/discover' })
-        expect(mapStateToProps(state, props).mode).to.equal('list')
+        expect(mapStateToProps(state, props).isGridMode).to.equal(false)
       })
     })
 

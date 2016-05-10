@@ -20,6 +20,7 @@ describe('gui reducer', () => {
       'history',
       'innerHeight',
       'innerWidth',
+      'isCoverHidden',
       'isGridMode',
       'isNavbarFixed',
       'isNavbarHidden',
