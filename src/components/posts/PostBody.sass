@@ -54,7 +54,6 @@
 
 .ImageRegion > .RegionContent
   display: inline-block
-  background-color: rgba(black, 0.1)
   color: rgba(black, 0)
 
 .ImageAttachment
@@ -63,6 +62,10 @@
 .isPending .ImageAttachment,
 .isRequesting .ImageAttachment
   opacity: 0
+
+.isPending .ImageRegion > .RegionContent,
+.isRequesting .ImageRegion > .RegionContent
+  background-color: rgba(black, 0.1)
 
 // Always get's rid of the first and last child's margin and protect against
 // potentially nested elements

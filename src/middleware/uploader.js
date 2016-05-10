@@ -68,7 +68,7 @@ export const uploader = store => next => action => {
   // This is problematic... :(
   if ((type !== ACTION_TYPES.PROFILE.SAVE_AVATAR &&
         type !== ACTION_TYPES.PROFILE.SAVE_COVER &&
-        type !== ACTION_TYPES.POST.SAVE_IMAGE
+        type !== ACTION_TYPES.EDITOR.SAVE_IMAGE
       ) || !payload) {
     return next(action)
   }

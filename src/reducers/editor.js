@@ -1,128 +1,130 @@
+import { REHYDRATE } from 'redux-persist/constants'
+import { cloneDeep, get } from 'lodash'
 import {
   AUTHENTICATION,
   EDITOR,
-  EMOJI,
   POST,
   PROFILE,
 } from '../constants/action_types'
-import { suggestEmoji } from '../components/completers/EmojiSuggester'
+import editorMethods from '../helpers/editor_helper'
 
 const initialState = {
   completions: {},
-  editors: {},
 }
 
-function imageBlockObject(state = {}, action) {
-  switch (action.type) {
-    case POST.TMP_IMAGE_CREATED:
-    case POST.IMAGE_BLOCK_CREATED:
-      return {
-        ...state,
-        type: action.type,
-        ...action.payload,
-      }
-    case POST.POST_PREVIEW_SUCCESS:
-    case POST.SAVE_IMAGE_SUCCESS:
-      return {
-        ...state,
-        type: action.type,
-        ...action.payload.response,
-      }
-    default:
-      return state
-  }
+const initialEditorState = {
+  collection: {},
+  completions: {},
+  dataKey: '',
+  hasContent: false,
+  hasMention: false,
+  isLoading: false,
+  order: [],
+  shouldPersist: false,
+  uid: 0,
 }
 
-function editorObject(state = { loadedContent: {} }, action) {
-  const newState = { ...state }
-  let obj = null
-  let index = null
+function editorObject(state = initialEditorState, action) {
+  let newState = cloneDeep(state)
   switch (action.type) {
+    case EDITOR.ADD_BLOCK:
+      return editorMethods.add({
+        block: action.payload.block,
+        state: newState,
+        shouldCheckForEmpty: action.payload.shouldCheckForEmpty,
+      })
+    case EDITOR.ADD_DRAG_BLOCK:
+      newState.dragBlock = action.payload.block
+      return newState
+    case EDITOR.ADD_EMPTY_TEXT_BLOCK:
+      return editorMethods.addEmptyTextBlock(newState)
     case EDITOR.APPEND_TEXT:
-      return {
-        ...state,
-        type: action.type,
-        appendText: action.payload.text,
-      }
-    case EDITOR.CLEAR_APPENDED_TEXT:
-      return {
-        ...state,
-        type: action.type,
-        appendText: null,
-      }
-    case POST.TMP_IMAGE_CREATED:
-    case POST.IMAGE_BLOCK_CREATED:
-    case POST.POST_PREVIEW_SUCCESS:
-    case POST.SAVE_IMAGE_SUCCESS:
-      index = action.payload ? action.payload.index : null
-      if (typeof index !== 'undefined') {
-        if (!newState.loadedContent) { newState.loadedContent = {} }
-        newState.loadedContent[index] = imageBlockObject(newState.loadedContent[index], action)
-        newState.index = index
-        newState.type = action.type
+      return editorMethods.appendText(newState, action.payload.text)
+    case EDITOR.INITIALIZE:
+      if (newState.shouldPersist) {
         return newState
       }
-      return state
-    case POST.PERSIST:
-      obj = {
-        ...state,
-        type: action.type,
-      }
-      if (action.payload) {
-        obj.editorState = action.payload
-      }
-      return obj
+      return initialEditorState
+    case EDITOR.POST_PREVIEW_SUCCESS:
+      newState = editorMethods.removeEmptyTextBlock(newState)
+      newState = editorMethods.add({
+        block: { ...action.payload.response.postPreviews.body[0] },
+        state: newState,
+      })
+      return newState
+    case EDITOR.REMOVE_BLOCK:
+      return editorMethods.remove({ state: newState, uid: action.payload.uid })
+    case EDITOR.REMOVE_DRAG_BLOCK:
+      delete newState.dragBlock
+      return newState
+    case EDITOR.REORDER_BLOCKS:
+      return editorMethods.reorderBlocks(newState, action)
+    case EDITOR.REPLACE_TEXT:
+      return editorMethods.replaceText(newState, action)
+    case EDITOR.RESET:
     case POST.CREATE_SUCCESS:
-      return {}
+    case POST.UPDATE_SUCCESS:
+      return editorMethods.addEmptyTextBlock({ ...initialEditorState, uid: newState.uid })
+    case EDITOR.SAVE_IMAGE_SUCCESS:
+      if (newState.dragBlock && newState.dragBlock.uid === action.payload.uid) {
+        newState.dragBlock = {
+          ...newState.dragBlock,
+          data: { url: action.payload.response.url },
+          isLoading: false,
+        }
+      } else {
+        newState.collection[action.payload.uid] = {
+          ...newState.collection[action.payload.uid],
+          data: { url: action.payload.response.url },
+          isLoading: false,
+        }
+      }
+      return newState
+    case EDITOR.TMP_IMAGE_CREATED:
+      newState = editorMethods.removeEmptyTextBlock(newState)
+      newState = editorMethods.add({
+        block: {
+          blob: action.payload.url,
+          kind: 'image',
+          data: {},
+          isLoading: true,
+        },
+        state: newState,
+      })
+      return newState
+    case EDITOR.UPDATE_BLOCK:
+      return editorMethods.updateBlock(newState, action)
     default:
       return state
   }
 }
 
 export function editor(state = initialState, action) {
-  const newState = { ...state }
-  let editorId = null
-  let obj = null
+  const newState = cloneDeep(state)
+  const editorId = get(action, 'payload.editorId')
+  if (editorId) {
+    newState[editorId] = editorObject(newState[editorId], action)
+    if (action.type === EDITOR.INITIALIZE) {
+      newState[editorId].shouldPersist = get(action, 'payload.shouldPersist', false)
+    } else if (newState[editorId]) {
+      newState[editorId] = editorMethods.addHasContent(newState[editorId])
+      newState[editorId] = editorMethods.addHasMention(newState[editorId])
+      newState[editorId] = editorMethods.addIsLoading(newState[editorId])
+    }
+    return newState
+  }
   switch (action.type) {
-    case EDITOR.APPEND_TEXT:
-    case EDITOR.CLEAR_APPENDED_TEXT:
-    case POST.CREATE_SUCCESS:
-    case POST.IMAGE_BLOCK_CREATED:
-    case POST.PERSIST:
-    case POST.POST_PREVIEW_SUCCESS:
-    case POST.SAVE_IMAGE_SUCCESS:
-    case POST.TMP_IMAGE_CREATED:
-      editorId = action.payload ? action.payload.editorId : null
-      if (editorId) {
-        newState.editors[editorId] = editorObject(newState.editors[editorId], action)
-        return newState
-      }
-      return state
-    case POST.AUTO_COMPLETE_CLEAR:
-      obj = {
-        ...state,
-        type: action.type,
-      }
-      delete obj.completions
-      return obj
-    case EMOJI.LOAD_SUCCESS:
-    case POST.AUTO_COMPLETE_SUCCESS:
-      obj = {
-        ...state,
-        type: action.type,
-      }
-      if (action.payload && action.payload.response) {
-        const { type = 'user', word } = action.payload
-        if (type === 'user') {
-          obj.completions = { data: action.payload.response.autocompleteResults, type }
-        } else if (type === 'emoji') {
-          obj.completions = { data: suggestEmoji(word, action.payload.response.emojis), type }
-        }
-      }
-      return obj
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
+    case EDITOR.CLEAR_AUTO_COMPLETERS:
+      delete newState.completions
+      return newState
+    case EDITOR.EMOJI_COMPLETER_SUCCESS:
+    case EDITOR.USER_COMPLETER_SUCCESS:
+      return editorMethods.addCompletions(newState, action)
+    case REHYDRATE:
+      return editorMethods.rehydrateEditors(action.payload.editor)
     default:
       return state
   }

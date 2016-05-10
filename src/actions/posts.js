@@ -2,6 +2,7 @@ import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
+import { resetEditor } from '../actions/editor'
 
 export function loadPostDetail(idOrToken) {
   return {
@@ -169,6 +170,7 @@ export function createPost(body, editorId, repostId, repostedFromId) {
     meta: {
       repostId,
       repostedFromId,
+      successAction: resetEditor(editorId),
     },
   }
 }
@@ -183,85 +185,23 @@ export function createComment(body, editorId, postId) {
       method: 'POST',
       postId,
     },
-    meta: {},
+    meta: {
+      successAction: resetEditor(editorId),
+    },
   }
 }
 
-export function updatePost(post, body) {
+export function updatePost(post, body, editorId) {
   return {
     type: ACTION_TYPES.POST.UPDATE,
     payload: {
       body: { body },
+      editorId,
       endpoint: api.updatePost(post.id),
       method: 'PATCH',
       model: post,
     },
     meta: {},
-  }
-}
-
-export function uploadAsset(type, file, editorId, index) {
-  return {
-    type,
-    meta: {},
-    payload: {
-      editorId,
-      file,
-      index,
-    },
-  }
-}
-
-export function temporaryPostImageCreated(objectURL, editorId, index) {
-  return {
-    type: ACTION_TYPES.POST.TMP_IMAGE_CREATED,
-    meta: {},
-    payload: {
-      url: objectURL,
-      editorId,
-      index,
-    },
-  }
-}
-
-export function savePostImage(file, editorId, index) {
-  return dispatch => {
-    dispatch(temporaryPostImageCreated(URL.createObjectURL(file), editorId, index))
-    dispatch(uploadAsset(ACTION_TYPES.POST.SAVE_IMAGE, file, editorId, index))
-  }
-}
-
-export function postPreviews(embedUrl, editorId, index) {
-  return {
-    type: ACTION_TYPES.POST.POST_PREVIEW,
-    payload: {
-      body: { body: [{ kind: 'embed', data: { url: embedUrl } }] },
-      editorId,
-      endpoint: api.postPreviews(),
-      index,
-      method: 'POST',
-    },
-  }
-}
-
-export function autoCompleteUsers(type, word) {
-  return {
-    type: ACTION_TYPES.POST.AUTO_COMPLETE,
-    payload: {
-      endpoint: api.userAutocompleter(word),
-      type,
-    },
-  }
-}
-
-export function loadEmojis(type, word) {
-  return {
-    type: ACTION_TYPES.EMOJI.LOAD,
-    payload: {
-      endpoint: api.loadEmojis(),
-      type,
-      word,
-    },
   }
 }
 

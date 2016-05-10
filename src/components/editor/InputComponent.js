@@ -1,6 +1,7 @@
 import { addKeyObject, removeKeyObject } from '../viewport/KeyComponent'
 import { getWordFromSelection } from './SelectionUtil'
 import { emojiRegex, userRegex } from '../completers/Completer'
+import { isFirefox } from '../../vendor/jello'
 
 const methods = {}
 
@@ -96,11 +97,13 @@ function onKeyDown(e) {
     })
   }
   if ((e.metaKey || e.ctrlKey) && e.keyCode === 13) {
+    e.preventDefault()
     callMethod('onSubmitPost')
+    return
   }
   // adding br tags while completing causes all of the text to disappear
   const completerActive = document.body.querySelector('.Completion.active')
-  if (e.keyCode === 13 && !/firefox/gi.test(window.navigator.userAgent) && !completerActive) {
+  if (e.keyCode === 13 && !isFirefox() && !completerActive) {
     e.preventDefault() // Prevent DIVs from being created
     document.execCommand('insertHTML', false, '<br/><br/>')
   }

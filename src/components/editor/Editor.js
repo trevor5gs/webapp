@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import _ from 'lodash'
-import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { openModal, closeModal } from '../../actions/modals'
 import { toggleEditing as toggleCommentEditing, updateComment } from '../../actions/comments'
@@ -12,6 +10,7 @@ import {
   toggleReposting,
   updatePost,
 } from '../../actions/posts'
+import { resetEditor, initializeEditor } from '../../actions/editor'
 import { closeOmnibar } from '../../actions/omnibar'
 import BlockCollection from './BlockCollection'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
@@ -33,9 +32,7 @@ export function getEditorId(post, comment, isComment, isZero) {
   if (editorUniqueIdentifiers.hasOwnProperty(fullPrefix)) {
     return editorUniqueIdentifiers[fullPrefix]
   }
-  const uniqueId = _.uniqueId(fullPrefix)
-  editorUniqueIdentifiers[fullPrefix] = uniqueId
-  return uniqueId
+  return fullPrefix
 }
 
 class Editor extends Component {
@@ -60,21 +57,14 @@ class Editor extends Component {
     shouldPersist: false,
   }
 
+  componentWillMount() {
+    const { dispatch, shouldPersist } = this.props
+    dispatch(initializeEditor(this.getEditorIdentifier(), shouldPersist))
+  }
+
   getEditorIdentifier() {
     const { autoPopulate, comment, isComment, post, shouldPersist } = this.props
     return getEditorId(post, comment, isComment, autoPopulate && !shouldPersist)
-  }
-
-  clearPersistedData() {
-    const { dispatch } = this.props
-    dispatch({
-      type: ACTION_TYPES.POST.PERSIST,
-      payload: {
-        editorId: this.getEditorIdentifier(),
-        collection: {},
-        order: [],
-      },
-    })
   }
 
   submit = (data) => {
@@ -82,7 +72,7 @@ class Editor extends Component {
     if (isComment) {
       if (comment && comment.isEditing) {
         dispatch(toggleCommentEditing(comment, false))
-        dispatch(updateComment(comment, data))
+        dispatch(updateComment(comment, data, this.getEditorIdentifier()))
       } else {
         dispatch(createComment(data, this.getEditorIdentifier(), post.id))
       }
@@ -91,7 +81,7 @@ class Editor extends Component {
       dispatch(createPost(data, this.getEditorIdentifier()))
     } else if (post.isEditing) {
       dispatch(toggleEditing(post, false))
-      dispatch(updatePost(post, data))
+      dispatch(updatePost(post, data, this.getEditorIdentifier()))
     } else if (post.isReposting) {
       dispatch(toggleReposting(post, false))
       const repostId = post.repostId || post.id
@@ -101,7 +91,6 @@ class Editor extends Component {
       )
     }
     if (onSubmit) { onSubmit() }
-    this.clearPersistedData()
   }
 
   cancel = () => {
@@ -139,11 +128,7 @@ class Editor extends Component {
   cancelConfirmed = () => {
     const { comment, dispatch, post, shouldPersist } = this.props
     this.closeModal()
-    requestAnimationFrame(() => {
-      if (this.refs.blockCollection) {
-        this.refs.blockCollection.refs.wrappedInstance.clearBlocks()
-      }
-    })
+    dispatch(resetEditor(this.getEditorIdentifier()))
     dispatch(closeOmnibar())
     if (post) {
       dispatch(toggleEditing(post, false))
