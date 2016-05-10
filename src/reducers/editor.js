@@ -19,6 +19,7 @@ const initialEditorState = {
   hasContent: false,
   hasMention: false,
   isLoading: false,
+  isPosting: false,
   order: [],
   shouldPersist: false,
   uid: 0,
@@ -61,10 +62,18 @@ function editorObject(state = initialEditorState, action) {
       return editorMethods.reorderBlocks(newState, action)
     case EDITOR.REPLACE_TEXT:
       return editorMethods.replaceText(newState, action)
+    case POST.CREATE_REQUEST:
+    case POST.UPDATE_REQUEST:
+      newState.isPosting = true
+      return newState
     case EDITOR.RESET:
     case POST.CREATE_SUCCESS:
     case POST.UPDATE_SUCCESS:
       return editorMethods.addEmptyTextBlock({ ...initialEditorState, uid: newState.uid })
+    case POST.CREATE_FAILURE:
+    case POST.UPDATE_FAILURE:
+      newState.isPosting = false
+      return newState
     case EDITOR.SAVE_IMAGE_SUCCESS:
       if (newState.dragBlock && newState.dragBlock.uid === action.payload.uid) {
         newState.dragBlock = {

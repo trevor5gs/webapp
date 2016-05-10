@@ -42,6 +42,7 @@ class BlockCollection extends Component {
     hasMention: PropTypes.bool,
     isComment: PropTypes.bool,
     isLoading: PropTypes.bool,
+    isPosting: PropTypes.bool,
     isMobileGridStream: PropTypes.bool,
     isOwnPost: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
@@ -368,8 +369,8 @@ class BlockCollection extends Component {
 
   render() {
     const {
-      avatar, cancelAction, collection, dragBlock, editorId, hasContent,
-      hasMention, isComment, isLoading, isMobileGridStream, isOwnPost, order, submitText,
+      avatar, cancelAction, collection, dragBlock, editorId, hasContent, hasMention,
+      isComment, isLoading, isMobileGridStream, isOwnPost, isPosting, order, submitText,
     } = this.props
     const { dragBlockTop, hasDragOver } = this.state
     const firstBlockIsText = collection[order[0]] ? collection[order[0]].kind === 'text' : true
@@ -381,6 +382,7 @@ class BlockCollection extends Component {
       hasContent,
       isComment,
       isLoading,
+      isPosting,
     })
     return (
       <div
@@ -406,7 +408,7 @@ class BlockCollection extends Component {
         { showQuickEmoji ? <QuickEmoji onAddEmoji={ this.onInsertEmoji } /> : null }
         <PostActionBar
           cancelAction={ cancelAction }
-          disableSubmitAction={ isLoading || !hasContent }
+          disableSubmitAction={ isPosting || isLoading || !hasContent }
           editorId={ editorId }
           handleFileAction={ this.handleFiles }
           ref="postActionBar"
@@ -429,6 +431,7 @@ function mapStateToProps(state, ownProps) {
     hasContent: editor.hasContent,
     hasMention: editor.hasMention,
     isLoading: editor.isLoading,
+    isPosting: editor.isPosting,
     isMobileGridStream: state.gui.viewportDeviceSize === 'mobile' && state.gui.isGridMode,
     isNavbarHidden: state.gui.isNavbarHidden,
     order: editor.order,
