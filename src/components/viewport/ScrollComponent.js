@@ -1,4 +1,4 @@
-import { isFirefox } from '../../vendor/jello'
+import { isAndroid, isFirefox } from '../../vendor/jello'
 
 let hasListeners = false
 let lastScrollDirection = null
@@ -26,6 +26,9 @@ function getScrollBottom(scrollHeight = getScrollHeight()) {
   let bottom = Math.round(scrollHeight - window.innerHeight)
   if (isFirefox() && document.querySelector('.Viewport.isOffsetLayout')) {
     bottom += Math.ceil(window.innerWidth * 0.5625)
+    if (isAndroid()) {
+      bottom += 40
+    }
   }
   return bottom
 }
@@ -62,7 +65,7 @@ function getScrollAction(scrollProperties) {
   const { scrollY, scrollBottom, scrollDirection } = scrollProperties
   if (scrollY === 0) {
     return 'onScrollTop'
-  } else if (Math.abs(scrollY - scrollBottom) < 11) {
+  } else if (Math.abs(scrollY - scrollBottom) < 20) {
     return 'onScrollBottom'
   } else if (scrollY < 0) {
     return 'onScrollPull'
