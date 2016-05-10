@@ -25,7 +25,7 @@ function imageRegion(region, key, isGridLayout, postDetailPath, isNotification, 
       isComment={ isComment }
       isGridLayout={ isGridLayout }
       isNotification={ isNotification }
-      key={ key }
+      key={ `${key}_${JSON.stringify(region.data)}` }
       links={ region.links }
       postDetailPath={ postDetailPath }
     />

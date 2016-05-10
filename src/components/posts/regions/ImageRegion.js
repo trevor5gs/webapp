@@ -103,7 +103,7 @@ class ImageRegion extends Component {
   }
 
   getAttachmentMetadata() {
-    if (!this.attachment) { return {} }
+    if (!this.attachment || this.isBasicAttachment()) { return null }
     const { optimized, xhdpi, hdpi } = this.attachment
     let width = null
     let height = null
@@ -130,7 +130,7 @@ class ImageRegion extends Component {
   // below 1:1 pixel density, or go above the desired grid cell height
   getImageDimensions() {
     const metadata = this.getAttachmentMetadata()
-    if (!metadata) { return metadata }
+    if (!metadata) { return {} }
     const { isGridLayout, isComment } = this.props
     const { columnWidth, contentWidth, commentOffset } = this.state
     const { height, ratio } = metadata
@@ -257,8 +257,7 @@ class ImageRegion extends Component {
 
   renderLegacyImageAttachment() {
     const { content, isNotification } = this.props
-    const dimensions = this.getImageDimensions()
-    const attrs = { src: content.url, ...dimensions }
+    const attrs = { src: content.url }
     if (isNotification) {
       attrs.height = 'auto'
     }
