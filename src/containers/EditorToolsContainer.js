@@ -53,6 +53,10 @@ class EditorToolsContainer extends Component {
     this.onCancelAutoCompleter()
   }
 
+  onSubmitPost() {
+    this.onCancelAutoCompleter()
+  }
+
   onCancelAutoCompleter = () => {
     const { dispatch } = this.props
     dispatch({ type: EDITOR.CLEAR_AUTO_COMPLETERS })
