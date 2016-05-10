@@ -19,7 +19,7 @@ function stubJSONStore() {
   stub('post', { id: '4', repostsCount: 1, token: 'token4', authorId: '4' })
 }
 
-describe('json reducer', () => {
+describe.only('json reducer', () => {
   beforeEach(() => {
     stubJSONStore()
     json.pages = {}
@@ -41,7 +41,7 @@ describe('json reducer', () => {
           id: '1',
           followersCount: 2,
         }
-      ))
+      )).to.be.true
       spy.restore()
     })
     it('should set the count', () => {
@@ -54,7 +54,7 @@ describe('json reducer', () => {
           id: '1',
           undefinedCount: 1,
         }
-      ))
+      )).to.be.true
       spy.restore()
     })
     it('should ignore ∞', () => {
@@ -67,7 +67,7 @@ describe('json reducer', () => {
           id: '1',
           followersCount: '∞',
         }
-      ))
+      )).to.be.true
       spy.restore()
     })
   })
@@ -83,7 +83,7 @@ describe('json reducer', () => {
           id: '1',
           repostsCount: 2,
         }
-      ))
+      )).to.be.true
       spy.restore()
     })
     it('should set the count', () => {
@@ -96,7 +96,7 @@ describe('json reducer', () => {
           id: '1',
           undefinedCount: 2,
         }
-      ))
+      )).to.be.true
       spy.restore()
     })
   })
