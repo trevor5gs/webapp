@@ -44,7 +44,6 @@ const createServerStore = (history, initialState = {}) => {
   const store = compose(
                     applyMiddleware(
                       thunk,
-                      authentication,
                       uploader,
                       reduxRouterMiddleware,
                       requester,

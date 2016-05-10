@@ -79,7 +79,7 @@ function renderFromServer(req, res) {
     const memoryHistory = createMemoryHistory(req.originalUrl)
     const store = createElloStore(memoryHistory, {
       authentication: {
-        accessToken: token.access_token,
+        accessToken: token.token.access_token,
         isLoggedIn: false,
       },
     })
