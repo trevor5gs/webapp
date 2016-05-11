@@ -14,8 +14,6 @@ import FormButton from '../../components/forms/FormButton'
 import { isFormValid, getEmailStateFromClient } from '../../components/forms/Validators'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
-let _isAndroid
-
 class ForgotPassword extends Component {
 
   static propTypes = {
@@ -35,12 +33,8 @@ class ForgotPassword extends Component {
     this.emailValue = ''
   }
 
-  componentDidMount() {
-    _isAndroid = isAndroid()
-  }
-
   onBlurControl = () => {
-    if (_isAndroid) {
+    if (isAndroid()) {
       document.body.classList.remove('hideCredits')
     }
   }
@@ -56,7 +50,7 @@ class ForgotPassword extends Component {
   }
 
   onFocusControl = () => {
-    if (_isAndroid) {
+    if (isAndroid()) {
       document.body.classList.add('hideCredits')
     }
   }

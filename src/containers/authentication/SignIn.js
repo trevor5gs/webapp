@@ -21,8 +21,6 @@ import {
 } from '../../components/forms/Validators'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
-let _isAndroid
-
 class SignIn extends Component {
 
   static propTypes = {
@@ -50,10 +48,6 @@ class SignIn extends Component {
     this.delayedShowPasswordError = debounce(this.delayedShowPasswordError, 1000)
   }
 
-  componentDidMount() {
-    _isAndroid = isAndroid()
-  }
-
   componentWillReceiveProps(nextProps) {
     if (typeof this.props.webOnboardingVersionSeen === 'undefined' &&
         this.props.webOnboardingVersionSeen !== nextProps.webOnboardingVersionSeen) {
@@ -71,7 +65,7 @@ class SignIn extends Component {
   }
 
   onBlurControl = () => {
-    if (_isAndroid) {
+    if (isAndroid()) {
       document.body.classList.remove('hideCredits')
     }
   }
@@ -101,7 +95,7 @@ class SignIn extends Component {
   }
 
   onFocusControl = () => {
-    if (_isAndroid) {
+    if (isAndroid()) {
       document.body.classList.add('hideCredits')
     }
   }

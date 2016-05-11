@@ -9,8 +9,6 @@ import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 import { isFormValid, getEmailStateFromClient } from '../forms/Validators'
 
-let _isAndroid
-
 class RegistrationRequestForm extends Component {
 
   static propTypes = {
@@ -28,10 +26,6 @@ class RegistrationRequestForm extends Component {
     this.delayedShowEmailError = debounce(this.delayedShowEmailError, 1000)
   }
 
-  componentDidMount() {
-    _isAndroid = isAndroid()
-  }
-
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
     if (availability && availability.hasOwnProperty('email')) {
@@ -40,7 +34,7 @@ class RegistrationRequestForm extends Component {
   }
 
   onBlurControl = () => {
-    if (_isAndroid) {
+    if (isAndroid()) {
       document.body.classList.remove('hideCredits')
     }
   }
@@ -58,7 +52,7 @@ class RegistrationRequestForm extends Component {
   }
 
   onFocusControl = () => {
-    if (_isAndroid) {
+    if (isAndroid()) {
       document.body.classList.add('hideCredits')
     }
   }
