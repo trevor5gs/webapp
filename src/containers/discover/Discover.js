@@ -83,7 +83,7 @@ export class Discover extends Component {
     const tabs = [
       {
         to: '/discover',
-        children: 'Recommended',
+        children: 'Featured',
         activePattern: /^\/(?:discover(\/recommended)?)?$/,
       },
       { to: '/discover/trending', children: 'Trending' },
