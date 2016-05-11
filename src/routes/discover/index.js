@@ -1,8 +1,7 @@
 const TYPES = [
-  'communities',
-  'featured-users',
+  // 'communities',
+  // 'featured-users',
   'recent',
-  'recommended',
   'trending',
 ]
 
