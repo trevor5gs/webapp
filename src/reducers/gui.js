@@ -70,12 +70,16 @@ const initialState = {
   activeNotificationsType: 'all',
   activeUserFollowingType: 'friend',
   currentStream: '/discover',
+  discoverKeyType: null,
+  history: {},
   isGridMode: true,
   isLayoutToolHidden: false,
   isNotificationsUnread: false,
   isOffsetLayout: false,
-  history: {},
+  lastDiscoverBeaconVersion: '0',
+  lastFollowingBeaconVersion: '0',
   lastNotificationCheck: oldDate.toUTCString(),
+  lastStarredBeaconVersion: '0',
   // order matters for matching routes
   modes: [
     { label: 'root', mode: 'grid', regex: '^/$' },
@@ -102,12 +106,36 @@ export const gui = (state = initialState, action = { type: '' }) => {
   let pathname = null
   let isLayoutToolHidden = null
   switch (action.type) {
+    case AUTHENTICATION.LOGOUT:
+      return { ...state, discoverKeyType: null }
     case BEACONS.LAST_DISCOVER_VERSION:
       return { ...state, lastDiscoverBeaconVersion: action.payload.version }
     case BEACONS.LAST_FOLLOWING_VERSION:
       return { ...state, lastFollowingBeaconVersion: action.payload.version }
     case BEACONS.LAST_STARRED_VERSION:
       return { ...state, lastStarredBeaconVersion: action.payload.version }
+    case GUI.BIND_DISCOVER_KEY:
+      return { ...newState, discoverKeyType: action.payload.type }
+    case GUI.NOTIFICATIONS_TAB:
+      return { ...state, activeNotificationsType: action.payload.activeTabType }
+    case GUI.SET_ACTIVE_USER_FOLLOWING_TYPE:
+      return { ...newState, activeUserFollowingType: action.payload.tab }
+    case GUI.SET_IS_OFFSET_LAYOUT:
+      return { ...state, isOffsetLayout: action.payload.isOffsetLayout }
+    case GUI.SET_SCROLL:
+      newState.history[action.payload.key] = { ...action.payload }
+      return newState
+    case GUI.SET_SCROLL_STATE:
+      return {
+        ...state,
+        isCoverHidden: _.get(action.payload, 'isCoverHidden', newState.isCoverHidden),
+        isNavbarFixed: _.get(action.payload, 'isNavbarFixed', newState.isNavbarFixed),
+        isNavbarHidden: _.get(action.payload, 'isNavbarHidden', newState.isNavbarHidden),
+        isNavbarSkippingTransition:
+          _.get(action.payload, 'isNavbarSkippingTransition', newState.isNavbarSkippingTransition),
+      }
+    case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
+      return { ...state, ...action.payload }
     case HEAD_FAILURE:
       return { ...state, isNotificationsUnread: false }
     case HEAD_SUCCESS:
@@ -115,8 +143,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
         return { ...state, isNotificationsUnread: true }
       }
       return state
-    case AUTHENTICATION.LOGOUT:
-      return { ...state, discoverKeyType: null }
     case LOAD_STREAM_SUCCESS:
       if (action.meta && /\/notifications/.test(action.meta.resultKey)) {
         return {
@@ -126,13 +152,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
         }
       }
       return state
-    case PROFILE.DELETE_SUCCESS:
-      return { ...initialState }
-    case SET_LAYOUT_MODE:
-      mode = findLayoutMode(newState.modes)
-      if (mode.mode === action.payload.mode) return state
-      mode.mode = action.payload.mode
-      return { ...newState, isGridMode: action.payload.mode === 'grid' }
     case LOCATION_CHANGE:
       location = action.payload
       pathname = location.pathname
@@ -152,34 +171,13 @@ export const gui = (state = initialState, action = { type: '' }) => {
         isLayoutToolHidden,
         isGridMode: _isGridMode(state.modes),
       }
-    case GUI.NOTIFICATIONS_TAB:
-      return { ...state, activeNotificationsType: action.payload.activeTabType }
-    case GUI.SET_SCROLL:
-      newState.history[action.payload.key] = { ...action.payload }
-      return newState
-    case GUI.SET_IS_OFFSET_LAYOUT:
-      return {
-        ...state,
-        isOffsetLayout: action.payload.isOffsetLayout,
-      }
-    case GUI.SET_SCROLL_STATE:
-      return {
-        ...state,
-        isCoverHidden: _.get(action.payload, 'isCoverHidden', newState.isCoverHidden),
-        isNavbarFixed: _.get(action.payload, 'isNavbarFixed', newState.isNavbarFixed),
-        isNavbarHidden: _.get(action.payload, 'isNavbarHidden', newState.isNavbarHidden),
-        isNavbarSkippingTransition:
-          _.get(action.payload, 'isNavbarSkippingTransition', newState.isNavbarSkippingTransition),
-      }
-    case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
-      return {
-        ...state,
-        ...action.payload,
-      }
-    case GUI.BIND_DISCOVER_KEY:
-      return { ...newState, discoverKeyType: action.payload.type }
-    case GUI.SET_ACTIVE_USER_FOLLOWING_TYPE:
-      return { ...newState, activeUserFollowingType: action.payload.tab }
+    case PROFILE.DELETE_SUCCESS:
+      return { ...initialState }
+    case SET_LAYOUT_MODE:
+      mode = findLayoutMode(newState.modes)
+      if (mode.mode === action.payload.mode) return state
+      mode.mode = action.payload.mode
+      return { ...newState, isGridMode: action.payload.mode === 'grid' }
     default:
       return state
   }
