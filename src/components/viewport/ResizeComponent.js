@@ -32,7 +32,7 @@ function getCoverImageSize(innerWidth) {
 }
 
 // This could be anything really, baby, momma, poppa bear would work too.
-function getViewportDeviceSize(columnCount, innerWidth) {
+function getDeviceSize(columnCount, innerWidth) {
   if (columnCount >= 4) {
     return 'desktop'
   } else if (columnCount >= 2 && innerWidth >= 640) {
@@ -57,11 +57,11 @@ function setResizeProperties() {
   const wiw = window.innerWidth
   const probe = getProbeProperties()
   const columnCount = parseInt(probe.columnCount, 10)
-  const viewportDeviceSize = getViewportDeviceSize(columnCount, wiw)
+  const deviceSize = getDeviceSize(columnCount, wiw)
   // Todo: Externalize padding out to the probe so I don't have to do things like
   // I'm about to do next :point_down:
   /* eslint-disable no-nested-ternary */
-  const padding = viewportDeviceSize === 'mobile' ? 10 : (columnCount >= 4 ? 40 : 20)
+  const padding = deviceSize === 'mobile' ? 10 : (columnCount >= 4 ? 40 : 20)
   /* eslint-enable no-nested-ternary */
   const columnWidth = Math.round((wiw - ((columnCount + 1) * padding)) / columnCount)
   const contentWidth = Math.round(wiw - (padding * 2))
@@ -71,9 +71,9 @@ function setResizeProperties() {
     contentWidth,
     coverImageSize: getCoverImageSize(wiw),
     coverOffset: Math.round((wiw * 0.5625)),
+    deviceSize,
     innerHeight: window.innerHeight,
     innerWidth: wiw,
-    viewportDeviceSize,
   }
 }
 

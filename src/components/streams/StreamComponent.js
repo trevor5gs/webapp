@@ -22,6 +22,7 @@ export class StreamComponent extends Component {
     children: PropTypes.any,
     className: PropTypes.string,
     currentUser: PropTypes.object,
+    deviceSize: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     columnCount: PropTypes.number,
     history: PropTypes.object.isRequired,
@@ -83,7 +84,6 @@ export class StreamComponent extends Component {
     routerState: PropTypes.object,
     scrollSessionKey: PropTypes.string,
     stream: PropTypes.object.isRequired,
-    viewportDeviceSize: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
@@ -298,14 +298,14 @@ export class StreamComponent extends Component {
   }
 
   loadPage(rel, scrolled = false) {
-    const { dispatch, result, stream, viewportDeviceSize } = this.props
+    const { deviceSize, dispatch, result, stream } = this.props
     if (!result) { return }
     const { action } = this.state
     const { meta } = action
     if (scrolled && meta && meta.resultKey && meta.updateKey) {
       // WTF?: Not sure why but when at `/notifications` is in mobile we have to
       // let this pass otherwise scrolling doesn't work. [#119054249]
-      if (viewportDeviceSize !== 'mobile' && !/notifications/.test(meta.updateKey)) {
+      if (deviceSize !== 'mobile' && !/notifications/.test(meta.updateKey)) {
         return
       }
     }
@@ -480,6 +480,7 @@ export function mapStateToProps(state, ownProps) {
   return {
     columnCount: state.gui.columnCount,
     currentUser: state.profile,
+    deviceSize: state.gui.deviceSize,
     history: state.gui.history,
     innerHeight: state.gui.innerHeight,
     innerWidth: state.gui.innerWidth,
@@ -491,7 +492,6 @@ export function mapStateToProps(state, ownProps) {
     resultPath,
     routerState: state.routing.location.state || {},
     stream,
-    viewportDeviceSize: state.gui.viewportDeviceSize,
   }
 }
 

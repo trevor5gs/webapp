@@ -16,9 +16,9 @@ const _offsets = { mobile: 70, tablet: 80, desktop: 100 }
 class FlagDialog extends Component {
 
   static propTypes = {
+    deviceSize: PropTypes.string,
     onResponse: PropTypes.func,
     onConfirm: PropTypes.func,
-    viewportDeviceSize: PropTypes.string,
   }
 
   componentWillMount() {
@@ -65,7 +65,7 @@ class FlagDialog extends Component {
   renderChoicesScreen() {
     const { activeChoice } = this.state
     const index = Object.keys(flags).indexOf(activeChoice)
-    const top = index < 0 ? null : (70 * index) + _offsets[this.props.viewportDeviceSize]
+    const top = index < 0 ? null : (70 * index) + _offsets[this.props.deviceSize]
     return (
       <div className="Dialog FlagDialog">
         <h2>Would you like to flag this content as:</h2>

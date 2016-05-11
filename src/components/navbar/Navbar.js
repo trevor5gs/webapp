@@ -71,6 +71,7 @@ NavbarLoggedOut.propTypes = {
 export const NavbarLoggedIn = ({
   avatar,
   currentStream,
+  deviceSize,
   hasLayoutTool,
   hasLoadMoreButton,
   hasNotifications,
@@ -92,7 +93,6 @@ export const NavbarLoggedIn = ({
   onLogOut,
   pathname,
   username,
-  viewportDeviceSize,
 }) =>
 <nav className="Navbar" role="navigation" >
   <NavbarMark
@@ -137,7 +137,7 @@ export const NavbarLoggedIn = ({
       className={ classNames('IconOnly', { hasNotifications }) }
       icon={ <BoltIcon /> }
       label="Notifications"
-      onClick={ viewportDeviceSize !== 'mobile' ? onClickNotification : null }
+      onClick={ deviceSize !== 'mobile' ? onClickNotification : null }
       pathname={ pathname }
       to={ `/notifications${notificationCategory}` }
     />
@@ -156,13 +156,13 @@ export const NavbarLoggedIn = ({
     onLogOut={ onLogOut }
     username={ username }
   />
-  { viewportDeviceSize === 'mobile' && hasLayoutTool ?
+  { deviceSize === 'mobile' && hasLayoutTool ?
     <NavbarLayoutTool
       icon={ isGridMode ? <ListIcon /> : <GridIcon /> }
       onClick={ onClickToggleLayoutMode }
     /> : null
   }
-  { viewportDeviceSize !== 'mobile' && isNotificationsActive ?
+  { deviceSize !== 'mobile' && isNotificationsActive ?
     <NotificationsContainer /> : null
   }
 </nav>
@@ -170,6 +170,7 @@ export const NavbarLoggedIn = ({
 NavbarLoggedIn.propTypes = {
   avatar: PropTypes.shape({}),
   currentStream: PropTypes.string.isRequired,
+  deviceSize: PropTypes.string.isRequired,
   hasLayoutTool: PropTypes.bool.isRequired,
   hasLoadMoreButton: PropTypes.bool.isRequired,
   hasNotifications: PropTypes.bool.isRequired,
@@ -191,6 +192,5 @@ NavbarLoggedIn.propTypes = {
   onLogOut: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
   username: PropTypes.string,
-  viewportDeviceSize: PropTypes.string.isRequired,
 }
 

@@ -6,6 +6,7 @@ class PostActionBar extends Component {
 
   static propTypes = {
     cancelAction: PropTypes.func.isRequired,
+    deviceSize: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     disableSubmitAction: PropTypes.bool,
     editorId: PropTypes.string.isRequired,
@@ -13,7 +14,6 @@ class PostActionBar extends Component {
     replyAllAction: PropTypes.func,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
-    viewportDeviceSize: PropTypes.string,
   }
 
   submitted = () => {
@@ -37,13 +37,13 @@ class PostActionBar extends Component {
   }
 
   render() {
-    const { disableSubmitAction, replyAllAction, submitText, viewportDeviceSize } = this.props
+    const { deviceSize, disableSubmitAction, replyAllAction, submitText } = this.props
     return (
       <div className="editor-actions">
 
         <button className="PostActionButton forUpload" ref="browseButton" onClick={ this.browse }>
           <span className="PostActionButtonLabel">Upload</span>
-          { viewportDeviceSize === 'mobile' ? <CameraIcon /> : <BrowseIcon /> }
+          { deviceSize === 'mobile' ? <CameraIcon /> : <BrowseIcon /> }
         </button>
 
         <button className="PostActionButton forCancel" ref="cancelButton" onClick={ this.cancel }>
@@ -86,7 +86,7 @@ class PostActionBar extends Component {
 const mapStateToProps = (state) => {
   const { gui } = state
   return {
-    viewportDeviceSize: gui.viewportDeviceSize,
+    deviceSize: gui.deviceSize,
   }
 }
 

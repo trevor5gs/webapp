@@ -52,9 +52,9 @@ const initialSizeState = {
   contentWidth: 0,
   coverImageSize: 'xhdpi',
   coverOffset: 0,
+  deviceSize: 'tablet',
   innerHeight: 0,
   innerWidth: 0,
-  viewportDeviceSize: 'tablet',
 }
 
 const initialScrollState = {

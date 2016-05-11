@@ -308,7 +308,7 @@ const mapStateToProps = (state) => {
   const { gui } = state
   return {
     columnWidth: gui.columnWidth,
-    commentOffset: gui.viewportDeviceSize === 'mobile' ? 40 : 60,
+    commentOffset: gui.deviceSize === 'mobile' ? 40 : 60,
     contentWidth: gui.contentWidth,
     innerHeight: gui.innerHeight,
   }

@@ -16,6 +16,7 @@ describe('gui reducer', () => {
       'coverImageSize',
       'coverOffset',
       'currentStream',
+      'deviceSize',
       'hasLayoutTool',
       'history',
       'innerHeight',
@@ -30,7 +31,6 @@ describe('gui reducer', () => {
       'modes',
       'newNotificationContent',
       'userFollowingTab',
-      'viewportDeviceSize',
       )
     })
   })

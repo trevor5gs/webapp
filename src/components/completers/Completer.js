@@ -14,9 +14,9 @@ export default class Completer extends Component {
   static propTypes = {
     className: PropTypes.string,
     completions: PropTypes.object.isRequired,
+    deviceSize: PropTypes.string,
     onCancel: PropTypes.func.isRequired,
     onCompletion: PropTypes.func.isRequired,
-    viewportDeviceSize: PropTypes.string,
   }
 
   componentWillMount() {
@@ -106,7 +106,7 @@ export default class Completer extends Component {
   }
 
   render() {
-    const { className, completions, viewportDeviceSize } = this.props
+    const { className, completions, deviceSize } = this.props
     if (!completions || !completions.data || !completions.data.length) {
       return null
     }
@@ -115,7 +115,7 @@ export default class Completer extends Component {
     const pos = getPositionFromSelection()
     if (!pos) {
       style = { top: -200, left: -666 }
-    } else if (viewportDeviceSize === 'mobile') {
+    } else if (deviceSize === 'mobile') {
       style = { top: pos.top + 20 }
     } else if (pos) {
       style = { top: pos.top + 20, left: pos.left }

@@ -432,7 +432,7 @@ function mapStateToProps(state, ownProps) {
     hasMention: editor.hasMention,
     isLoading: editor.isLoading,
     isPosting: editor.isPosting,
-    isMobileGridStream: state.gui.viewportDeviceSize === 'mobile' && state.gui.isGridMode,
+    isMobileGridStream: state.gui.deviceSize === 'mobile' && state.gui.isGridMode,
     isNavbarHidden: state.gui.isNavbarHidden,
     order: editor.order,
     orderLength: editor.order.length,

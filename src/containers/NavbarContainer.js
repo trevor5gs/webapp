@@ -212,6 +212,7 @@ const mapStateToProps = (state) => {
   if (isLoggedIn) {
     return {
       avatar: profile.avatar,
+      deviceSize: gui.deviceSize,
       currentStream,
       hasLayoutTool: gui.hasLayoutTool,
       hasLoadMoreButton,
@@ -222,7 +223,6 @@ const mapStateToProps = (state) => {
       isProfileMenuActive: modal.isProfileMenuActive,
       pathname,
       username: profile.username,
-      viewportDeviceSize: gui.viewportDeviceSize,
     }
   }
   return {
