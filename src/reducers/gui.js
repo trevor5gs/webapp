@@ -70,8 +70,8 @@ const initialState = {
   activeNotificationsType: 'all',
   activeUserFollowingType: 'friend',
   currentStream: '/discover',
-  hasLayoutTool: true,
   isGridMode: true,
+  isLayoutToolHidden: false,
   isNotificationsUnread: false,
   isOffsetLayout: false,
   history: {},
@@ -100,7 +100,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
   const newState = { ...state }
   let mode = null
   let pathname = null
-  let hasLayoutTool = null
+  let isLayoutToolHidden = null
   switch (action.type) {
     case BEACONS.LAST_DISCOVER_VERSION:
       return { ...state, lastDiscoverBeaconVersion: action.payload.version }
@@ -136,20 +136,20 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case LOCATION_CHANGE:
       location = action.payload
       pathname = location.pathname
-      hasLayoutTool = !_.some(NO_LAYOUT_TOOLS, pagex => pagex.test(pathname))
+      isLayoutToolHidden = _.some(NO_LAYOUT_TOOLS, pagex => pagex.test(pathname))
       if (_.some(STREAMS_WHITELIST, re => re.test(pathname))) {
         return {
           ...state,
           ...initialScrollState,
           currentStream: pathname,
-          hasLayoutTool,
+          isLayoutToolHidden,
           isGridMode: _isGridMode(state.modes),
         }
       }
       return {
         ...state,
         ...initialScrollState,
-        hasLayoutTool,
+        isLayoutToolHidden,
         isGridMode: _isGridMode(state.modes),
       }
     case GUI.NOTIFICATIONS_TAB:

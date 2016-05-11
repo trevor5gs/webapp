@@ -72,9 +72,9 @@ export const NavbarLoggedIn = ({
   avatar,
   currentStream,
   deviceSize,
-  hasLayoutTool,
   hasLoadMoreButton,
   isGridMode,
+  isLayoutToolHidden,
   isLoggedIn,
   isNotificationsActive,
   isNotificationsUnread,
@@ -156,7 +156,7 @@ export const NavbarLoggedIn = ({
     onLogOut={ onLogOut }
     username={ username }
   />
-  { deviceSize === 'mobile' && hasLayoutTool ?
+  { deviceSize === 'mobile' && !isLayoutToolHidden ?
     <NavbarLayoutTool
       icon={ isGridMode ? <ListIcon /> : <GridIcon /> }
       onClick={ onClickToggleLayoutMode }
@@ -171,9 +171,9 @@ NavbarLoggedIn.propTypes = {
   avatar: PropTypes.shape({}),
   currentStream: PropTypes.string.isRequired,
   deviceSize: PropTypes.string.isRequired,
-  hasLayoutTool: PropTypes.bool.isRequired,
   hasLoadMoreButton: PropTypes.bool.isRequired,
   isGridMode: PropTypes.bool,
+  isLayoutToolHidden: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   isNotificationsActive: PropTypes.bool.isRequired,
   isNotificationsUnread: PropTypes.bool.isRequired,
