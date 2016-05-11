@@ -178,7 +178,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
       }
     case GUI.BIND_DISCOVER_KEY:
       return { ...newState, discoverKeyType: action.payload.type }
-    case GUI.SET_FOLLOWING_TAB:
+    case GUI.SET_ACTIVE_USER_FOLLOWING_TYPE:
       return { ...newState, activeUserFollowingType: action.payload.tab }
     default:
       return state

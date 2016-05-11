@@ -15,7 +15,7 @@ import {
 } from '../../actions/user'
 import { openAlert, closeAlert } from '../../actions/modals'
 import { saveAvatar, saveCover } from '../../actions/profile'
-import { setFollowingTab } from '../../actions/gui'
+import { setActiveUserFollowingType } from '../../actions/gui'
 import Cover from '../../components/assets/Cover'
 import Uploader from '../../components/uploaders/Uploader'
 import { UserDetailHelmet } from '../../components/helmets/UserDetailHelmet'
@@ -301,7 +301,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    followingTab: bindActionCreators(setFollowingTab, dispatch),
+    followingTab: bindActionCreators(setActiveUserFollowingType, dispatch),
     dispatch,
   }
 }
