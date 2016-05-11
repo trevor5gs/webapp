@@ -74,6 +74,8 @@ export function regionItemsForNotifications(content, postDetailPath = null) {
 // TODO: Wrap all of these function arguments in an object and destructure so order doesn't matter.
 /* eslint-disable max-len */
 export function regionItems(content, only = null, isGridLayout = true, postDetailPath = null, isNotification = false, isComment = false) {
+  // sometimes the content is null/undefined for some reason
+  if (!content) { return null }
   return content.map((region, i) => {
     if (!only || only === region.kind) {
       switch (region.kind) {
