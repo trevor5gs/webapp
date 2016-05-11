@@ -72,6 +72,7 @@ const initialState = {
   currentStream: '/discover',
   hasLayoutTool: true,
   isGridMode: true,
+  isNotificationsUnread: false,
   isOffsetLayout: false,
   history: {},
   lastNotificationCheck: oldDate.toUTCString(),
@@ -93,7 +94,6 @@ const initialState = {
     { label: 'users/loves', mode: 'grid', regex: '/[\\w\\-]+/loves' },
     { label: 'users', mode: 'list', regex: '/[\\w\\-]+' },
   ],
-  newNotificationContent: false,
 }
 
 export const gui = (state = initialState, action = { type: '' }) => {
@@ -109,10 +109,10 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case BEACONS.LAST_STARRED_VERSION:
       return { ...state, lastStarredBeaconVersion: action.payload.version }
     case HEAD_FAILURE:
-      return { ...state, newNotificationContent: false }
+      return { ...state, isNotificationsUnread: false }
     case HEAD_SUCCESS:
       if (action.payload.serverResponse.status === 204) {
-        return { ...state, newNotificationContent: true }
+        return { ...state, isNotificationsUnread: true }
       }
       return state
     case AUTHENTICATION.LOGOUT:
@@ -121,7 +121,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
       if (action.meta && /\/notifications/.test(action.meta.resultKey)) {
         return {
           ...state,
-          newNotificationContent: false,
+          isNotificationsUnread: false,
           lastNotificationCheck: new Date().toUTCString(),
         }
       }

@@ -27,10 +27,10 @@ describe('gui reducer', () => {
       'isNavbarFixed',
       'isNavbarHidden',
       'isNavbarSkippingTransition',
+      'isNotificationsUnread',
       'isOffsetLayout',
       'lastNotificationCheck',
       'modes',
-      'newNotificationContent',
       )
     })
   })

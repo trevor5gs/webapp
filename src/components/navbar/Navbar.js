@@ -74,10 +74,10 @@ export const NavbarLoggedIn = ({
   deviceSize,
   hasLayoutTool,
   hasLoadMoreButton,
-  hasNotifications,
   isGridMode,
   isLoggedIn,
   isNotificationsActive,
+  isNotificationsUnread,
   isProfileMenuActive,
   notificationCategory,
   onClickAvatar,
@@ -134,7 +134,7 @@ export const NavbarLoggedIn = ({
       to="/starred"
     />
     <NavbarLink
-      className={ classNames('IconOnly', { hasNotifications }) }
+      className={ classNames('IconOnly', { isNotificationsUnread }) }
       icon={ <BoltIcon /> }
       label="Notifications"
       onClick={ deviceSize !== 'mobile' ? onClickNotification : null }
@@ -173,10 +173,10 @@ NavbarLoggedIn.propTypes = {
   deviceSize: PropTypes.string.isRequired,
   hasLayoutTool: PropTypes.bool.isRequired,
   hasLoadMoreButton: PropTypes.bool.isRequired,
-  hasNotifications: PropTypes.bool.isRequired,
   isGridMode: PropTypes.bool,
   isLoggedIn: PropTypes.bool.isRequired,
   isNotificationsActive: PropTypes.bool.isRequired,
+  isNotificationsUnread: PropTypes.bool.isRequired,
   isProfileMenuActive: PropTypes.bool.isRequired,
   notificationCategory: PropTypes.string.isRequired,
   onClickAvatar: PropTypes.func.isRequired,
