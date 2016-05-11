@@ -67,7 +67,7 @@ const initialScrollState = {
 const initialState = {
   ...initialSizeState,
   ...initialScrollState,
-  activeNotificationsTabType: 'all',
+  activeNotificationsType: 'all',
   currentStream: '/discover',
   hasLayoutTool: true,
   isGridMode: true,
@@ -153,7 +153,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
         isGridMode: _isGridMode(state.modes),
       }
     case GUI.NOTIFICATIONS_TAB:
-      return { ...state, activeNotificationsTabType: action.payload.activeTabType }
+      return { ...state, activeNotificationsType: action.payload.activeTabType }
     case GUI.SET_SCROLL:
       newState.history[action.payload.key] = { ...action.payload }
       return newState

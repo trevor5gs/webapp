@@ -9,7 +9,7 @@ describe('gui reducer', () => {
       expect(
         subject.gui(undefined, {})
       ).to.have.keys(
-      'activeNotificationsTabType',
+      'activeNotificationsType',
       'columnCount',
       'columnWidth',
       'contentWidth',
