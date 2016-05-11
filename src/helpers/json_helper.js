@@ -30,7 +30,7 @@ export function findModel(json, initModel) {
 }
 
 export function getLinkObject(model, identifier, json) {
-  if (!model.links || !model.links[identifier]) { return null }
+  if (!model || !model.links || !model.links[identifier]) { return null }
   const key = model.links[identifier].id || model.links[identifier]
   const collection = model.links[identifier].type || identifier
   const deletedCollection = json[`deleted_${collection}`]
@@ -44,7 +44,7 @@ export function getLinkObject(model, identifier, json) {
 }
 
 export function getLinkArray(model, identifier, json) {
-  if (!model.links || !model.links[identifier]) { return null }
+  if (!model || !model.links || !model.links[identifier]) { return null }
   const keys = model.links[identifier].ids || model.links[identifier]
   const collection = model.links[identifier].type || identifier
   const deletedCollection = json[`deleted_${collection}`]
