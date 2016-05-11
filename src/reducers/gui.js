@@ -68,6 +68,7 @@ const initialState = {
   ...initialSizeState,
   ...initialScrollState,
   activeNotificationsType: 'all',
+  activeUserFollowingType: 'friend',
   currentStream: '/discover',
   hasLayoutTool: true,
   isGridMode: true,
@@ -93,7 +94,6 @@ const initialState = {
     { label: 'users', mode: 'list', regex: '/[\\w\\-]+' },
   ],
   newNotificationContent: false,
-  userFollowingTab: 'friend',
 }
 
 export const gui = (state = initialState, action = { type: '' }) => {
@@ -179,7 +179,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case GUI.BIND_DISCOVER_KEY:
       return { ...newState, discoverKeyType: action.payload.type }
     case GUI.SET_FOLLOWING_TAB:
-      return { ...newState, userFollowingTab: action.payload.tab }
+      return { ...newState, activeUserFollowingType: action.payload.tab }
     default:
       return state
   }

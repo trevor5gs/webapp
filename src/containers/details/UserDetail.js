@@ -31,6 +31,7 @@ import {
 
 class UserDetail extends Component {
   static propTypes = {
+    activeUserFollowingType: PropTypes.string,
     coverImageSize: PropTypes.string,
     coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
@@ -49,7 +50,6 @@ class UserDetail extends Component {
       error: PropTypes.object,
     }),
     user: PropTypes.object,
-    userFollowingTab: PropTypes.string,
   };
 
   static preRender = (store, routerState) => {
@@ -154,7 +154,7 @@ class UserDetail extends Component {
       omnibar,
       params,
       stream,
-      userFollowingTab,
+      activeUserFollowingType,
       user,
     } = this.props
 
@@ -227,7 +227,7 @@ class UserDetail extends Component {
             className="LabelTabList"
             tabClasses="LabelTab"
             key={ `tabList_${user.id}` }
-            activeType={ userFollowingTab }
+            activeType={ activeUserFollowingType }
             tabs={ tabs }
             onTabClick={ ({ type: tab }) => followingTab(tab) }
           />
@@ -237,7 +237,7 @@ class UserDetail extends Component {
     let streamAction = null
     switch (type) {
       case 'following':
-        streamAction = loadUserFollowing(`~${params.username}`, userFollowingTab)
+        streamAction = loadUserFollowing(`~${params.username}`, activeUserFollowingType)
         break
       case 'followers':
         streamAction = loadUserUsers(`~${params.username}`, type)
@@ -249,7 +249,7 @@ class UserDetail extends Component {
         streamAction = loadUserPosts(`~${params.username}`, type)
         break
     }
-    const streamKey = `${params.username}${type === 'following' ? userFollowingTab : ''}`
+    const streamKey = `${params.username}${type === 'following' ? activeUserFollowingType : ''}`
     return (
       <main
         className={ classNames('UserDetail', 'View', omnibar.isActive ? 'OmnibarActive' : null) }
@@ -292,7 +292,7 @@ function mapStateToProps(state, ownProps) {
     omnibar: state.omnibar,
     isCoverHidden: gui.isCoverHidden,
     isLoggedIn: state.authentication.isLoggedIn,
-    userFollowingTab: get(state, 'gui.userFollowingTab'),
+    activeUserFollowingType: get(state, 'gui.activeUserFollowingType'),
     params,
     user,
     stream: state.stream,

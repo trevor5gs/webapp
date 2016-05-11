@@ -10,6 +10,7 @@ describe('gui reducer', () => {
         subject.gui(undefined, {})
       ).to.have.keys(
       'activeNotificationsType',
+      'activeUserFollowingType',
       'columnCount',
       'columnWidth',
       'contentWidth',
@@ -30,7 +31,6 @@ describe('gui reducer', () => {
       'lastNotificationCheck',
       'modes',
       'newNotificationContent',
-      'userFollowingTab',
       )
     })
   })
