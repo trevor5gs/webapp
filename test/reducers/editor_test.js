@@ -3,10 +3,16 @@ import { expect, sinon } from '../spec_helper'
 import * as subject from '../../src/reducers/editor'
 import { AUTHENTICATION, EDITOR, PROFILE } from '../../src/constants/action_types'
 
-describe('editor reducer', () => {
+describe.only('editor reducer', () => {
   describe('#editor', () => {
     let action = null
     let state = null
+
+    context('initialState', () => {
+      it('should have the correct default properties', () => {
+        expect(subject.initialState.completions).to.deep.equal({})
+      })
+    })
 
     context('with an editorId', () => {
       it('calls #getEditorObject', () => {
@@ -50,13 +56,13 @@ describe('editor reducer', () => {
       it('returns the initialState with AUTHENTICATION.LOGOUT', () => {
         action = { type: AUTHENTICATION.LOGOUT }
         state = subject.editor({}, action)
-        expect(state).to.deep.equal({ completions: {} })
+        expect(state).to.deep.equal(subject.initialState)
       })
 
       it('returns the initialState with PROFILE.DELETE_SUCCESS', () => {
         action = { type: PROFILE.DELETE_SUCCESS }
         state = subject.editor({}, action)
-        expect(state).to.deep.equal({ completions: {} })
+        expect(state).to.deep.equal(subject.initialState)
       })
 
       it('clears out completions with EDITOR.CLEAR_AUTO_COMPLETERS', () => {

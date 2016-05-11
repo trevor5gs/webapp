@@ -38,5 +38,5 @@ export function editor(state = initialState, action) {
   }
 }
 
-export { editorMethods }
+export { editorMethods, initialState }
 
