@@ -4,7 +4,7 @@ import { userRegex } from '../components/completers/Completer'
 import { EDITOR, POST } from '../constants/action_types'
 
 const methods = {}
-const initialEditorState = {
+const initialState = {
   collection: {},
   completions: {},
   dataKey: '',
@@ -201,7 +201,7 @@ function _replaceText(state, action) {
 }
 methods.replaceText = _replaceText
 
-function _getEditorObject(state, action) {
+function _getEditorObject(state = initialState, action) {
   let newState = cloneDeep(state)
   switch (action.type) {
     case EDITOR.ADD_BLOCK:
@@ -221,7 +221,7 @@ function _getEditorObject(state, action) {
       if (newState.shouldPersist) {
         return newState
       }
-      return initialEditorState
+      return initialState
     case EDITOR.POST_PREVIEW_SUCCESS:
       newState = methods.removeEmptyTextBlock(newState)
       newState = methods.add({
@@ -245,7 +245,7 @@ function _getEditorObject(state, action) {
     case EDITOR.RESET:
     case POST.CREATE_SUCCESS:
     case POST.UPDATE_SUCCESS:
-      return methods.addEmptyTextBlock({ ...initialEditorState, uid: newState.uid })
+      return methods.addEmptyTextBlock({ ...initialState, uid: newState.uid })
     case POST.CREATE_FAILURE:
     case POST.UPDATE_FAILURE:
       newState.isPosting = false
