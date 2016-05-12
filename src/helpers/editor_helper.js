@@ -6,8 +6,6 @@ import { EDITOR, POST } from '../constants/action_types'
 const methods = {}
 const initialState = {
   collection: {},
-  completions: {},
-  dataKey: '',
   hasContent: false,
   hasMention: false,
   isLoading: false,
@@ -218,8 +216,8 @@ function _getEditorObject(state = initialState, action) {
     case EDITOR.APPEND_TEXT:
       return methods.appendText(newState, action.payload.text)
     case EDITOR.INITIALIZE:
-      if (newState.shouldPersist) {
-        return newState
+      if (state.shouldPersist) {
+        return state
       }
       return initialState
     case EDITOR.POST_PREVIEW_SUCCESS:
@@ -286,4 +284,5 @@ function _getEditorObject(state = initialState, action) {
 methods.getEditorObject = _getEditorObject
 
 export default methods
+export { initialState, methods }
 

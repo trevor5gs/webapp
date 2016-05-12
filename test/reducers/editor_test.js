@@ -3,16 +3,16 @@ import { expect, sinon } from '../spec_helper'
 import * as subject from '../../src/reducers/editor'
 import { AUTHENTICATION, EDITOR, PROFILE } from '../../src/constants/action_types'
 
-describe.only('editor reducer', () => {
+describe('editor reducer', () => {
+  describe('@initialState', () => {
+    it('should have the correct default properties', () => {
+      expect(subject.initialState.completions).to.be.empty
+    })
+  })
+
   describe('#editor', () => {
     let action = null
     let state = null
-
-    context('initialState', () => {
-      it('should have the correct default properties', () => {
-        expect(subject.initialState.completions).to.deep.equal({})
-      })
-    })
 
     context('with an editorId', () => {
       it('calls #getEditorObject', () => {

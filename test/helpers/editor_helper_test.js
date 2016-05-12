@@ -1,0 +1,546 @@
+import { expect, sinon } from '../spec_helper'
+import * as subject from '../../src/helpers/editor_helper'
+import { EDITOR/* , POST */ } from '../../src/constants/action_types'
+
+describe.only('editor helper', () => {
+  let action = null
+  let state = null
+
+  describe('@initialState', () => {
+    it('should have the correct default properties', () => {
+      expect(subject.initialState.collection).to.be.empty
+      expect(subject.initialState.hasContent).to.be.false
+      expect(subject.initialState.hasMention).to.be.false
+      expect(subject.initialState.isLoading).to.be.false
+      expect(subject.initialState.isPosting).to.be.false
+      expect(subject.initialState.order).to.be.empty
+      expect(subject.initialState.shouldPersist).to.be.false
+      expect(subject.initialState.uid).to.equal(0)
+    })
+  })
+
+  describe('#addCompletions', () => {
+    it('sets proper completions for users', () => {
+      action = { payload: { response: { autocompleteResults: 'archer' }, type: 'user' } }
+      state = subject.methods.addCompletions(subject.initialState, action)
+      expect(state.completions).to.deep.equal({ data: 'archer', type: 'user' })
+    })
+
+    it('sets proper completions for emoji', () => {
+      action = {
+        payload: { response: { emojis: [{ name: 'metal' }] }, type: 'emoji', word: ':met' },
+      }
+      state = subject.methods.addCompletions(subject.initialState, action)
+      expect(state.completions).to.deep.equal({ data: [{ name: 'metal' }], type: 'emoji' })
+    })
+
+    it('sets completions to null without a response', () => {
+      action = { payload: { response: null, type: 'user' } }
+      state = subject.methods.addCompletions(subject.initialState, action)
+      expect(state.completions).to.be.null
+    })
+  })
+
+  describe('#rehydrateEditors', () => {
+    it('returns persisted editors and not others', () => {
+      const persistedEditors = { 0: { shouldPersist: true }, 1: {} }
+      state = subject.methods.rehydrateEditors(persistedEditors)
+      expect(state).to.deep.equal({ 0: { shouldPersist: true } })
+    })
+  })
+
+  describe('#addHasContent', () => {
+    it('returns the original state if no firstBlock', () => {
+      const newState = { collection: {}, order: [] }
+      state = subject.methods.addHasContent(newState)
+      expect(state).to.deep.equal(newState)
+    })
+
+    it('sets hasContent to true if order.length > 1', () => {
+      const newState = { collection: { 1: { something: '' } }, order: [1, 2] }
+      state = subject.methods.addHasContent(newState)
+      expect(state.hasContent).to.be.true
+    })
+
+    it('sets hasContent to true if firstBlock.data.length and not a <br>', () => {
+      const newState = { collection: { 0: { data: 'krieger' } }, order: [0] }
+      state = subject.methods.addHasContent(newState)
+      expect(state.hasContent).to.be.true
+    })
+
+    it('sets hasContent to false if firstBlock.data is a <br>', () => {
+      const newState = { collection: { 0: { data: '<br>' } }, order: [0] }
+      state = subject.methods.addHasContent(newState)
+      expect(state.hasContent).to.be.false
+    })
+  })
+
+  describe('#addHasMention', () => {
+    it('sets hasMention to false if no mention is present', () => {
+      const newState = {
+        collection: {
+          0: {
+            data: 'archer Phrasing!?',
+            kind: 'text',
+          },
+        },
+        order: [0],
+      }
+      state = subject.methods.addHasMention(newState)
+      expect(state.hasMention).to.be.false
+    })
+
+    it('sets hasMention to true if a mention is present', () => {
+      const newState = {
+        collection: {
+          0: {
+            data: '@archer That\'s how you get ants',
+            kind: 'text',
+          },
+        },
+        order: [0],
+      }
+      state = subject.methods.addHasMention(newState)
+      expect(state.hasMention).to.be.true
+    })
+  })
+
+  describe('#addIsLoading', () => {
+    it('sets isLoading to false if no image is loading', () => {
+      const newState = {
+        collection: {
+          0: {
+            data: '/path/to/avatar/archer.png',
+            kind: 'image',
+            isLoading: false,
+          },
+          1: {
+            data: '/path/to/avatar/lana.png',
+            kind: 'image',
+            isLoading: false,
+          },
+        },
+        order: [0, 1],
+      }
+      state = subject.methods.addIsLoading(newState)
+      expect(state.isLoading).to.be.false
+    })
+
+    it('sets isLoading to true if an image is loading', () => {
+      const newState = {
+        collection: {
+          0: {
+            data: '/path/to/avatar/archer.png',
+            kind: 'image',
+            isLoading: true,
+          },
+          1: {
+            data: '/path/to/avatar/lana.png',
+            kind: 'image',
+            isLoading: false,
+          },
+        },
+        order: [0, 1],
+      }
+      state = subject.methods.addIsLoading(newState)
+      expect(state.isLoading).to.be.true
+    })
+  })
+
+  describe('#add', () => {
+    let addEmptySpy = null
+
+    beforeEach(() => {
+      addEmptySpy = sinon.spy(subject.methods, 'addEmptyTextBlock')
+    })
+
+    afterEach(() => {
+      addEmptySpy.restore()
+    })
+
+    it('adds the block to the collection', () => {
+      state = subject.methods.add({
+        block: { kind: 'text' },
+        shouldCheckForEmpty: false,
+        state: subject.initialState,
+      })
+      expect(addEmptySpy.called).to.be.false
+      expect(state.uid).to.equal(1)
+      expect(state.order.length).to.equal(1)
+      expect(state.collection[0]).to.deep.equal({ kind: 'text', uid: 0 })
+    })
+
+    it('adds the block to the collection and calls #addEmptyTextBlock', () => {
+      state = subject.methods.add({
+        block: { kind: 'text' },
+        shouldCheckForEmpty: true,
+        state: subject.initialState,
+      })
+      expect(addEmptySpy.called).to.be.true
+      expect(state.uid).to.equal(1)
+      expect(state.order.length).to.equal(1)
+      expect(state.collection[0]).to.deep.equal({ kind: 'text', uid: 0 })
+    })
+  })
+
+  describe('#addEmptyTextBlock', () => {
+    let addSpy = null
+    let removeSpy = null
+
+    beforeEach(() => {
+      addSpy = sinon.spy(subject.methods, 'add')
+      removeSpy = sinon.spy(subject.methods, 'remove')
+    })
+
+    afterEach(() => {
+      addSpy.restore()
+      removeSpy.restore()
+    })
+
+    it('removes last empty text block if the second to last was a text block', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '@archer I swear to god I had something for this',
+            uid: 0,
+          },
+          1: {
+            kind: 'text',
+            data: '',
+            uid: 1,
+          },
+        },
+        order: [0, 1],
+        uid: 2,
+      }
+      state = subject.methods.addEmptyTextBlock(newState)
+      expect(addSpy.called).to.be.false
+      expect(removeSpy.called).to.be.true
+      expect(state.order).to.deep.equal([0])
+      expect(state.collection[1]).to.be.undefined
+    })
+
+    it('adds an empty text block if order.length is 0', () => {
+      state = subject.methods.addEmptyTextBlock(subject.initialState)
+      expect(addSpy.called).to.be.true
+      expect(removeSpy.called).to.be.false
+      expect(state.order).to.deep.equal([0])
+      expect(state.collection[0]).to.deep.equal({ kind: 'text', data: '', uid: 0 })
+    })
+
+    it('adds an empty text block if the last item is not text', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '@cheryl You\'re not my supervisor!',
+            uid: 0,
+          },
+          1: {
+            kind: 'image',
+            data: '/path/to/avatar/cheryl.png',
+            uid: 1,
+          },
+        },
+        order: [0, 1],
+        uid: 2,
+      }
+      state = subject.methods.addEmptyTextBlock(newState)
+      expect(addSpy.called).to.be.true
+      expect(removeSpy.called).to.be.false
+      expect(state.order).to.deep.equal([0, 1, 2])
+      expect(state.collection[2]).to.deep.equal({ kind: 'text', data: '', uid: 2 })
+      expect(state.uid).to.equal(3)
+    })
+  })
+
+  describe('#remove', () => {
+    let addEmptySpy = null
+
+    beforeEach(() => {
+      addEmptySpy = sinon.spy(subject.methods, 'addEmptyTextBlock')
+    })
+
+    afterEach(() => {
+      addEmptySpy.restore()
+    })
+
+    it('removes the block from the collection and calls #addEmptyTextBlock', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '@archer Can\'t or won\'t?',
+            uid: 0,
+          },
+        },
+        order: [0],
+        uid: 1,
+      }
+      state = subject.methods.remove({
+        state: newState,
+        uid: 0,
+      })
+      expect(addEmptySpy.called).to.be.true
+      expect(state.order).to.deep.equal([1])
+      expect(state.collection[1]).to.deep.equal({ kind: 'text', data: '', uid: 1 })
+    })
+
+    it('removes the block from the collection', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '@archer The tactical turtleneck! The... tactleneck.',
+            uid: 0,
+          },
+          1: {
+            kind: 'image',
+            data: '/path/to/avatar/archer.png',
+            uid: 0,
+          },
+        },
+        order: [0, 1],
+        uid: 2,
+      }
+      state = subject.methods.remove({
+        shouldCheckForEmpty: false,
+        state: newState,
+        uid: 1,
+      })
+      expect(addEmptySpy.called).to.be.false
+      expect(state.order).to.deep.equal([0])
+      expect(state.collection[1]).to.be.undefined
+    })
+  })
+
+  describe('#removeEmptyTextBlock', () => {
+    it('removes the last text block if it is empty', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '@archer Someone call Kenny Loggins cause you\'re in the danger zone',
+            uid: 0,
+          },
+          1: {
+            kind: 'text',
+            data: '',
+            uid: 1,
+          },
+        },
+        order: [0, 1],
+      }
+      state = subject.methods.removeEmptyTextBlock(newState)
+      expect(state.collection[1]).to.be.undefined
+      expect(state.order).to.deep.equal([0])
+    })
+
+    it('does not remove the last text block if it is not empty', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '@archer Are we still doing phrasing?',
+            uid: 0,
+          },
+          1: {
+            kind: 'text',
+            data: 'not empty',
+            uid: 1,
+          },
+        },
+        order: [0, 1],
+      }
+      state = subject.methods.removeEmptyTextBlock(newState)
+      expect(state.collection[1]).not.to.be.undefined
+      expect(state.order).to.deep.equal([0, 1])
+    })
+  })
+
+  describe('#updateBlock', () => {
+    it('updates the block with the new content', () => {
+      const newState = {
+        collection: {
+          0: 'Woodhouse!',
+        },
+      }
+      state = subject.methods.updateBlock(newState, { payload: { block: 'Yes sir', uid: 0 } })
+      expect(state.collection[0]).to.equal('Yes sir')
+    })
+  })
+
+  describe('#reorderBlocks', () => {
+    it('moves forward in the array when the delta is 1', () => {
+      const newState = {
+        order: [0, 1, 2],
+      }
+      state = subject.methods.reorderBlocks(newState, { payload: { delta: 1, uid: 0 } })
+      expect(state.order).to.deep.equal([1, 0, 2])
+    })
+
+    it('moves backwards in the array when the delta is -1', () => {
+      const newState = {
+        order: [0, 1, 2],
+      }
+      state = subject.methods.reorderBlocks(newState, { payload: { delta: -1, uid: 2 } })
+      expect(state.order).to.deep.equal([0, 2, 1])
+    })
+  })
+
+  describe('#appendText', () => {
+    it('appends text to the last text block found', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '@lana You killed a black astronaut, Cyril!',
+            uid: 0,
+          },
+          1: {
+            kind: 'image',
+            data: '/path/to/avatar/lana.png',
+            uid: 1,
+          },
+        },
+        order: [0, 1],
+      }
+      state = subject.methods.appendText(newState, ' That\'s like killing a unicorn!')
+      expect(state.collection[0].data).to.equal(
+        '@lana You killed a black astronaut, Cyril! That\'s like killing a unicorn!'
+      )
+    })
+
+    it('does not append text if there is no text block', () => {
+      const newState = {
+        collection: {
+          1: {
+            kind: 'image',
+            data: '/path/to/avatar/lana.png',
+            uid: 1,
+          },
+        },
+        order: [1],
+      }
+      state = subject.methods.appendText(newState, ' That\'s like killing a unicorn!')
+      expect(state.collection[1].data).to.equal('/path/to/avatar/lana.png')
+    })
+  })
+
+  // TODO: need to figure out how to test the query lookup in this method
+  describe('#replaceText', () => {
+
+  })
+
+  describe('#getEditorObject', () => {
+    let spy = null
+
+    afterEach(() => {
+      spy.restore()
+    })
+
+    it('calls #add with EDITOR.ADD_BLOCK', () => {
+      spy = sinon.stub(subject.methods, 'add')
+      action = {
+        type: EDITOR.ADD_BLOCK,
+        payload: { block: 'yo', shouldCheckForEmpty: false },
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
+    })
+
+    it('adds the dragBlock with EDITOR.ADD_DRAG_BLOCK', () => {
+      action = {
+        type: EDITOR.ADD_DRAG_BLOCK,
+        payload: { block: 'yo' },
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(state.dragBlock).to.equal('yo')
+    })
+
+    it('calls #addEmptyTextBlock with EDITOR.ADD_EMPTY_TEXT_BLOCK', () => {
+      spy = sinon.stub(subject.methods, 'addEmptyTextBlock')
+      action = {
+        type: EDITOR.ADD_EMPTY_TEXT_BLOCK,
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
+    })
+
+    it('calls #appendText with EDITOR.APPEND_TEXT', () => {
+      spy = sinon.stub(subject.methods, 'appendText')
+      action = {
+        type: EDITOR.APPEND_TEXT,
+        payload: { text: 'er' },
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
+    })
+
+    it('returns the original state with EDITOR.INITIALIZE on a persisted editor', () => {
+      const newState = { shouldPersist: true }
+      action = { type: EDITOR.INITIALIZE }
+      state = subject.methods.getEditorObject(newState, action)
+      expect(state).to.equal(newState)
+    })
+
+    it('returns the initialState with EDITOR.INITIALIZE on a not persisted editor', () => {
+      const newState = { shouldPersist: false }
+      action = { type: EDITOR.INITIALIZE }
+      state = subject.methods.getEditorObject(newState, action)
+      expect(state).to.equal(subject.initialState)
+    })
+
+    it('calls #removeEmptyTextBlock and #add with EDITOR.POST_PREVIEW_SUCCESS', () => {
+      spy = sinon.stub(subject.methods, 'removeEmptyTextBlock')
+      const addSpy = sinon.stub(subject.methods, 'add')
+      action = {
+        type: EDITOR.POST_PREVIEW_SUCCESS,
+        payload: { response: { postPreviews: { body: ['yo'] } } },
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
+      expect(addSpy.called).to.be.true
+      addSpy.restore()
+    })
+
+    it('calls #remove with EDITOR.REMOVE_BLOCK', () => {
+      spy = sinon.stub(subject.methods, 'remove')
+      action = {
+        type: EDITOR.REMOVE_BLOCK,
+        payload: { uid: 0 },
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
+    })
+
+    it('removes the dragBlock with EDITOR.REMOVE_DRAG_BLOCK', () => {
+      const newState = { dragBlock: 'yo' }
+      action = {
+        type: EDITOR.REMOVE_DRAG_BLOCK,
+      }
+      state = subject.methods.getEditorObject(newState, action)
+      expect(state.dragBlock).to.be.undefined
+    })
+
+    it('calls #reorderBlocks with EDITOR.REORDER_BLOCKS', () => {
+      spy = sinon.stub(subject.methods, 'reorderBlocks')
+      action = {
+        type: EDITOR.REORDER_BLOCKS,
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
+    })
+
+    it('calls #replaceText with EDITOR.REPLACE_TEXT', () => {
+      spy = sinon.stub(subject.methods, 'replaceText')
+      action = {
+        type: EDITOR.REPLACE_TEXT,
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
+    })
+  })
+})
+
