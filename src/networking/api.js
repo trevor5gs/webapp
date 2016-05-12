@@ -335,5 +335,12 @@ export function relationshipAdd(userId, priority) {
   }
 }
 
+// Android Push Subscriptions
+export function registerForGCM(regId) {
+  return {
+    path: getAPIPath(`profile/push_subscriptions/gcm/${regId}`)
+  }
+}
+
 export { API_VERSION, getAPIPath, PER_PAGE }
 

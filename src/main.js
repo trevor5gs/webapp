@@ -88,3 +88,8 @@ if (isLocalStorageSupported()) {
   launchApplication(MemoryStore)
 }
 
+if (typeof window !== 'undefined') {
+  window.registerAndroidNotifications = (registrationId) => {
+    console.log(`register android: ${registrationId}`)
+  }
+}
