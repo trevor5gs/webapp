@@ -28,7 +28,7 @@ Honeybadger.configure({
 
 updateTimeAgoStrings({ about: '' })
 
-const APP_VERSION = '1.0.18'
+const APP_VERSION = '3.0.19'
 
 const history = syncHistoryWithStore(browserHistory, store)
 const element = (
