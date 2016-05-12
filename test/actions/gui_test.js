@@ -80,7 +80,7 @@ describe('gui actions', () => {
       columnCount: 4,
       columnWidth: 320,
       contentWidth: 1280,
-      coverImageSize: 'xhdpi',
+      coverDPI: 'xhdpi',
       coverOffset: 200,
       deviceSize: 'desktop',
       innerHeight: 768,
@@ -100,7 +100,7 @@ describe('gui actions', () => {
         'columnCount',
         'columnWidth',
         'contentWidth',
-        'coverImageSize',
+        'coverDPI',
         'coverOffset',
         'deviceSize',
         'innerHeight',
@@ -112,7 +112,7 @@ describe('gui actions', () => {
       expect(action.payload.columnCount).to.equal(4)
       expect(action.payload.columnWidth).to.equal(320)
       expect(action.payload.contentWidth).to.equal(1280)
-      expect(action.payload.coverImageSize).to.equal('xhdpi')
+      expect(action.payload.coverDPI).to.equal('xhdpi')
       expect(action.payload.coverOffset).to.equal(200)
       expect(action.payload.deviceSize).to.equal('desktop')
       expect(action.payload.innerHeight).to.equal(768)

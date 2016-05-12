@@ -14,14 +14,14 @@ const STATUS = {
 class Promotion extends Component {
 
   static propTypes = {
-    coverImageSize: PropTypes.string,
+    coverDPI: PropTypes.string,
     creditsClickAction: PropTypes.func,
     isLoggedIn: PropTypes.bool.isRequired,
     userlist: PropTypes.array.isRequired,
   }
 
   static defaultProps = {
-    coverImageSize: 'xhdpi',
+    coverDPI: 'xhdpi',
   }
 
   componentWillMount() {
@@ -54,11 +54,11 @@ class Promotion extends Component {
   }
 
   getCoverSource() {
-    const { coverImageSize } = this.props
+    const { coverDPI } = this.props
     const { featuredUser } = this.state
     if (!featuredUser) { return null }
     const { coverImage } = featuredUser
-    return coverImage[coverImageSize].url
+    return coverImage[coverDPI].url
   }
 
   createLoader() {

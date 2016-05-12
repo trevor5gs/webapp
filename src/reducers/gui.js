@@ -50,7 +50,7 @@ const initialSizeState = {
   columnCount: 2,
   columnWidth: 0,
   contentWidth: 0,
-  coverImageSize: 'xhdpi',
+  coverDPI: 'xhdpi',
   coverOffset: 0,
   deviceSize: 'tablet',
   innerHeight: 0,

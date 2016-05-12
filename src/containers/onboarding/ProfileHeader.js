@@ -13,9 +13,9 @@ import Cover from '../../components/assets/Cover'
 class ProfileHeader extends Component {
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    coverImageSize: PropTypes.string,
+    coverDPI: PropTypes.string,
     coverOffset: PropTypes.number,
+    dispatch: PropTypes.func.isRequired,
     profile: PropTypes.object.isRequired,
   }
 
@@ -32,7 +32,7 @@ class ProfileHeader extends Component {
   }
 
   render() {
-    const { coverImageSize, coverOffset, dispatch, profile } = this.props
+    const { coverDPI, coverOffset, dispatch, profile } = this.props
     return (
       <main className="CoverPicker View" role="main">
         <OnboardingHeader
@@ -51,8 +51,8 @@ class ProfileHeader extends Component {
           title="Upload a header image"
         />
         <Cover
+          coverDPI={ coverDPI }
           coverImage={ profile.coverImage }
-          coverImageSize={ coverImageSize }
           coverOffset={ coverOffset }
           isModifiable
         />
@@ -64,7 +64,7 @@ class ProfileHeader extends Component {
 const mapStateToProps = (state) => {
   const { gui, profile } = state
   return {
-    coverImageSize: gui.coverImageSize,
+    coverDPI: gui.coverDPI,
     coverOffset: gui.coverOffset,
     profile,
   }

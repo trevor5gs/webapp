@@ -17,7 +17,7 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 class ForgotPassword extends Component {
 
   static propTypes = {
-    coverImageSize: PropTypes.string,
+    coverDPI: PropTypes.string,
     coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
   }
@@ -112,7 +112,7 @@ class ForgotPassword extends Component {
   }
 
   render() {
-    const { coverImageSize, coverOffset } = this.props
+    const { coverDPI, coverOffset } = this.props
     const { featuredUser, formStatus } = this.state
     return (
       <main className="Authentication View" role="main">
@@ -126,8 +126,8 @@ class ForgotPassword extends Component {
         <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover
+          coverDPI={ coverDPI }
           coverImage={ featuredUser.coverImage }
-          coverImageSize={ coverImageSize }
           coverOffset={ coverOffset }
           modifiers="asFullScreen withOverlay"
         />
@@ -139,7 +139,7 @@ class ForgotPassword extends Component {
 const mapStateToProps = (state) => {
   const { gui } = state
   return {
-    coverImageSize: gui.coverImageSize,
+    coverDPI: gui.coverDPI,
     coverOffset: gui.coverOffset,
   }
 }

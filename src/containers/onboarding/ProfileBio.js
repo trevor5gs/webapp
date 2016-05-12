@@ -13,9 +13,9 @@ import Cover from '../../components/assets/Cover'
 class ProfileBio extends Component {
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    coverImageSize: PropTypes.string,
+    coverDPI: PropTypes.string,
     coverOffset: PropTypes.number,
+    dispatch: PropTypes.func.isRequired,
     profile: PropTypes.object.isRequired,
   }
 
@@ -37,7 +37,7 @@ class ProfileBio extends Component {
   }
 
   render() {
-    const { coverImageSize, coverOffset, profile } = this.props
+    const { coverDPI, coverOffset, profile } = this.props
     return (
       <main className="InfoPicker View" role="main">
         <OnboardingHeader
@@ -58,8 +58,8 @@ class ProfileBio extends Component {
 
         </div>
         <Cover
+          coverDPI={ coverDPI }
           coverImage={ profile.coverImage }
-          coverImageSize={ coverImageSize }
           coverOffset={ coverOffset }
         />
       </main>
@@ -70,7 +70,7 @@ class ProfileBio extends Component {
 const mapStateToProps = (state) => {
   const { gui, profile } = state
   return {
-    coverImageSize: gui.coverImageSize,
+    coverDPI: gui.coverDPI,
     coverOffset: gui.coverOffset,
     profile,
   }

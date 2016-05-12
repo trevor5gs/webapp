@@ -32,7 +32,7 @@ import {
 class UserDetail extends Component {
   static propTypes = {
     activeUserFollowingType: PropTypes.string,
-    coverImageSize: PropTypes.string,
+    coverDPI: PropTypes.string,
     coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     isCoverHidden: PropTypes.bool,
@@ -146,7 +146,7 @@ class UserDetail extends Component {
 
   render() {
     const {
-      coverImageSize,
+      coverDPI,
       coverOffset,
       dispatch,
       isCoverHidden,
@@ -197,8 +197,8 @@ class UserDetail extends Component {
           <Cover
             isHidden={ isCoverHidden }
             isModifiable={ user.relationshipPriority === 'self' }
+            coverDPI={ coverDPI }
             coverImage={ user.coverImage }
-            coverImageSize={ coverImageSize }
             coverOffset={ coverOffset }
             key={ `userDetailCover_${user.id}` }
             useGif
@@ -287,7 +287,7 @@ function mapStateToProps(state, ownProps) {
     findObj: { username: params.username },
   })
   return {
-    coverImageSize: gui.coverImageSize,
+    coverDPI: gui.coverDPI,
     coverOffset: gui.coverOffset,
     omnibar: state.omnibar,
     isCoverHidden: gui.isCoverHidden,

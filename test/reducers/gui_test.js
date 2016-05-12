@@ -23,7 +23,7 @@ describe('gui reducer', () => {
       'columnCount',
       'columnWidth',
       'contentWidth',
-      'coverImageSize',
+      'coverDPI',
       'coverOffset',
       'currentStream',
       'deviceSize',
@@ -142,7 +142,7 @@ describe('gui reducer', () => {
       expect(initialState).to.have.property('columnCount', 2)
       expect(initialState).to.have.property('columnWidth', 0)
       expect(initialState).to.have.property('contentWidth', 0)
-      expect(initialState).to.have.property('coverImageSize', 'xhdpi')
+      expect(initialState).to.have.property('coverDPI', 'xhdpi')
       expect(initialState).to.have.property('coverOffset', 0)
       expect(initialState).to.have.property('deviceSize', 'tablet')
       expect(initialState).to.have.property('innerHeight', 0)
@@ -153,7 +153,7 @@ describe('gui reducer', () => {
           columnCount: 4,
           columnWidth: 320,
           contentWidth: 1280,
-          coverImageSize: 'optimized',
+          coverDPI: 'optimized',
           coverOffset: 200,
           deviceSize: 'desktop',
           innerHeight: 768,
@@ -165,7 +165,7 @@ describe('gui reducer', () => {
       expect(nextState.columnCount).to.equal(4)
       expect(nextState.columnWidth).to.equal(320)
       expect(nextState.contentWidth).to.equal(1280)
-      expect(nextState.coverImageSize).to.equal('optimized')
+      expect(nextState.coverDPI).to.equal('optimized')
       expect(nextState.coverOffset).to.equal(200)
       expect(nextState.deviceSize).to.equal('desktop')
       expect(nextState.innerHeight).to.equal(768)

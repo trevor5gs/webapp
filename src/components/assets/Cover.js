@@ -11,8 +11,8 @@ const STATUS = {
 class Cover extends Component {
 
   static propTypes = {
+    coverDPI: PropTypes.string,
     coverImage: PropTypes.object,
-    coverImageSize: PropTypes.string,
     coverOffset: PropTypes.number,
     isHidden: PropTypes.bool,
     isModifiable: PropTypes.bool,
@@ -21,10 +21,10 @@ class Cover extends Component {
   }
 
   static defaultProps = {
+    coverDPI: 'xhdpi',
+    isHidden: false,
     modifiers: '',
     useGif: false,
-    coverImageSize: 'xhdpi',
-    isHidden: false,
   }
 
   componentWillMount() {
@@ -82,7 +82,7 @@ class Cover extends Component {
   }
 
   getCoverSource(props = this.props) {
-    const { coverImage, coverImageSize, useGif } = props
+    const { coverDPI, coverImage, useGif } = props
     if (!coverImage) {
       return ''
     } else if (coverImage.tmp && coverImage.tmp.url) {
@@ -91,7 +91,7 @@ class Cover extends Component {
     if (useGif && this.isGif()) {
       return coverImage.original.url
     }
-    return coverImage[coverImageSize] ? coverImage[coverImageSize].url : null
+    return coverImage[coverDPI] ? coverImage[coverDPI].url : null
   }
 
   isGif() {

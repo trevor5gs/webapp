@@ -22,7 +22,7 @@ function getProbeElement() {
 
 // This is very rudimentary. needs things like 1x, 2x calculating the set
 // Used for background images in Cover and Promotions
-function getCoverImageSize(innerWidth) {
+function getCoverDPI(innerWidth) {
   if (innerWidth < 750) {
     return 'hdpi'
   } else if (innerWidth >= 750 && innerWidth < 1920) {
@@ -69,7 +69,7 @@ function setResizeProperties() {
     columnCount,
     columnWidth,
     contentWidth,
-    coverImageSize: getCoverImageSize(wiw),
+    coverDPI: getCoverDPI(wiw),
     coverOffset: Math.round((wiw * 0.5625)),
     deviceSize,
     innerHeight: window.innerHeight,

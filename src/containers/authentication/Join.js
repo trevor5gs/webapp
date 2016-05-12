@@ -30,7 +30,7 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 class Join extends Component {
 
   static propTypes = {
-    coverImageSize: PropTypes.string,
+    coverDPI: PropTypes.string,
     coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     email: PropTypes.string,
@@ -249,7 +249,7 @@ class Join extends Component {
       usernameState, showEmailError,
       passwordState, showUsernameError,
       featuredUser } = this.state
-    const { email, coverImageSize, coverOffset } = this.props
+    const { coverDPI, coverOffset, email } = this.props
     const isValid = isFormValid([emailState, usernameState, passwordState])
     const boxControlClassNames = 'asBoxControl'
     return (
@@ -315,8 +315,8 @@ class Join extends Component {
         <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
         <Cover
+          coverDPI={ coverDPI }
           coverImage={ featuredUser.coverImage }
-          coverImageSize={ coverImageSize }
           coverOffset={ coverOffset }
           modifiers="asFullScreen withOverlay"
         />
@@ -329,7 +329,7 @@ const mapStateToProps = (state, ownProps) => {
   const { gui, profile } = state
   return {
     availability: profile.availability,
-    coverImageSize: gui.coverImageSize,
+    coverDPI: gui.coverDPI,
     coverOffset: gui.coverOffset,
     email: profile.email,
     invitationCode: ownProps.params.invitationCode,

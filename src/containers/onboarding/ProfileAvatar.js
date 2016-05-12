@@ -14,9 +14,9 @@ import Cover from '../../components/assets/Cover'
 class ProfileAvatar extends Component {
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    coverImageSize: PropTypes.string,
+    coverDPI: PropTypes.string,
     coverOffset: PropTypes.number,
+    dispatch: PropTypes.func.isRequired,
     profile: PropTypes.object.isRequired,
   }
 
@@ -33,7 +33,7 @@ class ProfileAvatar extends Component {
   }
 
   render() {
-    const { coverImageSize, coverOffset, dispatch, profile } = this.props
+    const { coverDPI, coverOffset, dispatch, profile } = this.props
     return (
       <main className="AvatarPicker View" role="main">
         <OnboardingHeader
@@ -59,8 +59,8 @@ class ProfileAvatar extends Component {
           />
         </div>
         <Cover
+          coverDPI={ coverDPI }
           coverImage={ profile.coverImage }
-          coverImageSize={ coverImageSize }
           coverOffset={ coverOffset }
         />
       </main>
@@ -71,7 +71,7 @@ class ProfileAvatar extends Component {
 const mapStateToProps = (state) => {
   const { gui, profile } = state
   return {
-    coverImageSize: gui.coverImageSize,
+    coverDPI: gui.coverDPI,
     coverOffset: gui.coverOffset,
     profile,
   }
