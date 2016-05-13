@@ -15,6 +15,7 @@ import {
   addBlock,
   addDragBlock,
   addEmptyTextBlock,
+  loadReplyAll,
   removeBlock,
   removeDragBlock,
   reorderBlocks,
@@ -311,18 +312,8 @@ class BlockCollection extends Component {
   }
 
   replyAll = () => {
-    const { currentUsername, postId } = this.props
-    if (!postId) { return }
-    const nameArr = []
-    const usernames = document.querySelectorAll(`#Post_${postId} .CommentUsername`)
-    for (const node of usernames) {
-      if (nameArr.indexOf(node.innerHTML) === -1 && node.innerHTML !== `@${currentUsername}`) {
-        nameArr.push(node.innerHTML)
-      }
-    }
-    if (nameArr.length) {
-      this.appendText(`${nameArr.join(' ')} `)
-    }
+    const { dispatch, postId, editorId } = this.props
+    dispatch(loadReplyAll(postId, editorId))
   }
 
   submit = () => {

@@ -428,6 +428,54 @@ describe('editor helper', () => {
     })
   })
 
+  describe('#appendUsernames', () => {
+    it('appends usernames to the last text block found', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '',
+            uid: 0,
+          },
+          1: {
+            kind: 'image',
+            data: '/path/to/avatar/lana.png',
+            uid: 1,
+          },
+        },
+        order: [0, 1],
+      }
+      const usernames = [{ username: 'lana' }, { username: 'cyril' }]
+      state = subject.methods.appendUsernames(newState, usernames)
+      expect(state.collection[0].data).to.equal(
+        '@lana @cyril '
+      )
+    })
+
+    it('does not append usernames if they are already there', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '@lana @cyril ',
+            uid: 0,
+          },
+          1: {
+            kind: 'image',
+            data: '/path/to/avatar/lana.png',
+            uid: 1,
+          },
+        },
+        order: [0, 1],
+      }
+      const usernames = [{ username: 'lana' }, { username: 'cyril' }]
+      state = subject.methods.appendUsernames(newState, usernames)
+      expect(state.collection[0].data).to.equal(
+        '@lana @cyril '
+      )
+    })
+  })
+
   // TODO: need to figure out how to test the query lookup in this method
   describe('#replaceText', () => {
 
