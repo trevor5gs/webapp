@@ -90,6 +90,10 @@ describe('api.js', () => {
     it('#postLovers', () => {
       expect(api.postLovers('666').path).to.match(/\/posts\/666\/lovers/)
     })
+
+    it('#postLovers', () => {
+      expect(api.postReplyAll('666').path).to.match(/\/posts\/666\/commenters_usernames/)
+    })
   })
 
   context('comments', () => {
