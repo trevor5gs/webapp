@@ -1,26 +1,31 @@
+import SignIn from '../../containers/authentication/SignIn'
+import Join from '../../containers/authentication/Join'
+import SignUp from '../../containers/authentication/SignUp'
+import ForgotPassword from '../../containers/authentication/ForgotPassword'
+
 export default [
   {
     path: 'enter',
     getComponents(location, cb) {
-      cb(null, require('../../containers/authentication/SignIn').default)
+      cb(null, SignIn)
     },
   },
   {
     path: 'join(/:invitationCode)',
     getComponents(location, cb) {
-      cb(null, require('../../containers/authentication/Join').default)
+      cb(null, Join)
     },
   },
   {
     path: 'signup',
     getComponents(location, cb) {
-      cb(null, require('../../containers/authentication/SignUp').default)
+      cb(null, SignUp)
     },
   },
   {
     path: 'forgot-password',
     getComponents(location, cb) {
-      cb(null, require('../../containers/authentication/ForgotPassword').default)
+      cb(null, ForgotPassword)
     },
   },
 ]
