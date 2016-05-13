@@ -63,6 +63,16 @@ export function loadEmojis(type, word) {
   }
 }
 
+export function loadReplyAll(postId, editorId) {
+  return {
+    type: EDITOR.LOAD_REPLY_ALL,
+    payload: {
+      endpoint: api.postReplyAll(postId),
+      editorId,
+    },
+  }
+}
+
 export function postPreviews(embedUrl, editorId, uid) {
   return {
     type: EDITOR.POST_PREVIEW,

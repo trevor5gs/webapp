@@ -122,6 +122,7 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.COMMENT.UPDATE &&
         type !== ACTION_TYPES.COMMENT.FLAG &&
         type !== ACTION_TYPES.EDITOR.EMOJI_COMPLETER &&
+        type !== ACTION_TYPES.EDITOR.LOAD_REPLY_ALL &&
         type !== ACTION_TYPES.EDITOR.POST_PREVIEW &&
         type !== ACTION_TYPES.EDITOR.USER_COMPLETER &&
         type !== ACTION_TYPES.HEAD &&

@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash'
+import { cloneDeep, reduce, get } from 'lodash'
 import { suggestEmoji } from '../components/completers/EmojiSuggester'
 import { userRegex } from '../components/completers/Completer'
 import { COMMENT, EDITOR, POST } from '../constants/action_types'
@@ -184,6 +184,20 @@ function _appendText(state, text) {
 }
 methods.appendText = _appendText
 
+function _appendUsernames(state, usernames) {
+  const newState = cloneDeep(state)
+  const { collection, order } = newState
+  const textBlocks = order.filter((orderUid) => collection[orderUid].kind === 'text')
+  const lastTextBlock = collection[textBlocks[textBlocks.length - 1]]
+  const text = reduce(usernames, (memo, { username }) => `${memo}@${username} `, '')
+  if (lastTextBlock && !lastTextBlock.data.includes(text)) {
+    lastTextBlock.data += text
+    collection[lastTextBlock.uid] = lastTextBlock
+  }
+  return newState
+}
+methods.appendUsernames = _appendUsernames
+
 function _replaceText(state, action) {
   const newState = cloneDeep(state)
   const { collection } = newState
@@ -254,6 +268,8 @@ function _getEditorObject(state = initialState, action) {
     case POST.UPDATE_FAILURE:
       newState.isPosting = false
       return newState
+    case EDITOR.LOAD_REPLY_ALL_SUCCESS:
+      return methods.appendUsernames(newState, get(action, 'payload.response.usernames', []))
     case EDITOR.SAVE_IMAGE_SUCCESS:
       if (newState.dragBlock && newState.dragBlock.uid === action.payload.uid) {
         newState.dragBlock = {

@@ -180,6 +180,11 @@ export function postLovers(idOrToken) {
     path: getAPIPath(`posts/${idOrToken}/lovers`, { per_page: 10 }),
   }
 }
+export function postReplyAll(idOrToken) {
+  return {
+    path: getAPIPath(`posts/${idOrToken}/commenters_usernames`),
+  }
+}
 export function postReposters(idOrToken) {
   return {
     path: getAPIPath(`posts/${idOrToken}/reposters`, { per_page: 10 }),
