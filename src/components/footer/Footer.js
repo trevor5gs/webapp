@@ -7,9 +7,9 @@ import { FooterLink } from '../footer/FooterLink'
 import { FooterTool } from '../footer/FooterTool'
 
 export const Footer = ({
-  hasLayoutTool,
-  isPaginatoring,
   isGridMode,
+  isLayoutToolHidden,
+  isPaginatoring,
   onClickScrollToTop,
   onClickToggleLayoutMode,
 }) =>
@@ -40,7 +40,7 @@ export const Footer = ({
       label="Top"
       onClick={ onClickScrollToTop }
     />
-    { hasLayoutTool ?
+    { !isLayoutToolHidden ?
       <FooterTool
         className="LayoutTool"
         icon={ isGridMode ? <ListIcon /> : <GridIcon /> }
@@ -52,8 +52,8 @@ export const Footer = ({
 </footer>
 
 Footer.propTypes = {
-  hasLayoutTool: PropTypes.bool.isRequired,
   isGridMode: PropTypes.bool.isRequired,
+  isLayoutToolHidden: PropTypes.bool.isRequired,
   isPaginatoring: PropTypes.bool.isRequired,
   onClickScrollToTop: PropTypes.func.isRequired,
   onClickToggleLayoutMode: PropTypes.func.isRequired,

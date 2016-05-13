@@ -78,13 +78,13 @@ export function usersAsInviteeGrid(invitations, json) {
   )
 }
 
-export function postsAsGrid(posts, json, currentUser, gridColumnCount) {
+export function postsAsGrid(posts, json, currentUser, columnCount) {
   return (
     <PostsAsGrid
       posts={ posts.data }
       json={ json }
+      columnCount={ columnCount }
       currentUser={ currentUser }
-      gridColumnCount={ gridColumnCount }
     />
   )
 }

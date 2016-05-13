@@ -9,8 +9,8 @@ class FooterContainer extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    hasLayoutTool: PropTypes.bool.isRequired,
     isGridMode: PropTypes.bool.isRequired,
+    isLayoutToolHidden: PropTypes.bool.isRequired,
     isOffsetLayout: PropTypes.bool.isRequired,
     isPaginatoring: PropTypes.bool,
   }
@@ -31,9 +31,9 @@ class FooterContainer extends Component {
   }
 
   render() {
-    const { hasLayoutTool, isGridMode, isPaginatoring } = this.props
+    const { isLayoutToolHidden, isGridMode, isPaginatoring } = this.props
     const props = {
-      hasLayoutTool,
+      isLayoutToolHidden,
       isGridMode,
       isPaginatoring,
       onClickScrollToTop: this.onClickScrollToTop,
@@ -45,10 +45,9 @@ class FooterContainer extends Component {
 
 const mapStateToProps = (state) => {
   const { gui, stream } = state
-  const isPaginatoring = stream.type === LOAD_NEXT_CONTENT_REQUEST &&
-    gui.viewportDeviceSize === 'mobile'
+  const isPaginatoring = stream.type === LOAD_NEXT_CONTENT_REQUEST && gui.deviceSize === 'mobile'
   return {
-    hasLayoutTool: gui.hasLayoutTool,
+    isLayoutToolHidden: gui.isLayoutToolHidden,
     isGridMode: gui.isGridMode,
     isOffsetLayout: gui.isOffsetLayout,
     isPaginatoring,

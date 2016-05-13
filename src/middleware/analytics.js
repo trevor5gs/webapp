@@ -36,7 +36,7 @@ export const analytics = store => next => action => {
     if (type === ACTION_TYPES.GUI.NOTIFICATIONS_TAB) {
       pageProps.path = `/notifications/${_.get(action, 'payload.activeTabType', '')}`
     } else if (type === ACTION_TYPES.MODAL.TOGGLE_NOTIFICATIONS) {
-      const lastTabType = store.getState().gui.activeNotificationsTabType
+      const lastTabType = store.getState().gui.activeNotificationsType
       pageProps.path = `/notifications/${lastTabType === 'all' ? '' : lastTabType}`
     }
     if (window.analytics) {

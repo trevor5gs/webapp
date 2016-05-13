@@ -17,6 +17,7 @@ import { replaceWordFromSelection } from '../components/editor/SelectionUtil'
 class EditorToolsContainer extends Component {
 
   static propTypes = {
+    deviceSize: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     completions: PropTypes.shape({
       data: PropTypes.array,
@@ -133,13 +134,14 @@ class EditorToolsContainer extends Component {
   }
 
   render() {
-    const { completions, isCompleterActive } = this.props
+    const { completions, deviceSize, isCompleterActive } = this.props
     const { isTextToolsActive, textToolsStates, textToolsCoordinates } = this.props
     return (
       <div className="EditorTools">
         { isCompleterActive && completions ?
           <Completer
             completions={ completions }
+            deviceSize= { deviceSize }
             onCancel={ this.onCancelAutoCompleter }
             onCompletion={ this.onCompletion }
           /> :
@@ -160,7 +162,7 @@ class EditorToolsContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { editor, emoji, modal } = state
+  const { editor, emoji, gui, modal } = state
   return {
     completions: editor.completions,
     emojis: emoji.emojis,
@@ -168,6 +170,7 @@ const mapStateToProps = (state) => {
     isTextToolsActive: modal.isTextToolsActive,
     textToolsStates: modal.textToolsStates,
     textToolsCoordinates: modal.textToolsCoordinates,
+    deviceSize: gui.deviceSize,
   }
 }
 

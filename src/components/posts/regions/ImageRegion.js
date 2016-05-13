@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import _ from 'lodash'
 import classNames from 'classnames'
-import { GUI } from '../../../constants/gui_types'
-import { addResizeObject, removeResizeObject } from '../../viewport/ResizeComponent'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -11,12 +10,15 @@ const STATUS = {
   SUCCESS: null,
   FAILURE: 'isFailing',
 }
-
 class ImageRegion extends Component {
 
   static propTypes = {
     assets: PropTypes.object,
+    columnWidth: PropTypes.number,
+    commentOffset: PropTypes.number,
     content: PropTypes.object.isRequired,
+    contentWidth: PropTypes.number,
+    innerHeight: PropTypes.number,
     isComment: PropTypes.bool,
     isGridLayout: PropTypes.bool.isRequired,
     isNotification: PropTypes.bool,
@@ -31,29 +33,24 @@ class ImageRegion extends Component {
   }
 
   componentWillMount() {
-    const { assets, content } = this.props
+    const { assets, content, innerHeight } = this.props
     let scale = null
     const assetMatch = content.url && content.url.match(/asset\/attachment\/(\d+)\//)
     if (assetMatch && assets) {
       const assetId = assetMatch[1]
       const asset = this.props.assets[assetId] || this.props.assets[parseInt(assetId, 10)]
       const imageHeight = parseInt(_.get(asset, 'attachment.original.metadata.height'), 10)
-      scale = GUI.innerHeight / imageHeight
+      scale = innerHeight / imageHeight
     }
 
     this.state = {
       marginBottom: null,
       scale,
       status: STATUS.REQUEST,
-      columnWidth: GUI.columnWidth,
-      contentWidth: GUI.contentWidth,
-      commentOffset: GUI.viewportDeviceSize === 'mobile' ? 40 : 60,
-      innerHeight: GUI.innerHeight,
     }
   }
 
   componentDidMount() {
-    addResizeObject(this)
     if (this.state.status === STATUS.REQUEST) {
       this.createLoader()
     }
@@ -74,12 +71,6 @@ class ImageRegion extends Component {
 
   componentWillUnmount() {
     this.disposeLoader()
-    removeResizeObject(this)
-  }
-
-  onResize({ columnWidth, contentWidth, innerHeight, viewportDeviceSize }) {
-    const commentOffset = viewportDeviceSize === 'mobile' ? 40 : 60
-    this.setState({ columnWidth, contentWidth, innerHeight, commentOffset })
   }
 
   onClickStaticImageRegion = () => {
@@ -130,9 +121,8 @@ class ImageRegion extends Component {
   // below 1:1 pixel density, or go above the desired grid cell height
   getImageDimensions() {
     const metadata = this.getAttachmentMetadata()
-    if (!metadata) { return {} }
-    const { isGridLayout, isComment } = this.props
-    const { columnWidth, contentWidth, commentOffset } = this.state
+    if (!metadata) { return metadata }
+    const { columnWidth, commentOffset, contentWidth, isGridLayout, isComment } = this.props
     const { height, ratio } = metadata
     const allowableWidth = isGridLayout ? columnWidth : contentWidth
     const widthOffset = isGridLayout && isComment ? commentOffset : 0
@@ -168,7 +158,7 @@ class ImageRegion extends Component {
   setImageScale() {
     const dimensions = this.getImageDimensions()
     const imageHeight = dimensions.height
-    const innerHeight = GUI.innerHeight - 80
+    const innerHeight = this.props.innerHeight - 80
     if (imageHeight && imageHeight > innerHeight) {
       this.setState({
         scale: innerHeight / imageHeight,
@@ -314,5 +304,15 @@ class ImageRegion extends Component {
   }
 }
 
-export default ImageRegion
+const mapStateToProps = (state) => {
+  const { gui } = state
+  return {
+    columnWidth: gui.columnWidth,
+    commentOffset: gui.deviceSize === 'mobile' ? 40 : 60,
+    contentWidth: gui.contentWidth,
+    innerHeight: gui.innerHeight,
+  }
+}
+
+export default connect(mapStateToProps)(ImageRegion)
 

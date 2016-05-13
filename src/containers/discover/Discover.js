@@ -29,6 +29,7 @@ export function getDiscoverAction(type) {
 export class Discover extends Component {
 
   static propTypes = {
+    coverDPI: PropTypes.string,
     currentStream: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
@@ -77,7 +78,7 @@ export class Discover extends Component {
   }
 
   render() {
-    const { isLoggedIn, params, pathname } = this.props
+    const { coverDPI, isLoggedIn, params, pathname } = this.props
     const { isBeaconActive } = this.state
     const action = getDiscoverAction(params.type)
     const tabs = [
@@ -99,6 +100,7 @@ export class Discover extends Component {
       >
         { isBeaconActive ? this.renderZeroStream() : null }
         <Promotion
+          coverDPI={ coverDPI }
           creditsClickAction={ this.onClickTrackCredits }
           isLoggedIn={ isLoggedIn }
           userlist={ isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS }
@@ -117,6 +119,7 @@ export class Discover extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
+    coverDPI: state.gui.coverDPI,
     currentStream: state.gui.currentStream,
     isLoggedIn: state.authentication.isLoggedIn,
     lastDiscoverBeaconVersion: state.gui.lastDiscoverBeaconVersion,

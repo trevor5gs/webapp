@@ -212,17 +212,17 @@ const mapStateToProps = (state) => {
   if (isLoggedIn) {
     return {
       avatar: profile.avatar,
+      deviceSize: gui.deviceSize,
       currentStream,
-      hasLayoutTool: gui.hasLayoutTool,
       hasLoadMoreButton,
-      hasNotifications: gui.newNotificationContent,
       isGridMode: gui.isGridMode,
+      isLayoutToolHidden: gui.isLayoutToolHidden,
       isLoggedIn,
       isNotificationsActive: modal.isNotificationsActive,
+      isNotificationsUnread: gui.isNotificationsUnread,
       isProfileMenuActive: modal.isProfileMenuActive,
       pathname,
       username: profile.username,
-      viewportDeviceSize: gui.viewportDeviceSize,
     }
   }
   return {

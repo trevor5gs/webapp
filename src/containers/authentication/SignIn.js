@@ -21,13 +21,13 @@ import {
 } from '../../components/forms/Validators'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
-let _isAndroid
-
 class SignIn extends Component {
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    coverDPI: PropTypes.string,
+    coverOffset: PropTypes.number,
     currentStream: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
     webOnboardingVersionSeen: PropTypes.string,
   }
 
@@ -48,10 +48,6 @@ class SignIn extends Component {
     this.delayedShowPasswordError = debounce(this.delayedShowPasswordError, 1000)
   }
 
-  componentDidMount() {
-    _isAndroid = isAndroid()
-  }
-
   componentWillReceiveProps(nextProps) {
     if (typeof this.props.webOnboardingVersionSeen === 'undefined' &&
         this.props.webOnboardingVersionSeen !== nextProps.webOnboardingVersionSeen) {
@@ -69,7 +65,7 @@ class SignIn extends Component {
   }
 
   onBlurControl = () => {
-    if (_isAndroid) {
+    if (isAndroid()) {
       document.body.classList.remove('hideCredits')
     }
   }
@@ -99,7 +95,7 @@ class SignIn extends Component {
   }
 
   onFocusControl = () => {
-    if (_isAndroid) {
+    if (isAndroid()) {
       document.body.classList.add('hideCredits')
     }
   }
@@ -142,6 +138,7 @@ class SignIn extends Component {
   }
 
   render() {
+    const { coverDPI, coverOffset } = this.props
     const {
       emailState, showEmailError,
       passwordState, showPasswordError,
@@ -186,7 +183,12 @@ class SignIn extends Component {
         </div>
         <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
-        <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
+        <Cover
+          coverDPI={ coverDPI }
+          coverImage={ featuredUser.coverImage }
+          coverOffset={ coverOffset }
+          modifiers="asFullScreen withOverlay"
+        />
       </main>
     )
   }
@@ -194,6 +196,8 @@ class SignIn extends Component {
 
 const mapStateToProps = state => ({
   currentStream: state.gui.currentStream,
+  coverDPI: state.gui.coverDPI,
+  coverOffset: state.gui.coverOffset,
   webOnboardingVersionSeen: state.profile.webOnboardingVersion,
 })
 

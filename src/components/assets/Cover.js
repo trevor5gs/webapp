@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { addScrollObject, removeScrollObject } from '../viewport/ScrollComponent'
-import { addResizeObject, removeResizeObject } from '../viewport/ResizeComponent'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -13,28 +11,29 @@ const STATUS = {
 class Cover extends Component {
 
   static propTypes = {
+    coverDPI: PropTypes.string,
     coverImage: PropTypes.object,
+    coverOffset: PropTypes.number,
+    isHidden: PropTypes.bool,
     isModifiable: PropTypes.bool,
     modifiers: PropTypes.string,
     useGif: PropTypes.bool,
   }
 
   static defaultProps = {
+    coverDPI: 'xhdpi',
+    isHidden: false,
     modifiers: '',
     useGif: false,
   }
 
   componentWillMount() {
     this.state = {
-      asHidden: false,
-      imageSize: 'xhdpi',
       status: STATUS.REQUEST,
     }
   }
 
   componentDidMount() {
-    addResizeObject(this)
-    addScrollObject(this)
     if (this.state.status === STATUS.REQUEST) {
       this.createLoader()
     }
@@ -57,24 +56,7 @@ class Cover extends Component {
   }
 
   componentWillUnmount() {
-    removeResizeObject(this)
-    removeScrollObject(this)
     this.disposeLoader()
-  }
-
-  onResize(resizeProperties) {
-    const { coverOffset, coverImageSize } = resizeProperties
-    this.setState({ offset: coverOffset, imageSize: coverImageSize })
-  }
-
-  onScroll(scrollProperties) {
-    const { scrollY } = scrollProperties
-    const { offset, asHidden } = this.state
-    if (scrollY >= offset && !asHidden) {
-      this.setState({ asHidden: true })
-    } else if (scrollY < offset && asHidden) {
-      this.setState({ asHidden: false })
-    }
   }
 
   onLoadSuccess = () => {
@@ -88,29 +70,28 @@ class Cover extends Component {
   }
 
   getClassNames() {
-    const { isModifiable, modifiers } = this.props
-    const { status, asHidden } = this.state
+    const { isHidden, isModifiable, modifiers } = this.props
+    const { status } = this.state
     return classNames(
       'Cover',
       status,
       modifiers,
-      { asHidden },
+      { isHidden },
       { isModifiable },
     )
   }
 
   getCoverSource(props = this.props) {
-    const { coverImage, useGif } = props
+    const { coverDPI, coverImage, useGif } = props
     if (!coverImage) {
       return ''
     } else if (coverImage.tmp && coverImage.tmp.url) {
       return coverImage.tmp.url
     }
-    const { imageSize } = this.state
     if (useGif && this.isGif()) {
       return coverImage.original.url
     }
-    return coverImage[imageSize] ? coverImage[imageSize].url : null
+    return coverImage[coverDPI] ? coverImage[coverDPI].url : null
   }
 
   isGif() {

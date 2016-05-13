@@ -30,6 +30,8 @@ import AppleStoreLink from '../../components/support/AppleStoreLink'
 class Join extends Component {
 
   static propTypes = {
+    coverDPI: PropTypes.string,
+    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     email: PropTypes.string,
     invitationCode: PropTypes.string,
@@ -247,7 +249,7 @@ class Join extends Component {
       usernameState, showEmailError,
       passwordState, showUsernameError,
       featuredUser } = this.state
-    const { email } = this.props
+    const { coverDPI, coverOffset, email } = this.props
     const isValid = isFormValid([emailState, usernameState, passwordState])
     const boxControlClassNames = 'asBoxControl'
     return (
@@ -312,16 +314,24 @@ class Join extends Component {
         </div>
         <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
-        <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
+        <Cover
+          coverDPI={ coverDPI }
+          coverImage={ featuredUser.coverImage }
+          coverOffset={ coverOffset }
+          modifiers="asFullScreen withOverlay"
+        />
       </main>
     )
   }
 }
 
-function mapStateToProps(state, ownProps) {
+const mapStateToProps = (state, ownProps) => {
+  const { gui, profile } = state
   return {
-    availability: state.profile.availability,
-    email: state.profile.email,
+    availability: profile.availability,
+    coverDPI: gui.coverDPI,
+    coverOffset: gui.coverOffset,
+    email: profile.email,
     invitationCode: ownProps.params.invitationCode,
   }
 }

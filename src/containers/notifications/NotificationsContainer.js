@@ -182,7 +182,7 @@ class NotificationsContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    activeTabType: state.gui.activeNotificationsTabType,
+    activeTabType: state.gui.activeNotificationsType,
     streamType: _.get(state, 'stream.type'),
   }
 }

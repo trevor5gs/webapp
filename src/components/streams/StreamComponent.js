@@ -10,10 +10,8 @@ import { SESSION_KEYS } from '../../constants/gui_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { findModel } from '../../helpers/json_helper'
 import { addScrollObject, removeScrollObject } from '../viewport/ScrollComponent'
-import { addResizeObject, removeResizeObject } from '../viewport/ResizeComponent'
 import { ElloMark } from '../svg/ElloIcons'
 import { Paginator, emptyPagination } from './Paginator'
-import { findLayoutMode } from '../../reducers/gui'
 import { ErrorState4xx } from '../errors/Errors'
 import Session from '../../vendor/session'
 
@@ -24,12 +22,16 @@ export class StreamComponent extends Component {
     children: PropTypes.any,
     className: PropTypes.string,
     currentUser: PropTypes.object,
+    deviceSize: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
+    columnCount: PropTypes.number,
     history: PropTypes.object.isRequired,
-    mode: PropTypes.string.isRequired,
-    isModalComponent: PropTypes.bool,
     ignoresScrollPosition: PropTypes.bool.isRequired,
     initModel: PropTypes.object,
+    innerHeight: PropTypes.number,
+    innerWidth: PropTypes.number,
+    isGridMode: PropTypes.bool,
+    isModalComponent: PropTypes.bool,
     isUserDetail: PropTypes.bool.isRequired,
     json: PropTypes.object.isRequired,
     omnibar: PropTypes.shape({
@@ -82,7 +84,6 @@ export class StreamComponent extends Component {
     routerState: PropTypes.object,
     scrollSessionKey: PropTypes.string,
     stream: PropTypes.object.isRequired,
-    viewportDeviceSize: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
@@ -135,9 +136,6 @@ export class StreamComponent extends Component {
     } else {
       this.saveScroll = true
     }
-
-    addResizeObject(this)
-
     this.attemptToRestoreScroll(shouldScrollToTop)
   }
 
@@ -177,8 +175,8 @@ export class StreamComponent extends Component {
     }
 
     const { action } = this.state
-    const { stream, omnibar, isUserDetail } = this.props
-    const canScroll = document.body.scrollHeight > window.innerHeight
+    const { innerHeight, stream, omnibar, isUserDetail } = this.props
+    const canScroll = document.body.scrollHeight > innerHeight
     const shouldScroll = this.shouldScroll && (canScroll ||
       stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
       action && action.payload &&
@@ -200,8 +198,6 @@ export class StreamComponent extends Component {
       window.embetter.stopPlayers()
     }
     removeScrollObject(this)
-    removeResizeObject(this)
-
     this.saveScroll = false
   }
 
@@ -211,10 +207,6 @@ export class StreamComponent extends Component {
 
   onScrollBottom() {
     this.loadPage('next', true)
-  }
-
-  onResize(resizeProps) {
-    this.setState(resizeProps)
   }
 
   onLoadNextPage = () => {
@@ -255,12 +247,13 @@ export class StreamComponent extends Component {
   }
 
   scrollToUserDetail() {
-    const offset = Math.round((window.innerWidth * 0.5625)) - 200
+    const { innerWidth } = this.props
+    const offset = Math.round((innerWidth * 0.5625)) - 200
     window.scrollTo(0, offset)
   }
 
   attemptToRestoreScroll(fromMount = false) {
-    const { history, routerState, isModalComponent } = this.props
+    const { innerHeight, history, routerState, isModalComponent } = this.props
     let scrollTopValue = null
     if (!routerState.didComeFromSeeMoreCommentsLink && !this.props.ignoresScrollPosition) {
       if (fromMount && !isModalComponent) {
@@ -284,7 +277,7 @@ export class StreamComponent extends Component {
       }
     } else if (routerState.didComeFromSeeMoreCommentsLink) {
       this.saveScroll = true
-      scrollTopValue = document.body.scrollHeight - window.innerHeight
+      scrollTopValue = document.body.scrollHeight - innerHeight
     }
 
     if (scrollTopValue) {
@@ -305,14 +298,14 @@ export class StreamComponent extends Component {
   }
 
   loadPage(rel, scrolled = false) {
-    const { dispatch, result, stream, viewportDeviceSize } = this.props
+    const { deviceSize, dispatch, result, stream } = this.props
     if (!result) { return }
     const { action } = this.state
     const { meta } = action
     if (scrolled && meta && meta.resultKey && meta.updateKey) {
       // WTF?: Not sure why but when at `/notifications` is in mobile we have to
       // let this pass otherwise scrolling doesn't work. [#119054249]
-      if (viewportDeviceSize !== 'mobile' && !/notifications/.test(meta.updateKey)) {
+      if (deviceSize !== 'mobile' && !/notifications/.test(meta.updateKey)) {
         return
       }
     }
@@ -382,9 +375,9 @@ export class StreamComponent extends Component {
   }
 
   render() {
-    const { className, currentUser, initModel, json, mode,
+    const { className, columnCount, currentUser, initModel, isGridMode, json,
       paginatorText, renderObj, result, stream } = this.props
-    const { action, gridColumnCount, hidePaginator } = this.state
+    const { action, hidePaginator } = this.state
     if (!action) { return null }
     const model = findModel(json, initModel)
     if (model && !result) {
@@ -405,7 +398,7 @@ export class StreamComponent extends Component {
       }
     }
     const { meta } = action
-    const renderMethod = mode === 'grid' ? 'asGrid' : 'asList'
+    const renderMethod = isGridMode ? 'asGrid' : 'asList'
     const pagination = result && result.pagination ? result.pagination : emptyPagination()
     return (
       <section className={ classNames('StreamComponent', className) }>
@@ -414,7 +407,7 @@ export class StreamComponent extends Component {
             renderObj,
             json,
             currentUser,
-            gridColumnCount || 2)
+            columnCount || 2)
         }
         { this.props.children }
         <Paginator
@@ -485,17 +478,20 @@ export function mapStateToProps(state, ownProps) {
     stream = state.stream
   }
   return {
+    columnCount: state.gui.columnCount,
     currentUser: state.profile,
+    deviceSize: state.gui.deviceSize,
     history: state.gui.history,
+    innerHeight: state.gui.innerHeight,
+    innerWidth: state.gui.innerWidth,
     json: state.json,
-    mode: findLayoutMode(state.gui.modes).mode,
+    isGridMode: state.gui.isGridMode,
     omnibar: state.omnibar,
     renderObj,
     result,
     resultPath,
     routerState: state.routing.location.state || {},
     stream,
-    viewportDeviceSize: state.gui.viewportDeviceSize,
   }
 }
 

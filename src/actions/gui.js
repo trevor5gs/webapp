@@ -1,5 +1,12 @@
 import { GUI } from '../constants/action_types'
 
+export function setActiveUserFollowingType(type) {
+  return {
+    type: GUI.SET_ACTIVE_USER_FOLLOWING_TYPE,
+    payload: { tab: type },
+  }
+}
+
 export function setIsOffsetLayout({ isOffsetLayout }) {
   return {
     type: GUI.SET_IS_OFFSET_LAYOUT,
@@ -9,17 +16,11 @@ export function setIsOffsetLayout({ isOffsetLayout }) {
   }
 }
 
-export function setFollowingTab(followingTab) {
+export function setScrollState({ isCoverHidden, isFixed, isHidden, isSkippingTransition }) {
   return {
-    type: GUI.SET_FOLLOWING_TAB,
-    payload: { tab: followingTab },
-  }
-}
-
-export function setNavbarState({ isFixed, isHidden, isSkippingTransition }) {
-  return {
-    type: GUI.SET_NAVBAR_STATE,
+    type: GUI.SET_SCROLL_STATE,
     payload: {
+      isCoverHidden,
       isNavbarFixed: isFixed,
       isNavbarHidden: isHidden,
       isNavbarSkippingTransition: isSkippingTransition,

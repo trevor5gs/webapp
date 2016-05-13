@@ -1,16 +1,4 @@
 /* eslint-disable max-len */
-// These get set by the ResizeComponent
-export const GUI = {
-  innerWidth: null,
-  innerHeight: null,
-  columnWidth: null,
-  contentWidth: null,
-  coverOffset: null,
-  coverImageSize: null,
-  viewportDeviceSize: null,
-  gridColumnCount: null,
-}
-
 export const SHORTCUT_KEYS = {
   DISCOVER: 'd',
   DT_CONTAINER_TOGGLE: 'g |',

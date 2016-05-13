@@ -14,11 +14,11 @@ import FormButton from '../../components/forms/FormButton'
 import { isFormValid, getEmailStateFromClient } from '../../components/forms/Validators'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
 
-let _isAndroid
-
 class ForgotPassword extends Component {
 
   static propTypes = {
+    coverDPI: PropTypes.string,
+    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
   }
 
@@ -33,12 +33,8 @@ class ForgotPassword extends Component {
     this.emailValue = ''
   }
 
-  componentDidMount() {
-    _isAndroid = isAndroid()
-  }
-
   onBlurControl = () => {
-    if (_isAndroid) {
+    if (isAndroid()) {
       document.body.classList.remove('hideCredits')
     }
   }
@@ -54,7 +50,7 @@ class ForgotPassword extends Component {
   }
 
   onFocusControl = () => {
-    if (_isAndroid) {
+    if (isAndroid()) {
       document.body.classList.add('hideCredits')
     }
   }
@@ -116,6 +112,7 @@ class ForgotPassword extends Component {
   }
 
   render() {
+    const { coverDPI, coverOffset } = this.props
     const { featuredUser, formStatus } = this.state
     return (
       <main className="Authentication View" role="main">
@@ -128,11 +125,24 @@ class ForgotPassword extends Component {
         </div>
         <AppleStoreLink />
         <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
-        <Cover coverImage={ featuredUser.coverImage } modifiers="asFullScreen withOverlay" />
+        <Cover
+          coverDPI={ coverDPI }
+          coverImage={ featuredUser.coverImage }
+          coverOffset={ coverOffset }
+          modifiers="asFullScreen withOverlay"
+        />
       </main>
     )
   }
 }
 
-export default connect()(ForgotPassword)
+const mapStateToProps = (state) => {
+  const { gui } = state
+  return {
+    coverDPI: gui.coverDPI,
+    coverOffset: gui.coverOffset,
+  }
+}
+
+export default connect(mapStateToProps)(ForgotPassword)
 

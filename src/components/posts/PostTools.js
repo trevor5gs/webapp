@@ -30,6 +30,7 @@ class PostTools extends Component {
 
   static propTypes = {
     author: PropTypes.object.isRequired,
+    deviceSize: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isCommentsRequesting: PropTypes.bool,
     isGridLayout: PropTypes.bool,
@@ -122,9 +123,10 @@ class PostTools extends Component {
   }
 
   onClickFlagPost = () => {
-    const { dispatch } = this.props
+    const { deviceSize, dispatch } = this.props
     dispatch(openModal(
       <FlagDialog
+        deviceSize={ deviceSize }
         onResponse={ this.onPostWasFlagged }
         onConfirm={ this.closeModal }
       />))
@@ -353,7 +355,7 @@ class PostTools extends Component {
   }
 }
 
-const mapStateToProps = ({ authentication, json, profile, routing, stream }, ownProps) => {
+const mapStateToProps = ({ authentication, gui, json, profile, routing, stream }, ownProps) => {
   const post = json[POSTS][ownProps.post.id]
   const isCommentsRequesting = stream.type === LOAD_STREAM_REQUEST &&
                                stream.meta.mappingType === COMMENTS &&
@@ -374,6 +376,7 @@ const mapStateToProps = ({ authentication, json, profile, routing, stream }, own
     postShowLovers: post.showLovers,
     postShowReposters: post.showReposters,
     postViewsCountRounded: post.viewsCountRounded,
+    deviceSize: gui.deviceSize,
   }
 }
 

@@ -71,12 +71,13 @@ NavbarLoggedOut.propTypes = {
 export const NavbarLoggedIn = ({
   avatar,
   currentStream,
-  hasLayoutTool,
+  deviceSize,
   hasLoadMoreButton,
-  hasNotifications,
   isGridMode,
+  isLayoutToolHidden,
   isLoggedIn,
   isNotificationsActive,
+  isNotificationsUnread,
   isProfileMenuActive,
   notificationCategory,
   onClickAvatar,
@@ -92,7 +93,6 @@ export const NavbarLoggedIn = ({
   onLogOut,
   pathname,
   username,
-  viewportDeviceSize,
 }) =>
 <nav className="Navbar" role="navigation" >
   <NavbarMark
@@ -134,10 +134,10 @@ export const NavbarLoggedIn = ({
       to="/starred"
     />
     <NavbarLink
-      className={ classNames('IconOnly', { hasNotifications }) }
+      className={ classNames('IconOnly', { isNotificationsUnread }) }
       icon={ <BoltIcon /> }
       label="Notifications"
-      onClick={ viewportDeviceSize !== 'mobile' ? onClickNotification : null }
+      onClick={ deviceSize !== 'mobile' ? onClickNotification : null }
       pathname={ pathname }
       to={ `/notifications${notificationCategory}` }
     />
@@ -156,13 +156,13 @@ export const NavbarLoggedIn = ({
     onLogOut={ onLogOut }
     username={ username }
   />
-  { viewportDeviceSize === 'mobile' && hasLayoutTool ?
+  { deviceSize === 'mobile' && !isLayoutToolHidden ?
     <NavbarLayoutTool
       icon={ isGridMode ? <ListIcon /> : <GridIcon /> }
       onClick={ onClickToggleLayoutMode }
     /> : null
   }
-  { viewportDeviceSize !== 'mobile' && isNotificationsActive ?
+  { deviceSize !== 'mobile' && isNotificationsActive ?
     <NotificationsContainer /> : null
   }
 </nav>
@@ -170,12 +170,13 @@ export const NavbarLoggedIn = ({
 NavbarLoggedIn.propTypes = {
   avatar: PropTypes.shape({}),
   currentStream: PropTypes.string.isRequired,
-  hasLayoutTool: PropTypes.bool.isRequired,
+  deviceSize: PropTypes.string.isRequired,
   hasLoadMoreButton: PropTypes.bool.isRequired,
-  hasNotifications: PropTypes.bool.isRequired,
   isGridMode: PropTypes.bool,
+  isLayoutToolHidden: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   isNotificationsActive: PropTypes.bool.isRequired,
+  isNotificationsUnread: PropTypes.bool.isRequired,
   isProfileMenuActive: PropTypes.bool.isRequired,
   notificationCategory: PropTypes.string.isRequired,
   onClickAvatar: PropTypes.func.isRequired,
@@ -191,6 +192,5 @@ NavbarLoggedIn.propTypes = {
   onLogOut: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
   username: PropTypes.string,
-  viewportDeviceSize: PropTypes.string.isRequired,
 }
 

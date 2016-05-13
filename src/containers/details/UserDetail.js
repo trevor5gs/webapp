@@ -15,7 +15,7 @@ import {
 } from '../../actions/user'
 import { openAlert, closeAlert } from '../../actions/modals'
 import { saveAvatar, saveCover } from '../../actions/profile'
-import { setFollowingTab } from '../../actions/gui'
+import { setActiveUserFollowingType } from '../../actions/gui'
 import Cover from '../../components/assets/Cover'
 import Uploader from '../../components/uploaders/Uploader'
 import { UserDetailHelmet } from '../../components/helmets/UserDetailHelmet'
@@ -31,7 +31,11 @@ import {
 
 class UserDetail extends Component {
   static propTypes = {
+    activeUserFollowingType: PropTypes.string,
+    coverDPI: PropTypes.string,
+    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
+    isCoverHidden: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     followingTab: PropTypes.func,
     params: PropTypes.shape({
@@ -46,7 +50,6 @@ class UserDetail extends Component {
       error: PropTypes.object,
     }),
     user: PropTypes.object,
-    userFollowingTab: PropTypes.string,
   };
 
   static preRender = (store, routerState) => {
@@ -143,12 +146,15 @@ class UserDetail extends Component {
 
   render() {
     const {
+      coverDPI,
+      coverOffset,
       dispatch,
+      isCoverHidden,
       isLoggedIn,
       omnibar,
       params,
       stream,
-      userFollowingTab,
+      activeUserFollowingType,
       user,
     } = this.props
 
@@ -189,8 +195,11 @@ class UserDetail extends Component {
       if (!omnibar.isActive) {
         userEls.push(
           <Cover
+            isHidden={ isCoverHidden }
             isModifiable={ user.relationshipPriority === 'self' }
+            coverDPI={ coverDPI }
             coverImage={ user.coverImage }
+            coverOffset={ coverOffset }
             key={ `userDetailCover_${user.id}` }
             useGif
           />
@@ -218,7 +227,7 @@ class UserDetail extends Component {
             className="LabelTabList"
             tabClasses="LabelTab"
             key={ `tabList_${user.id}` }
-            activeType={ userFollowingTab }
+            activeType={ activeUserFollowingType }
             tabs={ tabs }
             onTabClick={ ({ type: tab }) => followingTab(tab) }
           />
@@ -228,7 +237,7 @@ class UserDetail extends Component {
     let streamAction = null
     switch (type) {
       case 'following':
-        streamAction = loadUserFollowing(`~${params.username}`, userFollowingTab)
+        streamAction = loadUserFollowing(`~${params.username}`, activeUserFollowingType)
         break
       case 'followers':
         streamAction = loadUserUsers(`~${params.username}`, type)
@@ -240,7 +249,7 @@ class UserDetail extends Component {
         streamAction = loadUserPosts(`~${params.username}`, type)
         break
     }
-    const streamKey = `${params.username}${type === 'following' ? userFollowingTab : ''}`
+    const streamKey = `${params.username}${type === 'following' ? activeUserFollowingType : ''}`
     return (
       <main
         className={ classNames('UserDetail', 'View', omnibar.isActive ? 'OmnibarActive' : null) }
@@ -271,16 +280,19 @@ class UserDetail extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { json } = state;
+  const { gui, json } = state
   const { params } = ownProps
   const user = findModel(json, {
     collection: MAPPING_TYPES.USERS,
     findObj: { username: params.username },
   })
   return {
+    coverDPI: gui.coverDPI,
+    coverOffset: gui.coverOffset,
     omnibar: state.omnibar,
+    isCoverHidden: gui.isCoverHidden,
     isLoggedIn: state.authentication.isLoggedIn,
-    userFollowingTab: get(state, 'gui.userFollowingTab'),
+    activeUserFollowingType: get(state, 'gui.activeUserFollowingType'),
     params,
     user,
     stream: state.stream,
@@ -289,7 +301,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    followingTab: bindActionCreators(setFollowingTab, dispatch),
+    followingTab: bindActionCreators(setActiveUserFollowingType, dispatch),
     dispatch,
   }
 }

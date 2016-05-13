@@ -37,8 +37,8 @@ const GridPost = connect(mapGridStateToProps)(DumbGridPost)
 class PostsAsGrid extends Component {
 
   static propTypes = {
+    columnCount: PropTypes.number,
     currentUser: PropTypes.object,
-    gridColumnCount: PropTypes.number,
     json: PropTypes.object,
     posts: PropTypes.array.isRequired,
   }
@@ -64,15 +64,15 @@ class PostsAsGrid extends Component {
   }
 
   render() {
-    const { posts, gridColumnCount } = this.props
-    if (!gridColumnCount) { return null }
+    const { posts, columnCount } = this.props
+    if (!columnCount) { return null }
     const columns = []
-    for (let i = 0; i < gridColumnCount; i++) {
+    for (let i = 0; i < columnCount; i++) {
       columns.push([])
     }
     for (const index in posts) {
       if (posts[index]) {
-        columns[index % gridColumnCount].push(posts[index])
+        columns[index % columnCount].push(posts[index])
       }
     }
     return (
