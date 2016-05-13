@@ -1,8 +1,20 @@
 import { cloneDeep } from 'lodash'
 import { suggestEmoji } from '../components/completers/EmojiSuggester'
 import { userRegex } from '../components/completers/Completer'
+import { COMMENT, EDITOR, POST } from '../constants/action_types'
 
 const methods = {}
+const initialState = {
+  collection: {},
+  hasContent: false,
+  hasMention: false,
+  isLoading: false,
+  isPosting: false,
+  order: [],
+  shouldPersist: false,
+  uid: 0,
+}
+
 
 function _addCompletions(state, action) {
   const newState = cloneDeep(state)
@@ -187,5 +199,96 @@ function _replaceText(state, action) {
 }
 methods.replaceText = _replaceText
 
+function _getEditorObject(state = initialState, action) {
+  let newState = cloneDeep(state)
+  switch (action.type) {
+    case EDITOR.ADD_BLOCK:
+      return methods.add({
+        block: action.payload.block,
+        state: newState,
+        shouldCheckForEmpty: action.payload.shouldCheckForEmpty,
+      })
+    case EDITOR.ADD_DRAG_BLOCK:
+      newState.dragBlock = action.payload.block
+      return newState
+    case EDITOR.ADD_EMPTY_TEXT_BLOCK:
+      return methods.addEmptyTextBlock(newState)
+    case EDITOR.APPEND_TEXT:
+      return methods.appendText(newState, action.payload.text)
+    case EDITOR.INITIALIZE:
+      if (state.shouldPersist) {
+        return state
+      }
+      return initialState
+    case EDITOR.POST_PREVIEW_SUCCESS:
+      newState = methods.removeEmptyTextBlock(newState)
+      newState = methods.add({
+        block: { ...action.payload.response.postPreviews.body[0] },
+        state: newState,
+      })
+      return newState
+    case EDITOR.REMOVE_BLOCK:
+      return methods.remove({ state: newState, uid: action.payload.uid })
+    case EDITOR.REMOVE_DRAG_BLOCK:
+      delete newState.dragBlock
+      return newState
+    case EDITOR.REORDER_BLOCKS:
+      return methods.reorderBlocks(newState, action)
+    case EDITOR.REPLACE_TEXT:
+      return methods.replaceText(newState, action)
+    case COMMENT.CREATE_REQUEST:
+    case COMMENT.UPDATE_REQUEST:
+    case POST.CREATE_REQUEST:
+    case POST.UPDATE_REQUEST:
+      newState.isPosting = true
+      return newState
+    case COMMENT.CREATE_SUCCESS:
+    case COMMENT.UPDATE_SUCCESS:
+    case EDITOR.RESET:
+    case POST.CREATE_SUCCESS:
+    case POST.UPDATE_SUCCESS:
+      return methods.addEmptyTextBlock({ ...initialState, uid: newState.uid })
+    case COMMENT.CREATE_FAILURE:
+    case COMMENT.UPDATE_FAILURE:
+    case POST.CREATE_FAILURE:
+    case POST.UPDATE_FAILURE:
+      newState.isPosting = false
+      return newState
+    case EDITOR.SAVE_IMAGE_SUCCESS:
+      if (newState.dragBlock && newState.dragBlock.uid === action.payload.uid) {
+        newState.dragBlock = {
+          ...newState.dragBlock,
+          data: { url: action.payload.response.url },
+          isLoading: false,
+        }
+      } else {
+        newState.collection[action.payload.uid] = {
+          ...newState.collection[action.payload.uid],
+          data: { url: action.payload.response.url },
+          isLoading: false,
+        }
+      }
+      return newState
+    case EDITOR.TMP_IMAGE_CREATED:
+      newState = methods.removeEmptyTextBlock(newState)
+      newState = methods.add({
+        block: {
+          blob: action.payload.url,
+          kind: 'image',
+          data: {},
+          isLoading: true,
+        },
+        state: newState,
+      })
+      return newState
+    case EDITOR.UPDATE_BLOCK:
+      return methods.updateBlock(newState, action)
+    default:
+      return state
+  }
+}
+methods.getEditorObject = _getEditorObject
+
 export default methods
+export { initialState, methods }
 
