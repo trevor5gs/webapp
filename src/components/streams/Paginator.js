@@ -35,8 +35,8 @@ export const Paginator = ({
       <ElloMark />
       {
         hasShowMoreButton ?
-        <button onClick={loadNextPage}>{message}</button> :
-        <span className="PaginatorMessage">{message}</span>
+          <button onClick={loadNextPage}>{message}</button> :
+          <span className="PaginatorMessage">{message}</span>
       }
     </div>
   )

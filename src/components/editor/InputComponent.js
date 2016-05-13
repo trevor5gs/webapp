@@ -5,7 +5,7 @@ import { isFirefox } from '../../vendor/jello'
 
 const methods = {}
 
-export let range = null
+let range = null
 const inputObjects = []
 let hasListeners = false
 

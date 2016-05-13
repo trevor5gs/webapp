@@ -83,11 +83,9 @@ class Settings extends Component {
       const attrs = get(nextProps, 'profile.errors.attrs')
       if (attrs) {
         const obj = {}
-        for (const attr in attrs) {
-          if (attrs.hasOwnProperty(attr)) {
-            obj[`${attr}State`] = { status: STATUS.FAILURE, message: attrs[attr] }
-          }
-        }
+        Object.keys(attrs).forEach((attr) => {
+          obj[`${attr}State`] = { status: STATUS.FAILURE, message: attrs[attr] }
+        })
         this.setState(obj)
       }
     } else if (this.props.profile.errors && !nextProps.profile.errors) {
@@ -526,23 +524,23 @@ class Settings extends Component {
             <TreeButton>Account Deletion</TreeButton>
             <TreePanel>
               <div className="SettingsCell">
-                  <dl className="SettingsDefinition">
-                    <dt>
-                      <span>{SETTINGS.ACCOUNT_DELETION_DEFINITION.term}</span>
-                      <Emoji
-                        name="wave"
-                        title="Sad wave"
-                        style={{ marginTop: `-${5 / 16}rem`, marginLeft: `${5 / 16}rem` }}
-                      />
-                    </dt>
-                    <dd>{SETTINGS.ACCOUNT_DELETION_DEFINITION.desc}</dd>
-                    <button
-                      className="SettingsButton asDangerous"
-                      onClick={this.onClickDeleteAccountModal}
-                    >
-                      Delete
-                    </button>
-                  </dl>
+                <dl className="SettingsDefinition">
+                  <dt>
+                    <span>{SETTINGS.ACCOUNT_DELETION_DEFINITION.term}</span>
+                    <Emoji
+                      name="wave"
+                      title="Sad wave"
+                      style={{ marginTop: `-${5 / 16}rem`, marginLeft: `${5 / 16}rem` }}
+                    />
+                  </dt>
+                  <dd>{SETTINGS.ACCOUNT_DELETION_DEFINITION.desc}</dd>
+                  <button
+                    className="SettingsButton asDangerous"
+                    onClick={this.onClickDeleteAccountModal}
+                  >
+                    Delete
+                  </button>
+                </dl>
               </div>
             </TreePanel>
           </div>

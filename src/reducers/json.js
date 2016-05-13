@@ -19,7 +19,7 @@ let path = '/'
 let prevTerms = null
 let hasLoadedFirstStream = false
 
-function _updateUserCount(newState, userId, prop, delta) {
+methods.updateUserCount = (newState, userId, prop, delta) => {
   const count = newState[MAPPING_TYPES.USERS][userId][prop] || 0
   if (count === '∞') { return newState }
 
@@ -31,9 +31,8 @@ function _updateUserCount(newState, userId, prop, delta) {
     obj,
   )
 }
-methods.updateUserCount = _updateUserCount
 
-function _updatePostCount(newState, postId, prop, delta) {
+methods.updatePostCount = (newState, postId, prop, delta) => {
   const count = newState[MAPPING_TYPES.POSTS][postId][prop] || 0
   if (count === '∞') { return newState }
 
@@ -45,9 +44,8 @@ function _updatePostCount(newState, postId, prop, delta) {
     obj,
   )
 }
-methods.updatePostCount = _updatePostCount
 
-function _appendPageId(newState, pageName, mappingType, id, addNewResult = true) {
+methods.appendPageId = (newState, pageName, mappingType, id, addNewResult = true) => {
   let page = get(newState, ['pages', pageName])
   if (page) {
     const ids = get(page, 'ids', [])
@@ -63,9 +61,8 @@ function _appendPageId(newState, pageName, mappingType, id, addNewResult = true)
   set(newState, ['pages', pageName], page)
   return newState
 }
-methods.appendPageId = _appendPageId
 
-function _removePageId(newState, pageName, id) {
+methods.removePageId = (newState, pageName, id) => {
   const existingIds = get(newState, ['pages', pageName, 'ids'])
   if (existingIds) {
     const index = existingIds.indexOf(`${id}`)
@@ -76,22 +73,18 @@ function _removePageId(newState, pageName, id) {
   }
   return newState
 }
-methods.removePageId = _removePageId
 
-function _getCurrentUser(state) {
-  for (const id in state[MAPPING_TYPES.USERS]) {
-    if (state[MAPPING_TYPES.USERS].hasOwnProperty(id)) {
-      const user = state[MAPPING_TYPES.USERS][id]
-      if (user.relationshipPriority === RELATIONSHIP_PRIORITY.SELF) {
-        return user
-      }
+methods.getCurrentUser = (state) => {
+  let currentUser = null
+  Object.values(state[MAPPING_TYPES.USERS]).forEach((user) => {
+    if (user.relationshipPriority === RELATIONSHIP_PRIORITY.SELF) {
+      currentUser = user
     }
-  }
-  return null
+  })
+  return currentUser
 }
-methods.getCurrentUser = _getCurrentUser
 
-function _mergeModel(state, type, params) {
+methods.mergeModel = (state, type, params) => {
   if (params.id) {
     // make the model's id a string for later comparisons
     // sometimes the API sends them back as a number
@@ -100,19 +93,18 @@ function _mergeModel(state, type, params) {
   }
   return state
 }
-methods.mergeModel = _mergeModel
 
-function _findPostFromIdOrToken(state, postIdOrToken) {
-  return parseInt(postIdOrToken, 10) > 0 ?
-    state[MAPPING_TYPES.POSTS][postIdOrToken] :
+methods.findPostFromIdOrToken = (state, postIdOrToken) => {
+  const id = parseInt(postIdOrToken, 10)
+  return id > 0 ?
+    state[MAPPING_TYPES.POSTS][id] :
     findModel(state, {
       collection: MAPPING_TYPES.POSTS,
       findObj: { token: postIdOrToken },
     })
 }
-methods.findPostFromIdOrToken = _findPostFromIdOrToken
 
-function _addParentPostIdToComments(state, action) {
+methods.addParentPostIdToComments = (state, action) => {
   // Kludge to abort for some tests
   const mappingType = get(action, 'meta.mappingType')
   if (mappingType !== MAPPING_TYPES.COMMENTS) { return null }
@@ -130,9 +122,8 @@ function _addParentPostIdToComments(state, action) {
   }
   return null
 }
-methods.addParentPostIdToComments = _addParentPostIdToComments
 
-function _addModels(state, type, data) {
+methods.addModels = (state, type, data) => {
   // add state['modelType']
   if (!state[type]) { state[type] = {} }
   const ids = []
@@ -158,40 +149,34 @@ function _addModels(state, type, data) {
   }
   return ids
 }
-methods.addModels = _addModels
 
-function _addNewIdsToResult(state, newState) {
+methods.addNewIdsToResult = (state, newState) => {
   const result = newState.pages[path]
   if (!result || !result.newIds) { return state }
   result.ids = result.newIds.concat(result.ids)
   delete result.newIds
   return newState
 }
-methods.addNewIdsToResult = _addNewIdsToResult
 
-function _setLayoutMode(action, state, newState) {
+methods.setLayoutMode = (action, state, newState) => {
   const result = newState.pages[path]
   if (!result || (result && result.mode === action.payload.mode)) { return state }
   result.mode = action.payload.mode
   return newState
 }
-methods.setLayoutMode = _setLayoutMode
 
 // parses the 'linked' node of the JSON
 // api responses into the json store
-function _parseLinked(linked, newState) {
+methods.parseLinked = (linked, newState) => {
   if (!linked) { return }
-  for (const linkedType in linked) {
-    if ({}.hasOwnProperty.call(linked, linkedType)) {
-      methods.addModels(newState, linkedType, linked)
-    }
-  }
+  Object.keys(linked).forEach((linkedType) => {
+    methods.addModels(newState, linkedType, linked)
+  })
 }
-methods.parseLinked = _parseLinked
 
 // parse main part of request into the state and
 // pull out the ids as this is the main payload
-function _getResult(response, newState, action) {
+methods.getResult = (response, newState, action) => {
   const { mappingType, resultFilter } = action.meta
   const ids = methods.addModels(newState, mappingType, response)
   // set the result to the resultFilter if it exists
@@ -199,17 +184,15 @@ function _getResult(response, newState, action) {
   result.pagination = action.payload.pagination
   return result
 }
-methods.getResult = _getResult
 
-function _pagesKey(action) {
+methods.pagesKey = (action) => {
   const pathname = action.payload && action.payload.pathname ? action.payload.pathname : path
   const { resultKey } = action.meta || {}
   return resultKey || pathname
 }
-methods.pagesKey = _pagesKey
 
 // TODO: need to test the existingResult conditional logic!!!!
-function _updateResult(response, newState, action) {
+methods.updateResult = (response, newState, action) => {
   const result = methods.getResult(response, newState, action)
   const { resultKey } = action.meta
   // the action payload pathname comes from before the fetch so that
@@ -262,9 +245,8 @@ function _updateResult(response, newState, action) {
     newState.pages[resultPath] = result
   }
 }
-methods.updateResult = _updateResult
 
-function _clearSearchResults(state, newState, action) {
+methods.clearSearchResults = (state, newState, action) => {
   const pathname = action.payload.pathname
   const existingResult = newState.pages[pathname]
   if (existingResult) {
@@ -273,9 +255,8 @@ function _clearSearchResults(state, newState, action) {
   }
   return state
 }
-methods.clearSearchResults = _clearSearchResults
 
-function _deleteModel(state, newState, action, mappingType) {
+methods.deleteModel = (state, newState, action, mappingType) => {
   const { model } = action.payload
   switch (action.type) {
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
@@ -307,9 +288,8 @@ function _deleteModel(state, newState, action, mappingType) {
   }
   return state
 }
-methods.deleteModel = _deleteModel
 
-function _updateCurrentUser(newState, action) {
+methods.updateCurrentUser = (newState, action) => {
   const { response } = action.payload
   newState[MAPPING_TYPES.USERS][response.id] = response
   let assetType = null
@@ -333,11 +313,10 @@ function _updateCurrentUser(newState, action) {
 
   return newState
 }
-methods.updateCurrentUser = _updateCurrentUser
 
 // TODO: This has the same issues as /reducers/profile.js (line ~38) by pulling
 // the previous image. Less so on production than staging I believe?
-function _updateCurrentUserTmpAsset(newState, action) {
+methods.updateCurrentUserTmpAsset = (newState, action) => {
   const assetType = action.type === ACTION_TYPES.PROFILE.TMP_AVATAR_CREATED ? 'avatar' : 'coverImage'
   const currentUser = methods.getCurrentUser(newState)
   const modifiedUser = {
@@ -347,9 +326,8 @@ function _updateCurrentUserTmpAsset(newState, action) {
   newState[MAPPING_TYPES.USERS][currentUser.id] = modifiedUser
   return newState
 }
-methods.updateCurrentUserTmpAsset = _updateCurrentUserTmpAsset
 
-function _updatePostDetail(newState, action) {
+methods.updatePostDetail = (newState, action) => {
   const post = action.payload.response.posts
   methods.parseLinked(action.payload.response.linked, newState)
   methods.addModels(newState, action.meta.mappingType, action.payload.response)
@@ -359,7 +337,6 @@ function _updatePostDetail(newState, action) {
     { id: post.id, showLovers: parseInt(post.lovesCount, 10) > 0, showReposters: parseInt(post.repostsCount, 10) > 0 }
   )
 }
-methods.updatePostDetail = _updatePostDetail
 
 export default function json(state = {}, action = { type: '' }) {
   let newState = { ...state }
@@ -432,11 +409,11 @@ export default function json(state = {}, action = { type: '' }) {
       // so we can still filter them out if needed
       if (action.payload.json) {
         const keepers = {}
-        for (const collection in action.payload.json) {
+        Object.keys(action.payload.json).forEach((collection) => {
           if (collection.match('deleted_')) {
             keepers[collection] = action.payload.json[collection]
           }
-        }
+        })
         newState = { ...newState, ...keepers }
       }
       if (action.payload.profile) {
@@ -479,5 +456,5 @@ export function setPath(newPath) {
   path = newPath
 }
 
-export { json, methods, path, commentMethods, postMethods, relationshipMethods }
+export { json, methods, commentMethods, postMethods, relationshipMethods }
 

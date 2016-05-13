@@ -5,11 +5,9 @@ const basePath = () => `${ENV.AUTH_DOMAIN}/api`
 function getAPIPath(relPath, queryParams = {}) {
   let path = `${basePath()}/${API_VERSION}/${relPath}`
   const queryArr = []
-  for (const param in queryParams) {
-    if (queryParams.hasOwnProperty(param)) {
-      queryArr.push(`${param}=${queryParams[param]}`)
-    }
-  }
+  Object.keys(queryParams).forEach((param) => {
+    queryArr.push(`${param}=${queryParams[param]}`)
+  })
   if (queryArr.length) {
     path = `${path}?${queryArr.join('&')}`
   }

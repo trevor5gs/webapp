@@ -135,16 +135,13 @@ const loggedInPaths = {
   notifications: /^\/notifications/,
 }
 
-function canPrerenderRequest(req) {
+export function canPrerenderRequest(req) {
   if (req.get('X-Skip-Prerender') === 'true') {
     return false
   }
-  for (const re in loggedInPaths) {
-    if (req.url.match(loggedInPaths[re])) {
-      return false
-    }
-  }
-  return true
+  return Object.values(loggedInPaths).every((regex) =>
+    !req.url.match(regex)
+  )
 }
 
 app.use((req, res) => {
@@ -162,4 +159,5 @@ app.use((req, res) => {
 // Honeybadger "after everything" middleware
 app.use(Honeybadger.errorHandler);
 
-module.exports = app
+export default app
+

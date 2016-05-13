@@ -67,12 +67,12 @@ export function usersAsInviteeGrid(invitations, json) {
   return (
     <div className="Users asInviteeGrid">
       {invitations.data.map((invitation) =>
-          <UserInvitee
-            className="UserInviteeGrid"
-            invitation={invitation}
-            json={json}
-            key={`userInviteeGrid_${invitation.id}`}
-          />
+        <UserInvitee
+          className="UserInviteeGrid"
+          invitation={invitation}
+          json={json}
+          key={`userInviteeGrid_${invitation.id}`}
+        />
       )}
     </div>
   )
@@ -106,17 +106,17 @@ export function postsAsList(posts) {
 
 export function commentsAsList(post) {
   return comments => (
-      <div>
-        {comments.data.map(comment =>
-          <CommentParser
-            key={`commentParser_${comment.id}`}
-            comment={comment}
-            post={post}
-            isEditing={comment.isEditing}
-          />
-        )}
-      </div>
-    )
+    <div>
+      {comments.data.map(comment =>
+        <CommentParser
+          key={`commentParser_${comment.id}`}
+          comment={comment}
+          post={post}
+          isEditing={comment.isEditing}
+        />
+      )}
+    </div>
+  )
 }
 
 export function notificationList(notifications, json) {

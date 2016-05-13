@@ -11,7 +11,7 @@ const flags = {
   offensive: 'I don\'t like it',
 }
 
-const _offsets = { mobile: 70, tablet: 80, desktop: 100 }
+const OFFSETS = { mobile: 70, tablet: 80, desktop: 100 }
 
 class FlagDialog extends Component {
 
@@ -65,7 +65,7 @@ class FlagDialog extends Component {
   renderChoicesScreen() {
     const { activeChoice } = this.state
     const index = Object.keys(flags).indexOf(activeChoice)
-    const top = index < 0 ? null : (70 * index) + _offsets[this.props.deviceSize]
+    const top = index < 0 ? null : (70 * index) + OFFSETS[this.props.deviceSize]
     return (
       <div className="Dialog FlagDialog">
         <h2>Would you like to flag this content as:</h2>

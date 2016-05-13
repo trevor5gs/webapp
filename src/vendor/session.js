@@ -1,3 +1,4 @@
+/* eslint-disable import/no-mutable-exports */
 let session
 if (typeof sessionStorage !== 'undefined') {
   session = sessionStorage
@@ -14,11 +15,9 @@ if (typeof sessionStorage !== 'undefined') {
       delete storage[key]
     }
     clear() {
-      for (const key in storage) {
-        if (storage.hasOwnProperty(key)) {
-          this.removeItem(key)
-        }
-      }
+      Object.keys(storage).forEach((key) => {
+        this.removeItem(key)
+      })
     }
   }
   session = new Sessh()

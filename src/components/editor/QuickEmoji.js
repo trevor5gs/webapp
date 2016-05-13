@@ -94,8 +94,7 @@ class QuickEmoji extends Component {
         <button className="QuickEmojiButton" onClick={this.show}>
           <MiniElloEmoji />
         </button>
-          <div className="QuickEmojiList">
-          </div>
+        <div className="QuickEmojiList" />
       </div>
     )
   }

@@ -85,16 +85,14 @@ Date.prototype.timeAgoInWords = function timeAgoInWords() {
 }
 
 function updateStrings(dict) {
-  for (const key in dict) {
-    if (dict.hasOwnProperty(key)) {
-      const value = dict[key]
-      if (timeAgoInWordsStrings.hasOwnProperty(key)) {
-        timeAgoInWordsStrings[key] = value
-      } else {
-        throw new Error(`TimeAgoInWords updateStrings key ${key} is not supported.`)
-      }
+  Object.keys(dict).forEach((key) => {
+    const value = dict[key]
+    if (timeAgoInWordsStrings.hasOwnProperty(key)) {
+      timeAgoInWordsStrings[key] = value
+    } else {
+      throw new Error(`TimeAgoInWords updateStrings key ${key} is not supported.`)
     }
-  }
+  })
 }
 
 export { updateStrings }

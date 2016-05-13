@@ -1,9 +1,11 @@
 import * as MAPPING_TYPES from '../src/constants/mapping_types'
 
-let json = {}
+const json = {}
 
 function clearJSON() {
-  json = {}
+  Object.keys(json).forEach((key) => {
+    delete json[key]
+  })
 }
 const commonProps = {
   id: '1',

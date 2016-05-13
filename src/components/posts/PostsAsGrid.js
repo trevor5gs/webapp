@@ -54,10 +54,10 @@ class PostsAsGrid extends Component {
     return (
       <div className="Column" key={`column_${index}`}>
         {posts.map((post) =>
-           <GridPost
-             key={`gridPost_${post.id}`}
-             post={post}
-           />
+          <GridPost
+            key={`gridPost_${post.id}`}
+            post={post}
+          />
         )}
       </div>
     )
@@ -70,11 +70,9 @@ class PostsAsGrid extends Component {
     for (let i = 0; i < columnCount; i++) {
       columns.push([])
     }
-    for (const index in posts) {
-      if (posts[index]) {
-        columns[index % columnCount].push(posts[index])
-      }
-    }
+    Object.keys(posts).forEach((index) => {
+      columns[index % columnCount].push(posts[index])
+    })
     return (
       <div className="Posts asGrid">
         {columns.map((columnPosts, index) => this.renderColumn(columnPosts, index))}

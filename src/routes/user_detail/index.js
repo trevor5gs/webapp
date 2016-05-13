@@ -1,3 +1,5 @@
+import UserDetail from '../../containers/details/UserDetail'
+
 const TYPES = [
   'following',
   'followers',
@@ -7,7 +9,7 @@ const TYPES = [
 export default {
   path: ':username(/:type)',
   getComponents(location, cb) {
-    cb(null, require('../../containers/details/UserDetail').default)
+    cb(null, UserDetail)
   },
   onEnter(nextState, replace) {
     const type = nextState.params.type

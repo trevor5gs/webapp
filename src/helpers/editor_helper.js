@@ -16,7 +16,7 @@ const initialState = {
 }
 
 
-function _addCompletions(state, action) {
+methods.addCompletions = (state, action) => {
   const newState = cloneDeep(state)
   const { payload } = action
   if (payload && payload.response) {
@@ -31,23 +31,20 @@ function _addCompletions(state, action) {
   }
   return newState
 }
-methods.addCompletions = _addCompletions
 
-function _rehydrateEditors(persistedEditors) {
+
+methods.rehydrateEditors = (persistedEditors) => {
   const editors = {}
-  for (const item in persistedEditors) {
-    if (persistedEditors.hasOwnProperty(item)) {
-      const pe = persistedEditors[item]
-      if (pe.shouldPersist) {
-        editors[item] = pe
-      }
+  Object.keys(persistedEditors).forEach((item) => {
+    const pe = persistedEditors[item]
+    if (pe.shouldPersist) {
+      editors[item] = pe
     }
-  }
+  })
   return editors
 }
-methods.rehydrateEditors = _rehydrateEditors
 
-function _addHasContent(state) {
+methods.addHasContent = (state) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
   const firstBlock = collection[order[0]]
@@ -61,9 +58,8 @@ function _addHasContent(state) {
   newState.hasContent = hasContent
   return newState
 }
-methods.addHasContent = _addHasContent
 
-function _addHasMention(state) {
+methods.addHasMention = (state) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
   let hasMention = false
@@ -77,28 +73,19 @@ function _addHasMention(state) {
   newState.hasMention = hasMention
   return newState
 }
-methods.addHasMention = _addHasMention
 
-function _addIsLoading(state) {
+methods.addIsLoading = (state) => {
   const newState = cloneDeep(state)
   const { collection } = newState
-  let isLoading = false
-  for (const uid in collection) {
-    if (collection.hasOwnProperty(uid)) {
-      const block = collection[uid]
-      if (block && block.kind === 'image' && block.isLoading) {
-        isLoading = true
-        break
-      }
-    }
-  }
+  let isLoading = Object.values(collection).some((block) =>
+    block.kind === 'image' && block.isLoading
+  )
   if (!isLoading && newState.dragBlock) { isLoading = newState.dragBlock.isLoading }
   newState.isLoading = isLoading
   return newState
 }
-methods.addIsLoading = _addIsLoading
 
-function _add({ block, shouldCheckForEmpty = true, state }) {
+methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
   collection[newState.uid] = { ...block, uid: newState.uid }
@@ -107,9 +94,8 @@ function _add({ block, shouldCheckForEmpty = true, state }) {
   if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(newState) }
   return newState
 }
-methods.add = _add
 
-function _addEmptyTextBlock(state, shouldCheckForEmpty = false) {
+methods.addEmptyTextBlock = (state, shouldCheckForEmpty = false) => {
   let newState = cloneDeep(state)
   const { collection, order } = newState
   if (order.length > 1) {
@@ -124,9 +110,8 @@ function _addEmptyTextBlock(state, shouldCheckForEmpty = false) {
   }
   return newState
 }
-methods.addEmptyTextBlock = _addEmptyTextBlock
 
-function _remove({ shouldCheckForEmpty = true, state, uid }) {
+methods.remove = ({ shouldCheckForEmpty = true, state, uid }) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
   delete collection[uid]
@@ -134,9 +119,8 @@ function _remove({ shouldCheckForEmpty = true, state, uid }) {
   if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(newState) }
   return newState
 }
-methods.remove = _remove
 
-function _removeEmptyTextBlock(state) {
+methods.removeEmptyTextBlock = (state) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
   if (order.length > 0) {
@@ -148,17 +132,15 @@ function _removeEmptyTextBlock(state) {
   }
   return newState
 }
-methods.removeEmptyTextBlock = _removeEmptyTextBlock
 
-function _updateBlock(state, action) {
+methods.updateBlock = (state, action) => {
   const newState = cloneDeep(state)
   const { block, uid } = action.payload
   newState.collection[uid] = block
   return newState
 }
-methods.updateBlock = _updateBlock
 
-function _reorderBlocks(state, action) {
+methods.reorderBlocks = (state, action) => {
   const newState = cloneDeep(state)
   const { order } = newState
   const { delta, uid } = action.payload
@@ -169,9 +151,8 @@ function _reorderBlocks(state, action) {
   order.splice(index + delta, 0, uid)
   return newState
 }
-methods.reorderBlocks = _reorderBlocks
 
-function _appendText(state, text) {
+methods.appendText = (state, text) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
   const textBlocks = order.filter((orderUid) => collection[orderUid].kind === 'text')
@@ -182,9 +163,8 @@ function _appendText(state, text) {
   }
   return newState
 }
-methods.appendText = _appendText
 
-function _appendUsernames(state, usernames) {
+methods.appendUsernames = (state, usernames) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
   const textBlocks = order.filter((orderUid) => collection[orderUid].kind === 'text')
@@ -196,9 +176,8 @@ function _appendUsernames(state, usernames) {
   }
   return newState
 }
-methods.appendUsernames = _appendUsernames
 
-function _replaceText(state, action) {
+methods.replaceText = (state, action) => {
   const newState = cloneDeep(state)
   const { collection } = newState
   const { editorId, uid } = action.payload
@@ -211,9 +190,8 @@ function _replaceText(state, action) {
   }
   return newState
 }
-methods.replaceText = _replaceText
 
-function _getEditorObject(state = initialState, action) {
+methods.getEditorObject = (state = initialState, action) => {
   let newState = cloneDeep(state)
   switch (action.type) {
     case EDITOR.ADD_BLOCK:
@@ -303,7 +281,6 @@ function _getEditorObject(state = initialState, action) {
       return state
   }
 }
-methods.getEditorObject = _getEditorObject
 
 export default methods
 export { initialState, methods }
