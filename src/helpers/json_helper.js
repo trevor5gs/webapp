@@ -4,22 +4,16 @@ export function findBy(params, collection, json) {
   if (!models) {
     return null
   }
-  for (const modelId in models) {
-    if (models.hasOwnProperty(modelId)) {
-      const model = models[modelId]
-      let found = true
-      for (const propName in params) {
-        if (model[propName] !== params[propName]) {
-          found = false
-          break
-        }
+  let found = null
+  Object.keys(models).forEach((modelId) => {
+    const model = models[modelId]
+    Object.keys(params).forEach((propName) => {
+      if (model[propName] !== params[propName]) {
+        found = model
       }
-      if (found) {
-        return model
-      }
-    }
-  }
-  return null
+    })
+  })
+  return found
 }
 
 export function findModel(json, initModel) {

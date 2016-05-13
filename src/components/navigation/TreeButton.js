@@ -49,7 +49,7 @@ class TreeButton extends Component {
     return (
       <button
         className={classNames(className, 'TreeButton', { isCollapsed: collapsed })}
-        onClick={ this.onClickTreeButton }
+        onClick={this.onClickTreeButton}
       >
         <TreeIcon />
         {children}

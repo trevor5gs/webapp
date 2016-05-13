@@ -10,16 +10,16 @@ import Editor from '../../components/editor/Editor'
 function header(comment, author) {
   if (!comment || !author) { return null }
   return (
-    <header className="CommentHeader" key={ `CommentHeader_${comment.id}` }>
+    <header className="CommentHeader" key={`CommentHeader_${comment.id}`}>
       <div className="CommentHeaderAuthor">
-        <Link className="CommentHeaderLink" to={ `/${author.username}` }>
+        <Link className="CommentHeaderLink" to={`/${author.username}`}>
           <Avatar
-            priority={ author.relationshipPriority }
-            sources={ author.avatar }
-            userId={ `${author.id}` }
-            username={ author.username }
+            priority={author.relationshipPriority}
+            sources={author.avatar}
+            userId={`${author.id}`}
+            username={author.username}
           />
-          <span className="CommentUsername">{ `@${author.username}` }</span>
+          <span className="CommentUsername">{`@${author.username}`}</span>
         </Link>
       </div>
     </header>
@@ -30,11 +30,11 @@ function footer(comment, author, currentUser, post) {
   if (!author) { return null }
   return (
     <CommentTools
-      author={ author }
-      comment={ comment }
-      currentUser={ currentUser }
-      key={ `CommentTools_${comment.id}` }
-      post={ post }
+      author={author}
+      comment={comment}
+      currentUser={currentUser}
+      key={`CommentTools_${comment.id}`}
+      post={post}
     />
   )
 }
@@ -43,8 +43,8 @@ function parseComment(comment, author, currentUser, post, isGridLayout = true) {
   const cells = []
   cells.push(header(comment, author))
   cells.push(
-    <div className="CommentBody" key={ `CommentBody${comment.id}` } >
-      { body(comment.content, comment.id, isGridLayout, null, true) }
+    <div className="CommentBody" key={`CommentBody${comment.id}`} >
+      {body(comment.content, comment.id, isGridLayout, null, true)}
     </div>
   )
   cells.push(footer(comment, author, currentUser, post))
@@ -72,8 +72,8 @@ class CommentParser extends Component {
     setModels({ assets })
     return (
       <div>
-        { isEditing && commentBody ?
-          <Editor isComment comment={ comment } /> :
+        {isEditing && commentBody ?
+          <Editor isComment comment={comment} /> :
           parseComment(comment, author, currentUser, post, isGridLayout)
         }
       </div>

@@ -13,7 +13,7 @@ function createPropsForStream(ownProps = {}) {
   const defaultProps = {
     action: {},
     currentUser: stub('user', { id: 'currentUser' }),
-    dispatch: () => {/**/},
+    dispatch: () => { /**/ },
     history: {},
     json: {
       pages: {

@@ -22,8 +22,8 @@ import TreePanel from '../../components/navigation/TreePanel'
 export function usersAsCards(users) {
   return (
     <div className="Cards">
-      { users.data.map((user) =>
-        <UserCard user={ user } key={ `userCard_${user.id}` } />
+      {users.data.map((user) =>
+        <UserCard user={user} key={`userCard_${user.id}`} />
       )}
     </div>
   )
@@ -32,8 +32,8 @@ export function usersAsCards(users) {
 export function usersAsGrid(users) {
   return (
     <div className="Users asGrid">
-      { users.data.map((user) =>
-        <UserGrid user={ user } key={ `userGrid_${user.id}` } />
+      {users.data.map((user) =>
+        <UserGrid user={user} key={`userGrid_${user.id}`} />
       )}
     </div>
   )
@@ -42,8 +42,8 @@ export function usersAsGrid(users) {
 export function usersAsList(users) {
   return (
     <div className="Users asList">
-      { users.data.map((user) =>
-        <UserList user={ user } key={ `userList_${user.id}` } />
+      {users.data.map((user) =>
+        <UserList user={user} key={`userList_${user.id}`} />
       )}
     </div>
   )
@@ -52,11 +52,11 @@ export function usersAsList(users) {
 export function usersAsInviteeList(invitations, json) {
   return (
     <div className="Users asInviteeList">
-      { invitations.data.map((invitation) =>
+      {invitations.data.map((invitation) =>
         <UserInvitee
-          invitation={ invitation }
-          json={ json }
-          key={ `userInviteeList_${invitation.id}` }
+          invitation={invitation}
+          json={json}
+          key={`userInviteeList_${invitation.id}`}
         />
       )}
     </div>
@@ -66,13 +66,13 @@ export function usersAsInviteeList(invitations, json) {
 export function usersAsInviteeGrid(invitations, json) {
   return (
     <div className="Users asInviteeGrid">
-      { invitations.data.map((invitation) =>
-          <UserInvitee
-            className="UserInviteeGrid"
-            invitation={ invitation }
-            json={ json }
-            key={ `userInviteeGrid_${invitation.id}` }
-          />
+      {invitations.data.map((invitation) =>
+        <UserInvitee
+          className="UserInviteeGrid"
+          invitation={invitation}
+          json={json}
+          key={`userInviteeGrid_${invitation.id}`}
+        />
       )}
     </div>
   )
@@ -81,10 +81,10 @@ export function usersAsInviteeGrid(invitations, json) {
 export function postsAsGrid(posts, json, currentUser, columnCount) {
   return (
     <PostsAsGrid
-      posts={ posts.data }
-      json={ json }
-      columnCount={ columnCount }
-      currentUser={ currentUser }
+      posts={posts.data}
+      json={json}
+      columnCount={columnCount}
+      currentUser={currentUser}
     />
   )
 }
@@ -92,11 +92,11 @@ export function postsAsGrid(posts, json, currentUser, columnCount) {
 export function postsAsList(posts) {
   return (
     <div className="Posts asList">
-      { posts.data.map((post) =>
-        <article id={ `Post_${post.id}` } key={ `postsAsList_${post.id}` } className="PostList">
+      {posts.data.map((post) =>
+        <article id={`Post_${post.id}`} key={`postsAsList_${post.id}`} className="PostList">
           <PostParser
-            isGridLayout={ false }
-            post={ post }
+            isGridLayout={false}
+            post={post}
           />
         </article>
       )}
@@ -106,32 +106,32 @@ export function postsAsList(posts) {
 
 export function commentsAsList(post) {
   return comments => (
-      <div>
-        { comments.data.map(comment =>
-          <CommentParser
-            key={ `commentParser_${comment.id}` }
-            comment={ comment }
-            post={ post }
-            isEditing={ comment.isEditing }
-          />
-        )}
-      </div>
-    )
+    <div>
+      {comments.data.map(comment =>
+        <CommentParser
+          key={`commentParser_${comment.id}`}
+          comment={comment}
+          post={post}
+          isEditing={comment.isEditing}
+        />
+      )}
+    </div>
+  )
 }
 
 export function notificationList(notifications, json) {
   return (
     <div className="Notifications">
-      { notifications.data.map((notification, index) => {
+      {notifications.data.map((notification, index) => {
         const subject = getLinkObject(notification, 'subject', json)
         return (
           <NotificationParser
-            json={ json }
-            key={ `notificationParser${index}_${notification.createdAt}` }
-            notification={ notification }
-            subject={ subject }
+            json={json}
+            key={`notificationParser${index}_${notification.createdAt}`}
+            notification={notification}
+            subject={subject}
           />
-        )}
+        ) }
       )}
     </div>
   )
@@ -150,18 +150,18 @@ export function profileToggles(categories, json, currentUser) {
   return (
     categories.data.map((category, index) => {
       if (category.label.toLowerCase().indexOf('push') === 0) { return null }
-      const arr = [<TreeButton key={ `categoryLabel${index}` }>{ category.label }</TreeButton>]
+      const arr = [<TreeButton key={`categoryLabel${index}`}>{category.label}</TreeButton>]
       arr.push(
-        <TreePanel key={ `categoryItems${index}` }>
+        <TreePanel key={`categoryItems${index}`}>
           {
             category.items.map((item) =>
               <Preference
                 definition={{ term: item.label, desc: item.info }}
-                id={ item.key }
-                key={ `preference_${item.key}` }
-                isChecked={ currentUser[camelize(item.key)] }
-                isDisabled={ !currentUser.isPublic && item.key === 'has_sharing_enabled' }
-                onToggleChange={ preferenceToggleChanged }
+                id={item.key}
+                key={`preference_${item.key}`}
+                isChecked={currentUser[camelize(item.key)]}
+                isDisabled={!currentUser.isPublic && item.key === 'has_sharing_enabled'}
+                onToggleChange={preferenceToggleChanged}
               />
             )
           }

@@ -6,7 +6,7 @@ import * as jsonReducer from '../../reducers/json'
 
 const methods = {}
 
-function _removeIdFromDeletedArray(newState, type, id) {
+methods.removeIdFromDeletedArray = (newState, type, id) => {
   const delArr = newState[`deleted_${type}`]
   if (delArr) {
     const index = delArr.indexOf(`${id}`)
@@ -16,54 +16,42 @@ function _removeIdFromDeletedArray(newState, type, id) {
   }
   return newState
 }
-methods.removeIdFromDeletedArray = (newState, id, type) =>
-  _removeIdFromDeletedArray(newState, id, type)
 
-function _relationshipUpdateSuccess(newState, action) {
+methods.relationshipUpdateSuccess = (newState, action) => {
   const { response } = action.payload
   const { owner, subject } = response
   if (owner) { newState[MAPPING_TYPES.USERS][owner.id] = owner }
   if (subject) { newState[MAPPING_TYPES.USERS][subject.id] = subject }
   return newState
 }
-methods.relationshipUpdateSuccess = (newState, action) =>
-  _relationshipUpdateSuccess(newState, action)
 
-function _addItemsForAuthor(newState, mappingType, authorId) {
-  for (const itemId in newState[mappingType]) {
-    if (newState[mappingType].hasOwnProperty(itemId)) {
-      const item = newState[mappingType][itemId]
-      if (item.hasOwnProperty('authorId') && item.authorId === authorId) {
-        methods.removeIdFromDeletedArray(newState, mappingType, itemId)
-      }
+methods.addItemsForAuthor = (newState, mappingType, authorId) => {
+  Object.keys(newState[mappingType]).forEach((itemId) => {
+    const item = newState[mappingType][itemId]
+    if (item.hasOwnProperty('authorId') && item.authorId === authorId) {
+      methods.removeIdFromDeletedArray(newState, mappingType, itemId)
     }
-  }
+  })
   return newState
 }
-methods.addItemsForAuthor = (newState, mappingType, authorId) =>
-  _addItemsForAuthor(newState, mappingType, authorId)
 
-function _removeItemsForAuthor(newState, mappingType, authorId) {
-  for (const itemId in newState[mappingType]) {
-    if (newState[mappingType].hasOwnProperty(itemId)) {
-      const item = newState[mappingType][itemId]
-      if (item.hasOwnProperty('authorId') && item.authorId === authorId) {
-        const action = {
-          type: '_REQUEST',
-          payload: {
-            model: newState[mappingType][itemId],
-          },
-        }
-        jsonReducer.methods.deleteModel(null, newState, action, mappingType)
+methods.removeItemsForAuthor = (newState, mappingType, authorId) => {
+  Object.keys(newState[mappingType]).forEach((itemId) => {
+    const item = newState[mappingType][itemId]
+    if (item.hasOwnProperty('authorId') && item.authorId === authorId) {
+      const action = {
+        type: '_REQUEST',
+        payload: {
+          model: newState[mappingType][itemId],
+        },
       }
+      jsonReducer.methods.deleteModel(null, newState, action, mappingType)
     }
-  }
+  })
   return newState
 }
-methods.removeItemsForAuthor = (newState, mappingType, authorId) =>
-  _removeItemsForAuthor(newState, mappingType, authorId)
 
-function _blockUser(newState, userId) {
+methods.blockUser = (newState, userId) => {
   // update blockedCount
   jsonReducer.methods.updateUserCount(newState, userId, 'blockedCount', 1)
   // delete the user
@@ -79,10 +67,8 @@ function _blockUser(newState, userId) {
   // delete all of their comments
   methods.removeItemsForAuthor(newState, MAPPING_TYPES.COMMENTS, userId)
 }
-methods.blockUser = (newState, userId) =>
-  _blockUser(newState, userId)
 
-function _unblockUser(newState, userId) {
+methods.unblockUser = (newState, userId) => {
   // update blockedCount
   jsonReducer.methods.updateUserCount(newState, userId, 'blockedCount', -1)
   // remove the user from the deleted user ids array
@@ -92,10 +78,8 @@ function _unblockUser(newState, userId) {
   // add back all of their comments
   methods.addItemsForAuthor(newState, MAPPING_TYPES.COMMENTS, userId)
 }
-methods.unblockUser = (newState, userId) =>
-  _unblockUser(newState, userId)
 
-function _updateRelationship(newState, action) {
+methods.updateRelationship = (newState, action) => {
   // on success just return the owner subject mapped back on users
   if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS) {
     return methods.relationshipUpdateSuccess(newState, action)
@@ -148,10 +132,8 @@ function _updateRelationship(newState, action) {
   )
   return newState
 }
-methods.updateRelationship = (newState, action) =>
-  _updateRelationship(newState, action)
 
-function _batchUpdateRelationship(newState, action) {
+methods.batchUpdateRelationship = (newState, action) => {
   const { priority, userIds } = action.payload
   for (const id of userIds) {
     jsonReducer.methods.mergeModel(
@@ -165,8 +147,6 @@ function _batchUpdateRelationship(newState, action) {
   }
   return newState
 }
-methods.batchUpdateRelationship = (newState, action) =>
-  _batchUpdateRelationship(newState, action)
 
 export { methods as default, jsonReducer }
 

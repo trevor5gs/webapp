@@ -3,16 +3,16 @@ import classNames from 'classnames'
 import ToggleControl from '../forms/ToggleControl'
 
 const Preference = ({ className, definition, id, isChecked, isDisabled, onToggleChange }) =>
-  <form className={ classNames(className, 'Preference') }>
+  <form className={classNames(className, 'Preference')}>
     <dl>
       <dt>{definition.term ? definition.term : ''}</dt>
       <dd dangerouslySetInnerHTML={{ __html: definition.desc ? definition.desc : '' }} />
     </dl>
     <ToggleControl
-      id={ id }
-      isChecked={ isChecked }
-      isDisabled={ isDisabled }
-      onChange={ onToggleChange }
+      id={id}
+      isChecked={isChecked}
+      isDisabled={isDisabled}
+      onChange={onToggleChange}
     />
   </form>
 

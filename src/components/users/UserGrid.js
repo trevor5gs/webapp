@@ -26,22 +26,22 @@ class UserGrid extends Component {
     const userPath = `/${user.username}`
     return (
       <div className="UserGrid" >
-        <CoverMini to={ userPath } coverImage={ user.coverImage } />
+        <CoverMini to={userPath} coverImage={user.coverImage} />
         <Avatar
-          priority={ relationshipPriority }
-          sources={ user.avatar }
-          to={ userPath }
-          userId={ `${user.id}` }
-          username={ user.username }
+          priority={relationshipPriority}
+          sources={user.avatar}
+          to={userPath}
+          userId={`${user.id}`}
+          username={user.username}
         />
         <RelationsGroup
-          user={ user }
-          relationshipPriority={ relationshipPriority }
+          user={user}
+          relationshipPriority={relationshipPriority}
           ref="RelationsGroup"
         />
-        <UserStats user={ user } />
-        <UserNames user={ user } />
-        <UserInfo user={ user } />
+        <UserStats user={user} />
+        <UserNames user={user} />
+        <UserInfo user={user} />
       </div>
     )
   }

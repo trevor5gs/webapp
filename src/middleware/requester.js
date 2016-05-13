@@ -7,7 +7,7 @@ import { refreshAuthenticationToken } from '../actions/authentication'
 
 let requesterIsPaused = false
 let requestQueue = []
-let runningFetches = {}
+const runningFetches = {}
 
 const defaultHeaders = {
   Accept: 'application/json',
@@ -43,7 +43,9 @@ function updateRunningFetches(response) {
   if (runningFetches[responseUrl]) {
     delete runningFetches[responseUrl]
   } else {
-    runningFetches = {}
+    Object.keys(runningFetches).forEach((key) => {
+      delete runningFetches[key]
+    })
   }
 }
 

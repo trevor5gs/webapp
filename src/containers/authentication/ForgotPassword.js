@@ -91,22 +91,22 @@ class ForgotPassword extends Component {
         className="AuthenticationForm"
         id="ForgotPasswordForm"
         noValidate="novalidate"
-        onSubmit={ this.onSubmit }
+        onSubmit={this.onSubmit}
         role="form"
       >
         <EmailControl
           classList="asBoxControl"
           label="Email"
-          onBlur={ this.onBlurControl }
-          onChange={ this.onChangeControl }
-          onFocus={ this.onFocusControl }
+          onBlur={this.onBlurControl}
+          onChange={this.onChangeControl}
+          onFocus={this.onFocusControl}
           tabIndex="1"
         />
-        { emailState.message ?
-            <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
-            <p className="HoppyStatusMessage"><span /></p>
+        {emailState.message ?
+          <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
+          <p className="HoppyStatusMessage"><span /></p>
         }
-        <FormButton disabled={ !isValid } tabIndex="2">Reset password</FormButton>
+        <FormButton disabled={!isValid} tabIndex="2">Reset password</FormButton>
       </form>
     )
   }
@@ -118,17 +118,17 @@ class ForgotPassword extends Component {
       <main className="Authentication View" role="main">
         <div className="AuthenticationFormDialog">
           <h1>
-            <Emoji name="hot_shit" title="It really does" size={ 32 } />
+            <Emoji name="hot_shit" title="It really does" size={32} />
             Shit happens.
           </h1>
-          { formStatus === STATUS.SUBMITTED ? this.renderSubmitted() : this.renderForm() }
+          {formStatus === STATUS.SUBMITTED ? this.renderSubmitted() : this.renderForm()}
         </div>
         <AppleStoreLink />
-        <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
+        <Credits onClick={this.onClickTrackCredits} user={featuredUser} />
         <Cover
-          coverDPI={ coverDPI }
-          coverImage={ featuredUser.coverImage }
-          coverOffset={ coverOffset }
+          coverDPI={coverDPI}
+          coverImage={featuredUser.coverImage}
+          coverOffset={coverOffset}
           modifiers="asFullScreen withOverlay"
         />
       </main>

@@ -111,19 +111,19 @@ class Communities extends Component {
         <OnboardingHeader
           title="What are you interested in?"
           message="Follow the Ello Communities that you find most inspiring."
-          isNextDisabled={ !following.length }
-          nextAction={ this.onClickNext }
-          skipAction={ this.onClickSkip }
+          isNextDisabled={!following.length}
+          nextAction={this.onClickNext}
+          skipAction={this.onClickSkip}
         />
-        <div className={ classNames({ isFollowingAll: this.isFollowingAll() }) }>
+        <div className={classNames({ isFollowingAll: this.isFollowingAll() })}>
           {
             userIds.length ?
-              <button className="PickerButton" ref="followAllButton" onClick={ this.followAll }>
-                <span>{ this.renderBigButtonText() }</span>
+              <button className="PickerButton" ref="followAllButton" onClick={this.followAll}>
+                <span>{this.renderBigButtonText()}</span>
               </button> :
               null
           }
-          <StreamComponent ref="streamComponent" action={ loadCommunities() } />
+          <StreamComponent ref="streamComponent" action={loadCommunities()} />
         </div>
       </main>
     )

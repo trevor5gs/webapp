@@ -4,14 +4,14 @@ import Avatar from '../assets/Avatar'
 import Hint from '../hints/Hint'
 
 const UserAvatar = ({ user }) =>
-  <Link className="UserAvatar" to={ `/${user.username}` }>
+  <Link className="UserAvatar" to={`/${user.username}`}>
     <Avatar
-      priority={ user.relationshipPriority }
-      sources={ user.avatar }
-      userId={ `${user.id}` }
-      username={ user.username }
+      priority={user.relationshipPriority}
+      sources={user.avatar}
+      userId={`${user.id}`}
+      username={user.username}
     />
-    <Hint>{ `@${user.username}` }</Hint>
+    <Hint>{`@${user.username}`}</Hint>
   </Link>
 
 UserAvatar.propTypes = {

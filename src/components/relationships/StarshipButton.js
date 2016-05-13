@@ -54,12 +54,12 @@ class StarshipButton extends Component {
     const { classList, priority } = this.props
     return (
       <button
-        className={ classNames('StarshipButton', classList) }
-        onClick={ this.updatePriority }
-        data-priority={ priority }
+        className={classNames('StarshipButton', classList)}
+        onClick={this.updatePriority}
+        data-priority={priority}
       >
         <StarIcon />
-        <span className="StarshipButtonLabel">{ priority === 'noise' ? 'Starred' : 'Star' }</span>
+        <span className="StarshipButtonLabel">{priority === 'noise' ? 'Starred' : 'Star'}</span>
       </button>
     )
   }

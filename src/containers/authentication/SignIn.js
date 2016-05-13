@@ -155,38 +155,38 @@ class SignIn extends Component {
             className="AuthenticationForm"
             id="NewSessionForm"
             noValidate="novalidate"
-            onSubmit={ this.onSubmit }
+            onSubmit={this.onSubmit}
             role="form"
           >
             <EmailControl
               classList="asBoxControl"
               label="Email"
-              onBlur={ this.onBlurControl }
-              onChange={ this.onChangeEmailControl }
-              onFocus={ this.onFocusControl }
-              renderStatus={ showEmailError ? this.renderStatus(emailState) : null }
+              onBlur={this.onBlurControl}
+              onChange={this.onChangeEmailControl}
+              onFocus={this.onFocusControl}
+              renderStatus={showEmailError ? this.renderStatus(emailState) : null}
               tabIndex="1"
             />
             <PasswordControl
               classList="asBoxControl"
               label="Password"
-              onBlur={ this.onBlurControl }
-              onChange={ this.onChangePasswordControl }
-              onFocus={ this.onFocusControl }
-              renderStatus={ showPasswordError ? this.renderStatus(passwordState) : null }
+              onBlur={this.onBlurControl}
+              onChange={this.onChangePasswordControl}
+              onFocus={this.onFocusControl}
+              renderStatus={showPasswordError ? this.renderStatus(passwordState) : null}
               tabIndex="2"
             />
             {failureMessage ? <p>{failureMessage}</p> : null}
-            <FormButton disabled={ !isValid } tabIndex="3">Log in</FormButton>
+            <FormButton disabled={!isValid} tabIndex="3">Log in</FormButton>
           </form>
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>
         <AppleStoreLink />
-        <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
+        <Credits onClick={this.onClickTrackCredits} user={featuredUser} />
         <Cover
-          coverDPI={ coverDPI }
-          coverImage={ featuredUser.coverImage }
-          coverOffset={ coverOffset }
+          coverDPI={coverDPI}
+          coverImage={featuredUser.coverImage}
+          coverOffset={coverOffset}
           modifiers="asFullScreen withOverlay"
         />
       </main>

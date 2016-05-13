@@ -36,7 +36,7 @@ class Uploader extends Component {
       <Dialog
         title="Invalid file type"
         body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
-        onClick={ this.props.closeAlert }
+        onClick={this.props.closeAlert}
       />
     )
   }
@@ -57,7 +57,7 @@ class Uploader extends Component {
       <Dialog
         title="Invalid file type"
         body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
-        onDismiss={ this.onDismissAlert }
+        onDismiss={this.onDismissAlert}
       />
     )
   }
@@ -86,22 +86,22 @@ class Uploader extends Component {
 
     return (
       <div
-        className={ klassNames }
-        onDrop={ this.onDrop }
-        onDragOver={ this.onDragOver }
-        onDragLeave={ this.onDragLeave }
+        className={klassNames}
+        onDrop={this.onDrop}
+        onDragOver={this.onDragOver}
+        onDragLeave={this.onDragLeave}
       >
         <button
           className="UploaderButton"
-          onClick={ this.onClickFileBrowser }
+          onClick={this.onClickFileBrowser}
         >
-          { title }
+          {title}
         </button>
-        { message ? <p>{ message }</p> : null }
-        { recommend ? <p>{ recommend }</p> : null }
+        {message ? <p>{message}</p> : null}
+        {recommend ? <p>{recommend}</p> : null}
         <input
           className="hidden"
-          onChange={ this.onFileBrowse }
+          onChange={this.onFileBrowse}
           ref="FileBrowser"
           type="file"
           accept="image/*"

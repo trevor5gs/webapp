@@ -44,7 +44,7 @@ class UserList extends Component {
   onClickShareProfile = () => {
     const { dispatch, user } = this.props
     const action = bindActionCreators(trackEvent, dispatch)
-    dispatch(openModal(<ShareDialog user={ user } trackEvent={ action } />))
+    dispatch(openModal(<ShareDialog user={user} trackEvent={action} />))
     dispatch(trackEvent('open-share-dialog-profile'))
   }
 
@@ -54,27 +54,27 @@ class UserList extends Component {
     const userPath = `/${user.username}`
     const isModifiable = uploader ? true : undefined
     return (
-      <div className={ classNames(classList, 'UserList') }>
-        { uploader }
+      <div className={classNames(classList, 'UserList')}>
+        {uploader}
         <Avatar
-          isModifiable={ isModifiable }
-          priority={ !isModifiable && relationshipPriority ? relationshipPriority : null }
+          isModifiable={isModifiable}
+          priority={!isModifiable && relationshipPriority ? relationshipPriority : null}
           size="large"
-          sources={ user.avatar }
-          to={ isModifiable ? null : userPath }
-          useGif={ useGif }
-          userId={ !isModifiable ? `${user.id}` : null }
-          username={ !isModifiable ? user.username : null }
+          sources={user.avatar}
+          to={isModifiable ? null : userPath}
+          useGif={useGif}
+          userId={!isModifiable ? `${user.id}` : null}
+          username={!isModifiable ? user.username : null}
         />
         <RelationsGroup
-          user={ user }
-          relationshipPriority={ relationshipPriority }
-          showBlockMuteButton={ showBlockMuteButton }
+          user={user}
+          relationshipPriority={relationshipPriority}
+          showBlockMuteButton={showBlockMuteButton}
         />
-        <UserNames user={ user } />
-        <UserStats user={ user } />
-        <UserInfo user={ user } />
-        <ShareProfileButton onClick={ this.onClickShareProfile } >
+        <UserNames user={user} />
+        <UserStats user={user} />
+        <UserInfo user={user} />
+        <ShareProfileButton onClick={this.onClickShareProfile} >
           Share Profile
         </ShareProfileButton>
       </div>

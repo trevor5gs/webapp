@@ -162,8 +162,8 @@ class FormControl extends Component {
     const { id, label } = this.props
     const labelClassNames = this.getLabelClassNames()
     return (
-      <label className={ labelClassNames } htmlFor={ id }>
-        { label }
+      <label className={labelClassNames} htmlFor={id}>
+        {label}
       </label>
     )
   }
@@ -172,12 +172,12 @@ class FormControl extends Component {
     return (
       <textarea
         { ...this.props }
-        className={ inputClassNames }
-        onFocus={ this.onFocusControl }
-        onBlur={ this.onBlurControl }
-        onChange={ this.onChangeControl }
+        className={inputClassNames}
+        onFocus={this.onFocusControl}
+        onBlur={this.onBlurControl}
+        onChange={this.onChangeControl}
         ref="input"
-        value={ text }
+        value={text}
       />
     )
   }
@@ -186,12 +186,12 @@ class FormControl extends Component {
     return (
       <input
         { ...this.props }
-        className={ inputClassNames }
-        onFocus={ this.onFocusControl }
-        onBlur={ this.onBlurControl }
-        onChange={ this.onChangeControl }
+        className={inputClassNames}
+        onFocus={this.onFocusControl}
+        onBlur={this.onBlurControl}
+        onChange={this.onChangeControl}
         ref="input"
-        value={ text }
+        value={text}
       />
     )
   }
@@ -203,18 +203,18 @@ class FormControl extends Component {
     const inputClassNames = this.getInputClassNames()
     const statusClassNames = this.getStatusClassNames()
     return (
-      <div className={ groupClassNames }>
-        { label && this.renderLabel() }
+      <div className={groupClassNames}>
+        {label && this.renderLabel()}
         {
           kind === 'textarea' ?
             this.renderTextArea(text, inputClassNames) :
             this.renderInput(text, inputClassNames)
         }
-        <span className={ statusClassNames }>
-          { this.getStatusIcon() }
+        <span className={statusClassNames}>
+          {this.getStatusIcon()}
         </span>
-        { renderStatus ? renderStatus() : null }
-        { renderFeedback ? renderFeedback() : null }
+        {renderStatus ? renderStatus() : null}
+        {renderFeedback ? renderFeedback() : null}
       </div>
     )
   }

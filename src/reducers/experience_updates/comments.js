@@ -5,7 +5,7 @@ import * as jsonReducer from '../../reducers/json'
 
 const methods = {}
 
-function _updateCommentsCount(newState, postId, delta) {
+methods.updateCommentsCount = (newState, postId, delta) => {
   const commentCount = newState[MAPPING_TYPES.POSTS][postId].commentsCount
   jsonReducer.methods.mergeModel(
     newState,
@@ -17,9 +17,8 @@ function _updateCommentsCount(newState, postId, delta) {
   )
   return newState
 }
-methods.updateCommentsCount = _updateCommentsCount
 
-function _addOrUpdateComment(newState, action) {
+methods.addOrUpdateComment = (newState, action) => {
   const { model, postId } = action.payload
   const post = newState[MAPPING_TYPES.POSTS][postId]
   let response = null
@@ -59,14 +58,12 @@ function _addOrUpdateComment(newState, action) {
       return newState
   }
 }
-methods.addOrUpdateComment = _addOrUpdateComment
 
-function _toggleEditing(newState, action) {
+methods.toggleEditing = (newState, action) => {
   const { model, isEditing } = action.payload
   newState[MAPPING_TYPES.COMMENTS][model.id].isEditing = isEditing
   return newState
 }
-methods.toggleEditing = _toggleEditing
 
 export default methods
 

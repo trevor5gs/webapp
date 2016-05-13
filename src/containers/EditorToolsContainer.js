@@ -138,21 +138,21 @@ class EditorToolsContainer extends Component {
     const { isTextToolsActive, textToolsStates, textToolsCoordinates } = this.props
     return (
       <div className="EditorTools">
-        { isCompleterActive && completions ?
+        {isCompleterActive && completions ?
           <Completer
-            completions={ completions }
-            deviceSize= { deviceSize }
-            onCancel={ this.onCancelAutoCompleter }
-            onCompletion={ this.onCompletion }
+            completions={completions}
+            deviceSize={deviceSize}
+            onCancel={this.onCancelAutoCompleter}
+            onCompletion={this.onCompletion}
           /> :
           null
         }
-        { isTextToolsActive ?
+        {isTextToolsActive ?
           <TextTools
-            activeTools={ textToolsStates }
-            isHidden={ !isTextToolsActive }
-            coordinates={ textToolsCoordinates }
-            key={ JSON.stringify(textToolsStates) }
+            activeTools={textToolsStates}
+            isHidden={!isTextToolsActive}
+            coordinates={textToolsCoordinates}
+            key={JSON.stringify(textToolsStates)}
           /> :
           null
         }

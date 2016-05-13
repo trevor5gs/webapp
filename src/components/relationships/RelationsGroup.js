@@ -54,11 +54,11 @@ class RelationsGroup extends Component {
     const { dispatch, relationshipPriority, user } = this.props
     dispatch(openModal(
       <BlockMuteDialog
-        onBlock={ this.onConfirmBlockUser }
-        onMute={ this.onConfirmMuteUser }
-        blockIsActive={ relationshipPriority === RELATIONSHIP_PRIORITY.BLOCK }
-        muteIsActive={ relationshipPriority === RELATIONSHIP_PRIORITY.MUTE }
-        username = { user.username }
+        onBlock={this.onConfirmBlockUser}
+        onMute={this.onConfirmMuteUser}
+        blockIsActive={relationshipPriority === RELATIONSHIP_PRIORITY.BLOCK}
+        muteIsActive={relationshipPriority === RELATIONSHIP_PRIORITY.MUTE}
+        username={user.username}
       />
     , 'asDangerZone'))
   }
@@ -126,9 +126,9 @@ class RelationsGroup extends Component {
     const { relationshipPriority, user } = this.props
     return (
       <BlockMuteButton
-        onClick={ this.onOpenBlockMutePrompt }
-        priority={ relationshipPriority }
-        userId={ user.id }
+        onClick={this.onOpenBlockMutePrompt}
+        priority={relationshipPriority}
+        userId={user.id}
       />
     )
   }
@@ -140,21 +140,21 @@ class RelationsGroup extends Component {
                      (this.onRelationshipUpdate)
 
     return (
-      <div className="RelationsGroup" data-priority={ relationshipPriority }>
-        { this.shouldRenderBlockMute() ? this.renderBlockMuteButton() : null }
+      <div className="RelationsGroup" data-priority={relationshipPriority}>
+        {this.shouldRenderBlockMute() ? this.renderBlockMuteButton() : null}
         <RelationshipButton
-          onClick={ isLoggedIn ? callback : this.onOpenSignupModal }
-          classList={ classList }
-          priority={ relationshipPriority }
+          onClick={isLoggedIn ? callback : this.onOpenSignupModal}
+          classList={classList}
+          priority={relationshipPriority}
           ref="RelationshipButton"
-          userId={ user.id }
+          userId={user.id}
         />
         <StarshipButton
-          onClick={ isLoggedIn ? callback : this.onOpenSignupModal }
-          classList={ classList }
-          priority={ relationshipPriority }
+          onClick={isLoggedIn ? callback : this.onOpenSignupModal}
+          classList={classList}
+          priority={relationshipPriority}
           ref="StarshipButton"
-          userId={ user.id }
+          userId={user.id}
         />
       </div>
     )

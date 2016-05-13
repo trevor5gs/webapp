@@ -13,8 +13,8 @@ const Dialog = ({ body, title, onClick }) =>
   <div className="Dialog">
     <h2>{title}</h2>
     <p>{body}</p>
-    { onClick ?
-      <button className="DialogClose" onClick={ onClick }><DismissIcon /></button> :
+    {onClick ?
+      <button className="DialogClose" onClick={onClick}><DismissIcon /></button> :
       null
     }
   </div>

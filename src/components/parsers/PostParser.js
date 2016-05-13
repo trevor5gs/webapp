@@ -21,10 +21,10 @@ function getPostDetailPath(author, post) {
 function postLoversDrawer(post) {
   return (
     <UserAvatars
-      endpoint={ postLovers(post.id) }
-      icon={ <HeartIcon /> }
-      key={ `userAvatarsLovers_${post.id}${post.lovesCount}` }
-      post={ post }
+      endpoint={postLovers(post.id)}
+      icon={<HeartIcon />}
+      key={`userAvatarsLovers_${post.id}${post.lovesCount}`}
+      post={post}
       resultType="love"
     />
   )
@@ -33,10 +33,10 @@ function postLoversDrawer(post) {
 function postRepostersDrawer(post) {
   return (
     <UserAvatars
-      endpoint={ postReposters(post.id) }
-      icon={ <RepostIcon /> }
-      key={ `userAvatarsReposters_${post.id}${post.repostsCount}` }
-      post={ post }
+      endpoint={postReposters(post.id)}
+      icon={<RepostIcon />}
+      key={`userAvatarsReposters_${post.id}${post.repostsCount}`}
+      post={post}
       resultType="repost"
     />
   )
@@ -45,15 +45,15 @@ function postRepostersDrawer(post) {
 function commentStream(post, author) {
   return (
     <CommentStream
-      key={ `commentStream_${post.id}${post.commentsCount}` }
-      post={ post }
-      author={ author }
+      key={`commentStream_${post.id}${post.commentsCount}`}
+      post={post}
+      author={author}
     />
   )
 }
 
 const PostHeaderTimeAgoLink = ({ to, createdAt }) =>
-  <Link className="PostHeaderTimeAgoLink" to={ to }>
+  <Link className="PostHeaderTimeAgoLink" to={to}>
     <span>{new Date(createdAt).timeAgoInWords()}</span>
   </Link>
 
@@ -67,20 +67,20 @@ function header(post, author) {
   if (!post || !author) { return null }
   const postDetailPath = getPostDetailPath(author, post)
   return (
-    <header className="PostHeader" key={ `PostHeader_${post.id}` }>
+    <header className="PostHeader" key={`PostHeader_${post.id}`}>
       <div className="PostHeaderAuthor">
-        <Link className="PostHeaderLink" to={ `/${author.username}` }>
+        <Link className="PostHeaderLink" to={`/${author.username}`}>
           <Avatar
-            priority={ author.relationshipPriority }
-            sources={ author.avatar }
-            userId={ `${author.id}` }
-            username={ author.username }
+            priority={author.relationshipPriority}
+            sources={author.avatar}
+            userId={`${author.id}`}
+            username={author.username}
           />
-          <span>{ `@${author.username}` }</span>
+          <span>{`@${author.username}`}</span>
         </Link>
       </div>
-      <RelationsGroup user={ author } classList="inHeader" />
-      <PostHeaderTimeAgoLink to={ postDetailPath } createdAt={ post.createdAt } />
+      <RelationsGroup user={author} classList="inHeader" />
+      <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.createdAt} />
     </header>
   )
 }
@@ -89,26 +89,26 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   if (!post || !repostedBy) { return null }
   const postDetailPath = getPostDetailPath(repostAuthor, post)
   return (
-    <header className="RepostHeader" key={ `RepostHeader_${post.id}` }>
+    <header className="RepostHeader" key={`RepostHeader_${post.id}`}>
       <div className="RepostHeaderAuthor">
-        <Link className="PostHeaderLink" to={ `/${repostAuthor.username}` }>
+        <Link className="PostHeaderLink" to={`/${repostAuthor.username}`}>
           <Avatar
-            priority={ repostAuthor.relationshipPriority }
-            sources={ repostAuthor.avatar }
-            userId={ `${repostAuthor.id}` }
-            username={ repostAuthor.username }
+            priority={repostAuthor.relationshipPriority}
+            sources={repostAuthor.avatar}
+            userId={`${repostAuthor.id}`}
+            username={repostAuthor.username}
           />
-          <span>{ `@${repostAuthor.username}` }</span>
+          <span>{`@${repostAuthor.username}`}</span>
         </Link>
       </div>
-      <RelationsGroup user={ repostAuthor } classList="inHeader" />
+      <RelationsGroup user={repostAuthor} classList="inHeader" />
       <div className="RepostHeaderReposter">
-        <Link className="PostHeaderLink" to={ `/${repostedBy.username}` }>
+        <Link className="PostHeaderLink" to={`/${repostedBy.username}`}>
           <RepostIcon />
-          { ` by @${repostedBy.username}` }
+          {` by @${repostedBy.username}`}
         </Link>
       </div>
-      <PostHeaderTimeAgoLink to={ postDetailPath } createdAt={ post.createdAt } />
+      <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.createdAt} />
     </header>
   )
 }
@@ -117,11 +117,11 @@ function footer(post, author, currentUser, isGridLayout, isRepostAnimating) {
   if (!author) { return null }
   return (
     <PostTools
-      author={ author }
-      post={ post }
-      isGridLayout={ isGridLayout }
-      isRepostAnimating={ isRepostAnimating }
-      key={ `PostTools_${post.id}` }
+      author={author}
+      post={post}
+      isGridLayout={isGridLayout}
+      isRepostAnimating={isRepostAnimating}
+      key={`PostTools_${post.id}`}
     />
   )
 }
@@ -134,7 +134,7 @@ export function parsePost(post, author, currentUser,
   const postDetailPath = getPostDetailPath(author, post)
 
   if (contentWarning) {
-    cells.push(<ContentWarningButton key={ `contentWarning_${post.id}` } post={ post } />)
+    cells.push(<ContentWarningButton key={`contentWarning_${post.id}`} post={post} />)
   }
 
   if (post.repostContent && post.repostContent.length) {
@@ -222,13 +222,13 @@ class PostParser extends Component {
     const isRepostAnimating = isReposting && !postBody
     return (
       <div className="Post">
-        { postHeader }
-        { showEditor ?
-          <Editor post={ post } /> :
+        {postHeader}
+        {showEditor ?
+          <Editor post={post} /> :
           parsePost(post, author, currentUser, isGridLayout, isRepostAnimating, contentWarning)}
-        { reallyShowLovers ? postLoversDrawer(post) : null }
-        { reallyShowReposters ? postRepostersDrawer(post) : null }
-        { reallyShowComments ? <Editor post={ post } isComment /> : null }
+        {reallyShowLovers ? postLoversDrawer(post) : null}
+        {reallyShowReposters ? postRepostersDrawer(post) : null}
+        {reallyShowComments ? <Editor post={post} isComment /> : null}
         {
           reallyShowComments && commentsCount > 0 ?
             commentStream(post, author, currentUser) :

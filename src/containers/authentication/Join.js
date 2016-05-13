@@ -263,61 +263,61 @@ class Join extends Component {
             className="AuthenticationForm"
             id="RegistrationForm"
             noValidate="novalidate"
-            onSubmit={ this.onSubmit }
+            onSubmit={this.onSubmit}
             role="form"
           >
             <InvitationCodeControl
-              classList={ boxControlClassNames }
+              classList={boxControlClassNames}
               label="Invitation Code"
-              onChange={ this.onChangeInvitationCodeControl }
-              status={ invitationCodeState.status }
-              renderStatus={ showInvitationError ? this.renderStatus(invitationCodeState) : null }
+              onChange={this.onChangeInvitationCodeControl}
+              status={invitationCodeState.status}
+              renderStatus={showInvitationError ? this.renderStatus(invitationCodeState) : null}
               tabIndex="5"
-              text={ this.invitationCodeValue }
+              text={this.invitationCodeValue}
             />
             <EmailControl
-              autoFocus={ !email }
-              classList={ boxControlClassNames }
-              key={ email }
+              autoFocus={!email}
+              classList={boxControlClassNames}
+              key={email}
               label="Email"
-              onChange={ this.onChangeEmailControl }
-              status={ emailState.status }
-              renderStatus={ showEmailError ? this.renderStatus(emailState) : null }
+              onChange={this.onChangeEmailControl}
+              status={emailState.status}
+              renderStatus={showEmailError ? this.renderStatus(emailState) : null}
               tabIndex="1"
-              text={ email }
+              text={email}
             />
             <UsernameControl
-              autoFocus={ email && email.length }
-              classList={ boxControlClassNames }
+              autoFocus={email && email.length}
+              classList={boxControlClassNames}
               label="Username"
-              onChange={ this.onChangeUsernameControl }
+              onChange={this.onChangeUsernameControl}
               placeholder="Create your username"
-              status={ usernameState.status }
-              renderStatus={ showUsernameError ? this.renderStatus(usernameState) : null }
-              suggestions={ usernameState.suggestions }
+              status={usernameState.status}
+              renderStatus={showUsernameError ? this.renderStatus(usernameState) : null}
+              suggestions={usernameState.suggestions}
               tabIndex="2"
             />
             <PasswordControl
-              classList={ boxControlClassNames }
+              classList={boxControlClassNames}
               label="Password"
-              onChange={ this.onChangePasswordControl }
+              onChange={this.onChangePasswordControl}
               placeholder="Set your password"
-              status={ passwordState.status }
-              renderStatus={ showPasswordError ? this.renderStatus(passwordState) : null }
+              status={passwordState.status}
+              renderStatus={showPasswordError ? this.renderStatus(passwordState) : null}
               tabIndex="3"
             />
-            <FormButton tabIndex="4" disabled={ !isValid }>Create Account</FormButton>
+            <FormButton tabIndex="4" disabled={!isValid}>Create Account</FormButton>
           </form>
           <p className="AuthenticationTermsCopy">
-            By clicking Create Account you are agreeing to our <a href={ `${ENV.AUTH_DOMAIN}/wtf/post/policies` }>Terms</a>.
+            By clicking Create Account you are agreeing to our <a href={`${ENV.AUTH_DOMAIN}/wtf/post/policies`}>Terms</a>.
           </p>
         </div>
         <AppleStoreLink />
-        <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
+        <Credits onClick={this.onClickTrackCredits} user={featuredUser} />
         <Cover
-          coverDPI={ coverDPI }
-          coverImage={ featuredUser.coverImage }
-          coverOffset={ coverOffset }
+          coverDPI={coverDPI}
+          coverImage={featuredUser.coverImage}
+          coverOffset={coverOffset}
           modifiers="asFullScreen withOverlay"
         />
       </main>

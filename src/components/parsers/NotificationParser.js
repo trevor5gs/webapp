@@ -32,7 +32,7 @@ function getActivityPath(user, post) {
 function userTextLink(user) {
   if (!user) { return null }
   return (
-    <Link to={ getActivityPath(user) }>
+    <Link to={getActivityPath(user)}>
       {`@${user.username}`}
     </Link>
   )
@@ -43,8 +43,8 @@ function postTextLink(post, text = 'post') {
   const author = models[MAPPING_TYPES.USERS][post.authorId]
   if (!author) { return text }
   return (
-    <Link to={ getActivityPath(author, post) }>
-      { text }
+    <Link to={getActivityPath(author, post)}>
+      {text}
     </Link>
   )
 }
@@ -71,17 +71,17 @@ function commentNotification(comment, createdAt) {
   const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath)
   return (
     <Notification
-      activityPath={ activityPath }
+      activityPath={activityPath}
       className="CommentNotification"
-      createdAt={ createdAt }
-      notifier={ author }
-      summary={ summary }
+      createdAt={createdAt}
+      notifier={author}
+      summary={summary}
     >
       <p>
-        { userTextLink(author) }
-        { ' commented on your ' }
-        { postTextLink(parentPost) }
-        { '.' }
+        {userTextLink(author)}
+        {' commented on your '}
+        {postTextLink(parentPost)}
+        {'.'}
       </p>
     </Notification>
   )
@@ -96,17 +96,17 @@ function commentMentionNotification(comment, createdAt) {
   const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath)
   return (
     <Notification
-      activityPath={ activityPath }
+      activityPath={activityPath}
       className="CommentMentionNotification"
-      createdAt={ createdAt }
-      notifier={ author }
-      summary={ summary }
+      createdAt={createdAt}
+      notifier={author}
+      summary={summary}
     >
       <p>
-        { userTextLink(author) }
-        { ' mentioned you in a ' }
-        { postTextLink(parentPost, 'comment') }
-        { '.' }
+        {userTextLink(author)}
+        {' mentioned you in a '}
+        {postTextLink(parentPost, 'comment')}
+        {'.'}
       </p>
     </Notification>
   )
@@ -122,21 +122,21 @@ function commentOnOriginalPostNotification(comment, createdAt) {
   const summary = parseSummaryForCommentNotification(repostedSource, comment, activityPath)
   return (
     <Notification
-      activityPath={ activityPath }
+      activityPath={activityPath}
       className="CommentOnPostNotification"
-      createdAt={ createdAt }
-      notifier={ author }
-      summary={ summary }
+      createdAt={createdAt}
+      notifier={author}
+      summary={summary}
     >
       <p>
-        { userTextLink(author) }
-        { ' commented on ' }
-        { userTextLink(repostAuthor) }
+        {userTextLink(author)}
+        {' commented on '}
+        {userTextLink(repostAuthor)}
         {'\'s '}
-        { postTextLink(repost, 'repost') }
+        {postTextLink(repost, 'repost')}
         {' of your '}
-        { postTextLink(repostedSource) }
-        { '.' }
+        {postTextLink(repostedSource)}
+        {'.'}
       </p>
     </Notification>
   )
@@ -150,17 +150,17 @@ function commentOnRepostNotification(comment, createdAt) {
   const summary = parseSummaryForCommentNotification(repost, comment, activityPath)
   return (
     <Notification
-      activityPath={ activityPath }
+      activityPath={activityPath}
       className="CommentOnRepostNotification"
-      createdAt={ createdAt }
-      notifier={ author }
-      summary={ summary }
+      createdAt={createdAt}
+      notifier={author}
+      summary={summary}
     >
       <p>
-        { userTextLink(author) }
-        { ' commented on your ' }
-        { postTextLink(repost, 'repost') }
-        { '.' }
+        {userTextLink(author)}
+        {' commented on your '}
+        {postTextLink(repost, 'repost')}
+        {'.'}
       </p>
     </Notification>
   )
@@ -170,14 +170,14 @@ function commentOnRepostNotification(comment, createdAt) {
 function invitationAcceptedNotification(user, createdAt) {
   return (
     <Notification
-      activityPath={ getActivityPath(user) }
+      activityPath={getActivityPath(user)}
       className="InvitationAcceptedNotification"
-      createdAt={ createdAt }
-      notifier={ user }
+      createdAt={createdAt}
+      notifier={user}
     >
       <p>
-        { userTextLink(user) }
-        { ' accepted your invitation.' }
+        {userTextLink(user)}
+        {' accepted your invitation.'}
       </p>
     </Notification>
   )
@@ -192,17 +192,17 @@ function loveNotification(love, createdAt) {
   const summary = parseSummary(post, activityPath)
   return (
     <Notification
-      activityPath={ activityPath }
+      activityPath={activityPath}
       className="LoveNotification"
-      createdAt={ createdAt }
-      notifier={ user }
-      summary={ summary }
+      createdAt={createdAt}
+      notifier={user}
+      summary={summary}
     >
       <p>
-        { userTextLink(user) }
-        { ' loved your ' }
-        { postTextLink(post) }
-        { '.' }
+        {userTextLink(user)}
+        {' loved your '}
+        {postTextLink(post)}
+        {'.'}
       </p>
     </Notification>
   )
@@ -216,17 +216,17 @@ function loveOnRepostNotification(love, createdAt) {
   const summary = parseSummary(repost, activityPath)
   return (
     <Notification
-      activityPath={ activityPath }
+      activityPath={activityPath}
       className="LoveOnRepostNotification"
-      createdAt={ createdAt }
-      notifier={ user }
-      summary={ summary }
+      createdAt={createdAt}
+      notifier={user}
+      summary={summary}
     >
       <p>
-        { userTextLink(user) }
-        { ' loved your ' }
-        { postTextLink(repost, 'repost') }
-        { '.' }
+        {userTextLink(user)}
+        {' loved your '}
+        {postTextLink(repost, 'repost')}
+        {'.'}
       </p>
     </Notification>
   )
@@ -242,21 +242,21 @@ function loveOnOriginalPostNotification(love, createdAt) {
   const summary = parseSummary(repost, activityPath)
   return (
     <Notification
-      activityPath={ activityPath }
+      activityPath={activityPath}
       className="LoveOnOriginalPostNotification"
-      createdAt={ createdAt }
-      notifier={ user }
-      summary={ summary }
+      createdAt={createdAt}
+      notifier={user}
+      summary={summary}
     >
       <p>
-        { userTextLink(user) }
-        { ' loved ' }
-        { userTextLink(repostAuthor) }
-        { '\'s ' }
-        { postTextLink(repost, 'repost') }
-        { ' of your ' }
-        { postTextLink(repostedSource) }
-        { '.' }
+        {userTextLink(user)}
+        {' loved '}
+        {userTextLink(repostAuthor)}
+        {'\'s '}
+        {postTextLink(repost, 'repost')}
+        {' of your '}
+        {postTextLink(repostedSource)}
+        {'.'}
       </p>
     </Notification>
   )
@@ -270,17 +270,17 @@ function postMentionNotification(post, createdAt) {
   const summary = parseSummary(post, activityPath)
   return (
     <Notification
-      activityPath={ activityPath }
+      activityPath={activityPath}
       className="PostMentionNotification"
-      createdAt={ createdAt }
-      notifier={ author }
-      summary={ summary }
+      createdAt={createdAt}
+      notifier={author}
+      summary={summary}
     >
       <p>
-        { userTextLink(author) }
-        { ' mentioned you in a ' }
-        { postTextLink(post) }
-        { '.' }
+        {userTextLink(author)}
+        {' mentioned you in a '}
+        {postTextLink(post)}
+        {'.'}
       </p>
     </Notification>
   )
@@ -290,14 +290,14 @@ function postMentionNotification(post, createdAt) {
 function newFollowerPost(user, createdAt) {
   return (
     <Notification
-      activityPath={ getActivityPath(user) }
+      activityPath={getActivityPath(user)}
       className="NewFollowerPostNotification"
-      createdAt={ createdAt }
-      notifier={ user }
+      createdAt={createdAt}
+      notifier={user}
     >
       <p>
-        { userTextLink(user) }
-        { ' started following you.' }
+        {userTextLink(user)}
+        {' started following you.'}
       </p>
     </Notification>
   )
@@ -306,15 +306,15 @@ function newFollowerPost(user, createdAt) {
 function newFollowedUserPost(user, createdAt) {
   return (
     <Notification
-      activityPath={ getActivityPath(user) }
+      activityPath={getActivityPath(user)}
       className="NewFollowedUserPostNotification"
-      createdAt={ createdAt }
-      notifier={ user }
+      createdAt={createdAt}
+      notifier={user}
     >
       <p>
-        { 'You started following ' }
-        { userTextLink(user) }
-        { '.' }
+        {'You started following '}
+        {userTextLink(user)}
+        {'.'}
       </p>
     </Notification>
   )
@@ -328,17 +328,17 @@ function repostNotification(post, createdAt) {
   const summary = parseSummary(post, activityPath)
   return (
     <Notification
-      activityPath={ activityPath }
+      activityPath={activityPath}
       className="RepostNotification"
-      createdAt={ createdAt }
-      notifier={ author }
-      summary={ summary }
+      createdAt={createdAt}
+      notifier={author}
+      summary={summary}
     >
       <p>
-        { userTextLink(author) }
-        { ' reposted your '}
-        { postTextLink(post) }
-        { '.' }
+        {userTextLink(author)}
+        {' reposted your '}
+        {postTextLink(post)}
+        {'.'}
       </p>
     </Notification>
   )

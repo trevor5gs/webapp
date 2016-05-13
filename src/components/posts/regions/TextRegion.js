@@ -64,9 +64,9 @@ class TextRegion extends Component {
     return (
       <div className="TextRegion">
         <div
-          className={ classNames('RegionContent', { asHotRegion: isHotRegion }) }
+          className={classNames('RegionContent', { asHotRegion: isHotRegion })}
           dangerouslySetInnerHTML={{ __html: content }}
-          onClick={ this.onClickRegion }
+          onClick={this.onClickRegion}
         />
       </div>
     )

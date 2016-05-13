@@ -50,12 +50,12 @@ class BioControl extends Component {
     return (
       <FormControl
         { ...this.props }
-        className={ classNames({ hasExceeded }) }
+        className={classNames({ hasExceeded })}
         autoCapitalize="off"
         autoCorrect="off"
         kind="textarea"
-        label={ label }
-        onChange={ this.onChangeControl }
+        label={label}
+        onChange={this.onChangeControl}
         type="text"
       />
     )

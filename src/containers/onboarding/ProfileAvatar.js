@@ -39,29 +39,29 @@ class ProfileAvatar extends Component {
         <OnboardingHeader
           message="Choose an avatar."
           title="Customize your profile."
-          nextAction={ this.onClickNext }
-          skipAction={ this.onClickSkip }
+          nextAction={this.onClickNext}
+          skipAction={this.onClickSkip}
         />
 
         <div className="AvatarPickerBody" >
           <Uploader
-            closeAlert={ bindActionCreators(closeAlert, dispatch) }
+            closeAlert={bindActionCreators(closeAlert, dispatch)}
             message="Or drag & drop it"
-            openAlert={ bindActionCreators(openAlert, dispatch) }
+            openAlert={bindActionCreators(openAlert, dispatch)}
             recommend="Recommended image size: 360 x 360"
-            saveAction={ bindActionCreators(saveAvatar, dispatch) }
+            saveAction={bindActionCreators(saveAvatar, dispatch)}
             title="Pick an Avatar"
           />
           <Avatar
             isModifiable
             size="large"
-            sources={ profile.avatar }
+            sources={profile.avatar}
           />
         </div>
         <Cover
-          coverDPI={ coverDPI }
-          coverImage={ profile.coverImage }
-          coverOffset={ coverOffset }
+          coverDPI={coverDPI}
+          coverImage={profile.coverImage}
+          coverOffset={coverOffset}
         />
       </main>
     )

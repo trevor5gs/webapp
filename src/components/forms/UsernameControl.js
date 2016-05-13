@@ -27,15 +27,15 @@ class UsernameControl extends Component {
       return (
         <ul className="FormControlSuggestionList hasSuggestions">
           <p>Here are some available usernames &mdash;</p>
-          { suggestions.map((suggestion, i) =>
+          {suggestions.map((suggestion, i) =>
             <li>
               <button
                 className="FormControlSuggestionButton"
-                title={ suggestion }
-                onClick={ this.onClickUsernameSuggestion }
-                key={ `suggestion_${i}` }
+                title={suggestion}
+                onClick={this.onClickUsernameSuggestion}
+                key={`suggestion_${i}`}
               >
-                { suggestion }
+                {suggestion}
               </button>
             </li>
             )}
@@ -57,7 +57,7 @@ class UsernameControl extends Component {
         autoCorrect="off"
         ref="FormControl"
         maxLength="50"
-        renderFeedback={ this.renderSuggestions }
+        renderFeedback={this.renderSuggestions}
         type="text"
       />
     )

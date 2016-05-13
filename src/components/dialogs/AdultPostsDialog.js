@@ -10,10 +10,10 @@ const AdultPostsDialog = ({ user, onConfirm }) =>
       view your posts.
     </p>
     <div className="AdultPostsFakeToggle">
-      <Avatar sources={ user.avatar } />
+      <Avatar sources={user.avatar} />
       <p>NSFW. <span className="AdultPostsFakeToggleLink">Click to view.</span></p>
     </div>
-    <button className="AdultPostsDialogButton" onClick={ onConfirm }>Okay</button>
+    <button className="AdultPostsDialogButton" onClick={onConfirm}>Okay</button>
   </div>
 
 AdultPostsDialog.propTypes = {

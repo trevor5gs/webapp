@@ -1,3 +1,5 @@
+import Notifications from '../../containers/notifications/Notifications'
+
 const CATEGORIES = [
   'all',
   'comments',
@@ -10,7 +12,7 @@ const CATEGORIES = [
 export default {
   path: 'notifications(/:category)',
   getComponents(location, cb) {
-    cb(null, require('../../containers/notifications/Notifications').default)
+    cb(null, Notifications)
   },
   onEnter(nextState, replaceState) {
     const category = nextState.params.category

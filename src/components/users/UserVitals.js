@@ -6,9 +6,9 @@ import { numberToHuman } from '../../vendor/number_to_human'
 export const UserNames = ({ user }) =>
   <div className="UserNames">
     <h2 className="UserUsername">
-      <Link to={ `/${user.username}` } >@{user.username}</Link>
+      <Link to={`/${user.username}`} >@{user.username}</Link>
     </h2>
-    <h3 className="UserName">{ user.name }</h3>
+    <h3 className="UserName">{user.name}</h3>
   </div>
 
 UserNames.propTypes = {
@@ -21,10 +21,10 @@ UserNames.propTypes = {
 const UserStatsLink = ({ asDisabled = false, children, to }) =>
   asDisabled ?
     <span activeClassName="active" className="UserStatsLink asDisabled">
-      { children }
+      {children}
     </span> :
-    <Link activeClassName="active" className="UserStatsLink" to={ to }>
-      { children }
+    <Link activeClassName="active" className="UserStatsLink" to={to}>
+      {children}
     </Link>
 
 UserStatsLink.propTypes = {
@@ -36,21 +36,21 @@ UserStatsLink.propTypes = {
 export const UserStats = ({ user }) =>
   <div className="UserStats">
     <dl>
-      <UserStatsLink to={ `/${user.username}` }>
-        <dt>{ numberToHuman(user.postsCount) }</dt>
+      <UserStatsLink to={`/${user.username}`}>
+        <dt>{numberToHuman(user.postsCount)}</dt>
         <dd>Posts</dd>
       </UserStatsLink>
     </dl>
     <dl>
-      <UserStatsLink asDisabled={ !user.followingCount } to={ `/${user.username}/following` }>
-        <dt>{ numberToHuman(user.followingCount) }</dt>
+      <UserStatsLink asDisabled={!user.followingCount} to={`/${user.username}/following`}>
+        <dt>{numberToHuman(user.followingCount)}</dt>
         <dd>Following</dd>
       </UserStatsLink>
     </dl>
     <dl>
       <UserStatsLink
-        asDisabled={ typeof user.followersCount === 'string' || !user.followersCount }
-        to={ `/${user.username}/followers` }
+        asDisabled={typeof user.followersCount === 'string' || !user.followersCount}
+        to={`/${user.username}/followers`}
       >
         <dt>
           {
@@ -63,8 +63,8 @@ export const UserStats = ({ user }) =>
       </UserStatsLink>
     </dl>
     <dl>
-      <UserStatsLink asDisabled={ !user.lovesCount } to={ `/${user.username}/loves` } >
-        <dt>{ numberToHuman(user.lovesCount) }</dt>
+      <UserStatsLink asDisabled={!user.lovesCount} to={`/${user.username}/loves`} >
+        <dt>{numberToHuman(user.lovesCount)}</dt>
         <dd>Loves</dd>
       </UserStatsLink>
     </dl>
@@ -88,14 +88,14 @@ export const UserInfo = ({ user }) => {
   let externalLinks = []
   if (user.externalLinksList) {
     externalLinks = user.externalLinksList.map((link, i) =>
-      <a href={ link.url } target="_blank" key={ i } >{ link.text }</a>
+      <a href={link.url} target="_blank" key={i} >{link.text}</a>
     )
   }
   return (
     <div className="UserInfo">
       <div className="UserShortBio" dangerouslySetInnerHTML={{ __html: user.formattedShortBio }} />
       <p className="UserExternalLinks">
-        { externalLinks }
+        {externalLinks}
       </p>
     </div>
   )

@@ -1,3 +1,5 @@
+import Discover from '../../containers/discover/Discover'
+
 const TYPES = [
   // 'communities',
   // 'featured-users',
@@ -6,7 +8,7 @@ const TYPES = [
 ]
 
 const getComponents = (location, cb) => {
-  cb(null, require('../../containers/discover/Discover').default)
+  cb(null, Discover)
 }
 
 const indexRoute = {

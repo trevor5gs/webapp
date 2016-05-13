@@ -10,20 +10,20 @@ export function updateQueryParams(params) {
     }
   }
   // set/delete params
-  for (const param in params) {
+  Object.keys(params).forEach((param) => {
     if (params[param] !== null) {
       queryObj[param] = encodeURIComponent(params[param])
     } else {
       delete queryObj[param]
     }
-  }
+  })
   // create query array
   const queryArr = []
-  for (const key in queryObj) {
+  Object.keys(queryObj).forEach((key) => {
     if (queryObj[key] !== null) {
       queryArr.push(`${key}=${queryObj[key]}`)
     }
-  }
+  })
   // re-assemble the query string
   let query = ''
   if (queryArr.length) {

@@ -12,14 +12,14 @@ class RelationshipImageButton extends RelationshipButton {
     return (
       <button
         className="RelationshipImageButton"
-        style={ style }
-        onClick={ this.updatePriority }
-        data-priority={ priority }
+        style={style}
+        onClick={this.updatePriority}
+        data-priority={priority}
       >
-        <span className="RelationshipImageButtonUsername">{ username }</span>
+        <span className="RelationshipImageButtonUsername">{username}</span>
         <span className="RelationshipImageButtonLabels">
-          { icon }
-          <span>{ label }</span>
+          {icon}
+          <span>{label}</span>
         </span>
       </button>
     )
@@ -32,12 +32,12 @@ class RelationshipImageButton extends RelationshipButton {
     return (
       <button
         className="RelationshipImageButton"
-        style={ style }
-        data-priority={ priority }
+        style={style}
+        data-priority={priority}
       >
-        <span className="RelationshipImageButtonUsername">{ username }</span>
+        <span className="RelationshipImageButtonUsername">{username}</span>
         <span className="RelationshipImageButtonLabels">
-          <span>{ label }</span>
+          <span>{label}</span>
         </span>
       </button>
     )
@@ -52,10 +52,10 @@ class RelationshipImageButton extends RelationshipButton {
       <Link
         className="RelationshipImageButton"
         to="/settings"
-        style={ style }
-        data-priority={ priority }
+        style={style}
+        data-priority={priority}
       >
-        <span className="RelationshipImageButtonUsername">{ username }</span>
+        <span className="RelationshipImageButtonUsername">{username}</span>
         <span className="RelationshipImageButtonLabels">
           <MiniPlusIcon />
           <span>Edit Profile</span>

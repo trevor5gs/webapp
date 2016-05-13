@@ -43,17 +43,17 @@ class ToggleControl extends Component {
     const { checked } = this.state
     return (
       <label
-        className={ classNames('ToggleControl', className, { isChecked: checked })}
-        disabled={ isDisabled }
-        htmlFor={ id }
+        className={classNames('ToggleControl', className, { isChecked: checked })}
+        disabled={isDisabled}
+        htmlFor={id}
       >
         <input
-          id={ id }
+          id={id}
           type="checkbox"
-          checked={ checked }
-          onChange={ this.onChangeControl }
+          checked={checked}
+          onChange={this.onChangeControl}
         />
-        <span>{ checked ? 'Yes' : 'No' }</span>
+        <span>{checked ? 'Yes' : 'No'}</span>
       </label>
     )
   }

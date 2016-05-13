@@ -27,15 +27,15 @@ export const NavbarLink = ({
   )
   return (
     <Link
-      className={ klassNames }
-      onClick={ onClick }
-      onDragLeave={ onDragLeave }
-      onDragOver={ onDragOver }
-      onDrop={ onDrop }
-      to={ to }
+      className={klassNames}
+      onClick={onClick}
+      onDragLeave={onDragLeave}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+      to={to}
     >
-      { icon || null }
-      <span className="NavbarLinkLabel">{ label }</span>
+      {icon || null}
+      <span className="NavbarLinkLabel">{label}</span>
     </Link>
   )
 }

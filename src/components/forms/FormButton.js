@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 
 const FormButton = ({ children, ...rest }) =>
   <button className="FormButton" {...rest}>
-    { children }
+    {children}
   </button>
 
 FormButton.propTypes = {

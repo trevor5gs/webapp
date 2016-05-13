@@ -32,7 +32,7 @@ class Starred extends Component {
 
   renderZeroStream() {
     return (
-      <ZeroStream onDismiss={ this.onDismissZeroStream }>
+      <ZeroStream onDismiss={this.onDismissZeroStream}>
        Star creators and communities to curate your second stream.
       </ZeroStream>
     )
@@ -42,7 +42,7 @@ class Starred extends Component {
     const { isBeaconActive } = this.state
     return (
       <main className="Starred View" role="main">
-        { isBeaconActive ? this.renderZeroStream() : null }
+        {isBeaconActive ? this.renderZeroStream() : null}
         <StreamComponent
           action={loadNoise()}
           scrollSessionKey="/starred"

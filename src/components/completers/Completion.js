@@ -29,11 +29,11 @@ export default class Completion extends Component {
     const { asset, label, className } = this.props
     return (
       <button
-        className={ classNames('Completion', className) }
-        onClick={ this.onClickCompletion }
+        className={classNames('Completion', className)}
+        onClick={this.onClickCompletion}
       >
-        { asset }
-        <span className="CompletionLabel">{ label }</span>
+        {asset}
+        <span className="CompletionLabel">{label}</span>
       </button>
     )
   }

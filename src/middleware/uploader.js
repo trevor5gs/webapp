@@ -117,7 +117,7 @@ export const uploader = store => next => action => {
             <Dialog
               title="Looks like you uploaded a .gif."
               body="If it’s animated people will only see the animation on your profile page."
-              onClick={ bindActionCreators(closeAlert, store.dispatch) }
+              onClick={bindActionCreators(closeAlert, store.dispatch)}
             />
           ))
         }
@@ -127,7 +127,7 @@ export const uploader = store => next => action => {
         <Dialog
           title="Invalid file type"
           body="We support .jpg, .gif, .png, .tif and .bmp files."
-          onClick={ bindActionCreators(closeAlert, store.dispatch) }
+          onClick={bindActionCreators(closeAlert, store.dispatch)}
         />
       ))
       return reject()

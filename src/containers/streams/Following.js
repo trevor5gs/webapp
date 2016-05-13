@@ -32,7 +32,7 @@ class Following extends Component {
 
   renderZeroStream() {
     return (
-      <ZeroStream onDismiss={ this.onDismissZeroStream }>
+      <ZeroStream onDismiss={this.onDismissZeroStream}>
         Follow the creators and communities that inspire you.
       </ZeroStream>
     )
@@ -42,7 +42,7 @@ class Following extends Component {
     const { isBeaconActive } = this.state
     return (
       <main className="Following View" role="main">
-        { isBeaconActive ? this.renderZeroStream() : null }
+        {isBeaconActive ? this.renderZeroStream() : null}
         <StreamComponent
           action={loadFriends()}
           scrollSessionKey="/following"

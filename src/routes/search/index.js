@@ -1,8 +1,10 @@
+import Search from '../../containers/search/Search'
+
 export default [
   {
     path: 'search',
     getComponent(location, cb) {
-      cb(null, require('../../containers/search/Search').default)
+      cb(null, Search)
     },
   },
   {

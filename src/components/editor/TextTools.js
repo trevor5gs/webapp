@@ -135,41 +135,41 @@ export default class TextTools extends Component {
     const style = coordinates ? { left: coordinates.left, top: coordinates.top - 40 } : null
     return (
       <div
-        style={ style }
-        className={ classNames('TextTools', { asShowLinkForm, isHidden }) }
+        style={style}
+        className={classNames('TextTools', { asShowLinkForm, isHidden })}
       >
         <button
-          className={ classNames('TextToolButton forBold', { isActive: isBoldActive }) }
-          onClick={ this.handleBoldToggle }
+          className={classNames('TextToolButton forBold', { isActive: isBoldActive })}
+          onClick={this.handleBoldToggle}
         >
           <strong>B</strong>
         </button>
         <button
-          className={ classNames('TextToolButton forItalic', { isActive: isItalicActive }) }
-          onClick={ this.handleItalicToggle }
+          className={classNames('TextToolButton forItalic', { isActive: isItalicActive })}
+          onClick={this.handleItalicToggle}
         >
           <em>I</em>
         </button>
         <button
-          className={ classNames('TextToolButton forLink', { isActive: isLinkActive }) }
-          onClick={ this.handleLinkToggle }
+          className={classNames('TextToolButton forLink', { isActive: isLinkActive })}
+          onClick={this.handleLinkToggle}
         >
           <LinkIcon />
         </button>
         <form
           className="TextToolForm"
           noValidate="novalidate"
-          onSubmit={ this.handleSubmit }
+          onSubmit={this.handleSubmit}
         >
           <input
             className="TextToolLinkInput"
-            onFocus={ this.handleFocus }
-            onBlur={ this.handleBlur }
-            onChange={ this.handleChange }
+            onFocus={this.handleFocus}
+            onBlur={this.handleBlur}
+            onChange={this.handleChange}
             placeholder="Add Link..."
             tabIndex="0"
             type="url"
-            value={ text }
+            value={text}
           />
         </form>
       </div>

@@ -3,7 +3,7 @@ import { debounce } from 'lodash'
 const resizeObjects = []
 let ticking = false
 let hasListeners = false
-let _probe = undefined
+let cachedProbe = undefined
 
 function callMethod(method, resizeProperties) {
   for (const obj of resizeObjects) {
@@ -14,9 +14,9 @@ function callMethod(method, resizeProperties) {
 }
 
 function getProbeElement() {
-  if (typeof _probe !== 'undefined') { return _probe }
-  _probe = document.getElementById('root')
-  return _probe
+  if (typeof cachedProbe !== 'undefined') { return cachedProbe }
+  cachedProbe = document.getElementById('root')
+  return cachedProbe
 }
 
 

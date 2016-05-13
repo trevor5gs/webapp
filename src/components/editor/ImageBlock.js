@@ -22,7 +22,7 @@ class ImageBlock extends Component {
     return (
       <Block
         { ...this.props }
-        children={ <img onLoad={ this.onLoadImage } src={ blob || data.url } alt={ data.alt } /> }
+        children={<img onLoad={this.onLoadImage} src={blob || data.url} alt={data.alt} />}
         ref="block"
       />
     )

@@ -143,35 +143,36 @@ class NotificationsContainer extends Component {
       { type: 'relationships', children: <RelationshipIcon /> },
     ]
     return (
-      <div className="NotificationsContainer"
-        onClick={ this.onClickSelf }
-        onMouseOver={ this.onMouseOver }
-        onMouseOut={ this.onMouseOut }
+      <div
+        className="NotificationsContainer"
+        onClick={this.onClickSelf}
+        onMouseOver={this.onMouseOver}
+        onMouseOut={this.onMouseOut}
       >
         <TabListButtons
-          activeType={ activeTabType }
+          activeType={activeTabType}
           className="IconTabList NotificationsContainerTabs"
-          onTabClick={ this.onClickTab }
+          onTabClick={this.onClickTab}
           tabClasses="IconTab"
-          tabs={ tabs }
+          tabs={tabs}
         />
-        <div className="Scrollable" ref="scrollable" onScroll={ this.onScrollElement }>
+        <div className="Scrollable" ref="scrollable" onScroll={this.onScrollElement}>
           {
             isReloading ?
               <Paginator
                 className="NotificationReload"
-                isHidden={ false }
-                totalPages={ 0 }
-                totalPagesRemaining={ 0 }
+                isHidden={false}
+                totalPages={0}
+                totalPagesRemaining={0}
               /> :
               null
           }
           <StreamComponent
-            action={ loadNotifications({ category: activeTabType }) }
+            action={loadNotifications({ category: activeTabType })}
             className="asFullWidth"
-            key={ `notificationView_${activeTabType}` }
+            key={`notificationView_${activeTabType}`}
             ref="streamComponent"
-            scrollSessionKey={ `notifications_${activeTabType}` }
+            scrollSessionKey={`notifications_${activeTabType}`}
             isModalComponent
           />
         </div>

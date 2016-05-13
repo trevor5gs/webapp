@@ -85,10 +85,10 @@ class TextBlock extends Component {
         { ...this.props }
         contentEditable
         dangerouslySetInnerHTML={{ __html: data }}
-        onBlur={ this.onBlurText }
-        onFocus={ this.onFocusText }
-        onInput={ null }
-        onPaste={ this.onPasteText }
+        onBlur={this.onBlurText}
+        onFocus={this.onFocusText}
+        onInput={null}
+        onPaste={this.onPasteText}
         ref="block"
       />
     )

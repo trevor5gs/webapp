@@ -28,14 +28,12 @@ function handleAndroidBrokenPaste() {
 }
 
 function handleClipboardItems(items) {
-  for (const key in items) {
-    if (items.hasOwnProperty(key)) {
-      const item = items[key]
-      if (item.type.indexOf('image') === 0) {
-        dispatch(saveAsset(item.getAsFile(), editorId))
-      }
+  Object.keys(items).forEach((key) => {
+    const item = items[key]
+    if (item.type.indexOf('image') === 0) {
+      dispatch(saveAsset(item.getAsFile(), editorId))
     }
-  }
+  })
 }
 
 function getBlobFromBase64(b64Data, contentType, sliceSize) {

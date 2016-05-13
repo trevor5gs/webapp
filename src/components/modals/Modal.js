@@ -59,10 +59,10 @@ class Modal extends Component {
     const { isActive, classList, component, kind } = modal
     return (
       <div
-        className={ classNames({ isActive }, kind, classList) }
-        onClick={ isActive ? this.onClickModal : null }
+        className={classNames({ isActive }, kind, classList)}
+        onClick={isActive ? this.onClickModal : null}
       >
-        { component }
+        {component}
       </div>
     )
   }

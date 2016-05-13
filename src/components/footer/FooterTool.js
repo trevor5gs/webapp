@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 
 export const FooterTool = ({ className, icon, label, onClick }) =>
-  <button className={ classNames(className, 'FooterTool') } onClick={ onClick } >
-    { icon }
-    <span>{ label }</span>
+  <button className={classNames(className, 'FooterTool')} onClick={onClick} >
+    {icon}
+    <span>{label}</span>
   </button>
 
 FooterTool.propTypes = {

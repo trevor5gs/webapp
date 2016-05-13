@@ -39,21 +39,21 @@ class ProfileHeader extends Component {
           message="Choose a header image."
           nextPath="/onboarding/profile-avatar"
           title="Customize your profile."
-          nextAction={ this.onClickNext }
-          skipAction={ this.onClickSkip }
+          nextAction={this.onClickNext}
+          skipAction={this.onClickSkip}
         />
         <Uploader
-          closeAlert={ bindActionCreators(closeAlert, dispatch) }
+          closeAlert={bindActionCreators(closeAlert, dispatch)}
           message="Or drag & drop"
-          openAlert={ bindActionCreators(openAlert, dispatch) }
+          openAlert={bindActionCreators(openAlert, dispatch)}
           recommend="Recommended image size: 2560 x 1440"
-          saveAction={ bindActionCreators(saveCover, dispatch) }
+          saveAction={bindActionCreators(saveCover, dispatch)}
           title="Upload a header image"
         />
         <Cover
-          coverDPI={ coverDPI }
-          coverImage={ profile.coverImage }
-          coverOffset={ coverOffset }
+          coverDPI={coverDPI}
+          coverImage={profile.coverImage}
+          coverOffset={coverOffset}
           isModifiable
         />
       </main>

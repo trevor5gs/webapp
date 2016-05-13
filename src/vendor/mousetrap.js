@@ -1,3 +1,5 @@
+/* eslint-disable import/no-mutable-exports */
+/* eslint-disable global-require */
 // this is only needed as a guard for server rendering
 // and not having access to window. you shouldn't
 // need to change anything in the components that

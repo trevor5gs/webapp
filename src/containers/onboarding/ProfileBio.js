@@ -43,24 +43,24 @@ class ProfileBio extends Component {
         <OnboardingHeader
           title="Customize your profile."
           message="Fill out your bio."
-          nextAction={ this.onClickNext }
-          skipAction={ this.onClickSkip }
+          nextAction={this.onClickNext}
+          skipAction={this.onClickSkip}
         />
 
         <div className="InfoPickerBody" >
           <Avatar
             size="large"
-            sources={ profile.avatar }
+            sources={profile.avatar}
           />
           <InfoForm
-            tabIndexStart={ 1 }
+            tabIndexStart={1}
           />
 
         </div>
         <Cover
-          coverDPI={ coverDPI }
-          coverImage={ profile.coverImage }
-          coverOffset={ coverOffset }
+          coverDPI={coverDPI}
+          coverImage={profile.coverImage}
+          coverOffset={coverOffset}
         />
       </main>
     )

@@ -12,7 +12,7 @@ export const addSegment = (uid, createdAt) => {
       if (uid) {
         analytics.identify(uid, { createdAt })
       }
-    }}();
+    } }();
   }
 }
 

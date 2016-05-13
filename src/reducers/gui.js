@@ -40,7 +40,7 @@ const findLayoutMode = (modes) => {
   return modes[modes.length - 1]
 }
 
-const _isGridMode = (modes) => {
+const getIsGridMode = (modes) => {
   const mode = findLayoutMode(modes)
   if (!mode) { return null }
   return mode.mode === 'grid'
@@ -162,14 +162,14 @@ export const gui = (state = initialState, action = { type: '' }) => {
           ...initialScrollState,
           currentStream: pathname,
           isLayoutToolHidden,
-          isGridMode: _isGridMode(state.modes),
+          isGridMode: getIsGridMode(state.modes),
         }
       }
       return {
         ...state,
         ...initialScrollState,
         isLayoutToolHidden,
-        isGridMode: _isGridMode(state.modes),
+        isGridMode: getIsGridMode(state.modes),
       }
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }

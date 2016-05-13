@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 const methods = {}
 
-function _updatePostLoves(state, newState, action) {
+methods.updatePostLoves = (state, newState, action) => {
   const { method, model } = action.payload
 
   const newPost = {
@@ -74,9 +74,8 @@ function _updatePostLoves(state, newState, action) {
 
   return newState
 }
-methods.updatePostLoves = _updatePostLoves
 
-function _addOrUpdatePost(newState, action) {
+methods.addOrUpdatePost = (newState, action) => {
   const { model, response } = action.payload
 
   const user = model ?
@@ -137,42 +136,36 @@ function _addOrUpdatePost(newState, action) {
       return newState
   }
 }
-methods.addOrUpdatePost = _addOrUpdatePost
 
-function _toggleComments(newState, action) {
+methods.toggleComments = (newState, action) => {
   const { model, showComments } = action.payload
   newState[MAPPING_TYPES.POSTS][model.id].showComments = showComments
   return newState
 }
-methods.toggleComments = _toggleComments
 
-function _toggleEditing(newState, action) {
+methods.toggleEditing = (newState, action) => {
   const { model, isEditing } = action.payload
   newState[MAPPING_TYPES.POSTS][model.id].isEditing = isEditing
   return newState
 }
-methods.toggleEditing = _toggleEditing
 
-function _toggleLovers(newState, action) {
+methods.toggleLovers = (newState, action) => {
   const { model, showLovers } = action.payload
   newState[MAPPING_TYPES.POSTS][model.id].showLovers = showLovers
   return newState
 }
-methods.toggleLovers = _toggleLovers
 
-function _toggleReposting(newState, action) {
+methods.toggleReposting = (newState, action) => {
   const { model, isReposting } = action.payload
   newState[MAPPING_TYPES.POSTS][model.id].isReposting = isReposting
   return newState
 }
-methods.toggleReposting = _toggleReposting
 
-function _toggleReposters(newState, action) {
+methods.toggleReposters = (newState, action) => {
   const { model, showReposters } = action.payload
   newState[MAPPING_TYPES.POSTS][model.id].showReposters = showReposters
   return newState
 }
-methods.toggleReposters = _toggleReposters
 
 export default methods
 

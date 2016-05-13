@@ -1,8 +1,10 @@
+import Invitations from '../../containers/invitations/Invitations'
+
 export default [
   {
     path: 'invitations',
     getComponents(location, cb) {
-      cb(null, require('../../containers/invitations/Invitations').default)
+      cb(null, Invitations)
     },
   },
 ]

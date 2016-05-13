@@ -26,8 +26,8 @@ const MiniElloEmoji = () =>
   </SVGIcon>
 
 const QuickEmojiChoiceButton = ({ name, onClick }) =>
-  <button className="QuickEmojiChoiceButton" name={ name } onClick={ onClick }>
-    <Emoji name={ name } />
+  <button className="QuickEmojiChoiceButton" name={name} onClick={onClick}>
+    <Emoji name={name} />
   </button>
 
 QuickEmojiChoiceButton.propTypes = {
@@ -74,7 +74,7 @@ class QuickEmoji extends Component {
   renderEmojis() {
     const samples = sampleSize(options, 4)
     return samples.map((sample) =>
-      <QuickEmojiChoiceButton key={ sample } name={ sample } onClick={ this.emojiWasClicked } />
+      <QuickEmojiChoiceButton key={sample} name={sample} onClick={this.emojiWasClicked} />
     )
   }
 
@@ -84,18 +84,17 @@ class QuickEmoji extends Component {
       return (
         <div className="QuickEmoji isActive">
           <div className="QuickEmojiList">
-            { this.renderEmojis() }
+            {this.renderEmojis()}
           </div>
         </div>
       )
     }
     return (
       <div className="QuickEmoji">
-        <button className="QuickEmojiButton" onClick={ this.show }>
+        <button className="QuickEmojiButton" onClick={this.show}>
           <MiniElloEmoji />
         </button>
-          <div className="QuickEmojiList">
-          </div>
+        <div className="QuickEmojiList" />
       </div>
     )
   }

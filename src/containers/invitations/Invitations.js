@@ -80,31 +80,31 @@ class Invitations extends Component {
           <form
             className="InvitationForm"
             noValidate="novalidate"
-            onSubmit={ this.onSubmit }
+            onSubmit={this.onSubmit}
             role="form"
           >
             <BatchEmailControl
               classList="asBoxControl onWhite"
-              label={ `Emails ${batchEmailState.message}` }
-              onChange={ this.onChangeControl }
+              label={`Emails ${batchEmailState.message}`}
+              onChange={this.onChangeControl}
               tabIndex="1"
               ref="Control"
             />
             <FormButton
               className="FormButton asPill"
-              disabled={ !isValid }
+              disabled={!isValid}
               tabIndex="2"
             >
               Invite
             </FormButton>
             <p className="BatchEmailControlSuggestions" style={{ color: '#aaa' }}>
-              { this.renderMessage() }
+              {this.renderMessage()}
             </p>
           </form>
 
         </div>
         <h2 className="InvitationsStreamHeading">Friends you've invited</h2>
-        <StreamComponent action={ loadInvitedUsers() } />
+        <StreamComponent action={loadInvitedUsers()} />
       </main>
     )
   }

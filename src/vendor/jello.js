@@ -1,5 +1,5 @@
-let _isAndroid = undefined
-let _isFirefox = undefined
+let memoizedIsAndroid = undefined
+let memoizedIsFirefox = undefined
 
 export const addFeatureDetection = () => {
   const cl = document.documentElement.classList
@@ -22,15 +22,15 @@ export const hideSoftKeyboard = () => {
 
 export const isAndroid = () => {
   if (typeof window === 'undefined') { return false }
-  if (typeof _isAndroid !== 'undefined') { return _isAndroid }
-  _isAndroid = /Android/gi.test(navigator.userAgent)
-  return _isAndroid
+  if (typeof memoizedIsAndroid !== 'undefined') { return memoizedIsAndroid }
+  memoizedIsAndroid = /Android/gi.test(navigator.userAgent)
+  return memoizedIsAndroid
 }
 
 export const isFirefox = () => {
   if (typeof window === 'undefined') { return false }
-  if (typeof _isFirefox !== 'undefined') { return _isFirefox }
-  _isFirefox = /Firefox/gi.test(navigator.userAgent)
-  return _isFirefox
+  if (typeof memoizedIsFirefox !== 'undefined') { return memoizedIsFirefox }
+  memoizedIsFirefox = /Firefox/gi.test(navigator.userAgent)
+  return memoizedIsFirefox
 }
 
