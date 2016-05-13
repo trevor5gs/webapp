@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash'
 import { suggestEmoji } from '../components/completers/EmojiSuggester'
 import { userRegex } from '../components/completers/Completer'
-import { EDITOR, POST } from '../constants/action_types'
+import { COMMENT, EDITOR, POST } from '../constants/action_types'
 
 const methods = {}
 const initialState = {
@@ -236,14 +236,20 @@ function _getEditorObject(state = initialState, action) {
       return methods.reorderBlocks(newState, action)
     case EDITOR.REPLACE_TEXT:
       return methods.replaceText(newState, action)
+    case COMMENT.CREATE_REQUEST:
+    case COMMENT.UPDATE_REQUEST:
     case POST.CREATE_REQUEST:
     case POST.UPDATE_REQUEST:
       newState.isPosting = true
       return newState
+    case COMMENT.CREATE_SUCCESS:
+    case COMMENT.UPDATE_SUCCESS:
     case EDITOR.RESET:
     case POST.CREATE_SUCCESS:
     case POST.UPDATE_SUCCESS:
       return methods.addEmptyTextBlock({ ...initialState, uid: newState.uid })
+    case COMMENT.CREATE_FAILURE:
+    case COMMENT.UPDATE_FAILURE:
     case POST.CREATE_FAILURE:
     case POST.UPDATE_FAILURE:
       newState.isPosting = false

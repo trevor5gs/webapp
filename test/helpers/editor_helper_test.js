@@ -1,8 +1,8 @@
 import { expect, sinon } from '../spec_helper'
 import * as subject from '../../src/helpers/editor_helper'
-import { EDITOR/* , POST */ } from '../../src/constants/action_types'
+import { COMMENT, EDITOR, POST } from '../../src/constants/action_types'
 
-describe.only('editor helper', () => {
+describe('editor helper', () => {
   let action = null
   let state = null
 
@@ -540,6 +540,99 @@ describe.only('editor helper', () => {
       }
       state = subject.methods.getEditorObject(subject.initialState, action)
       expect(spy.called).to.be.true
+    })
+
+    it('sets isPosting to true with create and update actions', () => {
+      const actionTypes = [
+        COMMENT.CREATE_REQUEST,
+        COMMENT.UPDATE_REQUEST,
+        POST.CREATE_REQUEST,
+        POST.UPDATE_REQUEST,
+      ]
+      for (const type of actionTypes) {
+        const newState = { isPosting: false }
+        action = { type }
+        state = subject.methods.getEditorObject(newState, action)
+        expect(state.isPosting).to.be.true
+      }
+    })
+
+    it('calls #addEmptyTextBlock with success and reset actions', () => {
+      const actionTypes = [
+        COMMENT.CREATE_SUCCESS,
+        COMMENT.UPDATE_SUCCESS,
+        EDITOR.RESET,
+        POST.CREATE_SUCCESS,
+        POST.UPDATE_SUCCESS,
+      ]
+      spy = sinon.stub(subject.methods, 'addEmptyTextBlock')
+      for (const type of actionTypes) {
+        action = { type }
+        state = subject.methods.getEditorObject(subject.initialState, action)
+        expect(spy.called).to.be.true
+      }
+      spy.restore()
+    })
+
+    it('sets isPosting to false with failure actions', () => {
+      const actionTypes = [
+        COMMENT.CREATE_FAILURE,
+        COMMENT.UPDATE_FAILURE,
+        POST.CREATE_FAILURE,
+        POST.UPDATE_FAILURE,
+      ]
+      for (const type of actionTypes) {
+        const newState = { isPosting: true }
+        action = { type }
+        state = subject.methods.getEditorObject(newState, action)
+        expect(state.isPosting).to.be.false
+      }
+    })
+
+    it('updates the dragBlock if one exists with EDITOR.SAVE_IMAGE_SUCCESS', () => {
+      const newState = {
+        dragBlock: {
+          kind: 'image',
+          data: { url: 'que' },
+          uid: 0,
+        },
+      }
+      action = {
+        type: EDITOR.SAVE_IMAGE_SUCCESS,
+        payload: { response: { url: 'blah' }, uid: 0 },
+      }
+      state = subject.methods.getEditorObject(newState, action)
+      expect(state.dragBlock.data.url).to.equal('blah')
+    })
+
+    it('updates the existing image block with EDITOR.SAVE_IMAGE_SUCCESS', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'image',
+            data: { url: 'what' },
+            uid: 0,
+          },
+        },
+      }
+      action = {
+        type: EDITOR.SAVE_IMAGE_SUCCESS,
+        payload: { response: { url: 'blah' }, uid: 0 },
+      }
+      state = subject.methods.getEditorObject(newState, action)
+      expect(state.collection[0].data.url).to.equal('blah')
+    })
+
+    it('calls #removeEmptyTextBlock and #add with EDITOR.TMP_IMAGE_CREATED', () => {
+      spy = sinon.stub(subject.methods, 'removeEmptyTextBlock')
+      const addSpy = sinon.stub(subject.methods, 'add')
+      action = {
+        type: EDITOR.TMP_IMAGE_CREATED,
+        payload: { url: 'yo dawg' },
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
+      expect(addSpy.called).to.be.true
     })
   })
 })
