@@ -9,6 +9,7 @@ import { AppHelmet } from '../components/helmets/AppHelmet'
 import Modal from '../components/modals/Modal'
 import Omnibar from '../components/omnibar/Omnibar'
 import { addGlobalDrag, removeGlobalDrag } from '../components/viewport/GlobalDrag'
+import { startRefreshTimer } from '../components/viewport/RefreshOnFocus'
 import AnalyticsContainer from '../containers/AnalyticsContainer'
 import EditorToolsContainer from '../containers/EditorToolsContainer'
 import FooterContainer from '../containers/FooterContainer'
@@ -35,6 +36,7 @@ class AppContainer extends Component {
 
   componentDidMount() {
     addGlobalDrag()
+    startRefreshTimer()
     if (get(this.props, 'authentication.isLoggedIn')) {
       const { dispatch } = this.props
       dispatch(loadProfile())
