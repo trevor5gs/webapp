@@ -129,39 +129,39 @@ class Avatar extends Component {
     if (to) {
       return (
         <Link
-          className={ klassNames }
-          data-priority={ priority || 'inactive' }
-          data-userid={ userId }
-          data-username={ username }
-          to={ to }
-          draggable={ isDraggable }
+          className={klassNames}
+          data-priority={priority || 'inactive'}
+          data-userid={userId}
+          data-username={username}
+          to={to}
+          draggable={isDraggable}
         >
-          <img className="AvatarImage" src={ src } alt={ username } />
+          <img className="AvatarImage" src={src} alt={username} />
         </Link>
       )
     } else if (onClick) {
       return (
         <button
-          className={ klassNames }
-          data-priority={ priority || 'inactive' }
-          data-userid={ userId }
-          data-username={ username }
-          onClick={ onClick }
-          draggable={ isDraggable }
+          className={klassNames}
+          data-priority={priority || 'inactive'}
+          data-userid={userId}
+          data-username={username}
+          onClick={onClick}
+          draggable={isDraggable}
         >
-          <img className="AvatarImage" src={ src } alt={ username } />
+          <img className="AvatarImage" src={src} alt={username} />
         </button>
       )
     }
     return (
       <span
-        className={ klassNames }
-        data-priority={ priority || 'inactive' }
-        data-userid={ userId }
-        data-username={ username }
-        draggable={ isDraggable }
+        className={klassNames}
+        data-priority={priority || 'inactive'}
+        data-userid={userId}
+        data-username={username}
+        draggable={isDraggable}
       >
-        <img className="AvatarImage" src={ src } alt={ username } />
+        <img className="AvatarImage" src={src} alt={username} />
       </span>
     )
   }

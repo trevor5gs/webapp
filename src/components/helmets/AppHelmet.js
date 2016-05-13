@@ -12,7 +12,7 @@ const viewport = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user
 
 export const AppHelmet = ({ pathname }) =>
   <Helmet
-    title={ title }
+    title={title}
     link={[
       { rel: 'apple-touch-icon', href: image },
       { rel: 'apple-touch-icon-precomposed', href: image },

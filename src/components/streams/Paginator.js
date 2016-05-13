@@ -31,12 +31,12 @@ export const Paginator = ({
   }) => {
   const message = getMessage({ hasShowMoreButton, messageText, totalPages, totalPagesRemaining })
   return (
-    <div className={ classNames('Paginator', { isBusy: !isHidden }, className) }>
+    <div className={classNames('Paginator', { isBusy: !isHidden }, className)}>
       <ElloMark />
       {
         hasShowMoreButton ?
-        <button onClick={ loadNextPage }>{ message }</button> :
-        <span className="PaginatorMessage">{ message }</span>
+        <button onClick={loadNextPage}>{message}</button> :
+        <span className="PaginatorMessage">{message}</span>
       }
     </div>
   )

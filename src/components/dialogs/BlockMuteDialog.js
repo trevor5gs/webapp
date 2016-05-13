@@ -19,10 +19,10 @@ const BlockMuteDialog = ({
       <div className="BlockMuteDialogBody">
         <div className="BlockMuteDialogColumn">
           <button
-            className={ blockButtonClasses }
-            onClick={ onBlock }
+            className={blockButtonClasses}
+            onClick={onBlock}
           >
-            { blockButtonText }
+            {blockButtonText}
           </button>
           <p>
             Blocking mutes a user, and disables them from viewing your profile
@@ -33,10 +33,10 @@ const BlockMuteDialog = ({
         </div>
         <div className="BlockMuteDialogColumn">
           <button
-            className={ muteButtonClasses }
-            onClick={ onMute }
+            className={muteButtonClasses}
+            onClick={onMute}
           >
-            { muteButtonText }
+            {muteButtonText}
           </button>
           <p>
             Muting prevents further email notifications from a user and removes

@@ -119,9 +119,9 @@ class Editor extends Component {
     const { dispatch } = this.props
     dispatch(openModal(
       <ConfirmDialog
-        title={ `Cancel ${label}?` }
-        onConfirm={ this.cancelConfirmed }
-        onDismiss={ this.closeModal }
+        title={`Cancel ${label}?`}
+        onConfirm={this.cancelConfirmed}
+        onDismiss={this.closeModal}
       />))
   }
 
@@ -189,19 +189,19 @@ class Editor extends Component {
     const key = `${editorId}_${blocks.length + repostContent.length}`
     return (
       <BlockCollection
-        blocks={ blocks }
-        cancelAction={ this.cancel }
-        editorId={ editorId }
-        isComment={ isComment }
-        isOwnPost={ isOwnPost }
-        key={ key }
-        post={ post }
+        blocks={blocks}
+        cancelAction={this.cancel}
+        editorId={editorId}
+        isComment={isComment}
+        isOwnPost={isOwnPost}
+        key={key}
+        post={post}
         ref="blockCollection"
-        repostContent={ repostContent }
-        shouldLoadFromState={ shouldLoadFromState }
-        shouldPersist={ shouldPersist }
-        submitAction={ this.submit }
-        submitText={ submitText }
+        repostContent={repostContent}
+        shouldLoadFromState={shouldLoadFromState}
+        shouldPersist={shouldPersist}
+        submitAction={this.submit}
+        submitText={submitText}
       />
     )
   }

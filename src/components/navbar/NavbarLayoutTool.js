@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react'
 
 export const NavbarLayoutTool = ({ icon, onClick }) =>
-  <button className="NavbarLayoutTool" onClick={ onClick } >
-    { icon }
+  <button className="NavbarLayoutTool" onClick={onClick} >
+    {icon}
   </button>
 
 NavbarLayoutTool.propTypes = {

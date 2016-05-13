@@ -3,9 +3,9 @@ import React, { PropTypes } from 'react'
 const ShareProfileButton = ({ children, onClick }) =>
   <button
     className="ShareProfileButton"
-    onClick={ onClick }
+    onClick={onClick}
   >
-    { children }
+    {children}
   </button>
 
 ShareProfileButton.propTypes = {

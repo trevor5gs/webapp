@@ -82,34 +82,34 @@ class InfoForm extends Component {
     }
     return (
       <form
-        className={ classNames(className, 'InfoForm') }
+        className={classNames(className, 'InfoForm')}
         noValidate="novalidate"
-        onSubmit={ this.onSubmit }
+        onSubmit={this.onSubmit}
         role="form"
       >
         <NameControl
-          classList={ controlClassModifiers }
-          onChange={ this.onChangeNameControl }
-          status={ nameStatus }
-          tabIndex={ `${tabIndexStart}` }
-          text={ profile.name }
+          classList={controlClassModifiers}
+          onChange={this.onChangeNameControl}
+          status={nameStatus}
+          tabIndex={`${tabIndexStart}`}
+          text={profile.name}
         />
         <BioControl
-          classList={ controlClassModifiers }
-          onChange={ this.onChangeBioControl }
-          status={ bioStatus }
-          tabIndex={ `${tabIndexStart + 1}` }
-          text={ profile.shortBio }
+          classList={controlClassModifiers}
+          onChange={this.onChangeBioControl}
+          status={bioStatus}
+          tabIndex={`${tabIndexStart + 1}`}
+          text={profile.shortBio}
         />
         <LinksControl
-          classList={ controlClassModifiers }
-          onChange={ this.onChangeLinksControl }
-          status={ linksStatus }
+          classList={controlClassModifiers}
+          onChange={this.onChangeLinksControl}
+          status={linksStatus}
           tabIndex={`${tabIndexStart + 2}`}
-          text={ profile.externalLinksList }
+          text={profile.externalLinksList}
         />
         <span
-          className={ classNames('InfoFormStatus', { showThenHideMessage }) }
+          className={classNames('InfoFormStatus', { showThenHideMessage })}
         >
           Profile updated successfully
         </span>

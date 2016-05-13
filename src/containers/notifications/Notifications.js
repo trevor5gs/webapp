@@ -91,27 +91,27 @@ export class Notifications extends Component {
     return (
       <main className="Notifications View" role="main">
         <TabListLinks
-          activePath={ pathname }
+          activePath={pathname}
           className="IconTabList NotificationsContainerTabs"
-          onTabClick={ this.onClickTab }
+          onTabClick={this.onClickTab}
           tabClasses="IconTab"
-          tabs={ tabs }
+          tabs={tabs}
         />
         {
           isReloading ?
             <Paginator
               className="NotificationReload"
-              isHidden={ false }
-              totalPages={ 0 }
-              totalPagesRemaining={ 0 }
+              isHidden={false}
+              totalPages={0}
+              totalPagesRemaining={0}
             /> :
             null
         }
         <StreamComponent
-          action={ loadNotifications(params) }
+          action={loadNotifications(params)}
           className="asFullWidth"
-          key={ `notificationView_${params.category}` }
-          scrollSessionKey={ `notifications_${category || 'all'}` }
+          key={`notificationView_${params.category}`}
+          scrollSessionKey={`notifications_${category || 'all'}`}
           ref="streamComponent"
         />
       </main>

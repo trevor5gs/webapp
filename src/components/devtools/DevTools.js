@@ -67,7 +67,7 @@ class DevTools extends Component {
 
   renderGrid(isVisible, type) {
     return (
-      isVisible ? <div className={ type }></div> : <span />
+      isVisible ? <div className={type}></div> : <span />
     )
   }
 
@@ -75,8 +75,8 @@ class DevTools extends Component {
     const { isHorizontalGridVisible, isVerticalGridVisible } = this.state
     return (
       <div className="DevTools">
-        { this.renderGrid(isHorizontalGridVisible, 'DT-horizontal-grid') }
-        { this.renderGrid(isVerticalGridVisible, 'DT-vertical-grid') }
+        {this.renderGrid(isHorizontalGridVisible, 'DT-horizontal-grid')}
+        {this.renderGrid(isVerticalGridVisible, 'DT-vertical-grid')}
       </div>
     )
   }

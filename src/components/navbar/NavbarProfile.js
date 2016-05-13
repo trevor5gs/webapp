@@ -16,8 +16,8 @@ export const NavbarProfile = ({
   if (avatar && username) {
     return (
       <span className="NavbarProfile">
-        <Avatar sources={ avatar } onClick={ onClickAvatar } />
-        <nav className={ classNames('NavbarProfileLinks', { isActive: isProfileMenuActive })} >
+        <Avatar sources={avatar} onClick={onClickAvatar} />
+        <nav className={classNames('NavbarProfileLinks', { isActive: isProfileMenuActive })} >
           <Link className="NavbarProfileLink" to={`/${username}`}>{`@${username}`}</Link>
           <Link className="NavbarProfileLink" to={`/${username}/loves`}>Loves</Link>
           <Link className="NavbarProfileLink" to="/invitations">Invite</Link>
@@ -25,20 +25,20 @@ export const NavbarProfile = ({
           <hr className="NavbarProfileLinkDivider" />
           <a
             className="NavbarProfileLink"
-            href={ `${ENV.AUTH_DOMAIN}/wtf/resources/community-directory/` }
+            href={`${ENV.AUTH_DOMAIN}/wtf/resources/community-directory/`}
             target="_blank"
           >
             Communities
           </a>
           <a
             className="NavbarProfileLink"
-            href={ `${ENV.AUTH_DOMAIN}/wtf` }
+            href={`${ENV.AUTH_DOMAIN}/wtf`}
             target="_blank"
           >
             Help
           </a>
-          <a className="NavbarProfileLink" href={ threadlessLink } target="_blank">Store</a>
-          <button className="NavbarProfileLink" onClick={ onLogOut }>Logout</button>
+          <a className="NavbarProfileLink" href={threadlessLink} target="_blank">Store</a>
+          <button className="NavbarProfileLink" onClick={onLogOut}>Logout</button>
           <button className="NavbarProfileCloseButton">
             <ExIcon />
           </button>

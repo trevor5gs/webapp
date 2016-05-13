@@ -50,12 +50,12 @@ class FlagDialog extends Component {
     for (const choice of Object.keys(flags)) {
       buttons.push(
         <button
-          className={ classNames({ isActive: activeChoice === choice }, 'FlagDialogChoice') }
-          data-flag={ choice }
-          key={ choice }
-          onClick={ this.onClickChoice }
+          className={classNames({ isActive: activeChoice === choice }, 'FlagDialogChoice')}
+          data-flag={choice}
+          key={choice}
+          onClick={this.onClickChoice}
         >
-          { flags[choice] }
+          {flags[choice]}
         </button>
       )
     }
@@ -70,12 +70,12 @@ class FlagDialog extends Component {
       <div className="Dialog FlagDialog">
         <h2>Would you like to flag this content as:</h2>
         <div className="FlagDialogBody">
-          { this.renderFlagChoices() }
+          {this.renderFlagChoices()}
 
           <button
             className="FlagDialogButton"
-            onClick={ this.onClickChoiceWasMade }
-            style={ top ? { top, display: 'inline-block' } : { display: 'none' } }
+            onClick={this.onClickChoiceWasMade}
+            style={top ? { top, display: 'inline-block' } : { display: 'none' }}
           >
             Submit
           </button>
@@ -100,7 +100,7 @@ class FlagDialog extends Component {
           mute this user as well.
         </p>
         <div className="FlagDialogBody">
-          <button className="FlagDialogOkayButton" onClick={ onConfirm }>Okay</button>
+          <button className="FlagDialogOkayButton" onClick={onConfirm}>Okay</button>
         </div>
       </div>
     )

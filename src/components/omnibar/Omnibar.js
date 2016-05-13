@@ -73,10 +73,10 @@ class Omnibar extends Component {
       return <div className={classNames('Omnibar', { isActive }, classList)} />
     }
     return (
-      <div className={ classNames('Omnibar', { isActive, isFullScreen }, classList) } >
-        <Avatar sources={ avatar } />
+      <div className={classNames('Omnibar', { isActive, isFullScreen }, classList)} >
+        <Avatar sources={avatar} />
         <Editor shouldLoadFromState shouldPersist />
-        <button className="OmnibarRevealNavbar" onClick={ this.close }>
+        <button className="OmnibarRevealNavbar" onClick={this.close}>
           <ChevronIcon />
           Navigation
         </button>

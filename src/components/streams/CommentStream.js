@@ -17,7 +17,7 @@ export default class CommentStream extends Component {
       <div>
         <StreamComponent
           className="CommentStreamComponent asFullWidth"
-          action={ action }
+          action={action}
           ignoresScrollPosition
         >
           {post.commentsCount > 10 ?

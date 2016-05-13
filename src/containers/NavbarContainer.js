@@ -175,27 +175,27 @@ class NavbarContainer extends Component {
       return (
         <NavbarLoggedIn
           { ...this.props }
-          notificationCategory={ this.getNotificationCategory() }
-          onClickAvatar={ this.onClickAvatar }
-          onClickDocument={ this.onClickDocument }
-          onClickLoadMorePosts={ this.onClickLoadMorePosts }
-          onClickNavbarMark={ this.onClickNavbarMark }
-          onClickNotification={ this.onClickNotification }
-          onClickOmniButton={ this.onClickOmniButton }
-          onClickToggleLayoutMode={ this.onClickToggleLayoutMode }
-          onDragLeaveStreamLink={ this.onDragLeaveStreamLink }
-          onDragOverOmniButton={ this.onDragOverOmniButton }
-          onDragOverStreamLink={ this.onDragOverStreamLink }
-          onDropStreamLink={ this.onDropStreamLink }
-          onLogOut={ this.onLogOut }
+          notificationCategory={this.getNotificationCategory()}
+          onClickAvatar={this.onClickAvatar}
+          onClickDocument={this.onClickDocument}
+          onClickLoadMorePosts={this.onClickLoadMorePosts}
+          onClickNavbarMark={this.onClickNavbarMark}
+          onClickNotification={this.onClickNotification}
+          onClickOmniButton={this.onClickOmniButton}
+          onClickToggleLayoutMode={this.onClickToggleLayoutMode}
+          onDragLeaveStreamLink={this.onDragLeaveStreamLink}
+          onDragOverOmniButton={this.onDragOverOmniButton}
+          onDragOverStreamLink={this.onDragOverStreamLink}
+          onDropStreamLink={this.onDropStreamLink}
+          onLogOut={this.onLogOut}
         />
       )
     }
     return (
       <NavbarLoggedOut
         { ...this.props }
-        onClickLoadMorePosts={ this.onClickLoadMorePosts }
-        onClickNavbarMark={ this.onClickNavbarMark }
+        onClickLoadMorePosts={this.onClickLoadMorePosts}
+        onClickNavbarMark={this.onClickNavbarMark}
       />
     )
   }

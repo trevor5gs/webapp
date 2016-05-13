@@ -96,22 +96,22 @@ class RegistrationRequestForm extends Component {
           className="AuthenticationForm"
           id="RegistrationRequestForm"
           noValidate="novalidate"
-          onSubmit={ this.onSubmit }
+          onSubmit={this.onSubmit}
           role="form"
         >
           <EmailControl
             classList="asBoxControl"
             label="Email"
-            onBlur={ this.onBlurControl }
-            onChange={ this.onChangeEmailControl }
-            onFocus={ this.onFocusControl }
+            onBlur={this.onBlurControl}
+            onChange={this.onChangeEmailControl}
+            onFocus={this.onFocusControl}
             tabIndex="1"
           />
-          { (showEmailError && emailState.status !== STATUS.INDETERMINATE) ?
+          {(showEmailError && emailState.status !== STATUS.INDETERMINATE) ?
             <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
             <p className="HoppyStatusMessage"><span /></p>
           }
-          <FormButton disabled={ !isValid } tabIndex="2">Sign up</FormButton>
+          <FormButton disabled={!isValid} tabIndex="2">Sign up</FormButton>
         </form>
         <Link className="HaveAccountLink" to="/enter">Have an account?</Link>
       </div>

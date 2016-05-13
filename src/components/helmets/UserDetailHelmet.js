@@ -8,7 +8,7 @@ export const UserDetailHelmet = ({ user }) => {
   const robots = user.badForSeo ? 'noindex, follow' : 'index, follow'
   return (
     <Helmet
-      title={ title }
+      title={title}
       meta={[
         { name: 'robots', content: robots },
         { name: 'name', itemprop: 'name', content: title },

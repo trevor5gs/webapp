@@ -6,10 +6,10 @@ import PostParser from '../parsers/PostParser'
 const DumbGridPost = (props) => {
   const { post } = props
   return (
-    <article className="PostGrid" id={ `Post_${post.id}` }>
+    <article className="PostGrid" id={`Post_${post.id}`}>
       <PostParser
         isGridLayout
-        post={ post }
+        post={post}
       />
     </article>
   )
@@ -52,11 +52,11 @@ class PostsAsGrid extends Component {
 
   renderColumn(posts, index) {
     return (
-      <div className="Column" key={ `column_${index}` }>
-        { posts.map((post) =>
+      <div className="Column" key={`column_${index}`}>
+        {posts.map((post) =>
            <GridPost
-             key={ `gridPost_${post.id}` }
-             post={ post }
+             key={`gridPost_${post.id}`}
+             post={post}
            />
         )}
       </div>
@@ -77,7 +77,7 @@ class PostsAsGrid extends Component {
     }
     return (
       <div className="Posts asGrid">
-        { columns.map((columnPosts, index) => this.renderColumn(columnPosts, index)) }
+        {columns.map((columnPosts, index) => this.renderColumn(columnPosts, index))}
       </div>
     )
   }

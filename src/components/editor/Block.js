@@ -38,19 +38,19 @@ class Block extends Component {
     return (
       <div
         className="editor-block"
-        data-collection-id={ uid }
-        data-editor-id={ editorId }
+        data-collection-id={uid}
+        data-editor-id={editorId}
         ref="editorBlock"
       >
         <div
           { ...this.props }
-          className={ classNames('editable', kind, className) }
+          className={classNames('editable', kind, className)}
           style={{ width, height }}
-          ref={ kind }
+          ref={kind}
         >
-          { children }
+          {children}
         </div>
-        <RegionTools editorId={ editorId } onRemoveBlock={ this.removeBlock } />
+        <RegionTools editorId={editorId} onRemoveBlock={this.removeBlock} />
       </div>
     )
   }

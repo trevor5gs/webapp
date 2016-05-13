@@ -102,19 +102,19 @@ class UserDetail extends Component {
     if (!user) { return null }
     const cells = []
     if (!user.followersCount) {
-      cells.push(<ZeroStateCreateRelationship key="zero1" user={ user } />)
+      cells.push(<ZeroStateCreateRelationship key="zero1" user={user} />)
     }
     if (isLoggedIn && !user.postsCount) {
       cells.push(
         <ZeroStateSayHello
-          hasPosted={ saidHelloTo }
+          hasPosted={saidHelloTo}
           key="zero2"
-          onSubmit={ this.onZeroStateHello }
-          user={ user }
+          onSubmit={this.onZeroStateHello}
+          user={user}
         />
       )
     }
-    return cells.length ? <div className="ZeroStates">{ cells }</div> : cells
+    return cells.length ? <div className="ZeroStates">{cells}</div> : cells
   }
 
   renderZeroStatesForCurrentUser(user) {
@@ -126,7 +126,7 @@ class UserDetail extends Component {
         />
       )
     }
-    return cells.length ? <div className="ZeroStates">{ cells }</div> : cells
+    return cells.length ? <div className="ZeroStates">{cells}</div> : cells
   }
 
   renderAvatarUploader() {
@@ -134,11 +134,11 @@ class UserDetail extends Component {
     return (
       <Uploader
         className="UserDetailAvatarUploader"
-        closeAlert={ bindActionCreators(closeAlert, dispatch) }
+        closeAlert={bindActionCreators(closeAlert, dispatch)}
         message="Or drag & drop"
-        openAlert={ bindActionCreators(openAlert, dispatch) }
+        openAlert={bindActionCreators(openAlert, dispatch)}
         recommend="Recommended image size: 360 x 360"
-        saveAction={ bindActionCreators(saveAvatar, dispatch) }
+        saveAction={bindActionCreators(saveAvatar, dispatch)}
         title="Pick an Avatar"
       />
     )
@@ -165,7 +165,7 @@ class UserDetail extends Component {
       case ACTION_TYPES.PROFILE.DETAIL_FAILURE:
         if (!user && stream.error) {
           return (
-            <main className="UserDetail View" key={ `userDetail_${type}` } role="main">
+            <main className="UserDetail View" key={`userDetail_${type}`} role="main">
               <section className="StreamComponent hasErrored">
                 <ErrorState4xx />
               </section>
@@ -182,12 +182,12 @@ class UserDetail extends Component {
         userEls.push(
           <Uploader
             className="UserDetailCoverUploader"
-            closeAlert={ bindActionCreators(closeAlert, dispatch) }
-            key={ `userDetailUploader_${user.id}` }
+            closeAlert={bindActionCreators(closeAlert, dispatch)}
+            key={`userDetailUploader_${user.id}`}
             message="Or drag & drop"
-            openAlert={ bindActionCreators(openAlert, dispatch) }
+            openAlert={bindActionCreators(openAlert, dispatch)}
             recommend="Recommended image size: 2560 x 1440"
-            saveAction={ bindActionCreators(saveCover, dispatch) }
+            saveAction={bindActionCreators(saveCover, dispatch)}
             title="Upload a header image"
           />
         )
@@ -195,12 +195,12 @@ class UserDetail extends Component {
       if (!omnibar.isActive) {
         userEls.push(
           <Cover
-            isHidden={ isCoverHidden }
-            isModifiable={ user.relationshipPriority === 'self' }
-            coverDPI={ coverDPI }
-            coverImage={ user.coverImage }
-            coverOffset={ coverOffset }
-            key={ `userDetailCover_${user.id}` }
+            isHidden={isCoverHidden}
+            isModifiable={user.relationshipPriority === 'self'}
+            coverDPI={coverDPI}
+            coverImage={user.coverImage}
+            coverOffset={coverOffset}
+            key={`userDetailCover_${user.id}`}
             useGif
           />
         )
@@ -208,11 +208,11 @@ class UserDetail extends Component {
       userEls.push(
         <UserList
           classList="asUserDetailHeader"
-          key={ `userList_${user.id}` }
+          key={`userList_${user.id}`}
           showBlockMuteButton
-          uploader={ user.relationshipPriority === 'self' && this.renderAvatarUploader() }
+          uploader={user.relationshipPriority === 'self' && this.renderAvatarUploader()}
           useGif
-          user={ user }
+          user={user}
         />
       )
     }
@@ -226,10 +226,10 @@ class UserDetail extends Component {
           <TabListButtons
             className="LabelTabList"
             tabClasses="LabelTab"
-            key={ `tabList_${user.id}` }
-            activeType={ activeUserFollowingType }
-            tabs={ tabs }
-            onTabClick={ ({ type: tab }) => followingTab(tab) }
+            key={`tabList_${user.id}`}
+            activeType={activeUserFollowingType}
+            tabs={tabs}
+            onTabClick={({ type: tab }) => followingTab(tab)}
           />
         )
       }
@@ -252,22 +252,22 @@ class UserDetail extends Component {
     const streamKey = `${params.username}${type === 'following' ? activeUserFollowingType : ''}`
     return (
       <main
-        className={ classNames('UserDetail', 'View', omnibar.isActive ? 'OmnibarActive' : null) }
-        key={ `userDetail_${type}` }
+        className={classNames('UserDetail', 'View', omnibar.isActive ? 'OmnibarActive' : null)}
+        key={`userDetail_${type}`}
         role="main"
       >
-        { user ? <UserDetailHelmet user={ user } /> : null }
+        {user ? <UserDetailHelmet user={user} /> : null}
         <div className="UserDetails">
-          { userEls }
-          { user && user.relationshipPriority === 'self' ?
+          {userEls}
+          {user && user.relationshipPriority === 'self' ?
             this.renderZeroStatesForCurrentUser(user) :
             this.renderZeroStates(user)
           }
           {
             user ?
               <StreamComponent
-                action={ streamAction }
-                key={ streamKey }
+                action={streamAction}
+                key={streamKey}
                 ref="streamComponent"
                 isUserDetail
               /> :

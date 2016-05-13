@@ -63,12 +63,12 @@ class RelationshipButton extends Component {
     const { classList, priority } = this.props
     return (
       <button
-        className={ classNames('RelationshipButton', classList) }
-        onClick={ this.updatePriority }
-        data-priority={ priority }
+        className={classNames('RelationshipButton', classList)}
+        onClick={this.updatePriority}
+        data-priority={priority}
       >
-        { icon }
-        <span className="RelationshipButtonLabel">{ label }</span>
+        {icon}
+        <span className="RelationshipButtonLabel">{label}</span>
       </button>
     )
   }
@@ -77,11 +77,11 @@ class RelationshipButton extends Component {
     const { onClick, priority, classList } = this.props
     return (
       <button
-        className={ classNames('RelationshipButton', classList) }
-        data-priority={ priority }
-        onClick={ onClick }
+        className={classNames('RelationshipButton', classList)}
+        data-priority={priority}
+        onClick={onClick}
       >
-        <span>{ label }</span>
+        <span>{label}</span>
       </button>
     )
   }
@@ -90,11 +90,11 @@ class RelationshipButton extends Component {
     const { priority, classList } = this.props
     return (
       <Link
-        className={ classNames('RelationshipButton', classList) }
+        className={classNames('RelationshipButton', classList)}
         to="/settings"
-        data-priority={ priority }
+        data-priority={priority}
       >
-        { classList === 'inHeader' ? <HeaderPlusIcon /> : <MiniPlusIcon /> }
+        {classList === 'inHeader' ? <HeaderPlusIcon /> : <MiniPlusIcon />}
         <span>Edit Profile</span>
       </Link>
     )

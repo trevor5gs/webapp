@@ -8,11 +8,11 @@ function renderHeader({ notifier }) {
   return (
     <header className="NotificationHeader">
       <Avatar
-        priority={ notifier.relationshipPriority }
-        sources={ notifier.avatar }
-        to={ `/${notifier.username}` }
-        userId={ `${notifier.id}` }
-        username={ notifier.username }
+        priority={notifier.relationshipPriority}
+        sources={notifier.avatar}
+        to={`/${notifier.username}`}
+        userId={`${notifier.id}`}
+        username={notifier.username}
       />
     </header>
   )
@@ -26,9 +26,9 @@ function renderBody({ children, summary }) {
   if (!children) { return null }
   return (
     <div className="NotificationBody">
-      { children }
-      { summary && summary.texts && summary.texts.length ?
-        <div className="NotificationSummaryTexts">{ summary.texts }</div> : null
+      {children}
+      {summary && summary.texts && summary.texts.length ?
+        <div className="NotificationSummaryTexts">{summary.texts}</div> : null
       }
     </div>
   )
@@ -45,7 +45,7 @@ renderBody.propTypes = {
 function renderAssets({ summary }) {
   return (
     summary && summary.assets && summary.assets.length ?
-      <div className="NotificationAsset">{ summary.assets[0] }</div> : null
+      <div className="NotificationAsset">{summary.assets[0]}</div> : null
   )
 }
 
@@ -60,10 +60,10 @@ function renderFooter({ activityPath, createdAt, retort }) {
   if (!createdAt) { return null }
   return (
     <footer className="NotificationFooter">
-      <Link className="NotificationFooterTimestamp" to={ activityPath }>
-        { new Date(createdAt).timeAgoInWords() }
+      <Link className="NotificationFooterTimestamp" to={activityPath}>
+        {new Date(createdAt).timeAgoInWords()}
       </Link>
-      { retort }
+      {retort}
     </footer>
   )
 }
@@ -85,11 +85,11 @@ export const Notification = ({
   }) => {
   const hasAsset = summary && summary.assets && summary.assets.length
   return (
-    <div className={ classNames('Notification', className, { hasAsset }) }>
-      { renderHeader({ notifier }) }
-      { renderAssets({ summary }) }
-      { renderBody({ children, summary }) }
-      { renderFooter({ activityPath, createdAt, retort }) }
+    <div className={classNames('Notification', className, { hasAsset })}>
+      {renderHeader({ notifier })}
+      {renderAssets({ summary })}
+      {renderBody({ children, summary })}
+      {renderFooter({ activityPath, createdAt, retort })}
     </div>
   )
 }

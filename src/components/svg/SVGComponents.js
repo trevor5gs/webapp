@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 export const SVGComponent = ({ children, ...rest }) =>
   <svg { ...rest }>
-    { children }
+    {children}
   </svg>
 
 SVGComponent.propTypes = {
@@ -15,9 +15,9 @@ export const SVGIcon = ({ children, className }) =>
   <SVGComponent
     width="20"
     height="20"
-    className={ classNames(className, 'SVGIcon') }
+    className={classNames(className, 'SVGIcon')}
   >
-    { children }
+    {children}
   </SVGComponent>
 
 SVGIcon.propTypes = {
@@ -30,9 +30,9 @@ export const SVGBox = ({ children, className }) =>
   <SVGComponent
     width="40"
     height="40"
-    className={ classNames(className, 'SVGBox') }
+    className={classNames(className, 'SVGBox')}
   >
-    { children }
+    {children}
   </SVGComponent>
 
 SVGBox.propTypes = {
@@ -45,9 +45,9 @@ export const SVGBoxMedium = ({ children, className }) =>
   <SVGComponent
     width="60"
     height="60"
-    className={ classNames(className, 'SVGBox') }
+    className={classNames(className, 'SVGBox')}
   >
-    { children }
+    {children}
   </SVGComponent>
 
 SVGBoxMedium.propTypes = {

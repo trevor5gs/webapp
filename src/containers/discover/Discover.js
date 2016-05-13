@@ -71,7 +71,7 @@ export class Discover extends Component {
 
   renderZeroStream() {
     return (
-      <ZeroStream onDismiss={ this.onDismissZeroStream }>
+      <ZeroStream onDismiss={this.onDismissZeroStream}>
         Explore creators and communities. Realize the promise of the internet.
       </ZeroStream>
     )
@@ -95,23 +95,23 @@ export class Discover extends Component {
     return (
       <main
         className="Discover View"
-        key={ `discover_${params.type || 'recommended'}` }
+        key={`discover_${params.type || 'recommended'}`}
         role="main"
       >
-        { isBeaconActive ? this.renderZeroStream() : null }
+        {isBeaconActive ? this.renderZeroStream() : null}
         <Promotion
-          coverDPI={ coverDPI }
-          creditsClickAction={ this.onClickTrackCredits }
-          isLoggedIn={ isLoggedIn }
-          userlist={ isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS }
+          coverDPI={coverDPI}
+          creditsClickAction={this.onClickTrackCredits}
+          isLoggedIn={isLoggedIn}
+          userlist={isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS}
         />
         <TabListLinks
-          activePath={ pathname }
+          activePath={pathname}
           className="LabelTabList"
           tabClasses="LabelTab"
-          tabs={ tabs }
+          tabs={tabs}
         />
-        <StreamComponent action={ action } ref="streamComponent" />
+        <StreamComponent action={action} ref="streamComponent" />
       </main>
     )
   }

@@ -34,11 +34,11 @@ export const NavbarMark = ({ currentStream, isLoggedIn, onClick }) => {
     <Link
       className="NavbarMark"
       draggable
-      onClick={ onClick }
-      to={ isLoggedIn ? currentStream : '/' }
+      onClick={onClick}
+      to={isLoggedIn ? currentStream : '/'}
     >
-      { getLogoModifier(mods) }
-      { getLogoMark(mark) }
+      {getLogoModifier(mods)}
+      {getLogoMark(mark)}
     </Link>
   )
 }

@@ -19,20 +19,20 @@ class OnboardingHeader extends Component {
       <header className="OnboardingHeader">
         <div className="OnboardingColumn">
           <ElloMark />
-          <h1>{ title }</h1>
-          <p>{ message }</p>
+          <h1>{title}</h1>
+          <p>{message}</p>
         </div>
         <div className="OnboardingColumn">
           <button
             className="OnboardingNextButton"
-            disabled={ isNextDisabled }
-            onClick={ nextAction }
+            disabled={isNextDisabled}
+            onClick={nextAction}
           >
             Next
           </button>
           <button
             className="OnboardingSkipButton"
-            onClick={ skipAction }
+            onClick={skipAction}
           >
             Skip
           </button>

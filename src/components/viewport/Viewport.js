@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 export const Viewport = (props) =>
 <div
-  className={ classNames(
+  className={classNames(
     'Viewport',
     { isNavbarFixed: props.isNavbarFixed },
     { isNavbarHidden: props.isNavbarHidden },
@@ -12,7 +12,7 @@ export const Viewport = (props) =>
     { isOffsetLayout: props.isOffsetLayout },
     { isProfileMenuActive: props.isProfileMenuActive },
   )}
-  data-pathname={ props.pathname }
+  data-pathname={props.pathname}
   role="presentation"
 />
 

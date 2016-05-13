@@ -112,19 +112,19 @@ class AwesomePeople extends Component {
         <OnboardingHeader
           title="Follow some awesome people."
           message="Ello is full of interesting and creative people committed to building a positive community."
-          isNextDisabled={ !following.length }
-          nextAction={ this.onClickNext }
-          skipAction={ this.onClickSkip }
+          isNextDisabled={!following.length}
+          nextAction={this.onClickNext}
+          skipAction={this.onClickSkip}
         />
-        <div className={ classNames({ isFollowingAll: this.isFollowingAll() }) }>
+        <div className={classNames({ isFollowingAll: this.isFollowingAll() })}>
           {
             userIds.length ?
-              <button className="PickerButton" ref="followAllButton" onClick={ this.followAll }>
-                <span>{ this.renderBigButtonText() }</span>
+              <button className="PickerButton" ref="followAllButton" onClick={this.followAll}>
+                <span>{this.renderBigButtonText()}</span>
               </button> :
               null
           }
-          <StreamComponent ref="streamComponent" action={ loadAwesomePeople() } />
+          <StreamComponent ref="streamComponent" action={loadAwesomePeople()} />
         </div>
       </main>
     )

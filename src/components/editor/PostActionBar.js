@@ -41,19 +41,19 @@ class PostActionBar extends Component {
     return (
       <div className="editor-actions">
 
-        <button className="PostActionButton forUpload" ref="browseButton" onClick={ this.browse }>
+        <button className="PostActionButton forUpload" ref="browseButton" onClick={this.browse}>
           <span className="PostActionButtonLabel">Upload</span>
-          { deviceSize === 'mobile' ? <CameraIcon /> : <BrowseIcon /> }
+          {deviceSize === 'mobile' ? <CameraIcon /> : <BrowseIcon />}
         </button>
 
-        <button className="PostActionButton forCancel" ref="cancelButton" onClick={ this.cancel }>
+        <button className="PostActionButton forCancel" ref="cancelButton" onClick={this.cancel}>
           <span className="PostActionButtonLabel">Cancel</span>
           <CancelIcon />
         </button>
 
         {
           replyAllAction ?
-            <button className="PostActionButton forReplyAll" onClick={ replyAllAction }>
+            <button className="PostActionButton forReplyAll" onClick={replyAllAction}>
               <span className="PostActionButtonLabel">Reply All</span>
               <ReplyAllIcon />
             </button> :
@@ -61,18 +61,18 @@ class PostActionBar extends Component {
         }
 
         <button
-          className={ `PostActionButton for${submitText}` }
-          disabled={ disableSubmitAction }
+          className={`PostActionButton for${submitText}`}
+          disabled={disableSubmitAction}
           ref="submitButton"
-          onClick={ this.submitted }
+          onClick={this.submitted}
         >
-          <span className="PostActionButtonLabel">{ submitText }</span>
+          <span className="PostActionButtonLabel">{submitText}</span>
           <PostIcon />
         </button>
 
         <input
           className="hidden"
-          onChange={ this.handleFileBrowser }
+          onChange={this.handleFileBrowser}
           ref="FileBrowser"
           type="file"
           accept="image/*"

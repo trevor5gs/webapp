@@ -41,8 +41,8 @@ class DeleteAccountDialog extends Component {
     return (
       <div className="Dialog DeleteAccountDialog">
         <h2>Delete account?</h2>
-        <button className="ConfirmDialogButton" onClick={ this.onClickConfirm }>Yes</button>
-        <button className="ConfirmDialogButton" onClick={ this.onClickJustKidding }>No</button>
+        <button className="ConfirmDialogButton" onClick={this.onClickConfirm}>Yes</button>
+        <button className="ConfirmDialogButton" onClick={this.onClickJustKidding}>No</button>
       </div>
     )
   }
@@ -51,8 +51,8 @@ class DeleteAccountDialog extends Component {
     return (
       <div className="Dialog DeleteAccountDialog">
         <h2>Are you sure?</h2>
-        <button className="ConfirmDialogButton" onClick={ this.onClickConfirmReally }>Yes</button>
-        <button className="ConfirmDialogButton" onClick={ this.onClickJustKidding }>No</button>
+        <button className="ConfirmDialogButton" onClick={this.onClickConfirmReally}>Yes</button>
+        <button className="ConfirmDialogButton" onClick={this.onClickJustKidding}>No</button>
         <p>
           * By deleting your account you remove your personal information from
           Ello. Your account cannot be restored.
@@ -72,7 +72,7 @@ class DeleteAccountDialog extends Component {
         <h2>{`You will be redirected in ${this.counter} ...`}</h2>
         <button
           className="ConfirmDialogButton"
-          onClick={ this.onClickJustKidding }
+          onClick={this.onClickJustKidding}
           style={{
             display: 'block',
             position: 'absolute',

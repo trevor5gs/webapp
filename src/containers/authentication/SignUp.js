@@ -38,11 +38,11 @@ class SignUp extends Component {
           <RegistrationRequestForm />
         </div>
         <AppleStoreLink />
-        <Credits onClick={ this.onClickTrackCredits } user={ featuredUser } />
+        <Credits onClick={this.onClickTrackCredits} user={featuredUser} />
         <Cover
-          coverDPI={ coverDPI }
-          coverImage={ featuredUser.coverImage }
-          coverOffset={ coverOffset }
+          coverDPI={coverDPI}
+          coverImage={featuredUser.coverImage}
+          coverOffset={coverOffset}
           modifiers="asFullScreen withOverlay"
         />
       </main>

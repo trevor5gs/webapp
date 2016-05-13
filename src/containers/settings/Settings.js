@@ -186,9 +186,9 @@ class Settings extends Component {
     const { dispatch, profile } = this.props
     dispatch(openModal(
       <DeleteAccountDialog
-        user={ profile }
-        onConfirm={ this.onConfirmAccountWasDeleted }
-        onDismiss={ this.closeModal }
+        user={profile}
+        onConfirm={this.onConfirmAccountWasDeleted}
+        onDismiss={this.closeModal}
       />
     , 'asDangerZone'))
   }
@@ -222,8 +222,8 @@ class Settings extends Component {
       const { dispatch, profile } = this.props
       dispatch(openModal(
         <AdultPostsDialog
-          onConfirm={ this.closeModal }
-          user={ profile }
+          onConfirm={this.closeModal}
+          user={profile}
         />
       ))
     }
@@ -235,12 +235,12 @@ class Settings extends Component {
     return (
       profile.externalLinksList.map((link, i) =>
         <a
-          href={ link.url }
+          href={link.url}
           target="_blank"
-          key={ `settingslinks_${i}` }
+          key={`settingslinks_${i}`}
           style={{ marginRight: `${5 / 16}rem` }}
         >
-          { link.text }
+          {link.text}
         </a>
       )
     )
@@ -249,7 +249,7 @@ class Settings extends Component {
   getOriginalAssetUrl(asset) {
     return (
     asset && asset.original && asset.original.url ?
-      <a href={ asset.original.url } target="_blank">View original image</a> :
+      <a href={asset.original.url} target="_blank">View original image</a> :
       <span>&mdash;</span>
     )
   }
@@ -292,7 +292,7 @@ class Settings extends Component {
 
   renderStatus(message) {
     if (message) {
-      return () => <p>{ message }</p>
+      return () => <p>{message}</p>
     }
     return null
   }
@@ -319,19 +319,19 @@ class Settings extends Component {
             title="Upload a header image"
             message="Or drag & drop"
             recommend="Recommended image size: 2560 x 1440"
-            openAlert={ bindActionCreators(openAlert, dispatch) }
-            closeAlert={ bindActionCreators(closeAlert, dispatch) }
-            saveAction={ bindActionCreators(saveCover, dispatch) }
+            openAlert={bindActionCreators(openAlert, dispatch)}
+            closeAlert={bindActionCreators(closeAlert, dispatch)}
+            saveAction={bindActionCreators(saveCover, dispatch)}
           />
           <Cover
-            coverDPI={ coverDPI }
-            coverImage={ profile.coverImage }
-            coverOffset={ coverOffset }
-            isHidden={ isCoverHidden }
+            coverDPI={coverDPI}
+            coverImage={profile.coverImage}
+            coverOffset={coverOffset}
+            isHidden={isCoverHidden}
             isModifiable
           />
         </div>
-        <button className="SettingsLogoutButton" onClick={ this.onLogOut }>Logout</button>
+        <button className="SettingsLogoutButton" onClick={this.onLogOut}>Logout</button>
 
         <div className="SettingsBody" >
           <div className="SettingsAvatarPicker" >
@@ -339,14 +339,14 @@ class Settings extends Component {
               title="Pick an Avatar"
               message="Or drag & drop it"
               recommend="Recommended image size: 360 x 360"
-              openAlert={ bindActionCreators(openAlert, dispatch) }
-              closeAlert={ bindActionCreators(closeAlert, dispatch) }
-              saveAction={ bindActionCreators(saveAvatar, dispatch) }
+              openAlert={bindActionCreators(openAlert, dispatch)}
+              closeAlert={bindActionCreators(closeAlert, dispatch)}
+              saveAction={bindActionCreators(saveAvatar, dispatch)}
             />
             <Avatar
               isModifiable
               size="large"
-              sources={ profile.avatar }
+              sources={profile.avatar}
             />
           </div>
 
@@ -361,96 +361,96 @@ class Settings extends Component {
           <form
             className="SettingsForm"
             noValidate="novalidate"
-            onSubmit={ this.onSubmit }
+            onSubmit={this.onSubmit}
             role="form"
           >
             <UsernameControl
-              classList={ boxControlClassNames }
+              classList={boxControlClassNames}
               label="Username"
-              onChange={ this.onChangeUsernameControl }
-              renderStatus={ this.renderStatus(usernameState.message) }
-              status={ usernameState.status }
-              suggestions={ usernameState.suggestions }
+              onChange={this.onChangeUsernameControl}
+              renderStatus={this.renderStatus(usernameState.message)}
+              status={usernameState.status}
+              suggestions={usernameState.suggestions}
               tabIndex="1"
-              text={ profile.username }
+              text={profile.username}
             />
             <EmailControl
-              classList={ boxControlClassNames }
+              classList={boxControlClassNames}
               label="Email"
-              onChange={ this.onChangeEmailControl }
-              renderStatus={ this.renderStatus(emailState.message) }
-              status={ emailState.status }
+              onChange={this.onChangeEmailControl}
+              renderStatus={this.renderStatus(emailState.message)}
+              status={emailState.status}
               tabIndex="2"
-              text={ profile.email }
+              text={profile.email}
             />
             <PasswordControl
-              classList={ boxControlClassNames }
+              classList={boxControlClassNames}
               label="Password"
-              onChange={ this.onChangePasswordControl }
+              onChange={this.onChangePasswordControl}
               placeholder="Set a new password"
-              renderStatus={ this.renderStatus(passwordState.message) }
+              renderStatus={this.renderStatus(passwordState.message)}
               ref="newPasswordControl"
-              status={ passwordState.status }
+              status={passwordState.status}
               tabIndex="3"
             />
-            <div className={ classNames('SettingsCredentialActions', { requiresSave }) }>
+            <div className={classNames('SettingsCredentialActions', { requiresSave })}>
               <p>To save changes you must re-enter your current Ello password.</p>
               <PasswordControl
-                classList={ boxControlClassNames }
+                classList={boxControlClassNames}
                 id="current_password"
                 label="Password - Please enter your current one."
                 name="user[current_password]"
-                onChange={ this.onChangeCurrentPasswordControl }
+                onChange={this.onChangeCurrentPasswordControl}
                 placeholder="Enter current password"
                 ref="currentPasswordControl"
-                status={ currentPasswordState.status }
-                tabIndex={ requiresSave ? '4' : '0' }
+                status={currentPasswordState.status}
+                tabIndex={requiresSave ? '4' : '0'}
               />
-              <FormButton disabled={ !requiresSave }>Save</FormButton>
+              <FormButton disabled={!requiresSave}>Save</FormButton>
             </div>
           </form>
 
           <InfoForm
-            controlClassModifiers={ boxControlClassNames }
+            controlClassModifiers={boxControlClassNames}
             showSaveMessage
-            tabIndexStart={ requiresSave ? 5 : 4 }
+            tabIndexStart={requiresSave ? 5 : 4}
           />
 
           <p className="SettingsLinks">
-            <Link to={ `/${profile.username}` }>View profile</Link>
+            <Link to={`/${profile.username}`}>View profile</Link>
             <Link to="/invitations">Invite people</Link>
             <Link to="/onboarding">Launch on-boarding</Link>
           </p>
 
           <div className="SettingsPreferences">
             <StreamComponent
-              action={ availableToggles() }
+              action={availableToggles()}
               ignoresScrollPosition
             />
 
             <TreeButton>NSFW</TreeButton>
             <TreePanel>
               <Preference
-                definition={ PREFERENCES.NSFW_VIEW }
+                definition={PREFERENCES.NSFW_VIEW}
                 id="viewsAdultContent"
-                isChecked={ profile.viewsAdultContent }
-                onToggleChange={ preferenceToggleChanged }
+                isChecked={profile.viewsAdultContent}
+                onToggleChange={preferenceToggleChanged}
               />
               <Preference
-                definition={ PREFERENCES.NSFW_POST }
+                definition={PREFERENCES.NSFW_POST}
                 id="postsAdultContent"
-                isChecked={ profile.postsAdultContent }
-                onToggleChange={ this.onTogglePostsAdultContent }
+                isChecked={profile.postsAdultContent}
+                onToggleChange={this.onTogglePostsAdultContent}
               />
-              <p><em>{ SETTINGS.NSFW_DISCLAIMER }</em></p>
+              <p><em>{SETTINGS.NSFW_DISCLAIMER}</em></p>
             </TreePanel>
 
-            { blockedCount > 0 ?
+            {blockedCount > 0 ?
               <div>
                 <TreeButton>Blocked users</TreeButton>
                 <TreePanel>
                   <StreamComponent
-                    action={ blockedUsers() }
+                    action={blockedUsers()}
                     className="BlockedUsers"
                     hasShowMoreButton
                     paginatorText="See more"
@@ -458,14 +458,14 @@ class Settings extends Component {
                   />
                 </TreePanel>
               </div> :
-              null }
+              null}
 
-            { mutedCount > 0 ?
+            {mutedCount > 0 ?
               <div>
                 <TreeButton>Muted users</TreeButton>
                 <TreePanel>
                   <StreamComponent
-                    action={ mutedUsers() }
+                    action={mutedUsers()}
                     className="MutedUsers"
                     hasShowMoreButton
                     paginatorText="See more"
@@ -473,28 +473,28 @@ class Settings extends Component {
                   />
                 </TreePanel>
               </div> :
-              null }
+              null}
 
             <TreeButton>Your Data</TreeButton>
             <TreePanel>
-              <p className="SettingsDataDescription">{ SETTINGS.YOUR_DATA_DESC}</p>
+              <p className="SettingsDataDescription">{SETTINGS.YOUR_DATA_DESC}</p>
               <dl className="SettingsDefinitionValues">
                 <dt>Username:</dt>
-                <dd>{ `@${profile.username}` }</dd>
+                <dd>{`@${profile.username}`}</dd>
                 <dt>Name:</dt>
-                <dd>{ profile.name || mdash }</dd>
+                <dd>{profile.name || mdash}</dd>
                 <dt>Short Bio:</dt>
-                <dd>{ profile.shortBio || mdash }</dd>
+                <dd>{profile.shortBio || mdash}</dd>
                 <dt>Links:</dt>
                 <dd>
-                  { !isEmpty(profile.externalLinksList) ?
+                  {!isEmpty(profile.externalLinksList) ?
                     this.getExternalLinkListAsText() :
-                    mdash }
+                    mdash}
                 </dd>
                 <dt>Avatar:</dt>
-                <dd>{ this.getOriginalAssetUrl(profile.avatar) }</dd>
+                <dd>{this.getOriginalAssetUrl(profile.avatar)}</dd>
                 <dt>Header:</dt>
-                <dd>{ this.getOriginalAssetUrl(profile.coverImage) }</dd>
+                <dd>{this.getOriginalAssetUrl(profile.coverImage)}</dd>
               </dl>
               <div className="SettingsCell">
                 <dl className="SettingsDefinition">
@@ -504,17 +504,17 @@ class Settings extends Component {
                     We will email you a link to download your data.
                   </dd>
                 </dl>
-                { profile.dataExport ?
+                {profile.dataExport ?
                   <a
                     className="SettingsButton"
-                    href={ profile.dataExport }
+                    href={profile.dataExport}
                     target="_blank"
                   >
                     Download Export
                   </a> :
                   <button
                     className="SettingsButton"
-                    onClick={ this.onClickRequestDataExport }
+                    onClick={this.onClickRequestDataExport}
                     ref="exportButton"
                   >
                     Request Export
@@ -528,17 +528,17 @@ class Settings extends Component {
               <div className="SettingsCell">
                   <dl className="SettingsDefinition">
                     <dt>
-                      <span>{ SETTINGS.ACCOUNT_DELETION_DEFINITION.term }</span>
+                      <span>{SETTINGS.ACCOUNT_DELETION_DEFINITION.term}</span>
                       <Emoji
                         name="wave"
                         title="Sad wave"
                         style={{ marginTop: `-${5 / 16}rem`, marginLeft: `${5 / 16}rem` }}
                       />
                     </dt>
-                    <dd>{ SETTINGS.ACCOUNT_DELETION_DEFINITION.desc }</dd>
+                    <dd>{SETTINGS.ACCOUNT_DELETION_DEFINITION.desc}</dd>
                     <button
                       className="SettingsButton asDangerous"
-                      onClick={ this.onClickDeleteAccountModal }
+                      onClick={this.onClickDeleteAccountModal}
                     >
                       Delete
                     </button>

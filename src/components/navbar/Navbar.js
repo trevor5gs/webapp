@@ -23,37 +23,37 @@ export const NavbarLoggedOut = ({
 }) =>
 <nav className="Navbar" role="navigation" >
   <NavbarMark
-    currentStream={ currentStream }
-    isLoggedIn={ isLoggedIn }
-    onClick={ onClickNavbarMark }
+    currentStream={currentStream}
+    isLoggedIn={isLoggedIn}
+    onClick={onClickNavbarMark}
   />
   <NavbarLabel />
-  { hasLoadMoreButton ? <NavbarMorePostsButton onClick={ onClickLoadMorePosts } /> : null }
+  {hasLoadMoreButton ? <NavbarMorePostsButton onClick={onClickLoadMorePosts} /> : null}
   <div className="NavbarLinks">
     <NavbarLink
       className="LabelOnly"
-      icon={ <SparklesIcon /> }
+      icon={<SparklesIcon />}
       label="Discover"
-      pathname={ pathname }
+      pathname={pathname}
       to="/"
     />
     <NavbarLink
       className="IconOnly"
-      icon={ <SearchIcon /> }
+      icon={<SearchIcon />}
       label="Search"
-      pathname={ pathname }
+      pathname={pathname}
       to="/search"
     />
     <NavbarLink
       className="LabelOnly"
       label="Log in"
-      pathname={ pathname }
+      pathname={pathname}
       to="/enter"
     />
     <NavbarLink
       className="LabelOnly"
       label="Sign up"
-      pathname={ pathname }
+      pathname={pathname}
       to="/signup"
     />
   </div>
@@ -96,73 +96,73 @@ export const NavbarLoggedIn = ({
 }) =>
 <nav className="Navbar" role="navigation" >
   <NavbarMark
-    currentStream={ currentStream }
-    isLoggedIn={ isLoggedIn }
-    onClick={ onClickNavbarMark }
+    currentStream={currentStream}
+    isLoggedIn={isLoggedIn}
+    onClick={onClickNavbarMark}
   />
   <NavbarOmniButton
-    onClick={ onClickOmniButton }
-    onDragOver={ onDragOverOmniButton }
+    onClick={onClickOmniButton}
+    onDragOver={onDragOverOmniButton}
   />
-  { hasLoadMoreButton ? <NavbarMorePostsButton onClick={ onClickLoadMorePosts } /> : null }
+  {hasLoadMoreButton ? <NavbarMorePostsButton onClick={onClickLoadMorePosts} /> : null}
   <div className="NavbarLinks">
     <NavbarLink
       className="LabelOnly"
-      icon={ <SparklesIcon /> }
+      icon={<SparklesIcon />}
       label="Discover"
-      pathname={ pathname }
+      pathname={pathname}
       to="/discover"
     />
     <NavbarLink
       className="LabelOnly"
-      icon={ <CircleIcon /> }
+      icon={<CircleIcon />}
       label="Following"
-      onDragLeave={ onDragLeaveStreamLink }
-      onDragOver={ onDragOverStreamLink }
-      onDrop={ onDropStreamLink }
-      pathname={ pathname }
+      onDragLeave={onDragLeaveStreamLink}
+      onDragOver={onDragOverStreamLink}
+      onDrop={onDropStreamLink}
+      pathname={pathname}
       to="/following"
     />
     <NavbarLink
       className=""
-      icon={ <StarIcon /> }
+      icon={<StarIcon />}
       label="Starred"
-      onDragLeave={ onDragLeaveStreamLink }
-      onDragOver={ onDragOverStreamLink }
-      onDrop={ onDropStreamLink }
-      pathname={ pathname }
+      onDragLeave={onDragLeaveStreamLink}
+      onDragOver={onDragOverStreamLink}
+      onDrop={onDropStreamLink}
+      pathname={pathname}
       to="/starred"
     />
     <NavbarLink
-      className={ classNames('IconOnly', { isNotificationsUnread }) }
-      icon={ <BoltIcon /> }
+      className={classNames('IconOnly', { isNotificationsUnread })}
+      icon={<BoltIcon />}
       label="Notifications"
-      onClick={ deviceSize !== 'mobile' ? onClickNotification : null }
-      pathname={ pathname }
-      to={ `/notifications${notificationCategory}` }
+      onClick={deviceSize !== 'mobile' ? onClickNotification : null}
+      pathname={pathname}
+      to={`/notifications${notificationCategory}`}
     />
     <NavbarLink
       className="IconOnly"
-      icon={ <SearchIcon /> }
+      icon={<SearchIcon />}
       label="Search"
-      pathname={ pathname }
+      pathname={pathname}
       to="/search"
     />
   </div>
   <NavbarProfile
-    avatar={ avatar }
-    isProfileMenuActive={ isProfileMenuActive }
-    onClickAvatar={ onClickAvatar }
-    onLogOut={ onLogOut }
-    username={ username }
+    avatar={avatar}
+    isProfileMenuActive={isProfileMenuActive}
+    onClickAvatar={onClickAvatar}
+    onLogOut={onLogOut}
+    username={username}
   />
-  { deviceSize === 'mobile' && !isLayoutToolHidden ?
+  {deviceSize === 'mobile' && !isLayoutToolHidden ?
     <NavbarLayoutTool
-      icon={ isGridMode ? <ListIcon /> : <GridIcon /> }
-      onClick={ onClickToggleLayoutMode }
+      icon={isGridMode ? <ListIcon /> : <GridIcon />}
+      onClick={onClickToggleLayoutMode}
     /> : null
   }
-  { deviceSize !== 'mobile' && isNotificationsActive ?
+  {deviceSize !== 'mobile' && isNotificationsActive ?
     <NotificationsContainer /> : null
   }
 </nav>

@@ -68,14 +68,14 @@ class AppContainer extends Component {
       { isLoggedOut: !isLoggedIn },
     )
     return (
-      <section className={ appClasses }>
-        <AppHelmet pathname={ pathname } />
-        <ViewportContainer routerParams={ params } />
-        { isLoggedIn ? <Omnibar /> : null }
-        { children }
-        <NavbarContainer routerParams={ params } />
+      <section className={appClasses}>
+        <AppHelmet pathname={pathname} />
+        <ViewportContainer routerParams={params} />
+        {isLoggedIn ? <Omnibar /> : null}
+        {children}
+        <NavbarContainer routerParams={params} />
         <FooterContainer />
-        { isLoggedIn ? <EditorToolsContainer /> : null }
+        {isLoggedIn ? <EditorToolsContainer /> : null}
         <Modal />
         <DevTools />
         <KeyboardContainer />

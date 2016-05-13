@@ -5,7 +5,7 @@ import { DotsIcon } from '../relationships/RelationshipIcons'
 const BlockMuteButton = ({ onClick }) =>
     <button
       className="BlockMuteButton"
-      onClick={ onClick }
+      onClick={onClick}
     >
       <DotsIcon />
       <Hint>Block or Mute</Hint>

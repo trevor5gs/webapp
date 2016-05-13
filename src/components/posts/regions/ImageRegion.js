@@ -218,12 +218,12 @@ class ImageRegion extends Component {
     const dimensions = this.getImageDimensions()
     return (
       <img
-        alt={ content.alt ? content.alt.replace('.gif', '') : null }
+        alt={content.alt ? content.alt.replace('.gif', '') : null}
         className="ImageAttachment"
-        height={ isNotification ? 'auto' : dimensions.height }
+        height={isNotification ? 'auto' : dimensions.height}
         role="presentation"
-        src={ this.attachment.optimized.url }
-        width={ dimensions.width }
+        src={this.attachment.optimized.url}
+        width={dimensions.width}
       />
     )
   }
@@ -234,13 +234,13 @@ class ImageRegion extends Component {
     const dimensions = this.getImageDimensions()
     return (
       <img
-        alt={ content.alt ? content.alt.replace('.jpg', '') : null }
+        alt={content.alt ? content.alt.replace('.jpg', '') : null}
         className="ImageAttachment"
-        height={ isNotification ? 'auto' : dimensions.height }
+        height={isNotification ? 'auto' : dimensions.height}
         role="presentation"
-        src={ this.attachment.hdpi.url }
-        srcSet={ srcset }
-        width={ dimensions.width }
+        src={this.attachment.hdpi.url}
+        srcSet={srcset}
+        width={dimensions.width}
       />
     )
   }
@@ -253,7 +253,7 @@ class ImageRegion extends Component {
     }
     return (
       <img
-        alt={ content.alt ? content.alt.replace('.jpg', '') : null }
+        alt={content.alt ? content.alt.replace('.jpg', '') : null}
         className="ImageAttachment"
         role="presentation"
         { ...attrs }
@@ -273,8 +273,8 @@ class ImageRegion extends Component {
   renderRegionAsLink() {
     const { postDetailPath } = this.props
     return (
-      <Link to={ postDetailPath } className="RegionContent">
-        { this.renderAttachment() }
+      <Link to={postDetailPath} className="RegionContent">
+        {this.renderAttachment()}
       </Link>
     )
   }
@@ -284,10 +284,10 @@ class ImageRegion extends Component {
     return (
       <div
         className="RegionContent"
-        onClick={ this.onClickStaticImageRegion }
+        onClick={this.onClickStaticImageRegion}
         style={{ transform: scale ? `scale(${scale})` : null, marginBottom }}
       >
-        { this.renderAttachment() }
+        {this.renderAttachment()}
       </div>
     )
   }
@@ -297,8 +297,8 @@ class ImageRegion extends Component {
     const { status } = this.state
     const asLink = isGridLayout && postDetailPath
     return (
-      <div className={ classNames('ImageRegion', status) } >
-        { asLink ? this.renderRegionAsLink() : this.renderRegionAsStatic() }
+      <div className={classNames('ImageRegion', status)} >
+        {asLink ? this.renderRegionAsLink() : this.renderRegionAsStatic()}
       </div>
     )
   }

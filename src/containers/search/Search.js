@@ -111,25 +111,25 @@ class Search extends Component {
     return (
       <main className="Search View" role="main">
         <Promotion
-          coverDPI={ coverDPI }
-          creditsClickAction={ this.onClickTrackCredits }
-          isLoggedIn={ isLoggedIn }
-          userlist={ isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS }
+          coverDPI={coverDPI}
+          creditsClickAction={this.onClickTrackCredits}
+          isLoggedIn={isLoggedIn}
+          userlist={isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS}
         />
-        <form className="SearchBar" onSubmit={ this.onSubmit }>
+        <form className="SearchBar" onSubmit={this.onSubmit}>
           <SearchControl
-            onChange={ this.onChangeControl }
-            text={ terms }
+            onChange={this.onChangeControl}
+            text={terms}
           />
           <TabListButtons
-            activeType={ type }
+            activeType={type}
             className="SearchTabList"
-            onTabClick={ this.onChangeControl }
+            onTabClick={this.onChangeControl}
             tabClasses="LabelTab SearchLabelTab"
-            tabs={ tabs }
+            tabs={tabs}
           />
         </form>
-        <StreamComponent ref="streamComponent" action={ this.getAction() } />
+        <StreamComponent ref="streamComponent" action={this.getAction()} />
       </main>
     )
   }

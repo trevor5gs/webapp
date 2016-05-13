@@ -31,12 +31,12 @@ export default class ContentWarningButton extends Component {
     const { isOpen } = this.state
     const classes = classNames('ContentWarningButton', { isOpen })
     return (
-      <button className={ classes } onClick={ this.onClickToggle }>
+      <button className={classes} onClick={this.onClickToggle}>
         <span className="ContentWarningButtonMessage">
-          { post.contentWarning }
+          {post.contentWarning}
         </span>
         <span className="ContentWarningButtonStateLabel">
-          { isOpen ? 'Hide' : 'View' }
+          {isOpen ? 'Hide' : 'View'}
         </span>
       </button>
     )

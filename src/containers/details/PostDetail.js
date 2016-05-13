@@ -99,35 +99,35 @@ class PostDetail extends Component {
       if (author) {
         postEls.push(
           <PostParser
-            isGridLayout={ false }
+            isGridLayout={false}
             isPostDetail
-            key={ `postParser_${post.id}` }
-            post={ post }
+            key={`postParser_${post.id}`}
+            post={post}
           />
         )
         if (author.hasCommentingEnabled && !(post.isReposting || post.isEditing)) {
-          postEls.push(<Editor key={ `editor_${post.id}` } post={ post } isComment />)
+          postEls.push(<Editor key={`editor_${post.id}`} post={post} isComment />)
         }
       }
     }
     return (
       <main className="PostDetail View" role="main">
-        { post && author ? <PostDetailHelmet post={ post } author={ author } /> : null }
+        {post && author ? <PostDetailHelmet post={post} author={author} /> : null}
         <div className="PostDetails Posts asList">
           <article
-            id={ `Post_${post ? post.id : null}` }
-            key={ `postDetail_${post ? post.id : null}` }
+            id={`Post_${post ? post.id : null}`}
+            key={`postDetail_${post ? post.id : null}`}
             className="PostList"
           >
             <div className="StreamContainer">
-              { postEls }
+              {postEls}
             </div>
             {
               post && author && author.hasCommentingEnabled ?
                 <StreamComponent
-                  action={ loadComments(post, false) }
+                  action={loadComments(post, false)}
                   className="CommentStreamComponent"
-                  key={ params.token }
+                  key={params.token}
                 /> :
                 null
             }

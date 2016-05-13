@@ -8,14 +8,14 @@ const Emoji = (props) => {
   return (
     <img
       { ...props }
-      alt={ alt || tip }
-      className={ classNames(className, 'Emoji') }
-      src={ src || `${ENV.AUTH_DOMAIN}/images/emoji/${name}.png` }
-      title={ title || tip }
-      width={ width || size }
-      height={ height || size }
-      size={ null }
-      name={ null }
+      alt={alt || tip}
+      className={classNames(className, 'Emoji')}
+      src={src || `${ENV.AUTH_DOMAIN}/images/emoji/${name}.png`}
+      title={title || tip}
+      width={width || size}
+      height={height || size}
+      size={null}
+      name={null}
     />
   )
 }

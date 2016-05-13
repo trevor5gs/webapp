@@ -21,14 +21,14 @@ export const Footer = ({
     <FooterLabel label="Beta 3.0" />
     <FooterLink
       className="asLabel"
-      href={ `${ENV.AUTH_DOMAIN}/wtf` }
+      href={`${ENV.AUTH_DOMAIN}/wtf`}
       label="WTF"
     />
-    { isAndroid() ?
+    {isAndroid() ?
       null :
       <FooterLink
         href="https://itunes.apple.com/app/apple-store/id953614327?pt=117139389&ct=webfooter&mt=8"
-        icon={ <PhoneIcon /> }
+        icon={<PhoneIcon />}
         label="Get the app"
       />
     }
@@ -36,16 +36,16 @@ export const Footer = ({
   <div className="FooterTools">
     <FooterTool
       className="TopTool"
-      icon={ <ChevronIcon /> }
+      icon={<ChevronIcon />}
       label="Top"
-      onClick={ onClickScrollToTop }
+      onClick={onClickScrollToTop}
     />
-    { !isLayoutToolHidden ?
+    {!isLayoutToolHidden ?
       <FooterTool
         className="LayoutTool"
-        icon={ isGridMode ? <ListIcon /> : <GridIcon /> }
-        label={ isGridMode ? 'List View' : 'Grid View' }
-        onClick={ onClickToggleLayoutMode }
+        icon={isGridMode ? <ListIcon /> : <GridIcon />}
+        label={isGridMode ? 'List View' : 'Grid View'}
+        onClick={onClickToggleLayoutMode}
       /> : null
     }
   </div>

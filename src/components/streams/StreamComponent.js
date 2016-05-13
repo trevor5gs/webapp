@@ -341,7 +341,7 @@ export class StreamComponent extends Component {
     const { meta } = action
     return (
       <section className="StreamComponent hasErrored">
-        { meta && meta.renderStream && meta.renderStream.asError ?
+        {meta && meta.renderStream && meta.renderStream.asError ?
           meta.renderStream.asError :
           <ErrorState4xx />
         }
@@ -352,7 +352,7 @@ export class StreamComponent extends Component {
   renderLoading() {
     const { className } = this.props
     return (
-      <section className={ classNames('StreamComponent isBusy', className)} >
+      <section className={classNames('StreamComponent isBusy', className)} >
         <div className="StreamBusyIndicator">
           <ElloMark />
         </div>
@@ -366,7 +366,7 @@ export class StreamComponent extends Component {
     const { meta } = action
     return (
       <section className="StreamComponent">
-        { meta && meta.renderStream && meta.renderStream.asZero ?
+        {meta && meta.renderStream && meta.renderStream.asZero ?
           meta.renderStream.asZero :
           null
         }
@@ -401,7 +401,7 @@ export class StreamComponent extends Component {
     const renderMethod = isGridMode ? 'asGrid' : 'asList'
     const pagination = result && result.pagination ? result.pagination : emptyPagination()
     return (
-      <section className={ classNames('StreamComponent', className) }>
+      <section className={classNames('StreamComponent', className)}>
         {
           meta.renderStream[renderMethod](
             renderObj,
@@ -409,16 +409,16 @@ export class StreamComponent extends Component {
             currentUser,
             columnCount || 2)
         }
-        { this.props.children }
+        {this.props.children}
         <Paginator
           hasShowMoreButton={
             typeof meta.resultKey !== 'undefined' && typeof meta.updateKey !== 'undefined'
           }
-          isHidden={ hidePaginator }
-          loadNextPage={ this.onLoadNextPage }
-          messageText={ paginatorText }
-          totalPages={ parseInt(pagination.totalPages, 10) }
-          totalPagesRemaining={ parseInt(pagination.totalPagesRemaining, 10) }
+          isHidden={hidePaginator}
+          loadNextPage={this.onLoadNextPage}
+          messageText={paginatorText}
+          totalPages={parseInt(pagination.totalPages, 10)}
+          totalPagesRemaining={parseInt(pagination.totalPagesRemaining, 10)}
         />
       </section>
     )

@@ -29,8 +29,8 @@ class RegionTools extends Component {
     dispatch(openModal(
       <ConfirmDialog
         title="Remove this content?"
-        onConfirm={ this.deleteContentConfirmed }
-        onDismiss={ this.closeModal }
+        onConfirm={this.deleteContentConfirmed}
+        onDismiss={this.closeModal}
       />))
   }
 
@@ -40,13 +40,13 @@ class RegionTools extends Component {
       <div className="RegionTools">
         <button
           className="BlockRemove"
-          onClick={ this.handleDeleteBlock }
+          onClick={this.handleDeleteBlock}
         >
           <DeleteIcon />
         </button>
         <button
           className="DragHandler"
-          data-drag-id={ editorId }
+          data-drag-id={editorId}
         >
           <DragIcon />
         </button>

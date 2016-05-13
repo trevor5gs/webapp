@@ -241,7 +241,7 @@ class BlockCollection extends Component {
         return (
           <Block
             { ...blockProps }
-            className={ classNames('BlockPlaceholder', { isUploading }) }
+            className={classNames('BlockPlaceholder', { isUploading })}
             ref="blockPlaceholder"
           />
         )
@@ -251,18 +251,18 @@ class BlockCollection extends Component {
         )
       case 'image':
         return (
-          <ImageBlock blob={ block.blob } { ...blockProps } />
+          <ImageBlock blob={block.blob} { ...blockProps } />
         )
       case 'repost':
         return (
-          <RepostBlock { ...blockProps } onRemoveBlock={ null } />
+          <RepostBlock { ...blockProps } onRemoveBlock={null} />
         )
       case 'text':
         return (
           <TextBlock
             { ...blockProps }
-            onInput={ this.handleTextBlockInput }
-            shouldAutofocus={ this.shouldAutofocus() }
+            onInput={this.handleTextBlockInput}
+            shouldAutofocus={this.shouldAutofocus()}
           />
         )
       default:
@@ -377,35 +377,35 @@ class BlockCollection extends Component {
     })
     return (
       <div
-        className={ editorClassNames }
+        className={editorClassNames}
         data-placeholder="Say Ello..."
-        onDragLeave={ this.onDragLeave }
-        onDragOver={ this.onDragOver }
-        onDrop={ this.onDrop }
+        onDragLeave={this.onDragLeave}
+        onDragOver={this.onDragOver}
+        onDrop={this.onDrop}
       >
-        { isComment ? <Avatar sources={ avatar } /> : null }
+        {isComment ? <Avatar sources={avatar} /> : null}
         <div
           className="editor-region"
-          data-num-blocks={ order.length }
+          data-num-blocks={order.length}
         >
-          { order.map((uid) => this.getBlockElement(collection[uid])) }
-          { dragBlock ?
+          {order.map((uid) => this.getBlockElement(collection[uid]))}
+          {dragBlock ?
             <div className="DragBlock" style={{ top: dragBlockTop }}>
-              { this.getBlockElement(dragBlock) }
+              {this.getBlockElement(dragBlock)}
             </div> :
             null
           }
         </div>
-        { showQuickEmoji ? <QuickEmoji onAddEmoji={ this.onInsertEmoji } /> : null }
+        {showQuickEmoji ? <QuickEmoji onAddEmoji={this.onInsertEmoji} /> : null}
         <PostActionBar
-          cancelAction={ cancelAction }
-          disableSubmitAction={ isPosting || isLoading || !hasContent }
-          editorId={ editorId }
-          handleFileAction={ this.handleFiles }
+          cancelAction={cancelAction}
+          disableSubmitAction={isPosting || isLoading || !hasContent}
+          editorId={editorId}
+          handleFileAction={this.handleFiles}
           ref="postActionBar"
-          replyAllAction={ isComment && isOwnPost && !isMobileGridStream ? this.replyAll : null }
-          submitAction={ this.submit }
-          submitText={ submitText }
+          replyAllAction={isComment && isOwnPost && !isMobileGridStream ? this.replyAll : null}
+          submitAction={this.submit}
+          submitText={submitText}
         />
       </div>
     )

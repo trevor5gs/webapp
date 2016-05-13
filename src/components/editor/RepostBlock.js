@@ -19,15 +19,15 @@ class RepostBlock extends Component {
     switch (block.kind) {
       case 'embed':
         return (
-          <img key={ `repostEmbed_${uid}` } src={ data.thumbnailLargeUrl } alt={ data.service } />
+          <img key={`repostEmbed_${uid}`} src={data.thumbnailLargeUrl} alt={data.service} />
         )
       case 'image':
         return (
-          <img key={ `repostImage_${uid}` } src={ data.url } alt={ data.alt } />
+          <img key={`repostImage_${uid}`} src={data.url} alt={data.alt} />
         )
       case 'text':
         return (
-          <div key={ `repostText_${uid}` } dangerouslySetInnerHTML={{ __html: data }} />
+          <div key={`repostText_${uid}`} dangerouslySetInnerHTML={{ __html: data }} />
         )
       default:
         return null
@@ -42,7 +42,7 @@ class RepostBlock extends Component {
           <RepostIcon />
           {` by @${currentUser.username}`}
         </div>
-        { data.map((block, i) => this.getBlockElement(block, i)) }
+        {data.map((block, i) => this.getBlockElement(block, i))}
         <div className="RegionTools">
           <LockIcon />
         </div>

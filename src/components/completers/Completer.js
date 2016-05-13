@@ -77,12 +77,12 @@ export default class Completer extends Component {
     return (
       completions.data.map((completion, i) =>
         <Completion
-          className={ i === selectedIndex ? 'active' : null }
-          key={ `completion_${i}` }
-          asset={ <Avatar classList="tiny" sources={{ tmp: { url: completion.imageUrl } }} />}
-          label={ `@${completion.name}` }
-          ref={ `completion_${i}` }
-          onClick={ onCompletion }
+          className={i === selectedIndex ? 'active' : null}
+          key={`completion_${i}`}
+          asset={<Avatar classList="tiny" sources={{ tmp: { url: completion.imageUrl } }} />}
+          label={`@${completion.name}`}
+          ref={`completion_${i}`}
+          onClick={onCompletion}
         />
       )
     )
@@ -94,12 +94,12 @@ export default class Completer extends Component {
     return (
       completions.data.map((completion, i) =>
         <Completion
-          className={ i === selectedIndex ? 'active' : null }
-          key={ `completion_${i}` }
-          asset={ <Emoji key={ completion.name } src={ completion.imageUrl } />}
-          label={ `:${completion.name}:` }
-          ref={ `completion_${i}` }
-          onClick={ onCompletion }
+          className={i === selectedIndex ? 'active' : null}
+          key={`completion_${i}`}
+          asset={<Emoji key={completion.name} src={completion.imageUrl} />}
+          label={`:${completion.name}:`}
+          ref={`completion_${i}`}
+          onClick={onCompletion}
         />
       )
     )
@@ -121,8 +121,8 @@ export default class Completer extends Component {
       style = { top: pos.top + 20, left: pos.left }
     }
     return (
-      <div style={ style } className={ classNames(className, 'Completer') }>
-        { completions.type === 'user' ? this.renderUsers() : this.renderEmoji() }
+      <div style={style} className={classNames(className, 'Completer')}>
+        {completions.type === 'user' ? this.renderUsers() : this.renderEmoji()}
       </div>
     )
   }
