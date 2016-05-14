@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import { ONBOARDING_VERSION } from '../../constants/gui_types'
+import { ONBOARDING_VERSION } from '../../constants/application_types'
 import { saveProfile } from '../../actions/profile'
 import { trackEvent } from '../../actions/tracking'
 import OnboardingHeader from '../../components/onboarding/OnboardingHeader'

@@ -1,7 +1,7 @@
 import { expect, getRenderedComponent } from '../../spec_helper'
 import { Notifications } from '../../../src/containers/notifications/Notifications'
 import Session from '../../../src/vendor/session'
-import { SESSION_KEYS } from '../../../src/constants/gui_types'
+import { SESSION_KEYS } from '../../../src/constants/application_types'
 
 describe('Notifications', () => {
   describe('#render', () => {

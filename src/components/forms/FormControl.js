@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
+import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
 
 class FormControl extends Component {

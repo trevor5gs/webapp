@@ -1,4 +1,5 @@
-import { ERROR_MESSAGES as ERROR, FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
+import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
+import { ERROR_MESSAGES as ERROR } from '../../constants/locales/en'
 
 export function isFormValid(states) {
   return states.every((state) => state.status === STATUS.SUCCESS)

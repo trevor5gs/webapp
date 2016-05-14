@@ -5,7 +5,7 @@ import { scrollToTop } from '../../vendor/scrollTop'
 import { loadNotifications } from '../../actions/notifications'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { LOAD_STREAM_SUCCESS } from '../../constants/action_types'
-import { SESSION_KEYS } from '../../constants/gui_types'
+import { SESSION_KEYS } from '../../constants/application_types'
 import {
   BubbleIcon,
   HeartIcon,
