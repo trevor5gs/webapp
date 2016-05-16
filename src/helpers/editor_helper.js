@@ -33,7 +33,7 @@ methods.addCompletions = (state, action) => {
 }
 
 
-methods.rehydrateEditors = (persistedEditors) => {
+methods.rehydrateEditors = (persistedEditors = {}) => {
   const editors = {}
   Object.keys(persistedEditors).forEach((item) => {
     const pe = persistedEditors[item]
