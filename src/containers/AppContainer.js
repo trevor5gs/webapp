@@ -3,6 +3,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
+import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
 import DevTools from '../components/devtools/DevTools'
 import { AppHelmet } from '../components/helmets/AppHelmet'
@@ -40,6 +41,7 @@ class AppContainer extends Component {
     if (get(this.props, 'authentication.isLoggedIn')) {
       const { dispatch } = this.props
       dispatch(loadProfile())
+      dispatch(loadNotifications({ category: 'all' }))
     }
   }
 
