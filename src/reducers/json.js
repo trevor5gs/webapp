@@ -76,7 +76,7 @@ methods.removePageId = (newState, pageName, id) => {
 
 methods.getCurrentUser = (state) => {
   let currentUser = null
-  Object.values(state[MAPPING_TYPES.USERS]).forEach((user) => {
+  Object.values(state[MAPPING_TYPES.USERS] || {}).forEach((user) => {
     if (user.relationshipPriority === RELATIONSHIP_PRIORITY.SELF) {
       currentUser = user
     }

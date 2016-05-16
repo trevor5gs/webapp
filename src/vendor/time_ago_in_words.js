@@ -84,7 +84,7 @@ Date.prototype.timeAgoInWords = function timeAgoInWords() {
   return this.distanceOfTimeInWords(new Date())
 }
 
-function updateStrings(dict) {
+function updateStrings(dict = {}) {
   Object.keys(dict).forEach((key) => {
     const value = dict[key]
     if (timeAgoInWordsStrings.hasOwnProperty(key)) {
