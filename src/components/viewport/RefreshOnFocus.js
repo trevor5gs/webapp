@@ -1,5 +1,6 @@
 const REFRESH_PERIOD = 30 * 60 * 1000 // 30 minutes in microseconds
-const focusSupported = typeof document.addEventListener !== 'undefined' &&
+const focusSupported = typeof document !== 'undefined' &&
+                       typeof document.addEventListener !== 'undefined' &&
                        typeof document.visibilityState !== 'undefined'
 
 let hiddenAt = null
