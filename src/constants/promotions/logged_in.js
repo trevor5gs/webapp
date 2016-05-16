@@ -18,7 +18,7 @@ export const LOGGED_IN_PROMOTIONS = [
     username: 'arkan_ask',
     caption: <h1>Supporting creators since 2014.</h1>,
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/274683/ello-regular-b568a74b.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/274683/ello-regular-6602b323.png' },
     },
     coverImage: {
       hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3900657/ello-hdpi-d21d755e.jpg' },
