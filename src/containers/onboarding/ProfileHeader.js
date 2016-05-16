@@ -9,6 +9,7 @@ import { saveCover } from '../../actions/profile'
 import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
 import Uploader from '../../components/uploaders/Uploader'
 import Cover from '../../components/assets/Cover'
+import { MainView } from '../../components/views/MainView'
 
 class ProfileHeader extends Component {
 
@@ -34,7 +35,7 @@ class ProfileHeader extends Component {
   render() {
     const { coverDPI, coverOffset, dispatch, profile } = this.props
     return (
-      <main className="CoverPicker View" role="main">
+      <MainView className="CoverPicker">
         <OnboardingHeader
           message="Choose a header image."
           nextPath="/onboarding/profile-avatar"
@@ -56,7 +57,7 @@ class ProfileHeader extends Component {
           coverOffset={coverOffset}
           isModifiable
         />
-      </main>
+      </MainView>
     )
   }
 }

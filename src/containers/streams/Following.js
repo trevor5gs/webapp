@@ -4,6 +4,7 @@ import { BEACONS } from '../../constants/action_types'
 import { loadFriends } from '../../actions/stream'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { ZeroStream } from '../../components/zeros/Zeros'
+import { MainView } from '../../components/views/MainView'
 
 const BEACON_VERSION = '1'
 
@@ -41,13 +42,13 @@ class Following extends Component {
   render() {
     const { isBeaconActive } = this.state
     return (
-      <main className="Following View" role="main">
+      <MainView className="Following">
         {isBeaconActive ? this.renderZeroStream() : null}
         <StreamComponent
           action={loadFriends()}
           scrollSessionKey="/following"
         />
-      </main>
+      </MainView>
     )
   }
 }

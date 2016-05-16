@@ -6,6 +6,7 @@ import StreamComponent from '../../components/streams/StreamComponent'
 import BatchEmailControl from '../../components/forms/BatchEmailControl'
 import { getBatchEmailState } from '../../components/forms/Validators'
 import FormButton from '../../components/forms/FormButton'
+import { MainView } from '../../components/views/MainView'
 
 class Invitations extends Component {
 
@@ -67,7 +68,7 @@ class Invitations extends Component {
     const { batchEmailState } = this.state
     const isValid = batchEmailState.status === STATUS.SUCCESS
     return (
-      <main className="Invitations View" role="main">
+      <MainView className="Invitations">
         <header className="InvitationsHeader">
           <h1 className="InvitationsHeading">Invite your friends</h1>
           <p>
@@ -105,7 +106,7 @@ class Invitations extends Component {
         </div>
         <h2 className="InvitationsStreamHeading">Friends you've invited</h2>
         <StreamComponent action={loadInvitedUsers()} />
-      </main>
+      </MainView>
     )
   }
 }

@@ -51,17 +51,17 @@
 
 // -------------------------------------
 
-.View > .StreamComponent.hasErrored,
-.View > .UserDetails > .StreamComponent.hasErrored,
-.View > .PostDetails > .StreamComponent.hasErrored
+.MainView > .StreamComponent.hasErrored,
+.MainView > .UserDetails > .StreamComponent.hasErrored,
+.MainView > .PostDetails > .StreamComponent.hasErrored
   margin: 0 auto
   max-width: rem(780)
 
-.View > .StreamComponent .StreamBusyIndicator
+.MainView > .StreamComponent .StreamBusyIndicator
   top: rem(80)
 
 @media(min-width: #{$break-2})
-  .View > .StreamComponent .StreamBusyIndicator
+  .MainView > .StreamComponent .StreamBusyIndicator
     top: rem(120)
 
 @media(min-width: #{$break-5})

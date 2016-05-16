@@ -9,6 +9,7 @@ import { loadCommunities, relationshipBatchSave } from '../../actions/onboarding
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
 import StreamComponent from '../../components/streams/StreamComponent'
+import { MainView } from '../../components/views/MainView'
 
 class Communities extends Component {
 
@@ -107,7 +108,7 @@ class Communities extends Component {
     const { following } = this.props
     const userIds = this.getUserIds()
     return (
-      <main className="CommunityPicker View" role="main">
+      <MainView className="CommunityPicker">
         <OnboardingHeader
           title="What are you interested in?"
           message="Follow the Ello Communities that you find most inspiring."
@@ -125,7 +126,7 @@ class Communities extends Component {
           }
           <StreamComponent ref="streamComponent" action={loadCommunities()} />
         </div>
-      </main>
+      </MainView>
     )
   }
 }

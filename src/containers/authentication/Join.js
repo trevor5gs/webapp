@@ -26,6 +26,7 @@ import {
   getPasswordState,
 } from '../../components/forms/Validators'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
+import { MainView } from '../../components/views/MainView'
 
 class Join extends Component {
 
@@ -253,7 +254,7 @@ class Join extends Component {
     const isValid = isFormValid([emailState, usernameState, passwordState])
     const boxControlClassNames = 'asBoxControl'
     return (
-      <main className="Authentication View" role="main">
+      <MainView className="Authentication">
         <div className="AuthenticationFormDialog">
           <h1>
             Welcome to Ello.
@@ -320,7 +321,7 @@ class Join extends Component {
           coverOffset={coverOffset}
           modifiers="asFullScreen withOverlay"
         />
-      </main>
+      </MainView>
     )
   }
 }

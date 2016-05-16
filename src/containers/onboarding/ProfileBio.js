@@ -9,6 +9,7 @@ import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
 import Avatar from '../../components/assets/Avatar'
 import InfoForm from '../../components/forms/InfoForm'
 import Cover from '../../components/assets/Cover'
+import { MainView } from '../../components/views/MainView'
 
 class ProfileBio extends Component {
 
@@ -39,7 +40,7 @@ class ProfileBio extends Component {
   render() {
     const { coverDPI, coverOffset, profile } = this.props
     return (
-      <main className="InfoPicker View" role="main">
+      <MainView className="InfoPicker">
         <OnboardingHeader
           title="Customize your profile."
           message="Fill out your bio."
@@ -62,7 +63,7 @@ class ProfileBio extends Component {
           coverImage={profile.coverImage}
           coverOffset={coverOffset}
         />
-      </main>
+      </MainView>
     )
   }
 }

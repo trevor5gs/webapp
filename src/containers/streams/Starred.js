@@ -4,6 +4,7 @@ import { BEACONS } from '../../constants/action_types'
 import { loadNoise } from '../../actions/stream'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { ZeroStream } from '../../components/zeros/Zeros'
+import { MainView } from '../../components/views/MainView'
 
 const BEACON_VERSION = '1'
 
@@ -41,13 +42,13 @@ class Starred extends Component {
   render() {
     const { isBeaconActive } = this.state
     return (
-      <main className="Starred View" role="main">
+      <MainView className="Starred">
         {isBeaconActive ? this.renderZeroStream() : null}
         <StreamComponent
           action={loadNoise()}
           scrollSessionKey="/starred"
         />
-      </main>
+      </MainView>
     )
   }
 }
