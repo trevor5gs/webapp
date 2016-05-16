@@ -1,19 +1,29 @@
 // TODO: test these as they are data related
+// TODO: We introduced a bug trying to conform to no-restricted-syntax, need to
+// investigate further and remove the disabled linting
 export function findBy(params, collection, json) {
   const models = json[collection]
   if (!models) {
     return null
   }
-  let found = null
-  Object.keys(models).forEach((modelId) => {
-    const model = models[modelId]
-    Object.keys(params).forEach((propName) => {
-      if (model[propName] !== params[propName]) {
-        found = model
+  /* eslint-disable no-restricted-syntax */
+  for (const modelId in models) {
+    if (models.hasOwnProperty(modelId)) {
+      const model = models[modelId]
+      let found = true
+      for (const propName in params) {
+        if (model[propName] !== params[propName]) {
+          found = false
+          break
+        }
       }
-    })
-  })
-  return found
+      if (found) {
+        return model
+      }
+    }
+  }
+  /* eslint-enable no-restricted-syntax */
+  return null
 }
 
 export function findModel(json, initModel) {
