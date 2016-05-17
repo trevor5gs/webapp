@@ -1,4 +1,3 @@
-import Honeybadger from 'honeybadger-js'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
@@ -7,6 +6,7 @@ import { body, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import CommentTools from '../comments/CommentTools'
 import Editor from '../../components/editor/Editor'
+import Honeybadger from '../../vendor/honeybadger'
 
 function header(comment, author) {
   if (!comment || !author) { return null }
@@ -41,7 +41,6 @@ function footer(comment, author, currentUser, post) {
 }
 
 function parseComment(comment, author, currentUser, post, isGridLayout = true, json) {
-  const cells = []
   if (!comment.content) {
     // send some data to honeybadger so we can hopefully track down
     // why there isn't any content here this should be temporary
@@ -51,8 +50,9 @@ function parseComment(comment, author, currentUser, post, isGridLayout = true, j
       fingerprint: 'No content on comment',
       json: JSON.stringify(json),
       message: 'No content on comment',
-    })
+    });
   }
+  const cells = []
   cells.push(header(comment, author))
   cells.push(
     <div className="CommentBody" key={`CommentBody${comment.id}`} >
