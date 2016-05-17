@@ -1,3 +1,4 @@
+import Honeybadger from 'honeybadger-js'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
@@ -6,7 +7,6 @@ import { body, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import CommentTools from '../comments/CommentTools'
 import Editor from '../../components/editor/Editor'
-import { trackEvent } from '../../actions/tracking'
 
 function header(comment, author) {
   if (!comment || !author) { return null }
@@ -40,16 +40,18 @@ function footer(comment, author, currentUser, post) {
   )
 }
 
-function parseComment(comment, author, currentUser, post, isGridLayout = true, dispatch, json) {
+function parseComment(comment, author, currentUser, post, isGridLayout = true, json) {
   const cells = []
   if (!comment.content) {
-    // send some data to segment so we can hopefully track down
+    // send some data to honeybadger so we can hopefully track down
     // why there isn't any content here this should be temporary
     // until we figure out how to fix this issue
-    dispatch(trackEvent('comment-no-content-error', {
+    Honeybadger.notify({
       comment: JSON.stringify(comment),
+      fingerprint: 'No content on comment',
       json: JSON.stringify(json),
-    }))
+      message: 'No content on comment',
+    })
   }
   cells.push(header(comment, author))
   cells.push(
@@ -70,7 +72,6 @@ class CommentParser extends Component {
     comment: PropTypes.object,
     commentBody: PropTypes.array,
     currentUser: PropTypes.object,
-    dispatch: PropTypes.func,
     isEditing: PropTypes.bool,
     isGridLayout: PropTypes.bool,
     json: PropTypes.object,
@@ -78,15 +79,15 @@ class CommentParser extends Component {
   }
 
   render() {
-    const { comment, author, assets, commentBody, currentUser,
-      dispatch, isEditing, isGridLayout, json, post } = this.props
+    const { comment, author, assets, commentBody,
+      currentUser, isEditing, isGridLayout, json, post } = this.props
     if (!comment) { return null }
     setModels({ assets })
     return (
       <div>
         {isEditing && commentBody ?
           <Editor isComment comment={comment} /> :
-          parseComment(comment, author, currentUser, post, isGridLayout, dispatch, json)
+          parseComment(comment, author, currentUser, post, isGridLayout, json)
         }
       </div>
     )
