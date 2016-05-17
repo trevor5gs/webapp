@@ -10,6 +10,7 @@ import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
 import Avatar from '../../components/assets/Avatar'
 import Uploader from '../../components/uploaders/Uploader'
 import Cover from '../../components/assets/Cover'
+import { MainView } from '../../components/views/MainView'
 
 class ProfileAvatar extends Component {
 
@@ -35,7 +36,7 @@ class ProfileAvatar extends Component {
   render() {
     const { coverDPI, coverOffset, dispatch, profile } = this.props
     return (
-      <main className="AvatarPicker View" role="main">
+      <MainView className="AvatarPicker">
         <OnboardingHeader
           message="Choose an avatar."
           title="Customize your profile."
@@ -63,7 +64,7 @@ class ProfileAvatar extends Component {
           coverImage={profile.coverImage}
           coverOffset={coverOffset}
         />
-      </main>
+      </MainView>
     )
   }
 }

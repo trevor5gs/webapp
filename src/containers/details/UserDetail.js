@@ -28,6 +28,7 @@ import {
   ZeroStateFirstPost,
   ZeroStateSayHello,
 } from '../../components/zeros/Zeros'
+import { MainView } from '../../components/views/MainView'
 
 class UserDetail extends Component {
   static propTypes = {
@@ -165,11 +166,11 @@ class UserDetail extends Component {
       case ACTION_TYPES.PROFILE.DETAIL_FAILURE:
         if (!user && stream.error) {
           return (
-            <main className="UserDetail View" key={`userDetail_${type}`} role="main">
+            <MainView className="UserDetail" key={`userDetail_${type}`}>
               <section className="StreamComponent hasErrored">
                 <ErrorState4xx />
               </section>
-            </main>
+            </MainView>
           )
         }
         break
@@ -251,10 +252,9 @@ class UserDetail extends Component {
     }
     const streamKey = `${params.username}${type === 'following' ? activeUserFollowingType : ''}`
     return (
-      <main
-        className={classNames('UserDetail', 'View', omnibar.isActive ? 'OmnibarActive' : null)}
+      <MainView
+        className={classNames('UserDetail', omnibar.isActive ? 'OmnibarActive' : null)}
         key={`userDetail_${type}`}
-        role="main"
       >
         {user ? <UserDetailHelmet user={user} /> : null}
         <div className="UserDetails">
@@ -274,7 +274,7 @@ class UserDetail extends Component {
               null
           }
         </div>
-      </main>
+      </MainView>
     )
   }
 }

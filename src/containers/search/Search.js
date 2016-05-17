@@ -12,6 +12,7 @@ import Promotion from '../../components/assets/Promotion'
 import SearchControl from '../../components/forms/SearchControl'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { TabListButtons } from '../../components/tabs/TabList'
+import { MainView } from '../../components/views/MainView'
 
 class Search extends Component {
 
@@ -109,7 +110,7 @@ class Search extends Component {
       { type: 'users', children: 'People' },
     ]
     return (
-      <main className="Search View" role="main">
+      <MainView className="Search">
         <Promotion
           coverDPI={coverDPI}
           creditsClickAction={this.onClickTrackCredits}
@@ -130,7 +131,7 @@ class Search extends Component {
           />
         </form>
         <StreamComponent ref="streamComponent" action={this.getAction()} />
-      </main>
+      </MainView>
     )
   }
 }

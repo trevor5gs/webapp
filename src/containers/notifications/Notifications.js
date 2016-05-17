@@ -15,6 +15,7 @@ import {
 import { TabListLinks } from '../../components/tabs/TabList'
 import { Paginator } from '../../components/streams/Paginator'
 import Session from '../../../src/vendor/session'
+import { MainView } from '../../components/views/MainView'
 
 /* eslint-disable react/prefer-stateless-function */
 export class Notifications extends Component {
@@ -89,7 +90,7 @@ export class Notifications extends Component {
       { to: '/notifications/relationships', type: 'relationships', children: <RelationshipIcon /> },
     ]
     return (
-      <main className="Notifications View" role="main">
+      <MainView className="Notifications">
         <TabListLinks
           activePath={pathname}
           className="IconTabList NotificationsContainerTabs"
@@ -114,7 +115,7 @@ export class Notifications extends Component {
           scrollSessionKey={`notifications_${category || 'all'}`}
           ref="streamComponent"
         />
-      </main>
+      </MainView>
     )
   }
 }

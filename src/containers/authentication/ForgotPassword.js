@@ -13,6 +13,7 @@ import EmailControl from '../../components/forms/EmailControl'
 import FormButton from '../../components/forms/FormButton'
 import { isFormValid, getEmailStateFromClient } from '../../components/forms/Validators'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
+import { MainView } from '../../components/views/MainView'
 
 class ForgotPassword extends Component {
 
@@ -115,7 +116,7 @@ class ForgotPassword extends Component {
     const { coverDPI, coverOffset } = this.props
     const { featuredUser, formStatus } = this.state
     return (
-      <main className="Authentication View" role="main">
+      <MainView className="Authentication">
         <div className="AuthenticationFormDialog">
           <h1>
             <Emoji name="hot_shit" title="It really does" size={32} />
@@ -131,7 +132,7 @@ class ForgotPassword extends Component {
           coverOffset={coverOffset}
           modifiers="asFullScreen withOverlay"
         />
-      </main>
+      </MainView>
     )
   }
 }

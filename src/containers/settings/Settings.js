@@ -44,6 +44,7 @@ import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
 import StreamComponent from '../../components/streams/StreamComponent'
 import InfoForm from '../../components/forms/InfoForm'
+import { MainView } from '../../components/views/MainView'
 
 class Settings extends Component {
 
@@ -312,7 +313,7 @@ class Settings extends Component {
     const boxControlClassNames = 'asBoxControl onWhite'
 
     return (
-      <main className="Settings View" role="main">
+      <MainView className="Settings">
         <div className="SettingsCoverPicker">
           <Uploader
             title="Upload a header image"
@@ -546,7 +547,7 @@ class Settings extends Component {
             </TreePanel>
           </div>
         </div>
-      </main>
+      </MainView>
     )
   }
 }

@@ -9,6 +9,7 @@ import { ErrorState4xx } from '../../components/errors/Errors'
 import PostParser from '../../components/parsers/PostParser'
 import Editor from '../../components/editor/Editor'
 import StreamComponent from '../../components/streams/StreamComponent'
+import { MainView } from '../../components/views/MainView'
 
 class PostDetail extends Component {
 
@@ -81,11 +82,11 @@ class PostDetail extends Component {
       case ACTION_TYPES.POST.DETAIL_FAILURE:
         if (!post && stream.error) {
           return (
-            <main className="PostDetail View" role="main">
+            <MainView className="PostDetail">
               <section className="StreamComponent hasErrored">
                 <ErrorState4xx />
               </section>
-            </main>
+            </MainView>
           )
         }
         break
@@ -111,7 +112,7 @@ class PostDetail extends Component {
       }
     }
     return (
-      <main className="PostDetail View" role="main">
+      <MainView className="PostDetail">
         {post && author ? <PostDetailHelmet post={post} author={author} /> : null}
         <div className="PostDetails Posts asList">
           <article
@@ -133,7 +134,7 @@ class PostDetail extends Component {
             }
           </article>
         </div>
-      </main>
+      </MainView>
     )
   }
 }

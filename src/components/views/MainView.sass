@@ -1,36 +1,36 @@
 @import ../../vendor/lib
 
-.View
+.MainView
   padding-top: rem(85)
   background-color: white
 
-.UserDetail.View,
-.Settings.View
+.UserDetail.MainView,
+.Settings.MainView
   padding-top: rem(40)
   margin-top: calc(56.25% + #{rem(40)})
   min-height: 100vh
 
-.PostDetail.View,
+.PostDetail.MainView,
   padding-bottom: rem(30)
 
-.UserDetail.View.OmnibarActive
+.UserDetail.MainView.OmnibarActive
   margin-top: 0
 
 @media(max-width: #{$break-2-max})
-  .isLoggedOut .View
+  .isLoggedOut .MainView
     padding-top: rem(50)
 
 @media(min-width: #{em(375)})
-  .UserDetail.View,
-  .Settings.View
+  .UserDetail.MainView,
+  .Settings.MainView
     margin-top: calc(56.25% + #{rem(20)})
 
 @media(min-width: #{$break-2})
-  .View
+  .MainView
     padding-top: rem(80)
-  .Authentication.View
+  .Authentication.MainView
     padding-top: 0
-  .UserDetail.View,
-  .Settings.View
+  .UserDetail.MainView,
+  .Settings.MainView
     margin-top: 56.25%
 

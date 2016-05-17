@@ -21,6 +21,7 @@ import {
   getPasswordState,
 } from '../../components/forms/Validators'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
+import { MainView } from '../../components/views/MainView'
 
 class SignIn extends Component {
 
@@ -147,7 +148,7 @@ class SignIn extends Component {
     } = this.state
     const isValid = isFormValid([emailState, passwordState])
     return (
-      <main className="Authentication View" role="main">
+      <MainView className="Authentication">
         <div className="AuthenticationFormDialog">
           <h1>
             Welcome back.
@@ -190,7 +191,7 @@ class SignIn extends Component {
           coverOffset={coverOffset}
           modifiers="asFullScreen withOverlay"
         />
-      </main>
+      </MainView>
     )
   }
 }

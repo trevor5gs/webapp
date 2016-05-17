@@ -7,6 +7,7 @@ import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
 import RegistrationRequestForm from '../../components/forms/RegistrationRequestForm'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
+import { MainView } from '../../components/views/MainView'
 
 class SignUp extends Component {
 
@@ -33,7 +34,7 @@ class SignUp extends Component {
     const { coverDPI, coverOffset } = this.props
     const { featuredUser } = this.state
     return (
-      <main className="Authentication View" role="main">
+      <MainView className="Authentication">
         <div className="AuthenticationFormDialog">
           <RegistrationRequestForm />
         </div>
@@ -45,7 +46,7 @@ class SignUp extends Component {
           coverOffset={coverOffset}
           modifiers="asFullScreen withOverlay"
         />
-      </main>
+      </MainView>
     )
   }
 }

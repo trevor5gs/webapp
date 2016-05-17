@@ -10,6 +10,7 @@ import { loadAwesomePeople, relationshipBatchSave } from '../../actions/onboardi
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
 import StreamComponent from '../../components/streams/StreamComponent'
+import { MainView } from '../../components/views/MainView'
 
 class AwesomePeople extends Component {
 
@@ -108,7 +109,7 @@ class AwesomePeople extends Component {
     const { following } = this.props
     const userIds = this.getUserIds()
     return (
-      <main className="PeoplePicker View" role="main">
+      <MainView className="PeoplePicker">
         <OnboardingHeader
           title="Follow some awesome people."
           message="Ello is full of interesting and creative people committed to building a positive community."
@@ -126,7 +127,7 @@ class AwesomePeople extends Component {
           }
           <StreamComponent ref="streamComponent" action={loadAwesomePeople()} />
         </div>
-      </main>
+      </MainView>
     )
   }
 }

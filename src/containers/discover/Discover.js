@@ -11,6 +11,7 @@ import Promotion from '../../components/assets/Promotion'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { TabListLinks } from '../../components/tabs/TabList'
 import { ZeroStream } from '../../components/zeros/Zeros'
+import { MainView } from '../../components/views/MainView'
 
 const BEACON_VERSION = '1'
 
@@ -93,11 +94,7 @@ export class Discover extends Component {
       // { to: '/discover/featured-users', children: 'Featured Users' },
     ]
     return (
-      <main
-        className="Discover View"
-        key={`discover_${params.type || 'recommended'}`}
-        role="main"
-      >
+      <MainView className="Discover" key={`discover_${params.type || 'recommended'}`}>
         {isBeaconActive ? this.renderZeroStream() : null}
         <Promotion
           coverDPI={coverDPI}
@@ -112,7 +109,7 @@ export class Discover extends Component {
           tabs={tabs}
         />
         <StreamComponent action={action} ref="streamComponent" />
-      </main>
+      </MainView>
     )
   }
 }
