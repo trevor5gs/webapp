@@ -77,7 +77,7 @@ methods.addHasMention = (state) => {
 methods.addIsLoading = (state) => {
   const newState = cloneDeep(state)
   const { collection } = newState
-  let isLoading = Object.values(collection).some((block) =>
+  let isLoading = Object.values(collection || {}).some((block) =>
     block.kind === 'image' && block.isLoading
   )
   if (!isLoading && newState.dragBlock) { isLoading = newState.dragBlock.isLoading }
