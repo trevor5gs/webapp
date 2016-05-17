@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import _ from 'lodash'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as jsonReducer from '../../reducers/json'
@@ -19,20 +20,13 @@ methods.updateCommentsCount = (newState, postId, delta) => {
 }
 
 methods.addOrUpdateComment = (newState, action) => {
-  const { model, postId } = action.payload
+  const { model, postId, response } = action.payload
   const post = newState[MAPPING_TYPES.POSTS][postId]
-  let response = null
   let index = null
   switch (action.type) {
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
-      response = action.payload.response
-      // the comments wouldn't exist if you refreshed
-      // on a post detail that didn't have any comments
-      if (!newState[MAPPING_TYPES.COMMENTS]) {
-        newState[MAPPING_TYPES.COMMENTS] = {}
-      }
-      newState[MAPPING_TYPES.COMMENTS][response.id] = response
+      _.setWith(newState, [MAPPING_TYPES.COMMENTS, response.id], response, Object)
       if (action.type === ACTION_TYPES.COMMENT.UPDATE_SUCCESS) { return newState }
       // add the comment to the linked array
       if (post.links && post.links.comments) {
