@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react'
-import { SHORTCUT_KEYS } from '../../constants/gui_types'
+import { SHORTCUT_KEYS } from '../../constants/application_types'
 
 const HelpDialog = () =>
   <div className="Dialog HelpDialog">

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import { SHORTCUT_KEYS } from '../../constants/gui_types'
+import { SHORTCUT_KEYS } from '../../constants/application_types'
 import { closeModal, closeAlert } from '../../actions/modals'
 import Mousetrap from '../../vendor/mousetrap'
 

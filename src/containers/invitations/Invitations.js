@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { FORM_CONTROL_STATUS as STATUS } from '../../constants/gui_types'
+import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { inviteUsers, loadInvitedUsers } from '../../actions/invitations'
 import StreamComponent from '../../components/streams/StreamComponent'
 import BatchEmailControl from '../../components/forms/BatchEmailControl'
