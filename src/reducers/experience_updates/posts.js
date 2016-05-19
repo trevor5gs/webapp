@@ -83,7 +83,8 @@ methods.addOrUpdatePost = (newState, action) => {
     jsonReducer.methods.getCurrentUser(newState)
   switch (action.type) {
     case ACTION_TYPES.POST.CREATE_SUCCESS:
-      _.set(newState, [MAPPING_TYPES.POSTS, response.id], response)
+      _.setWith(newState, [MAPPING_TYPES.POSTS, response.id], response, Object)
+      if (action.type === ACTION_TYPES.POST.UPDATE_SUCCESS) { return newState }
       jsonReducer.methods.appendPageId(
         newState, '/following',
         MAPPING_TYPES.POSTS, response.id, false)
@@ -128,9 +129,6 @@ methods.addOrUpdatePost = (newState, action) => {
       if (user) {
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', -1)
       }
-      return newState
-    case ACTION_TYPES.POST.UPDATE_SUCCESS:
-      newState[MAPPING_TYPES.POSTS][response.id] = response
       return newState
     default:
       return newState

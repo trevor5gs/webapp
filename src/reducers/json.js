@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
-import { merge, uniq, set, get } from 'lodash'
+import { get, merge, setWith, uniq } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
@@ -58,7 +58,7 @@ methods.appendPageId = (newState, pageName, mappingType, id, addNewResult = true
       ids: [`${id}`], type: mappingType, pagination: emptyPagination(),
     }
   }
-  set(newState, ['pages', pageName], page)
+  setWith(newState, ['pages', pageName], page, Object)
   return newState
 }
 
@@ -69,7 +69,7 @@ methods.removePageId = (newState, pageName, id) => {
     if (index !== -1) {
       existingIds.splice(index, 1)
     }
-    set(newState, ['pages', pageName, 'ids'], existingIds)
+    setWith(newState, ['pages', pageName, 'ids'], existingIds, Object)
   }
   return newState
 }

@@ -2,7 +2,6 @@ import './main.sass'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
 
-import Honeybadger from 'honeybadger-js'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
@@ -15,7 +14,7 @@ import { persistStore, storages } from 'redux-persist'
 import store from './store'
 import routes from './routes'
 import session from './vendor/session'
-
+import Honeybadger from './vendor/honeybadger'
 import MemoryStore from './vendor/memory_store'
 
 import './vendor/embetter'
@@ -24,7 +23,7 @@ import './vendor/embetter_initializer'
 Honeybadger.configure({
   api_key: ENV.HONEYBADGER_API_KEY,
   environment: ENV.HONEYBADGER_ENVIRONMENT,
-});
+})
 
 updateTimeAgoStrings({ about: '' })
 
