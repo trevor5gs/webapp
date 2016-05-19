@@ -31,6 +31,7 @@ describe('gui reducer', () => {
       'history',
       'innerHeight',
       'innerWidth',
+      'isAuthenticationView',
       'isCoverHidden',
       'isGridMode',
       'isLayoutToolHidden',
@@ -39,6 +40,7 @@ describe('gui reducer', () => {
       'isNavbarSkippingTransition',
       'isNotificationsUnread',
       'isOffsetLayout',
+      'isOnboardingView',
       'lastDiscoverBeaconVersion',
       'lastFollowingBeaconVersion',
       'lastNotificationCheck',
@@ -227,6 +229,42 @@ describe('gui reducer', () => {
       expect(reducer(undefined, action1)).to.have.property('isLayoutToolHidden', false)
       const action2 = { type: LOCATION_CHANGE, payload: { pathname: '/settings' } }
       expect(reducer(undefined, action2)).to.have.property('isLayoutToolHidden', true)
+    })
+
+    it('LOCATION_CHANGE updates isAuthenticationView', () => {
+      const root = { type: LOCATION_CHANGE, payload: { pathname: '/' } }
+      const enter = { type: LOCATION_CHANGE, payload: { pathname: '/enter' } }
+      const join = { type: LOCATION_CHANGE, payload: { pathname: '/join' } }
+      const password = { type: LOCATION_CHANGE, payload: { pathname: '/forgot-password' } }
+      const signup = { type: LOCATION_CHANGE, payload: { pathname: '/signup' } }
+      expect(reducer(undefined, enter)).to.have.property('isAuthenticationView', true)
+      expect(reducer(undefined, root)).to.have.property('isAuthenticationView', false)
+      expect(reducer(undefined, join)).to.have.property('isAuthenticationView', true)
+      expect(reducer(undefined, root)).to.have.property('isAuthenticationView', false)
+      expect(reducer(undefined, password)).to.have.property('isAuthenticationView', true)
+      expect(reducer(undefined, root)).to.have.property('isAuthenticationView', false)
+      expect(reducer(undefined, signup)).to.have.property('isAuthenticationView', true)
+    })
+
+    it('LOCATION_CHANGE updates isOnboardingView', () => {
+      const root = { type: LOCATION_CHANGE, payload: { pathname: '/' } }
+      const onboarding = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding' } }
+      const communities = {
+        type: LOCATION_CHANGE, payload: { pathname: '/onboarding/communities' },
+      }
+      const people = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding/people' } }
+      const header = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding/profile-header' } }
+      const avatar = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding/profile-avatar' } }
+      const bio = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding/profile-bio' } }
+      const one = { type: LOCATION_CHANGE, payload: { pathname: '/onboardingone' } }
+      expect(reducer(undefined, onboarding)).to.have.property('isOnboardingView', true)
+      expect(reducer(undefined, root)).to.have.property('isOnboardingView', false)
+      expect(reducer(undefined, communities)).to.have.property('isOnboardingView', true)
+      expect(reducer(undefined, people)).to.have.property('isOnboardingView', true)
+      expect(reducer(undefined, header)).to.have.property('isOnboardingView', true)
+      expect(reducer(undefined, avatar)).to.have.property('isOnboardingView', true)
+      expect(reducer(undefined, bio)).to.have.property('isOnboardingView', true)
+      expect(reducer(undefined, one)).to.have.property('isOnboardingView', false)
     })
   })
 
