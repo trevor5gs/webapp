@@ -14,7 +14,6 @@ export const Viewport = (props) =>
       { isOnboardingView: props.isOnboardingView },
       { isProfileMenuActive: props.isProfileMenuActive },
     )}
-    data-pathname={props.pathname}
     role="presentation"
   />
 
@@ -27,6 +26,5 @@ Viewport.propTypes = {
   isOffsetLayout: PropTypes.bool.isRequired,
   isOnboardingView: PropTypes.bool.isRequired,
   isProfileMenuActive: PropTypes.bool.isRequired,
-  pathname: PropTypes.string.isRequired,
 }
 
