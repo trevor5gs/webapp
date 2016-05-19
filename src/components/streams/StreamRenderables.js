@@ -127,7 +127,7 @@ export function notificationList(notifications, json) {
         return (
           <NotificationParser
             json={json}
-            key={`notificationParser${index}_${notification.createdAt || Date.now()}`}
+            key={`notificationParser${index}_${notification ? notification.createdAt : Date.now()}`}
             notification={notification}
             subject={subject}
           />
