@@ -13,7 +13,7 @@ import {
 import { gui as reducer, setLocation } from '../../src/reducers/gui'
 
 describe('gui reducer', () => {
-  describe('#initialState', () => {
+  context('#initialState', () => {
     it('sets up a default initialState', () => {
       expect(
         reducer(undefined, {})
@@ -31,6 +31,7 @@ describe('gui reducer', () => {
       'history',
       'innerHeight',
       'innerWidth',
+      'isAuthenticationView',
       'isCoverHidden',
       'isGridMode',
       'isLayoutToolHidden',
@@ -39,6 +40,7 @@ describe('gui reducer', () => {
       'isNavbarSkippingTransition',
       'isNotificationsUnread',
       'isOffsetLayout',
+      'isOnboardingView',
       'lastDiscoverBeaconVersion',
       'lastFollowingBeaconVersion',
       'lastNotificationCheck',
@@ -48,7 +50,7 @@ describe('gui reducer', () => {
     })
   })
 
-  describe('AUTHENTICATION', () => {
+  context('AUTHENTICATION', () => {
     it('LOGOUT resets the discoverKeyType', () => {
       const testState = { ...reducer(undefined, {}), discoverKeyType: 'wiketywhack' }
       expect(reducer(testState, {})).to.have.property('discoverKeyType', 'wiketywhack')
@@ -57,7 +59,7 @@ describe('gui reducer', () => {
     })
   })
 
-  describe('BEACONS', () => {
+  context('BEACONS', () => {
     it('BEACONS.LAST_DISCOVER_VERSION updates the lastDiscoverBeaconVersion', () => {
       expect(reducer(undefined, {})).to.have.property('lastDiscoverBeaconVersion', '0')
       const action = { type: BEACONS.LAST_DISCOVER_VERSION, payload: { version: '1' } }
@@ -77,7 +79,7 @@ describe('gui reducer', () => {
     })
   })
 
-  describe('GUI', () => {
+  context('GUI', () => {
     it('GUI.BIND_DISCOVER_KEY updates discoverKeyType', () => {
       expect(reducer(undefined, {})).to.have.property('discoverKeyType', null)
       const action = { type: GUI.BIND_DISCOVER_KEY, payload: { type: 'radical' } }
@@ -173,7 +175,7 @@ describe('gui reducer', () => {
     })
   })
 
-  describe('HEAD', () => {
+  context('HEAD', () => {
     it('HEAD_FAILURE updates isNotificationsUnread', () => {
       const testState = { ...reducer(undefined, {}), isNotificationsUnread: true }
       expect(reducer(testState, {})).to.have.property('isNotificationsUnread', true)
@@ -188,7 +190,7 @@ describe('gui reducer', () => {
     })
   })
 
-  describe('LOAD_STREAM_SUCCESS', () => {
+  context('LOAD_STREAM_SUCCESS', () => {
     it('LOAD_STREAM_SUCCESS updates lastNotificationCheck', () => {
       const action = { type: LOAD_STREAM_SUCCESS, meta: { resultKey: '/discover' } }
       const initialState = reducer(undefined, {})
@@ -208,7 +210,7 @@ describe('gui reducer', () => {
     })
   })
 
-  describe('LOCATION_CHANGE', () => {
+  context('LOCATION_CHANGE', () => {
     it('LOCATION_CHANGE updates relevant streams to currentStream', () => {
       const action = { type: LOCATION_CHANGE, payload: { pathname: '/discover/trending' } }
       expect(reducer(undefined, action)).to.have.property('currentStream', '/discover/trending')
@@ -228,9 +230,45 @@ describe('gui reducer', () => {
       const action2 = { type: LOCATION_CHANGE, payload: { pathname: '/settings' } }
       expect(reducer(undefined, action2)).to.have.property('isLayoutToolHidden', true)
     })
+
+    it('LOCATION_CHANGE updates isAuthenticationView', () => {
+      const root = { type: LOCATION_CHANGE, payload: { pathname: '/' } }
+      const enter = { type: LOCATION_CHANGE, payload: { pathname: '/enter' } }
+      const join = { type: LOCATION_CHANGE, payload: { pathname: '/join' } }
+      const password = { type: LOCATION_CHANGE, payload: { pathname: '/forgot-password' } }
+      const signup = { type: LOCATION_CHANGE, payload: { pathname: '/signup' } }
+      expect(reducer(undefined, enter)).to.have.property('isAuthenticationView', true)
+      expect(reducer(undefined, root)).to.have.property('isAuthenticationView', false)
+      expect(reducer(undefined, join)).to.have.property('isAuthenticationView', true)
+      expect(reducer(undefined, root)).to.have.property('isAuthenticationView', false)
+      expect(reducer(undefined, password)).to.have.property('isAuthenticationView', true)
+      expect(reducer(undefined, root)).to.have.property('isAuthenticationView', false)
+      expect(reducer(undefined, signup)).to.have.property('isAuthenticationView', true)
+    })
+
+    it('LOCATION_CHANGE updates isOnboardingView', () => {
+      const root = { type: LOCATION_CHANGE, payload: { pathname: '/' } }
+      const onboarding = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding' } }
+      const communities = {
+        type: LOCATION_CHANGE, payload: { pathname: '/onboarding/communities' },
+      }
+      const people = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding/people' } }
+      const header = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding/profile-header' } }
+      const avatar = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding/profile-avatar' } }
+      const bio = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding/profile-bio' } }
+      const one = { type: LOCATION_CHANGE, payload: { pathname: '/onboardingone' } }
+      expect(reducer(undefined, onboarding)).to.have.property('isOnboardingView', true)
+      expect(reducer(undefined, root)).to.have.property('isOnboardingView', false)
+      expect(reducer(undefined, communities)).to.have.property('isOnboardingView', true)
+      expect(reducer(undefined, people)).to.have.property('isOnboardingView', true)
+      expect(reducer(undefined, header)).to.have.property('isOnboardingView', true)
+      expect(reducer(undefined, avatar)).to.have.property('isOnboardingView', true)
+      expect(reducer(undefined, bio)).to.have.property('isOnboardingView', true)
+      expect(reducer(undefined, one)).to.have.property('isOnboardingView', false)
+    })
   })
 
-  describe('PROFILE', () => {
+  context('PROFILE', () => {
     it('DELETE_SUCCESS resets to the initialState', () => {
       const firstState = reducer(undefined, {})
       const testState = { ...reducer(undefined, {}), isNotificationsUnread: true }
@@ -241,7 +279,7 @@ describe('gui reducer', () => {
     })
   })
 
-  describe('SET_LAYOUT_MODE', () => {
+  context('SET_LAYOUT_MODE', () => {
     it('SET_LAYOUT_MODE updates the grid mode', () => {
       setLocation({ pathname: '/discover' })
       const listAction = { type: SET_LAYOUT_MODE, payload: { mode: 'list' } }

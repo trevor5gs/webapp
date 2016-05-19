@@ -1,10 +1,10 @@
 @import ../../vendor/lib
 
-[data-pathname^="/onboarding"] ~ .MainView
+.isOnboardingView ~ .MainView
   padding-top: 0
 
 @media(min-width: #{$break-2})
-  [data-pathname^="/onboarding"] ~ .MainView
+  .isOnboardingView ~ .MainView
     margin-top: rem(160)
     padding-bottom: 0
 

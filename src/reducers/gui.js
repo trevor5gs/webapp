@@ -17,6 +17,17 @@ let location = {}
 const oldDate = new Date()
 oldDate.setFullYear(oldDate.getFullYear() - 2)
 
+const AUTHENTICATION_WHITELIST = [
+  /^\/enter\b/,
+  /^\/forgot-password\b/,
+  /^\/join\b/,
+  /^\/signup\b/,
+]
+
+const ONBOARDING_WHITELIST = [
+  /^\/onboarding\b/,
+]
+
 const STREAMS_WHITELIST = [
   /^\/discover/,
   /^\/following$/,
@@ -72,10 +83,12 @@ const initialState = {
   currentStream: '/discover',
   discoverKeyType: null,
   history: {},
+  isAuthenticationView: false,
   isGridMode: true,
   isLayoutToolHidden: false,
   isNotificationsUnread: false,
   isOffsetLayout: false,
+  isOnboardingView: false,
   lastDiscoverBeaconVersion: '0',
   lastFollowingBeaconVersion: '0',
   lastNotificationCheck: oldDate.toUTCString(),
@@ -105,6 +118,8 @@ export const gui = (state = initialState, action = { type: '' }) => {
   let mode = null
   let pathname = null
   let isLayoutToolHidden = null
+  let isAuthenticationView = null
+  let isOnboardingView = null
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:
       return { ...state, discoverKeyType: null }
@@ -155,21 +170,27 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case LOCATION_CHANGE:
       location = action.payload
       pathname = location.pathname
+      isAuthenticationView = _.some(AUTHENTICATION_WHITELIST, pagex => pagex.test(pathname))
       isLayoutToolHidden = _.some(NO_LAYOUT_TOOLS, pagex => pagex.test(pathname))
+      isOnboardingView = _.some(ONBOARDING_WHITELIST, pagex => pagex.test(pathname))
       if (_.some(STREAMS_WHITELIST, re => re.test(pathname))) {
         return {
           ...state,
           ...initialScrollState,
           currentStream: pathname,
+          isAuthenticationView,
           isLayoutToolHidden,
           isGridMode: getIsGridMode(state.modes),
+          isOnboardingView,
         }
       }
       return {
         ...state,
         ...initialScrollState,
+        isAuthenticationView,
         isLayoutToolHidden,
         isGridMode: getIsGridMode(state.modes),
+        isOnboardingView,
       }
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
