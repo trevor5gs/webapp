@@ -31,6 +31,7 @@ class ViewportContainer extends Component {
   }
 
   componentWillMount() {
+    this.hasResized = false
     this.scrollYAtDirectionChange = null
   }
 
@@ -57,7 +58,8 @@ class ViewportContainer extends Component {
   onResize(resizeAttributes) {
     const { innerHeight: prevHeight, innerWidth: prevWidth } = this.props
     const { innerHeight: nextHeight, innerWidth: nextWidth } = resizeAttributes
-    if (prevHeight !== nextHeight || prevWidth !== nextWidth) {
+    if (!this.hasResized || (prevHeight !== nextHeight || prevWidth !== nextWidth)) {
+      this.hasResized = true
       this.props.dispatch(setViewportSizeAttributes(resizeAttributes))
     }
   }

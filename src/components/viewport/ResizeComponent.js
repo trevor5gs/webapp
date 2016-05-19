@@ -53,7 +53,7 @@ function getProbeProperties() {
 }
 
 
-function setResizeProperties() {
+function getResizeProperties() {
   const wiw = window.innerWidth
   const probe = getProbeProperties()
   const columnCount = parseInt(probe.columnCount, 10)
@@ -78,7 +78,7 @@ function setResizeProperties() {
 }
 
 function resized() {
-  const resizeProperties = setResizeProperties()
+  const resizeProperties = getResizeProperties()
   callMethod('onResize', resizeProperties)
 }
 
