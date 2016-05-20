@@ -69,12 +69,12 @@
 
 // Always get's rid of the first and last child's margin and protect against
 // potentially nested elements
-.RegionContent > *:first-of-type,
-.RegionContent:first-child > *:first-of-type
+.RegionContent > *:first-child,
+.RegionContent:first-child > *:first-child
   margin-top: 0
 
-.RegionContent > *:last-of-type,
-.RegionContent:last-child > *:last-of-type
+.RegionContent > *:last-child,
+.RegionContent:last-child > *:last-child
   margin-bottom: 0
 
 // -------------------------------------
