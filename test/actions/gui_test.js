@@ -1,4 +1,4 @@
-import { expect, isFSA } from '../spec_helper'
+import { expect, isFSA, isFSAN } from '../spec_helper'
 import * as subject from '../../src/actions/gui'
 
 describe('gui actions', () => {
@@ -9,8 +9,8 @@ describe('gui actions', () => {
       expect(isFSA(action)).to.be.true
     })
 
-    it('has the expected type constant', () => {
-      expect(action.type).to.equal('GUI.SET_ACTIVE_USER_FOLLOWING_TYPE')
+    it('has similar action.name and action.type', () => {
+      expect(isFSAN(action, subject.setActiveUserFollowingType)).to.be.true
     })
 
     it('has a payload with the correct keys', () => {
@@ -29,8 +29,8 @@ describe('gui actions', () => {
       expect(isFSA(action)).to.be.true
     })
 
-    it('has the expected type constant', () => {
-      expect(action.type).to.equal('GUI.SET_IS_OFFSET_LAYOUT')
+    it('has similar action.name and action.type', () => {
+      expect(isFSAN(action, subject.setIsOffsetLayout)).to.be.true
     })
 
     it('has a payload with the correct keys', () => {
@@ -54,8 +54,8 @@ describe('gui actions', () => {
       expect(isFSA(action)).to.be.true
     })
 
-    it('has the expected type constant', () => {
-      expect(action.type).to.equal('GUI.SET_SCROLL_STATE')
+    it('has similar action.name and action.type', () => {
+      expect(isFSAN(action, subject.setScrollState)).to.be.true
     })
 
     it('has a payload with the correct keys', () => {
@@ -91,8 +91,8 @@ describe('gui actions', () => {
       expect(isFSA(action)).to.be.true
     })
 
-    it('has the expected type constant', () => {
-      expect(action.type).to.equal('GUI.SET_VIEWPORT_SIZE_ATTRIBUTES')
+    it('has similar action.name and action.type', () => {
+      expect(isFSAN(action, subject.setViewportSizeAttributes)).to.be.true
     })
 
     it('has a payload with the correct keys', () => {
