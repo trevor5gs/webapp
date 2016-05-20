@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
-import Avatar from '../assets/Avatar'
 
-const AdultPostsDialog = ({ user, onConfirm }) =>
+const AdultPostsDialog = ({ onConfirm }) =>
   <div className="Dialog AdultPostsDialog">
     <p>If you post adult content, you must mark your account Not Safe for Work (NSFW).</p>
     <p>
@@ -14,7 +13,6 @@ const AdultPostsDialog = ({ user, onConfirm }) =>
 AdultPostsDialog.propTypes = {
   onConfirm: PropTypes.func,
   onDismiss: PropTypes.func,
-  user: PropTypes.shape({}),
 }
 
 export default AdultPostsDialog
