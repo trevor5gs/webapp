@@ -4,6 +4,7 @@ require('dotenv').load()
 global.ENV = JSON.stringify(require('../env'))
 
 import React from 'react'
+import { camelize } from 'humps'
 import jsdom from 'mocha-jsdom'
 import chai, { expect } from 'chai'
 import sinon from 'sinon'
@@ -63,6 +64,14 @@ function isValidFSAKey(key) {
     'meta',
   ]
   return validKeys.indexOf(key) > -1
+}
+
+// Ensures that the constant (action.type) and action (fn.name) are sort of equal:
+// GUI.SET_IS_OFFSET_LAYOUT === setIsOffsetLayout
+export function isFSAN(action, fn) {
+  const types = camelize(action.type.toLowerCase()).split('.')
+  const type = types.length >= 1 ? types[1] : types[0]
+  return type === fn.name
 }
 
 export function isFSA(action) {
