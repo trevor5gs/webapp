@@ -13,7 +13,7 @@ const onDragStart = (e) => {
   const nodeName = target.nodeName.toLowerCase()
 
   const avatar = classList.contains('Avatar') ? target : null
-  if (avatar) {
+  if (avatar || classList.contains('DraggableUsername')) {
     const priority = target.getAttribute('data-priority')
     const userId = target.getAttribute('data-userid')
     const username = target.getAttribute('data-username')
