@@ -20,7 +20,15 @@ function header(comment, author) {
             userId={`${author.id}`}
             username={author.username}
           />
-          <span className="CommentUsername">{`@${author.username}`}</span>
+          <span
+            className="CommentUsername DraggableUsername"
+            data-priority={author.relationshipPriority || 'inactive'}
+            data-userid={author.id}
+            data-username={author.username}
+            draggable
+          >
+            {`@${author.username}`}
+          </span>
         </Link>
       </div>
     </header>

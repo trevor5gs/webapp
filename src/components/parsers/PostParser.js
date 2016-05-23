@@ -76,7 +76,15 @@ function header(post, author) {
             userId={`${author.id}`}
             username={author.username}
           />
-          <span>{`@${author.username}`}</span>
+          <span
+            className="DraggableUsername"
+            data-priority={author.relationshipPriority || 'inactive'}
+            data-userid={author.id}
+            data-username={author.username}
+            draggable
+          >
+            {`@${author.username}`}
+          </span>
         </Link>
       </div>
       <RelationsGroup user={author} classList="inHeader" />
@@ -98,14 +106,30 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
             userId={`${repostAuthor.id}`}
             username={repostAuthor.username}
           />
-          <span>{`@${repostAuthor.username}`}</span>
+          <span
+            className="DraggableUsername"
+            data-priority={repostAuthor.relationshipPriority || 'inactive'}
+            data-userid={repostAuthor.id}
+            data-username={repostAuthor.username}
+            draggable
+          >
+            {`@${repostAuthor.username}`}
+          </span>
         </Link>
       </div>
       <RelationsGroup user={repostAuthor} classList="inHeader" />
       <div className="RepostHeaderReposter">
         <Link className="PostHeaderLink" to={`/${repostedBy.username}`}>
           <RepostIcon />
-          {` by @${repostedBy.username}`}
+          <span
+            className="DraggableUsername"
+            data-priority={repostedBy.relationshipPriority || 'inactive'}
+            data-userid={repostedBy.id}
+            data-username={repostedBy.username}
+            draggable
+          >
+            {` by @${repostedBy.username}`}
+          </span>
         </Link>
       </div>
       <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.createdAt} />
