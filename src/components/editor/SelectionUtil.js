@@ -1,3 +1,5 @@
+import { isIOS } from '../../vendor/jello'
+
 let node = null
 let startIndex = -1
 let endIndex = -1
@@ -39,7 +41,7 @@ export function getPositionFromSelection() {
   const pos = range.getBoundingClientRect()
   range.detach()
   return {
-    top: pos.top,
+    top: isIOS() ? pos.top + window.pageYOffset : pos.top,
     left: pos.left,
     height: pos.height,
     width: pos.width,

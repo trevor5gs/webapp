@@ -5,6 +5,7 @@ import Emoji from '../assets/Emoji'
 import Completion from './Completion'
 import { getPositionFromSelection } from '../editor/SelectionUtil'
 import { addKeyObject, removeKeyObject } from '../viewport/KeyComponent'
+import { addScrollObject, removeScrollObject } from '../viewport/ScrollComponent'
 
 export const emojiRegex = /\s?:{1}(\w+|\+|-):{0}$/
 export const userRegex = /(\s|^)@{1}\w+/
@@ -22,15 +23,18 @@ export default class Completer extends Component {
   componentWillMount() {
     this.state = {
       selectedIndex: 0,
+      scrollY: 0,
     }
   }
 
   componentDidMount() {
     addKeyObject(this)
+    addScrollObject(this)
   }
 
   componentWillUnmount() {
     removeKeyObject(this)
+    removeScrollObject(this)
   }
 
   onKeyDown(e) {
@@ -47,6 +51,10 @@ export default class Completer extends Component {
       e.preventDefault()
       this.props.onCancel()
     }
+  }
+
+  onScroll({ scrollY }) {
+    this.setState({ scrollY })
   }
 
   nextSelection() {

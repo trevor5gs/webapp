@@ -1,5 +1,6 @@
 let memoizedIsAndroid = undefined
 let memoizedIsFirefox = undefined
+let memoizedIsIOS = undefined
 
 export const addFeatureDetection = () => {
   const cl = document.documentElement.classList
@@ -32,5 +33,12 @@ export const isFirefox = () => {
   if (typeof memoizedIsFirefox !== 'undefined') { return memoizedIsFirefox }
   memoizedIsFirefox = /Firefox/gi.test(navigator.userAgent)
   return memoizedIsFirefox
+}
+
+export const isIOS = () => {
+  if (typeof window === 'undefined') { return false }
+  if (typeof memoizedIsIOS !== 'undefined') { return memoizedIsIOS }
+  memoizedIsIOS = /iPad|iPhone|iPod/gi.test(navigator.userAgent)
+  return memoizedIsIOS
 }
 
