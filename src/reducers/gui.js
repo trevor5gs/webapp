@@ -109,7 +109,7 @@ const initialState = {
     { label: 'users/following', mode: 'grid', regex: '/[\\w\\-]+/following' },
     { label: 'users/followers', mode: 'grid', regex: '/[\\w\\-]+/followers' },
     { label: 'users/loves', mode: 'grid', regex: '/[\\w\\-]+/loves' },
-    { label: 'users', mode: 'list', regex: '/[\\w\\-]+' },
+    { label: 'users', mode: 'grid', regex: '/[\\w\\-]+' },
   ],
 }
 
