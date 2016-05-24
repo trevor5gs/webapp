@@ -25,6 +25,15 @@ export function setLastDiscoverBeaconVersion({ version }) {
   }
 }
 
+export function setLastFollowingBeaconVersion({ version }) {
+  return {
+    type: GUI.SET_LAST_FOLLOWING_BEACON_VERSION,
+    payload: {
+      version,
+    },
+  }
+}
+
 export function setScrollState({ isCoverHidden, isFixed, isHidden, isSkippingTransition }) {
   return {
     type: GUI.SET_SCROLL_STATE,

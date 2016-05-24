@@ -60,18 +60,6 @@ describe('gui reducer', () => {
   })
 
   context('BEACONS', () => {
-    it('GUI.SET_LAST_DISCOVER_BEACON_VERSION updates the lastDiscoverBeaconVersion', () => {
-      expect(reducer(undefined, {})).to.have.property('lastDiscoverBeaconVersion', '0')
-      const action = { type: GUI.SET_LAST_DISCOVER_BEACON_VERSION, payload: { version: '1' } }
-      expect(reducer(undefined, action)).to.have.property('lastDiscoverBeaconVersion', '1')
-    })
-
-    it('BEACONS.LAST_FOLLOWING_VERSION updates lastFollowingBeaconVersion', () => {
-      expect(reducer(undefined, {})).to.have.property('lastFollowingBeaconVersion', '0')
-      const action = { type: BEACONS.LAST_FOLLOWING_VERSION, payload: { version: '666' } }
-      expect(reducer(undefined, action)).to.have.property('lastFollowingBeaconVersion', '666')
-    })
-
     it('BEACONS.LAST_STARRED_VERSION updates lastStarredBeaconVersion', () => {
       expect(reducer(undefined, {})).to.have.property('lastStarredBeaconVersion', '0')
       const action = { type: BEACONS.LAST_STARRED_VERSION, payload: { version: '667' } }
@@ -102,6 +90,18 @@ describe('gui reducer', () => {
       expect(reducer(undefined, {})).to.have.property('isOffsetLayout', false)
       const action = { type: GUI.SET_IS_OFFSET_LAYOUT, payload: { isOffsetLayout: true } }
       expect(reducer(reducer, action)).to.have.property('isOffsetLayout', true)
+    })
+
+    it('GUI.SET_LAST_DISCOVER_BEACON_VERSION updates the lastDiscoverBeaconVersion', () => {
+      expect(reducer(undefined, {})).to.have.property('lastDiscoverBeaconVersion', '0')
+      const action = { type: GUI.SET_LAST_DISCOVER_BEACON_VERSION, payload: { version: '1' } }
+      expect(reducer(undefined, action)).to.have.property('lastDiscoverBeaconVersion', '1')
+    })
+
+    it('GUI.SET_LAST_FOLLOWING_BEACON_VERSION updates lastFollowingBeaconVersion', () => {
+      expect(reducer(undefined, {})).to.have.property('lastFollowingBeaconVersion', '0')
+      const action = { type: GUI.SET_LAST_FOLLOWING_BEACON_VERSION, payload: { version: '666' } }
+      expect(reducer(undefined, action)).to.have.property('lastFollowingBeaconVersion', '666')
     })
 
     it('GUI.SET_SCROLL', () => {
