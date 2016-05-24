@@ -45,6 +45,7 @@ import TreePanel from '../../components/navigation/TreePanel'
 import StreamComponent from '../../components/streams/StreamComponent'
 import InfoForm from '../../components/forms/InfoForm'
 import { MainView } from '../../components/views/MainView'
+import { isElloAndroid } from '../../vendor/jello'
 
 class Settings extends Component {
 
@@ -303,6 +304,7 @@ class Settings extends Component {
     } = this.props
     const { currentPasswordState, emailState, passwordState, usernameState } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
+    const allowNSFWToggle = !isElloAndroid()
 
     if (!profile) {
       return null
@@ -428,22 +430,26 @@ class Settings extends Component {
               ignoresScrollPosition
             />
 
-            <TreeButton>NSFW</TreeButton>
-            <TreePanel>
-              <Preference
-                definition={PREFERENCES.NSFW_VIEW}
-                id="viewsAdultContent"
-                isChecked={profile.viewsAdultContent}
-                onToggleChange={preferenceToggleChanged}
-              />
-              <Preference
-                definition={PREFERENCES.NSFW_POST}
-                id="postsAdultContent"
-                isChecked={profile.postsAdultContent}
-                onToggleChange={this.onTogglePostsAdultContent}
-              />
-              <p><em>{SETTINGS.NSFW_DISCLAIMER}</em></p>
-            </TreePanel>
+            {allowNSFWToggle ?
+              <div>
+                <TreeButton>NSFW</TreeButton>
+                <TreePanel>
+                  <Preference
+                    definition={PREFERENCES.NSFW_VIEW}
+                    id="viewsAdultContent"
+                    isChecked={profile.viewsAdultContent}
+                    onToggleChange={preferenceToggleChanged}
+                  />
+                  <Preference
+                    definition={PREFERENCES.NSFW_POST}
+                    id="postsAdultContent"
+                    isChecked={profile.postsAdultContent}
+                    onToggleChange={this.onTogglePostsAdultContent}
+                  />
+                  <p><em>{SETTINGS.NSFW_DISCLAIMER}</em></p>
+                </TreePanel>
+              </div> :
+              null}
 
             {blockedCount > 0 ?
               <div>
