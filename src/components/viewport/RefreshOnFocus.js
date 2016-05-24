@@ -1,4 +1,5 @@
 const REFRESH_PERIOD = 30 * 60 * 1000 // 30 minutes in microseconds
+const focusEnabled = ENV.ENABLE_REFRESH_ON_FOCUS
 const focusSupported = typeof document !== 'undefined' &&
                        typeof document.addEventListener !== 'undefined' &&
                        typeof document.visibilityState !== 'undefined'
@@ -25,7 +26,7 @@ function handleChange() {
 }
 
 export const startRefreshTimer = () => {
-  if (focusSupported) {
+  if (focusEnabled && focusSupported) {
     document.addEventListener('visibilitychange', handleChange)
   }
 }
