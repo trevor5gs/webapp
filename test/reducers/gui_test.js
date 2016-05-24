@@ -2,7 +2,6 @@ import { expect } from '../spec_helper'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   AUTHENTICATION,
-  BEACONS,
   GUI,
   HEAD_FAILURE,
   HEAD_SUCCESS,
@@ -59,14 +58,6 @@ describe('gui reducer', () => {
     })
   })
 
-  context('BEACONS', () => {
-    it('BEACONS.LAST_STARRED_VERSION updates lastStarredBeaconVersion', () => {
-      expect(reducer(undefined, {})).to.have.property('lastStarredBeaconVersion', '0')
-      const action = { type: BEACONS.LAST_STARRED_VERSION, payload: { version: '667' } }
-      expect(reducer(undefined, action)).to.have.property('lastStarredBeaconVersion', '667')
-    })
-  })
-
   context('GUI', () => {
     it('GUI.BIND_DISCOVER_KEY updates discoverKeyType', () => {
       expect(reducer(undefined, {})).to.have.property('discoverKeyType', null)
@@ -102,6 +93,12 @@ describe('gui reducer', () => {
       expect(reducer(undefined, {})).to.have.property('lastFollowingBeaconVersion', '0')
       const action = { type: GUI.SET_LAST_FOLLOWING_BEACON_VERSION, payload: { version: '666' } }
       expect(reducer(undefined, action)).to.have.property('lastFollowingBeaconVersion', '666')
+    })
+
+    it('GUI.LAST_STARRED_BEACON_VERSION updates lastStarredBeaconVersion', () => {
+      expect(reducer(undefined, {})).to.have.property('lastStarredBeaconVersion', '0')
+      const action = { type: GUI.SET_LAST_STARRED_BEACON_VERSION, payload: { version: '667' } }
+      expect(reducer(undefined, action)).to.have.property('lastStarredBeaconVersion', '667')
     })
 
     it('GUI.SET_SCROLL', () => {

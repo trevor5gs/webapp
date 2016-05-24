@@ -3,26 +3,26 @@ import StreamComponent from '../streams/StreamComponent'
 import { MainView } from '../views/MainView'
 import { ZeroStream } from '../zeros/Zeros'
 
-const FollowingZeroStream = ({ onDismissZeroStream }) =>
+const StarredZeroStream = ({ onDismissZeroStream }) =>
   <ZeroStream onDismiss={onDismissZeroStream}>
-    Follow the creators and communities that inspire you.
+    Star creators and communities to curate your second stream.
   </ZeroStream>
 
-FollowingZeroStream.propTypes = {
+StarredZeroStream.propTypes = {
   onDismissZeroStream: PropTypes.func.isRequired,
 }
 
-export const Following = ({
+export const Starred = ({
     isBeaconActive,
     onDismissZeroStream,
     streamAction,
   }) =>
-  <MainView className="Following">
-    {isBeaconActive ? <FollowingZeroStream onDismissZeroStream={onDismissZeroStream} /> : null}
-    <StreamComponent action={streamAction} scrollSessionKey="/following" />
+  <MainView className="Starred">
+    {isBeaconActive ? <StarredZeroStream onDismissZeroStream={onDismissZeroStream} /> : null}
+    <StreamComponent action={streamAction} scrollSessionKey="/starred" />
   </MainView>
 
-Following.propTypes = {
+Starred.propTypes = {
   isBeaconActive: PropTypes.bool.isRequired,
   onDismissZeroStream: PropTypes.func.isRequired,
   streamAction: PropTypes.object.isRequired,

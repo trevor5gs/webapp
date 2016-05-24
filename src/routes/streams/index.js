@@ -1,5 +1,5 @@
 import FollowingContainer from '../../containers/FollowingContainer'
-import Starred from '../../containers/streams/Starred'
+import StarredContainer from '../../containers/StarredContainer'
 
 export default [
   {
@@ -11,7 +11,7 @@ export default [
   {
     path: 'starred',
     getComponents(location, cb) {
-      cb(null, Starred)
+      cb(null, StarredContainer)
     },
   },
 ]
