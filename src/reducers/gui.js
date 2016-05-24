@@ -123,8 +123,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:
       return { ...state, discoverKeyType: null }
-    case BEACONS.LAST_DISCOVER_VERSION:
-      return { ...state, lastDiscoverBeaconVersion: action.payload.version }
     case BEACONS.LAST_FOLLOWING_VERSION:
       return { ...state, lastFollowingBeaconVersion: action.payload.version }
     case BEACONS.LAST_STARRED_VERSION:
@@ -137,6 +135,8 @@ export const gui = (state = initialState, action = { type: '' }) => {
       return { ...newState, activeUserFollowingType: action.payload.tab }
     case GUI.SET_IS_OFFSET_LAYOUT:
       return { ...state, isOffsetLayout: action.payload.isOffsetLayout }
+    case GUI.SET_LAST_DISCOVER_BEACON_VERSION:
+      return { ...state, lastDiscoverBeaconVersion: action.payload.version }
     case GUI.SET_SCROLL:
       newState.history[action.payload.key] = { ...action.payload }
       return newState

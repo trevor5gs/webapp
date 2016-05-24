@@ -12,7 +12,7 @@ import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
 import { loadFriends, loadNoise } from '../actions/stream'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/Navbar'
-import { getDiscoverAction } from '../containers/discover/Discover'
+import { getDiscoverAction } from '../containers/DiscoverContainer'
 import Session from '../vendor/session'
 
 class NavbarContainer extends Component {

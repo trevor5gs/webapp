@@ -60,9 +60,9 @@ describe('gui reducer', () => {
   })
 
   context('BEACONS', () => {
-    it('BEACONS.LAST_DISCOVER_VERSION updates the lastDiscoverBeaconVersion', () => {
+    it('GUI.SET_LAST_DISCOVER_BEACON_VERSION updates the lastDiscoverBeaconVersion', () => {
       expect(reducer(undefined, {})).to.have.property('lastDiscoverBeaconVersion', '0')
-      const action = { type: BEACONS.LAST_DISCOVER_VERSION, payload: { version: '1' } }
+      const action = { type: GUI.SET_LAST_DISCOVER_BEACON_VERSION, payload: { version: '1' } }
       expect(reducer(undefined, action)).to.have.property('lastDiscoverBeaconVersion', '1')
     })
 

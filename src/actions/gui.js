@@ -16,6 +16,15 @@ export function setIsOffsetLayout({ isOffsetLayout }) {
   }
 }
 
+export function setLastDiscoverBeaconVersion({ version }) {
+  return {
+    type: GUI.SET_LAST_DISCOVER_BEACON_VERSION,
+    payload: {
+      version,
+    },
+  }
+}
+
 export function setScrollState({ isCoverHidden, isFixed, isHidden, isSkippingTransition }) {
   return {
     type: GUI.SET_SCROLL_STATE,

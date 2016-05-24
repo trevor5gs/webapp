@@ -2,7 +2,7 @@ import { expect, isFSA, isFSAN } from '../spec_helper'
 import * as subject from '../../src/actions/gui'
 
 describe('gui actions', () => {
-  describe('#setActiveUserFollowingType', () => {
+  context('#setActiveUserFollowingType', () => {
     const action = subject.setActiveUserFollowingType('noise')
 
     it('is an FSA compliant action', () => {
@@ -22,7 +22,7 @@ describe('gui actions', () => {
     })
   })
 
-  describe('#setIsOffsetLayout', () => {
+  context('#setIsOffsetLayout', () => {
     const action = subject.setIsOffsetLayout({ isOffsetLayout: false })
 
     it('is an FSA compliant action', () => {
@@ -42,7 +42,27 @@ describe('gui actions', () => {
     })
   })
 
-  describe('#setScrollState', () => {
+  context('#setLastDiscoverBeaconVersion', () => {
+    const action = subject.setLastDiscoverBeaconVersion({ version: '666' })
+
+    it('is an FSA compliant action', () => {
+      expect(isFSA(action)).to.be.true
+    })
+
+    it('has similar action.name and action.type', () => {
+      expect(isFSAN(action, subject.setLastDiscoverBeaconVersion)).to.be.true
+    })
+
+    it('has a payload with the correct keys', () => {
+      expect(action.payload).to.have.keys('version')
+    })
+
+    it('sets the appropriate payload', () => {
+      expect(action.payload.version).to.equal('666')
+    })
+  })
+
+  context('#setScrollState', () => {
     const action = subject.setScrollState({
       isCoverHidden: false,
       isFixed: true,
@@ -75,7 +95,7 @@ describe('gui actions', () => {
     })
   })
 
-  describe('#setViewportSizeAttributes', () => {
+  context('#setViewportSizeAttributes', () => {
     const action = subject.setViewportSizeAttributes({
       columnCount: 4,
       columnWidth: 320,
