@@ -1,17 +1,17 @@
-import Following from '../../containers/streams/Following'
-import Starred from '../../containers/streams/Starred'
+import FollowingContainer from '../../containers/FollowingContainer'
+import StarredContainer from '../../containers/StarredContainer'
 
 export default [
   {
     path: 'following',
     getComponents(location, cb) {
-      cb(null, Following)
+      cb(null, FollowingContainer)
     },
   },
   {
     path: 'starred',
     getComponents(location, cb) {
-      cb(null, Starred)
+      cb(null, StarredContainer)
     },
   },
 ]

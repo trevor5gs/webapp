@@ -1,4 +1,4 @@
-import Discover from '../../containers/discover/Discover'
+import DiscoverContainer from '../../containers/DiscoverContainer'
 
 const TYPES = [
   // 'communities',
@@ -8,7 +8,7 @@ const TYPES = [
 ]
 
 const getComponents = (location, cb) => {
-  cb(null, Discover)
+  cb(null, DiscoverContainer)
 }
 
 const indexRoute = {

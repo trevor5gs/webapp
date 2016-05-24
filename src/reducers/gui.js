@@ -3,7 +3,6 @@ import _ from 'lodash'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   AUTHENTICATION,
-  BEACONS,
   GUI,
   HEAD_FAILURE,
   HEAD_SUCCESS,
@@ -123,12 +122,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:
       return { ...state, discoverKeyType: null }
-    case BEACONS.LAST_DISCOVER_VERSION:
-      return { ...state, lastDiscoverBeaconVersion: action.payload.version }
-    case BEACONS.LAST_FOLLOWING_VERSION:
-      return { ...state, lastFollowingBeaconVersion: action.payload.version }
-    case BEACONS.LAST_STARRED_VERSION:
-      return { ...state, lastStarredBeaconVersion: action.payload.version }
     case GUI.BIND_DISCOVER_KEY:
       return { ...newState, discoverKeyType: action.payload.type }
     case GUI.NOTIFICATIONS_TAB:
@@ -137,6 +130,12 @@ export const gui = (state = initialState, action = { type: '' }) => {
       return { ...newState, activeUserFollowingType: action.payload.tab }
     case GUI.SET_IS_OFFSET_LAYOUT:
       return { ...state, isOffsetLayout: action.payload.isOffsetLayout }
+    case GUI.SET_LAST_DISCOVER_BEACON_VERSION:
+      return { ...state, lastDiscoverBeaconVersion: action.payload.version }
+    case GUI.SET_LAST_FOLLOWING_BEACON_VERSION:
+      return { ...state, lastFollowingBeaconVersion: action.payload.version }
+    case GUI.SET_LAST_STARRED_BEACON_VERSION:
+      return { ...state, lastStarredBeaconVersion: action.payload.version }
     case GUI.SET_SCROLL:
       newState.history[action.payload.key] = { ...action.payload }
       return newState
