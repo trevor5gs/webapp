@@ -57,7 +57,7 @@ function getUploadData(key, credentials, file) {
 function getCredentialsHeader(accessToken) {
   return {
     Authorization: `Bearer ${accessToken}`,
-    Accept: 'application/json',
+    Accept: 'application/vnd.api+json',
     'Content-Type': 'application/json',
   }
 }

@@ -2,9 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { openModal, closeModal } from '../../actions/modals'
-import { toggleEditing as toggleCommentEditing, updateComment } from '../../actions/comments'
 import {
   createComment,
+  toggleEditing as toggleCommentEditing,
+  updateComment,
+} from '../../actions/comments'
+import {
   createPost,
   toggleEditing,
   toggleReposting,

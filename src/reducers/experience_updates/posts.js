@@ -77,20 +77,20 @@ methods.updatePostLoves = (state, newState, action) => {
 
 methods.addOrUpdatePost = (newState, action) => {
   const { model, response } = action.payload
-  // this is to allow for the old way the API sent the response
-  // which was just as an object and not in the JSONAPI format
-  const normalizedResponse = response.id ? response : response[MAPPING_TYPES.POSTS]
-
   const user = model ?
     newState[MAPPING_TYPES.USERS][model.authorId] :
     jsonReducer.methods.getCurrentUser(newState)
   switch (action.type) {
     case ACTION_TYPES.POST.CREATE_SUCCESS:
-      _.setWith(newState, [MAPPING_TYPES.POSTS, normalizedResponse.id], normalizedResponse, Object)
+    case ACTION_TYPES.POST.UPDATE_SUCCESS:
+      _.setWith(newState,
+                [MAPPING_TYPES.POSTS, response[MAPPING_TYPES.POSTS].id],
+                response[MAPPING_TYPES.POSTS],
+                Object)
       if (action.type === ACTION_TYPES.POST.UPDATE_SUCCESS) { return newState }
       jsonReducer.methods.appendPageId(
         newState, '/following',
-        MAPPING_TYPES.POSTS, normalizedResponse.id, false)
+        MAPPING_TYPES.POSTS, response[MAPPING_TYPES.POSTS].id, false)
 
       if (action.meta.repostId) {
         jsonReducer.methods.updatePostCount(newState, action.meta.repostId, 'repostsCount', 1)
@@ -118,7 +118,7 @@ methods.addOrUpdatePost = (newState, action) => {
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', 1)
         jsonReducer.methods.appendPageId(
           newState, `/${user.username}`,
-          MAPPING_TYPES.POSTS, normalizedResponse.id, false)
+          MAPPING_TYPES.POSTS, response[MAPPING_TYPES.POSTS].id, false)
       }
       return newState
     case ACTION_TYPES.POST.DELETE_SUCCESS:

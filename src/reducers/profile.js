@@ -3,7 +3,6 @@ import jwtDecode from 'jwt-decode'
 import _ from 'lodash'
 import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, INVITATIONS, PROFILE } from '../constants/action_types'
-import * as MAPPING_TYPES from '../constants/mapping_types'
 
 function parseJWT(token) {
   const decoded = jwtDecode(token)
@@ -16,7 +15,6 @@ function parseJWT(token) {
 export function profile(state = {}, action) {
   let assetState = null
   let assetType = null
-  let normalizedResponse = null
   switch (action.type) {
     case PROFILE.AVAILABILITY_SUCCESS:
       return {
@@ -51,14 +49,11 @@ export function profile(state = {}, action) {
         errors: null,
       }
     case PROFILE.SAVE_SUCCESS:
-      normalizedResponse = action.payload.response.id ?
-        action.payload.response :
-        action.payload.response[MAPPING_TYPES.USERS]
       return {
         ...state,
-        ...normalizedResponse,
+        ...action.payload.response.users,
         availability: null,
-        id: `${normalizedResponse.id}`,
+        id: `${action.payload.response.users.id}`,
       }
     // should only happen if we get a 422 meaning
     // the current password entered was wrong

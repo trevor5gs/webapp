@@ -22,25 +22,22 @@ methods.updateCommentsCount = (newState, postId, delta) => {
 methods.addOrUpdateComment = (newState, action) => {
   const { model, postId, response } = action.payload
   const post = newState[MAPPING_TYPES.POSTS][postId]
-  // this is to allow for the old way the API sent the response
-  // which was just as an object and not in the JSONAPI format
-  const normalizedResponse = response.id ? response : response[MAPPING_TYPES.COMMENTS]
   let index = null
   switch (action.type) {
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
       _.setWith(newState,
-                [MAPPING_TYPES.COMMENTS, normalizedResponse.id],
-                normalizedResponse,
+                [MAPPING_TYPES.COMMENTS, response[MAPPING_TYPES.COMMENTS].id],
+                response[MAPPING_TYPES.COMMENTS],
                 Object)
       if (action.type === ACTION_TYPES.COMMENT.UPDATE_SUCCESS) { return newState }
       // add the comment to the linked array
       if (post.links && post.links.comments) {
-        post.links.comments.ids.unshift(`${normalizedResponse.id}`)
+        post.links.comments.ids.unshift(`${response[MAPPING_TYPES.COMMENTS].id}`)
       }
       jsonReducer.methods.appendPageId(
         newState, `/posts/${postId}/comments`,
-        MAPPING_TYPES.COMMENTS, normalizedResponse.id)
+        MAPPING_TYPES.COMMENTS, response[MAPPING_TYPES.COMMENTS].id)
       return methods.updateCommentsCount(newState, postId, 1)
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
       // add the comment to the linked array

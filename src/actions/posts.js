@@ -4,28 +4,44 @@ import * as api from '../networking/api'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
 import { resetEditor } from '../actions/editor'
 
-export function loadPostDetail(idOrToken) {
+export function createPost(body, editorId, repostId, repostedFromId) {
   return {
-    type: ACTION_TYPES.POST.DETAIL,
+    type: ACTION_TYPES.POST.CREATE,
     payload: {
-      endpoint: api.postDetail(idOrToken),
-      postIdOrToken: idOrToken,
+      body: body.length ? { body } : null,
+      editorId,
+      endpoint: api.createPost(repostId),
+      method: 'POST',
     },
     meta: {
       mappingType: MAPPING_TYPES.POSTS,
-      updateResult: false,
+      repostId,
+      repostedFromId,
+      successAction: resetEditor(editorId),
     },
   }
 }
 
-export function loadEditablePost(idOrToken) {
+export function deletePost(post) {
   return {
-    type: ACTION_TYPES.POST.EDITABLE,
-    payload: { endpoint: api.editPostDetail(idOrToken) },
-    meta: {
-      mappingType: MAPPING_TYPES.POSTS,
-      updateResult: false,
+    type: ACTION_TYPES.POST.DELETE,
+    payload: {
+      endpoint: api.deletePost(post.id),
+      method: 'DELETE',
+      model: post,
     },
+    meta: {},
+  }
+}
+
+export function flagPost(post, kind) {
+  return {
+    type: ACTION_TYPES.POST.FLAG,
+    payload: {
+      endpoint: api.flagPost(post.id, kind),
+      method: 'POST',
+    },
+    meta: {},
   }
 }
 
@@ -52,6 +68,47 @@ export function loadComments(post, addUpdateKey = true) {
     obj.meta.updateKey = `/posts/${postId}/`
   }
   return obj
+}
+
+export function loadEditablePost(idOrToken) {
+  return {
+    type: ACTION_TYPES.POST.EDITABLE,
+    payload: { endpoint: api.editPostDetail(idOrToken) },
+    meta: {
+      mappingType: MAPPING_TYPES.POSTS,
+      updateResult: false,
+    },
+  }
+}
+
+export function loadPostDetail(idOrToken) {
+  return {
+    type: ACTION_TYPES.POST.DETAIL,
+    payload: {
+      endpoint: api.postDetail(idOrToken),
+      postIdOrToken: idOrToken,
+    },
+    meta: {
+      mappingType: MAPPING_TYPES.POSTS,
+      updateResult: false,
+    },
+  }
+}
+
+export function lovePost(post) {
+  return {
+    type: ACTION_TYPES.POST.LOVE,
+    payload: {
+      endpoint: api.lovePost(post.id),
+      method: 'POST',
+      model: post,
+    },
+    meta: {
+      mappingType: MAPPING_TYPES.LOVES,
+      resultKey: `/posts/${post.id}/love`,
+      updateKey: `/posts/${post.id}/`,
+    },
+  }
 }
 
 export function toggleComments(post, showComments) {
@@ -104,22 +161,6 @@ export function toggleReposting(post, isReposting) {
   }
 }
 
-export function lovePost(post) {
-  return {
-    type: ACTION_TYPES.POST.LOVE,
-    payload: {
-      endpoint: api.lovePost(post.id),
-      method: 'POST',
-      model: post,
-    },
-    meta: {
-      mappingType: MAPPING_TYPES.LOVES,
-      resultKey: `/posts/${post.id}/love`,
-      updateKey: `/posts/${post.id}/`,
-    },
-  }
-}
-
 export function unlovePost(post) {
   return {
     type: ACTION_TYPES.POST.LOVE,
@@ -135,62 +176,6 @@ export function unlovePost(post) {
   }
 }
 
-export function deletePost(post) {
-  return {
-    type: ACTION_TYPES.POST.DELETE,
-    payload: {
-      endpoint: api.deletePost(post.id),
-      method: 'DELETE',
-      model: post,
-    },
-    meta: {},
-  }
-}
-
-export function flagPost(post, kind) {
-  return {
-    type: ACTION_TYPES.POST.FLAG,
-    payload: {
-      endpoint: api.flagPost(post.id, kind),
-      method: 'POST',
-    },
-    meta: {},
-  }
-}
-
-export function createPost(body, editorId, repostId, repostedFromId) {
-  return {
-    type: ACTION_TYPES.POST.CREATE,
-    payload: {
-      body: body.length ? { body } : null,
-      editorId,
-      endpoint: api.createPost(repostId),
-      method: 'POST',
-    },
-    meta: {
-      repostId,
-      repostedFromId,
-      successAction: resetEditor(editorId),
-    },
-  }
-}
-
-export function createComment(body, editorId, postId) {
-  return {
-    type: ACTION_TYPES.COMMENT.CREATE,
-    payload: {
-      body: { body },
-      editorId,
-      endpoint: api.createComment(postId),
-      method: 'POST',
-      postId,
-    },
-    meta: {
-      successAction: resetEditor(editorId),
-    },
-  }
-}
-
 export function updatePost(post, body, editorId) {
   return {
     type: ACTION_TYPES.POST.UPDATE,
@@ -201,7 +186,9 @@ export function updatePost(post, body, editorId) {
       method: 'PATCH',
       model: post,
     },
-    meta: {},
+    meta: {
+      mappingType: MAPPING_TYPES.POSTS,
+    },
   }
 }
 

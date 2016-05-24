@@ -291,7 +291,7 @@ methods.deleteModel = (state, newState, action, mappingType) => {
 
 methods.updateCurrentUser = (newState, action) => {
   const { response } = action.payload
-  newState[MAPPING_TYPES.USERS][response.id] = response
+  newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id] = response
   let assetType = null
   switch (action.type) {
     case ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS:
@@ -305,12 +305,11 @@ methods.updateCurrentUser = (newState, action) => {
       break
   }
   if (assetType) {
-    newState[MAPPING_TYPES.USERS][response.id][assetType] = {
-      ...newState[MAPPING_TYPES.USERS][response.id][assetType],
+    newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id][assetType] = {
+      ...newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id][assetType],
       tmp: { url: action.payload.response.assetUrl },
     }
   }
-
   return newState
 }
 
@@ -348,12 +347,10 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.AUTHENTICATION.LOGOUT:
     case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
       return {}
-    case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
+    case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
-      // parse linked if it exists to allow upgrading
-      // to how the API now handles create/update
-      methods.parseLinked(get(action, 'response.linked'), newState)
+      methods.parseLinked(get(action, 'payload.response.linked'), newState)
       return commentMethods.addOrUpdateComment(newState, action)
     case ACTION_TYPES.COMMENT.DELETE_REQUEST:
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
@@ -369,14 +366,10 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.PROFILE.DETAIL_SUCCESS:
       // fall through to parse the rest
       break
-    case ACTION_TYPES.POST.CREATE_REQUEST:
     case ACTION_TYPES.POST.CREATE_FAILURE:
     case ACTION_TYPES.POST.CREATE_SUCCESS:
-    case ACTION_TYPES.POST.UPDATE_REQUEST:
     case ACTION_TYPES.POST.UPDATE_SUCCESS:
-      // parse linked if it exists to allow upgrading
-      // to how the API now handles create/update
-      methods.parseLinked(get(action, 'response.linked'), newState)
+      methods.parseLinked(get(action, 'payload.response.linked'), newState)
       return postMethods.addOrUpdatePost(newState, action)
     case ACTION_TYPES.POST.DELETE_REQUEST:
     case ACTION_TYPES.POST.DELETE_SUCCESS:
@@ -390,9 +383,7 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_COVER_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_SUCCESS:
-      // parse linked if it exists to allow upgrading
-      // to how the API now handles create/update
-      methods.parseLinked(get(action, 'response.linked'), newState)
+      methods.parseLinked(get(action, 'payload.response.linked'), newState)
       return methods.updateCurrentUser(newState, action)
     case ACTION_TYPES.PROFILE.TMP_AVATAR_CREATED:
     case ACTION_TYPES.PROFILE.TMP_COVER_CREATED:
