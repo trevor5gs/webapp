@@ -10,24 +10,18 @@ let requestQueue = []
 const runningFetches = {}
 
 const defaultHeaders = {
-  Accept: 'application/json',
+  Accept: 'application/vnd.api+json',
   'Content-Type': 'application/json',
 }
 
 function getAuthToken(accessToken) {
   return {
+    ...defaultHeaders,
     Authorization: `Bearer ${accessToken}`,
   }
 }
 
-function getPostJsonHeader(accessToken) {
-  return {
-    ...defaultHeaders,
-    ...getAuthToken(accessToken),
-  }
-}
-
-function getGetHeader(accessToken) {
+function getHeaders(accessToken) {
   return getAuthToken(accessToken)
 }
 
@@ -228,12 +222,8 @@ export const requester = store => next => action => {
             // date if we end up hooking up following/starred checks
             options.headers = getHeadHeader(accessToken, state.gui.lastNotificationCheck)
             break
-          case 'PATCH':
-          case 'POST':
-            options.headers = getPostJsonHeader(accessToken)
-            break
           default:
-            options.headers = getGetHeader(accessToken)
+            options.headers = getHeaders(accessToken)
             break
         }
         return fetch(endpoint.path, options)

@@ -51,9 +51,9 @@ export function profile(state = {}, action) {
     case PROFILE.SAVE_SUCCESS:
       return {
         ...state,
-        ...action.payload.response,
+        ...action.payload.response.users,
         availability: null,
-        id: `${action.payload.response.id}`,
+        id: `${action.payload.response.users.id}`,
       }
     // should only happen if we get a 422 meaning
     // the current password entered was wrong

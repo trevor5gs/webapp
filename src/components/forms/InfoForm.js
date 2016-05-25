@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import { debounce } from 'lodash'
+import { debounce, isEqual } from 'lodash'
 import { hideSoftKeyboard } from '../../vendor/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { saveProfile } from '../../actions/profile'
@@ -38,7 +38,8 @@ class InfoForm extends Component {
       bioStatus: STATUS.INDETERMINATE,
       linksStatus: STATUS.INDETERMINATE,
       nameStatus: STATUS.INDETERMINATE,
-      showThenHideMessage: nextProps.showSaveMessage,
+      showThenHideMessage: nextProps.showSaveMessage &&
+        !isEqual(nextProps.profile, this.props.profile),
     })
   }
 

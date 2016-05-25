@@ -1,38 +1,22 @@
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
+import { resetEditor } from '../actions/editor'
 
-export function toggleEditing(comment, isEditing) {
+export function createComment(body, editorId, postId) {
   return {
-    type: ACTION_TYPES.COMMENT.TOGGLE_EDITING,
-    payload: {
-      model: comment,
-      isEditing,
-    },
-  }
-}
-
-export function loadEditableComment(comment) {
-  return {
-    type: ACTION_TYPES.COMMENT.EDITABLE,
-    payload: { endpoint: api.editComment(comment) },
-    meta: {
-      mappingType: MAPPING_TYPES.COMMENTS,
-      updateResult: false,
-    },
-  }
-}
-
-export function updateComment(comment, body, editorId) {
-  return {
-    type: ACTION_TYPES.COMMENT.UPDATE,
+    type: ACTION_TYPES.COMMENT.CREATE,
     payload: {
       body: { body },
       editorId,
-      endpoint: api.editComment(comment),
-      method: 'PATCH',
+      endpoint: api.createComment(postId),
+      method: 'POST',
+      postId,
     },
-    meta: {},
+    meta: {
+      mappingType: MAPPING_TYPES.COMMENTS,
+      successAction: resetEditor(editorId),
+    },
   }
 }
 
@@ -56,6 +40,42 @@ export function flagComment(comment, kind) {
       method: 'POST',
     },
     meta: {},
+  }
+}
+
+export function loadEditableComment(comment) {
+  return {
+    type: ACTION_TYPES.COMMENT.EDITABLE,
+    payload: { endpoint: api.editComment(comment) },
+    meta: {
+      mappingType: MAPPING_TYPES.COMMENTS,
+      updateResult: false,
+    },
+  }
+}
+
+export function toggleEditing(comment, isEditing) {
+  return {
+    type: ACTION_TYPES.COMMENT.TOGGLE_EDITING,
+    payload: {
+      model: comment,
+      isEditing,
+    },
+  }
+}
+
+export function updateComment(comment, body, editorId) {
+  return {
+    type: ACTION_TYPES.COMMENT.UPDATE,
+    payload: {
+      body: { body },
+      editorId,
+      endpoint: api.editComment(comment),
+      method: 'PATCH',
+    },
+    meta: {
+      mappingType: MAPPING_TYPES.COMMENTS,
+    },
   }
 }
 

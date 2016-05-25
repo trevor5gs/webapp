@@ -26,15 +26,18 @@ methods.addOrUpdateComment = (newState, action) => {
   switch (action.type) {
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
-      _.setWith(newState, [MAPPING_TYPES.COMMENTS, response.id], response, Object)
+      _.setWith(newState,
+                [MAPPING_TYPES.COMMENTS, response[MAPPING_TYPES.COMMENTS].id],
+                response[MAPPING_TYPES.COMMENTS],
+                Object)
       if (action.type === ACTION_TYPES.COMMENT.UPDATE_SUCCESS) { return newState }
       // add the comment to the linked array
       if (post.links && post.links.comments) {
-        post.links.comments.ids.unshift(`${response.id}`)
+        post.links.comments.ids.unshift(`${response[MAPPING_TYPES.COMMENTS].id}`)
       }
       jsonReducer.methods.appendPageId(
         newState, `/posts/${postId}/comments`,
-        MAPPING_TYPES.COMMENTS, response.id)
+        MAPPING_TYPES.COMMENTS, response[MAPPING_TYPES.COMMENTS].id)
       return methods.updateCommentsCount(newState, postId, 1)
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
       // add the comment to the linked array
