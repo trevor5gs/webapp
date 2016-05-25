@@ -2,6 +2,7 @@
 import 'newrelic'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
+import { values } from 'lodash'
 
 function handleZlibError(error) {
   if (error.code === 'Z_BUF_ERROR') {
@@ -139,7 +140,7 @@ export function canPrerenderRequest(req) {
   if (req.get('X-Skip-Prerender') === 'true') {
     return false
   }
-  return Object.values(loggedInPaths).every((regex) =>
+  return values(loggedInPaths).every((regex) =>
     !req.url.match(regex)
   )
 }

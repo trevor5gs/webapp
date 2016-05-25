@@ -9,12 +9,14 @@
     "build:web": "NODE_ENV=production node node_modules/webpack/bin/webpack.js -p --config=webpack.prod.config.js",
     "dev": "npm run clean && DEBUG=express:* NODE_ENV=development babel-node server-dev.js",
     "lint": "eslint src test",
-    "spec": "NODE_ENV=test mocha --compilers js:babel-core/register test/*.js test/**/*.js test/**/**/*.js",
+    "spec": "npm run test:all",
     "start": "NODE_ENV=production node dist/server-iso-entrypoint.js",
     "start:debug": "DEBUG=express:* NODE_ENV=production node dist/server-iso-entrypoint.js",
     "start:old": "NODE_ENV=production babel-node server.js",
     "postinstall": "npm run build",
-    "test": "npm run lint && NODE_ENV=test npm run spec"
+    "test": "npm run lint && NODE_ENV=test npm run test:all",
+    "test:all": "NODE_ENV=test mocha --compilers js:babel-core/register test/*.js test/**/*.js test/**/**/*.js",
+    "test:quick": "NODE_ENV=test mocha --compilers js:babel-core/register test/**/*.js test/**/**/*.js"
   },
   "engines": {
     "node": "5.10.1",
@@ -84,7 +86,6 @@
     "eslint-plugin-react": "5.1.1",
     "jsdom": "9.0.0",
     "mocha": "2.4.5",
-    "mocha-jsdom": "1.1.0",
     "react-addons-test-utils": "15.0.2",
     "react-transform-catch-errors": "1.0.2",
     "react-transform-hmr": "1.0.4",
