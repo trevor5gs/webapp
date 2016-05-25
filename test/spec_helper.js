@@ -2,29 +2,22 @@
 // webpack doesn't inject it here
 require('dotenv').load()
 global.ENV = JSON.stringify(require('../env'))
-
 import React from 'react'
+import TestUtils from 'react-addons-test-utils'
 import { camelize } from 'humps'
-import jsdom from 'mocha-jsdom'
 import chai, { expect } from 'chai'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 chai.use(sinonChai)
 import chaiHttp from 'chai-http'
 chai.use(chaiHttp)
+
+
+// Ease of use
 export { chai }
 export { sinon }
 export { expect }
-export { React as React }
 export { clearJSON, json, stub } from './stubs'
-
-import TestUtils from 'react-addons-test-utils'
-export { TestUtils }
-
-// create a js document
-export function jsdomReact() {
-  jsdom()
-}
 
 // React helpers
 export function getRenderedComponent(component, options = {}, children = null) {

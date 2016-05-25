@@ -1,4 +1,4 @@
-import { cloneDeep, reduce, get } from 'lodash'
+import { cloneDeep, reduce, get, values } from 'lodash'
 import { suggestEmoji } from '../components/completers/EmojiSuggester'
 import { userRegex } from '../components/completers/Completer'
 import { COMMENT, EDITOR, POST } from '../constants/action_types'
@@ -77,7 +77,7 @@ methods.addHasMention = (state) => {
 methods.addIsLoading = (state) => {
   const newState = cloneDeep(state)
   const { collection } = newState
-  let isLoading = Object.values(collection || {}).some((block) =>
+  let isLoading = values(collection).some((block) =>
     block.kind === 'image' && block.isLoading
   )
   if (!isLoading && newState.dragBlock) { isLoading = newState.dragBlock.isLoading }
