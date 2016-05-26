@@ -10,7 +10,7 @@ let requestQueue = []
 const runningFetches = {}
 
 const defaultHeaders = {
-  Accept: 'application/vnd.api+json',
+  Accept: 'application/json',
   'Content-Type': 'application/json',
 }
 
