@@ -16,6 +16,7 @@ import UserList from '../users/UserList'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
+import { isElloAndroid } from '../../vendor/jello'
 
 // TODO: convert these into react components (@see UserVitals)
 // to hopefully get better errors out of rendering streams
@@ -149,7 +150,7 @@ export function userAvatars(users) {
 export function profileToggles(categories, json, currentUser) {
   return (
     categories.data.map((category, index) => {
-      if (category.label.toLowerCase().indexOf('push') === 0) { return null }
+      if (!isElloAndroid() && category.label.toLowerCase().indexOf('push') === 0) { return null }
       const arr = [<TreeButton key={`categoryLabel${index}`}>{category.label}</TreeButton>]
       arr.push(
         <TreePanel key={`categoryItems${index}`}>
