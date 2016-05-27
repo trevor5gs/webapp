@@ -220,11 +220,10 @@ class Settings extends Component {
 
   onTogglePostsAdultContent = (obj) => {
     if (obj.postsAdultContent) {
-      const { dispatch, profile } = this.props
+      const { dispatch } = this.props
       dispatch(openModal(
         <AdultPostsDialog
           onConfirm={this.closeModal}
-          user={profile}
         />
       ))
     }
