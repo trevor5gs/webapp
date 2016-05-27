@@ -14,7 +14,7 @@ describe('user actions', () => {
     })
 
     it('has an api endpoint with the username in the action', () => {
-      expect(action.payload.endpoint.path).to.contain('/users/mk')
+      expect(action.payload.endpoint.path).to.contain('/users/~mk')
     })
 
     it('has an api endpoint with the flag kind in the action', () => {
