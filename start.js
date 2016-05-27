@@ -12,6 +12,7 @@ pm2.connect(true, function () {
     instances,
     kill_timeout: killTimeout,
     max_memory_restart: maxMemory + 'M',
+    cron_restart: "0,15,30,45 * * * *”",
     env: {
       "NODE_ENV": "production",
     },
