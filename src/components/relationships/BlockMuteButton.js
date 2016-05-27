@@ -8,7 +8,7 @@ const BlockMuteButton = ({ onClick }) =>
     onClick={onClick}
   >
     <DotsIcon />
-    <Hint>Block or Mute</Hint>
+    <Hint>Block, Mute or Flag</Hint>
   </button>
 
 BlockMuteButton.propTypes = {

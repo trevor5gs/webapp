@@ -3,9 +3,11 @@ import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { openModal, closeModal } from '../../actions/modals'
+import { flagUser } from '../../actions/user'
 import { updateRelationship } from '../../actions/relationships'
 import { trackEvent } from '../../actions/tracking'
 import BlockMuteDialog from '../dialogs/BlockMuteDialog'
+import FlagDialog from '../dialogs/FlagDialog'
 import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import BlockMuteButton from '../relationships/BlockMuteButton'
 import RelationshipButton from '../relationships/RelationshipButton'
@@ -15,6 +17,7 @@ class RelationsGroup extends Component {
 
   static propTypes = {
     classList: PropTypes.string,
+    deviceSize: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     pathname: PropTypes.string,
@@ -55,6 +58,7 @@ class RelationsGroup extends Component {
     dispatch(openModal(
       <BlockMuteDialog
         onBlock={this.onConfirmBlockUser}
+        onFlag={this.onConfirmFlagUser}
         onMute={this.onConfirmMuteUser}
         blockIsActive={relationshipPriority === RELATIONSHIP_PRIORITY.BLOCK}
         muteIsActive={relationshipPriority === RELATIONSHIP_PRIORITY.MUTE}
@@ -87,6 +91,23 @@ class RelationsGroup extends Component {
     this.closeModal()
   }
 
+  onConfirmFlagUser = () => {
+    const { deviceSize, dispatch } = this.props
+    // close the existing block/mute/flag modal
+    this.closeModal()
+    dispatch(openModal(
+      <FlagDialog
+        deviceSize={deviceSize}
+        onConfirm={this.closeModal}
+        onResponse={this.onUserWasFlagged}
+      />))
+  }
+
+  onUserWasFlagged = ({ flag }) => {
+    const { dispatch, user } = this.props
+    dispatch(flagUser(user.username, flag))
+  }
+
   getNextPriority(props, btnId) {
     const { relationshipPriority } = props
     switch (relationshipPriority) {
@@ -112,7 +133,7 @@ class RelationsGroup extends Component {
       relationshipPriority === RELATIONSHIP_PRIORITY.MUTE
   }
 
-  closeModal() {
+  closeModal = () => {
     const { dispatch } = this.props
     dispatch(closeModal())
   }
@@ -164,6 +185,7 @@ class RelationsGroup extends Component {
 function mapStateToProps(state, ownProps) {
   const user = state.json.users[ownProps.user.id]
   return {
+    deviceSize: state.gui.deviceSize,
     isLoggedIn: state.authentication.isLoggedIn,
     pathname: state.routing.location.pathname,
     previousPath: state.routing.previousPath,

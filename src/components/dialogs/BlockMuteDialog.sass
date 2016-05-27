@@ -17,10 +17,11 @@
   +sans-typeset
   transition: background-color $speed ease, border-color $speed ease, color $speed ease
   width: 100%
-  height: rem(60)
+  height: rem(40)
   margin-bottom: rem(20)
+  border-radius: rem(20)
+  line-height: rem(40)
   text-align: center
-  line-height: rem(60)
   white-space: nowrap
   background-color: white
   border: 1px solid white
@@ -40,14 +41,14 @@
 
 @media(min-width: #{$break-2})
   .BlockMuteDialog
-    max-width: rem(600)
+    max-width: rem(800)
   .BlockMuteDialogColumn
     display: inline-block
     vertical-align: top
-    max-width: calc(50% - #{rem(40)})
+    max-width: calc(33.33333% - #{rem(30)})
   .BlockMuteDialogColumn + .BlockMuteDialogColumn
     margin-top: 0
-    margin-left: rem(40)
+    margin-left: rem(30)
   .BlockMuteDialog h2
     font-size: rem(24)
 
