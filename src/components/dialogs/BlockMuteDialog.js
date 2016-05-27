@@ -3,6 +3,7 @@ import classNames from 'classnames'
 
 const BlockMuteDialog = ({
   onBlock,
+  onFlag,
   onMute,
   username,
   blockIsActive = false,
@@ -15,8 +16,22 @@ const BlockMuteDialog = ({
 
   return (
     <div className="Dialog BlockMuteDialog">
-      <h2>{`Would you like to block or mute @${username}?`}</h2>
+      <h2>{`Would you like to mute, block or flag @${username}?`}</h2>
       <div className="BlockMuteDialogBody">
+        <div className="BlockMuteDialogColumn">
+          <button
+            className={muteButtonClasses}
+            onClick={onMute}
+          >
+            {muteButtonText}
+          </button>
+          <p>
+            Muting prevents further email notifications from a user and removes
+            their past activity from your feed. The user is still able to
+            follow you and can still comment on your posts, but you will not
+            receive any notifications.
+          </p>
+        </div>
         <div className="BlockMuteDialogColumn">
           <button
             className={blockButtonClasses}
@@ -33,16 +48,13 @@ const BlockMuteDialog = ({
         </div>
         <div className="BlockMuteDialogColumn">
           <button
-            className={muteButtonClasses}
-            onClick={onMute}
+            className="BlockMuteDialogButton"
+            onClick={onFlag}
           >
-            {muteButtonText}
+            Flag User
           </button>
           <p>
-            Muting prevents further email notifications from a user and removes
-            their past activity from your feed. The user is still able to
-            follow you and can still comment on your posts, but you will not
-            receive any notifications.
+            Report @{username} for violating our rules.
           </p>
         </div>
       </div>
@@ -53,9 +65,10 @@ const BlockMuteDialog = ({
 BlockMuteDialog.propTypes = {
   blockIsActive: PropTypes.bool,
   muteIsActive: PropTypes.bool,
-  onBlock: PropTypes.func,
-  onMute: PropTypes.func,
-  username: PropTypes.string,
+  onBlock: PropTypes.func.isRequired,
+  onFlag: PropTypes.func.isRequired,
+  onMute: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
 }
 
 export default BlockMuteDialog

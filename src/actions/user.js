@@ -6,6 +6,17 @@ import * as StreamRenderables from '../components/streams/StreamRenderables'
 import * as StreamFilters from '../components/streams/StreamFilters'
 import { ErrorState } from '../components/errors/Errors'
 
+export function flagUser(username, kind) {
+  return {
+    type: ACTION_TYPES.USER.FLAG,
+    payload: {
+      endpoint: api.flagUser(`~${username}`, kind),
+      method: 'POST',
+    },
+    meta: {},
+  }
+}
+
 export function loadUserDetail(username) {
   return {
     type: ACTION_TYPES.PROFILE.DETAIL,

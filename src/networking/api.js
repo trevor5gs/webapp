@@ -274,6 +274,11 @@ export function userResources(idOrUsername, resource) {
     params,
   }
 }
+export function flagUser(idOrUsername, kind) {
+  return {
+    path: getAPIPath(`users/${idOrUsername}/flag/${kind}`),
+  }
+}
 // Search
 export function searchPosts(params) {
   return {

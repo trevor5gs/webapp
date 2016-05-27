@@ -142,7 +142,8 @@ export const requester = store => next => action => {
         type !== ACTION_TYPES.PROFILE.REQUEST_INVITE &&
         type !== ACTION_TYPES.PROFILE.SAVE &&
         type !== ACTION_TYPES.PROFILE.SIGNUP &&
-        type !== ACTION_TYPES.RELATIONSHIPS.UPDATE
+        type !== ACTION_TYPES.RELATIONSHIPS.UPDATE &&
+        type !== ACTION_TYPES.USER.FLAG
       ) || !payload) {
     return next(action)
   }

@@ -125,6 +125,10 @@ describe('api.js', () => {
     it('#userResources', () => {
       expect(api.userResources('~666', 'loves').path).to.match(/\/users\/~666\/loves\?per_page=/)
     })
+
+    it('#flagUser', () => {
+      expect(api.flagUser('666', 'ants').path).to.match(/\/users\/666\/flag\/ants$/)
+    })
   })
 
   context('search', () => {
