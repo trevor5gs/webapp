@@ -5,7 +5,7 @@ import { fetchOauthToken } from '../oauth'
 import jsdom from 'jsdom'
 
 describe('isomorphically rendering on the server', function () {
-  this.timeout(5000)
+  this.timeout(15000)
 
   context('#canPrerenderRequest', () => {
     it('returns false with loggedInPaths', () => {
