@@ -10,7 +10,7 @@ export function flagUser(username, kind) {
   return {
     type: ACTION_TYPES.USER.FLAG,
     payload: {
-      endpoint: api.flagUser(username, kind),
+      endpoint: api.flagUser(`~${username}`, kind),
       method: 'POST',
     },
     meta: {},
