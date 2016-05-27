@@ -48,7 +48,7 @@ export const AUTHENTICATION_PROMOTIONS = [
     },
   },
   {
-    username: 'p-a-n-t-a-r-e-i',
+    username: 'heypantarei',
 
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/2757192/ello-regular-4dd98ad8.png' },
