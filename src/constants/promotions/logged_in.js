@@ -135,10 +135,10 @@ export const LOGGED_IN_PROMOTIONS = [
     },
   },
   {
-    username: 'frankpantera',
+    username: 'dan_peterka',
     caption: <h1>Welcome to the future.</h1>,
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2044563/ello-regular-d510f0c1.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2044563/ello-regular-dcb36af3.png' },
     },
     coverImage: {
       hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3967186/ello-hdpi-186135a0.jpg' },
