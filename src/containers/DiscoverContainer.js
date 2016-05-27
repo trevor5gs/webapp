@@ -47,7 +47,7 @@ export class DiscoverContainer extends Component {
   }
 
   static preRender = (store, routerState) =>
-    store.dispatch(loadDiscoverUsers(routerState.params.type || 'recommended'))
+    store.dispatch(getDiscoverAction(routerState.params.type || 'recommended'))
 
   componentWillMount() {
     const { dispatch, paramsType } = this.props
