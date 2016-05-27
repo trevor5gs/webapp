@@ -88,7 +88,7 @@ export class PostDetailContainer extends Component {
     const props = {
       author,
       hasEditor: author && author.hasCommentingEnabled && !(post.isReposting || post.isEditing),
-      key: `postDetail_${post ? post.id : paramsToken}`,
+      key: `postDetail_${paramsToken}`,
       post,
       streamAction: author && author.hasCommentingEnabled ? loadComments(post, false) : null,
     }
