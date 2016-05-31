@@ -348,3 +348,6 @@ export default function* requester() {
   yield fork(handleRequest, requestChannel)
   // yield fork(requestSaga, requestChannel)
 }
+
+export { runningFetches }
+
