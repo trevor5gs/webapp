@@ -5,12 +5,10 @@ import { camelizeKeys } from 'humps'
 import { actionChannel, call, fork, put, select, take } from 'redux-saga/effects'
 import * as ACTION_TYPES from '../constants/action_types'
 import { refreshAuthenticationToken } from '../actions/authentication'
-import { pauseRequester, unpauseRequester } from '../actions/api'
+import { fetchCredentials, pauseRequester, unpauseRequester } from '../actions/api'
 import {
-  accessTokenSelector,
   isLoggedInSelector,
   refreshTokenSelector,
-  shouldUseAccessTokenSelector,
 } from './selectors'
 import { sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
@@ -175,33 +173,6 @@ export function* handleRequestError(error, action) {
     yield call(fireFailureAction)
   }
   return false
-}
-
-
-export function* fetchCredentials() {
-  const accessToken = yield select(accessTokenSelector)
-  if (yield select(shouldUseAccessTokenSelector)) {
-    return {
-      token: {
-        access_token: accessToken,
-      },
-    }
-  }
-
-  const tokenPath = (typeof window === 'undefined') ?
-    `http://localhost:${process.env.PORT || 6660}/api/webapp-token` :
-    `${document.location.protocol}//${document.location.host}/api/webapp-token`
-
-  try {
-    const serverResponse = yield call(fetch, tokenPath, { credentials: 'same-origin' })
-    if (serverResponse.ok) {
-      // Pass serverResponse as binding for serverResponse.json
-      return yield call([serverResponse, serverResponse.json])
-    }
-    return serverResponse
-  } catch (_err) {
-    return yield call(fetchCredentials)
-  }
 }
 
 const pathnameSelector = state => get(state, 'routing.location.pathname', '')

@@ -1,10 +1,10 @@
 import 'isomorphic-fetch'
 import { call, select } from 'redux-saga/effects'
-import { accessTokenSelector } from './selectors'
+import { accessTokenSelector, shouldUseAccessTokenSelector } from './selectors'
 
 export function* fetchCredentials() {
   const accessToken = yield select(accessTokenSelector)
-  if (accessToken) {
+  if (yield select(shouldUseAccessTokenSelector)) {
     return {
       token: {
         access_token: accessToken,
