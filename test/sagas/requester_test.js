@@ -4,12 +4,11 @@ import { loadDiscoverPosts } from '../../src/actions/discover'
 import { refreshAuthenticationToken } from '../../src/actions/authentication'
 import { isLoggedInSelector, refreshTokenSelector } from '../../src/sagas/selectors'
 import {
-  fetchCredentials,
   handleRequest,
   handleRequestError,
   performRequest,
 } from '../../src/sagas/requester'
-import { sagaFetch } from '../../src/sagas/api'
+import { fetchCredentials, sagaFetch } from '../../src/sagas/api'
 
 describe('requester saga', function () {
   it('generates requests to the api', function () {

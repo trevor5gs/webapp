@@ -5,12 +5,12 @@ import { camelizeKeys } from 'humps'
 import { actionChannel, call, fork, put, select, take } from 'redux-saga/effects'
 import * as ACTION_TYPES from '../constants/action_types'
 import { refreshAuthenticationToken } from '../actions/authentication'
-import { fetchCredentials, pauseRequester, unpauseRequester } from '../actions/api'
+import { pauseRequester, unpauseRequester } from '../actions/api'
 import {
   isLoggedInSelector,
   refreshTokenSelector,
 } from './selectors'
-import { sagaFetch } from './api'
+import { fetchCredentials, sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
 import Dialog from '../components/dialogs/Dialog'
 
