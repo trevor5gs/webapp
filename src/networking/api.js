@@ -338,7 +338,7 @@ export function relationshipAdd(userId, priority) {
 // Android Push Subscriptions
 export function registerForGCM(regId) {
   return {
-    path: getAPIPath(`profile/push_subscriptions/gcm/${regId}`)
+    path: getAPIPath(`profile/push_subscriptions/gcm/${regId}`),
   }
 }
 
