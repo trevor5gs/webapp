@@ -10,9 +10,13 @@ import {
 
 import {
   cancelAuthRefresh,
+  clearAuthStore,
+  getUserCredentials,
   refreshAuthenticationToken,
   scheduleAuthRefresh,
 } from '../actions/authentication'
+
+import { pauseRequester } from '../actions/api'
 
 const toMilliseconds = seconds => seconds * 1000
 
@@ -26,6 +30,14 @@ const futureTimeout = time => {
 
   // Let's not set a timeout for in the past
   return Math.max(msFromNow, 0)
+}
+
+export function* loginSaga() {
+  const { payload } = yield take(AUTHENTICATION.SIGN_IN)
+  const { email, password } = payload
+  yield put(pauseRequester())
+  yield put(clearAuthStore())
+  yield put(getUserCredentials(email, password))
 }
 
 function* userSuccessSaga() {

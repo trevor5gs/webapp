@@ -8,7 +8,7 @@ import { ONBOARDING_VERSION } from '../../constants/application_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { loadProfile, saveProfile } from '../../actions/profile'
-import { getUserCredentials } from '../../actions/authentication'
+import { signIn } from '../../actions/authentication'
 import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
@@ -112,7 +112,7 @@ class SignIn extends Component {
     e.preventDefault()
 
     const { dispatch } = this.props
-    const action = getUserCredentials(this.emailValue, this.passwordValue)
+    const action = signIn(this.emailValue, this.passwordValue)
 
     action.meta.successAction = () => dispatch(loadProfile())
 
