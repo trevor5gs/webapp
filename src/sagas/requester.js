@@ -10,6 +10,7 @@ import {
   accessTokenSelector,
   isLoggedInSelector,
   refreshTokenSelector,
+  shouldUseAccessTokenSelector,
 } from './selectors'
 import { sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
@@ -179,7 +180,7 @@ export function* handleRequestError(error, action) {
 
 export function* fetchCredentials() {
   const accessToken = yield select(accessTokenSelector)
-  if (accessToken) {
+  if (yield select(shouldUseAccessTokenSelector)) {
     return {
       token: {
         access_token: accessToken,
