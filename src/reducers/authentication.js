@@ -14,7 +14,8 @@ const initialState = {
 }
 
 export function authentication(state = initialState, action) {
-  const { authentication: auth, response } = action.payload
+  let auth
+  let response
   switch (action.type) {
     case ACTION_TYPES.AUTHENTICATION.SCHEDULE_REFRESH:
       return { ...state, refreshTimeoutId: action.payload.refreshTimeoutId }
@@ -29,6 +30,7 @@ export function authentication(state = initialState, action) {
     case ACTION_TYPES.AUTHENTICATION.USER_SUCCESS:
     case ACTION_TYPES.AUTHENTICATION.REFRESH_SUCCESS:
     case ACTION_TYPES.PROFILE.SIGNUP_SUCCESS:
+      response = action.payload.response
       return {
         ...state,
         ...response,
@@ -36,6 +38,7 @@ export function authentication(state = initialState, action) {
         isLoggedIn: true,
       }
     case REHYDRATE:
+      auth = action.payload.authentication
       // Don't take the timeout ID from localstorage
       if (auth) {
         return {
