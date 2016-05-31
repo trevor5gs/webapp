@@ -92,6 +92,8 @@ class CommentTools extends Component {
     const { author, comment, currentUser, isLoggedIn, post } = this.props
     const isOwnComment = currentUser && `${author.id}` === `${currentUser.id}`
     const isOwnPost = currentUser && `${post.authorId}` === `${currentUser.id}`
+    const isOwnRepost = currentUser && post.links.repostAuthor &&
+      `${post.links.repostAuthor.id}` === `${currentUser.id}`
     const cells = []
     cells.push(
       <span className="PostTool TimeAgoTool" key={`TimeAgoTool_${comment.id}`}>
@@ -116,7 +118,7 @@ class CommentTools extends Component {
             </button>
           </span>
         )
-      } else if (isOwnPost) {
+      } else if (isOwnPost || isOwnRepost) {
         cells.push(
           <span className="PostTool ReplyTool" key={`ReplyTool_${comment.id}`}>
             <button onClick={this.onClickReplyToComment}>
