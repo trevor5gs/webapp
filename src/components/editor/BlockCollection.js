@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import { delay, isEqual } from 'lodash'
+import { isEqual } from 'lodash'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
@@ -353,7 +353,7 @@ class BlockCollection extends Component {
       // This guard may not be necessary
       if (files.item(index)) {
         // need to delay a bit or else the images clobber each other
-        delay(dispatch, 100 * index, saveAsset(files[index], editorId))
+        dispatch(saveAsset(files[index], editorId))
       }
     }
   }

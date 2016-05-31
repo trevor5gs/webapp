@@ -129,7 +129,7 @@ class Editor extends Component {
   }
 
   cancelConfirmed = () => {
-    const { comment, dispatch, post, shouldPersist } = this.props
+    const { comment, dispatch, post } = this.props
     this.closeModal()
     dispatch(resetEditor(this.getEditorIdentifier()))
     dispatch(closeOmnibar())
@@ -139,9 +139,6 @@ class Editor extends Component {
     }
     if (comment) {
       dispatch(toggleCommentEditing(comment, false))
-    }
-    if (shouldPersist) {
-      this.clearPersistedData()
     }
   }
 

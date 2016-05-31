@@ -66,6 +66,12 @@ class SignIn extends Component {
     }
   }
 
+  componentWillUnmount() {
+    // Cancel lingering debounced methods
+    this.delayedShowEmailError.cancel()
+    this.delayedShowPasswordError.cancel()
+  }
+
   onBlurControl = () => {
     if (isAndroid()) {
       document.body.classList.remove('hideCredits')
@@ -102,19 +108,19 @@ class SignIn extends Component {
     }
   }
 
-  onSubmit = async (e) => {
+  onSubmit = (e) => {
     e.preventDefault()
 
     const { dispatch } = this.props
     const action = getUserCredentials(this.emailValue, this.passwordValue)
 
-    const success = await dispatch(action)
+    action.meta.successAction = () => dispatch(loadProfile())
 
-    if (success) {
-      dispatch(loadProfile())
-    } else {
-      this.setState({ failureMessage: 'Your email or password were incorrect.' })
-    }
+    action.meta.failureAction = () => this.setState({
+      failureMessage: 'Your email or password were incorrect',
+    })
+
+    dispatch(action)
   }
 
   onClickTrackCredits = () => {

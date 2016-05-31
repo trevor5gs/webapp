@@ -1,13 +1,13 @@
 /* eslint-disable no-underscore-dangle */
-import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { browserHistory } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
 import { combineReducers, compose, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
-import { analytics, authentication, editor, requester, uploader } from './middleware'
+import createSagaMiddleware, { END } from 'redux-saga'
+import { analytics } from './middleware'
 import * as reducers from './reducers'
-
+import rootSaga from './sagas'
 const reducer = combineReducers({
   ...reducers,
 })
@@ -15,7 +15,7 @@ const reducer = combineReducers({
 const createBrowserStore = (history, passedInitialState = {}) => {
   const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
   const reduxRouterMiddleware = routerMiddleware(history)
-
+  const sagaMiddleware = createSagaMiddleware()
   const initialState = window.__INITIAL_STATE__ || passedInitialState
   // react-router-redux doesn't know how to serialize
   // query params from server-side rendering, so we just kill it
@@ -25,33 +25,27 @@ const createBrowserStore = (history, passedInitialState = {}) => {
   const store = compose(
     autoRehydrate(),
     applyMiddleware(
-      thunk,
-      authentication,
+      sagaMiddleware,
       reduxRouterMiddleware,
-      uploader,
-      requester,
-      editor,
       analytics,
       logger
     ),
   )(createStore)(reducer, initialState)
 
+  sagaMiddleware.run(rootSaga)
   return store
 }
 
 const createServerStore = (history, initialState = {}) => {
   const reduxRouterMiddleware = routerMiddleware(history)
+  const sagaMiddleware = createSagaMiddleware()
   const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
   const store = compose(
-                    applyMiddleware(
-                      thunk,
-                      uploader,
-                      reduxRouterMiddleware,
-                      requester,
-                      logger
-                    ),
+    applyMiddleware(sagaMiddleware, reduxRouterMiddleware, logger),
   )(createStore)(reducer, initialState)
 
+  store.runSaga = sagaMiddleware.run
+  store.close = () => store.dispatch(END)
   return store
 }
 

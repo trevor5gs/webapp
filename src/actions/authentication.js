@@ -7,15 +7,8 @@ import {
 } from '../networking/api'
 
 export function cancelAuthRefresh() {
-  return (dispatch, getState) => {
-    const refreshTimeoutId = getState().authentication.refreshTimeoutId
-    if (!!refreshTimeoutId) {
-      clearTimeout(refreshTimeoutId)
-    }
-
-    return dispatch({
-      type: ACTION_TYPES.AUTHENTICATION.CANCEL_REFRESH,
-    })
+  return {
+    type: ACTION_TYPES.AUTHENTICATION.CANCEL_REFRESH,
   }
 }
 
@@ -30,20 +23,19 @@ export function getUserCredentials(email, password) {
         password,
       },
     },
+    meta: {
+      pauseRequester: true,
+    },
   }
 }
 
 export function logout() {
-  return dispatch => {
-    dispatch(cancelAuthRefresh())
-
-    return dispatch({
-      type: ACTION_TYPES.AUTHENTICATION.LOGOUT,
-      payload: {
-        endpoint: logoutEndpoint(),
-        method: 'DELETE',
-      },
-    })
+  return {
+    type: ACTION_TYPES.AUTHENTICATION.LOGOUT,
+    payload: {
+      endpoint: logoutEndpoint(),
+      method: 'DELETE',
+    },
   }
 }
 
@@ -57,21 +49,19 @@ export function refreshAuthenticationToken(refreshToken) {
         refresh_token: refreshToken,
       },
     },
+    meta: {
+      pauseRequester: true,
+    },
   }
 }
 
 export function scheduleAuthRefresh(refreshToken, timeout) {
-  return dispatch => {
-    const refreshTimeoutId = window.setTimeout(() => {
-      dispatch(refreshAuthenticationToken(refreshToken))
-    }, timeout)
-
-    return dispatch({
-      type: ACTION_TYPES.AUTHENTICATION.SCHEDULE_REFRESH,
-      payload: {
-        refreshTimeoutId,
-      },
-    })
+  return {
+    type: ACTION_TYPES.AUTHENTICATION.SCHEDULE_REFRESH,
+    payload: {
+      refreshToken,
+      timeout,
+    },
   }
 }
 

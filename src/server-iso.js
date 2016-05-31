@@ -30,6 +30,7 @@ import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_word
 import { addOauthRoute, currentToken } from '../oauth'
 import createRoutes from './routes'
 import { replace, syncHistoryWithStore } from 'react-router-redux'
+import { serverRoot } from './sagas'
 
 // load env vars first
 require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
@@ -54,13 +55,7 @@ librato.on('error', (err) => {
   console.log('ELLO LIBRATO ERROR', err)
 })
 
-let indexStr = ''
-// grab out the index.html string first thing
-fs.readFile(path.join(__dirname, '../public/index.html'), 'utf-8', (err, data) => {
-  if (!err) {
-    indexStr = data
-  }
-})
+const indexStr = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf-8')
 
 // Wire up OAuth route
 addOauthRoute(app)
@@ -71,7 +66,10 @@ app.use('/static', express.static('public/static', { maxAge: '1y' }))
 
 // Return promises for initial loads
 function preRender(renderProps, store) {
+  const sagaTask = store.runSaga(serverRoot)
   const promises = renderProps.components.map(component => ((component && component.preRender) ? component.preRender(store, renderProps) : null)).filter(component => !!component)
+
+  promises.push(sagaTask.done)
   return Promise.all(promises)
 }
 
@@ -102,12 +100,13 @@ function renderFromServer(req, res) {
 
       store.dispatch(replace(renderProps.location.pathname))
 
+      const InitialComponent = (
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>
+      )
+
       preRender(renderProps, store).then(() => {
-        const InitialComponent = (
-          <Provider store={store}>
-            <RouterContext {...renderProps} />
-          </Provider>
-        )
         const componentHTML = renderToString(InitialComponent)
         const head = Helmet.rewind()
         const state = store.getState()
@@ -124,6 +123,8 @@ function renderFromServer(req, res) {
         console.log('ELLO CATCH ERROR', err)
         res.status(500).end()
       })
+      renderToString(InitialComponent)
+      store.close()
     })
   })
 }

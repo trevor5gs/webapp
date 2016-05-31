@@ -102,28 +102,9 @@ export function requestInvite(email) {
   }
 }
 
-export function uploadAsset(type, file) {
+export function temporaryAssetCreated(type, objectURL) {
   return {
     type,
-    meta: {},
-    payload: {
-      endpoint: api.profilePath(),
-      file,
-    },
-  }
-}
-
-export function temporaryAvatarCreated(objectURL) {
-  return {
-    type: PROFILE.TMP_AVATAR_CREATED,
-    meta: {},
-    payload: { tmp: { url: objectURL } },
-  }
-}
-
-export function temporaryCoverCreated(objectURL) {
-  return {
-    type: PROFILE.TMP_COVER_CREATED,
     meta: {},
     payload: { tmp: { url: objectURL } },
   }
@@ -132,17 +113,25 @@ export function temporaryCoverCreated(objectURL) {
 // There are 2 branches here. One to Base64 encode the asset for immediate
 // feedback. The other sends it off to S3 and friends.
 export function saveAvatar(file) {
-  return dispatch => {
-    dispatch(temporaryAvatarCreated(URL.createObjectURL(file)))
-    dispatch(uploadAsset(PROFILE.SAVE_AVATAR, file))
+  return {
+    type: PROFILE.SAVE_AVATAR,
+    meta: {},
+    payload: {
+      endpoint: api.profilePath(),
+      file,
+    },
   }
 }
 
 // Basically the same things as saveAvatar above
 export function saveCover(file) {
-  return dispatch => {
-    dispatch(temporaryCoverCreated(URL.createObjectURL(file)))
-    dispatch(uploadAsset(PROFILE.SAVE_COVER, file))
+  return {
+    type: PROFILE.SAVE_COVER,
+    meta: {},
+    payload: {
+      endpoint: api.profilePath(),
+      file,
+    },
   }
 }
 

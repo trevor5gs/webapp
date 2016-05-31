@@ -145,12 +145,35 @@ export function saveAsset(file, editorId) {
   }
 }
 
+export function temporaryAssetCreated(objectURL, editorId) {
+  return {
+    type: EDITOR.TMP_IMAGE_CREATED,
+    meta: {},
+    payload: {
+      url: objectURL,
+      editorId,
+    },
+  }
+}
+
 export function updateBlock(block, uid, editorId) {
   return {
     type: EDITOR.UPDATE_BLOCK,
     payload: {
       block,
       editorId,
+      uid,
+    },
+  }
+}
+
+export function uploadAsset(type, file, editorId, uid) {
+  return {
+    type,
+    meta: {},
+    payload: {
+      editorId,
+      file,
       uid,
     },
   }

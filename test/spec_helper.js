@@ -8,6 +8,8 @@ import { camelize } from 'humps'
 import chai, { expect } from 'chai'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
+import chaiSaga from './support/saga_helpers'
+chai.use(chaiSaga)
 chai.use(sinonChai)
 import chaiHttp from 'chai-http'
 chai.use(chaiHttp)

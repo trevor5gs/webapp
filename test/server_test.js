@@ -21,36 +21,34 @@ describe('isomorphically rendering on the server', function () {
     })
   })
 
-  it('isomorphically renders the homepage', (done) => {
-    fetchOauthToken(() => {
-      chai
-      .request(app)
-      .get('/')
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(200)
-        expect(res).to.be.html
-        const document = jsdom.jsdom(res.text)
-        expect(document.querySelectorAll('main')).to.have.lengthOf(1)
-        done()
-      })
-    })
-  })
+  it('isomorphically renders the homepage', () =>
+     fetchOauthToken(() => {
+       chai
+         .request(app)
+         .get('/')
+         .end((err, res) => {
+           expect(err).to.be.null
+           expect(res).to.have.status(200)
+           expect(res).to.be.html
+           const document = jsdom.jsdom(res.text)
+           expect(document.querySelectorAll('main')).to.have.lengthOf(1)
+         })
+     })
+  )
 
-  it('does not isomorphically render when X-Skip-Prerender is true', (done) => {
-    fetchOauthToken(() => {
-      chai
-      .request(app)
-      .get('/')
-      .set('X-Skip-Prerender', true)
-      .end((err, res) => {
-        expect(err).to.be.null
-        expect(res).to.have.status(200)
-        expect(res).to.be.html
-        const document = jsdom.jsdom(res.text)
-        expect(document.querySelectorAll('main')).to.have.lengthOf(0)
-        done()
-      })
-    })
-  })
+  it('does not isomorphically render when X-Skip-Prerender is true', () =>
+     fetchOauthToken(() => {
+       chai
+         .request(app)
+         .get('/')
+         .set('X-Skip-Prerender', true)
+         .end((err, res) => {
+           expect(err).to.be.null
+           expect(res).to.have.status(200)
+           expect(res).to.be.html
+           const document = jsdom.jsdom(res.text)
+           expect(document.querySelectorAll('main')).to.have.lengthOf(0)
+         })
+     })
+    )
 })
