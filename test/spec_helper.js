@@ -61,12 +61,18 @@ function isValidFSAKey(key) {
   return validKeys.indexOf(key) > -1
 }
 
-// Ensures that the constant (action.type) and action (fn.name) are sort of equal:
-// GUI.SET_IS_OFFSET_LAYOUT === setIsOffsetLayout
-export function isFSAN(action, fn) {
-  const types = camelize(action.type.toLowerCase()).split('.')
-  const type = types.length >= 1 ? types[1] : types[0]
-  return type === fn.name
+// Ensures that the constant (action.type) and actionCreator (fn.name) are
+// known or sort of equal in a couple of ways.
+export function isFSAName(action, fn) {
+  // Top level ActionType
+  if (['LOAD_STREAM'].indexOf(action.type) > -1) { return true }
+  const names = camelize(action.type.toLowerCase()).split('.')
+  const namespace = names[0]
+  const type = names.length >= 1 ? names[1] : null
+  // GUI.SET_IS_OFFSET_LAYOUT === setIsOffsetLayout
+  if (type && type === fn.name) { return true }
+  // USER.FLAG === flagUser
+  return type && camelize([type, namespace].join('_')) === fn.name
 }
 
 export function isFSA(action) {

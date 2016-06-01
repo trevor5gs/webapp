@@ -1,4 +1,4 @@
-import { expect, isFSA, isFSAN } from '../spec_helper'
+import { expect, isFSA, isFSAName } from '../spec_helper'
 import * as subject from '../../src/actions/gui'
 
 describe('gui actions', () => {
@@ -10,7 +10,7 @@ describe('gui actions', () => {
     })
 
     it('has similar action.name and action.type', () => {
-      expect(isFSAN(action, subject.setActiveUserFollowingType)).to.be.true
+      expect(isFSAName(action, subject.setActiveUserFollowingType)).to.be.true
     })
 
     it('has a payload with the correct keys', () => {
@@ -30,7 +30,7 @@ describe('gui actions', () => {
     })
 
     it('has similar action.name and action.type', () => {
-      expect(isFSAN(action, subject.setIsOffsetLayout)).to.be.true
+      expect(isFSAName(action, subject.setIsOffsetLayout)).to.be.true
     })
 
     it('has a payload with the correct keys', () => {
@@ -50,7 +50,7 @@ describe('gui actions', () => {
     })
 
     it('has similar action.name and action.type', () => {
-      expect(isFSAN(action, subject.setLastDiscoverBeaconVersion)).to.be.true
+      expect(isFSAName(action, subject.setLastDiscoverBeaconVersion)).to.be.true
     })
 
     it('has a payload with the correct keys', () => {
@@ -70,7 +70,7 @@ describe('gui actions', () => {
     })
 
     it('has similar action.name and action.type', () => {
-      expect(isFSAN(action, subject.setLastFollowingBeaconVersion)).to.be.true
+      expect(isFSAName(action, subject.setLastFollowingBeaconVersion)).to.be.true
     })
 
     it('has a payload with the correct keys', () => {
@@ -90,7 +90,7 @@ describe('gui actions', () => {
     })
 
     it('has similar action.name and action.type', () => {
-      expect(isFSAN(action, subject.setLastStarredBeaconVersion)).to.be.true
+      expect(isFSAName(action, subject.setLastStarredBeaconVersion)).to.be.true
     })
 
     it('has a payload with the correct keys', () => {
@@ -115,7 +115,7 @@ describe('gui actions', () => {
     })
 
     it('has similar action.name and action.type', () => {
-      expect(isFSAN(action, subject.setScrollState)).to.be.true
+      expect(isFSAName(action, subject.setScrollState)).to.be.true
     })
 
     it('has a payload with the correct keys', () => {
@@ -152,7 +152,7 @@ describe('gui actions', () => {
     })
 
     it('has similar action.name and action.type', () => {
-      expect(isFSAN(action, subject.setViewportSizeAttributes)).to.be.true
+      expect(isFSAName(action, subject.setViewportSizeAttributes)).to.be.true
     })
 
     it('has a payload with the correct keys', () => {

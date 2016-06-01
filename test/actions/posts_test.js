@@ -21,3 +21,4 @@ describe('posts.js', () => {
     })
   })
 })
+

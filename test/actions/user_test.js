@@ -1,4 +1,4 @@
-import { expect, isFSA } from '../spec_helper'
+import { expect, isFSA, isFSAName } from '../spec_helper'
 import * as subject from '../../src/actions/user'
 
 describe('user actions', () => {
@@ -7,6 +7,10 @@ describe('user actions', () => {
 
     it('is an FSA compliant action', () => {
       expect(isFSA(action)).to.be.true
+    })
+
+    it('has similar action.name and action.type', () => {
+      expect(isFSAName(action, subject.flagUser)).to.be.true
     })
 
     it('has the expected type constant', () => {
