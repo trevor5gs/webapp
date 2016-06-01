@@ -199,7 +199,7 @@ class NavbarContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   const { authentication, gui, json, modal, profile, routing } = state
   const currentStream = gui.currentStream
   const isLoggedIn = authentication.isLoggedIn

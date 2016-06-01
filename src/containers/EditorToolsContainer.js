@@ -161,7 +161,7 @@ class EditorToolsContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   const { editor, emoji, gui, modal } = state
   return {
     completions: editor.completions,

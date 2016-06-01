@@ -96,7 +96,7 @@ AppContainer.preRender = (store) => {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+function mapStateToProps(state, ownProps) {
   const { authentication } = state
   return {
     authentication,

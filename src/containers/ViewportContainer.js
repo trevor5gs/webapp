@@ -146,7 +146,7 @@ class ViewportContainer extends Component {
 
 }
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   const { gui, modal, routing } = state
   return {
     coverOffset: gui.coverOffset,
