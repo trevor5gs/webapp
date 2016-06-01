@@ -10,5 +10,5 @@ The web app for [ello.co](http://ello.co).
 * Assets
 * [Contributing](/docs/contribute/Readme.md)
 
-:metal::metal:
+:metal::skull::metal:
 
