@@ -1,4 +1,4 @@
-import { expect, isFSA, hasStreamMetadata } from '../spec_helper'
+import { expect, isFSA, isFSAName, hasStreamMetadata } from '../spec_helper'
 import * as subject from '../../src/actions/onboarding'
 
 describe('onboarding.js', () => {
@@ -8,8 +8,8 @@ describe('onboarding.js', () => {
       expect(isFSA(action)).to.be.true
     })
 
-    it('has the expected type constant', () => {
-      expect(action.type).to.equal('LOAD_STREAM')
+    it('has known action.name and action.type', () => {
+      expect(isFSAName(action, subject.loadCommunities)).to.be.true
     })
 
     it('returns the expected action', () => {
@@ -27,8 +27,8 @@ describe('onboarding.js', () => {
       expect(isFSA(action)).to.be.true
     })
 
-    it('has the expected type constant', () => {
-      expect(action.type).to.equal('LOAD_STREAM')
+    it('has known action.name and action.type', () => {
+      expect(isFSAName(action, subject.loadAwesomePeople)).to.be.true
     })
 
     it('returns the expected action', () => {
