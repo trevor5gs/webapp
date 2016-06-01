@@ -71,7 +71,7 @@ class AnalyticsContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   const { authentication, profile } = state
   return {
     allowsAnalytics: profile.allowsAnalytics,

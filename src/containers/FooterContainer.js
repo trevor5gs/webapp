@@ -43,7 +43,7 @@ class FooterContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   const { gui, stream } = state
   const isPaginatoring = stream.type === LOAD_NEXT_CONTENT_REQUEST && gui.deviceSize === 'mobile'
   return {

@@ -92,7 +92,7 @@ class KeyboardContainer extends Component {
 
 }
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   const { authentication, gui, modal, routing } = state
   return {
     discoverKeyType: gui.discoverKeyType,

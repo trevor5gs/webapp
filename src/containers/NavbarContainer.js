@@ -26,8 +26,6 @@ class NavbarContainer extends Component {
     isNotificationsActive: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
     routerParams: PropTypes.shape({
-      username: PropTypes.string,
-      token: PropTypes.string,
       type: PropTypes.string,
     }).isRequired,
   }
@@ -201,7 +199,7 @@ class NavbarContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   const { authentication, gui, json, modal, profile, routing } = state
   const currentStream = gui.currentStream
   const isLoggedIn = authentication.isLoggedIn

@@ -26,7 +26,6 @@ class ViewportContainer extends Component {
     routerParams: PropTypes.shape({
       username: PropTypes.string,
       token: PropTypes.string,
-      type: PropTypes.string,
     }).isRequired,
   }
 
@@ -147,7 +146,7 @@ class ViewportContainer extends Component {
 
 }
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   const { gui, modal, routing } = state
   return {
     coverOffset: gui.coverOffset,
