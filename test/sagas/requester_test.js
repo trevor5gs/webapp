@@ -1,4 +1,3 @@
-import 'isomorphic-fetch'
 import { expect } from '../spec_helper'
 import { channel } from 'redux-saga'
 import { loadDiscoverPosts } from '../../src/actions/discover'
