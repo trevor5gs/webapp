@@ -12,7 +12,7 @@ export default function* pushSubscription() {
       yield put(registerForGCM(registrationId, bundleId, marketingVersion, buildVersion))
     } else {
       yield take(AUTHENTICATION.USER_SUCCESS)
-      yield put(registerForGCM(registrationId))
+      yield put(registerForGCM(registrationId, bundleId, marketingVersion, buildVersion))
     }
   }
 }
