@@ -186,3 +186,13 @@ export function exportData() {
   }
 }
 
+export function registerForGCM(regId) {
+  return {
+    type: PROFILE.REGISTER_FOR_GCM,
+    payload: {
+      endpoint: api.registerForGCM(regId),
+      method: 'POST',
+    },
+  }
+}
+
