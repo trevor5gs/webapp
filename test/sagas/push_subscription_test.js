@@ -1,13 +1,13 @@
 import { expect } from '../spec_helper'
 import { AUTHENTICATION, PROFILE } from '../../src/constants/action_types'
-import { pushSubscriptionSaga } from '../../src/sagas/push_subscription'
+import pushSubscriptionSaga from '../../src/sagas/push_subscription'
 import { isLoggedInSelector } from '../../src/sagas/selectors'
 import {
   registerForGCM,
   requestPushSubscription,
 } from '../../src/actions/profile'
 
-describe.only('push subscription saga', function () {
+describe('push subscription saga', function () {
   const regId = 'my awesome registration id'
 
   describe('the saga itself', function () {
