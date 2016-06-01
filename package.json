@@ -5,11 +5,10 @@
   "scripts": {
     "clean": "rm -f public/index.html public/static/*.js public/static/*.map public/static/*.css",
     "build": "npm run build:web && npm run build:server",
-    "build:server": "NODE_ENV=production node node_modules/webpack/bin/webpack.js --config=webpack.server.config.js",
-    "build:web": "NODE_ENV=production node node_modules/webpack/bin/webpack.js -p --config=webpack.prod.config.js",
+    "build:server": "NODE_ENV=production node ./node_modules/webpack/bin/webpack.js --config=webpack.server.config.js",
+    "build:web": "NODE_ENV=production node ./node_modules/webpack/bin/webpack.js -p --config=webpack.prod.config.js",
     "dev": "npm run clean && DEBUG=express:* NODE_ENV=development babel-node server-dev.js",
     "lint": "eslint src test",
-    "spec": "npm run test:all",
     "start": "NODE_ENV=production node dist/server-iso-entrypoint.js",
     "start:debug": "DEBUG=express:* NODE_ENV=production node dist/server-iso-entrypoint.js",
     "start:old": "NODE_ENV=production babel-node server.js",
@@ -17,7 +16,9 @@
     "pretest": "npm run lint",
     "test": "npm run test:all",
     "test:all": "NODE_ENV=test mocha --recursive",
-    "test:quick": "NODE_ENV=test mocha test/**/*.js test/**/**/*.js"
+    "test:cov": "NODE_ENV=test babel-node ./node_modules/isparta/bin/isparta cover --report text ./node_modules/mocha/bin/_mocha -- --recursive",
+    "test:quick": "NODE_ENV=test mocha test/**/*.js test/**/**/*.js",
+    "test:watch": "npm run test:quick -- --watch"
   },
   "engines": {
     "node": "5.10.1",
@@ -89,6 +90,7 @@
     "jsdom": "9.2.0",
     "mocha": "2.5.3",
     "react-addons-test-utils": "15.1.0",
+    "isparta": "4.0.0",
     "react-transform-catch-errors": "1.0.2",
     "react-transform-hmr": "1.0.4",
     "redbox-react": "1.2.6",
