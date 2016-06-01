@@ -186,12 +186,29 @@ export function exportData() {
   }
 }
 
-export function registerForGCM(regId) {
+export function registerForGCM(regId, bundleId, marketingVersion, buildVersion) {
   return {
     type: PROFILE.REGISTER_FOR_GCM,
     payload: {
       endpoint: api.registerForGCM(regId),
       method: 'POST',
+      body: {
+        bundle_identifier: bundleId,
+        marketing_version: marketingVersion,
+        build_version: buildVersion,
+      },
+    },
+  }
+}
+
+export function requestPushSubscription(registrationId, bundleId, marketingVersion, buildVersion) {
+  return {
+    type: PROFILE.REQUEST_PUSH_SUBSCRIPTION,
+    payload: {
+      registrationId,
+      bundleId,
+      marketingVersion,
+      buildVersion,
     },
   }
 }
