@@ -26,8 +26,6 @@ class NavbarContainer extends Component {
     isNotificationsActive: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
     routerParams: PropTypes.shape({
-      username: PropTypes.string,
-      token: PropTypes.string,
       type: PropTypes.string,
     }).isRequired,
   }
