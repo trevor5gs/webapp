@@ -201,7 +201,12 @@ methods.updateResult = (response, newState, action) => {
   const resultPath = methods.pagesKey(action)
   const existingResult = newState.pages[resultPath]
   if (existingResult && action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
-    existingResult.pagination = result.pagination
+    existingResult.pagination = {
+      ...result.pagination,
+      prev: result.pagination.prev ?
+        result.pagination.prev :
+        existingResult.pagination.next,
+    }
     if (existingResult.next) {
       existingResult.next.ids = uniq(existingResult.next.ids.concat(result.ids))
     } else {

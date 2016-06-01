@@ -27,6 +27,10 @@ class AppContainer extends Component {
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }).isRequired,
+    pagination: PropTypes.shape({
+      next: PropTypes.string,
+      prev: PropTypes.string,
+    }),
     pathname: PropTypes.string.isRequired,
     params: PropTypes.shape({
       username: PropTypes.string,
@@ -64,7 +68,7 @@ class AppContainer extends Component {
   }
 
   render() {
-    const { authentication, children, params, pathname } = this.props
+    const { authentication, children, params, pagination, pathname } = this.props
     const { isLoggedIn } = authentication
     const appClasses = classNames(
       'AppContainer',
@@ -73,7 +77,7 @@ class AppContainer extends Component {
     )
     return (
       <section className={appClasses}>
-        <AppHelmet pathname={pathname} />
+        <AppHelmet pagination={pagination} pathname={pathname} />
         <ViewportContainer routerParams={params} />
         {isLoggedIn ? <Omnibar /> : null}
         {children}
@@ -98,8 +102,16 @@ AppContainer.preRender = (store) => {
 
 function mapStateToProps(state, ownProps) {
   const { authentication } = state
+  let pagination = null
+  if (state.json.pages) {
+    const result = state.json.pages[ownProps.location.pathname]
+    if (result && result.pagination) {
+      pagination = result.pagination
+    }
+  }
   return {
     authentication,
+    pagination,
     pathname: ownProps.location.pathname,
   }
 }
