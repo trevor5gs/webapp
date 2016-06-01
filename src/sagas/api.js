@@ -1,3 +1,4 @@
+import 'isomorphic-fetch'
 import { call, select } from 'redux-saga/effects'
 import { accessTokenSelector } from './selectors'
 
