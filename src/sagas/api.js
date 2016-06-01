@@ -20,6 +20,8 @@ export function* fetchCredentials() {
     }
   } else if (yield(select(shouldUseRefreshTokenSelector))) {
     yield put(refreshAuthenticationToken())
+    // Wait for the refresh to resolve one way or another before firing
+    // fetchCredentials again
     yield take([AUTHENTICATION.USER.REFRESH_SUCCESS, AUTHENTICATION.USER.REFRESH_FAILURE])
     return yield call(fetchCredentials)
   }
