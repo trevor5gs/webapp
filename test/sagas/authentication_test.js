@@ -8,8 +8,6 @@ import {
   getUserCredentials,
 } from '../../src/actions/authentication'
 
-import { pauseRequester } from '../../src/actions/api'
-
 describe('authentication saga', function () {
   const email = 'email'
   const password = 'password'
@@ -19,9 +17,7 @@ describe('authentication saga', function () {
       const loginAction = signIn(email, password)
       const loginHandler = loginSaga()
       expect(loginHandler).to.take(AUTHENTICATION.SIGN_IN)
-      expect(loginHandler.next(loginAction)).to.put(pauseRequester())
-
-      expect(loginHandler).to.put(clearAuthStore())
+      expect(loginHandler.next(loginAction)).to.put(clearAuthStore())
 
       expect(loginHandler).to.put(getUserCredentials(email, password))
     })
