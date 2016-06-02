@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { replace } from 'react-router-redux'
-import { random, debounce } from 'lodash'
+import { random, debounce, set } from 'lodash'
 import { isAndroid } from '../../vendor/jello'
 import { ONBOARDING_VERSION } from '../../constants/application_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
@@ -114,11 +114,10 @@ class SignIn extends Component {
     const { dispatch } = this.props
     const action = signIn(this.emailValue, this.passwordValue)
 
-    action.meta.successAction = () => dispatch(loadProfile())
-
-    action.meta.failureAction = () => this.setState({
+    set(action, 'meta.successAction', () => dispatch(loadProfile()))
+    set(action, 'meta.failureAction', () => this.setState({
       failureMessage: 'Your email or password were incorrect',
-    })
+    }))
 
     dispatch(action)
   }

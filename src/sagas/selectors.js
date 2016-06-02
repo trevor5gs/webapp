@@ -8,10 +8,10 @@ export const refreshTokenSelector = state => get(state, 'authentication.refreshT
 
 export const shouldUseAccessTokenSelector = createSelector(
   accessTokenSelector, expirationDateSelector,
-  (accessToken, expirationDate) => accessToken && expirationDate < new Date()
+  (accessToken, expirationDate) => accessToken && expirationDate > new Date()
 )
 
 export const shouldUseRefreshTokenSelector = createSelector(
   accessTokenSelector, expirationDateSelector,
-  (accessToken, expirationDate) => accessToken && !(expirationDate < new Date())
+  (accessToken, expirationDate) => accessToken && !(expirationDate > new Date())
 )

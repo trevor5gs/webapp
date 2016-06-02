@@ -10,7 +10,7 @@ import {
   isLoggedInSelector,
   refreshTokenSelector,
 } from './selectors'
-import { fetchCredentials, sagaFetch } from './api'
+import { fetchCredentials, getClientCredentials, sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
 import Dialog from '../components/dialogs/Dialog'
 
@@ -207,7 +207,12 @@ export function* performRequest(action) {
   const REQUEST = `${type}_REQUEST`
   const SUCCESS = `${type}_SUCCESS`
 
-  const tokenJSON = yield call(fetchCredentials)
+  let tokenJSON = null
+  if (action.type === ACTION_TYPES.AUTHENTICATION.REFRESH) {
+    tokenJSON = yield call(getClientCredentials)
+  } else {
+    tokenJSON = yield call(fetchCredentials)
+  }
   const accessToken = get(tokenJSON, 'token.access_token')
 
   yield put({ type: REQUEST, payload, meta })

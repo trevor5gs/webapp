@@ -16,8 +16,6 @@ import {
   scheduleAuthRefresh,
 } from '../actions/authentication'
 
-import { pauseRequester } from '../actions/api'
-
 const toMilliseconds = seconds => seconds * 1000
 
 // Get a timeout value about 100ms before a given date,
@@ -36,7 +34,6 @@ export function* loginSaga() {
   while (true) {
     const { payload } = yield take(AUTHENTICATION.SIGN_IN)
     const { email, password } = payload
-    yield put(pauseRequester())
     yield put(clearAuthStore())
     yield put(getUserCredentials(email, password))
   }
@@ -110,6 +107,7 @@ function* rehydrateSaga() {
 
 export default function* authentication() {
   yield [
+    fork(loginSaga),
     fork(rehydrateSaga),
     fork(refreshSchedulerSaga),
     fork(userSuccessSaga),

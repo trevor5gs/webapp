@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import 'isomorphic-fetch'
 import { call, put, select, take } from 'redux-saga/effects'
 import { AUTHENTICATION } from '../constants/action_types'
@@ -18,14 +19,17 @@ export function* fetchCredentials() {
         access_token: accessToken,
       },
     }
-  } else if (yield(select(shouldUseRefreshTokenSelector))) {
+  } else if (yield select(shouldUseRefreshTokenSelector)) {
     yield put(refreshAuthenticationToken())
     // Wait for the refresh to resolve one way or another before firing
     // fetchCredentials again
     yield take([AUTHENTICATION.REFRESH_SUCCESS, AUTHENTICATION.REFRESH_FAILURE])
     return yield call(fetchCredentials)
   }
+  return yield call(getClientCredentials)
+}
 
+export function* getClientCredentials() {
   const tokenPath = (typeof window === 'undefined') ?
         `http://localhost:${process.env.PORT || 6660}/api/webapp-token` :
         `${document.location.protocol}//${document.location.host}/api/webapp-token`

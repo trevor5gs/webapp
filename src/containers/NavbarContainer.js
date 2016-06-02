@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
+import { set } from 'lodash'
 import { scrollToTop } from '../vendor/scrollTop'
 import { ADD_NEW_IDS_TO_RESULT, MODAL, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
@@ -129,11 +130,12 @@ class NavbarContainer extends Component {
   }
 
   // TODO: probably need to handle this a bit better
-  onLogOut = async() => {
+  onLogOut = () => {
     const { dispatch } = this.props
     this.deactivateProfileMenu()
-    await dispatch(logout())
-    dispatch(push('/enter'))
+    const logoutAction = logout()
+    set(logoutAction, 'meta.successAction', push('/enter'))
+    dispatch(logoutAction)
   }
 
   // if we're viewing notifications, don't change the lightning-bolt link.
