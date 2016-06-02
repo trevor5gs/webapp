@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { get } from 'lodash'
 import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
+import * as MAPPING_TYPES from '../constants/mapping_types'
 import DevTools from '../components/devtools/DevTools'
 import { AppHelmet } from '../components/helmets/AppHelmet'
 import Modal from '../components/modals/Modal'
@@ -17,6 +18,7 @@ import FooterContainer from '../containers/FooterContainer'
 import KeyboardContainer from '../containers/KeyboardContainer'
 import NavbarContainer from '../containers/NavbarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
+import { findModel } from '../helpers/json_helper'
 
 class AppContainer extends Component {
 
@@ -100,10 +102,21 @@ AppContainer.preRender = (store) => {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { authentication } = state
+  const { authentication, json } = state
   let pagination = null
   if (state.json.pages) {
-    const result = state.json.pages[ownProps.location.pathname]
+    let result = state.json.pages[ownProps.location.pathname]
+    if (!result && ownProps.params.token) {
+      // determine if we are on a post detail
+      // to find the comment pagination
+      const post = findModel(json, {
+        collection: MAPPING_TYPES.POSTS,
+        findObj: { token: ownProps.params.token.toLowerCase() },
+      })
+      if (post) {
+        result = state.json.pages[`/posts/${post.id}/comments`]
+      }
+    }
     if (result && result.pagination) {
       pagination = result.pagination
     }

@@ -1,3 +1,5 @@
+import { getPagingQueryParams } from '../helpers/uri_helper'
+
 const API_VERSION = 'v2'
 const PER_PAGE = 25
 const basePath = () => `${ENV.AUTH_DOMAIN}/api`
@@ -111,14 +113,18 @@ export function relationshipBatchPath() {
 }
 // Discover
 export function discoverUsers(type) {
-  const params = { per_page: PER_PAGE, include_recent_posts: true }
+  const params = {
+    per_page: PER_PAGE,
+    include_recent_posts: true,
+    ...getPagingQueryParams(location.search),
+  }
   return {
     path: getAPIPath(`discover/users/${type}`, params),
     params,
   }
 }
 export function discoverPosts(type) {
-  const params = { per_page: PER_PAGE }
+  const params = { per_page: PER_PAGE, ...getPagingQueryParams(location.search) }
   return {
     path: getAPIPath(`discover/posts/${type}`, params),
     params,
@@ -223,7 +229,7 @@ export function loadEmojis() {
 }
 // Comments
 export function commentsForPost(idOrToken) {
-  const params = { per_page: 10 }
+  const params = { per_page: 10, ...getPagingQueryParams(location.search) }
   return {
     path: getAPIPath(`posts/${idOrToken}/comments`, params),
   }
@@ -258,6 +264,7 @@ export function userDetail(idOrUsername) {
 export function userFollowing(idOrUsername, priority) {
   const params = {
     per_page: 10,
+    ...getPagingQueryParams(location.search),
   }
 
   if (priority) params.priority = priority
@@ -268,7 +275,7 @@ export function userFollowing(idOrUsername, priority) {
 }
 
 export function userResources(idOrUsername, resource) {
-  const params = { per_page: 10 }
+  const params = { per_page: 10, ...getPagingQueryParams(location.search) }
   return {
     path: getAPIPath(`users/${idOrUsername}/${resource}`, params),
     params,
