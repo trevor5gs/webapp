@@ -29,7 +29,6 @@ class AppContainer extends Component {
     }).isRequired,
     pagination: PropTypes.shape({
       next: PropTypes.string,
-      prev: PropTypes.string,
     }),
     pathname: PropTypes.string.isRequired,
     params: PropTypes.shape({
