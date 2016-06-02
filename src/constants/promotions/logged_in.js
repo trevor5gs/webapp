@@ -69,9 +69,9 @@ export const LOGGED_IN_PROMOTIONS = [
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/1336283/ello-regular-00b774ed.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036197/ello-hdpi-b2416594.gif' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036197/ello-xhdpi-b2416594.gif' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4036197/ello-optimized-b2416594.gif' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036731/ello-hdpi-648bc870.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036731/ello-xhdpi-648bc870.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4036731/ello-optimized-648bc870.jpg' },
     },
   },
   {
