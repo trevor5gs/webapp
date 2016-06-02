@@ -58,7 +58,7 @@ export const LOGGED_OUT_PROMOTIONS = [
     },
     coverImage: {
       hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036230/ello-hdpi-80e2cf3a.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036230/ello-xhpi-80e2cf3a.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036230/ello-xhdpi-80e2cf3a.jpg' },
       optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4036230/ello-optimized-80e2cf3a.jpg' },
     },
   },
