@@ -33,11 +33,13 @@ const futureTimeout = time => {
 }
 
 export function* loginSaga() {
-  const { payload } = yield take(AUTHENTICATION.SIGN_IN)
-  const { email, password } = payload
-  yield put(pauseRequester())
-  yield put(clearAuthStore())
-  yield put(getUserCredentials(email, password))
+  while (true) {
+    const { payload } = yield take(AUTHENTICATION.SIGN_IN)
+    const { email, password } = payload
+    yield put(pauseRequester())
+    yield put(clearAuthStore())
+    yield put(getUserCredentials(email, password))
+  }
 }
 
 function* userSuccessSaga() {
