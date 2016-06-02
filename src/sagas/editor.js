@@ -4,7 +4,7 @@ import { actionChannel, fork, put, select, take } from 'redux-saga/effects'
 import * as ACTION_TYPES from '../constants/action_types'
 import { temporaryAssetCreated, uploadAsset } from '../actions/editor'
 
-function* saveAsset(channel) {
+export function* saveAsset(channel) {
   while (true) {
     const action = yield take(channel)
     const editorId = get(action, 'payload.editorId')
@@ -17,7 +17,7 @@ function* saveAsset(channel) {
     // the 3 back to the 1 where the image should reconcile back to.
     if (editorId && file) {
       yield put(temporaryAssetCreated(URL.createObjectURL(file), editorId))
-      const uid = yield select((state) => state.editor[editorId].uid - 2)
+      const uid = yield select(state => state.editor[editorId].uid - 2)
       yield put(uploadAsset(ACTION_TYPES.EDITOR.SAVE_IMAGE, file, editorId, uid))
     }
   }
