@@ -2,7 +2,6 @@
 // webpack doesn't inject it here
 require('dotenv').load()
 global.ENV = JSON.stringify(require('../env'))
-global.location = { search: '' }
 import React from 'react'
 import TestUtils from 'react-addons-test-utils'
 import { camelize } from 'humps'
