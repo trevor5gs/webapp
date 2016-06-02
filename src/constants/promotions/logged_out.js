@@ -3,63 +3,63 @@ import React from 'react'
 
 export const LOGGED_OUT_PROMOTIONS = [
   {
-    username: 'damien',
+    username: 'badson',
     caption: <h1>The Creators Network.</h1>,
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/14994/ello-regular-d2efd436.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2618931/ello-regular-6f4c00fd.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3967176/ello-hdpi-db1ed3ba.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3967176/ello-xhdpi-db1ed3ba.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/3967176/ello-optimized-db1ed3ba.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036226/ello-hdpi-0a34c487.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036226/ello-xhdpi-0a34c487.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4036226/ello-optimized-0a34c487.jpg' },
     },
   },
   {
-    username: 'jan_sramek_kolouch',
+    username: 'yuyatakeda',
     caption: <h1>The Creators Network.</h1>,
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/532595/ello-regular-05fa25aa.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/795701/ello-regular-f71e809c.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3967174/ello-hdpi-8a793e77.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3967174/ello-xhdpi-8a793e77.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/3967174/ello-optimized-8a793e77.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036227/ello-hdpi-acd8af61.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036227/ello-xhdpi-acd8af61.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4036227/ello-optimized-acd8af61.jpg' },
     },
   },
   {
-    username: 'paulsyng',
+    username: 'wannerstedt',
     caption: <h1>The Creators Network.</h1>,
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/1426344/ello-regular-f0880367.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2753041/ello-regular-4f625a90.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3967173/ello-hdpi-90242001.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3967173/ello-xhdpi-90242001.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/3967173/ello-optimized-90242001.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036228/ello-hdpi-ddca7654.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036228/ello-xhdpi-ddca7654.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4036228/ello-optimized-ddca7654.jpg' },
     },
   },
   {
-    username: 'chepetusa',
+    username: 'marianagv',
     caption: <h1>The Creators Network.</h1>,
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2749822/ello-regular-343a646c.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/243710/ello-regular-0fc1291c.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3967167/ello-hdpi-45d5fe8d.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3967167/ello-xhdpi-45d5fe8d.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/3967167/ello-optimized-45d5fe8d.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036229/ello-hdpi-60790b70.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036229/ello-xhdpi-60790b70.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4036229/ello-optimized-60790b70.jpg' },
     },
   },
   {
-    username: 'lilylikesuse',
+    username: 'lilikorcsok',
     caption: <h1>The Creators Network.</h1>,
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/4607/ello-regular-7c6b37be.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2816179/ello-regular-24a9ac4c.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3967160/ello-hdpi-566d3448.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/3967160/ello-xhdpi-566d3448.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/3967160/ello-optimized-566d3448.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036230/ello-hdpi-80e2cf3a.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036230/ello-xhdpi-80e2cf3a.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4036230/ello-optimized-80e2cf3a.jpg' },
     },
   },
 ]
