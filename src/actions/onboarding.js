@@ -31,6 +31,7 @@ export function loadAwesomePeople() {
   }
 }
 
+// TODO: Update the `body` and `user_ids`
 export function relationshipBatchSave(ids, priority = 'friend') {
   return {
     type: ACTION_TYPES.POST_JSON,
