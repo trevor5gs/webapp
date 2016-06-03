@@ -16,6 +16,23 @@ methods.updatePostLoves = (state, newState, action) => {
   let delta = 0
   let idAdded = false
   switch (action.type) {
+    case ACTION_TYPES.POST.LOVE_REQUEST:
+      if (method === 'POST') {
+        delta = 1
+        newPost.loved = true
+      } else {
+        delta = -1
+        newPost.loved = false
+      }
+      break
+    case ACTION_TYPES.POST.LOVE_SUCCESS:
+      if (method === 'POST') {
+        newPost.showLovers = true
+        idAdded = true
+      } else {
+        newPost.showLovers = false
+      }
+      break
     case ACTION_TYPES.POST.LOVE_FAILURE:
       if (method === 'POST') {
         delta = -1
@@ -24,18 +41,6 @@ methods.updatePostLoves = (state, newState, action) => {
         delta = 1
         newPost.loved = true
         idAdded = true
-      }
-      break
-    case ACTION_TYPES.POST.LOVE_SUCCESS:
-      if (method === 'POST') {
-        delta = 1
-        newPost.loved = true
-        newPost.showLovers = true
-        idAdded = true
-      } else {
-        delta = -1
-        newPost.loved = false
-        newPost.showLovers = false
       }
       break
     default:
