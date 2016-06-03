@@ -5,6 +5,7 @@ import { AUTHENTICATION } from '../constants/action_types'
 
 import {
   accessTokenSelector,
+  refreshTokenSelector,
   shouldUseAccessTokenSelector,
   shouldUseRefreshTokenSelector,
 } from './selectors'
@@ -20,7 +21,8 @@ export function* fetchCredentials() {
       },
     }
   } else if (yield select(shouldUseRefreshTokenSelector)) {
-    yield put(refreshAuthenticationToken())
+    const refreshToken = yield select(refreshTokenSelector)
+    yield put(refreshAuthenticationToken(refreshToken))
     // Wait for the refresh to resolve one way or another before firing
     // fetchCredentials again
     yield take([AUTHENTICATION.REFRESH_SUCCESS, AUTHENTICATION.REFRESH_FAILURE])
