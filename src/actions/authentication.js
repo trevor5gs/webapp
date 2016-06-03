@@ -12,6 +12,22 @@ export function cancelAuthRefresh() {
   }
 }
 
+export function clearAuthStore() {
+  return {
+    type: ACTION_TYPES.AUTHENTICATION.CLEAR_STORE,
+  }
+}
+
+export function signIn(email, password) {
+  return {
+    type: ACTION_TYPES.AUTHENTICATION.SIGN_IN,
+    payload: {
+      email,
+      password,
+    },
+  }
+}
+
 export function getUserCredentials(email, password) {
   return {
     type: ACTION_TYPES.AUTHENTICATION.USER,

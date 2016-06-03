@@ -10,6 +10,7 @@ describe('authentication reducer', () => {
       ).to.have.keys(
         'accessToken',
         'createdAt',
+        'expirationDate',
         'expiresIn',
         'isLoggedIn',
         'refreshTimeoutId',

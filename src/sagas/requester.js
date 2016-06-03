@@ -7,11 +7,10 @@ import * as ACTION_TYPES from '../constants/action_types'
 import { refreshAuthenticationToken } from '../actions/authentication'
 import { pauseRequester, unpauseRequester } from '../actions/api'
 import {
-  accessTokenSelector,
   isLoggedInSelector,
   refreshTokenSelector,
 } from './selectors'
-import { sagaFetch } from './api'
+import { fetchCredentials, getClientCredentials, sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
 import Dialog from '../components/dialogs/Dialog'
 
@@ -176,33 +175,6 @@ export function* handleRequestError(error, action) {
   return false
 }
 
-
-export function* fetchCredentials() {
-  const accessToken = yield select(accessTokenSelector)
-  if (accessToken) {
-    return {
-      token: {
-        access_token: accessToken,
-      },
-    }
-  }
-
-  const tokenPath = (typeof window === 'undefined') ?
-    `http://localhost:${process.env.PORT || 6660}/api/webapp-token` :
-    `${document.location.protocol}//${document.location.host}/api/webapp-token`
-
-  try {
-    const serverResponse = yield call(fetch, tokenPath, { credentials: 'same-origin' })
-    if (serverResponse.ok) {
-      // Pass serverResponse as binding for serverResponse.json
-      return yield call([serverResponse, serverResponse.json])
-    }
-    return serverResponse
-  } catch (_err) {
-    return yield call(fetchCredentials)
-  }
-}
-
 const pathnameSelector = state => get(state, 'routing.location.pathname', '')
 const lastNotificationCheckSelector = state => get(state, 'gui.lastNotificationCheck')
 
@@ -235,7 +207,12 @@ export function* performRequest(action) {
   const REQUEST = `${type}_REQUEST`
   const SUCCESS = `${type}_SUCCESS`
 
-  const tokenJSON = yield call(fetchCredentials)
+  let tokenJSON = null
+  if (action.type === ACTION_TYPES.AUTHENTICATION.REFRESH) {
+    tokenJSON = yield call(getClientCredentials)
+  } else {
+    tokenJSON = yield call(fetchCredentials)
+  }
   const accessToken = get(tokenJSON, 'token.access_token')
 
   yield put({ type: REQUEST, payload, meta })
