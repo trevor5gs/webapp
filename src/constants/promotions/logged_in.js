@@ -63,15 +63,15 @@ export const LOGGED_IN_PROMOTIONS = [
     },
   },
   {
-    username: 'mwm_graphics',
+    username: 'grayalas',
     caption: <h1>Ello is NSFW.</h1>,
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/1336283/ello-regular-00b774ed.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2584820/ello-regular-257c53b5.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036731/ello-hdpi-648bc870.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4036731/ello-xhdpi-648bc870.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4036731/ello-optimized-648bc870.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4041455/ello-hdpi-69eab338.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4041455/ello-xhdpi-69eab338.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4041455/ello-optimized-69eab338.jpg' },
     },
   },
   {
