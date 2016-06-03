@@ -291,7 +291,7 @@ methods.deleteModel = (state, newState, action, mappingType) => {
 
 methods.updateCurrentUser = (newState, action) => {
   const { response } = action.payload
-  newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id] = response
+  newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id] = response.users
   let assetType = null
   switch (action.type) {
     case ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS:
