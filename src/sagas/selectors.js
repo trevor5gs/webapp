@@ -7,11 +7,13 @@ export const isLoggedInSelector = state => get(state, 'authentication.isLoggedIn
 export const refreshTokenSelector = state => get(state, 'authentication.refreshToken')
 
 export const shouldUseAccessTokenSelector = createSelector(
-  accessTokenSelector, expirationDateSelector,
-  (accessToken, expirationDate) => accessToken && expirationDate > new Date()
+  accessTokenSelector, expirationDateSelector, isLoggedInSelector,
+  (accessToken, expirationDate, isLoggedIn) =>
+    isLoggedIn && accessToken && expirationDate > new Date()
 )
 
 export const shouldUseRefreshTokenSelector = createSelector(
-  accessTokenSelector, expirationDateSelector,
-  (accessToken, expirationDate) => accessToken && !(expirationDate > new Date())
+  accessTokenSelector, expirationDateSelector, isLoggedInSelector,
+  (accessToken, expirationDate, isLoggedIn) =>
+    isLoggedIn && accessToken && !(expirationDate > new Date())
 )
