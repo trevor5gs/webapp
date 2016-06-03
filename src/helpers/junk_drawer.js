@@ -1,6 +1,6 @@
 import { decamelizeKeys } from 'humps'
 import store from '../store'
-import { registerForGCM, saveProfile } from '../actions/profile'
+import { requestPushSubscription, saveProfile } from '../actions/profile'
 
 export function preferenceToggleChanged(obj) {
   const newObj = { ...obj }
@@ -14,8 +14,13 @@ export function preferenceToggleChanged(obj) {
 }
 
 if (typeof window !== 'undefined') {
-  window.registerAndroidNotifications = (registrationId) => {
-    store.dispatch(registerForGCM(registrationId))
+  window.registerAndroidNotifications = (registrationId,
+                                         bundleId,
+                                         marketingVersion,
+                                         buildVersion) => {
+    store.dispatch(
+      requestPushSubscription(registrationId, bundleId, marketingVersion, buildVersion)
+    )
   }
 }
 
