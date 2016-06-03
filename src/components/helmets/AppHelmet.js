@@ -10,13 +10,21 @@ const description =
 
 const viewport = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
 
-export const AppHelmet = ({ pathname }) =>
+function getPaginationLinks(pagination, pathname) {
+  const links = []
+  if (!pagination || !pagination.next) { return links }
+  links.push({ rel: 'next', href: `${pathname}?${pagination.next.split('?')[1]}` })
+  return links
+}
+
+export const AppHelmet = ({ pagination, pathname }) =>
   <Helmet
     title={title}
     link={[
       { rel: 'apple-touch-icon', href: image },
       { rel: 'apple-touch-icon-precomposed', href: image },
       { rel: 'mask-icon', href: 'ello-icon.svg', color: 'black' },
+      ...getPaginationLinks(pagination, pathname),
     ]}
     meta={[
       { name: 'name', itemprop: 'name', content: title },
@@ -43,6 +51,9 @@ export const AppHelmet = ({ pathname }) =>
   />
 
 AppHelmet.propTypes = {
+  pagination: PropTypes.shape({
+    next: PropTypes.string,
+  }),
   pathname: PropTypes.string.isRequired,
 }
 

@@ -46,3 +46,20 @@ export function getQueryParamValue(param, uri) {
   return null
 }
 
+const paramWhitelist = ['before', 'per_page']
+export function getPagingQueryParams(uri = '?') {
+  const search = uri.split('?')[1]
+  const obj = {}
+  if (search && search.length) {
+    const searchArr = search.split('&')
+    for (const keyVal of searchArr) {
+      const keyValArr = keyVal.split('=')
+      const key = keyValArr[0]
+      if (paramWhitelist.indexOf(key) !== -1) {
+        obj[key] = keyValArr[1]
+      }
+    }
+  }
+  return obj
+}
+

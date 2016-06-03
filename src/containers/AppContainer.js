@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { get } from 'lodash'
 import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
+import * as MAPPING_TYPES from '../constants/mapping_types'
 import DevTools from '../components/devtools/DevTools'
 import { AppHelmet } from '../components/helmets/AppHelmet'
 import Modal from '../components/modals/Modal'
@@ -17,6 +18,7 @@ import FooterContainer from '../containers/FooterContainer'
 import KeyboardContainer from '../containers/KeyboardContainer'
 import NavbarContainer from '../containers/NavbarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
+import { findModel } from '../helpers/json_helper'
 
 class AppContainer extends Component {
 
@@ -27,6 +29,9 @@ class AppContainer extends Component {
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }).isRequired,
+    pagination: PropTypes.shape({
+      next: PropTypes.string,
+    }),
     pathname: PropTypes.string.isRequired,
     params: PropTypes.shape({
       username: PropTypes.string,
@@ -64,7 +69,7 @@ class AppContainer extends Component {
   }
 
   render() {
-    const { authentication, children, params, pathname } = this.props
+    const { authentication, children, params, pagination, pathname } = this.props
     const { isLoggedIn } = authentication
     const appClasses = classNames(
       'AppContainer',
@@ -73,7 +78,7 @@ class AppContainer extends Component {
     )
     return (
       <section className={appClasses}>
-        <AppHelmet pathname={pathname} />
+        <AppHelmet pagination={pagination} pathname={pathname} />
         <ViewportContainer routerParams={params} />
         {isLoggedIn ? <Omnibar /> : null}
         {children}
@@ -96,10 +101,51 @@ AppContainer.preRender = (store) => {
   }
 }
 
+const PAGING_BLACKLIST = [
+  /^\/enter\b/,
+  /^\/forgot-password\b/,
+  /^\/join\b/,
+  /^\/signup\b/,
+  /^\/following$/,
+  /^\/starred$/,
+  /^\/notifications\b/,
+  /^\/settings\b/,
+  /^\/onboarding\b/,
+  /^\/invitations\b/,
+]
+
+function isPagingEnabled(pathname) {
+  for (const re of PAGING_BLACKLIST) {
+    if (re.test(pathname)) {
+      return false
+    }
+  }
+  return true
+}
+
 function mapStateToProps(state, ownProps) {
-  const { authentication } = state
+  const { authentication, json } = state
+  let pagination = null
+  if (state.json.pages && isPagingEnabled(ownProps.location.pathname)) {
+    let result = state.json.pages[ownProps.location.pathname]
+    if (!result && ownProps.params.token) {
+      // determine if we are on a post detail
+      // to find the comment pagination
+      const post = findModel(json, {
+        collection: MAPPING_TYPES.POSTS,
+        findObj: { token: ownProps.params.token.toLowerCase() },
+      })
+      if (post) {
+        result = state.json.pages[`/posts/${post.id}/comments`]
+      }
+    }
+    if (result && result.pagination) {
+      pagination = result.pagination
+    }
+  }
   return {
     authentication,
+    pagination,
     pathname: ownProps.location.pathname,
   }
 }
