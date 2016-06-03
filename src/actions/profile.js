@@ -21,7 +21,9 @@ export function loadProfile() {
 export function signUpUser(email, username, password, invitationCode) {
   return {
     type: PROFILE.SIGNUP,
-    meta: {},
+    meta: {
+      successAction: replace({ pathname: '/onboarding' }),
+    },
     payload: {
       method: 'POST',
       endpoint: api.signupPath(),

@@ -2,7 +2,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { random, debounce } from 'lodash'
-import { replace } from 'react-router-redux'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { getInviteEmail } from '../../actions/invitations'
@@ -166,13 +165,10 @@ class Join extends Component {
     }
   }
 
-  onSubmit = async (e) => {
+  onSubmit = (e) => {
     e.preventDefault()
     const { dispatch } = this.props
-    const success = await dispatch(signUpUser(this.emailValue, this.usernameValue, this.passwordValue, this.invitationCodeValue))
-    if (success) {
-      dispatch(replace({ pathname: '/onboarding' }))
-    }
+    dispatch(signUpUser(this.emailValue, this.usernameValue, this.passwordValue, this.invitationCodeValue))
   }
 
   onClickTrackCredits = () => {
