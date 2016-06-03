@@ -377,6 +377,7 @@ export default function json(state = {}, action = { type: '' }) {
       return methods.deleteModel(state, newState, action, MAPPING_TYPES.POSTS)
     case ACTION_TYPES.POST.DETAIL_SUCCESS:
       return methods.updatePostDetail(newState, action)
+    case ACTION_TYPES.POST.LOVE_REQUEST:
     case ACTION_TYPES.POST.LOVE_SUCCESS:
     case ACTION_TYPES.POST.LOVE_FAILURE:
       return postMethods.updatePostLoves(state, newState, action)
