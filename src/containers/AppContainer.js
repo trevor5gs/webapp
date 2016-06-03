@@ -101,10 +101,32 @@ AppContainer.preRender = (store) => {
   }
 }
 
+const PAGING_BLACKLIST = [
+  /^\/enter\b/,
+  /^\/forgot-password\b/,
+  /^\/join\b/,
+  /^\/signup\b/,
+  /^\/following$/,
+  /^\/starred$/,
+  /^\/notifications\b/,
+  /^\/settings\b/,
+  /^\/onboarding\b/,
+  /^\/invitations\b/,
+]
+
+function isPagingEnabled(pathname) {
+  for (const re of PAGING_BLACKLIST) {
+    if (re.test(pathname)) {
+      return false
+    }
+  }
+  return true
+}
+
 function mapStateToProps(state, ownProps) {
   const { authentication, json } = state
   let pagination = null
-  if (state.json.pages) {
+  if (state.json.pages && isPagingEnabled(ownProps.location.pathname)) {
     let result = state.json.pages[ownProps.location.pathname]
     if (!result && ownProps.params.token) {
       // determine if we are on a post detail
