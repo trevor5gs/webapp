@@ -8,7 +8,7 @@ import {
   uploadAsset,
 } from '../../src/actions/editor'
 
-describe.only('editor saga', () => {
+describe('editor saga', () => {
   it('saves temporary assets and uploads to s3 with a file and editorId', () => {
     const myChannel = channel()
     const saveAction = saveAssetAction('file', 'editorId')
