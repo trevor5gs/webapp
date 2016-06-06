@@ -3,7 +3,9 @@ import {
   ALERT,
   AUTHENTICATION,
   MODAL,
+  OMNIBAR,
   PROFILE,
+  ZEROS,
 } from '../constants/action_types'
 
 const initialState = {
@@ -12,9 +14,11 @@ const initialState = {
   isActive: false,
   isCompleterActive: false,
   isNotificationsActive: false,
+  isOmnibarActive: false,
   isProfileMenuActive: false,
   isTextToolsActive: false,
   kind: 'Modal',
+  saidHelloTo: [],
   textToolsCoordinates: { top: -200, left: -666 },
   textToolsStates: {},
 }
@@ -55,6 +59,11 @@ export function modal(state = initialState, action) {
         ...state,
         textToolsCoordinates: action.payload.textToolsCoordinates,
       }
+    case OMNIBAR.OPEN:
+    case OMNIBAR.CLOSE:
+      return { ...state, isOmnibarActive: action.payload.isActive }
+    case ZEROS.SAY_HELLO:
+      return { ...state, saidHelloTo: [...state.saidHelloTo, action.payload.username] }
     default:
       return state
   }
