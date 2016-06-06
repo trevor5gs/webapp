@@ -65,9 +65,10 @@ export function* sagaFetch(path, options) {
   const response = yield call(fetch, path, options)
   checkStatus(response)
 
-  // allow for the json to be empty for a 201/202/204
+  // allow for the json to be empty for a 202/204
   let json = {}
-  if (response.status === 200 && /application\/json/.test(response.headers.get('content-type'))) {
+  if ((response.status === 200 || response.status === 201) &&
+      /application\/json/.test(response.headers.get('content-type'))) {
     json = yield call(extractJSON, response)
   }
   return { serverResponse: response, json }
