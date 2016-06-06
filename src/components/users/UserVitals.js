@@ -38,13 +38,13 @@ export const UserStats = ({ user }) =>
     <dl>
       <UserStatsLink to={`/${user.username}`}>
         <dt>{numberToHuman(user.postsCount)}</dt>
-        <dd>Posts</dd>
+        <dd><span className="UserStatsCountLabel">Posts</span></dd>
       </UserStatsLink>
     </dl>
     <dl>
       <UserStatsLink asDisabled={!user.followingCount} to={`/${user.username}/following`}>
         <dt>{numberToHuman(user.followingCount)}</dt>
-        <dd>Following</dd>
+        <dd><span className="UserStatsCountLabel">Following</span></dd>
       </UserStatsLink>
     </dl>
     <dl>
@@ -59,13 +59,13 @@ export const UserStats = ({ user }) =>
               numberToHuman(user.followersCount)
           }
         </dt>
-        <dd>Followers</dd>
+        <dd><span className="UserStatsCountLabel">Followers</span></dd>
       </UserStatsLink>
     </dl>
     <dl>
       <UserStatsLink asDisabled={!user.lovesCount} to={`/${user.username}/loves`} >
         <dt>{numberToHuman(user.lovesCount)}</dt>
-        <dd>Loves</dd>
+        <dd><span className="UserStatsCountLabel">Loves</span></dd>
       </UserStatsLink>
     </dl>
   </div>
