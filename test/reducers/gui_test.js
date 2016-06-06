@@ -226,6 +226,10 @@ describe('gui reducer', () => {
       expect(reducer(undefined, action1)).to.have.property('isLayoutToolHidden', false)
       const action2 = { type: LOCATION_CHANGE, payload: { pathname: '/settings' } }
       expect(reducer(undefined, action2)).to.have.property('isLayoutToolHidden', true)
+      const action3 = { type: LOCATION_CHANGE, payload: { pathname: '/elloindiegogo' } }
+      expect(reducer(undefined, action3)).to.have.property('isLayoutToolHidden', false)
+      const action4 = { type: LOCATION_CHANGE, payload: { pathname: '/elloindiegogo/post/a5qr9a' } }
+      expect(reducer(undefined, action4)).to.have.property('isLayoutToolHidden', true)
     })
 
     it('LOCATION_CHANGE updates isAuthenticationView', () => {
