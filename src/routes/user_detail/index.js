@@ -1,4 +1,4 @@
-import UserDetail from '../../containers/details/UserDetail'
+import UserDetailContainer from '../../containers/UserDetailContainer'
 
 const TYPES = [
   'following',
@@ -9,7 +9,7 @@ const TYPES = [
 export default {
   path: ':username(/:type)',
   getComponents(location, cb) {
-    cb(null, UserDetail)
+    cb(null, UserDetailContainer)
   },
   onEnter(nextState, replace) {
     const type = nextState.params.type

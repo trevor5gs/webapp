@@ -261,3 +261,7 @@ export const USER = {
   FLAG_FAILURE: 'USER.FLAG_FAILURE',
 }
 
+export const ZEROS = {
+  SAY_HELLO: 'ZEROS.SAY_HELLO',
+}
+
