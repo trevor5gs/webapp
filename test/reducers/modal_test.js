@@ -82,13 +82,13 @@ describe('modal reducer', () => {
   })
 
   context('OMNIBAR', () => {
-    it('OPEN sets isOmnibarActive to true', () => {
+    it('OMNIBAR.OPEN sets isOmnibarActive to true', () => {
       expect(reducer(undefined, {})).to.have.property('isOmnibarActive', false)
       const action = { type: OMNIBAR.OPEN, payload: { isActive: true } }
       expect(reducer(reducer, action)).to.have.property('isOmnibarActive', true)
     })
 
-    it('CLOSE sets isOmnibarActive to false', () => {
+    it('OMNIBAR.CLOSE sets isOmnibarActive to false', () => {
       const testState = { ...reducer(undefined, {}), isOmnibarActive: true }
       expect(testState).to.have.property('isOmnibarActive', true)
       const action = { type: OMNIBAR.CLOSE, payload: { isActive: false } }
@@ -97,7 +97,7 @@ describe('modal reducer', () => {
   })
 
   context('ZEROS', () => {
-    it('SAY_HELLO adds the username to saidHelloTo', () => {
+    it('ZEROS.SAY_HELLO adds the username to saidHelloTo', () => {
       const firstState = reducer(undefined, {})
       expect(firstState).to.have.property('saidHelloTo')
       expect(firstState.saidHelloTo.length).to.equal(0)
