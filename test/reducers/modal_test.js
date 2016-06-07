@@ -1,6 +1,6 @@
 import { expect } from '../spec_helper'
 // import { LOCATION_CHANGE } from 'react-router-redux'
-import { OMNIBAR, ZEROS } from '../../src/constants/action_types'
+import { EDITOR, GUI, OMNIBAR, ZEROS } from '../../src/constants/action_types'
 import { modal as reducer } from '../../src/reducers/modal'
 
 describe('modal reducer', () => {
@@ -33,7 +33,23 @@ describe('modal reducer', () => {
       expect(reducer(reducer, action)).to.have.property('isCompleterActive', true)
     })
 
+    it('EDITOR.SET_IS_TEXT_TOOLS_ACTIVE updates isTextToolsActive', () => {
+      expect(reducer(undefined, {})).to.have.property('isTextToolsActive', false)
+      const action = {
+        type: EDITOR.SET_IS_TEXT_TOOLS_ACTIVE,
+        payload: {
+          isTextToolsActive: true,
+          textToolsStates: { isLinkActive: false, isBoldActive: true, isItalicActive: false },
+        },
+      }
+      const result = reducer(reducer, action)
+      expect(result).to.have.property('isTextToolsActive', true)
+      expect(result.textToolsStates).to.have.property('isLinkActive', false)
+      expect(result.textToolsStates).to.have.property('isBoldActive', true)
+      expect(result.textToolsStates).to.have.property('isItalicActive', false)
+    })
   })
+
   context('GUI', () => {
     it('GUI.SET_IS_PROFILE_MENU_ACTIVE updates isProfileMenuActive', () => {
       expect(reducer(undefined, {})).to.have.property('isProfileMenuActive', false)

@@ -49,17 +49,6 @@ export function closeAlert() {
 }
 
 // TODO: Move to actions/editor
-export function setIsTextToolsActive({ isActive, textToolsStates = {} }) {
-  return {
-    type: MODAL.SET_IS_TEXT_TOOLS_ACTIVE,
-    payload: {
-      isTextToolsActive: isActive,
-      textToolsStates,
-    },
-  }
-}
-
-// TODO: Move to actions/editor
 export function setTextToolsCoordinates({ textToolsCoordinates = { top: -200, left: -666 } }) {
   return {
     type: MODAL.SET_TEXT_TOOLS_COORDINATES,

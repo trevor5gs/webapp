@@ -1,7 +1,6 @@
 import { EDITOR } from '../constants/action_types'
 import * as api from '../networking/api'
 
-
 export function addBlock(block, editorId, shouldCheckForEmpty = true) {
   return {
     type: EDITOR.ADD_BLOCK,
@@ -150,6 +149,16 @@ export function setIsCompleterActive({ isActive }) {
     type: EDITOR.SET_IS_COMPLETER_ACTIVE,
     payload: {
       isCompleterActive: isActive,
+    },
+  }
+}
+
+export function setIsTextToolsActive({ isActive, textToolsStates = {} }) {
+  return {
+    type: EDITOR.SET_IS_TEXT_TOOLS_ACTIVE,
+    payload: {
+      isTextToolsActive: isActive,
+      textToolsStates,
     },
   }
 }
