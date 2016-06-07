@@ -48,6 +48,7 @@ export function closeAlert() {
   }
 }
 
+// TODO: Move to actions/editor
 export function setIsCompleterActive({ isActive }) {
   return {
     type: MODAL.SET_IS_COMPLETER_ACTIVE,
@@ -57,6 +58,7 @@ export function setIsCompleterActive({ isActive }) {
   }
 }
 
+// TODO: Move to actions/gui
 export function setIsProfileMenuActive({ isActive }) {
   return {
     type: MODAL.SET_IS_PROFILE_MENU_ACTIVE,
@@ -66,6 +68,7 @@ export function setIsProfileMenuActive({ isActive }) {
   }
 }
 
+// TODO: Move to actions/editor
 export function setIsTextToolsActive({ isActive, textToolsStates = {} }) {
   return {
     type: MODAL.SET_IS_TEXT_TOOLS_ACTIVE,
@@ -76,6 +79,7 @@ export function setIsTextToolsActive({ isActive, textToolsStates = {} }) {
   }
 }
 
+// TODO: Move to actions/editor
 export function setTextToolsCoordinates({ textToolsCoordinates = { top: -200, left: -666 } }) {
   return {
     type: MODAL.SET_TEXT_TOOLS_COORDINATES,
