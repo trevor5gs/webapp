@@ -28,7 +28,7 @@ export function signIn(email, password) {
   }
 }
 
-export function getUserCredentials(email, password) {
+export function getUserCredentials(email, password, meta) {
   return {
     type: ACTION_TYPES.AUTHENTICATION.USER,
     payload: {
@@ -40,6 +40,7 @@ export function getUserCredentials(email, password) {
       },
     },
     meta: {
+      ...meta,
       pauseRequester: true,
     },
   }
