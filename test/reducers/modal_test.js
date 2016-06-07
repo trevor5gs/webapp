@@ -72,6 +72,13 @@ describe('modal reducer', () => {
       const action = { type: GUI.SET_IS_PROFILE_MENU_ACTIVE, payload: { isProfileMenuActive } }
       expect(reducer(reducer, action)).to.have.property('isProfileMenuActive', true)
     })
+
+    it('GUI.TOGGLE_NOTIFICATIONS updates isNotificationsActive', () => {
+      expect(reducer(undefined, {})).to.have.property('isNotificationsActive', false)
+      const isNotificationsActive = true
+      const action = { type: GUI.TOGGLE_NOTIFICATIONS, payload: { isNotificationsActive } }
+      expect(reducer(reducer, action)).to.have.property('isNotificationsActive', true)
+    })
   })
 
   context('OMNIBAR', () => {

@@ -199,5 +199,25 @@ describe('gui actions', () => {
       expect(action.payload.innerWidth).to.equal(1360)
     })
   })
+
+  context('#toggleNotifications', () => {
+    const action = subject.toggleNotifications({ isActive: true })
+
+    it('is an FSA compliant action', () => {
+      expect(isFSA(action)).to.be.true
+    })
+
+    it('has similar action.name and action.type', () => {
+      expect(isFSAName(action, subject.toggleNotifications)).to.be.true
+    })
+
+    it('has a payload with the correct keys', () => {
+      expect(action.payload).to.have.keys('isNotificationsActive')
+    })
+
+    it('sets the appropriate payload', () => {
+      expect(action.payload.isNotificationsActive).to.be.true
+    })
+  })
 })
 

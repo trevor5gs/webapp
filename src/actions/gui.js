@@ -73,3 +73,12 @@ export function setViewportSizeAttributes(resizeAttributes) {
   }
 }
 
+export function toggleNotifications({ isActive }) {
+  return {
+    type: GUI.TOGGLE_NOTIFICATIONS,
+    payload: {
+      isNotificationsActive: isActive,
+    },
+  }
+}
+

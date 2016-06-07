@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import { set } from 'lodash'
 import { scrollToTop } from '../vendor/scrollTop'
-import { ADD_NEW_IDS_TO_RESULT, MODAL, SET_LAYOUT_MODE } from '../constants/action_types'
+import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
 import { logout } from '../actions/authentication'
-import { setIsProfileMenuActive } from '../actions/gui'
+import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
 import { checkForNewNotifications } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
@@ -62,10 +62,7 @@ class NavbarContainer extends Component {
   onClickNotification = (e) => {
     if (e) { e.preventDefault() }
     const { dispatch, isNotificationsActive } = this.props
-    dispatch({
-      type: MODAL.TOGGLE_NOTIFICATIONS,
-      payload: { isNotificationsActive: !isNotificationsActive },
-    })
+    dispatch(toggleNotifications({ isActive: !isNotificationsActive }))
   }
 
   onClickLoadMorePosts = () => {

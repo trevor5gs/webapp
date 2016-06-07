@@ -32,8 +32,6 @@ export function modal(state = initialState, action) {
     case MODAL.OPEN:
     case MODAL.CLOSE:
       return { ...state, ...action.payload }
-    case MODAL.TOGGLE_NOTIFICATIONS:
-      return { ...state, isNotificationsActive: action.payload.isNotificationsActive }
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
@@ -61,6 +59,8 @@ export function modal(state = initialState, action) {
         ...state,
         isProfileMenuActive: action.payload.isProfileMenuActive,
       }
+    case GUI.TOGGLE_NOTIFICATIONS:
+      return { ...state, isNotificationsActive: action.payload.isNotificationsActive }
     case OMNIBAR.OPEN:
     case OMNIBAR.CLOSE:
       return { ...state, isOmnibarActive: action.payload.isActive }
