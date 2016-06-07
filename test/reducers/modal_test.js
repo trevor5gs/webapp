@@ -25,6 +25,15 @@ describe('modal reducer', () => {
     })
   })
 
+  context('GUI', () => {
+    it('GUI.SET_IS_PROFILE_MENU_ACTIVE updates isProfileMenuActive', () => {
+      expect(reducer(undefined, {})).to.have.property('isProfileMenuActive', false)
+      const isProfileMenuActive = true
+      const action = { type: GUI.SET_IS_PROFILE_MENU_ACTIVE, payload: { isProfileMenuActive } }
+      expect(reducer(reducer, action)).to.have.property('isProfileMenuActive', true)
+    })
+  })
+
   context('OMNIBAR', () => {
     it('OPEN sets isOmnibarActive to true', () => {
       expect(reducer(undefined, {})).to.have.property('isOmnibarActive', false)

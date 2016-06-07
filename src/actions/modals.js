@@ -58,16 +58,6 @@ export function setIsCompleterActive({ isActive }) {
   }
 }
 
-// TODO: Move to actions/gui
-export function setIsProfileMenuActive({ isActive }) {
-  return {
-    type: MODAL.SET_IS_PROFILE_MENU_ACTIVE,
-    payload: {
-      isProfileMenuActive: isActive,
-    },
-  }
-}
-
 // TODO: Move to actions/editor
 export function setIsTextToolsActive({ isActive, textToolsStates = {} }) {
   return {

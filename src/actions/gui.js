@@ -16,6 +16,15 @@ export function setIsOffsetLayout({ isOffsetLayout }) {
   }
 }
 
+export function setIsProfileMenuActive({ isActive }) {
+  return {
+    type: GUI.SET_IS_PROFILE_MENU_ACTIVE,
+    payload: {
+      isProfileMenuActive: isActive,
+    },
+  }
+}
+
 export function setLastDiscoverBeaconVersion({ version }) {
   return {
     type: GUI.SET_LAST_DISCOVER_BEACON_VERSION,

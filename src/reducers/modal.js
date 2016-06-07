@@ -2,6 +2,7 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   ALERT,
   AUTHENTICATION,
+  GUI,
   MODAL,
   OMNIBAR,
   PROFILE,
@@ -43,16 +44,16 @@ export function modal(state = initialState, action) {
         ...state,
         isCompleterActive: action.payload.isCompleterActive,
       }
-    case MODAL.SET_IS_PROFILE_MENU_ACTIVE:
       return {
         ...state,
-        isProfileMenuActive: action.payload.isProfileMenuActive,
       }
     case MODAL.SET_IS_TEXT_TOOLS_ACTIVE:
+    case GUI.SET_IS_PROFILE_MENU_ACTIVE:
       return {
         ...state,
         isTextToolsActive: action.payload.isTextToolsActive,
         textToolsStates: action.payload.textToolsStates,
+        isProfileMenuActive: action.payload.isProfileMenuActive,
       }
     case MODAL.SET_TEXT_TOOLS_COORDINATES:
       return {

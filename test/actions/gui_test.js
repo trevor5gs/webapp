@@ -42,6 +42,26 @@ describe('gui actions', () => {
     })
   })
 
+  context('#setIsProfileMenuActive', () => {
+    const action = subject.setIsProfileMenuActive({ isActive: true })
+
+    it('is an FSA compliant action', () => {
+      expect(isFSA(action)).to.be.true
+    })
+
+    it('has similar action.name and action.type', () => {
+      expect(isFSAName(action, subject.setIsProfileMenuActive)).to.be.true
+    })
+
+    it('has a payload with the correct keys', () => {
+      expect(action.payload).to.have.keys('isProfileMenuActive')
+    })
+
+    it('sets the appropriate payload', () => {
+      expect(action.payload.isProfileMenuActive).to.be.true
+    })
+  })
+
   context('#setLastDiscoverBeaconVersion', () => {
     const action = subject.setLastDiscoverBeaconVersion({ version: '666' })
 
