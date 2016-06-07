@@ -3,13 +3,13 @@ import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { debounce } from 'lodash'
 import { EDITOR } from '../constants/action_types'
-import { setTextToolsCoordinates } from '../actions/modals'
 import {
   autoCompleteUsers,
   loadEmojis,
   replaceText,
   setIsCompleterActive,
   setIsTextToolsActive,
+  setTextToolsCoordinates,
 } from '../actions/editor'
 import Completer from '../components/completers/Completer'
 import TextTools from '../components/editor/TextTools'

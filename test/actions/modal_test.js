@@ -2,7 +2,6 @@ import { expect, isFSA, isFSAName } from '../spec_helper'
 import * as subject from '../../src/actions/modals'
 
 describe('modal actions', () => {
-  it('needs to move setIsCompleterActive, setIsTextToolsActive, setTextToolsCoordinates to editor_')
   it('needs to be divided from alert')
   it('does not need to pass in things like classList and component')
 

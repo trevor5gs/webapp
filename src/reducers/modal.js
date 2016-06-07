@@ -51,15 +51,15 @@ export function modal(state = initialState, action) {
         isTextToolsActive: action.payload.isTextToolsActive,
         textToolsStates: action.payload.textToolsStates,
       }
+    case EDITOR.SET_TEXT_TOOLS_COORDINATES:
+      return {
+        ...state,
+        textToolsCoordinates: action.payload.textToolsCoordinates,
+      }
     case GUI.SET_IS_PROFILE_MENU_ACTIVE:
       return {
         ...state,
         isProfileMenuActive: action.payload.isProfileMenuActive,
-      }
-    case MODAL.SET_TEXT_TOOLS_COORDINATES:
-      return {
-        ...state,
-        textToolsCoordinates: action.payload.textToolsCoordinates,
       }
     case OMNIBAR.OPEN:
     case OMNIBAR.CLOSE:

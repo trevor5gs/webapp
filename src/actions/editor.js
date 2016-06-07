@@ -163,6 +163,15 @@ export function setIsTextToolsActive({ isActive, textToolsStates = {} }) {
   }
 }
 
+export function setTextToolsCoordinates({ textToolsCoordinates = { top: -200, left: -666 } }) {
+  return {
+    type: EDITOR.SET_TEXT_TOOLS_COORDINATES,
+    payload: {
+      textToolsCoordinates,
+    },
+  }
+}
+
 export function temporaryAssetCreated(objectURL, editorId) {
   return {
     type: EDITOR.TMP_IMAGE_CREATED,

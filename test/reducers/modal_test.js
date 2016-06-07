@@ -48,6 +48,21 @@ describe('modal reducer', () => {
       expect(result.textToolsStates).to.have.property('isBoldActive', true)
       expect(result.textToolsStates).to.have.property('isItalicActive', false)
     })
+
+    it('EDITOR.SET_TEXT_TOOLS_COORDINATES updates textToolsCoordinates', () => {
+      const defaults = reducer(undefined, {})
+      expect(defaults.textToolsCoordinates).to.have.property('top', -200)
+      expect(defaults.textToolsCoordinates).to.have.property('left', -666)
+      const action = {
+        type: EDITOR.SET_TEXT_TOOLS_COORDINATES,
+        payload: {
+          textToolsCoordinates: { top: 0, left: 20 },
+        },
+      }
+      const result = reducer(reducer, action)
+      expect(result.textToolsCoordinates).to.have.property('top', 0)
+      expect(result.textToolsCoordinates).to.have.property('left', 20)
+    })
   })
 
   context('GUI', () => {

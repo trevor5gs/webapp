@@ -48,13 +48,3 @@ export function closeAlert() {
   }
 }
 
-// TODO: Move to actions/editor
-export function setTextToolsCoordinates({ textToolsCoordinates = { top: -200, left: -666 } }) {
-  return {
-    type: MODAL.SET_TEXT_TOOLS_COORDINATES,
-    payload: {
-      textToolsCoordinates,
-    },
-  }
-}
-
