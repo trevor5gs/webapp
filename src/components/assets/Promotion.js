@@ -80,11 +80,20 @@ class Promotion extends Component {
     }
   }
 
+  renderCallToAction(isLoggedIn, cta) {
+    if (cta) {
+      return cta
+    } else if (!isLoggedIn) {
+      return <Link to="https://ello.co/signup">Sign Up</Link>
+    }
+    return null
+  }
+
   render() {
     const { featuredUser, status } = this.state
     const { creditsClickAction, isLoggedIn } = this.props
     if (!featuredUser) { return null }
-    const { caption } = featuredUser
+    const { caption, cta } = featuredUser
     const src = this.getCoverSource()
     const klassNames = classNames('Promotion', status)
     const style = src ? { backgroundImage: `url(${src})` } : null
@@ -94,7 +103,7 @@ class Promotion extends Component {
         <figure className="PromotionImage" style={style} />
         <div className="PromotionCaption">
           {caption}
-          {isLoggedIn ? null : <Link to="https://ello.co/signup">Sign Up</Link>}
+          {this.renderCallToAction(isLoggedIn, cta)}
         </div>
         <Credits onClick={creditsClickAction} user={featuredUser} />
       </div>

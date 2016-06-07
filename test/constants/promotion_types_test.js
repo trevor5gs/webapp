@@ -25,6 +25,7 @@ function isValidSignedOutPromotionKey(key) {
     'caption',
     'avatar',
     'coverImage',
+    'cta',
   ]
   return validKeys.indexOf(key) > -1
 }
@@ -51,6 +52,16 @@ function hasValidCaption(promotion) {
     promotion.caption.props.children &&
     promotion.caption.props.children.length
   )
+}
+
+function hasValidCallToAction(promotion) {
+  const { cta } = promotion
+  if (!cta) { return true }
+  const { href, target } = cta.props
+  const hasValidType = cta.type === 'a'
+  const hasValidHref = href && (href.indexOf('.') > -1 || href.indexOf('/') > -1)
+  const hasValidTarget = !target || target === '_blank'
+  return hasValidType && hasValidHref && hasValidTarget
 }
 
 function hasValidAvatar(promotion) {
@@ -163,6 +174,10 @@ describe('promotion_types.js', () => {
       expect(LOGGED_IN_PROMOTIONS.every(hasValidCaption)).to.be.true
     })
 
+    it('has a valid call to action for each index it is defined', () => {
+      expect(LOGGED_IN_PROMOTIONS.every(hasValidCallToAction)).to.be.true
+    })
+
     it('has a valid avatar for each index', () => {
       expect(LOGGED_IN_PROMOTIONS.every(hasValidAvatar)).to.be.true
     })
@@ -200,6 +215,10 @@ describe('promotion_types.js', () => {
 
     it('has a valid caption for each index', () => {
       expect(LOGGED_OUT_PROMOTIONS.every(hasValidCaption)).to.be.true
+    })
+
+    it('has a valid call to action for each index it is defined', () => {
+      expect(LOGGED_OUT_PROMOTIONS.every(hasValidCallToAction)).to.be.true
     })
 
     it('has a valid avatar for each index', () => {
