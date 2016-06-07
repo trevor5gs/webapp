@@ -25,6 +25,15 @@ describe('modal reducer', () => {
     })
   })
 
+  context('EDITOR', () => {
+    it('EDITOR.SET_IS_COMPLETER_ACTIVE updates isCompleterActive', () => {
+      expect(reducer(undefined, {})).to.have.property('isCompleterActive', false)
+      const isCompleterActive = true
+      const action = { type: EDITOR.SET_IS_COMPLETER_ACTIVE, payload: { isCompleterActive } }
+      expect(reducer(reducer, action)).to.have.property('isCompleterActive', true)
+    })
+
+  })
   context('GUI', () => {
     it('GUI.SET_IS_PROFILE_MENU_ACTIVE updates isProfileMenuActive', () => {
       expect(reducer(undefined, {})).to.have.property('isProfileMenuActive', false)

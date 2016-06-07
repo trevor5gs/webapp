@@ -49,16 +49,6 @@ export function closeAlert() {
 }
 
 // TODO: Move to actions/editor
-export function setIsCompleterActive({ isActive }) {
-  return {
-    type: MODAL.SET_IS_COMPLETER_ACTIVE,
-    payload: {
-      isCompleterActive: isActive,
-    },
-  }
-}
-
-// TODO: Move to actions/editor
 export function setIsTextToolsActive({ isActive, textToolsStates = {} }) {
   return {
     type: MODAL.SET_IS_TEXT_TOOLS_ACTIVE,

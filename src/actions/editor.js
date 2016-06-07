@@ -145,6 +145,15 @@ export function saveAsset(file, editorId) {
   }
 }
 
+export function setIsCompleterActive({ isActive }) {
+  return {
+    type: EDITOR.SET_IS_COMPLETER_ACTIVE,
+    payload: {
+      isCompleterActive: isActive,
+    },
+  }
+}
+
 export function temporaryAssetCreated(objectURL, editorId) {
   return {
     type: EDITOR.TMP_IMAGE_CREATED,
