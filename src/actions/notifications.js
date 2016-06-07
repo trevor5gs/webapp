@@ -10,7 +10,7 @@ export function loadNotifications(params = {}) {
   const categoryResult = params.category && params.category !== 'all' ? `/${params.category}` : ''
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.notifications(params), vo: {} },
+    payload: { endpoint: api.notifications(params) },
     meta: {
       mappingType: MAPPING_TYPES.ACTIVITIES,
       renderStream: {
