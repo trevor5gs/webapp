@@ -60,6 +60,7 @@ let requesterIsPaused = false
 
 const runningFetches = {}
 function updateRunningFetches(serverResponse) {
+  if (!serverResponse) { return }
   const serverResponseUrl = serverResponse.url && serverResponse.url.length
         ? serverResponse.url
         : serverResponse.headers.get('X-Request-Url')
