@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import { isEqual } from 'lodash'
+import { get, isEqual } from 'lodash'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
@@ -35,7 +35,7 @@ class BlockCollection extends Component {
     blocks: PropTypes.array,
     cancelAction: PropTypes.func.isRequired,
     currentUsername: PropTypes.string,
-    collection: PropTypes.object.isRequired,
+    collection: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     dragBlock: PropTypes.object,
     editorId: PropTypes.string.isRequired,
@@ -47,7 +47,7 @@ class BlockCollection extends Component {
     isMobileGridStream: PropTypes.bool,
     isOwnPost: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
-    order: PropTypes.array.isRequired,
+    order: PropTypes.array,
     pathname: PropTypes.string.isRequired,
     postId: PropTypes.string,
     repostContent: PropTypes.array,
@@ -84,6 +84,7 @@ class BlockCollection extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    if (!nextProps.collection || !nextProps.order) { return false }
     return !isEqual(nextProps, this.props) || !isEqual(nextState, this.state)
   }
 
@@ -413,7 +414,7 @@ class BlockCollection extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const editor = state.editor[ownProps.editorId]
+  const editor = get(state, ['editor', ownProps.editorId], {})
   return {
     avatar: state.profile.avatar,
     collection: editor.collection,
@@ -426,9 +427,9 @@ function mapStateToProps(state, ownProps) {
     isMobileGridStream: state.gui.deviceSize === 'mobile' && state.gui.isGridMode,
     isNavbarHidden: state.gui.isNavbarHidden,
     order: editor.order,
-    orderLength: editor.order.length,
+    orderLength: get(editor, 'order.length'),
     pathname: state.routing.location.pathname,
-    postId: ownProps.post ? `${ownProps.post.id}` : null,
+    postId: get(ownProps, 'post.id'),
   }
 }
 
