@@ -32,10 +32,10 @@ const futureTimeout = time => {
 
 export function* loginSaga() {
   while (true) {
-    const { payload } = yield take(AUTHENTICATION.SIGN_IN)
+    const { meta, payload } = yield take(AUTHENTICATION.SIGN_IN)
     const { email, password } = payload
     yield put(clearAuthStore())
-    yield put(getUserCredentials(email, password))
+    yield put(getUserCredentials(email, password, meta))
   }
 }
 
