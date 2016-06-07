@@ -16,7 +16,8 @@ import { emptyPagination } from '../components/streams/Paginator'
 // allows the unit tests to stub methods in this module
 const methods = {}
 let path = '/'
-let prevTerms = null
+let prevSearchTerms = null
+let prevSearchType = null
 let hasLoadedFirstStream = false
 
 methods.updateUserCount = (newState, userId, prop, delta) => {
@@ -246,14 +247,14 @@ methods.updateResult = (response, newState, action) => {
   }
 }
 
-methods.clearSearchResults = (state, newState, action) => {
-  const pathname = action.payload.pathname
-  const existingResult = newState.pages[pathname]
-  if (existingResult) {
-    newState.pages[pathname] = null
-    return newState
+methods.clearSearchResults = (newState) => {
+  for (const resultKey of ['/search/posts', '/search/users']) {
+    const existingResult = newState.pages[resultKey]
+    if (existingResult) {
+      newState.pages[resultKey] = null
+    }
   }
-  return state
+  return newState
 }
 
 methods.deleteModel = (state, newState, action, mappingType) => {
@@ -420,9 +421,11 @@ export default function json(state = {}, action = { type: '' }) {
       return newState
     case LOCATION_CHANGE:
       path = action.payload.pathname
-      if (action.payload.query.terms && prevTerms !== action.payload.query.terms) {
-        newState = methods.clearSearchResults(state, newState, action)
-        prevTerms = action.payload.query.terms
+      if (action.payload.query.terms &&
+          (prevSearchTerms !== action.payload.query.terms || prevSearchType !== action.payload.query.type)) {
+        newState = methods.clearSearchResults(newState)
+        prevSearchTerms = action.payload.query.terms
+        prevSearchType = action.payload.query.type
         return newState
       }
       return state
