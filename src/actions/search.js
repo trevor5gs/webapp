@@ -21,6 +21,7 @@ export function searchForPosts(terms) {
         asList: StreamRenderables.postsAsList,
         asZero: <ZeroState />,
       },
+      resultKey: '/search/posts',
     },
   }
 }
@@ -41,6 +42,7 @@ export function searchForUsers(terms) {
         asList: StreamRenderables.usersAsList,
         asZero: <ZeroState />,
       },
+      resultKey: '/search/users',
     },
   }
 }
