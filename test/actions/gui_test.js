@@ -42,6 +42,26 @@ describe('gui actions', () => {
     })
   })
 
+  context('#setIsProfileMenuActive', () => {
+    const action = subject.setIsProfileMenuActive({ isActive: true })
+
+    it('is an FSA compliant action', () => {
+      expect(isFSA(action)).to.be.true
+    })
+
+    it('has similar action.name and action.type', () => {
+      expect(isFSAName(action, subject.setIsProfileMenuActive)).to.be.true
+    })
+
+    it('has a payload with the correct keys', () => {
+      expect(action.payload).to.have.keys('isProfileMenuActive')
+    })
+
+    it('sets the appropriate payload', () => {
+      expect(action.payload.isProfileMenuActive).to.be.true
+    })
+  })
+
   context('#setLastDiscoverBeaconVersion', () => {
     const action = subject.setLastDiscoverBeaconVersion({ version: '666' })
 
@@ -177,6 +197,26 @@ describe('gui actions', () => {
       expect(action.payload.deviceSize).to.equal('desktop')
       expect(action.payload.innerHeight).to.equal(768)
       expect(action.payload.innerWidth).to.equal(1360)
+    })
+  })
+
+  context('#toggleNotifications', () => {
+    const action = subject.toggleNotifications({ isActive: true })
+
+    it('is an FSA compliant action', () => {
+      expect(isFSA(action)).to.be.true
+    })
+
+    it('has similar action.name and action.type', () => {
+      expect(isFSAName(action, subject.toggleNotifications)).to.be.true
+    })
+
+    it('has a payload with the correct keys', () => {
+      expect(action.payload).to.have.keys('isNotificationsActive')
+    })
+
+    it('sets the appropriate payload', () => {
+      expect(action.payload.isNotificationsActive).to.be.true
     })
   })
 })

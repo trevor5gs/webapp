@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
-import { GUI, LOAD_STREAM_SUCCESS, MODAL } from '../../constants/action_types'
 import { connect } from 'react-redux'
+import { GUI, LOAD_STREAM_SUCCESS } from '../../constants/action_types'
 import { scrollElToTop } from '../../vendor/scrollTop'
+import { toggleNotifications } from '../../actions/gui'
 import { loadNotifications } from '../../actions/notifications'
 import StreamComponent from '../../components/streams/StreamComponent'
 import {
@@ -101,10 +102,7 @@ class NotificationsContainer extends Component {
         classList.contains('StarshipButton')
        ) { return }
     const { dispatch } = this.props
-    dispatch({
-      type: MODAL.TOGGLE_NOTIFICATIONS,
-      payload: { isNotificationsActive: false },
-    })
+    dispatch(toggleNotifications({ isActive: false }))
   }
 
   onScrolled = () => {

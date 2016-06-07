@@ -1,7 +1,6 @@
 import { EDITOR } from '../constants/action_types'
 import * as api from '../networking/api'
 
-
 export function addBlock(block, editorId, shouldCheckForEmpty = true) {
   return {
     type: EDITOR.ADD_BLOCK,
@@ -141,6 +140,34 @@ export function saveAsset(file, editorId) {
     payload: {
       editorId,
       file,
+    },
+  }
+}
+
+export function setIsCompleterActive({ isActive }) {
+  return {
+    type: EDITOR.SET_IS_COMPLETER_ACTIVE,
+    payload: {
+      isCompleterActive: isActive,
+    },
+  }
+}
+
+export function setIsTextToolsActive({ isActive, textToolsStates = {} }) {
+  return {
+    type: EDITOR.SET_IS_TEXT_TOOLS_ACTIVE,
+    payload: {
+      isTextToolsActive: isActive,
+      textToolsStates,
+    },
+  }
+}
+
+export function setTextToolsCoordinates({ textToolsCoordinates = { top: -200, left: -666 } }) {
+  return {
+    type: EDITOR.SET_TEXT_TOOLS_COORDINATES,
+    payload: {
+      textToolsCoordinates,
     },
   }
 }

@@ -2,6 +2,8 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   ALERT,
   AUTHENTICATION,
+  EDITOR,
+  GUI,
   MODAL,
   OMNIBAR,
   PROFILE,
@@ -30,35 +32,35 @@ export function modal(state = initialState, action) {
     case MODAL.OPEN:
     case MODAL.CLOSE:
       return { ...state, ...action.payload }
-    case MODAL.TOGGLE_NOTIFICATIONS:
-      return { ...state, isNotificationsActive: action.payload.isNotificationsActive }
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
     case LOCATION_CHANGE:
       if (state.isActive) { return initialState }
       return state
-    case MODAL.SET_IS_COMPLETER_ACTIVE:
+    case EDITOR.SET_IS_COMPLETER_ACTIVE:
       return {
         ...state,
         isCompleterActive: action.payload.isCompleterActive,
       }
-    case MODAL.SET_IS_PROFILE_MENU_ACTIVE:
-      return {
-        ...state,
-        isProfileMenuActive: action.payload.isProfileMenuActive,
-      }
-    case MODAL.SET_IS_TEXT_TOOLS_ACTIVE:
+    case EDITOR.SET_IS_TEXT_TOOLS_ACTIVE:
       return {
         ...state,
         isTextToolsActive: action.payload.isTextToolsActive,
         textToolsStates: action.payload.textToolsStates,
       }
-    case MODAL.SET_TEXT_TOOLS_COORDINATES:
+    case EDITOR.SET_TEXT_TOOLS_COORDINATES:
       return {
         ...state,
         textToolsCoordinates: action.payload.textToolsCoordinates,
       }
+    case GUI.SET_IS_PROFILE_MENU_ACTIVE:
+      return {
+        ...state,
+        isProfileMenuActive: action.payload.isProfileMenuActive,
+      }
+    case GUI.TOGGLE_NOTIFICATIONS:
+      return { ...state, isNotificationsActive: action.payload.isNotificationsActive }
     case OMNIBAR.OPEN:
     case OMNIBAR.CLOSE:
       return { ...state, isOmnibarActive: action.payload.isActive }

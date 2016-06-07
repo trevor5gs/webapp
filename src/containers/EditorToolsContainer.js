@@ -4,11 +4,13 @@ import { connect } from 'react-redux'
 import { debounce } from 'lodash'
 import { EDITOR } from '../constants/action_types'
 import {
+  autoCompleteUsers,
+  loadEmojis,
+  replaceText,
   setIsCompleterActive,
   setIsTextToolsActive,
   setTextToolsCoordinates,
-} from '../actions/modals'
-import { autoCompleteUsers, loadEmojis, replaceText } from '../actions/editor'
+} from '../actions/editor'
 import Completer from '../components/completers/Completer'
 import TextTools from '../components/editor/TextTools'
 import { addInputObject, removeInputObject } from '../components/editor/InputComponent'
