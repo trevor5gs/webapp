@@ -82,6 +82,7 @@ class PostTools extends Component {
       dispatch(postActions.unlovePost(post))
     } else {
       dispatch(postActions.lovePost(post))
+      dispatch(trackEvent('web_production.post_actions_love'))
     }
   }
 
