@@ -80,6 +80,7 @@ export function availableToggles() {
   }
 }
 
+// TODO: Do we need the meta here?
 export function checkAvailability(vo) {
   return {
     type: PROFILE.AVAILABILITY,
