@@ -36,7 +36,7 @@ export function loadDiscoverPosts(type) {
 export function loadCommunities() {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.communitiesPath(), vo: {} },
+    payload: { endpoint: api.communitiesPath() },
     meta: {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
@@ -50,7 +50,7 @@ export function loadCommunities() {
 export function loadFeaturedUsers() {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.awesomePeoplePath(), vo: {} },
+    payload: { endpoint: api.awesomePeoplePath() },
     meta: {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
