@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import { debounce, get, isEqual } from 'lodash'
+import { get, isEqual } from 'lodash'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
@@ -73,9 +73,6 @@ class BlockCollection extends Component {
         dispatch(addBlock(block, editorId, false))
       }
     }
-    // add the leading optiion to get it to update immediately
-    // to get rid of the 'Say Ello' text sooner than later
-    this.handleTextBlockInput = debounce(this.handleTextBlockInput, 300, { leading: true })
   }
 
   componentDidMount() {
