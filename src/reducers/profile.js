@@ -43,6 +43,11 @@ export function profile(state = {}, action) {
       delete assetState.avatar.tmp
       delete assetState.coverImage.tmp
       return assetState
+    case PROFILE.REQUEST_PUSH_SUBSCRIPTION:
+      return {
+        ...state,
+        ...action.payload,
+      }
     case PROFILE.SAVE_REQUEST:
       return {
         ...state,

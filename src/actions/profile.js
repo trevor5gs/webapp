@@ -215,3 +215,16 @@ export function requestPushSubscription(registrationId, bundleId, marketingVersi
   }
 }
 
+export function unregisterForGCM(regId, bundleId) {
+  return {
+    type: PROFILE.UNREGISTER_FOR_GCM,
+    payload: {
+      endpoint: api.registerForGCM(regId),
+      method: 'DELETE',
+      body: {
+        bundle_identifier: bundleId,
+      },
+    },
+  }
+}
+
