@@ -1,11 +1,11 @@
-import * as ACTION_TYPES from '../constants/action_types'
+import { COMMENT } from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
 import { resetEditor } from '../actions/editor'
 
 export function createComment(body, editorId, postId) {
   return {
-    type: ACTION_TYPES.COMMENT.CREATE,
+    type: COMMENT.CREATE,
     payload: {
       body: { body },
       editorId,
@@ -22,7 +22,7 @@ export function createComment(body, editorId, postId) {
 
 export function deleteComment(comment) {
   return {
-    type: ACTION_TYPES.COMMENT.DELETE,
+    type: COMMENT.DELETE,
     payload: {
       endpoint: api.deleteComment(comment),
       method: 'DELETE',
@@ -34,7 +34,7 @@ export function deleteComment(comment) {
 
 export function flagComment(comment, kind) {
   return {
-    type: ACTION_TYPES.COMMENT.FLAG,
+    type: COMMENT.FLAG,
     payload: {
       endpoint: api.flagComment(comment, kind),
       method: 'POST',
@@ -45,7 +45,7 @@ export function flagComment(comment, kind) {
 
 export function loadEditableComment(comment) {
   return {
-    type: ACTION_TYPES.COMMENT.EDITABLE,
+    type: COMMENT.EDITABLE,
     payload: { endpoint: api.editComment(comment) },
     meta: {
       mappingType: MAPPING_TYPES.COMMENTS,
@@ -56,7 +56,7 @@ export function loadEditableComment(comment) {
 
 export function toggleEditing(comment, isEditing) {
   return {
-    type: ACTION_TYPES.COMMENT.TOGGLE_EDITING,
+    type: COMMENT.TOGGLE_EDITING,
     payload: {
       model: comment,
       isEditing,
@@ -66,7 +66,7 @@ export function toggleEditing(comment, isEditing) {
 
 export function updateComment(comment, body, editorId) {
   return {
-    type: ACTION_TYPES.COMMENT.UPDATE,
+    type: COMMENT.UPDATE,
     payload: {
       body: { body },
       editorId,
