@@ -5,7 +5,7 @@ import { AUTHENTICATION, PROFILE } from '../constants/action_types'
 import {
   bundleIdSelector,
   isLoggedInSelector,
-  registrationIdSelector
+  registrationIdSelector,
 } from './selectors'
 
 export function* loginPushSubscribe() {
@@ -20,7 +20,7 @@ export function* loginPushSubscribe() {
 }
 
 export function* logoutPushUnsubscribe() {
-  const action = yield take(AUTHENTICATION.LOGOUT)
+  yield take(AUTHENTICATION.LOGOUT)
   const registrationId = yield select(registrationIdSelector)
   const bundleId = yield select(bundleIdSelector)
   yield put(unregisterForGCM(registrationId, bundleId))
