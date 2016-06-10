@@ -1,6 +1,7 @@
 import { decamelizeKeys } from 'humps'
 import store from '../store'
 import { requestPushSubscription, saveProfile } from '../actions/profile'
+import { isElloAndroid } from '../vendor/jello'
 
 export function preferenceToggleChanged(obj) {
   const newObj = { ...obj }
@@ -21,6 +22,10 @@ if (typeof window !== 'undefined') {
     store.dispatch(
       requestPushSubscription(registrationId, bundleId, marketingVersion, buildVersion)
     )
+  }
+
+  if (isElloAndroid()) {
+    AndroidInterface.webAppLoaded()
   }
 }
 

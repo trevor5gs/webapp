@@ -7,7 +7,8 @@
     "mocha": true
   },
   "globals": {
-    "ENV": false
+    "ENV": false,
+    "AndroidInterface": false
   },
   "rules": {
     "no-alert": 2,
