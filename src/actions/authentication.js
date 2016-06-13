@@ -28,7 +28,6 @@ export function signIn(email, password) {
   }
 }
 
-// TODO: I think we can get rid of meta here.
 export function getUserCredentials(email, password, meta) {
   return {
     type: AUTHENTICATION.USER,
