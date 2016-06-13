@@ -1,4 +1,4 @@
-import * as ACTION_TYPES from '../constants/action_types'
+import { LOAD_STREAM, POST } from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
@@ -6,7 +6,7 @@ import { resetEditor } from '../actions/editor'
 
 export function createPost(body, editorId, repostId, repostedFromId) {
   return {
-    type: ACTION_TYPES.POST.CREATE,
+    type: POST.CREATE,
     payload: {
       body: body.length ? { body } : null,
       editorId,
@@ -24,7 +24,7 @@ export function createPost(body, editorId, repostId, repostedFromId) {
 
 export function deletePost(post) {
   return {
-    type: ACTION_TYPES.POST.DELETE,
+    type: POST.DELETE,
     payload: {
       endpoint: api.deletePost(post.id),
       method: 'DELETE',
@@ -36,7 +36,7 @@ export function deletePost(post) {
 
 export function flagPost(post, kind) {
   return {
-    type: ACTION_TYPES.POST.FLAG,
+    type: POST.FLAG,
     payload: {
       endpoint: api.flagPost(post.id, kind),
       method: 'POST',
@@ -50,7 +50,7 @@ export function flagPost(post, kind) {
 export function loadComments(post, addUpdateKey = true) {
   const postId = `${post.id}`
   const obj = {
-    type: ACTION_TYPES.LOAD_STREAM,
+    type: LOAD_STREAM,
     payload: {
       endpoint: api.commentsForPost(postId),
       postIdOrToken: postId,
@@ -72,7 +72,7 @@ export function loadComments(post, addUpdateKey = true) {
 
 export function loadEditablePost(idOrToken) {
   return {
-    type: ACTION_TYPES.POST.EDITABLE,
+    type: POST.EDITABLE,
     payload: { endpoint: api.editPostDetail(idOrToken) },
     meta: {
       mappingType: MAPPING_TYPES.POSTS,
@@ -83,7 +83,7 @@ export function loadEditablePost(idOrToken) {
 
 export function loadPostDetail(idOrToken) {
   return {
-    type: ACTION_TYPES.POST.DETAIL,
+    type: POST.DETAIL,
     payload: {
       endpoint: api.postDetail(idOrToken),
       postIdOrToken: idOrToken,
@@ -97,7 +97,7 @@ export function loadPostDetail(idOrToken) {
 
 export function lovePost(post) {
   return {
-    type: ACTION_TYPES.POST.LOVE,
+    type: POST.LOVE,
     payload: {
       endpoint: api.lovePost(post.id),
       method: 'POST',
@@ -113,7 +113,7 @@ export function lovePost(post) {
 
 export function toggleComments(post, showComments) {
   return {
-    type: ACTION_TYPES.POST.TOGGLE_COMMENTS,
+    type: POST.TOGGLE_COMMENTS,
     payload: {
       model: post,
       showComments,
@@ -123,7 +123,7 @@ export function toggleComments(post, showComments) {
 
 export function toggleEditing(post, isEditing) {
   return {
-    type: ACTION_TYPES.POST.TOGGLE_EDITING,
+    type: POST.TOGGLE_EDITING,
     payload: {
       model: post,
       isEditing,
@@ -133,7 +133,7 @@ export function toggleEditing(post, isEditing) {
 
 export function toggleLovers(post, showLovers) {
   return {
-    type: ACTION_TYPES.POST.TOGGLE_LOVERS,
+    type: POST.TOGGLE_LOVERS,
     payload: {
       model: post,
       showLovers,
@@ -143,7 +143,7 @@ export function toggleLovers(post, showLovers) {
 
 export function toggleReposters(post, showReposters) {
   return {
-    type: ACTION_TYPES.POST.TOGGLE_REPOSTERS,
+    type: POST.TOGGLE_REPOSTERS,
     payload: {
       model: post,
       showReposters,
@@ -153,7 +153,7 @@ export function toggleReposters(post, showReposters) {
 
 export function toggleReposting(post, isReposting) {
   return {
-    type: ACTION_TYPES.POST.TOGGLE_REPOSTING,
+    type: POST.TOGGLE_REPOSTING,
     payload: {
       model: post,
       isReposting,
@@ -163,7 +163,7 @@ export function toggleReposting(post, isReposting) {
 
 export function unlovePost(post) {
   return {
-    type: ACTION_TYPES.POST.LOVE,
+    type: POST.LOVE,
     payload: {
       endpoint: api.unlovePost(post.id),
       method: 'DELETE',
@@ -178,7 +178,7 @@ export function unlovePost(post) {
 
 export function updatePost(post, body, editorId) {
   return {
-    type: ACTION_TYPES.POST.UPDATE,
+    type: POST.UPDATE,
     payload: {
       body: { body },
       editorId,
