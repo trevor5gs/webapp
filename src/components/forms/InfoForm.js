@@ -31,6 +31,10 @@ class InfoForm extends Component {
       showThenHideMessage: false,
     }
     this.saveForm = debounce(this.saveForm, 300)
+    this.hideStatusMessage = debounce(this.hideStatusMessage, 3500, {
+      leading: false,
+      trailing: true,
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -38,9 +42,7 @@ class InfoForm extends Component {
                                 !isEqual(nextProps.profile, this.props.profile)
 
     // Remove this class about half a second after its animation finishes
-    if (showThenHideMessage) {
-      setTimeout(() => this.setState({ showThenHideMessage: false }), 3500)
-    }
+    this.hideStatusMessage()
 
     this.setState({
       bioStatus: STATUS.INDETERMINATE,
@@ -80,6 +82,12 @@ class InfoForm extends Component {
 
   saveForm(vo) {
     this.props.dispatch(saveProfile(vo))
+  }
+
+  hideStatusMessage() {
+    this.setState({
+      showThenHideMessage: false,
+    })
   }
 
   render() {
