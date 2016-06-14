@@ -1,3 +1,5 @@
+import EXIF from 'exif-js'
+
 export const SUPPORTED_IMAGE_TYPES = {
   BMP: 'image/bmp',
   GIF: 'image/gif',
@@ -19,6 +21,10 @@ export function isValidFileType(file) {
       if (/ffd8ff/i.test(header)) {
         isValid = true // image/jpg
         fileType = SUPPORTED_IMAGE_TYPES.JPG
+        const imageData = EXIF.readFromBinaryFile(e.target.result)
+        if (imageData) {
+          console.log('imageData', imageData)
+        }
       } else if (/424D/i.test(header)) {
         isValid = true // image/bmp
         fileType = SUPPORTED_IMAGE_TYPES.BMP
