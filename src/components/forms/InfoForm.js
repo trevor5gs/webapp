@@ -52,6 +52,10 @@ class InfoForm extends Component {
     })
   }
 
+  componentWillUnmount() {
+    this.hideStatusMessage.cancel()
+  }
+
   onChangeNameControl = (vo) => {
     this.controlWasChanged(vo, 'nameStatus')
   }
