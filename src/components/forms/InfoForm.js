@@ -31,16 +31,29 @@ class InfoForm extends Component {
       showThenHideMessage: false,
     }
     this.saveForm = debounce(this.saveForm, 300)
+    this.hideStatusMessage = debounce(this.hideStatusMessage, 3500, {
+      leading: false,
+      trailing: true,
+    })
   }
 
   componentWillReceiveProps(nextProps) {
+    const showThenHideMessage = nextProps.showSaveMessage &&
+                                !isEqual(nextProps.profile, this.props.profile)
+
+    // Remove this class about half a second after its animation finishes
+    this.hideStatusMessage()
+
     this.setState({
       bioStatus: STATUS.INDETERMINATE,
       linksStatus: STATUS.INDETERMINATE,
       nameStatus: STATUS.INDETERMINATE,
-      showThenHideMessage: nextProps.showSaveMessage &&
-        !isEqual(nextProps.profile, this.props.profile),
+      showThenHideMessage,
     })
+  }
+
+  componentWillUnmount() {
+    this.hideStatusMessage.cancel()
   }
 
   onChangeNameControl = (vo) => {
@@ -73,6 +86,12 @@ class InfoForm extends Component {
 
   saveForm(vo) {
     this.props.dispatch(saveProfile(vo))
+  }
+
+  hideStatusMessage() {
+    this.setState({
+      showThenHideMessage: false,
+    })
   }
 
   render() {
