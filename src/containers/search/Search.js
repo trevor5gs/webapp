@@ -130,7 +130,7 @@ class Search extends Component {
             tabs={tabs}
           />
         </form>
-        <StreamComponent ref="streamComponent" action={this.getAction()} />
+        <StreamComponent key={`search_${type}`} ref="streamComponent" action={this.getAction()} />
       </MainView>
     )
   }
