@@ -34,12 +34,19 @@ class InfoForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const showThenHideMessage = nextProps.showSaveMessage &&
+                                !isEqual(nextProps.profile, this.props.profile)
+
+    // Remove this class about half a second after its animation finishes
+    if (showThenHideMessage) {
+      setTimeout(() => this.setState({ showThenHideMessage: false }), 3500)
+    }
+
     this.setState({
       bioStatus: STATUS.INDETERMINATE,
       linksStatus: STATUS.INDETERMINATE,
       nameStatus: STATUS.INDETERMINATE,
-      showThenHideMessage: nextProps.showSaveMessage &&
-        !isEqual(nextProps.profile, this.props.profile),
+      showThenHideMessage,
     })
   }
 
