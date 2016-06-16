@@ -64,7 +64,7 @@ export const LOGGED_IN_PROMOTIONS = [
   },
   {
     username: 'incolorvision',
-    caption: <h1>Get the Ello iOS App.</h1>,
+    caption: <h1>[Get the Ello iOS App.](https://search.itunes.apple.com/WebObjects/MZContentLink.woa/wa/link?mt=8&path=apps%2fello%2fello)</h1>,
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/453/ello-regular-dbe052ea.png' },
     },
