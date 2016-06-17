@@ -59,7 +59,7 @@ class Invitations extends Component {
       case STATUS.INDETERMINATE:
       default:
         return (
-          'You can invite multiple friends at once, just separate their email adresses with commas.'
+          'Invite as many people as you want, just separate their email addresses with commas.'
         )
     }
   }
@@ -70,10 +70,9 @@ class Invitations extends Component {
     return (
       <MainView className="Invitations">
         <header className="InvitationsHeader">
-          <h1 className="InvitationsHeading">Invite your friends</h1>
+          <h1 className="InvitationsHeading">Invite some cool people</h1>
           <p>
-            Help Ello grow organically by inviting the people you love, and who
-            you know will love Ello too.
+            Help Ello grow.
           </p>
         </header>
         <div className="InvitationsForm">
@@ -104,7 +103,7 @@ class Invitations extends Component {
           </form>
 
         </div>
-        <h2 className="InvitationsStreamHeading">Friends you've invited</h2>
+        <h2 className="InvitationsStreamHeading">People you've invited</h2>
         <StreamComponent action={loadInvitedUsers()} />
       </MainView>
     )
