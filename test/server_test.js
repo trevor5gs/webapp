@@ -1,10 +1,22 @@
 /* eslint-disable max-len,func-names */
 import { chai, expect } from './spec_helper'
 import app, { canPrerenderRequest } from '../src/server-iso'
+import nock from 'nock'
 import { fetchOauthToken } from '../oauth'
 import jsdom from 'jsdom'
 
 describe('isomorphically rendering on the server', () => {
+  beforeEach(() => {
+    nock(process.env.AUTH_DOMAIN)
+      .post('/api/oauth/token')
+      .reply(200, {
+        access_token: '123abc456',
+        refresh_token: '789def012',
+        token_type: 'bearer',
+        expires_in: 7200,
+      })
+  })
+
   describe('#canPrerenderRequest', () => {
     it('returns false with loggedInPaths', () => {
       ['/following', '/invitations', '/settings', '/starred', '/notifications'].forEach((path) => {
