@@ -59,7 +59,7 @@ class Invitations extends Component {
       case STATUS.INDETERMINATE:
       default:
         return (
-          'Invite as many you want, just separate their email addresses with commas.'
+          'Invite as many people as you want, just separate their email addresses with commas.'
         )
     }
   }
