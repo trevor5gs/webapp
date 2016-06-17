@@ -170,13 +170,13 @@ class FormControl extends Component {
   }
 
   renderTextArea(text, inputClassNames) {
-    // "name=password" is a hack to disable predictive 
+    // "name=password" is a hack to disable predictive
     // text on Samgsung phones :(
     return (
       <textarea
         { ...this.props }
         className={inputClassNames}
-        name={isElloAndroid() ? "password" : (this.props.name || null)}
+        name={isElloAndroid() ? 'password' : (this.props.name || null)}
         onFocus={this.onFocusControl}
         onBlur={this.onBlurControl}
         onChange={this.onChangeControl}
@@ -187,13 +187,13 @@ class FormControl extends Component {
   }
 
   renderInput(text, inputClassNames) {
-    // "name=password" is a hack to disable predictive 
+    // "name=password" is a hack to disable predictive
     // text on Samgsung phones :(
     return (
       <input
         { ...this.props }
         className={inputClassNames}
-        name={isElloAndroid() ? "password" : (this.props.name || null)}
+        name={isElloAndroid() ? 'password' : (this.props.name || null)}
         onFocus={this.onFocusControl}
         onBlur={this.onBlurControl}
         onChange={this.onChangeControl}
