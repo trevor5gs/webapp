@@ -68,7 +68,7 @@ export function regionItemsForNotifications(content, postDetailPath = null) {
         break
     }
   })
-  return { imageAssets, texts }
+  return { assets: imageAssets, texts }
 }
 
 // TODO: Wrap all of these function arguments in an object and destructure so order doesn't matter.
