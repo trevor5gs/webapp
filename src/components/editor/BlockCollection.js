@@ -308,8 +308,10 @@ class BlockCollection extends Component {
   }
 
   handleTextBlockInput = (vo) => {
-    const { dispatch, editorId } = this.props
-    dispatch(updateBlock(vo, vo.uid, editorId))
+    const { collection, dispatch, editorId } = this.props
+    if (!isEqual(collection[vo.uid], vo)) {
+      dispatch(updateBlock(vo, vo.uid, editorId))
+    }
   }
 
   replyAll = () => {
