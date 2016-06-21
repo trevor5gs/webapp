@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { getLinkObject } from '../../helpers/json_helper'
-import { body, repostedBody, setAssets } from './RegionParser'
+import { body, repostedBody, setModels } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import UserAvatars from '../../components/users/UserAvatars'
 import ContentWarningButton from '../posts/ContentWarningButton'
@@ -177,7 +177,7 @@ export function parsePost(post, author, currentUser,
     cells.push(body(content, post.id, isGridLayout, postDetailPath))
   }
   cells.push(footer(post, author, currentUser, isGridLayout, isRepostAnimating))
-  setAssets({})
+  setModels({})
   return cells
 }
 
@@ -228,7 +228,7 @@ class PostParser extends Component {
       showReposters,
     } = this.props
     if (!post) { return null }
-    setAssets(assets)
+    setModels({ assets })
 
     const showEditor = (isEditing || isReposting) && postBody
     const reallyShowLovers = !showEditor && !isGridLayout && showLovers && lovesCount > 0

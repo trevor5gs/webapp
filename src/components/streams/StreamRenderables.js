@@ -1,5 +1,7 @@
 import React from 'react'
 import { uniqBy } from 'lodash'
+import { camelize } from 'humps'
+import { getLinkObject } from '../../helpers/json_helper'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import PostParser from '../parsers/PostParser'
 import CommentParser from '../parsers/CommentParser'
@@ -47,12 +49,13 @@ export function usersAsList(users) {
   )
 }
 
-export function usersAsInviteeList(invitations) {
+export function usersAsInviteeList(invitations, json) {
   return (
     <div className="Users asInviteeList">
       {invitations.data.map((invitation) =>
         <UserInvitee
           invitation={invitation}
+          json={json}
           key={`userInviteeList_${invitation.id}`}
         />
       )}
@@ -60,13 +63,14 @@ export function usersAsInviteeList(invitations) {
   )
 }
 
-export function usersAsInviteeGrid(invitations) {
+export function usersAsInviteeGrid(invitations, json) {
   return (
     <div className="Users asInviteeGrid">
       {invitations.data.map((invitation) =>
         <UserInvitee
           className="UserInviteeGrid"
           invitation={invitation}
+          json={json}
           key={`userInviteeGrid_${invitation.id}`}
         />
       )}
@@ -74,9 +78,14 @@ export function usersAsInviteeGrid(invitations) {
   )
 }
 
-export function postsAsGrid(posts) {
+export function postsAsGrid(posts, json, currentUser, columnCount) {
   return (
-    <PostsAsGrid posts={posts.data} />
+    <PostsAsGrid
+      posts={posts.data}
+      json={json}
+      columnCount={columnCount}
+      currentUser={currentUser}
+    />
   )
 }
 
@@ -110,14 +119,19 @@ export function commentsAsList(post) {
   )
 }
 
-export function notificationList(notifications) {
+export function notificationList(notifications, json) {
   return (
     <div className="Notifications">
-      {notifications.data.map((notification, index) =>
-        <NotificationParser
-          key={`notificationParser${index}_${notification ? notification.createdAt : Date.now()}`}
-          notification={notification}
-        />
+      {notifications.data.map((notification, index) => {
+        const subject = getLinkObject(notification, 'subject', json)
+        return (
+          <NotificationParser
+            json={json}
+            key={`notificationParser${index}_${notification ? notification.createdAt : Date.now()}`}
+            notification={notification}
+            subject={subject}
+          />
+        ) }
       )}
     </div>
   )
@@ -132,7 +146,7 @@ export function userAvatars(users) {
   )
 }
 
-export function profileToggles(categories) {
+export function profileToggles(categories, json, currentUser) {
   return (
     categories.data.map((category, index) => {
       if (category.label.toLowerCase().indexOf('push') === 0) { return null }
@@ -145,6 +159,8 @@ export function profileToggles(categories) {
                 definition={{ term: item.label, desc: item.info }}
                 id={item.key}
                 key={`preference_${item.key}`}
+                isChecked={currentUser[camelize(item.key)]}
+                isDisabled={!currentUser.isPublic && item.key === 'has_sharing_enabled'}
                 onToggleChange={preferenceToggleChanged}
               />
             )
