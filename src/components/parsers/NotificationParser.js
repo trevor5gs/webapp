@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { getLinkObject } from '../../helpers/json_helper'
-import { regionItemsForNotifications, setAssets } from '../parsers/RegionParser'
+import { regionItemsForNotifications, setModels } from '../parsers/RegionParser'
 import { Notification } from '../notifications/Notification'
 
 const NOTIFICATION_KIND = {
@@ -21,15 +21,10 @@ const NOTIFICATION_KIND = {
   WELCOME: 'welcome_notification',
 }
 
-const SUBJECT_TYPE = {
-  LOVE: 'love',
-  POST: 'post',
-  USER: 'user',
-}
+let models = {}
 
 // HELPERS
 function getActivityPath(user, post) {
-  if (!user) { return '/' }
   if (!post) { return `/${user.username}` }
   return `/${user.username}/post/${post.token}`
 }
@@ -43,8 +38,10 @@ function userTextLink(user) {
   )
 }
 
-function postTextLink(author, post, text = 'post') {
-  if (!post || !author) { return text }
+function postTextLink(post, text = 'post') {
+  if (!post) { return text }
+  const author = models[MAPPING_TYPES.USERS][post.authorId]
+  if (!author) { return text }
   return (
     <Link to={getActivityPath(author, post)}>
       {text}
@@ -65,7 +62,11 @@ function parseSummaryForCommentNotification(post, comment, path) {
 }
 
 // COMMENTS
-function commentNotification(comment, createdAt, { author, parentPost, parentPostAuthor }) {
+function commentNotification(comment, createdAt) {
+  const author = getLinkObject(comment, 'author', models)
+  const parentPost = getLinkObject(comment, 'parentPost', models)
+  const parentPostAuthor = models[MAPPING_TYPES.USERS][parentPost.authorId]
+  if (!author || !parentPost || !parentPostAuthor) { return null }
   const activityPath = getActivityPath(parentPostAuthor, parentPost)
   const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath)
   return (
@@ -79,14 +80,18 @@ function commentNotification(comment, createdAt, { author, parentPost, parentPos
       <p>
         {userTextLink(author)}
         {' commented on your '}
-        {postTextLink(author, parentPost)}
+        {postTextLink(parentPost)}
         {'.'}
       </p>
     </Notification>
   )
 }
 
-function commentMentionNotification(comment, createdAt, { author, parentPost, parentPostAuthor }) {
+function commentMentionNotification(comment, createdAt) {
+  const author = getLinkObject(comment, 'author', models)
+  const parentPost = getLinkObject(comment, 'parentPost', models)
+  const parentPostAuthor = models[MAPPING_TYPES.USERS][parentPost.authorId]
+  if (!author || !parentPost || !parentPostAuthor) { return null }
   const activityPath = getActivityPath(parentPostAuthor, parentPost)
   const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath)
   return (
@@ -100,21 +105,19 @@ function commentMentionNotification(comment, createdAt, { author, parentPost, pa
       <p>
         {userTextLink(author)}
         {' mentioned you in a '}
-        {postTextLink(author, parentPost, 'comment')}
+        {postTextLink(parentPost, 'comment')}
         {'.'}
       </p>
     </Notification>
   )
 }
 
-function commentOnOriginalPostNotification(comment, createdAt,
-                                           {
-                                             author,
-                                             repost,
-                                             repostAuthor,
-                                             repostedSource,
-                                             repostedSourceAuthor,
-                                           }) {
+function commentOnOriginalPostNotification(comment, createdAt) {
+  const author = getLinkObject(comment, 'author', models)
+  const repost = getLinkObject(comment, 'parentPost', models)
+  const repostAuthor = getLinkObject(repost, 'author', models)
+  const repostedSource = getLinkObject(repost, 'repostedSource', models)
+  if (!author || !repost || !repostAuthor || !repostedSource) { return null }
   const activityPath = getActivityPath(author, repostedSource)
   const summary = parseSummaryForCommentNotification(repostedSource, comment, activityPath)
   return (
@@ -130,16 +133,19 @@ function commentOnOriginalPostNotification(comment, createdAt,
         {' commented on '}
         {userTextLink(repostAuthor)}
         {'\'s '}
-        {postTextLink(repostAuthor, repost, 'repost')}
+        {postTextLink(repost, 'repost')}
         {' of your '}
-        {postTextLink(repostedSourceAuthor, repostedSource)}
+        {postTextLink(repostedSource)}
         {'.'}
       </p>
     </Notification>
   )
 }
 
-function commentOnRepostNotification(comment, createdAt, { author, repost, repostAuthor }) {
+function commentOnRepostNotification(comment, createdAt) {
+  const author = getLinkObject(comment, 'author', models)
+  const repost = getLinkObject(comment, 'parentPost', models)
+  if (!author || !repost) { return null }
   const activityPath = getActivityPath(author, repost)
   const summary = parseSummaryForCommentNotification(repost, comment, activityPath)
   return (
@@ -153,7 +159,7 @@ function commentOnRepostNotification(comment, createdAt, { author, repost, repos
       <p>
         {userTextLink(author)}
         {' commented on your '}
-        {postTextLink(repostAuthor, repost, 'repost')}
+        {postTextLink(repost, 'repost')}
         {'.'}
       </p>
     </Notification>
@@ -178,7 +184,10 @@ function invitationAcceptedNotification(user, createdAt) {
 }
 
 // LOVES
-function loveNotification(love, createdAt, { author, post, user }) {
+function loveNotification(love, createdAt) {
+  const user = getLinkObject(love, 'user', models)
+  const post = getLinkObject(love, 'post', models)
+  if (!user || !post) { return null }
   const activityPath = getActivityPath(user, post)
   const summary = parseSummary(post, activityPath)
   return (
@@ -192,14 +201,17 @@ function loveNotification(love, createdAt, { author, post, user }) {
       <p>
         {userTextLink(user)}
         {' loved your '}
-        {postTextLink(author, post)}
+        {postTextLink(post)}
         {'.'}
       </p>
     </Notification>
   )
 }
 
-function loveOnRepostNotification(love, createdAt, { repost, repostAuthor, user }) {
+function loveOnRepostNotification(love, createdAt) {
+  const user = getLinkObject(love, 'user', models)
+  const repost = getLinkObject(love, 'post', models)
+  if (!user || !repost) { return null }
   const activityPath = getActivityPath(user, repost)
   const summary = parseSummary(repost, activityPath)
   return (
@@ -213,21 +225,19 @@ function loveOnRepostNotification(love, createdAt, { repost, repostAuthor, user 
       <p>
         {userTextLink(user)}
         {' loved your '}
-        {postTextLink(repostAuthor, repost, 'repost')}
+        {postTextLink(repost, 'repost')}
         {'.'}
       </p>
     </Notification>
   )
 }
 
-function loveOnOriginalPostNotification(love, createdAt,
-                                        {
-                                          repost,
-                                          repostAuthor,
-                                          repostedSource,
-                                          repostedSourceAuthor,
-                                          user,
-                                        }) {
+function loveOnOriginalPostNotification(love, createdAt) {
+  const user = getLinkObject(love, 'user', models)
+  const repost = getLinkObject(love, 'post', models)
+  const repostAuthor = getLinkObject(repost, 'author', models)
+  const repostedSource = getLinkObject(repost, 'repostedSource', models)
+  if (!user || !repost || !repostAuthor || !repostedSource) { return null }
   const activityPath = getActivityPath(user, repost)
   const summary = parseSummary(repost, activityPath)
   return (
@@ -243,9 +253,9 @@ function loveOnOriginalPostNotification(love, createdAt,
         {' loved '}
         {userTextLink(repostAuthor)}
         {'\'s '}
-        {postTextLink(repostAuthor, repost, 'repost')}
+        {postTextLink(repost, 'repost')}
         {' of your '}
-        {postTextLink(repostedSourceAuthor, repostedSource)}
+        {postTextLink(repostedSource)}
         {'.'}
       </p>
     </Notification>
@@ -253,7 +263,9 @@ function loveOnOriginalPostNotification(love, createdAt,
 }
 
 // MENTIONS
-function postMentionNotification(post, createdAt, { author }) {
+function postMentionNotification(post, createdAt) {
+  const author = getLinkObject(post, 'author', models)
+  if (!author) { return null }
   const activityPath = getActivityPath(author, post)
   const summary = parseSummary(post, activityPath)
   return (
@@ -267,7 +279,7 @@ function postMentionNotification(post, createdAt, { author }) {
       <p>
         {userTextLink(author)}
         {' mentioned you in a '}
-        {postTextLink(author, post)}
+        {postTextLink(post)}
         {'.'}
       </p>
     </Notification>
@@ -309,7 +321,9 @@ function newFollowedUserPost(user, createdAt) {
 }
 
 // REPOSTS
-function repostNotification(post, createdAt, { author }) {
+function repostNotification(post, createdAt) {
+  const author = getLinkObject(post, 'author', models)
+  if (!author) { return null }
   const activityPath = getActivityPath(author, post)
   const summary = parseSummary(post, activityPath)
   return (
@@ -323,7 +337,7 @@ function repostNotification(post, createdAt, { author }) {
       <p>
         {userTextLink(author)}
         {' reposted your '}
-        {postTextLink(author, post)}
+        {postTextLink(post)}
         {'.'}
       </p>
     </Notification>
@@ -333,89 +347,43 @@ function repostNotification(post, createdAt, { author }) {
 /* eslint-disable react/prefer-stateless-function, react/require-render-return */
 class NotificationParser extends Component {
   static propTypes = {
-    assets: PropTypes.object,
-    createdAt: PropTypes.string.isRequired,
-    kind: PropTypes.string,
-    lovePost: PropTypes.object,
-    lovePostAuthor: PropTypes.object,
-    loveUser: PropTypes.object,
-    parentPost: PropTypes.object,
-    parentPostAuthor: PropTypes.object,
-    postAuthor: PropTypes.object,
-    repost: PropTypes.object,
-    repostAuthor: PropTypes.object,
-    repostedSource: PropTypes.object,
-    repostedSourceAuthor: PropTypes.object,
+    notification: PropTypes.object,
+    json: PropTypes.object,
     subject: PropTypes.object.isRequired,
   }
 
   render() {
-    const {
-      assets,
-      createdAt,
-      kind,
-      lovePost,
-      lovePostAuthor,
-      loveUser,
-      parentPost,
-      parentPostAuthor,
-      postAuthor,
-      repost,
-      repostAuthor,
-      repostedSource,
-      repostedSourceAuthor,
-      subject,
-    } = this.props
+    const { notification, json, subject } = this.props
+    if (!notification) { return null }
+    models = json
+    setModels(models)
+    const createdAt = notification.createdAt
 
-    setAssets(assets)
-
-    let linkedObjects = {}
-    switch (kind) {
+    switch (notification.kind) {
       case NOTIFICATION_KIND.COMMENT:
-        linkedObjects = { author: postAuthor, parentPost, parentPostAuthor }
-        return commentNotification(subject, createdAt, linkedObjects)
+        return commentNotification(subject, createdAt)
       case NOTIFICATION_KIND.COMMENT_MENTION:
-        linkedObjects = { author: postAuthor, parentPost, parentPostAuthor }
-        return commentMentionNotification(subject, createdAt, linkedObjects)
+        return commentMentionNotification(subject, createdAt)
       case NOTIFICATION_KIND.COMMENT_ORIGINAL:
-        linkedObjects = {
-          author: postAuthor,
-          repost,
-          repostAuthor,
-          repostedSource,
-          repostedSourceAuthor,
-        }
-        return commentOnOriginalPostNotification(subject, createdAt, linkedObjects)
+        return commentOnOriginalPostNotification(subject, createdAt)
       case NOTIFICATION_KIND.COMMENT_REPOST:
-        linkedObjects = { author: postAuthor, repost, repostAuthor }
-        return commentOnRepostNotification(subject, createdAt, linkedObjects)
+        return commentOnRepostNotification(subject, createdAt)
       case NOTIFICATION_KIND.INVITATION_ACCEPTED:
         return invitationAcceptedNotification(subject, createdAt)
       case NOTIFICATION_KIND.LOVE:
-        linkedObjects = { author: lovePostAuthor, post: lovePost, user: loveUser }
-        return loveNotification(subject, createdAt, linkedObjects)
+        return loveNotification(subject, createdAt)
       case NOTIFICATION_KIND.LOVE_ORIGINAL:
-        linkedObjects = {
-          repost,
-          repostAuthor,
-          repostedSource,
-          repostedSourceAuthor,
-          user: loveUser,
-        }
-        return loveOnOriginalPostNotification(subject, createdAt, linkedObjects)
+        return loveOnOriginalPostNotification(subject, createdAt)
       case NOTIFICATION_KIND.LOVE_REPOST:
-        linkedObjects = { repost, repostAuthor, user: loveUser }
-        return loveOnRepostNotification(subject, createdAt, linkedObjects)
+        return loveOnRepostNotification(subject, createdAt)
       case NOTIFICATION_KIND.NEW_FOLLOWER:
         return newFollowerPost(subject, createdAt)
       case NOTIFICATION_KIND.NEW_FOLLOWED_USER:
         return newFollowedUserPost(subject, createdAt)
       case NOTIFICATION_KIND.POST_MENTION:
-        linkedObjects = { author: postAuthor }
-        return postMentionNotification(subject, createdAt, linkedObjects)
+        return postMentionNotification(subject, createdAt)
       case NOTIFICATION_KIND.REPOST:
-        linkedObjects = { author: postAuthor }
-        return repostNotification(subject, createdAt, linkedObjects)
+        return repostNotification(subject, createdAt)
       case NOTIFICATION_KIND.WELCOME:
         return <p>Welcome to Ello!</p>
       default:
@@ -424,70 +392,5 @@ class NotificationParser extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  const { notification } = ownProps
-  const subject = getLinkObject(notification, 'subject', state.json)
-
-  let lovePost = null
-  let lovePostAuthor = null
-  let loveUser = null
-  let postAuthor = null
-  let repost = null
-  let repostAuthor = null
-  let repostedSource = null
-  let repostedSourceAuthor = null
-  let parentPost = null
-  let parentPostAuthor = null
-
-  // subject is a post or comment
-  if (notification.subjectType.toLowerCase() === SUBJECT_TYPE.POST) {
-    postAuthor = getLinkObject(subject, 'author', state.json)
-    // comment
-    if (subject.parentPostId) {
-      parentPost = getLinkObject(subject, 'parentPost', state.json)
-      parentPostAuthor = getLinkObject(parentPost, 'author', state.json)
-    }
-    // repost
-    if (subject.repostId) {
-      repost = getLinkObject(subject, 'repost', state.json)
-      repostAuthor = getLinkObject(repost, 'author', state.json)
-      repostedSource = getLinkObject(subject, 'repostedSource', state.json)
-      repostedSourceAuthor = getLinkObject(repostedSource, 'author', state.json)
-    }
-  }
-  // subject is a love
-  if (notification.subjectType.toLowerCase() === SUBJECT_TYPE.LOVE) {
-    loveUser = getLinkObject(subject, 'user', state.json)
-    lovePost = getLinkObject(subject, 'post', state.json)
-    lovePostAuthor = getLinkObject(lovePost, 'author', state.json)
-    // repost
-    if (lovePost.repostId) {
-      repost = lovePost
-      repostAuthor = getLinkObject(repost, 'author', state.json)
-      repostedSource = getLinkObject(repost, 'repostedSource', state.json)
-      repostedSourceAuthor = getLinkObject(repostedSource, 'author', state.json)
-    }
-  }
-  // subject can be a user as well but we don't
-  // need to add any additional properties
-
-  return {
-    assets: state.json.assets,
-    createdAt: notification.createdAt,
-    kind: notification.kind,
-    lovePost,
-    lovePostAuthor,
-    loveUser,
-    postAuthor,
-    parentPost,
-    parentPostAuthor,
-    repost,
-    repostAuthor,
-    repostedSource,
-    repostedSourceAuthor,
-    subject,
-  }
-}
-
-export default connect(mapStateToProps)(NotificationParser)
+export default NotificationParser
 

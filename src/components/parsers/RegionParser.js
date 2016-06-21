@@ -4,7 +4,7 @@ import Avatar from '../assets/Avatar'
 import TextRegion from '../posts/regions/TextRegion'
 import ImageRegion from '../posts/regions/ImageRegion'
 
-let assets = {}
+let models = {}
 
 function textRegion(region, key, isGridLayout, postDetailPath) {
   return (
@@ -20,7 +20,7 @@ function textRegion(region, key, isGridLayout, postDetailPath) {
 function imageRegion(region, key, isGridLayout, postDetailPath, isNotification, isComment) {
   return (
     <ImageRegion
-      assets={assets}
+      assets={models.assets}
       content={region.data}
       isComment={isComment}
       isGridLayout={isGridLayout}
@@ -47,7 +47,7 @@ function embedRegion(region, key) {
 }
 
 export function regionItemsForNotifications(content, postDetailPath = null) {
-  const imageAssets = []
+  const assets = []
   const texts = []
 
   content.forEach((region, i) => {
@@ -56,10 +56,10 @@ export function regionItemsForNotifications(content, postDetailPath = null) {
         texts.push(textRegion(region, `TextRegion_${i}`, false, postDetailPath))
         break
       case 'image':
-        imageAssets.push(imageRegion(region, `ImageRegion_${i}`, true, postDetailPath, true))
+        assets.push(imageRegion(region, `ImageRegion_${i}`, true, postDetailPath, true))
         break
       case 'embed':
-        imageAssets.push(embedRegion(region, `EmbedRegion_${i}`))
+        assets.push(embedRegion(region, `EmbedRegion_${i}`))
         break
       case 'rule':
         texts.push(<hr className="NotificationRule" key={`NotificationRule_${i}`} />)
@@ -68,7 +68,7 @@ export function regionItemsForNotifications(content, postDetailPath = null) {
         break
     }
   })
-  return { assets: imageAssets, texts }
+  return { assets, texts }
 }
 
 // TODO: Wrap all of these function arguments in an object and destructure so order doesn't matter.
@@ -116,7 +116,7 @@ export function repostedBody(author, content, id, isGridLayout, postDetailPath =
   )
 }
 
-export function setAssets(newAssets) {
-  assets = newAssets
+export function setModels(newModels) {
+  models = newModels
 }
 

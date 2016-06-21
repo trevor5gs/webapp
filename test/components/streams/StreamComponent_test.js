@@ -89,6 +89,14 @@ describe('StreamComponent', () => {
   })
 
   describe('#mapStateToProps', () => {
+    context('currentUser', () => {
+      it('sets currentUser', () => {
+        state = createStateForStream()
+        props = createPropsForStream()
+        expect(mapStateToProps(state, props).currentUser.id).to.equal('currentUser')
+      })
+    })
+
     context('history', () => {
       it('sets history', () => {
         state = createStateForStream()

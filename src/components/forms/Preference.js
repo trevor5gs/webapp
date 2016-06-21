@@ -1,6 +1,4 @@
 import React, { PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { camelize } from 'humps'
 import classNames from 'classnames'
 import ToggleControl from '../forms/ToggleControl'
 
@@ -27,12 +25,5 @@ Preference.propTypes = {
   onToggleChange: PropTypes.func,
 }
 
-function mapStateToProps(state, ownProps) {
-  return {
-    isChecked: state.profile[camelize(ownProps.id)],
-    isDisabled: !state.profile.isPublic && ownProps.id === 'has_sharing_enabled',
-  }
-}
-
-export default connect(mapStateToProps)(Preference)
+export default Preference
 
