@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
-import { isElloAndroid } from '../../vendor/jello'
 
 class FormControl extends Component {
 
