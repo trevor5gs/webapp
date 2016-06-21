@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
-import { isElloAndroid } from '../../vendor/jello'
 
 class FormControl extends Component {
 
@@ -170,35 +169,29 @@ class FormControl extends Component {
   }
 
   renderTextArea(text, inputClassNames) {
-    // "name=password" is a hack to disable predictive
-    // text on Samgsung phones :(
     return (
       <textarea
         { ...this.props }
         className={inputClassNames}
-        name={isElloAndroid() ? 'password' : (this.props.name || null)}
         onFocus={this.onFocusControl}
         onBlur={this.onBlurControl}
         onChange={this.onChangeControl}
         ref="input"
-        value={text}
+        defaultValue={text}
       />
     )
   }
 
   renderInput(text, inputClassNames) {
-    // "name=password" is a hack to disable predictive
-    // text on Samgsung phones :(
     return (
       <input
         { ...this.props }
         className={inputClassNames}
-        name={isElloAndroid() ? 'password' : (this.props.name || null)}
         onFocus={this.onFocusControl}
         onBlur={this.onBlurControl}
         onChange={this.onChangeControl}
         ref="input"
-        value={text}
+        defaultValue={text}
       />
     )
   }
