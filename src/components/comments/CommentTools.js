@@ -17,6 +17,7 @@ import {
   XBoxIcon,
 } from '../posts/PostIcons'
 import { getEditorId } from '../editor/Editor'
+import { scrollToLastTextBlock } from '../../vendor/scrolling'
 
 class CommentTools extends Component {
 
@@ -27,6 +28,7 @@ class CommentTools extends Component {
     deviceSize: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    isNavbarHidden: PropTypes.bool,
     post: PropTypes.object.isRequired,
   }
 
@@ -41,14 +43,16 @@ class CommentTools extends Component {
   }
 
   onClickReplyToComment = () => {
-    const { author, dispatch, post } = this.props
+    const { author, dispatch, isNavbarHidden, post } = this.props
+    const editorId = getEditorId(post, null, true, false)
     dispatch({
       type: ACTION_TYPES.EDITOR.APPEND_TEXT,
       payload: {
-        editorId: getEditorId(post, null, true, false),
+        editorId,
         text: `@${author.username} `,
       },
     })
+    scrollToLastTextBlock(editorId, isNavbarHidden)
   }
 
   onClickEditComment = () => {
@@ -205,6 +209,7 @@ function mapStateToProps(state) {
   return {
     deviceSize: state.gui.deviceSize,
     isLoggedIn: state.authentication.isLoggedIn,
+    isNavbarHidden: state.gui.isNavbarHidden,
   }
 }
 

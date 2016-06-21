@@ -23,7 +23,7 @@ import {
   updateBlock,
 } from '../../actions/editor'
 import { closeOmnibar } from '../../actions/omnibar'
-import { scrollToTop } from '../../vendor/scrollTop'
+import { scrollToLastTextBlock } from '../../vendor/scrolling'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addInputObject, removeInputObject } from './InputComponent'
@@ -271,25 +271,6 @@ class BlockCollection extends Component {
     }
   }
 
-  isElementInViewport(el, topOffset = 0) {
-    const rect = el.getBoundingClientRect()
-    return (
-      rect.top >= topOffset && rect.left >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    )
-  }
-
-  scrollToLastTextBlock() {
-    const { editorId, isNavbarHidden } = this.props
-    const textBlocks = document.querySelectorAll(`[data-editor-id='${editorId}'] div.text`)
-    const lastTextBlock = textBlocks[textBlocks.length - 1]
-    if (lastTextBlock && !this.isElementInViewport(lastTextBlock, isNavbarHidden ? 0 : 80)) {
-      const pos = lastTextBlock.getBoundingClientRect()
-      scrollToTop(window.scrollY + (pos.top - 100))
-    }
-  }
-
   shouldAutofocus() {
     const { pathname, isComment } = this.props
     const postRegex = /^\/[\w\-]+\/post\/.+/
@@ -297,9 +278,9 @@ class BlockCollection extends Component {
   }
 
   appendText = (content) => {
-    const { dispatch, editorId } = this.props
+    const { dispatch, editorId, isNavbarHidden } = this.props
     dispatch({ type: ACTION_TYPES.EDITOR.APPEND_TEXT, payload: { editorId, text: content } })
-    this.scrollToLastTextBlock()
+    scrollToLastTextBlock(editorId, isNavbarHidden)
   }
 
   remove = (uid) => {
