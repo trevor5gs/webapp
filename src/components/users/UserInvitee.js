@@ -14,7 +14,7 @@ class UserInvitee extends Component {
     className: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     invitation: PropTypes.shape({}).isRequired,
-    json: PropTypes.object.isRequired,
+    user: PropTypes.object,
   }
 
   onClickReInvite = () => {
@@ -53,9 +53,7 @@ class UserInvitee extends Component {
     )
   }
 
-  renderAccepted(invitation) {
-    const { json } = this.props
-    const user = getLinkObject(invitation, 'acceptedBy', json)
+  renderAccepted(user) {
     return (
       <div className={classNames(this.props.className, 'UserInvitee')}>
         <div className="UserInviteeHeader">
@@ -76,9 +74,9 @@ class UserInvitee extends Component {
 
   // Need to actually define when these states are setup
   render() {
-    const { invitation } = this.props
+    const { invitation, user } = this.props
     if (invitation.acceptedAt) {
-      return this.renderAccepted(invitation)
+      return this.renderAccepted(user)
     } else if (invitation.email) {
       return this.renderReInvite(invitation)
     }
@@ -86,5 +84,11 @@ class UserInvitee extends Component {
   }
 }
 
-export default connect()(UserInvitee)
+function mapStateToProps(state, ownProps) {
+  return {
+    user: getLinkObject(ownProps.invitation, 'acceptedBy', state.json),
+  }
+}
+
+export default connect(mapStateToProps)(UserInvitee)
 

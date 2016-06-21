@@ -1,3 +1,5 @@
+import { get } from 'lodash'
+
 // TODO: test these as they are data related
 // TODO: We introduced a bug trying to conform to no-restricted-syntax, need to
 // investigate further and remove the disabled linting
@@ -38,11 +40,8 @@ export function getLinkObject(model, identifier, json) {
   const key = model.links[identifier].id || model.links[identifier]
   const collection = model.links[identifier].type || identifier
   const deletedCollection = json[`deleted_${collection}`]
-  if (key &&
-      json[collection] &&
-      json[collection][key] &&
-      (!deletedCollection || deletedCollection.indexOf(key) === -1)) {
-    return json[collection][key]
+  if (!deletedCollection || deletedCollection.indexOf(key) === -1) {
+    return get(json, [collection, key])
   }
   return null
 }
