@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
-import { scrollToTop, scrollToOffsetTop } from '../vendor/scrollTop'
+import { scrollToTop, scrollToOffsetTop } from '../vendor/scrolling'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { Footer } from '../components/footer/Footer'
 

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import { scrollToTop } from '../../vendor/scrollTop'
+import { scrollToTop } from '../../vendor/scrolling'
 import { loadNotifications } from '../../actions/notifications'
 import StreamComponent from '../../components/streams/StreamComponent'
 import { LOAD_STREAM_SUCCESS } from '../../constants/action_types'

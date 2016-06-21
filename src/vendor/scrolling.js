@@ -59,3 +59,21 @@ export function scrollElToTop(el) {
   }
 }
 
+function isElementInViewport(el, topOffset = 0) {
+  const rect = el.getBoundingClientRect()
+  return (
+    rect.top >= topOffset && rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  )
+}
+
+export function scrollToLastTextBlock(editorId, isNavbarHidden) {
+  const textBlocks = document.querySelectorAll(`[data-editor-id='${editorId}'] div.text`)
+  const lastTextBlock = textBlocks[textBlocks.length - 1]
+  if (lastTextBlock && !isElementInViewport(lastTextBlock, isNavbarHidden ? 0 : 80)) {
+    const pos = lastTextBlock.getBoundingClientRect()
+    scrollToTop(window.scrollY + (pos.top - 100))
+  }
+}
+
