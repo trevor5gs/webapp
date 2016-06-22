@@ -1,6 +1,6 @@
 {
   "name": "ello-webapp",
-  "version": "3.0.20",
+  "version": "3.0.21",
   "private": true,
   "scripts": {
     "clean": "rm -f public/index.html public/static/*.js public/static/*.map public/static/*.css",

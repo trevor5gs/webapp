@@ -111,6 +111,18 @@ export function relationshipBatchPath() {
     path: getAPIPath('relationships/batches'),
   }
 }
+// Categories
+export function categories() {
+  return {
+    path: getAPIPath('categories'),
+  }
+}
+export function categoryPosts(type) {
+  const typePath = type ? `/${type}` : ''
+  return {
+    path: getAPIPath(`categories${typePath}/posts/recent`, { per_page: PER_PAGE }),
+  }
+}
 // Discover
 export function discoverUsers(type) {
   const params = {
