@@ -6,10 +6,10 @@ import { LOGGED_OUT_PROMOTIONS } from '../constants/promotions/logged_out'
 import {
   bindDiscoverKey,
   loadCategoryPosts,
-  loadCommunities,
+  // loadCommunities,
   loadDiscoverPosts,
   loadDiscoverUsers,
-  loadFeaturedUsers,
+  // loadFeaturedUsers,
 } from '../actions/discover'
 import { setLastDiscoverBeaconVersion } from '../actions/gui'
 import { trackEvent } from '../actions/tracking'
