@@ -19,6 +19,7 @@ describe('gui reducer', () => {
       ).to.have.keys(
       'activeNotificationsType',
       'activeUserFollowingType',
+      'categories',
       'columnCount',
       'columnWidth',
       'contentWidth',
