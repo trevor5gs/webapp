@@ -9,6 +9,9 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
+// Used for temporary base64 assets
+export const avatarPreview = null
+
 class Avatar extends Component {
 
   static propTypes = {
@@ -86,7 +89,10 @@ class Avatar extends Component {
   }
 
   getAvatarSource(props = this.props) {
-    const { sources, size, useGif } = props
+    const { isModifiable, sources, size, useGif } = props
+    if (isModifiable && avatarPreview) {
+      return avatarPreview
+    }
     if (!sources) {
       return ''
     } else if (sources.tmp && sources.tmp.url) {
