@@ -1,17 +1,5 @@
 import { expect } from '../spec_helper'
-import jsdom from 'jsdom'
-import {
-  getRestrictedSize,
-  // orientImage,
-} from '../../src/helpers/file_helper'
-
-
-function getDOMString() {
-  // 1x1 transparent gif
-  const src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='
-  const landscape = `<img class="landscape" src=${src} width=16 height=9 />`
-  return `<html><body>${landscape}</body></html>`
-}
+import { getRestrictedSize } from '../../src/helpers/file_helper'
 
 describe('file helpers', () => {
   context('#getRestrictedSize', () => {
@@ -27,19 +15,6 @@ describe('file helpers', () => {
       expect(width).to.equal(2560)
       expect(height).to.equal(1440)
     })
-  })
-
-  context('#orientImage', () => {
-    const document = jsdom.jsdom(getDOMString())
-    const landscapeImage = document.body.querySelector('.landscape')
-
-    it('found the correct assets for testing', () => {
-      expect(landscapeImage.width).to.equal(16)
-      expect(landscapeImage.height).to.equal(9)
-    })
-
-    it('needs to test orienting of images')
-    it('needs to test processing of images')
   })
 })
 
