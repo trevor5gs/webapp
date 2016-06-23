@@ -57,7 +57,7 @@ export class UserDetailContainer extends Component {
   }
 
   static preRender = (store, routerState) => {
-    const { type = 'posts', username } = routerState
+    const { type = 'posts', username } = routerState.params
     const profileAction = loadUserDetail(`~${username}`)
     const streamAction = getStreamAction({ type, username })
     return Promise.all([
