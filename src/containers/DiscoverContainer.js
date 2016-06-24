@@ -98,9 +98,11 @@ export class DiscoverContainer extends Component {
   }
 
   render() {
-    const { coverDPI, isBeaconActive, isLoggedIn, paramsType, pathname, primary } = this.props
+    const { coverDPI, isBeaconActive, isLoggedIn, paramsType,
+      pathname, primary, secondary, tertiary } = this.props
     const props = {
       coverDPI,
+      hoverCategories: secondary.concat(tertiary),
       isBeaconActive,
       isLoggedIn,
       onClickTrackCredits: this.onClickTrackCredits,

@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import Promotion from '../assets/Promotion'
 import StreamComponent from '../streams/StreamComponent'
+import { HoverMenu } from '../modals/HoverMenu'
 import { TabListLinks } from '../tabs/TabList'
 import { MainView } from '../views/MainView'
 import { ZeroStream } from '../zeros/Zeros'
@@ -16,6 +17,7 @@ DiscoverZeroStream.propTypes = {
 
 export const Discover = ({
     coverDPI,
+    hoverCategories,
     isBeaconActive,
     isLoggedIn,
     onClickTrackCredits,
@@ -39,11 +41,13 @@ export const Discover = ({
       tabClasses="LabelTab"
       tabs={tabs}
     />
+    <HoverMenu categories={hoverCategories} />
     <StreamComponent action={streamAction} />
   </MainView>
 
 Discover.propTypes = {
   coverDPI: PropTypes.string.isRequired,
+  hoverCategories: PropTypes.array,
   isBeaconActive: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   onClickTrackCredits: PropTypes.func.isRequired,
