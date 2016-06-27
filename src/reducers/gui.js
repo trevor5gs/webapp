@@ -4,7 +4,6 @@ import _ from 'lodash'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   AUTHENTICATION,
-  CATEGORIES,
   GUI,
   HEAD_FAILURE,
   HEAD_SUCCESS,
@@ -81,7 +80,6 @@ export const initialState = {
   ...initialScrollState,
   activeNotificationsType: 'all',
   activeUserFollowingType: 'friend',
-  categories: [],
   currentStream: '/discover',
   discoverKeyType: null,
   history: {},
@@ -125,8 +123,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:
       return { ...state, discoverKeyType: null }
-    case CATEGORIES.GET_SUCCESS:
-      return { ...state, categories: action.payload.response.categories }
     case GUI.BIND_DISCOVER_KEY:
       return { ...state, discoverKeyType: action.payload.type }
     case GUI.NOTIFICATIONS_TAB:

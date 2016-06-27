@@ -24,8 +24,8 @@ export const HoverMenu = ({ categories, isHoverMenuActive, onClickDots }) =>
         Recent
       </Link>
       <hr className="HoverMenuLinkDivider" />
-      {categories.map(cat =>
-        <div key={`discover/${cat.slug}`}>
+      {categories.map((cat, index) =>
+        <div key={`discover/${cat.slug}_${index}`}>
           <Link
             activeClassName={'isActive'}
             className="HoverMenuLink"

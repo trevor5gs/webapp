@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual } from 'lodash'
+import { get, isEqual } from 'lodash'
 import { LOGGED_IN_PROMOTIONS } from '../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../constants/promotions/logged_out'
 import {
   bindDiscoverKey,
+  getCategories,
   loadCategoryPosts,
   // loadCommunities,
   loadDiscoverPosts,
@@ -31,6 +32,8 @@ export function getDiscoverAction(type) {
       return loadDiscoverPosts(type)
     case 'trending':
       return loadDiscoverUsers(type)
+    case 'all':
+      return getCategories()
     default:
       return loadCategoryPosts(type)
   }
@@ -182,12 +185,21 @@ function sortCategories(a, b) {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { authentication, gui, modal } = state
+  const { authentication, gui, json, modal } = state
+  const result = get(json, 'pages.all-categories')
+  const categories = []
+  if (result) {
+    for (const id of result.ids) {
+      if (get(state.json, [result.type, id])) {
+        categories.push(get(json, [result.type, id]))
+      }
+    }
+  }
   let primary = []
   let secondary = []
   let tertiary = []
-  if (gui.categories.length) {
-    for (const category of gui.categories) {
+  if (categories && categories.length) {
+    for (const category of categories) {
       switch (category.level) {
         case 'primary':
           primary.push(category)

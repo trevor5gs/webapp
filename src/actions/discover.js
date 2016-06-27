@@ -6,8 +6,16 @@ import * as StreamRenderables from '../components/streams/StreamRenderables'
 
 export function getCategories() {
   return {
-    type: ACTION_TYPES.CATEGORIES.GET,
+    type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint: api.categories() },
+    meta: {
+      mappingType: MAPPING_TYPES.CATEGORIES,
+      renderStream: {
+        asList: StreamRenderables.categoriesAsGrid,
+        asGrid: StreamRenderables.categoriesAsGrid,
+      },
+      resultKey: 'all-categories',
+    },
   }
 }
 

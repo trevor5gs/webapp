@@ -13,10 +13,10 @@ function isActive(tab, activePath) {
 
 export const TabListLinks = ({ activePath, className, onTabClick, tabClasses, tabs }) =>
   <nav className={classNames(className, 'TabListLinks')} role="tablist">
-    {tabs.map((tab) =>
+    {tabs.map((tab, index) =>
       <Link
         className={classNames(tabClasses, 'TabLink', { active: isActive(tab, activePath) })}
-        key={`TabLink-${tab.to.replace('/', '_')}`}
+        key={`TabLink-${tab.to.replace('/', '_')}_${index}`}
         onClick={onTabClick ? () => { onTabClick({ type: tab.type }) } : null}
         to={tab.to}
       >
@@ -37,10 +37,10 @@ TabListLinks.propTypes = {
 
 export const TabListButtons = ({ activeType, className, onTabClick, tabClasses, tabs }) =>
   <nav className={classNames(className, 'TabListButtons')} role="tablist">
-    {tabs.map((tab) =>
+    {tabs.map((tab, index) =>
       <button
         className={classNames(tabClasses, 'TabButton', { active: tab.type === activeType })}
-        key={`TabButton-${tab.type}`}
+        key={`TabButton-${tab.type}_${index}`}
         onClick={() => { onTabClick({ type: tab.type }) }}
         type="button"
       >
