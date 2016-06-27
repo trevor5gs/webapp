@@ -13,10 +13,9 @@ export const HoverMenu = ({ categories, isHoverMenuActive, onClickDots }) =>
       <Link className="HoverMenuLink" to="/discover/recent">Recent</Link>
       <hr className="HoverMenuLinkDivider" />
       {categories.map(cat =>
-        <div>
+        <div key={`discover/${cat.slug}`}>
           <Link
             className="HoverMenuLink"
-            key={`discover/${cat.slug}`}
             to={`/discover/${cat.slug}`}
           >
             {cat.name}

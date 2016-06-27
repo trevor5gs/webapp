@@ -57,6 +57,7 @@ export class DiscoverContainer extends Component {
   static propTypes = {
     coverDPI: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
+    innerWidth: PropTypes.number,
     isBeaconActive: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     paramsType: PropTypes.string.isRequired,
@@ -74,17 +75,26 @@ export class DiscoverContainer extends Component {
     store.dispatch(getDiscoverAction(routerState.params.type || 'recommended'))
 
   componentWillMount() {
+    this.state = { primaryIndex: undefined }
     const { dispatch, paramsType } = this.props
     dispatch(bindDiscoverKey(paramsType))
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !isEqual(nextProps, this.props)
+  componentDidMount() {
+    this.hideCategories()
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (isEqual(nextProps, this.props) && isEqual(nextState, this.state)) {
+      return false
+    }
+    return true
   }
 
   componentDidUpdate() {
     const { dispatch, paramsType } = this.props
     dispatch(bindDiscoverKey(paramsType))
+    this.hideCategories()
   }
 
   onClickTrackCredits = () => {
@@ -97,12 +107,31 @@ export class DiscoverContainer extends Component {
     dispatch(setLastDiscoverBeaconVersion({ version: BEACON_VERSION }))
   }
 
+  hideCategories = () => {
+    const { innerWidth, primary } = this.props
+    let index = primary.length
+    primary.map((cat, i) => {
+      const elem = document.querySelector(`[href="/discover/${cat.slug}"]`)
+      if (elem) {
+        elem.classList.remove('hidden')
+        const rect = elem.getClientRects()[0]
+        if (rect && rect.left + rect.width >= innerWidth - 60) {
+          if (index === primary.length) { index = i }
+          elem.classList.add('hidden')
+        }
+      }
+      return cat
+    })
+    this.setState({ primaryIndex: index })
+  }
+
   render() {
     const { coverDPI, isBeaconActive, isLoggedIn, paramsType,
       pathname, primary, secondary, tertiary } = this.props
+    const { primaryIndex } = this.state
     const props = {
       coverDPI,
-      hoverCategories: secondary.concat(tertiary),
+      hoverCategories: primary.slice(primaryIndex).concat(secondary, tertiary),
       isBeaconActive,
       isLoggedIn,
       onClickTrackCredits: this.onClickTrackCredits,
@@ -152,6 +181,7 @@ function mapStateToProps(state, ownProps) {
   }
   return {
     coverDPI: gui.coverDPI,
+    innerWidth: gui.innerWidth,
     isBeaconActive: authentication.isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
     isLoggedIn: authentication.isLoggedIn,
     paramsType: ownProps.params.type,

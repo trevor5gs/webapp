@@ -41,7 +41,11 @@ export const Discover = ({
       tabClasses="LabelTab"
       tabs={tabs}
     />
-    <HoverMenu categories={hoverCategories} />
+    {
+      hoverCategories && hoverCategories.length ?
+        <HoverMenu categories={hoverCategories} /> :
+        null
+    }
     <StreamComponent action={streamAction} />
   </MainView>
 
