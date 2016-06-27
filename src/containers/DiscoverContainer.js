@@ -100,7 +100,6 @@ export class DiscoverContainer extends Component {
   }
 
   onClickDiscoverDots = () => {
-    console.log('click dots')
     const { isDiscoverMenuActive } = this.props
     return isDiscoverMenuActive ? this.deactivateDiscoverMenu() : this.activateDiscoverMenu()
   }
