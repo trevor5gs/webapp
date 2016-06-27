@@ -8,13 +8,26 @@ export const HoverMenu = ({ categories, isHoverMenuActive, onClickDots }) =>
   <span className="HoverMenu">
     <DotsIcon onClick={onClickDots} />
     <nav className={classNames('HoverMenuLinks', { isActive: isHoverMenuActive })} >
-      <Link className="HoverMenuLink" to="/discover/trending">Trending</Link>
+      <Link
+        activeClassName={'isActive'}
+        className="HoverMenuLink"
+        to="/discover/trending"
+      >
+        Trending
+      </Link>
       <hr className="HoverMenuLinkDivider" />
-      <Link className="HoverMenuLink" to="/discover/recent">Recent</Link>
+      <Link
+        activeClassName={'isActive'}
+        className="HoverMenuLink"
+        to="/discover/recent"
+      >
+        Recent
+      </Link>
       <hr className="HoverMenuLinkDivider" />
       {categories.map(cat =>
         <div key={`discover/${cat.slug}`}>
           <Link
+            activeClassName={'isActive'}
             className="HoverMenuLink"
             to={`/discover/${cat.slug}`}
           >
@@ -23,7 +36,7 @@ export const HoverMenu = ({ categories, isHoverMenuActive, onClickDots }) =>
           <hr className="HoverMenuLinkDivider" />
         </div>
       )}
-      <Link className="HoverMenuLink" to="/discover/all">See All</Link>
+      <Link activeClassName={'isActive'} className="HoverMenuLink" to="/discover/all">See All</Link>
       <button className="HoverMenuCloseButton">
         <ExIcon />
       </button>

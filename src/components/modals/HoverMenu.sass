@@ -38,6 +38,7 @@
   height: rem(60)
   line-height: rem(60)
 
+.HoverMenuLink.isActive,
 .no-touch .HoverMenuLink:hover
   color: black
 
@@ -52,12 +53,12 @@
   right: rem(5)
 
 @media(max-width: #{$break-2-max})
-  .isProfileMenuActive ~ .MainView,
-  .isProfileMenuActive ~ .Footer
+  .isHoverMenuActive ~ .MainView,
+  .isHoverMenuActive ~ .Footer
     display: none
-  .isProfileMenuActive ~ .Navbar > *:not(.HoverMenu)
+  .isHoverMenuActive ~ .Navbar > *:not(.HoverMenu)
     display: none
-  .isProfileMenuActive ~ .HoverMenu > .Avatar
+  .isHoverMenuActive ~ .HoverMenu > .Avatar
     pointer-events: none
   .HoverMenuLinks
     top: rem(-10)

@@ -12,6 +12,7 @@ import {
   // loadFeaturedUsers,
 } from '../actions/discover'
 import { setLastDiscoverBeaconVersion } from '../actions/gui'
+import { setIsDiscoverMenuActive } from '../actions/modals'
 import { trackEvent } from '../actions/tracking'
 import { Discover } from '../components/views/Discover'
 
@@ -59,6 +60,7 @@ export class DiscoverContainer extends Component {
     dispatch: PropTypes.func.isRequired,
     innerWidth: PropTypes.number,
     isBeaconActive: PropTypes.bool.isRequired,
+    isDiscoverMenuActive: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     paramsType: PropTypes.string.isRequired,
     pathname: PropTypes.string.isRequired,
@@ -97,6 +99,16 @@ export class DiscoverContainer extends Component {
     this.hideCategories()
   }
 
+  onClickDiscoverDots = () => {
+    console.log('click dots')
+    const { isDiscoverMenuActive } = this.props
+    return isDiscoverMenuActive ? this.deactivateDiscoverMenu() : this.activateDiscoverMenu()
+  }
+
+  onClickDocument = () => {
+    this.deactivateDiscoverMenu()
+  }
+
   onClickTrackCredits = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('banderole-credits-clicked'))
@@ -125,15 +137,31 @@ export class DiscoverContainer extends Component {
     this.setState({ primaryIndex: index })
   }
 
+  activateDiscoverMenu() {
+    const { dispatch, isDiscoverMenuActive } = this.props
+    if (isDiscoverMenuActive) { return }
+    document.addEventListener('click', this.onClickDocument)
+    dispatch(setIsDiscoverMenuActive({ isActive: true }))
+  }
+
+  deactivateDiscoverMenu() {
+    const { dispatch, isDiscoverMenuActive } = this.props
+    if (!isDiscoverMenuActive) { return }
+    document.removeEventListener('click', this.onClickDocument)
+    dispatch(setIsDiscoverMenuActive({ isActive: false }))
+  }
+
   render() {
-    const { coverDPI, isBeaconActive, isLoggedIn, paramsType,
-      pathname, primary, secondary, tertiary } = this.props
+    const { coverDPI, isBeaconActive, isDiscoverMenuActive, isLoggedIn,
+      paramsType, pathname, primary, secondary, tertiary } = this.props
     const { primaryIndex } = this.state
     const props = {
       coverDPI,
       hoverCategories: primary.slice(primaryIndex).concat(secondary, tertiary),
       isBeaconActive,
+      isDiscoverMenuActive,
       isLoggedIn,
+      onClickDots: this.onClickDiscoverDots,
       onClickTrackCredits: this.onClickTrackCredits,
       onDismissZeroStream: this.onDismissZeroStream,
       pathname,
@@ -155,7 +183,7 @@ function sortCategories(a, b) {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { authentication, gui } = state
+  const { authentication, gui, modal } = state
   let primary = []
   let secondary = []
   let tertiary = []
@@ -183,6 +211,7 @@ function mapStateToProps(state, ownProps) {
     coverDPI: gui.coverDPI,
     innerWidth: gui.innerWidth,
     isBeaconActive: authentication.isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
+    isDiscoverMenuActive: modal.isDiscoverMenuActive,
     isLoggedIn: authentication.isLoggedIn,
     paramsType: ownProps.params.type,
     pathname: ownProps.location.pathname,

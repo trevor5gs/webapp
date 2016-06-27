@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { SVGIcon } from '../svg/SVGComponents'
 
 export const MiniPlusIcon = () =>
@@ -23,8 +23,8 @@ export const StarIcon = () =>
     </g>
   </SVGIcon>
 
-export const DotsIcon = () =>
-  <SVGIcon className="DotsIcon">
+export const DotsIcon = ({ onClick }) =>
+  <SVGIcon className="DotsIcon" onClick={onClick}>
     <g>
       <circle cx="3" cy="10" r="2.5" />
     </g>
@@ -35,6 +35,10 @@ export const DotsIcon = () =>
       <circle cx="17" cy="10" r="2.5" />
     </g>
   </SVGIcon>
+
+DotsIcon.propTypes = {
+  onClick: PropTypes.func,
+}
 
 // Original `+` from Illustrator which is blurry on non-retina.
 // We may need to show B&L this since it's a little offset

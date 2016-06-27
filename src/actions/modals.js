@@ -1,4 +1,4 @@
-import { MODAL, ALERT } from '../constants/action_types'
+import { GUI, MODAL, ALERT } from '../constants/action_types'
 
 export function openModal(component, classList = '') {
   return {
@@ -44,6 +44,15 @@ export function closeAlert() {
       component: null,
       isActive: false,
       kind: 'Alert',
+    },
+  }
+}
+
+export function setIsDiscoverMenuActive({ isActive }) {
+  return {
+    type: GUI.SET_IS_DISCOVER_MENU_ACTIVE,
+    payload: {
+      isDiscoverMenuActive: isActive,
     },
   }
 }

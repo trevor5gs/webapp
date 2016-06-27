@@ -19,7 +19,9 @@ export const Discover = ({
     coverDPI,
     hoverCategories,
     isBeaconActive,
+    isDiscoverMenuActive,
     isLoggedIn,
+    onClickDots,
     onClickTrackCredits,
     onDismissZeroStream,
     pathname,
@@ -43,7 +45,11 @@ export const Discover = ({
     />
     {
       hoverCategories && hoverCategories.length ?
-        <HoverMenu categories={hoverCategories} /> :
+        <HoverMenu
+          categories={hoverCategories}
+          isHoverMenuActive={isDiscoverMenuActive}
+          onClickDots={onClickDots}
+        /> :
         null
     }
     <StreamComponent action={streamAction} />
@@ -53,7 +59,9 @@ Discover.propTypes = {
   coverDPI: PropTypes.string.isRequired,
   hoverCategories: PropTypes.array,
   isBeaconActive: PropTypes.bool.isRequired,
+  isDiscoverMenuActive: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
+  onClickDots: PropTypes.func.isRequired,
   onClickTrackCredits: PropTypes.func.isRequired,
   onDismissZeroStream: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
