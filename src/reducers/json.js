@@ -294,11 +294,13 @@ methods.updateCurrentUser = (newState, action) => {
   const { response } = action.payload
   const newProfile = { ...response.users }
   const curUser = newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id]
-  if (curUser.avatar.tmp) {
-    newProfile.avatar = { ...response.users.avatar, tmp: curUser.avatar.tmp }
-  }
-  if (curUser.coverImage.tmp) {
-    newProfile.coverImage = { ...response.users.coverImage, tmp: curUser.coverImage.tmp }
+  if (action.type !== ACTION_TYPES.PROFILE.LOAD_SUCCESS) {
+    if (curUser.avatar.tmp) {
+      newProfile.avatar = { ...response.users.avatar, tmp: curUser.avatar.tmp }
+    }
+    if (curUser.coverImage.tmp) {
+      newProfile.coverImage = { ...response.users.coverImage, tmp: curUser.coverImage.tmp }
+    }
   }
   // updates the whole current user..
   newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id] = newProfile
@@ -349,7 +351,6 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
     case ACTION_TYPES.POST.EDITABLE_SUCCESS:
-    case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
     case ACTION_TYPES.PROFILE.DETAIL_SUCCESS:
       // fall through to parse the rest
       break
@@ -368,6 +369,7 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.POST.LOVE_SUCCESS:
     case ACTION_TYPES.POST.LOVE_FAILURE:
       return postMethods.updatePostLoves(state, newState, action)
+    case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_COVER_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_SUCCESS:
@@ -399,6 +401,12 @@ export default function json(state = {}, action = { type: '' }) {
         const keepers = {}
         const curUser = methods.getCurrentUser(action.payload.json)
         if (curUser) {
+          if (curUser.avatar.tmp) {
+            delete curUser.avatar
+          }
+          if (curUser.coverImage.tmp) {
+            delete curUser.coverImage
+          }
           setWith(keepers, [MAPPING_TYPES.USERS, curUser.id], curUser, Object)
         }
         Object.keys(action.payload.json).forEach((collection) => {

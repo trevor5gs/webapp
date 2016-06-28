@@ -150,23 +150,29 @@ function* performUpload(action) {
     // TODO: add max width/height for avatars
     // TODO: figure out a cool way to display the initial image before processing
     const objectURL = URL.createObjectURL(file)
-    const imageData = yield call(processImage, { ...fileData, file: objectURL })
-    if (type === EDITOR.SAVE_ASSET) {
-      const { editorId } = payload
-      yield put(temporaryEditorAssetCreated(imageData.objectURL, editorId))
-      // The - 2 should always be consistent. The reason is that when a tmp image
-      // gets created at say uid 1 an additional text block is added to the bottom
-      // of the editor at uid 2 and the uid of the editor is now sitting at 3
-      // since it gets incremented after a block is added. So the - 2 gets us from
-      // the 3 back to the 1 where the image should reconcile back to.
-      uid = yield select(state => state.editor[editorId].uid - 2)
-    } else if (type === PROFILE.SAVE_AVATAR) {
-      yield put(temporaryAssetCreated(PROFILE.TMP_AVATAR_CREATED, imageData.objectURL))
-    } else if (type === PROFILE.SAVE_COVER) {
-      yield put(temporaryAssetCreated(PROFILE.TMP_COVER_CREATED, imageData.objectURL))
+    if (fileData.fileType === SUPPORTED_IMAGE_TYPES.GIF) {
+      yield put(temporaryAssetCreated(PROFILE.TMP_COVER_CREATED, objectURL))
+      const { credentials } = yield call(fetchCredentials, accessToken)
+      yield call(postAsset, credentials)
+    } else {
+      const imageData = yield call(processImage, { ...fileData, file: objectURL })
+      if (type === EDITOR.SAVE_ASSET) {
+        const { editorId } = payload
+        yield put(temporaryEditorAssetCreated(imageData.objectURL, editorId))
+        // The - 2 should always be consistent. The reason is that when a tmp image
+        // gets created at say uid 1 an additional text block is added to the bottom
+        // of the editor at uid 2 and the uid of the editor is now sitting at 3
+        // since it gets incremented after a block is added. So the - 2 gets us from
+        // the 3 back to the 1 where the image should reconcile back to.
+        uid = yield select(state => state.editor[editorId].uid - 2)
+      } else if (type === PROFILE.SAVE_AVATAR) {
+        yield put(temporaryAssetCreated(PROFILE.TMP_AVATAR_CREATED, imageData.objectURL))
+      } else if (type === PROFILE.SAVE_COVER) {
+        yield put(temporaryAssetCreated(PROFILE.TMP_COVER_CREATED, imageData.objectURL))
+      }
+      const { credentials } = yield call(fetchCredentials, accessToken)
+      yield call(postAsset, credentials, imageData.blob)
     }
-    const { credentials } = yield call(fetchCredentials, accessToken)
-    yield call(postAsset, credentials, imageData.blob)
 
     // this should only happen when adding assets to an editor
     // on the page since we don't hit the API directly for that
