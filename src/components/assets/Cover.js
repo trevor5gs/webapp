@@ -8,9 +8,6 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
-// Used for temporary base64 assets
-export const coverPreview = null
-
 class Cover extends Component {
 
   static propTypes = {
@@ -85,10 +82,7 @@ class Cover extends Component {
   }
 
   getCoverSource(props = this.props) {
-    const { coverDPI, coverImage, isModifiable, useGif } = props
-    if (isModifiable && coverPreview) {
-      return coverPreview
-    }
+    const { coverDPI, coverImage, useGif } = props
     if (!coverImage) {
       return ''
     } else if (coverImage.tmp && coverImage.tmp.url) {
