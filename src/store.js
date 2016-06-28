@@ -31,8 +31,9 @@ const createBrowserStore = (history, passedInitialState = {}) => {
       logger
     ),
   )(createStore)(reducer, initialState)
+  store.close = () => store.dispatch(END)
 
-  sagaMiddleware.run(rootSaga)
+  store.sagaTask = sagaMiddleware.run(rootSaga)
   return store
 }
 
