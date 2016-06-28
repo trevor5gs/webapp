@@ -43,9 +43,19 @@ describe('editor helper', () => {
 
   describe('#rehydrateEditors', () => {
     it('returns persisted editors and not others', () => {
-      const persistedEditors = { 0: { shouldPersist: true }, 1: {} }
+      const persistedEditors = { 0: { collection: {}, shouldPersist: true }, 1: { collection: {} } }
       state = subject.methods.rehydrateEditors(persistedEditors)
-      expect(state).to.deep.equal({ 0: { shouldPersist: true } })
+      expect(state).to.deep.equal({ 0: { collection: {}, shouldPersist: true } })
+    })
+
+    it('should clear out blobs in image blocks', () => {
+      const persistedEditors = {
+        0: { collection: { 0: { kind: 'image', blob: 'blah' } }, shouldPersist: true },
+        1: { collection: {} },
+      }
+      expect(persistedEditors[0].collection[0].blob).to.equal('blah')
+      state = subject.methods.rehydrateEditors(persistedEditors)
+      expect(persistedEditors[0].collection[0].blob).to.be.undefined
     })
   })
 
@@ -637,7 +647,7 @@ describe('editor helper', () => {
       }
     })
 
-    it('updates the dragBlock if one exists with EDITOR.SAVE_IMAGE_SUCCESS', () => {
+    it('updates the dragBlock if one exists with EDITOR.SAVE_ASSET_SUCCESS', () => {
       const newState = {
         dragBlock: {
           kind: 'image',
@@ -646,14 +656,14 @@ describe('editor helper', () => {
         },
       }
       action = {
-        type: EDITOR.SAVE_IMAGE_SUCCESS,
+        type: EDITOR.SAVE_ASSET_SUCCESS,
         payload: { response: { url: 'blah' }, uid: 0 },
       }
       state = subject.methods.getEditorObject(newState, action)
       expect(state.dragBlock.data.url).to.equal('blah')
     })
 
-    it('updates the existing image block with EDITOR.SAVE_IMAGE_SUCCESS', () => {
+    it('updates the existing image block with EDITOR.SAVE_ASSET_SUCCESS', () => {
       const newState = {
         collection: {
           0: {
@@ -664,7 +674,7 @@ describe('editor helper', () => {
         },
       }
       action = {
-        type: EDITOR.SAVE_IMAGE_SUCCESS,
+        type: EDITOR.SAVE_ASSET_SUCCESS,
         payload: { response: { url: 'blah' }, uid: 0 },
       }
       state = subject.methods.getEditorObject(newState, action)

@@ -9,6 +9,7 @@ import {
   select,
   take,
 } from 'redux-saga/effects'
+
 import { PROFILE, EDITOR } from '../constants/action_types'
 
 import { s3CredentialsPath } from '../networking/api'
@@ -16,8 +17,9 @@ import FileTypeDialog from '../containers/dialogs/FileTypeDialog'
 
 import { accessTokenSelector } from './selectors'
 import { openAlert } from '../actions/modals'
-import { temporaryAssetCreated } from '../actions/profile'
-import { isValidFileType, SUPPORTED_IMAGE_TYPES } from '../helpers/file_helper'
+import { temporaryEditorAssetCreated } from '../actions/editor'
+// import { temporaryAssetCreated } from '../actions/profile'
+import { isValidFileType, processImage, SUPPORTED_IMAGE_TYPES } from '../helpers/file_helper'
 
 function getCredentialsHeader(accessToken) {
   return {
@@ -38,7 +40,7 @@ function imageGuid() {
 const uploadTypes = [
   PROFILE.SAVE_AVATAR,
   PROFILE.SAVE_COVER,
-  EDITOR.SAVE_IMAGE,
+  EDITOR.SAVE_ASSET,
 ]
 
 export function checkStatus(response) {
@@ -100,7 +102,7 @@ function getAssetUrl(endpoint, key) {
   return `${endpoint}/${key}`
 }
 
-function getUploadData(key, credentials, file) {
+function getUploadData(key, credentials, file, fileData) {
   const data = new FormData()
   data.append('key', key)
   data.append('AWSAccessKeyId', credentials.access_key)
@@ -109,7 +111,7 @@ function getUploadData(key, credentials, file) {
   data.append('policy', credentials.policy)
   data.append('signature', credentials.signature)
   data.append('Content-Type', file.type)
-  data.append('file', file)
+  data.append('file', fileData || file)
   return data
 }
 
@@ -121,15 +123,9 @@ function* performUpload(action) {
   const FAILURE = `${type}_FAILURE`
   const accessToken = yield select(accessTokenSelector)
   let assetUrl
+  let uid
 
-  if (endpoint) {
-    const url = URL.createObjectURL(file)
-    yield type === PROFILE.SAVE_AVATAR ?
-      put(temporaryAssetCreated(PROFILE.TMP_AVATAR_CREATED, url)) :
-      put(temporaryAssetCreated(PROFILE.TMP_COVER_CREATED, url))
-  }
-
-  function* postAsset(credentials) {
+  function* postAsset(credentials, fileData) {
     const filename = getFilename(file.type)
     const { prefix, endpoint: assetEndpoint } = credentials
     const key = getFileKey(prefix, filename)
@@ -137,7 +133,7 @@ function* performUpload(action) {
 
     const fetchCall = call(fetch, assetEndpoint, {
       method: 'POST',
-      body: getUploadData(key, credentials, file),
+      body: getUploadData(key, credentials, file, fileData),
     })
     const response = yield fetchCall
     yield call(checkStatus, response)
@@ -151,11 +147,26 @@ function* performUpload(action) {
   try {
     const fileData = yield call(isValidFileType, file)
     yield call(popAlertsForFile, fileData, action)
+    // TODO: add max width/height for avatars
+    // TODO: figure out a cool way to display the initial image before processing
+    const objectURL = URL.createObjectURL(file)
+    const imageData = yield call(processImage, { ...fileData, file: objectURL })
+    if (type === EDITOR.SAVE_ASSET) {
+      const { editorId } = payload
+      yield put(temporaryEditorAssetCreated(imageData.objectURL, editorId))
+      // The - 2 should always be consistent. The reason is that when a tmp image
+      // gets created at say uid 1 an additional text block is added to the bottom
+      // of the editor at uid 2 and the uid of the editor is now sitting at 3
+      // since it gets incremented after a block is added. So the - 2 gets us from
+      // the 3 back to the 1 where the image should reconcile back to.
+      uid = yield select(state => state.editor[editorId].uid - 2)
+    }
     const { credentials } = yield call(fetchCredentials, accessToken)
-    yield call(postAsset, credentials)
+    yield call(postAsset, credentials, imageData.blob)
 
     if (!endpoint) {
       payload.response = { url: assetUrl }
+      payload.uid = uid
       yield put({ meta, payload, type: SUCCESS })
       return
     }

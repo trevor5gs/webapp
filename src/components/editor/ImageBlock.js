@@ -2,11 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import Block from './Block'
 
-
-// editorId_ui: 'image name'
-// { postEditor0_4: 'base64_preview' }
-export const imageBlockPreviews = {}
-
 class ImageBlock extends Component {
 
   static propTypes = {
@@ -22,15 +17,6 @@ class ImageBlock extends Component {
   onLoadImage = () => {
     const { data } = this.props
     URL.revokeObjectURL(data.src)
-  }
-
-  getImageSource() {
-    const { blob, data, editorId, uid } = this.props
-    const preview = imageBlockPreviews[`${editorId}_${uid}`]
-    if (preview) {
-      return preview
-    }
-    return data.url || blob
   }
 
   render() {

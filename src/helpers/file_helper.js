@@ -51,93 +51,105 @@ export function isValidFileType(file) {
   })
 }
 
-export function getRestrictedSize(width, height, maxWidth, maxHeight) {
-  let wv = width
-  let hv = height
+export function orientImage(img, maxW, maxH, orientation) {
+  let width = img.width
+  let height = img.height
+  let transform = 'none'
 
-  if (width / maxWidth > height / maxHeight) {
-    if (width > maxWidth) {
-      hv *= maxWidth / width
-      wv = maxWidth
+  switch (orientation) {
+    case 8:
+      width = img.height
+      height = img.width
+      transform = 'left'
+      break
+    case 6:
+      width = img.height
+      height = img.width
+      transform = 'right'
+      break
+    case 3:
+      transform = 'flip'
+      break
+    default:
+      break
+  }
+
+  if (width / maxW > height / maxH) {
+    if (width > maxW) {
+      height *= maxW / width
+      width = maxW
     }
   } else {
-    if (height > maxHeight) {
-      wv *= maxHeight / height
-      hv = maxHeight
+    if (height > maxH) {
+      width *= maxH / height
+      height = maxH
     }
   }
-  return { width: wv, height: hv }
-}
-
-// Orientation functions based on:
-// https://github.com/buunguyen/exif-orient
-
-function rotate(canvas, ctx, deg) {
-  const width = canvas.width
-  const height = canvas.height
-  ctx.translate(width / 2, height / 2)
-  ctx.rotate(deg * (Math.PI / 180))
-  ctx.translate(-width / 2, -height / 2)
-  if (Math.abs(deg) === 90) {
-    ctx.translate((width - height) / 2, -(width - height) / 2)
-  }
-}
-
-function flip(canvas, ctx, flipX, flipY) {
-  ctx.translate(flipX ? canvas.width : 0, flipY ? canvas.height : 0)
-  ctx.scale(flipX ? -1 : 1, flipY ? -1 : 1)
-}
-
-export function orientImage(img, orientation = 1, wv, hv) {
-  // source: http://sylvana.net/jpegcrop/exif_orientation.html
-  // orientation mapped as [1, 2, 3, 4, 5, 6, 7, 8]
-  // [flip-x, flip-y, deg]
-  const transforms = [
-    [false, false, 0],
-    [true, false, 0],
-    [false, false, 180],
-    [false, true, 0],
-    [true, false, 90],
-    [false, false, 90],
-    [true, false, -90],
-    [false, false, -90],
-  ]
-  const transform = transforms[orientation - 1]
-  const flipX = transform[0]
-  const flipY = transform[1]
-  const deg = transform[2]
-
   const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
   const ctx = canvas.getContext('2d')
-  const width = wv || img.naturalWidth
-  const height = hv || img.naturalHeight
+  ctx.fillStyle = 'white'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-  canvas.width = Math.abs(deg) === 90 ? height : width
-  canvas.height = Math.abs(deg) === 90 ? width : height
-
-  if (flipX || flipY) {
-    flip(canvas, ctx, flipX, flipY)
+  switch (transform) {
+    case 'left':
+      ctx.setTransform(0, -1, 1, 0, 0, height)
+      ctx.drawImage(img, 0, 0, height, width)
+      break
+    case 'right':
+      ctx.setTransform(0, 1, -1, 0, width, 0)
+      ctx.drawImage(img, 0, 0, height, width)
+      break
+    case 'flip':
+      ctx.setTransform(1, 0, 0, -1, 0, height)
+      ctx.translate(width, 0)
+      ctx.scale(-1, 1)
+      ctx.drawImage(img, 0, 0, width, height)
+      break
+    default:
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
+      ctx.drawImage(img, 0, 0, width, height)
+      break
   }
-
-  if (deg) {
-    rotate(canvas, ctx, deg)
-  }
-  ctx.drawImage(img, 0, 0)
+  ctx.setTransform(1, 0, 0, 1, 0, 0)
   return canvas
+}
+
+export function getBlobFromBase64(b64Data, contentType, sliceSize) {
+  const type = contentType || ''
+  const size = sliceSize || 512
+  const byteCharacters = atob(b64Data)
+  const byteArrays = []
+  let offset = 0
+  while (offset < byteCharacters.length) {
+    const slice = byteCharacters.slice(offset, offset + size)
+    const byteNumbers = new Array(slice.length)
+    let i = 0
+    while (i < slice.length) {
+      byteNumbers[i] = slice.charCodeAt(i)
+      i++
+    }
+    const byteArray = new Uint8Array(byteNumbers)
+    byteArrays.push(byteArray)
+    offset += size
+  }
+  return new Blob(byteArrays, { type })
 }
 
 export function processImage({ exifData, file, fileType, maxWidth = 2560, maxHeight = 1440 }) {
   return new Promise((resolve, reject) => {
     const img = new Image()
     img.onload = () => {
-      const { width, height } = getRestrictedSize(img.width, img.height, maxWidth, maxHeight)
       const orientation = exifData.Orientation
-      const canvas = orientImage(img, orientation, width, height)
+      const canvas = orientImage(img, maxWidth, maxHeight, orientation)
       const src = canvas.toDataURL(fileType || SUPPORTED_IMAGE_TYPES.JPG)
-      resolve({ canvas, src })
+      const blob = getBlobFromBase64(src.split(',')[1], fileType || SUPPORTED_IMAGE_TYPES.PNG)
+      const objectURL = URL.createObjectURL(blob)
+      resolve({ blob, objectURL })
     }
     img.onerror = () => {
-      reject({ canvas: null, src: file })
+      reject({ objectURL: null })
     }
     img.src = file
   })
