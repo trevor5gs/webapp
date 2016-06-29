@@ -49,7 +49,7 @@ describe('gui reducer', () => {
     })
   })
 
-  context.only('#findLayoutMode', () => {
+  context('#findLayoutMode', () => {
     it('/', () => {
       setLocation({ pathname: '/' })
       const initialState = reducer()
