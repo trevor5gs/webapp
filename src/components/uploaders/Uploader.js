@@ -73,7 +73,7 @@ class Uploader extends Component {
   }
 
   isLegitimateFileType(file) {
-    return (file && file.type && file.type.match(/^image\/(jpg|jpeg|gif|png|tiff|tif|bmp)/))
+    return (file && file.type && file.type.match(/^image\/(jpg|jpeg|gif|png|bmp)/))
   }
 
   render() {

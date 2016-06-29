@@ -3,7 +3,6 @@ export const SUPPORTED_IMAGE_TYPES = {
   GIF: 'image/gif',
   JPG: 'image/jpg',
   PNG: 'image/png',
-  TIF: 'image/tif',
 }
 
 export function isValidFileType(file) {
@@ -23,9 +22,6 @@ export function isValidFileType(file) {
       } else if (/424D/i.test(header)) {
         isValid = true // image/bmp
         fileType = SUPPORTED_IMAGE_TYPES.BMP
-      } else if (/(4949|4d4d)/i.test(header)) {
-        isValid = true // image/tiff
-        fileType = SUPPORTED_IMAGE_TYPES.TIF
       } else {
         switch (header) {
           case '47494638': // image/gif
