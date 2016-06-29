@@ -32,7 +32,10 @@ export function editor(state = initialState, action) {
     case EDITOR.USER_COMPLETER_SUCCESS:
       return editorMethods.addCompletions(newState, action)
     case REHYDRATE:
-      return editorMethods.rehydrateEditors(action.payload.editor)
+      if (action.payload.editor) {
+        return editorMethods.rehydrateEditors(action.payload.editor)
+      }
+      return state
     default:
       return state
   }

@@ -124,11 +124,11 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case AUTHENTICATION.LOGOUT:
       return { ...state, discoverKeyType: null }
     case GUI.BIND_DISCOVER_KEY:
-      return { ...newState, discoverKeyType: action.payload.type }
+      return { ...state, discoverKeyType: action.payload.type }
     case GUI.NOTIFICATIONS_TAB:
       return { ...state, activeNotificationsType: action.payload.activeTabType }
     case GUI.SET_ACTIVE_USER_FOLLOWING_TYPE:
-      return { ...newState, activeUserFollowingType: action.payload.tab }
+      return { ...state, activeUserFollowingType: action.payload.tab }
     case GUI.SET_IS_OFFSET_LAYOUT:
       return { ...state, isOffsetLayout: action.payload.isOffsetLayout }
     case GUI.SET_LAST_DISCOVER_BEACON_VERSION:
@@ -143,11 +143,11 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case GUI.SET_SCROLL_STATE:
       return {
         ...state,
-        isCoverHidden: _.get(action.payload, 'isCoverHidden', newState.isCoverHidden),
-        isNavbarFixed: _.get(action.payload, 'isNavbarFixed', newState.isNavbarFixed),
-        isNavbarHidden: _.get(action.payload, 'isNavbarHidden', newState.isNavbarHidden),
+        isCoverHidden: _.get(action.payload, 'isCoverHidden', state.isCoverHidden),
+        isNavbarFixed: _.get(action.payload, 'isNavbarFixed', state.isNavbarFixed),
+        isNavbarHidden: _.get(action.payload, 'isNavbarHidden', state.isNavbarHidden),
         isNavbarSkippingTransition:
-          _.get(action.payload, 'isNavbarSkippingTransition', newState.isNavbarSkippingTransition),
+          _.get(action.payload, 'isNavbarSkippingTransition', state.isNavbarSkippingTransition),
       }
     case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
       return { ...state, ...action.payload }
@@ -195,8 +195,19 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
     case REHYDRATE:
+      if (action.payload.gui) {
+        return {
+          ...state,
+          ...action.payload.gui,
+          currentStream: state.currentStream,
+          isAuthenticationView: state.isAuthenticationView,
+          isLayoutToolHidden: state.isLayoutToolHidden,
+          isGridMode: state.isGridMode,
+          isOnboadingView: state.isOnboadingView,
+        }
+      }
       return {
-        ...action.payload.gui,
+        ...state,
         currentStream: state.currentStream,
         isAuthenticationView: state.isAuthenticationView,
         isLayoutToolHidden: state.isLayoutToolHidden,
@@ -207,7 +218,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
       mode = findLayoutMode(newState.modes)
       if (!mode) { return state }
       mode.mode = action.payload.mode
-      return { ...newState, isGridMode: action.payload.mode === 'grid' }
+      return { ...state, isGridMode: action.payload.mode === 'grid' }
     default:
       return state
   }

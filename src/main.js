@@ -27,7 +27,7 @@ Honeybadger.configure({
 
 updateTimeAgoStrings({ about: '' })
 
-const APP_VERSION = '3.0.20'
+const APP_VERSION = '3.0.21'
 
 const history = syncHistoryWithStore(browserHistory, store)
 const element = (
@@ -38,7 +38,7 @@ const element = (
 
 const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
 
-const launchApplication = (storage) => {
+const launchApplication = (storage, hasLocalStorage = false) => {
   addFeatureDetection()
   const persistor = persistStore(store, { storage, whitelist }, () => {
     const root = document.getElementById('root')
@@ -54,15 +54,24 @@ const launchApplication = (storage) => {
     }
   })
 
-  // check and update current version and
-  // only kill off the persisted reducers
-  storage.getItem('APP_VERSION', (error, result) => {
-    storage.setItem('APP_VERSION', APP_VERSION, () => {})
-    if (result && result !== APP_VERSION) {
-      persistor.purgeAll()
+  // check and update current version and only kill off the persisted reducers
+  // due to the async nature of the default storage we need to check against the
+  // real localStorage to determine if we should purge to avoid a weird race condition
+  if (hasLocalStorage) {
+    if (localStorage.getItem('APP_VERSION') !== APP_VERSION) {
+      persistor.purge(whitelist)
       session.clear()
+      storage.setItem('APP_VERSION', APP_VERSION, () => {})
     }
-  })
+  } else {
+    storage.getItem('APP_VERSION', (error, result) => {
+      if (result && result !== APP_VERSION) {
+        persistor.purge(whitelist)
+        session.clear()
+        storage.setItem('APP_VERSION', APP_VERSION, () => {})
+      }
+    })
+  }
 }
 
 // this will fail in a safari private window
@@ -82,7 +91,7 @@ function isLocalStorageSupported() {
 if (isLocalStorageSupported()) {
   // use localStorage as indexedDB seems to
   // have issues in chrome and firefox private
-  launchApplication(storages.asyncLocalStorage)
+  launchApplication(storages.asyncLocalStorage, true)
 } else {
   // localStorage fails, use an in-memory store
   launchApplication(MemoryStore)
