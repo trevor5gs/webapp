@@ -1,3 +1,4 @@
+import { REHYDRATE } from 'redux-persist/constants'
 import _ from 'lodash'
 
 import { LOCATION_CHANGE } from 'react-router-redux'
@@ -40,14 +41,14 @@ const NO_LAYOUT_TOOLS = [
   /^\/onboarding\b/,
 ]
 
-const findLayoutMode = (modes) => {
+export const findLayoutMode = (modes) => {
   for (const mode of modes) {
     const regex = new RegExp(mode.regex)
     if (regex.test(location.pathname)) {
       return mode
     }
   }
-  return modes[modes.length - 1]
+  return null
 }
 
 const getIsGridMode = (modes) => {
@@ -74,7 +75,7 @@ const initialScrollState = {
   isNavbarSkippingTransition: false,
 }
 
-const initialState = {
+export const initialState = {
   ...initialSizeState,
   ...initialScrollState,
   activeNotificationsType: 'all',
@@ -193,9 +194,18 @@ export const gui = (state = initialState, action = { type: '' }) => {
       }
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
+    case REHYDRATE:
+      return {
+        ...action.payload.gui,
+        currentStream: state.currentStream,
+        isAuthenticationView: state.isAuthenticationView,
+        isLayoutToolHidden: state.isLayoutToolHidden,
+        isGridMode: state.isGridMode,
+        isOnboadingView: state.isOnboadingView,
+      }
     case SET_LAYOUT_MODE:
       mode = findLayoutMode(newState.modes)
-      if (mode.mode === action.payload.mode) return state
+      if (!mode) { return state }
       mode.mode = action.payload.mode
       return { ...newState, isGridMode: action.payload.mode === 'grid' }
     default:

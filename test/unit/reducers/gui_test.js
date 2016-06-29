@@ -9,7 +9,7 @@ import {
   PROFILE,
   SET_LAYOUT_MODE,
 } from '../../../src/constants/action_types'
-import { gui as reducer, setLocation } from '../../../src/reducers/gui'
+import { gui as reducer, setLocation, findLayoutMode } from '../../../src/reducers/gui'
 
 describe('gui reducer', () => {
   context('#initialState', () => {
@@ -46,6 +46,14 @@ describe('gui reducer', () => {
       'lastStarredBeaconVersion',
       'modes',
       )
+    })
+  })
+
+  context.only('#findLayoutMode', () => {
+    it('/', () => {
+      setLocation({ pathname: '/' })
+      const initialState = reducer()
+      expect(findLayoutMode(initialState.modes).label).to.equal('root')
     })
   })
 
