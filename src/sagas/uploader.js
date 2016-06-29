@@ -64,7 +64,8 @@ export function* fetchCredentials(accessToken) {
   return yield call(parseJSON, response)
 }
 
-function* popAlertsForFile({ fileType, isValid }, { type }) {
+// TODO: can remove this export once the exif branch is merged
+export function* popAlertsForFile({ fileType, isValid }, { type }) {
   if (isValid) {
     if (fileType === SUPPORTED_IMAGE_TYPES.GIF &&
         (type === PROFILE.SAVE_AVATAR ||
