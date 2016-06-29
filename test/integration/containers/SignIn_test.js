@@ -53,7 +53,6 @@ describe('SignIn', function () {
       target: { value: 'password' },
     })
     wrapper.find('form').simulate('submit')
-    expect(emailInput.find('input').get(0).value).to.equal('word')
 
     store.close()
     return sagaTask.done.then(() => {
