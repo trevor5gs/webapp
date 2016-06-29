@@ -282,7 +282,6 @@ class PostParser extends Component {
       const { authorLinkObject, sourceLinkObject } = this.props
       postHeader = repostHeader(post, authorLinkObject, sourceLinkObject, author)
     } else if (isOnFeaturedCategory && categoryName && categoryPath) {
-      console.log('render category header')
       postHeader = categoryHeader(post, author, categoryName, categoryPath)
     } else {
       postHeader = header(post, author)
