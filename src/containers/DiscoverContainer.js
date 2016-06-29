@@ -39,7 +39,7 @@ export function getDiscoverAction(type) {
   }
 }
 
-export function generateTabs(primary) {
+export function generateTabs(primary, secondary) {
   const tabs = []
   // add featured by default
   tabs.push({
@@ -48,6 +48,22 @@ export function generateTabs(primary) {
     activePattern: /^\/(?:discover(\/featured|\/recommended)?)?$/,
   })
   for (const category of primary) {
+    tabs.push({
+      to: `/discover/${category.slug}`,
+      children: category.name,
+    })
+  }
+  // add line to split categories
+  // add trending/recent
+  tabs.push({
+    to: '/discover/trending',
+    children: 'Trending',
+  })
+  tabs.push({
+    to: '/discover/recent',
+    children: 'Recent',
+  })
+  for (const category of secondary) {
     tabs.push({
       to: `/discover/${category.slug}`,
       children: category.name,
@@ -85,10 +101,6 @@ export class DiscoverContainer extends Component {
     dispatch(bindDiscoverKey(paramsType))
   }
 
-  componentDidMount() {
-    this.hideCategories()
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     if (isEqual(nextProps, this.props) && isEqual(nextState, this.state)) {
       return false
@@ -99,12 +111,6 @@ export class DiscoverContainer extends Component {
   componentDidUpdate() {
     const { dispatch, paramsType } = this.props
     dispatch(bindDiscoverKey(paramsType))
-    this.hideCategories()
-  }
-
-  onClickDiscoverDots = () => {
-    const { isDiscoverMenuActive } = this.props
-    return isDiscoverMenuActive ? this.deactivateDiscoverMenu() : this.activateDiscoverMenu()
   }
 
   onClickDocument = () => {
@@ -119,24 +125,6 @@ export class DiscoverContainer extends Component {
   onDismissZeroStream = () => {
     const { dispatch } = this.props
     dispatch(setLastDiscoverBeaconVersion({ version: BEACON_VERSION }))
-  }
-
-  hideCategories = () => {
-    const { innerWidth, primary } = this.props
-    let index = primary.length
-    primary.map((cat, i) => {
-      const elem = document.querySelector(`[href="/discover/${cat.slug}"]`)
-      if (elem) {
-        elem.classList.remove('hidden')
-        const rect = elem.getClientRects()[0]
-        if (rect && rect.left + rect.width >= innerWidth - 60) {
-          if (index === primary.length) { index = i }
-          elem.classList.add('hidden')
-        }
-      }
-      return cat
-    })
-    this.setState({ primaryIndex: index })
   }
 
   activateDiscoverMenu() {
@@ -154,22 +142,18 @@ export class DiscoverContainer extends Component {
   }
 
   render() {
-    const { coverDPI, isBeaconActive, isDiscoverMenuActive, isLoggedIn,
-      paramsType, pathname, primary, secondary, tertiary } = this.props
-    const { primaryIndex } = this.state
+    const { coverDPI, isBeaconActive, isLoggedIn, paramsType,
+      pathname, primary, secondary, tertiary } = this.props
     const props = {
       coverDPI,
-      hoverCategories: primary.slice(primaryIndex).concat(secondary, tertiary),
       isBeaconActive,
-      isDiscoverMenuActive,
       isLoggedIn,
-      onClickDots: this.onClickDiscoverDots,
       onClickTrackCredits: this.onClickTrackCredits,
       onDismissZeroStream: this.onDismissZeroStream,
       pathname,
       promotions: isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS,
       streamAction: getDiscoverAction(paramsType),
-      tabs: generateTabs(primary),
+      tabs: generateTabs(primary, secondary.concat(tertiary)),
     }
     return <Discover key={`discover_${paramsType}`} {...props} />
   }

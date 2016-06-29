@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
 import Promotion from '../assets/Promotion'
 import StreamComponent from '../streams/StreamComponent'
-import { HoverMenu } from '../modals/HoverMenu'
 import { TabListLinks } from '../tabs/TabList'
 import { MainView } from '../views/MainView'
 import { ZeroStream } from '../zeros/Zeros'
@@ -17,11 +17,8 @@ DiscoverZeroStream.propTypes = {
 
 export const Discover = ({
     coverDPI,
-    hoverCategories,
     isBeaconActive,
-    isDiscoverMenuActive,
     isLoggedIn,
-    onClickDots,
     onClickTrackCredits,
     onDismissZeroStream,
     pathname,
@@ -37,31 +34,24 @@ export const Discover = ({
       isLoggedIn={isLoggedIn}
       userlist={promotions}
     />
-    <TabListLinks
-      activePath={pathname}
-      className="LabelTabList"
-      tabClasses="LabelTab"
-      tabs={tabs}
-    />
-    {
-      hoverCategories && hoverCategories.length ?
-        <HoverMenu
-          categories={hoverCategories}
-          isHoverMenuActive={isDiscoverMenuActive}
-          onClickDots={onClickDots}
-        /> :
-        null
-    }
+    <div className="CategoryTabBar">
+      <TabListLinks
+        activePath={pathname}
+        className="LabelTabList CategoryTabBarLeft"
+        tabClasses="LabelTab CategoryTabBarLabelTab"
+        tabs={tabs}
+      />
+      <div className="CategoryTabBarRight">
+        <Link to="/discover/all">See All</Link>
+      </div>
+    </div>
     <StreamComponent action={streamAction} />
   </MainView>
 
 Discover.propTypes = {
   coverDPI: PropTypes.string.isRequired,
-  hoverCategories: PropTypes.array,
   isBeaconActive: PropTypes.bool.isRequired,
-  isDiscoverMenuActive: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
-  onClickDots: PropTypes.func.isRequired,
   onClickTrackCredits: PropTypes.func.isRequired,
   onDismissZeroStream: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
