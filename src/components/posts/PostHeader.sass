@@ -1,6 +1,7 @@
 @import ../../vendor/lib
 
 .PostHeader,
+.CategoryHeader,
 .RepostHeader
   +sans-typeset
   position: relative
@@ -8,22 +9,27 @@
   color: #aaa
 
 .PostHeaderAuthor,
+.CategoryHeaderAuthor,
 .RepostHeaderAuthor,
 .RepostHeaderReposter
   position: relative
 
 .PostHeaderAuthor,
 .RepostHeaderAuthor,
+.CategoryHeaderAuthor,
 .PostHeader .RelationsGroup,
+.CategoryHeader .RelationsGroup,
 .RepostHeader .RelationsGroup
   display: inline-block
   vertical-align: middle
 
 .PostHeaderAuthor,
+.CategoryHeaderAuthor,
 .RepostHeaderAuthor
   max-width: calc(100% - #{rem(80)})
 
 .PostHeader .RelationsGroup,
+.CategoryHeader .RelationsGroup,
 .RepostHeader .RelationsGroup
   margin-left: rem(10)
   margin-top: rem(-2)
@@ -39,17 +45,23 @@
   padding-left: rem(40)
   line-height: rem(60)
 
+.CategoryHeaderAuthor,
 .RepostHeaderAuthor
   padding-left: rem(40)
   line-height: rem(45)
 
+.CategoryHeaderCategory,
 .RepostHeaderReposter
   margin-top: rem(-12)
   margin-left: rem(40)
   line-height: rem(15)
   max-width: calc(100% - #{rem(120)})
 
+.CategoryHeaderCategoryName
+  text-decoration: underline
+
 .PostHeader .Avatar,
+.CategoryHeader .Avatar,
 .RepostHeader .Avatar
   position: absolute
   top: rem(15)
@@ -68,19 +80,23 @@
 // MIN WIDTH!!!
 @media(min-width: #{$break-2})
   .PostHeader,
+  .CategoryHeader,
   .RepostHeader
     height: rem(80)
   .PostHeaderAuthor
     padding-left: rem(60)
     line-height: rem(80)
+  .CategoryHeaderAuthor,
   .RepostHeaderAuthor
     padding-left: rem(60)
     line-height: rem(60)
+  .CategoryHeaderCategory,
   .RepostHeaderReposter
     margin-top: rem(-20)
     margin-left: rem(60)
     line-height: rem(20)
   .PostHeader .Avatar,
+  .CategoryHeader .Avatar,
   .RepostHeader .Avatar
     top: rem(20)
   .PostHeaderTimeAgoLink
@@ -103,9 +119,12 @@
 @media(max-width: #{$break-2-max})
   .Posts.asGrid .PostHeaderTimeAgoLink,
   .Posts.asGrid .PostHeader .RelationsGroup,
+  .Posts.asGrid .CategoryHeader .RelationsGroup,
   .Posts.asGrid .RepostHeader .RelationsGroup
     display: none
   .Posts.asGrid .PostHeaderAuthor,
+  .Posts.asGrid .CategoryHeaderAuthor,
+  .Posts.asGrid .CategoryHeaderCategory,
   .Posts.asGrid .RepostHeaderAuthor,
   .Posts.asGrid .RepostHeaderReposter
     max-width: 100%
