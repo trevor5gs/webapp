@@ -80,7 +80,7 @@ function* popAlertsForFile({ fileType, isValid }, { type }) {
     yield put(openAlert(
       <FileTypeDialog
         title="Invalid file type"
-        body="We support .jpg, .gif, .png, .tif, and .bmp files."
+        body="We support .jpg, .gif, .png, and .bmp files."
       />
     ))
     throw new Error('Invalid file type')
