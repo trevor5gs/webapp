@@ -39,7 +39,7 @@ export const UserDetail = (props) => {
   const { isLoggedIn, isSelf, hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = props
   const { activeType, onSubmitHello, onTabClick, streamAction, tabs, user } = props
   const { coverDPI, coverImage, coverOffset, isCoverActive, isCoverHidden } = props
-  const useGif = true
+  const useGif = !user.postsAdultContent
 
   // construct component props
   const coverProps = {
