@@ -62,7 +62,7 @@ class UserList extends Component {
           size="large"
           sources={user.avatar}
           to={isModifiable ? null : userPath}
-          useGif={useGif}
+          useGif={useGif && !user.postsAdultContent}
           userId={!isModifiable ? `${user.id}` : null}
           username={!isModifiable ? user.username : null}
         />
