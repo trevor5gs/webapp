@@ -199,20 +199,12 @@ export const gui = (state = initialState, action = { type: '' }) => {
         return {
           ...state,
           ...action.payload.gui,
-          currentStream: state.currentStream,
-          isAuthenticationView: state.isAuthenticationView,
           isLayoutToolHidden: state.isLayoutToolHidden,
-          isGridMode: state.isGridMode,
-          isOnboadingView: state.isOnboadingView,
         }
       }
       return {
         ...state,
-        currentStream: state.currentStream,
-        isAuthenticationView: state.isAuthenticationView,
         isLayoutToolHidden: state.isLayoutToolHidden,
-        isGridMode: state.isGridMode,
-        isOnboadingView: state.isOnboadingView,
       }
     case SET_LAYOUT_MODE:
       mode = findLayoutMode(newState.modes)
