@@ -73,7 +73,7 @@ export function profilePath() {
 }
 export function profileAvailableToggles() {
   return {
-    path: getAPIPath('profile/available_toggles'),
+    path: getAPIPath('profile/settings'),
   }
 }
 export function profileBlockedUsers() {

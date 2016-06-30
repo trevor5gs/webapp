@@ -128,11 +128,11 @@ methods.addModels = (state, type, data) => {
   // add state['modelType']
   if (!state[type]) { state[type] = {} }
   const ids = []
-  if (type === MAPPING_TYPES.CATEGORIES) {
-    data[type].forEach((category, index) => {
+  if (type === MAPPING_TYPES.SETTINGS) {
+    data[type].forEach((item, index) => {
       const newType = { ...state[type] }
       const id = index + 1
-      newType[id] = category
+      newType[id] = item
       state[type] = newType
       ids.push(id)
     })
