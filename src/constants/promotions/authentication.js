@@ -1,62 +1,62 @@
 export const AUTHENTICATION_PROMOTIONS = [
   {
-    username: 'mariosupa',
+    username: 'zeazy',
 
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2706139/ello-regular-90c19d9d.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2784339/ello-regular-d4cbbc5c.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4102816/ello-hdpi-17bf3355.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4102816/ello-xhdpi-17bf3355.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4102816/ello-optimized-17bf3355.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4170080/ello-hdpi-aad3812b.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4170080/ello-xhdpi-aad3812b.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4170080/ello-optimized-aad3812b.jpg' },
     },
   },
   {
-    username: 'g-vnct',
+    username: 'inconvergent',
 
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/1442872/ello-regular-f933e564.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2722862/ello-regular-7c21268e.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4102820/ello-hdpi-917dc26a.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4102820/ello-xhdpi-917dc26a.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4102820/ello-optimized-917dc26a.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4170083/ello-hdpi-e7bfc461.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4170083/ello-xhdpi-e7bfc461.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4170083/ello-optimized-e7bfc461.jpg' },
     },
   },
   {
-    username: 'marcogallotta',
+    username: 'mothra',
 
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2756191/ello-regular-f5c7074a.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/438/ello-regular-7a9a1135.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4102821/ello-hdpi-5efbfd35.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4102821/ello-xhdpi-5efbfd35.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4102821/ello-optimized-5efbfd35.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4170086/ello-hdpi-67917d7b.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4170086/ello-xhdpi-67917d7b.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4170086/ello-optimized-67917d7b.jpg' },
     },
   },
   {
-    username: 'sawawiwoswag',
+    username: 'stylow',
 
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2335406/ello-regular-bf655b58.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/331361/ello-regular-e2f2aef2.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4102822/ello-hdpi-9c539fd8.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4102822/ello-xhdpi-9c539fd8.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4102822/ello-optimized-9c539fd8.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4170090/ello-hdpi-64c95f05.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4170090/ello-xhdpi-64c95f05.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4170090/ello-optimized-64c95f05.jpg' },
     },
   },
   {
-    username: 'blakekathryn',
+    username: 'cristinaleonte',
 
     avatar: {
-      regular: { url: 'https://assets.ello.co/uploads/user/avatar/289767/ello-regular-d85cffeb.png' },
+      regular: { url: 'https://assets.ello.co/uploads/user/avatar/2712622/ello-regular-39fc2de5.png' },
     },
     coverImage: {
-      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4103121/ello-hdpi-1e319f35.jpg' },
-      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4103121/ello-xhdpi-1e319f35.jpg' },
-      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4103121/ello-optimized-1e319f35.jpg' },
+      hdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4170092/ello-hdpi-97248f76.jpg' },
+      xhdpi: { url: 'https://assets.ello.co/uploads/asset/attachment/4170092/ello-xhdpi-97248f76.jpg' },
+      optimized: { url: 'https://assets.ello.co/uploads/asset/attachment/4170092/ello-optimized-97248f76.jpg' },
     },
   },
 ]
