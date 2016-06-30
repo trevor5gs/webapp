@@ -87,7 +87,6 @@ export class DiscoverContainer extends Component {
   static propTypes = {
     coverDPI: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    innerWidth: PropTypes.number,
     isBeaconActive: PropTypes.bool.isRequired,
     isDiscoverMenuActive: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
@@ -234,7 +233,6 @@ function mapStateToProps(state, ownProps) {
   }
   return {
     coverDPI: gui.coverDPI,
-    innerWidth: gui.innerWidth,
     isBeaconActive: authentication.isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
     isDiscoverMenuActive: modal.isDiscoverMenuActive,
     isLoggedIn: authentication.isLoggedIn,
