@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { uniqBy } from 'lodash'
+import { get, uniqBy } from 'lodash'
 import { camelize } from 'humps'
 import { getLinkObject } from '../../helpers/json_helper'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
@@ -26,7 +26,7 @@ export function categoriesAsGrid(categories) {
           className="CategoryLink"
           to={`/discover/${category.slug}`}
           key={`CategoryLink_${category.slug}_${index}`}
-          style={{ backgroundImage: `url("${category.image}")` }}
+          style={{ backgroundImage: `url("${get(category, 'tileImage.large.url')}")` }}
         >
           <span>{category.name}</span>
         </Link>

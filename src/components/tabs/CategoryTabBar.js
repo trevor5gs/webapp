@@ -11,7 +11,7 @@ export const CategoryTabBar = ({ pathname, tabs }) =>
       tabs={tabs}
     />
     <div className="CategoryTabBarUtility">
-      <Link className="CategoryLabelTab" to="/discover/all">See All</Link>
+      <Link activeClassName="active" className="CategoryLabelTab" to="/discover/all">See All</Link>
     </div>
   </div>
 
