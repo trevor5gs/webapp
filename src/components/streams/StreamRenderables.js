@@ -146,15 +146,15 @@ export function userAvatars(users) {
   )
 }
 
-export function profileToggles(categories, json, currentUser) {
+export function profileToggles(settings, json, currentUser) {
   return (
-    categories.data.map((category, index) => {
-      if (category.label.toLowerCase().indexOf('push') === 0) { return null }
-      const arr = [<TreeButton key={`categoryLabel${index}`}>{category.label}</TreeButton>]
+    settings.data.map((setting, index) => {
+      if (setting.label.toLowerCase().indexOf('push') === 0) { return null }
+      const arr = [<TreeButton key={`settingLabel${index}`}>{setting.label}</TreeButton>]
       arr.push(
-        <TreePanel key={`categoryItems${index}`}>
+        <TreePanel key={`settingItems${index}`}>
           {
-            category.items.map((item) =>
+            setting.items.map((item) =>
               <Preference
                 definition={{ term: item.label, desc: item.info }}
                 id={item.key}

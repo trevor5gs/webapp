@@ -117,11 +117,11 @@ describe('profile actions', () => {
     })
 
     it('has the correct mapping type in the action', () => {
-      expect(action.meta.mappingType).to.equal('categories')
+      expect(action.meta.mappingType).to.equal('settings')
     })
 
     it('has the correct resultKey in the action', () => {
-      expect(action.meta.resultKey).to.equal('/settings/available-toggles')
+      expect(action.meta.resultKey).to.equal('/profile/settings')
     })
 
     it('has asList, asGrid and asError properties on renderStreams in the action', () => {
@@ -131,7 +131,7 @@ describe('profile actions', () => {
     })
 
     it('has the correct api endpoint in the action', () => {
-      expect(action.payload.endpoint.path).to.contain('/profile/available_toggles')
+      expect(action.payload.endpoint.path).to.contain('/profile/settings')
     })
   })
 
