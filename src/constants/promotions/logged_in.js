@@ -151,7 +151,7 @@ export const LOGGED_IN_PROMOTIONS = [
   },
   {
     username: 'spoonxello',
-    caption: <h1>SPOON x Ello | Fashion x Art Competion.</h1>,
+    caption: <h1>SPOON x Ello | Fashion x Art Competition.</h1>,
     cta: <a href="https://ello.co/spoonxello/post/paris" target="_blank">Learn more</a>,
     avatar: {
       regular: { url: 'https://assets.ello.co/uploads/user/avatar/2775933/ello-regular-bb711fa2.png' },
