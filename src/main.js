@@ -59,14 +59,14 @@ const launchApplication = (storage, hasLocalStorage = false) => {
   // real localStorage to determine if we should purge to avoid a weird race condition
   if (hasLocalStorage) {
     if (localStorage.getItem('APP_VERSION') !== APP_VERSION) {
-      persistor.purge(whitelist)
+      persistor.purge(['json'])
       session.clear()
       storage.setItem('APP_VERSION', APP_VERSION, () => {})
     }
   } else {
     storage.getItem('APP_VERSION', (error, result) => {
       if (result && result !== APP_VERSION) {
-        persistor.purge(whitelist)
+        persistor.purge(['json'])
         session.clear()
         storage.setItem('APP_VERSION', APP_VERSION, () => {})
       }
