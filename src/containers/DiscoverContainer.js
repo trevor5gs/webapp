@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { get, isEqual } from 'lodash'
+import { get, isEqual, upperFirst } from 'lodash'
 import { LOGGED_IN_PROMOTIONS } from '../constants/promotions/logged_in'
 import { LOGGED_OUT_PROMOTIONS } from '../constants/promotions/logged_out'
 import {
@@ -39,7 +39,7 @@ export function getDiscoverAction(type) {
   }
 }
 
-export function generateTabs(primary, secondary) {
+export function generateTabs(primary, secondary, tertiary) {
   const tabs = []
   // add featured by default
   tabs.push({
@@ -54,6 +54,7 @@ export function generateTabs(primary, secondary) {
     })
   }
   // add line to split categories
+  tabs.push({ kind: 'divider' })
   // add trending/recent
   tabs.push({
     to: '/discover/trending',
@@ -64,6 +65,15 @@ export function generateTabs(primary, secondary) {
     children: 'Recent',
   })
   for (const category of secondary) {
+    tabs.push({
+      to: `/discover/${category.slug}`,
+      children: category.name,
+    })
+  }
+  if (tertiary && tertiary.length) {
+    tabs.push({ kind: 'divider' })
+  }
+  for (const category of tertiary) {
     tabs.push({
       to: `/discover/${category.slug}`,
       children: category.name,
@@ -81,6 +91,7 @@ export class DiscoverContainer extends Component {
     isBeaconActive: PropTypes.bool.isRequired,
     isDiscoverMenuActive: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
+    pageTitle: PropTypes.string,
     paramsType: PropTypes.string.isRequired,
     pathname: PropTypes.string.isRequired,
     primary: PropTypes.array,
@@ -142,7 +153,7 @@ export class DiscoverContainer extends Component {
   }
 
   render() {
-    const { coverDPI, isBeaconActive, isLoggedIn, paramsType,
+    const { coverDPI, isBeaconActive, isLoggedIn, pageTitle, paramsType,
       pathname, primary, secondary, tertiary } = this.props
     const props = {
       coverDPI,
@@ -150,10 +161,11 @@ export class DiscoverContainer extends Component {
       isLoggedIn,
       onClickTrackCredits: this.onClickTrackCredits,
       onDismissZeroStream: this.onDismissZeroStream,
+      pageTitle,
       pathname,
       promotions: isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS,
       streamAction: getDiscoverAction(paramsType),
-      tabs: generateTabs(primary, secondary.concat(tertiary)),
+      tabs: generateTabs(primary, secondary, tertiary),
     }
     return <Discover key={`discover_${paramsType}`} {...props} />
   }
@@ -179,11 +191,16 @@ function mapStateToProps(state, ownProps) {
       }
     }
   }
+  const paramsType = ownProps.params.type
   let primary = []
   let secondary = []
   let tertiary = []
+  let pageTitle = null
   if (categories && categories.length) {
     for (const category of categories) {
+      if (category.slug === paramsType) {
+        pageTitle = category.name
+      }
       switch (category.level) {
         case 'primary':
           primary.push(category)
@@ -198,6 +215,19 @@ function mapStateToProps(state, ownProps) {
           break
       }
     }
+    if (!pageTitle) {
+      switch (paramsType) {
+        case 'all':
+          break
+        case undefined:
+        case 'recommended':
+          pageTitle = 'Featured'
+          break
+        default:
+          pageTitle = upperFirst(paramsType)
+          break
+      }
+    }
     primary = primary.sort(sortCategories)
     secondary = secondary.sort(sortCategories)
     tertiary = tertiary.sort(sortCategories)
@@ -208,7 +238,8 @@ function mapStateToProps(state, ownProps) {
     isBeaconActive: authentication.isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
     isDiscoverMenuActive: modal.isDiscoverMenuActive,
     isLoggedIn: authentication.isLoggedIn,
-    paramsType: ownProps.params.type,
+    pageTitle,
+    paramsType,
     pathname: ownProps.location.pathname,
     primary,
     secondary,

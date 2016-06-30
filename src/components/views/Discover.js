@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react'
-import { Link } from 'react-router'
 import Promotion from '../assets/Promotion'
 import StreamComponent from '../streams/StreamComponent'
-import { TabListLinks } from '../tabs/TabList'
+import { CategoryTabBar } from '../tabs/CategoryTabBar'
 import { MainView } from '../views/MainView'
 import { ZeroStream } from '../zeros/Zeros'
 
@@ -21,6 +20,7 @@ export const Discover = ({
     isLoggedIn,
     onClickTrackCredits,
     onDismissZeroStream,
+    pageTitle,
     pathname,
     promotions,
     streamAction,
@@ -34,17 +34,8 @@ export const Discover = ({
       isLoggedIn={isLoggedIn}
       userlist={promotions}
     />
-    <div className="CategoryTabBar">
-      <TabListLinks
-        activePath={pathname}
-        className="LabelTabList CategoryTabBarLeft"
-        tabClasses="LabelTab CategoryTabBarLabelTab"
-        tabs={tabs}
-      />
-      <div className="CategoryTabBarRight">
-        <Link to="/discover/all">See All</Link>
-      </div>
-    </div>
+    <CategoryTabBar pathname={pathname} tabs={tabs} />
+    {pageTitle ? <h1 className="DiscoverPageTitle">{pageTitle}</h1> : null}
     <StreamComponent action={streamAction} />
   </MainView>
 
@@ -54,6 +45,7 @@ Discover.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   onClickTrackCredits: PropTypes.func.isRequired,
   onDismissZeroStream: PropTypes.func.isRequired,
+  pageTitle: PropTypes.string,
   pathname: PropTypes.string.isRequired,
   promotions: PropTypes.array.isRequired,
   streamAction: PropTypes.object.isRequired,
