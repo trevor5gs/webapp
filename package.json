@@ -9,6 +9,7 @@
     "build:web": "NODE_ENV=production node ./node_modules/webpack/bin/webpack.js -p --config=webpack.prod.config.js",
     "dev": "npm run clean && DEBUG=express:* NODE_ENV=development babel-node server-dev.js",
     "lint": "eslint src test",
+    "lint:fix": "eslint src test --fix",
     "start": "NODE_ENV=production node dist/server-iso-entrypoint.js",
     "start:debug": "DEBUG=express:* NODE_ENV=production node dist/server-iso-entrypoint.js",
     "start:old": "NODE_ENV=production babel-node server.js",
