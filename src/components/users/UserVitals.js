@@ -33,54 +33,52 @@ UserStatsLink.propTypes = {
   to: PropTypes.string,
 }
 
-export const UserStats = ({ user }) =>
+export const UserStats = ({ followingCount, followersCount, lovesCount, postsCount, username }) =>
   <div className="UserStats">
     <dl>
-      <UserStatsLink to={`/${user.username}`}>
-        <dt>{numberToHuman(user.postsCount)}</dt>
+      <UserStatsLink to={`/${username}`}>
+        <dt>{numberToHuman(postsCount)}</dt>
         <dd><span className="UserStatsCountLabel">Posts</span></dd>
       </UserStatsLink>
     </dl>
     <dl>
-      <UserStatsLink asDisabled={!user.followingCount} to={`/${user.username}/following`}>
-        <dt>{numberToHuman(user.followingCount)}</dt>
+      <UserStatsLink asDisabled={!followingCount} to={`/${username}/following`}>
+        <dt>{numberToHuman(followingCount)}</dt>
         <dd><span className="UserStatsCountLabel">Following</span></dd>
       </UserStatsLink>
     </dl>
     <dl>
       <UserStatsLink
-        asDisabled={typeof user.followersCount === 'string' || !user.followersCount}
-        to={`/${user.username}/followers`}
+        asDisabled={typeof followersCount === 'string' || !followersCount}
+        to={`/${username}/followers`}
       >
         <dt>
           {
-            typeof user.followersCount === 'string' ?
-              user.followersCount :
-              numberToHuman(user.followersCount)
+            typeof followersCount === 'string' ?
+              followersCount :
+              numberToHuman(followersCount)
           }
         </dt>
         <dd><span className="UserStatsCountLabel">Followers</span></dd>
       </UserStatsLink>
     </dl>
     <dl>
-      <UserStatsLink asDisabled={!user.lovesCount} to={`/${user.username}/loves`} >
-        <dt>{numberToHuman(user.lovesCount)}</dt>
+      <UserStatsLink asDisabled={!lovesCount} to={`/${username}/loves`} >
+        <dt>{numberToHuman(lovesCount)}</dt>
         <dd><span className="UserStatsCountLabel">Loves</span></dd>
       </UserStatsLink>
     </dl>
   </div>
 
 UserStats.propTypes = {
-  user: PropTypes.shape({
-    followingCount: PropTypes.number.isRequired,
-    followersCount: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]).isRequired,
-    lovesCount: PropTypes.number.isRequired,
-    postsCount: PropTypes.number.isRequired,
-    username: PropTypes.string.isRequired,
-  }).isRequired,
+  followingCount: PropTypes.number.isRequired,
+  followersCount: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
+  lovesCount: PropTypes.number.isRequired,
+  postsCount: PropTypes.number.isRequired,
+  username: PropTypes.string.isRequired,
 }
 
 
