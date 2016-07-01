@@ -16,7 +16,14 @@ class UserList extends Component {
   static propTypes = {
     classList: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
+    followingCount: PropTypes.number.isRequired,
+    followersCount: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]).isRequired,
     isLoggedIn: PropTypes.bool,
+    lovesCount: PropTypes.number.isRequired,
+    postsCount: PropTypes.number.isRequired,
     relationshipPriority: PropTypes.string,
     showBlockMuteButton: PropTypes.bool,
     uploader: PropTypes.oneOfType([
@@ -26,6 +33,7 @@ class UserList extends Component {
     useGif: PropTypes.bool,
     user: PropTypes.shape({
     }).isRequired,
+    username: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
@@ -49,8 +57,8 @@ class UserList extends Component {
   }
 
   render() {
-    const { classList, relationshipPriority, useGif,
-      user, uploader, showBlockMuteButton } = this.props
+    const { classList, followingCount, followersCount, lovesCount, relationshipPriority,
+      postsCount, showBlockMuteButton, uploader, useGif, user, username } = this.props
     const userPath = `/${user.username}`
     const isModifiable = uploader ? true : undefined
     return (
@@ -72,7 +80,13 @@ class UserList extends Component {
           showBlockMuteButton={showBlockMuteButton}
         />
         <UserNames user={user} />
-        <UserStats user={user} />
+        <UserStats
+          followingCount={followingCount}
+          followersCount={followersCount}
+          lovesCount={lovesCount}
+          postsCount={postsCount}
+          username={username}
+        />
         <UserInfo user={user} />
         <ShareProfileButton onClick={this.onClickShareProfile} >
           Share Profile
@@ -85,9 +99,14 @@ class UserList extends Component {
 function mapStateToProps(state, ownProps) {
   const user = state.json.users[ownProps.user.id]
   return {
+    followingCount: user.followingCount,
+    followersCount: user.followersCount,
     isLoggedIn: state.authentication.isLoggedIn,
+    lovesCount: user.lovesCount,
     relationshipPriority: user.relationshipPriority,
+    postsCount: user.postsCount,
     user,
+    username: user.username,
   }
 }
 
