@@ -6,6 +6,8 @@ import * as api from '../networking/api'
 import * as StreamFilters from '../components/streams/StreamFilters'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
 import { ErrorState } from '../components/errors/Errors'
+import { trackEvent } from '../actions/tracking'
+import store from '../store'
 
 export function loadProfile() {
   return {
@@ -22,7 +24,10 @@ export function signUpUser(email, username, password, invitationCode) {
   return {
     type: PROFILE.SIGNUP,
     meta: {
-      successAction: replace({ pathname: '/onboarding' }),
+      successAction: () => {
+        store.dispatch(replace({ pathname: '/onboarding' }))
+        store.dispatch(trackEvent('join-successful'))
+      },
     },
     payload: {
       method: 'POST',
