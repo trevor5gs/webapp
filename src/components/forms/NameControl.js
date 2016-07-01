@@ -15,7 +15,7 @@ class NameControl extends Component {
   render() {
     return (
       <FormControl
-        { ...this.props }
+        {...this.props}
         autoCapitalize="off"
         autoCorrect="off"
         maxLength="50"

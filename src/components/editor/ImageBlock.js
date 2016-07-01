@@ -21,7 +21,7 @@ class ImageBlock extends Component {
     const { blob, data } = this.props
     return (
       <Block
-        { ...this.props }
+        {...this.props}
         children={<img onLoad={this.onLoadImage} src={blob || data.url} alt={data.alt} />}
         ref="block"
       />

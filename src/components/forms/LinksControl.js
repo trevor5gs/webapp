@@ -31,7 +31,7 @@ class LinksControl extends Component {
   render() {
     return (
       <FormControl
-        { ...this.props }
+        {...this.props}
         autoCapitalize="off"
         autoCorrect="off"
         text={this.getLinks()}

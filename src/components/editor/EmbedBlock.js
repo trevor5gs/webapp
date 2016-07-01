@@ -43,7 +43,7 @@ class EmbedBlock extends Component {
       null
     return (
       <Block
-        { ...this.props }
+        {...this.props}
         dangerouslySetInnerHTML={{ __html: children }}
         ref="block"
       />

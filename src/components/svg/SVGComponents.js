@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 
 export const SVGComponent = ({ children, ...rest }) =>
-  <svg { ...rest }>
+  <svg {...rest}>
     {children}
   </svg>
 
