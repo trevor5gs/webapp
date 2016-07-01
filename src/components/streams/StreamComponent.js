@@ -388,7 +388,7 @@ export class StreamComponent extends Component {
           if (_.get(stream, 'payload.endpoint.path') === _.get(action, 'payload.endpoint.path')) {
             return this.renderZeroState()
           }
-          return this.renderLoading()
+          return null
         case ACTION_TYPES.LOAD_STREAM_REQUEST:
           return this.renderLoading()
         case ACTION_TYPES.LOAD_STREAM_FAILURE:
