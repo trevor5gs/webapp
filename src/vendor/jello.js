@@ -60,6 +60,7 @@ export function addFeatureDetection() {
     cl.add('has-touch')
   }
   if (isChrome()) { cl.add('isChrome') }
+  if (isFirefox()) { cl.add('isFirefox') }
   document.addEventListener('touchstart', onTouchStart)
 }
 
