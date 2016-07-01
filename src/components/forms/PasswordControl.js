@@ -21,7 +21,7 @@ class PasswordControl extends Component {
   render() {
     return (
       <FormControl
-        { ...this.props }
+        {...this.props}
         autoCapitalize="off"
         autoCorrect="off"
         type="password"

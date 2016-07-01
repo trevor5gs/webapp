@@ -49,7 +49,7 @@ class BioControl extends Component {
     const label = hasExceeded ? `Bio ${textLength}` : 'Bio'
     return (
       <FormControl
-        { ...this.props }
+        {...this.props}
         className={classNames({ hasExceeded })}
         autoCapitalize="off"
         autoCorrect="off"

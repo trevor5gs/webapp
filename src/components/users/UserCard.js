@@ -16,7 +16,7 @@ class UserCard extends Component {
     relationshipPriority: PropTypes.string,
   }
 
-  onClickRelationshipUpdate(vo) {
+  onClickRelationshipUpdate = (vo) => {
     const { userId, priority, existing } = vo
     const { dispatch, pathname } = this.props
 
@@ -27,16 +27,14 @@ class UserCard extends Component {
     dispatch(updateRelationship(userId, priority, existing))
   }
 
-  onClickOpenSignupModal() {
+  onClickOpenSignupModal = () => {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
   }
 
   render() {
     const { isLoggedIn, relationshipPriority, user } = this.props
-    const callback = isLoggedIn ?
-                     this.onClickRelationshipUpdate.bind(this) :
-                     this.onClickOpenSignupModal.bind(this)
+    const callback = isLoggedIn ? this.onClickRelationshipUpdate : this.onClickOpenSignupModal
     return (
       <div className="UserCard" >
         <RelationshipImageButton

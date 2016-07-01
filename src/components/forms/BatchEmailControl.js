@@ -21,7 +21,7 @@ class BatchEmailControl extends Component {
   render() {
     return (
       <FormControl
-        { ...this.props }
+        {...this.props}
         autoCapitalize="off"
         autoCorrect="off"
         kind="textarea"

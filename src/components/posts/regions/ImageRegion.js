@@ -256,7 +256,7 @@ class ImageRegion extends Component {
         alt={content.alt ? content.alt.replace('.jpg', '') : null}
         className="ImageAttachment"
         role="presentation"
-        { ...attrs }
+        {...attrs}
       />
     )
   }

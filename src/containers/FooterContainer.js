@@ -39,7 +39,7 @@ class FooterContainer extends Component {
       onClickScrollToTop: this.onClickScrollToTop,
       onClickToggleLayoutMode: this.onClickToggleLayoutMode,
     }
-    return <Footer { ...props } />
+    return <Footer {...props} />
   }
 }
 

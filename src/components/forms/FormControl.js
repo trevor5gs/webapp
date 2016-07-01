@@ -171,7 +171,7 @@ class FormControl extends Component {
   renderTextArea(text, inputClassNames) {
     return (
       <textarea
-        { ...this.props }
+        {...this.props}
         className={inputClassNames}
         onFocus={this.onFocusControl}
         onBlur={this.onBlurControl}
@@ -185,7 +185,7 @@ class FormControl extends Component {
   renderInput(text, inputClassNames) {
     return (
       <input
-        { ...this.props }
+        {...this.props}
         className={inputClassNames}
         onFocus={this.onFocusControl}
         onBlur={this.onBlurControl}

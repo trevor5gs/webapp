@@ -141,7 +141,7 @@ class ViewportContainer extends Component {
   }
 
   render() {
-    return <Viewport { ...this.props } />
+    return <Viewport {...this.props} />
   }
 
 }

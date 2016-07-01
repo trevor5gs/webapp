@@ -171,7 +171,7 @@ class NavbarContainer extends Component {
     if (isLoggedIn) {
       return (
         <NavbarLoggedIn
-          { ...this.props }
+          {...this.props}
           notificationCategory={this.getNotificationCategory()}
           onClickAvatar={this.onClickAvatar}
           onClickDocument={this.onClickDocument}
@@ -190,7 +190,7 @@ class NavbarContainer extends Component {
     }
     return (
       <NavbarLoggedOut
-        { ...this.props }
+        {...this.props}
         onClickLoadMorePosts={this.onClickLoadMorePosts}
         onClickNavbarMark={this.onClickNavbarMark}
       />

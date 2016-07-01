@@ -82,7 +82,7 @@ class TextBlock extends Component {
     const { data } = this.props
     return (
       <Block
-        { ...this.props }
+        {...this.props}
         contentEditable
         dangerouslySetInnerHTML={{ __html: data }}
         onBlur={this.onBlurText}

@@ -242,27 +242,27 @@ class BlockCollection extends Component {
       case 'block':
         return (
           <Block
-            { ...blockProps }
+            {...blockProps}
             className={classNames('BlockPlaceholder', { isUploading })}
             ref="blockPlaceholder"
           />
         )
       case 'embed':
         return (
-          <EmbedBlock { ...blockProps } />
+          <EmbedBlock {...blockProps} />
         )
       case 'image':
         return (
-          <ImageBlock blob={block.blob} { ...blockProps } />
+          <ImageBlock blob={block.blob} {...blockProps} />
         )
       case 'repost':
         return (
-          <RepostBlock { ...blockProps } onRemoveBlock={null} />
+          <RepostBlock {...blockProps} onRemoveBlock={null} />
         )
       case 'text':
         return (
           <TextBlock
-            { ...blockProps }
+            {...blockProps}
             onInput={this.handleTextBlockInput}
             shouldAutofocus={this.shouldAutofocus()}
           />

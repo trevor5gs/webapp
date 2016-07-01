@@ -7,7 +7,7 @@ const Emoji = (props) => {
   const tip = name.replace(/_|-/, ' ')
   return (
     <img
-      { ...props }
+      {...props}
       alt={alt || tip}
       className={classNames(className, 'Emoji')}
       src={src || `${ENV.AUTH_DOMAIN}/images/emoji/${name}.png`}
