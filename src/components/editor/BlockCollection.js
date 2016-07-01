@@ -215,8 +215,9 @@ class BlockCollection extends Component {
   }
 
   onSubmitPost() {
-    const { editorId } = this.props
-    if (document.activeElement.parentNode.dataset.editorId === editorId) {
+    const { collection, editorId, hasContent } = this.props
+    if (document.activeElement.parentNode.dataset.editorId === editorId &&
+        !Object.values(collection).some((block) => block.isLoading) && hasContent) {
       this.submit()
     }
   }
