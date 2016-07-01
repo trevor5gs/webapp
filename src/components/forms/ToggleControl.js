@@ -21,11 +21,17 @@ class ToggleControl extends Component {
   componentWillReceiveProps(nextProps) {
     const { isChecked } = nextProps
     const { checked } = this.state
-    if (checked !== isChecked) {
+    if (checked !== isChecked && typeof isChecked !== 'undefined') {
       this.setState({
         checked: isChecked,
       })
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const { isChecked } = nextProps
+    if (typeof isChecked === 'undefined') { return false }
+    return true
   }
 
   onChangeControl = () => {
