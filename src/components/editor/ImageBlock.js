@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import classNames from 'classnames'
 import Block from './Block'
 
 class ImageBlock extends Component {
@@ -6,6 +7,7 @@ class ImageBlock extends Component {
   static propTypes = {
     blob: PropTypes.string,
     data: PropTypes.object,
+    isUploading: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -18,13 +20,17 @@ class ImageBlock extends Component {
   }
 
   render() {
-    const { blob, data } = this.props
+    const { blob, data, isUploading } = this.props
     return (
-      <Block
-        {...this.props}
-        children={<img onLoad={this.onLoadImage} src={blob || data.url} alt={data.alt} />}
-        ref="block"
-      />
+      <Block {...this.props}>
+        <div className={classNames('editable image', { isUploading })}>
+          <img
+            alt={data.alt}
+            onLoad={this.onLoadImage}
+            src={blob || data.url}
+          />
+        </div>
+      </Block>
     )
   }
 }

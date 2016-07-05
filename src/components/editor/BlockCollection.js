@@ -228,7 +228,6 @@ class BlockCollection extends Component {
 
   getBlockElement(block) {
     const { editorId } = this.props
-    const isUploading = block.isLoading
     const blockProps = {
       data: block.data,
       editorId,
@@ -236,16 +235,17 @@ class BlockCollection extends Component {
       kind: block.kind,
       onRemoveBlock: this.remove,
       uid: block.uid,
-      className: classNames({ isUploading }),
     }
     switch (block.kind) {
       case 'block':
         return (
           <Block
             {...blockProps}
-            className={classNames('BlockPlaceholder', { isUploading })}
+            className={classNames('BlockPlaceholder', { isUploading: block.isLoading })}
             ref="blockPlaceholder"
-          />
+          >
+            <div style={{ width: block.data.width, height: block.data.height }} />
+          </Block>
         )
       case 'embed':
         return (
@@ -253,7 +253,7 @@ class BlockCollection extends Component {
         )
       case 'image':
         return (
-          <ImageBlock blob={block.blob} {...blockProps} />
+          <ImageBlock blob={block.blob} {...blockProps} isUploading={block.isLoading} />
         )
       case 'repost':
         return (

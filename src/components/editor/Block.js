@@ -1,16 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import RegionTools from './RegionTools'
-import classNames from 'classnames'
 
 class Block extends Component {
 
   static propTypes = {
     children: PropTypes.element,
-    className: PropTypes.string,
-    data: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object,
-    ]).isRequired,
     editorId: PropTypes.string.isRequired,
     kind: PropTypes.oneOf([
       'block',
@@ -33,8 +27,7 @@ class Block extends Component {
   }
 
   render() {
-    const { children, className, data, kind, editorId, uid } = this.props
-    const { width, height } = data
+    const { children, editorId, uid } = this.props
     return (
       <div
         className="editor-block"
@@ -42,14 +35,7 @@ class Block extends Component {
         data-editor-id={editorId}
         ref="editorBlock"
       >
-        <div
-          {...this.props}
-          className={classNames('editable', kind, className)}
-          style={{ width, height }}
-          ref={kind}
-        >
-          {children}
-        </div>
+        {children}
         <RegionTools editorId={editorId} onRemoveBlock={this.removeBlock} />
       </div>
     )
