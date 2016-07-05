@@ -14,28 +14,6 @@ function checkForEmbeds(text) {
   }
 }
 
-function handlePlainText(text) {
-  if (!text.length) return
-  replaceSelectionWithText(text)
-  checkForEmbeds(text)
-}
-
-function handleAndroidBrokenPaste() {
-  // android bug: https://code.google.com/p/chromium/issues/detail?id=369101
-  requestAnimationFrame(() => {
-    handlePlainText(getLastWordPasted())
-  })
-}
-
-function handleClipboardItems(items) {
-  Object.keys(items).forEach((key) => {
-    const item = items[key]
-    if (item.type.indexOf('image') === 0) {
-      dispatch(saveAsset(item.getAsFile(), editorId))
-    }
-  })
-}
-
 function getBlobFromBase64(b64Data, contentType, sliceSize) {
   const type = contentType || ''
   const size = sliceSize || 512
@@ -57,13 +35,41 @@ function getBlobFromBase64(b64Data, contentType, sliceSize) {
   return new Blob(byteArrays, type)
 }
 
+function handlePlainText(text) {
+  if (!text.length) return
+  if (text.match(/;base64,/)) {
+    dispatch(saveAsset(
+      getBlobFromBase64(text.split(',')[1], { type: 'image/png' }), editorId
+    ))
+  } else {
+    replaceSelectionWithText(text)
+    checkForEmbeds(text)
+  }
+}
+
+function handleAndroidBrokenPaste() {
+  // android bug: https://code.google.com/p/chromium/issues/detail?id=369101
+  requestAnimationFrame(() => {
+    handlePlainText(getLastWordPasted())
+  })
+}
+
+function handleClipboardItems(items) {
+  Object.keys(items).forEach((key) => {
+    const item = items[key]
+    if (item.type.indexOf('image') === 0) {
+      dispatch(saveAsset(item.getAsFile(), editorId))
+    }
+  })
+}
+
 function checkForImages(e) {
   const image = e.target.parentNode.querySelector('img')
   if (image) {
     // this works on FF paste of clipboard data
     if (image.src.match(/;base64,/)) {
       dispatch(saveAsset(
-        getBlobFromBase64(image.src.split(',')[1], 'image/png'), editorId
+        getBlobFromBase64(image.src.split(',')[1], { type: 'image/png' }), editorId
       ))
     } else if (image.src.indexOf('webkit-fake-url') === 0) {
       // safari adds 'webkit-fake-url://' to image src and throws security
