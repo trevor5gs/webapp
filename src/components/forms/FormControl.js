@@ -145,6 +145,24 @@ class FormControl extends Component {
     }
   }
 
+  // TODO: this was a quick fix to get forms to not throw
+  // a warning when passing props that aren't actual attributes
+  getElementProps() {
+    const elementProps = { ...this.props }
+    const blacklistedProps = [
+      'classList',
+      'renderStatus',
+      'status',
+      'suggestions',
+      'renderFeedback',
+      'text',
+    ]
+    blacklistedProps.forEach(prop => {
+      delete elementProps[prop]
+    })
+    return elementProps
+  }
+
   checkValue = () => {
     const inputControl = this.refs.input
     const { text } = this.state
@@ -155,7 +173,7 @@ class FormControl extends Component {
   }
 
   clear() {
-    this.setState({ text: '' })
+    this.refs.input.value = ''
   }
 
   renderLabel() {
@@ -171,7 +189,7 @@ class FormControl extends Component {
   renderTextArea(text, inputClassNames) {
     return (
       <textarea
-        {...this.props}
+        {...this.getElementProps()}
         className={inputClassNames}
         onFocus={this.onFocusControl}
         onBlur={this.onBlurControl}
@@ -185,7 +203,7 @@ class FormControl extends Component {
   renderInput(text, inputClassNames) {
     return (
       <input
-        {...this.props}
+        {...this.getElementProps()}
         className={inputClassNames}
         onFocus={this.onFocusControl}
         onBlur={this.onBlurControl}

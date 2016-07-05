@@ -13,22 +13,23 @@ class TextBlock extends Component {
     editorId: PropTypes.string.isRequired,
     onInput: PropTypes.func.isRequired,
     shouldAutofocus: PropTypes.bool.isRequired,
+    uid: PropTypes.number.isRequired,
   }
 
   componentDidMount() {
     if (this.props.shouldAutofocus) {
-      placeCaretAtEnd(this.refs.block.refs.text)
+      placeCaretAtEnd(this.refs.text)
     }
     addKeyObject(this)
     document.addEventListener('click', this.onClickDocument, false)
   }
 
   shouldComponentUpdate(nextProps) {
-    return !(nextProps.data === this.refs.block.refs.text.innerHTML)
+    return !(nextProps.data === this.refs.text.innerHTML)
   }
 
   componentDidUpdate() {
-    placeCaretAtEnd(this.refs.block.refs.text)
+    placeCaretAtEnd(this.refs.text)
   }
 
   componentWillUnmount() {
@@ -61,36 +62,35 @@ class TextBlock extends Component {
   }
 
   onPasteText = (e) => {
-    const { dispatch, editorId } = this.props
+    const { dispatch, editorId, uid } = this.props
     // order matters here!
-    const uid = this.refs.block.props.uid
     pasted(e, dispatch, editorId, uid)
     this.updateTextBlock()
   }
 
   getData() {
-    return this.refs.block.refs.text.innerHTML
+    return this.refs.text.innerHTML
   }
 
   updateTextBlock() {
-    const { onInput } = this.props
-    const uid = this.refs.block.props.uid
+    const { onInput, uid } = this.props
     onInput({ kind: 'text', data: this.getData(), uid })
   }
 
   render() {
     const { data } = this.props
     return (
-      <Block
-        {...this.props}
-        contentEditable
-        dangerouslySetInnerHTML={{ __html: data }}
-        onBlur={this.onBlurText}
-        onFocus={this.onFocusText}
-        onInput={null}
-        onPaste={this.onPasteText}
-        ref="block"
-      />
+      <Block {...this.props}>
+        <div
+          className="editable text"
+          contentEditable
+          dangerouslySetInnerHTML={{ __html: data }}
+          onBlur={this.onBlurText}
+          onFocus={this.onFocusText}
+          onPaste={this.onPasteText}
+          ref="text"
+        />
+      </Block>
     )
   }
 }
