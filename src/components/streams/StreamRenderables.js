@@ -28,7 +28,7 @@ export function categoriesAsGrid(categories) {
           key={`CategoryLink_${category.slug}_${index}`}
           style={{ backgroundImage: `url("${get(category, 'tileImage.large.url')}")` }}
         >
-          <span>{category.name}</span>
+          <span className="CategoryLinkName">{category.name}</span>
         </Link>
       )}
     </div>
