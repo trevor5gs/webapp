@@ -80,10 +80,10 @@ export function profile(state = {}, action) {
         availability: null,
         dataExport: null,
       }
-      if (assetState.avatar.tmp) {
+      if (_.get(assetState, 'avatar.tmp')) {
         delete assetState.avatar
       }
-      if (assetState.coverImage.tmp) {
+      if (_.get(assetState, 'coverImage.tmp')) {
         delete assetState.coverImage
       }
       return assetState
