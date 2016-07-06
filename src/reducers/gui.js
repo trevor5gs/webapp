@@ -36,6 +36,7 @@ const STREAMS_WHITELIST = [
 
 const NO_LAYOUT_TOOLS = [
   /^\/[\w\-]+\/post\/.+/,
+  /^\/discover\/all\b/,
   /^\/notifications\b/,
   /^\/settings\b/,
   /^\/onboarding\b/,
