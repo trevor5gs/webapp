@@ -292,30 +292,21 @@ methods.deleteModel = (state, newState, action, mappingType) => {
 
 methods.updateCurrentUser = (newState, action) => {
   const { response } = action.payload
-  newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id] = response.users
-  let assetType = null
-  switch (action.type) {
-    case ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS:
-      assetType = 'avatar'
-      break
-    case ACTION_TYPES.PROFILE.SAVE_COVER_SUCCESS:
-      assetType = 'coverImage'
-      break
-    default:
-      assetType = null
-      break
-  }
-  if (assetType) {
-    newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id][assetType] = {
-      ...newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id][assetType],
-      tmp: { url: action.payload.response.assetUrl },
+  const newProfile = { ...response.users }
+  const curUser = newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id]
+  if (action.type !== ACTION_TYPES.PROFILE.LOAD_SUCCESS) {
+    if (curUser.avatar.tmp) {
+      newProfile.avatar = { ...response.users.avatar, tmp: curUser.avatar.tmp }
+    }
+    if (curUser.coverImage.tmp) {
+      newProfile.coverImage = { ...response.users.coverImage, tmp: curUser.coverImage.tmp }
     }
   }
+  // updates the whole current user..
+  newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id] = newProfile
   return newState
 }
 
-// TODO: This has the same issues as /reducers/profile.js (line ~38) by pulling
-// the previous image. Less so on production than staging I believe?
 methods.updateCurrentUserTmpAsset = (newState, action) => {
   const assetType = action.type === ACTION_TYPES.PROFILE.TMP_AVATAR_CREATED ? 'avatar' : 'coverImage'
   const currentUser = methods.getCurrentUser(newState)
@@ -360,7 +351,6 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS:
     case ACTION_TYPES.LOAD_STREAM_SUCCESS:
     case ACTION_TYPES.POST.EDITABLE_SUCCESS:
-    case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
     case ACTION_TYPES.PROFILE.DETAIL_SUCCESS:
       // fall through to parse the rest
       break
@@ -379,6 +369,7 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.POST.LOVE_SUCCESS:
     case ACTION_TYPES.POST.LOVE_FAILURE:
       return postMethods.updatePostLoves(state, newState, action)
+    case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_COVER_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_SUCCESS:
@@ -408,6 +399,16 @@ export default function json(state = {}, action = { type: '' }) {
       // so we can still filter them out if needed
       if (action.payload.json) {
         const keepers = {}
+        const curUser = methods.getCurrentUser(action.payload.json)
+        if (curUser) {
+          if (curUser.avatar.tmp) {
+            delete curUser.avatar
+          }
+          if (curUser.coverImage.tmp) {
+            delete curUser.coverImage
+          }
+          setWith(keepers, [MAPPING_TYPES.USERS, curUser.id], curUser, Object)
+        }
         Object.keys(action.payload.json).forEach((collection) => {
           if (collection.match('deleted_')) {
             keepers[collection] = action.payload.json[collection]

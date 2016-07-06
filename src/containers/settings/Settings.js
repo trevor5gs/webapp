@@ -16,7 +16,6 @@ import {
   checkAvailability,
   deleteProfile,
   exportData,
-  loadProfile,
   mutedUsers,
   saveAvatar,
   saveCover,
@@ -60,7 +59,7 @@ class Settings extends Component {
   }
 
   componentWillMount() {
-    const { dispatch, profile } = this.props
+    const { profile } = this.props
     this.state = {
       currentPasswordState: { status: STATUS.INDETERMINATE, message: '' },
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
@@ -72,7 +71,6 @@ class Settings extends Component {
     this.emailValue = profile.email
     this.usernameValue = profile.username
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 666)
-    dispatch(loadProfile())
   }
 
   componentDidMount() {

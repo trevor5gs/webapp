@@ -326,9 +326,9 @@ describe('editor actions', () => {
     })
   })
 
-  context('#temporaryAssetCreated', () => {
+  context('#temporaryEditorAssetCreated', () => {
     const objectURL = 'blob:http://ello.co/dae89036-db57-40a7-a622-75cd1991b9d7'
-    const action = subject.temporaryAssetCreated(objectURL, 'editorId')
+    const action = subject.temporaryEditorAssetCreated(objectURL, 'editorId')
 
     it('is an FSA compliant action', () => {
       expect(isFSA(action)).to.be.true
@@ -336,7 +336,7 @@ describe('editor actions', () => {
 
     it('has similar action.name and action.type')
     // it('has similar action.name and action.type', () => {
-    //   expect(isFSAName(action, subject.temporaryAssetCreated)).to.be.true
+    //   expect(isFSAName(action, subject.temporaryEditorAssetCreated)).to.be.true
     // })
 
     it('sets the appropriate payload', () => {
@@ -360,26 +360,6 @@ describe('editor actions', () => {
     it('sets the appropriate payload', () => {
       expect(action.payload.block).to.deep.equal(block)
       expect(action.payload.editorId).to.equal('editorId')
-      expect(action.payload.uid).to.equal('uid')
-    })
-  })
-
-  context('#uploadAsset', () => {
-    const file = {
-      lastModifiedDate: 'Tue Apr 28 2015 17:43:36 GMT-0600 (MDT)',
-      name: 'boom.gif',
-      size: 5924227,
-      type: 'image/gif',
-    }
-    const action = subject.uploadAsset('EDITOR.SAVE_IMAGE', file, 'editorId', 'uid')
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('sets the appropriate payload', () => {
-      expect(action.payload.editorId).to.equal('editorId')
-      expect(action.payload.file).to.deep.equal(file)
       expect(action.payload.uid).to.equal('uid')
     })
   })

@@ -335,9 +335,7 @@ class BlockCollection extends Component {
   acceptFiles(files) {
     const { dispatch, editorId } = this.props
     for (let index = 0, len = files.length; index < len; index += 1) {
-      // This guard may not be necessary
       if (files.item(index)) {
-        // need to delay a bit or else the images clobber each other
         dispatch(saveAsset(files[index], editorId))
       }
     }

@@ -40,8 +40,6 @@ export function profile(state = {}, action) {
         ...action.payload.response.users,
         id: `${action.payload.response.users.id}`,
       }
-      delete assetState.avatar.tmp
-      delete assetState.coverImage.tmp
       return assetState
     case PROFILE.REQUEST_PUSH_SUBSCRIPTION:
       return {
@@ -76,17 +74,34 @@ export function profile(state = {}, action) {
         [assetType]: { ...state[assetType], ...action.payload },
       }
     case REHYDRATE:
-      if (action.payload.profile) {
-        return { ...action.payload.profile, availability: null, dataExport: null }
+      if (!action.payload.profile) { return state }
+      assetState = {
+        ...action.payload.profile,
+        availability: null,
+        dataExport: null,
       }
-      return { ...state, availability: null, dataExport: null }
+      if (_.get(assetState, 'avatar.tmp')) {
+        delete assetState.avatar
+      }
+      if (_.get(assetState, 'coverImage.tmp')) {
+        delete assetState.coverImage
+      }
+      return assetState
     case PROFILE.SAVE_AVATAR_SUCCESS:
     case PROFILE.SAVE_COVER_SUCCESS:
-      assetType = action.type === PROFILE.SAVE_AVATAR_SUCCESS ? 'avatar' : 'coverImage'
-      return {
+      assetState = {
         ...state,
-        [assetType]: { ...state[assetType], tmp: { url: action.payload.response.assetUrl } },
+        ...action.payload.response.users,
       }
+      if (state.avatar.tmp) {
+        assetState.avatar = { ...action.payload.response.users.avatar, tmp: state.avatar.tmp }
+      }
+      if (state.coverImage.tmp) {
+        assetState.coverImage = {
+          ...action.payload.response.users.coverImage, tmp: state.coverImage.tmp,
+        }
+      }
+      return assetState
     case AUTHENTICATION.USER_SUCCESS:
     case AUTHENTICATION.REFRESH_SUCCESS:
     case PROFILE.SIGNUP_SUCCESS:

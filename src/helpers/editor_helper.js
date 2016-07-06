@@ -38,6 +38,14 @@ methods.rehydrateEditors = (persistedEditors = {}) => {
   Object.keys(persistedEditors).forEach((item) => {
     const pe = persistedEditors[item]
     if (pe.shouldPersist) {
+      // clear out the blobs
+      Object.keys(pe.collection).forEach((uid) => {
+        const block = pe.collection[uid]
+        if (block.kind === 'image') {
+          delete block.blob
+          pe.collection[uid] = block
+        }
+      })
       editors[item] = pe
     }
   })
@@ -248,7 +256,7 @@ methods.getEditorObject = (state = initialState, action) => {
       return newState
     case EDITOR.LOAD_REPLY_ALL_SUCCESS:
       return methods.appendUsernames(newState, get(action, 'payload.response.usernames', []))
-    case EDITOR.SAVE_IMAGE_SUCCESS:
+    case EDITOR.SAVE_ASSET_SUCCESS:
       if (newState.dragBlock && newState.dragBlock.uid === action.payload.uid) {
         newState.dragBlock = {
           ...newState.dragBlock,

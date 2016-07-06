@@ -172,7 +172,7 @@ export function setTextToolsCoordinates({ textToolsCoordinates = { top: -200, le
   }
 }
 
-export function temporaryAssetCreated(objectURL, editorId) {
+export function temporaryEditorAssetCreated(objectURL, editorId) {
   return {
     type: EDITOR.TMP_IMAGE_CREATED,
     payload: {
@@ -188,17 +188,6 @@ export function updateBlock(block, uid, editorId) {
     payload: {
       block,
       editorId,
-      uid,
-    },
-  }
-}
-
-export function uploadAsset(type, file, editorId, uid) {
-  return {
-    type,
-    payload: {
-      editorId,
-      file,
       uid,
     },
   }

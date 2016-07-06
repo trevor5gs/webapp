@@ -1,6 +1,7 @@
 import { isAndroid } from '../../vendor/jello'
 import { getLastWordPasted, replaceSelectionWithText } from './SelectionUtil'
 import { postPreviews, saveAsset } from '../../actions/editor'
+import { getBlobFromBase64 } from '../../helpers/file_helper'
 
 let dispatch = null
 let editorId = null
@@ -12,27 +13,6 @@ function checkForEmbeds(text) {
       dispatch(postPreviews(mediaUrl, editorId, 0))
     }
   }
-}
-
-function getBlobFromBase64(b64Data, contentType, sliceSize) {
-  const type = contentType || ''
-  const size = sliceSize || 512
-  const byteCharacters = atob(b64Data)
-  const byteArrays = []
-  let offset = 0
-  while (offset < byteCharacters.length) {
-    const slice = byteCharacters.slice(offset, offset + size)
-    const byteNumbers = new Array(slice.length)
-    let i = 0
-    while (i < slice.length) {
-      byteNumbers[i] = slice.charCodeAt(i)
-      i++
-    }
-    const byteArray = new Uint8Array(byteNumbers)
-    byteArrays.push(byteArray)
-    offset += size
-  }
-  return new Blob(byteArrays, type)
 }
 
 function handlePlainText(text) {
