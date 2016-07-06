@@ -14,6 +14,13 @@
   white-space: nowrap
   color: #aaa
 
+.NavbarLink.isSignUp
+  width: rem(80)
+  border-radius: rem(5)
+  text-align: center
+  background-color: #00d100
+  color: white
+
 .NavbarLink > .SVGIcon
   margin-top: rem(-5)
 
@@ -32,6 +39,9 @@
   height: rem(2)
   background-color: transparent
 
+.NavbarLink.isSignUp .NavbarLinkLabel:after
+  display: none
+
 // -------------------------------------
 // Active and hover states
 // @see NavbarIcons for icon animations and coloring
@@ -40,6 +50,16 @@
 .NavbarLink:active > .NavbarLinkLabel,
 .no-touch .NavbarLink:hover > .NavbarLinkLabel
   color: black
+
+.NavbarLink.isSignUp.isActive,
+.NavbarLink.isSignUp:active,
+.no-touch .NavbarLink.isSignUp:hover
+  background-color: #00b100
+
+.NavbarLink.isSignUp.isActive > .NavbarLinkLabel,
+.NavbarLink.isSignUp:active > .NavbarLinkLabel,
+.no-touch .NavbarLink.isSignUp:hover > .NavbarLinkLabel
+  color: white
 
 .NavbarLink.isActive > .NavbarLinkLabel:after,
 .NavbarLink:active > .NavbarLinkLabel:after,
