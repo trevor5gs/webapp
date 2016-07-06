@@ -9,9 +9,17 @@ import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
 class UserGrid extends Component {
 
   static propTypes = {
+    followingCount: PropTypes.number.isRequired,
+    followersCount: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]).isRequired,
+    lovesCount: PropTypes.number.isRequired,
+    postsCount: PropTypes.number.isRequired,
     relationshipPriority: PropTypes.string,
     user: PropTypes.shape({
     }).isRequired,
+    username: PropTypes.string.isRequired,
   }
 
   shouldComponentUpdate(nextProps) {
@@ -22,7 +30,9 @@ class UserGrid extends Component {
   }
 
   render() {
-    const { relationshipPriority, user } = this.props
+    const {
+      followingCount, followersCount, lovesCount, relationshipPriority, postsCount, user, username,
+    } = this.props
     const userPath = `/${user.username}`
     return (
       <div className="UserGrid" >
@@ -39,7 +49,13 @@ class UserGrid extends Component {
           relationshipPriority={relationshipPriority}
           ref="RelationsGroup"
         />
-        <UserStats user={user} />
+        <UserStats
+          followingCount={followingCount}
+          followersCount={followersCount}
+          lovesCount={lovesCount}
+          postsCount={postsCount}
+          username={username}
+        />
         <UserNames user={user} />
         <UserInfo user={user} />
       </div>
@@ -50,8 +66,13 @@ class UserGrid extends Component {
 function mapStateToProps(state, ownProps) {
   const user = state.json.users[ownProps.user.id]
   return {
+    followersCount: user.followersCount,
+    followingCount: user.followingCount,
+    lovesCount: user.lovesCount,
+    postsCount: user.postsCount,
     relationshipPriority: user.relationshipPriority,
     user,
+    username: user.username,
   }
 }
 
