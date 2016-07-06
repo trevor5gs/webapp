@@ -7,9 +7,10 @@
   position: relative
   display: inline-block
   width: calc(50% - #{rem(20)})
-  height: rem(275)
+  height: rem(144)
   margin-top: rem(20)
   margin-left: rem(20)
+  font-size: rem(16)
   text-align: center
   background-size: cover
 .Categories .CategoryLink:before
@@ -29,7 +30,7 @@
   position: relative
   display: inline-block
   z-index: 3
-  margin-top: rem(130)
+  margin-top: rem(72)
 
 .CategoryLinkName:after
   transition: width $speed $ease
@@ -43,6 +44,14 @@
 .no-touch .Categories .CategoryLink:hover .CategoryLinkName:after
   width: 100%
 
+@media(min-width: #{$break-2})
+  .Categories .CategoryLink
+    height: rem(275)
+    font-size: rem(24)
+  .CategoryLinkName
+    margin-top: rem(130)
+  .CategoryLinkName:after
+    top: rem(32)
 
 @media(min-width: #{$break-3})
   .Categories .CategoryLink
