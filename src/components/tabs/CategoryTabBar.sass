@@ -12,7 +12,7 @@
   overflow-y: hidden
   overflow-x: auto
   -webkit-overflow-scrolling: touch
-  max-width: calc(100% - #{rem(80)})
+  max-width: calc(100% - #{rem(70)})
   height: 100%
   padding: 0 rem(10)
   white-space: nowrap
@@ -21,10 +21,12 @@
   position: relative
   display: inline-block
   vertical-align: top
-  width: rem(80)
+  width: rem(70)
   height: 100%
   white-space: nowrap
   background-color: #e8e8e8
+  text-align: right
+  padding-right: rem(10)
 .CategoryTabBarUtility:before
   content: ''
   position: absolute
@@ -83,6 +85,8 @@
   .CategoryTabBarLinks .TabDivider
     margin-left: rem(30)
     margin-right: rem(30)
+  .CategoryTabBarUtility
+    padding-right: rem(20)
   .CategoryTabBarUtility:before
     left: rem(-30)
     width: rem(30)
@@ -90,4 +94,6 @@
 @media(min-width: #{$break-4})
   .CategoryTabBarLinks
     padding-left: rem(40)
+  .CategoryTabBarUtility
+    padding-right: rem(40)
 
