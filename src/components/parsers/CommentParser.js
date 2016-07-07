@@ -102,7 +102,7 @@ class CommentParser extends Component {
   }
 }
 
-const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
+const mapStateToProps = ({ json, profile: currentUser, gui }, ownProps) => {
   const comment = json[MAPPING_TYPES.COMMENTS][ownProps.comment.id]
   const author = json[MAPPING_TYPES.USERS][comment.authorId]
   const post = ownProps.post || json[MAPPING_TYPES.POSTS][comment.postId]
@@ -113,6 +113,7 @@ const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
     commentBody: comment.body,
     currentUser,
     isEditing: comment.isEditing,
+    isGridLayout: gui.isGridMode,
     json,
     post,
   }
