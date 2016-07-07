@@ -151,7 +151,15 @@ function* performUpload(action) {
     // TODO: figure out a cool way to display the initial image before processing
     const objectURL = URL.createObjectURL(file)
     if (fileData.fileType === SUPPORTED_IMAGE_TYPES.GIF) {
-      yield put(temporaryAssetCreated(PROFILE.TMP_COVER_CREATED, objectURL))
+      if (type === EDITOR.SAVE_ASSET) {
+        const { editorId } = payload
+        yield put(temporaryEditorAssetCreated(objectURL, editorId))
+        uid = yield select(state => state.editor[editorId].uid - 2)
+      } else if (type === PROFILE.SAVE_AVATAR) {
+        yield put(temporaryAssetCreated(PROFILE.TMP_AVATAR_CREATED, objectURL))
+      } else if (type === PROFILE.SAVE_COVER) {
+        yield put(temporaryAssetCreated(PROFILE.TMP_COVER_CREATED, objectURL))
+      }
       const { credentials } = yield call(fetchCredentials, accessToken)
       yield call(postAsset, credentials)
     } else {
