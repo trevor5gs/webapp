@@ -312,7 +312,7 @@ const mapStateToProps = (state, ownProps) => {
   const author = json[MAPPING_TYPES.USERS][post.authorId]
   const assets = json.assets
   const categories = post.links.categories
-  const category = categories ? json.categories[categories[0]] : null
+  const category = json.categories && categories ? json.categories[categories[0]] : null
   const isOnFeaturedCategory = /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname)
 
   let newProps = {
