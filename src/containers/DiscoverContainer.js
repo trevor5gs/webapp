@@ -103,7 +103,10 @@ export class DiscoverContainer extends Component {
   }
 
   static preRender = (store, routerState) =>
-    store.dispatch(getDiscoverAction(routerState.params.type || 'recommended'))
+    Promise.all([
+      store.dispatch(getDiscoverAction(routerState.params.type || 'recommended')),
+      store.dispatch(getCategories()),
+    ])
 
   componentWillMount() {
     this.state = { primaryIndex: undefined }
