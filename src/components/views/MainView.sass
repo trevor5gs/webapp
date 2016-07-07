@@ -16,6 +16,13 @@
 .UserDetail.MainView.isCoverInactive
   margin-top: 0
 
+.DiscoverPageTitle
+  display: inline-block
+  margin: rem(18) 0 0 rem(10)
+  font-size: rem(18)
+  border-bottom: 1px solid
+  color: black
+
 @media(max-width: #{$break-2-max})
   .isLoggedOut .MainView
     padding-top: rem(50)
@@ -33,4 +40,11 @@
   .UserDetail.MainView,
   .Settings.MainView
     margin-top: 56.25%
+  .DiscoverPageTitle
+    font-size: rem(24)
+    margin: rem(35) 0 0 rem(20)
+
+@media(min-width: #{$break-4})
+  .DiscoverPageTitle
+    margin-left: rem(40)
 

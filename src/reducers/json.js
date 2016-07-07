@@ -128,7 +128,15 @@ methods.addModels = (state, type, data) => {
   // add state['modelType']
   if (!state[type]) { state[type] = {} }
   const ids = []
-  if (type === MAPPING_TYPES.SETTINGS) {
+  if (type === MAPPING_TYPES.CATEGORIES) {
+    data[type].forEach((item) => {
+      const newType = { ...state[type] }
+      const id = `${item.id}`
+      newType[id] = item
+      state[type] = newType
+      ids.push(id)
+    })
+  } else if (type === MAPPING_TYPES.SETTINGS) {
     data[type].forEach((item, index) => {
       const newType = { ...state[type] }
       const id = index + 1
@@ -410,11 +418,12 @@ export default function json(state = {}, action = { type: '' }) {
           setWith(keepers, [MAPPING_TYPES.USERS, curUser.id], curUser, Object)
         }
         Object.keys(action.payload.json).forEach((collection) => {
-          if (collection.match('deleted_')) {
+          if (/(deleted_|categories)/.test(collection)) {
             keepers[collection] = action.payload.json[collection]
           }
         })
-        newState = { ...newState, ...keepers }
+        // hack to keep around the categories
+        newState = { ...newState, ...keepers, pages: { 'all-categories': action.payload.json.pages['all-categories'] } }
       }
       if (action.payload.profile) {
         methods.addModels(newState, MAPPING_TYPES.USERS, { users: [action.payload.profile] })

@@ -3,6 +3,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
+import { getCategories } from '../actions/discover'
 import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
 import * as MAPPING_TYPES from '../constants/mapping_types'
@@ -43,11 +44,12 @@ class AppContainer extends Component {
   componentDidMount() {
     addGlobalDrag()
     startRefreshTimer()
+    const { dispatch } = this.props
     if (get(this.props, 'authentication.isLoggedIn')) {
-      const { dispatch } = this.props
       dispatch(loadProfile())
       dispatch(loadNotifications({ category: 'all' }))
     }
+    dispatch(getCategories())
   }
 
   componentWillReceiveProps(nextProps) {

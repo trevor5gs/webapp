@@ -11,11 +11,12 @@ SVGComponent.propTypes = {
 }
 
 
-export const SVGIcon = ({ children, className }) =>
+export const SVGIcon = ({ children, className, onClick }) =>
   <SVGComponent
     width="20"
     height="20"
     className={classNames(className, 'SVGIcon')}
+    onClick={onClick}
   >
     {children}
   </SVGComponent>
@@ -23,6 +24,7 @@ export const SVGIcon = ({ children, className }) =>
 SVGIcon.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 }
 
 

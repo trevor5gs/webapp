@@ -1,0 +1,99 @@
+@import ../../vendor/lib
+
+.CategoryTabBar
+  height: rem(75)
+  font-size: rem(14)
+  white-space: nowrap
+  background-color: #e8e8e8
+
+.CategoryTabBarLinks
+  display: inline-block
+  vertical-align: top
+  overflow-y: hidden
+  overflow-x: auto
+  -webkit-overflow-scrolling: touch
+  max-width: calc(100% - #{rem(70)})
+  height: 100%
+  padding: 0 rem(10)
+  white-space: nowrap
+
+.CategoryTabBarUtility
+  position: relative
+  display: inline-block
+  vertical-align: top
+  width: rem(70)
+  height: 100%
+  white-space: nowrap
+  background-color: #e8e8e8
+  text-align: right
+  padding-right: rem(10)
+.CategoryTabBarUtility:before
+  content: ''
+  position: absolute
+  top: 0
+  left: rem(-20)
+  width: rem(20)
+  height: 100%
+  z-index: 2
+  background: linear-gradient(to right, rgba(#e8e8e8, 0) 0%, rgba(#e8e8e8, 1) 90%)
+
+.CategoryLabelTab
+  transition: color $speed ease
+  display: inline-block
+  position: relative
+  overflow: hidden
+  height: rem(75)
+  line-height: rem(75)
+  white-space: nowrap
+  color: #aaa
+
+.CategoryLabelTab:before
+  content: ''
+  transition: width $speed $ease, background-color $speed ease
+  position: absolute
+  top: 0
+  left: 0
+  width: 0
+  height: rem(3)
+  background-color: transparent
+
+.CategoryLabelTab.active,
+.CategoryLabelTab:active,
+.no-touch .CategoryLabelTab:hover
+  color: #888
+  &:before
+    width: 100%
+    background-color: #aaa
+
+.CategoryLabelTab + .CategoryLabelTab
+  margin-left: rem(20)
+
+.CategoryTabBarLinks .TabDivider
+  display: inline-block
+  vertical-align: top
+  margin: rem(22) rem(20) 0
+  width: rem(1)
+  height: rem(30)
+  background-color: white
+
+@media(min-width: #{$break-2})
+  .CategoryTabBarLinks
+    padding-left: rem(20)
+    padding-right: rem(30)
+  .CategoryLabelTab + .CategoryLabelTab
+    margin-left: rem(30)
+  .CategoryTabBarLinks .TabDivider
+    margin-left: rem(30)
+    margin-right: rem(30)
+  .CategoryTabBarUtility
+    padding-right: rem(20)
+  .CategoryTabBarUtility:before
+    left: rem(-30)
+    width: rem(30)
+
+@media(min-width: #{$break-4})
+  .CategoryTabBarLinks
+    padding-left: rem(40)
+  .CategoryTabBarUtility
+    padding-right: rem(40)
+

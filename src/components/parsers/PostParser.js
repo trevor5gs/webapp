@@ -93,6 +93,42 @@ function header(post, author) {
   )
 }
 
+function categoryHeader(post, author, categoryName, categoryPath) {
+  if (!post || !author) { return null }
+  const postDetailPath = getPostDetailPath(author, post)
+  return (
+    <header className="CategoryHeader" key={`CategoryHeader_${post.id}`}>
+      <div className="CategoryHeaderAuthor">
+        <Link className="PostHeaderLink" to={`/${author.username}`}>
+          <Avatar
+            priority={author.relationshipPriority}
+            sources={author.avatar}
+            userId={`${author.id}`}
+            username={author.username}
+          />
+          <span
+            className="DraggableUsername"
+            data-priority={author.relationshipPriority || 'inactive'}
+            data-userid={author.id}
+            data-username={author.username}
+            draggable
+          >
+            {`@${author.username}`}
+          </span>
+        </Link>
+      </div>
+      <RelationsGroup user={author} classList="inHeader" />
+      <div className="CategoryHeaderCategory">
+        <Link className="PostHeaderLink" to={categoryPath}>
+          <span>in </span>
+          <span className="CategoryHeaderCategoryName">{categoryName}</span>
+        </Link>
+      </div>
+      <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.createdAt} />
+    </header>
+  )
+}
+
 function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   if (!post || !repostedBy) { return null }
   const postDetailPath = getPostDetailPath(repostAuthor, post)
@@ -191,11 +227,14 @@ class PostParser extends Component {
     assets: PropTypes.any,
     author: PropTypes.object,
     authorLinkObject: PropTypes.object,
+    categoryName: PropTypes.string,
+    categoryPath: PropTypes.string,
     commentsCount: PropTypes.number,
     contentWarning: PropTypes.string,
     currentUser: PropTypes.object,
     isEditing: PropTypes.bool,
     isGridLayout: PropTypes.bool,
+    isOnFeaturedCategory: PropTypes.bool,
     isPostDetail: PropTypes.bool,
     isReposting: PropTypes.bool,
     lovesCount: PropTypes.number,
@@ -212,11 +251,14 @@ class PostParser extends Component {
     const {
       assets,
       author,
+      categoryName,
+      categoryPath,
       commentsCount,
       contentWarning,
       currentUser,
       isEditing,
       isGridLayout,
+      isOnFeaturedCategory,
       isPostDetail,
       isReposting,
       lovesCount,
@@ -239,6 +281,8 @@ class PostParser extends Component {
     if (isRepost(post)) {
       const { authorLinkObject, sourceLinkObject } = this.props
       postHeader = repostHeader(post, authorLinkObject, sourceLinkObject, author)
+    } else if (isOnFeaturedCategory && categoryName && categoryPath) {
+      postHeader = categoryHeader(post, author, categoryName, categoryPath)
     } else {
       postHeader = header(post, author)
     }
@@ -262,18 +306,25 @@ class PostParser extends Component {
   }
 }
 
-const mapStateToProps = ({ json, profile: currentUser }, ownProps) => {
+const mapStateToProps = (state, ownProps) => {
+  const { json, profile: currentUser, routing: { location: { pathname } } } = state
   const post = json[MAPPING_TYPES.POSTS][ownProps.post.id]
   const author = json[MAPPING_TYPES.USERS][post.authorId]
   const assets = json.assets
+  const categories = post.links.categories
+  const category = categories ? json.categories[categories[0]] : null
+  const isOnFeaturedCategory = /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname)
 
   let newProps = {
     assets,
     author,
+    categoryName: category ? category.name : null,
+    categoryPath: category ? `/discover/${category.slug}` : null,
     commentsCount: post.commentsCount,
     contentWarning: post.contentWarning,
     currentUser,
     isEditing: post.isEditing || false,
+    isOnFeaturedCategory,
     isReposting: post.isReposting || false,
     lovesCount: post.lovesCount,
     repostsCount: post.repostsCount,

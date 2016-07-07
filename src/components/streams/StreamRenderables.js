@@ -1,5 +1,6 @@
 import React from 'react'
-import { uniqBy } from 'lodash'
+import { Link } from 'react-router'
+import { get, uniqBy } from 'lodash'
 import { camelize } from 'humps'
 import { getLinkObject } from '../../helpers/json_helper'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
@@ -16,6 +17,23 @@ import UserList from '../users/UserList'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
+
+export function categoriesAsGrid(categories) {
+  return (
+    <div className="Categories asGrid">
+      {categories.data.map((category, index) =>
+        <Link
+          className="CategoryLink"
+          to={`/discover/${category.slug}`}
+          key={`CategoryLink_${category.slug}_${index}`}
+          style={{ backgroundImage: `url("${get(category, 'tileImage.large.url')}")` }}
+        >
+          <span className="CategoryLinkName">{category.name}</span>
+        </Link>
+      )}
+    </div>
+  )
+}
 
 // TODO: convert these into react components (@see UserVitals)
 // to hopefully get better errors out of rendering streams
