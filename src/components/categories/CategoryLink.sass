@@ -2,13 +2,14 @@
 
 .Categories
   margin-left: rem(-20)
+  margin-top: rem(10)
   color: white
 .Categories .CategoryLink
   position: relative
   display: inline-block
   width: calc(50% - #{rem(20)})
   height: rem(144)
-  margin-top: rem(20)
+  margin-bottom: rem(20)
   margin-left: rem(20)
   font-size: rem(16)
   text-align: center
@@ -59,10 +60,11 @@
 
 @media(min-width: #{$break-4})
   .Categories
+    margin-top: rem(20)
     margin-left: rem(-40)
   .Categories .CategoryLink
     width: calc(25% - #{rem(40)})
-    margin-top: rem(40)
+    margin-bottom: rem(40)
     margin-left: rem(40)
 
 @media(min-width: #{$break-5})
