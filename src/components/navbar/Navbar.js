@@ -51,7 +51,7 @@ export const NavbarLoggedOut = ({
         to="/enter"
       />
       <NavbarLink
-        className="LabelOnly"
+        className="LabelOnly isSignUp"
         label="Sign up"
         pathname={pathname}
         to="/signup"
