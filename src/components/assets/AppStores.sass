@@ -1,0 +1,33 @@
+@import ../../vendor/lib
+
+.AppStore
+  display: none
+  position: absolute
+  bottom: rem(10)
+  width: rem(135)
+  height: rem(40)
+  background: transparent url('/static/images/support/app-store-sprite.png') no-repeat 0 0
+  background-size: cover
+
+.AppleStore
+  left: rem(10)
+
+.GooglePlayStore
+  left: rem(155)
+  background-position: -135px 0
+
+@media(min-width: #{$break-2})
+  .AppStore
+    display: block
+    bottom: rem(20)
+  .AppleStore
+    left: rem(20)
+  .GooglePlayStore
+    left: rem(165)
+
+@media(min-width: #{$break-4})
+  .AppleStore
+    left: rem(40)
+  .GooglePlayStore
+    left: rem(185)
+

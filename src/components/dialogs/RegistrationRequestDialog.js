@@ -1,11 +1,12 @@
 import React from 'react'
 import RegistrationRequestForm from '../../components/forms/RegistrationRequestForm'
-import AppleStoreLink from '../../components/support/AppleStoreLink'
+import { AppleStore, GooglePlayStore } from '../../components/assets/AppStores'
 
 const RegistrationRequestDialog = () =>
   <div className="AuthenticationFormDialog">
     <RegistrationRequestForm />
-    <AppleStoreLink />
+    <AppleStore />
+    <GooglePlayStore />
   </div>
 
 export default RegistrationRequestDialog
