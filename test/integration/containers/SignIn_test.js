@@ -4,7 +4,7 @@ import { pretendServer } from '../spec_helper.js'
 import { mount } from 'enzyme'
 import { expect } from 'chai'
 import { createElloStore } from '../../../src/store'
-import EmailControl from '../../../src/components/forms/EmailControl'
+import TextControl from '../../../src/components/forms/TextControl'
 import PasswordControl from '../../../src/components/forms/PasswordControl'
 import SignIn from '../../../src/containers/authentication/SignIn'
 
@@ -43,7 +43,7 @@ describe('SignIn', function () {
 
     const wrapper = mount(miniApp, { context: { store } })
 
-    const emailInput = wrapper.find(EmailControl)
+    const emailInput = wrapper.find(TextControl)
     emailInput.find('input').simulate('change', {
       target: { value: 'word' },
     })
