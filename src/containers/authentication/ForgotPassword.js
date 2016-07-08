@@ -6,13 +6,13 @@ import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { sendForgotPasswordRequest } from '../../actions/authentication'
 import { trackEvent } from '../../actions/tracking'
+import { AppleStore, GooglePlayStore } from '../../components/assets/AppStores'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
 import Emoji from '../../components/assets/Emoji'
 import EmailControl from '../../components/forms/EmailControl'
 import FormButton from '../../components/forms/FormButton'
 import { isFormValid, getEmailStateFromClient } from '../../components/forms/Validators'
-import AppleStoreLink from '../../components/support/AppleStoreLink'
 import { MainView } from '../../components/views/MainView'
 
 class ForgotPassword extends Component {
@@ -124,7 +124,8 @@ class ForgotPassword extends Component {
           </h1>
           {formStatus === STATUS.SUBMITTED ? this.renderSubmitted() : this.renderForm()}
         </div>
-        <AppleStoreLink />
+        <AppleStore />
+        <GooglePlayStore />
         <Credits onClick={this.onClickTrackCredits} user={featuredUser} />
         <Cover
           coverDPI={coverDPI}

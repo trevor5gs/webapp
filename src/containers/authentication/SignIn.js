@@ -10,6 +10,7 @@ import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentica
 import { loadProfile, saveProfile } from '../../actions/profile'
 import { signIn } from '../../actions/authentication'
 import { trackEvent } from '../../actions/tracking'
+import { AppleStore, GooglePlayStore } from '../../components/assets/AppStores'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
 import EmailControl from '../../components/forms/EmailControl'
@@ -20,7 +21,6 @@ import {
   getEmailStateFromClient,
   getPasswordState,
 } from '../../components/forms/Validators'
-import AppleStoreLink from '../../components/support/AppleStoreLink'
 import { MainView } from '../../components/views/MainView'
 
 class SignIn extends Component {
@@ -188,7 +188,8 @@ class SignIn extends Component {
           </form>
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>
-        <AppleStoreLink />
+        <AppleStore />
+        <GooglePlayStore />
         <Credits onClick={this.onClickTrackCredits} user={featuredUser} />
         <Cover
           coverDPI={coverDPI}

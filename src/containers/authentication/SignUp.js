@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import { random } from 'lodash'
 import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { trackEvent } from '../../actions/tracking'
+import { AppleStore, GooglePlayStore } from '../../components/assets/AppStores'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
 import RegistrationRequestForm from '../../components/forms/RegistrationRequestForm'
-import AppleStoreLink from '../../components/support/AppleStoreLink'
 import { MainView } from '../../components/views/MainView'
 
 class SignUp extends Component {
@@ -38,7 +38,8 @@ class SignUp extends Component {
         <div className="AuthenticationFormDialog">
           <RegistrationRequestForm />
         </div>
-        <AppleStoreLink />
+        <AppleStore />
+        <GooglePlayStore />
         <Credits onClick={this.onClickTrackCredits} user={featuredUser} />
         <Cover
           coverDPI={coverDPI}

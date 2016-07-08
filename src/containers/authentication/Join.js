@@ -7,6 +7,7 @@ import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentica
 import { getInviteEmail } from '../../actions/invitations'
 import { checkAvailability, signUpUser } from '../../actions/profile'
 import { trackEvent } from '../../actions/tracking'
+import { AppleStore, GooglePlayStore } from '../../components/assets/AppStores'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
 import EmailControl from '../../components/forms/EmailControl'
@@ -24,7 +25,6 @@ import {
   getEmailStateFromServer,
   getPasswordState,
 } from '../../components/forms/Validators'
-import AppleStoreLink from '../../components/support/AppleStoreLink'
 import { MainView } from '../../components/views/MainView'
 
 class Join extends Component {
@@ -309,7 +309,8 @@ class Join extends Component {
             By clicking Create Account you are agreeing to our <a href={`${ENV.AUTH_DOMAIN}/wtf/post/policies`}>Terms</a>.
           </p>
         </div>
-        <AppleStoreLink />
+        <AppleStore />
+        <GooglePlayStore />
         <Credits onClick={this.onClickTrackCredits} user={featuredUser} />
         <Cover
           coverDPI={coverDPI}
