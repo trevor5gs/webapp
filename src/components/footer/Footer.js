@@ -18,7 +18,7 @@ export const Footer = ({
     role="contentinfo"
   >
     <div className="FooterLinks">
-      <FooterLabel label="Beta 3.0" />
+      <FooterLabel label="Beta" />
       <FooterLink
         className="asLabel"
         href={`${ENV.AUTH_DOMAIN}/wtf`}
@@ -27,9 +27,9 @@ export const Footer = ({
       {isAndroid() ?
         null :
         <FooterLink
-          href="https://itunes.apple.com/app/apple-store/id953614327?pt=117139389&ct=webfooter&mt=8"
+          href="https://ello.co/wtf/resources/mobile-features/"
           icon={<PhoneIcon />}
-          label="Get the app"
+          label="Apps"
         />
       }
     </div>
