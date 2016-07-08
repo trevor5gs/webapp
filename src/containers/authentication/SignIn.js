@@ -85,7 +85,6 @@ class SignIn extends Component {
     const { userState } = this.state
     const currentStatus = userState.status
     const newState = getUserStateFromClient({ value: usernameOrEmail, currentStatus })
-    console.log(newState)
     if (newState.status !== currentStatus) {
       this.setState({ userState: newState })
     }
