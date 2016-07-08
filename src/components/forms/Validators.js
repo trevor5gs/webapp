@@ -145,3 +145,17 @@ export function getBatchEmailState({ currentStatus, value }) {
   )
 }
 
+// Email or Username control
+export function getUserStateFromClient({ currentStatus, value }) {
+  if (!value && !value.length && currentStatus !== STATUS.INDETERMINATE) {
+    return { status: STATUS.INDETERMINATE, suggestions: null, message: '' }
+  }
+  const usernameState = getUsernameStateFromClient({ currentStatus, value })
+  const emailState = getEmailStateFromClient({ currentStatus, value })
+  return (
+    usernameState.status === STATUS.SUCCESS || emailState.status === STATUS.SUCCESS ?
+      { status: STATUS.SUCCESS, message: ERROR.NONE } :
+      { status: STATUS.FAILURE, message: ERROR.USERNAME_OR_EMAIL.INVALID }
+  )
+}
+

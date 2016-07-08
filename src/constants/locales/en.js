@@ -16,6 +16,9 @@ export const ERROR_MESSAGES = {
     INVALID: 'That username is invalid. Please try again.',
     SPACES: 'Username must not contain a space.',
   },
+  USERNAME_OR_EMAIL: {
+    INVALID: 'That username or email is invalid.',
+  },
 }
 
 export const PREFERENCES = {

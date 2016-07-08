@@ -12,12 +12,12 @@ import { signIn } from '../../actions/authentication'
 import { trackEvent } from '../../actions/tracking'
 import Cover from '../../components/assets/Cover'
 import Credits from '../../components/assets/Credits'
-import EmailControl from '../../components/forms/EmailControl'
+import TextControl from '../../components/forms/TextControl'
 import PasswordControl from '../../components/forms/PasswordControl'
 import FormButton from '../../components/forms/FormButton'
 import {
   isFormValid,
-  getEmailStateFromClient,
+  getUserStateFromClient,
   getPasswordState,
 } from '../../components/forms/Validators'
 import AppleStoreLink from '../../components/support/AppleStoreLink'
@@ -37,16 +37,16 @@ class SignIn extends Component {
     const userlist = AUTHENTICATION_PROMOTIONS
     const index = random(0, userlist.length - 1)
     this.state = {
-      showEmailError: false,
+      showUserError: false,
       showPasswordError: false,
-      emailState: { status: STATUS.INDETERMINATE, message: '' },
+      userState: { status: STATUS.INDETERMINATE, message: '' },
       featuredUser: userlist[index],
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
     }
-    this.emailValue = ''
+    this.userValue = ''
     this.passwordValue = ''
 
-    this.delayedShowEmailError = debounce(this.delayedShowEmailError, 1000)
+    this.delayedShowUserError = debounce(this.delayedShowUserError, 1000)
     this.delayedShowPasswordError = debounce(this.delayedShowPasswordError, 1000)
   }
 
@@ -68,7 +68,7 @@ class SignIn extends Component {
 
   componentWillUnmount() {
     // Cancel lingering debounced methods
-    this.delayedShowEmailError.cancel()
+    this.delayedShowUserError.cancel()
     this.delayedShowPasswordError.cancel()
   }
 
@@ -78,15 +78,16 @@ class SignIn extends Component {
     }
   }
 
-  onChangeEmailControl = ({ email }) => {
-    this.setState({ showEmailError: false })
-    this.delayedShowEmailError()
-    this.emailValue = email
-    const { emailState } = this.state
-    const currentStatus = emailState.status
-    const newState = getEmailStateFromClient({ value: email, currentStatus })
+  onChangeUserControl = ({ usernameOrEmail }) => {
+    this.setState({ showUserError: false })
+    this.delayedShowUserError()
+    this.userValue = usernameOrEmail
+    const { userState } = this.state
+    const currentStatus = userState.status
+    const newState = getUserStateFromClient({ value: usernameOrEmail, currentStatus })
+    console.log(newState)
     if (newState.status !== currentStatus) {
-      this.setState({ emailState: newState })
+      this.setState({ userState: newState })
     }
   }
 
@@ -112,11 +113,11 @@ class SignIn extends Component {
     e.preventDefault()
 
     const { dispatch } = this.props
-    const action = signIn(this.emailValue, this.passwordValue)
+    const action = signIn(this.userValue, this.passwordValue)
 
     set(action, 'meta.successAction', () => dispatch(loadProfile()))
     set(action, 'meta.failureAction', () => this.setState({
-      failureMessage: 'Your email or password were incorrect',
+      failureMessage: 'Your username/email or password are incorrect',
     }))
 
     dispatch(action)
@@ -127,8 +128,8 @@ class SignIn extends Component {
     dispatch(trackEvent('authentication-credits-clicked'))
   }
 
-  delayedShowEmailError = () => {
-    this.setState({ showEmailError: true })
+  delayedShowUserError = () => {
+    this.setState({ showUserError: true })
   }
 
   delayedShowPasswordError = () => {
@@ -147,11 +148,11 @@ class SignIn extends Component {
   render() {
     const { coverDPI, coverOffset } = this.props
     const {
-      emailState, showEmailError,
+      userState, showUserError,
       passwordState, showPasswordError,
       failureMessage, featuredUser,
     } = this.state
-    const isValid = isFormValid([emailState, passwordState])
+    const isValid = isFormValid([userState, passwordState])
     return (
       <MainView className="Authentication">
         <div className="AuthenticationFormDialog">
@@ -165,13 +166,16 @@ class SignIn extends Component {
             onSubmit={this.onSubmit}
             role="form"
           >
-            <EmailControl
+            <TextControl
               classList="asBoxControl"
-              label="Email"
+              id="usernameOrEmail"
+              label="Username or Email"
+              name="user[usernameOrEmail]"
               onBlur={this.onBlurControl}
-              onChange={this.onChangeEmailControl}
+              onChange={this.onChangeUserControl}
               onFocus={this.onFocusControl}
-              renderStatus={showEmailError ? this.renderStatus(emailState) : null}
+              placeholder="Enter your username or email"
+              renderStatus={showUserError ? this.renderStatus(userState) : null}
               tabIndex="1"
             />
             <PasswordControl
