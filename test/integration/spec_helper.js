@@ -1,5 +1,4 @@
 /* eslint no-param-reassign: ["error", { props: false } ] */
-import 'babel-polyfill'
 import Pretender from 'fetch-pretender'
 
 export function pretendServer(cb) {
