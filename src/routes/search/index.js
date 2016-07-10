@@ -1,4 +1,4 @@
-import Search from '../../containers/search/Search'
+import SearchContainer from '../../containers/SearchContainer'
 import { loadPromotions } from '../../helpers/junk_drawer'
 
 const find = store => ({
@@ -13,7 +13,7 @@ const find = store => ({
 const search = store => ({
   path: 'search',
   getComponent(location, cb) {
-    cb(null, Search)
+    cb(null, SearchContainer)
   },
   onEnter(nextState, replace, callback) {
     const { authentication: { isLoggedIn } } = store.getState()
