@@ -20,7 +20,7 @@ UserNames.propTypes = {
 
 const UserStatsLink = ({ asDisabled = false, children, to }) =>
   asDisabled ?
-    <span activeClassName="active" className="UserStatsLink asDisabled">
+    <span className="UserStatsLink asDisabled">
       {children}
     </span> :
     <Link activeClassName="active" className="UserStatsLink" to={to}>
