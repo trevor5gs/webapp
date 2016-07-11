@@ -2,11 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { replace } from 'react-router-redux'
-import { random, debounce, set } from 'lodash'
+import { debounce, isNil, sample, set } from 'lodash'
 import { isAndroid } from '../../vendor/jello'
 import { ONBOARDING_VERSION } from '../../constants/application_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
-import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { loadProfile, saveProfile } from '../../actions/profile'
 import { signIn } from '../../actions/authentication'
 import { trackEvent } from '../../actions/tracking'
@@ -29,18 +28,18 @@ class SignIn extends Component {
     coverDPI: PropTypes.string,
     coverOffset: PropTypes.number,
     currentStream: PropTypes.string,
+    featuredUser: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     webOnboardingVersionSeen: PropTypes.string,
   }
 
   componentWillMount() {
-    const userlist = AUTHENTICATION_PROMOTIONS
-    const index = random(0, userlist.length - 1)
+    const { featuredUser } = this.props
     this.state = {
       showUserError: false,
       showPasswordError: false,
       userState: { status: STATUS.INDETERMINATE, message: '' },
-      featuredUser: userlist[index],
+      featuredUser,
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
     }
     this.userValue = ''
@@ -194,12 +193,13 @@ class SignIn extends Component {
         <AppleStore />
         <GooglePlayStore />
         <Credits onClick={this.onClickTrackCredits} user={featuredUser} />
-        <Cover
-          coverDPI={coverDPI}
-          coverImage={featuredUser.coverImage}
-          coverOffset={coverOffset}
-          modifiers="asFullScreen withOverlay"
-        />
+        {isNil(featuredUser) ? '' :
+          <Cover
+            coverDPI={coverDPI}
+            coverImage={featuredUser.coverImage}
+            coverOffset={coverOffset}
+            modifiers="asFullScreen withOverlay"
+          />}
       </MainView>
     )
   }
@@ -209,6 +209,7 @@ const mapStateToProps = state => ({
   currentStream: state.gui.currentStream,
   coverDPI: state.gui.coverDPI,
   coverOffset: state.gui.coverOffset,
+  featuredUser: sample(state.promotions.authentication),
   webOnboardingVersionSeen: state.profile.webOnboardingVersion,
 })
 

@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { get, isEqual, upperFirst } from 'lodash'
-import { LOGGED_IN_PROMOTIONS } from '../constants/promotions/logged_in'
-import { LOGGED_OUT_PROMOTIONS } from '../constants/promotions/logged_out'
 import {
   bindDiscoverKey,
   getCategories,
@@ -93,6 +91,7 @@ export class DiscoverContainer extends Component {
     pageTitle: PropTypes.string,
     paramsType: PropTypes.string.isRequired,
     pathname: PropTypes.string.isRequired,
+    promotions: PropTypes.array,
     primary: PropTypes.array,
     secondary: PropTypes.array,
     tertiary: PropTypes.array,
@@ -112,6 +111,7 @@ export class DiscoverContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    if (!isEqual(this.props.promotions, nextProps.promotions)) return true
     if (isEqual(nextProps, this.props) && isEqual(nextState, this.state)) {
       return false
     }
@@ -153,7 +153,7 @@ export class DiscoverContainer extends Component {
 
   render() {
     const { coverDPI, isBeaconActive, isLoggedIn, pageTitle, paramsType,
-      pathname, primary, secondary, tertiary } = this.props
+            pathname, promotions, primary, secondary, tertiary } = this.props
     const props = {
       coverDPI,
       isBeaconActive,
@@ -162,7 +162,7 @@ export class DiscoverContainer extends Component {
       onDismissZeroStream: this.onDismissZeroStream,
       pageTitle,
       pathname,
-      promotions: isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS,
+      promotions,
       streamAction: getDiscoverAction(paramsType),
       tabs: generateTabs(primary, secondary, tertiary),
     }
@@ -181,6 +181,7 @@ function sortCategories(a, b) {
 
 function mapStateToProps(state, ownProps) {
   const { authentication, gui, json, modal } = state
+  const { isLoggedIn } = authentication
   const result = get(json, 'pages.all-categories')
   const categories = []
   if (result) {
@@ -235,10 +236,11 @@ function mapStateToProps(state, ownProps) {
     coverDPI: gui.coverDPI,
     isBeaconActive: authentication.isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
     isDiscoverMenuActive: modal.isDiscoverMenuActive,
-    isLoggedIn: authentication.isLoggedIn,
+    isLoggedIn,
     pageTitle,
     paramsType,
     pathname: ownProps.location.pathname,
+    promotions: isLoggedIn ? state.promotions.loggedIn : state.promotions.loggedOut,
     primary,
     secondary,
     tertiary,

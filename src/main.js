@@ -5,14 +5,14 @@ import 'isomorphic-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { Router, browserHistory } from 'react-router'
+import { Router, browserHistory, match } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { addFeatureDetection } from './vendor/jello'
 import { scrollToOffsetTop } from './vendor/scrolling'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import { persistStore, storages } from 'redux-persist'
 import store from './store'
-import routes from './routes'
+import createRoutes from './routes'
 import session from './vendor/session'
 import Honeybadger from './vendor/honeybadger'
 import MemoryStore from './vendor/memory_store'
@@ -29,20 +29,23 @@ updateTimeAgoStrings({ about: '' })
 
 const APP_VERSION = '3.0.21'
 
-const history = syncHistoryWithStore(browserHistory, store)
-const element = (
-  <Provider store={store}>
-    <Router history={history} routes={routes(store)} />
-  </Provider>
-)
 
 const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
 
 const launchApplication = (storage, hasLocalStorage = false) => {
   addFeatureDetection()
   const persistor = persistStore(store, { storage, whitelist }, () => {
+    const history = syncHistoryWithStore(browserHistory, store)
+    const routes = createRoutes(store)
     const root = document.getElementById('root')
-    ReactDOM.render(element, root)
+    match({ history, routes }, (error, redirectLocation, renderProps) => {
+      ReactDOM.render(
+        <Provider store={store}>
+          <Router {...renderProps} />
+        </Provider>,
+        root
+      )
+    })
 
     // Scroll fix for layouts with Covers and universal rendering Normally we
     // call this in componentDidMount, but for the server rendered pages that

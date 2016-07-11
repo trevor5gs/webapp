@@ -65,8 +65,7 @@ app.use(express.static('public', { maxAge: '1y', index: false }))
 app.use('/static', express.static('public/static', { maxAge: '1y' }))
 
 // Return promises for initial loads
-function preRender(renderProps, store) {
-  const sagaTask = store.runSaga(serverRoot)
+function preRender(renderProps, store, sagaTask) {
   const promises = renderProps.components.map(component => ((component && component.preRender) ? component.preRender(store, renderProps) : null)).filter(component => !!component)
 
   promises.push(sagaTask.done)
@@ -84,6 +83,7 @@ function renderFromServer(req, res) {
     })
     const routes = createRoutes(store)
     const history = syncHistoryWithStore(memoryHistory, store)
+    const sagaTask = store.runSaga(serverRoot)
 
     match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
       // populate the router store object for initial render
@@ -106,7 +106,7 @@ function renderFromServer(req, res) {
         </Provider>
       )
 
-      preRender(renderProps, store).then(() => {
+      preRender(renderProps, store, sagaTask).then(() => {
         const componentHTML = renderToString(InitialComponent)
         const head = Helmet.rewind()
         const state = store.getState()

@@ -7,6 +7,7 @@ import { createElloStore } from '../../../src/store'
 import TextControl from '../../../src/components/forms/TextControl'
 import PasswordControl from '../../../src/components/forms/PasswordControl'
 import SignIn from '../../../src/containers/authentication/SignIn'
+import { PROMOTIONS } from '../../../src/constants/action_types'
 
 describe('SignIn', function () {
   beforeEach(function () {
@@ -35,6 +36,32 @@ describe('SignIn', function () {
   it('signs you in', function () {
     const store = createElloStore()
 
+    store.dispatch({
+      type: PROMOTIONS.AUTHENTICATION_SUCCESS,
+      payload: {
+        response: [
+          {
+            username: 'foobar',
+            avatar: {
+              regular: {
+                url: 'avatarImageForFun',
+              },
+            },
+            coverImage: {
+              hdpi: {
+                url: 'hdpiImageForFun',
+              },
+              xhdpi: {
+                url: 'xhdpiImageForFun',
+              },
+              optimized: {
+                url: 'optimizedImageForFun',
+              },
+            },
+          },
+        ],
+      },
+    })
     const { sagaTask } = store
 
     const miniApp = (

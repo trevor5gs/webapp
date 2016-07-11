@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
-import { random } from 'lodash'
+import { isNil, random } from 'lodash'
 import Credits from '../assets/Credits'
 
 const STATUS = {
@@ -82,7 +82,7 @@ class Promotion extends Component {
 
   renderCallToAction(isLoggedIn, cta) {
     if (cta) {
-      return cta
+      return <a href={cta.href}>{cta.caption}</a>
     } else if (!isLoggedIn) {
       return <Link to="https://ello.co/signup">Sign Up</Link>
     }
@@ -98,11 +98,15 @@ class Promotion extends Component {
     const klassNames = classNames('Promotion', status)
     const style = src ? { backgroundImage: `url(${src})` } : null
 
+    if (isNil(featuredUser)) {
+      return null
+    }
+
     return (
       <div className={klassNames}>
         <figure className="PromotionImage" style={style} />
         <div className="PromotionCaption">
-          {caption}
+          <h1>{caption}</h1>
           {this.renderCallToAction(isLoggedIn, cta)}
         </div>
         <Credits onClick={creditsClickAction} user={featuredUser} />

@@ -65,6 +65,20 @@ export function signupPath(email, username, password, invitationCode) {
   }
 }
 
+export function authenticationPromo() {
+  return {
+    path: `${ENV.PROMO_HOST}/authentication.json`,
+  }
+}
+
+export function loggedInPromo() {
+  return { path: `${ENV.PROMO_HOST}/loggedIn.json` }
+}
+
+export function loggedOutPromo() {
+  return { path: `${ENV.PROMO_HOST}/loggedOut.json` }
+}
+
 // Current User Profile
 export function profilePath() {
   return {

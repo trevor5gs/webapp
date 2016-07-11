@@ -1,8 +1,10 @@
+import { set } from 'lodash'
 import AppContainer from '../containers/AppContainer'
 import { refreshAuthenticationToken } from '../actions/authentication'
+import { fetchLoggedInPromos, fetchLoggedOutPromos } from '../actions/promotions'
 import PostDetailRoute from './post_detail'
 import WTFRoute from './wtf'
-import AuthenticationRoutes from './authentication'
+import authenticationRoutes from './authentication'
 import {
   getComponents as getDiscoverComponents,
   discover as discoverRoute,
@@ -54,27 +56,19 @@ const routes = store => {
     }
   }
 
-  const deauthenticate = (route) =>
-    ({
-      ...route,
-      onEnter(nextState, replace) {
-        const {
-          authentication: { isLoggedIn },
-          gui: { currentStream },
-        } = store.getState()
-        if (isLoggedIn) {
-          replace({ pathname: currentStream, state: nextState })
-        }
-      },
-    })
-
   const indexRoute = {
     getComponents: getDiscoverComponents,
-    onEnter(nextState, replace) {
+    onEnter(nextState, replace, callback) {
       const {
         authentication: { isLoggedIn },
         gui: { currentStream },
       } = store.getState()
+
+      const fetchPromoAction = isLoggedIn ? fetchLoggedInPromos() : fetchLoggedOutPromos()
+      set(fetchPromoAction, 'meta.successAction', callback)
+      set(fetchPromoAction, 'meta.failureAction', callback)
+      store.dispatch(fetchPromoAction)
+
       if (isLoggedIn) {
         replace({ pathname: currentStream, state: nextState })
       }
@@ -90,7 +84,7 @@ const routes = store => {
       childRoutes: [
         WTFRoute,
         PostDetailRoute,
-        ...AuthenticationRoutes.map(route => deauthenticate(route)),
+        ...authenticationRoutes(store),
         discoverRoute(store),
         exploreRoute(store),
         ...StreamsRoutes.map(route => authenticate(route)),
