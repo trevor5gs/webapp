@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import Block from './Block'
+import ImageAsset from '../assets/ImageAsset'
 
-class ImageBlock extends Component {
+export default class ImageBlock extends Component {
 
   static propTypes = {
     blob: PropTypes.string,
@@ -14,7 +15,7 @@ class ImageBlock extends Component {
     data: {},
   }
 
-  onLoadImage = () => {
+  onLoadSuccess = () => {
     const { data } = this.props
     URL.revokeObjectURL(data.src)
   }
@@ -24,9 +25,9 @@ class ImageBlock extends Component {
     return (
       <Block {...this.props}>
         <div className={classNames('editable image', { isUploading })}>
-          <img
+          <ImageAsset
             alt={data.alt}
-            onLoad={this.onLoadImage}
+            onLoadSuccess={this.onLoadSuccess}
             src={blob || data.url}
           />
         </div>
@@ -34,6 +35,4 @@ class ImageBlock extends Component {
     )
   }
 }
-
-export default ImageBlock
 

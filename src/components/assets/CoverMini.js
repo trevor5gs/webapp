@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
+import ImageAsset from '../assets/ImageAsset'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -9,7 +10,7 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
-class CoverMini extends Component {
+export default class CoverMini extends Component {
 
   static propTypes = {
     coverImage: PropTypes.any,
@@ -23,12 +24,6 @@ class CoverMini extends Component {
     }
   }
 
-  componentDidMount() {
-    if (this.state.status === STATUS.REQUEST) {
-      this.createLoader()
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     const thisSource = this.getCoverSource()
     const nextSource = this.getCoverSource(nextProps)
@@ -39,23 +34,11 @@ class CoverMini extends Component {
     }
   }
 
-  componentDidUpdate() {
-    if (this.state.status === STATUS.REQUEST && !this.img) {
-      this.createLoader()
-    }
-  }
-
-  componentWillUnmount() {
-    this.disposeLoader()
-  }
-
   onLoadSuccess = () => {
-    this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
   }
 
   onLoadFailure = () => {
-    this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
   }
 
@@ -70,41 +53,25 @@ class CoverMini extends Component {
     return coverImage[imageSize] ? coverImage[imageSize].url : null
   }
 
-  createLoader() {
-    const src = this.getCoverSource()
-    this.disposeLoader()
-    if (src) {
-      this.img = new Image()
-      this.img.onload = this.onLoadSuccess
-      this.img.onerror = this.onLoadFailure
-      this.img.src = src
-    }
-  }
-
-  disposeLoader() {
-    if (this.img) {
-      this.img.onload = null
-      this.img.onerror = null
-      this.img = null
-    }
-  }
-
   render() {
     const { to } = this.props
     const { status } = this.state
-    const src = this.getCoverSource()
-    const klassNames = classNames('CoverMini', status)
-    const style = src ? { backgroundImage: `url(${src})` } : null
+    const classList = classNames('CoverMini', status)
+    const imageProps = {
+      className: 'CoverMiniImage',
+      isBackgroundImage: true,
+      onLoadFailure: this.onLoadFailure,
+      onLoadSuccess: this.onLoadSuccess,
+      src: this.getCoverSource(),
+    }
 
     return to ?
-      <Link to={to} className={klassNames}>
-        <figure className="CoverMiniImage" style={style} />
+      <Link to={to} className={classList}>
+        <ImageAsset {...imageProps} />
       </Link> :
-      <span className={klassNames}>
-        <figure className="CoverMiniImage" style={style} />
+      <span className={classList}>
+        <ImageAsset {...imageProps} />
       </span>
   }
 }
-
-export default CoverMini
 

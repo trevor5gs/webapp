@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
+import ImageAsset from './ImageAsset'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -9,8 +10,7 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
-class Avatar extends Component {
-
+export default class Avatar extends Component {
   static propTypes = {
     classList: PropTypes.string,
     isModifiable: PropTypes.bool,
@@ -37,12 +37,6 @@ class Avatar extends Component {
     }
   }
 
-  componentDidMount() {
-    if (this.state.status === STATUS.REQUEST) {
-      this.createLoader()
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     const thisSource = this.getAvatarSource()
     const nextSource = this.getAvatarSource(nextProps)
@@ -53,23 +47,11 @@ class Avatar extends Component {
     }
   }
 
-  componentDidUpdate() {
-    if (this.state.status === STATUS.REQUEST && !this.img) {
-      this.createLoader()
-    }
-  }
-
-  componentWillUnmount() {
-    this.disposeLoader()
-  }
-
   onLoadSuccess = () => {
-    this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
   }
 
   onLoadFailure = () => {
-    this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
   }
 
@@ -102,70 +84,41 @@ class Avatar extends Component {
     return /gif$/.test(this.props.sources.original.url)
   }
 
-  createLoader() {
-    const src = this.getAvatarSource()
-    this.disposeLoader()
-    if (src) {
-      this.img = new Image()
-      this.img.onload = this.onLoadSuccess
-      this.img.onerror = this.onLoadFailure
-      this.img.src = src
-    }
-  }
-
-  disposeLoader() {
-    if (this.img) {
-      this.img.onload = null
-      this.img.onerror = null
-      this.img = null
-    }
-  }
-
   render() {
     const { onClick, priority, to, userId, username } = this.props
-    const src = this.getAvatarSource()
-    const klassNames = this.getClassNames()
-    const isDraggable = username && username.length > 1 || priority && priority.length
+    const wrapperProps = {
+      className: this.getClassNames(),
+      'data-priority': priority || 'inactive',
+      'data-userid': userId,
+      'data-username': username,
+      draggable: username && username.length > 1 || priority && priority.length,
+    }
+    const imageProps = {
+      alt: username,
+      className: 'AvatarImage',
+      src: this.getAvatarSource(),
+      onLoadFailure: this.onLoadFailure,
+      onLoadSuccess: this.onLoadSuccess,
+    }
+
     if (to) {
       return (
-        <Link
-          className={klassNames}
-          data-priority={priority || 'inactive'}
-          data-userid={userId}
-          data-username={username}
-          to={to}
-          draggable={isDraggable}
-        >
-          <img className="AvatarImage" src={src} alt={username} />
+        <Link {...wrapperProps} to={to} >
+          <ImageAsset {...imageProps} />
         </Link>
       )
     } else if (onClick) {
       return (
-        <button
-          className={klassNames}
-          data-priority={priority || 'inactive'}
-          data-userid={userId}
-          data-username={username}
-          onClick={onClick}
-          draggable={isDraggable}
-        >
-          <img className="AvatarImage" src={src} alt={username} />
+        <button {...wrapperProps} onClick={onClick} >
+          <ImageAsset {...imageProps} />
         </button>
       )
     }
     return (
-      <span
-        className={klassNames}
-        data-priority={priority || 'inactive'}
-        data-userid={userId}
-        data-username={username}
-        draggable={isDraggable}
-      >
-        <img className="AvatarImage" src={src} alt={username} />
+      <span {...wrapperProps} >
+        <ImageAsset {...imageProps} />
       </span>
     )
   }
 }
-
-export default Avatar
 
