@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
-import { isNil, random } from 'lodash'
+import { isNil, random, isEqual } from 'lodash'
 import Credits from '../assets/Credits'
 
 const STATUS = {
@@ -11,7 +11,7 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
-class Promotion extends Component {
+export default class Promotion extends Component {
 
   static propTypes = {
     coverDPI: PropTypes.string,
@@ -37,6 +37,14 @@ class Promotion extends Component {
     if (this.state.status === STATUS.REQUEST) {
       this.createLoader()
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const creditsClickAction = null
+    const userlist = null
+    const thisCompare = { ...this.props, ...this.state, creditsClickAction, userlist }
+    const nextCompare = { ...nextProps, ...nextState, creditsClickAction, userlist }
+    return !isEqual(thisCompare, nextCompare)
   }
 
   componentWillUnmount() {
@@ -114,6 +122,4 @@ class Promotion extends Component {
     )
   }
 }
-
-export default Promotion
 

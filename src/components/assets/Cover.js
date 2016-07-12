@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { isEqual } from 'lodash'
 import classNames from 'classnames'
 
 const STATUS = {
@@ -47,6 +48,12 @@ class Cover extends Component {
         status: nextSource ? STATUS.REQUEST : STATUS.PENDING,
       })
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const thisCompare = { ...this.props, ...this.state }
+    const nextCompare = { ...nextProps, ...nextState }
+    return !isEqual(thisCompare, nextCompare)
   }
 
   componentDidUpdate() {
