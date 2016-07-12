@@ -39,21 +39,12 @@ export function getDiscoverAction(type) {
 
 export function generateTabs(primary, secondary, tertiary) {
   const tabs = []
-  // add featured by default
+  // add featured/trending/recent by default
   tabs.push({
     to: '/discover',
     children: 'Featured',
     activePattern: /^\/(?:discover(\/featured|\/recommended)?)?$/,
   })
-  for (const category of primary) {
-    tabs.push({
-      to: `/discover/${category.slug}`,
-      children: category.name,
-    })
-  }
-  // add line to split categories
-  tabs.push({ kind: 'divider' })
-  // add trending/recent
   tabs.push({
     to: '/discover/trending',
     children: 'Trending',
@@ -62,14 +53,19 @@ export function generateTabs(primary, secondary, tertiary) {
     to: '/discover/recent',
     children: 'Recent',
   })
-  for (const category of secondary) {
+  // add line to split categories
+  tabs.push({ kind: 'divider' })
+  for (const category of primary) {
     tabs.push({
       to: `/discover/${category.slug}`,
       children: category.name,
     })
   }
-  if (tertiary && tertiary.length) {
-    tabs.push({ kind: 'divider' })
+  for (const category of secondary) {
+    tabs.push({
+      to: `/discover/${category.slug}`,
+      children: category.name,
+    })
   }
   for (const category of tertiary) {
     tabs.push({
