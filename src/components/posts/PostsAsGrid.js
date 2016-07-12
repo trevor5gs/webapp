@@ -38,8 +38,6 @@ class PostsAsGrid extends Component {
 
   static propTypes = {
     columnCount: PropTypes.number,
-    currentUser: PropTypes.object,
-    json: PropTypes.object,
     posts: PropTypes.array.isRequired,
   }
 
@@ -65,7 +63,6 @@ class PostsAsGrid extends Component {
 
   render() {
     const { posts, columnCount } = this.props
-    if (!columnCount) { return null }
     const columns = []
     for (let i = 0; i < columnCount; i++) {
       columns.push([])
@@ -81,5 +78,11 @@ class PostsAsGrid extends Component {
   }
 }
 
-export default PostsAsGrid
+function mapStateToProps(state) {
+  return {
+    columnCount: state.gui.columnCount || 2,
+  }
+}
+
+export default connect(mapStateToProps)(PostsAsGrid)
 

@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { get, uniqBy } from 'lodash'
-import { camelize } from 'humps'
-import { getLinkObject } from '../../helpers/json_helper'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import PostParser from '../parsers/PostParser'
 import CommentParser from '../parsers/CommentParser'
@@ -67,13 +65,12 @@ export function usersAsList(users) {
   )
 }
 
-export function usersAsInviteeList(invitations, json) {
+export function usersAsInviteeList(invitations) {
   return (
     <div className="Users asInviteeList">
       {invitations.data.map((invitation) =>
         <UserInvitee
           invitation={invitation}
-          json={json}
           key={`userInviteeList_${invitation.id}`}
         />
       )}
@@ -81,14 +78,13 @@ export function usersAsInviteeList(invitations, json) {
   )
 }
 
-export function usersAsInviteeGrid(invitations, json) {
+export function usersAsInviteeGrid(invitations) {
   return (
     <div className="Users asInviteeGrid">
       {invitations.data.map((invitation) =>
         <UserInvitee
           className="UserInviteeGrid"
           invitation={invitation}
-          json={json}
           key={`userInviteeGrid_${invitation.id}`}
         />
       )}
@@ -96,14 +92,9 @@ export function usersAsInviteeGrid(invitations, json) {
   )
 }
 
-export function postsAsGrid(posts, json, currentUser, columnCount) {
+export function postsAsGrid(posts) {
   return (
-    <PostsAsGrid
-      posts={posts.data}
-      json={json}
-      columnCount={columnCount}
-      currentUser={currentUser}
-    />
+    <PostsAsGrid posts={posts.data} />
   )
 }
 
@@ -137,19 +128,14 @@ export function commentsAsList(post) {
   )
 }
 
-export function notificationList(notifications, json) {
+export function notificationList(notifications) {
   return (
     <div className="Notifications">
-      {notifications.data.map((notification, index) => {
-        const subject = getLinkObject(notification, 'subject', json)
-        return (
-          <NotificationParser
-            json={json}
-            key={`notificationParser${index}_${notification ? notification.createdAt : Date.now()}`}
-            notification={notification}
-            subject={subject}
-          />
-        ) }
+      {notifications.data.map((notification, index) =>
+        <NotificationParser
+          key={`notificationParser${index}_${notification ? notification.createdAt : Date.now()}`}
+          notification={notification}
+        />
       )}
     </div>
   )
@@ -164,7 +150,7 @@ export function userAvatars(users) {
   )
 }
 
-export function profileToggles(settings, json, currentUser) {
+export function profileToggles(settings) {
   return (
     settings.data.map((setting, index) => {
       if (setting.label.toLowerCase().indexOf('push') === 0) { return null }
@@ -177,8 +163,6 @@ export function profileToggles(settings, json, currentUser) {
                 definition={{ term: item.label, desc: item.info }}
                 id={item.key}
                 key={`preference_${item.key}`}
-                isChecked={currentUser[camelize(item.key)]}
-                isDisabled={!currentUser.isPublic && item.key === 'has_sharing_enabled'}
                 onToggleChange={preferenceToggleChanged}
               />
             )

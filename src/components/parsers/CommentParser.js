@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
-import { body, setModels } from './RegionParser'
+import { body, setAssets } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import CommentTools from '../comments/CommentTools'
 import Editor from '../../components/editor/Editor'
@@ -68,7 +68,7 @@ function parseComment(comment, author, currentUser, post, isGridLayout = true, j
     </div>
   )
   cells.push(footer(comment, author, currentUser, post))
-  setModels({})
+  setAssets({})
   return cells
 }
 
@@ -90,7 +90,7 @@ class CommentParser extends Component {
     const { comment, author, assets, commentBody,
       currentUser, isEditing, isGridLayout, json, post } = this.props
     if (!comment) { return null }
-    setModels({ assets })
+    setAssets(assets)
     return (
       <div>
         {isEditing && commentBody ?
