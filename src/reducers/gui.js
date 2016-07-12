@@ -1,17 +1,18 @@
 import { REHYDRATE } from 'redux-persist/constants'
 import _ from 'lodash'
-
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   AUTHENTICATION,
+  EDITOR,
   GUI,
   HEAD_FAILURE,
   HEAD_SUCCESS,
   LOAD_STREAM_SUCCESS,
+  OMNIBAR,
   PROFILE,
   SET_LAYOUT_MODE,
+  ZEROS,
 } from '../constants/action_types'
-
 
 let location = {}
 const oldDate = new Date()
@@ -76,9 +77,21 @@ const initialScrollState = {
   isNavbarSkippingTransition: false,
 }
 
+const initialNonPersistedState = {
+  isCompleterActive: false,
+  isNotificationsActive: false,
+  isOmnibarActive: false,
+  isProfileMenuActive: false,
+  isTextToolsActive: false,
+  saidHelloTo: [],
+  textToolsCoordinates: { top: -200, left: -666 },
+  textToolsStates: {},
+}
+
 export const initialState = {
   ...initialSizeState,
   ...initialScrollState,
+  ...initialNonPersistedState,
   activeNotificationsType: 'all',
   activeUserFollowingType: 'friend',
   currentStream: '/discover',
@@ -124,12 +137,24 @@ export const gui = (state = initialState, action = { type: '' }) => {
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:
       return { ...state, discoverKeyType: null }
+    case EDITOR.SET_IS_COMPLETER_ACTIVE:
+      return { ...state, isCompleterActive: action.payload.isCompleterActive }
+    case EDITOR.SET_IS_TEXT_TOOLS_ACTIVE:
+      return {
+        ...state,
+        isTextToolsActive: action.payload.isTextToolsActive,
+        textToolsStates: action.payload.textToolsStates,
+      }
+    case EDITOR.SET_TEXT_TOOLS_COORDINATES:
+      return { ...state, textToolsCoordinates: action.payload.textToolsCoordinates }
     case GUI.BIND_DISCOVER_KEY:
       return { ...state, discoverKeyType: action.payload.type }
     case GUI.NOTIFICATIONS_TAB:
       return { ...state, activeNotificationsType: action.payload.activeTabType }
     case GUI.SET_ACTIVE_USER_FOLLOWING_TYPE:
       return { ...state, activeUserFollowingType: action.payload.tab }
+    case GUI.SET_IS_PROFILE_MENU_ACTIVE:
+      return { ...state, isProfileMenuActive: action.payload.isProfileMenuActive }
     case GUI.SET_IS_OFFSET_LAYOUT:
       return { ...state, isOffsetLayout: action.payload.isOffsetLayout }
     case GUI.SET_LAST_DISCOVER_BEACON_VERSION:
@@ -152,6 +177,8 @@ export const gui = (state = initialState, action = { type: '' }) => {
       }
     case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
       return { ...state, ...action.payload }
+    case GUI.TOGGLE_NOTIFICATIONS:
+      return { ...state, isNotificationsActive: action.payload.isNotificationsActive }
     case HEAD_FAILURE:
       return { ...state, isNotificationsUnread: false }
     case HEAD_SUCCESS:
@@ -193,6 +220,9 @@ export const gui = (state = initialState, action = { type: '' }) => {
         isGridMode: getIsGridMode(state.modes),
         isOnboardingView,
       }
+    case OMNIBAR.OPEN:
+    case OMNIBAR.CLOSE:
+      return { ...state, isOmnibarActive: action.payload.isActive }
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
     case REHYDRATE:
@@ -200,6 +230,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
         return {
           ...state,
           ...action.payload.gui,
+          ...initialNonPersistedState,
           isLayoutToolHidden: state.isLayoutToolHidden,
         }
       }
@@ -212,6 +243,8 @@ export const gui = (state = initialState, action = { type: '' }) => {
       if (!mode) { return state }
       mode.mode = action.payload.mode
       return { ...state, isGridMode: action.payload.mode === 'grid' }
+    case ZEROS.SAY_HELLO:
+      return { ...state, saidHelloTo: [...state.saidHelloTo, action.payload.username] }
     default:
       return state
   }

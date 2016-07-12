@@ -84,25 +84,5 @@ describe('modal actions', () => {
       expect(action.payload.kind).to.equal('Alert')
     })
   })
-
-  context('#setIsDiscoverMenuActive', () => {
-    const action = subject.setIsDiscoverMenuActive({ isActive: true })
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('has similar action.name and action.type', () => {
-      expect(isFSAName(action, subject.setIsDiscoverMenuActive)).to.be.true
-    })
-
-    it('has a payload with the correct keys', () => {
-      expect(action.payload).to.have.keys('isDiscoverMenuActive')
-    })
-
-    it('sets the appropriate payload', () => {
-      expect(action.payload.isDiscoverMenuActive).to.be.true
-    })
-  })
 })
 

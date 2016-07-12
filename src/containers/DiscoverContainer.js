@@ -11,7 +11,6 @@ import {
   // loadFeaturedUsers,
 } from '../actions/discover'
 import { setLastDiscoverBeaconVersion } from '../actions/gui'
-import { setIsDiscoverMenuActive } from '../actions/modals'
 import { trackEvent } from '../actions/tracking'
 import { Discover } from '../components/views/Discover'
 
@@ -82,7 +81,6 @@ export class DiscoverContainer extends Component {
     coverDPI: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     isBeaconActive: PropTypes.bool.isRequired,
-    isDiscoverMenuActive: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     pageTitle: PropTypes.string,
     paramsType: PropTypes.string.isRequired,
@@ -127,10 +125,6 @@ export class DiscoverContainer extends Component {
     dispatch(bindDiscoverKey(paramsType))
   }
 
-  onClickDocument = () => {
-    this.deactivateDiscoverMenu()
-  }
-
   onClickTrackCredits = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('banderole-credits-clicked'))
@@ -139,20 +133,6 @@ export class DiscoverContainer extends Component {
   onDismissZeroStream = () => {
     const { dispatch } = this.props
     dispatch(setLastDiscoverBeaconVersion({ version: BEACON_VERSION }))
-  }
-
-  activateDiscoverMenu() {
-    const { dispatch, isDiscoverMenuActive } = this.props
-    if (isDiscoverMenuActive) { return }
-    document.addEventListener('click', this.onClickDocument)
-    dispatch(setIsDiscoverMenuActive({ isActive: true }))
-  }
-
-  deactivateDiscoverMenu() {
-    const { dispatch, isDiscoverMenuActive } = this.props
-    if (!isDiscoverMenuActive) { return }
-    document.removeEventListener('click', this.onClickDocument)
-    dispatch(setIsDiscoverMenuActive({ isActive: false }))
   }
 
   render() {
@@ -184,7 +164,7 @@ function sortCategories(a, b) {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { authentication, gui, json, modal } = state
+  const { authentication, gui, json } = state
   const { isLoggedIn } = authentication
   const result = get(json, 'pages.all-categories')
   const categories = []
@@ -238,8 +218,7 @@ function mapStateToProps(state, ownProps) {
   }
   return {
     coverDPI: gui.coverDPI,
-    isBeaconActive: authentication.isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
-    isDiscoverMenuActive: modal.isDiscoverMenuActive,
+    isBeaconActive: isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
     isLoggedIn,
     pageTitle,
     paramsType,

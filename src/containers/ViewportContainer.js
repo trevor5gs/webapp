@@ -147,7 +147,7 @@ class ViewportContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  const { gui, modal, routing } = state
+  const { gui, routing } = state
   return {
     coverOffset: gui.coverOffset,
     innerHeight: gui.innerHeight,
@@ -157,10 +157,10 @@ function mapStateToProps(state) {
     isNavbarFixed: gui.isNavbarFixed,
     isNavbarHidden: gui.isNavbarHidden,
     isNavbarSkippingTransition: gui.isNavbarSkippingTransition,
-    isNotificationsActive: modal.isNotificationsActive,
+    isNotificationsActive: gui.isNotificationsActive,
     isOffsetLayout: gui.isOffsetLayout,
     isOnboardingView: gui.isOnboardingView,
-    isProfileMenuActive: modal.isProfileMenuActive,
+    isProfileMenuActive: gui.isProfileMenuActive,
     offset: gui.coverOffset ? gui.coverOffset - 80 : 160,
     pathname: routing.location.pathname,
   }

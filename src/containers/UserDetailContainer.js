@@ -121,7 +121,7 @@ export class UserDetailContainer extends Component {
 }
 
 export function mapStateToProps(state, ownProps) {
-  const { authentication, gui, json, modal, stream } = state
+  const { authentication, gui, json, stream } = state
   const { params } = ownProps
   const { type = 'posts', username } = params
 
@@ -136,14 +136,14 @@ export function mapStateToProps(state, ownProps) {
     coverDPI: gui.coverDPI,
     coverImage: user && user.coverImage ? user.coverImage : null,
     coverOffset: gui.coverOffset,
-    isCoverActive: !modal.isOmnibarActive,
+    isCoverActive: !gui.isOmnibarActive,
     isCoverHidden: gui.isCoverHidden,
     isLoggedIn,
     isSelf,
     isStreamFailing: stream.type === PROFILE.DETAIL_FAILURE && stream.error && !user,
     hasZeroFollowers: user ? user.followersCount < 1 : false,
     hasZeroPosts: user ? user.postsCount < 1 : false,
-    hasSaidHelloTo: user ? modal.saidHelloTo.indexOf(user.username) !== -1 && !isSelf : false,
+    hasSaidHelloTo: user ? gui.saidHelloTo.indexOf(user.username) !== -1 && !isSelf : false,
     paramsType: type,
     paramsUsername: username,
     streamAction: getStreamAction({ activeUserFollowingType, type, username }),
