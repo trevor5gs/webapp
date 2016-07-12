@@ -137,7 +137,7 @@ export function getBlobFromBase64(b64Data, contentType, sliceSize) {
   return new Blob(byteArrays, { type })
 }
 
-export function processImage({ exifData, file, fileType, maxWidth = 2560, maxHeight = 1440 }) {
+export function processImage({ exifData, file, fileType, maxWidth = 2560, maxHeight = 2560 }) {
   return new Promise((resolve, reject) => {
     const img = new Image()
     img.onload = () => {
