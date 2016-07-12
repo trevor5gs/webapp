@@ -5,7 +5,7 @@ import 'isomorphic-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { Router, browserHistory, match } from 'react-router'
+import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { addFeatureDetection } from './vendor/jello'
 import { scrollToOffsetTop } from './vendor/scrolling'
@@ -29,23 +29,21 @@ updateTimeAgoStrings({ about: '' })
 
 const APP_VERSION = '3.0.21'
 
+const history = syncHistoryWithStore(browserHistory, store)
+const routes = createRoutes(store)
+const element = (
+  <Provider store={store}>
+    <Router history={history} routes={routes} />
+  </Provider>
+)
 
 const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
 
 const launchApplication = (storage, hasLocalStorage = false) => {
   addFeatureDetection()
   const persistor = persistStore(store, { storage, whitelist }, () => {
-    const history = syncHistoryWithStore(browserHistory, store)
-    const routes = createRoutes(store)
     const root = document.getElementById('root')
-    match({ history, routes }, (error, redirectLocation, renderProps) => {
-      ReactDOM.render(
-        <Provider store={store}>
-          <Router {...renderProps} />
-        </Provider>,
-        root
-      )
-    })
+    ReactDOM.render(element, root)
 
     // Scroll fix for layouts with Covers and universal rendering Normally we
     // call this in componentDidMount, but for the server rendered pages that
