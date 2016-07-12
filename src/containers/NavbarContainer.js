@@ -199,7 +199,7 @@ class NavbarContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  const { authentication, gui, json, modal, profile, routing } = state
+  const { authentication, gui, json, profile, routing } = state
   const currentStream = gui.currentStream
   const isLoggedIn = authentication.isLoggedIn
   const pathname = routing.location.pathname
@@ -215,9 +215,9 @@ function mapStateToProps(state) {
       isGridMode: gui.isGridMode,
       isLayoutToolHidden: gui.isLayoutToolHidden,
       isLoggedIn,
-      isNotificationsActive: modal.isNotificationsActive,
+      isNotificationsActive: gui.isNotificationsActive,
       isNotificationsUnread: gui.isNotificationsUnread,
-      isProfileMenuActive: modal.isProfileMenuActive,
+      isProfileMenuActive: gui.isProfileMenuActive,
       pathname,
       username: profile.username,
     }

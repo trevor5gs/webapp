@@ -38,9 +38,12 @@ describe('UserDetailContainer', () => {
     })
     const state = {
       authentication: { isLoggedIn: true },
-      gui: { activeUserFollowingType: 'friend' },
+      gui: {
+        activeUserFollowingType: 'friend',
+        isOmnibarActive: false,
+        saidHelloTo: ['phillip', 'damian'],
+      },
       json: { users: { 1: { ...user } } },
-      modal: { isOmnibarActive: false, saidHelloTo: ['phillip', 'damian'] },
       stream: { type: 'PROFILE.DETAIL_SUCCESS', error: {} },
     }
     const props = { params: { type: 'posts', username: 'damian' } }
@@ -85,9 +88,12 @@ describe('UserDetailContainer', () => {
     })
     const state = {
       authentication: { isLoggedIn: true },
-      gui: { activeUserFollowingType: 'friend' },
+      gui: {
+        activeUserFollowingType: 'friend',
+        isOmnibarActive: true,
+        saidHelloTo: ['phillip', 'damian'],
+      },
       json: { users: { 1: { ...user } } },
-      modal: { isOmnibarActive: true, saidHelloTo: ['phillip', 'damian'] },
       stream: { type: 'PROFILE.DETAIL_SUCCESS', error: {} },
     }
     const props = { params: { type: 'following', username: 'nikki' } }
@@ -140,9 +146,12 @@ describe('UserDetailContainer', () => {
     })
     const state = {
       authentication: { isLoggedIn: true },
-      gui: { activeUserFollowingType: 'friend' },
+      gui: {
+        activeUserFollowingType: 'friend',
+        isOmnibarActive: false,
+        saidHelloTo: ['phillip', 'damian'],
+      },
       json: { users: { 1: { ...user } } },
-      modal: { isOmnibarActive: false, saidHelloTo: ['phillip', 'damian'] },
       stream: { type: 'PROFILE.DETAIL_FAILURE', error: {} },
     }
     const props = { params: { type: 'following', username: 'nikki' } }

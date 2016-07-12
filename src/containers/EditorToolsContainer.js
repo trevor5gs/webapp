@@ -164,14 +164,14 @@ class EditorToolsContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  const { editor, emoji, gui, modal } = state
+  const { editor, emoji, gui } = state
   return {
     completions: editor.completions,
     emojis: emoji.emojis,
-    isCompleterActive: modal.isCompleterActive,
-    isTextToolsActive: modal.isTextToolsActive,
-    textToolsStates: modal.textToolsStates,
-    textToolsCoordinates: modal.textToolsCoordinates,
+    isCompleterActive: gui.isCompleterActive,
+    isTextToolsActive: gui.isTextToolsActive,
+    textToolsStates: gui.textToolsStates,
+    textToolsCoordinates: gui.textToolsCoordinates,
     deviceSize: gui.deviceSize,
   }
 }
