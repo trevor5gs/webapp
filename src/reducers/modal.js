@@ -15,7 +15,6 @@ const initialState = {
   component: null,
   isActive: false,
   isCompleterActive: false,
-  isDiscoverMenuActive: false,
   isNotificationsActive: false,
   isOmnibarActive: false,
   isProfileMenuActive: false,
@@ -54,11 +53,6 @@ export function modal(state = initialState, action) {
       return {
         ...state,
         textToolsCoordinates: action.payload.textToolsCoordinates,
-      }
-    case GUI.SET_IS_DISCOVER_MENU_ACTIVE:
-      return {
-        ...state,
-        isDiscoverMenuActive: action.payload.isDiscoverMenuActive,
       }
     case GUI.SET_IS_PROFILE_MENU_ACTIVE:
       return {

@@ -13,7 +13,6 @@ describe('modal reducer', () => {
         'component',
         'isActive',
         'isCompleterActive',
-        'isDiscoverMenuActive',
         'isNotificationsActive',
         'isOmnibarActive',
         'isProfileMenuActive',
