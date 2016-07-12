@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import _ from 'lodash'
 import classNames from 'classnames'
+import ImageAsset from '../../assets/ImageAsset'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -10,6 +11,17 @@ const STATUS = {
   SUCCESS: null,
   FAILURE: 'isFailing',
 }
+
+function mapStateToProps(state) {
+  const { gui } = state
+  return {
+    columnWidth: gui.columnWidth,
+    commentOffset: gui.deviceSize === 'mobile' ? 40 : 60,
+    contentWidth: gui.contentWidth,
+    innerHeight: gui.innerHeight,
+  }
+}
+
 class ImageRegion extends Component {
 
   static propTypes = {
@@ -50,27 +62,11 @@ class ImageRegion extends Component {
     }
   }
 
-  componentDidMount() {
-    if (this.state.status === STATUS.REQUEST) {
-      this.createLoader()
-    }
-  }
-
   componentWillReceiveProps() {
     const { scale } = this.state
     if (scale) {
       this.setImageScale()
     }
-  }
-
-  componentDidUpdate() {
-    if (this.state.status === STATUS.REQUEST && !this.img) {
-      this.createLoader()
-    }
-  }
-
-  componentWillUnmount() {
-    this.disposeLoader()
   }
 
   onClickStaticImageRegion = () => {
@@ -84,12 +80,10 @@ class ImageRegion extends Component {
   }
 
   onLoadSuccess = () => {
-    this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
   }
 
   onLoadFailure = () => {
-    this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
   }
 
@@ -188,39 +182,16 @@ class ImageRegion extends Component {
     return false
   }
 
-  createLoader() {
-    const isBasicAttachment = this.isBasicAttachment()
-    const sources = isBasicAttachment ? this.props.content.url : this.getImageSourceSet()
-    this.disposeLoader()
-    if (sources) {
-      this.img = new Image()
-      this.img.onload = this.onLoadSuccess
-      this.img.onerror = this.onLoadFailure
-      if (isBasicAttachment) {
-        this.img.src = sources
-      } else {
-        this.img.srcset = sources
-        this.img.src = this.attachment.hdpi.url
-      }
-    }
-  }
-
-  disposeLoader() {
-    if (this.img) {
-      this.img.onload = null
-      this.img.onerror = null
-      this.img = null
-    }
-  }
-
   renderGifAttachment() {
     const { content, isNotification } = this.props
     const dimensions = this.getImageDimensions()
     return (
-      <img
+      <ImageAsset
         alt={content.alt ? content.alt.replace('.gif', '') : null}
         className="ImageAttachment"
         height={isNotification ? 'auto' : dimensions.height}
+        onLoadFailure={this.onLoadFailure}
+        onLoadSuccess={this.onLoadSuccess}
         role="presentation"
         src={this.attachment.optimized.url}
         width={dimensions.width}
@@ -233,13 +204,15 @@ class ImageRegion extends Component {
     const srcset = this.getImageSourceSet()
     const dimensions = this.getImageDimensions()
     return (
-      <img
+      <ImageAsset
         alt={content.alt ? content.alt.replace('.jpg', '') : null}
         className="ImageAttachment"
         height={isNotification ? 'auto' : dimensions.height}
+        onLoadFailure={this.onLoadFailure}
+        onLoadSuccess={this.onLoadSuccess}
         role="presentation"
-        src={this.attachment.hdpi.url}
         srcSet={srcset}
+        src={this.attachment.hdpi.url}
         width={dimensions.width}
       />
     )
@@ -252,9 +225,11 @@ class ImageRegion extends Component {
       attrs.height = 'auto'
     }
     return (
-      <img
+      <ImageAsset
         alt={content.alt ? content.alt.replace('.jpg', '') : null}
         className="ImageAttachment"
+        onLoadFailure={this.onLoadFailure}
+        onLoadSuccess={this.onLoadSuccess}
         role="presentation"
         {...attrs}
       />
@@ -301,16 +276,6 @@ class ImageRegion extends Component {
         {asLink ? this.renderRegionAsLink() : this.renderRegionAsStatic()}
       </div>
     )
-  }
-}
-
-const mapStateToProps = (state) => {
-  const { gui } = state
-  return {
-    columnWidth: gui.columnWidth,
-    commentOffset: gui.deviceSize === 'mobile' ? 40 : 60,
-    contentWidth: gui.contentWidth,
-    innerHeight: gui.innerHeight,
   }
 }
 

@@ -1,0 +1,83 @@
+import React, { Component, PropTypes } from 'react'
+import { isEqual } from 'lodash'
+
+export default class ImageAsset extends Component {
+
+  static propTypes = {
+    isBackgroundImage: PropTypes.bool,
+    onLoadSuccess: PropTypes.func,
+    onLoadFailure: PropTypes.func,
+    src: PropTypes.string.isRequired,
+    srcSet: PropTypes.string,
+  }
+
+  componentDidMount() {
+    this.createLoader()
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(this.props, nextProps)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!this.img && prevProps.src !== this.props.src) {
+      this.createLoader()
+    }
+  }
+
+  componentWillUnmount() {
+    this.disposeLoader()
+  }
+
+  onLoadSuccess = () => {
+    this.disposeLoader()
+    if (typeof this.props.onLoadSuccess === 'function') {
+      this.props.onLoadSuccess()
+    }
+  }
+
+  onLoadFailure = () => {
+    this.disposeLoader()
+    if (typeof this.props.onLoadFailure === 'function') {
+      this.props.onLoadFailure()
+    }
+  }
+
+  createLoader() {
+    this.disposeLoader()
+    const { src, srcSet } = this.props
+    const hasSource = !!(src && src.length || srcSet && srcSet.length)
+    if (!hasSource) { return }
+    this.img = new Image()
+    this.img.onload = this.onLoadSuccess
+    this.img.onerror = this.onLoadFailure
+    if (srcSet) {
+      this.img.srcset = srcSet
+    }
+    this.img.src = src
+  }
+
+  disposeLoader() {
+    if (!this.img) { return }
+    this.img.onload = null
+    this.img.onerror = null
+    this.img = null
+  }
+
+  render() {
+    const elementProps = { ...this.props }
+    delete elementProps.onLoadFailure
+    delete elementProps.onLoadSuccess
+    if (elementProps.isBackgroundImage) {
+      const style = elementProps.src ? { backgroundImage: `url(${elementProps.src})` } : null
+      delete elementProps.isBackgroundImage
+      return (
+        <figure {...elementProps} style={style} />
+      )
+    }
+    return (
+      <img alt="" {...elementProps} />
+    )
+  }
+}
+

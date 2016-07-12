@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { isEqual } from 'lodash'
 import classNames from 'classnames'
+import ImageAsset from '../assets/ImageAsset'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -9,7 +10,7 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
-class Cover extends Component {
+export default class Cover extends Component {
 
   static propTypes = {
     coverDPI: PropTypes.string,
@@ -34,12 +35,6 @@ class Cover extends Component {
     }
   }
 
-  componentDidMount() {
-    if (this.state.status === STATUS.REQUEST) {
-      this.createLoader()
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     const thisSource = this.getCoverSource()
     const nextSource = this.getCoverSource(nextProps)
@@ -56,23 +51,11 @@ class Cover extends Component {
     return !isEqual(thisCompare, nextCompare)
   }
 
-  componentDidUpdate() {
-    if (this.state.status === STATUS.REQUEST && !this.img) {
-      this.createLoader()
-    }
-  }
-
-  componentWillUnmount() {
-    this.disposeLoader()
-  }
-
   onLoadSuccess = () => {
-    this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
   }
 
   onLoadFailure = () => {
-    this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
   }
 
@@ -105,36 +88,18 @@ class Cover extends Component {
     return /gif$/.test(this.props.coverImage.original.url)
   }
 
-  createLoader() {
-    const src = this.getCoverSource()
-    this.disposeLoader()
-    if (src) {
-      this.img = new Image()
-      this.img.onload = this.onLoadSuccess
-      this.img.onerror = this.onLoadFailure
-      this.img.src = src
-    }
-  }
-
-  disposeLoader() {
-    if (this.img) {
-      this.img.onload = null
-      this.img.onerror = null
-      this.img = null
-    }
-  }
-
   render() {
-    const src = this.getCoverSource()
-    const klassNames = this.getClassNames()
-    const style = src ? { backgroundImage: `url(${src})` } : null
     return (
-      <div className={klassNames}>
-        <figure className="CoverImage" style={style} />
+      <div className={this.getClassNames()}>
+        <ImageAsset
+          className="CoverImage"
+          isBackgroundImage
+          onLoadFailure={this.onLoadFailure}
+          onLoadSuccess={this.onLoadSuccess}
+          src={this.getCoverSource()}
+        />
       </div>
     )
   }
 }
-
-export default Cover
 

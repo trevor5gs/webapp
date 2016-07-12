@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import classNames from 'classnames'
 import { isNil, random, isEqual } from 'lodash'
 import Credits from '../assets/Credits'
+import ImageAsset from '../assets/ImageAsset'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -33,12 +34,6 @@ export default class Promotion extends Component {
     }
   }
 
-  componentDidMount() {
-    if (this.state.status === STATUS.REQUEST) {
-      this.createLoader()
-    }
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     const creditsClickAction = null
     const userlist = null
@@ -47,17 +42,11 @@ export default class Promotion extends Component {
     return !isEqual(thisCompare, nextCompare)
   }
 
-  componentWillUnmount() {
-    this.disposeLoader()
-  }
-
   onLoadSuccess = () => {
-    this.disposeLoader()
     this.setState({ status: STATUS.SUCCESS })
   }
 
   onLoadFailure = () => {
-    this.disposeLoader()
     this.setState({ status: STATUS.FAILURE })
   }
 
@@ -67,25 +56,6 @@ export default class Promotion extends Component {
     if (!featuredUser) { return null }
     const { coverImage } = featuredUser
     return coverImage[coverDPI].url
-  }
-
-  createLoader() {
-    const src = this.getCoverSource()
-    this.disposeLoader()
-    if (src) {
-      this.img = new Image()
-      this.img.onload = this.onLoadSuccess
-      this.img.onerror = this.onLoadFailure
-      this.img.src = src
-    }
-  }
-
-  disposeLoader() {
-    if (this.img) {
-      this.img.onload = null
-      this.img.onerror = null
-      this.img = null
-    }
   }
 
   renderCallToAction(isLoggedIn, cta) {
@@ -102,17 +72,18 @@ export default class Promotion extends Component {
     const { creditsClickAction, isLoggedIn } = this.props
     if (!featuredUser) { return null }
     const { caption, cta } = featuredUser
-    const src = this.getCoverSource()
-    const klassNames = classNames('Promotion', status)
-    const style = src ? { backgroundImage: `url(${src})` } : null
-
     if (isNil(featuredUser)) {
       return null
     }
-
     return (
-      <div className={klassNames}>
-        <figure className="PromotionImage" style={style} />
+      <div className={classNames('Promotion', status)}>
+        <ImageAsset
+          className="PromotionImage"
+          isBackgroundImage
+          onLoadFailure={this.onLoadFailure}
+          onLoadSuccess={this.onLoadSuccess}
+          src={this.getCoverSource()}
+        />
         <div className="PromotionCaption">
           <h1>{caption}</h1>
           {this.renderCallToAction(isLoggedIn, cta)}
