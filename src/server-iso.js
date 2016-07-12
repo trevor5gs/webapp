@@ -130,10 +130,14 @@ function renderFromServer(req, res) {
   })
 }
 
-const loggedInPaths = {
+const noPreRenderPaths = {
   following: /^\/following/,
+  forgotPassword: /^\/forgot-password/,
+  enter: /^\/enter/,
   invitations: /^\/invitations/,
+  join: /^\/join/,
   settings: /^\/settings/,
+  signup: /^\/signup/,
   starred: /^\/starred/,
   notifications: /^\/notifications/,
 }
@@ -142,7 +146,7 @@ export function canPrerenderRequest(req) {
   if (req.get('X-Skip-Prerender') === 'true') {
     return false
   }
-  return values(loggedInPaths).every((regex) =>
+  return values(noPreRenderPaths).every((regex) =>
     !req.url.match(regex)
   )
 }
