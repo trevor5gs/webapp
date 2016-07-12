@@ -28,7 +28,10 @@ export function profile(state = {}, action) {
       }
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
-      return {}
+      // keep around the registrationId so that android
+      // can re-register a user if they logout and then login
+      // as a different user without leaving the app
+      return { registrationId: state.registrationId }
     case PROFILE.EXPORT_SUCCESS:
       if (action.payload.serverResponse.status === 200) {
         return { ...state, dataExport: action.payload.response.exportUrl }
