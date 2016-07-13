@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { replace } from 'react-router-redux'
 import { debounce, isNil, sample, set } from 'lodash'
-import { isAndroid } from '../../vendor/jello'
+import { isAndroid, isElloAndroid } from '../../vendor/jello'
 import { ONBOARDING_VERSION } from '../../constants/application_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
-import { loadProfile, saveProfile } from '../../actions/profile'
+import { loadProfile, requestPushSubscription, saveProfile } from '../../actions/profile'
 import { signIn } from '../../actions/authentication'
 import { trackEvent } from '../../actions/tracking'
 import { AppleStore, GooglePlayStore } from '../../components/assets/AppStores'
@@ -25,11 +25,15 @@ import { MainView } from '../../components/views/MainView'
 class SignIn extends Component {
 
   static propTypes = {
+    buildVersion: PropTypes.string,
+    bundleId: PropTypes.string,
     coverDPI: PropTypes.string,
     coverOffset: PropTypes.number,
     currentStream: PropTypes.string,
     featuredUser: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
+    marketingVersion: PropTypes.string,
+    registrationId: PropTypes.string,
     webOnboardingVersionSeen: PropTypes.string,
   }
 
@@ -110,10 +114,18 @@ class SignIn extends Component {
   onSubmit = (e) => {
     e.preventDefault()
 
-    const { dispatch } = this.props
+    const { dispatch, registrationId } = this.props
     const action = signIn(this.userValue, this.passwordValue)
 
-    set(action, 'meta.successAction', () => dispatch(loadProfile()))
+    set(action, 'meta.successAction', () => {
+      dispatch(loadProfile())
+      // if we have a registrationId on login send the subscription
+      // up again since this could be a new user that logged in
+      if (registrationId) {
+        const { buildVersion, bundleId, marketingVersion } = this.props
+        dispatch(requestPushSubscription(registrationId, bundleId, marketingVersion, buildVersion))
+      }
+    })
     set(action, 'meta.failureAction', () => this.setState({
       failureMessage: 'Your username/email or password are incorrect',
     }))
@@ -205,13 +217,22 @@ class SignIn extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  currentStream: state.gui.currentStream,
-  coverDPI: state.gui.coverDPI,
-  coverOffset: state.gui.coverOffset,
-  featuredUser: sample(state.promotions.authentication),
-  webOnboardingVersionSeen: state.profile.webOnboardingVersion,
-})
+const mapStateToProps = (state) => {
+  const obj = {
+    currentStream: state.gui.currentStream,
+    coverDPI: state.gui.coverDPI,
+    coverOffset: state.gui.coverOffset,
+    featuredUser: sample(state.promotions.authentication),
+    webOnboardingVersionSeen: state.profile.webOnboardingVersion,
+  }
+  if (isElloAndroid()) {
+    obj.buildVersion = state.profile.buildVersion
+    obj.bundleId = state.profile.bundleId
+    obj.marketingVersion = state.profile.marketingVersion
+    obj.registrationId = state.profile.registrationId
+  }
+  return obj
+}
 
 export default connect(mapStateToProps)(SignIn)
 
