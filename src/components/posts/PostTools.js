@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { push, replace } from 'react-router-redux'
+import { set } from 'lodash'
 import classNames from 'classnames'
 import { LOAD_STREAM_REQUEST } from '../../constants/action_types'
 import { COMMENTS, POSTS } from '../../constants/mapping_types'
@@ -169,10 +170,11 @@ class PostTools extends Component {
   onCofirmDeletePost = () => {
     const { dispatch, pathname, post, previousPath } = this.props
     this.closeModal()
-    dispatch(postActions.deletePost(post))
+    const action = postActions.deletePost(post)
     if (pathname.match(post.token)) {
-      dispatch(replace(previousPath || '/'))
+      set(action, 'meta.successAction', replace(previousPath || '/'))
     }
+    dispatch(action)
   }
 
   getPostDetailLink() {
