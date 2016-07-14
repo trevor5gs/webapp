@@ -95,14 +95,8 @@ export class DiscoverContainer extends Component {
     paramsType: 'featured',
   }
 
-  static preRender = (store, routerState) => {
-    const discoverAction = getDiscoverAction(routerState.params.type || 'featured')
-    const categoryAction = getCategories()
-    return Promise.all([
-      store.dispatch(discoverAction),
-      store.dispatch(categoryAction),
-    ])
-  }
+  static preRender = (store, routerState) =>
+    store.dispatch(getDiscoverAction(routerState.params.type || 'featured'))
 
   componentWillMount() {
     this.state = { primaryIndex: undefined }
