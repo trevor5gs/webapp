@@ -99,12 +99,9 @@ class AppContainer extends Component {
 AppContainer.preRender = (store) => {
   const state = store.getState()
   if (state.authentication && state.authentication.isLoggedIn) {
-    return Promise.all([
-      store.dispatch(getCategories()),
-      store.dispatch(loadProfile()),
-    ])
+    return store.dispatch(loadProfile())
   }
-  return store.dispatch(getCategories())
+  return null
 }
 
 const PAGING_BLACKLIST = [
