@@ -67,9 +67,10 @@ app.use('/static', express.static('public/static', { maxAge: '1y' }))
 // Return promises for initial loads
 function preRender(renderProps, store, sagaTask) {
   const promises = renderProps.components.map(component => ((component && component.preRender) ? component.preRender(store, renderProps) : null)).filter(component => !!component)
-
-  promises.push(sagaTask.done)
-  return Promise.all(promises)
+  return Promise.all(promises).then(() => {
+    store.close()
+    return sagaTask.done
+  })
 }
 
 function renderFromServer(req, res) {
@@ -125,7 +126,6 @@ function renderFromServer(req, res) {
         res.status(500).end()
       })
       renderToString(InitialComponent)
-      store.close()
     })
   })
 }
