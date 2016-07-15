@@ -27,7 +27,7 @@ function createRedirect(from, to) {
   }
 }
 
-const routes = store => {
+const routes = (store, isServer = false) => {
   // Wrap up authenticated routes
   const authenticate = (route) => {
     const oldOnEnter = route.onEnter
@@ -98,7 +98,7 @@ const routes = store => {
       ],
       onEnter() {
         const { authentication: { isLoggedIn } } = store.getState()
-        if (!isLoggedIn) {
+        if (!isLoggedIn && !isServer) {
           store.dispatch(refreshAuthenticationToken())
         }
       },

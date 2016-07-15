@@ -82,7 +82,8 @@ function renderFromServer(req, res) {
         isLoggedIn: false,
       },
     })
-    const routes = createRoutes(store)
+    const isServer = true
+    const routes = createRoutes(store, isServer)
     const history = syncHistoryWithStore(memoryHistory, store)
     const sagaTask = store.runSaga(serverRoot)
 
