@@ -236,6 +236,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
       }
       return {
         ...state,
+        ...initialNonPersistedState,
         isLayoutToolHidden: state.isLayoutToolHidden,
       }
     case SET_LAYOUT_MODE:
