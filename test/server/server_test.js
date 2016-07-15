@@ -44,7 +44,52 @@ describe('isomorphically rendering on the server', () => {
             expect(res).to.have.status(200)
             expect(res).to.be.html
             const document = jsdom.jsdom(res.text)
-            expect(document.querySelectorAll('main')).to.have.lengthOf(1)
+            expect(document.querySelectorAll('main.Discover')).to.have.lengthOf(1)
+          })
+      })
+    )
+
+    it('isomorphically renders a user detail', () =>
+      fetchOauthToken(() => {
+        chai
+          .request(app)
+          .get('/666')
+          .end((err, res) => {
+            expect(err).to.be.null
+            expect(res).to.have.status(200)
+            expect(res).to.be.html
+            const document = jsdom.jsdom(res.text)
+            expect(document.querySelectorAll('main.UserDetail')).to.have.lengthOf(1)
+          })
+      })
+    )
+
+    it('isomorphically renders a post detail', () =>
+      fetchOauthToken(() => {
+        chai
+          .request(app)
+          .get('/666/post/my_sweet_token_here')
+          .end((err, res) => {
+            expect(err).to.be.null
+            expect(res).to.have.status(200)
+            expect(res).to.be.html
+            const document = jsdom.jsdom(res.text)
+            expect(document.querySelectorAll('main.PostDetail')).to.have.lengthOf(1)
+          })
+      })
+    )
+
+    it('isomorphically renders search', () =>
+      fetchOauthToken(() => {
+        chai
+          .request(app)
+          .get('/search')
+          .end((err, res) => {
+            expect(err).to.be.null
+            expect(res).to.have.status(200)
+            expect(res).to.be.html
+            const document = jsdom.jsdom(res.text)
+            expect(document.querySelectorAll('main.Search')).to.have.lengthOf(1)
           })
       })
     )
