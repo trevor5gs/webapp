@@ -1,7 +1,11 @@
 import { set } from 'lodash'
 import AppContainer from '../containers/AppContainer'
 import { refreshAuthenticationToken } from '../actions/authentication'
-import { fetchLoggedInPromos, fetchLoggedOutPromos } from '../actions/promotions'
+import {
+  fetchAuthenticationPromos,
+  fetchLoggedInPromos,
+  fetchLoggedOutPromos,
+} from '../actions/promotions'
 import PostDetailRoute from './post_detail'
 import WTFRoute from './wtf'
 import authenticationRoutes from './authentication'
@@ -25,6 +29,31 @@ function createRedirect(from, to) {
       replace({ pathname: to, state: nextState })
     },
   }
+}
+
+// TODO: this seems a bit goofy but I couldn't think on a friday
+// of a better way to load in all of the types to be available
+// for all of the possible scenarios that they show up on
+// especially since they might get added to following/starred
+// might want to make a single call to get all promos instead
+// and then just key off of a name to get the right ones
+function fetchAllPromos(store, callback) {
+  const authPromoFn = () => {
+    const loggedOutPromoFn = () => {
+      const loggedOutPromoAction = fetchLoggedOutPromos()
+      set(loggedOutPromoAction, 'meta.successAction', callback)
+      set(loggedOutPromoAction, 'meta.failureAction', callback)
+      store.dispatch(loggedOutPromoAction)
+    }
+    const loggedInPromoAction = fetchLoggedInPromos()
+    set(loggedInPromoAction, 'meta.successAction', loggedOutPromoFn)
+    set(loggedInPromoAction, 'meta.failureAction', loggedOutPromoFn)
+    store.dispatch(loggedInPromoAction)
+  }
+  const authPromoAction = fetchAuthenticationPromos()
+  set(authPromoAction, 'meta.successAction', authPromoFn)
+  set(authPromoAction, 'meta.failureAction', authPromoFn)
+  store.dispatch(authPromoAction)
 }
 
 const routes = (store, isServer = false) => {
@@ -58,16 +87,11 @@ const routes = (store, isServer = false) => {
 
   const indexRoute = {
     getComponents: getDiscoverComponents,
-    onEnter(nextState, replace, callback) {
+    onEnter(nextState, replace) {
       const {
         authentication: { isLoggedIn },
         gui: { currentStream },
       } = store.getState()
-
-      const fetchPromoAction = isLoggedIn ? fetchLoggedInPromos() : fetchLoggedOutPromos()
-      set(fetchPromoAction, 'meta.successAction', callback)
-      set(fetchPromoAction, 'meta.failureAction', callback)
-      store.dispatch(fetchPromoAction)
 
       if (isLoggedIn) {
         replace({ pathname: currentStream, state: nextState })
@@ -96,10 +120,15 @@ const routes = (store, isServer = false) => {
         ...SearchRoutes,
         UserDetailRoute,
       ],
-      onEnter() {
+      onEnter(nextState, replace, callback) {
         const { authentication: { isLoggedIn } } = store.getState()
         if (!isLoggedIn && !isServer) {
-          store.dispatch(refreshAuthenticationToken())
+          const refreshAction = refreshAuthenticationToken()
+          set(refreshAction, 'meta.successAction', fetchAllPromos(store, callback))
+          set(refreshAction, 'meta.failureAction', fetchAllPromos(store, callback))
+          store.dispatch(refreshAction)
+        } else {
+          fetchAllPromos(store, callback)
         }
       },
     },

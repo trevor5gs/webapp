@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { random } from 'lodash'
 import { isAndroid } from '../../vendor/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
-import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { sendForgotPasswordRequest } from '../../actions/authentication'
 import { trackEvent } from '../../actions/tracking'
 import { AppleStore, GooglePlayStore } from '../../components/assets/AppStores'
@@ -21,10 +20,11 @@ class ForgotPassword extends Component {
     coverDPI: PropTypes.string,
     coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
+    userlist: PropTypes.array,
   }
 
   componentWillMount() {
-    const userlist = AUTHENTICATION_PROMOTIONS
+    const { userlist } = this.props
     const index = random(0, userlist.length - 1)
     this.state = {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
@@ -143,6 +143,7 @@ const mapStateToProps = (state) => {
   return {
     coverDPI: gui.coverDPI,
     coverOffset: gui.coverOffset,
+    userlist: state.promotions.authentication,
   }
 }
 

@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { random, debounce } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
-import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { getInviteEmail } from '../../actions/invitations'
 import { checkAvailability, signUpUser } from '../../actions/profile'
 import { trackEvent } from '../../actions/tracking'
@@ -35,11 +34,11 @@ class Join extends Component {
     dispatch: PropTypes.func.isRequired,
     email: PropTypes.string,
     invitationCode: PropTypes.string,
+    userlist: PropTypes.array,
   }
 
   componentWillMount() {
-    const { invitationCode } = this.props
-    const userlist = AUTHENTICATION_PROMOTIONS
+    const { invitationCode, userlist } = this.props
     const index = random(0, userlist.length - 1)
     this.state = {
       showInvitationError: false,
@@ -331,6 +330,7 @@ const mapStateToProps = (state, ownProps) => {
     coverOffset: gui.coverOffset,
     email: profile.email,
     invitationCode: ownProps.params.invitationCode,
+    userlist: state.promotions.authentication,
   }
 }
 

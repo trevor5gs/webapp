@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { random } from 'lodash'
-import { AUTHENTICATION_PROMOTIONS } from '../../constants/promotions/authentication'
 import { trackEvent } from '../../actions/tracking'
 import { AppleStore, GooglePlayStore } from '../../components/assets/AppStores'
 import Cover from '../../components/assets/Cover'
@@ -15,10 +14,11 @@ class SignUp extends Component {
     coverDPI: PropTypes.string,
     coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
+    userlist: PropTypes.array,
   }
 
   componentWillMount() {
-    const userlist = AUTHENTICATION_PROMOTIONS
+    const { userlist } = this.props
     const index = random(0, userlist.length - 1)
     this.state = {
       featuredUser: userlist[index],
@@ -57,6 +57,7 @@ const mapStateToProps = (state) => {
   return {
     coverDPI: gui.coverDPI,
     coverOffset: gui.coverOffset,
+    userlist: state.promotions.authentication,
   }
 }
 

@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import { debounce, get } from 'lodash'
 import { hideSoftKeyboard } from '../../vendor/jello'
-import { LOGGED_IN_PROMOTIONS } from '../../constants/promotions/logged_in'
-import { LOGGED_OUT_PROMOTIONS } from '../../constants/promotions/logged_out'
 import { updateQueryParams } from '../../helpers/uri_helper'
 import * as SearchActions from '../../actions/search'
 import { trackEvent } from '../../actions/tracking'
@@ -26,6 +24,7 @@ class Search extends Component {
         type: PropTypes.string,
       }).isRequired,
     }).isRequired,
+    promotions: PropTypes.array,
   }
 
   static preRender = (store, routerState) => {
@@ -103,7 +102,7 @@ class Search extends Component {
   }
 
   render() {
-    const { coverDPI, isLoggedIn } = this.props
+    const { coverDPI, isLoggedIn, promotions } = this.props
     const { terms, type } = this.state
     const tabs = [
       { type: 'posts', children: 'Posts' },
@@ -115,7 +114,7 @@ class Search extends Component {
           coverDPI={coverDPI}
           creditsClickAction={this.onClickTrackCredits}
           isLoggedIn={isLoggedIn}
-          userlist={isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS}
+          userlist={promotions}
         />
         <form className="SearchBar" onSubmit={this.onSubmit}>
           <SearchControl
@@ -138,9 +137,11 @@ class Search extends Component {
 
 
 function mapStateToProps(state) {
+  const { isLoggedIn } = state.authentication
   return {
     coverDPI: state.gui.coverDPI,
-    isLoggedIn: state.authentication.isLoggedIn,
+    isLoggedIn,
+    promotions: isLoggedIn ? state.promotions.loggedIn : state.promotions.loggedOut,
   }
 }
 
