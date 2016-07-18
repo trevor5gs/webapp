@@ -1,7 +1,10 @@
 import { set } from 'lodash'
 import AppContainer from '../containers/AppContainer'
 import { refreshAuthenticationToken } from '../actions/authentication'
-import { fetchLoggedInPromos, fetchLoggedOutPromos } from '../actions/promotions'
+import {
+  fetchLoggedInPromos,
+  fetchLoggedOutPromos,
+} from '../actions/promotions'
 import PostDetailRoute from './post_detail'
 import WTFRoute from './wtf'
 import authenticationRoutes from './authentication'
@@ -15,7 +18,7 @@ import NotificationsRoute from './notifications'
 import InvitationsRoutes from './invitations'
 import SettingsRoutes from './settings'
 import OnboardingRoutes from './onboarding'
-import SearchRoutes from './search'
+import { search as searchRoute, find as findRoute } from './search'
 import UserDetailRoute from './user_detail'
 
 function createRedirect(from, to) {
@@ -93,7 +96,8 @@ const routes = (store, isServer = false) => {
         ...SettingsRoutes.map(route => authenticate(route)),
         createRedirect('onboarding', '/onboarding/communities'),
         ...OnboardingRoutes.map(route => authenticate(route)),
-        ...SearchRoutes,
+        searchRoute(store),
+        findRoute(store),
         UserDetailRoute,
       ],
       onEnter() {

@@ -1,7 +1,9 @@
+import { set } from 'lodash'
 import { decamelizeKeys } from 'humps'
 import store from '../store'
 import { requestPushSubscription, saveProfile } from '../actions/profile'
 import { isElloAndroid } from '../vendor/jello'
+import { fetchLoggedInPromos, fetchLoggedOutPromos } from '../actions/promotions'
 
 export function preferenceToggleChanged(obj) {
   const newObj = { ...obj }
@@ -27,5 +29,12 @@ if (typeof window !== 'undefined') {
   if (isElloAndroid()) {
     AndroidInterface.webAppLoaded()
   }
+}
+
+export function loadPromotions(isLoggedIn, callback) {
+  const fetchPromoAction = isLoggedIn ? fetchLoggedInPromos() : fetchLoggedOutPromos()
+  set(fetchPromoAction, 'meta.successAction', callback)
+  set(fetchPromoAction, 'meta.failureAction', callback)
+  store.dispatch(fetchPromoAction)
 }
 
