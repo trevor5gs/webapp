@@ -41,6 +41,7 @@ class BlockCollection extends Component {
     dragBlock: PropTypes.object,
     editorId: PropTypes.string.isRequired,
     hasContent: PropTypes.bool,
+    hasMedia: PropTypes.bool,
     hasMention: PropTypes.bool,
     isComment: PropTypes.bool,
     isLoading: PropTypes.bool,
@@ -360,8 +361,8 @@ class BlockCollection extends Component {
 
   render() {
     const {
-      affiliateLink, avatar, cancelAction, collection, dragBlock, editorId, hasContent, hasMention,
-      isComment, isLoading, isMobileGridStream, isOwnPost, isPosting, order, submitText,
+      affiliateLink, avatar, cancelAction, collection, dragBlock, editorId, hasContent, hasMedia,
+      hasMention, isComment, isLoading, isMobileGridStream, isOwnPost, isPosting, order, submitText,
     } = this.props
     const { dragBlockTop, hasDragOver } = this.state
     const firstBlockIsText = collection[order[0]] ? /text/.test(collection[order[0]].kind) : true
@@ -369,8 +370,9 @@ class BlockCollection extends Component {
     const editorClassNames = classNames('editor', {
       withQuickEmoji: showQuickEmoji,
       hasDragOver,
-      hasMention,
       hasContent,
+      hasMedia,
+      hasMention,
       isComment,
       isLoading,
       isPosting,
@@ -403,6 +405,7 @@ class BlockCollection extends Component {
           disableSubmitAction={isPosting || isLoading || !hasContent}
           editorId={editorId}
           handleFileAction={this.handleFiles}
+          hasMedia={hasMedia}
           ref="postActionBar"
           replyAllAction={isComment && isOwnPost && !isMobileGridStream ? this.replyAll : null}
           submitAction={this.submit}
@@ -422,6 +425,7 @@ function mapStateToProps(state, ownProps) {
     currentUsername: state.profile.username,
     dragBlock: editor.dragBlock,
     hasContent: editor.hasContent,
+    hasMedia: editor.hasMedia,
     hasMention: editor.hasMention,
     isLoading: editor.isLoading,
     isPosting: editor.isPosting,

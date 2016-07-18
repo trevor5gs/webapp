@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
+import classNames from 'classnames'
 import { connect } from 'react-redux'
 import {
-  BrowseIcon, CameraIcon, CancelIcon, PostIcon, ReplyAllIcon, MoneyIcon,
+  BrowseIcon, CheckIcon, CameraIcon, CancelIcon, PostIcon, ReplyAllIcon, MoneyIcon,
 } from './EditorIcons'
 import { openModal, closeModal } from '../../actions/modals'
 import { updateAffiliateLink } from '../../actions/editor'
@@ -17,13 +18,13 @@ class PostActionBar extends Component {
     disableSubmitAction: PropTypes.bool,
     editorId: PropTypes.string.isRequired,
     handleFileAction: PropTypes.func.isRequired,
+    hasMedia: PropTypes.bool,
     replyAllAction: PropTypes.func,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
   }
 
   onAddAffiliateLink = ({ value }) => {
-    console.log('onAddAffiliateLink', value)
     const { dispatch, editorId } = this.props
     dispatch(updateAffiliateLink(editorId, value))
     this.onCloseModal()
@@ -65,13 +66,20 @@ class PostActionBar extends Component {
   }
 
   render() {
-    const { deviceSize, disableSubmitAction, replyAllAction, submitText } = this.props
+    const { deviceSize, disableSubmitAction, hasMedia, replyAllAction, submitText } = this.props
+    const isAffiliateLinked = this.props.affiliateLink && this.props.affiliateLink.length
     return (
       <div className="editor-actions">
 
-        <button className="PostActionButton forMoney" ref="moneyButton" onClick={this.money}>
+        <button
+          className={classNames('PostActionButton forMoney', { isAffiliateLinked })}
+          disabled={!hasMedia}
+          ref="moneyButton"
+          onClick={this.money}
+        >
           <span className="PostActionButtonLabel">Sell</span>
           <MoneyIcon />
+          <CheckIcon />
         </button>
 
         <button className="PostActionButton forUpload" ref="browseButton" onClick={this.browse}>

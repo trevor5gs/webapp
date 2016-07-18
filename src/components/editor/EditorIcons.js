@@ -2,6 +2,13 @@
 import React from 'react'
 import { SVGIcon } from '../svg/SVGComponents'
 
+export const CheckIcon = () =>
+  <SVGIcon className="CheckIcon CheckMark">
+    <g>
+      <polyline points="4.8,10.8 9.9,17 17.2,5" />
+    </g>
+  </SVGIcon>
+
 export const DragIcon = () =>
   <SVGIcon className="DragIcon">
     <g>

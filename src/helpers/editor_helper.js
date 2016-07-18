@@ -7,6 +7,7 @@ const methods = {}
 const initialState = {
   collection: {},
   hasContent: false,
+  hasMedia: false,
   hasMention: false,
   isLoading: false,
   isPosting: false,
@@ -64,6 +65,13 @@ methods.addHasContent = (state) => {
     firstBlock.data !== '<br>'
   )
   newState.hasContent = hasContent
+  return newState
+}
+
+methods.addHasMedia = (state) => {
+  const newState = cloneDeep(state)
+  const { collection, order } = newState
+  newState.hasMedia = order.some((uid) => /embed|image/.test(collection[uid].kind))
   return newState
 }
 

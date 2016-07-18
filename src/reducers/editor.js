@@ -16,6 +16,7 @@ export function editor(state = initialState, action) {
       newState[editorId].shouldPersist = get(action, 'payload.shouldPersist', false)
     } else if (newState[editorId]) {
       newState[editorId] = editorMethods.addHasContent(newState[editorId])
+      newState[editorId] = editorMethods.addHasMedia(newState[editorId])
       newState[editorId] = editorMethods.addHasMention(newState[editorId])
       newState[editorId] = editorMethods.addIsLoading(newState[editorId])
     }

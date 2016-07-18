@@ -28,10 +28,22 @@
   position: absolute
   left: rem(20)
 
-.PostActionButton.forMoney > .SVGIcon > g
+.PostActionButton.forMoney > .SVGIcon.MoneyIcon > g
   fill: #aaa
   stroke: none
 
+.PostActionButton .CheckMark
+  position: absolute
+  top: rem(7)
+  right: 0
+  transform: scale(0.6)
+  display: none
+.PostActionButton .CheckMark g
+  stroke: #00d100
+.PostActionButton.isAffiliateLinked .CheckMark
+  display: block
+.PostActionButton.isAffiliateLinked > .SVGIcon.MoneyIcon > g
+  fill: black
 
 .PostActionButton[disabled]
   pointer-events: none
@@ -45,7 +57,7 @@
     stroke: white
   .no-touch .PostActionButton:hover > .BrowseIcon > g
     fill: black
-  .no-touch .PostActionButton.forMoney:hover > .SVGIcon > g
+  .no-touch .PostActionButton.forMoney:hover > .SVGIcon.MoneyIcon > g
     fill: white
     stroke: none
 
