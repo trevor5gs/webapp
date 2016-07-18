@@ -36,18 +36,21 @@ export default (store) => {
       getComponents(location, cb) {
         cb(null, Join)
       },
+      onEnter,
     },
     {
       path: 'signup',
       getComponents(location, cb) {
         cb(null, SignUp)
       },
+      onEnter,
     },
     {
       path: 'forgot-password',
       getComponents(location, cb) {
         cb(null, ForgotPassword)
       },
+      onEnter,
     },
   ]
 }
