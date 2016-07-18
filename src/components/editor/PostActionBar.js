@@ -1,10 +1,16 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { BrowseIcon, CameraIcon, CancelIcon, PostIcon, ReplyAllIcon } from './EditorIcons'
+import {
+  BrowseIcon, CameraIcon, CancelIcon, PostIcon, ReplyAllIcon, MoneyIcon,
+} from './EditorIcons'
+import { openModal, closeModal } from '../../actions/modals'
+import { updateAffiliateLink } from '../../actions/editor'
+import AffiliateDialog from '../dialogs/AffiliateDialog'
 
 class PostActionBar extends Component {
 
   static propTypes = {
+    affiliateLink: PropTypes.string,
     cancelAction: PropTypes.func.isRequired,
     deviceSize: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
@@ -14,6 +20,18 @@ class PostActionBar extends Component {
     replyAllAction: PropTypes.func,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
+  }
+
+  onAddAffiliateLink = ({ value }) => {
+    console.log('onAddAffiliateLink', value)
+    const { dispatch, editorId } = this.props
+    dispatch(updateAffiliateLink(editorId, value))
+    this.onCloseModal()
+  }
+
+  onCloseModal = () => {
+    const { dispatch } = this.props
+    dispatch(closeModal())
   }
 
   submitted = () => {
@@ -36,10 +54,25 @@ class PostActionBar extends Component {
     this.props.cancelAction()
   }
 
+  money = () => {
+    const { dispatch, affiliateLink } = this.props
+    dispatch(openModal(
+      <AffiliateDialog
+        onConfirm={this.onAddAffiliateLink}
+        onDismiss={this.onCloseModal}
+        text={affiliateLink}
+      />))
+  }
+
   render() {
     const { deviceSize, disableSubmitAction, replyAllAction, submitText } = this.props
     return (
       <div className="editor-actions">
+
+        <button className="PostActionButton forMoney" ref="moneyButton" onClick={this.money}>
+          <span className="PostActionButtonLabel">Sell</span>
+          <MoneyIcon />
+        </button>
 
         <button className="PostActionButton forUpload" ref="browseButton" onClick={this.browse}>
           <span className="PostActionButtonLabel">Upload</span>

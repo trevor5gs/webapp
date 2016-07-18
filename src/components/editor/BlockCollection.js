@@ -31,6 +31,7 @@ import { addInputObject, removeInputObject } from './InputComponent'
 class BlockCollection extends Component {
 
   static propTypes = {
+    affiliateLink: PropTypes.string,
     avatar: PropTypes.object,
     blocks: PropTypes.array,
     cancelAction: PropTypes.func.isRequired,
@@ -247,10 +248,12 @@ class BlockCollection extends Component {
             <div style={{ width: block.data.width, height: block.data.height }} />
           </Block>
         )
+      case 'affiliate_embed':
       case 'embed':
         return (
           <EmbedBlock {...blockProps} />
         )
+      case 'affiliate_image':
       case 'image':
         return (
           <ImageBlock blob={block.blob} {...blockProps} isUploading={block.isLoading} />
@@ -259,6 +262,7 @@ class BlockCollection extends Component {
         return (
           <RepostBlock {...blockProps} onRemoveBlock={null} />
         )
+      case 'affiliate_text':
       case 'text':
         return (
           <TextBlock
@@ -312,17 +316,30 @@ class BlockCollection extends Component {
     const results = []
     for (const uid of order) {
       const block = collection[uid]
-      switch (block.kind) {
-        case 'text':
-          if (block.data.length) {
+      if (/affiliate_/.test(block.kind)) {
+        switch (block.kind) {
+          case 'affiliate_text':
+            if (block.data.length) {
+              results.push({ kind: block.kind, data: block.data, link_url: block.link_url })
+            }
+            break
+          default:
+            results.push({ kind: block.kind, data: block.data, link_url: block.link_url })
+            break
+        }
+      } else {
+        switch (block.kind) {
+          case 'text':
+            if (block.data.length) {
+              results.push({ kind: block.kind, data: block.data })
+            }
+            break
+          case 'repost':
+            break
+          default:
             results.push({ kind: block.kind, data: block.data })
-          }
-          break
-        case 'repost':
-          break
-        default:
-          results.push({ kind: block.kind, data: block.data })
-          break
+            break
+        }
       }
     }
     return results
@@ -343,11 +360,11 @@ class BlockCollection extends Component {
 
   render() {
     const {
-      avatar, cancelAction, collection, dragBlock, editorId, hasContent, hasMention,
+      affiliateLink, avatar, cancelAction, collection, dragBlock, editorId, hasContent, hasMention,
       isComment, isLoading, isMobileGridStream, isOwnPost, isPosting, order, submitText,
     } = this.props
     const { dragBlockTop, hasDragOver } = this.state
-    const firstBlockIsText = collection[order[0]] ? collection[order[0]].kind === 'text' : true
+    const firstBlockIsText = collection[order[0]] ? /text/.test(collection[order[0]].kind) : true
     const showQuickEmoji = isComment && firstBlockIsText
     const editorClassNames = classNames('editor', {
       withQuickEmoji: showQuickEmoji,
@@ -381,6 +398,7 @@ class BlockCollection extends Component {
         </div>
         {showQuickEmoji ? <QuickEmoji onAddEmoji={this.onInsertEmoji} /> : null}
         <PostActionBar
+          affiliateLink={affiliateLink}
           cancelAction={cancelAction}
           disableSubmitAction={isPosting || isLoading || !hasContent}
           editorId={editorId}
@@ -398,6 +416,7 @@ class BlockCollection extends Component {
 function mapStateToProps(state, ownProps) {
   const editor = get(state, ['editor', ownProps.editorId], {})
   return {
+    affiliateLink: get(editor, ['collection', editor.order[0], 'link_url']),
     avatar: state.profile.avatar,
     collection: editor.collection,
     currentUsername: state.profile.username,

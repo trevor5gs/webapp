@@ -75,11 +75,11 @@ class ShareDialog extends Component {
     // grab out the image and summary from the post
     this.image = null
     for (const region of post.summary) {
-      if (region.kind === 'text') {
+      if (/text/.test(region.kind)) {
         const div = document.createElement('div')
         div.innerHTML = region.data
         summary = div.textContent
-      } else if (!this.image && region.kind === 'image') {
+      } else if (!this.image && /image/.test(region.kind)) {
         this.image = region.data.url
         if (this.image.indexOf('//') === 0) {
           this.image = `http:${this.image}`

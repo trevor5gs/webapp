@@ -11,10 +11,10 @@ const initialState = {
   isLoading: false,
   isPosting: false,
   order: [],
+  postAffiliateLink: null,
   shouldPersist: false,
   uid: 0,
 }
-
 
 methods.addCompletions = (state, action) => {
   const newState = cloneDeep(state)
@@ -41,7 +41,7 @@ methods.rehydrateEditors = (persistedEditors = {}) => {
       // clear out the blobs
       Object.keys(pe.collection).forEach((uid) => {
         const block = pe.collection[uid]
-        if (block.kind === 'image') {
+        if (/image/.test(block.kind)) {
           delete block.blob
           pe.collection[uid] = block
         }
@@ -73,7 +73,7 @@ methods.addHasMention = (state) => {
   let hasMention = false
   for (const uid of order) {
     const block = collection[uid]
-    if (block && block.kind === 'text' && userRegex.test(block.data)) {
+    if (block && /text/.test(block.kind) && userRegex.test(block.data)) {
       hasMention = true
       break
     }
@@ -86,7 +86,7 @@ methods.addIsLoading = (state) => {
   const newState = cloneDeep(state)
   const { collection } = newState
   let isLoading = values(collection).some((block) =>
-    block.kind === 'image' && block.isLoading
+    /image/.test(block.kind) && block.isLoading
   )
   if (!isLoading && newState.dragBlock) { isLoading = newState.dragBlock.isLoading }
   newState.isLoading = isLoading
@@ -96,7 +96,12 @@ methods.addIsLoading = (state) => {
 methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
-  collection[newState.uid] = { ...block, uid: newState.uid }
+  const newBlock = { ...block, uid: newState.uid }
+  if (newState.postAffiliateLink) {
+    newBlock.link_url = newState.postAffiliateLink
+    newBlock.kind = `affiliate_${block.kind}`
+  }
+  collection[newState.uid] = newBlock
   order.push(newState.uid)
   newState.uid++
   if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(newState) }
@@ -109,11 +114,11 @@ methods.addEmptyTextBlock = (state, shouldCheckForEmpty = false) => {
   if (order.length > 1) {
     const last = collection[order[order.length - 1]]
     const secondToLast = collection[order[order.length - 2]]
-    if (secondToLast.kind === 'text' && last.kind === 'text' && !last.data.length) {
+    if (/text/.test(secondToLast.kind) && /text/.test(last.kind) && !last.data.length) {
       return methods.remove({ shouldCheckForEmpty, state: newState, uid: last.uid })
     }
   }
-  if (!order.length || collection[order[order.length - 1]].kind !== 'text') {
+  if (!order.length || !/text/.test(collection[order[order.length - 1]].kind)) {
     newState = methods.add({ block: { data: '', kind: 'text' }, state: newState })
   }
   return newState
@@ -133,7 +138,7 @@ methods.removeEmptyTextBlock = (state) => {
   const { collection, order } = newState
   if (order.length > 0) {
     const last = collection[order[order.length - 1]]
-    if (last && last.kind === 'text' && !last.data.length) {
+    if (last && /text/.test(last.kind) && !last.data.length) {
       delete collection[last.uid]
       order.splice(order.indexOf(last.uid), 1)
     }
@@ -163,7 +168,7 @@ methods.reorderBlocks = (state, action) => {
 methods.appendText = (state, text) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
-  const textBlocks = order.filter((orderUid) => collection[orderUid].kind === 'text')
+  const textBlocks = order.filter((orderUid) => /text/.test(collection[orderUid].kind))
   const lastTextBlock = collection[textBlocks[textBlocks.length - 1]]
   if (lastTextBlock) {
     lastTextBlock.data += text
@@ -175,7 +180,7 @@ methods.appendText = (state, text) => {
 methods.appendUsernames = (state, usernames) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
-  const textBlocks = order.filter((orderUid) => collection[orderUid].kind === 'text')
+  const textBlocks = order.filter((orderUid) => /text/.test(collection[orderUid].kind))
   const lastTextBlock = collection[textBlocks[textBlocks.length - 1]]
   const text = reduce(usernames, (memo, { username }) => `${memo}@${username} `, '')
   if (lastTextBlock && !lastTextBlock.data.includes(text)) {
@@ -189,13 +194,34 @@ methods.replaceText = (state, action) => {
   const newState = cloneDeep(state)
   const { collection } = newState
   const { editorId, uid } = action.payload
-  if (collection[uid].kind === 'text') {
+  if (/text/.test(collection[uid].kind)) {
     const selector = `[data-editor-id="${editorId}"][data-collection-id="${uid}"]`
     const elem = document.querySelector(selector)
     if (elem && elem.firstChild) {
       collection[uid].data = elem.firstChild.innerHTML
     }
   }
+  return newState
+}
+
+methods.updateAffiliateLink = (state, action) => {
+  const newState = cloneDeep(state)
+  const { payload: { link } } = action
+  // once individual blocks can get their own links
+  // we can rip out this overall property on editor
+  newState.postAffiliateLink = link
+  newState.order.forEach((uid) => {
+    const block = newState.collection[uid]
+    if (link && link.length) {
+      block.link_url = link
+      if (!/affiliate_/.test(block.kind)) {
+        block.kind = `affiliate_${block.kind}`
+      }
+    } else {
+      block.kind = block.kind.replace('affiliate_', '')
+      delete block.link_url
+    }
+  })
   return newState
 }
 
@@ -283,6 +309,8 @@ methods.getEditorObject = (state = initialState, action) => {
         state: newState,
       })
       return newState
+    case EDITOR.UPDATE_AFFILIATE_LINK:
+      return methods.updateAffiliateLink(newState, action)
     case EDITOR.UPDATE_BLOCK:
       return methods.updateBlock(newState, action)
     default:

@@ -5,7 +5,7 @@ import trunc from 'trunc-html'
 function getTextContent(blocks) {
   let text = ''
   for (const block of blocks) {
-    if (block.kind === 'text') {
+    if (/text/.test(block.kind)) {
       text += block.data
     }
   }
@@ -29,7 +29,7 @@ function getDescription(text) {
 function getImages(blocks) {
   const imageUrls = []
   for (const block of blocks) {
-    if (block.kind === 'image' && block.data && block.data.url) {
+    if (/image/.test(block.kind) && block.data && block.data.url) {
       imageUrls.push(block.data.url)
     }
   }
@@ -39,7 +39,7 @@ function getImages(blocks) {
 function getEmbeds(blocks) {
   const embedUrls = []
   for (const block of blocks) {
-    if (block.kind === 'embed' && block.data && block.data.thumbnailLargeUrl) {
+    if (/embed/.test(block.kind) && block.data && block.data.thumbnailLargeUrl) {
       embedUrls.push(block.data.thumbnailLargeUrl)
     }
   }

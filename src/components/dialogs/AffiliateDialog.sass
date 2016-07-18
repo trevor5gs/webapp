@@ -1,0 +1,47 @@
+@import ../../vendor/lib
+
+.AffiliateDialog
+  width: 100%
+  max-width: rem(440)
+
+.AffiliateDialogTitle
+  font-size: rem(24)
+  margin-bottom: rem(30)
+
+.AffiliateDialogControl
+  width: 100%
+.AffiliateDialogControl .FormControlInput.asBoxControl
+  height: rem(50)
+  padding: 0 rem(10)
+
+.AffiliateDialogButton
+  +sans-typeset
+  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease
+  width: rem(100)
+  height: rem(50)
+  padding: 0 rem(20)
+  border-radius: rem(5)
+  line-height: rem(50)
+  text-align: center
+  color: #aaa
+
+.AffiliateDialogButton.isSubmit
+  margin-right: rem(10)
+  background-color: #00d100
+  color: white
+
+.AffiliateDialogButton.isRemove
+  margin-right: rem(10)
+  background-color: #aaa
+  color: white
+
+.AffiliateDialogButton:focus,
+.no-touch .AffiliateDialogButton:hover
+  background-color: #666
+  border-color: #666
+  color: white
+
+.AffiliateDialogButton[disabled]
+  color: #666
+
+

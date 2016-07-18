@@ -17,14 +17,17 @@ class RepostBlock extends Component {
   getBlockElement(block, uid) {
     const data = block.data
     switch (block.kind) {
+      case 'affiliate_embed':
       case 'embed':
         return (
           <img key={`repostEmbed_${uid}`} src={data.thumbnailLargeUrl} alt={data.service} />
         )
+      case 'affiliate_image':
       case 'image':
         return (
           <img key={`repostImage_${uid}`} src={data.url} alt={data.alt} />
         )
+      case 'affiliate_text':
       case 'text':
         return (
           <div key={`repostText_${uid}`} dangerouslySetInnerHTML={{ __html: data }} />
