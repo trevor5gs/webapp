@@ -443,7 +443,7 @@ function mapStateToProps(state, ownProps) {
   if (notification.subjectType.toLowerCase() === SUBJECT_TYPE.POST) {
     postAuthor = getLinkObject(subject, 'author', state.json)
     // comment
-    if (subject.parentPostId) {
+    if (subject.postId) {
       parentPost = getLinkObject(subject, 'parentPost', state.json)
       parentPostAuthor = getLinkObject(parentPost, 'author', state.json)
     }
