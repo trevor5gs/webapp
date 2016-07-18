@@ -4,8 +4,6 @@ import { replace } from 'react-router-redux'
 import { debounce, get, isEqual } from 'lodash'
 import { updateQueryParams } from '../helpers/uri_helper'
 import { searchForPosts, searchForUsers } from '../actions/search'
-import { LOGGED_IN_PROMOTIONS } from '../constants/promotions/logged_in'
-import { LOGGED_OUT_PROMOTIONS } from '../constants/promotions/logged_out'
 import { trackEvent } from '../actions/tracking'
 import { hideSoftKeyboard } from '../vendor/jello'
 import { Search } from '../components/views/Search'
@@ -35,12 +33,13 @@ export function shouldSearchContainerUpdate(thisProps, nextProps) {
 }
 
 export function mapStateToProps(state, ownProps) {
-  const { authentication, gui } = state
+  const { authentication, gui, promotions } = state
   const { location } = ownProps
   return {
     coverDPI: gui.coverDPI,
     isLoggedIn: authentication.isLoggedIn,
     pathname: get(location, 'pathname', ''),
+    promotions: authentication.isLoggedIn ? promotions.loggedIn : promotions.loggedOut,
     terms: get(location, 'query.terms', ''),
     type: get(location, 'query.type', 'posts'),
   }
@@ -53,6 +52,7 @@ export class SearchContainer extends Component {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     pathname: PropTypes.string.isRequired,
+    promotions: PropTypes.array,
     type: PropTypes.string.isRequired,
     terms: PropTypes.string.isRequired,
   }
@@ -114,14 +114,14 @@ export class SearchContainer extends Component {
   }
 
   render() {
-    const { coverDPI, isLoggedIn, terms, type } = this.props
+    const { coverDPI, isLoggedIn, promotions, terms, type } = this.props
     const props = {
       coverDPI,
       isLoggedIn,
       onChange: this.onChangeControl,
       onClickTrackCredits: this.onClickTrackCredits,
       onSubmit: this.onSubmit,
-      promotions: isLoggedIn ? LOGGED_IN_PROMOTIONS : LOGGED_OUT_PROMOTIONS,
+      promotions,
       streamAction: getStreamAction(this.props),
       streamKey: `search_${type}_${terms}`,
       tabs: TABS,
