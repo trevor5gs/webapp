@@ -451,7 +451,7 @@ function mapStateToProps(state, ownProps) {
     if (parentPost && parentPost.repostId) {
       repost = parentPost
       repostAuthor = getLinkObject(repost, 'author', state.json)
-      repostedSource = getLinkObject(subject, 'repostedSource', state.json)
+      repostedSource = getLinkObject(repost, 'repostedSource', state.json)
       repostedSourceAuthor = getLinkObject(repostedSource, 'author', state.json)
     }
   }
