@@ -11,6 +11,8 @@ class TextBlock extends Component {
     data: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     editorId: PropTypes.string.isRequired,
+    kind: PropTypes.string.isRequired,
+    linkURL: PropTypes.string,
     onInput: PropTypes.func.isRequired,
     shouldAutofocus: PropTypes.bool.isRequired,
     uid: PropTypes.number.isRequired,
@@ -26,6 +28,7 @@ class TextBlock extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    if (nextProps.linkURL !== this.props.linkURL) { return true }
     return !(nextProps.data === this.refs.text.innerHTML)
   }
 
@@ -75,8 +78,8 @@ class TextBlock extends Component {
   }
 
   updateTextBlock() {
-    const { onInput, uid } = this.props
-    onInput({ kind: 'text', data: this.getData(), uid })
+    const { kind, linkURL, onInput, uid } = this.props
+    onInput({ kind, data: this.getData(), uid, link_url: linkURL })
   }
 
   render() {

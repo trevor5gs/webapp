@@ -235,6 +235,7 @@ class BlockCollection extends Component {
       editorId,
       key: block.uid,
       kind: block.kind,
+      linkURL: block.link_url,
       onRemoveBlock: this.remove,
       uid: block.uid,
     }

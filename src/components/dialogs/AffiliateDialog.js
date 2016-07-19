@@ -12,6 +12,9 @@ class AffiliateDialog extends Component {
   }
 
   onClickSubmit = () => {
+    if (this.value.indexOf('http') !== 0) {
+      this.value = `http://${this.value}`
+    }
     this.props.onConfirm({ value: this.value })
   }
 
