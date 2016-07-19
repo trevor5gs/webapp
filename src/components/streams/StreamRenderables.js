@@ -15,6 +15,7 @@ import UserList from '../users/UserList'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
+import { isElloAndroid } from '../../vendor/jello'
 
 export function categoriesAsGrid(categories) {
   return (
@@ -153,7 +154,7 @@ export function userAvatars(users) {
 export function profileToggles(settings) {
   return (
     settings.data.map((setting, index) => {
-      if (setting.label.toLowerCase().indexOf('push') === 0) { return null }
+      if (!isElloAndroid() && setting.label.toLowerCase().indexOf('push') === 0) { return null }
       const arr = [<TreeButton key={`settingLabel${index}`}>{setting.label}</TreeButton>]
       arr.push(
         <TreePanel key={`settingItems${index}`}>
