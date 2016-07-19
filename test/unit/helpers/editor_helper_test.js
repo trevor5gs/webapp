@@ -808,6 +808,15 @@ describe('editor helper', () => {
       }
     })
 
+    it('calls #appendUsernames with EDITOR.LOAD_REPLY_ALL_SUCCESS', () => {
+      spy = sinon.stub(subject.methods, 'appendUsernames')
+      action = {
+        type: EDITOR.LOAD_REPLY_ALL_SUCCESS,
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
+    })
+
     it('updates the dragBlock if one exists with EDITOR.SAVE_ASSET_SUCCESS', () => {
       const newState = {
         dragBlock: {
@@ -842,6 +851,29 @@ describe('editor helper', () => {
       expect(state.collection[0].data.url).to.equal('blah')
     })
 
+    it('updates the drag image block with EDITOR.SAVE_ASSET_SUCCESS', () => {
+      const newState = {
+        dragBlock: {
+          kind: 'image',
+          data: { url: 'what' },
+          uid: 0,
+        },
+        collection: {
+          1: {
+            kind: 'image',
+            data: { url: 'que' },
+            uid: 1,
+          },
+        },
+      }
+      action = {
+        type: EDITOR.SAVE_ASSET_SUCCESS,
+        payload: { response: { url: 'blah' }, uid: 0 },
+      }
+      state = subject.methods.getEditorObject(newState, action)
+      expect(state.dragBlock.data.url).to.equal('blah')
+    })
+
     it('calls #removeEmptyTextBlock and #add with EDITOR.TMP_IMAGE_CREATED', () => {
       spy = sinon.stub(subject.methods, 'removeEmptyTextBlock')
       const addSpy = sinon.stub(subject.methods, 'add')
@@ -852,6 +884,24 @@ describe('editor helper', () => {
       state = subject.methods.getEditorObject(subject.initialState, action)
       expect(spy.called).to.be.true
       expect(addSpy.called).to.be.true
+    })
+
+    it('calls #updateAffiliateLink with EDITOR.UPDATE_AFFILIATE_LINK', () => {
+      spy = sinon.stub(subject.methods, 'updateAffiliateLink')
+      action = {
+        type: EDITOR.UPDATE_AFFILIATE_LINK,
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
+    })
+
+    it('calls #updateBlock with EDITOR.UPDATE_BLOCK', () => {
+      spy = sinon.stub(subject.methods, 'updateBlock')
+      action = {
+        type: EDITOR.UPDATE_BLOCK,
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
     })
   })
 })
