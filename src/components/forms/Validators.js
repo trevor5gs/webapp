@@ -1,5 +1,6 @@
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { ERROR_MESSAGES as ERROR } from '../../constants/locales/en'
+import urlRegex from 'url-regex'
 
 export function isFormValid(states) {
   return states.every((state) => state.status === STATUS.SUCCESS)
@@ -15,7 +16,7 @@ export function containsInvalidUsernameCharacters(value) {
 }
 
 export function isValidURL(value) {
-  return (/(?:(?:https?|ftp):\/\/)?(.{2,}\.?){1,}/i).test(value)
+  return urlRegex({ exact: true }).test(value)
 }
 
 // Client-side only validation
