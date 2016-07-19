@@ -16,7 +16,13 @@ export function containsInvalidUsernameCharacters(value) {
 }
 
 export function isValidURL(value) {
-  return urlRegex({ exact: true }).test(value)
+  // this is added since we only validate affiliate links
+  // which would get the protocol prepended if not there
+  let newValue = value
+  if (newValue.indexOf('http') !== 0) {
+    newValue = `http://${newValue}`
+  }
+  return urlRegex({ exact: true }).test(newValue)
 }
 
 // Client-side only validation
