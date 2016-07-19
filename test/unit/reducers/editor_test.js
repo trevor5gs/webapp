@@ -42,10 +42,12 @@ describe('editor reducer', () => {
         it('calls #addHasContent, #addHasMention, and #addIsLoading', () => {
           action = { payload: { editorId: 666 } }
           const contentSpy = sinon.stub(subject.editorMethods, 'addHasContent')
+          const mediaSpy = sinon.stub(subject.editorMethods, 'addHasMedia')
           const mentionSpy = sinon.stub(subject.editorMethods, 'addHasMention')
           const loadingSpy = sinon.stub(subject.editorMethods, 'addIsLoading')
           state = subject.editor({}, action)
           expect(contentSpy.called).to.be.true
+          expect(mediaSpy.called).to.be.true
           expect(mentionSpy.called).to.be.true
           expect(loadingSpy.called).to.be.true
         })
