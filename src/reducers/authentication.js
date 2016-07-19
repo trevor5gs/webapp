@@ -1,37 +1,37 @@
 import { REHYDRATE } from 'redux-persist/constants'
-import * as ACTION_TYPES from '../constants/action_types'
+import { AUTHENTICATION, PROFILE } from '../constants/action_types'
 import session from '../vendor/session'
 
 export const initialState = {
-  isLoggedIn: false,
   accessToken: null,
-  tokenType: null,
+  createdAt: null,
   expirationDate: null,
   expiresIn: null,
-  createdAt: null,
-  refreshToken: null,
+  isLoggedIn: false,
   refreshTimeoutId: null,
+  refreshToken: null,
+  tokenType: null,
 }
 
 export function authentication(state = initialState, action) {
   let auth
   let response
   switch (action.type) {
-    case ACTION_TYPES.AUTHENTICATION.SCHEDULE_REFRESH:
+    case AUTHENTICATION.SCHEDULE_REFRESH:
       return { ...state, refreshTimeoutId: action.payload.refreshTimeoutId }
-    case ACTION_TYPES.AUTHENTICATION.CANCEL_REFRESH:
+    case AUTHENTICATION.CANCEL_REFRESH:
       return { ...state, refreshTimeoutId: null }
-    case ACTION_TYPES.AUTHENTICATION.CLEAR_STORE:
+    case AUTHENTICATION.CLEAR_STORE:
       return initialState
-    case ACTION_TYPES.AUTHENTICATION.LOGOUT_SUCCESS:
-    case ACTION_TYPES.AUTHENTICATION.LOGOUT_FAILURE:
+    case AUTHENTICATION.LOGOUT_SUCCESS:
+    case AUTHENTICATION.LOGOUT_FAILURE:
       session.clear()
       return { ...initialState }
-    case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
+    case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
-    case ACTION_TYPES.AUTHENTICATION.USER_SUCCESS:
-    case ACTION_TYPES.AUTHENTICATION.REFRESH_SUCCESS:
-    case ACTION_TYPES.PROFILE.SIGNUP_SUCCESS:
+    case AUTHENTICATION.USER_SUCCESS:
+    case AUTHENTICATION.REFRESH_SUCCESS:
+    case PROFILE.SIGNUP_SUCCESS:
       response = action.payload.response
       return {
         ...state,
