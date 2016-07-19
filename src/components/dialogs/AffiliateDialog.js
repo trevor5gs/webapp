@@ -11,6 +11,10 @@ class AffiliateDialog extends Component {
     this.updateStatus({ affiliateLink: this.value || '' })
   }
 
+  componentDidMount() {
+    this.refs.textControl.refs.textControl.refs.input.focus()
+  }
+
   onClickSubmit = () => {
     if (this.value.indexOf('http') !== 0) {
       this.value = `http://${this.value}`
@@ -50,6 +54,7 @@ class AffiliateDialog extends Component {
           name="affiliate[productDetail]"
           onChange={this.onChangeControl}
           placeholder="Product detail URL"
+          ref="textControl"
           status={urlStatus}
           tabIndex="1"
           text={text}
