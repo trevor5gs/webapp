@@ -5,12 +5,17 @@ export function isFormValid(states) {
   return states.every((state) => state.status === STATUS.SUCCESS)
 }
 
+
 export function containsSpace(value) {
   return (/\s/).test(value)
 }
 
 export function containsInvalidUsernameCharacters(value) {
   return (!(/^[a-zA-Z0-9\-_]+$/).test(value))
+}
+
+export function isValidURL(value) {
+  return (/(?:(?:https?|ftp):\/\/)?(.{2,}\.?){1,}/i).test(value)
 }
 
 // Client-side only validation

@@ -8,15 +8,15 @@
   font-size: rem(24)
   margin-bottom: rem(30)
 
-.AffiliateDialogControl
-  width: 100%
 .AffiliateDialogControl .FormControlInput.asBoxControl
   height: rem(50)
   padding: 0 rem(10)
+.AffiliateDialogControl .FormControlStatus.asBoxControl
+  top: rem(15)
 
 .AffiliateDialogButton
   +sans-typeset
-  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease
+  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, opacity $speed $ease, width $speed $ease
   width: rem(100)
   height: rem(50)
   padding: 0 rem(20)
@@ -29,6 +29,9 @@
   margin-right: rem(10)
   background-color: #00d100
   color: white
+
+.AffiliateDialogButton[disabled]
+  opacity: 0.5
 
 .AffiliateDialogButton.isRemove
   margin-right: rem(10)
