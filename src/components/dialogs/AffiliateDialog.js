@@ -50,7 +50,6 @@ class AffiliateDialog extends Component {
         <TextControl
           classList="asBoxControl AffiliateDialogControl"
           id="affiliateLink"
-          label="Product detail URL"
           name="affiliate[productDetail]"
           onChange={this.onChangeControl}
           placeholder="Product detail URL"
