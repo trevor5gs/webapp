@@ -85,6 +85,58 @@ describe('editor helper', () => {
     })
   })
 
+  describe('#addHasMedia', () => {
+    it('sets hasMedia to false if no image/embed kind', () => {
+      const newState = {
+        collection: {
+          0: {
+            data: 'archer Phrasing!?',
+            kind: 'text',
+          },
+        },
+        order: [0],
+      }
+      state = subject.methods.addHasMedia(newState)
+      expect(state.hasMedia).to.be.false
+    })
+
+    it('sets hasMedia to true if an image is present', () => {
+      const newState = {
+        collection: {
+          0: {
+            data: 'path/to/image.png',
+            kind: 'image',
+          },
+          1: {
+            data: 'Lana!!!',
+            kind: 'text',
+          },
+        },
+        order: [0, 1],
+      }
+      state = subject.methods.addHasMedia(newState)
+      expect(state.hasMedia).to.be.true
+    })
+
+    it('sets hasMedia to true if an embed is present', () => {
+      const newState = {
+        collection: {
+          0: {
+            data: 'Stir Friday',
+            kind: 'text',
+          },
+          1: {
+            data: 'path/to/embed.png',
+            kind: 'embed',
+          },
+        },
+        order: [0, 1],
+      }
+      state = subject.methods.addHasMedia(newState)
+      expect(state.hasMedia).to.be.true
+    })
+  })
+
   describe('#addHasMention', () => {
     it('sets hasMention to false if no mention is present', () => {
       const newState = {
