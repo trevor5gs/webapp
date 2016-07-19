@@ -276,7 +276,8 @@ class ImageRegion extends Component {
   }
 
   renderRegionAsStatic() {
-    const { affiliateLinkURL, marginBottom, scale } = this.state
+    const { marginBottom, scale } = this.state
+    const { affiliateLinkURL } = this.props
     return (
       <div
         className="RegionContent"
