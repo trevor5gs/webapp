@@ -39,7 +39,7 @@ describe('editor reducer', () => {
       })
 
       context('editor exists', () => {
-        it('calls #addHasContent, #addHasMention, and #addIsLoading', () => {
+        it('calls #addHasContent, #addHasMedia, #addHasMention, and #addIsLoading', () => {
           action = { payload: { editorId: 666 } }
           const contentSpy = sinon.stub(subject.editorMethods, 'addHasContent')
           const mediaSpy = sinon.stub(subject.editorMethods, 'addHasMedia')
@@ -78,6 +78,15 @@ describe('editor reducer', () => {
         action = { type: EDITOR.EMOJI_COMPLETER_SUCCESS }
         state = subject.editor({ completions: ['1', '2', '3'] }, action)
         expect(spy.called).to.be.true
+        spy.restore()
+      })
+
+      it('calls #addCompletions with EDITOR.USER_COMPLETER_SUCCESS', () => {
+        const spy = sinon.stub(subject.editorMethods, 'addCompletions')
+        action = { type: EDITOR.USER_COMPLETER_SUCCESS }
+        state = subject.editor({ completions: ['1', '2', '3'] }, action)
+        expect(spy.called).to.be.true
+        spy.restore()
       })
 
       it('calls #rehydrateEditors with REHYDRATE', () => {
@@ -85,6 +94,7 @@ describe('editor reducer', () => {
         action = { type: REHYDRATE, payload: { editor: 'yo' } }
         state = subject.editor({}, action)
         expect(spy.calledWith('yo')).to.be.true
+        spy.restore()
       })
 
       it('returns the original state if action.type is not supported', () => {

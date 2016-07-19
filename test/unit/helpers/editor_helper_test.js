@@ -10,10 +10,12 @@ describe('editor helper', () => {
     it('should have the correct default properties', () => {
       expect(subject.initialState.collection).to.be.empty
       expect(subject.initialState.hasContent).to.be.false
+      expect(subject.initialState.hasMedia).to.be.false
       expect(subject.initialState.hasMention).to.be.false
       expect(subject.initialState.isLoading).to.be.false
       expect(subject.initialState.isPosting).to.be.false
       expect(subject.initialState.order).to.be.empty
+      expect(subject.initialState.postAffiliateLink).to.be.null
       expect(subject.initialState.shouldPersist).to.be.false
       expect(subject.initialState.uid).to.equal(0)
     })
@@ -242,6 +244,17 @@ describe('editor helper', () => {
       expect(state.uid).to.equal(1)
       expect(state.order.length).to.equal(1)
       expect(state.collection[0]).to.deep.equal({ kind: 'text', uid: 0 })
+    })
+
+    it('adds the linkUrl and updates the block kind when affiliate link is present', () => {
+      state = subject.methods.add({
+        block: { kind: 'text' },
+        shouldCheckForEmpty: true,
+        state: { ...subject.initialState, postAffiliateLink: 'yeah' },
+      })
+      expect(state.uid).to.equal(1)
+      expect(state.order.length).to.equal(1)
+      expect(state.collection[0]).to.deep.equal({ kind: 'affiliate_text', uid: 0, linkUrl: 'yeah' })
     })
   })
 
@@ -539,8 +552,104 @@ describe('editor helper', () => {
   })
 
   // TODO: need to figure out how to test the query lookup in this method
-  describe('#replaceText', () => {
+  describe('#replaceText', () => { })
 
+  describe('#updateAffiliateLink', () => {
+    it('updates all blocks with a link_url and updates their kind', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '@lana @cyril ',
+            uid: 0,
+          },
+          1: {
+            kind: 'image',
+            data: '/path/to/avatar/lana.png',
+            uid: 1,
+          },
+          2: {
+            kind: 'embed',
+            data: '/path/to/embed/krieger.png',
+            uid: 2,
+          },
+        },
+        order: [0, 1, 2],
+      }
+      state = subject.methods.updateAffiliateLink(newState, { payload: { link: 'word' } })
+      expect(state.collection[0].linkUrl).to.equal('word')
+      expect(state.collection[0].kind).to.equal('affiliate_text')
+      expect(state.collection[1].linkUrl).to.equal('word')
+      expect(state.collection[1].kind).to.equal('affiliate_image')
+      expect(state.collection[2].linkUrl).to.equal('word')
+      expect(state.collection[2].kind).to.equal('affiliate_embed')
+    })
+
+    it('removes link_url from all blocks and updates their kind with blank link', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'affiliate_text',
+            data: '@lana @cyril ',
+            linkUrl: 'yo',
+            uid: 0,
+          },
+          1: {
+            kind: 'affiliate_image',
+            data: '/path/to/avatar/lana.png',
+            linkUrl: 'yo',
+            uid: 1,
+          },
+          2: {
+            kind: 'affiliate_embed',
+            data: '/path/to/embed/krieger.png',
+            linkUrl: 'yo',
+            uid: 2,
+          },
+        },
+        order: [0, 1, 2],
+      }
+      state = subject.methods.updateAffiliateLink(newState, { payload: { link: '' } })
+      expect(state.collection[0].linkUrl).to.be.undefined
+      expect(state.collection[0].kind).to.equal('text')
+      expect(state.collection[1].linkUrl).to.be.undefined
+      expect(state.collection[1].kind).to.equal('image')
+      expect(state.collection[2].linkUrl).to.be.undefined
+      expect(state.collection[2].kind).to.equal('embed')
+    })
+
+    it('removes link_url from all blocks and updates their kind with null link', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'affiliate_text',
+            data: '@lana @cyril ',
+            linkUrl: 'yo',
+            uid: 0,
+          },
+          1: {
+            kind: 'affiliate_image',
+            data: '/path/to/avatar/lana.png',
+            linkUrl: 'yo',
+            uid: 1,
+          },
+          2: {
+            kind: 'affiliate_embed',
+            data: '/path/to/embed/krieger.png',
+            linkUrl: 'yo',
+            uid: 2,
+          },
+        },
+        order: [0, 1, 2],
+      }
+      state = subject.methods.updateAffiliateLink(newState, { payload: { link: null } })
+      expect(state.collection[0].linkUrl).to.be.undefined
+      expect(state.collection[0].kind).to.equal('text')
+      expect(state.collection[1].linkUrl).to.be.undefined
+      expect(state.collection[1].kind).to.equal('image')
+      expect(state.collection[2].linkUrl).to.be.undefined
+      expect(state.collection[2].kind).to.equal('embed')
+    })
   })
 
   describe('#getEditorObject', () => {
