@@ -79,7 +79,7 @@ class TextBlock extends Component {
 
   updateTextBlock() {
     const { kind, linkURL, onInput, uid } = this.props
-    onInput({ kind, data: this.getData(), uid, link_url: linkURL })
+    onInput({ kind, data: this.getData(), uid, linkUrl: linkURL })
   }
 
   render() {

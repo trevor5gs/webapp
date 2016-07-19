@@ -235,7 +235,7 @@ class BlockCollection extends Component {
       editorId,
       key: block.uid,
       kind: block.kind,
-      linkURL: block.link_url,
+      linkURL: block.linkUrl,
       onRemoveBlock: this.remove,
       uid: block.uid,
     }
@@ -322,11 +322,11 @@ class BlockCollection extends Component {
         switch (block.kind) {
           case 'affiliate_text':
             if (block.data.length) {
-              results.push({ kind: block.kind, data: block.data, link_url: block.link_url })
+              results.push({ kind: block.kind, data: block.data, link_url: block.linkUrl })
             }
             break
           default:
-            results.push({ kind: block.kind, data: block.data, link_url: block.link_url })
+            results.push({ kind: block.kind, data: block.data, link_url: block.linkUrl })
             break
         }
       } else {
@@ -420,7 +420,7 @@ class BlockCollection extends Component {
 function mapStateToProps(state, ownProps) {
   const editor = get(state, ['editor', ownProps.editorId], {})
   return {
-    affiliateLink: get(editor, ['collection', editor.order[0], 'link_url']),
+    affiliateLink: get(editor, ['collection', editor.order[0], 'linkUrl']),
     avatar: state.profile.avatar,
     collection: editor.collection,
     currentUsername: state.profile.username,
