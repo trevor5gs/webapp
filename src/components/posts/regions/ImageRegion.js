@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import _ from 'lodash'
 import classNames from 'classnames'
 import ImageAsset from '../../assets/ImageAsset'
+import { AffiliateLinkButton } from '../../editor/AffiliateLinkButton'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -25,6 +26,7 @@ function mapStateToProps(state) {
 class ImageRegion extends Component {
 
   static propTypes = {
+    affiliateLinkURL: PropTypes.string,
     assets: PropTypes.object,
     columnWidth: PropTypes.number,
     commentOffset: PropTypes.number,
@@ -258,16 +260,23 @@ class ImageRegion extends Component {
   }
 
   renderRegionAsLink() {
-    const { postDetailPath } = this.props
+    const { affiliateLinkURL, postDetailPath } = this.props
     return (
-      <Link to={postDetailPath} className="RegionContent">
-        {this.renderAttachment()}
-      </Link>
+      <div className="RegionContent">
+        <Link to={postDetailPath}>
+          {this.renderAttachment()}
+        </Link>
+        {
+          affiliateLinkURL && affiliateLinkURL.length ?
+            <AffiliateLinkButton to={affiliateLinkURL} /> :
+            null
+        }
+      </div>
     )
   }
 
   renderRegionAsStatic() {
-    const { marginBottom, scale } = this.state
+    const { affiliateLinkURL, marginBottom, scale } = this.state
     return (
       <div
         className="RegionContent"
@@ -275,6 +284,11 @@ class ImageRegion extends Component {
         style={{ transform: scale ? `scale(${scale})` : null, marginBottom }}
       >
         {this.renderAttachment()}
+        {
+          affiliateLinkURL && affiliateLinkURL.length ?
+            <AffiliateLinkButton to={affiliateLinkURL} /> :
+            null
+        }
       </div>
     )
   }
