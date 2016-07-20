@@ -51,6 +51,25 @@ function stubCoverImage() {
   }
 }
 
+function stubPromotion(username = '666') {
+  return {
+    avatar: { regular: `${username}-avatar.jpg` },
+    caption: 'Ello promotion caption.',
+    coverImage: {
+      hdpi: { url: `${username}-cover.jpg` },
+      xhdpi: { url: `${username}-cover.jpg` },
+      optimized: { url: `${username}-cover.jpg` },
+    },
+    username,
+  }
+}
+
+function stubAuthPromotion(username = '666') {
+  const promotion = stubPromotion(username)
+  delete promotion.caption
+  return promotion
+}
+
 function stubUser(properties) {
   const defaultProps = {
     username: 'username',
@@ -138,5 +157,5 @@ export function stub(model, properties) {
   }
 }
 
-export { clearJSON, json, stubPost, stubTextRegion, stubUser }
+export { clearJSON, json, stubPost, stubPromotion, stubAuthPromotion, stubTextRegion, stubUser }
 
