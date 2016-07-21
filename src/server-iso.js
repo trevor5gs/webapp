@@ -38,6 +38,7 @@ global.ENV = require('../env')
 updateTimeAgoStrings({ about: '' })
 
 const app = express()
+const preRenderTimeout = (parseInt(process.env.PRERENDER_TIMEOUT, 0) || 15) * 1000
 
 // Honeybadger "before everything" middleware
 app.use(Honeybadger.requestHandler);
@@ -157,7 +158,12 @@ app.use((req, res) => {
   res.setHeader('Expires', new Date(Date.now() + 1000 * 60).toUTCString());
   if (canPrerenderRequest(req)) {
     console.log('Serving pre-rendered markup for path', req.url)
+    const timeout = setTimeout(() => {
+      console.log(`Prerendering timed out after ${preRenderTimeout}ms. Serving static content instead.`)
+      res.send(indexStr)
+    }, preRenderTimeout)
     renderFromServer(req, res)
+    clearTimeout(timeout)
   } else {
     console.log('Serving static markup for path', req.url)
     res.send(indexStr)
