@@ -30,10 +30,10 @@ export default class ImageAsset extends Component {
   }
 
   onLoadSuccess = () => {
-    this.disposeLoader()
     if (typeof this.props.onLoadSuccess === 'function') {
-      this.props.onLoadSuccess()
+      this.props.onLoadSuccess(this.img)
     }
+    this.disposeLoader()
   }
 
   onLoadFailure = () => {
