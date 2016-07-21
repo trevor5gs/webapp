@@ -4,7 +4,7 @@ import { profile as reducer } from '../../../src/reducers/profile'
 import { AUTHENTICATION, INVITATIONS, PROFILE } from '../../../src/constants/action_types'
 
 
-describe('promotions reducer', () => {
+describe('profile reducer', () => {
   context('#initialState', () => {
     it('sets up a default initialState', () => {
       expect(reducer({}, {})).to.deep.equal({})
@@ -46,6 +46,40 @@ describe('promotions reducer', () => {
   })
 
   context('PROFILE', () => {
+    it('PROFILE.AVAILABILITY_SUCCESS adds the availability data to the profile', () => {
+      const state = stubUser({ username: 'username' })
+      const action = {
+        type: PROFILE.AVAILABILITY_SUCCESS,
+        meta: { original: 'OG' },
+        payload: {
+          response: {
+            availability: {
+              username: false,
+              email: true,
+              invitation_code: true,
+              suggestions: {
+                username: [
+                  'lanakane32d',
+                  'trans_lana',
+                  'lanalicious',
+                ],
+                email: {
+                  address: 'lana',
+                  domain: 'gmail.com',
+                  full: 'lana@gmail.com',
+                },
+              },
+            },
+          },
+        },
+      }
+      const reduced = reducer(state, action)
+      expect(reduced).have.property('availability')
+      expect(reduced.availability).have.property('username', false)
+      expect(reduced.availability).have.property('original', 'OG')
+      expect(reduced.availability).have.property('suggestions')
+    })
+
     it('PROFILE.EXPORT_SUCCESS adds the dataExport url on a 200', () => {
       const state = stubUser({ username: 'username' })
       const action = {

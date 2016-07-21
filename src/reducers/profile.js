@@ -16,7 +16,6 @@ export function profile(state = {}, action) {
   let assetState = null
   let assetType = null
   switch (action.type) {
-    // TODO: I don't think this is in play?
     case PROFILE.AVAILABILITY_SUCCESS:
       return {
         ...state,
