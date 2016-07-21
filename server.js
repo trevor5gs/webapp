@@ -4,8 +4,6 @@ const path = require('path')
 const express = require('express')
 const app = express()
 
-const socketTimeout = (parseInt(process.env.SOCKET_TIMEOUT, 0) || 25) * 1000
-
 app.use(express.static('public'))
 app.use('/static', express.static('public/static'))
 
@@ -19,9 +17,4 @@ app.listen(port, (err) => {
     return
   }
   console.log('Listening at http://localhost:' + port)
-})
-
-app.on('connection', (socket) => {
-  console.log("A new connection was made by a client.");
-  socket.setTimeout(socketTimeout)
 })
