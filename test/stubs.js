@@ -19,27 +19,27 @@ function addToJSON(collection, model) {
   json[collection][model.id] = model
 }
 
-function stubAvatar() {
+export function stubAvatar(url = '') {
   return {
     original: {
-      url: '',
+      url,
     },
     large: {
-      url: '',
+      url,
       metadata: null,
     },
     regular: {
-      url: '',
+      url,
       metadata: null,
     },
     small: {
-      url: '',
+      url,
       metadata: null,
     },
   }
 }
 
-function stubCoverImage() {
+export function stubCoverImage() {
   return {
     original: {
       url: '',
