@@ -79,7 +79,11 @@ class ImageRegion extends Component {
     return this.setImageScale()
   }
 
-  onLoadSuccess = () => {
+  onLoadSuccess = (img) => {
+    if (this.isBasicAttachment()) {
+      const dimensions = this.getBasicAttachmentDimensions(img)
+      this.setState({ width: dimensions.width, height: dimensions.height })
+    }
     this.setState({ status: STATUS.SUCCESS })
   }
 
@@ -113,8 +117,7 @@ class ImageRegion extends Component {
 
   // Use the lowest of the size constraints to ensure we don't go askew, go
   // below 1:1 pixel density, or go above the desired grid cell height
-  getImageDimensions() {
-    const metadata = this.getAttachmentMetadata()
+  getImageDimensions(metadata = this.getAttachmentMetadata()) {
     if (!metadata) { return metadata }
     const { columnWidth, commentOffset, contentWidth, isGridLayout, isComment } = this.props
     const { height, ratio } = metadata
@@ -130,6 +133,12 @@ class ImageRegion extends Component {
       height: hv,
       ratio,
     }
+  }
+
+  getBasicAttachmentDimensions(img) {
+    const height = img.height
+    const ratio = img.width / height
+    return this.getImageDimensions({ height, ratio })
   }
 
   getImageSourceSet() {
@@ -221,6 +230,8 @@ class ImageRegion extends Component {
   renderLegacyImageAttachment() {
     const { content, isNotification } = this.props
     const attrs = { src: content.url }
+    const { width, height } = this.state
+    const stateDimensions = width ? { width, height } : {}
     if (isNotification) {
       attrs.height = 'auto'
     }
@@ -231,6 +242,7 @@ class ImageRegion extends Component {
         onLoadFailure={this.onLoadFailure}
         onLoadSuccess={this.onLoadSuccess}
         role="presentation"
+        {...stateDimensions}
         {...attrs}
       />
     )
