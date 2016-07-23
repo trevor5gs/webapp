@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
+import { get, isEqual, pick } from 'lodash'
+import { selectPagination } from '../selectors'
 import { getCategories } from '../actions/discover'
 import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
-import * as MAPPING_TYPES from '../constants/mapping_types'
 import DevTools from '../components/devtools/DevTools'
 import { AppHelmet } from '../components/helmets/AppHelmet'
 import Modal from '../components/modals/Modal'
@@ -19,7 +18,22 @@ import FooterContainer from '../containers/FooterContainer'
 import KeyboardContainer from '../containers/KeyboardContainer'
 import NavbarContainer from '../containers/NavbarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
-import { findModel } from '../helpers/json_helper'
+
+export function shouldContainerUpdate(thisProps, nextProps) {
+  const pickProps = ['authentication', 'pagination', 'params']
+  const thisCompare = pick(thisProps, pickProps)
+  const nextCompare = pick(nextProps, pickProps)
+  return !isEqual(thisCompare, nextCompare)
+}
+
+function mapStateToProps(state, props) {
+  const { authentication } = state
+  return {
+    authentication,
+    pagination: selectPagination(state, props),
+    pathname: props.location.pathname,
+  }
+}
 
 class AppContainer extends Component {
 
@@ -39,6 +53,17 @@ class AppContainer extends Component {
       token: PropTypes.string,
       type: PropTypes.string,
     }).isRequired,
+  }
+
+  static preRender = (store) => {
+    const state = store.getState()
+    if (state.authentication && state.authentication.isLoggedIn) {
+      return Promise.all([
+        store.dispatch(loadProfile()),
+        store.dispatch(getCategories()),
+      ])
+    }
+    return store.dispatch(getCategories())
   }
 
   componentDidMount() {
@@ -62,8 +87,8 @@ class AppContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate(nextProps) {
+    return shouldContainerUpdate(this.props, nextProps)
   }
 
   componentWillUnmount() {
@@ -93,66 +118,6 @@ class AppContainer extends Component {
         <AnalyticsContainer />
       </section>
     )
-  }
-}
-
-AppContainer.preRender = (store) => {
-  const state = store.getState()
-  if (state.authentication && state.authentication.isLoggedIn) {
-    return Promise.all([
-      store.dispatch(loadProfile()),
-      store.dispatch(getCategories()),
-    ])
-  }
-  return store.dispatch(getCategories())
-}
-
-const PAGING_BLACKLIST = [
-  /^\/enter\b/,
-  /^\/forgot-password\b/,
-  /^\/join\b/,
-  /^\/signup\b/,
-  /^\/following$/,
-  /^\/starred$/,
-  /^\/notifications\b/,
-  /^\/settings\b/,
-  /^\/onboarding\b/,
-  /^\/invitations\b/,
-]
-
-function isPagingEnabled(pathname) {
-  for (const re of PAGING_BLACKLIST) {
-    if (re.test(pathname)) {
-      return false
-    }
-  }
-  return true
-}
-
-function mapStateToProps(state, ownProps) {
-  const { authentication, json } = state
-  let pagination = null
-  if (state.json.pages && isPagingEnabled(ownProps.location.pathname)) {
-    let result = state.json.pages[ownProps.location.pathname]
-    if (!result && ownProps.params.token) {
-      // determine if we are on a post detail
-      // to find the comment pagination
-      const post = findModel(json, {
-        collection: MAPPING_TYPES.POSTS,
-        findObj: { token: ownProps.params.token.toLowerCase() },
-      })
-      if (post) {
-        result = state.json.pages[`/posts/${post.id}/comments`]
-      }
-    }
-    if (result && result.pagination) {
-      pagination = result.pagination
-    }
-  }
-  return {
-    authentication,
-    pagination,
-    pathname: ownProps.location.pathname,
   }
 }
 
