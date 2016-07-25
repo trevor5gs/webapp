@@ -59,15 +59,12 @@ export function regionItemsForNotifications(content, postDetailPath = null) {
 
   content.forEach((region, i) => {
     switch (region.kind) {
-      case 'affiliate_text':
       case 'text':
         texts.push(textRegion(region, `TextRegion_${i}`, false, postDetailPath))
         break
-      case 'affiliate_image':
       case 'image':
         imageAssets.push(imageRegion(region, `ImageRegion_${i}`, true, postDetailPath, true))
         break
-      case 'affiliate_embed':
       case 'embed':
         imageAssets.push(embedRegion(region, `EmbedRegion_${i}`))
         break
@@ -89,13 +86,10 @@ export function regionItems(content, only = null, isGridLayout = true, postDetai
   return content.map((region, i) => {
     if (!only || new RegExp(only).test(region.kind)) {
       switch (region.kind) {
-        case 'affiliate_text':
         case 'text':
           return textRegion(region, `TextRegion_${i}`, isGridLayout, postDetailPath)
-        case 'affiliate_image':
         case 'image':
           return imageRegion(region, `ImageRegion_${i}`, isGridLayout, postDetailPath, isNotification, isComment)
-        case 'affiliate_embed':
         case 'embed':
           return embedRegion(region, `EmbedRegion_${i}`)
         default:

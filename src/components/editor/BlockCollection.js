@@ -250,12 +250,10 @@ class BlockCollection extends Component {
             <div style={{ width: block.data.width, height: block.data.height }} />
           </Block>
         )
-      case 'affiliate_embed':
       case 'embed':
         return (
           <EmbedBlock {...blockProps} />
         )
-      case 'affiliate_image':
       case 'image':
         return (
           <ImageBlock blob={block.blob} {...blockProps} isUploading={block.isLoading} />
@@ -264,7 +262,6 @@ class BlockCollection extends Component {
         return (
           <RepostBlock {...blockProps} onRemoveBlock={null} />
         )
-      case 'affiliate_text':
       case 'text':
         return (
           <TextBlock
@@ -318,30 +315,25 @@ class BlockCollection extends Component {
     const results = []
     for (const uid of order) {
       const block = collection[uid]
-      if (/affiliate_/.test(block.kind)) {
-        switch (block.kind) {
-          case 'affiliate_text':
-            if (block.data.length) {
+      switch (block.kind) {
+        case 'text':
+          if (block.data.length) {
+            if (block.linkUrl && block.linkUrl.length) {
               results.push({ kind: block.kind, data: block.data, link_url: block.linkUrl })
-            }
-            break
-          default:
-            results.push({ kind: block.kind, data: block.data, link_url: block.linkUrl })
-            break
-        }
-      } else {
-        switch (block.kind) {
-          case 'text':
-            if (block.data.length) {
+            } else {
               results.push({ kind: block.kind, data: block.data })
             }
-            break
-          case 'repost':
-            break
-          default:
+          }
+          break
+        case 'repost':
+          break
+        default:
+          if (block.linkUrl && block.linkUrl.length) {
+            results.push({ kind: block.kind, data: block.data, link_url: block.linkUrl })
+          } else {
             results.push({ kind: block.kind, data: block.data })
-            break
-        }
+          }
+          break
       }
     }
     return results

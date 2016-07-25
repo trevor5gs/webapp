@@ -8,9 +8,6 @@ class Block extends Component {
     children: PropTypes.element,
     editorId: PropTypes.string.isRequired,
     kind: PropTypes.oneOf([
-      'affiliate_embed',
-      'affiliate_image',
-      'affiliate_text',
       'block',
       'embed',
       'image',

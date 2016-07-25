@@ -107,7 +107,6 @@ methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
   const newBlock = { ...block, uid: newState.uid }
   if (newState.postAffiliateLink) {
     newBlock.linkUrl = newState.postAffiliateLink
-    newBlock.kind = `affiliate_${block.kind}`
   }
   collection[newState.uid] = newBlock
   order.push(newState.uid)
@@ -222,11 +221,7 @@ methods.updateAffiliateLink = (state, action) => {
     const block = newState.collection[uid]
     if (link && link.length) {
       block.linkUrl = link
-      if (!/affiliate_/.test(block.kind)) {
-        block.kind = `affiliate_${block.kind}`
-      }
     } else {
-      block.kind = block.kind.replace('affiliate_', '')
       delete block.linkUrl
     }
   })
