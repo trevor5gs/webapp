@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { get, isEqual, upperFirst } from 'lodash'
+import { isEqual, pick } from 'lodash'
+import { selectCategories, selectCategoryPageTitle } from '../selectors'
 import {
   bindDiscoverKey,
   getCategories,
@@ -16,7 +17,8 @@ import { Discover } from '../components/views/Discover'
 
 const BEACON_VERSION = '1'
 
-export function getDiscoverAction(type) {
+// TODO: Move to a selector
+export function getStreamAction(type) {
   switch (type) {
     // case 'communities':
     //   return loadCommunities()
@@ -36,6 +38,7 @@ export function getDiscoverAction(type) {
   }
 }
 
+// TODO: Combine with selectCategories or move to its own selector
 export function generateTabs(primary, secondary, tertiary) {
   const tabs = []
   // add featured/trending/recent by default
@@ -75,8 +78,45 @@ export function generateTabs(primary, secondary, tertiary) {
   return tabs
 }
 
-export class DiscoverContainer extends Component {
+export function shouldContainerUpdate(thisProps, nextProps) {
+  const pickProps = [
+    'coverDPI',
+    'isBeaconActive',
+    'isLoggedIn',
+    'location',
+    'params',
+    'pageTitle',
+    'pathname',
+    'primary',
+    'secondary',
+    'tertiary',
+  ]
+  const thisCompare = pick(thisProps, pickProps)
+  const nextCompare = pick(nextProps, pickProps)
+  return !isEqual(thisCompare, nextCompare)
+}
 
+function mapStateToProps(state, props) {
+  const { authentication, gui } = state
+  const { location, params } = props
+  const { isLoggedIn } = authentication
+  const { primary, secondary, tertiary } = selectCategories(state, props)
+  const pageTitle = selectCategoryPageTitle(state, props)
+  return {
+    coverDPI: gui.coverDPI,
+    isBeaconActive: isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
+    isLoggedIn,
+    pageTitle,
+    paramsType: params.type,
+    pathname: location.pathname,
+    promotions: isLoggedIn ? state.promotions.loggedIn : state.promotions.loggedOut,
+    primary,
+    secondary,
+    tertiary,
+  }
+}
+
+export class DiscoverContainer extends Component {
   static propTypes = {
     coverDPI: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -96,20 +136,15 @@ export class DiscoverContainer extends Component {
   }
 
   static preRender = (store, routerState) =>
-    store.dispatch(getDiscoverAction(routerState.params.type || 'featured'))
+    store.dispatch(getStreamAction(routerState.params.type || 'featured'))
 
   componentWillMount() {
-    this.state = { primaryIndex: undefined }
     const { dispatch, paramsType } = this.props
     dispatch(bindDiscoverKey(paramsType))
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!isEqual(this.props.promotions, nextProps.promotions)) return true
-    if (isEqual(nextProps, this.props) && isEqual(nextState, this.state)) {
-      return false
-    }
-    return true
+  shouldComponentUpdate(nextProps) {
+    return shouldContainerUpdate(this.props, nextProps)
   }
 
   componentDidUpdate() {
@@ -139,86 +174,10 @@ export class DiscoverContainer extends Component {
       pageTitle,
       pathname,
       promotions,
-      streamAction: getDiscoverAction(paramsType),
+      streamAction: getStreamAction(paramsType),
       tabs: generateTabs(primary, secondary, tertiary),
     }
     return <Discover key={`discover_${paramsType}`} {...props} />
-  }
-}
-
-function sortCategories(a, b) {
-  if (a.order < b.order) {
-    return -1
-  } else if (a.order > b.order) {
-    return 1
-  }
-  return 0
-}
-
-function mapStateToProps(state, ownProps) {
-  const { authentication, gui, json } = state
-  const { isLoggedIn } = authentication
-  const result = get(json, 'pages.all-categories')
-  const categories = []
-  if (result) {
-    for (const id of result.ids) {
-      if (get(state.json, [result.type, id])) {
-        categories.push(get(json, [result.type, id]))
-      }
-    }
-  }
-  const paramsType = ownProps.params.type
-  let primary = []
-  let secondary = []
-  let tertiary = []
-  let pageTitle = null
-  if (categories && categories.length) {
-    for (const category of categories) {
-      if (category.slug === paramsType) {
-        pageTitle = category.name
-      }
-      switch (category.level) {
-        case 'primary':
-          primary.push(category)
-          break
-        case 'secondary':
-          secondary.push(category)
-          break
-        case 'tertiary':
-          tertiary.push(category)
-          break
-        default:
-          break
-      }
-    }
-    if (!pageTitle) {
-      switch (paramsType) {
-        case 'all':
-          break
-        case undefined:
-        case 'recommended':
-          pageTitle = 'Featured'
-          break
-        default:
-          pageTitle = upperFirst(paramsType)
-          break
-      }
-    }
-    primary = primary.sort(sortCategories)
-    secondary = secondary.sort(sortCategories)
-    tertiary = tertiary.sort(sortCategories)
-  }
-  return {
-    coverDPI: gui.coverDPI,
-    isBeaconActive: isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
-    isLoggedIn,
-    pageTitle,
-    paramsType,
-    pathname: ownProps.location.pathname,
-    promotions: isLoggedIn ? state.promotions.loggedIn : state.promotions.loggedOut,
-    primary,
-    secondary,
-    tertiary,
   }
 }
 
