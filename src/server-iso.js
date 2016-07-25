@@ -63,6 +63,7 @@ function renderFromServer(req, res) {
     // Don't let processes run away on us
     const renderTimeout = setTimeout(() => {
       console.log('Render timed out; killing child process and returning boilerplate.')
+      librato.increment('webapp-server-render-timeout')
       child.kill('SIGKILL')
       res.send(indexStr)
     }, preRenderTimeout)
@@ -72,14 +73,17 @@ function renderFromServer(req, res) {
       switch (type) {
         case 'redirect':
           console.log(`Redirecting to ${location}`)
+          librato.increment('webapp-server-render-redirect')
           res.redirect(location)
           break
         case 'render':
           console.log('Rendering ISO response')
+          librato.increment('webapp-server-render-success')
           res.send(body)
           break
         case 'error':
           console.log('Rendering error response')
+          librato.increment('webapp-server-render-error')
           res.status(500).end()
           break
         default:
