@@ -40,7 +40,10 @@ const selectLocationPathname = (state, props) => get(props, 'location.pathname')
 
 // state.json.xxx
 const selectPages = (state) => get(state, 'json.pages')
-const selectPagingResult = (state, props) => state.json.pages[props.location.pathname]
+const selectPagingResult = (state, props) => {
+  const pathname = get(props, 'location.pathname')
+  return get(state, ['json', 'pages', pathname])
+}
 const selectAllCategories = (state) => get(state, 'json.pages.all-categories')
 const selectCategoryCollection = (state) => get(state, 'json.categories')
 
