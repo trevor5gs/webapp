@@ -20,17 +20,9 @@ import morgan from 'morgan'
 import librato from 'librato-node'
 import path from 'path'
 import fs from 'fs'
-import React from 'react'
-import Helmet from 'react-helmet'
-import { renderToString } from 'react-dom/server'
-import { createMemoryHistory, match, RouterContext } from 'react-router'
-import { Provider } from 'react-redux'
-import { createElloStore } from './store'
+import cp from 'child_process'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import { addOauthRoute, currentToken } from '../oauth'
-import createRoutes from './routes'
-import { replace, syncHistoryWithStore } from 'react-router-redux'
-import { serverRoot } from './sagas'
 
 // load env vars first
 require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
@@ -38,6 +30,7 @@ global.ENV = require('../env')
 updateTimeAgoStrings({ about: '' })
 
 const app = express()
+const preRenderTimeout = (parseInt(process.env.PRERENDER_TIMEOUT, 10) || 15) * 1000
 
 // Honeybadger "before everything" middleware
 app.use(Honeybadger.requestHandler);
@@ -64,70 +57,44 @@ addOauthRoute(app)
 app.use(express.static('public', { maxAge: '1y', index: false }))
 app.use('/static', express.static('public/static', { maxAge: '1y' }))
 
-// Return promises for initial loads
-function preRender(renderProps, store, sagaTask) {
-  const promises = renderProps.components.map(component => ((component && component.preRender) ? component.preRender(store, renderProps) : null)).filter(component => !!component)
-  return Promise.all(promises).then(() => {
-    store.close()
-    return sagaTask.done
-  })
-}
-
 function renderFromServer(req, res) {
   currentToken().then((token) => {
-    const memoryHistory = createMemoryHistory(req.originalUrl)
-    const store = createElloStore(memoryHistory, {
-      authentication: {
-        accessToken: token.token.access_token,
-        isLoggedIn: false,
-      },
-    })
-    const isServer = true
-    const routes = createRoutes(store, isServer)
-    const history = syncHistoryWithStore(memoryHistory, store)
-    const sagaTask = store.runSaga(serverRoot)
-
-    match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
-      // populate the router store object for initial render
-      if (error) {
-        console.log('ELLO MATCH ERROR', error)
-      } else if (redirectLocation) {
-        console.log('ELLO HANDLE REDIRECT', redirectLocation)
-        res.redirect(redirectLocation.pathname)
-        return
-      } else if (!renderProps) {
-        console.log('NO RENDER PROPS')
-        return
+    const child = cp.fork('./dist/server-render-entrypoint');
+    // Don't let processes run away on us
+    const renderTimeout = setTimeout(() => {
+      console.log('Render timed out; killing child process and returning boilerplate.')
+      child.kill('SIGKILL')
+      res.send(indexStr)
+    }, preRenderTimeout)
+    // Handle the return on renders
+    child.on('message', (msg) => {
+      const { type, location, body } = msg
+      switch (type) {
+        case 'redirect':
+          console.log(`Redirecting to ${location}`)
+          res.redirect(location)
+          break
+        case 'render':
+          console.log('Rendering ISO response')
+          res.send(body)
+          break
+        case 'error':
+          console.log('Rendering error response')
+          res.status(500).end()
+          break
+        default:
+          // No-op
       }
-
-      store.dispatch(replace(renderProps.location.pathname))
-
-      const InitialComponent = (
-        <Provider store={store}>
-          <RouterContext {...renderProps} />
-        </Provider>
-      )
-
-      preRender(renderProps, store, sagaTask).then(() => {
-        const componentHTML = renderToString(InitialComponent)
-        const head = Helmet.rewind()
-        const state = store.getState()
-        const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
-        // Add helmet's stuff after the last statically rendered meta tag
-        const html = indexStr.replace(
-          'content="ie=edge">',
-          `content="ie=edge">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()}`
-        ).replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
-        res.send(html)
-      }).catch((err) => {
-        // this will give you a js error like:
-        // `window is not defined`
-        console.log('ELLO CATCH ERROR', err)
-        Honeybadger.notify(err);
-        res.status(500).end()
-      })
-      renderToString(InitialComponent)
+      clearTimeout(renderTimeout)
     })
+    // Handle assorted child process errors
+    child.on('exit', (code, signal) => {
+      console.log(code, signal)
+      res.status(500).end()
+      clearTimeout(renderTimeout)
+    })
+    // Kick off the render
+    child.send({ access_token: token.token.access_token, originalUrl: req.originalUrl, url: req.url })
   })
 }
 
