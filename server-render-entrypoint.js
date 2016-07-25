@@ -50,6 +50,7 @@ function handlePrerender(context) {
     } else if (redirectLocation) {
       console.log('ELLO HANDLE REDIRECT', redirectLocation)
       process.send({ type: 'redirect', location: redirectLocation.pathname })
+      process.exit(0)
       return
     } else if (!renderProps) {
       console.log('NO RENDER PROPS')
@@ -75,12 +76,14 @@ function handlePrerender(context) {
         `content="ie=edge">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()}`
       ).replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
       process.send({ type: 'render', body: html })
+      process.exit(0)
     }).catch((err) => {
       // this will give you a js error like:
       // `window is not defined`
       console.log('ELLO CATCH ERROR', err)
       Honeybadger.notify(err);
       process.send({ type: 'error' })
+      process.exit(1)
     })
     renderToString(InitialComponent)
   })

@@ -59,7 +59,7 @@ app.use('/static', express.static('public/static', { maxAge: '1y' }))
 
 function renderFromServer(req, res) {
   currentToken().then((token) => {
-    const child = cp.fork('./dist/server-render-entrypoint');
+    const child = cp.fork('./dist/server-render-entrypoint')
     // Don't let processes run away on us
     const renderTimeout = setTimeout(() => {
       console.log('Render timed out; killing child process and returning boilerplate.')
@@ -68,7 +68,7 @@ function renderFromServer(req, res) {
       res.send(indexStr)
     }, preRenderTimeout)
     // Handle the return on renders
-    child.on('message', (msg) => {
+    child.once('message', (msg) => {
       const { type, location, body } = msg
       switch (type) {
         case 'redirect':
@@ -91,11 +91,19 @@ function renderFromServer(req, res) {
       }
       clearTimeout(renderTimeout)
     })
+    // Clean up any lingering renderer processes at shutdown
+    const exitHandler = () => {
+      console.log(`Killing child render process ${child.pid}`)
+      child.kill('SIGKILL')
+    }
+    process.on('exit', exitHandler);
+
     // Handle assorted child process errors
-    child.on('exit', (code, signal) => {
-      console.log(code, signal)
+    child.once('exit', (code, signal) => {
+      console.log(`Render process exited with ${code} due to ${signal}`)
       res.status(500).end()
       clearTimeout(renderTimeout)
+      process.removeListener('exit', exitHandler);
     })
     // Kick off the render
     child.send({ access_token: token.token.access_token, originalUrl: req.originalUrl, url: req.url })
