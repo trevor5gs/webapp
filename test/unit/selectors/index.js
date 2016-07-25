@@ -1,7 +1,9 @@
 import { expect } from '../../spec_helper'
 import { stubJSONStore } from '../../stubs'
 import {
+  selectCategories,
   selectPagination,
+  sortCategories,
 } from '../../../src/selectors'
 
 describe('selectors', () => {
@@ -28,6 +30,40 @@ describe('selectors', () => {
       const nextState = { ...state, blah: 1 }
       expect(selectPagination(nextState, props)).to.deep.equal(json.pages['/discover'].pagination)
       expect(selectPagination.recomputations()).to.equal(1)
+    })
+  })
+
+  context('#selectCategories', () => {
+    it('returns the category object with memoization', () => {
+      const state = { json }
+      const props = { params, location }
+      const categories = json.categories
+      const keys = Object.keys(categories)
+      let primary = []
+      let secondary = []
+      let tertiary = []
+      keys.forEach((key) => {
+        const category = categories[key]
+        switch (category.level) {
+          case 'primary':
+            primary.push(category)
+            break
+          case 'secondary':
+            secondary.push(category)
+            break
+          case 'tertiary':
+            tertiary.push(category)
+            break
+          default:
+            break
+        }
+      })
+      primary = primary.sort(sortCategories)
+      secondary = secondary.sort(sortCategories)
+      tertiary = tertiary.sort(sortCategories)
+      const selected = selectCategories(state, props)
+      const compare = { primary, secondary, tertiary, pageTitle: 'Featured' }
+      expect(selected).to.deep.equal(compare)
     })
   })
 })

@@ -1,3 +1,4 @@
+import { upperFirst } from 'lodash'
 import * as MAPPING_TYPES from '../src/constants/mapping_types'
 
 const json = {}
@@ -144,9 +145,37 @@ function stubComment(properties) {
   return model
 }
 
+export function stubCategories(properties) {
+  const categories = [
+    { level: 'primary', name: 'art', order: 1 },
+    { level: 'primary', name: 'architecture', order: 4 },
+    { level: 'primary', name: 'design', order: 2 },
+    { level: 'primary', name: 'photography', order: 3 },
+    { level: 'secondary', name: 'collage', order: 6 },
+    { level: 'secondary', name: 'interviews', order: 5 },
+  ]
+  categories.forEach((category, index) => {
+    const defaultProps = {
+      id: index + 1,
+      links: { recent: { related: `/categories/${category.name}/posts/recent` } },
+      name: upperFirst(category.name),
+      slug: category.name,
+      tileImage: {
+        large: { url: `/tile_image/${index + 1}/large.png`, metadata: 'meta large' },
+        optimized: { url: `/tile_image/${index + 1}/optimized.png`, metadata: 'meta optimized' },
+        regular: { url: `/tile_image/${index + 1}/regular.png`, metadata: 'meta regular' },
+        small: { url: `/tile_image/${index + 1}/small.png`, metadata: 'meta small' },
+      },
+    }
+    const model = { ...category, ...defaultProps, ...properties }
+    addToJSON('categories', model)
+  })
+  return json.categories
+}
+
 function stubPage(path, properties = {}) {
   const page = {
-    ids: ['1', '2', '3', '4', '5'],
+    ids: ['1', '2', '3', '4', '5', '6'],
     next: {
       ids: [],
       pagination: { next: '/next/next', totalCount: 1, totalPages: 3, totalPagesRemaining: 2 },
@@ -192,6 +221,12 @@ export function stubJSONStore() {
   stubPage('/search/posts')
   stubPage('/search/users')
   stubPage('/mk')
+  stubPage('all-categories', {
+    next: undefined,
+    pagination: { totalCount: null, totalPages: null, totalPagesRemaining: null },
+    type: 'categories',
+  })
+  stubCategories()
   return json
 }
 
