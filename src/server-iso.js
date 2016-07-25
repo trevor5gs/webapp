@@ -20,6 +20,7 @@ import morgan from 'morgan'
 import librato from 'librato-node'
 import path from 'path'
 import fs from 'fs'
+import semaphore from 'semaphore'
 import cp from 'child_process'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import { addOauthRoute, currentToken } from '../oauth'
@@ -31,6 +32,7 @@ updateTimeAgoStrings({ about: '' })
 
 const app = express()
 const preRenderTimeout = (parseInt(process.env.PRERENDER_TIMEOUT, 10) || 15) * 1000
+const renderSemaphore = semaphore(parseInt(process.env.MAX_SIMULTANEOUS_RENDERS, 10) || 5)
 
 // Honeybadger "before everything" middleware
 app.use(Honeybadger.requestHandler);
@@ -59,54 +61,65 @@ app.use('/static', express.static('public/static', { maxAge: '1y' }))
 
 function renderFromServer(req, res) {
   currentToken().then((token) => {
-    const child = cp.fork('./dist/server-render-entrypoint')
-    // Don't let processes run away on us
+    console.log(`- Attempting render, ${renderSemaphore.current} current semaphore locks`)
+    let child = null
     const renderTimeout = setTimeout(() => {
-      console.log('Render timed out; killing child process and returning boilerplate.')
+      console.log('- Render timed out; killing child process and returning boilerplate.')
       librato.increment('webapp-server-render-timeout')
-      child.kill('SIGKILL')
+      if (child) {
+        child.kill('SIGKILL')
+      }
       res.send(indexStr)
     }, preRenderTimeout)
-    // Handle the return on renders
-    child.once('message', (msg) => {
-      const { type, location, body } = msg
-      switch (type) {
-        case 'redirect':
-          console.log(`Redirecting to ${location}`)
-          librato.increment('webapp-server-render-redirect')
-          res.redirect(location)
-          break
-        case 'render':
-          console.log('Rendering ISO response')
-          librato.increment('webapp-server-render-success')
-          res.send(body)
-          break
-        case 'error':
-          console.log('Rendering error response')
-          librato.increment('webapp-server-render-error')
-          res.status(500).end()
-          break
-        default:
-          // No-op
+    renderSemaphore.take(() => {
+      child = cp.fork('./dist/server-render-entrypoint')
+      // Don't let processes run away on us
+      // Handle the return on renders
+      child.once('message', (msg) => {
+        const { type, location, body } = msg
+        switch (type) {
+          case 'redirect':
+            console.log(`-- Redirecting to ${location}`)
+            librato.increment('webapp-server-render-redirect')
+            res.redirect(location)
+            break
+          case 'render':
+            console.log('-- Rendering ISO response')
+            librato.increment('webapp-server-render-success')
+            res.send(body)
+            break
+          case 'error':
+            console.log('-- Rendering error response')
+            librato.increment('webapp-server-render-error')
+            res.status(500).end()
+            break
+          default:
+            // No-op
+        }
+        clearTimeout(renderTimeout)
+        renderSemaphore.leave()
+      })
+      // Clean up any lingering renderer processes at shutdown
+      const exitHandler = () => {
+        console.log(`- Killing child render process ${child.pid}`)
+        child.kill('SIGKILL')
       }
-      clearTimeout(renderTimeout)
-    })
-    // Clean up any lingering renderer processes at shutdown
-    const exitHandler = () => {
-      console.log(`Killing child render process ${child.pid}`)
-      child.kill('SIGKILL')
-    }
-    process.on('exit', exitHandler);
+      process.on('exit', exitHandler);
 
-    // Handle assorted child process errors
-    child.once('exit', (code, signal) => {
-      console.log(`Render process exited with ${code} due to ${signal}`)
-      res.status(500).end()
-      clearTimeout(renderTimeout)
-      process.removeListener('exit', exitHandler);
+      // Handle assorted child process errors
+      child.once('exit', (code, signal) => {
+        clearTimeout(renderTimeout)
+        process.removeListener('exit', exitHandler);
+        // Abnormal exit, may be in a dirty state
+        if (code !== 0) {
+          console.log(`- Render process exited with ${code} due to ${signal}`)
+          res.status(500).end()
+          renderSemaphore.leave()
+        }
+      })
+      // Kick off the render
+      child.send({ access_token: token.token.access_token, originalUrl: req.originalUrl, url: req.url })
     })
-    // Kick off the render
-    child.send({ access_token: token.token.access_token, originalUrl: req.originalUrl, url: req.url })
   })
 }
 
