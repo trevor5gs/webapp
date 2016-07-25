@@ -29,7 +29,7 @@ export function sortCategories(a, b) {
 const selectJSON = (state) => state.json
 
 // props.params.xxx
-const selectParamsType = (state, props) => get(props, 'parmas.type')
+const selectParamsType = (state, props) => get(props, 'params.type')
 const selectParamsToken = (state, props) => {
   const token = get(props, 'params.token')
   return token ? token.toLowerCase() : undefined
@@ -65,13 +65,12 @@ export const selectPagination = createSelector(
 )
 
 export const selectCategories = createSelector(
-  [selectCategoryCollection, selectAllCategories, selectParamsType],
-  (categoryCollection, allCategories, paramsType) => {
+  [selectCategoryCollection, selectAllCategories],
+  (categoryCollection, allCategories) => {
     const categories = []
     let primary = []
     let secondary = []
     let tertiary = []
-    let pageTitle = null
     if (allCategories) {
       for (const id of allCategories.ids) {
         const cat = categoryCollection[id]
@@ -81,9 +80,6 @@ export const selectCategories = createSelector(
       }
     }
     for (const category of categories) {
-      if (category.slug === paramsType) {
-        pageTitle = category.name
-      }
       switch (category.level) {
         case 'primary':
           primary.push(category)
@@ -98,23 +94,24 @@ export const selectCategories = createSelector(
           break
       }
     }
-    if (!pageTitle) {
-      switch (paramsType) {
-        case 'all':
-          break
-        case undefined:
-        case 'recommended':
-          pageTitle = 'Featured'
-          break
-        default:
-          pageTitle = upperFirst(paramsType)
-          break
-      }
-    }
     primary = primary.sort(sortCategories)
     secondary = secondary.sort(sortCategories)
     tertiary = tertiary.sort(sortCategories)
-    return { primary, secondary, tertiary, pageTitle }
+    return { primary, secondary, tertiary }
+  }
+)
+
+export const selectCategoryPageTitle = createSelector(
+  [selectParamsType], (paramsType) => {
+    switch (paramsType) {
+      case 'all':
+        return null
+      case undefined:
+      case 'recommended':
+        return 'Featured'
+      default:
+        return upperFirst(paramsType)
+    }
   }
 )
 

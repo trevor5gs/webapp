@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual } from 'lodash'
-import { selectCategories } from '../selectors'
+import { isEqual, pick } from 'lodash'
+import { selectCategories, selectCategoryPageTitle } from '../selectors'
 import {
   bindDiscoverKey,
   getCategories,
@@ -17,7 +17,8 @@ import { Discover } from '../components/views/Discover'
 
 const BEACON_VERSION = '1'
 
-export function getDiscoverAction(type) {
+// TODO: Move to a selector
+export function getStreamAction(type) {
   switch (type) {
     // case 'communities':
     //   return loadCommunities()
@@ -37,6 +38,7 @@ export function getDiscoverAction(type) {
   }
 }
 
+// TODO: Combine with selectCategories or move to its own selector
 export function generateTabs(primary, secondary, tertiary) {
   const tabs = []
   // add featured/trending/recent by default
@@ -76,11 +78,30 @@ export function generateTabs(primary, secondary, tertiary) {
   return tabs
 }
 
+export function shouldContainerUpdate(thisProps, nextProps) {
+  const pickProps = [
+    'coverDPI',
+    'isBeaconActive',
+    'isLoggedIn',
+    'location',
+    'params',
+    'pageTitle',
+    'pathname',
+    'primary',
+    'secondary',
+    'tertiary',
+  ]
+  const thisCompare = pick(thisProps, pickProps)
+  const nextCompare = pick(nextProps, pickProps)
+  return !isEqual(thisCompare, nextCompare)
+}
+
 function mapStateToProps(state, props) {
   const { authentication, gui } = state
   const { location, params } = props
   const { isLoggedIn } = authentication
-  const { primary, secondary, tertiary, pageTitle } = selectCategories(state, props)
+  const { primary, secondary, tertiary } = selectCategories(state, props)
+  const pageTitle = selectCategoryPageTitle(state, props)
   return {
     coverDPI: gui.coverDPI,
     isBeaconActive: isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
@@ -115,20 +136,15 @@ export class DiscoverContainer extends Component {
   }
 
   static preRender = (store, routerState) =>
-    store.dispatch(getDiscoverAction(routerState.params.type || 'featured'))
+    store.dispatch(getStreamAction(routerState.params.type || 'featured'))
 
   componentWillMount() {
-    this.state = { primaryIndex: undefined }
     const { dispatch, paramsType } = this.props
     dispatch(bindDiscoverKey(paramsType))
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!isEqual(this.props.promotions, nextProps.promotions)) return true
-    if (isEqual(nextProps, this.props) && isEqual(nextState, this.state)) {
-      return false
-    }
-    return true
+  shouldComponentUpdate(nextProps) {
+    return shouldContainerUpdate(this.props, nextProps)
   }
 
   componentDidUpdate() {
@@ -158,7 +174,7 @@ export class DiscoverContainer extends Component {
       pageTitle,
       pathname,
       promotions,
-      streamAction: getDiscoverAction(paramsType),
+      streamAction: getStreamAction(paramsType),
       tabs: generateTabs(primary, secondary, tertiary),
     }
     return <Discover key={`discover_${paramsType}`} {...props} />
