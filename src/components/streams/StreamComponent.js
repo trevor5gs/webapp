@@ -163,6 +163,8 @@ export class StreamComponent extends Component {
     } else if (_.isEqual(nextState, this.state) &&
                _.isEqual(nextProps, this.props)) {
       return false
+    } else if (_.get(stream, 'payload.endpoint.path') !== _.get(action, 'payload.endpoint.path')) {
+      return false
     }
     return true
   }
@@ -383,10 +385,7 @@ export class StreamComponent extends Component {
     } else if (!renderObj.data.length) {
       switch (stream.type) {
         case ACTION_TYPES.LOAD_STREAM_SUCCESS:
-          if (_.get(stream, 'payload.endpoint.path') === _.get(action, 'payload.endpoint.path')) {
-            return this.renderZeroState()
-          }
-          return null
+          return this.renderZeroState()
         case ACTION_TYPES.LOAD_STREAM_REQUEST:
           return this.renderLoading()
         case ACTION_TYPES.LOAD_STREAM_FAILURE:
