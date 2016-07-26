@@ -1,12 +1,30 @@
 import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
+import { isEqual, pick } from 'lodash'
 import { push } from 'react-router-redux'
 import { SET_LAYOUT_MODE } from '../constants/action_types'
 import { SHORTCUT_KEYS } from '../constants/application_types'
 import { openModal, closeModal } from '../actions/modals'
 import Mousetrap from '../vendor/mousetrap'
 import HelpDialog from '../components/dialogs/HelpDialog'
+
+export function shouldContainerUpdate(thisProps, nextProps) {
+  const pickProps = ['discoverKeyType', 'isGridMode', 'isLoggedIn', 'modalIsActive', 'pathname']
+  const thisCompare = pick(thisProps, pickProps)
+  const nextCompare = pick(nextProps, pickProps)
+  return !isEqual(thisCompare, nextCompare)
+}
+
+function mapStateToProps(state) {
+  const { authentication, gui, modal, routing } = state
+  return {
+    discoverKeyType: gui.discoverKeyType,
+    isGridMode: gui.isGridMode,
+    isLoggedIn: authentication.isLoggedIn,
+    modalIsActive: modal.isActive,
+    pathname: routing.location.pathname,
+  }
+}
 
 class KeyboardContainer extends Component {
   static propTypes = {
@@ -38,8 +56,8 @@ class KeyboardContainer extends Component {
     })
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate(nextProps) {
+    return shouldContainerUpdate(this.props, nextProps)
   }
 
   componentDidUpdate() {
@@ -90,17 +108,6 @@ class KeyboardContainer extends Component {
     return null
   }
 
-}
-
-function mapStateToProps(state) {
-  const { authentication, gui, modal, routing } = state
-  return {
-    discoverKeyType: gui.discoverKeyType,
-    isGridMode: gui.isGridMode,
-    isLoggedIn: authentication.isLoggedIn,
-    modalIsActive: modal.isActive,
-    pathname: routing.location.pathname,
-  }
 }
 
 export default connect(mapStateToProps)(KeyboardContainer)
