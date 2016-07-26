@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import Promotion from '../assets/Promotion'
-import StreamComponent from '../streams/StreamComponent'
+import StreamContainer from '../../containers/StreamContainer'
 import { CategoryTabBar } from '../tabs/CategoryTabBar'
 import { MainView } from '../views/MainView'
 import { ZeroStream } from '../zeros/Zeros'
@@ -36,7 +36,7 @@ export const Discover = ({
     />
     <CategoryTabBar pathname={pathname} tabs={tabs} />
     {pageTitle ? <h1 className="DiscoverPageTitle">{pageTitle}</h1> : null}
-    <StreamComponent action={streamAction} />
+    <StreamContainer action={streamAction} />
   </MainView>
 
 Discover.propTypes = {

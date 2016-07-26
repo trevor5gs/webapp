@@ -1,9 +1,9 @@
-import { expect, stub } from '../../../spec_helper'
+import { expect, stub } from '../../spec_helper'
 import {
   makeMapStateToProps,
-} from '../../../../src/components/streams/StreamComponent'
-import * as MAPPING_TYPES from '../../../../src/constants/mapping_types'
-import { setLocation } from '../../../../src/reducers/gui'
+} from '../../../src/containers/StreamContainer'
+import * as MAPPING_TYPES from '../../../src/constants/mapping_types'
+import { setLocation } from '../../../src/reducers/gui'
 
 let props
 let state
@@ -82,7 +82,7 @@ function createStateForStream(ownState = {}) {
   return { ...defaultProps, ...ownState }
 }
 
-describe('StreamComponent', () => {
+describe('StreamContainer', () => {
   afterEach(() => {
     props = null
     state = null

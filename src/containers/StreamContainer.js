@@ -3,17 +3,17 @@ import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import classNames from 'classnames'
 import _ from 'lodash'
-import scrollTop from '../../vendor/scrolling'
-import { runningFetches } from '../../sagas/requester'
-import * as ACTION_TYPES from '../../constants/action_types'
-import { SESSION_KEYS } from '../../constants/application_types'
-import { findModel } from '../../helpers/json_helper'
-import { addScrollObject, removeScrollObject } from '../viewport/ScrollComponent'
-import { ElloMark } from '../svg/ElloIcons'
-import { Paginator } from './Paginator'
-import { ErrorState4xx } from '../errors/Errors'
-import { makeSelectStreamProps } from '../../selectors'
-import Session from '../../vendor/session'
+import scrollTop from '../vendor/scrolling'
+import { runningFetches } from '../sagas/requester'
+import * as ACTION_TYPES from '../constants/action_types'
+import { SESSION_KEYS } from '../constants/application_types'
+import { findModel } from '../helpers/json_helper'
+import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
+import { ElloMark } from '../components/svg/ElloIcons'
+import { Paginator } from '../components/streams/Paginator'
+import { ErrorState4xx } from '../components/errors/Errors'
+import { makeSelectStreamProps } from '../selectors'
+import Session from '../vendor/session'
 
 export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
   const { stream } = nextProps
@@ -61,7 +61,7 @@ export function makeMapStateToProps() {
   return mapStateToProps
 }
 
-export class StreamComponent extends Component {
+export class StreamContainer extends Component {
 
   static propTypes = {
     action: PropTypes.object,
@@ -325,7 +325,7 @@ export class StreamComponent extends Component {
     const { action } = this.props
     const { meta } = action
     return (
-      <section className="StreamComponent hasErrored">
+      <section className="StreamContainer hasErrored">
         {meta && meta.renderStream && meta.renderStream.asError ?
           meta.renderStream.asError :
           <ErrorState4xx />
@@ -337,7 +337,7 @@ export class StreamComponent extends Component {
   renderLoading() {
     const { className } = this.props
     return (
-      <section className={classNames('StreamComponent isBusy', className)} >
+      <section className={classNames('StreamContainer isBusy', className)} >
         <div className="StreamBusyIndicator">
           <ElloMark />
         </div>
@@ -350,7 +350,7 @@ export class StreamComponent extends Component {
     if (!action) { return null }
     const { meta } = action
     return (
-      <section className="StreamComponent">
+      <section className="StreamContainer">
         {meta && meta.renderStream && meta.renderStream.asZero ?
           meta.renderStream.asZero :
           null
@@ -386,7 +386,7 @@ export class StreamComponent extends Component {
     const renderMethod = isGridMode ? 'asGrid' : 'asList'
     const pagination = result.pagination
     return (
-      <section className={classNames('StreamComponent', className)}>
+      <section className={classNames('StreamContainer', className)}>
         {meta.renderStream[renderMethod](renderObj)}
         {this.props.children}
         <Paginator
@@ -404,5 +404,5 @@ export class StreamComponent extends Component {
   }
 }
 
-export default connect(makeMapStateToProps, null, null, { withRef: true })(StreamComponent)
+export default connect(makeMapStateToProps, null, null, { withRef: true })(StreamContainer)
 

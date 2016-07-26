@@ -6,34 +6,31 @@
   to
     transform: rotate(720deg)
 
-.StreamComponent,
 .StreamContainer
   padding: rem(10)
 
-.StreamComponent.asFullWidth
+.StreamContainer.asFullWidth
   padding-left: 0
   padding-right: 0
 
 @media(min-width: #{$break-2})
-  .StreamComponent,
   .StreamContainer
     padding: rem(20)
-  .PostList .CommentStreamComponent
+  .PostList .CommentStreamContainer
     padding-top: 0
 
 
 @media(min-width: #{$break-4})
-  .StreamComponent,
   .StreamContainer
     padding-left: rem(40)
     padding-right: rem(40)
 
 // -------------------------------------
 
-.StreamComponent.isBusy
+.StreamContainer.isBusy
   text-align: center
 
-.PostList .CommentStreamComponent.isBusy
+.PostList .CommentStreamContainer.isBusy
   max-width: rem(720)
 
 .StreamBusyIndicator
@@ -51,20 +48,20 @@
 
 // -------------------------------------
 
-.MainView > .StreamComponent.hasErrored,
-.MainView > .UserDetails > .StreamComponent.hasErrored,
-.MainView > .PostDetails > .StreamComponent.hasErrored
+.MainView > .StreamContainer.hasErrored,
+.MainView > .UserDetails > .StreamContainer.hasErrored,
+.MainView > .PostDetails > .StreamContainer.hasErrored
   margin: 0 auto
   max-width: rem(780)
 
-.MainView > .StreamComponent .StreamBusyIndicator
+.MainView > .StreamContainer .StreamBusyIndicator
   top: rem(80)
 
 @media(min-width: #{$break-2})
-  .MainView > .StreamComponent .StreamBusyIndicator
+  .MainView > .StreamContainer .StreamBusyIndicator
     top: rem(120)
 
 @media(min-width: #{$break-5})
-  .View > .StreamComponent .StreamBusyIndicator
+  .View > .StreamContainer .StreamBusyIndicator
     top: rem(240)
 

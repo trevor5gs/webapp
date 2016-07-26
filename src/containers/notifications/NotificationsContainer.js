@@ -6,7 +6,7 @@ import { GUI, LOAD_STREAM_SUCCESS } from '../../constants/action_types'
 import { scrollElToTop } from '../../vendor/scrolling'
 import { toggleNotifications } from '../../actions/gui'
 import { loadNotifications } from '../../actions/notifications'
-import StreamComponent from '../../components/streams/StreamComponent'
+import StreamContainer from '../../containers/StreamContainer'
 import {
   BubbleIcon,
   HeartIcon,
@@ -38,7 +38,7 @@ class NotificationsContainer extends Component {
   componentDidMount() {
     document.addEventListener('click', this.onClickDocument)
     document.addEventListener('touchstart', this.onClickDocument)
-    this.refs.streamComponent.refs.wrappedInstance.scrollContainer = this.refs.scrollable
+    this.refs.streamContainer.refs.wrappedInstance.scrollContainer = this.refs.scrollable
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,7 +49,7 @@ class NotificationsContainer extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.activeTabType !== this.props.activeTabType && this.refs.scrollable) {
-      this.refs.streamComponent.refs.wrappedInstance.scrollContainer = this.refs.scrollable
+      this.refs.streamContainer.refs.wrappedInstance.scrollContainer = this.refs.scrollable
       this.refs.scrollable.scrollTop = 0
     }
   }
@@ -78,8 +78,8 @@ class NotificationsContainer extends Component {
         payload: { activeTabType: type },
       })
     }
-    if (this.refs.streamComponent) {
-      this.refs.streamComponent.refs.wrappedInstance.setAction(
+    if (this.refs.streamContainer) {
+      this.refs.streamContainer.refs.wrappedInstance.setAction(
         loadNotifications({ category: type })
       )
     }
@@ -111,13 +111,13 @@ class NotificationsContainer extends Component {
     const { scrollable } = this.refs
     if (!scrollable) { return }
 
-    this.refs.streamComponent.refs.wrappedInstance.onScroll()
+    this.refs.streamContainer.refs.wrappedInstance.onScroll()
 
     const scrollY = Math.ceil(scrollable.scrollTop)
     const scrollHeight = Math.max(scrollable.scrollHeight, scrollable.offsetHeight)
     const scrollBottom = Math.round(scrollHeight - scrollable.offsetHeight)
     if (Math.abs(scrollY - scrollBottom) < 5) {
-      this.refs.streamComponent.refs.wrappedInstance.onLoadNextPage()
+      this.refs.streamContainer.refs.wrappedInstance.onLoadNextPage()
     }
   }
 
@@ -167,11 +167,11 @@ class NotificationsContainer extends Component {
               /> :
               null
           }
-          <StreamComponent
+          <StreamContainer
             action={loadNotifications({ category: activeTabType })}
             className="asFullWidth"
             key={`notificationView_${activeTabType}`}
-            ref="streamComponent"
+            ref="streamContainer"
             scrollSessionKey={`notifications_${activeTabType}`}
             isModalComponent
           />

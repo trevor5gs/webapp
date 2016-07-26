@@ -8,7 +8,7 @@ import { batchUpdateRelationship } from '../../actions/relationships'
 import { loadCommunities, relationshipBatchSave } from '../../actions/onboarding'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
-import StreamComponent from '../../components/streams/StreamComponent'
+import StreamContainer from '../../containers/StreamContainer'
 import { MainView } from '../../components/views/MainView'
 
 class Communities extends Component {
@@ -65,9 +65,9 @@ class Communities extends Component {
   }
 
   getUserIds() {
-    const { streamComponent } = this.refs
-    return streamComponent && streamComponent.refs.wrappedInstance.props.result ?
-      streamComponent.refs.wrappedInstance.props.result.ids :
+    const { streamContainer } = this.refs
+    return streamContainer && streamContainer.refs.wrappedInstance.props.result ?
+      streamContainer.refs.wrappedInstance.props.result.ids :
       []
   }
 
@@ -124,7 +124,7 @@ class Communities extends Component {
               </button> :
               null
           }
-          <StreamComponent ref="streamComponent" action={loadCommunities()} />
+          <StreamContainer ref="streamContainer" action={loadCommunities()} />
         </div>
       </MainView>
     )

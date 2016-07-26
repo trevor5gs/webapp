@@ -253,7 +253,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
   }
 }
 
-// this is used for testing in StreamComponent_test
+// this is used for testing in StreamContainer_test
 export const setLocation = (loc) => {
   location = loc
 }

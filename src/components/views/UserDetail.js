@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import Cover from '../assets/Cover'
 import classNames from 'classnames'
 import { UserDetailHelmet } from '../helmets/UserDetailHelmet'
-import StreamComponent from '../streams/StreamComponent'
+import StreamContainer from '../../containers/StreamContainer'
 import UserList from '../users/UserList'
 import { MainView } from '../views/MainView'
 import { TabListButtons } from '../tabs/TabList'
@@ -61,7 +61,7 @@ export const UserDetail = (props) => {
         <UserList {...userListProps} />
         {tabs ? <TabListButtons {...tabProps} onTabClick={({ type }) => onTabClick(type)} /> : null}
         {hasZeroPosts || hasZeroFollowers ? <ZeroStates {...zeroProps} /> : null}
-        {streamAction ? <StreamComponent {...streamProps} /> : null}
+        {streamAction ? <StreamContainer {...streamProps} /> : null}
       </div>
     </MainView>
   )
@@ -89,7 +89,7 @@ UserDetail.propTypes = {
 
 export const UserDetailError = ({ children }) =>
   <MainView className="UserDetail">
-    <section className="StreamComponent hasErrored">
+    <section className="StreamContainer hasErrored">
       {children}
     </section>
   </MainView>
