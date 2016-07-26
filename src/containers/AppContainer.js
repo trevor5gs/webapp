@@ -20,7 +20,7 @@ import NavbarContainer from '../containers/NavbarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
 
 export function shouldContainerUpdate(thisProps, nextProps) {
-  const pickProps = ['authentication', 'pagination', 'params']
+  const pickProps = ['authentication', 'location', 'pagination', 'params']
   const thisCompare = pick(thisProps, pickProps)
   const nextCompare = pick(nextProps, pickProps)
   return !isEqual(thisCompare, nextCompare)
