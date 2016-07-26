@@ -1,11 +1,17 @@
 import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
+import { isEqual } from 'lodash'
 import { loadNoise } from '../actions/stream'
 import { setLastStarredBeaconVersion } from '../actions/gui'
 import { Starred } from '../components/views/Starred'
 
 const BEACON_VERSION = '1'
+
+function mapStateToProps(state) {
+  return {
+    isBeaconActive: state.gui.lastStarredBeaconVersion !== BEACON_VERSION,
+  }
+}
 
 export class StarredContainer extends Component {
 
@@ -17,8 +23,8 @@ export class StarredContainer extends Component {
   static preRender = (store) =>
     store.dispatch(loadNoise())
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(this.props, nextProps)
   }
 
   onDismissZeroStream = () => {
@@ -34,12 +40,6 @@ export class StarredContainer extends Component {
       streamAction: loadNoise(),
     }
     return <Starred {...props} />
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-    isBeaconActive: state.gui.lastStarredBeaconVersion !== BEACON_VERSION,
   }
 }
 

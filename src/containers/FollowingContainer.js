@@ -1,11 +1,17 @@
 import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
+import { isEqual } from 'lodash'
 import { loadFriends } from '../actions/stream'
 import { setLastFollowingBeaconVersion } from '../actions/gui'
 import { Following } from '../components/views/Following'
 
 const BEACON_VERSION = '1'
+
+function mapStateToProps(state) {
+  return {
+    isBeaconActive: state.gui.lastFollowingBeaconVersion !== BEACON_VERSION,
+  }
+}
 
 export class FollowingContainer extends Component {
 
@@ -17,8 +23,8 @@ export class FollowingContainer extends Component {
   static preRender = (store) =>
     store.dispatch(loadFriends())
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(this.props, nextProps)
   }
 
   onDismissZeroStream = () => {
@@ -34,12 +40,6 @@ export class FollowingContainer extends Component {
       streamAction: loadFriends(),
     }
     return <Following {...props} />
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-    isBeaconActive: state.gui.lastFollowingBeaconVersion !== BEACON_VERSION,
   }
 }
 
