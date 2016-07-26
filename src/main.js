@@ -1,6 +1,7 @@
 import './main.sass'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
+import 'react-fastclick'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
