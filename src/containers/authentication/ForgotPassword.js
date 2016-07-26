@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { random } from 'lodash'
+import { random, trim } from 'lodash'
 import { isAndroid } from '../../vendor/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { sendForgotPasswordRequest } from '../../actions/authentication'
@@ -41,7 +41,7 @@ class ForgotPassword extends Component {
   }
 
   onChangeControl = ({ email }) => {
-    this.emailValue = email
+    this.emailValue = trim(email)
     const { emailState } = this.state
     const currentStatus = emailState.status
     const newState = getEmailStateFromClient({ value: email, currentStatus })
