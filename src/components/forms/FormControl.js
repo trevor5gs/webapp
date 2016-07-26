@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { trim } from 'lodash'
 import classNames from 'classnames'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'
@@ -20,6 +21,7 @@ class FormControl extends Component {
     renderFeedback: PropTypes.func,
     status: PropTypes.string,
     tabIndex: PropTypes.string.isRequired,
+    trimWhitespace: PropTypes.bool,
     text: PropTypes.string,
   }
 
@@ -29,6 +31,7 @@ class FormControl extends Component {
     status: STATUS.INDETERMINATE,
     tabIndex: '0',
     text: '',
+    trimWhitespace: false,
     type: 'text',
   }
 
@@ -70,7 +73,13 @@ class FormControl extends Component {
   }
 
   onChangeControl = (e) => {
-    this.onChangeValue(e.target.value)
+    const target = e.target
+    let value = target.value
+    if (this.props.trimWhitespace) {
+      value = trim(value)
+      target.value = value
+    }
+    this.onChangeValue(value)
   }
 
   onChangeValue = (val) => {
@@ -155,6 +164,7 @@ class FormControl extends Component {
       'status',
       'suggestions',
       'renderFeedback',
+      'trimWhitespace',
       'text',
     ]
     blacklistedProps.forEach(prop => {
