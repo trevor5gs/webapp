@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { replace } from 'react-router-redux'
-import { debounce, isNil, sample, set, trim } from 'lodash'
+import { debounce, isNil, sample, set } from 'lodash'
 import { isAndroid, isElloAndroid } from '../../vendor/jello'
 import { ONBOARDING_VERSION } from '../../constants/application_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
@@ -84,7 +84,7 @@ class SignIn extends Component {
   onChangeUserControl = ({ usernameOrEmail }) => {
     this.setState({ showUserError: false })
     this.delayedShowUserError()
-    this.userValue = trim(usernameOrEmail)
+    this.userValue = usernameOrEmail
     const { userState } = this.state
     const currentStatus = userState.status
     const newState = getUserStateFromClient({ value: usernameOrEmail, currentStatus })
@@ -187,6 +187,7 @@ class SignIn extends Component {
               placeholder="Enter your username or email"
               renderStatus={showUserError ? this.renderStatus(userState) : null}
               tabIndex="1"
+              trimWhitespace
             />
             <PasswordControl
               classList="asBoxControl"

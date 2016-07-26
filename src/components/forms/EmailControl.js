@@ -17,6 +17,7 @@ class EmailControl extends Component {
         {...this.props}
         autoCapitalize="off"
         autoCorrect="off"
+        trimWhitespace
         type="email"
       />
     )

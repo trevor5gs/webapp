@@ -58,6 +58,7 @@ class UsernameControl extends Component {
         ref="FormControl"
         maxLength="50"
         renderFeedback={this.renderSuggestions}
+        trimWhitespace
         type="text"
       />
     )
