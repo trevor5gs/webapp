@@ -1,10 +1,31 @@
 import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
+import { isEqual } from 'lodash'
 import { setIsOffsetLayout, setScrollState, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
+
+
+function mapStateToProps(state) {
+  const { gui, routing } = state
+  return {
+    coverOffset: gui.coverOffset,
+    innerHeight: gui.innerHeight,
+    innerWidth: gui.innerWidth,
+    isAuthenticationView: gui.isAuthenticationView,
+    isCoverHidden: gui.isCoverHidden,
+    isNavbarFixed: gui.isNavbarFixed,
+    isNavbarHidden: gui.isNavbarHidden,
+    isNavbarSkippingTransition: gui.isNavbarSkippingTransition,
+    isNotificationsActive: gui.isNotificationsActive,
+    isOffsetLayout: gui.isOffsetLayout,
+    isOnboardingView: gui.isOnboardingView,
+    isProfileMenuActive: gui.isProfileMenuActive,
+    offset: gui.coverOffset ? gui.coverOffset - 80 : 160,
+    pathname: routing.location.pathname,
+  }
+}
 
 class ViewportContainer extends Component {
   static propTypes = {
@@ -40,8 +61,8 @@ class ViewportContainer extends Component {
     this.updateIsOffsetLayout()
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(this.props, nextProps)
   }
 
   componentDidUpdate(prevProps) {
@@ -144,26 +165,6 @@ class ViewportContainer extends Component {
     return <Viewport {...this.props} />
   }
 
-}
-
-function mapStateToProps(state) {
-  const { gui, routing } = state
-  return {
-    coverOffset: gui.coverOffset,
-    innerHeight: gui.innerHeight,
-    innerWidth: gui.innerWidth,
-    isAuthenticationView: gui.isAuthenticationView,
-    isCoverHidden: gui.isCoverHidden,
-    isNavbarFixed: gui.isNavbarFixed,
-    isNavbarHidden: gui.isNavbarHidden,
-    isNavbarSkippingTransition: gui.isNavbarSkippingTransition,
-    isNotificationsActive: gui.isNotificationsActive,
-    isOffsetLayout: gui.isOffsetLayout,
-    isOnboardingView: gui.isOnboardingView,
-    isProfileMenuActive: gui.isProfileMenuActive,
-    offset: gui.coverOffset ? gui.coverOffset - 80 : 160,
-    pathname: routing.location.pathname,
-  }
 }
 
 export default connect(mapStateToProps)(ViewportContainer)
