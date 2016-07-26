@@ -1,13 +1,13 @@
 import { expect, stub } from '../../../spec_helper'
 import {
-  // StreamComponent as subject,
-  mapStateToProps,
+  makeMapStateToProps,
 } from '../../../../src/components/streams/StreamComponent'
 import * as MAPPING_TYPES from '../../../../src/constants/mapping_types'
 import { setLocation } from '../../../../src/reducers/gui'
 
 let props
 let state
+const mapStateToProps = makeMapStateToProps()
 
 function createPropsForStream(ownProps = {}) {
   const defaultProps = {
@@ -149,10 +149,13 @@ describe('StreamComponent', () => {
         })
       })
 
-      it('does not find a result if one does not exist', () => {
+      it('returns a default result if no data is present', () => {
         state = createStateForStream()
         props = createPropsForStream()
-        expect(mapStateToProps(state, props).result).to.be.undefined
+        const defaultResult = {
+          ids: [], pagination: { totalPages: 0, totalPagesRemaining: 0 },
+        }
+        expect(mapStateToProps(state, props).result).to.deep.equal(defaultResult)
       })
     })
 
@@ -166,124 +169,5 @@ describe('StreamComponent', () => {
       })
     })
   })
-
-  // TODO: figure out why this refactor caused the component
-  // not to be created with the getRenderedComponent method
-  // describe('#render', () => {
-  //   describe('StreamComponent hasErrored', () => {
-  //     it('renders errors', () => {
-  //       const props = { stream: { error: true }, action: { meta: {} } }
-  //       const comp = getRenderedComponent(subject, createPropsForStream(props))
-  //       console.log('comp', comp)
-  //       expect(comp.props.className).to.equal('StreamComponent hasErrored')
-  //       expect(comp.type).to.equal('section')
-  //       const div = comp.props.children
-  //       expect(div)
-  //       // const [ img, p1, p2, p3 ] = div.props.children
-  //     })
-  //   })
-
-  //   describe('StreamComponent isBusy', () => {
-  //     it('renders a loader when no result', () => {
-  //       const comp = getRenderedComponent(subject, createPropsForStream({ result: null }))
-  //       expect(comp.type).to.equal('section')
-  //       expect(comp.props.className).to.equal('StreamComponent isBusy')
-  //       const div = comp.props.children
-  //       expect(div.props.className).to.equal('StreamBusyIndicator')
-  //     })
-
-  //     it('renders a loader when no result.type', () => {
-  //       const ownProps = { result: { type: null } }
-  //       const comp = getRenderedComponent(subject, createPropsForStream(ownProps))
-  //       expect(comp.type).to.equal('section')
-  //       expect(comp.props.className).to.equal('StreamComponent isBusy')
-  //       const div = comp.props.children
-  //       expect(div.props.className).to.equal('StreamBusyIndicator')
-  //     })
-
-  //     it('renders a loader when no result.ids', () => {
-  //       const ownProps = { result: { ids: null } }
-  //       const comp = getRenderedComponent(subject, createPropsForStream(ownProps))
-  //       expect(comp.type).to.equal('section')
-  //       expect(comp.props.className).to.equal('StreamComponent isBusy')
-  //       const div = comp.props.children
-  //       expect(div.props.className).to.equal('StreamBusyIndicator')
-  //     })
-
-  //     it('renders a loader when there is no jsonables', () => {
-  //       const comp = getRenderedComponent(subject, createPropsForStream({ meta: true }))
-  //       expect(comp.type).to.equal('section')
-  //       expect(comp.props.className).to.equal('StreamComponent isBusy')
-  //       const div = comp.props.children
-  //       expect(div.props.className).to.equal('StreamBusyIndicator')
-  //     })
-
-  //     it('renders a loader when there is no meta data', () => {
-  //       const props = {
-  //         meta: false,
-  //         json: {
-  //           pages: {
-  //             what: {},
-  //           },
-  //           posts: {
-  //             1: { id: '1' },
-  //             2: { id: '2' },
-  //           },
-  //         },
-  //         result: {
-  //           type: 'posts',
-  //           ids: ['1', '2'],
-  //         },
-  //       }
-  //       const comp = getRenderedComponent(subject, createPropsForStream(props))
-  //       expect(comp.type).to.equal('section')
-  //       expect(comp.props.className).to.equal('StreamComponent isBusy')
-  //       const div = comp.props.children
-  //       expect(div.props.className).to.equal('StreamBusyIndicator')
-  //     })
-  //   })
-
-  //   describe('StreamComponent', () => {
-  //     it('renders the stream', () => {
-  //       const props = createPropsForStream({
-  //         action: {
-  //           meta: {
-  //             renderStream: { asList: () => {/**/}, asGrid: () => {/**/} },
-  //             mappingType: MAPPING_TYPES.POSTS,
-  //           },
-  //         },
-  //         json: {
-  //           pages: { what: { type: 'posts', ids: ['1'] } },
-  //           posts: {
-  //             1: { id: '1' },
-  //           },
-  //         },
-  //       })
-  //       const renderSpy = sinon.spy(props.action.meta.renderStream, 'asList')
-  //       const comp = getRenderedComponent(subject, props)
-  //       expect(comp.type).to.equal('section')
-  //       expect(comp.props.className).to.equal('StreamComponent')
-  //       const expectedProps = {
-  //         pages: {
-  //           what: {
-  //             type: 'posts',
-  //             ids: ['1'],
-  //           },
-  //         },
-  //         posts: {
-  //           1: {
-  //             id: '1',
-  //           },
-  //         },
-  //       }
-  //       expect(renderSpy.calledWith(
-  //         { data: [{ id: '1' }], nestedData: [] },
-  //         expectedProps,
-  //         { id: 'currentUser' },
-  //         undefined
-  //       )).to.be.true
-  //     })
-  //   })
-  // })
 })
 
