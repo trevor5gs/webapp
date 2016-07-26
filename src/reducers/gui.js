@@ -231,12 +231,14 @@ export const gui = (state = initialState, action = { type: '' }) => {
           ...state,
           ...action.payload.gui,
           ...initialNonPersistedState,
+          ...initialScrollState,
           isLayoutToolHidden: state.isLayoutToolHidden,
         }
       }
       return {
         ...state,
         ...initialNonPersistedState,
+        ...initialScrollState,
         isLayoutToolHidden: state.isLayoutToolHidden,
       }
     case SET_LAYOUT_MODE:
