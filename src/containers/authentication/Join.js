@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { random, debounce } from 'lodash'
+import { random, debounce, trim } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { getInviteEmail } from '../../actions/invitations'
 import { checkAvailability, signUpUser } from '../../actions/profile'
@@ -113,7 +113,7 @@ class Join extends Component {
   onChangeEmailControl = ({ email }) => {
     this.setState({ showEmailError: false })
     this.delayedShowEmailError()
-    this.emailValue = email
+    this.emailValue = trim(email)
     const { emailState } = this.state
     const currentStatus = emailState.status
     const clientState = getEmailStateFromClient({ value: email, currentStatus })
