@@ -166,7 +166,7 @@ export class StreamComponent extends Component {
     // allow page loads to fall through and also allow stream
     // load requests to fall through to show the loader
     // on an initial page load when endpoints don't match
-    } else if (!/LOAD_NEXT_CONTENT/.test(stream.type) &&
+    } else if (!/LOAD_NEXT_CONTENT|POST\.|COMMENT\./.test(stream.type) &&
                stream.type !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
                streamPath !== _.get(action, 'payload.endpoint.path')) {
       return false
