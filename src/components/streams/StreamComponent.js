@@ -163,7 +163,12 @@ export class StreamComponent extends Component {
     } else if (_.isEqual(nextState, this.state) &&
                _.isEqual(nextProps, this.props)) {
       return false
-    } else if (_.get(stream, 'payload.endpoint.path') !== _.get(action, 'payload.endpoint.path')) {
+    // allow page loads to fall through and also allow stream
+    // load requests to fall through to show the loader
+    // on an initial page load when endpoints don't match
+    } else if (!/LOAD_NEXT_CONTENT/.test(stream.type) &&
+               stream.type !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
+               streamPath !== _.get(action, 'payload.endpoint.path')) {
       return false
     }
     return true
