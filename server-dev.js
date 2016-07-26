@@ -36,7 +36,7 @@ app.get('*', (req, res) => {
 fetchOauthToken(() => {
   app.listen(6660, '0.0.0.0', (err) => {
     if (err) {
-      console.log(err)
+      console.log('Listen error', err)
       return
     }
     console.log('Listening at http://localhost:6660')

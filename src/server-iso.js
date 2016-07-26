@@ -6,7 +6,7 @@ import { values } from 'lodash'
 
 function handleZlibError(error) {
   if (error.code === 'Z_BUF_ERROR') {
-    console.error(error)
+    console.error('ZlibError', error)
   } else {
     console.log(error.stack)
     throw error
@@ -24,6 +24,8 @@ import semaphore from 'semaphore'
 import cp from 'child_process'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import { addOauthRoute, currentToken } from '../oauth'
+import memjs from 'memjs'
+import crypto from 'crypto'
 
 // load env vars first
 require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
@@ -33,6 +35,7 @@ updateTimeAgoStrings({ about: '' })
 const app = express()
 const preRenderTimeout = (parseInt(process.env.PRERENDER_TIMEOUT, 10) || 15) * 1000
 const renderSemaphore = semaphore(parseInt(process.env.MAX_SIMULTANEOUS_RENDERS, 10) || 5)
+const memcacheClient = memjs.Client.create(null, { expires: 60 })
 
 // Honeybadger "before everything" middleware
 app.use(Honeybadger.requestHandler);
@@ -59,7 +62,17 @@ addOauthRoute(app)
 app.use(express.static('public', { maxAge: '1y', index: false }))
 app.use('/static', express.static('public/static', { maxAge: '1y' }))
 
-function renderFromServer(req, res) {
+function saveResponseToCache(cacheKey, body) {
+  memcacheClient.set(cacheKey, body, (err) => {
+    if (err) {
+      console.log('Memcache error', err)
+    } else {
+      console.log(`- Saved ${cacheKey} to memcache`)
+    }
+  })
+}
+
+function renderFromServer(req, res, cacheKey) {
   currentToken().then((token) => {
     console.log(`- Attempting render, ${renderSemaphore.current} current semaphore locks`)
     let child = null
@@ -87,6 +100,7 @@ function renderFromServer(req, res) {
             console.log('-- Rendering ISO response')
             librato.increment('webapp-server-render-success')
             res.send(body)
+            saveResponseToCache(cacheKey, body)
             break
           case 'error':
             console.log('-- Rendering error response')
@@ -144,12 +158,24 @@ export function canPrerenderRequest(req) {
   )
 }
 
+function cacheKeyForRequest(req, salt = '') {
+  return crypto.createHash('sha256').update(salt + req.url).digest('hex')
+}
+
 app.use((req, res) => {
   res.setHeader('Cache-Control', 'public, max-age=60');
   res.setHeader('Expires', new Date(Date.now() + 1000 * 60).toUTCString());
   if (canPrerenderRequest(req)) {
-    console.log('Serving pre-rendered markup for path', req.url)
-    renderFromServer(req, res)
+    const cacheKey = cacheKeyForRequest(req)
+    console.log('Serving pre-rendered markup for path', req.url, cacheKey)
+    memcacheClient.get(cacheKey, (err, value) => {
+      if (value) {
+        console.log('Cache hit!', req.url)
+        res.send(value.toString())
+      } else {
+        renderFromServer(req, res, cacheKey)
+      }
+    })
   } else {
     console.log('Serving static markup for path', req.url)
     res.send(indexStr)
@@ -160,4 +186,3 @@ app.use((req, res) => {
 app.use(Honeybadger.errorHandler);
 
 export default app
-

@@ -13,7 +13,7 @@ app.use('*', (req, res) => {
 const port = process.env.PORT || 6660
 app.listen(port, (err) => {
   if (err) {
-    console.log(err)
+    console.log('Listen error', err)
     return
   }
   console.log('Listening at http://localhost:' + port)
