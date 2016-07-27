@@ -52,7 +52,6 @@ class NavbarContainer extends Component {
 
   onClickAvatar = () => {
     const { isProfileMenuActive } = this.props
-    console.log('onClickAvatar', isProfileMenuActive)
     return isProfileMenuActive ? this.deactivateProfileMenu() : this.activateProfileMenu()
   }
 
