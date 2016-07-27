@@ -15,7 +15,6 @@ import { serverRoot } from './src/sagas'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
 
 const indexStr = fs.readFileSync(path.join(__dirname, './public/index.html'), 'utf-8')
-const preRenderTimeout = (parseInt(process.env.PRERENDER_TIMEOUT, 10) || 15) * 1000
 
 // Return promises for initial loads
 function preRender(renderProps, store, sagaTask) {
@@ -89,13 +88,6 @@ function handlePrerender(context) {
   })
 }
 
-process.on('message', (msg) => {
-  const renderTimeout = setTimeout(() => {
-    console.log(`Killing child render process after ${preRenderTimeout}ms`)
-    process.exit(1)
-  }, preRenderTimeout)
-  handlePrerender(msg)
-  clearTimeout(renderTimeout)
-})
+process.on('message', handlePrerender)
 
 export default handlePrerender
