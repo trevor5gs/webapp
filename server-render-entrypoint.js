@@ -10,7 +10,7 @@ import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { Provider } from 'react-redux'
 import { createElloStore } from './src/store'
 import createRoutes from './src/routes'
-import { replace, syncHistoryWithStore } from 'react-router-redux'
+import { syncHistoryWithStore } from 'react-router-redux'
 import { serverRoot } from './src/sagas'
 import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
 
@@ -54,9 +54,8 @@ function handlePrerender(context) {
     } else if (!renderProps) {
       console.log('NO RENDER PROPS')
       process.exit(1)
+      return
     }
-
-    store.dispatch(replace(renderProps.location.pathname))
 
     const InitialComponent = (
       <Provider store={store}>
