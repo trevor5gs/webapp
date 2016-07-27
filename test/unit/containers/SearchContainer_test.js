@@ -1,6 +1,6 @@
 import { expect } from '../../spec_helper'
 import {
-  getStreamAction, shouldSearchContainerUpdate,
+  getStreamAction, shouldContainerUpdate,
 } from '../../../src/containers/SearchContainer'
 
 describe('SearchContainer', () => {
@@ -18,26 +18,22 @@ describe('SearchContainer', () => {
     })
   })
 
-  context('#shouldSearchContainerUpdate', () => {
+  context('#shouldContainerUpdate', () => {
     it('returns the correct stream action for user search', () => {
       const thisProps = {
         coverDPI: 'xhdpi',
         isLoggedIn: true,
         pathname: '/search',
+        promitions: {},
         terms: '@mansfield',
         type: 'users',
       }
-      const sameProps = {
-        coverDPI: 'xhdpi',
-        isLoggedIn: true,
-        pathname: '/search',
-        terms: '@mansfield',
-        type: 'users',
-      }
+      const sameProps = { ...thisProps }
       const nextProps = {
         coverDPI: 'xhdpi',
         isLoggedIn: true,
         pathname: '/search',
+        promitions: { stuff: 'stuff' },
         terms: 'danger',
         type: 'posts',
       }
@@ -45,12 +41,13 @@ describe('SearchContainer', () => {
         coverDPI: 'xhdpi',
         isLoggedIn: true,
         pathname: '/search',
+        promitions: { stuff: 'stuff' },
         terms: 'danger_zo',
         type: 'posts',
       }
-      const shouldSameUpdate = shouldSearchContainerUpdate(thisProps, sameProps)
-      const shouldNextUpdate = shouldSearchContainerUpdate(thisProps, nextProps)
-      const shouldLastUpdate = shouldSearchContainerUpdate(nextProps, lastProps)
+      const shouldSameUpdate = shouldContainerUpdate(thisProps, sameProps)
+      const shouldNextUpdate = shouldContainerUpdate(thisProps, nextProps)
+      const shouldLastUpdate = shouldContainerUpdate(nextProps, lastProps)
       expect(shouldSameUpdate).to.be.false
       expect(shouldNextUpdate).to.be.true
       expect(shouldLastUpdate).to.be.true
