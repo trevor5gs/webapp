@@ -1,10 +1,16 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { isEqual } from 'lodash'
-import { findModel } from '../helpers/json_helper'
+import { createSelector } from 'reselect'
+import { isEqual, omit } from 'lodash'
 import { PROFILE } from '../constants/action_types'
-import { USERS } from '../constants/mapping_types'
+import {
+  selectActiveUserFollowingType,
+  selectHasSaidHelloTo,
+  selectParamsType,
+  selectParamsUsername,
+  selectUser,
+} from '../selectors'
 import { setActiveUserFollowingType } from '../actions/gui'
 import { sayHello } from '../actions/zeros'
 import {
@@ -30,6 +36,54 @@ export function getStreamAction({ activeUserFollowingType = 'friend', type = 'po
     case 'posts':
     default:
       return loadUserPosts(`~${username}`, type)
+  }
+}
+
+const selectUserDetailStreamAction = createSelector(
+  [selectActiveUserFollowingType, selectParamsType, selectParamsUsername],
+  (activeUserFollowingType, type, username) =>
+    getStreamAction({ activeUserFollowingType, type, username })
+)
+
+export function shouldContainerUpdate(thisProps, nextProps) {
+  if (!nextProps.user) { return false }
+  const omitProps = ['children', 'dispatch', 'history', 'route', 'routes']
+  const thisCompare = omit(thisProps, omitProps)
+  const nextCompare = omit(nextProps, omitProps)
+  return !isEqual(thisCompare, nextCompare)
+}
+
+export function mapStateToProps(state, props) {
+  const { authentication, gui, stream } = state
+  const type = selectParamsType(state, props) || 'posts'
+  const username = selectParamsUsername(state, props)
+  const user = selectUser(state, props)
+  const activeUserFollowingType = gui.activeUserFollowingType
+  const isLoggedIn = authentication.isLoggedIn
+  const isSelf = isLoggedIn && user ? user.relationshipPriority === 'self' : false
+  const hasSaidHelloTo = user ? !isSelf && selectHasSaidHelloTo(state, props) : false
+  const keyPostfix = isSelf && activeUserFollowingType ? `/${activeUserFollowingType}` : ''
+  const streamAction = selectUserDetailStreamAction(state, props)
+
+  return {
+    activeUserFollowingType,
+    coverDPI: gui.coverDPI,
+    coverImage: user && user.coverImage ? user.coverImage : null,
+    coverOffset: gui.coverOffset,
+    isCoverActive: !gui.isOmnibarActive,
+    isCoverHidden: gui.isCoverHidden,
+    isLoggedIn,
+    isSelf,
+    isStreamFailing: stream.type === PROFILE.DETAIL_FAILURE && stream.error && !user,
+    hasZeroFollowers: user ? user.followersCount < 1 : false,
+    hasZeroPosts: user ? user.postsCount < 1 : false,
+    hasSaidHelloTo,
+    paramsType: type,
+    paramsUsername: username,
+    streamAction,
+    tabs: isSelf && type === 'following' ? followingTabs : null,
+    user,
+    viewKey: `userDetail/${username}/${type}${keyPostfix}`,
   }
 }
 
@@ -79,8 +133,7 @@ export class UserDetailContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (!nextProps.user) { return false }
-    return !isEqual(this.props, nextProps)
+    return shouldContainerUpdate(this.props, nextProps)
   }
 
   render() {
@@ -117,39 +170,6 @@ export class UserDetailContainer extends Component {
       user,
     }
     return <UserDetail {...props} key={viewKey} />
-  }
-}
-
-export function mapStateToProps(state, ownProps) {
-  const { authentication, gui, json, stream } = state
-  const { params } = ownProps
-  const { type = 'posts', username } = params
-
-  const activeUserFollowingType = gui.activeUserFollowingType
-  const isLoggedIn = authentication.isLoggedIn
-  const user = findModel(json, { collection: USERS, findObj: { username } })
-  const isSelf = isLoggedIn && user ? user.relationshipPriority === 'self' : false
-  const keyPostfix = isSelf && activeUserFollowingType ? `/${activeUserFollowingType}` : ''
-
-  return {
-    activeUserFollowingType,
-    coverDPI: gui.coverDPI,
-    coverImage: user && user.coverImage ? user.coverImage : null,
-    coverOffset: gui.coverOffset,
-    isCoverActive: !gui.isOmnibarActive,
-    isCoverHidden: gui.isCoverHidden,
-    isLoggedIn,
-    isSelf,
-    isStreamFailing: stream.type === PROFILE.DETAIL_FAILURE && stream.error && !user,
-    hasZeroFollowers: user ? user.followersCount < 1 : false,
-    hasZeroPosts: user ? user.postsCount < 1 : false,
-    hasSaidHelloTo: user ? gui.saidHelloTo.indexOf(user.username) !== -1 && !isSelf : false,
-    paramsType: type,
-    paramsUsername: username,
-    streamAction: getStreamAction({ activeUserFollowingType, type, username }),
-    tabs: isSelf && type === 'following' ? followingTabs : null,
-    user,
-    viewKey: `userDetail/${username}/${type}${keyPostfix}`,
   }
 }
 
