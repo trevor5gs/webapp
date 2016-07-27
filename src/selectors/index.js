@@ -31,7 +31,7 @@ const selectJSON = (state) => state.json
 
 // props.params.xxx
 const selectParamsType = (state, props) => get(props, 'params.type')
-const selectParamsToken = (state, props) => {
+export const selectParamsToken = (state, props) => {
   const token = get(props, 'params.token')
   return token ? token.toLowerCase() : undefined
 }
@@ -50,6 +50,12 @@ const selectCategoryCollection = (state) => get(state, 'json.categories')
 
 
 // Memoized Selectors
+
+export const selectPost = createSelector(
+  [selectJSON, selectParamsToken], (json, paramsToken) =>
+    findModel(json, { collection: MAPPING_TYPES.POSTS, findObj: { token: paramsToken } })
+)
+
 export const selectPagination = createSelector(
   [selectJSON, selectPages, selectLocationPathname, selectPagingResult, selectParamsToken],
   (json, pages, pathname, pagingResult, paramsToken) => {

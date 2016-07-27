@@ -1,9 +1,12 @@
+import { get } from 'lodash'
 import { expect } from '../../spec_helper'
 import { stubJSONStore } from '../../stubs'
 import {
   selectCategoryPageTitle,
   selectCategories,
   selectPagination,
+  selectParamsToken,
+  selectPost,
   sortCategories,
 } from '../../../src/selectors'
 
@@ -21,6 +24,27 @@ describe('selectors', () => {
     json = {}
     params = {}
     location = {}
+  })
+
+  context('#selectParamsToken', () => {
+    it('returns the params token as lower case', () => {
+      const state = { json }
+      const props = { params, location }
+      expect(selectParamsToken(state, props)).to.equal('paramstoken')
+    })
+  })
+
+  context('#selectPost', () => {
+    it('returns the post object with memoization', () => {
+      const state = { json }
+      const thisParams = { token: 'token1', type: 'paramsType' }
+      const props = { params: thisParams, location }
+      const testPost = get(json, 'posts.1')
+      expect(selectPost(state, props)).to.deep.equal(testPost)
+      const nextState = { ...state, blah: 1 }
+      expect(selectPost(nextState, props)).to.deep.equal(testPost)
+      expect(selectPost.recomputations()).to.equal(1)
+    })
   })
 
   context('#selectPagination', () => {
