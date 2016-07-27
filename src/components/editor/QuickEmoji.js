@@ -49,6 +49,7 @@ class QuickEmoji extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('click', this.onDocumentClick)
+    document.removeEventListener('touchstart', this.onDocumentClick)
   }
 
   onDocumentClick = () => {
@@ -57,14 +58,14 @@ class QuickEmoji extends Component {
 
   show = () => {
     this.setState({ isActive: true })
-    requestAnimationFrame(() => {
-      document.addEventListener('click', this.onDocumentClick)
-    })
+    document.addEventListener('click', this.onDocumentClick)
+    document.addEventListener('touchstart', this.onDocumentClick)
   }
 
   hide = () => {
     this.setState({ isActive: false })
     document.removeEventListener('click', this.onDocumentClick)
+    document.removeEventListener('touchstart', this.onDocumentClick)
   }
 
   emojiWasClicked = (e) => {

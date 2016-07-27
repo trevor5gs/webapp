@@ -21,9 +21,8 @@ class TextBlock extends Component {
       placeCaretAtEnd(this.refs.text)
     }
     addKeyObject(this)
-    requestAnimationFrame(() => {
-      document.addEventListener('click', this.onClickDocument, false)
-    })
+    document.addEventListener('click', this.onClickDocument, false)
+    document.addEventListener('touchstart', this.onClickDocument, false)
   }
 
   shouldComponentUpdate(nextProps) {
@@ -37,6 +36,7 @@ class TextBlock extends Component {
   componentWillUnmount() {
     removeKeyObject(this)
     document.removeEventListener('click', this.onClickDocument, false)
+    document.removeEventListener('touchstart', this.onClickDocument, false)
   }
 
   // TODO: Send `isEditorFocused` through the modal reducer

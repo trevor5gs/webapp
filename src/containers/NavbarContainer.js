@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import { set } from 'lodash'
 import { scrollToTop } from '../vendor/scrolling'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
@@ -50,7 +49,9 @@ class NavbarContainer extends Component {
     this.deactivateProfileMenu()
   }
 
-  onClickAvatar = () => {
+  onClickAvatar = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
     const { isProfileMenuActive } = this.props
     return isProfileMenuActive ? this.deactivateProfileMenu() : this.activateProfileMenu()
   }
@@ -127,12 +128,11 @@ class NavbarContainer extends Component {
   }
 
   // TODO: probably need to handle this a bit better
-  onLogOut = () => {
+  onLogOut = async() => {
     const { dispatch } = this.props
     this.deactivateProfileMenu()
-    const logoutAction = logout()
-    set(logoutAction, 'meta.successAction', push('/enter'))
-    dispatch(logoutAction)
+    await dispatch(logout())
+    dispatch(push('/enter'))
   }
 
   // if we're viewing notifications, don't change the lightning-bolt link.
@@ -156,16 +156,16 @@ class NavbarContainer extends Component {
     const { dispatch, isProfileMenuActive } = this.props
     if (isProfileMenuActive) { return }
     dispatch(setIsProfileMenuActive({ isActive: true }))
-    requestAnimationFrame(() => {
-      document.addEventListener('click', this.onClickDocument)
-    })
+    document.addEventListener('click', this.onClickDocument)
+    document.addEventListener('touchstart', this.onClickDocument)
   }
 
   deactivateProfileMenu() {
     const { dispatch, isProfileMenuActive } = this.props
     if (!isProfileMenuActive) { return }
-    document.removeEventListener('click', this.onClickDocument)
     dispatch(setIsProfileMenuActive({ isActive: false }))
+    document.removeEventListener('click', this.onClickDocument)
+    document.removeEventListener('touchstart', this.onClickDocument)
   }
 
   render() {

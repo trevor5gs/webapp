@@ -36,9 +36,8 @@ class NotificationsContainer extends Component {
   }
 
   componentDidMount() {
-    requestAnimationFrame(() => {
-      document.addEventListener('click', this.onClickDocument)
-    })
+    document.addEventListener('click', this.onClickDocument)
+    document.addEventListener('touchstart', this.onClickDocument)
     this.refs.streamComponent.refs.wrappedInstance.scrollContainer = this.refs.scrollable
   }
 
@@ -57,6 +56,7 @@ class NotificationsContainer extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('click', this.onClickDocument)
+    document.removeEventListener('touchstart', this.onClickDocument)
   }
 
   onMouseOver = () => {
