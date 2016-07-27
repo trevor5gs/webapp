@@ -64,7 +64,7 @@ describe('isomorphically rendering on the server', () => {
       })
     )
 
-    it('isomorphically renders a post detail', () =>
+    it('isomorphically renders a post detail', () => {
       fetchOauthToken(() => {
         chai
           .request(app)
@@ -77,9 +77,9 @@ describe('isomorphically rendering on the server', () => {
             expect(document.querySelectorAll('main.PostDetail')).to.have.lengthOf(1)
           })
       })
-    )
+    })
 
-    it('isomorphically renders search', () =>
+    it('isomorphically renders search', () => {
       fetchOauthToken(() => {
         chai
           .request(app)
@@ -92,7 +92,37 @@ describe('isomorphically rendering on the server', () => {
             expect(document.querySelectorAll('main.Search')).to.have.lengthOf(1)
           })
       })
-    )
+    })
+
+    it('isomorphically renders trending', () => {
+      fetchOauthToken(() => {
+        chai
+          .request(app)
+          .get('/discover/trending')
+          .end((err, res) => {
+            expect(err).to.be.null
+            expect(res).to.have.status(200)
+            expect(res).to.be.html
+            const document = jsdom.jsdom(res.text)
+            expect(document.querySelectorAll('main.Discover')).to.have.lengthOf(1)
+          })
+      })
+    })
+
+    it('isomorphically renders recent', () => {
+      fetchOauthToken(() => {
+        chai
+          .request(app)
+          .get('/discover/recent')
+          .end((err, res) => {
+            expect(err).to.be.null
+            expect(res).to.have.status(200)
+            expect(res).to.be.html
+            const document = jsdom.jsdom(res.text)
+            expect(document.querySelectorAll('main.Discover')).to.have.lengthOf(1)
+          })
+      })
+    })
 
     it('does not isomorphically render when X-Skip-Prerender is true', () =>
       fetchOauthToken(() => {
