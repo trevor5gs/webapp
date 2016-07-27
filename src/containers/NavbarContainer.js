@@ -52,6 +52,7 @@ class NavbarContainer extends Component {
 
   onClickAvatar = () => {
     const { isProfileMenuActive } = this.props
+    console.log('onClickAvatar', isProfileMenuActive)
     return isProfileMenuActive ? this.deactivateProfileMenu() : this.activateProfileMenu()
   }
 
@@ -155,8 +156,10 @@ class NavbarContainer extends Component {
   activateProfileMenu() {
     const { dispatch, isProfileMenuActive } = this.props
     if (isProfileMenuActive) { return }
-    document.addEventListener('click', this.onClickDocument)
     dispatch(setIsProfileMenuActive({ isActive: true }))
+    requestAnimationFrame(() => {
+      document.addEventListener('click', this.onClickDocument)
+    })
   }
 
   deactivateProfileMenu() {

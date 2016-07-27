@@ -36,7 +36,9 @@ class NotificationsContainer extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener('click', this.onClickDocument)
+    requestAnimationFrame(() => {
+      document.addEventListener('click', this.onClickDocument)
+    })
     this.refs.streamComponent.refs.wrappedInstance.scrollContainer = this.refs.scrollable
   }
 

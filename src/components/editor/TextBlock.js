@@ -21,7 +21,9 @@ class TextBlock extends Component {
       placeCaretAtEnd(this.refs.text)
     }
     addKeyObject(this)
-    document.addEventListener('click', this.onClickDocument, false)
+    requestAnimationFrame(() => {
+      document.addEventListener('click', this.onClickDocument, false)
+    })
   }
 
   shouldComponentUpdate(nextProps) {

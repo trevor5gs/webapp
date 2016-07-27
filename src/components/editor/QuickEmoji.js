@@ -57,7 +57,9 @@ class QuickEmoji extends Component {
 
   show = () => {
     this.setState({ isActive: true })
-    document.addEventListener('click', this.onDocumentClick)
+    requestAnimationFrame(() => {
+      document.addEventListener('click', this.onDocumentClick)
+    })
   }
 
   hide = () => {
