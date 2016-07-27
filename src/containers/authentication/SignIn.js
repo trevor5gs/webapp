@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { replace } from 'react-router-redux'
-import { debounce, isNil, sample, set } from 'lodash'
+import { debounce, sample, set } from 'lodash'
 import { isAndroid, isElloAndroid } from '../../vendor/jello'
 import { ONBOARDING_VERSION } from '../../constants/application_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
@@ -30,20 +30,18 @@ class SignIn extends Component {
     coverDPI: PropTypes.string,
     coverOffset: PropTypes.number,
     currentStream: PropTypes.string,
-    featuredUser: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     marketingVersion: PropTypes.string,
+    promotions: PropTypes.array.isRequired,
     registrationId: PropTypes.string,
     webOnboardingVersionSeen: PropTypes.string,
   }
 
   componentWillMount() {
-    const { featuredUser } = this.props
     this.state = {
       showUserError: false,
       showPasswordError: false,
       userState: { status: STATUS.INDETERMINATE, message: '' },
-      featuredUser,
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
     }
     this.userValue = ''
@@ -156,12 +154,13 @@ class SignIn extends Component {
   }
 
   render() {
-    const { coverDPI, coverOffset } = this.props
+    const { coverDPI, coverOffset, promotions } = this.props
     const {
       userState, showUserError,
       passwordState, showPasswordError,
-      failureMessage, featuredUser,
+      failureMessage,
     } = this.state
+    const promotion = sample(promotions)
     const isValid = isFormValid([userState, passwordState])
     return (
       <MainView className="Authentication">
@@ -205,14 +204,13 @@ class SignIn extends Component {
         </div>
         <AppleStore />
         <GooglePlayStore />
-        <Credits onClick={this.onClickTrackCredits} user={featuredUser} />
-        {isNil(featuredUser) ? '' :
-          <Cover
-            coverDPI={coverDPI}
-            coverImage={featuredUser.coverImage}
-            coverOffset={coverOffset}
-            modifiers="asFullScreen withOverlay"
-          />}
+        <Credits onClick={this.onClickTrackCredits} user={promotion} />
+        <Cover
+          coverDPI={coverDPI}
+          coverImage={promotion ? promotion.coverImage : null}
+          coverOffset={coverOffset}
+          modifiers="asFullScreen withOverlay"
+        />
       </MainView>
     )
   }
@@ -223,7 +221,7 @@ const mapStateToProps = (state) => {
     currentStream: state.gui.currentStream,
     coverDPI: state.gui.coverDPI,
     coverOffset: state.gui.coverOffset,
-    featuredUser: sample(state.promotions.authentication),
+    promotions: state.promotions.authentication,
     webOnboardingVersionSeen: state.profile.webOnboardingVersion,
   }
   if (isElloAndroid()) {

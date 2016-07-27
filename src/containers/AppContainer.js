@@ -18,6 +18,11 @@ import FooterContainer from '../containers/FooterContainer'
 import KeyboardContainer from '../containers/KeyboardContainer'
 import NavbarContainer from '../containers/NavbarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
+import {
+  fetchAuthenticationPromos,
+  fetchLoggedInPromos,
+  fetchLoggedOutPromos,
+} from '../actions/promotions'
 
 export function shouldContainerUpdate(thisProps, nextProps) {
   const pickProps = ['authentication', 'location', 'pagination', 'params']
@@ -61,9 +66,14 @@ class AppContainer extends Component {
       return Promise.all([
         store.dispatch(loadProfile()),
         store.dispatch(getCategories()),
+        store.dispatch(fetchLoggedInPromos()),
       ])
     }
-    return store.dispatch(getCategories())
+    return Promise.all([
+      store.dispatch(getCategories()),
+      store.dispatch(fetchAuthenticationPromos()),
+      store.dispatch(fetchLoggedOutPromos()),
+    ])
   }
 
   componentDidMount() {
@@ -73,6 +83,10 @@ class AppContainer extends Component {
     if (get(this.props, 'authentication.isLoggedIn')) {
       dispatch(loadProfile())
       dispatch(loadNotifications({ category: 'all' }))
+      dispatch(fetchLoggedInPromos())
+    } else {
+      dispatch(fetchAuthenticationPromos())
+      dispatch(fetchLoggedOutPromos())
     }
     dispatch(getCategories())
   }
@@ -84,6 +98,10 @@ class AppContainer extends Component {
         !prevAuthentication.isLoggedIn &&
         authentication.isLoggedIn) {
       dispatch(loadProfile())
+      dispatch(fetchLoggedInPromos())
+    } else {
+      dispatch(fetchAuthenticationPromos())
+      dispatch(fetchLoggedOutPromos())
     }
   }
 

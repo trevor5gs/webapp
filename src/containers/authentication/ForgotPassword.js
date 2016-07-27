@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { random } from 'lodash'
+import { sample } from 'lodash'
 import { isAndroid } from '../../vendor/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { sendForgotPasswordRequest } from '../../actions/authentication'
@@ -20,15 +20,12 @@ class ForgotPassword extends Component {
     coverDPI: PropTypes.string,
     coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
-    userlist: PropTypes.array,
+    promotions: PropTypes.array.isRequired,
   }
 
   componentWillMount() {
-    const { userlist } = this.props
-    const index = random(0, userlist.length - 1)
     this.state = {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
-      featuredUser: userlist[index],
       formStatus: STATUS.INDETERMINATE,
     }
     this.emailValue = ''
@@ -113,8 +110,9 @@ class ForgotPassword extends Component {
   }
 
   render() {
-    const { coverDPI, coverOffset } = this.props
-    const { featuredUser, formStatus } = this.state
+    const { coverDPI, coverOffset, promotions } = this.props
+    const { formStatus } = this.state
+    const promotion = sample(promotions)
     return (
       <MainView className="Authentication">
         <div className="AuthenticationFormDialog">
@@ -126,10 +124,10 @@ class ForgotPassword extends Component {
         </div>
         <AppleStore />
         <GooglePlayStore />
-        <Credits onClick={this.onClickTrackCredits} user={featuredUser} />
+        <Credits onClick={this.onClickTrackCredits} user={promotion} />
         <Cover
           coverDPI={coverDPI}
-          coverImage={featuredUser.coverImage}
+          coverImage={promotion ? promotion.coverImage : null}
           coverOffset={coverOffset}
           modifiers="asFullScreen withOverlay"
         />
@@ -143,7 +141,7 @@ const mapStateToProps = (state) => {
   return {
     coverDPI: gui.coverDPI,
     coverOffset: gui.coverOffset,
-    userlist: state.promotions.authentication,
+    promotions: state.promotions.authentication,
   }
 }
 
