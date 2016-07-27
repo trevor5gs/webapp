@@ -8,7 +8,7 @@ const backlog = process.env.BACKLOG || 511
 const start = (workerId) => {
   const server = app.listen(port, backlog, (err) => {
     if (err) {
-      console.log(err)
+      console.log('Listen error', err)
       return
     }
     console.log('Worker ' + workerId + ' listening at http://localhost:' + port)
