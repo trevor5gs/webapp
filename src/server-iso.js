@@ -112,7 +112,6 @@ function renderFromServer(req, res, cacheKey) {
             // No-op
         }
         clearTimeout(renderTimeout)
-        renderSemaphore.leave()
       })
       // Clean up any lingering renderer processes at shutdown
       const exitHandler = () => {
@@ -125,11 +124,11 @@ function renderFromServer(req, res, cacheKey) {
       child.once('exit', (code, signal) => {
         clearTimeout(renderTimeout)
         process.removeListener('exit', exitHandler);
+        renderSemaphore.leave()
         // Abnormal exit, may be in a dirty state
         if (code !== 0) {
           console.log(`- Render process exited with ${code} due to ${signal}`)
           res.status(500).end()
-          renderSemaphore.leave()
         }
       })
       // Kick off the render
