@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual, pick } from 'lodash'
+import { isEqual, pick, sample } from 'lodash'
 import { selectCategories, selectCategoryPageTitle } from '../selectors'
 import {
   bindDiscoverKey,
@@ -87,6 +87,7 @@ export function shouldContainerUpdate(thisProps, nextProps) {
     'params',
     'pageTitle',
     'pathname',
+    'promotions',
     'primary',
     'secondary',
     'tertiary',
@@ -102,6 +103,7 @@ function mapStateToProps(state, props) {
   const { isLoggedIn } = authentication
   const { primary, secondary, tertiary } = selectCategories(state, props)
   const pageTitle = selectCategoryPageTitle(state, props)
+  const promotions = isLoggedIn ? state.promotions.loggedIn : state.promotions.loggedOut
   return {
     coverDPI: gui.coverDPI,
     isBeaconActive: isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
@@ -109,7 +111,7 @@ function mapStateToProps(state, props) {
     pageTitle,
     paramsType: params.type,
     pathname: location.pathname,
-    promotions: isLoggedIn ? state.promotions.loggedIn : state.promotions.loggedOut,
+    promotions,
     primary,
     secondary,
     tertiary,
@@ -125,7 +127,7 @@ export class DiscoverContainer extends Component {
     pageTitle: PropTypes.string,
     paramsType: PropTypes.string.isRequired,
     pathname: PropTypes.string.isRequired,
-    promotions: PropTypes.array,
+    promotions: PropTypes.array.isRequired,
     primary: PropTypes.array,
     secondary: PropTypes.array,
     tertiary: PropTypes.array,
@@ -147,9 +149,11 @@ export class DiscoverContainer extends Component {
     return shouldContainerUpdate(this.props, nextProps)
   }
 
-  componentDidUpdate() {
-    const { dispatch, paramsType } = this.props
-    dispatch(bindDiscoverKey(paramsType))
+  componentDidUpdate(prevProps) {
+    const { dispatch, paramsType, pathname } = this.props
+    if (prevProps.pathname !== pathname) {
+      dispatch(bindDiscoverKey(paramsType))
+    }
   }
 
   onClickTrackCredits = () => {
@@ -173,7 +177,7 @@ export class DiscoverContainer extends Component {
       onDismissZeroStream: this.onDismissZeroStream,
       pageTitle,
       pathname,
-      promotions,
+      promotion: sample(promotions),
       streamAction: getStreamAction(paramsType),
       tabs: generateTabs(primary, secondary, tertiary),
     }

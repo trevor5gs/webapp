@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { random, debounce } from 'lodash'
+import { sample, debounce } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { getInviteEmail } from '../../actions/invitations'
 import { checkAvailability, signUpUser } from '../../actions/profile'
@@ -34,18 +34,16 @@ class Join extends Component {
     dispatch: PropTypes.func.isRequired,
     email: PropTypes.string,
     invitationCode: PropTypes.string,
-    userlist: PropTypes.array,
+    promotions: PropTypes.array.isRequired,
   }
 
   componentWillMount() {
-    const { invitationCode, userlist } = this.props
-    const index = random(0, userlist.length - 1)
+    const { invitationCode } = this.props
     this.state = {
       showInvitationError: false,
       showEmailError: false,
       showPasswordError: false,
       showUsernameError: false,
-      featuredUser: userlist[index],
       invitationCodeState: { status: STATUS.INDETERMINATE, message: '' },
       emailState: { status: STATUS.INDETERMINATE, message: '' },
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
@@ -244,8 +242,9 @@ class Join extends Component {
       emailState, showInvitationError,
       usernameState, showEmailError,
       passwordState, showUsernameError,
-      featuredUser } = this.state
-    const { coverDPI, coverOffset, email } = this.props
+    } = this.state
+    const { coverDPI, coverOffset, email, promotions } = this.props
+    const promotion = sample(promotions)
     const isValid = isFormValid([emailState, usernameState, passwordState])
     const boxControlClassNames = 'asBoxControl'
     return (
@@ -310,10 +309,10 @@ class Join extends Component {
         </div>
         <AppleStore />
         <GooglePlayStore />
-        <Credits onClick={this.onClickTrackCredits} user={featuredUser} />
+        <Credits onClick={this.onClickTrackCredits} user={promotion} />
         <Cover
           coverDPI={coverDPI}
-          coverImage={featuredUser.coverImage}
+          coverImage={promotion ? promotion.coverImage : null}
           coverOffset={coverOffset}
           modifiers="asFullScreen withOverlay"
         />
@@ -330,7 +329,7 @@ const mapStateToProps = (state, ownProps) => {
     coverOffset: gui.coverOffset,
     email: profile.email,
     invitationCode: ownProps.params.invitationCode,
-    userlist: state.promotions.authentication,
+    promotions: state.promotions.authentication,
   }
 }
 

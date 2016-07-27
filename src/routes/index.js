@@ -13,12 +13,12 @@ import {
   discover as discoverRoute,
   explore as exploreRoute,
 } from './discover'
+import SearchRoutes from './search'
 import StreamsRoutes from './streams'
 import NotificationsRoute from './notifications'
 import InvitationsRoutes from './invitations'
 import SettingsRoutes from './settings'
 import OnboardingRoutes from './onboarding'
-import { search as searchRoute, find as findRoute } from './search'
 import UserDetailRoute from './user_detail'
 
 function createRedirect(from, to) {
@@ -96,8 +96,7 @@ const routes = (store, isServer = false) => {
         ...SettingsRoutes.map(route => authenticate(route)),
         createRedirect('onboarding', '/onboarding/communities'),
         ...OnboardingRoutes.map(route => authenticate(route)),
-        searchRoute(store),
-        findRoute(store),
+        ...SearchRoutes,
         UserDetailRoute,
       ],
       onEnter() {

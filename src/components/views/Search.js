@@ -11,7 +11,7 @@ export const Search = ({
   onChange,
   onClickTrackCredits,
   onSubmit,
-  promotions,
+  promotion,
   streamAction,
   streamKey,
   tabs,
@@ -23,7 +23,7 @@ export const Search = ({
       coverDPI={coverDPI}
       creditsClickAction={onClickTrackCredits}
       isLoggedIn={isLoggedIn}
-      userlist={promotions}
+      promotion={promotion}
     />
     <form className="SearchBar" onSubmit={onSubmit}>
       <SearchControl onChange={onChange} text={terms} />
@@ -44,7 +44,7 @@ Search.propTypes = {
   onChange: PropTypes.func.isRequired,
   onClickTrackCredits: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  promotions: PropTypes.array.isRequired,
+  promotion: PropTypes.object,
   streamAction: PropTypes.object,
   streamKey: PropTypes.string.isRequired,
   tabs: PropTypes.array.isRequired,

@@ -22,7 +22,7 @@ export const Discover = ({
     onDismissZeroStream,
     pageTitle,
     pathname,
-    promotions,
+    promotion,
     streamAction,
     tabs,
   }) =>
@@ -32,7 +32,7 @@ export const Discover = ({
       coverDPI={coverDPI}
       creditsClickAction={onClickTrackCredits}
       isLoggedIn={isLoggedIn}
-      userlist={promotions}
+      promotion={promotion}
     />
     <CategoryTabBar pathname={pathname} tabs={tabs} />
     {pageTitle ? <h1 className="DiscoverPageTitle">{pageTitle}</h1> : null}
@@ -47,7 +47,7 @@ Discover.propTypes = {
   onDismissZeroStream: PropTypes.func.isRequired,
   pageTitle: PropTypes.string,
   pathname: PropTypes.string.isRequired,
-  promotions: PropTypes.array.isRequired,
+  promotion: PropTypes.object,
   streamAction: PropTypes.object.isRequired,
   tabs: PropTypes.array.isRequired,
 }

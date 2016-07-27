@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
-import { debounce, get, isEqual } from 'lodash'
+import { debounce, get, isEqual, sample } from 'lodash'
 import { updateQueryParams } from '../helpers/uri_helper'
 import { searchForPosts, searchForUsers } from '../actions/search'
 import { trackEvent } from '../actions/tracking'
@@ -22,7 +22,7 @@ export function getStreamAction(props) {
 }
 
 export function shouldSearchContainerUpdate(thisProps, nextProps) {
-  const names = ['coverDPI', 'isLoggedIn', 'pathname', 'terms', 'type']
+  const names = ['coverDPI', 'isLoggedIn', 'pathname', 'promotions', 'terms', 'type']
   const thisCompare = {}
   const nextCompare = {}
   names.forEach((name) => {
@@ -121,7 +121,7 @@ export class SearchContainer extends Component {
       onChange: this.onChangeControl,
       onClickTrackCredits: this.onClickTrackCredits,
       onSubmit: this.onSubmit,
-      promotions,
+      promotion: sample(promotions),
       streamAction: getStreamAction(this.props),
       streamKey: `search_${type}_${terms}`,
       tabs: TABS,
