@@ -66,14 +66,9 @@ class AppContainer extends Component {
       return Promise.all([
         store.dispatch(loadProfile()),
         store.dispatch(getCategories()),
-        store.dispatch(fetchLoggedInPromos()),
       ])
     }
-    return Promise.all([
-      store.dispatch(getCategories()),
-      store.dispatch(fetchAuthenticationPromos()),
-      store.dispatch(fetchLoggedOutPromos()),
-    ])
+    return store.dispatch(getCategories())
   }
 
   componentDidMount() {
