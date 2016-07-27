@@ -34,8 +34,9 @@ updateTimeAgoStrings({ about: '' })
 
 const app = express()
 const preRenderTimeout = (parseInt(process.env.PRERENDER_TIMEOUT, 10) || 15) * 1000
+const memcacheDefaultTTL = (parseInt(process.env.MEMCACHE_DEFAULT_TTL, 10) || 300)
 const renderSemaphore = semaphore(parseInt(process.env.MAX_SIMULTANEOUS_RENDERS, 10) || 5)
-const memcacheClient = memjs.Client.create(null, { expires: 60 })
+const memcacheClient = memjs.Client.create(null, { expires: memcacheDefaultTTL })
 
 // Honeybadger "before everything" middleware
 app.use(Honeybadger.requestHandler);
