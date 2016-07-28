@@ -1,16 +1,40 @@
-repo = 'ello/webapp'
+repo = github.pr_json[:base][:repo][:full_name]
+pr_number = github.pr_json[:number]
+
+# HELPERS
+# repo
+def repo_has_label(repo, label)
+  github.api.labels(repo).any?{|l| l[:name] == label}
+end
+
+def add_label_to_repo(repo, label, color)
+  github.api.add_label(repo, label, color)
+end
+
+# issues
+def issue_has_label(repo, pr_number, label)
+  github.api.labels_for_issue(repo, pr_number).any?{|l| l[:name] == label}
+end
+
+def add_labels_to_issue(repo, pr_number, labels)
+  github.api.add_labels_to_an_issue(repo, pr_number, labels)
+end
+
+def remove_label_from_issue(repo, pr_number, label)
+  github.api.remove_label(repo, pr_number, label)
+end
 
 # LABELS
 # create tiny
-if !github.api.labels(repo).any?{|label| label.name == "tiny"}
-  github.api.add_label(repo, 'tiny', 'f7c6c7')
+if !repo_has_label(repo, 'tiny')
+  add_label_to_repo(repo, 'tiny', 'f7c6c7')
 end
 # add/remove tiny
-issue_has_tiny_label = github.api.labels_for_issue(repo, github.pr_json[:number]).any?{|l| l[:name] == 'tiny'}
+issue_has_tiny_label = issue_has_label(repo, pr_number, 'tiny')
 if git.lines_of_code < 50 && !issue_has_tiny_label
-  github.api.add_labels_to_an_issue(repo, github.pr_json[:number], ['tiny'])
+  add_labels_to_issue(repo, pr_number, ['tiny'])
 elsif git.lines_of_code > 50 && issue_has_tiny_label
-  github.api.remove_label(repo, github.pr_json[:number], ['tiny'])
+  remove_label_from_issue(repo, pr_number, 'tiny')
 end
 
 # WARNINGS
