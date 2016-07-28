@@ -4,10 +4,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
-import { openModal } from '../../actions/modals'
+import { openModal, closeModal } from '../../actions/modals'
 import { trackEvent } from '../../actions/tracking'
-import ShareProfileButton from './ShareProfileButton'
+import { MiniPillButton } from '../buttons/Buttons'
+import MessageDialog from '../dialogs/MessageDialog'
 import ShareDialog from '../dialogs/ShareDialog'
+import { ShareIcon } from '../users/UserIcons'
 import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
 import RelationshipContainer from '../../containers/RelationshipContainer'
 
@@ -21,6 +23,7 @@ class UserList extends Component {
       PropTypes.string,
       PropTypes.number,
     ]).isRequired,
+    isHirable: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     lovesCount: PropTypes.number.isRequired,
     postsCount: PropTypes.number.isRequired,
@@ -56,8 +59,31 @@ class UserList extends Component {
     dispatch(trackEvent('open-share-dialog-profile'))
   }
 
+  onClickHireMe = () => {
+    const { dispatch, user } = this.props
+    dispatch(openModal(
+      <MessageDialog
+        name={`${user.name ? user.name : user.username}`}
+        onConfirm={this.onConfirmHireMe}
+        onDismiss={this.onDismissModal}
+      />
+    ))
+    // dispatch(trackEvent('open-hire-dialog-profile'))
+  }
+
+  // TODO: Wire this up to an action / api etc.
+  onConfirmHireMe = ({ subject, message }) => {
+    // dispatch(sendMessage(subject, message))
+    console.log('subject:', subject, 'message:', message)
+  }
+
+  onDismissModal = () => {
+    const { dispatch } = this.props
+    dispatch(closeModal())
+  }
+
   render() {
-    const { classList, followingCount, followersCount, lovesCount, relationshipPriority,
+    const { classList, followingCount, followersCount, isHirable, lovesCount, relationshipPriority,
       postsCount, showBlockMuteButton, uploader, useGif, user, username } = this.props
     const userPath = `/${user.username}`
     const isModifiable = uploader ? true : undefined
@@ -89,9 +115,22 @@ class UserList extends Component {
           username={username}
         />
         <UserInfo user={user} />
-        <ShareProfileButton onClick={this.onClickShareProfile} >
-          Share Profile
-        </ShareProfileButton>
+        {isHirable ?
+          <div className="ProfileButtons">
+            <MiniPillButton onClick={this.onClickHireMe} >
+              Hire Me
+            </MiniPillButton>
+            <button className="ProfileButtonsShareButton" onClick={this.onClickShareProfile} >
+              <ShareIcon />
+            </button>
+          </div>
+          :
+          <div className="ProfileButtons">
+            <MiniPillButton onClick={this.onClickShareProfile} >
+              Share Profile
+            </MiniPillButton>
+          </div>
+        }
       </div>
     )
   }
@@ -102,6 +141,7 @@ function mapStateToProps(state, ownProps) {
   return {
     followingCount: user.followingCount,
     followersCount: user.followersCount,
+    isHirable: true,
     isLoggedIn: state.authentication.isLoggedIn,
     lovesCount: user.lovesCount,
     relationshipPriority: user.relationshipPriority,
