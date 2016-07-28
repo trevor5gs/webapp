@@ -24,11 +24,19 @@ class ForgotPassword extends Component {
   }
 
   componentWillMount() {
+    const { promotions } = this.props
     this.state = {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
       formStatus: STATUS.INDETERMINATE,
+      promotion: sample(promotions),
     }
     this.emailValue = ''
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.state.promotion) {
+      this.setState({ promotion: sample(nextProps.promotions) })
+    }
   }
 
   onBlurControl = () => {
@@ -110,9 +118,8 @@ class ForgotPassword extends Component {
   }
 
   render() {
-    const { coverDPI, coverOffset, promotions } = this.props
-    const { formStatus } = this.state
-    const promotion = sample(promotions)
+    const { coverDPI, coverOffset } = this.props
+    const { formStatus, promotion } = this.state
     return (
       <MainView className="Authentication">
         <div className="AuthenticationFormDialog">

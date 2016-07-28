@@ -38,15 +38,16 @@ class Join extends Component {
   }
 
   componentWillMount() {
-    const { invitationCode } = this.props
+    const { invitationCode, promotions } = this.props
     this.state = {
-      showInvitationError: false,
+      emailState: { status: STATUS.INDETERMINATE, message: '' },
+      invitationCodeState: { status: STATUS.INDETERMINATE, message: '' },
+      passwordState: { status: STATUS.INDETERMINATE, message: '' },
+      promotion: sample(promotions),
       showEmailError: false,
+      showInvitationError: false,
       showPasswordError: false,
       showUsernameError: false,
-      invitationCodeState: { status: STATUS.INDETERMINATE, message: '' },
-      emailState: { status: STATUS.INDETERMINATE, message: '' },
-      passwordState: { status: STATUS.INDETERMINATE, message: '' },
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
     }
 
@@ -66,7 +67,10 @@ class Join extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { availability, dispatch, email, invitationCode } = nextProps
+    const { availability, dispatch, email, invitationCode, promotions } = nextProps
+    if (!this.state.promotion) {
+      this.setState({ promotion: sample(promotions) })
+    }
     if (invitationCode && !email) {
       this.invitationCodeValue = invitationCode
       dispatch(getInviteEmail(invitationCode))
@@ -241,10 +245,9 @@ class Join extends Component {
       invitationCodeState, showPasswordError,
       emailState, showInvitationError,
       usernameState, showEmailError,
-      passwordState, showUsernameError,
+      passwordState, showUsernameError, promotion,
     } = this.state
-    const { coverDPI, coverOffset, email, promotions } = this.props
-    const promotion = sample(promotions)
+    const { coverDPI, coverOffset, email } = this.props
     const isValid = isFormValid([emailState, usernameState, passwordState])
     const boxControlClassNames = 'asBoxControl'
     return (

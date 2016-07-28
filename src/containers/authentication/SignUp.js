@@ -17,14 +17,25 @@ class SignUp extends Component {
     promotions: PropTypes.array.isRequired,
   }
 
+  componentWillMount() {
+    const { promotions } = this.props
+    this.state = { promotion: sample(promotions) }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.state.promotion) {
+      this.setState({ promotion: sample(nextProps.promotions) })
+    }
+  }
+
   onClickTrackCredits = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('authentication-credits-clicked'))
   }
 
   render() {
-    const { coverDPI, coverOffset, promotions } = this.props
-    const promotion = sample(promotions)
+    const { coverDPI, coverOffset } = this.props
+    const { promotion } = this.state
     return (
       <MainView className="Authentication">
         <div className="AuthenticationFormDialog">
