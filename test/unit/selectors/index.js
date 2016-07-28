@@ -1,9 +1,16 @@
+import { get } from 'lodash'
 import { expect } from '../../spec_helper'
 import { stubJSONStore } from '../../stubs'
 import {
   selectCategoryPageTitle,
   selectCategories,
   selectPagination,
+  selectParamsToken,
+  selectParamsType,
+  selectParamsUsername,
+  selectPost,
+  selectHasSaidHelloTo,
+  selectUser,
   sortCategories,
 } from '../../../src/selectors'
 
@@ -21,6 +28,60 @@ describe('selectors', () => {
     json = {}
     params = {}
     location = {}
+  })
+
+  context('#selectParamsToken', () => {
+    it('returns the params token as lower case', () => {
+      const state = { json }
+      const props = { params, location }
+      expect(selectParamsToken(state, props)).to.equal('paramstoken')
+    })
+  })
+
+  context('#selectParamsType', () => {
+    it('returns the params type', () => {
+      const state = { json }
+      const props = { params, location }
+      expect(selectParamsType(state, props)).to.equal('paramsType')
+    })
+  })
+
+  context('#selectParamsUsername', () => {
+    const state = { json }
+    const props = { params, location }
+
+    it('returns the params username as undefined', () => {
+      expect(selectParamsUsername(state, props)).to.be.undefined
+    })
+
+    it('returns the correct params username', () => {
+      const nextProps = { params: { ...params, username: 'username' }, location }
+      expect(selectParamsUsername(state, nextProps)).to.equal('username')
+    })
+  })
+
+  context('#selectPost', () => {
+    it('returns the post object with memoization', () => {
+      const state = { json }
+      const thisParams = { token: 'token1', type: 'paramsType' }
+      const props = { params: thisParams, location }
+      const testPost = get(json, 'posts.1')
+      expect(selectPost(state, props)).to.deep.equal(testPost)
+      const nextState = { ...state, blah: 1 }
+      expect(selectPost(nextState, props)).to.deep.equal(testPost)
+      expect(selectPost.recomputations()).to.equal(1)
+    })
+  })
+
+  context('#selectUser', () => {
+    it('returns the user object with memoization', () => {
+      const state = { json }
+      const props = { params: { ...params, username: 'archer' }, location }
+      const testUser = get(json, 'users.1')
+      expect(selectUser(state, props)).to.deep.equal(testUser)
+      const nextState = { ...state, blah: 1 }
+      expect(selectUser(nextState, props)).to.deep.equal(testUser)
+    })
   })
 
   context('#selectPagination', () => {
@@ -80,6 +141,14 @@ describe('selectors', () => {
       const selected = selectCategories(state, props)
       const compare = { primary, secondary, tertiary }
       expect(selected).to.deep.equal(compare)
+    })
+  })
+
+  context('#selectHasSaidHelloTo', () => {
+    it('returns the gui.saidHelloTo', () => {
+      const state = { json, gui: { saidHelloTo: ['archer', 'lana'] } }
+      const props = { params: { ...params, username: 'archer' }, location }
+      expect(selectHasSaidHelloTo(state, props)).to.be.true
     })
   })
 })

@@ -1,9 +1,9 @@
 import { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import { isEqual, pick } from 'lodash'
 import { connect } from 'react-redux'
 
-export const addSegment = (uid, createdAt) => {
-  if (window) {
+export function addSegment(uid, createdAt) {
+  if (typeof window !== 'undefined') {
     /* eslint-disable */
     !function(){const analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){const e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(let t=0;t<analytics.methods.length;t++){const e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){const e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";const n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};
     /* eslint-enable */
@@ -16,8 +16,8 @@ export const addSegment = (uid, createdAt) => {
   }
 }
 
-export const doesAllowTracking = () => {
-  if (!window) { return false }
+export function doesAllowTracking() {
+  if (typeof window === 'undefined') { return false }
   return !(
     window.navigator.doNotTrack === '1' ||
     window.navigator.msDoNotTrack === '1' ||
@@ -26,13 +26,30 @@ export const doesAllowTracking = () => {
   )
 }
 
+export function shouldContainerUpdate(thisProps, nextProps) {
+  const pickProps = ['allowsAnalytics', 'analyticsId', 'isLoggedIn']
+  const thisCompare = pick(thisProps, pickProps)
+  const nextCompare = pick(nextProps, pickProps)
+  return !isEqual(thisCompare, nextCompare)
+}
+
+function mapStateToProps(state) {
+  const { authentication, profile } = state
+  return {
+    allowsAnalytics: profile.allowsAnalytics,
+    analyticsId: profile.analyticsId,
+    createdAt: profile.createdAt,
+    isLoggedIn: authentication.isLoggedIn,
+  }
+}
+
 class AnalyticsContainer extends Component {
 
   static propTypes = {
     allowsAnalytics: PropTypes.bool,
     analyticsId: PropTypes.string,
-    isLoggedIn: PropTypes.bool.isRequired,
     createdAt: PropTypes.string,
+    isLoggedIn: PropTypes.bool.isRequired,
   }
 
   componentWillMount() {
@@ -62,22 +79,12 @@ class AnalyticsContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate(nextProps) {
+    return shouldContainerUpdate(this.props, nextProps)
   }
 
   render() {
     return null
-  }
-}
-
-function mapStateToProps(state) {
-  const { authentication, profile } = state
-  return {
-    allowsAnalytics: profile.allowsAnalytics,
-    analyticsId: profile.analyticsId,
-    createdAt: profile.createdAt,
-    isLoggedIn: authentication.isLoggedIn,
   }
 }
 

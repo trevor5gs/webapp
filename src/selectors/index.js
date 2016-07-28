@@ -30,14 +30,19 @@ export function sortCategories(a, b) {
 const selectJSON = (state) => state.json
 
 // props.params.xxx
-const selectParamsType = (state, props) => get(props, 'params.type')
-const selectParamsToken = (state, props) => {
+export const selectParamsToken = (state, props) => {
   const token = get(props, 'params.token')
   return token ? token.toLowerCase() : undefined
 }
+export const selectParamsType = (state, props) => get(props, 'params.type')
+export const selectParamsUsername = (state, props) => get(props, 'params.username')
 
 // props.location.xxx
 const selectLocationPathname = (state, props) => get(props, 'location.pathname')
+
+// state.gui.xxx
+const selectSaidHelloTo = (state) => get(state, 'gui.saidHelloTo')
+export const selectActiveUserFollowingType = (state) => get(state, 'gui.activeUserFollowingType')
 
 // state.json.xxx
 const selectPages = (state) => get(state, 'json.pages')
@@ -50,6 +55,16 @@ const selectCategoryCollection = (state) => get(state, 'json.categories')
 
 
 // Memoized Selectors
+export const selectPost = createSelector(
+  [selectJSON, selectParamsToken], (json, token) =>
+    findModel(json, { collection: MAPPING_TYPES.POSTS, findObj: { token } })
+)
+
+export const selectUser = createSelector(
+  [selectJSON, selectParamsUsername], (json, username) =>
+    findModel(json, { collection: MAPPING_TYPES.USERS, findObj: { username } })
+)
+
 export const selectPagination = createSelector(
   [selectJSON, selectPages, selectLocationPathname, selectPagingResult, selectParamsToken],
   (json, pages, pathname, pagingResult, paramsToken) => {
@@ -192,4 +207,8 @@ export const makeSelectStreamProps = () =>
       return { renderObj, result, resultPath }
     }
   )
+export const selectHasSaidHelloTo = createSelector(
+  [selectSaidHelloTo, selectParamsUsername], (saidHelloTo, username) =>
+    saidHelloTo.indexOf(username) !== -1
+)
 

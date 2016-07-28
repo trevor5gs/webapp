@@ -91,7 +91,7 @@ describe('DiscoverContainer', () => {
       expect(tabs[9]).to.have.property('to', '/discover/collage')
     })
   })
-  context('#shouldSearchContainerUpdate', () => {
+  context('#shouldContainerUpdate', () => {
     it('returns the correct stream action for discover', () => {
       const thisProps = {
         coverDPI: 'xhdpi',

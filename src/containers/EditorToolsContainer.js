@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
-import { debounce } from 'lodash'
+import { debounce, isEqual } from 'lodash'
 import { EDITOR } from '../constants/action_types'
 import {
   autoCompleteUsers,
@@ -15,6 +14,19 @@ import Completer from '../components/completers/Completer'
 import TextTools from '../components/editor/TextTools'
 import { addInputObject, removeInputObject } from '../components/editor/InputComponent'
 import { replaceWordFromSelection } from '../components/editor/SelectionUtil'
+
+function mapStateToProps(state) {
+  const { editor, emoji, gui } = state
+  return {
+    completions: editor.completions,
+    emojis: emoji.emojis,
+    isCompleterActive: gui.isCompleterActive,
+    isTextToolsActive: gui.isTextToolsActive,
+    textToolsStates: gui.textToolsStates,
+    textToolsCoordinates: gui.textToolsCoordinates,
+    deviceSize: gui.deviceSize,
+  }
+}
 
 class EditorToolsContainer extends Component {
 
@@ -47,8 +59,8 @@ class EditorToolsContainer extends Component {
     addInputObject(this)
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(this.props, nextProps)
   }
 
   componentWillUnmount() {
@@ -160,19 +172,6 @@ class EditorToolsContainer extends Component {
         }
       </div>
     )
-  }
-}
-
-function mapStateToProps(state) {
-  const { editor, emoji, gui } = state
-  return {
-    completions: editor.completions,
-    emojis: emoji.emojis,
-    isCompleterActive: gui.isCompleterActive,
-    isTextToolsActive: gui.isTextToolsActive,
-    textToolsStates: gui.textToolsStates,
-    textToolsCoordinates: gui.textToolsCoordinates,
-    deviceSize: gui.deviceSize,
   }
 }
 

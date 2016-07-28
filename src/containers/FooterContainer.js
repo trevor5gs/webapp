@@ -1,9 +1,20 @@
 import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
+import { isEqual } from 'lodash'
 import { scrollToTop, scrollToOffsetTop } from '../vendor/scrolling'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { Footer } from '../components/footer/Footer'
+
+function mapStateToProps(state) {
+  const { gui, stream } = state
+  const isPaginatoring = stream.type === LOAD_NEXT_CONTENT_REQUEST && gui.deviceSize === 'mobile'
+  return {
+    isLayoutToolHidden: gui.isLayoutToolHidden,
+    isGridMode: gui.isGridMode,
+    isOffsetLayout: gui.isOffsetLayout,
+    isPaginatoring,
+  }
+}
 
 class FooterContainer extends Component {
 
@@ -15,8 +26,8 @@ class FooterContainer extends Component {
     isPaginatoring: PropTypes.bool,
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(this.props, nextProps)
   }
 
   onClickScrollToTop = () => {
@@ -40,17 +51,6 @@ class FooterContainer extends Component {
       onClickToggleLayoutMode: this.onClickToggleLayoutMode,
     }
     return <Footer {...props} />
-  }
-}
-
-function mapStateToProps(state) {
-  const { gui, stream } = state
-  const isPaginatoring = stream.type === LOAD_NEXT_CONTENT_REQUEST && gui.deviceSize === 'mobile'
-  return {
-    isLayoutToolHidden: gui.isLayoutToolHidden,
-    isGridMode: gui.isGridMode,
-    isOffsetLayout: gui.isOffsetLayout,
-    isPaginatoring,
   }
 }
 

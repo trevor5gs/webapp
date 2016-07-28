@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
+import { isEqual } from 'lodash'
 import { scrollToTop } from '../vendor/scrolling'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
@@ -14,6 +14,38 @@ import { loadFriends, loadNoise } from '../actions/stream'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/Navbar'
 import { getDiscoverAction } from '../containers/DiscoverContainer'
 import Session from '../vendor/session'
+
+function mapStateToProps(state) {
+  const { authentication, gui, json, profile, routing } = state
+  const currentStream = gui.currentStream
+  const isLoggedIn = authentication.isLoggedIn
+  const pathname = routing.location.pathname
+  const result = json.pages ? json.pages[pathname] : null
+  const hasLoadMoreButton = Boolean(result && result.newIds)
+
+  if (isLoggedIn) {
+    return {
+      avatar: profile.avatar,
+      deviceSize: gui.deviceSize,
+      currentStream,
+      hasLoadMoreButton,
+      isGridMode: gui.isGridMode,
+      isLayoutToolHidden: gui.isLayoutToolHidden,
+      isLoggedIn,
+      isNotificationsActive: gui.isNotificationsActive,
+      isNotificationsUnread: gui.isNotificationsUnread,
+      isProfileMenuActive: gui.isProfileMenuActive,
+      pathname,
+      username: profile.username,
+    }
+  }
+  return {
+    currentStream,
+    hasLoadMoreButton,
+    isLoggedIn,
+    pathname,
+  }
+}
 
 class NavbarContainer extends Component {
 
@@ -34,8 +66,8 @@ class NavbarContainer extends Component {
     this.checkForNotifications()
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(this.props, nextProps)
   }
 
   componentDidUpdate(prevProps) {
@@ -197,38 +229,6 @@ class NavbarContainer extends Component {
         onClickNavbarMark={this.onClickNavbarMark}
       />
     )
-  }
-}
-
-function mapStateToProps(state) {
-  const { authentication, gui, json, profile, routing } = state
-  const currentStream = gui.currentStream
-  const isLoggedIn = authentication.isLoggedIn
-  const pathname = routing.location.pathname
-  const result = json.pages ? json.pages[pathname] : null
-  const hasLoadMoreButton = Boolean(result && result.newIds)
-
-  if (isLoggedIn) {
-    return {
-      avatar: profile.avatar,
-      deviceSize: gui.deviceSize,
-      currentStream,
-      hasLoadMoreButton,
-      isGridMode: gui.isGridMode,
-      isLayoutToolHidden: gui.isLayoutToolHidden,
-      isLoggedIn,
-      isNotificationsActive: gui.isNotificationsActive,
-      isNotificationsUnread: gui.isNotificationsUnread,
-      isProfileMenuActive: gui.isProfileMenuActive,
-      pathname,
-      username: profile.username,
-    }
-  }
-  return {
-    currentStream,
-    hasLoadMoreButton,
-    isLoggedIn,
-    pathname,
   }
 }
 

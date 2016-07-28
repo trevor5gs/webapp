@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
-import { debounce, get, isEqual, sample } from 'lodash'
+import { debounce, get, isEqual, pick, sample } from 'lodash'
 import { updateQueryParams } from '../helpers/uri_helper'
 import { searchForPosts, searchForUsers } from '../actions/search'
 import { trackEvent } from '../actions/tracking'
@@ -21,20 +21,16 @@ export function getStreamAction(props) {
   return null
 }
 
-export function shouldSearchContainerUpdate(thisProps, nextProps) {
-  const names = ['coverDPI', 'isLoggedIn', 'pathname', 'promotions', 'terms', 'type']
-  const thisCompare = {}
-  const nextCompare = {}
-  names.forEach((name) => {
-    thisCompare[name] = thisProps[name]
-    nextCompare[name] = nextProps[name]
-  })
+export function shouldContainerUpdate(thisProps, nextProps) {
+  const pickProps = ['coverDPI', 'isLoggedIn', 'pathname', 'promotions', 'terms', 'type']
+  const thisCompare = pick(thisProps, pickProps)
+  const nextCompare = pick(nextProps, pickProps)
   return !isEqual(thisCompare, nextCompare)
 }
 
-export function mapStateToProps(state, ownProps) {
+export function mapStateToProps(state, props) {
   const { authentication, gui, promotions } = state
-  const { location } = ownProps
+  const { location } = props
   return {
     coverDPI: gui.coverDPI,
     isLoggedIn: authentication.isLoggedIn,
@@ -84,7 +80,7 @@ export class SearchContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return shouldSearchContainerUpdate(this.props, nextProps)
+    return shouldContainerUpdate(this.props, nextProps)
   }
 
   onChangeControl = (vo) => {
