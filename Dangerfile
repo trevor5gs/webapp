@@ -12,7 +12,7 @@ if !github.api.labels(repo).any?{|label| label.name == "tiny"}
   github.api.add_label(repo, 'tiny', 'f7c6c7')
 end
 if git.lines_of_code < 50
-  github.api.add_labels_to_an_issue(repo, github.pr_json[:number], github.api.labels(repo).find{|hash| hash[:name] == "tiny"})
+  github.api.add_labels_to_an_issue(repo, github.pr_json[:number], [github.api.labels(repo).find{|hash| hash[:name] == "tiny"}])
 end
 
 # FAILURES
