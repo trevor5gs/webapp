@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import RegionTools from './RegionTools'
+import { AffiliateLinkButton } from './AffiliateLinkButton'
 
 class Block extends Component {
 
@@ -12,6 +13,7 @@ class Block extends Component {
       'image',
       'text',
     ]).isRequired,
+    linkURL: PropTypes.string,
     onRemoveBlock: PropTypes.func.isRequired,
     uid: PropTypes.number.isRequired,
   }
@@ -27,7 +29,7 @@ class Block extends Component {
   }
 
   render() {
-    const { children, editorId, uid } = this.props
+    const { children, editorId, linkURL, uid } = this.props
     return (
       <div
         className="editor-block"
@@ -36,6 +38,11 @@ class Block extends Component {
         ref="editorBlock"
       >
         {children}
+        {
+          linkURL && linkURL.length ?
+            <AffiliateLinkButton to={linkURL} /> :
+            null
+        }
         <RegionTools editorId={editorId} onRemoveBlock={this.removeBlock} />
       </div>
     )

@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
 import TextRegion from '../posts/regions/TextRegion'
 import ImageRegion from '../posts/regions/ImageRegion'
+import { AffiliateLinkButton } from '../editor/AffiliateLinkButton'
 
 let assets = {}
 
@@ -20,6 +21,7 @@ function textRegion(region, key, isGridLayout, postDetailPath) {
 function imageRegion(region, key, isGridLayout, postDetailPath, isNotification, isComment) {
   return (
     <ImageRegion
+      affiliateLinkURL={region.linkUrl}
       assets={assets}
       content={region.data}
       isComment={isComment}
@@ -41,6 +43,11 @@ function embedRegion(region, key) {
         <Link className="EmbedRegionContent" to={region.data.url}>
           <img src={region.data.thumbnailLargeUrl} alt={region.data.service} />
         </Link>
+        {
+          region.linkUrl && region.linkUrl.length ?
+            <AffiliateLinkButton to={region.linkUrl} /> :
+            null
+        }
       </div>
     </div>
   )
@@ -77,7 +84,7 @@ export function regionItems(content, only = null, isGridLayout = true, postDetai
   // sometimes the content is null/undefined for some reason
   if (!content) { return null }
   return content.map((region, i) => {
-    if (!only || only === region.kind) {
+    if (!only || new RegExp(only).test(region.kind)) {
       switch (region.kind) {
         case 'text':
           return textRegion(region, `TextRegion_${i}`, isGridLayout, postDetailPath)

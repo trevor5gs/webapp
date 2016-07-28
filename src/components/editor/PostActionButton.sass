@@ -28,6 +28,24 @@
   position: absolute
   left: rem(20)
 
+.PostActionButton.forMoney > .SVGIcon.MoneyIcon > g
+  fill: #aaa
+  stroke: none
+
+.PostActionButton .CheckMark
+  position: absolute
+  top: rem(7)
+  right: 0
+  transform: scale(0.6)
+  display: none
+.PostActionButton .CheckMark g
+  stroke: #00d100
+  stroke-width: 2
+.PostActionButton.isAffiliateLinked .CheckMark
+  display: block
+.PostActionButton.isAffiliateLinked > .SVGIcon.MoneyIcon > g
+  fill: black
+
 .PostActionButton[disabled]
   pointer-events: none
   opacity: 0.5
@@ -40,12 +58,17 @@
     stroke: white
   .no-touch .PostActionButton:hover > .BrowseIcon > g
     fill: black
+  .no-touch .PostActionButton.forMoney:hover > .SVGIcon.MoneyIcon > g
+    fill: white
+    stroke: none
+
 
   .no-touch .PostActionButton:hover
     width: rem(105)
   .no-touch .PostActionButton.forUpload:hover
     width: rem(110)
-  .no-touch .PostActionButton.forPost:hover
+  .no-touch .PostActionButton.forPost:hover,
+  .no-touch .PostActionButton.forMoney:hover
     width: rem(85)
   .no-touch .PostActionButton.forComment:hover
     width: rem(125)

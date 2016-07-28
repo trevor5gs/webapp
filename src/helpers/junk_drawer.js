@@ -2,6 +2,7 @@ import { decamelizeKeys } from 'humps'
 import store from '../store'
 import { requestPushSubscription, saveProfile } from '../actions/profile'
 import { isElloAndroid } from '../vendor/jello'
+import { trackEvent } from '../actions/tracking'
 
 export function preferenceToggleChanged(obj) {
   const newObj = { ...obj }
@@ -27,5 +28,9 @@ if (typeof window !== 'undefined') {
   if (isElloAndroid()) {
     AndroidInterface.webAppLoaded()
   }
+}
+
+export function dispatchTrackEvent(label, options = {}) {
+  store.dispatch(trackEvent(label, options))
 }
 

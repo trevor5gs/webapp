@@ -10,10 +10,12 @@ describe('editor helper', () => {
     it('should have the correct default properties', () => {
       expect(subject.initialState.collection).to.be.empty
       expect(subject.initialState.hasContent).to.be.false
+      expect(subject.initialState.hasMedia).to.be.false
       expect(subject.initialState.hasMention).to.be.false
       expect(subject.initialState.isLoading).to.be.false
       expect(subject.initialState.isPosting).to.be.false
       expect(subject.initialState.order).to.be.empty
+      expect(subject.initialState.postAffiliateLink).to.be.null
       expect(subject.initialState.shouldPersist).to.be.false
       expect(subject.initialState.uid).to.equal(0)
     })
@@ -82,6 +84,58 @@ describe('editor helper', () => {
       const newState = { collection: { 0: { data: '<br>' } }, order: [0] }
       state = subject.methods.addHasContent(newState)
       expect(state.hasContent).to.be.false
+    })
+  })
+
+  describe('#addHasMedia', () => {
+    it('sets hasMedia to false if no image/embed kind', () => {
+      const newState = {
+        collection: {
+          0: {
+            data: 'archer Phrasing!?',
+            kind: 'text',
+          },
+        },
+        order: [0],
+      }
+      state = subject.methods.addHasMedia(newState)
+      expect(state.hasMedia).to.be.false
+    })
+
+    it('sets hasMedia to true if an image is present', () => {
+      const newState = {
+        collection: {
+          0: {
+            data: 'path/to/image.png',
+            kind: 'image',
+          },
+          1: {
+            data: 'Lana!!!',
+            kind: 'text',
+          },
+        },
+        order: [0, 1],
+      }
+      state = subject.methods.addHasMedia(newState)
+      expect(state.hasMedia).to.be.true
+    })
+
+    it('sets hasMedia to true if an embed is present', () => {
+      const newState = {
+        collection: {
+          0: {
+            data: 'Stir Friday',
+            kind: 'text',
+          },
+          1: {
+            data: 'path/to/embed.png',
+            kind: 'embed',
+          },
+        },
+        order: [0, 1],
+      }
+      state = subject.methods.addHasMedia(newState)
+      expect(state.hasMedia).to.be.true
     })
   })
 
@@ -190,6 +244,17 @@ describe('editor helper', () => {
       expect(state.uid).to.equal(1)
       expect(state.order.length).to.equal(1)
       expect(state.collection[0]).to.deep.equal({ kind: 'text', uid: 0 })
+    })
+
+    it('adds the linkUrl when affiliate link is present', () => {
+      state = subject.methods.add({
+        block: { kind: 'text' },
+        shouldCheckForEmpty: true,
+        state: { ...subject.initialState, postAffiliateLink: 'yeah' },
+      })
+      expect(state.uid).to.equal(1)
+      expect(state.order.length).to.equal(1)
+      expect(state.collection[0]).to.deep.equal({ kind: 'text', uid: 0, linkUrl: 'yeah' })
     })
   })
 
@@ -487,8 +552,95 @@ describe('editor helper', () => {
   })
 
   // TODO: need to figure out how to test the query lookup in this method
-  describe('#replaceText', () => {
+  describe('#replaceText', () => { })
 
+  describe('#updateAffiliateLink', () => {
+    it('updates all blocks with a link_url', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '@lana @cyril ',
+            uid: 0,
+          },
+          1: {
+            kind: 'image',
+            data: '/path/to/avatar/lana.png',
+            uid: 1,
+          },
+          2: {
+            kind: 'embed',
+            data: '/path/to/embed/krieger.png',
+            uid: 2,
+          },
+        },
+        order: [0, 1, 2],
+      }
+      state = subject.methods.updateAffiliateLink(newState, { payload: { link: 'word' } })
+      expect(state.collection[0].linkUrl).to.equal('word')
+      expect(state.collection[1].linkUrl).to.equal('word')
+      expect(state.collection[2].linkUrl).to.equal('word')
+    })
+
+    it('removes link_url from all blocks with an empty link', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '@lana @cyril ',
+            linkUrl: 'yo',
+            uid: 0,
+          },
+          1: {
+            kind: 'image',
+            data: '/path/to/avatar/lana.png',
+            linkUrl: 'yo',
+            uid: 1,
+          },
+          2: {
+            kind: 'embed',
+            data: '/path/to/embed/krieger.png',
+            linkUrl: 'yo',
+            uid: 2,
+          },
+        },
+        order: [0, 1, 2],
+      }
+      state = subject.methods.updateAffiliateLink(newState, { payload: { link: '' } })
+      expect(state.collection[0].linkUrl).to.be.undefined
+      expect(state.collection[1].linkUrl).to.be.undefined
+      expect(state.collection[2].linkUrl).to.be.undefined
+    })
+
+    it('removes link_url from all blocks null link', () => {
+      const newState = {
+        collection: {
+          0: {
+            kind: 'text',
+            data: '@lana @cyril ',
+            linkUrl: 'yo',
+            uid: 0,
+          },
+          1: {
+            kind: 'image',
+            data: '/path/to/avatar/lana.png',
+            linkUrl: 'yo',
+            uid: 1,
+          },
+          2: {
+            kind: 'embed',
+            data: '/path/to/embed/krieger.png',
+            linkUrl: 'yo',
+            uid: 2,
+          },
+        },
+        order: [0, 1, 2],
+      }
+      state = subject.methods.updateAffiliateLink(newState, { payload: { link: null } })
+      expect(state.collection[0].linkUrl).to.be.undefined
+      expect(state.collection[1].linkUrl).to.be.undefined
+      expect(state.collection[2].linkUrl).to.be.undefined
+    })
   })
 
   describe('#getEditorObject', () => {
@@ -647,6 +799,15 @@ describe('editor helper', () => {
       }
     })
 
+    it('calls #appendUsernames with EDITOR.LOAD_REPLY_ALL_SUCCESS', () => {
+      spy = sinon.stub(subject.methods, 'appendUsernames')
+      action = {
+        type: EDITOR.LOAD_REPLY_ALL_SUCCESS,
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
+    })
+
     it('updates the dragBlock if one exists with EDITOR.SAVE_ASSET_SUCCESS', () => {
       const newState = {
         dragBlock: {
@@ -681,6 +842,29 @@ describe('editor helper', () => {
       expect(state.collection[0].data.url).to.equal('blah')
     })
 
+    it('updates the drag image block with EDITOR.SAVE_ASSET_SUCCESS', () => {
+      const newState = {
+        dragBlock: {
+          kind: 'image',
+          data: { url: 'what' },
+          uid: 0,
+        },
+        collection: {
+          1: {
+            kind: 'image',
+            data: { url: 'que' },
+            uid: 1,
+          },
+        },
+      }
+      action = {
+        type: EDITOR.SAVE_ASSET_SUCCESS,
+        payload: { response: { url: 'blah' }, uid: 0 },
+      }
+      state = subject.methods.getEditorObject(newState, action)
+      expect(state.dragBlock.data.url).to.equal('blah')
+    })
+
     it('calls #removeEmptyTextBlock and #add with EDITOR.TMP_IMAGE_CREATED', () => {
       spy = sinon.stub(subject.methods, 'removeEmptyTextBlock')
       const addSpy = sinon.stub(subject.methods, 'add')
@@ -691,6 +875,24 @@ describe('editor helper', () => {
       state = subject.methods.getEditorObject(subject.initialState, action)
       expect(spy.called).to.be.true
       expect(addSpy.called).to.be.true
+    })
+
+    it('calls #updateAffiliateLink with EDITOR.UPDATE_AFFILIATE_LINK', () => {
+      spy = sinon.stub(subject.methods, 'updateAffiliateLink')
+      action = {
+        type: EDITOR.UPDATE_AFFILIATE_LINK,
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
+    })
+
+    it('calls #updateBlock with EDITOR.UPDATE_BLOCK', () => {
+      spy = sinon.stub(subject.methods, 'updateBlock')
+      action = {
+        type: EDITOR.UPDATE_BLOCK,
+      }
+      state = subject.methods.getEditorObject(subject.initialState, action)
+      expect(spy.called).to.be.true
     })
   })
 })

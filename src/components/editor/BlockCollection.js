@@ -31,6 +31,7 @@ import { addInputObject, removeInputObject } from './InputComponent'
 class BlockCollection extends Component {
 
   static propTypes = {
+    affiliateLink: PropTypes.string,
     avatar: PropTypes.object,
     blocks: PropTypes.array,
     cancelAction: PropTypes.func.isRequired,
@@ -40,6 +41,7 @@ class BlockCollection extends Component {
     dragBlock: PropTypes.object,
     editorId: PropTypes.string.isRequired,
     hasContent: PropTypes.bool,
+    hasMedia: PropTypes.bool,
     hasMention: PropTypes.bool,
     isComment: PropTypes.bool,
     isLoading: PropTypes.bool,
@@ -233,6 +235,7 @@ class BlockCollection extends Component {
       editorId,
       key: block.uid,
       kind: block.kind,
+      linkURL: block.linkUrl,
       onRemoveBlock: this.remove,
       uid: block.uid,
     }
@@ -315,13 +318,21 @@ class BlockCollection extends Component {
       switch (block.kind) {
         case 'text':
           if (block.data.length) {
-            results.push({ kind: block.kind, data: block.data })
+            if (block.linkUrl && block.linkUrl.length) {
+              results.push({ kind: block.kind, data: block.data, link_url: block.linkUrl })
+            } else {
+              results.push({ kind: block.kind, data: block.data })
+            }
           }
           break
         case 'repost':
           break
         default:
-          results.push({ kind: block.kind, data: block.data })
+          if (block.linkUrl && block.linkUrl.length) {
+            results.push({ kind: block.kind, data: block.data, link_url: block.linkUrl })
+          } else {
+            results.push({ kind: block.kind, data: block.data })
+          }
           break
       }
     }
@@ -343,17 +354,18 @@ class BlockCollection extends Component {
 
   render() {
     const {
-      avatar, cancelAction, collection, dragBlock, editorId, hasContent, hasMention,
-      isComment, isLoading, isMobileGridStream, isOwnPost, isPosting, order, submitText,
+      affiliateLink, avatar, cancelAction, collection, dragBlock, editorId, hasContent, hasMedia,
+      hasMention, isComment, isLoading, isMobileGridStream, isOwnPost, isPosting, order, submitText,
     } = this.props
     const { dragBlockTop, hasDragOver } = this.state
-    const firstBlockIsText = collection[order[0]] ? collection[order[0]].kind === 'text' : true
+    const firstBlockIsText = collection[order[0]] ? /text/.test(collection[order[0]].kind) : true
     const showQuickEmoji = isComment && firstBlockIsText
     const editorClassNames = classNames('editor', {
       withQuickEmoji: showQuickEmoji,
       hasDragOver,
-      hasMention,
       hasContent,
+      hasMedia,
+      hasMention,
       isComment,
       isLoading,
       isPosting,
@@ -381,10 +393,12 @@ class BlockCollection extends Component {
         </div>
         {showQuickEmoji ? <QuickEmoji onAddEmoji={this.onInsertEmoji} /> : null}
         <PostActionBar
+          affiliateLink={affiliateLink}
           cancelAction={cancelAction}
           disableSubmitAction={isPosting || isLoading || !hasContent}
           editorId={editorId}
           handleFileAction={this.handleFiles}
+          hasMedia={hasMedia}
           ref="postActionBar"
           replyAllAction={isComment && isOwnPost && !isMobileGridStream ? this.replyAll : null}
           submitAction={this.submit}
@@ -398,11 +412,13 @@ class BlockCollection extends Component {
 function mapStateToProps(state, ownProps) {
   const editor = get(state, ['editor', ownProps.editorId], {})
   return {
+    affiliateLink: get(editor, ['collection', editor.order[0], 'linkUrl']),
     avatar: state.profile.avatar,
     collection: editor.collection,
     currentUsername: state.profile.username,
     dragBlock: editor.dragBlock,
     hasContent: editor.hasContent,
+    hasMedia: editor.hasMedia,
     hasMention: editor.hasMention,
     isLoading: editor.isLoading,
     isPosting: editor.isPosting,

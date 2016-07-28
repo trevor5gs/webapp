@@ -1,9 +1,11 @@
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { ERROR_MESSAGES as ERROR } from '../../constants/locales/en'
+import urlRegex from 'url-regex'
 
 export function isFormValid(states) {
   return states.every((state) => state.status === STATUS.SUCCESS)
 }
+
 
 export function containsSpace(value) {
   return (/\s/).test(value)
@@ -11,6 +13,16 @@ export function containsSpace(value) {
 
 export function containsInvalidUsernameCharacters(value) {
   return (!(/^[a-zA-Z0-9\-_]+$/).test(value))
+}
+
+export function isValidURL(value) {
+  // this is added since we only validate affiliate links
+  // which would get the protocol prepended if not there
+  let newValue = value
+  if (newValue.indexOf('http') !== 0) {
+    newValue = `http://${newValue}`
+  }
+  return urlRegex({ exact: true }).test(newValue)
 }
 
 // Client-side only validation
