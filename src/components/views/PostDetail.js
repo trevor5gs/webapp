@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import Editor from '../editor/Editor'
 import { PostDetailHelmet } from '../helmets/PostDetailHelmet'
 import PostParser from '../parsers/PostParser'
-import StreamComponent from '../streams/StreamComponent'
+import StreamContainer from '../../containers/StreamContainer'
 import { MainView } from '../views/MainView'
 
 export const PostDetail = ({ author, hasEditor, post, streamAction }) =>
@@ -15,7 +15,7 @@ export const PostDetail = ({ author, hasEditor, post, streamAction }) =>
           {hasEditor && post ? <Editor post={post} isComment /> : null}
         </div>
         {streamAction ?
-          <StreamComponent action={streamAction} className="CommentStreamComponent" /> :
+          <StreamContainer action={streamAction} className="CommentStreamContainer" /> :
           null
         }
       </article>
@@ -32,7 +32,7 @@ PostDetail.propTypes = {
 
 export const PostDetailError = ({ children }) =>
   <MainView className="PostDetail">
-    <section className="StreamComponent hasErrored">
+    <section className="StreamContainer hasErrored">
       {children}
     </section>
   </MainView>

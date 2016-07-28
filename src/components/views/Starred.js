@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import StreamComponent from '../streams/StreamComponent'
+import StreamContainer from '../../containers/StreamContainer'
 import { MainView } from '../views/MainView'
 import { ZeroStream } from '../zeros/Zeros'
 
@@ -19,7 +19,7 @@ export const Starred = ({
   }) =>
   <MainView className="Starred">
     {isBeaconActive ? <StarredZeroStream onDismissZeroStream={onDismissZeroStream} /> : null}
-    <StreamComponent action={streamAction} scrollSessionKey="/starred" />
+    <StreamContainer action={streamAction} scrollSessionKey="/starred" />
   </MainView>
 
 Starred.propTypes = {

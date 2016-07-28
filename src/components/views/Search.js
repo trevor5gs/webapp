@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import Promotion from '../assets/Promotion'
 import SearchControl from '../forms/SearchControl'
-import StreamComponent from '../streams/StreamComponent'
+import StreamContainer from '../../containers/StreamContainer'
 import { TabListButtons } from '../tabs/TabList'
 import { MainView } from '../views/MainView'
 
@@ -35,7 +35,7 @@ export const Search = ({
         tabs={tabs}
       />
     </form>
-    <StreamComponent key={streamKey} action={streamAction} />
+    <StreamContainer key={streamKey} action={streamAction} />
   </MainView>
 
 Search.propTypes = {

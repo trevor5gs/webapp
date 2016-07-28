@@ -41,7 +41,7 @@ import Avatar from '../../components/assets/Avatar'
 import Cover from '../../components/assets/Cover'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
-import StreamComponent from '../../components/streams/StreamComponent'
+import StreamContainer from '../../containers/StreamContainer'
 import InfoForm from '../../components/forms/InfoForm'
 import { MainView } from '../../components/views/MainView'
 import { isElloAndroid } from '../../vendor/jello'
@@ -422,7 +422,7 @@ class Settings extends Component {
           </p>
 
           <div className="SettingsPreferences">
-            <StreamComponent
+            <StreamContainer
               action={availableToggles()}
               ignoresScrollPosition
             />
@@ -452,7 +452,7 @@ class Settings extends Component {
               <div>
                 <TreeButton>Blocked users</TreeButton>
                 <TreePanel>
-                  <StreamComponent
+                  <StreamContainer
                     action={blockedUsers()}
                     className="BlockedUsers"
                     hasShowMoreButton
@@ -467,7 +467,7 @@ class Settings extends Component {
               <div>
                 <TreeButton>Muted users</TreeButton>
                 <TreePanel>
-                  <StreamComponent
+                  <StreamContainer
                     action={mutedUsers()}
                     className="MutedUsers"
                     hasShowMoreButton

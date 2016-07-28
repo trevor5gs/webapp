@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { inviteUsers, loadInvitedUsers } from '../../actions/invitations'
-import StreamComponent from '../../components/streams/StreamComponent'
+import StreamContainer from '../../containers/StreamContainer'
 import BatchEmailControl from '../../components/forms/BatchEmailControl'
 import { getBatchEmailState } from '../../components/forms/Validators'
 import FormButton from '../../components/forms/FormButton'
@@ -104,7 +104,7 @@ class Invitations extends Component {
 
         </div>
         <h2 className="InvitationsStreamHeading">People you've invited</h2>
-        <StreamComponent action={loadInvitedUsers()} />
+        <StreamContainer action={loadInvitedUsers()} />
       </MainView>
     )
   }

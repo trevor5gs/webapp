@@ -3,19 +3,65 @@ import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import classNames from 'classnames'
 import _ from 'lodash'
-import scrollTop from '../../vendor/scrolling'
-import { runningFetches } from '../../sagas/requester'
-import * as ACTION_TYPES from '../../constants/action_types'
-import { SESSION_KEYS } from '../../constants/application_types'
-import * as MAPPING_TYPES from '../../constants/mapping_types'
-import { findModel } from '../../helpers/json_helper'
-import { addScrollObject, removeScrollObject } from '../viewport/ScrollComponent'
-import { ElloMark } from '../svg/ElloIcons'
-import { Paginator, emptyPagination } from './Paginator'
-import { ErrorState4xx } from '../errors/Errors'
-import Session from '../../vendor/session'
+import scrollTop from '../vendor/scrolling'
+import { runningFetches } from '../sagas/requester'
+import * as ACTION_TYPES from '../constants/action_types'
+import { SESSION_KEYS } from '../constants/application_types'
+import { findModel } from '../helpers/json_helper'
+import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
+import { ElloMark } from '../components/svg/ElloIcons'
+import { Paginator } from '../components/streams/Paginator'
+import { ErrorState4xx } from '../components/errors/Errors'
+import { makeSelectStreamProps } from '../selectors'
+import Session from '../vendor/session'
 
-export class StreamComponent extends Component {
+export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
+  const { stream } = nextProps
+  const { action } = nextState
+  const updateKey = _.get(action, 'meta.updateKey')
+  const streamPath = _.get(stream, 'payload.endpoint.path', '')
+  // this prevents nested stream components from clobbering parents
+  if (updateKey && !streamPath.match(updateKey)) {
+    return false
+    // when hitting the back button the result can update and
+    // try to feed wrong results to the actions render method
+    // thus causing errors when trying to render wrong results
+  } else if (nextProps.resultPath !== thisProps.resultPath) {
+    return false
+    // allow page loads to fall through and also allow stream
+    // load requests to fall through to show the loader
+    // on an initial page load when endpoints don't match
+  } else if (!/LOAD_NEXT_CONTENT|POST\.|COMMENT\./.test(stream.type) &&
+             stream.type !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
+             streamPath !== _.get(action, 'payload.endpoint.path')) {
+    return false
+  } else if (_.isEqual(nextState, thisState) && _.isEqual(nextProps, thisProps)) {
+    return false
+  }
+  return true
+}
+
+export function makeMapStateToProps() {
+  const getStreamProps = makeSelectStreamProps()
+  const mapStateToProps = (state, props) => {
+    const streamProps = getStreamProps(state, props)
+    return {
+      ...streamProps,
+      deviceSize: state.gui.deviceSize,
+      history: state.gui.history,
+      innerHeight: state.gui.innerHeight,
+      innerWidth: state.gui.innerWidth,
+      json: state.json,
+      isGridMode: state.gui.isGridMode,
+      omnibar: state.omnibar,
+      routerState: state.routing.location.state || {},
+      stream: state.stream,
+    }
+  }
+  return mapStateToProps
+}
+
+export class StreamContainer extends Component {
 
   static propTypes = {
     action: PropTypes.object,
@@ -32,52 +78,10 @@ export class StreamComponent extends Component {
     isModalComponent: PropTypes.bool,
     isUserDetail: PropTypes.bool.isRequired,
     json: PropTypes.object.isRequired,
-    omnibar: PropTypes.shape({
-      isActive: PropTypes.bool,
-    }),
+    omnibar: PropTypes.object,
     paginatorText: PropTypes.string,
-    renderObj: PropTypes.shape({
-      data: PropTypes.array.isRequired,
-      nestedData: PropTypes.array.isRequired,
-    }).isRequired,
-    result: PropTypes.shape({
-      next: PropTypes.shape({
-        ids: PropTypes.array,
-        pagination: PropTypes.shape({
-          next: PropTypes.string,
-          totalCount: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string,
-          ]),
-          totalPages: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string,
-          ]),
-          totalPagesRemaining: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string,
-          ]),
-        }),
-        type: PropTypes.string,
-      }),
-      ids: PropTypes.array,
-      pagination: PropTypes.shape({
-        next: PropTypes.string,
-        totalCount: PropTypes.oneOfType([
-          PropTypes.number,
-          PropTypes.string,
-        ]),
-        totalPages: PropTypes.oneOfType([
-          PropTypes.number,
-          PropTypes.string,
-        ]),
-        totalPagesRemaining: PropTypes.oneOfType([
-          PropTypes.number,
-          PropTypes.string,
-        ]),
-      }),
-      type: PropTypes.string,
-    }),
+    renderObj: PropTypes.object.isRequired,
+    result: PropTypes.object.isRequired,
     resultPath: PropTypes.string,
     routerState: PropTypes.object,
     scrollSessionKey: PropTypes.string,
@@ -148,30 +152,7 @@ export class StreamComponent extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { stream } = nextProps
-    const { action } = nextState
-    const updateKey = _.get(action, 'meta.updateKey')
-    const streamPath = _.get(stream, 'payload.endpoint.path', '')
-    // this prevents nested stream components from clobbering parents
-    if (updateKey && !streamPath.match(updateKey)) {
-      return false
-    // when hitting the back button the result can update and
-    // try to feed wrong results to the actions render method
-    // thus causing errors when trying to render wrong results
-    } else if (nextProps.resultPath !== this.props.resultPath) {
-      return false
-    } else if (_.isEqual(nextState, this.state) &&
-               _.isEqual(nextProps, this.props)) {
-      return false
-    // allow page loads to fall through and also allow stream
-    // load requests to fall through to show the loader
-    // on an initial page load when endpoints don't match
-    } else if (!/LOAD_NEXT_CONTENT|POST\.|COMMENT\./.test(stream.type) &&
-               stream.type !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
-               streamPath !== _.get(action, 'payload.endpoint.path')) {
-      return false
-    }
-    return true
+    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
   }
 
   componentDidUpdate() {
@@ -304,7 +285,6 @@ export class StreamComponent extends Component {
 
   loadPage(rel, scrolled = false) {
     const { deviceSize, dispatch, result, stream } = this.props
-    if (!result) { return }
     const { action } = this.state
     const { meta } = action
     if (scrolled && meta && meta.resultKey && meta.updateKey) {
@@ -345,7 +325,7 @@ export class StreamComponent extends Component {
     const { action } = this.props
     const { meta } = action
     return (
-      <section className="StreamComponent hasErrored">
+      <section className="StreamContainer hasErrored">
         {meta && meta.renderStream && meta.renderStream.asError ?
           meta.renderStream.asError :
           <ErrorState4xx />
@@ -357,7 +337,7 @@ export class StreamComponent extends Component {
   renderLoading() {
     const { className } = this.props
     return (
-      <section className={classNames('StreamComponent isBusy', className)} >
+      <section className={classNames('StreamContainer isBusy', className)} >
         <div className="StreamBusyIndicator">
           <ElloMark />
         </div>
@@ -370,7 +350,7 @@ export class StreamComponent extends Component {
     if (!action) { return null }
     const { meta } = action
     return (
-      <section className="StreamComponent">
+      <section className="StreamContainer">
         {meta && meta.renderStream && meta.renderStream.asZero ?
           meta.renderStream.asZero :
           null
@@ -385,7 +365,7 @@ export class StreamComponent extends Component {
     const { action, hidePaginator } = this.state
     if (!action) { return null }
     const model = findModel(json, initModel)
-    if (model && !result) {
+    if (model) {
       renderObj.data.push(model)
     } else if (!renderObj.data.length) {
       switch (stream.type) {
@@ -404,9 +384,9 @@ export class StreamComponent extends Component {
     }
     const { meta } = action
     const renderMethod = isGridMode ? 'asGrid' : 'asList'
-    const pagination = result && result.pagination ? result.pagination : emptyPagination()
+    const pagination = result.pagination
     return (
-      <section className={classNames('StreamComponent', className)}>
+      <section className={classNames('StreamContainer', className)}>
         {meta.renderStream[renderMethod](renderObj)}
         {this.props.children}
         <Paginator
@@ -424,73 +404,5 @@ export class StreamComponent extends Component {
   }
 }
 
-export function mapStateToProps(state, ownProps) {
-  let result
-
-  const { action } = ownProps
-  const meta = action ? action.meta : null
-  const resultPath = (meta && meta.resultKey) ? meta.resultKey : state.routing.location.pathname
-  const payload = action ? action.payload : null
-  const renderObj = { data: [], nestedData: [] }
-  if (state.json.pages) {
-    result = state.json.pages[resultPath]
-  }
-  if (result && result.type === MAPPING_TYPES.NOTIFICATIONS) {
-    renderObj.data = renderObj.data.concat(result.ids)
-    if (result.next) {
-      renderObj.data = renderObj.data.concat(result.next.ids)
-    }
-  } else if (
-    meta && result &&
-    (
-      result.type === meta.mappingType ||
-      (meta.resultFilter && result.type !== meta.mappingType)
-    )
-  ) {
-    const deletedCollection = state.json[`deleted_${result.type}`]
-    // don't filter out blocked ids if we are in settings
-    // since you can unblock/unmute them from here
-    for (const id of result.ids) {
-      if (_.get(state.json, [result.type, id]) &&
-          (state.routing.location.pathname === '/settings' ||
-          (!deletedCollection || deletedCollection.indexOf(id) === -1))) {
-        renderObj.data.push(_.get(state.json, [result.type, id]))
-      }
-    }
-    if (result.next) {
-      const nextDeletedCollection = state.json[`deleted_${result.next.type}`]
-      const dataProp = payload.endpoint.pagingPath ? 'nestedData' : 'data'
-      for (const nextId of result.next.ids) {
-        if (state.json[result.next.type][nextId] &&
-            (state.routing.location.pathname === '/settings' ||
-            (!nextDeletedCollection || nextDeletedCollection.indexOf(nextId) === -1))) {
-          renderObj[dataProp].push(state.json[result.next.type][nextId])
-        }
-      }
-    }
-  }
-
-  let stream = ownProps.stream
-  if (!stream ||
-    _.get(state.stream, 'payload.endpoint.path') === _.get(action, 'payload.endpoint.path')
-  ) {
-    stream = state.stream
-  }
-  return {
-    deviceSize: state.gui.deviceSize,
-    history: state.gui.history,
-    innerHeight: state.gui.innerHeight,
-    innerWidth: state.gui.innerWidth,
-    json: state.json,
-    isGridMode: state.gui.isGridMode,
-    omnibar: state.omnibar,
-    renderObj,
-    result,
-    resultPath,
-    routerState: state.routing.location.state || {},
-    stream,
-  }
-}
-
-export default connect(mapStateToProps, null, null, { withRef: true })(StreamComponent)
+export default connect(makeMapStateToProps, null, null, { withRef: true })(StreamContainer)
 

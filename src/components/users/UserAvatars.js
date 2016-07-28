@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { loadUserAvatars } from '../../actions/user'
-import StreamComponent from '../streams/StreamComponent'
+import StreamContainer from '../../containers/StreamContainer'
 
 class UserAvatars extends Component {
 
@@ -16,8 +16,8 @@ class UserAvatars extends Component {
     return (
       <section className="UserAvatars">
         {icon}
-        <StreamComponent
-          ref="streamComponent"
+        <StreamContainer
+          ref="streamContainer"
           action={loadUserAvatars(endpoint, post, resultType)}
           paginatorText="+more"
           ignoresScrollPosition

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
-import StreamComponent from './StreamComponent'
+import StreamContainer from '../../containers/StreamContainer'
 import { loadComments } from '../../actions/posts'
 
 /* eslint-disable react/prefer-stateless-function */
@@ -15,8 +15,8 @@ export default class CommentStream extends Component {
     const action = loadComments(post)
     return (
       <div>
-        <StreamComponent
-          className="CommentStreamComponent asFullWidth"
+        <StreamContainer
+          className="CommentStreamContainer asFullWidth"
           action={action}
           ignoresScrollPosition
         >
@@ -32,7 +32,7 @@ export default class CommentStream extends Component {
             </Link>
             : null
           }
-        </StreamComponent>
+        </StreamContainer>
       </div>
     )
   }

@@ -2,6 +2,7 @@ import { createSelector } from 'reselect'
 import { get, upperFirst } from 'lodash'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { findModel } from '../helpers/json_helper'
+import { emptyPagination } from '../components/streams/Paginator'
 
 const PAGING_BLACKLIST = [
   /^\/enter\b/,
@@ -117,4 +118,78 @@ export const selectCategoryPageTitle = createSelector(
     }
   }
 )
+
+const selectStreamResultPath = (state, props) => {
+  const meta = get(props, 'action.meta', {})
+  return meta.resultKey || get(state, 'routing.location.pathname')
+}
+
+const selectStreamResult = (state, props) => {
+  const meta = get(props, 'action.meta', {})
+  const resultPath = meta.resultKey || get(state, 'routing.location.pathname')
+  return get(state.json, ['pages', resultPath], { ids: [], pagination: emptyPagination() })
+}
+
+const selectStreamDeletions = (state, props) => {
+  const meta = get(props, 'action.meta', {})
+  const resultPath = meta.resultKey || get(state, 'routing.location.pathname')
+  const result = get(state.json, ['pages', resultPath], { ids: [] })
+  return result.type === meta.mappingType || (meta.resultFilter && result.type !== meta.mappingType)
+}
+
+const selectRoutingPathname = (state) =>
+  get(state, 'routing.location.pathname')
+
+const selectPagingPath = (state, props) =>
+  get(props, 'action.payload.endpoint.pagingPath')
+
+export const makeSelectStreamProps = () =>
+  createSelector(
+    [
+      selectStreamResult,
+      selectStreamResultPath,
+      selectStreamDeletions,
+      selectJSON,
+      selectRoutingPathname,
+      selectPagingPath,
+    ],
+    (
+      result,
+      resultPath,
+      shouldRemoveDeletions,
+      json,
+      path,
+      pagingPath
+    ) => {
+      const renderObj = { data: [], nestedData: [] }
+      if (result && result.type === MAPPING_TYPES.NOTIFICATIONS) {
+        renderObj.data = renderObj.data.concat(result.ids)
+        if (result.next) {
+          renderObj.data = renderObj.data.concat(result.next.ids)
+        }
+      } else if (shouldRemoveDeletions) {
+        const delTypes = json[`deleted_${result.type}`]
+        // don't filter out blocked ids if we are in settings
+        // since you can unblock/unmute them from here
+        for (const id of result.ids) {
+          const model = get(json, [result.type, id])
+          if (model && (path === '/settings' || (!delTypes || delTypes.indexOf(id) === -1))) {
+            renderObj.data.push(model)
+          }
+        }
+        if (result.next) {
+          const nDelTypes = json[`deleted_${result.next.type}`]
+          const dataProp = pagingPath ? 'nestedData' : 'data'
+          for (const nextId of result.next.ids) {
+            const model = get(json, [result.next.type, nextId])
+            if (model && (path === '/settings' ||
+                (!nDelTypes || nDelTypes.indexOf(nextId) === -1))) {
+              renderObj[dataProp].push(model)
+            }
+          }
+        }
+      }
+      return { renderObj, result, resultPath }
+    }
+  )
 

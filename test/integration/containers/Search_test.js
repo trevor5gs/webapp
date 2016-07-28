@@ -7,7 +7,7 @@ import { updateQueryParams } from '../../../src/helpers/uri_helper'
 import { createElloStore } from '../../../src/store'
 import Promotion from '../../../src/components/assets/Promotion'
 import SearchControl from '../../../src/components/forms/SearchControl'
-import StreamComponent from '../../../src/components/streams/StreamComponent'
+import StreamContainer from '../../../src/containers/StreamContainer'
 import { TabListButtons } from '../../../src/components/tabs/TabList'
 import SearchContainer from '../../../src/containers/SearchContainer'
 
@@ -34,7 +34,7 @@ describe('Search', function () {
     const promotion = wrapper.find(Promotion)
     const searchControl = wrapper.find(SearchControl)
     const tabListButtons = wrapper.find(TabListButtons)
-    const streamComponent = wrapper.find(StreamComponent)
+    const streamContainer = wrapper.find(StreamContainer)
     const tab0 = tabListButtons.childAt(0)
     const tab1 = tabListButtons.childAt(1)
 
@@ -57,7 +57,7 @@ describe('Search', function () {
       expect(promotion).to.have.length(1)
       expect(searchControl).to.have.length(1)
       expect(tabListButtons).to.have.length(1)
-      expect(streamComponent).to.have.length(1)
+      expect(streamContainer).to.have.length(1)
       expect(tabListButtons.find('.TabButton')).to.have.length(2)
       expect(tab0.prop('children')).to.equal('Posts')
       expect(tab1.prop('children')).to.equal('People')

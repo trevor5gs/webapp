@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import { scrollToTop } from '../../vendor/scrolling'
 import { loadNotifications } from '../../actions/notifications'
-import StreamComponent from '../../components/streams/StreamComponent'
+import StreamContainer from '../../containers/StreamContainer'
 import { LOAD_STREAM_SUCCESS } from '../../constants/action_types'
 import { SESSION_KEYS } from '../../constants/application_types'
 import {
@@ -56,8 +56,8 @@ export class Notifications extends Component {
       scrollToTop()
       this.setState({ isReloading: true })
     }
-    if (this.refs.streamComponent) {
-      this.refs.streamComponent.refs.wrappedInstance.setAction(
+    if (this.refs.streamContainer) {
+      this.refs.streamContainer.refs.wrappedInstance.setAction(
         loadNotifications({ category: type })
       )
     }
@@ -108,12 +108,12 @@ export class Notifications extends Component {
             /> :
             null
         }
-        <StreamComponent
+        <StreamContainer
           action={loadNotifications(params)}
           className="asFullWidth"
           key={`notificationView_${params.category}`}
           scrollSessionKey={`notifications_${category || 'all'}`}
-          ref="streamComponent"
+          ref="streamContainer"
         />
       </MainView>
     )
