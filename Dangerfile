@@ -14,7 +14,6 @@ end
 if git.lines_of_code < 50
   github.api.add_labels_to_an_issue(repo, github.pr_json[:number], ['tiny'])
 end
-binding.pry
 
 # FAILURES
 # don't let testing shortcuts get into master by accident
