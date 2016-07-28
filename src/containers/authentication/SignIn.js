@@ -38,8 +38,10 @@ class SignIn extends Component {
   }
 
   componentWillMount() {
+    const { promotions } = this.props
     this.state = {
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
+      promotion: sample(promotions),
       showPasswordError: false,
       showUserError: false,
       userState: { status: STATUS.INDETERMINATE, message: '' },

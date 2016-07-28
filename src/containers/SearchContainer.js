@@ -65,15 +65,22 @@ export class SearchContainer extends Component {
   }
 
   componentWillMount() {
-    const { debounceWait = 666 } = this.props
+    const { debounceWait = 666, promotions } = this.props
     if (debounceWait > 0) {
       this.search = debounce(this.search, debounceWait, { leading: true })
     }
+    this.state = { promotion: sample(promotions) }
   }
 
   componentDidMount() {
     const { terms, type } = this.props
     this.search({ terms, type })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.state.promotion) {
+      this.setState({ promotion: sample(nextProps.promotions) })
+    }
   }
 
   shouldComponentUpdate(nextProps) {
@@ -114,14 +121,15 @@ export class SearchContainer extends Component {
   }
 
   render() {
-    const { coverDPI, isLoggedIn, promotions, terms, type } = this.props
+    const { coverDPI, isLoggedIn, terms, type } = this.props
+    const { promotion } = this.state
     const props = {
       coverDPI,
       isLoggedIn,
       onChange: this.onChangeControl,
       onClickTrackCredits: this.onClickTrackCredits,
       onSubmit: this.onSubmit,
-      promotion: sample(promotions),
+      promotion,
       streamAction: getStreamAction(this.props),
       streamKey: `search_${type}_${terms}`,
       tabs: TABS,

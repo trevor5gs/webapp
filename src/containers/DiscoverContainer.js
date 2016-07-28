@@ -141,8 +141,16 @@ export class DiscoverContainer extends Component {
     store.dispatch(getStreamAction(routerState.params.type || 'featured'))
 
   componentWillMount() {
-    const { dispatch, paramsType } = this.props
+    const { dispatch, paramsType, promotions } = this.props
     dispatch(bindDiscoverKey(paramsType))
+    this.state = { promotion: sample(promotions) }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { pathname, promotions } = nextProps
+    if (!this.state.promotion || this.props.pathname !== pathname) {
+      this.setState({ promotion: sample(promotions) })
+    }
   }
 
   shouldComponentUpdate(nextProps) {
@@ -168,7 +176,8 @@ export class DiscoverContainer extends Component {
 
   render() {
     const { coverDPI, isBeaconActive, isLoggedIn, pageTitle, paramsType,
-            pathname, promotions, primary, secondary, tertiary } = this.props
+            pathname, primary, secondary, tertiary } = this.props
+    const { promotion } = this.state
     const props = {
       coverDPI,
       isBeaconActive,
@@ -177,7 +186,7 @@ export class DiscoverContainer extends Component {
       onDismissZeroStream: this.onDismissZeroStream,
       pageTitle,
       pathname,
-      promotion: sample(promotions),
+      promotion,
       streamAction: getStreamAction(paramsType),
       tabs: generateTabs(primary, secondary, tertiary),
     }

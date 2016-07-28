@@ -18,7 +18,8 @@ class SignUp extends Component {
   }
 
   componentWillMount() {
-    this.state = {}
+    const { promotions } = this.props
+    this.state = { promotion: sample(promotions) }
   }
 
   componentWillReceiveProps(nextProps) {

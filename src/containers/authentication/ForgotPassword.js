@@ -24,9 +24,11 @@ class ForgotPassword extends Component {
   }
 
   componentWillMount() {
+    const { promotions } = this.props
     this.state = {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
       formStatus: STATUS.INDETERMINATE,
+      promotion: sample(promotions),
     }
     this.emailValue = ''
   }

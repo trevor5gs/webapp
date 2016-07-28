@@ -38,11 +38,12 @@ class Join extends Component {
   }
 
   componentWillMount() {
-    const { invitationCode } = this.props
+    const { invitationCode, promotions } = this.props
     this.state = {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
       invitationCodeState: { status: STATUS.INDETERMINATE, message: '' },
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
+      promotion: sample(promotions),
       showEmailError: false,
       showInvitationError: false,
       showPasswordError: false,
