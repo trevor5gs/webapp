@@ -74,7 +74,10 @@ class UserList extends Component {
   // TODO: Wire this up to an action / api etc.
   onConfirmHireMe = ({ subject, message }) => {
     // dispatch(sendMessage(subject, message))
-    console.log('subject:', subject, 'message:', message)
+    // console.log('subject:', subject, 'message:', message)
+    // just appeasing the linter
+    const stuff = { subject, message }
+    return stuff
   }
 
   onDismissModal = () => {
