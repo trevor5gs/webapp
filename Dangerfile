@@ -12,8 +12,9 @@ if !github.api.labels(repo).any?{|label| label.name == "tiny"}
   github.api.add_label(repo, 'tiny', 'f7c6c7')
 end
 if git.lines_of_code < 50
-  github.api.add_labels_to_an_issue(repo, github.pr_json[:number], [github.api.labels(repo).find{|hash| hash[:name] == "tiny"}])
+  github.api.add_labels_to_an_issue(repo, github.pr_json[:number], ['tiny'])
 end
+binding.pry
 
 # FAILURES
 # don't let testing shortcuts get into master by accident
@@ -23,4 +24,4 @@ fail("Lock down package versions") if `grep -e '"~' -e '"\^' -e '">' -e '">=' -e
 
 # GENERIC MESSAGING
 message("Nice, more deletions than insertions :red_circle:") if git.deletions > git.insertions
-message(":metal:") if `grep -e '666' #{git.modified_files}`.length > 0
+message(":metal:") if `grep -e '666' #{git.modified_files.join(' ')}`.length > 0
