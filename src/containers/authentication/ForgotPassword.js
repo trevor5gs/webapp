@@ -31,6 +31,12 @@ class ForgotPassword extends Component {
     this.emailValue = ''
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!this.state.promotion) {
+      this.setState({ promotion: sample(nextProps.promotions) })
+    }
+  }
+
   onBlurControl = () => {
     if (isAndroid()) {
       document.body.classList.remove('hideCredits')
@@ -110,9 +116,8 @@ class ForgotPassword extends Component {
   }
 
   render() {
-    const { coverDPI, coverOffset, promotions } = this.props
-    const { formStatus } = this.state
-    const promotion = sample(promotions)
+    const { coverDPI, coverOffset } = this.props
+    const { formStatus, promotion } = this.state
     return (
       <MainView className="Authentication">
         <div className="AuthenticationFormDialog">

@@ -39,10 +39,10 @@ class SignIn extends Component {
 
   componentWillMount() {
     this.state = {
-      showUserError: false,
-      showPasswordError: false,
-      userState: { status: STATUS.INDETERMINATE, message: '' },
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
+      showPasswordError: false,
+      showUserError: false,
+      userState: { status: STATUS.INDETERMINATE, message: '' },
     }
     this.userValue = ''
     this.passwordValue = ''
@@ -52,6 +52,9 @@ class SignIn extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!this.state.promotion) {
+      this.setState({ promotion: sample(nextProps.promotions) })
+    }
     if (typeof this.props.webOnboardingVersionSeen === 'undefined' &&
         this.props.webOnboardingVersionSeen !== nextProps.webOnboardingVersionSeen) {
       const { currentStream, dispatch } = this.props
@@ -154,13 +157,12 @@ class SignIn extends Component {
   }
 
   render() {
-    const { coverDPI, coverOffset, promotions } = this.props
+    const { coverDPI, coverOffset } = this.props
     const {
       userState, showUserError,
       passwordState, showPasswordError,
-      failureMessage,
+      failureMessage, promotion,
     } = this.state
-    const promotion = sample(promotions)
     const isValid = isFormValid([userState, passwordState])
     return (
       <MainView className="Authentication">
