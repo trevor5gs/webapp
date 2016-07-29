@@ -2,10 +2,9 @@ import React from 'react'
 import { Link } from 'react-router'
 import { get, uniqBy } from 'lodash'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
-import PostParser from '../parsers/PostParser'
+import PostContainer from '../../containers/PostContainer'
 import CommentParser from '../parsers/CommentParser'
 import NotificationParser from '../parsers/NotificationParser'
-import PostsAsGrid from '../posts/PostsAsGrid'
 import UserAvatar from '../users/UserAvatar'
 import UserCard from '../users/UserCard'
 import UserCompact from '../users/UserCompact'
@@ -93,9 +92,29 @@ export function usersAsInviteeGrid(invitations) {
   )
 }
 
-export function postsAsGrid(posts) {
+export function postsAsGrid(posts, columnCount) {
+  const columns = []
+  for (let i = 0; i < columnCount; i++) {
+    columns.push([])
+  }
+  Object.keys(posts.data).forEach((index) => {
+    columns[index % columnCount].push(posts.data[index])
+  })
   return (
-    <PostsAsGrid posts={posts.data} />
+    <div className="Posts asGrid">
+      {columns.map((columnPosts, index) =>
+        <div className="Column" key={`column_${index}`}>
+          {columnPosts.map((post) =>
+            <article className="PostGrid" key={`postsAsGrid_${post.id}`}>
+              <PostContainer
+                isGridLayout
+                post={post}
+              />
+            </article>
+          )}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -103,9 +122,8 @@ export function postsAsList(posts) {
   return (
     <div className="Posts asList">
       {posts.data.map((post) =>
-        <article id={`Post_${post.id}`} key={`postsAsList_${post.id}`} className="PostList">
-          <PostParser
-            isGridLayout={false}
+        <article className="PostList" key={`postsAsList_${post.id}`}>
+          <PostContainer
             post={post}
           />
         </article>

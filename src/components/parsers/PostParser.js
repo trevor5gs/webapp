@@ -1,13 +1,10 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-import { connect } from 'react-redux'
-import * as MAPPING_TYPES from '../../constants/mapping_types'
-import { getLinkObject } from '../../helpers/json_helper'
 import { body, repostedBody, setAssets } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import UserAvatars from '../../components/users/UserAvatars'
 import ContentWarningButton from '../posts/ContentWarningButton'
-import PostTools from '../posts/PostTools'
+import PostToolsContainer from '../../containers/PostToolsContainer'
 import CommentStream from '../streams/CommentStream'
 import { HeartIcon, RepostIcon } from '../posts/PostIcons'
 import RelationshipContainer from '../../containers/RelationshipContainer'
@@ -18,7 +15,7 @@ function getPostDetailPath(author, post) {
   return `/${author.username}/post/${post.token}`
 }
 
-function postLoversDrawer(post) {
+export function postLoversDrawer(post) {
   return (
     <UserAvatars
       endpoint={postLovers(post.id)}
@@ -30,7 +27,7 @@ function postLoversDrawer(post) {
   )
 }
 
-function postRepostersDrawer(post) {
+export function postRepostersDrawer(post) {
   return (
     <UserAvatars
       endpoint={postReposters(post.id)}
@@ -42,7 +39,7 @@ function postRepostersDrawer(post) {
   )
 }
 
-function commentStream(post, author) {
+export function commentStream(post, author) {
   return (
     <CommentStream
       key={`commentStream_${post.id}${post.commentsCount}`}
@@ -62,8 +59,7 @@ PostHeaderTimeAgoLink.propTypes = {
   to: PropTypes.string,
 }
 
-
-function header(post, author) {
+export function header(post, author) {
   if (!post || !author) { return null }
   const postDetailPath = getPostDetailPath(author, post)
   return (
@@ -93,7 +89,7 @@ function header(post, author) {
   )
 }
 
-function categoryHeader(post, author, categoryName, categoryPath) {
+export function categoryHeader(post, author, categoryName, categoryPath) {
   if (!post || !author) { return null }
   const postDetailPath = getPostDetailPath(author, post)
   return (
@@ -129,7 +125,7 @@ function categoryHeader(post, author, categoryName, categoryPath) {
   )
 }
 
-function repostHeader(post, repostAuthor, repostSource, repostedBy) {
+export function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   if (!post || !repostedBy) { return null }
   const postDetailPath = getPostDetailPath(repostAuthor, post)
   return (
@@ -176,7 +172,7 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
 function footer(post, author, currentUser, isGridLayout, isRepostAnimating) {
   if (!author) { return null }
   return (
-    <PostTools
+    <PostToolsContainer
       author={author}
       post={post}
       isGridLayout={isGridLayout}
@@ -186,7 +182,7 @@ function footer(post, author, currentUser, isGridLayout, isRepostAnimating) {
   )
 }
 
-export function parsePost(post, author, currentUser,
+export function parsePostBody(post, author, currentUser,
   isGridLayout = true, isRepostAnimating = false, contentWarning = null,
 ) {
   if (!post) { return null }
@@ -216,135 +212,4 @@ export function parsePost(post, author, currentUser,
   setAssets({})
   return cells
 }
-
-function isRepost(post) {
-  return post.repostContent && post.repostContent.length
-}
-
-/* eslint-disable react/prefer-stateless-function */
-class PostParser extends Component {
-  static propTypes = {
-    assets: PropTypes.any,
-    author: PropTypes.object,
-    authorLinkObject: PropTypes.object,
-    categoryName: PropTypes.string,
-    categoryPath: PropTypes.string,
-    commentsCount: PropTypes.number,
-    contentWarning: PropTypes.string,
-    currentUser: PropTypes.object,
-    isEditing: PropTypes.bool,
-    isGridLayout: PropTypes.bool,
-    isOnFeaturedCategory: PropTypes.bool,
-    isPostDetail: PropTypes.bool,
-    isReposting: PropTypes.bool,
-    lovesCount: PropTypes.number,
-    repostsCount: PropTypes.number,
-    post: PropTypes.object,
-    postBody: PropTypes.array,
-    showComments: PropTypes.bool,
-    showLovers: PropTypes.bool,
-    showReposters: PropTypes.bool,
-    sourceLinkObject: PropTypes.object,
-  }
-
-  render() {
-    const {
-      assets,
-      author,
-      categoryName,
-      categoryPath,
-      commentsCount,
-      contentWarning,
-      currentUser,
-      isEditing,
-      isGridLayout,
-      isOnFeaturedCategory,
-      isPostDetail,
-      isReposting,
-      lovesCount,
-      post,
-      postBody,
-      repostsCount,
-      showComments,
-      showLovers,
-      showReposters,
-    } = this.props
-    if (!post) { return null }
-    setAssets(assets)
-
-    const showEditor = (isEditing || isReposting) && postBody
-    const reallyShowLovers = !showEditor && !isGridLayout && showLovers && lovesCount > 0
-    const reallyShowReposters = !showEditor && !isGridLayout && showReposters && repostsCount > 0
-    const reallyShowComments = !showEditor && !isPostDetail && showComments
-
-    let postHeader
-    if (isRepost(post)) {
-      const { authorLinkObject, sourceLinkObject } = this.props
-      postHeader = repostHeader(post, authorLinkObject, sourceLinkObject, author)
-    } else if (isOnFeaturedCategory && categoryName && categoryPath) {
-      postHeader = categoryHeader(post, author, categoryName, categoryPath)
-    } else {
-      postHeader = header(post, author)
-    }
-
-    const isRepostAnimating = isReposting && !postBody
-    return (
-      <div className="Post">
-        {postHeader}
-        {showEditor ?
-          <Editor post={post} /> :
-          parsePost(post, author, currentUser, isGridLayout, isRepostAnimating, contentWarning)}
-        {reallyShowLovers ? postLoversDrawer(post) : null}
-        {reallyShowReposters ? postRepostersDrawer(post) : null}
-        {reallyShowComments ? <Editor post={post} isComment /> : null}
-        {
-          reallyShowComments && commentsCount > 0 ?
-            commentStream(post, author, currentUser) :
-            null
-        }
-      </div>)
-  }
-}
-
-const mapStateToProps = (state, ownProps) => {
-  const { json, profile: currentUser, routing: { location: { pathname } } } = state
-  const post = json[MAPPING_TYPES.POSTS][ownProps.post.id]
-  const author = json[MAPPING_TYPES.USERS][post.authorId]
-  const assets = json.assets
-  const categories = post.links.categories
-  const category = json.categories && categories ? json.categories[categories[0]] : null
-  const isOnFeaturedCategory = /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname)
-
-  let newProps = {
-    assets,
-    author,
-    categoryName: category ? category.name : null,
-    categoryPath: category ? `/discover/${category.slug}` : null,
-    commentsCount: post.commentsCount,
-    contentWarning: post.contentWarning,
-    currentUser,
-    isEditing: post.isEditing || false,
-    isOnFeaturedCategory,
-    isReposting: post.isReposting || false,
-    lovesCount: post.lovesCount,
-    repostsCount: post.repostsCount,
-    showComments: post.showComments || false,
-    showLovers: post.showLovers || false,
-    showReposters: post.showReposters || false,
-    postBody: post.body,
-    post,
-  }
-
-  if (isRepost(post)) {
-    newProps = {
-      ...newProps,
-      authorLinkObject: post.repostAuthor || getLinkObject(post, 'repostAuthor', json) || author,
-      sourceLinkObject: getLinkObject(post, 'repostedSource', json),
-    }
-  }
-
-  return newProps
-}
-
-export default connect(mapStateToProps)(PostParser)
 
