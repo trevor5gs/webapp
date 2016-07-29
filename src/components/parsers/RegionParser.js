@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
 import TextRegion from '../posts/regions/TextRegion'
 import ImageRegion from '../posts/regions/ImageRegion'
-import { AffiliateLinkButton } from '../editor/AffiliateLinkButton'
+import { ElloBuyButton } from '../editor/ElloBuyButton'
 
 let assets = {}
 
@@ -45,7 +45,7 @@ function embedRegion(region, key) {
         </Link>
         {
           region.linkUrl && region.linkUrl.length ?
-            <AffiliateLinkButton to={region.linkUrl} /> :
+            <ElloBuyButton to={region.linkUrl} /> :
             null
         }
       </div>

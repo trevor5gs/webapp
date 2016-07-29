@@ -1,6 +1,6 @@
 @import ../../vendor/lib
 
-.AffiliateLinkButton
+.ElloBuyButton
   transition: background-color $speed ease, color $speed ease
   vertical-align: middle
   overflow: hidden
@@ -16,20 +16,20 @@
   z-index: 2
   top: rem(40)
   right: rem(30)
-.AffiliateLinkButton:before
+.ElloBuyButton:before
   +hitarea
 
 
-.AffiliateLinkButton > .SVGIcon.MoneyIcon > g
+.ElloBuyButton > .SVGIcon.MoneyIcon > g
   fill: white
   stroke: white
   stroke-width: 0.5
 
-.editable[contenteditable] + .AffiliateLinkButton
+.editable[contenteditable] + .ElloBuyButton
   display: none
 
-.EmbedRegion .AffiliateLinkButton,
-.RegionContent .AffiliateLinkButton
+.EmbedRegion .ElloBuyButton,
+.RegionContent .ElloBuyButton
   top: rem(10)
   right: rem(10)
 
@@ -37,10 +37,10 @@
   line-height: rem(40)
 
 @media(min-width: #{$break-2})
-  .no-touch .AffiliateLinkButton:hover
+  .no-touch .ElloBuyButton:hover
     color: black
     background-color: #eaeaea
-  .no-touch .AffiliateLinkButton:hover > .SVGIcon.MoneyIcon > g
+  .no-touch .ElloBuyButton:hover > .SVGIcon.MoneyIcon > g
     fill: black
     stroke: transparent
 

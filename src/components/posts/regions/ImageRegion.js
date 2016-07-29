@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import _ from 'lodash'
 import classNames from 'classnames'
 import ImageAsset from '../../assets/ImageAsset'
-import { AffiliateLinkButton } from '../../editor/AffiliateLinkButton'
+import { ElloBuyButton } from '../../editor/ElloBuyButton'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -268,7 +268,7 @@ class ImageRegion extends Component {
         </Link>
         {
           affiliateLinkURL && affiliateLinkURL.length ?
-            <AffiliateLinkButton to={affiliateLinkURL} /> :
+            <ElloBuyButton to={affiliateLinkURL} /> :
             null
         }
       </div>
@@ -287,7 +287,7 @@ class ImageRegion extends Component {
         {this.renderAttachment()}
         {
           affiliateLinkURL && affiliateLinkURL.length ?
-            <AffiliateLinkButton to={affiliateLinkURL} /> :
+            <ElloBuyButton to={affiliateLinkURL} /> :
             null
         }
       </div>

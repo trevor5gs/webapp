@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import RegionTools from './RegionTools'
-import { AffiliateLinkButton } from './AffiliateLinkButton'
+import { ElloBuyButton } from './ElloBuyButton'
 
 class Block extends Component {
 
@@ -40,7 +40,7 @@ class Block extends Component {
         {children}
         {
           linkURL && linkURL.length ?
-            <AffiliateLinkButton to={linkURL} /> :
+            <ElloBuyButton to={linkURL} /> :
             null
         }
         <RegionTools editorId={editorId} onRemoveBlock={this.removeBlock} />

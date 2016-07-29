@@ -2,21 +2,21 @@ import React, { PropTypes } from 'react'
 import { MoneyIcon } from './EditorIcons'
 import { dispatchTrackEvent } from '../../helpers/junk_drawer'
 
-function onAffiliateLinkButtonClick(e) {
+function onElloBuyButtonClick(e) {
   dispatchTrackEvent('affililate_link_clicked', { link: e.target.href })
 }
 
-export const AffiliateLinkButton = ({ to }) =>
+export const ElloBuyButton = ({ to }) =>
   <a
-    className="AffiliateLinkButton"
+    className="ElloBuyButton"
     href={to}
-    onClick={onAffiliateLinkButtonClick}
+    onClick={onElloBuyButtonClick}
     target="_blank"
   >
     <MoneyIcon />
   </a>
 
-AffiliateLinkButton.propTypes = {
+ElloBuyButton.propTypes = {
   to: PropTypes.string.isRequired,
 }
 
