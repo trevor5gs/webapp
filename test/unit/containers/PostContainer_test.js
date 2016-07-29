@@ -1,11 +1,11 @@
 import { expect, stub } from '../../spec_helper'
-import { parsePost } from '../../../src/components/parsers/PostParser'
+import { parsePostBody } from '../../../src/components/parsers/PostParser'
 
 describe('PostParser', () => {
   it('#render', () => {
     const post = stub('post', { authorId: '42' })
     const user = stub('user', { id: '42', username: 'forty_two' })
-    const cells = parsePost(post, user)
+    const cells = parsePostBody(post, user)
 
     expect(cells.length).to.equal(2)
 
