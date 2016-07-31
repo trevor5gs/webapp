@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
+import RelationshipContainer from '../../containers/RelationshipContainer'
 import Avatar from '../assets/Avatar'
-import RelationsGroup from '../relationships/RelationsGroup'
 
 const UserCompact = ({ user, className }) =>
   <div className={classNames(className, 'UserCompact')}>
@@ -17,7 +17,7 @@ const UserCompact = ({ user, className }) =>
         <span className="UserCompactUsername">{`@${user.username}`}</span>
       </Link>
     </div>
-    <RelationsGroup user={user} />
+    <RelationshipContainer user={user} />
   </div>
 
 UserCompact.propTypes = {

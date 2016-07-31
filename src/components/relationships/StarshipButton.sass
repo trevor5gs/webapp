@@ -12,7 +12,7 @@
   fill: black
   stroke: black
 
-.StarshipButton.inHeader
+.StarshipButton.isInHeader
   width: rem(20)
   height: rem(20)
   font-size: 0
@@ -20,26 +20,26 @@
   padding-left: rem(3)
 
 .ZeroStates .StarshipButton .StarIcon > g,
-.StarshipButton.inHeader .StarIcon
+.StarshipButton.isInHeader .StarIcon
   position: relative
   top: 0
 
-.StarshipButton.inHeader .StarIcon > g
+.StarshipButton.isInHeader .StarIcon > g
   stroke: #aaa
 
-.StarshipButton.inHeader[data-priority="noise"] .StarIcon > g
+.StarshipButton.isInHeader[data-priority="noise"] .StarIcon > g
   fill: #aaa
   stroke: #aaa
 
-.no-touch .StarshipButton.inHeader:hover > .StarIcon > g
+.no-touch .StarshipButton.isInHeader:hover > .StarIcon > g
   fill: #535353
   stroke: #535353
 
 @media(min-width: #{$break-2})
   // Hints
-  .no-touch .StarshipButton.inHeader
+  .no-touch .StarshipButton.isInHeader
     font-size: 0.75rem
-  .no-touch .StarshipButton.inHeader .StarshipButtonLabel
+  .no-touch .StarshipButton.isInHeader .StarshipButtonLabel
     transition: opacity $speed ease, visibility 0s ease $speed
     display: inline-block
     visibility: hidden
@@ -54,7 +54,7 @@
     white-space: nowrap
     background-color: black
     color: white
-  .no-touch .StarshipButton.inHeader:hover .StarshipButtonLabel
+  .no-touch .StarshipButton.isInHeader:hover .StarshipButtonLabel
     transition-delay: 0.5s, 0s
     visibility: visible
     opacity: 1

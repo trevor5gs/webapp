@@ -40,10 +40,6 @@ DotsIcon.propTypes = {
   onClick: PropTypes.func,
 }
 
-// Original `+` from Illustrator which is blurry on non-retina.
-// We may need to show B&L this since it's a little offset
-// <line x1="10" y1="7.5" x2="10" y2="12.5"/>
-// <line x1="12.5" y1="10" x2="7.5" y2="10"/>
 export const HeaderPlusIcon = () =>
   <SVGIcon className="MiniPlusIcon">
     <g>

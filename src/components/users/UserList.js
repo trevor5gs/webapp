@@ -6,10 +6,10 @@ import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
 import { openModal } from '../../actions/modals'
 import { trackEvent } from '../../actions/tracking'
-import RelationsGroup from '../relationships/RelationsGroup'
 import ShareProfileButton from './ShareProfileButton'
 import ShareDialog from '../dialogs/ShareDialog'
 import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
+import RelationshipContainer from '../../containers/RelationshipContainer'
 
 class UserList extends Component {
 
@@ -74,10 +74,10 @@ class UserList extends Component {
           userId={!isModifiable ? `${user.id}` : null}
           username={!isModifiable ? user.username : null}
         />
-        <RelationsGroup
-          user={user}
+        <RelationshipContainer
+          hasBlockMuteButton={showBlockMuteButton}
           relationshipPriority={relationshipPriority}
-          showBlockMuteButton={showBlockMuteButton}
+          user={user}
         />
         <UserNames user={user} />
         <UserStats

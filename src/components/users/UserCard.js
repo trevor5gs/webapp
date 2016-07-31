@@ -38,9 +38,9 @@ class UserCard extends Component {
     return (
       <div className="UserCard" >
         <RelationshipImageButton
-          onClick={callback}
           coverSrc={user.coverImage.hdpi.url}
           isLoggedIn={isLoggedIn}
+          onClick={callback}
           priority={relationshipPriority}
           ref="RelationshipImageButton"
           userId={user.id}

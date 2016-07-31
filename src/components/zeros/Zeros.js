@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import RelationsGroup from '../relationships/RelationsGroup'
+import RelationshipContainer from '../../containers/RelationshipContainer'
 import Editor from '../editor/Editor'
 
 export const ZeroStream = ({ children, onDismiss }) =>
@@ -50,7 +50,7 @@ export const ZeroStateCreateRelationship = ({ user }) =>
       <span className="ZeroStateUsername">{`@${user.username}`}</span>
       <span> doesn't have any followers yet, why don't you be their first?</span>
     </h2>
-    <RelationsGroup user={user} />
+    <RelationshipContainer user={user} />
   </ZeroState>
 
 ZeroStateCreateRelationship.propTypes = {

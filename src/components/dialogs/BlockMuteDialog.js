@@ -2,17 +2,17 @@ import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 
 const BlockMuteDialog = ({
+  isBlockActive = false,
+  isMuteActive = false,
   onBlock,
   onFlag,
   onMute,
   username,
-  blockIsActive = false,
-  muteIsActive = false,
   }) => {
-  const blockButtonClasses = classNames({ isActive: blockIsActive }, 'BlockMuteDialogButton')
-  const muteButtonClasses = classNames({ isActive: muteIsActive }, 'BlockMuteDialogButton')
-  const blockButtonText = blockIsActive ? 'Unblock' : 'Block'
-  const muteButtonText = muteIsActive ? 'Unmute' : 'Mute'
+  const blockButtonClasses = classNames({ isActive: isBlockActive }, 'BlockMuteDialogButton')
+  const muteButtonClasses = classNames({ isActive: isMuteActive }, 'BlockMuteDialogButton')
+  const blockButtonText = isBlockActive ? 'Unblock' : 'Block'
+  const muteButtonText = isMuteActive ? 'Unmute' : 'Mute'
 
   return (
     <div className="Dialog BlockMuteDialog">
@@ -63,8 +63,8 @@ const BlockMuteDialog = ({
 }
 
 BlockMuteDialog.propTypes = {
-  blockIsActive: PropTypes.bool,
-  muteIsActive: PropTypes.bool,
+  isBlockActive: PropTypes.bool,
+  isMuteActive: PropTypes.bool,
   onBlock: PropTypes.func.isRequired,
   onFlag: PropTypes.func.isRequired,
   onMute: PropTypes.func.isRequired,

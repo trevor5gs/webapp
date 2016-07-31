@@ -3,11 +3,19 @@ import classNames from 'classnames'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { StarIcon } from '../relationships/RelationshipIcons'
 
-class StarshipButton extends Component {
+export function getNextPriority(currentPriority) {
+  switch (currentPriority) {
+    case RELATIONSHIP_PRIORITY.NOISE:
+      return RELATIONSHIP_PRIORITY.FRIEND
+    default:
+      return RELATIONSHIP_PRIORITY.NOISE
+  }
+}
 
+class StarshipButton extends Component {
   static propTypes = {
+    className: PropTypes.string,
     onClick: PropTypes.func,
-    classList: PropTypes.string,
     priority: PropTypes.oneOf([
       RELATIONSHIP_PRIORITY.INACTIVE,
       RELATIONSHIP_PRIORITY.FRIEND,
@@ -25,24 +33,14 @@ class StarshipButton extends Component {
   }
 
   componentWillMount() {
-    this.state = { nextPriority: this.getNextPriority(this.props) }
+    this.state = { nextPriority: getNextPriority(this.props.priority) }
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ nextPriority: this.getNextPriority(nextProps) })
+    this.setState({ nextPriority: getNextPriority(nextProps.priority) })
   }
 
-  getNextPriority(props) {
-    const { priority } = props
-    switch (priority) {
-      case RELATIONSHIP_PRIORITY.NOISE:
-        return RELATIONSHIP_PRIORITY.FRIEND
-      default:
-        return RELATIONSHIP_PRIORITY.NOISE
-    }
-  }
-
-  updatePriority = () => {
+  onClickUpdatePriority = () => {
     const { nextPriority } = this.state
     const { onClick, priority, userId } = this.props
     if (onClick) {
@@ -51,12 +49,12 @@ class StarshipButton extends Component {
   }
 
   renderStar() {
-    const { classList, priority } = this.props
+    const { className, priority } = this.props
     return (
       <button
-        className={classNames('StarshipButton', classList)}
-        onClick={this.updatePriority}
+        className={classNames('StarshipButton', className)}
         data-priority={priority}
+        onClick={this.onClickUpdatePriority}
       >
         <StarIcon />
         <span className="StarshipButtonLabel">{priority === 'noise' ? 'Starred' : 'Star'}</span>

@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import Avatar from '../assets/Avatar'
 import CoverMini from '../assets/CoverMini'
-import RelationsGroup from '../relationships/RelationsGroup'
 import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
+import RelationshipContainer from '../../containers/RelationshipContainer'
 
 class UserGrid extends Component {
 
@@ -44,10 +44,10 @@ class UserGrid extends Component {
           userId={`${user.id}`}
           username={user.username}
         />
-        <RelationsGroup
+        <RelationshipContainer
           user={user}
           relationshipPriority={relationshipPriority}
-          ref="RelationsGroup"
+          ref="RelationshipContainer"
         />
         <UserStats
           followingCount={followingCount}

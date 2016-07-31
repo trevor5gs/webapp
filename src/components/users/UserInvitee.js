@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { getLinkObject } from '../../helpers/json_helper'
 import { inviteUsers } from '../../actions/invitations'
 import Avatar from '../assets/Avatar'
-import RelationsGroup from '../relationships/RelationsGroup'
+import RelationshipContainer from '../../containers/RelationshipContainer'
 
 /* eslint-disable react/prefer-stateless-function */
 class UserInvitee extends Component {
@@ -67,7 +67,7 @@ class UserInvitee extends Component {
             <span className="UserInviteeUsername">{`@${user.username}`}</span>
           </Link>
         </div>
-        <RelationsGroup user={user} />
+        <RelationshipContainer user={user} />
       </div>
     )
   }

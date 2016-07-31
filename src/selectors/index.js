@@ -45,13 +45,15 @@ const selectSaidHelloTo = (state) => get(state, 'gui.saidHelloTo')
 export const selectActiveUserFollowingType = (state) => get(state, 'gui.activeUserFollowingType')
 
 // state.json.xxx
-const selectPages = (state) => get(state, 'json.pages')
+const selectCategoryCollection = (state) => get(state, 'json.categories')
+export const selectPages = (state) => get(state, 'json.pages')
+export const selectUsers = (state) => get(state, 'json.users')
+
+const selectAllCategories = (state) => get(state, 'json.pages.all-categories')
 const selectPagingResult = (state, props) => {
   const pathname = get(props, 'location.pathname')
   return get(state, ['json', 'pages', pathname])
 }
-const selectAllCategories = (state) => get(state, 'json.pages.all-categories')
-const selectCategoryCollection = (state) => get(state, 'json.categories')
 
 
 // Memoized Selectors

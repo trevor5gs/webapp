@@ -3,17 +3,25 @@ import { Link } from 'react-router'
 import classNames from 'classnames'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import {
-  HeaderPlusIcon,
-  HeaderCheckIcon,
-  MiniPlusIcon,
-  MiniCheckIcon,
+  HeaderCheckIcon, HeaderPlusIcon, MiniCheckIcon, MiniPlusIcon,
 } from '../relationships/RelationshipIcons'
 
-class RelationshipButton extends Component {
+export function getNextPriority(currentPriority) {
+  switch (currentPriority) {
+    case RELATIONSHIP_PRIORITY.INACTIVE:
+    case RELATIONSHIP_PRIORITY.NOISE:
+    case RELATIONSHIP_PRIORITY.NONE:
+    case null:
+      return RELATIONSHIP_PRIORITY.FRIEND
+    default:
+      return RELATIONSHIP_PRIORITY.INACTIVE
+  }
+}
 
+class RelationshipButton extends Component {
   static propTypes = {
+    className: PropTypes.string,
     onClick: PropTypes.func,
-    classList: PropTypes.string,
     priority: PropTypes.oneOf([
       RELATIONSHIP_PRIORITY.INACTIVE,
       RELATIONSHIP_PRIORITY.FRIEND,
@@ -31,27 +39,14 @@ class RelationshipButton extends Component {
   }
 
   componentWillMount() {
-    this.state = { nextPriority: this.getNextPriority(this.props) }
+    this.state = { nextPriority: getNextPriority(this.props.priority) }
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ nextPriority: this.getNextPriority(nextProps) })
+    this.setState({ nextPriority: getNextPriority(nextProps.priority) })
   }
 
-  getNextPriority(props) {
-    const { priority } = props
-    switch (priority) {
-      case RELATIONSHIP_PRIORITY.INACTIVE:
-      case RELATIONSHIP_PRIORITY.NOISE:
-      case RELATIONSHIP_PRIORITY.NONE:
-      case null:
-        return RELATIONSHIP_PRIORITY.FRIEND
-      default:
-        return RELATIONSHIP_PRIORITY.INACTIVE
-    }
-  }
-
-  updatePriority = () => {
+  onClickUpdatePriority = () => {
     const { nextPriority } = this.state
     const { onClick, priority, userId } = this.props
     if (onClick) {
@@ -60,12 +55,12 @@ class RelationshipButton extends Component {
   }
 
   renderAsToggleButton(label, icon = null) {
-    const { classList, priority } = this.props
+    const { className, priority } = this.props
     return (
       <button
-        className={classNames('RelationshipButton', classList)}
-        onClick={this.updatePriority}
+        className={classNames('RelationshipButton', className)}
         data-priority={priority}
+        onClick={this.onClickUpdatePriority}
       >
         {icon}
         <span className="RelationshipButtonLabel">{label}</span>
@@ -74,10 +69,10 @@ class RelationshipButton extends Component {
   }
 
   renderAsLabelButton(label) {
-    const { onClick, priority, classList } = this.props
+    const { className, onClick, priority } = this.props
     return (
       <button
-        className={classNames('RelationshipButton', classList)}
+        className={classNames('RelationshipButton', className)}
         data-priority={priority}
         onClick={onClick}
       >
@@ -87,21 +82,21 @@ class RelationshipButton extends Component {
   }
 
   renderAsSelf() {
-    const { priority, classList } = this.props
+    const { className, priority } = this.props
     return (
       <Link
-        className={classNames('RelationshipButton', classList)}
-        to="/settings"
+        className={classNames('RelationshipButton', className)}
         data-priority={priority}
+        to="/settings"
       >
-        {classList === 'inHeader' ? <HeaderPlusIcon /> : <MiniPlusIcon />}
+        {className === 'isInHeader' ? <HeaderPlusIcon /> : <MiniPlusIcon />}
         <span>Edit Profile</span>
       </Link>
     )
   }
 
   renderAsInactive() {
-    const icon = this.props.classList === 'inHeader' ? <HeaderPlusIcon /> : <MiniPlusIcon />
+    const icon = this.props.className === 'isInHeader' ? <HeaderPlusIcon /> : <MiniPlusIcon />
     return this.renderAsToggleButton('Follow', icon)
   }
 
@@ -110,13 +105,13 @@ class RelationshipButton extends Component {
   }
 
   renderAsFriend() {
-    const icon = this.props.classList === 'inHeader' ? <HeaderCheckIcon /> : <MiniCheckIcon />
+    const icon = this.props.className === 'isInHeader' ? <HeaderCheckIcon /> : <MiniCheckIcon />
     return this.renderAsToggleButton('Following', icon)
   }
 
   renderAsNoise() {
-    const icon = this.props.classList === 'inHeader' ? <HeaderPlusIcon /> : <MiniCheckIcon />
-    const label = this.props.classList === 'inHeader' ? 'Follow' : 'Starred'
+    const icon = this.props.className === 'isInHeader' ? <HeaderPlusIcon /> : <MiniCheckIcon />
+    const label = this.props.className === 'isInHeader' ? 'Follow' : 'Starred'
     return this.renderAsToggleButton(label, icon)
   }
 

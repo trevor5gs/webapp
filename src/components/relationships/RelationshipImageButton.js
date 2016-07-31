@@ -12,9 +12,9 @@ class RelationshipImageButton extends RelationshipButton {
     return (
       <button
         className="RelationshipImageButton"
-        style={style}
-        onClick={this.updatePriority}
         data-priority={priority}
+        onClick={this.onClickUpdatePriority}
+        style={style}
       >
         <span className="RelationshipImageButtonUsername">{username}</span>
         <span className="RelationshipImageButtonLabels">
@@ -32,8 +32,8 @@ class RelationshipImageButton extends RelationshipButton {
     return (
       <button
         className="RelationshipImageButton"
-        style={style}
         data-priority={priority}
+        style={style}
       >
         <span className="RelationshipImageButtonUsername">{username}</span>
         <span className="RelationshipImageButtonLabels">
@@ -51,9 +51,9 @@ class RelationshipImageButton extends RelationshipButton {
     return (
       <Link
         className="RelationshipImageButton"
+        data-priority={priority}
         to="/settings"
         style={style}
-        data-priority={priority}
       >
         <span className="RelationshipImageButtonUsername">{username}</span>
         <span className="RelationshipImageButtonLabels">
