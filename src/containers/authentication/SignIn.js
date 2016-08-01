@@ -80,7 +80,7 @@ class SignIn extends Component {
 
   onBlurControl = () => {
     if (isAndroid()) {
-      document.body.classList.remove('hideCredits')
+      document.body.classList.remove('isCreditsHidden')
     }
   }
 
@@ -110,7 +110,7 @@ class SignIn extends Component {
 
   onFocusControl = () => {
     if (isAndroid()) {
-      document.body.classList.add('hideCredits')
+      document.body.classList.add('isCreditsHidden')
     }
   }
 
