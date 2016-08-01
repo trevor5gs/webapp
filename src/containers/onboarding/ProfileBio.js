@@ -50,6 +50,7 @@ class ProfileBio extends Component {
 
         <div className="InfoPickerBody" >
           <Avatar
+            className="isLarge"
             size="large"
             sources={profile.avatar}
           />

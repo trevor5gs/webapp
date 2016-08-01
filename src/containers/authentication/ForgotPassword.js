@@ -41,7 +41,7 @@ class ForgotPassword extends Component {
 
   onBlurControl = () => {
     if (isAndroid()) {
-      document.body.classList.remove('hideCredits')
+      document.body.classList.remove('isCreditsHidden')
     }
   }
 
@@ -57,7 +57,7 @@ class ForgotPassword extends Component {
 
   onFocusControl = () => {
     if (isAndroid()) {
-      document.body.classList.add('hideCredits')
+      document.body.classList.add('isCreditsHidden')
     }
   }
 
@@ -136,7 +136,7 @@ class ForgotPassword extends Component {
           coverDPI={coverDPI}
           coverImage={promotion ? promotion.coverImage : null}
           coverOffset={coverOffset}
-          modifiers="asFullScreen withOverlay"
+          modifiers="isFullScreen hasOverlay"
         />
       </MainView>
     )

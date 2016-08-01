@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import ImageAsset from './ImageAsset'
+import { isGif } from '../../helpers/file_helper'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -10,9 +11,22 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
+export function getSource(props) {
+  const { sources, size, useGif } = props
+  if (!sources) {
+    return ''
+  } else if (sources.tmp && sources.tmp.url) {
+    return sources.tmp.url
+  }
+  if (useGif && isGif(sources.original.url)) {
+    return sources.original.url
+  }
+  return sources[size] ? sources[size].url : null
+}
+
 export default class Avatar extends Component {
   static propTypes = {
-    classList: PropTypes.string,
+    className: PropTypes.string,
     isModifiable: PropTypes.bool,
     onClick: PropTypes.func,
     priority: PropTypes.string,
@@ -25,7 +39,7 @@ export default class Avatar extends Component {
   }
 
   static defaultProps = {
-    classList: '',
+    className: '',
     isModifiable: false,
     size: 'regular',
     useGif: false,
@@ -33,13 +47,13 @@ export default class Avatar extends Component {
 
   componentWillMount() {
     this.state = {
-      status: this.getAvatarSource() ? STATUS.REQUEST : STATUS.PENDING,
+      status: getSource(this.props) ? STATUS.REQUEST : STATUS.PENDING,
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const thisSource = this.getAvatarSource()
-    const nextSource = this.getAvatarSource(nextProps)
+    const thisSource = getSource(this.props)
+    const nextSource = getSource(nextProps)
     if (thisSource !== nextSource) {
       this.setState({
         status: nextSource ? STATUS.REQUEST : STATUS.PENDING,
@@ -55,39 +69,11 @@ export default class Avatar extends Component {
     this.setState({ status: STATUS.FAILURE })
   }
 
-  getClassNames() {
-    const { classList, isModifiable, size } = this.props
-    const { status } = this.state
-    return classNames(
-      'Avatar',
-      size !== 'regular' ? size : null,
-      classList,
-      status,
-      { isModifiable },
-    )
-  }
-
-  getAvatarSource(props = this.props) {
-    const { sources, size, useGif } = props
-    if (!sources) {
-      return ''
-    } else if (sources.tmp && sources.tmp.url) {
-      return sources.tmp.url
-    }
-    if (useGif && this.isGif()) {
-      return sources.original.url
-    }
-    return sources[size] ? sources[size].url : null
-  }
-
-  isGif() {
-    return /gif$/.test(this.props.sources.original.url)
-  }
-
   render() {
-    const { onClick, priority, to, userId, username } = this.props
+    const { className, isModifiable, onClick, priority, to, userId, username } = this.props
+    const { status } = this.state
     const wrapperProps = {
-      className: this.getClassNames(),
+      className: classNames('Avatar', className, status, { isModifiable }),
       'data-priority': priority || 'inactive',
       'data-userid': userId,
       'data-username': username,
@@ -96,7 +82,7 @@ export default class Avatar extends Component {
     const imageProps = {
       alt: username,
       className: 'AvatarImage',
-      src: this.getAvatarSource(),
+      src: getSource(this.props),
       onLoadFailure: this.onLoadFailure,
       onLoadSuccess: this.onLoadSuccess,
     }

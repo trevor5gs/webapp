@@ -30,8 +30,8 @@ export const Discover = ({
     {isBeaconActive ? <DiscoverZeroStream onDismissZeroStream={onDismissZeroStream} /> : null}
     <Promotion
       coverDPI={coverDPI}
-      creditsClickAction={onClickTrackCredits}
       isLoggedIn={isLoggedIn}
+      onClickTrackCredits={onClickTrackCredits}
       promotion={promotion}
     />
     <CategoryTabBar pathname={pathname} tabs={tabs} />

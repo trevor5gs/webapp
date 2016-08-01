@@ -65,6 +65,7 @@ class UserList extends Component {
       <div className={classNames(classList, 'UserList')}>
         {uploader}
         <Avatar
+          className="isLarge"
           isModifiable={isModifiable}
           priority={!isModifiable && relationshipPriority ? relationshipPriority : null}
           size="large"

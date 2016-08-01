@@ -12,12 +12,19 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
+export function getSource(props) {
+  const { coverDPI, promotion } = props
+  if (!promotion) { return null }
+  const { coverImage } = promotion
+  return coverImage[coverDPI].url
+}
+
 export default class Promotion extends Component {
 
   static propTypes = {
     coverDPI: PropTypes.string,
-    creditsClickAction: PropTypes.func,
     isLoggedIn: PropTypes.bool.isRequired,
+    onClickTrackCredits: PropTypes.func,
     promotion: PropTypes.object,
   }
 
@@ -43,13 +50,6 @@ export default class Promotion extends Component {
     this.setState({ status: STATUS.FAILURE })
   }
 
-  getCoverSource() {
-    const { coverDPI, promotion } = this.props
-    if (!promotion) { return null }
-    const { coverImage } = promotion
-    return coverImage[coverDPI].url
-  }
-
   renderCallToAction(isLoggedIn, cta) {
     if (cta) {
       return <a href={cta.href}>{cta.caption}</a>
@@ -61,7 +61,7 @@ export default class Promotion extends Component {
 
   render() {
     const { status } = this.state
-    const { creditsClickAction, isLoggedIn, promotion } = this.props
+    const { isLoggedIn, onClickTrackCredits, promotion } = this.props
     if (!promotion) { return <div className="Promotion isRequesting" /> }
     const { caption, cta } = promotion
     return (
@@ -71,13 +71,13 @@ export default class Promotion extends Component {
           isBackgroundImage
           onLoadFailure={this.onLoadFailure}
           onLoadSuccess={this.onLoadSuccess}
-          src={this.getCoverSource()}
+          src={getSource(this.props)}
         />
         <div className="PromotionCaption">
           <h1>{caption}</h1>
           {this.renderCallToAction(isLoggedIn, cta)}
         </div>
-        <Credits onClick={creditsClickAction} user={promotion} />
+        <Credits onClick={onClickTrackCredits} user={promotion} />
       </div>
     )
   }

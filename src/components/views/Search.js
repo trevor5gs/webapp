@@ -21,8 +21,8 @@ export const Search = ({
   <MainView className="Search">
     <Promotion
       coverDPI={coverDPI}
-      creditsClickAction={onClickTrackCredits}
       isLoggedIn={isLoggedIn}
+      onClickTrackCredits={onClickTrackCredits}
       promotion={promotion}
     />
     <form className="SearchBar" onSubmit={onSubmit}>
