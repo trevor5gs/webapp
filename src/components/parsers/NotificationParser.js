@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { getLinkObject } from '../../helpers/json_helper'
-import { regionItemsForNotifications } from '../parsers/RegionParser'
+import { regionItemsForNotifications } from '../regions/RegionRenderables'
 import { Notification } from '../notifications/Notification'
 
 const NOTIFICATION_KIND = {

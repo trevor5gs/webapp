@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { get, uniqBy } from 'lodash'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import PostContainer from '../../containers/PostContainer'
-import CommentParser from '../parsers/CommentParser'
+import CommentContainer from '../../containers/CommentContainer'
 import NotificationParser from '../parsers/NotificationParser'
 import UserAvatar from '../users/UserAvatar'
 import UserCard from '../users/UserCard'
@@ -131,8 +131,8 @@ export function commentsAsList(post) {
   return comments => (
     <div>
       {comments.data.map(comment =>
-        <CommentParser
-          key={`commentParser_${comment.id}`}
+        <CommentContainer
+          key={`commentContainer_${comment.id}`}
           comment={comment}
           post={post}
           isEditing={comment.isEditing}

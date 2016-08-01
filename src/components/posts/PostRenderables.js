@@ -9,9 +9,7 @@ import RelationshipContainer from '../../containers/RelationshipContainer'
 import { postLovers, postReposters } from '../../networking/api'
 import StreamContainer from '../../containers/StreamContainer'
 import { loadComments } from '../../actions/posts'
-import EmbedRegion from '../posts/regions/EmbedRegion'
-import ImageRegion from '../posts/regions/ImageRegion'
-import TextRegion from '../posts/regions/TextRegion'
+import { RegionItems } from '../regions/RegionRenderables'
 
 function getPostDetailPath(author, post) {
   return `/${author.username}/post/${post.token}`
@@ -208,73 +206,6 @@ RepostHeader.propTypes = {
   repostedBy: PropTypes.object,
 }
 
-export const PostFooter = ({ post, author, isGridMode, isRepostAnimating }) => {
-  if (!author) { return null }
-  return (
-    <PostToolsContainer
-      author={author}
-      post={post}
-      isGridMode={isGridMode}
-      isRepostAnimating={isRepostAnimating}
-      key={`PostTools_${post.id}`}
-    />
-  )
-}
-
-PostFooter.propTypes = {
-  author: PropTypes.object,
-  isGridMode: PropTypes.bool,
-  isRepostAnimating: PropTypes.bool,
-  post: PropTypes.object,
-}
-
-function RegionItems({ assets, content, isGridMode = true, postDetailPath = null }) {
-  // sometimes the content is null/undefined for some reason
-  if (!content) { return null }
-  const cells = []
-  content.forEach((region, i) => {
-    switch (region.kind) {
-      case 'text':
-        cells.push(
-          <TextRegion
-            content={region.data}
-            isGridMode={isGridMode}
-            key={`TextRegion_${i}`}
-            postDetailPath={postDetailPath}
-          />
-        )
-        break
-      case 'image':
-        cells.push(
-          <ImageRegion
-            affiliateLinkURL={region.linkUrl}
-            assets={assets}
-            content={region.data}
-            isGridMode={isGridMode}
-            key={`ImageRegion_${i}_${JSON.stringify(region.data)}`}
-            links={region.links}
-            postDetailPath={postDetailPath}
-          />
-        )
-        break
-      case 'embed':
-        cells.push(<EmbedRegion region={region} key={`EmbedRegion_${i}`} />)
-        break
-      default:
-        cells.push(null)
-        break
-    }
-  })
-  return <div>{cells}</div>
-}
-
-RegionItems.propTypes = {
-  assets: PropTypes.object,
-  content: PropTypes.array,
-  isGridMode: PropTypes.bool,
-  postDetailPath: PropTypes.string,
-}
-
 export const PostBody = ({ post, assets, author, isGridMode, contentWarning }) => {
   if (!post) { return null }
   const cells = []
@@ -327,6 +258,26 @@ PostBody.propTypes = {
   author: PropTypes.object,
   contentWarning: PropTypes.string,
   isGridMode: PropTypes.bool,
+  post: PropTypes.object,
+}
+
+export const PostFooter = ({ post, author, isGridMode, isRepostAnimating }) => {
+  if (!author) { return null }
+  return (
+    <PostToolsContainer
+      author={author}
+      post={post}
+      isGridMode={isGridMode}
+      isRepostAnimating={isRepostAnimating}
+      key={`PostTools_${post.id}`}
+    />
+  )
+}
+
+PostFooter.propTypes = {
+  author: PropTypes.object,
+  isGridMode: PropTypes.bool,
+  isRepostAnimating: PropTypes.bool,
   post: PropTypes.object,
 }
 

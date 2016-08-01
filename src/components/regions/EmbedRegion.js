@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-import { ElloBuyButton } from '../../editor/ElloBuyButton'
+import { ElloBuyButton } from '../editor/ElloBuyButton'
 
 export const EmbedRegion = ({ region, key }) => {
   const data = {}

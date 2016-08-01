@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import _ from 'lodash'
 import classNames from 'classnames'
-import ImageAsset from '../../assets/ImageAsset'
-import { ElloBuyButton } from '../../editor/ElloBuyButton'
+import ImageAsset from '../assets/ImageAsset'
+import { ElloBuyButton } from '../editor/ElloBuyButton'
 
 const STATUS = {
   PENDING: 'isPending',
