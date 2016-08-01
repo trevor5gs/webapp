@@ -2,7 +2,7 @@ import { expect } from '../../../spec_helper'
 import { RELATIONSHIP_PRIORITY } from '../../../../src/constants/relationship_types'
 import { getNextPriority } from '../../../../src/components/relationships/StarshipButton'
 
-describe('RelationshipButton', () => {
+describe('StarshipButton', () => {
   context('#getNextPriority', () => {
     it('returns a friendship priority if it is NOISE', () => {
       expect(getNextPriority(RELATIONSHIP_PRIORITY.NOISE)).to.equal(RELATIONSHIP_PRIORITY.FRIEND)
