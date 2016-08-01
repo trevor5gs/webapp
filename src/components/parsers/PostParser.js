@@ -10,7 +10,7 @@ import ContentWarningButton from '../posts/ContentWarningButton'
 import PostTools from '../posts/PostTools'
 import CommentStream from '../streams/CommentStream'
 import { HeartIcon, RepostIcon } from '../posts/PostIcons'
-import RelationsGroup from '../relationships/RelationsGroup'
+import RelationshipContainer from '../../containers/RelationshipContainer'
 import Editor from '../../components/editor/Editor'
 import { postLovers, postReposters } from '../../networking/api'
 
@@ -87,7 +87,7 @@ function header(post, author) {
           </span>
         </Link>
       </div>
-      <RelationsGroup user={author} classList="inHeader" />
+      <RelationshipContainer className="isInHeader" user={author} />
       <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.createdAt} />
     </header>
   )
@@ -117,7 +117,7 @@ function categoryHeader(post, author, categoryName, categoryPath) {
           </span>
         </Link>
       </div>
-      <RelationsGroup user={author} classList="inHeader" />
+      <RelationshipContainer className="isInHeader" user={author} />
       <div className="CategoryHeaderCategory">
         <Link className="PostHeaderLink" to={categoryPath}>
           <span>in </span>
@@ -153,7 +153,7 @@ function repostHeader(post, repostAuthor, repostSource, repostedBy) {
           </span>
         </Link>
       </div>
-      <RelationsGroup user={repostAuthor} classList="inHeader" />
+      <RelationshipContainer className="isInHeader" user={repostAuthor} />
       <div className="RepostHeaderReposter">
         <Link className="PostHeaderLink" to={`/${repostedBy.username}`}>
           <RepostIcon />

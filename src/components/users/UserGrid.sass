@@ -16,15 +16,15 @@
   width: rem(80)
   height: rem(80)
 
-.UserGrid > .RelationsGroup > .RelationshipButton
+.UserGrid > .RelationshipContainer > .RelationshipButton
   position: absolute
   top: rem(90)
   right: rem(30)
 
-.UserGrid > .RelationsGroup > .RelationshipButton[data-priority="self"]
+.UserGrid > .RelationshipContainer > .RelationshipButton[data-priority="self"]
   right: 0
 
-.UserGrid > .RelationsGroup > .StarshipButton
+.UserGrid > .RelationshipContainer > .StarshipButton
   position: absolute
   top: rem(90)
   right: rem(-5)
@@ -62,8 +62,8 @@
     width: rem(120)
     height: rem(120)
 
-  .UserGrid > .RelationsGroup > .RelationshipButton,
-  .UserGrid > .RelationsGroup > .StarshipButton
+  .UserGrid > .RelationshipContainer > .RelationshipButton,
+  .UserGrid > .RelationshipContainer > .StarshipButton
     top: rem(200)
 
   .UserGrid > .UserStats
@@ -112,8 +112,8 @@
 
 
 .isOnboardingView ~ .MainView
-  .UserGrid > .RelationsGroup > .StarshipButton
+  .UserGrid > .RelationshipContainer > .StarshipButton
     display: none !important
-  .UserGrid > .RelationsGroup > .RelationshipButton
+  .UserGrid > .RelationshipContainer > .RelationshipButton
     right: rem(0)
 

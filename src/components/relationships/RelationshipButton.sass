@@ -33,16 +33,16 @@
   border-color: $danger
   color: white !important
 
-.RelationshipButton:not(.inHeader) > .MiniPlusIcon
+.RelationshipButton:not(.isInHeader) > .MiniPlusIcon
   margin-top: rem(-2)
 
-.RelationshipButton:not(.inHeader) > .MiniCheckIcon
+.RelationshipButton:not(.isInHeader) > .MiniCheckIcon
   margin-top: rem(-4)
 
 
 // -------------------------------------
 // Within post and repost headers...
-.RelationshipButton.inHeader
+.RelationshipButton.isInHeader
   width: rem(20)
   height: rem(20)
   border-radius: 0
@@ -52,33 +52,33 @@
   background-color: transparent
   color: #aaa
 
-.RelationshipButton.inHeader > .SVGIcon
+.RelationshipButton.isInHeader > .SVGIcon
   vertical-align: top
 
-.no-touch .RelationshipButton.inHeader:hover
+.no-touch .RelationshipButton.isInHeader:hover
   background-color: transparent
   color: white
 
-.RelationshipButton.inHeader[data-priority="self"]
+.RelationshipButton.isInHeader[data-priority="self"]
   display: none
 
-.RelationshipButton.inHeader[data-priority="friend"]
+.RelationshipButton.isInHeader[data-priority="friend"]
   color: white
 
-.RelationshipButton.inHeader[data-priority="friend"] > .SVGIcon > g:first-child
+.RelationshipButton.isInHeader[data-priority="friend"] > .SVGIcon > g:first-child
   fill: #aaa
   stroke: #aaa
 
-.RelationshipButton.inHeader:hover > .SVGIcon > g:first-of-type
+.RelationshipButton.isInHeader:hover > .SVGIcon > g:first-of-type
   fill: #535353
   stroke: #535353
 
 @media(min-width: #{$break-2})
   // Hints
-  .no-touch .RelationshipButton.inHeader
+  .no-touch .RelationshipButton.isInHeader
     font-size: 0.75rem
     overflow: visible
-  .no-touch .RelationshipButton.inHeader .RelationshipButtonLabel
+  .no-touch .RelationshipButton.isInHeader .RelationshipButtonLabel
     transition: opacity $speed ease, visibility 0s ease $speed
     visibility: hidden
     position: absolute
@@ -91,7 +91,7 @@
     opacity: 0
     white-space: nowrap
     background-color: black
-  .no-touch .RelationshipButton.inHeader:hover .RelationshipButtonLabel
+  .no-touch .RelationshipButton.isInHeader:hover .RelationshipButtonLabel
     transition-delay: 0.5s, 0s
     visibility: visible
     opacity: 1
