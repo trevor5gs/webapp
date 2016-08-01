@@ -343,6 +343,7 @@ class Settings extends Component {
               saveAction={bindActionCreators(saveAvatar, dispatch)}
             />
             <Avatar
+              className="isLarge"
               isModifiable
               size="large"
               sources={profile.avatar}

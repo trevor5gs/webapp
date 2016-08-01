@@ -87,7 +87,7 @@ export default class Completer extends Component {
         <Completion
           className={i === selectedIndex ? 'active' : null}
           key={`completion_${i}`}
-          asset={<Avatar classList="tiny" sources={{ tmp: { url: completion.imageUrl } }} />}
+          asset={<Avatar className="isTiny" sources={{ tmp: { url: completion.imageUrl } }} />}
           label={`@${completion.name}`}
           ref={`completion_${i}`}
           onClick={onCompletion}

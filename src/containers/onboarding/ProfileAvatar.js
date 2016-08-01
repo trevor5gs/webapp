@@ -54,6 +54,7 @@ class ProfileAvatar extends Component {
             title="Pick an Avatar"
           />
           <Avatar
+            className="isLarge"
             isModifiable
             size="large"
             sources={profile.avatar}
