@@ -10,5 +10,5 @@ checkout:
 
 test:
   post:
-    - gem install danger
+    - gem install danger -v 2.0.1
     - danger
