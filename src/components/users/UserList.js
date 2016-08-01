@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
+import { getElloPlatform } from '../../vendor/jello'
 import Avatar from '../assets/Avatar'
 import { openModal, closeModal } from '../../actions/modals'
 import { trackEvent } from '../../actions/tracking'
@@ -68,13 +69,15 @@ class UserList extends Component {
         onDismiss={this.onDismissModal}
       />
     ))
-    // dispatch(trackEvent('open-hire-dialog-profile'))
+    dispatch(trackEvent('open-hire-dialog-profile', { platform: getElloPlatform() }))
   }
 
   // TODO: Wire this up to an action / api etc.
   onConfirmHireMe = ({ subject, message }) => {
+    const { dispatch } = this.props
     // dispatch(sendMessage(subject, message))
     // console.log('subject:', subject, 'message:', message)
+    dispatch(trackEvent('send-hire-dialog-profile', { platform: getElloPlatform() }))
     // just appeasing the linter
     const stuff = { subject, message }
     return stuff

@@ -47,6 +47,10 @@ export function isIOS() {
   return memoizedIsIOS
 }
 
+export function getElloPlatform() {
+  return isElloAndroid() ? 'ello-android-app' : 'ello-webapp'
+}
+
 // -------------------------------------
 
 export function addFeatureDetection() {
