@@ -1,3 +1,7 @@
+repo = github.pr_json[:base][:repo][:full_name]
+
+puts "repo #{repo}"
+
 # FAILURES
 # don't let testing shortcuts get into master by accident
 fail('.only left in test suite') if `grep -r -e '\w\.only' test/`.length > 0
