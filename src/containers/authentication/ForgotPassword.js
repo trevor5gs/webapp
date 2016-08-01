@@ -136,7 +136,7 @@ class ForgotPassword extends Component {
           coverDPI={coverDPI}
           coverImage={promotion ? promotion.coverImage : null}
           coverOffset={coverOffset}
-          modifiers="asFullScreen withOverlay"
+          modifiers="isFullScreen withOverlay"
         />
       </MainView>
     )

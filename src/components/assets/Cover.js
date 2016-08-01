@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { isEqual } from 'lodash'
 import classNames from 'classnames'
+import { isGif } from '../../helpers/file_helper'
 import ImageAsset from '../assets/ImageAsset'
 
 const STATUS = {
@@ -10,8 +11,20 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
-export default class Cover extends Component {
+export function getSource(props) {
+  const { coverDPI, coverImage, useGif } = props
+  if (!coverImage) {
+    return ''
+  } else if (coverImage.tmp && coverImage.tmp.url) {
+    return coverImage.tmp.url
+  }
+  if (useGif && isGif(coverImage.original.url)) {
+    return coverImage.original.url
+  }
+  return coverImage[coverDPI] ? coverImage[coverDPI].url : null
+}
 
+export default class Cover extends Component {
   static propTypes = {
     coverDPI: PropTypes.string,
     coverImage: PropTypes.object,
@@ -36,8 +49,8 @@ export default class Cover extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const thisSource = this.getCoverSource()
-    const nextSource = this.getCoverSource(nextProps)
+    const thisSource = getSource(this.props)
+    const nextSource = getSource(nextProps)
     if (thisSource !== nextSource) {
       this.setState({
         status: nextSource ? STATUS.REQUEST : STATUS.PENDING,
@@ -59,44 +72,17 @@ export default class Cover extends Component {
     this.setState({ status: STATUS.FAILURE })
   }
 
-  getClassNames() {
+  render() {
     const { isHidden, isModifiable, modifiers } = this.props
     const { status } = this.state
-    return classNames(
-      'Cover',
-      status,
-      modifiers,
-      { isHidden },
-      { isModifiable },
-    )
-  }
-
-  getCoverSource(props = this.props) {
-    const { coverDPI, coverImage, useGif } = props
-    if (!coverImage) {
-      return ''
-    } else if (coverImage.tmp && coverImage.tmp.url) {
-      return coverImage.tmp.url
-    }
-    if (useGif && this.isGif()) {
-      return coverImage.original.url
-    }
-    return coverImage[coverDPI] ? coverImage[coverDPI].url : null
-  }
-
-  isGif() {
-    return /gif$/.test(this.props.coverImage.original.url)
-  }
-
-  render() {
     return (
-      <div className={this.getClassNames()}>
+      <div className={classNames('Cover', status, modifiers, { isHidden }, { isModifiable })}>
         <ImageAsset
           className="CoverImage"
           isBackgroundImage
           onLoadFailure={this.onLoadFailure}
           onLoadSuccess={this.onLoadSuccess}
-          src={this.getCoverSource()}
+          src={getSource(this.props)}
         />
       </div>
     )
