@@ -213,7 +213,7 @@ class SignIn extends Component {
           coverDPI={coverDPI}
           coverImage={promotion ? promotion.coverImage : null}
           coverOffset={coverOffset}
-          modifiers="isFullScreen withOverlay"
+          modifiers="isFullScreen hasOverlay"
         />
       </MainView>
     )
