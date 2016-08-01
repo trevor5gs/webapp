@@ -3,17 +3,17 @@ import { connect } from 'react-redux'
 import { get, isEqual, pick } from 'lodash'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { getLinkObject } from '../helpers/json_helper'
-import { setAssets } from '../components/parsers/RegionParser'
 import Editor from '../components/editor/Editor'
 import {
-  categoryHeader,
-  commentStream,
-  header,
-  parsePostBody,
-  postLoversDrawer,
-  postRepostersDrawer,
-  repostHeader,
-} from '../components/parsers/PostParser'
+  CategoryHeader,
+  CommentStream,
+  PostBody,
+  PostFooter,
+  PostHeader,
+  PostLoversDrawer,
+  PostRepostersDrawer,
+  RepostHeader,
+} from '../components/posts/PostRenderables'
 
 export function shouldContainerUpdate(thisProps, nextProps) {
   if (!nextProps.post) { return false }
@@ -42,6 +42,7 @@ export function mapStateToProps(state, props) {
   const repostsCount = post.repostsCount
   const showCommentEditor = !showEditor && !props.isPostDetail && post.showComments
   const showComments = showCommentEditor && post.commentsCount > 0
+  const isGridMode = state.gui.isGridMode
 
   let newProps = {
     assets,
@@ -51,14 +52,15 @@ export function mapStateToProps(state, props) {
     commentsCount: post.commentsCount,
     contentWarning: post.contentWarning,
     currentUser,
+    isGridMode,
     isOnFeaturedCategory,
     isRepost,
     isReposting,
     showCommentEditor,
     showComments,
     showEditor,
-    showLovers: !showEditor && !props.isGridLayout && post.showLovers && lovesCount > 0,
-    showReposters: !showEditor && !props.isGridLayout && post.showReposters && repostsCount > 0,
+    showLovers: !showEditor && !isGridMode && post.showLovers && lovesCount > 0,
+    showReposters: !showEditor && !isGridMode && post.showReposters && repostsCount > 0,
     postBody,
     post,
   }
@@ -67,7 +69,6 @@ export function mapStateToProps(state, props) {
     newProps = {
       ...newProps,
       authorLinkObject: post.repostAuthor || getLinkObject(post, 'repostAuthor', json) || author,
-      sourceLinkObject: getLinkObject(post, 'repostedSource', json),
     }
   }
 
@@ -83,7 +84,7 @@ class PostContainer extends Component {
     categoryPath: PropTypes.string,
     contentWarning: PropTypes.string,
     currentUser: PropTypes.object,
-    isGridLayout: PropTypes.bool,
+    isGridMode: PropTypes.bool,
     isOnFeaturedCategory: PropTypes.bool,
     isRepost: PropTypes.bool,
     isReposting: PropTypes.bool,
@@ -94,7 +95,6 @@ class PostContainer extends Component {
     showEditor: PropTypes.bool,
     showLovers: PropTypes.bool,
     showReposters: PropTypes.bool,
-    sourceLinkObject: PropTypes.object,
   }
 
   shouldComponentUpdate(nextProps) {
@@ -108,8 +108,7 @@ class PostContainer extends Component {
       categoryName,
       categoryPath,
       contentWarning,
-      currentUser,
-      isGridLayout,
+      isGridMode,
       isOnFeaturedCategory,
       isRepost,
       isReposting,
@@ -122,16 +121,17 @@ class PostContainer extends Component {
       showReposters,
     } = this.props
     if (!post) { return null }
-    setAssets(assets)
 
     let postHeader
     if (isRepost) {
-      const { authorLinkObject, sourceLinkObject } = this.props
-      postHeader = repostHeader(post, authorLinkObject, sourceLinkObject, author)
+      const { authorLinkObject } = this.props
+      const reProps = { post, repostAuthor: authorLinkObject, repostedBy: author }
+      postHeader = <RepostHeader {...reProps} />
     } else if (isOnFeaturedCategory && categoryName && categoryPath) {
-      postHeader = categoryHeader(post, author, categoryName, categoryPath)
+      const catProps = { post, author, categoryName, categoryPath }
+      postHeader = <CategoryHeader {...catProps} />
     } else {
-      postHeader = header(post, author)
+      postHeader = <PostHeader post={post} author={author} />
     }
 
     const isRepostAnimating = isReposting && !postBody
@@ -140,16 +140,24 @@ class PostContainer extends Component {
         {postHeader}
         {showEditor ?
           <Editor post={post} /> :
-          parsePostBody(post, author, currentUser, isGridLayout, isRepostAnimating, contentWarning)
+          <PostBody
+            assets={assets}
+            author={author}
+            contentWarning={contentWarning}
+            isGridMode={isGridMode}
+            post={post}
+          />
         }
-        {showLovers ? postLoversDrawer(post) : null}
-        {showReposters ? postRepostersDrawer(post) : null}
+        <PostFooter
+          author={author}
+          isGridMode={isGridMode}
+          isRepostAnimating={isRepostAnimating}
+          post={post}
+        />
+        {showLovers ? <PostLoversDrawer post={post} /> : null}
+        {showReposters ? <PostRepostersDrawer post={post} /> : null}
         {showCommentEditor ? <Editor post={post} isComment /> : null}
-        {
-          showComments ?
-            commentStream(post, author, currentUser) :
-            null
-        }
+        {showComments ? <CommentStream post={post} author={author} /> : null}
       </div>)
   }
 }

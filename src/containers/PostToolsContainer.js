@@ -58,7 +58,7 @@ class PostToolsContainer extends Component {
     detailLink: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isCommentsRequesting: PropTypes.bool,
-    isGridLayout: PropTypes.bool,
+    isGridMode: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     isOwnPost: PropTypes.bool.isRequired,
     isRepostAnimating: PropTypes.bool,
@@ -116,13 +116,13 @@ class PostToolsContainer extends Component {
   }
 
   onClickToggleLovers = () => {
-    const { detailLink, dispatch, isGridLayout, isLoggedIn,
+    const { detailLink, dispatch, isGridMode, isLoggedIn,
             pathname, post, postShowLovers } = this.props
     if (!isLoggedIn) {
       this.onSignUp()
       return
     }
-    if (isGridLayout && pathname !== detailLink) {
+    if (isGridMode && pathname !== detailLink) {
       dispatch(push(detailLink))
     } else {
       const showLovers = !postShowLovers
@@ -131,13 +131,13 @@ class PostToolsContainer extends Component {
   }
 
   onClickToggleReposters = () => {
-    const { detailLink, dispatch, isGridLayout, isLoggedIn,
+    const { detailLink, dispatch, isGridMode, isLoggedIn,
       pathname, post, postShowReposters } = this.props
     if (!isLoggedIn) {
       this.onSignUp()
       return
     }
-    if (isGridLayout && pathname !== detailLink) {
+    if (isGridMode && pathname !== detailLink) {
       dispatch(push(detailLink))
     } else {
       const showReposters = !postShowReposters

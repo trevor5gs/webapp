@@ -1,52 +1,73 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-import { body, repostedBody, setAssets } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import UserAvatars from '../../components/users/UserAvatars'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostToolsContainer from '../../containers/PostToolsContainer'
-import CommentStream from '../streams/CommentStream'
 import { HeartIcon, RepostIcon } from '../posts/PostIcons'
 import RelationshipContainer from '../../containers/RelationshipContainer'
-import Editor from '../../components/editor/Editor'
 import { postLovers, postReposters } from '../../networking/api'
+import StreamContainer from '../../containers/StreamContainer'
+import { loadComments } from '../../actions/posts'
+import EmbedRegion from '../posts/regions/EmbedRegion'
+import ImageRegion from '../posts/regions/ImageRegion'
+import TextRegion from '../posts/regions/TextRegion'
 
 function getPostDetailPath(author, post) {
   return `/${author.username}/post/${post.token}`
 }
 
-export function postLoversDrawer(post) {
-  return (
-    <UserAvatars
-      endpoint={postLovers(post.id)}
-      icon={<HeartIcon />}
-      key={`userAvatarsLovers_${post.id}${post.lovesCount}`}
-      post={post}
-      resultType="love"
-    />
-  )
+export const PostLoversDrawer = ({ post }) =>
+  <UserAvatars
+    endpoint={postLovers(post.id)}
+    icon={<HeartIcon />}
+    key={`userAvatarsLovers_${post.id}${post.lovesCount}`}
+    post={post}
+    resultType="love"
+  />
+
+PostLoversDrawer.propTypes = {
+  post: PropTypes.object,
 }
 
-export function postRepostersDrawer(post) {
-  return (
-    <UserAvatars
-      endpoint={postReposters(post.id)}
-      icon={<RepostIcon />}
-      key={`userAvatarsReposters_${post.id}${post.repostsCount}`}
-      post={post}
-      resultType="repost"
-    />
-  )
+export const PostRepostersDrawer = ({ post }) =>
+  <UserAvatars
+    endpoint={postReposters(post.id)}
+    icon={<RepostIcon />}
+    key={`userAvatarsReposters_${post.id}${post.repostsCount}`}
+    post={post}
+    resultType="repost"
+  />
+
+PostRepostersDrawer.propTypes = {
+  post: PropTypes.object,
 }
 
-export function commentStream(post, author) {
-  return (
-    <CommentStream
-      key={`commentStream_${post.id}${post.commentsCount}`}
-      post={post}
-      author={author}
-    />
-  )
+export const CommentStream = ({ post, author }) =>
+  <div>
+    <StreamContainer
+      className="CommentStreamContainer asFullWidth"
+      action={loadComments(post)}
+      ignoresScrollPosition
+    >
+      {post.commentsCount > 10 ?
+        <Link
+          to={{
+            pathname: `/${author.username}/post/${post.token}`,
+            state: { didComeFromSeeMoreCommentsLink: true },
+          }}
+          className="CommentsLink"
+        >
+          See More
+        </Link>
+        : null
+      }
+    </StreamContainer>
+  </div>
+
+CommentStream.propTypes = {
+  author: PropTypes.object,
+  post: PropTypes.object,
 }
 
 const PostHeaderTimeAgoLink = ({ to, createdAt }) =>
@@ -59,7 +80,7 @@ PostHeaderTimeAgoLink.propTypes = {
   to: PropTypes.string,
 }
 
-export function header(post, author) {
+export const PostHeader = ({ post, author }) => {
   if (!post || !author) { return null }
   const postDetailPath = getPostDetailPath(author, post)
   return (
@@ -89,7 +110,12 @@ export function header(post, author) {
   )
 }
 
-export function categoryHeader(post, author, categoryName, categoryPath) {
+PostHeader.propTypes = {
+  author: PropTypes.object,
+  post: PropTypes.object,
+}
+
+export const CategoryHeader = ({ post, author, categoryName, categoryPath }) => {
   if (!post || !author) { return null }
   const postDetailPath = getPostDetailPath(author, post)
   return (
@@ -125,7 +151,14 @@ export function categoryHeader(post, author, categoryName, categoryPath) {
   )
 }
 
-export function repostHeader(post, repostAuthor, repostSource, repostedBy) {
+CategoryHeader.propTypes = {
+  author: PropTypes.object,
+  categoryName: PropTypes.string,
+  categoryPath: PropTypes.string,
+  post: PropTypes.object,
+}
+
+export const RepostHeader = ({ post, repostAuthor, repostedBy }) => {
   if (!post || !repostedBy) { return null }
   const postDetailPath = getPostDetailPath(repostAuthor, post)
   return (
@@ -169,47 +202,131 @@ export function repostHeader(post, repostAuthor, repostSource, repostedBy) {
   )
 }
 
-function footer(post, author, currentUser, isGridLayout, isRepostAnimating) {
+RepostHeader.propTypes = {
+  post: PropTypes.object,
+  repostAuthor: PropTypes.object,
+  repostedBy: PropTypes.object,
+}
+
+export const PostFooter = ({ post, author, isGridMode, isRepostAnimating }) => {
   if (!author) { return null }
   return (
     <PostToolsContainer
       author={author}
       post={post}
-      isGridLayout={isGridLayout}
+      isGridMode={isGridMode}
       isRepostAnimating={isRepostAnimating}
       key={`PostTools_${post.id}`}
     />
   )
 }
 
-export function parsePostBody(post, author, currentUser,
-  isGridLayout = true, isRepostAnimating = false, contentWarning = null,
-) {
+PostFooter.propTypes = {
+  author: PropTypes.object,
+  isGridMode: PropTypes.bool,
+  isRepostAnimating: PropTypes.bool,
+  post: PropTypes.object,
+}
+
+function RegionItems({ assets, content, isGridMode = true, postDetailPath = null }) {
+  // sometimes the content is null/undefined for some reason
+  if (!content) { return null }
+  const cells = []
+  content.forEach((region, i) => {
+    switch (region.kind) {
+      case 'text':
+        cells.push(
+          <TextRegion
+            content={region.data}
+            isGridMode={isGridMode}
+            key={`TextRegion_${i}`}
+            postDetailPath={postDetailPath}
+          />
+        )
+        break
+      case 'image':
+        cells.push(
+          <ImageRegion
+            affiliateLinkURL={region.linkUrl}
+            assets={assets}
+            content={region.data}
+            isGridMode={isGridMode}
+            key={`ImageRegion_${i}_${JSON.stringify(region.data)}`}
+            links={region.links}
+            postDetailPath={postDetailPath}
+          />
+        )
+        break
+      case 'embed':
+        cells.push(<EmbedRegion region={region} key={`EmbedRegion_${i}`} />)
+        break
+      default:
+        cells.push(null)
+        break
+    }
+  })
+  return <div>{cells}</div>
+}
+
+RegionItems.propTypes = {
+  assets: PropTypes.object,
+  content: PropTypes.array,
+  isGridMode: PropTypes.bool,
+  postDetailPath: PropTypes.string,
+}
+
+export const PostBody = ({ post, assets, author, isGridMode, contentWarning }) => {
   if (!post) { return null }
   const cells = []
-  const postDetailPath = getPostDetailPath(author, post)
+  const postDetailPath = `/${author.username}/post/${post.token}`
 
   if (contentWarning) {
     cells.push(<ContentWarningButton key={`contentWarning_${post.id}`} post={post} />)
   }
 
+  const regionProps = { assets, isGridMode, postDetailPath }
   if (post.repostContent && post.repostContent.length) {
     // this is weird, but the post summary is
     // actually the repost summary on reposts
-    if (isGridLayout) {
-      cells.push(body(post.summary, post.id, isGridLayout, postDetailPath))
+    if (isGridMode) {
+      regionProps.content = post.summary
+      cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.id}`} />)
     } else {
-      cells.push(body(post.repostContent, `repost_${post.id}`, isGridLayout, postDetailPath))
+      regionProps.content = post.repostContent
+      cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.id}`} />)
       if (post.content && post.content.length) {
-        cells.push(repostedBody(author, post.content, post.id, isGridLayout, postDetailPath))
+        regionProps.content = post.content
+        cells.push(
+          <div className="PostBody RepostedBody" key={`RepostedBody_${post.id}`}>
+            <Avatar
+              priority={author.relationshipPriority}
+              sources={author.avatar}
+              to={`/${author.username}`}
+              userId={`${author.id}`}
+              username={author.username}
+            />
+            <RegionItems {...regionProps} />
+          </div>
+        )
       }
     }
   } else {
-    const content = isGridLayout ? post.summary : post.content
-    cells.push(body(content, post.id, isGridLayout, postDetailPath))
+    const content = isGridMode ? post.summary : post.content
+    regionProps.content = content
+    cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.id}`} />)
   }
-  cells.push(footer(post, author, currentUser, isGridLayout, isRepostAnimating))
-  setAssets({})
-  return cells
+  return (
+    <div className="PostBody" key={`PostBody_${post.id}`}>
+      {cells}
+    </div>
+  )
+}
+
+PostBody.propTypes = {
+  assets: PropTypes.object,
+  author: PropTypes.object,
+  contentWarning: PropTypes.string,
+  isGridMode: PropTypes.bool,
+  post: PropTypes.object,
 }
 

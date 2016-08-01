@@ -106,10 +106,7 @@ export function postsAsGrid(posts, columnCount) {
         <div className="Column" key={`column_${index}`}>
           {columnPosts.map((post) =>
             <article className="PostGrid" key={`postsAsGrid_${post.id}`}>
-              <PostContainer
-                isGridLayout
-                post={post}
-              />
+              <PostContainer post={post} />
             </article>
           )}
         </div>
@@ -123,9 +120,7 @@ export function postsAsList(posts) {
     <div className="Posts asList">
       {posts.data.map((post) =>
         <article className="PostList" key={`postsAsList_${post.id}`}>
-          <PostContainer
-            post={post}
-          />
+          <PostContainer post={post} />
         </article>
       )}
     </div>

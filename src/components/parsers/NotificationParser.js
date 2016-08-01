@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { getLinkObject } from '../../helpers/json_helper'
-import { regionItemsForNotifications, setAssets } from '../parsers/RegionParser'
+import { regionItemsForNotifications } from '../parsers/RegionParser'
 import { Notification } from '../notifications/Notification'
 
 const NOTIFICATION_KIND = {
@@ -351,7 +351,6 @@ class NotificationParser extends Component {
 
   render() {
     const {
-      assets,
       createdAt,
       kind,
       lovePost,
@@ -366,8 +365,6 @@ class NotificationParser extends Component {
       repostedSourceAuthor,
       subject,
     } = this.props
-
-    setAssets(assets)
 
     let linkedObjects = {}
     switch (kind) {

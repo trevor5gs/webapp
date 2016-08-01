@@ -15,12 +15,12 @@ class TextRegion extends Component {
   static propTypes = {
     content: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    isGridLayout: PropTypes.bool.isRequired,
+    isGridMode: PropTypes.bool.isRequired,
     postDetailPath: PropTypes.string,
   }
 
   onClickRegion = (e) => {
-    const { dispatch, isGridLayout, postDetailPath } = this.props
+    const { dispatch, isGridMode, postDetailPath } = this.props
     const { classList, dataset } = e.target
     // Get the raw value instead of the property value which is always absolute
     const href = e.target.getAttribute('href')
@@ -38,7 +38,7 @@ class TextRegion extends Component {
       return
 
     // Treat non links within grid layouts as a push to it's detail path
-    } else if (isGridLayout && postDetailPath && !isLink(e.target)) {
+    } else if (isGridMode && postDetailPath && !isLink(e.target)) {
       e.preventDefault()
 
       // if it's a command / control click or middle mouse fake a link and
@@ -59,8 +59,8 @@ class TextRegion extends Component {
   }
 
   render() {
-    const { content, isGridLayout, postDetailPath } = this.props
-    const isHotRegion = isGridLayout && postDetailPath
+    const { content, isGridMode, postDetailPath } = this.props
+    const isHotRegion = isGridMode && postDetailPath
     return (
       <div className="TextRegion">
         <div

@@ -28,6 +28,8 @@ export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState
     // thus causing errors when trying to render wrong results
   } else if (nextProps.resultPath !== thisProps.resultPath) {
     return false
+  } else if (nextProps.isGridMode !== thisProps.isGridMode) {
+    return true
   } else if (thisProps.columnCount !== nextProps.columnCount && nextProps.isGridMode) {
     return true
     // allow page loads to fall through and also allow stream

@@ -1,7 +1,7 @@
 import { expect, stub } from '../../spec_helper'
-import { parsePostBody } from '../../../src/components/parsers/PostParser'
+import { parsePostBody } from '../../../src/components/posts/PostRenderables'
 
-describe('PostParser', () => {
+describe('PostContainer', () => {
   it('#render', () => {
     const post = stub('post', { authorId: '42' })
     const user = stub('user', { id: '42', username: 'forty_two' })

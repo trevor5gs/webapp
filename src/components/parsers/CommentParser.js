@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
-import { body, setAssets } from './RegionParser'
+import { body } from './RegionParser'
 import Avatar from '../assets/Avatar'
 import CommentTools from '../comments/CommentTools'
 import Editor from '../../components/editor/Editor'
@@ -48,7 +48,7 @@ function footer(comment, author, currentUser, post) {
   )
 }
 
-function parseComment(comment, author, currentUser, post, isGridLayout = true, json) {
+function parseComment(comment, author, currentUser, post, isGridMode = true, json) {
   if (!comment.content) {
     // send some data to honeybadger so we can hopefully track down
     // why there isn't any content here this should be temporary
@@ -64,11 +64,10 @@ function parseComment(comment, author, currentUser, post, isGridLayout = true, j
   cells.push(header(comment, author))
   cells.push(
     <div className="CommentBody" key={`CommentBody${comment.id}`} >
-      {body(comment.content, comment.id, isGridLayout, null, true)}
+      {body(comment.content, comment.id, isGridMode, null, true)}
     </div>
   )
   cells.push(footer(comment, author, currentUser, post))
-  setAssets({})
   return cells
 }
 
@@ -81,21 +80,20 @@ class CommentParser extends Component {
     commentBody: PropTypes.array,
     currentUser: PropTypes.object,
     isEditing: PropTypes.bool,
-    isGridLayout: PropTypes.bool,
+    isGridMode: PropTypes.bool,
     json: PropTypes.object,
     post: PropTypes.object,
   }
 
   render() {
-    const { comment, author, assets, commentBody,
-      currentUser, isEditing, isGridLayout, json, post } = this.props
+    const { comment, author, commentBody,
+      currentUser, isEditing, isGridMode, json, post } = this.props
     if (!comment) { return null }
-    setAssets(assets)
     return (
       <div>
         {isEditing && commentBody ?
           <Editor isComment comment={comment} /> :
-          parseComment(comment, author, currentUser, post, isGridLayout, json)
+          parseComment(comment, author, currentUser, post, isGridMode, json)
         }
       </div>
     )
@@ -113,7 +111,7 @@ const mapStateToProps = ({ json, profile: currentUser, gui }, ownProps) => {
     commentBody: comment.body,
     currentUser,
     isEditing: comment.isEditing,
-    isGridLayout: gui.isGridMode,
+    isGridMode: gui.isGridMode,
     json,
     post,
   }
