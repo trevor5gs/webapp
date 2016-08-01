@@ -10,6 +10,16 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
+export function getSource(props) {
+  const { coverImage } = props
+  if (!coverImage) {
+    return ''
+  } else if (typeof coverImage === 'string') {
+    return coverImage
+  }
+  return coverImage.xhdpi ? coverImage.xhdpi.url : null
+}
+
 export default class CoverMini extends Component {
 
   static propTypes = {
@@ -19,14 +29,13 @@ export default class CoverMini extends Component {
 
   componentWillMount() {
     this.state = {
-      imageSize: 'xhdpi',
       status: STATUS.REQUEST,
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const thisSource = this.getCoverSource()
-    const nextSource = this.getCoverSource(nextProps)
+    const thisSource = getSource(this.props)
+    const nextSource = getSource(nextProps)
     if (thisSource !== nextSource) {
       this.setState({
         status: nextSource ? STATUS.REQUEST : STATUS.PENDING,
@@ -42,17 +51,6 @@ export default class CoverMini extends Component {
     this.setState({ status: STATUS.FAILURE })
   }
 
-  getCoverSource(props = this.props) {
-    const { coverImage } = props
-    if (!coverImage) {
-      return ''
-    } else if (typeof coverImage === 'string') {
-      return coverImage
-    }
-    const { imageSize } = this.state
-    return coverImage[imageSize] ? coverImage[imageSize].url : null
-  }
-
   render() {
     const { to } = this.props
     const { status } = this.state
@@ -62,7 +60,7 @@ export default class CoverMini extends Component {
       isBackgroundImage: true,
       onLoadFailure: this.onLoadFailure,
       onLoadSuccess: this.onLoadSuccess,
-      src: this.getCoverSource(),
+      src: getSource(this.props),
     }
 
     return to ?
