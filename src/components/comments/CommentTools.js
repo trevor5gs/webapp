@@ -1,13 +1,5 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import React, { PropTypes } from 'react'
 import classNames from 'classnames'
-import * as ACTION_TYPES from '../../constants/action_types'
-import { openModal, closeModal } from '../../actions/modals'
-import * as commentActions from '../../actions/comments'
-import { trackEvent } from '../../actions/tracking'
-import ConfirmDialog from '../dialogs/ConfirmDialog'
-import FlagDialog from '../dialogs/FlagDialog'
-import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import Hint from '../hints/Hint'
 import {
   ChevronIcon,
@@ -16,202 +8,132 @@ import {
   ReplyIcon,
   XBoxIcon,
 } from '../posts/PostIcons'
-import { getEditorId } from '../editor/Editor'
-import { scrollToLastTextBlock } from '../../vendor/scrolling'
 
-class CommentTools extends Component {
+const TimeAgoTool = ({ createdAt }) =>
+  <span className="PostTool TimeAgoTool">
+    <span className="PostToolValue">{new Date(createdAt).timeAgoInWords()}</span>
+  </span>
 
-  static propTypes = {
-    author: PropTypes.object.isRequired,
-    comment: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    deviceSize: PropTypes.string,
-    dispatch: PropTypes.func.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
-    isNavbarHidden: PropTypes.bool,
-    post: PropTypes.object.isRequired,
-  }
-
-  componentWillMount() {
-    this.state = {
-      isMoreToolActive: false,
-    }
-  }
-
-  onClickMoreTool = () => {
-    this.setState({ isMoreToolActive: !this.state.isMoreToolActive })
-  }
-
-  onClickReplyToComment = () => {
-    const { author, dispatch, isNavbarHidden, post } = this.props
-    const editorId = getEditorId(post, null, true, false)
-    dispatch({
-      type: ACTION_TYPES.EDITOR.APPEND_TEXT,
-      payload: {
-        editorId,
-        text: `@${author.username} `,
-      },
-    })
-    scrollToLastTextBlock(editorId, isNavbarHidden)
-  }
-
-  onClickEditComment = () => {
-    const { comment, dispatch } = this.props
-    dispatch(commentActions.toggleEditing(comment, true))
-    dispatch(commentActions.loadEditableComment(comment))
-  }
-
-  onClickFlagComment = () => {
-    const { deviceSize, dispatch } = this.props
-    dispatch(openModal(
-      <FlagDialog
-        deviceSize={deviceSize}
-        onResponse={this.onCommentWasFlagged}
-        onConfirm={this.closeModal}
-      />))
-  }
-
-  onCommentWasFlagged = ({ flag }) => {
-    const { dispatch, comment } = this.props
-    dispatch(commentActions.flagComment(comment, flag))
-  }
-
-  onClickDeleteComment = () => {
-    const { dispatch } = this.props
-    dispatch(openModal(
-      <ConfirmDialog
-        title="Delete Comment?"
-        onConfirm={this.onConfirmDeleteComment}
-        onDismiss={this.closeModal}
-      />))
-  }
-
-  onConfirmDeleteComment = () => {
-    const { comment, dispatch } = this.props
-    this.closeModal()
-    dispatch(commentActions.deleteComment(comment))
-  }
-
-  getToolCells() {
-    const { author, comment, currentUser, isLoggedIn, post } = this.props
-    const isOwnComment = currentUser && `${author.id}` === `${currentUser.id}`
-    const isOwnPost = currentUser && `${post.authorId}` === `${currentUser.id}`
-    const isOwnRepost = currentUser && post.links.repostAuthor &&
-      `${post.links.repostAuthor.id}` === `${currentUser.id}`
-    const cells = []
-    cells.push(
-      <span className="PostTool TimeAgoTool" key={`TimeAgoTool_${comment.id}`}>
-        <span className="PostToolValue">{new Date(comment.createdAt).timeAgoInWords()}</span>
-      </span>
-    )
-    if (isLoggedIn) {
-      if (isOwnComment) {
-        cells.push(
-          <span className="PostTool EditTool ShyTool" key={`EditTool_${comment.id}`}>
-            <button onClick={this.onClickEditComment}>
-              <PencilIcon />
-              <Hint>Edit</Hint>
-            </button>
-          </span>
-        )
-        cells.push(
-          <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${comment.id}`}>
-            <button onClick={this.onClickDeleteComment}>
-              <XBoxIcon />
-              <Hint>Delete</Hint>
-            </button>
-          </span>
-        )
-      } else if (isOwnPost || isOwnRepost) {
-        cells.push(
-          <span className="PostTool ReplyTool" key={`ReplyTool_${comment.id}`}>
-            <button onClick={this.onClickReplyToComment}>
-              <ReplyIcon />
-              <Hint>Reply</Hint>
-            </button>
-          </span>
-        )
-        cells.push(
-          <span className="PostTool FlagTool ShyTool" key={`FlagTool_${comment.id}`}>
-            <button onClick={this.onClickFlagComment}>
-              <FlagIcon />
-              <Hint>Flag</Hint>
-            </button>
-          </span>
-        )
-        cells.push(
-          <span className="PostTool DeleteTool ShyTool" key={`DeleteTool_${comment.id}`}>
-            <button onClick={this.onClickDeleteComment}>
-              <XBoxIcon />
-              <Hint>Delete</Hint>
-            </button>
-          </span>
-        )
-      } else {
-        cells.push(
-          <span className="PostTool ReplyTool" key={`ReplyTool_${comment.id}`}>
-            <button onClick={this.onClickReplyToComment}>
-              <ReplyIcon />
-              <Hint>Reply</Hint>
-            </button>
-          </span>
-        )
-        cells.push(
-          <span className="PostTool FlagTool ShyTool asSolo" key={`FlagTool_${comment.id}`}>
-            <button onClick={this.onClickFlagComment}>
-              <FlagIcon />
-              <Hint>Flag</Hint>
-            </button>
-          </span>
-        )
-      }
-    }
-    cells.push(
-      <span className={"PostTool MoreTool"} key={`MoreTool_${comment.id}`}>
-        <button onClick={this.onClickMoreTool}>
-          <ChevronIcon />
-          <Hint>More</Hint>
-        </button>
-      </span>
-    )
-    return cells
-  }
-
-  closeModal = () => {
-    const { dispatch } = this.props
-    dispatch(closeModal())
-  }
-
-  signUp() {
-    const { dispatch } = this.props
-    dispatch(openModal(<RegistrationRequestDialog />, 'isDecapitated'))
-    dispatch(trackEvent('open-registration-request-post-tools'))
-  }
-
-  render() {
-    const { comment } = this.props
-    if (!comment) { return null }
-    const classes = classNames(
-      'PostTools',
-      'CommentTools',
-      { isMoreToolActive: this.state.isMoreToolActive },
-    )
-    return (
-      <footer className={classes}>
-        {this.getToolCells()}
-      </footer>
-    )
-  }
+TimeAgoTool.propTypes = {
+  createdAt: PropTypes.string,
 }
 
+const EditTool = ({ onClickEditComment }) =>
+  <span className="PostTool EditTool ShyTool">
+    <button onClick={onClickEditComment}>
+      <PencilIcon />
+      <Hint>Edit</Hint>
+    </button>
+  </span>
 
-function mapStateToProps(state) {
-  return {
-    deviceSize: state.gui.deviceSize,
-    isLoggedIn: state.authentication.isLoggedIn,
-    isNavbarHidden: state.gui.isNavbarHidden,
-  }
+EditTool.propTypes = {
+  onClickEditComment: PropTypes.func,
 }
 
-export default connect(mapStateToProps)(CommentTools)
+const DeleteTool = ({ onClickDeleteComment }) =>
+  <span className="PostTool DeleteTool ShyTool">
+    <button onClick={onClickDeleteComment}>
+      <XBoxIcon />
+      <Hint>Delete</Hint>
+    </button>
+  </span>
+
+DeleteTool.propTypes = {
+  onClickDeleteComment: PropTypes.func,
+}
+
+const ReplyTool = ({ onClickReplyToComment }) =>
+  <span className="PostTool ReplyTool">
+    <button onClick={onClickReplyToComment}>
+      <ReplyIcon />
+      <Hint>Reply</Hint>
+    </button>
+  </span>
+
+ReplyTool.propTypes = {
+  onClickReplyToComment: PropTypes.func,
+}
+
+const FlagTool = ({ className, onClickFlagComment }) =>
+  <span className={classNames('PostTool FlagTool ShyTool', className)}>
+    <button onClick={onClickFlagComment}>
+      <FlagIcon />
+      <Hint>Flag</Hint>
+    </button>
+  </span>
+
+FlagTool.propTypes = {
+  className: PropTypes.string,
+  onClickFlagComment: PropTypes.func,
+}
+
+const MoreTool = ({ onClickMoreTool }) =>
+  <span className={"PostTool MoreTool"}>
+    <button onClick={onClickMoreTool}>
+      <ChevronIcon />
+      <Hint>More</Hint>
+    </button>
+  </span>
+
+MoreTool.propTypes = {
+  onClickMoreTool: PropTypes.func,
+}
+
+export const CommentTools = (props) => {
+  const { comment, isLoggedIn, isMoreToolActive, isOwnComment, isOwnPost, isOwnRepost } = props
+  const { onClickEditComment, onClickDeleteComment, onClickReplyToComment,
+          onClickFlagComment, onClickMoreTool } = props
+  const cId = comment.id
+  const cells = []
+  cells.push(<TimeAgoTool key={`TimeAgoTool_${cId}`} createdAt={comment.createdAt} />)
+  if (isLoggedIn) {
+    if (isOwnComment) {
+      cells.push(<EditTool key={`EditTool_${cId}`} onClickEditComment={onClickEditComment} />)
+      cells.push(
+        <DeleteTool key={`DeleteTool_${cId}`} onClickDeleteComment={onClickDeleteComment} />
+      )
+    } else if (isOwnPost || isOwnRepost) {
+      cells.push(
+        <ReplyTool key={`ReplyTool_${cId}`} onClickReplyToComment={onClickReplyToComment} />
+      )
+      cells.push(
+        <FlagTool key={`FlagTool_${cId}`} onClickFlagComment={onClickFlagComment} />
+      )
+      cells.push(
+        <DeleteTool key={`DeleteTool_${cId}`} onClickDeleteComment={onClickDeleteComment} />
+      )
+    } else {
+      cells.push(
+        <ReplyTool key={`ReplyTool_${cId}`} onClickReplyToComment={onClickReplyToComment} />
+      )
+      cells.push(
+        <FlagTool
+          key={`FlagTool_${cId}`}
+          className="asSolo"
+          onClickFlagComment={onClickFlagComment}
+        />
+      )
+    }
+  }
+  cells.push(<MoreTool key={`MoreTool_${cId}`} onClickMoreTool={onClickMoreTool} />)
+  return (
+    <footer className={classNames('PostTools', 'CommentTools', { isMoreToolActive })}>
+      {cells}
+    </footer>
+  )
+}
+
+CommentTools.propTypes = {
+  comment: PropTypes.object,
+  isLoggedIn: PropTypes.bool,
+  isMoreToolActive: PropTypes.bool,
+  isOwnComment: PropTypes.bool,
+  isOwnPost: PropTypes.bool,
+  isOwnRepost: PropTypes.bool,
+  onClickDeleteComment: PropTypes.func,
+  onClickEditComment: PropTypes.func,
+  onClickFlagComment: PropTypes.func,
+  onClickMoreTool: PropTypes.func,
+  onClickReplyToComment: PropTypes.func,
+}
 

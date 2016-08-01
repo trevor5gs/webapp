@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import { RegionItems } from '../regions/RegionRenderables'
 import Avatar from '../assets/Avatar'
-import CommentTools from '../comments/CommentTools'
+import CommentToolsContainer from '../../containers/CommentToolsContainer'
 
 export const CommentHeader = ({ comment, author }) => {
   if (!comment || !author) { return null }
@@ -54,7 +54,7 @@ CommentBody.propTypes = {
 export const CommentFooter = ({ author, comment, currentUser, post }) => {
   if (!author) { return null }
   return (
-    <CommentTools
+    <CommentToolsContainer
       author={author}
       comment={comment}
       currentUser={currentUser}

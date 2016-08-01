@@ -132,10 +132,10 @@ export function commentsAsList(post) {
     <div>
       {comments.data.map(comment =>
         <CommentContainer
-          key={`commentContainer_${comment.id}`}
           comment={comment}
-          post={post}
           isEditing={comment.isEditing}
+          key={`commentContainer_${comment.id}`}
+          post={post}
         />
       )}
     </div>
