@@ -57,9 +57,9 @@ function stubPromotion(username = '666') {
     avatar: { regular: `${username}-avatar.jpg` },
     caption: 'Ello promotion caption.',
     coverImage: {
-      hdpi: { url: `${username}-cover.jpg` },
-      xhdpi: { url: `${username}-cover.jpg` },
-      optimized: { url: `${username}-cover.jpg` },
+      hdpi: { url: `${username}-cover-hdpi.jpg` },
+      xhdpi: { url: `${username}-cover-xhdpi.jpg` },
+      optimized: { url: `${username}-cover-optimized.jpg` },
     },
     username,
   }
