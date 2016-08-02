@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react'
 import Helmet from 'react-helmet'
+import { META } from '../../constants/application_types'
 
-const title = 'Ello | The Creators Network.'
+const title = META.TITLE
 const image = '/apple-touch-icon-precomposed.png'
 
 const description =
