@@ -109,6 +109,7 @@ export function sendMessage(id, subject, message) {
     payload: {
       body: { subject, body: message },
       endpoint: api.hireUser(id),
+      method: 'POST',
     },
   }
 }
