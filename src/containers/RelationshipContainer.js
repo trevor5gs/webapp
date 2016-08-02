@@ -165,12 +165,12 @@ class RelationshipContainer extends Component {
         onMute={this.onConfirmMuteUser}
         username={username}
       />
-    , 'asDangerZone'))
+    , 'isDangerZone'))
   }
 
   onOpenSignupModal = () => {
     const { dispatch } = this.props
-    dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
+    dispatch(openModal(<RegistrationRequestDialog />, 'isDecapitated'))
     dispatch(trackEvent('open-registration-request-follow-button'))
   }
 

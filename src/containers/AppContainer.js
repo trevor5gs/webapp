@@ -8,7 +8,6 @@ import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
 import DevTools from '../components/devtools/DevTools'
 import { AppHelmet } from '../components/helmets/AppHelmet'
-import Modal from '../components/modals/Modal'
 import Omnibar from '../components/omnibar/Omnibar'
 import { addGlobalDrag, removeGlobalDrag } from '../components/viewport/GlobalDrag'
 import { startRefreshTimer } from '../components/viewport/RefreshOnFocus'
@@ -16,6 +15,7 @@ import AnalyticsContainer from '../containers/AnalyticsContainer'
 import EditorToolsContainer from '../containers/EditorToolsContainer'
 import FooterContainer from '../containers/FooterContainer'
 import KeyboardContainer from '../containers/KeyboardContainer'
+import ModalContainer from '../containers/ModalContainer'
 import NavbarContainer from '../containers/NavbarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
 import {
@@ -125,7 +125,7 @@ class AppContainer extends Component {
         <NavbarContainer routerParams={params} />
         <FooterContainer />
         {isLoggedIn ? <EditorToolsContainer /> : null}
-        <Modal />
+        <ModalContainer />
         <DevTools />
         <KeyboardContainer />
         <AnalyticsContainer />

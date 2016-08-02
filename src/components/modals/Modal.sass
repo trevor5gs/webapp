@@ -1,9 +1,9 @@
 @import ../../vendor/lib
 
-body.modalIsActive
+body.isModalActive
   overflow: hidden
 
-body.modalIsActive .MainView
+body.isModalActive .MainView
   pointer-events: none
 
 .Modal
@@ -27,10 +27,10 @@ body.modalIsActive .MainView
   background-color: rgba(#1a1a1a, 0.8)
   -webkit-overflow-scrolling: touch
 
-.Modal.isActive.asDangerZone
+.Modal.isActive.isDangerZone
   background-color: rgba($danger, 0.95)
 
-.Modal.asDecapitated
+.Modal.isDecapitated
   z-index: $z-navbar - 5
 
 @media(min-width: #{$break-2})

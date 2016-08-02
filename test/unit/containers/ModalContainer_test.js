@@ -1,33 +1,25 @@
 import { expect } from '../../spec_helper'
-import { shouldContainerUpdate } from '../../../src/containers/KeyboardContainer'
+import { shouldContainerUpdate } from '../../../src/containers/ModalContainer'
 
-describe('KeyboardContainer', () => {
+describe('ModalContainer', () => {
   context('#shouldContainerUpdate', () => {
     const thisProps = {
-      discoverKeyType: 'featured',
-      isGridMode: true,
+      classList: 'isDecapitated',
+      kind: 'Modal',
+      isActive: true,
       isLoggedIn: true,
-      isModalActive: false,
-      pathname: '/discover',
       notPicked: 'notPicked',
     }
     const sameProps = { ...thisProps }
     const nextProps = {
-      discoverKeyType: 'trending',
-      isGridMode: false,
+      classList: 'isDangerZone',
+      kind: 'Modal',
+      isActive: false,
       isLoggedIn: true,
-      isModalActive: false,
-      pathname: '/discover/trending',
       notPicked: 'notPicked',
     }
-    const lastProps = {
-      discoverKeyType: 'trending',
-      isGridMode: false,
-      isLoggedIn: true,
-      isModalActive: false,
-      pathname: '/discover/trending',
-      notPicked: 'changed',
-    }
+    const lastProps = { ...nextProps, notPicked: 'changed' }
+
     const shouldSameUpdate = shouldContainerUpdate(thisProps, sameProps)
     const shouldNextUpdate = shouldContainerUpdate(thisProps, nextProps)
     const shouldLastUpdate = shouldContainerUpdate(nextProps, lastProps)
