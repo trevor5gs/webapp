@@ -89,14 +89,14 @@ class AppContainer extends Component {
   componentWillReceiveProps(nextProps) {
     const prevAuthentication = this.props.authentication
     const { authentication, dispatch } = nextProps
-    if (authentication &&
-        !prevAuthentication.isLoggedIn &&
-        authentication.isLoggedIn) {
-      dispatch(loadProfile())
-      dispatch(fetchLoggedInPromos())
-    } else {
-      dispatch(fetchAuthenticationPromos())
-      dispatch(fetchLoggedOutPromos())
+    if (authentication) {
+      if (!prevAuthentication.isLoggedIn && authentication.isLoggedIn) {
+        dispatch(loadProfile())
+        dispatch(fetchLoggedInPromos())
+      } else if (prevAuthentication.isLoggedIn && !authentication.isLoggedIn) {
+        dispatch(fetchAuthenticationPromos())
+        dispatch(fetchLoggedOutPromos())
+      }
     }
   }
 

@@ -50,9 +50,10 @@ export const selectPages = (state) => get(state, 'json.pages')
 export const selectUsers = (state) => get(state, 'json.users')
 
 const selectAllCategories = (state) => get(state, 'json.pages.all-categories')
-const selectPagingResult = (state, props) => {
-  const pathname = get(props, 'location.pathname')
-  return get(state, ['json', 'pages', pathname])
+const selectStreamResult = (state, props) => {
+  const meta = get(props, 'action.meta', {})
+  const resultPath = meta.resultKey || get(state, 'routing.location.pathname')
+  return get(state, ['json', 'pages', resultPath], { ids: [], pagination: emptyPagination() })
 }
 
 
@@ -68,7 +69,7 @@ export const selectUser = createSelector(
 )
 
 export const selectPagination = createSelector(
-  [selectJSON, selectPages, selectLocationPathname, selectPagingResult, selectParamsToken],
+  [selectJSON, selectPages, selectLocationPathname, selectStreamResult, selectParamsToken],
   (json, pages, pathname, pagingResult, paramsToken) => {
     let result = pagingResult
     const isPagingEnabled = !(PAGING_BLACKLIST.every((re) => re.test(pathname)))
@@ -141,17 +142,12 @@ const selectStreamResultPath = (state, props) => {
   return meta.resultKey || get(state, 'routing.location.pathname')
 }
 
-const selectStreamResult = (state, props) => {
-  const meta = get(props, 'action.meta', {})
-  const resultPath = meta.resultKey || get(state, 'routing.location.pathname')
-  return get(state.json, ['pages', resultPath], { ids: [], pagination: emptyPagination() })
-}
-
 const selectStreamDeletions = (state, props) => {
   const meta = get(props, 'action.meta', {})
   const resultPath = meta.resultKey || get(state, 'routing.location.pathname')
   const result = get(state.json, ['pages', resultPath], { ids: [] })
-  return result.type === meta.mappingType || (meta.resultFilter && result.type !== meta.mappingType)
+  return result && result.type === meta.mappingType ||
+    (meta.resultFilter && result.type !== meta.mappingType)
 }
 
 const selectRoutingPathname = (state) =>
