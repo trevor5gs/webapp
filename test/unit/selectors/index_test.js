@@ -86,8 +86,8 @@ describe('selectors', () => {
 
   context('#selectPagination', () => {
     it('returns the pagination object related to the /discover page with memoization', () => {
-      const state = { json }
-      const props = { params, location }
+      const state = { json, routing: { location: { pathname: '/discover' } } }
+      const props = { params }
       expect(selectPagination(state, props)).to.deep.equal(json.pages['/discover'].pagination)
       const nextState = { ...state, blah: 1 }
       expect(selectPagination(nextState, props)).to.deep.equal(json.pages['/discover'].pagination)
