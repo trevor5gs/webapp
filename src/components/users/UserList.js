@@ -7,6 +7,7 @@ import { getElloPlatform } from '../../vendor/jello'
 import Avatar from '../assets/Avatar'
 import { openModal, closeModal } from '../../actions/modals'
 import { trackEvent } from '../../actions/tracking'
+import { sendMessage } from '../../actions/user'
 import { MiniPillButton } from '../buttons/Buttons'
 import MessageDialog from '../dialogs/MessageDialog'
 import ShareDialog from '../dialogs/ShareDialog'
@@ -72,15 +73,10 @@ class UserList extends Component {
     dispatch(trackEvent('open-hire-dialog-profile', { platform: getElloPlatform() }))
   }
 
-  // TODO: Wire this up to an action / api etc.
   onConfirmHireMe = ({ subject, message }) => {
-    const { dispatch } = this.props
-    // dispatch(sendMessage(subject, message))
-    // console.log('subject:', subject, 'message:', message)
+    const { dispatch, user } = this.props
+    dispatch(sendMessage(user.id, subject, message))
     dispatch(trackEvent('send-hire-dialog-profile', { platform: getElloPlatform() }))
-    // just appeasing the linter
-    const stuff = { subject, message }
-    return stuff
   }
 
   onDismissModal = () => {

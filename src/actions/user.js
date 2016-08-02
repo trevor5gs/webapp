@@ -102,3 +102,13 @@ export function loadUserAvatars(endpoint, post, resultType) {
     },
   }
 }
+
+export function sendMessage(id, subject, message) {
+  return {
+    type: ACTION_TYPES.USER.HIRE_ME,
+    payload: {
+      body: { subject, body: message },
+      endpoint: api.hireUser(id),
+    },
+  }
+}
