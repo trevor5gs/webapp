@@ -1,13 +1,8 @@
-import React, { Component, PropTypes } from 'react'
-import ReactDOM from 'react-dom'
+import React, { PropTypes } from 'react'
 import classNames from 'classnames'
-import { connect } from 'react-redux'
-import { SHORTCUT_KEYS } from '../../constants/application_types'
-import { closeOmnibar } from '../../actions/omnibar'
 import Avatar from '../assets/Avatar'
 import Editor from '../editor/Editor'
 import { SVGIcon } from '../svg/SVGComponents'
-import Mousetrap from '../../vendor/mousetrap'
 
 const ChevronIcon = () =>
   <SVGIcon className="ChevronIcon">
@@ -16,81 +11,28 @@ const ChevronIcon = () =>
     </g>
   </SVGIcon>
 
-class Omnibar extends Component {
 
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    avatar: PropTypes.shape({}),
-    omnibar: PropTypes.shape({
-      isActive: PropTypes.bool,
-      classList: PropTypes.string,
-    }).isRequired,
+export const Omnibar = ({ avatar, classList, isActive, isFullScreen, onClickCloseOmnibar }) => {
+  if (!isActive) {
+    return <div className={classNames('Omnibar', { isActive }, classList)} />
   }
-
-  componentWillMount() {
-    this.state = {
-      isFullScreen: false,
-    }
-  }
-
-  componentDidMount() {
-    Mousetrap.bind(SHORTCUT_KEYS.FULLSCREEN, () => { this.toggleFullScreen() })
-  }
-
-  componentDidUpdate() {
-    const { omnibar } = this.props
-    const { isActive } = omnibar
-    const body = ReactDOM.findDOMNode(document.body)
-    if (isActive) {
-      body.classList.add('omnibarIsActive')
-    } else if (!isActive) {
-      body.classList.remove('omnibarIsActive')
-    }
-  }
-
-  componentWillUnmount() {
-    Mousetrap.unbind(SHORTCUT_KEYS.FULLSCREEN)
-  }
-
-  toggleFullScreen = () => {
-    const { isFullScreen } = this.state
-    this.setState({ isFullScreen: !isFullScreen })
-  }
-
-  close = () => {
-    const { omnibar, dispatch } = this.props
-    const { isActive } = omnibar
-    if (isActive) {
-      dispatch(closeOmnibar())
-    }
-  }
-
-  render() {
-    const { avatar, omnibar } = this.props
-    const { isFullScreen } = this.state
-    const { isActive, classList } = omnibar
-    if (!isActive) {
-      return <div className={classNames('Omnibar', { isActive }, classList)} />
-    }
-    return (
-      <div className={classNames('Omnibar', { isActive, isFullScreen }, classList)} >
-        <Avatar sources={avatar} />
-        <Editor shouldLoadFromState shouldPersist />
-        <button className="OmnibarRevealNavbar" onClick={this.close}>
-          <ChevronIcon />
-          Navigation
-        </button>
-      </div>
-    )
-  }
+  return (
+    <div className={classNames('Omnibar', { isActive, isFullScreen }, classList)} >
+      <Avatar sources={avatar} />
+      <Editor shouldLoadFromState shouldPersist />
+      <button className="OmnibarRevealNavbar" onClick={onClickCloseOmnibar}>
+        <ChevronIcon />
+        Navigation
+      </button>
+    </div>
+  )
 }
 
-function mapStateToProps(state) {
-  return {
-    omnibar: state.omnibar,
-    avatar: state.profile.avatar,
-  }
+Omnibar.propTypes = {
+  avatar: PropTypes.shape({}),
+  classList: PropTypes.string,
+  isActive: PropTypes.bool.isRequired,
+  isFullScreen: PropTypes.bool,
+  onClickCloseOmnibar: PropTypes.func,
 }
-
-export default connect(mapStateToProps)(Omnibar)
 

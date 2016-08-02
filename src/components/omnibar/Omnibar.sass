@@ -38,10 +38,10 @@
 // This is sort of gnarly and should get moved to the
 // component level
 
-body.omnibarIsActive .MainView
+body.isOmnibarActive .MainView
   padding-top: 0
 
-body.omnibarIsActive .Navbar
+body.isOmnibarActive .Navbar
   pointer-events: none
   opacity: 0
   background-color: transparent
@@ -55,8 +55,8 @@ body.omnibarIsActive .Navbar
   .Omnibar > .editor:after
     left: rem(51)
 
-  body.omnibarIsActive .MainView,
-  body.omnibarIsActive .Footer
+  body.isOmnibarActive .MainView,
+  body.isOmnibarActive .Footer
     display: none
 
 
@@ -74,18 +74,18 @@ body.omnibarIsActive .Navbar
     top: rem(25)
     right: rem(10)
 
-  body.omnibarIsActive .Navbar > .NavbarProfile,
-  body.omnibarIsActive .Navbar > .NavbarLinks
+  body.isOmnibarActive .Navbar > .NavbarProfile,
+  body.isOmnibarActive .Navbar > .NavbarLinks
     position: absolute
     transform: translate3d(#{rem(400)}, 0, 0)
 
-  body.omnibarIsActive .Omnibar.isFullScreen ~ .MainView,
-  body.omnibarIsActive .Omnibar.isFullScreen ~ .Footer
+  body.isOmnibarActive .Omnibar.isFullScreen ~ .MainView,
+  body.isOmnibarActive .Omnibar.isFullScreen ~ .Footer
     display: none
 
-  body.omnibarIsActive .Omnibar.isFullScreen > .editor
+  body.isOmnibarActive .Omnibar.isFullScreen > .editor
     max-width: none
     padding-right: rem(40)
-  body.omnibarIsActive .Omnibar.isFullScreen > .editor .editor-region
+  body.isOmnibarActive .Omnibar.isFullScreen > .editor .editor-region
     min-height: calc(100vh - #{rem(100)})
 

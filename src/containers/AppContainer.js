@@ -8,7 +8,6 @@ import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
 import DevTools from '../components/devtools/DevTools'
 import { AppHelmet } from '../components/helmets/AppHelmet'
-import Omnibar from '../components/omnibar/Omnibar'
 import { addGlobalDrag, removeGlobalDrag } from '../components/viewport/GlobalDrag'
 import { startRefreshTimer } from '../components/viewport/RefreshOnFocus'
 import AnalyticsContainer from '../containers/AnalyticsContainer'
@@ -17,6 +16,7 @@ import FooterContainer from '../containers/FooterContainer'
 import KeyboardContainer from '../containers/KeyboardContainer'
 import ModalContainer from '../containers/ModalContainer'
 import NavbarContainer from '../containers/NavbarContainer'
+import OmnibarContainer from '../containers/OmnibarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
 import {
   fetchAuthenticationPromos,
@@ -120,7 +120,7 @@ class AppContainer extends Component {
       <section className={appClasses}>
         <AppHelmet pagination={pagination} pathname={pathname} />
         <ViewportContainer routerParams={params} />
-        {isLoggedIn ? <Omnibar /> : null}
+        {isLoggedIn ? <OmnibarContainer /> : null}
         {children}
         <NavbarContainer routerParams={params} />
         <FooterContainer />
