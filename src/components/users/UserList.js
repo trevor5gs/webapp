@@ -143,7 +143,7 @@ function mapStateToProps(state, ownProps) {
   return {
     followingCount: user.followingCount,
     followersCount: user.followersCount,
-    isHirable: true,
+    isHirable: user.isHirable || true,
     isLoggedIn: state.authentication.isLoggedIn,
     lovesCount: user.lovesCount,
     relationshipPriority: user.relationshipPriority,
