@@ -75,7 +75,7 @@ class FormControl extends Component {
   onChangeControl = (e) => {
     const target = e.target
     let value = target.value
-    if (this.props.trimWhitespace) {
+    if (this.props.trimWhitespace && /\s/.test(value)) {
       value = trim(value)
       target.value = value
     }
