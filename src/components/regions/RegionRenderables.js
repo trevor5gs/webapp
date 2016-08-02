@@ -55,7 +55,7 @@ RegionItems.propTypes = {
 }
 
 
-export function regionItemsForNotifications(content, postDetailPath = null) {
+export function regionItemsForNotifications(content, postDetailPath = null, assets) {
   const imageAssets = []
   const texts = []
 

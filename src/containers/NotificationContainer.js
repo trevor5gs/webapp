@@ -1,6 +1,22 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { isEqual } from 'lodash'
 import { getLinkObject } from '../helpers/json_helper'
+import * as MAPPING_TYPES from '../constants/mapping_types'
+import {
+  CommentNotification,
+  CommentMentionNotification,
+  CommentOnOriginalPostNotification,
+  CommentOnRepostNotification,
+  InvitationAcceptedNotification,
+  LoveNotification,
+  LoveOnOriginalPostNotification,
+  LoveOnRepostNotification,
+  NewFollowerPost,
+  NewFollowedUserPost,
+  PostMentionNotification,
+  RepostNotification,
+} from '../components/notifications/NotificationRenderables'
 
 const NOTIFICATION_KIND = {
   COMMENT: 'comment_notification',
@@ -25,7 +41,78 @@ const SUBJECT_TYPE = {
 }
 
 function shouldContainerUpdate(thisProps, nextProps) {
-  return true
+  return !isEqual(thisProps, nextProps)
+}
+
+function mapStateToProps(state, ownProps) {
+  const { notification } = ownProps
+  const subject = getLinkObject(notification, 'subject', state.json)
+
+  let lovePost = null
+  let lovePostAuthor = null
+  let loveUser = null
+  let postAuthor = null
+  let repost = null
+  let repostAuthor = null
+  let repostedSource = null
+  let repostedSourceAuthor = null
+  let parentPost = null
+  let parentPostAuthor = null
+
+  // subject is a post or comment
+  if (notification.subjectType.toLowerCase() === SUBJECT_TYPE.POST) {
+    postAuthor = getLinkObject(subject, 'author', state.json) ||
+      state.json[MAPPING_TYPES.USERS][subject.authorId]
+    // comment
+    if (subject.postId) {
+      parentPost = getLinkObject(subject, 'parentPost', state.json)
+      parentPostAuthor = getLinkObject(parentPost, 'author', state.json) ||
+        state.json[MAPPING_TYPES.USERS][parentPost.authorId]
+    }
+    // repost
+    if (parentPost && parentPost.repostId) {
+      repost = parentPost
+      repostAuthor = getLinkObject(repost, 'author', state.json) ||
+        state.json[MAPPING_TYPES.USERS][repost.authorId]
+      repostedSource = getLinkObject(repost, 'repostedSource', state.json)
+      repostedSourceAuthor = getLinkObject(repostedSource, 'author', state.json) ||
+        state.json[MAPPING_TYPES.USERS][repostedSource.authorId]
+    }
+  }
+  // subject is a love
+  if (notification.subjectType.toLowerCase() === SUBJECT_TYPE.LOVE) {
+    loveUser = getLinkObject(subject, 'user', state.json)
+    lovePost = getLinkObject(subject, 'post', state.json)
+    lovePostAuthor = getLinkObject(lovePost, 'author', state.json) ||
+      state.json[MAPPING_TYPES.USERS][lovePost.authorId]
+    // repost
+    if (lovePost.repostId) {
+      repost = lovePost
+      repostAuthor = getLinkObject(repost, 'author', state.json)
+      repostedSource = getLinkObject(repost, 'repostedSource', state.json)
+      repostedSourceAuthor = getLinkObject(repostedSource, 'author', state.json) ||
+        state.json[MAPPING_TYPES.USERS][repostedSource.authorId]
+    }
+  }
+  // subject can be a user as well but we don't
+  // need to add any additional properties
+
+  return {
+    assets: state.json.assets,
+    createdAt: notification.createdAt,
+    kind: notification.kind,
+    lovePost,
+    lovePostAuthor,
+    loveUser,
+    postAuthor,
+    parentPost,
+    parentPostAuthor,
+    repost,
+    repostAuthor,
+    repostedSource,
+    repostedSourceAuthor,
+    subject,
+  }
 }
 
 class NotificationParser extends Component {
@@ -52,6 +139,7 @@ class NotificationParser extends Component {
 
   render() {
     const {
+      assets,
       createdAt,
       kind,
       lovePost,
@@ -67,123 +155,114 @@ class NotificationParser extends Component {
       subject,
     } = this.props
 
-    let linkedObjects = {}
     switch (kind) {
       case NOTIFICATION_KIND.COMMENT:
-        linkedObjects = { author: postAuthor, parentPost, parentPostAuthor }
-        return commentNotification(subject, createdAt, linkedObjects)
+        return (
+          <CommentNotification
+            assets={assets}
+            author={postAuthor}
+            comment={subject}
+            createdAt={createdAt}
+            parentPost={parentPost}
+            parentPostAuthor={parentPostAuthor}
+          />
+        )
       case NOTIFICATION_KIND.COMMENT_MENTION:
-        linkedObjects = { author: postAuthor, parentPost, parentPostAuthor }
-        return commentMentionNotification(subject, createdAt, linkedObjects)
+        return (
+          <CommentMentionNotification
+            assets={assets}
+            author={postAuthor}
+            comment={subject}
+            createdAt={createdAt}
+            parentPost={parentPost}
+            parentPostAuthor={parentPostAuthor}
+          />
+        )
       case NOTIFICATION_KIND.COMMENT_ORIGINAL:
-        linkedObjects = {
-          author: postAuthor,
-          repost,
-          repostAuthor,
-          repostedSource,
-          repostedSourceAuthor,
-        }
-        return commentOnOriginalPostNotification(subject, createdAt, linkedObjects)
+        return (
+          <CommentOnOriginalPostNotification
+            assets={assets}
+            author={postAuthor}
+            comment={subject}
+            createdAt={createdAt}
+            repost={repost}
+            repostAuthor={repostAuthor}
+            repostedSource={repostedSource}
+            repostedSourceAuthor={repostedSourceAuthor}
+          />
+        )
       case NOTIFICATION_KIND.COMMENT_REPOST:
-        linkedObjects = { author: postAuthor, repost, repostAuthor }
-        return commentOnRepostNotification(subject, createdAt, linkedObjects)
+        return (
+          <CommentOnRepostNotification
+            assets={assets}
+            author={postAuthor}
+            comment={subject}
+            createdAt={createdAt}
+            repost={repost}
+            repostAuthor={repostAuthor}
+          />
+        )
       case NOTIFICATION_KIND.INVITATION_ACCEPTED:
-        return invitationAcceptedNotification(subject, createdAt)
+        return <InvitationAcceptedNotification createdAt={createdAt} user={subject} />
       case NOTIFICATION_KIND.LOVE:
-        linkedObjects = { author: lovePostAuthor, post: lovePost, user: loveUser }
-        return loveNotification(subject, createdAt, linkedObjects)
+        return (
+          <LoveNotification
+            assets={assets}
+            author={lovePostAuthor}
+            createdAt={createdAt}
+            post={lovePost}
+            user={loveUser}
+          />
+        )
       case NOTIFICATION_KIND.LOVE_ORIGINAL:
-        linkedObjects = {
-          repost,
-          repostAuthor,
-          repostedSource,
-          repostedSourceAuthor,
-          user: loveUser,
-        }
-        return loveOnOriginalPostNotification(subject, createdAt, linkedObjects)
+        return (
+          <LoveOnOriginalPostNotification
+            assets={assets}
+            createdAt={createdAt}
+            repost={repost}
+            repostAuthor={repostAuthor}
+            repostedSource={repostedSource}
+            repostedSourceAuthor={repostedSourceAuthor}
+            user={loveUser}
+          />
+        )
       case NOTIFICATION_KIND.LOVE_REPOST:
-        linkedObjects = { repost, repostAuthor, user: loveUser }
-        return loveOnRepostNotification(subject, createdAt, linkedObjects)
+        return (
+          <LoveOnRepostNotification
+            assets={assets}
+            createdAt={createdAt}
+            repost={repost}
+            repostAuthor={repostAuthor}
+            user={loveUser}
+          />
+        )
       case NOTIFICATION_KIND.NEW_FOLLOWER:
-        return newFollowerPost(subject, createdAt)
+        return <NewFollowerPost createdAt={createdAt} user={subject} />
       case NOTIFICATION_KIND.NEW_FOLLOWED_USER:
-        return newFollowedUserPost(subject, createdAt)
+        return <NewFollowedUserPost createdAt={createdAt} user={subject} />
       case NOTIFICATION_KIND.POST_MENTION:
-        linkedObjects = { author: postAuthor }
-        return postMentionNotification(subject, createdAt, linkedObjects)
+        return (
+          <PostMentionNotification
+            assets={assets}
+            author={postAuthor}
+            createdAt={createdAt}
+            post={subject}
+          />
+        )
       case NOTIFICATION_KIND.REPOST:
-        linkedObjects = { author: postAuthor }
-        return repostNotification(subject, createdAt, linkedObjects)
+        return (
+          <RepostNotification
+            assets={assets}
+            author={postAuthor}
+            createdAt={createdAt}
+            post={subject}
+          />
+        )
       case NOTIFICATION_KIND.WELCOME:
         return <p>Welcome to Ello!</p>
       default:
         return null
     }
-  }
-}
-
-function mapStateToProps(state, ownProps) {
-  const { notification } = ownProps
-  const subject = getLinkObject(notification, 'subject', state.json)
-
-  let lovePost = null
-  let lovePostAuthor = null
-  let loveUser = null
-  let postAuthor = null
-  let repost = null
-  let repostAuthor = null
-  let repostedSource = null
-  let repostedSourceAuthor = null
-  let parentPost = null
-  let parentPostAuthor = null
-
-  // subject is a post or comment
-  if (notification.subjectType.toLowerCase() === SUBJECT_TYPE.POST) {
-    postAuthor = getLinkObject(subject, 'author', state.json)
-    // comment
-    if (subject.postId) {
-      parentPost = getLinkObject(subject, 'parentPost', state.json)
-      parentPostAuthor = getLinkObject(parentPost, 'author', state.json)
-    }
-    // repost
-    if (parentPost && parentPost.repostId) {
-      repost = parentPost
-      repostAuthor = getLinkObject(repost, 'author', state.json)
-      repostedSource = getLinkObject(repost, 'repostedSource', state.json)
-      repostedSourceAuthor = getLinkObject(repostedSource, 'author', state.json)
-    }
-  }
-  // subject is a love
-  if (notification.subjectType.toLowerCase() === SUBJECT_TYPE.LOVE) {
-    loveUser = getLinkObject(subject, 'user', state.json)
-    lovePost = getLinkObject(subject, 'post', state.json)
-    lovePostAuthor = getLinkObject(lovePost, 'author', state.json)
-    // repost
-    if (lovePost.repostId) {
-      repost = lovePost
-      repostAuthor = getLinkObject(repost, 'author', state.json)
-      repostedSource = getLinkObject(repost, 'repostedSource', state.json)
-      repostedSourceAuthor = getLinkObject(repostedSource, 'author', state.json)
-    }
-  }
-  // subject can be a user as well but we don't
-  // need to add any additional properties
-
-  return {
-    assets: state.json.assets,
-    createdAt: notification.createdAt,
-    kind: notification.kind,
-    lovePost,
-    lovePostAuthor,
-    loveUser,
-    postAuthor,
-    parentPost,
-    parentPostAuthor,
-    repost,
-    repostAuthor,
-    repostedSource,
-    repostedSourceAuthor,
-    subject,
   }
 }
 
