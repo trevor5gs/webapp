@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { isEqual, pick, sample } from 'lodash'
 import { selectCategories, selectCategoryPageTitle } from '../selectors'
+import { META } from '../constants/application_types'
 import {
   bindDiscoverKey,
   getCategories,
@@ -104,6 +105,8 @@ function mapStateToProps(state, props) {
   const { primary, secondary, tertiary } = selectCategories(state, props)
   const pageTitle = selectCategoryPageTitle(state, props)
   const promotions = isLoggedIn ? state.promotions.loggedIn : state.promotions.loggedOut
+  const titlePrefix = pageTitle ? `${pageTitle} | ` : ''
+  const title = titlePrefix + META.TITLE
   return {
     coverDPI: gui.coverDPI,
     isBeaconActive: isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
@@ -115,6 +118,7 @@ function mapStateToProps(state, props) {
     primary,
     secondary,
     tertiary,
+    title,
   }
 }
 
@@ -131,6 +135,7 @@ export class DiscoverContainer extends Component {
     primary: PropTypes.array,
     secondary: PropTypes.array,
     tertiary: PropTypes.array,
+    title: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
@@ -176,7 +181,7 @@ export class DiscoverContainer extends Component {
 
   render() {
     const { coverDPI, isBeaconActive, isLoggedIn, pageTitle, paramsType,
-            pathname, primary, secondary, tertiary } = this.props
+            pathname, primary, secondary, tertiary, title } = this.props
     const { promotion } = this.state
     const props = {
       coverDPI,
@@ -189,6 +194,7 @@ export class DiscoverContainer extends Component {
       promotion,
       streamAction: getStreamAction(paramsType),
       tabs: generateTabs(primary, secondary, tertiary),
+      title,
     }
     return <Discover key={`discover_${paramsType}`} {...props} />
   }

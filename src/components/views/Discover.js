@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import Helmet from 'react-helmet'
 import Promotion from '../assets/Promotion'
 import StreamContainer from '../../containers/StreamContainer'
 import { CategoryTabBar } from '../tabs/CategoryTabBar'
@@ -15,18 +16,20 @@ DiscoverZeroStream.propTypes = {
 }
 
 export const Discover = ({
-    coverDPI,
-    isBeaconActive,
-    isLoggedIn,
-    onClickTrackCredits,
-    onDismissZeroStream,
-    pageTitle,
-    pathname,
-    promotion,
-    streamAction,
-    tabs,
+  coverDPI,
+  isBeaconActive,
+  isLoggedIn,
+  onClickTrackCredits,
+  onDismissZeroStream,
+  pageTitle,
+  pathname,
+  promotion,
+  streamAction,
+  tabs,
+  title,
   }) =>
   <MainView className="Discover">
+    <Helmet title={title} />
     {isBeaconActive ? <DiscoverZeroStream onDismissZeroStream={onDismissZeroStream} /> : null}
     <Promotion
       coverDPI={coverDPI}
@@ -50,5 +53,6 @@ Discover.propTypes = {
   promotion: PropTypes.object,
   streamAction: PropTypes.object.isRequired,
   tabs: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
 }
 
