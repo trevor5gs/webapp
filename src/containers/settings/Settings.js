@@ -189,7 +189,7 @@ class Settings extends Component {
         onConfirm={this.onConfirmAccountWasDeleted}
         onDismiss={this.closeModal}
       />
-    , 'asDangerZone'))
+    , 'isDangerZone'))
   }
 
   onConfirmAccountWasDeleted = () => {

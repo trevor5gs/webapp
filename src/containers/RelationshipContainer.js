@@ -165,7 +165,7 @@ class RelationshipContainer extends Component {
         onMute={this.onConfirmMuteUser}
         username={username}
       />
-    , 'asDangerZone'))
+    , 'isDangerZone'))
   }
 
   onOpenSignupModal = () => {
