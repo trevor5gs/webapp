@@ -27,9 +27,9 @@ class Modal extends Component {
     const { isActive, kind } = modal
     const body = ReactDOM.findDOMNode(document.body)
     if (kind === 'Modal' && isActive) {
-      body.classList.add('modalIsActive')
+      body.classList.add('isModalActive')
     } else if (kind === 'Modal' && !isActive) {
-      body.classList.remove('modalIsActive')
+      body.classList.remove('isModalActive')
     }
   }
 

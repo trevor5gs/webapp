@@ -9,7 +9,7 @@ import Mousetrap from '../vendor/mousetrap'
 import HelpDialog from '../components/dialogs/HelpDialog'
 
 export function shouldContainerUpdate(thisProps, nextProps) {
-  const pickProps = ['discoverKeyType', 'isGridMode', 'isLoggedIn', 'modalIsActive', 'pathname']
+  const pickProps = ['discoverKeyType', 'isGridMode', 'isLoggedIn', 'isModalActive', 'pathname']
   const thisCompare = pick(thisProps, pickProps)
   const nextCompare = pick(nextProps, pickProps)
   return !isEqual(thisCompare, nextCompare)
@@ -21,7 +21,7 @@ function mapStateToProps(state) {
     discoverKeyType: gui.discoverKeyType,
     isGridMode: gui.isGridMode,
     isLoggedIn: authentication.isLoggedIn,
-    modalIsActive: modal.isActive,
+    isModalActive: modal.isActive,
     pathname: routing.location.pathname,
   }
 }
@@ -32,7 +32,7 @@ class KeyboardContainer extends Component {
     dispatch: PropTypes.func.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    modalIsActive: PropTypes.bool,
+    isModalActive: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
     shortcuts: PropTypes.shape({}).isRequired,
   }
@@ -85,8 +85,8 @@ class KeyboardContainer extends Component {
       })
 
       Mousetrap.bind(SHORTCUT_KEYS.HELP, () => {
-        const { modalIsActive } = this.props
-        if (modalIsActive) {
+        const { isModalActive } = this.props
+        if (isModalActive) {
           dispatch(closeModal())
           return
         }

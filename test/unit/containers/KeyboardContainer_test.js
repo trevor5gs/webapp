@@ -7,7 +7,7 @@ describe('KeyboardContainer', () => {
       discoverKeyType: 'featured',
       isGridMode: true,
       isLoggedIn: true,
-      modalIsActive: false,
+      isModalActive: false,
       pathname: '/discover',
       notPicked: 'notPicked',
     }
@@ -16,7 +16,7 @@ describe('KeyboardContainer', () => {
       discoverKeyType: 'trending',
       isGridMode: false,
       isLoggedIn: true,
-      modalIsActive: false,
+      isModalActive: false,
       pathname: '/discover/trending',
       notPicked: 'notPicked',
     }
@@ -24,7 +24,7 @@ describe('KeyboardContainer', () => {
       discoverKeyType: 'trending',
       isGridMode: false,
       isLoggedIn: true,
-      modalIsActive: false,
+      isModalActive: false,
       pathname: '/discover/trending',
       notPicked: 'changed',
     }
