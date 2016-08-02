@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import _ from 'lodash'
 import classNames from 'classnames'
@@ -11,16 +10,6 @@ const STATUS = {
   REQUEST: 'isRequesting',
   SUCCESS: null,
   FAILURE: 'isFailing',
-}
-
-function mapStateToProps(state) {
-  const { gui } = state
-  return {
-    columnWidth: gui.columnWidth,
-    commentOffset: gui.deviceSize === 'mobile' ? 40 : 60,
-    contentWidth: gui.contentWidth,
-    innerHeight: gui.innerHeight,
-  }
 }
 
 class ImageRegion extends Component {
@@ -306,5 +295,5 @@ class ImageRegion extends Component {
   }
 }
 
-export default connect(mapStateToProps)(ImageRegion)
+export default ImageRegion
 

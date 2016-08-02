@@ -3,7 +3,9 @@ import EmbedRegion from '../regions/EmbedRegion'
 import ImageRegion from '../regions/ImageRegion'
 import TextRegion from '../regions/TextRegion'
 
-export function RegionItems({ assets, content, isGridMode = true, postDetailPath = null }) {
+export function RegionItems(props) {
+  const { assets, columnWidth, commentOffset, content, contentWidth,
+    innerHeight, isGridMode = true, postDetailPath = null } = props
   // sometimes the content is null/undefined for some reason
   if (!content) { return null }
   const cells = []
@@ -24,7 +26,11 @@ export function RegionItems({ assets, content, isGridMode = true, postDetailPath
           <ImageRegion
             affiliateLinkURL={region.linkUrl}
             assets={assets}
+            columnWidth={columnWidth}
+            commentOffset={commentOffset}
             content={region.data}
+            contentWidth={contentWidth}
+            innerHeight={innerHeight}
             isGridMode={isGridMode}
             key={`ImageRegion_${i}_${JSON.stringify(region.data)}`}
             links={region.links}
@@ -35,11 +41,7 @@ export function RegionItems({ assets, content, isGridMode = true, postDetailPath
       case 'embed':
         cells.push(<EmbedRegion region={region} key={`EmbedRegion_${i}`} />)
         break
-      case 'rule':
-        cells.push(<hr className="NotificationRule" key={`NotificationRule_${i}`} />)
-        break
       default:
-        cells.push(null)
         break
     }
   })
@@ -49,7 +51,11 @@ export function RegionItems({ assets, content, isGridMode = true, postDetailPath
 
 RegionItems.propTypes = {
   assets: PropTypes.object,
+  columnWidth: PropTypes.number,
+  commentOffset: PropTypes.number,
   content: PropTypes.array,
+  contentWidth: PropTypes.number,
+  innerHeight: PropTypes.number,
   isGridMode: PropTypes.bool,
   postDetailPath: PropTypes.string,
 }

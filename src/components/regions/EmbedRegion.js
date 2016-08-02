@@ -2,11 +2,11 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import { ElloBuyButton } from '../editor/ElloBuyButton'
 
-export const EmbedRegion = ({ region, key }) => {
+const EmbedRegion = ({ region }) => {
   const data = {}
   data[`data-${region.data.service}-id`] = region.data.id
   return (
-    <div className="EmbedRegion" key={key}>
+    <div className="EmbedRegion">
       <div className="embetter" {...data}>
         <Link className="EmbedRegionContent" to={region.data.url}>
           <img src={region.data.thumbnailLargeUrl} alt={region.data.service} />
@@ -23,7 +23,7 @@ export const EmbedRegion = ({ region, key }) => {
 
 EmbedRegion.propTypes = {
   region: PropTypes.object,
-  key: PropTypes.string,
 }
 
+export default EmbedRegion
 

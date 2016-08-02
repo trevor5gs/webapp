@@ -206,7 +206,9 @@ RepostHeader.propTypes = {
   repostedBy: PropTypes.object,
 }
 
-export const PostBody = ({ post, assets, author, isGridMode, contentWarning }) => {
+export const PostBody = (props) => {
+  const { assets, author, columnWidth, commentOffset, contentWarning,
+    contentWidth, innerHeight, isGridMode, post } = props
   if (!post) { return null }
   const cells = []
   const postDetailPath = `/${author.username}/post/${post.token}`
@@ -215,7 +217,8 @@ export const PostBody = ({ post, assets, author, isGridMode, contentWarning }) =
     cells.push(<ContentWarningButton key={`contentWarning_${post.id}`} post={post} />)
   }
 
-  const regionProps = { assets, isGridMode, postDetailPath }
+  const regionProps = { assets, columnWidth, commentOffset, contentWidth,
+    innerHeight, isGridMode, postDetailPath }
   if (post.repostContent && post.repostContent.length) {
     // this is weird, but the post summary is
     // actually the repost summary on reposts
@@ -256,7 +259,11 @@ export const PostBody = ({ post, assets, author, isGridMode, contentWarning }) =
 PostBody.propTypes = {
   assets: PropTypes.object,
   author: PropTypes.object,
+  columnWidth: PropTypes.number,
+  commentOffset: PropTypes.number,
   contentWarning: PropTypes.string,
+  contentWidth: PropTypes.number,
+  innerHeight: PropTypes.number,
   isGridMode: PropTypes.bool,
   post: PropTypes.object,
 }

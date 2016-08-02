@@ -26,7 +26,7 @@ export function shouldContainerUpdate(thisProps, nextProps) {
 }
 
 export function mapStateToProps(state, props) {
-  const { json, profile: currentUser, routing: { location: { pathname } } } = state
+  const { gui, json, profile: currentUser, routing: { location: { pathname } } } = state
   const post = json[MAPPING_TYPES.POSTS][props.post.id]
   const author = json[MAPPING_TYPES.USERS][post.authorId]
   const assets = json.assets
@@ -42,27 +42,31 @@ export function mapStateToProps(state, props) {
   const repostsCount = post.repostsCount
   const showCommentEditor = !showEditor && !props.isPostDetail && post.showComments
   const showComments = showCommentEditor && post.commentsCount > 0
-  const isGridMode = state.gui.isGridMode
+  const isGridMode = gui.isGridMode
 
   let newProps = {
     assets,
     author,
     categoryName: category ? category.name : null,
     categoryPath: category ? `/discover/${category.slug}` : null,
+    columnWidth: gui.columnWidth,
+    commentOffset: gui.deviceSize === 'mobile' ? 40 : 60,
     commentsCount: post.commentsCount,
     contentWarning: post.contentWarning,
+    contentWidth: gui.contentWidth,
     currentUser,
+    innerHeight: gui.innerHeight,
     isGridMode,
     isOnFeaturedCategory,
     isRepost,
     isReposting,
+    post,
+    postBody,
     showCommentEditor,
     showComments,
     showEditor,
     showLovers: !showEditor && !isGridMode && post.showLovers && lovesCount > 0,
     showReposters: !showEditor && !isGridMode && post.showReposters && repostsCount > 0,
-    postBody,
-    post,
   }
 
   if (isRepost) {
@@ -82,8 +86,12 @@ class PostContainer extends Component {
     authorLinkObject: PropTypes.object,
     categoryName: PropTypes.string,
     categoryPath: PropTypes.string,
+    columnWidth: PropTypes.number,
+    commentOffset: PropTypes.number,
     contentWarning: PropTypes.string,
+    contentWidth: PropTypes.number,
     currentUser: PropTypes.object,
+    innerHeight: PropTypes.number,
     isGridMode: PropTypes.bool,
     isOnFeaturedCategory: PropTypes.bool,
     isRepost: PropTypes.bool,
@@ -107,7 +115,11 @@ class PostContainer extends Component {
       author,
       categoryName,
       categoryPath,
+      columnWidth,
+      commentOffset,
       contentWarning,
+      contentWidth,
+      innerHeight,
       isGridMode,
       isOnFeaturedCategory,
       isRepost,
@@ -143,7 +155,11 @@ class PostContainer extends Component {
           <PostBody
             assets={assets}
             author={author}
+            columnWidth={columnWidth}
+            commentOffset={commentOffset}
             contentWarning={contentWarning}
+            contentWidth={contentWidth}
+            innerHeight={innerHeight}
             isGridMode={isGridMode}
             post={post}
           />
