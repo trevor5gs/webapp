@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
+import { isElloAndroid } from '../../vendor/jello'
 import { NavbarLabel } from './NavbarLabel'
 import { NavbarLayoutTool } from './NavbarLayoutTool'
 import { NavbarLink } from './NavbarLink'
@@ -137,7 +138,7 @@ export const NavbarLoggedIn = ({
         className={classNames('IconOnly', { isNotificationsUnread })}
         icon={<BoltIcon />}
         label="Notifications"
-        onClick={deviceSize !== 'mobile' ? onClickNotification : null}
+        onClick={isElloAndroid() || deviceSize === 'mobile' ? null : onClickNotification}
         pathname={pathname}
         to={`/notifications${notificationCategory}`}
       />
