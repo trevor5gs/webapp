@@ -4,7 +4,7 @@ import { get, uniqBy } from 'lodash'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import PostContainer from '../../containers/PostContainer'
 import CommentContainer from '../../containers/CommentContainer'
-import NotificationParser from '../parsers/NotificationParser'
+import NotificationContainer from '../../containers/NotificationContainer'
 import UserAvatar from '../users/UserAvatar'
 import UserCard from '../users/UserCard'
 import UserCompact from '../users/UserCompact'
@@ -146,7 +146,7 @@ export function notificationList(notifications) {
   return (
     <div className="Notifications">
       {notifications.data.map((notification, index) =>
-        <NotificationParser
+        <NotificationContainer
           key={`notificationParser${index}_${notification ? notification.createdAt : Date.now()}`}
           notification={notification}
         />
