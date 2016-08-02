@@ -50,9 +50,9 @@ class OmnibarContainer extends Component {
     const { isActive } = this.props
     const body = ReactDOM.findDOMNode(document.body)
     if (isActive) {
-      body.classList.add('omnibarIsActive')
+      body.classList.add('isOmnibarActive')
     } else if (!isActive) {
-      body.classList.remove('omnibarIsActive')
+      body.classList.remove('isOmnibarActive')
     }
   }
 
