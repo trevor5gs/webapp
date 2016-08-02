@@ -170,7 +170,7 @@ class RelationshipContainer extends Component {
 
   onOpenSignupModal = () => {
     const { dispatch } = this.props
-    dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
+    dispatch(openModal(<RegistrationRequestDialog />, 'isDecapitated'))
     dispatch(trackEvent('open-registration-request-follow-button'))
   }
 

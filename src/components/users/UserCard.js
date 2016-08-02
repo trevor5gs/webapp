@@ -29,7 +29,7 @@ class UserCard extends Component {
 
   onClickOpenSignupModal = () => {
     const { dispatch } = this.props
-    dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
+    dispatch(openModal(<RegistrationRequestDialog />, 'isDecapitated'))
   }
 
   render() {
