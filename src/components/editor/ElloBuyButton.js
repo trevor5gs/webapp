@@ -3,7 +3,7 @@ import { MoneyIcon } from './EditorIcons'
 import { dispatchTrackEvent } from '../../helpers/junk_drawer'
 
 function onElloBuyButtonClick(e) {
-  dispatchTrackEvent('affililate_link_clicked', { link: e.target.href })
+  dispatchTrackEvent('buy_link_clicked', { link: e.target.href })
 }
 
 export const ElloBuyButton = ({ to }) =>
