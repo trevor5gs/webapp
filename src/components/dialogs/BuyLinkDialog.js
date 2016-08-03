@@ -3,12 +3,12 @@ import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import TextControl from '../forms/TextControl'
 import { isValidURL } from '../forms/Validators'
 
-class AffiliateDialog extends Component {
+class BuyLinkDialog extends Component {
 
   componentWillMount() {
     this.value = this.props.text
     this.state = { status: STATUS.INDETERMINATE }
-    this.updateStatus({ affiliateLink: this.value || '' })
+    this.updateStatus({ buyLink: this.value || '' })
   }
 
   componentDidMount() {
@@ -26,13 +26,13 @@ class AffiliateDialog extends Component {
     this.props.onConfirm({ value: null })
   }
 
-  onChangeControl = ({ affiliateLink }) => {
-    this.updateStatus({ affiliateLink })
-    this.value = affiliateLink
+  onChangeControl = ({ buyLink }) => {
+    this.updateStatus({ buyLink })
+    this.value = buyLink
   }
 
-  updateStatus({ affiliateLink }) {
-    const isValid = isValidURL(affiliateLink)
+  updateStatus({ buyLink }) {
+    const isValid = isValidURL(buyLink)
     const { urlStatus } = this.state
     if (isValid && urlStatus !== STATUS.SUCCESS) {
       this.setState({ urlStatus: STATUS.SUCCESS })
@@ -45,12 +45,12 @@ class AffiliateDialog extends Component {
     const { onDismiss, text } = this.props
     const { urlStatus } = this.state
     return (
-      <div className="Dialog AffiliateDialog">
-        <h2 className="AffiliateDialogTitle">Sell your work</h2>
+      <div className="Dialog BuyLinkDialog">
+        <h2 className="BuyLinkDialogTitle">Sell your work</h2>
         <TextControl
-          classList="asBoxControl AffiliateDialogControl"
-          id="affiliateLink"
-          name="affiliate[productDetail]"
+          classList="asBoxControl BuyLinkDialogControl"
+          id="buyLink"
+          name="buy[productDetail]"
           onChange={this.onChangeControl}
           placeholder="Product detail URL"
           ref="textControl"
@@ -59,7 +59,7 @@ class AffiliateDialog extends Component {
           text={text}
         />
         <button
-          className="AffiliateDialogButton isSubmit"
+          className="BuyLinkDialogButton isSubmit"
           onClick={this.onClickSubmit}
           disabled={!(urlStatus === STATUS.SUCCESS)}
         >
@@ -68,24 +68,24 @@ class AffiliateDialog extends Component {
         </button>
         {text && text.length ?
           <button
-            className="AffiliateDialogButton isRemove"
+            className="BuyLinkDialogButton isRemove"
             onClick={this.onClickReset}
           >
             Remove
           </button> :
           null
         }
-        <button className="AffiliateDialogButton" onClick={onDismiss}>Cancel</button>
+        <button className="BuyLinkDialogButton" onClick={onDismiss}>Cancel</button>
       </div>
     )
   }
 }
 
-AffiliateDialog.propTypes = {
+BuyLinkDialog.propTypes = {
   onConfirm: PropTypes.func,
   onDismiss: PropTypes.func,
   text: PropTypes.string,
 }
 
-export default AffiliateDialog
+export default BuyLinkDialog
 

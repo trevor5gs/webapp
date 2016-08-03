@@ -26,7 +26,7 @@ function mapStateToProps(state) {
 class ImageRegion extends Component {
 
   static propTypes = {
-    affiliateLinkURL: PropTypes.string,
+    buyLinkURL: PropTypes.string,
     assets: PropTypes.object,
     columnWidth: PropTypes.number,
     commentOffset: PropTypes.number,
@@ -260,15 +260,15 @@ class ImageRegion extends Component {
   }
 
   renderRegionAsLink() {
-    const { affiliateLinkURL, postDetailPath } = this.props
+    const { buyLinkURL, postDetailPath } = this.props
     return (
       <div className="RegionContent">
         <Link to={postDetailPath}>
           {this.renderAttachment()}
         </Link>
         {
-          affiliateLinkURL && affiliateLinkURL.length ?
-            <ElloBuyButton to={affiliateLinkURL} /> :
+          buyLinkURL && buyLinkURL.length ?
+            <ElloBuyButton to={buyLinkURL} /> :
             null
         }
       </div>
@@ -277,7 +277,7 @@ class ImageRegion extends Component {
 
   renderRegionAsStatic() {
     const { marginBottom, scale } = this.state
-    const { affiliateLinkURL } = this.props
+    const { buyLinkURL } = this.props
     return (
       <div
         className="RegionContent"
@@ -286,8 +286,8 @@ class ImageRegion extends Component {
       >
         {this.renderAttachment()}
         {
-          affiliateLinkURL && affiliateLinkURL.length ?
-            <ElloBuyButton to={affiliateLinkURL} /> :
+          buyLinkURL && buyLinkURL.length ?
+            <ElloBuyButton to={buyLinkURL} /> :
             null
         }
       </div>

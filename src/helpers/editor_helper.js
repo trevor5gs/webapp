@@ -12,7 +12,7 @@ const initialState = {
   isLoading: false,
   isPosting: false,
   order: [],
-  postAffiliateLink: null,
+  postBuyLink: null,
   shouldPersist: false,
   uid: 0,
 }
@@ -105,8 +105,8 @@ methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
   const newBlock = { ...block, uid: newState.uid }
-  if (newState.postAffiliateLink) {
-    newBlock.linkUrl = newState.postAffiliateLink
+  if (newState.postBuyLink) {
+    newBlock.linkUrl = newState.postBuyLink
   }
   collection[newState.uid] = newBlock
   order.push(newState.uid)
@@ -211,12 +211,12 @@ methods.replaceText = (state, action) => {
   return newState
 }
 
-methods.updateAffiliateLink = (state, action) => {
+methods.updateBuyLink = (state, action) => {
   const newState = cloneDeep(state)
   const { payload: { link } } = action
   // once individual blocks can get their own links
   // we can rip out this overall property on editor
-  newState.postAffiliateLink = link
+  newState.postBuyLink = link
   newState.order.forEach((uid) => {
     const block = newState.collection[uid]
     if (link && link.length) {
@@ -312,8 +312,8 @@ methods.getEditorObject = (state = initialState, action) => {
         state: newState,
       })
       return newState
-    case EDITOR.UPDATE_AFFILIATE_LINK:
-      return methods.updateAffiliateLink(newState, action)
+    case EDITOR.UPDATE_BUY_LINK:
+      return methods.updateBuyLink(newState, action)
     case EDITOR.UPDATE_BLOCK:
       return methods.updateBlock(newState, action)
     default:

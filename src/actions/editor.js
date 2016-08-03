@@ -182,9 +182,9 @@ export function temporaryEditorAssetCreated(objectURL, editorId) {
   }
 }
 
-export function updateAffiliateLink(editorId, link) {
+export function updateBuyLink(editorId, link) {
   return {
-    type: EDITOR.UPDATE_AFFILIATE_LINK,
+    type: EDITOR.UPDATE_BUY_LINK,
     payload: {
       editorId,
       link,

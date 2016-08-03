@@ -21,7 +21,7 @@ function textRegion(region, key, isGridLayout, postDetailPath) {
 function imageRegion(region, key, isGridLayout, postDetailPath, isNotification, isComment) {
   return (
     <ImageRegion
-      affiliateLinkURL={region.linkUrl}
+      buyLinkURL={region.linkUrl}
       assets={assets}
       content={region.data}
       isComment={isComment}
