@@ -29,7 +29,13 @@ export const Discover = ({
   title,
   }) =>
   <MainView className="Discover">
-    <Helmet title={title} />
+    <Helmet
+      title={title}
+      meta={[
+        { property: 'og:title', content: title },
+        { name: 'name', itemprop: 'name', content: title },
+      ]}
+    />
     {isBeaconActive ? <DiscoverZeroStream onDismissZeroStream={onDismissZeroStream} /> : null}
     <Promotion
       coverDPI={coverDPI}
