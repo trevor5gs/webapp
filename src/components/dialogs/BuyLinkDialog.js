@@ -48,7 +48,7 @@ class BuyLinkDialog extends Component {
       <div className="Dialog BuyLinkDialog">
         <h2 className="BuyLinkDialogTitle">Sell your work</h2>
         <TextControl
-          classList="asBoxControl BuyLinkDialogControl"
+          classList="isBoxControl BuyLinkDialogControl"
           id="buyLink"
           name="buy[productDetail]"
           onChange={this.onChangeControl}

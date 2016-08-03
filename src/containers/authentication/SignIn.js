@@ -180,7 +180,7 @@ class SignIn extends Component {
             role="form"
           >
             <TextControl
-              classList="asBoxControl"
+              classList="isBoxControl"
               id="usernameOrEmail"
               label="Username or Email"
               name="user[usernameOrEmail]"
@@ -193,7 +193,7 @@ class SignIn extends Component {
               trimWhitespace
             />
             <PasswordControl
-              classList="asBoxControl"
+              classList="isBoxControl"
               label="Password"
               onBlur={this.onBlurControl}
               onChange={this.onChangePasswordControl}

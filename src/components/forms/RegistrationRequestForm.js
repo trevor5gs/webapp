@@ -100,7 +100,7 @@ class RegistrationRequestForm extends Component {
           role="form"
         >
           <EmailControl
-            classList="asBoxControl"
+            classList="isBoxControl"
             label="Email"
             onBlur={this.onBlurControl}
             onChange={this.onChangeEmailControl}

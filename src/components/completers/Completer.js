@@ -85,7 +85,7 @@ export default class Completer extends Component {
     return (
       completions.data.map((completion, i) =>
         <Completion
-          className={i === selectedIndex ? 'active' : null}
+          className={i === selectedIndex ? 'isActive' : null}
           key={`completion_${i}`}
           asset={<Avatar className="isTiny" sources={{ tmp: { url: completion.imageUrl } }} />}
           label={`@${completion.name}`}
@@ -102,7 +102,7 @@ export default class Completer extends Component {
     return (
       completions.data.map((completion, i) =>
         <Completion
-          className={i === selectedIndex ? 'active' : null}
+          className={i === selectedIndex ? 'isActive' : null}
           key={`completion_${i}`}
           asset={<Emoji key={completion.name} src={completion.imageUrl} />}
           label={`:${completion.name}:`}

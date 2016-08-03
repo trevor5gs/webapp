@@ -19,7 +19,7 @@ export const TabListLinks = ({ activePath, className, onTabClick, tabClasses, ta
       }
       return (
         <Link
-          className={classNames(tabClasses, 'TabLink', { active: isActive(tab, activePath) })}
+          className={classNames(tabClasses, 'TabLink', { isActive: isActive(tab, activePath) })}
           key={`TabLink-${tab.to.replace('/', '_')}_${index}`}
           onClick={onTabClick ? () => { onTabClick({ type: tab.type }) } : null}
           to={tab.to}
@@ -44,7 +44,7 @@ export const TabListButtons = ({ activeType, className, onTabClick, tabClasses, 
   <nav className={classNames(className, 'TabListButtons')} role="tablist">
     {tabs.map((tab, index) =>
       <button
-        className={classNames(tabClasses, 'TabButton', { active: tab.type === activeType })}
+        className={classNames(tabClasses, 'TabButton', { isActive: tab.type === activeType })}
         key={`TabButton-${tab.type}_${index}`}
         onClick={() => { onTabClick({ type: tab.type }) }}
         type="button"

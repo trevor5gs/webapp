@@ -309,7 +309,7 @@ class Settings extends Component {
 
     // const { isInfoFormSaving } = this.state
     const mdash = <span>&mdash;</span>
-    const boxControlClassNames = 'asBoxControl onWhite'
+    const boxControlClassNames = 'isBoxControl onWhite'
 
     return (
       <MainView className="Settings">

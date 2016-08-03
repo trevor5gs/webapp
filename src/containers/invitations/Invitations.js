@@ -84,7 +84,7 @@ class Invitations extends Component {
             role="form"
           >
             <BatchEmailControl
-              classList="asBoxControl onWhite"
+              classList="isBoxControl onWhite"
               label={`Emails ${batchEmailState.message}`}
               onChange={this.onChangeControl}
               tabIndex="1"

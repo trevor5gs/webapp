@@ -61,8 +61,8 @@ describe('Search', function () {
       expect(tabListButtons.find('.TabButton')).to.have.length(2)
       expect(tab0.prop('children')).to.equal('Posts')
       expect(tab1.prop('children')).to.equal('People')
-      expect(tab0.hasClass('active')).to.be.true
-      expect(tab1.hasClass('active')).to.be.false
+      expect(tab0.hasClass('isActive')).to.be.true
+      expect(tab1.hasClass('isActive')).to.be.false
     })
 
     it('exercises the search interface', function () {
@@ -75,8 +75,8 @@ describe('Search', function () {
       tab1.simulate('click')
       expect(window.location.search).to.equal('?terms=word&type=users')
       mockLocationChangeUpdate({ type: 'users' })
-      expect(tab0.hasClass('active')).to.be.false
-      expect(tab1.hasClass('active')).to.be.true
+      expect(tab0.hasClass('isActive')).to.be.false
+      expect(tab1.hasClass('isActive')).to.be.true
 
       // Performs a "User" search
       searchControl.find('input').simulate('change', { target: { value: 'thugs' } })
@@ -87,8 +87,8 @@ describe('Search', function () {
       tab0.simulate('click')
       expect(window.location.search).to.equal('?terms=thugs')
       mockLocationChangeUpdate({ type: 'posts' })
-      expect(tab0.hasClass('active')).to.be.true
-      expect(tab1.hasClass('active')).to.be.false
+      expect(tab0.hasClass('isActive')).to.be.true
+      expect(tab1.hasClass('isActive')).to.be.false
     })
 
     // Clean it up

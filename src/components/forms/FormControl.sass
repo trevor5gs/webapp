@@ -3,7 +3,7 @@
 .FormControl
   position: relative
 
-.FormControl.asBoxControl
+.FormControl.isBoxControl
   margin-bottom: rem(10)
 
 // -------------------------------------
@@ -25,19 +25,19 @@
   &::placeholder
     color: #aaa
 
-.FormControlInput.asBoxControl
+.FormControlInput.isBoxControl
   height: rem(60)
   padding: 0 rem(30)
   background-color: #d8d8d8
   border: 1px solid #d8d8d8
   color: black
-.FormControlInput.asBoxControl.onWhite
+.FormControlInput.isBoxControl.onWhite
   background-color: white
   border: 1px solid #ccc
-.FormControlInput.asBoxControl:focus
+.FormControlInput.isBoxControl:focus
   background-color: white
   border-color: white
-.FormControlInput.asBoxControl.onWhite:focus
+.FormControlInput.isBoxControl.onWhite:focus
   background-color: #ccc
   border-color: #ccc
   color: black
@@ -45,40 +45,40 @@
 .hasValue:not(.isInitialValue) > .FormControlInput
   border-color: black
 
-.hasValue:not(.isInitialValue) > .FormControlInput.asBoxControl
+.hasValue:not(.isInitialValue) > .FormControlInput.isBoxControl
   background-color: white
   border-color: white
-.hasValue:not(.isInitialValue) > .FormControlInput.asBoxControl.onWhite
+.hasValue:not(.isInitialValue) > .FormControlInput.isBoxControl.onWhite
   background-color: #ccc
   border-color: #ccc
   color: black
 
 .isFailing > .FormControlInput,
-.isFailing > .FormControlInput.asBoxControl,
-.isFailing > .FormControlInput.asBoxControl.onWhite
+.isFailing > .FormControlInput.isBoxControl,
+.isFailing > .FormControlInput.isBoxControl.onWhite
   border-color: $danger
 
-textarea.FormControlInput:not(.asBoxControl)
+textarea.FormControlInput:not(.isBoxControl)
   height: rem(30)
   min-height: 0
   margin-top: rem(10)
 
-textarea.FormControlInput.asBoxControl
+textarea.FormControlInput.isBoxControl
   height: rem(120)
   padding-top: rem(20)
   padding-bottom: rem(20)
   margin-bottom: rem(-5)
 
-.hasValue > textarea.FormControlInput:not(.asBoxControl),
-.hasFocus > textarea.FormControlInput:not(.asBoxControl)
+.hasValue > textarea.FormControlInput:not(.isBoxControl),
+.hasFocus > textarea.FormControlInput:not(.isBoxControl)
   height: rem(115)
 
 @media(min-width: #{$break-3})
-  .hasValue > textarea.FormControlInput:not(.asBoxControl),
-  .hasFocus > textarea.FormControlInput:not(.asBoxControl)
+  .hasValue > textarea.FormControlInput:not(.isBoxControl),
+  .hasFocus > textarea.FormControlInput:not(.isBoxControl)
     height: rem(85)
 
-.BatchEmailControl .FormControlInput.asBoxControl
+.BatchEmailControl .FormControlInput.isBoxControl
   height: rem(160)
 
 .isOnboardingView ~ .MainView .NameControl > .FormControlInput
@@ -98,7 +98,7 @@ textarea.FormControlInput.asBoxControl
   opacity: 0
   color: #aaa
 
-.FormControlLabel.asBoxControl
+.FormControlLabel.isBoxControl
   top: rem(20)
   bottom: auto
   left: auto
@@ -111,8 +111,8 @@ textarea.FormControlInput.asBoxControl
   transform: translate3d(0,rem(10),0)
   opacity: 1
 
-.isFailing > .FormControlLabel.asBoxControl,
-.hasValue > .FormControlLabel.asBoxControl
+.isFailing > .FormControlLabel.isBoxControl,
+.hasValue > .FormControlLabel.isBoxControl
   transform: translate3d(0,rem(-13),0)
 
 .isFailing > .FormControlLabel
