@@ -102,7 +102,7 @@ function onKeyDown(e) {
     return
   }
   // adding br tags while completing causes all of the text to disappear
-  const completerActive = document.body.querySelector('.Completion.active')
+  const completerActive = document.body.querySelector('.Completion.isActive')
   if (e.keyCode === 13 && !isFirefox() && !completerActive) {
     e.preventDefault() // Prevent DIVs from being created
     document.execCommand('insertHTML', false, '<br/><br/>')

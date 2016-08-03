@@ -243,14 +243,14 @@ class PostTools extends Component {
           key={`LoveTool_${post.id}`}
         >
           <button
-            className={classNames({ active: postLoved, hasPostToolDrawer: postLovesCount > 0 })}
+            className={classNames({ isActive: postLoved, hasPostToolDrawer: postLovesCount > 0 })}
             onClick={this.onClickLovePost}
           >
             <HeartIcon />
             <Hint>Love</Hint>
           </button>
           <button
-            className={classNames({ active: postLoved }, 'PostToolDrawerButton')}
+            className={classNames({ isActive: postLoved }, 'PostToolDrawerButton')}
             onClick={this.onClickToggleLovers}
           >
             <span className="PostToolValue" >
