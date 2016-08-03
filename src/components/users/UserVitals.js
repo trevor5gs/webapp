@@ -23,7 +23,7 @@ const UserStatsLink = ({ asDisabled = false, children, to }) =>
     <span className="UserStatsLink asDisabled">
       {children}
     </span> :
-    <Link activeClassName="active" className="UserStatsLink" to={to}>
+    <Link activeClassName="isActive" className="UserStatsLink" to={to}>
       {children}
     </Link>
 
