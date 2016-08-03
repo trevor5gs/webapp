@@ -11,6 +11,7 @@ import { sendMessage } from '../../actions/user'
 import { MiniPillButton } from '../buttons/Buttons'
 import MessageDialog from '../dialogs/MessageDialog'
 import ShareDialog from '../dialogs/ShareDialog'
+import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import { ShareIcon } from '../users/UserIcons'
 import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
 import RelationshipContainer from '../../containers/RelationshipContainer'
@@ -84,9 +85,16 @@ class UserList extends Component {
     dispatch(closeModal())
   }
 
+  onOpenSignupModal = () => {
+    const { dispatch } = this.props
+    dispatch(openModal(<RegistrationRequestDialog />, 'isDecapitated'))
+    dispatch(trackEvent('open-registration-request-hire-me-button'))
+  }
+
   render() {
-    const { classList, followingCount, followersCount, isHireable, lovesCount, relationshipPriority,
-      postsCount, showBlockMuteButton, uploader, useGif, user, username } = this.props
+    const { classList, followingCount, followersCount, isHireable, isLoggedIn,
+      lovesCount, relationshipPriority, postsCount, showBlockMuteButton,
+      uploader, useGif, user, username } = this.props
     const userPath = `/${user.username}`
     const isModifiable = uploader ? true : undefined
     return (
@@ -119,7 +127,7 @@ class UserList extends Component {
         <UserInfo user={user} />
         {isHireable ?
           <div className="ProfileButtons">
-            <MiniPillButton onClick={this.onClickHireMe} >
+            <MiniPillButton onClick={isLoggedIn ? this.onClickHireMe : this.onOpenSignupModal} >
               Hire Me
             </MiniPillButton>
             <button className="ProfileButtonsShareButton" onClick={this.onClickShareProfile} >
