@@ -16,7 +16,7 @@ export function containsInvalidUsernameCharacters(value) {
 }
 
 export function isValidURL(value) {
-  // this is added since we only validate affiliate links
+  // this is added since we only validate buy links
   // which would get the protocol prepended if not there
   let newValue = value
   if (newValue.indexOf('http') !== 0) {

@@ -5,13 +5,13 @@ import {
   BrowseIcon, CheckIcon, CameraIcon, CancelIcon, PostIcon, ReplyAllIcon, MoneyIcon,
 } from './EditorIcons'
 import { openModal, closeModal } from '../../actions/modals'
-import { updateAffiliateLink } from '../../actions/editor'
-import AffiliateDialog from '../dialogs/AffiliateDialog'
+import { updateBuyLink } from '../../actions/editor'
+import BuyLinkDialog from '../dialogs/BuyLinkDialog'
 
 class PostActionBar extends Component {
 
   static propTypes = {
-    affiliateLink: PropTypes.string,
+    buyLink: PropTypes.string,
     cancelAction: PropTypes.func.isRequired,
     deviceSize: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
@@ -24,9 +24,9 @@ class PostActionBar extends Component {
     submitText: PropTypes.string,
   }
 
-  onAddAffiliateLink = ({ value }) => {
+  onAddBuyLink = ({ value }) => {
     const { dispatch, editorId } = this.props
-    dispatch(updateAffiliateLink(editorId, value))
+    dispatch(updateBuyLink(editorId, value))
     this.onCloseModal()
   }
 
@@ -56,22 +56,22 @@ class PostActionBar extends Component {
   }
 
   money = () => {
-    const { dispatch, affiliateLink } = this.props
+    const { dispatch, buyLink } = this.props
     dispatch(openModal(
-      <AffiliateDialog
-        onConfirm={this.onAddAffiliateLink}
+      <BuyLinkDialog
+        onConfirm={this.onAddBuyLink}
         onDismiss={this.onCloseModal}
-        text={affiliateLink}
+        text={buyLink}
       />))
   }
 
   render() {
     const { deviceSize, disableSubmitAction, hasMedia, replyAllAction, submitText } = this.props
-    const isAffiliateLinked = this.props.affiliateLink && this.props.affiliateLink.length
+    const isBuyLinked = this.props.buyLink && this.props.buyLink.length
     return (
       <div className="editor-actions">
         <button
-          className={classNames('PostActionButton forMoney', { isAffiliateLinked })}
+          className={classNames('PostActionButton forMoney', { isBuyLinked })}
           disabled={!hasMedia}
           ref="moneyButton"
           onClick={this.money}

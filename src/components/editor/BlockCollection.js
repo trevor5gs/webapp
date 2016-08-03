@@ -31,7 +31,7 @@ import { addInputObject, removeInputObject } from './InputComponent'
 class BlockCollection extends Component {
 
   static propTypes = {
-    affiliateLink: PropTypes.string,
+    buyLink: PropTypes.string,
     avatar: PropTypes.object,
     blocks: PropTypes.array,
     cancelAction: PropTypes.func.isRequired,
@@ -354,7 +354,7 @@ class BlockCollection extends Component {
 
   render() {
     const {
-      affiliateLink, avatar, cancelAction, collection, dragBlock, editorId, hasContent, hasMedia,
+      buyLink, avatar, cancelAction, collection, dragBlock, editorId, hasContent, hasMedia,
       hasMention, isComment, isLoading, isMobileGridStream, isOwnPost, isPosting, order, submitText,
     } = this.props
     const { dragBlockTop, hasDragOver } = this.state
@@ -393,7 +393,7 @@ class BlockCollection extends Component {
         </div>
         {showQuickEmoji ? <QuickEmoji onAddEmoji={this.onInsertEmoji} /> : null}
         <PostActionBar
-          affiliateLink={affiliateLink}
+          buyLink={buyLink}
           cancelAction={cancelAction}
           disableSubmitAction={isPosting || isLoading || !hasContent}
           editorId={editorId}
@@ -412,7 +412,7 @@ class BlockCollection extends Component {
 function mapStateToProps(state, ownProps) {
   const editor = get(state, ['editor', ownProps.editorId], {})
   return {
-    affiliateLink: get(editor, ['collection', editor.order[0], 'linkUrl']),
+    buyLink: get(editor, ['collection', editor.order[0], 'linkUrl']),
     avatar: state.profile.avatar,
     collection: editor.collection,
     currentUsername: state.profile.username,

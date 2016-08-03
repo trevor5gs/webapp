@@ -15,7 +15,7 @@ describe('editor helper', () => {
       expect(subject.initialState.isLoading).to.be.false
       expect(subject.initialState.isPosting).to.be.false
       expect(subject.initialState.order).to.be.empty
-      expect(subject.initialState.postAffiliateLink).to.be.null
+      expect(subject.initialState.postBuyLink).to.be.null
       expect(subject.initialState.shouldPersist).to.be.false
       expect(subject.initialState.uid).to.equal(0)
     })
@@ -246,11 +246,11 @@ describe('editor helper', () => {
       expect(state.collection[0]).to.deep.equal({ kind: 'text', uid: 0 })
     })
 
-    it('adds the linkUrl when affiliate link is present', () => {
+    it('adds the linkUrl when buy link is present', () => {
       state = subject.methods.add({
         block: { kind: 'text' },
         shouldCheckForEmpty: true,
-        state: { ...subject.initialState, postAffiliateLink: 'yeah' },
+        state: { ...subject.initialState, postBuyLink: 'yeah' },
       })
       expect(state.uid).to.equal(1)
       expect(state.order.length).to.equal(1)
@@ -554,7 +554,7 @@ describe('editor helper', () => {
   // TODO: need to figure out how to test the query lookup in this method
   describe('#replaceText', () => { })
 
-  describe('#updateAffiliateLink', () => {
+  describe('#updateBuyLink', () => {
     it('updates all blocks with a link_url', () => {
       const newState = {
         collection: {
@@ -576,7 +576,7 @@ describe('editor helper', () => {
         },
         order: [0, 1, 2],
       }
-      state = subject.methods.updateAffiliateLink(newState, { payload: { link: 'word' } })
+      state = subject.methods.updateBuyLink(newState, { payload: { link: 'word' } })
       expect(state.collection[0].linkUrl).to.equal('word')
       expect(state.collection[1].linkUrl).to.equal('word')
       expect(state.collection[2].linkUrl).to.equal('word')
@@ -606,7 +606,7 @@ describe('editor helper', () => {
         },
         order: [0, 1, 2],
       }
-      state = subject.methods.updateAffiliateLink(newState, { payload: { link: '' } })
+      state = subject.methods.updateBuyLink(newState, { payload: { link: '' } })
       expect(state.collection[0].linkUrl).to.be.undefined
       expect(state.collection[1].linkUrl).to.be.undefined
       expect(state.collection[2].linkUrl).to.be.undefined
@@ -636,7 +636,7 @@ describe('editor helper', () => {
         },
         order: [0, 1, 2],
       }
-      state = subject.methods.updateAffiliateLink(newState, { payload: { link: null } })
+      state = subject.methods.updateBuyLink(newState, { payload: { link: null } })
       expect(state.collection[0].linkUrl).to.be.undefined
       expect(state.collection[1].linkUrl).to.be.undefined
       expect(state.collection[2].linkUrl).to.be.undefined
@@ -877,10 +877,10 @@ describe('editor helper', () => {
       expect(addSpy.called).to.be.true
     })
 
-    it('calls #updateAffiliateLink with EDITOR.UPDATE_AFFILIATE_LINK', () => {
-      spy = sinon.stub(subject.methods, 'updateAffiliateLink')
+    it('calls #updateBuyLink with EDITOR.UPDATE_BUY_LINK', () => {
+      spy = sinon.stub(subject.methods, 'updateBuyLink')
       action = {
-        type: EDITOR.UPDATE_AFFILIATE_LINK,
+        type: EDITOR.UPDATE_BUY_LINK,
       }
       state = subject.methods.getEditorObject(subject.initialState, action)
       expect(spy.called).to.be.true
