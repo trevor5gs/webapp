@@ -249,7 +249,7 @@ class Join extends Component {
     } = this.state
     const { coverDPI, coverOffset, email } = this.props
     const isValid = isFormValid([emailState, usernameState, passwordState])
-    const boxControlClassNames = 'asBoxControl'
+    const boxControlClassNames = 'isBoxControl'
     return (
       <MainView className="Authentication">
         <div className="AuthenticationFormDialog">
