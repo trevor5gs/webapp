@@ -18,7 +18,6 @@ class PostActionBar extends Component {
     disableSubmitAction: PropTypes.bool,
     editorId: PropTypes.string.isRequired,
     handleFileAction: PropTypes.func.isRequired,
-    hasAffiliateLinkAuthoring: PropTypes.bool,
     hasMedia: PropTypes.bool,
     replyAllAction: PropTypes.func,
     submitAction: PropTypes.func.isRequired,
@@ -67,26 +66,20 @@ class PostActionBar extends Component {
   }
 
   render() {
-    const { deviceSize, disableSubmitAction, hasAffiliateLinkAuthoring,
-      hasMedia, replyAllAction, submitText } = this.props
+    const { deviceSize, disableSubmitAction, hasMedia, replyAllAction, submitText } = this.props
     const isAffiliateLinked = this.props.affiliateLink && this.props.affiliateLink.length
     return (
       <div className="editor-actions">
-
-        {
-          hasAffiliateLinkAuthoring ?
-            <button
-              className={classNames('PostActionButton forMoney', { isAffiliateLinked })}
-              disabled={!hasMedia}
-              ref="moneyButton"
-              onClick={this.money}
-            >
-              <span className="PostActionButtonLabel">Sell</span>
-              <MoneyIcon />
-              <CheckIcon />
-            </button> :
-            null
-        }
+        <button
+          className={classNames('PostActionButton forMoney', { isAffiliateLinked })}
+          disabled={!hasMedia}
+          ref="moneyButton"
+          onClick={this.money}
+        >
+          <span className="PostActionButtonLabel">Sell</span>
+          <MoneyIcon />
+          <CheckIcon />
+        </button>
 
         <button className="PostActionButton forUpload" ref="browseButton" onClick={this.browse}>
           <span className="PostActionButtonLabel">Upload</span>
@@ -131,10 +124,9 @@ class PostActionBar extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { gui, profile } = state
+  const { gui } = state
   return {
     deviceSize: gui.deviceSize,
-    hasAffiliateLinkAuthoring: profile.hasAffiliateLinkAuthoring || false,
   }
 }
 
