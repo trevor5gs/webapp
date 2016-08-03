@@ -86,7 +86,7 @@ export function loadUserUsers(username, type) {
   }
 }
 
-export function loadUserAvatars(endpoint, post, resultType) {
+export function loadUserDrawer(endpoint, post, resultType) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint },

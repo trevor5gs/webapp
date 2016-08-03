@@ -1,23 +1,24 @@
 import React, { PropTypes } from 'react'
-import { loadUserAvatars } from '../../actions/user'
+import { loadUserDrawer } from '../../actions/user'
 import StreamContainer from '../../containers/StreamContainer'
 
-const UserAvatars = ({ endpoint, icon, post, resultType }) =>
-  <section className="UserAvatars">
+const UserDrawer = ({ endpoint, icon, post, resultType }) =>
+  <section className="UserDrawer">
     {icon}
     <StreamContainer
-      action={loadUserAvatars(endpoint, post, resultType)}
+      action={loadUserDrawer(endpoint, post, resultType)}
       paginatorText="+more"
       ignoresScrollPosition
     />
   </section>
 
-UserAvatars.propTypes = {
+UserDrawer.propTypes = {
   endpoint: PropTypes.object.isRequired,
   icon: PropTypes.element.isRequired,
   post: PropTypes.object.isRequired,
   resultType: PropTypes.string.isRequired,
 }
 
-export default UserAvatars
+
+export default UserDrawer
 

@@ -5,12 +5,9 @@ import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import PostContainer from '../../containers/PostContainer'
 import CommentContainer from '../../containers/CommentContainer'
 import NotificationContainer from '../../containers/NotificationContainer'
-import UserAvatar from '../users/UserAvatar'
+import UserContainer from '../../containers/UserContainer'
 import UserCard from '../users/UserCard'
-import UserCompact from '../users/UserCompact'
-import UserGrid from '../users/UserGrid'
 import UserInvitee from '../users/UserInvitee'
-import UserList from '../users/UserList'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
@@ -49,7 +46,7 @@ export function usersAsGrid(users) {
   return (
     <div className="Users asGrid">
       {users.data.map((user) =>
-        <UserGrid user={user} key={`userGrid_${user.id}`} />
+        <UserContainer user={user} key={`userGrid_${user.id}`} type="grid" />
       )}
     </div>
   )
@@ -59,7 +56,7 @@ export function usersAsList(users) {
   return (
     <div className="Users asList">
       {users.data.map((user) =>
-        <UserList user={user} key={`userList_${user.id}`} />
+        <UserContainer user={user} key={`userList_${user.id}`} type="list" />
       )}
     </div>
   )
@@ -159,7 +156,7 @@ export function userAvatars(users) {
   const uniqUsers = uniqBy(users.data, (user) => user.id)
   return (
     uniqUsers.map((user) =>
-      <UserAvatar user={user} key={`userAvatar_${user.id}`} />
+      <UserContainer user={user} key={`userAvatar_${user.id}`} type="avatar" />
     )
   )
 }
@@ -191,7 +188,7 @@ export function profileToggles(settings) {
 export function blockedMutedUserList(users) {
   return (
     users.data.map((user) =>
-      <UserCompact user={user} key={`userCompact_${user.id}`} />
+      <UserContainer user={user} key={`userCompact_${user.id}`} type="compact" />
     )
   )
 }

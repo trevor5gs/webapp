@@ -160,16 +160,16 @@ describe('user actions', () => {
     })
   })
 
-  context('#loadUserAvatars', () => {
+  context('#loadUserDrawer', () => {
     const post = { id: '666' }
-    const action = subject.loadUserAvatars(postLovers(post.id), post, 'loves')
+    const action = subject.loadUserDrawer(postLovers(post.id), post, 'loves')
 
     it('is an FSA compliant action', () => {
       expect(isFSA(action)).to.be.true
     })
 
     it('has a top level action.type', () => {
-      expect(isFSAName(action, subject.loadUserAvatars)).to.be.true
+      expect(isFSAName(action, subject.loadUserDrawer)).to.be.true
     })
 
     it('has the correct api endpoint in the action', () => {
