@@ -25,7 +25,7 @@ class UserList extends Component {
       PropTypes.string,
       PropTypes.number,
     ]).isRequired,
-    isHirable: PropTypes.bool,
+    isHireable: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     lovesCount: PropTypes.number.isRequired,
     postsCount: PropTypes.number.isRequired,
@@ -85,7 +85,7 @@ class UserList extends Component {
   }
 
   render() {
-    const { classList, followingCount, followersCount, isHirable, lovesCount, relationshipPriority,
+    const { classList, followingCount, followersCount, isHireable, lovesCount, relationshipPriority,
       postsCount, showBlockMuteButton, uploader, useGif, user, username } = this.props
     const userPath = `/${user.username}`
     const isModifiable = uploader ? true : undefined
@@ -117,7 +117,7 @@ class UserList extends Component {
           username={username}
         />
         <UserInfo user={user} />
-        {isHirable ?
+        {isHireable ?
           <div className="ProfileButtons">
             <MiniPillButton onClick={this.onClickHireMe} >
               Hire Me
@@ -143,7 +143,7 @@ function mapStateToProps(state, ownProps) {
   return {
     followingCount: user.followingCount,
     followersCount: user.followersCount,
-    isHirable: user.isHirable,
+    isHireable: user.isHireable,
     isLoggedIn: state.authentication.isLoggedIn,
     lovesCount: user.lovesCount,
     relationshipPriority: user.relationshipPriority,
