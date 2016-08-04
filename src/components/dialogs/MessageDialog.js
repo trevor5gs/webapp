@@ -49,7 +49,7 @@ export default class MessageDialog extends Component {
           role="form"
         >
           <FormControl
-            classList="MessageMessageControl asBoxControl"
+            classList="MessageMessageControl isBoxControl"
             id="message"
             kind="textarea"
             label="Message"
