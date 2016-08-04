@@ -173,5 +173,11 @@ describe('api.js', () => {
       expect(api.relationshipAdd('666', 'buddy').path).to.match(/\/users\/666\/add\/buddy$/)
     })
   })
+
+  context('hireUser', () => {
+    it('#hireUser', () => {
+      expect(api.hireUser('666', 'subject', 'message body').path).to.match(/\/users\/666\/hire_me$/)
+    })
+  })
 })
 

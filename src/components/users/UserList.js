@@ -3,11 +3,16 @@ import _ from 'lodash'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
+import { getElloPlatform } from '../../vendor/jello'
 import Avatar from '../assets/Avatar'
-import { openModal } from '../../actions/modals'
+import { openModal, closeModal } from '../../actions/modals'
 import { trackEvent } from '../../actions/tracking'
-import ShareProfileButton from './ShareProfileButton'
+import { sendMessage } from '../../actions/user'
+import { MiniPillButton } from '../buttons/Buttons'
+import MessageDialog from '../dialogs/MessageDialog'
 import ShareDialog from '../dialogs/ShareDialog'
+import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
+import { ShareIcon } from '../users/UserIcons'
 import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
 import RelationshipContainer from '../../containers/RelationshipContainer'
 
@@ -21,6 +26,7 @@ class UserList extends Component {
       PropTypes.string,
       PropTypes.number,
     ]).isRequired,
+    isHireable: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     lovesCount: PropTypes.number.isRequired,
     postsCount: PropTypes.number.isRequired,
@@ -56,9 +62,39 @@ class UserList extends Component {
     dispatch(trackEvent('open-share-dialog-profile'))
   }
 
+  onClickHireMe = () => {
+    const { dispatch, user } = this.props
+    dispatch(openModal(
+      <MessageDialog
+        name={`${user.name ? user.name : user.username}`}
+        onConfirm={this.onConfirmHireMe}
+        onDismiss={this.onDismissModal}
+      />
+    ))
+    dispatch(trackEvent('open-hire-dialog-profile', { platform: getElloPlatform() }))
+  }
+
+  onConfirmHireMe = ({ message }) => {
+    const { dispatch, user } = this.props
+    dispatch(sendMessage(user.id, message))
+    dispatch(trackEvent('send-hire-dialog-profile', { platform: getElloPlatform() }))
+  }
+
+  onDismissModal = () => {
+    const { dispatch } = this.props
+    dispatch(closeModal())
+  }
+
+  onOpenSignupModal = () => {
+    const { dispatch } = this.props
+    dispatch(openModal(<RegistrationRequestDialog />, 'isDecapitated'))
+    dispatch(trackEvent('open-registration-request-hire-me-button'))
+  }
+
   render() {
-    const { classList, followingCount, followersCount, lovesCount, relationshipPriority,
-      postsCount, showBlockMuteButton, uploader, useGif, user, username } = this.props
+    const { classList, followingCount, followersCount, isHireable, isLoggedIn,
+      lovesCount, relationshipPriority, postsCount, showBlockMuteButton,
+      uploader, useGif, user, username } = this.props
     const userPath = `/${user.username}`
     const isModifiable = uploader ? true : undefined
     return (
@@ -89,9 +125,22 @@ class UserList extends Component {
           username={username}
         />
         <UserInfo user={user} />
-        <ShareProfileButton onClick={this.onClickShareProfile} >
-          Share Profile
-        </ShareProfileButton>
+        {isHireable ?
+          <div className="ProfileButtons">
+            <MiniPillButton onClick={isLoggedIn ? this.onClickHireMe : this.onOpenSignupModal} >
+              Hire Me
+            </MiniPillButton>
+            <button className="ProfileButtonsShareButton" onClick={this.onClickShareProfile} >
+              <ShareIcon />
+            </button>
+          </div>
+          :
+          <div className="ProfileButtons">
+            <MiniPillButton onClick={this.onClickShareProfile} >
+              Share Profile
+            </MiniPillButton>
+          </div>
+        }
       </div>
     )
   }
@@ -102,6 +151,7 @@ function mapStateToProps(state, ownProps) {
   return {
     followingCount: user.followingCount,
     followersCount: user.followersCount,
+    isHireable: user.isHireable,
     isLoggedIn: state.authentication.isLoggedIn,
     lovesCount: user.lovesCount,
     relationshipPriority: user.relationshipPriority,

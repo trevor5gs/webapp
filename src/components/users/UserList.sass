@@ -49,15 +49,22 @@
 .UserList > .UserStats
   margin: rem(20) 0
 
-.UserList > .ShareProfileButton
+.UserList > .ProfileButtons
   display: none
 
 .UserList.asUserDetailHeader
   margin-left: rem(10)
   margin-bottom: rem(20)
 
-.UserList.asUserDetailHeader > .ShareProfileButton
+.UserList.asUserDetailHeader > .ProfileButtons
   display: block
+
+.ProfileButtonsShareButton
+  color: #aaa
+  margin-top: rem(-2)
+  margin-left: rem(5)
+.no-touch .ProfileButtonsShareButton:hover
+  color: black
 
 @media(min-width: #{$break-2})
   .UserList.asUserDetailHeader
@@ -107,7 +114,7 @@
     margin-left: rem(220)
     padding-right: rem(20)
 
-  .UserList > .ShareProfileButton
+  .UserList > .ProfileButtons
     position: absolute
     top: rem(210)
     left: rem(35)

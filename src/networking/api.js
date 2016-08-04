@@ -321,6 +321,11 @@ export function flagUser(idOrUsername, kind) {
     path: getAPIPath(`users/${idOrUsername}/flag/${kind}`),
   }
 }
+export function hireUser(id) {
+  return {
+    path: getAPIPath(`users/${id}/hire_me`),
+  }
+}
 // Search
 export function searchPosts(params) {
   return {

@@ -1,17 +1,15 @@
 import React, { PropTypes } from 'react'
 
-const ShareProfileButton = ({ children, onClick }) =>
+export const MiniPillButton = ({ children, onClick }) =>
   <button
-    className="ShareProfileButton"
+    className="MiniPillButton"
     onClick={onClick}
   >
     {children}
   </button>
 
-ShareProfileButton.propTypes = {
+MiniPillButton.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func.isRequired,
 }
-
-export default ShareProfileButton
 
