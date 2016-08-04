@@ -196,7 +196,7 @@ describe('user actions', () => {
   })
 
   context('#sendMessage', () => {
-    const action = subject.sendMessage('1', 'subject', 'message body')
+    const action = subject.sendMessage('1', 'message body')
 
     it('is an FSA compliant action', () => {
       expect(isFSA(action)).to.be.true
@@ -211,7 +211,6 @@ describe('user actions', () => {
     })
 
     it('has the expected body for sending a message', () => {
-      expect(action.payload.body.subject).to.equal('subject')
       expect(action.payload.body.body).to.equal('message body')
     })
   })

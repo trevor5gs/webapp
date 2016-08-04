@@ -74,9 +74,9 @@ class UserList extends Component {
     dispatch(trackEvent('open-hire-dialog-profile', { platform: getElloPlatform() }))
   }
 
-  onConfirmHireMe = ({ subject, message }) => {
+  onConfirmHireMe = ({ message }) => {
     const { dispatch, user } = this.props
-    dispatch(sendMessage(user.id, subject, message))
+    dispatch(sendMessage(user.id, message))
     dispatch(trackEvent('send-hire-dialog-profile', { platform: getElloPlatform() }))
   }
 

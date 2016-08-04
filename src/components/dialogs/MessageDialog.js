@@ -11,13 +11,7 @@ export default class MessageDialog extends Component {
 
   componentWillMount() {
     this.state = { isValid: false, scene: 'renderCompose' }
-    this.subjectValue = ''
     this.messageValue = ''
-  }
-
-  onChangeSubjectControl = ({ subject }) => {
-    this.subjectValue = subject
-    this.updateFormState()
   }
 
   onChangeMessageControl = ({ message }) => {
@@ -27,7 +21,6 @@ export default class MessageDialog extends Component {
 
   onConfirm = () => {
     this.props.onConfirm({
-      subject: this.subjectValue,
       message: this.messageValue,
     })
     this.setState({ scene: 'renderSent' })
@@ -35,9 +28,9 @@ export default class MessageDialog extends Component {
 
   updateFormState() {
     const { isValid } = this.state
-    if (!isValid && (this.subjectValue.length && this.messageValue.length)) {
+    if (!isValid && this.messageValue.length) {
       this.setState({ isValid: true })
-    } else if (isValid && (!this.subjectValue.length || !this.messageValue.length)) {
+    } else if (isValid && !this.messageValue.length) {
       this.setState({ isValid: false })
     }
   }
@@ -55,15 +48,6 @@ export default class MessageDialog extends Component {
           onSubmit={this.onConfirm}
           role="form"
         >
-          <FormControl
-            classList="asBoxControl"
-            id="subject"
-            label="Subject"
-            name="message[subject]"
-            onChange={this.onChangeSubjectControl}
-            placeholder="Subject"
-            tabIndex="1"
-          />
           <FormControl
             classList="MessageMessageControl asBoxControl"
             id="message"
@@ -102,7 +86,7 @@ export default class MessageDialog extends Component {
               <polyline points="4.8,10.8 9.9,17 17.2,5" />
             </g>
           </SVGIcon>
-          <span>{`Email sent to ${name}`}</span>
+          <span>{`Message sent to ${name}`}</span>
         </h2>
         <button
           className="MessageDialogButton isOkayButton"
