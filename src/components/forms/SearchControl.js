@@ -19,6 +19,7 @@ class SearchControl extends Component {
         autoCapitalize="off"
         autoCorrect="off"
         autoComplete="off"
+        autoFocus
         type="text"
       />
     )
