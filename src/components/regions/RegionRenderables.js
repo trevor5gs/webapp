@@ -24,8 +24,8 @@ export function RegionItems(props) {
       case 'image':
         cells.push(
           <ImageRegion
-            affiliateLinkURL={region.linkUrl}
             assets={assets}
+            buyLinkURL={region.linkUrl}
             columnWidth={columnWidth}
             commentOffset={commentOffset}
             content={region.data}
@@ -80,7 +80,7 @@ export function regionItemsForNotifications(content, postDetailPath = null, asse
       case 'image':
         imageAssets.push(
           <ImageRegion
-            affiliateLinkURL={region.linkUrl}
+            buyLinkURL={region.linkUrl}
             assets={assets}
             content={region.data}
             isGridMode
