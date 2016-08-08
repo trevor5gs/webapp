@@ -25,6 +25,52 @@
     "node": "5.10.1",
     "npm": "3.8.3"
   },
+  "babel": {
+    "presets": ["es2015", "react", "stage-0"],
+    "plugins": ["lodash"],
+    "env": {
+      "development": {
+        "plugins": [
+          ["react-transform", {
+            "transforms": [{
+              "transform": "react-transform-hmr",
+              "imports": ["react"],
+              "locals": ["module"]
+            }, {
+              "transform": "react-transform-catch-errors",
+              "imports": ["react", "redbox-react"]
+            }]
+          }]
+        ]
+      },
+      "production": {
+        "plugins": [
+          "transform-react-constant-elements"
+        ]
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "node": true,
+      "mocha": true
+    },
+    "globals": {
+      "ENV": false,
+      "AndroidInterface": false
+    },
+    "rules": {
+      "no-alert": 2,
+      "no-console": 2,
+      "no-debugger": 2,
+      "no-multiple-empty-lines": [2, { "max": 3, "maxEOF": 2 }],
+      "no-unused-expressions": 0,
+      "semi": 0
+    }
+  },
   "dependencies": {
     "autoprefixer": "6.3.7",
     "autoprefixer-loader": "3.2.0",
