@@ -81,11 +81,11 @@ export function loadEditablePost(idOrToken) {
   }
 }
 
-export function loadPostDetail(idOrToken) {
+export function loadPostDetail(idOrToken, userIdOrToken) {
   return {
     type: POST.DETAIL,
     payload: {
-      endpoint: api.postDetail(idOrToken),
+      endpoint: api.postDetail(idOrToken, userIdOrToken),
       postIdOrToken: idOrToken,
     },
     meta: {
