@@ -42,7 +42,7 @@ export function mapStateToProps(state, props) {
   const repostsCount = post.repostsCount
   const showCommentEditor = !showEditor && !props.isPostDetail && post.showComments
   const showComments = showCommentEditor && post.commentsCount > 0
-  const isGridMode = gui.isGridMode
+  const isGridMode = props.isPostDetail ? false : gui.isGridMode
 
   let newProps = {
     assets,
