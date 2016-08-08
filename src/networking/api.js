@@ -175,8 +175,8 @@ export function noiseStream() {
   }
 }
 // Posts
-export function postDetail(idOrToken) {
-  const params = { comment_count: false }
+export function postDetail(idOrToken, userIdOrToken) {
+  const params = { comment_count: false, user_id: userIdOrToken }
   return {
     path: getAPIPath(`posts/${idOrToken}`, params),
   }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { isEqual } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
-import { selectParamsToken, selectPost } from '../selectors'
+import { selectParamsToken, selectParamsUsername, selectPost } from '../selectors'
 import { loadComments, loadPostDetail, toggleLovers, toggleReposters } from '../actions/posts'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { PostDetail, PostDetailError } from '../components/views/PostDetail'
@@ -12,11 +12,14 @@ import { PostDetail, PostDetailError } from '../components/views/PostDetail'
 // before it ever hits React's virtual DOM so it's really beneficial to
 // optimzize the amount of times render is called.
 export function shouldContainerUpdate(thisProps, nextProps) {
-  const { author, isLoggedIn, paramsToken, post, streamError, streamType } = thisProps
+  const { author, isLoggedIn, paramsToken, paramsUsername,
+    post, streamError, streamType } = thisProps
   if (!nextProps.author || !nextProps.post) {
     return false
   }
-  if (paramsToken !== nextProps.paramsToken || isLoggedIn !== nextProps.isLoggedIn) {
+  if (paramsToken !== nextProps.paramsToken ||
+      paramsUsername !== nextProps.paramsUsername ||
+      isLoggedIn !== nextProps.isLoggedIn) {
     return true
   }
   if (!isEqual(author, nextProps.author) || !isEqual(post, nextProps.post)) {
@@ -31,11 +34,13 @@ export function shouldContainerUpdate(thisProps, nextProps) {
 export function mapStateToProps(state, props) {
   const { authentication, json, stream } = state
   const paramsToken = selectParamsToken(state, props)
+  const paramsUsername = selectParamsUsername(state, props)
   const post = selectPost(state, props)
   return {
     author: post ? json[MAPPING_TYPES.USERS][post.authorId] : null,
     isLoggedIn: authentication.isLoggedIn,
     paramsToken,
+    paramsUsername,
     post,
     streamError: stream.error,
     streamType: stream.type,
@@ -50,26 +55,29 @@ export class PostDetailContainer extends Component {
     isLoggedIn: PropTypes.bool.isRequired,
     post: PropTypes.object,
     paramsToken: PropTypes.string.isRequired,
+    paramsUsername: PropTypes.string.isRequired,
     streamError: PropTypes.object,
     streamType: PropTypes.string,
   }
 
-  static preRender = (store, routerState) =>
-    store.dispatch(loadPostDetail(`~${routerState.params.token}`))
+  static preRender = (store, routerState) => {
+    const params = routerState.params
+    return store.dispatch(loadPostDetail(`~${params.token}`, `~${params.username}`))
+  }
 
   componentWillMount() {
-    const { dispatch, paramsToken, post } = this.props
+    const { dispatch, paramsToken, paramsUsername, post } = this.props
     if (post) {
       this.lovesWasOpen = post.showLovers
       this.repostsWasOpen = post.showReposters
     }
-    dispatch(loadPostDetail(`~${paramsToken}`))
+    dispatch(loadPostDetail(`~${paramsToken}`, `~${paramsUsername}`))
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch, paramsToken } = this.props
-    if (paramsToken !== nextProps.paramsToken) {
-      dispatch(loadPostDetail(`~${nextProps.paramsToken}`))
+    const { dispatch, paramsToken, paramsUsername } = this.props
+    if (paramsToken !== nextProps.paramsToken || paramsUsername !== nextProps.paramsUsername) {
+      dispatch(loadPostDetail(`~${nextProps.paramsToken}`, `~${nextProps.paramsUsername}`))
     }
   }
 
