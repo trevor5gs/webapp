@@ -35,7 +35,6 @@ export function mapStateToProps(state, props) {
   const { authentication, json, stream } = state
   const paramsToken = selectParamsToken(state, props)
   const paramsUsername = selectParamsUsername(state, props)
-  console.log('paramsUsername', paramsUsername)
   const post = selectPost(state, props)
   return {
     author: post ? json[MAPPING_TYPES.USERS][post.authorId] : null,
