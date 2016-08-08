@@ -19,7 +19,6 @@
 .ElloBuyButton:before
   +hitarea
 
-
 .ElloBuyButton > .SVGIcon.MoneyIcon > g
   fill: white
   stroke: white
@@ -35,6 +34,17 @@
 
 .EmbedRegion .embetter a
   line-height: rem(40)
+
+.Notification .ElloBuyButton
+  width: rem(15)
+  height: rem(15)
+  line-height: rem(14)
+.Notification .RegionContent .ElloBuyButton
+  top: rem(5)
+  right: rem(5)
+.Notification .ElloBuyButton svg
+  transform: scale(0.7)
+  transform-origin: rem(2) rem(2)
 
 @media(min-width: #{$break-2})
   .no-touch .ElloBuyButton:hover
