@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import Editor from '../editor/Editor'
 import { PostDetailHelmet } from '../helmets/PostDetailHelmet'
-import PostParser from '../parsers/PostParser'
+import PostContainer from '../../containers/PostContainer'
 import StreamContainer from '../../containers/StreamContainer'
 import { MainView } from '../views/MainView'
 
@@ -11,7 +11,7 @@ export const PostDetail = ({ author, hasEditor, post, streamAction }) =>
     <div className="PostDetails Posts asList">
       <article className="PostList" id={`Post_${post ? post.id : '_'}`}>
         <div className="StreamContainer">
-          {author && post ? <PostParser isGridLayout={false} isPostDetail post={post} /> : null}
+          {author && post ? <PostContainer isPostDetail post={post} /> : null}
           {hasEditor && post ? <Editor post={post} isComment /> : null}
         </div>
         {streamAction ?

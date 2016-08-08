@@ -2,10 +2,9 @@ import React from 'react'
 import { Link } from 'react-router'
 import { get, uniqBy } from 'lodash'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
-import PostParser from '../parsers/PostParser'
-import CommentParser from '../parsers/CommentParser'
-import NotificationParser from '../parsers/NotificationParser'
-import PostsAsGrid from '../posts/PostsAsGrid'
+import PostContainer from '../../containers/PostContainer'
+import CommentContainer from '../../containers/CommentContainer'
+import NotificationContainer from '../../containers/NotificationContainer'
 import UserAvatar from '../users/UserAvatar'
 import UserCard from '../users/UserCard'
 import UserCompact from '../users/UserCompact'
@@ -93,9 +92,26 @@ export function usersAsInviteeGrid(invitations) {
   )
 }
 
-export function postsAsGrid(posts) {
+export function postsAsGrid(posts, columnCount) {
+  const columns = []
+  for (let i = 0; i < columnCount; i++) {
+    columns.push([])
+  }
+  Object.keys(posts.data).forEach((index) => {
+    columns[index % columnCount].push(posts.data[index])
+  })
   return (
-    <PostsAsGrid posts={posts.data} />
+    <div className="Posts asGrid">
+      {columns.map((columnPosts, index) =>
+        <div className="Column" key={`column_${index}`}>
+          {columnPosts.map((post) =>
+            <article className="PostGrid" key={`postsAsGrid_${post.id}`}>
+              <PostContainer post={post} />
+            </article>
+          )}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -103,11 +119,8 @@ export function postsAsList(posts) {
   return (
     <div className="Posts asList">
       {posts.data.map((post) =>
-        <article id={`Post_${post.id}`} key={`postsAsList_${post.id}`} className="PostList">
-          <PostParser
-            isGridLayout={false}
-            post={post}
-          />
+        <article className="PostList" key={`postsAsList_${post.id}`}>
+          <PostContainer post={post} />
         </article>
       )}
     </div>
@@ -118,11 +131,11 @@ export function commentsAsList(post) {
   return comments => (
     <div>
       {comments.data.map(comment =>
-        <CommentParser
-          key={`commentParser_${comment.id}`}
+        <CommentContainer
           comment={comment}
-          post={post}
           isEditing={comment.isEditing}
+          key={`commentContainer_${comment.id}`}
+          post={post}
         />
       )}
     </div>
@@ -133,7 +146,7 @@ export function notificationList(notifications) {
   return (
     <div className="Notifications">
       {notifications.data.map((notification, index) =>
-        <NotificationParser
+        <NotificationContainer
           key={`notificationParser${index}_${notification ? notification.createdAt : Date.now()}`}
           notification={notification}
         />

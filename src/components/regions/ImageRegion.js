@@ -1,26 +1,15 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import _ from 'lodash'
 import classNames from 'classnames'
-import ImageAsset from '../../assets/ImageAsset'
-import { ElloBuyButton } from '../../editor/ElloBuyButton'
+import ImageAsset from '../assets/ImageAsset'
+import { ElloBuyButton } from '../editor/ElloBuyButton'
 
 const STATUS = {
   PENDING: 'isPending',
   REQUEST: 'isRequesting',
   SUCCESS: null,
   FAILURE: 'isFailing',
-}
-
-function mapStateToProps(state) {
-  const { gui } = state
-  return {
-    columnWidth: gui.columnWidth,
-    commentOffset: gui.deviceSize === 'mobile' ? 40 : 60,
-    contentWidth: gui.contentWidth,
-    innerHeight: gui.innerHeight,
-  }
 }
 
 class ImageRegion extends Component {
@@ -34,7 +23,7 @@ class ImageRegion extends Component {
     contentWidth: PropTypes.number,
     innerHeight: PropTypes.number,
     isComment: PropTypes.bool,
-    isGridLayout: PropTypes.bool.isRequired,
+    isGridMode: PropTypes.bool.isRequired,
     isNotification: PropTypes.bool,
     links: PropTypes.object,
     postDetailPath: PropTypes.string,
@@ -42,7 +31,7 @@ class ImageRegion extends Component {
 
   static defaultProps = {
     isComment: false,
-    isGridLayout: false,
+    isGridMode: false,
     isNotification: false,
   }
 
@@ -121,12 +110,12 @@ class ImageRegion extends Component {
   // below 1:1 pixel density, or go above the desired grid cell height
   getImageDimensions(metadata = this.getAttachmentMetadata()) {
     if (!metadata) { return metadata }
-    const { columnWidth, commentOffset, contentWidth, isGridLayout, isComment } = this.props
+    const { columnWidth, commentOffset, contentWidth, isGridMode, isComment } = this.props
     const { height, ratio } = metadata
-    const allowableWidth = isGridLayout ? columnWidth : contentWidth
-    const widthOffset = isGridLayout && isComment ? commentOffset : 0
+    const allowableWidth = isGridMode ? columnWidth : contentWidth
+    const widthOffset = isGridMode && isComment ? commentOffset : 0
     const calculatedWidth = allowableWidth - widthOffset
-    const maxCellHeight = isGridLayout ? 1200 : 7500
+    const maxCellHeight = isGridMode ? 1200 : 7500
     const widthConstrainedRelativeHeight = Math.round(calculatedWidth * (1 / ratio))
     const hv = Math.min(widthConstrainedRelativeHeight, height, maxCellHeight)
     const wv = Math.round(hv * ratio)
@@ -144,10 +133,10 @@ class ImageRegion extends Component {
   }
 
   getImageSourceSet() {
-    const { isGridLayout } = this.props
+    const { isGridMode } = this.props
     const images = []
     if (!this.isBasicAttachment()) {
-      if (isGridLayout) {
+      if (isGridMode) {
         images.push(`${this.attachment.mdpi.url} 375w`)
         images.push(`${this.attachment.hdpi.url} 1920w`)
       } else {
@@ -295,9 +284,9 @@ class ImageRegion extends Component {
   }
 
   render() {
-    const { isGridLayout, postDetailPath } = this.props
+    const { isGridMode, postDetailPath } = this.props
     const { status } = this.state
-    const asLink = isGridLayout && postDetailPath
+    const asLink = isGridMode && postDetailPath
     return (
       <div className={classNames('ImageRegion', status)} >
         {asLink ? this.renderRegionAsLink() : this.renderRegionAsStatic()}
@@ -306,5 +295,5 @@ class ImageRegion extends Component {
   }
 }
 
-export default connect(mapStateToProps)(ImageRegion)
+export default ImageRegion
 

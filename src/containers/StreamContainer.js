@@ -28,6 +28,10 @@ export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState
     // thus causing errors when trying to render wrong results
   } else if (nextProps.resultPath !== thisProps.resultPath) {
     return false
+  } else if (nextProps.isGridMode !== thisProps.isGridMode) {
+    return true
+  } else if (thisProps.columnCount !== nextProps.columnCount && nextProps.isGridMode) {
+    return true
     // allow page loads to fall through and also allow stream
     // load requests to fall through to show the loader
     // on an initial page load when endpoints don't match
@@ -47,6 +51,7 @@ export function makeMapStateToProps() {
     const streamProps = getStreamProps(state, props)
     return {
       ...streamProps,
+      columnCount: state.gui.columnCount,
       deviceSize: state.gui.deviceSize,
       history: state.gui.history,
       innerHeight: state.gui.innerHeight,
@@ -67,6 +72,7 @@ export class StreamContainer extends Component {
     action: PropTypes.object,
     children: PropTypes.any,
     className: PropTypes.string,
+    columnCount: PropTypes.number,
     deviceSize: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
@@ -360,7 +366,7 @@ export class StreamContainer extends Component {
   }
 
   render() {
-    const { className, initModel, isGridMode, json,
+    const { className, columnCount, initModel, isGridMode, json,
       paginatorText, renderObj, result, stream } = this.props
     const { action, hidePaginator } = this.state
     if (!action) { return null }
@@ -387,7 +393,7 @@ export class StreamContainer extends Component {
     const pagination = result.pagination
     return (
       <section className={classNames('StreamContainer', className)}>
-        {meta.renderStream[renderMethod](renderObj)}
+        {meta.renderStream[renderMethod](renderObj, columnCount)}
         {this.props.children}
         <Paginator
           hasShowMoreButton={
