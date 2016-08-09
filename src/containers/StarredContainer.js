@@ -13,7 +13,7 @@ function mapStateToProps(state) {
   }
 }
 
-export class StarredContainer extends Component {
+class StarredContainer extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,

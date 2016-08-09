@@ -84,3 +84,5 @@ export function pasted(e, d, id) {
   }
 }
 
+export default pasted
+

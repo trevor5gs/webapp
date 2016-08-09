@@ -18,3 +18,5 @@ export function omnibar(state = initialState, action) {
   }
 }
 
+export default omnibar
+

@@ -12,3 +12,5 @@ export const ShareIcon = () =>
     </g>
   </SVGIcon>
 
+export default ShareIcon
+

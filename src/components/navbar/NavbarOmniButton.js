@@ -12,3 +12,5 @@ NavbarOmniButton.propTypes = {
   onDragOver: PropTypes.func.isRequired,
 }
 
+export default NavbarOmniButton
+

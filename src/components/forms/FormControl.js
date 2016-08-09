@@ -174,7 +174,7 @@ class FormControl extends Component {
   }
 
   checkValue = () => {
-    const inputControl = this.refs.input
+    const inputControl = this.input
     const { text } = this.state
     if (inputControl && inputControl.value !== text) {
       this.onChangeValue(inputControl.value)
@@ -183,7 +183,7 @@ class FormControl extends Component {
   }
 
   clear() {
-    this.refs.input.value = ''
+    this.input.value = ''
   }
 
   renderLabel() {
@@ -204,7 +204,7 @@ class FormControl extends Component {
         onFocus={this.onFocusControl}
         onBlur={this.onBlurControl}
         onChange={this.onChangeControl}
-        ref="input"
+        ref={(comp) => { this.input = comp }}
         defaultValue={text}
       />
     )
@@ -218,7 +218,7 @@ class FormControl extends Component {
         onFocus={this.onFocusControl}
         onBlur={this.onBlurControl}
         onChange={this.onChangeControl}
-        ref="input"
+        ref={(comp) => { this.input = comp }}
         defaultValue={text}
       />
     )

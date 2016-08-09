@@ -35,3 +35,5 @@ export function suggestEmoji(word, e) {
   return suggestions
 }
 
+export default suggestEmoji
+

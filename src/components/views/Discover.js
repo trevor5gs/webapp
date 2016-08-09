@@ -62,3 +62,5 @@ Discover.propTypes = {
   title: PropTypes.string.isRequired,
 }
 
+export default Discover
+

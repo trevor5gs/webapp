@@ -28,7 +28,7 @@ class RegistrationRequestForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
-    if (availability && availability.hasOwnProperty('email')) {
+    if (availability && {}.hasOwnProperty.call(availability, 'email')) {
       this.onValidateEmailResponse(availability)
     }
   }

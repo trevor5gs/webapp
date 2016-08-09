@@ -9,3 +9,5 @@ export function emoji(state = {}, action) {
   }
 }
 
+export default emoji
+

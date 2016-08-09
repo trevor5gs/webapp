@@ -1,9 +1,9 @@
-let memoizedIsAndroid = undefined
-let memoizedIsChrome = undefined
-let memoizedIsElloAndroid = undefined
-let memoizedIsFirefox = undefined
-let memoizedIsIOS = undefined
-let memoizedIsSafari = undefined
+let memoizedIsAndroid
+let memoizedIsChrome
+let memoizedIsElloAndroid
+let memoizedIsFirefox
+let memoizedIsIOS
+let memoizedIsSafari
 
 export function isAndroid() {
   if (typeof window === 'undefined') { return false }

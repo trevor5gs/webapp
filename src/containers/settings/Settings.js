@@ -100,10 +100,10 @@ class Settings extends Component {
     if (!availability) { return }
     const prevUsername = get(availability, 'original.username', this.usernameValue)
     const prevEmail = get(availability, 'original.email', this.emailValue)
-    if (availability.hasOwnProperty('username') && prevUsername === this.usernameValue) {
+    if ({}.hasOwnProperty.call(availability, 'username') && prevUsername === this.usernameValue) {
       this.validateUsernameResponse(availability)
     }
-    if (availability.hasOwnProperty('email') && prevEmail === this.emailValue) {
+    if ({}.hasOwnProperty.call(availability, 'email') && prevEmail === this.emailValue) {
       this.validateEmailResponse(availability)
     }
   }
@@ -177,8 +177,8 @@ class Settings extends Component {
   onClickRequestDataExport = () => {
     const { dispatch } = this.props
     dispatch(exportData())
-    this.refs.exportButton.disabled = true
-    this.refs.exportButton.innerHTML = 'Exported'
+    this.exportButton.disabled = true
+    this.exportButton.innerHTML = 'Exported'
   }
 
   onClickDeleteAccountModal = () => {
@@ -236,6 +236,7 @@ class Settings extends Component {
           href={link.url}
           target="_blank"
           key={`settingslinks_${i}`}
+          rel="noopener noreferrer"
           style={{ marginRight: `${5 / 16}rem` }}
         >
           {link.text}
@@ -247,7 +248,13 @@ class Settings extends Component {
   getOriginalAssetUrl(asset) {
     return (
     asset && asset.original && asset.original.url ?
-      <a href={asset.original.url} target="_blank">View original image</a> :
+      <a
+        href={asset.original.url}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        View original image
+      </a> :
       <span>&mdash;</span>
     )
   }
@@ -261,8 +268,8 @@ class Settings extends Component {
   }
 
   clearPasswords() {
-    this.refs.newPasswordControl.clear()
-    this.refs.currentPasswordControl.clear()
+    this.newPasswordControl.clear()
+    this.currentPasswordControl.clear()
   }
 
   checkServerForAvailability(vo) {
@@ -389,7 +396,7 @@ class Settings extends Component {
               onChange={this.onChangePasswordControl}
               placeholder="Set a new password"
               renderStatus={this.renderStatus(passwordState.message)}
-              ref="newPasswordControl"
+              ref={(comp) => { this.newPasswordControl = comp }}
               status={passwordState.status}
               tabIndex="3"
             />
@@ -402,7 +409,7 @@ class Settings extends Component {
                 name="user[current_password]"
                 onChange={this.onChangeCurrentPasswordControl}
                 placeholder="Enter current password"
-                ref="currentPasswordControl"
+                ref={(comp) => { this.currentPasswordControl = comp }}
                 status={currentPasswordState.status}
                 tabIndex={requiresSave ? '4' : '0'}
               />
@@ -512,6 +519,7 @@ class Settings extends Component {
                   <a
                     className="SettingsButton"
                     href={profile.dataExport}
+                    rel="noopener noreferrer"
                     target="_blank"
                   >
                     Download Export
@@ -519,7 +527,7 @@ class Settings extends Component {
                   <button
                     className="SettingsButton"
                     onClick={this.onClickRequestDataExport}
-                    ref="exportButton"
+                    ref={(comp) => { this.exportButton = comp }}
                   >
                     Request Export
                   </button>

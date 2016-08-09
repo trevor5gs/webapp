@@ -32,7 +32,7 @@ export function getEditorId(post, comment, isComment, isZero) {
     modelId = '0'
   }
   const fullPrefix = `${prefix}${modelId}`
-  if (editorUniqueIdentifiers.hasOwnProperty(fullPrefix)) {
+  if ({}.hasOwnProperty.call(editorUniqueIdentifiers, fullPrefix)) {
     return editorUniqueIdentifiers[fullPrefix]
   }
   return fullPrefix
@@ -196,7 +196,6 @@ class Editor extends Component {
         isOwnPost={isOwnPost}
         key={key}
         post={post}
-        ref="blockCollection"
         repostContent={repostContent}
         shouldLoadFromState={shouldLoadFromState}
         shouldPersist={shouldPersist}

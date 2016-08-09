@@ -66,7 +66,7 @@ export function makeMapStateToProps() {
   return mapStateToProps
 }
 
-export class StreamContainer extends Component {
+class StreamContainer extends Component {
 
   static propTypes = {
     action: PropTypes.object,
@@ -170,9 +170,9 @@ export class StreamContainer extends Component {
     const { innerHeight, stream, omnibar, isUserDetail } = this.props
     const canScroll = document.body.scrollHeight > innerHeight
     const shouldScroll = this.shouldScroll && (canScroll ||
-      stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
-      action && action.payload &&
-      stream.payload.endpoint.path === action.payload.endpoint.path)
+      (stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
+       action && action.payload &&
+       stream.payload.endpoint.path === action.payload.endpoint.path))
     if (shouldScroll) {
       if (this.attemptToRestoreScroll()) {
         this.shouldScroll = false

@@ -17,8 +17,7 @@ import { Paginator } from '../../components/streams/Paginator'
 import Session from '../../../src/vendor/session'
 import { MainView } from '../../components/views/MainView'
 
-/* eslint-disable react/prefer-stateless-function */
-export class Notifications extends Component {
+class Notifications extends Component {
 
   static propTypes = {
     pathname: PropTypes.string,
@@ -56,8 +55,8 @@ export class Notifications extends Component {
       scrollToTop()
       this.setState({ isReloading: true })
     }
-    if (this.refs.streamContainer) {
-      this.refs.streamContainer.refs.wrappedInstance.setAction(
+    if (this.streamContainer) {
+      this.streamContainer.refs.wrappedInstance.setAction(
         loadNotifications({ category: type })
       )
     }
@@ -112,8 +111,8 @@ export class Notifications extends Component {
           action={loadNotifications(params)}
           className="asFullWidth"
           key={`notificationView_${params.category}`}
+          ref={(comp) => { this.streamContainer = comp }}
           scrollSessionKey={`notifications_${category || 'all'}`}
-          ref="streamContainer"
         />
       </MainView>
     )

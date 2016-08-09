@@ -7,3 +7,5 @@ export function sayHello({ username }) {
   }
 }
 
+export default sayHello
+

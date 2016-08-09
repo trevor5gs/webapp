@@ -1,12 +1,12 @@
 /* eslint-disable max-len */
 import React, { Component, PropTypes } from 'react'
 import { push } from 'react-router-redux'
-import { trackEvent } from '../../actions/tracking'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import * as ACTION_TYPES from '../../constants/action_types'
-import { batchUpdateRelationship } from '../../actions/relationships'
 import { loadAwesomePeople, relationshipBatchSave } from '../../actions/onboarding'
+import { batchUpdateRelationship } from '../../actions/relationships'
+import { trackEvent } from '../../actions/tracking'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
 import StreamContainer from '../../containers/StreamContainer'
@@ -66,9 +66,8 @@ class AwesomePeople extends Component {
   }
 
   getUserIds() {
-    const { streamContainer } = this.refs
-    return streamContainer && streamContainer.refs.wrappedInstance.props.result ?
-      streamContainer.refs.wrappedInstance.props.result.ids :
+    return this.streamContainer && this.streamContainer.refs.wrappedInstance.props.result ?
+      this.streamContainer.refs.wrappedInstance.props.result.ids :
       []
   }
 
@@ -120,12 +119,12 @@ class AwesomePeople extends Component {
         <div className={classNames({ isFollowingAll: this.isFollowingAll() })}>
           {
             userIds.length ?
-              <button className="PickerButton" ref="followAllButton" onClick={this.followAll}>
+              <button className="PickerButton" onClick={this.followAll}>
                 <span>{this.renderBigButtonText()}</span>
               </button> :
               null
           }
-          <StreamContainer ref="streamContainer" action={loadAwesomePeople()} />
+          <StreamContainer ref={(comp) => { this.streamContainer = comp }} action={loadAwesomePeople()} />
         </div>
       </MainView>
     )

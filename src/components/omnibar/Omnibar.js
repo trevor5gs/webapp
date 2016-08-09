@@ -36,3 +36,5 @@ Omnibar.propTypes = {
   onClickCloseOmnibar: PropTypes.func,
 }
 
+export default Omnibar
+

@@ -1,6 +1,6 @@
-import { expect } from '../../spec_helper'
-import { LOCATION_CHANGE } from 'react-router-redux'
 import React from 'react'
+import { LOCATION_CHANGE } from 'react-router-redux'
+import { expect } from '../../spec_helper'
 import { modal as reducer } from '../../../src/reducers/modal'
 import { ALERT, AUTHENTICATION, MODAL, PROFILE } from '../../../src/constants/action_types'
 

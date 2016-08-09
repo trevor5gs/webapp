@@ -46,7 +46,7 @@ export default class ImageAsset extends Component {
   createLoader() {
     this.disposeLoader()
     const { src, srcSet } = this.props
-    const hasSource = !!(src && src.length || srcSet && srcSet.length)
+    const hasSource = !!((src && src.length) || (srcSet && srcSet.length))
     if (!hasSource) { return }
     this.img = new Image()
     this.img.onload = this.onLoadSuccess

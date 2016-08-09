@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-import FormControl from './FormControl'
 import classNames from 'classnames'
+import FormControl from './FormControl'
 
 class BioControl extends Component {
 

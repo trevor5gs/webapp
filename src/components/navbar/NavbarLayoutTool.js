@@ -10,3 +10,5 @@ NavbarLayoutTool.propTypes = {
   onClick: PropTypes.func,
 }
 
+export default NavbarLayoutTool
+

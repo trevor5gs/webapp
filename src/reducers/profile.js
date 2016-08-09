@@ -127,3 +127,5 @@ export function profile(state = {}, action) {
   }
 }
 
+export default profile
+

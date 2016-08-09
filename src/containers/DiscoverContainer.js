@@ -121,7 +121,7 @@ function mapStateToProps(state, props) {
   }
 }
 
-export class DiscoverContainer extends Component {
+class DiscoverContainer extends Component {
   static propTypes = {
     coverDPI: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,

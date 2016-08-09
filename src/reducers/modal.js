@@ -26,3 +26,5 @@ export function modal(state = initialState, action) {
   }
 }
 
+export default modal
+

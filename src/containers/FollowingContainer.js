@@ -13,7 +13,7 @@ function mapStateToProps(state) {
   }
 }
 
-export class FollowingContainer extends Component {
+class FollowingContainer extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,

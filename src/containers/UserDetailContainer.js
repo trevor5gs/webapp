@@ -87,7 +87,7 @@ export function mapStateToProps(state, props) {
   }
 }
 
-export class UserDetailContainer extends Component {
+class UserDetailContainer extends Component {
   static propTypes = {
     activeUserFollowingType: PropTypes.string,
     coverDPI: PropTypes.string,

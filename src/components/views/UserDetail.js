@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
-import Cover from '../assets/Cover'
 import classNames from 'classnames'
+import Cover from '../assets/Cover'
 import { UserDetailHelmet } from '../helmets/UserDetailHelmet'
 import StreamContainer from '../../containers/StreamContainer'
 import UserList from '../users/UserList'

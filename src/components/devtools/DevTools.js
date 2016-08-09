@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import { SHORTCUT_KEYS } from '../../constants/application_types'
 import Mousetrap from '../../vendor/mousetrap'
 
@@ -61,13 +60,13 @@ class DevTools extends Component {
 
 
   toggleContainerColors() {
-    ReactDOM.findDOMNode(document.body).classList.toggle('highlightContainers')
+    document.body.classList.toggle('highlightContainers')
   }
 
 
   renderGrid(isVisible, type) {
     return (
-      isVisible ? <div className={type}></div> : <span />
+      isVisible ? <div className={type} /> : <span />
     )
   }
 

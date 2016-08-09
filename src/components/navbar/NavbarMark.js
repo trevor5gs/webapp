@@ -49,3 +49,5 @@ NavbarMark.propTypes = {
   onClick: PropTypes.func.isRequired,
 }
 
+export default NavbarMark
+

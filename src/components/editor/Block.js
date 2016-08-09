@@ -35,7 +35,7 @@ class Block extends Component {
         className="editor-block"
         data-collection-id={uid}
         data-editor-id={editorId}
-        ref="editorBlock"
+        ref={(comp) => { this.editorBlock = comp }}
       >
         {children}
         {

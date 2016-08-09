@@ -30,3 +30,6 @@ export const startRefreshTimer = () => {
     document.addEventListener('visibilitychange', handleChange)
   }
 }
+
+export default startRefreshTimer
+

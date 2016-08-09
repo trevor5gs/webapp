@@ -11,3 +11,5 @@ export function trackEvent(label, options = {}) {
   }
 }
 
+export default trackEvent
+

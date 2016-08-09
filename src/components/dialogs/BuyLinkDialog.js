@@ -11,10 +11,6 @@ class BuyLinkDialog extends Component {
     this.updateStatus({ buyLink: this.value || '' })
   }
 
-  componentDidMount() {
-    this.refs.textControl.refs.textControl.refs.input.focus()
-  }
-
   onClickSubmit = () => {
     if (this.value.indexOf('http') !== 0) {
       this.value = `http://${this.value}`
@@ -48,12 +44,12 @@ class BuyLinkDialog extends Component {
       <div className="Dialog BuyLinkDialog">
         <h2 className="BuyLinkDialogTitle">Sell your work</h2>
         <TextControl
+          autoFocus
           classList="isBoxControl BuyLinkDialogControl"
           id="buyLink"
           name="buy[productDetail]"
           onChange={this.onChangeControl}
           placeholder="Product detail URL"
-          ref="textControl"
           status={urlStatus}
           tabIndex="1"
           text={text}

@@ -108,3 +108,5 @@ Notification.propTypes = {
   }),
 }
 
+export default Notification
+

@@ -24,3 +24,5 @@ export function routeReducer(state = initialState, { type, payload: location }) 
   }
 }
 
+export default routeReducer
+

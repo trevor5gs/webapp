@@ -60,9 +60,9 @@ methods.addHasContent = (state) => {
   if (!firstBlock) { return state }
   const hasContent = Boolean(
     order.length > 1 ||
-    firstBlock &&
+    (firstBlock &&
     firstBlock.data.length &&
-    firstBlock.data !== '<br>'
+    firstBlock.data !== '<br>')
   )
   newState.hasContent = hasContent
   return newState

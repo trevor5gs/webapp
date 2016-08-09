@@ -20,7 +20,7 @@ class TextBlock extends Component {
 
   componentDidMount() {
     if (this.props.shouldAutofocus) {
-      placeCaretAtEnd(this.refs.text)
+      placeCaretAtEnd(this.text)
     }
     addKeyObject(this)
     document.addEventListener('click', this.onClickDocument, false)
@@ -29,11 +29,11 @@ class TextBlock extends Component {
 
   shouldComponentUpdate(nextProps) {
     if (nextProps.linkURL !== this.props.linkURL) { return true }
-    return !(nextProps.data === this.refs.text.innerHTML)
+    return !(nextProps.data === this.text.innerHTML)
   }
 
   componentDidUpdate() {
-    placeCaretAtEnd(this.refs.text)
+    placeCaretAtEnd(this.text)
   }
 
   componentWillUnmount() {
@@ -74,7 +74,7 @@ class TextBlock extends Component {
   }
 
   getData() {
-    return this.refs.text.innerHTML
+    return this.text.innerHTML
   }
 
   updateTextBlock() {
@@ -93,7 +93,7 @@ class TextBlock extends Component {
           onBlur={this.onBlurText}
           onFocus={this.onFocusText}
           onPaste={this.onPasteText}
-          ref="text"
+          ref={(comp) => { this.text = comp }}
         />
       </Block>
     )

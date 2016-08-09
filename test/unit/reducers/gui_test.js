@@ -1,5 +1,5 @@
-import { expect } from '../../spec_helper'
 import { LOCATION_CHANGE } from 'react-router-redux'
+import { expect } from '../../spec_helper'
 import {
   AUTHENTICATION,
   EDITOR,

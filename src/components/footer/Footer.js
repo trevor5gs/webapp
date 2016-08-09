@@ -59,3 +59,5 @@ Footer.propTypes = {
   onClickToggleLayoutMode: PropTypes.func.isRequired,
 }
 
+export default Footer
+

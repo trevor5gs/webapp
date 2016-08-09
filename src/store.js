@@ -5,9 +5,10 @@ import { routerMiddleware } from 'react-router-redux'
 import { combineReducers, compose, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
 import createSagaMiddleware, { END } from 'redux-saga'
-import { analytics } from './middleware'
+import analytics from './middleware/analytics'
 import * as reducers from './reducers'
 import rootSaga from './sagas'
+
 const reducer = combineReducers({
   ...reducers,
 })

@@ -47,7 +47,6 @@ class UserGrid extends Component {
         <RelationshipContainer
           user={user}
           relationshipPriority={relationshipPriority}
-          ref="RelationshipContainer"
         />
         <UserStats
           followingCount={followingCount}

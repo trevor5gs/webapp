@@ -45,7 +45,7 @@ function getScrollPercent(bottom, top, val) {
   topRange += -bottomRange
   valueInRange += -bottomRange
   bottomRange += -bottomRange
-  return Math.round((valueInRange / (topRange - bottomRange) * 100))
+  return Math.round(((valueInRange / (topRange - bottomRange)) * 100))
 }
 
 function getScrollProperties() {

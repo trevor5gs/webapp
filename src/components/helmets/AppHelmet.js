@@ -46,3 +46,5 @@ AppHelmet.propTypes = {
   pathname: PropTypes.string.isRequired,
 }
 
+export default AppHelmet
+

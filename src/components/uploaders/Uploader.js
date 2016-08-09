@@ -42,7 +42,7 @@ class Uploader extends Component {
   }
 
   onClickFileBrowser = () => {
-    this.refs.FileBrowser.click()
+    this.fileBrowser.click()
   }
 
   onDrop = (e) => {
@@ -102,7 +102,7 @@ class Uploader extends Component {
         <input
           className="hidden"
           onChange={this.onFileBrowse}
-          ref="FileBrowser"
+          ref={(comp) => { this.fileBrowser = comp }}
           type="file"
           accept="image/*"
         />

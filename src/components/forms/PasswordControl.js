@@ -13,8 +13,8 @@ class PasswordControl extends Component {
   }
 
   clear() {
-    if (this.refs.Control.clear) {
-      this.refs.Control.clear()
+    if (this.control.clear) {
+      this.control.clear()
     }
   }
 
@@ -25,7 +25,7 @@ class PasswordControl extends Component {
         autoCapitalize="off"
         autoCorrect="off"
         type="password"
-        ref="Control"
+        ref={(comp) => { this.control = comp }}
       />
     )
   }

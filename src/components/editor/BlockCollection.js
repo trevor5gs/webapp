@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { get, isEqual } from 'lodash'
@@ -125,7 +124,7 @@ class BlockCollection extends Component {
     }
     dispatch(updateBlock(block, dragUid, editorId, true))
     this.onDragMove(props)
-    ReactDOM.findDOMNode(document.body).classList.add('isDragging')
+    document.body.classList.add('isDragging')
   }
 
   onDragMove(props) {
@@ -143,7 +142,7 @@ class BlockCollection extends Component {
     if (this.prevBlock &&
         !this.prevBlock.classList.contains('readonly') &&
         (props.dragY + this.startOffset) <
-        (this.prevBlock.offsetTop + this.prevBlock.offsetHeight * 0.5)) {
+        (this.prevBlock.offsetTop + (this.prevBlock.offsetHeight * 0.5))) {
       this.onMoveBlock(-1)
     }
   }
@@ -151,16 +150,16 @@ class BlockCollection extends Component {
   onDragDown(props) {
     if (this.nextBlock &&
         (props.dragY + this.startOffset + this.startHeight) >
-        (this.nextBlock.offsetTop + this.nextBlock.offsetHeight * 0.5)) {
+        (this.nextBlock.offsetTop + (this.nextBlock.offsetHeight * 0.5))) {
       this.onMoveBlock(1)
     }
   }
 
   onMoveBlock(delta) {
-    if (!this.refs.blockPlaceholder) return
+    if (!this.blockPlaceholder) return
     const { dispatch, dragBlock, editorId } = this.props
     dispatch(reorderBlocks(dragBlock.uid, delta, editorId))
-    const placeholder = this.refs.blockPlaceholder.refs.editorBlock
+    const placeholder = this.blockPlaceholder.editorBlock
     this.prevBlock = placeholder.previousSibling
     this.nextBlock = placeholder.nextSibling
   }
@@ -172,7 +171,7 @@ class BlockCollection extends Component {
     const dragUid = dragBlock.uid
     dispatch(updateBlock(dragBlock, dragUid, editorId))
     dispatch(removeDragBlock(editorId))
-    ReactDOM.findDOMNode(document.body).classList.remove('isDragging')
+    document.body.classList.remove('isDragging')
     this.setState({ dragBlockTop: null })
     dispatch(addEmptyTextBlock(editorId))
   }
@@ -245,7 +244,7 @@ class BlockCollection extends Component {
           <Block
             {...blockProps}
             className={classNames('BlockPlaceholder', { isUploading: block.isLoading })}
-            ref="blockPlaceholder"
+            ref={(comp) => { this.blockPlaceholder = comp }}
           >
             <div style={{ width: block.data.width, height: block.data.height }} />
           </Block>
@@ -399,7 +398,6 @@ class BlockCollection extends Component {
           editorId={editorId}
           handleFileAction={this.handleFiles}
           hasMedia={hasMedia}
-          ref="postActionBar"
           replyAllAction={isComment && isOwnPost && !isMobileGridStream ? this.replyAll : null}
           submitAction={this.submit}
           submitText={submitText}

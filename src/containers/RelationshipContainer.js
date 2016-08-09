@@ -28,8 +28,8 @@ const selectUser = createSelector(
 const selectOnClickCallback = createSelector(
   [selectIsLoggedIn, selectRelationshipPriority], (isLoggedIn, relationshipPriority) => {
     if (!isLoggedIn) { return 'onOpenSignupModal' }
-    const isBlockedOrMuted = relationshipPriority &&
-      relationshipPriority === RELATIONSHIP_PRIORITY.BLOCK ||
+    const isBlockedOrMuted = (relationshipPriority &&
+      relationshipPriority === RELATIONSHIP_PRIORITY.BLOCK) ||
       relationshipPriority === RELATIONSHIP_PRIORITY.MUTE
     return isBlockedOrMuted ? 'onOpenBlockMuteModal' : 'onRelationshipUpdate'
   }

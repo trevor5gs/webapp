@@ -81,11 +81,9 @@ export function orientImage(img, maxW, maxH, orientation) {
       height *= maxW / width
       width = maxW
     }
-  } else {
-    if (height > maxH) {
-      width *= maxH / height
-      height = maxH
-    }
+  } else if (height > maxH) {
+    width *= maxH / height
+    height = maxH
   }
   const canvas = document.createElement('canvas')
   canvas.width = width
