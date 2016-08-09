@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import classNames from 'classnames'
 import RegionTools from './RegionTools'
 import { ElloBuyButton } from './ElloBuyButton'
 
@@ -6,6 +7,7 @@ class Block extends Component {
 
   static propTypes = {
     children: PropTypes.element,
+    className: PropTypes.string,
     editorId: PropTypes.string.isRequired,
     kind: PropTypes.oneOf([
       'block',
@@ -29,10 +31,10 @@ class Block extends Component {
   }
 
   render() {
-    const { children, editorId, linkURL, uid } = this.props
+    const { children, className, editorId, linkURL, uid } = this.props
     return (
       <div
-        className="editor-block"
+        className={classNames('editor-block', className)}
         data-collection-id={uid}
         data-editor-id={editorId}
         ref={(comp) => { this.editorBlock = comp }}
