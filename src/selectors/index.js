@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { get, upperFirst } from 'lodash'
+import { startCase, get } from 'lodash'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { findModel } from '../helpers/json_helper'
 import { emptyPagination } from '../components/streams/Paginator'
@@ -132,7 +132,7 @@ export const selectCategoryPageTitle = createSelector(
       case 'recommended':
         return 'Featured'
       default:
-        return upperFirst(paramsType)
+        return startCase(paramsType).replace(/\sX\s/, ' x ')
     }
   }
 )

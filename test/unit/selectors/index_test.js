@@ -98,10 +98,10 @@ describe('selectors', () => {
   context('#selectCategoryPageTitle', () => {
     it('returns the page title related to the /discover page with memoization', () => {
       const state = { json }
-      const props = { params, location }
-      expect(selectCategoryPageTitle(state, props)).to.equal('ParamsType')
+      const props = { params: { token: 'paramsToken', type: 'arktip-x-ello' }, location }
+      expect(selectCategoryPageTitle(state, props)).to.equal('Arktip x Ello')
       const nextProps = { ...props, blah: 1 }
-      expect(selectCategoryPageTitle(state, nextProps)).to.equal('ParamsType')
+      expect(selectCategoryPageTitle(state, nextProps)).to.equal('Arktip x Ello')
       expect(selectPagination.recomputations()).to.equal(1)
       const nextNextProps = { ...nextProps, params: { token: 'paramsToken', type: 'all' } }
       expect(selectCategoryPageTitle(state, nextNextProps)).to.be.null
