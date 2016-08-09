@@ -19,6 +19,7 @@ import RelationshipContainer from '../../containers/RelationshipContainer'
 class UserList extends Component {
 
   static propTypes = {
+    alt: PropTypes.string,
     classList: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     followingCount: PropTypes.number.isRequired,
@@ -92,7 +93,7 @@ class UserList extends Component {
   }
 
   render() {
-    const { classList, followingCount, followersCount, isHireable, isLoggedIn,
+    const { alt, classList, followingCount, followersCount, isHireable, isLoggedIn,
       lovesCount, relationshipPriority, postsCount, showBlockMuteButton,
       uploader, useGif, user, username } = this.props
     const userPath = `/${user.username}`
@@ -101,6 +102,7 @@ class UserList extends Component {
       <div className={classNames(classList, 'UserList')}>
         {uploader}
         <Avatar
+          alt={alt || user.username}
           className="isLarge"
           isModifiable={isModifiable}
           priority={!isModifiable && relationshipPriority ? relationshipPriority : null}
