@@ -94,6 +94,7 @@ class PostContainer extends Component {
     innerHeight: PropTypes.number,
     isGridMode: PropTypes.bool,
     isOnFeaturedCategory: PropTypes.bool,
+    isPostDetail: PropTypes.bool,
     isRepost: PropTypes.bool,
     isReposting: PropTypes.bool,
     post: PropTypes.object,
@@ -122,6 +123,7 @@ class PostContainer extends Component {
       innerHeight,
       isGridMode,
       isOnFeaturedCategory,
+      isPostDetail,
       isRepost,
       isReposting,
       post,
@@ -143,7 +145,7 @@ class PostContainer extends Component {
       const catProps = { post, author, categoryName, categoryPath }
       postHeader = <CategoryHeader {...catProps} />
     } else {
-      postHeader = <PostHeader post={post} author={author} />
+      postHeader = <PostHeader post={post} author={author} isPostDetail={isPostDetail} />
     }
 
     const isRepostAnimating = isReposting && !postBody
