@@ -225,8 +225,15 @@ export const PostBody = (props) => {
     cells.push(<ContentWarningButton key={`contentWarning_${post.id}`} post={post} />)
   }
 
-  const regionProps = { assets, columnWidth, commentOffset, contentWidth,
-    innerHeight, isGridMode, postDetailPath }
+  const regionProps = {
+    assets,
+    columnWidth,
+    commentOffset,
+    contentWidth,
+    innerHeight,
+    isGridMode,
+    postDetailPath,
+  }
   if (post.repostContent && post.repostContent.length) {
     // this is weird, but the post summary is
     // actually the repost summary on reposts

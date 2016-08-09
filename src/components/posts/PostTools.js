@@ -230,3 +230,5 @@ PostTools.propTypes = {
   postRepostsCount: PropTypes.number,
 }
 
+export default PostTools
+
