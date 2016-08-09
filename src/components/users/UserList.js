@@ -13,13 +13,12 @@ import MessageDialog from '../dialogs/MessageDialog'
 import ShareDialog from '../dialogs/ShareDialog'
 import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import { ShareIcon } from '../users/UserIcons'
-import { UserNames, UserStats, UserInfo } from '../users/UserVitals'
+import { UserDetailUserNames, UserNames, UserStats, UserInfo } from '../users/UserVitals'
 import RelationshipContainer from '../../containers/RelationshipContainer'
 
 class UserList extends Component {
 
   static propTypes = {
-    alt: PropTypes.string,
     classList: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     followingCount: PropTypes.number.isRequired,
@@ -29,6 +28,7 @@ class UserList extends Component {
     ]).isRequired,
     isHireable: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
+    isUserDetail: PropTypes.bool,
     lovesCount: PropTypes.number.isRequired,
     postsCount: PropTypes.number.isRequired,
     relationshipPriority: PropTypes.string,
@@ -93,7 +93,7 @@ class UserList extends Component {
   }
 
   render() {
-    const { alt, classList, followingCount, followersCount, isHireable, isLoggedIn,
+    const { classList, followingCount, followersCount, isHireable, isLoggedIn, isUserDetail,
       lovesCount, relationshipPriority, postsCount, showBlockMuteButton,
       uploader, useGif, user, username } = this.props
     const userPath = `/${user.username}`
@@ -102,7 +102,7 @@ class UserList extends Component {
       <div className={classNames(classList, 'UserList')}>
         {uploader}
         <Avatar
-          alt={alt || user.username}
+          alt={isUserDetail && user.name ? user.name : user.username}
           className="isLarge"
           isModifiable={isModifiable}
           priority={!isModifiable && relationshipPriority ? relationshipPriority : null}
@@ -118,7 +118,7 @@ class UserList extends Component {
           relationshipPriority={relationshipPriority}
           user={user}
         />
-        <UserNames user={user} />
+        {isUserDetail ? <UserDetailUserNames user={user} /> : <UserNames user={user} />}
         <UserStats
           followingCount={followingCount}
           followersCount={followersCount}
