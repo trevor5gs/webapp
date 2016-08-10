@@ -429,5 +429,5 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export default connect(mapStateToProps, null, null, { withRef: true })(BlockCollection)
+export default connect(mapStateToProps)(BlockCollection)
 

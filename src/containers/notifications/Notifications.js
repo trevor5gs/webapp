@@ -97,18 +97,18 @@ class Notifications extends Component {
           action={streamAction}
           className="asFullWidth"
           key={`notificationView_${category}`}
-          scrollSessionKey={`notifications_${category || 'all'}`}
+          scrollSessionKey={`notifications_${category}`}
         />
       </MainView>
     )
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  const category = _.get(ownProps, 'params.category')
+function mapStateToProps(state, props) {
+  const category = _.get(props, 'params.category', 'all')
   return {
     category,
-    pathname: ownProps.location.pathname,
+    pathname: props.location.pathname,
     streamAction: loadNotifications({ category }),
     streamType: _.get(state, 'stream.type'),
   }
