@@ -15,16 +15,16 @@ class Communities extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    followAll: PropTypes.bool,
     following: PropTypes.array.isRequired,
     inactive: PropTypes.array.isRequired,
-    followAll: PropTypes.bool,
+    userIds: PropTypes.array,
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch } = this.props
+    const { dispatch, userIds } = this.props
     if (!this.hasAutoFollowed && nextProps.followAll && nextProps.inactive.length > 0) {
       this.hasAutoFollowed = true
-      const userIds = this.getUserIds()
       if (userIds.length) {
         dispatch(batchUpdateRelationship(userIds, 'friend'))
       }
@@ -64,18 +64,11 @@ class Communities extends Component {
     dispatch(push('/onboarding/awesome-people'))
   }
 
-  getUserIds() {
-    return this.streamContainer && this.streamContainer.refs.wrappedInstance.props.result ?
-      this.streamContainer.refs.wrappedInstance.props.result.ids :
-      []
-  }
-
   followAll = () => {
-    const { dispatch, inactive } = this.props
+    const { dispatch, inactive, userIds } = this.props
     const relationship = inactive.length === 0 ?
       RELATIONSHIP_PRIORITY.INACTIVE :
       RELATIONSHIP_PRIORITY.FRIEND
-    const userIds = this.getUserIds()
     if (userIds.length) {
       dispatch(batchUpdateRelationship(userIds, relationship))
     }
@@ -104,8 +97,7 @@ class Communities extends Component {
   }
 
   render() {
-    const { following } = this.props
-    const userIds = this.getUserIds()
+    const { following, userIds } = this.props
     return (
       <MainView className="CommunityPicker">
         <OnboardingHeader
@@ -151,11 +143,12 @@ function mapStateToProps(state, ownProps) {
     }
   }
   return {
+    followAll: state.stream.type && state.stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS,
     following: relationshipMap.following,
     inactive: relationshipMap.inactive,
     profile: state.profile,
-    followAll: state.stream.type && state.stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS,
     type: ownProps.params.type,
+    userIds: result ? result.ids : [],
   }
 }
 
