@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { get, upperFirst } from 'lodash'
+import { startCase, get } from 'lodash'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { findModel } from '../helpers/json_helper'
 import { emptyPagination } from '../components/streams/Paginator'
@@ -55,7 +55,6 @@ const selectStreamResult = (state, props) => {
   const resultPath = meta.resultKey || get(state, 'routing.location.pathname')
   return get(state, ['json', 'pages', resultPath], { ids: [], pagination: emptyPagination() })
 }
-
 
 // Memoized Selectors
 export const selectPost = createSelector(
@@ -124,15 +123,17 @@ export const selectCategories = createSelector(
 )
 
 export const selectCategoryPageTitle = createSelector(
-  [selectParamsType], (paramsType) => {
+  [selectParamsType, selectCategoryCollection], (paramsType, categories) => {
     switch (paramsType) {
       case 'all':
         return null
       case undefined:
       case 'recommended':
         return 'Featured'
-      default:
-        return upperFirst(paramsType)
+      default: {
+        const key = Object.keys(categories).find((k) => categories[k].slug === paramsType)
+        return key ? categories[key].name : startCase(paramsType).replace(/\sX\s/, ' x ')
+      }
     }
   }
 )
