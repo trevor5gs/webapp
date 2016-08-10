@@ -78,7 +78,7 @@ PostHeaderTimeAgoLink.propTypes = {
   to: PropTypes.string,
 }
 
-export const PostHeader = ({ post, author }) => {
+export const PostHeader = ({ post, author, isPostDetail = false }) => {
   if (!post || !author) { return null }
   const postDetailPath = getPostDetailPath(author, post)
   return (
@@ -98,7 +98,14 @@ export const PostHeader = ({ post, author }) => {
             data-username={author.username}
             draggable
           >
-            {`@${author.username}`}
+            {isPostDetail && author.name ?
+              <span>
+                <span className="PostHeaderAuthorName">{author.name}</span>
+                <span className="PostHeaderAuthorUsername">@{author.username}</span>
+              </span>
+              :
+              `@${author.username}`
+            }
           </span>
         </Link>
       </div>
@@ -110,6 +117,7 @@ export const PostHeader = ({ post, author }) => {
 
 PostHeader.propTypes = {
   author: PropTypes.object,
+  isPostDetail: PropTypes.bool,
   post: PropTypes.object,
 }
 

@@ -45,7 +45,7 @@ export const UserDetail = (props) => {
   const coverProps = {
     coverDPI, coverImage, coverOffset, isHidden: isCoverHidden, isModifiable: isSelf, useGif,
   }
-  const userListProps = { classList: 'asUserDetailHeader', showBlockMuteButton: true, useGif, user }
+  const userListProps = { classList: 'asUserDetailHeader', useGif, user }
   const tabProps = { activeType, className: 'LabelTabList', tabClasses: 'LabelTab', tabs }
   const streamProps = { action: streamAction, isUserDetail: true }
   const zeroProps = {
@@ -58,7 +58,7 @@ export const UserDetail = (props) => {
       <UserDetailHelmet user={user} />
       <div className="UserDetails">
         {isCoverActive ? <Cover {...coverProps} /> : null}
-        <UserList {...userListProps} />
+        <UserList {...userListProps} isUserDetail showBlockMuteButton />
         {tabs ? <TabListButtons {...tabProps} onTabClick={({ type }) => onTabClick(type)} /> : null}
         {hasZeroPosts || hasZeroFollowers ? <ZeroStates {...zeroProps} /> : null}
         {streamAction ? <StreamContainer {...streamProps} /> : null}

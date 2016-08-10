@@ -26,6 +26,7 @@ export function getSource(props) {
 
 export default class Avatar extends Component {
   static propTypes = {
+    alt: PropTypes.string,
     className: PropTypes.string,
     isModifiable: PropTypes.bool,
     onClick: PropTypes.func,
@@ -70,7 +71,7 @@ export default class Avatar extends Component {
   }
 
   render() {
-    const { className, isModifiable, onClick, priority, to, userId, username } = this.props
+    const { alt, className, isModifiable, onClick, priority, to, userId, username } = this.props
     const { status } = this.state
     const wrapperProps = {
       className: classNames('Avatar', className, status, { isModifiable }),
@@ -80,7 +81,7 @@ export default class Avatar extends Component {
       draggable: username && username.length > 1 || priority && priority.length,
     }
     const imageProps = {
-      alt: username,
+      alt: alt || username,
       className: 'AvatarImage',
       src: getSource(this.props),
       onLoadFailure: this.onLoadFailure,

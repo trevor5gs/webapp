@@ -1,10 +1,14 @@
 import React, { PropTypes } from 'react'
 import Helmet from 'react-helmet'
+import trunc from 'trunc-html'
 
 export const UserDetailHelmet = ({ user }) => {
-  const title = `${user.username} | Ello`
+  const { name, username } = user
+  const title = name ? `${name} (@${username}) | Ello` : `@${username} | Ello`
   const image = user.coverImage && user.coverImage.optimized ? user.coverImage.optimized.url : null
-  const description = `See ${user.username}'s work on Ello.`
+  const userBio = user.formattedShortBio
+  const msg = name ? `See ${name}'s work on Ello @${username}` : `See @${username}'s work on Ello.`
+  const description = userBio ? trunc(userBio, 160).text : msg
   const robots = user.badForSeo ? 'noindex, follow' : 'index, follow'
   return (
     <Helmet

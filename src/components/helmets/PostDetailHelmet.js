@@ -105,7 +105,7 @@ export const PostDetailHelmet = ({ post, author }) => {
   const twitterTags = getTwitterTags({ images, embeds })
   const schemaTags = getSchemaTags({ images, embeds })
   const tags = [].concat(metaTags, openGraphTags, twitterTags, schemaTags)
-  const links = post.repostContent ? [{ rel: 'canonical', href: repostUrl }] : []
+  const links = post.repostContent ? [{ href: repostUrl, rel: 'canonical' }] : []
 
   return <Helmet title={title} link={links} meta={tags} />
 }
