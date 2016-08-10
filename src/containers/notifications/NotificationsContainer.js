@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { GUI, LOAD_STREAM_SUCCESS } from '../../constants/action_types'
@@ -16,13 +15,12 @@ import {
 import { TabListButtons } from '../../components/tabs/TabList'
 import { Paginator } from '../../components/streams/Paginator'
 
-let ticking = false
-
 class NotificationsContainer extends Component {
 
   static propTypes = {
     activeTabType: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
+    streamAction: PropTypes.object,
   }
 
   static defaultProps = {
@@ -30,15 +28,13 @@ class NotificationsContainer extends Component {
   }
 
   componentWillMount() {
-    this.body = ReactDOM.findDOMNode(document.body)
-    this.onScrolled = _.debounce(this.onScrolled, 300)
+    this.body = document.body
     this.state = { isReloading: false }
   }
 
   componentDidMount() {
     document.addEventListener('click', this.onClickDocument)
     document.addEventListener('touchstart', this.onClickDocument)
-    this.refs.streamContainer.refs.wrappedInstance.scrollContainer = this.refs.scrollable
   }
 
   componentWillReceiveProps(nextProps) {
@@ -48,9 +44,8 @@ class NotificationsContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.activeTabType !== this.props.activeTabType && this.refs.scrollable) {
-      this.refs.streamContainer.refs.wrappedInstance.scrollContainer = this.refs.scrollable
-      this.refs.scrollable.scrollTop = 0
+    if (prevProps.activeTabType !== this.props.activeTabType && this.scrollContainer) {
+      this.scrollContainer.scrollTop = 0
     }
   }
 
@@ -70,18 +65,13 @@ class NotificationsContainer extends Component {
   onClickTab = ({ type }) => {
     const { dispatch } = this.props
     if (this.state.activeTabType === type) {
-      scrollElToTop(this.refs.scrollable)
+      scrollElToTop(this.scrollContainer)
       this.setState({ isReloading: true })
     } else {
       dispatch({
         type: GUI.NOTIFICATIONS_TAB,
         payload: { activeTabType: type },
       })
-    }
-    if (this.refs.streamContainer) {
-      this.refs.streamContainer.refs.wrappedInstance.setAction(
-        loadNotifications({ category: type })
-      )
     }
     this.setState({ activeTabType: type })
   }
@@ -107,32 +97,8 @@ class NotificationsContainer extends Component {
     dispatch(toggleNotifications({ isActive: false }))
   }
 
-  onScrolled = () => {
-    const { scrollable } = this.refs
-    if (!scrollable) { return }
-
-    this.refs.streamContainer.refs.wrappedInstance.onScroll()
-
-    const scrollY = Math.ceil(scrollable.scrollTop)
-    const scrollHeight = Math.max(scrollable.scrollHeight, scrollable.offsetHeight)
-    const scrollBottom = Math.round(scrollHeight - scrollable.offsetHeight)
-    if (Math.abs(scrollY - scrollBottom) < 5) {
-      this.refs.streamContainer.refs.wrappedInstance.onLoadNextPage()
-    }
-  }
-
-  onScrollElement = () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        this.onScrolled()
-        ticking = false
-      })
-      ticking = true
-    }
-  }
-
   render() {
-    const { activeTabType } = this.props
+    const { activeTabType, streamAction } = this.props
     const { isReloading } = this.state
     const tabs = [
       { type: 'all', children: 'All' },
@@ -156,7 +122,10 @@ class NotificationsContainer extends Component {
           tabClasses="IconTab"
           tabs={tabs}
         />
-        <div className="Scrollable" ref="scrollable" onScroll={this.onScrollElement}>
+        <div
+          className="Scrollable"
+          ref={(comp) => { this.scrollContainer = comp }}
+        >
           {
             isReloading ?
               <Paginator
@@ -168,10 +137,11 @@ class NotificationsContainer extends Component {
               null
           }
           <StreamContainer
-            action={loadNotifications({ category: activeTabType })}
+            action={streamAction}
             className="asFullWidth"
             key={`notificationView_${activeTabType}`}
-            ref="streamContainer"
+            ref={(comp) => { this.streamContainer = comp }}
+            scrollContainer={this.scrollContainer}
             scrollSessionKey={`notifications_${activeTabType}`}
             isModalComponent
           />
@@ -182,11 +152,13 @@ class NotificationsContainer extends Component {
 }
 
 function mapStateToProps(state) {
+  const activeTabType = state.gui.activeNotificationsType
   return {
-    activeTabType: state.gui.activeNotificationsType,
+    activeTabType,
+    streamAction: loadNotifications({ category: activeTabType }),
     streamType: _.get(state, 'stream.type'),
   }
 }
 
-export default connect(mapStateToProps, null, null, { withRef: true })(NotificationsContainer)
+export default connect(mapStateToProps)(NotificationsContainer)
 

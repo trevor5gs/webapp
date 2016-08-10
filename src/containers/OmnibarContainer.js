@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { isEqual, pick } from 'lodash'
 import { SHORTCUT_KEYS } from '../constants/application_types'
@@ -48,11 +47,10 @@ class OmnibarContainer extends Component {
 
   componentDidUpdate() {
     const { isActive } = this.props
-    const body = ReactDOM.findDOMNode(document.body)
     if (isActive) {
-      body.classList.add('isOmnibarActive')
+      document.body.classList.add('isOmnibarActive')
     } else if (!isActive) {
-      body.classList.remove('isOmnibarActive')
+      document.body.classList.remove('isOmnibarActive')
     }
   }
 

@@ -78,7 +78,7 @@ export default class Avatar extends Component {
       'data-priority': priority || 'inactive',
       'data-userid': userId,
       'data-username': username,
-      draggable: username && username.length > 1 || priority && priority.length,
+      draggable: (username && username.length > 1) || (priority && priority.length),
     }
     const imageProps = {
       alt: alt || username,

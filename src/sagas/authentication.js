@@ -24,7 +24,7 @@ const futureTimeout = time => {
   let msFromNow = time - new Date()
 
   // Establish a lead time of 100ms before expiration date
-  msFromNow = msFromNow - 100
+  msFromNow -= 100
 
   // Let's not set a timeout for in the past
   return Math.max(msFromNow, 0)

@@ -1,4 +1,5 @@
 import { PROMOTIONS } from '../constants/action_types'
+
 const initialState = {
   authentication: [],
   loggedIn: [],
@@ -26,3 +27,6 @@ export function promotions(state = initialState, action) {
       return state
   }
 }
+
+export default promotions
+

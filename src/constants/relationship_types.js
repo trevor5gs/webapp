@@ -8,3 +8,5 @@ export const RELATIONSHIP_PRIORITY = {
   SELF: 'self',
 }
 
+export default RELATIONSHIP_PRIORITY
+

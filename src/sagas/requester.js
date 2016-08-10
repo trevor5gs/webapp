@@ -299,21 +299,20 @@ export function* handleRequest(requestChannel) {
 
     const { meta, payload: { endpoint } } = action
 
-    if (runningFetches[endpoint.path]) {
-      continue
-    }
-    if (requesterIsPaused) {
-      yield call(waitForUnpause)
-    }
+    if (!runningFetches[endpoint.path]) {
+      if (requesterIsPaused) {
+        yield call(waitForUnpause)
+      }
 
-    runningFetches[endpoint.path] = true
+      runningFetches[endpoint.path] = true
 
-    if (get(meta, 'pauseRequester')) {
-      yield put(pauseRequester())
-      yield call(performRequest, action)
-      yield put(unpauseRequester())
-    } else {
-      yield fork(performRequest, action)
+      if (get(meta, 'pauseRequester')) {
+        yield put(pauseRequester())
+        yield call(performRequest, action)
+        yield put(unpauseRequester())
+      } else {
+        yield fork(performRequest, action)
+      }
     }
   }
 }

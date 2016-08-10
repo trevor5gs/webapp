@@ -11,3 +11,5 @@ FooterLabel.propTypes = {
   label: PropTypes.string,
 }
 
+export default FooterLabel
+

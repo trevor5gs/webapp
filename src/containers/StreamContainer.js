@@ -8,7 +8,12 @@ import { runningFetches } from '../sagas/requester'
 import * as ACTION_TYPES from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
 import { findModel } from '../helpers/json_helper'
-import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
+import {
+  addScrollObject,
+  addScrollTarget,
+  removeScrollObject,
+  removeScrollTarget,
+} from '../components/viewport/ScrollComponent'
 import { ElloMark } from '../components/svg/ElloIcons'
 import { Paginator } from '../components/streams/Paginator'
 import { ErrorState4xx } from '../components/errors/Errors'
@@ -52,7 +57,6 @@ export function makeMapStateToProps() {
     return {
       ...streamProps,
       columnCount: state.gui.columnCount,
-      deviceSize: state.gui.deviceSize,
       history: state.gui.history,
       innerHeight: state.gui.innerHeight,
       innerWidth: state.gui.innerWidth,
@@ -66,14 +70,13 @@ export function makeMapStateToProps() {
   return mapStateToProps
 }
 
-export class StreamContainer extends Component {
+class StreamContainer extends Component {
 
   static propTypes = {
     action: PropTypes.object,
     children: PropTypes.any,
     className: PropTypes.string,
     columnCount: PropTypes.number,
-    deviceSize: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     ignoresScrollPosition: PropTypes.bool.isRequired,
@@ -90,6 +93,7 @@ export class StreamContainer extends Component {
     result: PropTypes.object.isRequired,
     resultPath: PropTypes.string,
     routerState: PropTypes.object,
+    scrollContainer: PropTypes.object,
     scrollSessionKey: PropTypes.string,
     stream: PropTypes.object.isRequired,
   }
@@ -120,18 +124,23 @@ export class StreamContainer extends Component {
       this.state = { action, locationKey: location.key }
     })
     unlisten()
-    this.setDebouncedScroll = _.debounce(this.setDebouncedScroll, 300)
+    this.setScroll = _.debounce(this.setScroll, 300)
+    this.setScrollTarget = _.debounce(this.setScrollTarget, 300)
     this.shouldScroll = true
     this.wasOmnibarActive = omnibar.isActive
   }
 
   componentDidMount() {
-    const { routerState } = this.props
+    const { isModalComponent, routerState, scrollContainer } = this.props
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    if (!this.props.isModalComponent) {
-      addScrollObject(this)
+    if (isModalComponent && scrollContainer) {
+      this.scrollObject = { component: this, element: scrollContainer }
+      addScrollTarget(this.scrollObject)
+    } else if (!isModalComponent) {
+      this.scrollObject = this
+      addScrollObject(this.scrollObject)
     }
 
     let shouldScrollToTop = true
@@ -150,8 +159,11 @@ export class StreamContainer extends Component {
   componentWillReceiveProps(nextProps) {
     const { stream } = nextProps
     const { action } = this.state
+    if (this.props.isModalComponent && !this.props.scrollContainer && nextProps.scrollContainer) {
+      this.scrollObject = { component: this, element: nextProps.scrollContainer }
+      addScrollTarget(this.scrollObject)
+    }
     if (!action) { return }
-
     if (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.setState({ hidePaginator: true })
     }
@@ -170,9 +182,9 @@ export class StreamContainer extends Component {
     const { innerHeight, stream, omnibar, isUserDetail } = this.props
     const canScroll = document.body.scrollHeight > innerHeight
     const shouldScroll = this.shouldScroll && (canScroll ||
-      stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
-      action && action.payload &&
-      stream.payload.endpoint.path === action.payload.endpoint.path)
+      (stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
+       action && action.payload &&
+       stream.payload.endpoint.path === action.payload.endpoint.path))
     if (shouldScroll) {
       if (this.attemptToRestoreScroll()) {
         this.shouldScroll = false
@@ -189,16 +201,25 @@ export class StreamContainer extends Component {
     if (window.embetter) {
       window.embetter.stopPlayers()
     }
-    removeScrollObject(this)
+    removeScrollObject(this.scrollObject)
+    removeScrollTarget(this.scrollObject)
     this.saveScroll = false
   }
 
   onScroll() {
-    this.setDebouncedScroll()
+    this.setScroll()
+  }
+
+  onScrollTarget() {
+    this.setScrollTarget()
   }
 
   onScrollBottom() {
-    this.loadPage('next', true)
+    this.onLoadNextPage()
+  }
+
+  onScrollBottomTarget() {
+    this.onLoadNextPage()
   }
 
   onLoadNextPage = () => {
@@ -210,31 +231,30 @@ export class StreamContainer extends Component {
     this.props.dispatch(action)
   }
 
-  setDebouncedScroll() {
-    this.setScroll()
-  }
-
   setScroll() {
     if (!this.saveScroll) { return }
+    const { dispatch } = this.props
+    const scrollTopValue = scrollTop(window)
 
+    dispatch({
+      type: ACTION_TYPES.GUI.SET_SCROLL,
+      payload: {
+        key: this.state.locationKey,
+        scrollTop: scrollTopValue,
+      },
+    })
+  }
+
+  setScrollTarget() {
+    if (!this.saveScroll) { return }
+    const { scrollContainer, scrollSessionKey } = this.props
     let scrollTopValue
-    if (this.scrollContainer) {
-      scrollTopValue = scrollTop(this.scrollContainer)
-    } else {
-      scrollTopValue = scrollTop(window)
+    if (scrollContainer) {
+      scrollTopValue = scrollTop(scrollContainer)
     }
-
-    if (this.props.scrollSessionKey) {
-      const sessionStorageKey = SESSION_KEYS.scrollLocationKey(this.props.scrollSessionKey)
+    if (scrollSessionKey) {
+      const sessionStorageKey = SESSION_KEYS.scrollLocationKey(scrollSessionKey)
       Session.setItem(sessionStorageKey, scrollTopValue)
-    } else {
-      this.props.dispatch({
-        type: ACTION_TYPES.GUI.SET_SCROLL,
-        payload: {
-          key: this.state.locationKey,
-          scrollTop: scrollTopValue,
-        },
-      })
     }
   }
 
@@ -245,7 +265,7 @@ export class StreamContainer extends Component {
   }
 
   attemptToRestoreScroll(fromMount = false) {
-    const { innerHeight, history, routerState, isModalComponent } = this.props
+    const { innerHeight, history, routerState, scrollContainer, isModalComponent } = this.props
     let scrollTopValue = null
     if (!routerState.didComeFromSeeMoreCommentsLink && !this.props.ignoresScrollPosition) {
       if (fromMount && !isModalComponent) {
@@ -278,8 +298,10 @@ export class StreamContainer extends Component {
           return
         }
 
-        if (this.scrollContainer) {
-          this.scrollContainer.scrollTop = scrollTopValue
+        if (isModalComponent) {
+          if (scrollContainer) {
+            scrollContainer.scrollTop = scrollTopValue
+          }
         } else if (typeof window !== 'undefined') {
           window.scrollTo(0, scrollTopValue)
         }
@@ -289,17 +311,10 @@ export class StreamContainer extends Component {
     return false
   }
 
-  loadPage(rel, scrolled = false) {
-    const { deviceSize, dispatch, result, stream } = this.props
+  loadPage(rel) {
+    const { dispatch, result, stream } = this.props
     const { action } = this.state
     const { meta } = action
-    if (scrolled && meta && meta.resultKey && meta.updateKey) {
-      // WTF?: Not sure why but when at `/notifications` is in mobile we have to
-      // let this pass otherwise scrolling doesn't work. [#119054249]
-      if (deviceSize !== 'mobile' && !/notifications/.test(meta.updateKey)) {
-        return
-      }
-    }
     const { pagination } = result
     if (!action.payload.endpoint || !pagination[rel] ||
         parseInt(pagination.totalPagesRemaining, 10) === 0 || !action ||
@@ -410,5 +425,5 @@ export class StreamContainer extends Component {
   }
 }
 
-export default connect(makeMapStateToProps, null, null, { withRef: true })(StreamContainer)
+export default connect(makeMapStateToProps)(StreamContainer)
 

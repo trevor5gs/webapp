@@ -16,7 +16,7 @@ function getMessage({ hasShowMoreButton, messageText, totalPages, totalPagesRema
     return messageText
   }
   return (totalPages > 0) ?
-    `${messageText}: ${totalPages - totalPagesRemaining + 1} of ${totalPages}` :
+    `${messageText}: ${(totalPages - totalPagesRemaining) + 1} of ${totalPages}` :
     `${messageText}...`
 }
 

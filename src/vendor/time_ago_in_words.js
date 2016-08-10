@@ -87,7 +87,7 @@ Date.prototype.timeAgoInWords = function timeAgoInWords() {
 function updateStrings(dict = {}) {
   Object.keys(dict).forEach((key) => {
     const value = dict[key]
-    if (timeAgoInWordsStrings.hasOwnProperty(key)) {
+    if ({}.hasOwnProperty.call(timeAgoInWordsStrings, key)) {
       timeAgoInWordsStrings[key] = value
     } else {
       throw new Error(`TimeAgoInWords updateStrings key ${key} is not supported.`)
@@ -96,4 +96,5 @@ function updateStrings(dict = {}) {
 }
 
 export { updateStrings }
+export default updateStrings
 

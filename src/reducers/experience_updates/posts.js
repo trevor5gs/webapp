@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
+import _ from 'lodash'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as jsonReducer from '../../reducers/json'
-import _ from 'lodash'
 
 const methods = {}
 

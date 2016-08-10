@@ -43,12 +43,12 @@ class PostActionBar extends Component {
   handleFileBrowser = (e) => {
     const { handleFileAction } = this.props
     handleFileAction(e)
-    this.refs.FileBrowser.value = ''
+    this.fileBrowser.value = ''
   }
 
   browse = () => {
-    this.refs.browseButton.blur()
-    this.refs.FileBrowser.click()
+    this.browseButton.blur()
+    this.fileBrowser.click()
   }
 
   cancel = () => {
@@ -73,7 +73,6 @@ class PostActionBar extends Component {
         <button
           className={classNames('PostActionButton forMoney', { isBuyLinked })}
           disabled={!hasMedia}
-          ref="moneyButton"
           onClick={this.money}
         >
           <span className="PostActionButtonLabel">Sell</span>
@@ -81,12 +80,16 @@ class PostActionBar extends Component {
           <CheckIcon />
         </button>
 
-        <button className="PostActionButton forUpload" ref="browseButton" onClick={this.browse}>
+        <button
+          className="PostActionButton forUpload"
+          onClick={this.browse}
+          ref={(comp) => { this.browseButton = comp }}
+        >
           <span className="PostActionButtonLabel">Upload</span>
           {deviceSize === 'mobile' ? <CameraIcon /> : <BrowseIcon />}
         </button>
 
-        <button className="PostActionButton forCancel" ref="cancelButton" onClick={this.cancel}>
+        <button className="PostActionButton forCancel" onClick={this.cancel}>
           <span className="PostActionButtonLabel">Cancel</span>
           <CancelIcon />
         </button>
@@ -103,7 +106,7 @@ class PostActionBar extends Component {
         <button
           className={`PostActionButton for${submitText}`}
           disabled={disableSubmitAction}
-          ref="submitButton"
+          ref={(comp) => { this.submitButton = comp }}
           onClick={this.submitted}
         >
           <span className="PostActionButtonLabel">{submitText}</span>
@@ -113,7 +116,7 @@ class PostActionBar extends Component {
         <input
           className="hidden"
           onChange={this.handleFileBrowser}
-          ref="FileBrowser"
+          ref={(comp) => { this.fileBrowser = comp }}
           type="file"
           accept="image/*"
           multiple

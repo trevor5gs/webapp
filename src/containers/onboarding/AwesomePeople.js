@@ -1,12 +1,12 @@
 /* eslint-disable max-len */
 import React, { Component, PropTypes } from 'react'
 import { push } from 'react-router-redux'
-import { trackEvent } from '../../actions/tracking'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import * as ACTION_TYPES from '../../constants/action_types'
-import { batchUpdateRelationship } from '../../actions/relationships'
 import { loadAwesomePeople, relationshipBatchSave } from '../../actions/onboarding'
+import { batchUpdateRelationship } from '../../actions/relationships'
+import { trackEvent } from '../../actions/tracking'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
 import StreamContainer from '../../containers/StreamContainer'
@@ -16,16 +16,16 @@ class AwesomePeople extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    followAll: PropTypes.bool,
     following: PropTypes.array.isRequired,
     inactive: PropTypes.array.isRequired,
-    followAll: PropTypes.bool,
+    userIds: PropTypes.array,
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch } = this.props
+    const { dispatch, userIds } = this.props
     if (!this.hasAutoFollowed && nextProps.followAll && nextProps.inactive.length > 0) {
       this.hasAutoFollowed = true
-      const userIds = this.getUserIds()
       if (userIds.length) {
         dispatch(batchUpdateRelationship(userIds, 'friend'))
       }
@@ -65,19 +65,11 @@ class AwesomePeople extends Component {
     dispatch(push('/onboarding/profile-header'))
   }
 
-  getUserIds() {
-    const { streamContainer } = this.refs
-    return streamContainer && streamContainer.refs.wrappedInstance.props.result ?
-      streamContainer.refs.wrappedInstance.props.result.ids :
-      []
-  }
-
   followAll = () => {
-    const { dispatch, inactive } = this.props
+    const { dispatch, inactive, userIds } = this.props
     const relationship = inactive.length === 0 ?
       RELATIONSHIP_PRIORITY.INACTIVE :
       RELATIONSHIP_PRIORITY.FRIEND
-    const userIds = this.getUserIds()
     if (userIds.length) {
       dispatch(batchUpdateRelationship(userIds, relationship))
     }
@@ -106,8 +98,7 @@ class AwesomePeople extends Component {
   }
 
   render() {
-    const { following } = this.props
-    const userIds = this.getUserIds()
+    const { following, userIds } = this.props
     return (
       <MainView className="PeoplePicker">
         <OnboardingHeader
@@ -120,12 +111,12 @@ class AwesomePeople extends Component {
         <div className={classNames({ isFollowingAll: this.isFollowingAll() })}>
           {
             userIds.length ?
-              <button className="PickerButton" ref="followAllButton" onClick={this.followAll}>
+              <button className="PickerButton" onClick={this.followAll}>
                 <span>{this.renderBigButtonText()}</span>
               </button> :
               null
           }
-          <StreamContainer ref="streamContainer" action={loadAwesomePeople()} />
+          <StreamContainer ref={(comp) => { this.streamContainer = comp }} action={loadAwesomePeople()} />
         </div>
       </MainView>
     )
@@ -150,11 +141,12 @@ function mapStateToProps(state, ownProps) {
     }
   }
   return {
+    followAll: state.stream.type && state.stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS,
     following: relationshipMap.following,
     inactive: relationshipMap.inactive,
     profile: state.profile,
-    followAll: state.stream.type && state.stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS,
     type: ownProps.params.type,
+    userIds: result ? result.ids : [],
   }
 }
 

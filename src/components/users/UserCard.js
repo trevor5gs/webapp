@@ -42,7 +42,6 @@ class UserCard extends Component {
           isLoggedIn={isLoggedIn}
           onClick={callback}
           priority={relationshipPriority}
-          ref="RelationshipImageButton"
           userId={user.id}
           username={`@${user.username}`}
         />

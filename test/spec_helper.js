@@ -1,16 +1,19 @@
 // set global ENV for testing since
 // webpack doesn't inject it here
-require('dotenv').load()
-global.ENV = JSON.stringify(require('../env'))
-global.URL = { createObjectURL: (input) => input }
 import React from 'react'
 import TestUtils from 'react-addons-test-utils'
 import { camelize } from 'humps'
 import chai, { expect } from 'chai'
 import sinon from 'sinon'
-import chaiSaga from './support/saga_helpers'
 import chaiHttp from 'chai-http'
 import sinonChai from 'sinon-chai'
+import chaiSaga from './support/saga_helpers'
+
+require('dotenv').load()
+
+global.URL = { createObjectURL: (input) => input }
+global.ENV = JSON.stringify(require('../env'))
+
 chai.use(chaiSaga)
 chai.use(chaiHttp)
 chai.use(sinonChai)

@@ -28,3 +28,5 @@ Following.propTypes = {
   streamAction: PropTypes.object.isRequired,
 }
 
+export default Following
+

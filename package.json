@@ -25,49 +25,104 @@
     "node": "5.10.1",
     "npm": "3.8.3"
   },
+  "babel": {
+    "presets": ["es2015", "react", "stage-0"],
+    "plugins": ["lodash"],
+    "env": {
+      "development": {
+        "plugins": [
+          ["react-transform", {
+            "transforms": [{
+              "transform": "react-transform-hmr",
+              "imports": ["react"],
+              "locals": ["module"]
+            }, {
+              "transform": "react-transform-catch-errors",
+              "imports": ["react", "redbox-react"]
+            }]
+          }]
+        ]
+      },
+      "production": {
+        "plugins": [
+          "transform-react-constant-elements"
+        ]
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "node": true,
+      "mocha": true
+    },
+    "globals": {
+      "ENV": false,
+      "AndroidInterface": false
+    },
+    "rules": {
+      "no-alert": 2,
+      "no-console": 2,
+      "no-debugger": 2,
+      "no-multiple-empty-lines": [2, { "max": 3, "maxEOF": 2 }],
+      "no-unused-expressions": 0,
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "semi": 0
+    }
+  },
   "dependencies": {
-    "autoprefixer": "6.3.7",
+    "autoprefixer": "6.4.0",
     "autoprefixer-loader": "3.2.0",
     "babel": "6.5.2",
     "babel-cli": "6.11.4",
-    "babel-core": "6.11.4",
+    "babel-core": "6.13.2",
     "babel-eslint": "6.1.2",
     "babel-loader": "6.2.4",
     "babel-plugin-lodash": "3.2.6",
     "babel-plugin-transform-react-constant-elements": "6.9.1",
-    "babel-polyfill": "6.9.1",
-    "babel-preset-es2015": "6.9.0",
+    "babel-polyfill": "6.13.0",
+    "babel-preset-es2015": "6.13.2",
     "babel-preset-react": "6.11.1",
     "babel-preset-stage-0": "6.5.0",
+    "chai": "3.5.0",
+    "chai-generator": "2.0.3",
+    "chai-http": "3.0.0",
     "classnames": "2.2.5",
     "css-loader": "0.23.1",
     "dotenv": "2.0.0",
+    "enzyme": "2.4.1",
     "estraverse-fb": "1.3.1",
     "exif-js": "2.1.1",
     "express": "4.14.0",
     "extract-text-webpack-plugin": "1.0.1",
+    "fetch-pretender": "1.5.0",
     "honeybadger": "1.1.2",
     "honeybadger-js": "0.4.2",
     "html-webpack-plugin": "2.22.0",
     "humps": "1.1.0",
     "isomorphic-fetch": "2.2.1",
+    "jsdom": "9.4.1",
     "jwt-decode": "2.1.0",
     "librato-node": "4.1.0",
-    "lodash": "4.13.1",
+    "lodash": "4.14.2",
     "memjs": "0.10.0",
     "morgan": "1.7.0",
     "mousetrap": "1.6.0",
-    "newrelic": "1.28.3",
+    "newrelic": "1.29.0",
+    "nock": "8.0.0",
     "node-libs-browser": "1.0.0",
     "node-sass": "3.8.0",
-    "node-static": "0.7.7",
+    "node-static": "0.7.8",
     "pm2": "1.1.3",
-    "react": "15.2.1",
-    "react-dom": "15.2.1",
+    "react": "15.3.0",
+    "react-addons-test-utils": "15.3.0",
+    "react-dom": "15.3.0",
     "react-fastclick": "2.1.2",
     "react-helmet": "3.1.0",
     "react-redux": "4.4.5",
-    "react-router": "2.6.0",
+    "react-router": "2.6.1",
     "react-router-redux": "4.0.5",
     "redux": "3.5.2",
     "redux-logger": "2.6.1",
@@ -76,43 +131,35 @@
     "reselect": "2.5.3",
     "sass-loader": "4.0.0",
     "semaphore": "1.0.5",
-    "simple-oauth2": "0.7.0",
+    "simple-oauth2": "0.8.0",
+    "sinon": "1.17.5",
+    "sinon-chai": "2.8.0",
     "style-loader": "0.13.1",
-    "trunc-html": "1.0.2",
+    "trunc-html": "1.1.2",
     "url-regex": "3.2.0",
     "webpack": "1.13.1",
     "webpack-sources": "0.1.2"
   },
   "devDependencies": {
     "babel-plugin-react-transform": "2.0.2",
-    "chai": "3.5.0",
-    "chai-generator": "2.0.3",
-    "chai-http": "3.0.0",
-    "enzyme": "2.4.1",
-    "eslint": "3.1.1",
-    "eslint-config-airbnb": "9.0.1",
-    "eslint-plugin-import": "1.11.1",
+    "eslint": "3.2.2",
+    "eslint-config-airbnb": "10.0.0",
+    "eslint-plugin-import": "1.12.0",
     "eslint-plugin-jsx-a11y": "2.0.1",
-    "eslint-plugin-react": "5.2.2",
-    "fetch-pretender": "1.5.0",
-    "jsdom": "9.4.1",
-    "karma": "1.1.1",
+    "eslint-plugin-react": "6.0.0",
+    "karma": "1.1.2",
     "karma-chrome-launcher": "1.0.1",
     "karma-mocha": "1.1.1",
     "karma-phantomjs-launcher": "1.0.1",
     "karma-sourcemap-loader": "0.3.7",
-    "karma-webpack": "1.7.0",
-    "mocha": "2.5.3",
-    "nock": "8.0.0",
-    "phantomjs-prebuilt": "2.1.7",
-    "react-addons-test-utils": "15.2.1",
+    "karma-webpack": "1.8.0",
+    "mocha": "3.0.2",
+    "phantomjs-prebuilt": "2.1.11",
     "react-transform-catch-errors": "1.0.2",
     "react-transform-hmr": "1.0.4",
-    "redbox-react": "1.2.10",
-    "sinon": "1.17.4",
-    "sinon-chai": "2.8.0",
+    "redbox-react": "1.3.0",
     "source-map-support": "0.4.2",
     "webpack-dev-middleware": "1.6.1",
-    "webpack-hot-middleware": "2.12.1"
+    "webpack-hot-middleware": "2.12.2"
   }
 }

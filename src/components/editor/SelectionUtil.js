@@ -28,7 +28,7 @@ export function getWordFromSelection() {
       letters.unshift(letter)
     }
   }
-  startIndex = endIndex - letters.length + 1
+  startIndex = (endIndex - letters.length) + 1
   return letters.join('')
 }
 

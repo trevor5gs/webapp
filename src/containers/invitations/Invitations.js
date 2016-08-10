@@ -43,7 +43,7 @@ class Invitations extends Component {
       return
     }
     const { dispatch } = this.props
-    this.refs.Control.clear()
+    this.control.clear()
     dispatch(inviteUsers(this.batchEmailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
   }
@@ -88,7 +88,7 @@ class Invitations extends Component {
               label={`Emails ${batchEmailState.message}`}
               onChange={this.onChangeControl}
               tabIndex="1"
-              ref="Control"
+              ref={(comp) => { this.control = comp }}
             />
             <FormButton
               className="FormButton asPill"

@@ -28,7 +28,7 @@ methods.relationshipUpdateSuccess = (newState, action) => {
 methods.addItemsForAuthor = (newState, mappingType, authorId) => {
   Object.keys(newState[mappingType] || {}).forEach((itemId) => {
     const item = newState[mappingType][itemId]
-    if (item.hasOwnProperty('authorId') && item.authorId === authorId) {
+    if ({}.hasOwnProperty.call(item, 'authorId') && item.authorId === authorId) {
       methods.removeIdFromDeletedArray(newState, mappingType, itemId)
     }
   })
@@ -38,7 +38,7 @@ methods.addItemsForAuthor = (newState, mappingType, authorId) => {
 methods.removeItemsForAuthor = (newState, mappingType, authorId) => {
   Object.keys(newState[mappingType] || {}).forEach((itemId) => {
     const item = newState[mappingType][itemId]
-    if (item.hasOwnProperty('authorId') && item.authorId === authorId) {
+    if ({}.hasOwnProperty.call(item, 'authorId') && item.authorId === authorId) {
       const action = {
         type: '_REQUEST',
         payload: {

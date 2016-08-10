@@ -147,7 +147,7 @@ const selectStreamDeletions = (state, props) => {
   const meta = get(props, 'action.meta', {})
   const resultPath = meta.resultKey || get(state, 'routing.location.pathname')
   const result = get(state.json, ['pages', resultPath], { ids: [] })
-  return result && result.type === meta.mappingType ||
+  return (result && result.type === meta.mappingType) ||
     (meta.resultFilter && result.type !== meta.mappingType)
 }
 

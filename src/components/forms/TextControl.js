@@ -17,7 +17,6 @@ class TextControl extends Component {
         {...this.props}
         autoCapitalize="off"
         autoCorrect="off"
-        ref="textControl"
         type="text"
       />
     )

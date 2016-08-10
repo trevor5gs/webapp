@@ -17,24 +17,19 @@ import { Paginator } from '../../components/streams/Paginator'
 import Session from '../../../src/vendor/session'
 import { MainView } from '../../components/views/MainView'
 
-/* eslint-disable react/prefer-stateless-function */
-export class Notifications extends Component {
+class Notifications extends Component {
 
   static propTypes = {
+    category: PropTypes.string,
     pathname: PropTypes.string,
     params: PropTypes.shape({
       category: PropTypes.string,
     }),
+    streamAction: PropTypes.object,
   }
 
-  static preRender = (store, routerState) => {
-    const { category } = routerState.params
-    const params = {}
-    if (category) {
-      params.category = category
-    }
-    return store.dispatch(loadNotifications(params))
-  }
+  static preRender = (store, routerState) =>
+    store.dispatch(loadNotifications(routerState.params))
 
   componentWillMount() {
     this.saveCategory()
@@ -56,16 +51,11 @@ export class Notifications extends Component {
       scrollToTop()
       this.setState({ isReloading: true })
     }
-    if (this.refs.streamContainer) {
-      this.refs.streamContainer.refs.wrappedInstance.setAction(
-        loadNotifications({ category: type })
-      )
-    }
     this.setState({ activeTabType: type })
   }
 
   saveCategory() {
-    const { category } = this.props.params
+    const { category } = this.props
     if (category) {
       Session.setItem(SESSION_KEYS.NOTIFICATIONS_FILTER, category)
     } else {
@@ -74,13 +64,8 @@ export class Notifications extends Component {
   }
 
   render() {
-    const { pathname } = this.props
-    const { category } = this.props.params
+    const { category, pathname, streamAction } = this.props
     const { isReloading } = this.state
-    const params = {}
-    if (category) {
-      params.category = category
-    }
     const tabs = [
       { to: '/notifications', type: 'all', children: 'All' },
       { to: '/notifications/comments', type: 'comments', children: <BubbleIcon /> },
@@ -109,20 +94,22 @@ export class Notifications extends Component {
             null
         }
         <StreamContainer
-          action={loadNotifications(params)}
+          action={streamAction}
           className="asFullWidth"
-          key={`notificationView_${params.category}`}
-          scrollSessionKey={`notifications_${category || 'all'}`}
-          ref="streamContainer"
+          key={`notificationView_${category}`}
+          scrollSessionKey={`notifications_${category}`}
         />
       </MainView>
     )
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state, props) {
+  const category = _.get(props, 'params.category', 'all')
   return {
-    pathname: ownProps.location.pathname,
+    category,
+    pathname: props.location.pathname,
+    streamAction: loadNotifications({ category }),
     streamType: _.get(state, 'stream.type'),
   }
 }

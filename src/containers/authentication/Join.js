@@ -81,13 +81,13 @@ class Join extends Component {
       })
     }
     if (!availability) { return }
-    if (availability.hasOwnProperty('username')) {
+    if ({}.hasOwnProperty.call(availability, 'username')) {
       this.validateUsernameResponse(availability)
     }
-    if (availability.hasOwnProperty('email')) {
+    if ({}.hasOwnProperty.call(availability, 'email')) {
       this.validateEmailResponse(availability)
     }
-    if (availability.hasOwnProperty('invitationCode')) {
+    if ({}.hasOwnProperty.call(availability, 'invitationCode')) {
       this.validateInvitationCodeResponse(availability)
     }
   }

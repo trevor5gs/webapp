@@ -30,3 +30,5 @@ UserDetailHelmet.propTypes = {
   user: PropTypes.object,
 }
 
+export default UserDetailHelmet
+

@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import * as ACTION_TYPES from '../constants/action_types'
 
-export const analytics = store => next => action => {
+const analytics = store => next => action => {
   const { payload, type } = action
 
   if ((type !== LOCATION_CHANGE &&
@@ -50,4 +50,6 @@ export const analytics = store => next => action => {
 
   return next(action)
 }
+
+export default analytics
 

@@ -137,3 +137,5 @@ CommentTools.propTypes = {
   onClickReplyToComment: PropTypes.func,
 }
 
+export default CommentTools
+

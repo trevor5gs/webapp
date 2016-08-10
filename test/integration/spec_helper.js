@@ -32,3 +32,5 @@ export function pretendServer(cb) {
   }
   return server
 }
+
+export default pretendServer

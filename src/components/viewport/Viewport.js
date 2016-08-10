@@ -28,3 +28,5 @@ Viewport.propTypes = {
   isProfileMenuActive: PropTypes.bool.isRequired,
 }
 
+export default Viewport
+

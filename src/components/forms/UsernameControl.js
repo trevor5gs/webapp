@@ -18,7 +18,7 @@ class UsernameControl extends Component {
 
   onClickUsernameSuggestion = (e) => {
     const val = e.target.title
-    this.refs.FormControl.onChangeControl({ target: { value: val } })
+    this.formControl.onChangeControl({ target: { value: val } })
   }
 
   renderSuggestions = () => {
@@ -44,7 +44,7 @@ class UsernameControl extends Component {
     }
     return (
       <p className="FormControlSuggestionList">
-        <span></span>
+        <span />
       </p>
     )
   }
@@ -55,7 +55,7 @@ class UsernameControl extends Component {
         {...this.props}
         autoCapitalize="off"
         autoCorrect="off"
-        ref="FormControl"
+        ref={(comp) => { this.formControl = comp }}
         maxLength="50"
         renderFeedback={this.renderSuggestions}
         trimWhitespace

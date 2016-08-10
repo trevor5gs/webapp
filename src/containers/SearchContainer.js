@@ -41,7 +41,7 @@ export function mapStateToProps(state, props) {
   }
 }
 
-export class SearchContainer extends Component {
+class SearchContainer extends Component {
   static propTypes = {
     coverDPI: PropTypes.string.isRequired,
     debounceWait: PropTypes.number,

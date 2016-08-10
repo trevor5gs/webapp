@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
-import Avatar from '../assets/Avatar'
 import classNames from 'classnames'
 import { Link } from 'react-router'
+import Avatar from '../assets/Avatar'
 import { ExIcon } from './NavbarIcons'
 
 const threadlessLink = 'http://ello.threadless.com/'
@@ -26,6 +26,7 @@ export const NavbarProfile = ({
           <a
             className="NavbarProfileLink"
             href={`${ENV.AUTH_DOMAIN}/wtf/resources/community-directory/`}
+            rel="noopener noreferrer"
             target="_blank"
           >
             Communities
@@ -33,11 +34,19 @@ export const NavbarProfile = ({
           <a
             className="NavbarProfileLink"
             href={`${ENV.AUTH_DOMAIN}/wtf`}
+            rel="noopener noreferrer"
             target="_blank"
           >
             Help
           </a>
-          <a className="NavbarProfileLink" href={threadlessLink} target="_blank">Store</a>
+          <a
+            className="NavbarProfileLink"
+            href={threadlessLink}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Store
+          </a>
           <button className="NavbarProfileLink" onClick={onLogOut}>Logout</button>
           <button className="NavbarProfileCloseButton">
             <ExIcon />
@@ -60,4 +69,6 @@ NavbarProfile.propTypes = {
   onLogOut: PropTypes.func,
   username: PropTypes.string,
 }
+
+export default NavbarProfile
 

@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { isEqual, pick } from 'lodash'
 import { SHORTCUT_KEYS } from '../constants/application_types'
@@ -39,11 +38,10 @@ class ModalContainer extends Component {
 
   componentDidUpdate() {
     const { isActive, kind } = this.props
-    const body = ReactDOM.findDOMNode(document.body)
     if (kind === 'Modal' && isActive) {
-      body.classList.add('isModalActive')
+      document.body.classList.add('isModalActive')
     } else if (kind === 'Modal' && !isActive) {
-      body.classList.remove('isModalActive')
+      document.body.classList.remove('isModalActive')
     }
   }
 

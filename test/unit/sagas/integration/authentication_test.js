@@ -1,10 +1,9 @@
-import { expect } from '../../../spec_helper'
 import createSagaMiddleware from 'redux-saga'
+import { applyMiddleware, combineReducers, createStore } from 'redux'
+import { expect } from '../../../spec_helper'
 import { authentication, initialState } from '../../../../src/reducers/authentication'
 import { loginSaga } from '../../../../src/sagas/authentication'
 import { signIn } from '../../../../src/actions/authentication'
-
-import { applyMiddleware, combineReducers, createStore } from 'redux'
 
 describe('authentication saga', function () {
   const badInitialState = {

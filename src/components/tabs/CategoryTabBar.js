@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
-import { TabListLinks } from './TabList'
 import { Link } from 'react-router'
+import { TabListLinks } from './TabList'
 
 export const CategoryTabBar = ({ pathname, tabs }) =>
   <div className="CategoryTabBar">
@@ -25,4 +25,6 @@ CategoryTabBar.propTypes = {
   pathname: PropTypes.string.isRequired,
   tabs: PropTypes.array.isRequired,
 }
+
+export default CategoryTabBar
 

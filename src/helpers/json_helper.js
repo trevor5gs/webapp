@@ -10,7 +10,7 @@ export function findBy(params, collection, json) {
   }
   /* eslint-disable no-restricted-syntax */
   for (const modelId in models) {
-    if (models.hasOwnProperty(modelId)) {
+    if ({}.hasOwnProperty.call(models, modelId)) {
       const model = models[modelId]
       let found = true
       for (const propName in params) {

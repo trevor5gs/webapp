@@ -3,6 +3,18 @@ import 'newrelic'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
 import { values } from 'lodash'
+import Honeybadger from 'honeybadger'
+import express from 'express'
+import morgan from 'morgan'
+import librato from 'librato-node'
+import path from 'path'
+import fs from 'fs'
+import semaphore from 'semaphore'
+import cp from 'child_process'
+import memjs from 'memjs'
+import crypto from 'crypto'
+import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
+import { addOauthRoute, currentToken } from '../oauth'
 
 function handleZlibError(error) {
   if (error.code === 'Z_BUF_ERROR') {
@@ -14,22 +26,10 @@ function handleZlibError(error) {
 }
 process.on('uncaughtException', handleZlibError)
 
-import Honeybadger from 'honeybadger'
-import express from 'express'
-import morgan from 'morgan'
-import librato from 'librato-node'
-import path from 'path'
-import fs from 'fs'
-import semaphore from 'semaphore'
-import cp from 'child_process'
-import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
-import { addOauthRoute, currentToken } from '../oauth'
-import memjs from 'memjs'
-import crypto from 'crypto'
-
 // load env vars first
 require('dotenv').load({ silent: process.env.NODE_ENV === 'production' })
 global.ENV = require('../env')
+
 updateTimeAgoStrings({ about: '' })
 
 const app = express()
@@ -164,7 +164,7 @@ function cacheKeyForRequest(req, salt = '') {
 
 app.use((req, res) => {
   res.setHeader('Cache-Control', 'public, max-age=60');
-  res.setHeader('Expires', new Date(Date.now() + 1000 * 60).toUTCString());
+  res.setHeader('Expires', new Date(Date.now() + (1000 * 60)).toUTCString());
   if (canPrerenderRequest(req)) {
     const cacheKey = cacheKeyForRequest(req)
     console.log('Serving pre-rendered markup for path', req.url, cacheKey)

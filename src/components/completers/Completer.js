@@ -76,7 +76,7 @@ export default class Completer extends Component {
   submit() {
     const { onCompletion } = this.props
     const { selectedIndex } = this.state
-    onCompletion({ value: this.refs[`completion_${selectedIndex}`].getValue() })
+    onCompletion({ value: this[`completion_${selectedIndex}`].getValue() })
   }
 
   renderUsers() {
@@ -89,7 +89,7 @@ export default class Completer extends Component {
           key={`completion_${i}`}
           asset={<Avatar className="isTiny" sources={{ tmp: { url: completion.imageUrl } }} />}
           label={`@${completion.name}`}
-          ref={`completion_${i}`}
+          ref={(comp) => { this[`completion_${i}`] = comp }}
           onClick={onCompletion}
         />
       )
@@ -106,7 +106,7 @@ export default class Completer extends Component {
           key={`completion_${i}`}
           asset={<Emoji key={completion.name} src={completion.imageUrl} />}
           label={`:${completion.name}:`}
-          ref={`completion_${i}`}
+          ref={(comp) => { this[`completion_${i}`] = comp }}
           onClick={onCompletion}
         />
       )

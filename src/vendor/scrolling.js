@@ -6,7 +6,7 @@ export default function scrollTop(_node) {
     return node.scrollTop
   }
 
-  if (window.hasOwnProperty('scrollY')) {
+  if ({}.hasOwnProperty.call(window, 'scrollY')) {
     return window.scrollY
   }
   const offset = document.documentElement ?

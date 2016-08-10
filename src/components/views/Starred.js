@@ -28,3 +28,5 @@ Starred.propTypes = {
   streamAction: PropTypes.object.isRequired,
 }
 
+export default Starred
+

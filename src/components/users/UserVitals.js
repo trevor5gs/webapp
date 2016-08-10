@@ -101,7 +101,7 @@ export const UserInfo = ({ user }) => {
   let externalLinks = []
   if (user.externalLinksList) {
     externalLinks = user.externalLinksList.map((link, i) =>
-      <a href={link.url} target="_blank" key={i} >{link.text}</a>
+      <a href={link.url} key={i} rel="noopener noreferrer" target="_blank">{link.text}</a>
     )
   }
   return (

@@ -52,3 +52,5 @@ NavbarLink.propTypes = {
   to: PropTypes.string.isRequired,
 }
 
+export default NavbarLink
+

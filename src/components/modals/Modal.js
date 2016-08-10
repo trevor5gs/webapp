@@ -14,3 +14,5 @@ Modal.propTypes = {
   onClickModal: PropTypes.func,
 }
 
+export default Modal
+

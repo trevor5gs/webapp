@@ -11,6 +11,7 @@ export const ElloBuyButton = ({ to }) =>
     className="ElloBuyButton"
     href={to}
     onClick={onElloBuyButtonClick}
+    rel="noopener noreferrer"
     target="_blank"
   >
     <MoneyIcon />
@@ -19,4 +20,6 @@ export const ElloBuyButton = ({ to }) =>
 ElloBuyButton.propTypes = {
   to: PropTypes.string.isRequired,
 }
+
+export default ElloBuyButton
 

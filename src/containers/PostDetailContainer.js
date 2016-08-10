@@ -47,7 +47,7 @@ export function mapStateToProps(state, props) {
   }
 }
 
-export class PostDetailContainer extends Component {
+class PostDetailContainer extends Component {
 
   static propTypes = {
     author: PropTypes.object,
