@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { isEqual, pick, sample } from 'lodash'
 import { selectCategories, selectCategoryPageTitle } from '../selectors'
-import { META } from '../constants/application_types'
 import {
   bindDiscoverKey,
   getCategories,
@@ -106,7 +105,7 @@ function mapStateToProps(state, props) {
   const pageTitle = selectCategoryPageTitle(state, props)
   const promotions = isLoggedIn ? state.promotions.loggedIn : state.promotions.loggedOut
   const titlePrefix = pageTitle ? `${pageTitle} | ` : ''
-  const title = titlePrefix + META.TITLE
+  const title = `${titlePrefix} Ello`
   return {
     coverDPI: gui.coverDPI,
     isBeaconActive: isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
