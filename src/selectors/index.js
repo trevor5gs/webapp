@@ -56,7 +56,6 @@ const selectStreamResult = (state, props) => {
   return get(state, ['json', 'pages', resultPath], { ids: [], pagination: emptyPagination() })
 }
 
-
 // Memoized Selectors
 export const selectPost = createSelector(
   [selectJSON, selectParamsToken], (json, token) =>
@@ -124,15 +123,17 @@ export const selectCategories = createSelector(
 )
 
 export const selectCategoryPageTitle = createSelector(
-  [selectParamsType], (paramsType) => {
+  [selectParamsType, selectCategoryCollection], (paramsType, categories) => {
     switch (paramsType) {
       case 'all':
         return null
       case undefined:
       case 'recommended':
         return 'Featured'
-      default:
-        return startCase(paramsType).replace(/\sX\s/, ' x ')
+      default: {
+        const key = Object.keys(categories).find((k) => categories[k].slug === paramsType)
+        return key ? categories[key].name : startCase(paramsType).replace(/\sX\s/, ' x ')
+      }
     }
   }
 )
