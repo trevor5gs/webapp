@@ -64,7 +64,7 @@ export const CommentNotification = (props) => {
       <p>
         <UserTextLink user={author} />
         {' commented on your '}
-        <PostTextLink author={author} post={parentPost} />
+        <PostTextLink author={parentPostAuthor} post={parentPost} />
         {'.'}
       </p>
     </Notification>
@@ -94,7 +94,7 @@ export const CommentMentionNotification = (props) => {
       <p>
         <UserTextLink user={author} />
         {' mentioned you in a '}
-        <PostTextLink author={author} post={parentPost} text="comment" />
+        <PostTextLink author={parentPostAuthor} post={parentPost} text="comment" />
         {'.'}
       </p>
     </Notification>
