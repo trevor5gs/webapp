@@ -15,7 +15,7 @@ import {
 import { numberToHuman } from '../../vendor/number_to_human'
 
 const ViewsTool = ({ detailLink, isLoggedIn, postViewsCountRounded }) =>
-  <span className={classNames('PostTool', 'ViewsTool', { asPill: isLoggedIn })}>
+  <span className={classNames('PostTool', 'ViewsTool', { isPill: isLoggedIn })}>
     <Link to={detailLink}>
       <EyeIcon />
       <span className="PostToolValue">{postViewsCountRounded}</span>
@@ -131,7 +131,7 @@ RepostTool.propTypes = {
 }
 
 const ShareTool = ({ isLoggedIn, onClickSharePost }) =>
-  <span className={classNames('PostTool', 'ShareTool', { asPill: !isLoggedIn })}>
+  <span className={classNames('PostTool', 'ShareTool', { isPill: !isLoggedIn })}>
     <button onClick={onClickSharePost}>
       <ShareIcon />
       <Hint>Share</Hint>
