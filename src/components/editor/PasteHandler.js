@@ -1,5 +1,4 @@
-import { isAndroid } from '../../vendor/jello'
-import { getLastWordPasted, replaceSelectionWithText } from './SelectionUtil'
+import { replaceSelectionWithText } from './SelectionUtil'
 import { postPreviews, saveAsset } from '../../actions/editor'
 import { getBlobFromBase64 } from '../../helpers/file_helper'
 
@@ -25,13 +24,6 @@ function handlePlainText(text) {
     replaceSelectionWithText(text)
     checkForEmbeds(text)
   }
-}
-
-function handleAndroidBrokenPaste() {
-  // android bug: https://code.google.com/p/chromium/issues/detail?id=369101
-  requestAnimationFrame(() => {
-    handlePlainText(getLastWordPasted())
-  })
 }
 
 function handleClipboardItems(items) {
@@ -66,10 +58,6 @@ function checkForImages(e) {
 export function pasted(e, d, id) {
   dispatch = d
   editorId = id
-  if (isAndroid()) {
-    handleAndroidBrokenPaste()
-    return
-  }
   const text = e.clipboardData.getData('text/plain')
   const items = e.clipboardData.items
   if (text.length) {
