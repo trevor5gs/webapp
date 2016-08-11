@@ -46,6 +46,7 @@ class TextBlock extends Component {
   // instead once PR #577 is merged: ag isEditorFocused
   onBlurText = () => {
     document.body.classList.remove('isEditorFocused')
+    this.updateTextBlock()
   }
 
   // TODO: Send `isEditorFocused` through the modal reducer
