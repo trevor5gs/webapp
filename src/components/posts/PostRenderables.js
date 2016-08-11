@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
-import UserAvatars from '../../components/users/UserAvatars'
+import UserDrawer from '../users/UserDrawer'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostToolsContainer from '../../containers/PostToolsContainer'
 import { HeartIcon, RepostIcon } from '../posts/PostIcons'
@@ -16,7 +16,7 @@ function getPostDetailPath(author, post) {
 }
 
 export const PostLoversDrawer = ({ post }) =>
-  <UserAvatars
+  <UserDrawer
     endpoint={postLovers(post.id)}
     icon={<HeartIcon />}
     key={`userAvatarsLovers_${post.id}${post.lovesCount}`}
@@ -29,7 +29,7 @@ PostLoversDrawer.propTypes = {
 }
 
 export const PostRepostersDrawer = ({ post }) =>
-  <UserAvatars
+  <UserDrawer
     endpoint={postReposters(post.id)}
     icon={<RepostIcon />}
     key={`userAvatarsReposters_${post.id}${post.repostsCount}`}
