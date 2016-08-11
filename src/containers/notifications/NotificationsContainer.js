@@ -138,7 +138,7 @@ class NotificationsContainer extends Component {
           }
           <StreamContainer
             action={streamAction}
-            className="asFullWidth"
+            className="isFullWidth"
             key={`notificationView_${activeTabType}`}
             ref={(comp) => { this.streamContainer = comp }}
             scrollContainer={this.scrollContainer}
