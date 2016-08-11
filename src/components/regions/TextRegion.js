@@ -60,11 +60,11 @@ class TextRegion extends Component {
 
   render() {
     const { content, isGridMode, postDetailPath } = this.props
-    const isHotRegion = isGridMode && postDetailPath
+    const isHot = isGridMode && postDetailPath
     return (
       <div className="TextRegion">
         <div
-          className={classNames('RegionContent', { isHotRegion })}
+          className={classNames('RegionContent', { isHot })}
           dangerouslySetInnerHTML={{ __html: content }}
           onClick={this.onClickRegion}
         />
