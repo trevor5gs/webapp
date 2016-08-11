@@ -97,7 +97,7 @@ describe('performRequest', function () {
       ...pretendAction,
       payload: {
         ...pretendAction.payload,
-        serverResponse: fakeResponse,
+        serverStatus: 200,
         pathname: '/foo',
         pagination: {
           totalCount: 2,
