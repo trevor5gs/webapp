@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
-import UserDrawer from '../users/UserDrawer'
+import { UserDrawer } from '../users/UserRenderables'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import PostToolsContainer from '../../containers/PostToolsContainer'
 import { HeartIcon, RepostIcon } from '../posts/PostIcons'

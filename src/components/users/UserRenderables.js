@@ -4,7 +4,9 @@ import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
 import CoverMini from '../assets/CoverMini'
 import Hint from '../hints/Hint'
+import { loadUserDrawer } from '../../actions/user'
 import RelationshipContainer from '../../containers/RelationshipContainer'
+import StreamContainer from '../../containers/StreamContainer'
 import { MiniPillButton } from '../buttons/Buttons'
 import { ShareIcon } from './UserIcons'
 import { UserDetailUserNames, UserNames, UserStats, UserInfo } from './UserVitals'
@@ -42,6 +44,23 @@ export const UserCompact = ({ user }) =>
 
 UserCompact.propTypes = {
   user: PropTypes.object,
+}
+
+export const UserDrawer = ({ endpoint, icon, post, resultType }) =>
+  <section className="UserDrawer">
+    {icon}
+    <StreamContainer
+      action={loadUserDrawer(endpoint, post, resultType)}
+      paginatorText="+more"
+      ignoresScrollPosition
+    />
+  </section>
+
+UserDrawer.propTypes = {
+  endpoint: PropTypes.object.isRequired,
+  icon: PropTypes.element.isRequired,
+  post: PropTypes.object.isRequired,
+  resultType: PropTypes.string.isRequired,
 }
 
 export const UserGrid = ({ user }) =>
