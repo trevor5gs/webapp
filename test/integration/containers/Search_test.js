@@ -65,7 +65,7 @@ describe('Search', function () {
       expect(tab1.hasClass('isActive')).to.be.false
     })
 
-    it('exercises the search interface', function () {
+    xit('exercises the search interface', function () {
       // Performs a "Posts" search
       searchControl.find('input').simulate('change', { target: { value: 'word' } })
       expect(window.location.search).to.equal('?terms=word')
