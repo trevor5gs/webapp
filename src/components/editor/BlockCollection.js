@@ -89,6 +89,14 @@ class BlockCollection extends Component {
     return !isEqual(nextProps, this.props) || !isEqual(nextState, this.state)
   }
 
+  componentDidUpdate(prevProps) {
+    const { editorId, isNavbarHidden, order } = this.props
+    const isDragging = document.body.classList.contains('isDragging')
+    if (!isDragging && prevProps.order.length !== order.length) {
+      scrollToLastTextBlock(editorId, isNavbarHidden)
+    }
+  }
+
   componentWillUnmount() {
     if (this.dragObject) {
       removeDragObject(this.dragObject)
