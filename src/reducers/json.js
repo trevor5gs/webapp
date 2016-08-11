@@ -259,7 +259,7 @@ methods.clearSearchResults = (newState) => {
   for (const resultKey of ['/search/posts', '/search/users']) {
     const existingResult = newState.pages[resultKey]
     if (existingResult) {
-      newState.pages[resultKey] = null
+      newState.pages[resultKey] = { ids: [], pagination: emptyPagination() }
     }
   }
   return newState
