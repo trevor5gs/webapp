@@ -27,11 +27,20 @@ export function scrollToTop(pos = 0) {
   let timeout = 10
   const max = 1000
 
-  while (top > pos) {
-    timeout += 10
-    up = up * 1.1 < max ? up * 1.1 : max
-    top -= up
-    setTimeout(scrollToFn(top), timeout)
+  if (top > pos) {
+    while (top > pos) {
+      timeout += 10
+      up = up * 1.1 < max ? up * 1.1 : max
+      top -= up
+      setTimeout(scrollToFn(top), timeout)
+    }
+  } else {
+    while (top < pos) {
+      timeout += 10
+      up = up * 1.1 < max ? up * 1.1 : max
+      top += up
+      setTimeout(scrollToFn(top), timeout)
+    }
   }
 }
 
@@ -73,7 +82,11 @@ export function scrollToLastTextBlock(editorId, isNavbarHidden) {
   const lastTextBlock = textBlocks[textBlocks.length - 1]
   if (lastTextBlock && !isElementInViewport(lastTextBlock, isNavbarHidden ? 0 : 80)) {
     const pos = lastTextBlock.getBoundingClientRect()
-    scrollToTop(window.scrollY + (pos.top - 100))
+    if (pos.top > window.innerHeight) {
+      scrollToTop(window.scrollY + ((pos.top - window.innerHeight) + 140))
+    } else {
+      scrollToTop(window.scrollY + (pos.top - 100))
+    }
   }
 }
 
