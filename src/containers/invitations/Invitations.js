@@ -91,7 +91,7 @@ class Invitations extends Component {
               ref={(comp) => { this.control = comp }}
             />
             <FormButton
-              className="FormButton asPill"
+              className="FormButton isPill"
               disabled={!isValid}
               tabIndex="2"
             >

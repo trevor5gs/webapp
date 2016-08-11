@@ -346,7 +346,7 @@ class StreamContainer extends Component {
     const { action } = this.props
     const { meta } = action
     return (
-      <section className="StreamContainer hasErrored">
+      <section className="StreamContainer isError">
         {meta && meta.renderStream && meta.renderStream.asError ?
           meta.renderStream.asError :
           <ErrorState4xx />

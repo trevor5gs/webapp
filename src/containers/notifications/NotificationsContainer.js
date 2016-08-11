@@ -55,11 +55,11 @@ class NotificationsContainer extends Component {
   }
 
   onMouseOver = () => {
-    this.body.classList.add('notificationsAreScrolling')
+    this.body.classList.add('isNotificationsScrolling')
   }
 
   onMouseOut = () => {
-    this.body.classList.remove('notificationsAreScrolling')
+    this.body.classList.remove('isNotificationsScrolling')
   }
 
   onClickTab = ({ type }) => {
@@ -138,7 +138,7 @@ class NotificationsContainer extends Component {
           }
           <StreamContainer
             action={streamAction}
-            className="asFullWidth"
+            className="isFullWidth"
             key={`notificationView_${activeTabType}`}
             ref={(comp) => { this.streamContainer = comp }}
             scrollContainer={this.scrollContainer}

@@ -95,7 +95,7 @@ class Notifications extends Component {
         }
         <StreamContainer
           action={streamAction}
-          className="asFullWidth"
+          className="isFullWidth"
           key={`notificationView_${category}`}
           scrollSessionKey={`notifications_${category}`}
         />

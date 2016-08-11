@@ -109,7 +109,7 @@ export const CommentTools = (props) => {
       cells.push(
         <FlagTool
           key={`FlagTool_${cId}`}
-          className="asSolo"
+          className="isSolo"
           onClickFlagComment={onClickFlagComment}
         />
       )

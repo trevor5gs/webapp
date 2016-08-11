@@ -44,7 +44,7 @@ PostRepostersDrawer.propTypes = {
 export const CommentStream = ({ post, author }) =>
   <div>
     <StreamContainer
-      className="CommentStreamContainer asFullWidth"
+      className="CommentStreamContainer isFullWidth"
       action={loadComments(post)}
       ignoresScrollPosition
     >
