@@ -38,7 +38,7 @@ export function profile(state = {}, action) {
         registrationId: state.registrationId,
       }
     case PROFILE.EXPORT_SUCCESS:
-      if (action.payload.serverResponse.status === 200) {
+      if (action.payload.serverStatus === 200) {
         return { ...state, dataExport: action.payload.response.exportUrl }
       }
       return { ...state, dataExport: null }

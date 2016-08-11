@@ -85,7 +85,7 @@ describe('profile reducer', () => {
       const action = {
         type: PROFILE.EXPORT_SUCCESS,
         payload: {
-          serverResponse: { status: 200 },
+          serverStatus: 200,
           response: { exportUrl: 'ello.co/export' },
         },
       }
@@ -98,7 +98,7 @@ describe('profile reducer', () => {
       const action = {
         type: PROFILE.EXPORT_SUCCESS,
         payload: {
-          serverResponse: { status: 666 },
+          serverStatus: 666,
           response: { exportUrl: 'ello.co/export' },
         },
       }

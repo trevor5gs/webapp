@@ -319,7 +319,7 @@ class StreamContainer extends Component {
     if (!action.payload.endpoint || !pagination[rel] ||
         parseInt(pagination.totalPagesRemaining, 10) === 0 || !action ||
         (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS &&
-         _.get(stream, 'payload.serverResponse.status', 0) === 204)) { return }
+         _.get(stream, 'payload.serverStatus', 0) === 204)) { return }
     if (runningFetches[pagination[rel]]) { return }
     this.setState({ hidePaginator: false })
     const infiniteAction = {

@@ -259,7 +259,7 @@ export function* performRequest(action) {
 
   updateRunningFetches(serverResponse)
 
-  payload.serverResponse = serverResponse
+  payload.serverStatus = serverResponse.status
   if (serverResponse.status === 200 || serverResponse.status === 201) {
     payload.response = camelizeKeys(json)
 

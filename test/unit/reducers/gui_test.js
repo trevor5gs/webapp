@@ -255,7 +255,7 @@ describe('gui reducer', () => {
 
     it('HEAD_SUCCESS updates isNotificationsUnread', () => {
       expect(reducer(undefined, {})).to.have.property('isNotificationsUnread', false)
-      const action = { type: HEAD_SUCCESS, payload: { serverResponse: { status: 204 } } }
+      const action = { type: HEAD_SUCCESS, payload: { serverStatus: 204 } }
       expect(reducer(reducer, action)).to.have.property('isNotificationsUnread', true)
     })
   })
