@@ -26,7 +26,7 @@ export const Search = ({
       promotion={promotion}
     />
     <form className="SearchBar" onSubmit={onSubmit}>
-      <SearchControl onChange={onChange} text={terms} />
+      <SearchControl key={terms} onChange={onChange} text={terms} />
       <TabListButtons
         activeType={type}
         className="SearchTabList"
