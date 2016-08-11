@@ -32,7 +32,7 @@ PostDetail.propTypes = {
 
 export const PostDetailError = ({ children }) =>
   <MainView className="PostDetail">
-    <section className="StreamContainer hasErrored">
+    <section className="StreamContainer isError">
       {children}
     </section>
   </MainView>

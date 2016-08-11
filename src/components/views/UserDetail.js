@@ -89,7 +89,7 @@ UserDetail.propTypes = {
 
 export const UserDetailError = ({ children }) =>
   <MainView className="UserDetail">
-    <section className="StreamContainer hasErrored">
+    <section className="StreamContainer isError">
       {children}
     </section>
   </MainView>
