@@ -88,12 +88,7 @@ class UserContainer extends Component {
     dispatch(trackEvent('open-share-dialog-profile'))
   }
 
-  onClickHireMe = () => {
-    const { isLoggedIn } = this.props
-    isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal
-  }
-
-  onOpenHireMeModal() {
+  onOpenHireMeModal = () => {
     const { dispatch, user } = this.props
     dispatch(openModal(
       <MessageDialog
@@ -116,7 +111,7 @@ class UserContainer extends Component {
     dispatch(closeModal())
   }
 
-  onOpenSignupModal() {
+  onOpenSignupModal = () => {
     const { dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog />, 'isDecapitated'))
     dispatch(trackEvent('open-registration-request-hire-me-button'))
@@ -136,7 +131,7 @@ class UserContainer extends Component {
           <UserList
             className={className}
             isLoggedIn={isLoggedIn}
-            onClickHireMe={this.onClickHireMe}
+            onClickHireMe={isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal}
             onClickShareProfile={this.onClickShareProfile}
             showBlockMuteButton={showBlockMuteButton}
             useGif={useGif}
