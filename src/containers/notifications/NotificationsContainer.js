@@ -55,11 +55,11 @@ class NotificationsContainer extends Component {
   }
 
   onMouseOver = () => {
-    this.body.classList.add('notificationsAreScrolling')
+    this.body.classList.add('isNotificationsScrolling')
   }
 
   onMouseOut = () => {
-    this.body.classList.remove('notificationsAreScrolling')
+    this.body.classList.remove('isNotificationsScrolling')
   }
 
   onClickTab = ({ type }) => {
