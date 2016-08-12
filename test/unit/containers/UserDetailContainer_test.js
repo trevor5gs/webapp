@@ -102,7 +102,7 @@ describe('UserDetailContainer', () => {
         saidHelloTo: ['phillip', 'damian'],
       },
       json: { users: { 1: { ...user } } },
-      stream: { type: 'PROFILE.DETAIL_SUCCESS', error: {} },
+      stream: { type: 'USER.DETAIL_SUCCESS', error: {} },
     }
     const props = { params: { type: 'posts', username: 'damian' } }
     const action = getStreamAction({ username: 'damian' })
@@ -152,7 +152,7 @@ describe('UserDetailContainer', () => {
         saidHelloTo: ['phillip', 'damian'],
       },
       json: { users: { 1: { ...user } } },
-      stream: { type: 'PROFILE.DETAIL_SUCCESS', error: {} },
+      stream: { type: 'USER.DETAIL_SUCCESS', error: {} },
     }
     const props = { params: { type: 'following', username: 'nikki' } }
     const action = getStreamAction({ username: 'nikki', type: 'following' })
@@ -210,7 +210,7 @@ describe('UserDetailContainer', () => {
         saidHelloTo: ['phillip', 'damian'],
       },
       json: { users: { 1: { ...user } } },
-      stream: { type: 'PROFILE.DETAIL_FAILURE', error: {} },
+      stream: { type: 'USER.DETAIL_FAILURE', error: {} },
     }
     const props = { params: { type: 'following', username: 'nikki' } }
     const nextProps = mapStateToProps(state, props)

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
 import { isEqual, omit } from 'lodash'
-import { PROFILE } from '../constants/action_types'
+import { USER } from '../constants/action_types'
 import {
   selectActiveUserFollowingType,
   selectHasSaidHelloTo,
@@ -45,8 +45,10 @@ const selectUserDetailStreamAction = createSelector(
     getStreamAction({ activeUserFollowingType, type, username })
 )
 
-export function shouldContainerUpdate(thisProps, nextProps) {
-  if (!nextProps.user) { return false }
+export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
+  if (thisState.isStreamFailing !== nextState.isStreamFailing) {
+    return true
+  } else if (!nextProps.user) { return false }
   const omitProps = ['children', 'dispatch', 'history', 'route', 'routes']
   const thisCompare = omit(thisProps, omitProps)
   const nextCompare = omit(nextProps, omitProps)
@@ -74,13 +76,13 @@ export function mapStateToProps(state, props) {
     isCoverHidden: gui.isCoverHidden,
     isLoggedIn,
     isSelf,
-    isStreamFailing: stream.type === PROFILE.DETAIL_FAILURE && stream.error && !user,
     hasZeroFollowers: user ? user.followersCount < 1 : false,
     hasZeroPosts: user ? user.postsCount < 1 : false,
     hasSaidHelloTo,
     paramsType: type,
     paramsUsername: username,
     streamAction,
+    streamType: stream.type,
     tabs: isSelf && type === 'following' ? followingTabs : null,
     user,
     viewKey: `userDetail/${username}/${type}${keyPostfix}`,
@@ -98,13 +100,13 @@ class UserDetailContainer extends Component {
     isCoverHidden: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     isSelf: PropTypes.bool.isRequired,
-    isStreamFailing: PropTypes.bool.isRequired,
     hasSaidHelloTo: PropTypes.bool.isRequired,
     hasZeroFollowers: PropTypes.bool.isRequired,
     hasZeroPosts: PropTypes.bool.isRequired,
     paramsType: PropTypes.string,
     paramsUsername: PropTypes.string.isRequired,
     streamAction: PropTypes.object,
+    streamType: PropTypes.string,
     tabs: PropTypes.array,
     user: PropTypes.object,
     viewKey: PropTypes.string,
@@ -123,6 +125,7 @@ class UserDetailContainer extends Component {
   componentWillMount() {
     const { dispatch, paramsUsername } = this.props
     dispatch(loadUserDetail(`~${paramsUsername}`))
+    this.state = { isStreamFailing: false }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -130,17 +133,23 @@ class UserDetailContainer extends Component {
     if (paramsUsername !== nextProps.paramsUsername) {
       dispatch(loadUserDetail(`~${nextProps.paramsUsername}`))
     }
+    if (nextProps.streamType === USER.DETAIL_SUCCESS) {
+      this.setState({ isStreamFailing: false })
+    } else if (nextProps.streamType === USER.DETAIL_FAILURE) {
+      this.setState({ isStreamFailing: true })
+    }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
   }
 
   render() {
     const { activeUserFollowingType, dispatch, streamAction, tabs, user, viewKey } = this.props
-    const { isLoggedIn, isSelf, isStreamFailing } = this.props
+    const { isLoggedIn, isSelf } = this.props
     const { hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = this.props
     const { coverDPI, coverImage, coverOffset, isCoverActive, isCoverHidden } = this.props
+    const { isStreamFailing } = this.state
     const shouldBindHello = hasZeroPosts && !hasSaidHelloTo
 
     if (isStreamFailing) {
