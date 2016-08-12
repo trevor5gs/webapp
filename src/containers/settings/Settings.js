@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { push } from 'react-router-redux'
 import classNames from 'classnames'
 import { debounce, isEmpty, get } from 'lodash'
 import { PREFERENCES, SETTINGS } from '../../constants/locales/en'
@@ -108,10 +107,9 @@ class Settings extends Component {
     }
   }
 
-  onLogOut = async() => {
+  onLogOut = () => {
     const { dispatch } = this.props
-    await dispatch(logout())
-    dispatch(push('/enter'))
+    dispatch(logout())
   }
 
   onChangeUsernameControl = ({ username }) => {

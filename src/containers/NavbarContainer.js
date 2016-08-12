@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
 import { isEqual } from 'lodash'
 import { scrollToTop } from '../vendor/scrolling'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
@@ -159,12 +158,10 @@ class NavbarContainer extends Component {
     }
   }
 
-  // TODO: probably need to handle this a bit better
-  onLogOut = async() => {
+  onLogOut = () => {
     const { dispatch } = this.props
     this.deactivateProfileMenu()
-    await dispatch(logout())
-    dispatch(push('/enter'))
+    dispatch(logout())
   }
 
   // if we're viewing notifications, don't change the lightning-bolt link.
