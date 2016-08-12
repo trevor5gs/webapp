@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { isEqual, pick } from 'lodash'
+import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../constants/application_types'
 import { closeOmnibar } from '../actions/omnibar'
-import Mousetrap from '../vendor/mousetrap'
 import { Omnibar } from '../components/omnibar/Omnibar'
 
 export function shouldContainerUpdate(thisProps, nextProps) {

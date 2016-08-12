@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { isEqual, pick } from 'lodash'
+import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../constants/application_types'
 import { closeModal, closeAlert } from '../actions/modals'
-import Mousetrap from '../vendor/mousetrap'
 import { Modal } from '../components/modals/Modal'
 
 export function shouldContainerUpdate(thisProps, nextProps) {
