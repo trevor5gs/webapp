@@ -11,10 +11,11 @@ import { PostDetail, PostDetailError } from '../components/views/PostDetail'
 // A lot of information needs to get generated in the meta tags for this page
 // before it ever hits React's virtual DOM so it's really beneficial to
 // optimzize the amount of times render is called.
-export function shouldContainerUpdate(thisProps, nextProps) {
-  const { author, isLoggedIn, paramsToken, paramsUsername,
-    post, streamError, streamType } = thisProps
-  if (!nextProps.author || !nextProps.post) {
+export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
+  const { author, isLoggedIn, paramsToken, paramsUsername, post } = thisProps
+  if (thisState.isStreamFailing !== nextState.isStreamFailing) {
+    return true
+  } else if (!nextProps.author || !nextProps.post) {
     return false
   }
   if (paramsToken !== nextProps.paramsToken ||
@@ -23,9 +24,6 @@ export function shouldContainerUpdate(thisProps, nextProps) {
     return true
   }
   if (!isEqual(author, nextProps.author) || !isEqual(post, nextProps.post)) {
-    return true
-  }
-  if (streamType !== nextProps.streamType || !isEqual(streamError, nextProps.streamError)) {
     return true
   }
   return false
@@ -42,7 +40,6 @@ export function mapStateToProps(state, props) {
     paramsToken,
     paramsUsername,
     post,
-    streamError: stream.error,
     streamType: stream.type,
   }
 }
@@ -56,7 +53,6 @@ class PostDetailContainer extends Component {
     post: PropTypes.object,
     paramsToken: PropTypes.string.isRequired,
     paramsUsername: PropTypes.string.isRequired,
-    streamError: PropTypes.object,
     streamType: PropTypes.string,
   }
 
@@ -71,6 +67,7 @@ class PostDetailContainer extends Component {
       this.lovesWasOpen = post.showLovers
       this.repostsWasOpen = post.showReposters
     }
+    this.state = { isStreamFailing: false }
     dispatch(loadPostDetail(`~${paramsToken}`, `~${paramsUsername}`))
   }
 
@@ -79,10 +76,15 @@ class PostDetailContainer extends Component {
     if (paramsToken !== nextProps.paramsToken || paramsUsername !== nextProps.paramsUsername) {
       dispatch(loadPostDetail(`~${nextProps.paramsToken}`, `~${nextProps.paramsUsername}`))
     }
+    if (nextProps.streamType === ACTION_TYPES.POST.DETAIL_SUCCESS) {
+      this.setState({ isStreamFailing: false })
+    } else if (nextProps.streamType === ACTION_TYPES.POST.DETAIL_FAILURE) {
+      this.setState({ isStreamFailing: true })
+    }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
   }
 
   componentWillUnmount() {
@@ -98,8 +100,9 @@ class PostDetailContainer extends Component {
   }
 
   render() {
-    const { author, paramsToken, post, streamError, streamType } = this.props
-    if (streamType === ACTION_TYPES.POST.DETAIL_FAILURE && streamError && !post) {
+    const { author, paramsToken, post } = this.props
+    const { isStreamFailing } = this.state
+    if (isStreamFailing) {
       return (
         <PostDetailError>
           <ErrorState4xx />
