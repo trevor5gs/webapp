@@ -13,8 +13,7 @@ import { CommentTools } from '../components/comments/CommentTools'
 
 export function shouldContainerUpdate(thisProps, nextProps) {
   if (!nextProps.comment) { return false }
-  const pickProps = ['isLoggedIn', 'isNavbarHidden', 'isMoreToolActive',
-                      'isOwnComment', 'isOwnPost', 'isOwnRepost']
+  const pickProps = ['isLoggedIn', 'isNavbarHidden', 'isOwnComment', 'isOwnPost', 'isOwnRepost']
   const thisCompare = pick(thisProps, pickProps)
   const nextCompare = pick(nextProps, pickProps)
   return !isEqual(thisCompare, nextCompare)
@@ -53,7 +52,8 @@ class CommentToolsContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.isMoreToolActive !== nextState.isMoreToolActive) { return true }
     return shouldContainerUpdate(this.props, nextProps)
   }
 
@@ -119,6 +119,7 @@ class CommentToolsContainer extends Component {
   render() {
     const toolProps = {
       ...this.props,
+      isMoreToolActive: this.state.isMoreToolActive,
       onClickDeleteComment: this.onClickDeleteComment,
       onClickEditComment: this.onClickEditComment,
       onClickFlagComment: this.onClickFlagComment,
