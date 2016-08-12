@@ -58,7 +58,10 @@ export function deleteProfile() {
   return {
     type: PROFILE.DELETE,
     meta: {
-      successAction: replace('/'),
+      successAction: () => {
+        localStorage.clear()
+        window.location.href = '/'
+      },
     },
     payload: {
       method: 'DELETE',
