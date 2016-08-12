@@ -2,10 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { isEqual, pick } from 'lodash'
 import { push } from 'react-router-redux'
+import Mousetrap from 'mousetrap'
 import { SET_LAYOUT_MODE } from '../constants/action_types'
 import { SHORTCUT_KEYS } from '../constants/application_types'
 import { openModal, closeModal } from '../actions/modals'
-import Mousetrap from '../vendor/mousetrap'
 import HelpDialog from '../components/dialogs/HelpDialog'
 
 export function shouldContainerUpdate(thisProps, nextProps) {
