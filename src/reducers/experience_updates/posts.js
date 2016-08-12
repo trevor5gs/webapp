@@ -70,7 +70,9 @@ methods.updatePostLoves = (state, newState, action) => {
     }
   }
 
-  jsonReducer.methods.updateUserCount(newState, model.authorId, 'lovesCount', delta)
+  if (currentUser.id === model.authorId) {
+    jsonReducer.methods.updateUserCount(newState, model.authorId, 'lovesCount', delta)
+  }
   jsonReducer.methods.mergeModel(
     newState,
     MAPPING_TYPES.POSTS,

@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import Cover from '../assets/Cover'
 import { UserDetailHelmet } from '../helmets/UserDetailHelmet'
 import StreamContainer from '../../containers/StreamContainer'
-import UserList from '../users/UserList'
+import UserContainer from '../../containers/UserContainer'
 import { MainView } from '../views/MainView'
 import { TabListButtons } from '../tabs/TabList'
 import { ZeroStateCreateRelationship, ZeroStateFirstPost, ZeroStateSayHello } from '../zeros/Zeros'
@@ -45,7 +45,7 @@ export const UserDetail = (props) => {
   const coverProps = {
     coverDPI, coverImage, coverOffset, isHidden: isCoverHidden, isModifiable: isSelf, useGif,
   }
-  const userListProps = { classList: 'asUserDetailHeader', useGif, user }
+  const userListProps = { className: 'asUserDetailHeader', showBlockMuteButton: true, useGif, user }
   const tabProps = { activeType, className: 'LabelTabList', tabClasses: 'LabelTab', tabs }
   const streamProps = { action: streamAction, isUserDetail: true }
   const zeroProps = {
@@ -58,7 +58,7 @@ export const UserDetail = (props) => {
       <UserDetailHelmet user={user} />
       <div className="UserDetails">
         {isCoverActive ? <Cover {...coverProps} /> : null}
-        <UserList {...userListProps} isUserDetail showBlockMuteButton />
+        <UserContainer {...userListProps} isUserDetail type="list" />
         {tabs ? <TabListButtons {...tabProps} onTabClick={({ type }) => onTabClick(type)} /> : null}
         {hasZeroPosts || hasZeroFollowers ? <ZeroStates {...zeroProps} /> : null}
         {streamAction ? <StreamContainer {...streamProps} /> : null}
