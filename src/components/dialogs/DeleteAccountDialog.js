@@ -12,7 +12,7 @@ class DeleteAccountDialog extends Component {
     this.state = {
       scene: 'renderConfirm',
     }
-    this.counter = 6
+    this.counter = 5
   }
 
   componentWillUnmount() {
@@ -32,8 +32,13 @@ class DeleteAccountDialog extends Component {
   }
 
   onClickConfirmReally = () => {
+    this.setState({ scene: 'renderCountdown' })
     this.interval = setInterval(() => {
-      this.setState({ scene: 'renderCountdown' })
+      this.counter--
+      this.counterEl.innerHTML = this.counter
+      if (this.counter === 0) {
+        this.onClickNotKidding()
+      }
     }, 1000)
   }
 
@@ -62,14 +67,13 @@ class DeleteAccountDialog extends Component {
   }
 
   renderCountdown() {
-    this.counter -= 1
-    if (this.counter < 0) {
-      this.onClickNotKidding()
-      return null
-    }
     return (
       <div className="Dialog DeleteAccountDialog">
-        <h2>{`You will be redirected in ${this.counter} ...`}</h2>
+        <h2>
+          <span>You will be redirected in </span>
+          <span ref={(comp) => { this.counterEl = comp }}>{this.counter}</span>
+          <span> ...</span>
+        </h2>
         <button
           className="ConfirmDialogButton"
           onClick={this.onClickJustKidding}

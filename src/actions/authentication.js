@@ -1,3 +1,4 @@
+import { push } from 'react-router-redux'
 import { AUTHENTICATION } from '../constants/action_types'
 import {
   loginToken,
@@ -52,6 +53,9 @@ export function logout() {
     payload: {
       endpoint: logoutEndpoint(),
       method: 'DELETE',
+    },
+    meta: {
+      successAction: push('/enter'),
     },
   }
 }
