@@ -22,7 +22,7 @@ import {
 } from '../../components/forms/Validators'
 import { MainView } from '../../components/views/MainView'
 
-class SignIn extends Component {
+class Enter extends Component {
 
   static propTypes = {
     buildVersion: PropTypes.string,
@@ -237,5 +237,5 @@ const mapStateToProps = (state) => {
   return obj
 }
 
-export default connect(mapStateToProps)(SignIn)
+export default connect(mapStateToProps)(Enter)
 

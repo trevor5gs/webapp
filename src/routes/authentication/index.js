@@ -1,5 +1,5 @@
-import SignIn from '../../containers/authentication/SignIn'
-import Join from '../../containers/authentication/Join'
+import Enter from '../../containers/authentication/Enter'
+import JoinContainer from '../../containers/JoinContainer'
 import SignUp from '../../containers/authentication/SignUp'
 import ForgotPassword from '../../containers/authentication/ForgotPassword'
 
@@ -18,14 +18,14 @@ export default (store) => {
     {
       path: 'enter',
       getComponents(location, cb) {
-        cb(null, SignIn)
+        cb(null, Enter)
       },
       onEnter,
     },
     {
       path: 'join(/:invitationCode)',
       getComponents(location, cb) {
-        cb(null, Join)
+        cb(null, JoinContainer)
       },
       onEnter,
     },

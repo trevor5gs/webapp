@@ -8,7 +8,7 @@ import { loadAwesomePeople, relationshipBatchSave } from '../../actions/onboardi
 import { batchUpdateRelationship } from '../../actions/relationships'
 import { trackEvent } from '../../actions/tracking'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
-import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
+import OnboardingNavbar from '../../components/onboarding/OnboardingNavbar'
 import StreamContainer from '../../containers/StreamContainer'
 import { MainView } from '../../components/views/MainView'
 
@@ -101,7 +101,7 @@ class AwesomePeople extends Component {
     const { following, userIds } = this.props
     return (
       <MainView className="PeoplePicker">
-        <OnboardingHeader
+        <OnboardingNavbar
           title="Follow some awesome people."
           message="Ello is full of interesting and creative people committed to building a positive community."
           isNextDisabled={!following.length}

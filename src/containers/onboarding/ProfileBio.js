@@ -5,7 +5,7 @@ import { push } from 'react-router-redux'
 import { ONBOARDING_VERSION } from '../../constants/application_types'
 import { saveProfile } from '../../actions/profile'
 import { trackEvent } from '../../actions/tracking'
-import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
+import OnboardingNavbar from '../../components/onboarding/OnboardingNavbar'
 import Avatar from '../../components/assets/Avatar'
 import InfoForm from '../../components/forms/InfoForm'
 import Cover from '../../components/assets/Cover'
@@ -41,7 +41,7 @@ class ProfileBio extends Component {
     const { coverDPI, coverOffset, profile } = this.props
     return (
       <MainView className="InfoPicker">
-        <OnboardingHeader
+        <OnboardingNavbar
           title="Customize your profile."
           message="Fill out your bio."
           nextAction={this.onClickNext}

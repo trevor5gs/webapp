@@ -6,7 +6,7 @@ import { push } from 'react-router-redux'
 import { trackEvent } from '../../actions/tracking'
 import { openAlert, closeAlert } from '../../actions/modals'
 import { saveCover } from '../../actions/profile'
-import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
+import OnboardingNavbar from '../../components/onboarding/OnboardingNavbar'
 import Uploader from '../../components/uploaders/Uploader'
 import Cover from '../../components/assets/Cover'
 import { MainView } from '../../components/views/MainView'
@@ -36,7 +36,7 @@ class ProfileHeader extends Component {
     const { coverDPI, coverOffset, dispatch, profile } = this.props
     return (
       <MainView className="CoverPicker">
-        <OnboardingHeader
+        <OnboardingNavbar
           message="Choose a header image."
           nextPath="/onboarding/profile-avatar"
           title="Customize your profile."

@@ -1,6 +1,6 @@
 @import ../../vendor/lib
 
-.OnboardingHeader
+.OnboardingNavbar
   +sans-typeset
   height: rem(150)
   margin-bottom: rem(30)
@@ -51,7 +51,7 @@
   background-color: #f1f1f1
   color: #ccc
 
-.OnboardingSkipButton
+.OnboardingDoneButton
   order: 1
   width: rem(80)
   height: rem(40)
@@ -64,7 +64,7 @@
 
 
 @media(min-width: #{$break-2})
-  .OnboardingHeader
+  .OnboardingNavbar
     display: flex
     position: fixed
     top: 0
@@ -82,7 +82,7 @@
     margin-top: 0
   .OnboardingNextButton
     max-width: rem(280)
-  .OnboardingSkipButton
+  .OnboardingDoneButton
     order: 2
     height: rem(30)
     margin: 0
@@ -100,6 +100,6 @@
     padding-left: rem(60)
 
 @media(min-width: #{$break-4})
-  .OnboardingHeader
+  .OnboardingNavbar
     padding: rem(20) rem(40)
 

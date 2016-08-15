@@ -3,8 +3,22 @@ import AwesomePeople from '../../containers/onboarding/AwesomePeople'
 import ProfileHeader from '../../containers/onboarding/ProfileHeader'
 import ProfileAvatar from '../../containers/onboarding/ProfileAvatar'
 import ProfileBio from '../../containers/onboarding/ProfileBio'
+import OnboardingCategoriesContainer from '../../containers/OnboardingCategoriesContainer'
+import OnboardingSettingsContainer from '../../containers/OnboardingSettingsContainer'
 
 export default [
+  {
+    path: 'onboarding/categories',
+    getComponent(location, cb) {
+      cb(null, OnboardingCategoriesContainer)
+    },
+  },
+  {
+    path: 'onboarding/settings',
+    getComponent(location, cb) {
+      cb(null, OnboardingSettingsContainer)
+    },
+  },
   {
     path: 'onboarding/communities',
     getComponent(location, cb) {

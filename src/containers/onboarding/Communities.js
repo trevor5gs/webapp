@@ -7,7 +7,7 @@ import { loadCommunities, relationshipBatchSave } from '../../actions/onboarding
 import { batchUpdateRelationship } from '../../actions/relationships'
 import { trackEvent } from '../../actions/tracking'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
-import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
+import OnboardingNavbar from '../../components/onboarding/OnboardingNavbar'
 import StreamContainer from '../../containers/StreamContainer'
 import { MainView } from '../../components/views/MainView'
 
@@ -100,7 +100,7 @@ class Communities extends Component {
     const { following, userIds } = this.props
     return (
       <MainView className="CommunityPicker">
-        <OnboardingHeader
+        <OnboardingNavbar
           title="What are you interested in?"
           message="Follow the Ello Communities that you find most inspiring."
           isNextDisabled={!following.length}

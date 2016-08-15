@@ -6,7 +6,7 @@ import { push } from 'react-router-redux'
 import { trackEvent } from '../../actions/tracking'
 import { closeAlert, openAlert } from '../../actions/modals'
 import { saveAvatar } from '../../actions/profile'
-import OnboardingHeader from '../../components/onboarding/OnboardingHeader'
+import OnboardingNavbar from '../../components/onboarding/OnboardingNavbar'
 import Avatar from '../../components/assets/Avatar'
 import Uploader from '../../components/uploaders/Uploader'
 import Cover from '../../components/assets/Cover'
@@ -37,7 +37,7 @@ class ProfileAvatar extends Component {
     const { coverDPI, coverOffset, dispatch, profile } = this.props
     return (
       <MainView className="AvatarPicker">
-        <OnboardingHeader
+        <OnboardingNavbar
           message="Choose an avatar."
           title="Customize your profile."
           nextAction={this.onClickNext}
