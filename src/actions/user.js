@@ -19,7 +19,7 @@ export function flagUser(username, kind) {
 
 export function loadUserDetail(username) {
   return {
-    type: ACTION_TYPES.PROFILE.DETAIL,
+    type: ACTION_TYPES.USER.DETAIL,
     payload: { endpoint: api.userDetail(username) },
     meta: {
       mappingType: MAPPING_TYPES.USERS,

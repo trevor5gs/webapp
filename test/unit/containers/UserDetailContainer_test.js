@@ -42,7 +42,6 @@ describe('UserDetailContainer', () => {
       isCoverHidden: false,
       isLoggedIn: false,
       isSelf: false,
-      isStreamFailing: false,
       hasSaidHelloTo: false,
       hasZeroFollowers: false,
       hasZeroPosts: false,
@@ -64,7 +63,6 @@ describe('UserDetailContainer', () => {
       isCoverHidden: true,
       isLoggedIn: true,
       isSelf: true,
-      isStreamFailing: false,
       hasSaidHelloTo: false,
       hasZeroFollowers: false,
       hasZeroPosts: false,
@@ -75,8 +73,9 @@ describe('UserDetailContainer', () => {
       user: {},
       viewKey: 'nextViewKey',
     }
-    const shouldSameUpdate = shouldContainerUpdate(thisProps, sameProps)
-    const shouldNextUpdate = shouldContainerUpdate(thisProps, nextProps)
+    const defaultState = { isStreamFailing: false }
+    const shouldSameUpdate = shouldContainerUpdate(thisProps, sameProps, defaultState, defaultState)
+    const shouldNextUpdate = shouldContainerUpdate(thisProps, nextProps, defaultState, defaultState)
 
     it('should not update state since the values are the same', () => {
       expect(shouldSameUpdate).to.be.false
@@ -102,7 +101,7 @@ describe('UserDetailContainer', () => {
         saidHelloTo: ['phillip', 'damian'],
       },
       json: { users: { 1: { ...user } } },
-      stream: { type: 'PROFILE.DETAIL_SUCCESS', error: {} },
+      stream: { type: 'USER.DETAIL_SUCCESS', error: {} },
     }
     const props = { params: { type: 'posts', username: 'damian' } }
     const action = getStreamAction({ username: 'damian' })
@@ -152,7 +151,7 @@ describe('UserDetailContainer', () => {
         saidHelloTo: ['phillip', 'damian'],
       },
       json: { users: { 1: { ...user } } },
-      stream: { type: 'PROFILE.DETAIL_SUCCESS', error: {} },
+      stream: { type: 'USER.DETAIL_SUCCESS', error: {} },
     }
     const props = { params: { type: 'following', username: 'nikki' } }
     const action = getStreamAction({ username: 'nikki', type: 'following' })
@@ -192,31 +191,6 @@ describe('UserDetailContainer', () => {
 
     it('sets the cover to inactive once the omnibar is active', () => {
       expect(nextProps.isCoverActive).to.be.false
-    })
-  })
-
-  context('#mapStateToProps (fails)', () => {
-    const user = stub('user', {
-      followersCount: 42,
-      postsCount: 1,
-      relationshipPriority: 'noise',
-      username: 'fail',
-    })
-    const state = {
-      authentication: { isLoggedIn: true },
-      gui: {
-        activeUserFollowingType: 'friend',
-        isOmnibarActive: false,
-        saidHelloTo: ['phillip', 'damian'],
-      },
-      json: { users: { 1: { ...user } } },
-      stream: { type: 'PROFILE.DETAIL_FAILURE', error: {} },
-    }
-    const props = { params: { type: 'following', username: 'nikki' } }
-    const nextProps = mapStateToProps(state, props)
-
-    it('sets isStreamFailing to true', () => {
-      expect(nextProps.isStreamFailing).to.be.true
     })
   })
 })

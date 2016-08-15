@@ -14,7 +14,7 @@ import { fetchCredentials, getClientCredentials, sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
 import Dialog from '../components/dialogs/Dialog'
 
-const requestTypes = [
+export const requestTypes = [
   ACTION_TYPES.AUTHENTICATION.FORGOT_PASSWORD,
   ACTION_TYPES.AUTHENTICATION.LOGOUT,
   ACTION_TYPES.AUTHENTICATION.REFRESH,
@@ -45,7 +45,6 @@ const requestTypes = [
   ACTION_TYPES.POST_JSON,
   ACTION_TYPES.PROFILE.AVAILABILITY,
   ACTION_TYPES.PROFILE.DELETE,
-  ACTION_TYPES.PROFILE.DETAIL,
   ACTION_TYPES.PROFILE.EXPORT,
   ACTION_TYPES.PROFILE.LOAD,
   ACTION_TYPES.PROFILE.REGISTER_FOR_GCM,
@@ -57,6 +56,7 @@ const requestTypes = [
   ACTION_TYPES.PROMOTIONS.LOGGED_IN,
   ACTION_TYPES.PROMOTIONS.LOGGED_OUT,
   ACTION_TYPES.RELATIONSHIPS.UPDATE,
+  ACTION_TYPES.USER.DETAIL,
   ACTION_TYPES.USER.FLAG,
   ACTION_TYPES.USER.HIRE_ME,
 ]
@@ -142,6 +142,7 @@ export function* handleRequestError(error, action) {
   }
 
   if (error.response) {
+    payload.serverStatus = error.response.status
     if (error.response.status === 401) {
       const isLoggedIn = yield select(isLoggedInSelector)
       const refreshToken = yield select(refreshTokenSelector)
@@ -175,6 +176,9 @@ export function* handleRequestError(error, action) {
       yield call(fireFailureAction)
     }
   } else {
+    if (/Failed to fetch/.test(error)) {
+      payload.serverStatus = 404
+    }
     yield put({ error, meta, payload, type: FAILURE })
     yield call(fireFailureAction)
   }

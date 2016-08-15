@@ -123,7 +123,7 @@ class AwesomePeople extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state, props) {
   const result = state.json.pages ? state.json.pages[state.routing.location.pathname] : null
   const relationshipMap = { following: [], inactive: [] }
   if (result && result.type && result.ids) {
@@ -145,7 +145,7 @@ function mapStateToProps(state, ownProps) {
     following: relationshipMap.following,
     inactive: relationshipMap.inactive,
     profile: state.profile,
-    type: ownProps.params.type,
+    type: props.params.type,
     userIds: result ? result.ids : [],
   }
 }

@@ -33,9 +33,10 @@ describe('PostDetailContainer', () => {
       streamType: 'nextStreamType',
       notPicked: 'changed',
     }
-    const shouldSameUpdate = shouldContainerUpdate(thisProps, sameProps)
-    const shouldNextUpdate = shouldContainerUpdate(thisProps, nextProps)
-    const shouldLastUpdate = shouldContainerUpdate(nextProps, lastProps)
+    const defaultState = { isStreamFailing: false }
+    const shouldSameUpdate = shouldContainerUpdate(thisProps, sameProps, defaultState, defaultState)
+    const shouldNextUpdate = shouldContainerUpdate(thisProps, nextProps, defaultState, defaultState)
+    const shouldLastUpdate = shouldContainerUpdate(nextProps, lastProps, defaultState, defaultState)
 
     it('should not update state since the values are the same', () => {
       expect(shouldSameUpdate).to.be.false
@@ -50,11 +51,13 @@ describe('PostDetailContainer', () => {
     })
 
     it('should not update since author and post are undefined', () => {
-      expect(shouldContainerUpdate({}, thisProps)).to.be.false
+      expect(shouldContainerUpdate({}, thisProps, defaultState, defaultState)).to.be.false
     })
 
     it('should update since the stream error type changed', () => {
-      expect(shouldContainerUpdate(thisProps, { ...nextProps, streamError: 'Error' })).to.be.true
+      expect(shouldContainerUpdate(
+        thisProps, { ...nextProps, streamError: 'Error' }, defaultState, defaultState
+      )).to.be.true
     })
   })
 
