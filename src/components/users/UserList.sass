@@ -31,10 +31,10 @@
 .UserList > .RelationshipContainer > .RelationshipButton[data-priority="self"]
   right: 0
 
-.asUserDetailHeader > .RelationshipContainer > .RelationshipButton[data-priority="noise"]
+.isUserDetailHeader > .RelationshipContainer > .RelationshipButton[data-priority="noise"]
   padding: 0
 
-.asUserDetailHeader > .RelationshipContainer > .RelationshipButton[data-priority="noise"] .SVGIcon
+.isUserDetailHeader > .RelationshipContainer > .RelationshipButton[data-priority="noise"] .SVGIcon
   display: none
 
 .UserList > .RelationshipContainer > .StarshipButton
@@ -52,11 +52,11 @@
 .UserList > .ProfileButtons
   display: none
 
-.UserList.asUserDetailHeader
+.UserList.isUserDetailHeader
   margin-left: rem(10)
   margin-bottom: rem(20)
 
-.UserList.asUserDetailHeader > .ProfileButtons
+.UserList.isUserDetailHeader > .ProfileButtons
   display: block
 
 .ProfileButtonsShareButton
@@ -67,18 +67,18 @@
   color: black
 
 @media(min-width: #{$break-2})
-  .UserList.asUserDetailHeader
+  .UserList.isUserDetailHeader
     margin-left: rem(20)
 @media(min-width: #{$break-4})
-  .UserList.asUserDetailHeader
+  .UserList.isUserDetailHeader
     margin-left: rem(40)
 
 // Special case for the user detail header in mobile land
 @media(max-width: #{$break-2-max})
-  .UserList.asUserDetailHeader
+  .UserList.isUserDetailHeader
     margin-top: rem(-120)
     margin-bottom: rem(40)
-  .UserList.asUserDetailHeader > .RelationshipContainer
+  .UserList.isUserDetailHeader > .RelationshipContainer
     top: rem(90)
   .UserList > .RelationshipContainer > .RelationshipButton
     right: rem(35)
@@ -86,9 +86,9 @@
     right: 0
   .UserList > .RelationshipContainer > .RelationshipButton[data-priority="self"]
     right: rem(10)
-  .UserList.asUserDetailHeader > .UserNames
+  .UserList.isUserDetailHeader > .UserNames
     margin-top: rem(200)
-  .UserList.asUserDetailHeader > .UserStats
+  .UserList.isUserDetailHeader > .UserStats
     position: absolute
     top: rem(120)
     left: 0
