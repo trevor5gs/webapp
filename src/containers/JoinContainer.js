@@ -127,7 +127,6 @@ class JoinContainer extends Component {
     dispatch(
       signUpUser(this.emailValue, this.usernameValue, this.passwordValue, this.invitationCodeValue)
     )
-    console.log('go to next step')
   }
 
   onDoneClick = () => {
