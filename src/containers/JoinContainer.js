@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
 import { debounce, isEqual } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
 import { getInviteEmail } from '../actions/invitations'
@@ -129,11 +128,6 @@ class JoinContainer extends Component {
     )
   }
 
-  onDoneClick = () => {
-    const { dispatch } = this.props
-    dispatch(push('/'))
-  }
-
   checkServerForAvailability(vo) {
     this.props.dispatch(checkAvailability(vo))
   }
@@ -182,7 +176,7 @@ class JoinContainer extends Component {
   renderStatus(state) {
     return () => {
       if (state.status === STATUS.FAILURE) {
-        return <p>{state.message}</p>
+        return <p className="FormControlStatusMessage">{state.message}</p>
       }
 
       return ''
@@ -203,13 +197,12 @@ class JoinContainer extends Component {
         isValid={isValid}
         onChangePasswordControl={this.onChangePasswordControl}
         onChangeUsernameControl={this.onChangeUsernameControl}
-        onDoneClick={this.onDoneClick}
         onNextClick={this.onSubmit}
         passwordRenderStatus={showPasswordError ? this.renderStatus(passwordState) : null}
         passwordStatus={passwordState.status}
         usernameRenderStatus={showUsernameError ? this.renderStatus(usernameState) : null}
         usernameStatus={usernameState.status}
-        usernameSuggestions={null}
+        usernameSuggestions={usernameState.suggestions}
       />
     )
   }

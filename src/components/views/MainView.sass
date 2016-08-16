@@ -23,6 +23,9 @@
   border-bottom: 1px solid
   color: black
 
+.isOnboardingView ~ .MainView
+  padding-top: rem(70)
+
 @media(max-width: #{$break-2-max})
   .isLoggedOut .MainView
     padding-top: rem(50)
@@ -43,6 +46,11 @@
   .DiscoverPageTitle
     font-size: rem(24)
     margin: rem(35) 0 0 rem(20)
+
+@media(min-width: #{$break-3})
+  .isOnboardingView ~ .MainView
+    padding-top: 0
+    padding-bottom: rem(80)
 
 @media(min-width: #{$break-4})
   .DiscoverPageTitle

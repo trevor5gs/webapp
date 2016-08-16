@@ -6,6 +6,9 @@
 .FormControl.isBoxControl
   margin-bottom: rem(10)
 
+.FormControl.isSimpleWhiteControl
+  margin-bottom: rem(30)
+
 // -------------------------------------
 
 .FormControlInput
@@ -25,6 +28,15 @@
   &::placeholder
     color: #aaa
 
+.FormControlInput.isSimpleWhiteControl
+  border-bottom-color: white
+  font-size: rem(24)
+  min-height: none
+.FormControlInput.isSimpleWhiteControl:focus
+  color: white
+.FormControlInput.isSimpleWhiteControl::placeholder
+  color: white
+
 .FormControlInput.isBoxControl
   height: rem(60)
   padding: 0 rem(30)
@@ -42,8 +54,13 @@
   border-color: #ccc
   color: black
 
+
 .hasValue:not(.isInitialValue) > .FormControlInput
   border-color: black
+
+.hasValue:not(.isInitialValue) > .FormControlInput.isSimpleWhiteControl
+  border-color: white
+  color: white
 
 .hasValue:not(.isInitialValue) > .FormControlInput.isBoxControl
   background-color: white
@@ -81,10 +98,6 @@ textarea.FormControlInput.isBoxControl
 .BatchEmailControl .FormControlInput.isBoxControl
   height: rem(160)
 
-.isOnboardingView ~ .MainView .NameControl > .FormControlInput
-  +sans-bold-family
-  font-size: 1rem
-
 // -------------------------------------
 
 .FormControlLabel
@@ -97,6 +110,11 @@ textarea.FormControlInput.isBoxControl
   right: 0
   opacity: 0
   color: #aaa
+
+.FormControlLabel.isSimpleWhiteControl
+  color: white
+  top: rem(33)
+  bottom: auto
 
 .FormControlLabel.isBoxControl
   top: rem(20)
@@ -121,11 +139,6 @@ textarea.FormControlInput.isBoxControl
 .hasExceeded.hasValue > .FormControlLabel
   color: $danger
 
-// Use the older hiding label pattern just for on-boarding
-.isOnboardingView ~ .MainView .InfoForm .hasValue:not(.hasFocus) > .FormControlLabel
-  transform: translate3d(0,rem(-10),0)
-  opacity: 0
-
 // -------------------------------------
 
 .FormControlSuggestionList
@@ -143,10 +156,11 @@ textarea.FormControlInput.isBoxControl
   +sans-typeset
   transition: color $speed
   margin-right: rem(10)
-  border-bottom: 1px solid
+  margin-top: rem(5)
+  border-bottom: 1px solid currentColor
 
 .no-touch .FormControlSuggestionButton:hover
-  color: #aaa
+  color: black
 
 .FormControlSuggestionButton:last-of-type
   margin-right: 0
@@ -177,6 +191,12 @@ textarea.FormControlInput.isBoxControl
 
 .isOnboardingView ~ .MainView .FormControlStatus
   display: none
+
+.FormControlStatus.isSimpleWhiteControl
+  top: rem(5)
+
+.FormControl.isSimpleWhiteControl .FormControlStatusMessage
+  margin-top: rem(30)
 
 .HoppyStatusMessage
   transition: height $speed ease, margin $speed ease, opacity $speed ease

@@ -14,7 +14,6 @@ const Join = (props) => {
     isValid,
     onChangePasswordControl,
     onChangeUsernameControl,
-    onDoneClick,
     onNextClick,
     passwordRenderStatus,
     passwordStatus,
@@ -22,6 +21,7 @@ const Join = (props) => {
     usernameStatus,
     usernameSuggestions,
   } = props
+  const domain = ENV.AUTH_DOMAIN
   return (
     <MainView className="Authentication isJoinForm">
       <div className="AuthenticationFormDialog">
@@ -34,41 +34,39 @@ const Join = (props) => {
         >
           <UsernameControl
             autoFocus={email && email.length}
-            classList="isBoxControl"
+            classList="isSimpleWhiteControl"
             label="Username"
             onChange={onChangeUsernameControl}
-            placeholder="Create your username"
+            placeholder="Username"
             status={usernameStatus}
             renderStatus={usernameRenderStatus}
             suggestions={usernameSuggestions}
             tabIndex="1"
           />
           <PasswordControl
-            classList="isBoxControl"
+            classList="isSimpleWhiteControl"
             label="Password"
             onChange={onChangePasswordControl}
-            placeholder="Set your password"
+            placeholder="Password"
             status={passwordStatus}
             renderStatus={passwordRenderStatus}
             tabIndex="2"
           />
         </form>
         <p className="AuthenticationTermsCopy">
-          By clicking Create Account you are agreeing to our
-          <a href={`${ENV.AUTH_DOMAIN}/wtf/post/policies`}>Terms</a>.
+          By continuing you are agreeing to our <a href={`${domain}/wtf/post/policies`}>Terms</a>.
         </p>
       </div>
       <OnboardingNavbar
         isNextDisabled={!isValid}
         nextLabel="Continue"
-        onDoneClick={onDoneClick}
         onNextClick={onNextClick}
       />
       <Cover
         coverDPI={coverDPI}
         coverImage={coverImage}
         coverOffset={coverOffset}
-        modifiers="isFullScreen hasOverlay"
+        modifiers="isFullScreen hasOverlay60"
       />
     </MainView>
   )
@@ -83,11 +81,10 @@ Join.propTypes = {
   isValid: PropTypes.bool.isRequired,
   onChangePasswordControl: PropTypes.func.isRequired,
   onChangeUsernameControl: PropTypes.func.isRequired,
-  onDoneClick: PropTypes.func.isRequired,
   onNextClick: PropTypes.func.isRequired,
-  passwordRenderStatus: PropTypes.object,
+  passwordRenderStatus: PropTypes.func,
   passwordStatus: PropTypes.string.isRequired,
-  usernameRenderStatus: PropTypes.object,
+  usernameRenderStatus: PropTypes.func,
   usernameStatus: PropTypes.string.isRequired,
   usernameSuggestions: PropTypes.array,
 }

@@ -2,17 +2,22 @@ import React, { PropTypes } from 'react'
 import { getCategories } from '../../actions/discover'
 import StreamContainer from '../../containers/StreamContainer'
 import OnboardingNavbar from './OnboardingNavbar'
+import { MainView } from '../views/MainView'
 
 const OnboardingCategories = ({ onDoneClick, onNextClick }) =>
-  <div className="OnboardingCategories">
+  <MainView className="Onboarding OnboardingCategories">
+    <h1 className="OnboardingHeading">
+      <span>Pick what you're into. </span>
+      <span>Slow down & check out some cool ass shit.</span>
+    </h1>
+    <StreamContainer
+      action={getCategories()}
+    />
     <OnboardingNavbar
       onDoneClick={onDoneClick}
       onNextClick={onNextClick}
     />
-    <StreamContainer
-      action={getCategories()}
-    />
-  </div>
+  </MainView>
 
 OnboardingCategories.propTypes = {
   onDoneClick: PropTypes.func.isRequired,

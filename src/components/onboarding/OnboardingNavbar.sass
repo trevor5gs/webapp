@@ -2,104 +2,61 @@
 
 .OnboardingNavbar
   +sans-typeset
-  height: rem(150)
-  margin-bottom: rem(30)
-  padding: rem(10)
-  background-color: white
-
-.OnboardingColumn
-  width: 100%
-
-.OnboardingColumn:nth-child(1)
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
   height: rem(70)
-.OnboardingColumn:nth-child(2)
-  display: flex
-  flex-direction: row
-  height: rem(40)
-  margin-top: rem(15)
-
-.OnboardingColumn > .ElloMark
-  display: none
-
-.OnboardingColumn > h1
-  +sans-bold-family
-  font-size: rem(18)
-
-.OnboardingColumn > p
-  max-width: rem(600)
-  margin: 0
-  color: #aaa
-
-.OnboardingNextButton
-  +sans-typeset
-  transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease
-  order: 2
-  width: 100%
-  height: rem(40)
-  padding: 0 rem(30)
-  line-height: rem(40)
+  padding: rem(10)
   text-align: center
-  background-color: #e5e5e5
-  border: 1px solid #e5e5e5
-  color: #666
-.no-touch .OnboardingNextButton:hover
-  background-color: #666
-  border-color: #666
+  background-color: #f0f0f0
+  color: black
+  z-index: $z-navbar
+
+.OnboardingNavbar > .ElloMark
+  transform-origin: 0 0
+  position: absolute
+  top: rem(15)
+  left: rem(10)
+
+.OnboardingNextButton:not([disabled])
+  background-color: #00d100
+  border-color: #00d100
   color: white
-.OnboardingNextButton[disabled]
-  pointer-events: none
-  background-color: #f1f1f1
-  color: #ccc
+
+.OnboardingNextButton:not([disabled]):active,
+.no-touch .OnboardingNextButton:not([disabled]):hover
+  background-color: #00b100
+  border-color: #00b100
+  color: white
 
 .OnboardingDoneButton
-  order: 1
-  width: rem(80)
-  height: rem(40)
-  line-height: rem(40)
-  text-align: left
-  border: 0
   color: #aaa
-  &:hover
-    color: #666
-
-
-@media(min-width: #{$break-2})
-  .OnboardingNavbar
-    display: flex
-    position: fixed
-    top: 0
-    left: 0
-    right: 0
-    z-index: $z-navbar
-    height: rem(110)
-    margin-bottom: 0
-    padding: rem(20)
-  .OnboardingColumn:nth-child(2)
-    flex-direction: column
-    align-items: flex-end
-    order: 1
-    height: rem(70)
-    margin-top: 0
-  .OnboardingNextButton
-    max-width: rem(280)
-  .OnboardingDoneButton
-    order: 2
-    height: rem(30)
-    margin: 0
-    line-height: rem(30)
-    text-align: right
+  margin-left: rem(30)
 
 @media(min-width: #{$break-3})
-  .OnboardingColumn:nth-child(1)
-    padding-left: 15%
-  .OnboardingColumn > .ElloMark
-    position: absolute
-    display: inline-block
-  .OnboardingColumn > h1,
-  .OnboardingColumn > p
-    padding-left: rem(60)
-
-@media(min-width: #{$break-4})
   .OnboardingNavbar
-    padding: rem(20) rem(40)
+    top: auto
+    bottom: 0
+    height: rem(100)
+    padding: rem(25) rem(20) rem(20)
+  .OnboardingNavbar > .ElloMark
+    top: rem(20)
+    left: rem(20)
+    transform: scale(1.5)
+
+// -------------------------------------
+// Not the best place for this.
+.OnboardingHeading
+  font-size: rem(24)
+  margin: 0 auto
+  max-width: rem(480)
+  padding: rem(55) rem(10) rem(15)
+
+.OnboardingHeading > span + span
+  color: #aaa
+
+@media(min-width: #{$break-3})
+  .OnboardingHeading
+    padding: rem(85) rem(10) rem(45)
 
