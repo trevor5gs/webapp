@@ -34,6 +34,21 @@
   color: #aaa
   margin-left: rem(30)
 
+.OnboardingNavbarCounter
+  position: absolute
+  top: rem(25)
+  right: rem(10)
+  color: #aaa
+
+.OnboardingNavbarCounter .CheckMark
+  position: absolute
+  top: rem(-2)
+  left: rem(-20)
+  transform: scale(0.6)
+.OnboardingNavbarCounter .CheckMark g
+  stroke: #00d100
+  stroke-width: 2
+
 @media(min-width: #{$break-3})
   .OnboardingNavbar
     top: auto
@@ -44,6 +59,10 @@
     top: rem(20)
     left: rem(20)
     transform: scale(1.5)
+  .OnboardingNavbarCounter
+    top: rem(40)
+    right: rem(20)
+
 
 // -------------------------------------
 // Not the best place for this.
@@ -59,4 +78,7 @@
 @media(min-width: #{$break-3})
   .OnboardingHeading
     padding: rem(85) rem(10) rem(45)
+
+  .OnboardingNavbarCounter
+    right: rem(20)
 

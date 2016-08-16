@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { ElloMark } from '../svg/ElloIcons'
+import { CheckIcon } from '../editor/EditorIcons'
 
 const OnboardingNavbar = (props, context) => {
   const { counterText, isCounterSuccess, isNextDisabled } = props
@@ -22,8 +23,8 @@ const OnboardingNavbar = (props, context) => {
         : null
       }
       {counterText !== undefined ?
-        <div>
-          {isCounterSuccess ? <span>!</span> : null}
+        <div className="OnboardingNavbarCounter">
+          {isCounterSuccess ? <CheckIcon /> : null}
           {counterText ? <span>{counterText}</span> : null}
         </div> :
         null

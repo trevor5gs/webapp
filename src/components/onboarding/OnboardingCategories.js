@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { get } from 'lodash'
 import OnboardingNavbar from './OnboardingNavbar'
 import { MainView } from '../views/MainView'
+import { CheckIcon } from '../editor/EditorIcons'
 
 class CategoryButton extends Component {
 
@@ -30,7 +31,10 @@ class CategoryButton extends Component {
         className={classNames('CategoryLink', { isActive })}
         style={{ backgroundImage: `url("${get(category, 'tileImage.large.url')}")` }}
       >
-        <span className="CategoryLinkName">{category.name}</span>
+        <span className="CategoryLinkName">
+          {isActive ? <CheckIcon /> : null}
+          {category.name}
+        </span>
       </button>
     )
   }
@@ -47,15 +51,17 @@ const OnboardingCategories = ({
       <span>Pick what you're into. </span>
       <span>Slow down & check out some cool ass shit.</span>
     </h1>
-    <div className="Categories asGrid">
-      {categories.map((category, index) =>
-        <CategoryButton
-          category={category}
-          key={`CategoryLink_${category.slug}_${index}`}
-          onCategoryClick={onCategoryClick}
-        />
-      )}
-    </div>
+    <section className="StreamContainer">
+      <div className="Categories asGrid">
+        {categories.map((category, index) =>
+          <CategoryButton
+            category={category}
+            key={`CategoryLink_${category.slug}_${index}`}
+            onCategoryClick={onCategoryClick}
+          />
+        )}
+      </div>
+    </section>
     <OnboardingNavbar
       counterText={counterText}
       isCounterSuccess={isCounterSuccess}
