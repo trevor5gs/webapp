@@ -21,6 +21,20 @@ class OnboardingCategoriesContainer extends Component {
     dispatch: PropTypes.func.isRequired,
   }
 
+  static childContextTypes = {
+    nextLabel: PropTypes.string,
+    onDoneClick: PropTypes.func.isRequired,
+    onNextClick: PropTypes.func.isRequired,
+  }
+
+  getChildContext() {
+    return {
+      nextLabel: 'Create Your Profile',
+      onDoneClick: this.onDoneClick,
+      onNextClick: this.onNextClick,
+    }
+  }
+
   componentWillMount() {
     const { dispatch } = this.props
     dispatch(getCategories())
@@ -40,7 +54,7 @@ class OnboardingCategoriesContainer extends Component {
 
   onDoneClick = () => {
     const { dispatch } = this.props
-    dispatch(push('/'))
+    dispatch(push('/following'))
   }
 
   onNextClick = () => {
@@ -59,10 +73,7 @@ class OnboardingCategoriesContainer extends Component {
         categories={categories}
         counterText={counterText}
         isCounterSuccess={selected === CATEGORIES_NEEDED}
-        nextLabel="Create Your Profile"
         onCategoryClick={this.onCategoryClick}
-        onDoneClick={this.onDoneClick}
-        onNextClick={this.onNextClick}
       />
     )
   }

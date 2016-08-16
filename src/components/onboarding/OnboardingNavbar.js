@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react'
 import { ElloMark } from '../svg/ElloIcons'
 
-const OnboardingNavbar = (props) => {
-  const { counterText, isCounterSuccess, isNextDisabled,
-    nextLabel = 'Continue', onDoneClick, onNextClick } = props
+const OnboardingNavbar = (props, context) => {
+  const { counterText, isCounterSuccess, isNextDisabled } = props
+  const { nextLabel = 'Continue', onDoneClick, onNextClick } = context
 
   return (
     <header className="OnboardingNavbar">
@@ -34,10 +34,13 @@ const OnboardingNavbar = (props) => {
 
 OnboardingNavbar.propTypes = {
   counterText: PropTypes.string,
-  isCounterSuccess: PropTypes.bool.isRequired,
+  isCounterSuccess: PropTypes.bool,
   isNextDisabled: PropTypes.bool,
+}
+
+OnboardingNavbar.contextTypes = {
   nextLabel: PropTypes.string,
-  onDoneClick: PropTypes.func,
+  onDoneClick: PropTypes.func.isRequired,
   onNextClick: PropTypes.func.isRequired,
 }
 

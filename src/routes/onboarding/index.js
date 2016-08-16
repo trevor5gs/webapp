@@ -5,6 +5,7 @@ import ProfileAvatar from '../../containers/onboarding/ProfileAvatar'
 import ProfileBio from '../../containers/onboarding/ProfileBio'
 import OnboardingCategoriesContainer from '../../containers/OnboardingCategoriesContainer'
 import OnboardingSettingsContainer from '../../containers/OnboardingSettingsContainer'
+import OnboardingInvitationsContainer from '../../containers/OnboardingInvitationsContainer'
 
 export default [
   {
@@ -17,6 +18,12 @@ export default [
     path: 'onboarding/settings',
     getComponent(location, cb) {
       cb(null, OnboardingSettingsContainer)
+    },
+  },
+  {
+    path: 'onboarding/invitations',
+    getComponent(location, cb) {
+      cb(null, OnboardingInvitationsContainer)
     },
   },
   {

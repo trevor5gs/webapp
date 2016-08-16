@@ -40,10 +40,7 @@ const OnboardingCategories = ({
   categories,
   counterText,
   isCounterSuccess,
-  nextLabel,
   onCategoryClick,
-  onDoneClick,
-  onNextClick,
 }) =>
   <MainView className="Onboarding OnboardingCategories">
     <h1 className="OnboardingHeading">
@@ -62,9 +59,6 @@ const OnboardingCategories = ({
     <OnboardingNavbar
       counterText={counterText}
       isCounterSuccess={isCounterSuccess}
-      nextLabel={nextLabel}
-      onDoneClick={onDoneClick}
-      onNextClick={onNextClick}
     />
   </MainView>
 
@@ -72,10 +66,7 @@ OnboardingCategories.propTypes = {
   categories: PropTypes.array,
   counterText: PropTypes.string.isRequired,
   isCounterSuccess: PropTypes.bool.isRequired,
-  nextLabel: PropTypes.string,
   onCategoryClick: PropTypes.func.isRequired,
-  onDoneClick: PropTypes.func,
-  onNextClick: PropTypes.func.isRequired,
 }
 
 export default OnboardingCategories
