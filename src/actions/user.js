@@ -17,6 +17,18 @@ export function flagUser(username, kind) {
   }
 }
 
+export function followCategories(id, catIds) {
+  return {
+    type: ACTION_TYPES.USER.FOLLOW_CATEGORIES,
+    payload: {
+      body: { followed_categories: catIds },
+      endpoint: api.followCategories(id),
+      method: 'PUT',
+    },
+    meta: {},
+  }
+}
+
 export function loadUserDetail(username) {
   return {
     type: ACTION_TYPES.USER.DETAIL,
