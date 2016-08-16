@@ -44,6 +44,7 @@ const OnboardingCategories = ({
   categories,
   counterText,
   isCounterSuccess,
+  isNextDisabled,
   onCategoryClick,
 }) =>
   <MainView className="Onboarding OnboardingCategories">
@@ -65,6 +66,7 @@ const OnboardingCategories = ({
     <OnboardingNavbar
       counterText={counterText}
       isCounterSuccess={isCounterSuccess}
+      isNextDisabled={isNextDisabled}
     />
   </MainView>
 
@@ -72,6 +74,7 @@ OnboardingCategories.propTypes = {
   categories: PropTypes.array,
   counterText: PropTypes.string.isRequired,
   isCounterSuccess: PropTypes.bool.isRequired,
+  isNextDisabled: PropTypes.bool.isRequired,
   onCategoryClick: PropTypes.func.isRequired,
 }
 

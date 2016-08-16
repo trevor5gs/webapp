@@ -77,6 +77,7 @@ class OnboardingCategoriesContainer extends Component {
         categories={categories}
         counterText={counterText}
         isCounterSuccess={selected === CATEGORIES_NEEDED}
+        isNextDisabled={categoryIds.length < CATEGORIES_NEEDED}
         onCategoryClick={this.onCategoryClick}
       />
     )
