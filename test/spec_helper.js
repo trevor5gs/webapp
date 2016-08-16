@@ -9,11 +9,6 @@ import chaiHttp from 'chai-http'
 import sinonChai from 'sinon-chai'
 import chaiSaga from './support/saga_helpers'
 
-require('dotenv').load()
-
-global.URL = { createObjectURL: (input) => input }
-global.ENV = JSON.stringify(require('../env'))
-
 chai.use(chaiSaga)
 chai.use(chaiHttp)
 chai.use(sinonChai)
