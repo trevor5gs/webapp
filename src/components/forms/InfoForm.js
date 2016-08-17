@@ -35,6 +35,7 @@ class InfoForm extends Component {
       leading: false,
       trailing: true,
     })
+    this.componentWillReceiveProps(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
