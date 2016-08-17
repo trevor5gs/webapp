@@ -44,6 +44,7 @@ class BlockCollection extends Component {
     hasMention: PropTypes.bool,
     isComment: PropTypes.bool,
     isLoading: PropTypes.bool,
+    isPostDetail: PropTypes.bool,
     isPosting: PropTypes.bool,
     isMobileGridStream: PropTypes.bool,
     isOwnPost: PropTypes.bool,
@@ -59,6 +60,7 @@ class BlockCollection extends Component {
   static defaultProps = {
     blocks: [],
     isComment: false,
+    isPostDetail: false,
     repostContent: [],
     submitText: 'Post',
   }
@@ -90,9 +92,9 @@ class BlockCollection extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { editorId, isNavbarHidden, order } = this.props
+    const { editorId, isNavbarHidden, isPostDetail, order } = this.props
     const isDragging = document.body.classList.contains('isDragging')
-    if (!isDragging && prevProps.order.length !== order.length) {
+    if (!isPostDetail && !isDragging && prevProps.order.length !== order.length) {
       scrollToLastTextBlock(editorId, isNavbarHidden)
     }
   }

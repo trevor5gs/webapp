@@ -12,7 +12,7 @@ export const PostDetail = ({ author, hasEditor, post, streamAction }) =>
       <article className="PostList" id={`Post_${post ? post.id : '_'}`}>
         <div className="StreamContainer">
           {author && post ? <PostContainer isPostDetail post={post} /> : null}
-          {hasEditor && post ? <Editor post={post} isComment /> : null}
+          {hasEditor && post ? <Editor post={post} isComment isPostDetail /> : null}
         </div>
         {streamAction ?
           <StreamContainer action={streamAction} className="CommentStreamContainer" /> :
@@ -28,7 +28,6 @@ PostDetail.propTypes = {
   post: PropTypes.object,
   streamAction: PropTypes.object,
 }
-
 
 export const PostDetailError = ({ children }) =>
   <MainView className="PostDetail">
