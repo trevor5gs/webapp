@@ -3,7 +3,9 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import { get } from 'lodash'
 import OnboardingCategories from '../components/onboarding/OnboardingCategories'
+import { ONBOARDING_VERSION } from '../constants/application_types'
 import { getCategories } from '../actions/discover'
+import { saveProfile } from '../actions/profile'
 import { followCategories } from '../actions/user'
 import { selectCategories } from '../selectors'
 
@@ -63,6 +65,7 @@ class OnboardingCategoriesContainer extends Component {
 
   onNextClick = () => {
     const { dispatch, userId } = this.props
+    dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
     dispatch(followCategories(userId, this.state.categoryIds))
     dispatch(push('/onboarding/settings'))
   }
