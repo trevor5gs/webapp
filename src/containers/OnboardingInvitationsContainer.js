@@ -11,26 +11,19 @@ class OnboardingInvitationsContainer extends Component {
 
   static childContextTypes = {
     nextLabel: PropTypes.string,
-    onDoneClick: PropTypes.func.isRequired,
     onNextClick: PropTypes.func.isRequired,
   }
 
   getChildContext() {
     return {
       nextLabel: 'Get To The Goods',
-      onDoneClick: this.onDoneClick,
       onNextClick: this.onNextClick,
     }
   }
 
-  onDoneClick = () => {
-    const { dispatch } = this.props
-    dispatch(push('/'))
-  }
-
   onNextClick = () => {
     const { dispatch } = this.props
-    dispatch(push('/'))
+    dispatch(push('/following'))
   }
 
   render() {

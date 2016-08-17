@@ -41,7 +41,7 @@ OnboardingNavbar.propTypes = {
 
 OnboardingNavbar.contextTypes = {
   nextLabel: PropTypes.string,
-  onDoneClick: PropTypes.func.isRequired,
+  onDoneClick: PropTypes.func,
   onNextClick: PropTypes.func.isRequired,
 }
 
