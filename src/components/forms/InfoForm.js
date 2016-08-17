@@ -43,11 +43,12 @@ class InfoForm extends Component {
 
     // Remove this class about half a second after its animation finishes
     this.hideStatusMessage()
+    const { profile } = nextProps
 
     this.setState({
-      bioStatus: STATUS.INDETERMINATE,
-      linksStatus: STATUS.INDETERMINATE,
-      nameStatus: STATUS.INDETERMINATE,
+      bioStatus: profile.shortBio.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
+      linksStatus: profile.externalLinksList.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
+      nameStatus: profile.name.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
       showThenHideMessage,
     })
   }

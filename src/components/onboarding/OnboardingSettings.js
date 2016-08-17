@@ -4,11 +4,10 @@ import { MainView } from '../views/MainView'
 import InfoForm from '../../components/forms/InfoForm'
 import Uploader from '../../components/uploaders/Uploader'
 import Avatar from '../../components/assets/Avatar'
-import Cover from '../../components/assets/Cover'
+import CoverMini from '../../components/assets/CoverMini'
 
 const OnboardingSettings = (props, context) => {
-  const { avatar, closeAlert, coverDPI, coverImage, coverOffset,
-    isCoverHidden, openAlert, saveAvatar, saveCover } = context
+  const { avatar, closeAlert, coverImage, openAlert, saveAvatar, saveCover } = context
   return (
     <MainView className="Onboarding OnboardingSettings">
       <h1 className="OnboardingHeading">
@@ -16,45 +15,43 @@ const OnboardingSettings = (props, context) => {
         <span>Completed profiles get way more views.</span>
       </h1>
 
-      <div className="SettingsCoverPicker">
+      <div className="OnboardingCoverPicker">
+        <CoverMini
+          coverImage={coverImage}
+          isModifiable
+        />
         <Uploader
-          title="Upload a header image"
-          message="Or drag & drop"
-          recommend="Recommended image size: 2560 x 1440"
+          title="Upload Header"
+          line1="2560 x 1440"
+          line2="Animated Gifs work too"
           openAlert={openAlert}
           closeAlert={closeAlert}
           saveAction={saveCover}
         />
-        <Cover
-          coverDPI={coverDPI}
-          coverImage={coverImage}
-          coverOffset={coverOffset}
-          isHidden={isCoverHidden}
-          isModifiable
-        />
       </div>
 
-      <div className="SettingsAvatarPicker" >
-        <Uploader
-          title="Pick an Avatar"
-          message="Or drag & drop it"
-          recommend="Recommended image size: 360 x 360"
-          openAlert={openAlert}
-          closeAlert={closeAlert}
-          saveAction={saveAvatar}
-        />
+      <div className="OnboardingAvatarPicker" >
         <Avatar
-          className="isLarge"
+          className="isXLarge"
           isModifiable
           size="large"
           sources={avatar}
         />
+        <Uploader
+          title="Upload Avatar"
+          line1="360 x 360"
+          line2="Animated Gifs work too"
+          openAlert={openAlert}
+          closeAlert={closeAlert}
+          saveAction={saveAvatar}
+        />
       </div>
 
       <InfoForm
-        controlClassModifiers="isBoxControl onWhite"
+        className="OnboardingInfoForm"
+        controlClassModifiers="isOnboardingControl"
         showSaveMessage
-        tabIndexStart={4}
+        tabIndexStart={1}
       />
 
       <OnboardingNavbar />
@@ -65,10 +62,7 @@ const OnboardingSettings = (props, context) => {
 OnboardingSettings.contextTypes = {
   avatar: PropTypes.object,
   closeAlert: PropTypes.func.isRequired,
-  coverDPI: PropTypes.string.isRequired,
   coverImage: PropTypes.object,
-  coverOffset: PropTypes.number.isRequired,
-  isCoverHidden: PropTypes.bool.isRequired,
   openAlert: PropTypes.func.isRequired,
   saveAvatar: PropTypes.func.isRequired,
   saveCover: PropTypes.func.isRequired,

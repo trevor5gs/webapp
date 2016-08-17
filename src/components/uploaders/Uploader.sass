@@ -1,16 +1,20 @@
 @import ../../vendor/lib
 
+.Uploader
+  text-align: center
+
 .UploaderButton
   +sans-typeset
   transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease, opacity $speed
-  min-width: rem(280)
-  height: rem(60)
-  padding: 0 rem(30)
-  line-height: rem(60)
+  min-width: rem(160)
+  height: rem(40)
+  padding: 0 rem(20)
+  border-radius: rem(5)
+  line-height: rem(40)
   text-align: center
-  background-color: black
-  border: 1px solid black
-  color: white
+  background-color: white
+  border: 1px solid #aaa
+  color: #aaa
 
 .hasDragOver .UploaderButton,
 .no-touch .UploaderButton:hover
@@ -18,77 +22,15 @@
   border-color: #666
   color: white
 
-.Uploader > p
-  transition: opacity $speed
+.UploaderMessages
+  max-width: rem(160)
+  margin: 0 auto
+  text-align: left
+  color: #aaa
+
+.UploaderMessages > p
   margin-bottom: 0
 
-.Uploader > p + p
+.UploaderMessages > p + p
   margin-top: 0
-
-// -------------------------------------
-
-.UserDetailAvatarUploader
-  position: absolute
-  top: 0
-  left: 0
-  width: rem(120)
-  height: rem(120)
-  border-radius: 50%
-  z-index: 5
-  color: white
-  text-align: center
-  padding-left: rem(5)
-  padding-right: rem(5)
-  overflow: hidden
-
-.UserDetailAvatarUploader > .UploaderButton
-  min-width: rem(120)
-  margin-top: rem(35)
-  height: rem(40)
-  padding: 0 rem(20)
-  line-height: rem(40)
-
-.UserDetailAvatarUploader > .UploaderButton,
-.UserDetailAvatarUploader > p
-  opacity: 0
-
-.hasDragOver.UserDetailAvatarUploader > .UploaderButton,
-.hasDragOver.UserDetailAvatarUploader > p,
-.no-touch .UserDetailAvatarUploader:hover > .UploaderButton,
-.no-touch .UserDetailAvatarUploader:hover > p
-  opacity: 1
-
-// -------------------------------------
-
-.UserDetailCoverUploader
-  position: fixed
-  top: 0
-  left: 0
-  right: 0
-  z-index: -1
-  padding-top: rem(100)
-  padding-bottom: 56.25%
-  text-align: center
-  background: transparent
-  color: white
-
-.UserDetailCoverUploader > .UploaderButton,
-.UserDetailCoverUploader > p
-  opacity: 0
-
-.hasDragOver.UserDetailCoverUploader > .UploaderButton,
-.hasDragOver.UserDetailCoverUploader > p,
-.no-touch .UserDetailCoverUploader:hover > .UploaderButton,
-.no-touch .UserDetailCoverUploader:hover > p
-  opacity: 1
-
-// -------------------------------------
-
-@media(min-width: #{$break-2})
-  .UserDetailCoverUploader
-    padding-top: rem(180)
-
-  .UserDetailAvatarUploader
-    width: rem(180)
-    height: rem(180)
 

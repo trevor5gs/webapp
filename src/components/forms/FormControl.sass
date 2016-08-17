@@ -37,6 +37,14 @@
 .FormControlInput.isSimpleWhiteControl::placeholder
   color: white
 
+.FormControlInput.isOnboardingControl
+  border-bottom-color: #f0f0f0
+  font-size: rem(18)
+
+@media(min-width: #{$break-3})
+  .FormControlInput.isOnboardingControl
+    font-size: rem(24)
+
 .FormControlInput.isBoxControl
   height: rem(60)
   padding: 0 rem(30)
@@ -69,6 +77,10 @@
 .hasValue:not(.isInitialValue) > .FormControlInput.isSimpleWhiteControl
   border-color: white
   color: white
+
+.hasValue:not(.isInitialValue) > .FormControlInput.isOnboardingControl
+  border-color: #f0f0f0
+  color: black
 
 .hasValue:not(.isInitialValue) > .FormControlInput.isBoxControl
   background-color: white
@@ -138,6 +150,9 @@ textarea.FormControlInput.isBoxControl
   font-size: rem(11)
   text-align: right
 
+.FormControlLabel.isOnboardingControl
+  display: none
+
 .isFailing > .FormControlLabel,
 .hasValue > .FormControlLabel
   transform: translate3d(0,rem(10),0)
@@ -202,9 +217,6 @@ textarea.FormControlInput.isBoxControl
 
 .FormControlStatus > .FailureIcon > g
   stroke: $danger
-
-.isOnboardingView ~ .MainView .FormControlStatus
-  display: none
 
 .FormControlStatus.isSimpleWhiteControl
   top: rem(5)

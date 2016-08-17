@@ -320,9 +320,9 @@ class Settings extends Component {
       <MainView className="Settings">
         <div className="SettingsCoverPicker">
           <Uploader
-            title="Upload a header image"
-            message="Or drag & drop"
-            recommend="Recommended image size: 2560 x 1440"
+            title="Upload Header"
+            line1="2560 x 1440"
+            line2="Animated Gifs work too"
             openAlert={bindActionCreators(openAlert, dispatch)}
             closeAlert={bindActionCreators(closeAlert, dispatch)}
             saveAction={bindActionCreators(saveCover, dispatch)}
@@ -340,9 +340,9 @@ class Settings extends Component {
         <div className="SettingsBody" >
           <div className="SettingsAvatarPicker" >
             <Uploader
-              title="Pick an Avatar"
-              message="Or drag & drop it"
-              recommend="Recommended image size: 360 x 360"
+              title="Upload Avatar"
+              line1="360 x 360"
+              line2="Animated Gifs work too"
               openAlert={bindActionCreators(openAlert, dispatch)}
               closeAlert={bindActionCreators(closeAlert, dispatch)}
               saveAction={bindActionCreators(saveAvatar, dispatch)}

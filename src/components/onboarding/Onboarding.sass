@@ -1,0 +1,51 @@
+@import ../../vendor/lib
+
+.OnboardingSettings
+  position: relative
+  max-width: rem(750)
+  margin: 0 auto
+
+.OnboardingAvatarPicker
+  text-align: center
+
+.OnboardingAvatarPicker .Avatar
+  margin: rem(20) auto
+
+.Onboarding .CoverMini
+  height: rem(220) !important
+
+.OnboardingCoverPicker > .Uploader
+  position: relative
+  float: left
+  margin-top: rem(-220)
+  width: 100%
+.OnboardingCoverPicker .UploaderButton
+  margin-top: rem(80)
+
+// These styles should eventually be applied to Cover
+.OnboardingCoverPicker > .Uploader:before
+  content: ''
+  transition: background-color $speed ease
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  background-color: transparent
+  height: rem(220)
+
+
+@media(min-width: #{$break-3})
+  .OnboardingAvatarPicker,
+  .OnboardingAvatarPicker > .Uploader
+    text-align: left
+  .OnboardingAvatarPicker > .Uploader,
+  .OnboardingAvatarPicker .UploaderMessages
+    text-align: center
+  .OnboardingAvatarPicker
+    position: absolute
+    left: 0
+  .OnboardingAvatarPicker > .Uploader
+    max-width: rem(220)
+  .OnboardingAvatarPicker .Avatar
+    margin-top: rem(40)
+

@@ -10,10 +10,6 @@
   100%
     opacity: 0
 
-.isOnboardingView ~ .MainView .InfoForm
-  position: relative
-  max-width: rem(610)
-
 .InfoFormStatus
   +sans-typeset
   transition: opacity $speed2
@@ -35,6 +31,20 @@
   display: inline
   animation: showWaitThenHide 3s 1 linear
 
-.isOnboardingView ~ .MainView .InfoFormStatus
-  margin-top: rem(20)
+.OnboardingInfoForm
+  padding: rem(20) rem(10) rem(80)
+
+.OnboardingInfoForm .InfoFormStatus
+  display: none
+
+.OnboardingInfoForm .FormControlStatus
+  top: rem(10)
+
+.OnboardingInfoForm .SVGIcon
+  transform: scale(0.6)
+
+@media(min-width: #{$break-3})
+  .OnboardingInfoForm
+    margin-left: rem(240)
+    padding-top: rem(40)
 
