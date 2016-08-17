@@ -54,6 +54,14 @@
   border-color: #ccc
   color: black
 
+.FormControlInput.isBoxControl.onGrey
+  background-color: #ccc
+  border: 1px solid #ccc
+.FormControlInput.isBoxControl.onGrey:focus
+  background-color: white
+  border-color: #ccc
+  color: black
+
 
 .hasValue:not(.isInitialValue) > .FormControlInput
   border-color: black
@@ -69,9 +77,15 @@
   background-color: #ccc
   border-color: #ccc
   color: black
+.hasValue:not(.isInitialValue) > .FormControlInput.isBoxControl.onGrey
+  background-color: white
+  border-color: #ccc
+  color: black
+
 
 .isFailing > .FormControlInput,
 .isFailing > .FormControlInput.isBoxControl,
+.isFailing > .FormControlInput.isBoxControl.onGrey,
 .isFailing > .FormControlInput.isBoxControl.onWhite
   border-color: $danger
 

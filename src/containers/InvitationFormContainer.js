@@ -71,14 +71,14 @@ class InvitationFormContainer extends Component {
           role="form"
         >
           <BatchEmailControl
-            classList="isBoxControl onWhite"
+            classList="isBoxControl onGrey"
             label={`Emails ${batchEmailState.message}`}
             onChange={this.onChangeControl}
             tabIndex="1"
             ref={(comp) => { this.control = comp }}
           />
           <FormButton
-            className="FormButton isPill"
+            className="FormButton isRounded isPrimary"
             disabled={!isValid}
             tabIndex="2"
           >
