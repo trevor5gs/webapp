@@ -19,6 +19,7 @@ const OnboardingSettings = (props, context) => {
         <CoverMini
           coverImage={coverImage}
           isModifiable
+          useGif
         />
         <Uploader
           title="Upload Header"
@@ -36,6 +37,7 @@ const OnboardingSettings = (props, context) => {
           isModifiable
           size="large"
           sources={avatar}
+          useGif
         />
         <Uploader
           title="Upload Avatar"

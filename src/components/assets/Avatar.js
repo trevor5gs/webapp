@@ -17,8 +17,7 @@ export function getSource(props) {
     return ''
   } else if (sources.tmp && sources.tmp.url) {
     return sources.tmp.url
-  }
-  if (useGif && isGif(sources.original.url)) {
+  } else if (useGif && isGif(sources.original.url)) {
     return sources.original.url
   }
   return sources[size] ? sources[size].url : null

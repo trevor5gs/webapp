@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { isEqual } from 'lodash'
 import classNames from 'classnames'
-import { isGif } from '../../helpers/file_helper'
 import ImageAsset from '../assets/ImageAsset'
+import { isGif } from '../../helpers/file_helper'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -17,8 +17,7 @@ export function getSource(props) {
     return ''
   } else if (coverImage.tmp && coverImage.tmp.url) {
     return coverImage.tmp.url
-  }
-  if (useGif && isGif(coverImage.original.url)) {
+  } else if (useGif && isGif(coverImage.original.url)) {
     return coverImage.original.url
   }
   return coverImage[coverDPI] ? coverImage[coverDPI].url : null
