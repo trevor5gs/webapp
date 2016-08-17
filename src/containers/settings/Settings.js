@@ -333,6 +333,7 @@ class Settings extends Component {
             coverOffset={coverOffset}
             isHidden={isCoverHidden}
             isModifiable
+            useGif
           />
         </div>
         <button className="SettingsLogoutButton" onClick={this.onLogOut}>Logout</button>
@@ -352,6 +353,7 @@ class Settings extends Component {
               isModifiable
               size="large"
               sources={profile.avatar}
+              useGif
             />
           </div>
 
