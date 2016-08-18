@@ -20,17 +20,19 @@ export function shouldContainerUpdate(thisProps, nextProps) {
 }
 
 export function mapStateToProps(state, props) {
-  const isOwnComment = props.currentUser && `${props.author.id}` === `${props.currentUser.id}`
-  const isOwnPost = props.currentUser && `${props.post.authorId}` === `${props.currentUser.id}`
-  const isOwnRepost = props.currentUser && props.post.links.repostAuthor &&
-    `${props.post.links.repostAuthor.id}` === `${props.currentUser.id}`
+  const { author, comment, currentUser, post } = props
+  const isOwnComment = currentUser && `${author.id}` === `${currentUser.id}`
+  const isOwnPost = currentUser && `${post.authorId}` === `${currentUser.id}`
+  let canDeleteComment = isOwnPost
+  if (post.repostId) {
+    canDeleteComment = isOwnPost && comment.postId === post.id
+  }
   return {
+    canDeleteComment,
     deviceSize: state.gui.deviceSize,
     isLoggedIn: state.authentication.isLoggedIn,
     isNavbarHidden: state.gui.isNavbarHidden,
     isOwnComment,
-    isOwnPost,
-    isOwnRepost,
   }
 }
 

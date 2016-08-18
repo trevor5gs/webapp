@@ -80,7 +80,7 @@ MoreTool.propTypes = {
 }
 
 export const CommentTools = (props) => {
-  const { comment, isLoggedIn, isMoreToolActive, isOwnComment, isOwnPost, isOwnRepost } = props
+  const { canDeleteComment, comment, isLoggedIn, isMoreToolActive, isOwnComment } = props
   const { onClickEditComment, onClickDeleteComment, onClickReplyToComment,
           onClickFlagComment, onClickMoreTool } = props
   const cId = comment.id
@@ -92,7 +92,7 @@ export const CommentTools = (props) => {
       cells.push(
         <DeleteTool key={`DeleteTool_${cId}`} onClickDeleteComment={onClickDeleteComment} />
       )
-    } else if (isOwnPost || isOwnRepost) {
+    } else if (canDeleteComment) {
       cells.push(
         <ReplyTool key={`ReplyTool_${cId}`} onClickReplyToComment={onClickReplyToComment} />
       )
@@ -124,12 +124,11 @@ export const CommentTools = (props) => {
 }
 
 CommentTools.propTypes = {
+  canDeleteComment: PropTypes.bool,
   comment: PropTypes.object,
   isLoggedIn: PropTypes.bool,
   isMoreToolActive: PropTypes.bool,
   isOwnComment: PropTypes.bool,
-  isOwnPost: PropTypes.bool,
-  isOwnRepost: PropTypes.bool,
   onClickDeleteComment: PropTypes.func,
   onClickEditComment: PropTypes.func,
   onClickFlagComment: PropTypes.func,
