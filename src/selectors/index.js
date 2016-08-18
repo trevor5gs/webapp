@@ -131,7 +131,8 @@ export const selectCategoryPageTitle = createSelector(
       case 'recommended':
         return 'Featured'
       default: {
-        const key = Object.keys(categories).find((k) => categories[k].slug === paramsType)
+        const key = categories &&
+          Object.keys(categories).find((k) => categories[k].slug === paramsType)
         return key ? categories[key].name : startCase(paramsType).replace(/\sX\s/, ' x ')
       }
     }
