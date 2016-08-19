@@ -320,19 +320,19 @@ class Settings extends Component {
       <MainView className="Settings">
         <div className="SettingsCoverPicker">
           <Uploader
-            title="Upload Header"
+            className="isSettingsCoverUploader"
+            closeAlert={bindActionCreators(closeAlert, dispatch)}
             line1="2560 x 1440"
             line2="Animated Gifs work too"
             openAlert={bindActionCreators(openAlert, dispatch)}
-            closeAlert={bindActionCreators(closeAlert, dispatch)}
             saveAction={bindActionCreators(saveCover, dispatch)}
+            title="Upload Header"
           />
           <Cover
             coverDPI={coverDPI}
             coverImage={profile.coverImage}
             coverOffset={coverOffset}
             isHidden={isCoverHidden}
-            isModifiable
             useGif
           />
         </div>
@@ -341,6 +341,7 @@ class Settings extends Component {
         <div className="SettingsBody" >
           <div className="SettingsAvatarPicker" >
             <Uploader
+              className="isAvatarUploader isLGUploader"
               title="Upload Avatar"
               line1="360 x 360"
               line2="Animated Gifs work too"
@@ -350,7 +351,6 @@ class Settings extends Component {
             />
             <Avatar
               className="isLarge"
-              isModifiable
               size="large"
               sources={profile.avatar}
               useGif

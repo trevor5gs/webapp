@@ -35,7 +35,7 @@ const OnboardingSettings = (props, context) => {
       </div>
       <div className="OnboardingAvatarPicker" >
         <Uploader
-          className={classNames('isAvatarUploader isOnboardingUploader', { isAvatarBlank })}
+          className={classNames('isAvatarUploader isXLUploader', { isAvatarBlank })}
           title="Upload Avatar"
           line1="360 x 360"
           line2="Animated Gifs work too"

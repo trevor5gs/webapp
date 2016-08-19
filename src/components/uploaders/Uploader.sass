@@ -4,14 +4,27 @@
   position: relative
 
 .isAvatarUploader
-  padding-top: rem(240)
   text-align: center
-  width: rem(220)
 
 .isCoverUploader
   display: block
   width: 100%
   height: rem(220)
+
+.isSettingsCoverUploader
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+
+.isXLUploader
+  padding-top: rem(240)
+  width: rem(220)
+
+.isLGUploader
+  padding-top: rem(140)
+  width: rem(120)
 
 .Uploader:before
   content: ''
@@ -21,16 +34,22 @@
   left: 0
   right: 0
   bottom: 0
-  background-color: transparent
   z-index: 2
+  background-color: transparent
 
 .hasDragOver.Uploader:before
   background-color: rgba(black, 0.4)
 
 .isAvatarUploader:before
   border-radius: 50%
+
+.isXLUploader:before
   width: rem(220)
   height: rem(220)
+
+.isLGUploader:before
+  width: rem(120)
+  height: rem(120)
 
 
 .UploaderButton
@@ -61,7 +80,6 @@
   border-color: #00b100
   color: white
 
-
 .UploaderMessages
   position: relative
   z-index: 3
@@ -74,4 +92,16 @@
 
 .UploaderMessages > p + p
   margin-top: 0
+
+.isSettingsCoverUploader .UploaderButton,
+.isSettingsCoverUploader .UploaderMessages
+  transform: translateY(#{rem(-160)})
+
+@media(min-width: #{$break-2})
+  .isLGUploader
+    padding-top: rem(200)
+    width: rem(180)
+  .isLGUploader:before
+    width: rem(180)
+    height: rem(180)
 
