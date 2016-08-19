@@ -45,11 +45,12 @@ class InfoForm extends Component {
     // Remove this class about half a second after its animation finishes
     this.hideStatusMessage()
     const { profile } = nextProps
+    const { externalLinksList, name, shortBio } = profile
 
     this.setState({
-      bioStatus: profile.shortBio.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
-      linksStatus: profile.externalLinksList.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
-      nameStatus: profile.name.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
+      bioStatus: shortBio && shortBio.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
+      linksStatus: externalLinksList.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
+      nameStatus: name && name.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
       showThenHideMessage,
     })
   }
@@ -114,14 +115,14 @@ class InfoForm extends Component {
           onChange={this.onChangeNameControl}
           status={nameStatus}
           tabIndex={`${tabIndexStart}`}
-          text={profile.name}
+          text={profile.name || ''}
         />
         <BioControl
           classList={controlClassModifiers}
           onChange={this.onChangeBioControl}
           status={bioStatus}
           tabIndex={`${tabIndexStart + 1}`}
-          text={profile.shortBio}
+          text={profile.shortBio || ''}
         />
         <LinksControl
           classList={controlClassModifiers}
