@@ -8,38 +8,31 @@
   padding: 0 rem(30)
   line-height: rem(60)
   text-align: center
-  background-color: black
-  border: 1px solid black
+  background-color: #00d100
+  border: 1px solid #00d100
   color: white
-
-.FormButton:focus,
-.no-touch .FormButton:hover
-  background-color: #666
-  border-color: #666
-  color: white
-
-.FormButton[disabled]
-  color: #666
 
 .FormButton.isRounded
-  width: auto
-  height: rem(40)
-  line-height: rem(40)
   border-radius: rem(5)
 
-.FormButton.isPrimary
-  background-color: #00d100
-  border-color: #00d100
-  color: white
+.FormButton.isAutoSize
+  width: auto
+  line-height: rem(40)
+  height: rem(40)
 
-.FormButton.isPrimary[disabled]
-  background-color: transparent
-  border-color: #aaa
-  color: #aaa
-
-.FormButton.isPrimary:not([disabled]):active,
-.no-touch .FormButton.isPrimary:not([disabled]):hover
+.FormButton:not([disabled]):active,
+.no-touch .FormButton:not([disabled]):hover
   background-color: #00b100
   border-color: #00b100
   color: white
+
+.FormButton[disabled]
+  background-color: black
+  border: 1px solid black
+  color: #666
+
+.FormButton.isOutlined[disabled]
+  background-color: transparent
+  border-color: #aaa
+  color: #aaa
 

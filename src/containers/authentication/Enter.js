@@ -202,7 +202,9 @@ class Enter extends Component {
               tabIndex="2"
             />
             {failureMessage ? <p>{failureMessage}</p> : null}
-            <FormButton disabled={!isValid} tabIndex="3">Log in</FormButton>
+            <FormButton className="FormButton isRounded" disabled={!isValid} tabIndex="3">
+              Log in
+            </FormButton>
           </form>
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>

@@ -112,7 +112,9 @@ class ForgotPassword extends Component {
           <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
           <p className="HoppyStatusMessage"><span /></p>
         }
-        <FormButton disabled={!isValid} tabIndex="2">Reset password</FormButton>
+        <FormButton className="FormButton isRounded" disabled={!isValid} tabIndex="2">
+          Reset password
+        </FormButton>
       </form>
     )
   }

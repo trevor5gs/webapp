@@ -413,7 +413,9 @@ class Settings extends Component {
                 status={currentPasswordState.status}
                 tabIndex={requiresSave ? '4' : '0'}
               />
-              <FormButton disabled={!requiresSave}>Save</FormButton>
+              <FormButton className="FormButton isRounded" disabled={!requiresSave}>
+                Save
+              </FormButton>
             </div>
           </form>
 

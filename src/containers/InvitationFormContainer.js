@@ -78,7 +78,7 @@ class InvitationFormContainer extends Component {
             ref={(comp) => { this.control = comp }}
           />
           <FormButton
-            className="FormButton isRounded isPrimary"
+            className="FormButton isAutoSize isOutlined isRounded"
             disabled={!isValid}
             tabIndex="2"
           >
