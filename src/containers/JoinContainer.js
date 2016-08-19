@@ -39,6 +39,19 @@ class JoinContainer extends Component {
     invitationCode: PropTypes.string,
   }
 
+  static childContextTypes = {
+    nextLabel: PropTypes.string,
+    onDoneClick: PropTypes.func,
+    onNextClick: PropTypes.func,
+  }
+
+  getChildContext() {
+    return {
+      nextLabel: 'Discover Ello',
+      onNextClick: this.onSubmit,
+    }
+  }
+
   componentWillMount() {
     this.state = {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
@@ -197,7 +210,7 @@ class JoinContainer extends Component {
         isValid={isValid}
         onChangePasswordControl={this.onChangePasswordControl}
         onChangeUsernameControl={this.onChangeUsernameControl}
-        onNextClick={this.onSubmit}
+        onSubmit={this.onSubmit}
         passwordRenderStatus={showPasswordError ? this.renderStatus(passwordState) : null}
         passwordStatus={passwordState.status}
         usernameRenderStatus={showUsernameError ? this.renderStatus(usernameState) : null}

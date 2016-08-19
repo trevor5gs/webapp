@@ -14,7 +14,7 @@ const Join = (props) => {
     isValid,
     onChangePasswordControl,
     onChangeUsernameControl,
-    onNextClick,
+    onSubmit,
     passwordRenderStatus,
     passwordStatus,
     usernameRenderStatus,
@@ -29,7 +29,7 @@ const Join = (props) => {
           className="AuthenticationForm"
           id="RegistrationForm"
           noValidate="novalidate"
-          onSubmit={onNextClick}
+          onSubmit={onSubmit}
           role="form"
         >
           <UsernameControl
@@ -59,8 +59,6 @@ const Join = (props) => {
       </div>
       <OnboardingNavbar
         isNextDisabled={!isValid}
-        nextLabel="Continue"
-        onNextClick={onNextClick}
       />
       <Cover
         coverDPI={coverDPI}
@@ -81,7 +79,7 @@ Join.propTypes = {
   isValid: PropTypes.bool.isRequired,
   onChangePasswordControl: PropTypes.func.isRequired,
   onChangeUsernameControl: PropTypes.func.isRequired,
-  onNextClick: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   passwordRenderStatus: PropTypes.func,
   passwordStatus: PropTypes.string.isRequired,
   usernameRenderStatus: PropTypes.func,
