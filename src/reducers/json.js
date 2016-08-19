@@ -306,7 +306,8 @@ methods.deleteModel = (state, newState, action, mappingType) => {
 methods.updateCurrentUser = (newState, action) => {
   const { response } = action.payload
   const newProfile = { ...response.users }
-  const curUser = newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id]
+  const nextState = !newState[MAPPING_TYPES.USERS] ? { ...newState, users: response } : newState
+  const curUser = nextState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id]
   if (action.type !== ACTION_TYPES.PROFILE.LOAD_SUCCESS) {
     if (curUser.avatar.tmp) {
       newProfile.avatar = { ...response.users.avatar, tmp: curUser.avatar.tmp }
@@ -316,8 +317,8 @@ methods.updateCurrentUser = (newState, action) => {
     }
   }
   // updates the whole current user..
-  newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id] = newProfile
-  return newState
+  nextState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id] = newProfile
+  return nextState
 }
 
 methods.updateCurrentUserTmpAsset = (newState, action) => {
