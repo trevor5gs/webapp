@@ -30,7 +30,6 @@ const OnboardingSettings = (props, context) => {
         />
         <CoverMini
           coverImage={coverImage}
-          isModifiable
           useGif
         />
       </div>
@@ -47,7 +46,6 @@ const OnboardingSettings = (props, context) => {
         {isAvatarBlank ? <ElloOutlineMark /> : null}
         <Avatar
           className="isXLarge"
-          isModifiable
           size="large"
           sources={avatar}
           useGif

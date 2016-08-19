@@ -29,7 +29,6 @@ export default class Cover extends Component {
     coverImage: PropTypes.object,
     coverOffset: PropTypes.number,
     isHidden: PropTypes.bool,
-    isModifiable: PropTypes.bool,
     modifiers: PropTypes.string,
     useGif: PropTypes.bool,
   }
@@ -72,10 +71,10 @@ export default class Cover extends Component {
   }
 
   render() {
-    const { isHidden, isModifiable, modifiers } = this.props
+    const { isHidden, modifiers } = this.props
     const { status } = this.state
     return (
-      <div className={classNames('Cover', status, modifiers, { isHidden }, { isModifiable })}>
+      <div className={classNames('Cover', status, modifiers, { isHidden })}>
         <ImageAsset
           className="CoverImage"
           isBackgroundImage

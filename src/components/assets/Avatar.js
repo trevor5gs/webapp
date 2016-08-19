@@ -27,7 +27,6 @@ export default class Avatar extends Component {
   static propTypes = {
     alt: PropTypes.string,
     className: PropTypes.string,
-    isModifiable: PropTypes.bool,
     onClick: PropTypes.func,
     priority: PropTypes.string,
     size: PropTypes.string,
@@ -40,7 +39,6 @@ export default class Avatar extends Component {
 
   static defaultProps = {
     className: '',
-    isModifiable: false,
     size: 'regular',
     useGif: false,
   }
@@ -70,10 +68,10 @@ export default class Avatar extends Component {
   }
 
   render() {
-    const { alt, className, isModifiable, onClick, priority, to, userId, username } = this.props
+    const { alt, className, onClick, priority, to, userId, username } = this.props
     const { status } = this.state
     const wrapperProps = {
-      className: classNames('Avatar', className, status, { isModifiable }),
+      className: classNames('Avatar', className, status),
       'data-priority': priority || 'inactive',
       'data-userid': userId,
       'data-username': username,
