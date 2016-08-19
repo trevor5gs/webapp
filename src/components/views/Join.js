@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import Cover from '../assets/Cover'
 import OnboardingNavbar from '../onboarding/OnboardingNavbar'
 import PasswordControl from '../forms/PasswordControl'
 import UsernameControl from '../forms/UsernameControl'
@@ -7,9 +6,6 @@ import { MainView } from '../views/MainView'
 
 const Join = (props) => {
   const {
-    coverDPI,
-    coverImage,
-    coverOffset,
     email,
     isValid,
     onChangePasswordControl,
@@ -60,20 +56,12 @@ const Join = (props) => {
       <OnboardingNavbar
         isNextDisabled={!isValid}
       />
-      <Cover
-        coverDPI={coverDPI}
-        coverImage={coverImage}
-        coverOffset={coverOffset}
-        modifiers="isFullScreen hasOverlay60"
-      />
+      <div className="AnimatedCover animationCachefloweBackground" />
     </MainView>
   )
 }
 
 Join.propTypes = {
-  coverDPI: PropTypes.string,
-  coverImage: PropTypes.string,
-  coverOffset: PropTypes.number,
   email: PropTypes.string,
   invitationCode: PropTypes.string,
   isValid: PropTypes.bool.isRequired,
