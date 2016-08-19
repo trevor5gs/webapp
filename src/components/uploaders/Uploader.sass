@@ -1,10 +1,42 @@
 @import ../../vendor/lib
 
 .Uploader
+  position: relative
+
+.isAvatarUploader
+  padding-top: rem(240)
   text-align: center
+  width: rem(220)
+
+.isCoverUploader
+  display: block
+  width: 100%
+  height: rem(220)
+
+.Uploader:before
+  content: ''
+  transition: background-color $speed ease
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: transparent
+  z-index: 2
+
+.hasDragOver.Uploader:before
+  background-color: rgba(black, 0.4)
+
+.isAvatarUploader:before
+  border-radius: 50%
+  width: rem(220)
+  height: rem(220)
+
 
 .UploaderButton
   +sans-typeset
+  position: relative
+  z-index: 3
   transition: background-color $speed $ease, border-color $speed $ease, color $speed $ease, width $speed $ease, opacity $speed
   min-width: rem(160)
   height: rem(40)
@@ -15,17 +47,26 @@
   background-color: white
   border: 1px solid #aaa
   color: #aaa
+  display: inline-block
 
-.hasDragOver .UploaderButton,
-.no-touch .UploaderButton:hover
-  background-color: #666
-  border-color: #666
+.isAvatarBlank .UploaderButton,
+.isCoverBlank .UploaderButton
+  background-color: #00d100
+  border-color: #00d100
   color: white
 
+.hasDragOver .UploaderButton,
+.no-touch .Uploader:hover .UploaderButton
+  background-color: #00b100
+  border-color: #00b100
+  color: white
+
+
 .UploaderMessages
+  position: relative
+  z-index: 3
   max-width: rem(160)
   margin: 0 auto
-  text-align: left
   color: #aaa
 
 .UploaderMessages > p

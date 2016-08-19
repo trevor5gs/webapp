@@ -6,10 +6,10 @@ class Uploader extends Component {
 
   static propTypes = {
     className: PropTypes.string,
-    line1: PropTypes.string,
-    openAlert: PropTypes.func.isRequired,
     closeAlert: PropTypes.func.isRequired,
+    line1: PropTypes.string,
     line2: PropTypes.string,
+    openAlert: PropTypes.func.isRequired,
     saveAction: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
   }
@@ -78,25 +78,23 @@ class Uploader extends Component {
 
   render() {
     const { className, title, line1, line2 } = this.props
-    const klassNames = classNames(
+    const classList = classNames(
       'Uploader',
       className,
       { hasDragOver: this.state.hasDragOver },
     )
 
     return (
-      <div
-        className={klassNames}
+      <button
+        className={classList}
+        onClick={this.onClickFileBrowser}
         onDrop={this.onDrop}
         onDragOver={this.onDragOver}
         onDragLeave={this.onDragLeave}
       >
-        <button
-          className="UploaderButton"
-          onClick={this.onClickFileBrowser}
-        >
+        <span className="UploaderButton">
           {title}
-        </button>
+        </span>
         <div className="UploaderMessages">
           {line1 ? <p>{line1}</p> : null}
           {line2 ? <p>{line2}</p> : null}
@@ -108,7 +106,7 @@ class Uploader extends Component {
           type="file"
           accept="image/*"
         />
-      </div>
+      </button>
     )
   }
 }

@@ -32,24 +32,25 @@
 
 .OnboardingDoneButton
   color: #aaa
-  margin-left: rem(30)
+  margin-left: rem(10)
 
 .OnboardingNavbarCounter
-  position: absolute
-  top: rem(25)
-  right: rem(10)
+  float: right
+  position: relative
+  top: rem(15)
+  margin-left: rem(15)
   color: #aaa
 
 .OnboardingNavbarCounter .CheckMark
   position: absolute
   top: rem(-2)
-  left: rem(-20)
+  left: rem(-17)
   transform: scale(0.6)
 .OnboardingNavbarCounter .CheckMark g
   stroke: #00d100
   stroke-width: 2
 
-@media(min-width: #{$break-3})
+@media(min-width: #{$break-2})
   .OnboardingNavbar
     top: auto
     bottom: 0
@@ -60,9 +61,16 @@
     top: rem(20)
     left: rem(20)
     transform: scale(1.5)
+  .OnboardingDoneButton
+    margin-left: rem(30)
   .OnboardingNavbarCounter
+    float: none
+    position: absolute
     top: rem(40)
     right: rem(20)
+    margin-left: none
+  .OnboardingNavbarCounter .CheckMark
+    left: rem(-20)
 
 
 // -------------------------------------

@@ -2,50 +2,48 @@
 
 .OnboardingSettings
   position: relative
-  max-width: rem(750)
+  max-width: rem(770)
   margin: 0 auto
 
+.Onboarding .InvitationsForm
+  padding: 0 rem(10)
+
+.OnboardingCoverPicker
+  position: relative
+
 .OnboardingAvatarPicker
+  position: relative
+  margin: rem(20) auto
   text-align: center
 
+
+.OnboardingCoverPicker .CoverMini,
 .OnboardingAvatarPicker .Avatar
-  margin: rem(20) auto
-
-.Onboarding .CoverMini
-  height: rem(220) !important
-
-.OnboardingCoverPicker > .Uploader
-  position: relative
-  float: left
-  margin-top: rem(-220)
-  width: 100%
-.OnboardingCoverPicker .UploaderButton
-  margin-top: rem(80)
-
-// These styles should eventually be applied to Cover
-.OnboardingCoverPicker > .Uploader:before
-  content: ''
-  transition: background-color $speed ease
   position: absolute
   top: 0
   left: 0
   right: 0
-  background-color: transparent
-  height: rem(220)
+  z-index: 1
+
+.OnboardingCoverPicker .CoverMini
+  height: rem(220) !important
+
+.OnboardingAvatarPicker .Avatar
+  margin: 0 auto
+
+.OnboardingAvatarPicker .ElloOutlineMark
+  position: absolute
+  top: rem(80)
+  left: 0
+  right: 0
+  z-index: 2
+  margin: 0 auto
+  transform-origin: 50% 0
+  transform: scale(1.5)
 
 
-@media(min-width: #{$break-3})
-  .OnboardingAvatarPicker,
-  .OnboardingAvatarPicker > .Uploader
-    text-align: left
-  .OnboardingAvatarPicker > .Uploader,
-  .OnboardingAvatarPicker .UploaderMessages
-    text-align: center
+@media(min-width: #{$break-2})
   .OnboardingAvatarPicker
     position: absolute
     left: 0
-  .OnboardingAvatarPicker > .Uploader
-    max-width: rem(220)
-  .OnboardingAvatarPicker .Avatar
-    margin-top: rem(40)
 

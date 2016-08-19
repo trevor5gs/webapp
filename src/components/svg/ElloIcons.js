@@ -44,3 +44,9 @@ export const ElloNinjaSuit = () =>
     <path d="M5.6,6.2C3.8,8,2.4,10.2,1.4,12.7h44.2l-3.1-3.2l3.1-3.2H5.6z" />
   </SVGComponent>
 
+export const ElloOutlineMark = () =>
+  <SVGBox className="ElloOutlineMark">
+    <path className="FillPath" d="M0 0h40v40h-40z" />
+    {fortyPointSmilePath()}
+  </SVGBox>
+
