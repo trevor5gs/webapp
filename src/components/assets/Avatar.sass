@@ -1,17 +1,5 @@
 @import ../../vendor/lib
 
-@keyframes animateThrobber
-  0%
-    background-color: rgba(black, 0.1)
-  25%
-    background-color: rgba(purple, 0.1)
-  50%
-    background-color: rgba(green, 0.1)
-  75%
-    background-color: rgba(purple, 0.1)
-  100%
-    background-color: rgba(black, 0.1)
-
 .Avatar
   transition: transform $speed $ease
   position: relative
@@ -20,7 +8,7 @@
   overflow: hidden
   width: rem(30)
   height: rem(30)
-  background: transparent no-repeat 50% 50%
+  background: #f0f0f0 no-repeat 50% 50%
   background-size: cover
   border-radius: 50%
   color: transparent
@@ -35,11 +23,10 @@
   height: rem(30)
 
 .Avatar.isRequesting
-  animation: animateThrobber 2s infinite linear
+  animation: animateLavaLamp 3s infinite linear
 
-.Avatar.isPending,
-.Avatar.isRequesting
-  background-color: rgba(black, 0.1)
+.Avatar.isPending
+  background-color: #f0f0f0
 
 .Avatar.isFailing
   background-color: $danger
@@ -55,6 +42,8 @@
   height: 100%
   border-radius: 50%
   object-fit: cover
+.AvatarImage[src='']
+  display: none
 
 .isPending > .AvatarImage,
 .isRequesting > .AvatarImage
@@ -82,9 +71,6 @@
 .no-touch button.Avatar:hover:before,
 .no-touch button:hover > .Avatar:before
   background-color: rgba(white, 0.4)
-
-.hasDragOver + .Avatar.isModifiable:before
-  background-color: rgba(black, 0.4)
 
 
 @media(min-width: #{$break-2})

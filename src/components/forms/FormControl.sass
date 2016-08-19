@@ -9,6 +9,9 @@
 .FormControl.isSimpleWhiteControl
   margin-bottom: rem(30)
 
+.FormControl.isOnboardingControl
+  margin-bottom: rem(25)
+
 // -------------------------------------
 
 .FormControlInput
@@ -116,10 +119,19 @@ textarea.FormControlInput.isBoxControl
 .hasFocus > textarea.FormControlInput:not(.isBoxControl)
   height: rem(115)
 
+textarea.FormControlInput.isOnboardingControl
+  height: rem(40)
+  padding-top: 0
+  padding-bottom: 0
+  margin-bottom: 0
+
 @media(min-width: #{$break-3})
   .hasValue > textarea.FormControlInput:not(.isBoxControl),
   .hasFocus > textarea.FormControlInput:not(.isBoxControl)
     height: rem(85)
+  .hasValue > textarea.FormControlInput.isOnboardingControl,
+  .hasFocus > textarea.FormControlInput.isOnboardingControl
+    height: rem(115)
 
 .BatchEmailControl .FormControlInput.isBoxControl
   height: rem(160)
@@ -152,6 +164,8 @@ textarea.FormControlInput.isBoxControl
 
 .FormControlLabel.isOnboardingControl
   display: none
+.hasExceeded .FormControlLabel.isOnboardingControl
+  display: inline-block
 
 .isFailing > .FormControlLabel,
 .hasValue > .FormControlLabel
