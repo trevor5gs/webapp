@@ -1,4 +1,4 @@
-import { clearJSON, json, stub } from '../../../stubs'
+import { clearJSON, json, stub } from '../../../support/stubs'
 import subject, { jsonReducer } from '../../../../src/reducers/experience_updates/relationships'
 import * as ACTION_TYPES from '../../../../src/constants/action_types'
 import * as MAPPING_TYPES from '../../../../src/constants/mapping_types'

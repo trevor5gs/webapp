@@ -1,4 +1,4 @@
-import { isFSA, isFSAName } from '../../helpers'
+import { isFSA, isFSAName } from '../../support/test_helpers'
 import * as subject from '../../../src/actions/discover'
 import { mostRecentPostsFromUsers } from '../../../src/components/streams/StreamFilters'
 import {

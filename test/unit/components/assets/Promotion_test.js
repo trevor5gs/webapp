@@ -1,4 +1,4 @@
-import { stubPromotion } from '../../../stubs'
+import { stubPromotion } from '../../../support/stubs'
 import { getSource } from '../../../../src/components/assets/Promotion'
 
 describe('Promotion', () => {

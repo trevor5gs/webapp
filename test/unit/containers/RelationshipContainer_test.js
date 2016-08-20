@@ -1,5 +1,5 @@
 import { noop } from 'lodash'
-import { stubJSONStore, stubUser } from '../../stubs'
+import { stubJSONStore, stubUser } from '../../support/stubs'
 import { RELATIONSHIP_PRIORITY as PRIORITY } from '../../../src/constants/relationship_types'
 import {
   getNextBlockMutePriority, mapStateToProps, shouldContainerUpdate,

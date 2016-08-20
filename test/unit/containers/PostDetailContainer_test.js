@@ -1,5 +1,5 @@
 import { get } from 'lodash'
-import { stubJSONStore } from '../../stubs'
+import { stubJSONStore } from '../../support/stubs'
 import { shouldContainerUpdate, mapStateToProps } from '../../../src/containers/PostDetailContainer'
 
 describe('PostDetailContainer', () => {

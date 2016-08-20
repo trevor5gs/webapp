@@ -1,4 +1,4 @@
-import { isFSA, isFSAName } from '../../helpers'
+import { isFSA, isFSAName } from '../../support/test_helpers'
 import { notificationList } from '../../../src/components/streams/StreamRenderables'
 import { notificationsFromActivities } from '../../../src/components/streams/StreamFilters'
 import * as subject from '../../../src/actions/notifications'

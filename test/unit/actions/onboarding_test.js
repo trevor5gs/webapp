@@ -1,4 +1,4 @@
-import { isFSA, isFSAName, hasStreamMetadata } from '../../helpers'
+import { isFSA, isFSAName, hasStreamMetadata } from '../../support/test_helpers'
 import * as subject from '../../../src/actions/onboarding'
 
 describe('onboarding.js', () => {

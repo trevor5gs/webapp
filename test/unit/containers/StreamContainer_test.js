@@ -1,4 +1,4 @@
-import { stub } from '../../stubs'
+import { stub } from '../../support/stubs'
 import {
   makeMapStateToProps,
 } from '../../../src/containers/StreamContainer'

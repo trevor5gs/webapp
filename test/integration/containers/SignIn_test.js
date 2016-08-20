@@ -1,4 +1,3 @@
-/* eslint-disable prefer-arrow-callback, func-names */
 import React from 'react'
 import { mount } from 'enzyme'
 import { pretendServer } from '../../support/pretender.js'

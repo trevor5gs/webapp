@@ -1,4 +1,4 @@
-import { isFSA } from '../../helpers'
+import { isFSA } from '../../support/test_helpers'
 import * as subject from '../../../src/actions/relationships'
 
 describe('relationship actions', () => {

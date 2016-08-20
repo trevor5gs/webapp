@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { isValidResult } from '../../helpers'
-import { stub, json, clearJSON } from '../../stubs'
+import { isValidResult } from '../../support/test_helpers'
+import { stub, json, clearJSON } from '../../support/stubs'
 import * as subject from '../../../src/reducers/json'
 import * as ACTION_TYPES from '../../../src/constants/action_types'
 import * as MAPPING_TYPES from '../../../src/constants/mapping_types'

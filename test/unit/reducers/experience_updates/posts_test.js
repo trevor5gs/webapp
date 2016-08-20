@@ -1,4 +1,4 @@
-import { clearJSON, json, stub } from '../../../stubs'
+import { clearJSON, json, stub } from '../../../support/stubs'
 import subject from '../../../../src/reducers/experience_updates/posts'
 import * as ACTION_TYPES from '../../../../src/constants/action_types'
 
