@@ -1,4 +1,4 @@
-import { expect, stub } from '../../spec_helper'
+import { stub } from '../../stubs'
 import {
   makeMapStateToProps,
 } from '../../../src/containers/StreamContainer'

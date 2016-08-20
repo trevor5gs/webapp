@@ -1,5 +1,4 @@
 import { REHYDRATE } from 'redux-persist/constants'
-import { expect } from '../../spec_helper'
 import { AUTHENTICATION, PROFILE } from '../../../src/constants/action_types'
 import { authentication as reducer } from '../../../src/reducers/authentication'
 

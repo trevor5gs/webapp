@@ -1,4 +1,3 @@
-import { expect } from '../../spec_helper'
 import { stubAvatar } from '../../stubs'
 import { shouldContainerUpdate } from '../../../src/containers/OmnibarContainer'
 

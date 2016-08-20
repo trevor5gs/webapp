@@ -1,5 +1,4 @@
 import { noop } from 'lodash'
-import { expect } from '../../spec_helper'
 import { stubJSONStore, stubUser } from '../../stubs'
 import { RELATIONSHIP_PRIORITY as PRIORITY } from '../../../src/constants/relationship_types'
 import {

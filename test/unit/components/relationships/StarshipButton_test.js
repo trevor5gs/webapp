@@ -1,4 +1,3 @@
-import { expect } from '../../../spec_helper'
 import { RELATIONSHIP_PRIORITY } from '../../../../src/constants/relationship_types'
 import { getNextPriority } from '../../../../src/components/relationships/StarshipButton'
 

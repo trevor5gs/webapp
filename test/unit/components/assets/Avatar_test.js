@@ -1,4 +1,3 @@
-import { expect } from '../../../spec_helper'
 import { getSource } from '../../../../src/components/assets/Avatar'
 
 function tmpAvatar() {

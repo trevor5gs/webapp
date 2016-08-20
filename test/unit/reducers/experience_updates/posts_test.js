@@ -1,9 +1,4 @@
-import {
-  clearJSON,
-  expect,
-  json,
-  stub,
-} from '../../../spec_helper'
+import { clearJSON, json, stub } from '../../../stubs'
 import subject from '../../../../src/reducers/experience_updates/posts'
 import * as ACTION_TYPES from '../../../../src/constants/action_types'
 

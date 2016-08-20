@@ -1,4 +1,5 @@
-import { expect, isFSA, isFSAName, stub } from '../../spec_helper'
+import { isFSA, isFSAName } from '../../helpers'
+import { stub } from '../../stubs'
 import { resetEditor } from '../../../src/actions/editor'
 import * as subject from '../../../src/actions/posts'
 

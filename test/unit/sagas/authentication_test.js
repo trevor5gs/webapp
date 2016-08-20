@@ -1,4 +1,3 @@
-import { expect } from '../../spec_helper'
 import { AUTHENTICATION } from '../../../src/constants/action_types'
 import { loginSaga } from '../../../src/sagas/authentication'
 

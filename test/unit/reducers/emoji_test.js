@@ -1,4 +1,3 @@
-import { expect } from '../../spec_helper'
 import { emoji as reducer } from '../../../src/reducers/emoji'
 import { EDITOR } from '../../../src/constants/action_types'
 

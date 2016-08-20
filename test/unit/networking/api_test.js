@@ -1,4 +1,3 @@
-import { expect } from '../../spec_helper'
 import * as api from '../../../src/networking/api'
 
 describe('api.js', () => {

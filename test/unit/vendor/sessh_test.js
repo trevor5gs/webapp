@@ -1,4 +1,3 @@
-import { expect } from '../../spec_helper'
 import Session from '../../../src/vendor/session'
 
 describe('Sessh', () => {

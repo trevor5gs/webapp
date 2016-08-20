@@ -79,8 +79,11 @@
       "mocha": true
     },
     "globals": {
+      "AndroidInterface": false,
       "ENV": false,
-      "AndroidInterface": false
+      "chai": false,
+      "expect": false,
+      "sinon": false
     },
     "rules": {
       "no-alert": 2,

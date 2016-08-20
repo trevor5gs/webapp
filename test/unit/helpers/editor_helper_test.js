@@ -1,4 +1,3 @@
-import { expect, sinon } from '../../spec_helper'
 import * as subject from '../../../src/helpers/editor_helper'
 import { COMMENT, EDITOR, POST } from '../../../src/constants/action_types'
 

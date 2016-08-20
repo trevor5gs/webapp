@@ -1,4 +1,3 @@
-import { expect, sinon } from '../../spec_helper'
 import MemoryStore from '../../../src/vendor/memory_store'
 
 describe('MemoryStore', () => {

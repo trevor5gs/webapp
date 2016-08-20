@@ -1,7 +1,6 @@
 /* eslint-disable prefer-arrow-callback, func-names */
 import React from 'react'
 import { mount } from 'enzyme'
-import { expect } from 'chai'
 import { pretendServer } from '../../support/pretender.js'
 import { createElloStore } from '../../../src/store'
 import TextControl from '../../../src/components/forms/TextControl'

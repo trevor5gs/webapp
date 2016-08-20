@@ -1,4 +1,4 @@
-import { expect, isFSA, isFSAName } from '../../spec_helper'
+import { isFSA, isFSAName } from '../../helpers'
 import * as subject from '../../../src/actions/api'
 
 describe('api actions', () => {

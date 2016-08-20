@@ -1,5 +1,4 @@
 import { get } from 'lodash'
-import { expect } from '../../spec_helper'
 import { stubJSONStore } from '../../stubs'
 import { shouldContainerUpdate, mapStateToProps } from '../../../src/containers/PostDetailContainer'
 

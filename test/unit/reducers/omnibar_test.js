@@ -1,4 +1,3 @@
-import { expect } from '../../spec_helper'
 import { omnibar as reducer } from '../../../src/reducers/omnibar'
 import { AUTHENTICATION, OMNIBAR, PROFILE } from '../../../src/constants/action_types'
 

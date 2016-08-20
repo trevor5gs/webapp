@@ -1,4 +1,3 @@
-import { expect } from '../../spec_helper'
 import {
   getStreamAction, shouldContainerUpdate,
 } from '../../../src/containers/SearchContainer'

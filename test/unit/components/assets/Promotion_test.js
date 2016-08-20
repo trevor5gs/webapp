@@ -1,4 +1,3 @@
-import { expect } from '../../../spec_helper'
 import { stubPromotion } from '../../../stubs'
 import { getSource } from '../../../../src/components/assets/Promotion'
 

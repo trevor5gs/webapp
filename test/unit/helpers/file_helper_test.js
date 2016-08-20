@@ -1,4 +1,3 @@
-import { expect } from '../../spec_helper'
 import { isGif } from '../../../src/helpers/file_helper'
 
 describe('file helper', () => {

@@ -1,4 +1,3 @@
-import { expect } from '../../spec_helper'
 import { stubJSONStore } from '../../stubs'
 import { sortCategories } from '../../../src/selectors'
 import {
