@@ -80,4 +80,3 @@ OnboardingCategories.propTypes = {
 
 export default OnboardingCategories
 
-

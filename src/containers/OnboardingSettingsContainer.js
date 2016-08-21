@@ -69,7 +69,6 @@ class OnboardingSettingsContainer extends Component {
   render() {
     return <OnboardingSettings />
   }
-
 }
 
 export default connect(mapStateToProps)(OnboardingSettingsContainer)
