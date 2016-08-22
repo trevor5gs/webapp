@@ -1,6 +1,6 @@
 import Enter from '../../containers/authentication/Enter'
 import JoinContainer from '../../containers/JoinContainer'
-import SignUp from '../../containers/authentication/SignUp'
+import SignUpContainer from '../../containers/SignUpContainer'
 import ForgotPassword from '../../containers/authentication/ForgotPassword'
 
 export default (store) => {
@@ -32,7 +32,7 @@ export default (store) => {
     {
       path: 'signup',
       getComponents(location, cb) {
-        cb(null, SignUp)
+        cb(null, SignUpContainer)
       },
       onEnter,
     },
