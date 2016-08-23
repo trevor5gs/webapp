@@ -1,4 +1,5 @@
 import { fork } from 'redux-saga/effects'
+import analyticsSaga from './analytics'
 import authenticationSaga from './authentication'
 import pushSubscriptionSaga from './push_subscription'
 import requesterSaga from './requester'
@@ -13,6 +14,7 @@ export function* serverRoot() {
 
 export default function* root() {
   yield [
+    fork(analyticsSaga),
     fork(authenticationSaga),
     fork(requesterSaga),
     fork(uploaderSaga),
