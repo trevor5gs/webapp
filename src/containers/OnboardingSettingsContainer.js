@@ -83,7 +83,6 @@ class OnboardingSettingsContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    console.log(this.props.coverImage, nextProps.coverImage)
     return shouldContainerUpdate(this.props, nextProps)
   }
 
