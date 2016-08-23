@@ -3,6 +3,7 @@ import { get } from 'lodash'
 
 export const selectAvatar = (state) => get(state, 'profile.avatar')
 export const selectCoverImage = (state) => get(state, 'profile.coverImage')
+export const selectCreatedAt = (state) => get(state, 'profile.createdAt')
 export const selectExternalLinksList = (state) => get(state, 'profile.externalLinksList')
 export const selectId = (state) => get(state, 'profile.id')
 export const selectName = (state) => get(state, 'profile.name')

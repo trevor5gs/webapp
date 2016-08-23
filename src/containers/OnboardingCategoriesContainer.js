@@ -8,9 +8,10 @@ import { getCategories } from '../actions/discover'
 import { saveProfile } from '../actions/profile'
 import { followCategories } from '../actions/user'
 import { selectCategories } from '../selectors'
-import { selectId } from '../selectors/profile'
+import { selectCreatedAt, selectId } from '../selectors/profile'
 
 const CATEGORIES_NEEDED = 3
+const MS_IN_WEEK = 604800 * 1000
 
 function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
   const pickProps = ['categories', 'userId']
@@ -23,14 +24,29 @@ function mapStateToProps(state, props) {
   const catLevels = selectCategories(state, props)
   return {
     categories: catLevels.primary.concat(catLevels.secondary, catLevels.tertiary),
+    createdAt: selectCreatedAt(state),
     userId: `${selectId(state)}`,
   }
+}
+
+function isMoreThanOneWeekOld(createdAt) {
+  return new Date() - new Date(createdAt) > MS_IN_WEEK
+}
+
+function hasSelectedCategoriesNeeded(state) {
+  return state.categoryIds.length < CATEGORIES_NEEDED
+}
+
+function getIsNextDisabled(state, createdAt) {
+  if (isMoreThanOneWeekOld(createdAt)) { return false }
+  return hasSelectedCategoriesNeeded(state)
 }
 
 class OnboardingCategoriesContainer extends Component {
 
   static propTypes = {
     categories: PropTypes.array,
+    createdAt: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     userId: PropTypes.string.isRequired,
   }
@@ -42,10 +58,9 @@ class OnboardingCategoriesContainer extends Component {
   }
 
   getChildContext() {
-    const { categoryIds } = this.state
     return {
       nextLabel: 'Create Your Profile',
-      onDoneClick: categoryIds.length < CATEGORIES_NEEDED ? null : this.onDoneClick,
+      onDoneClick: getIsNextDisabled(this.state, this.props.createdAt) ? null : this.onDoneClick,
       onNextClick: this.onNextClick,
     }
   }
@@ -84,16 +99,17 @@ class OnboardingCategoriesContainer extends Component {
   }
 
   render() {
-    const { categories } = this.props
+    const { categories, createdAt } = this.props
     const { categoryIds } = this.state
-    const selected = categoryIds.length < CATEGORIES_NEEDED ? categoryIds.length : CATEGORIES_NEEDED
+    const isNextDisabled = getIsNextDisabled(this.state, createdAt)
+    const selected = isNextDisabled ? categoryIds.length : CATEGORIES_NEEDED
     const counterText = `${selected} of ${CATEGORIES_NEEDED}`
     return (
       <OnboardingCategories
         categories={categories}
         counterText={counterText}
         isCounterSuccess={selected === CATEGORIES_NEEDED}
-        isNextDisabled={categoryIds.length < CATEGORIES_NEEDED}
+        isNextDisabled={isNextDisabled}
         onCategoryClick={this.onCategoryClick}
       />
     )

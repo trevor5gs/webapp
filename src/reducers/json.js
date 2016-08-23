@@ -309,10 +309,10 @@ methods.updateCurrentUser = (newState, action) => {
   const nextState = !newState[MAPPING_TYPES.USERS] ? { ...newState, users: response } : newState
   const curUser = nextState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id]
   if (action.type !== ACTION_TYPES.PROFILE.LOAD_SUCCESS) {
-    if (curUser.avatar.tmp) {
+    if (curUser && curUser.avatar.tmp) {
       newProfile.avatar = { ...response.users.avatar, tmp: curUser.avatar.tmp }
     }
-    if (curUser.coverImage.tmp) {
+    if (curUser && curUser.coverImage.tmp) {
       newProfile.coverImage = { ...response.users.coverImage, tmp: curUser.coverImage.tmp }
     }
   }
@@ -415,10 +415,10 @@ export default function json(state = {}, action = { type: '' }) {
         const keepers = {}
         const curUser = methods.getCurrentUser(action.payload.json)
         if (curUser) {
-          if (curUser.avatar.tmp) {
+          if (curUser.avatar && curUser.avatar.tmp) {
             delete curUser.avatar
           }
-          if (curUser.coverImage.tmp) {
+          if (curUser.coverImage && curUser.coverImage.tmp) {
             delete curUser.coverImage
           }
           setWith(keepers, [MAPPING_TYPES.USERS, curUser.id], curUser, Object)
