@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
+import { get } from 'lodash'
 import OnboardingCategories from '../components/onboarding/OnboardingCategories'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { getCategories } from '../actions/discover'
@@ -10,6 +11,18 @@ import { selectCategories } from '../selectors'
 import { selectId } from '../selectors/profile'
 
 const CATEGORIES_NEEDED = 3
+
+function shouldContainerUpdate(thisProps, nextProps) {
+  if (thisProps.userId !== nextProps.userId) {
+    return true
+  }
+  const thisCategories = get(thisProps, 'categories', [])
+  const nextCategories = get(nextProps, 'categories', [])
+  if (thisCategories.length !== nextCategories.length) {
+    return true
+  }
+  return false
+}
 
 function mapStateToProps(state, props) {
   const catLevels = selectCategories(state, props)
@@ -47,6 +60,10 @@ class OnboardingCategoriesContainer extends Component {
     dispatch(getCategories())
     this.categoryIds = []
     this.state = { categoryIds: [] }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return shouldContainerUpdate(this.props, nextProps)
   }
 
   onCategoryClick = (id) => {
