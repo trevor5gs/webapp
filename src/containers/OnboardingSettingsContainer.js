@@ -2,18 +2,30 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import { get } from 'lodash'
 import { openAlert, closeAlert } from '../actions/modals'
+import { saveAvatar, saveCover } from '../actions/profile'
 import {
-  saveAvatar,
-  saveCover,
-} from '../actions/profile'
+  selectAvatar,
+  selectCoverImage,
+  selectIsAvatarBlank,
+  selectIsCoverImageBlank,
+  selectIsInfoFormBlank,
+} from '../selectors/profile'
 import OnboardingSettings from '../components/onboarding/OnboardingSettings'
 
 function mapStateToProps(state) {
+  const avatar = selectAvatar(state)
+  const coverImage = selectCoverImage(state)
+  const isAvatarBlank = selectIsAvatarBlank(state)
+  const isCoverBlank = selectIsCoverImageBlank(state)
+  const isInfoFormBlank = selectIsInfoFormBlank(state)
+  const isNextDisabled = isAvatarBlank && isCoverBlank && isInfoFormBlank
   return {
-    avatar: get(state, 'profile.avatar'),
-    coverImage: get(state, 'profile.coverImage'),
+    avatar,
+    coverImage,
+    isAvatarBlank,
+    isCoverBlank,
+    isNextDisabled,
   }
 }
 
@@ -23,6 +35,9 @@ class OnboardingSettingsContainer extends Component {
     avatar: PropTypes.object,
     coverImage: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
+    isAvatarBlank: PropTypes.bool.isRequired,
+    isCoverBlank: PropTypes.bool.isRequired,
+    isNextDisabled: PropTypes.bool.isRequired,
   }
 
   static childContextTypes = {
@@ -40,15 +55,15 @@ class OnboardingSettingsContainer extends Component {
   }
 
   getChildContext() {
-    const { avatar, dispatch, coverImage } = this.props
+    const { avatar, dispatch, coverImage, isAvatarBlank, isCoverBlank, isNextDisabled } = this.props
     return {
       avatar,
       closeAlert: bindActionCreators(closeAlert, dispatch),
       coverImage,
-      isAvatarBlank: !(avatar && (avatar.tmp || avatar.original)),
-      isCoverBlank: !(coverImage && (coverImage.tmp || coverImage.original)),
+      isAvatarBlank,
+      isCoverBlank,
       nextLabel: 'Invite Cool People',
-      onDoneClick: this.onDoneClick,
+      onDoneClick: isNextDisabled ? null : this.onDoneClick,
       onNextClick: this.onNextClick,
       openAlert: bindActionCreators(openAlert, dispatch),
       saveAvatar: bindActionCreators(saveAvatar, dispatch),
@@ -67,7 +82,7 @@ class OnboardingSettingsContainer extends Component {
   }
 
   render() {
-    return <OnboardingSettings />
+    return <OnboardingSettings isNextDisabled={this.props.isNextDisabled} />
   }
 }
 

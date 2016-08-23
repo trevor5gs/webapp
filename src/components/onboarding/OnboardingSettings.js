@@ -12,6 +12,7 @@ const OnboardingSettings = (props, context) => {
   const { avatar, isAvatarBlank, saveAvatar } = context
   const { coverImage, isCoverBlank, saveCover } = context
   const { closeAlert, openAlert } = context
+  const { isNextDisabled } = props
   return (
     <MainView className="Onboarding OnboardingSettings">
       <h1 className="OnboardingHeading">
@@ -57,9 +58,15 @@ const OnboardingSettings = (props, context) => {
         showSaveMessage
         tabIndexStart={1}
       />
-      <OnboardingNavbar />
+      <OnboardingNavbar
+        isNextDisabled={isNextDisabled}
+      />
     </MainView>
   )
+}
+
+OnboardingSettings.propTypes = {
+  isNextDisabled: PropTypes.bool,
 }
 
 OnboardingSettings.contextTypes = {

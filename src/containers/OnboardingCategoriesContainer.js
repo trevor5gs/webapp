@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import { get } from 'lodash'
 import OnboardingCategories from '../components/onboarding/OnboardingCategories'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { getCategories } from '../actions/discover'
 import { saveProfile } from '../actions/profile'
 import { followCategories } from '../actions/user'
 import { selectCategories } from '../selectors'
+import { selectId } from '../selectors/profile'
 
 const CATEGORIES_NEEDED = 3
 
@@ -15,7 +15,7 @@ function mapStateToProps(state, props) {
   const catLevels = selectCategories(state, props)
   return {
     categories: catLevels.primary.concat(catLevels.secondary, catLevels.tertiary),
-    userId: `${get(state, 'profile.id')}`,
+    userId: `${selectId(state)}`,
   }
 }
 
@@ -29,14 +29,15 @@ class OnboardingCategoriesContainer extends Component {
 
   static childContextTypes = {
     nextLabel: PropTypes.string,
-    onDoneClick: PropTypes.func.isRequired,
+    onDoneClick: PropTypes.func,
     onNextClick: PropTypes.func.isRequired,
   }
 
   getChildContext() {
+    const { categoryIds } = this.state
     return {
       nextLabel: 'Create Your Profile',
-      onDoneClick: this.onDoneClick,
+      onDoneClick: categoryIds.length < CATEGORIES_NEEDED ? null : this.onDoneClick,
       onNextClick: this.onNextClick,
     }
   }
