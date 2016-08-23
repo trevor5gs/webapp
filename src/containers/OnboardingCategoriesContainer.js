@@ -4,6 +4,7 @@ import { push } from 'react-router-redux'
 import { isEqual, pick } from 'lodash'
 import OnboardingCategories from '../components/onboarding/OnboardingCategories'
 import { ONBOARDING_VERSION } from '../constants/application_types'
+import { trackEvent } from '../actions/analytics'
 import { getCategories } from '../actions/discover'
 import { saveProfile } from '../actions/profile'
 import { followCategories } from '../actions/user'
@@ -88,6 +89,7 @@ class OnboardingCategoriesContainer extends Component {
 
   onDoneClick = () => {
     const { dispatch } = this.props
+    dispatch(trackEvent('Onboarding.Categories.Done.Clicked'))
     dispatch(push('/following'))
   }
 

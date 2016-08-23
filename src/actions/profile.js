@@ -6,7 +6,7 @@ import * as api from '../networking/api'
 import * as StreamFilters from '../components/streams/StreamFilters'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
 import { ErrorState } from '../components/errors/Errors'
-import { trackEvent } from '../actions/tracking'
+import { trackEvent } from '../actions/analytics'
 import store from '../store'
 
 export function loadProfile() {

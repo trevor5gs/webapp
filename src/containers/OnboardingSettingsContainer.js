@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import { isEqual, pick } from 'lodash'
+import { trackEvent } from '../actions/analytics'
 import { openAlert, closeAlert } from '../actions/modals'
 import { saveAvatar, saveCover } from '../actions/profile'
 import {
@@ -88,6 +89,7 @@ class OnboardingSettingsContainer extends Component {
 
   onDoneClick = () => {
     const { dispatch } = this.props
+    dispatch(trackEvent('Onboarding.Settings.Done.Clicked'))
     dispatch(push('/following'))
   }
 
