@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { isEqual, pick, sample } from 'lodash'
 import { trackEvent } from '../actions/tracking'
-import SignUp from '../components/views/SignUp'
+import { SignUp } from '../components/views/SignUp'
 
 function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
   const pickProps = ['coverDPI', 'coverOffset']
