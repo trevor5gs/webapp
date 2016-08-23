@@ -64,7 +64,9 @@ class OnboardingSettingsContainer extends Component {
   }
 
   getChildContext() {
-    const { avatar, dispatch, coverImage, isAvatarBlank, isCoverImageBlank, isNextDisabled } = this.props
+    const {
+      avatar, dispatch, coverImage, isAvatarBlank, isCoverImageBlank, isNextDisabled,
+    } = this.props
     return {
       avatar,
       closeAlert: bindActionCreators(closeAlert, dispatch),
@@ -81,6 +83,7 @@ class OnboardingSettingsContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    console.log(this.props.coverImage, nextProps.coverImage)
     return shouldContainerUpdate(this.props, nextProps)
   }
 

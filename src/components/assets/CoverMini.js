@@ -15,6 +15,8 @@ export function getSource(props) {
   const { coverImage, useGif } = props
   if (!coverImage) {
     return ''
+  } else if (coverImage.tmp && coverImage.tmp.url) {
+    return coverImage.tmp.url
   } else if (typeof coverImage === 'string') {
     return coverImage
   } else if (useGif && isGif(coverImage.original.url)) {
