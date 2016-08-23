@@ -22,8 +22,8 @@
     "test:unit:watch": "npm run test:unit -- --watch"
   },
   "engines": {
-    "node": "5.10.1",
-    "npm": "3.8.3"
+    "node": "6.4.0",
+    "npm": "3.10.3"
   },
   "babel": {
     "presets": ["es2015", "react", "stage-0"],
