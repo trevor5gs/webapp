@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import { get } from 'lodash'
+import { isEqual, pick } from 'lodash'
 import OnboardingCategories from '../components/onboarding/OnboardingCategories'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { getCategories } from '../actions/discover'
@@ -12,16 +12,11 @@ import { selectId } from '../selectors/profile'
 
 const CATEGORIES_NEEDED = 3
 
-function shouldContainerUpdate(thisProps, nextProps) {
-  if (thisProps.userId !== nextProps.userId) {
-    return true
-  }
-  const thisCategories = get(thisProps, 'categories', [])
-  const nextCategories = get(nextProps, 'categories', [])
-  if (thisCategories.length !== nextCategories.length) {
-    return true
-  }
-  return false
+function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
+  const pickProps = ['categories', 'userId']
+  const thisCompare = pick(thisProps, pickProps)
+  const nextCompare = pick(nextProps, pickProps)
+  return !isEqual(thisCompare, nextCompare) || !isEqual(thisState, nextState)
 }
 
 function mapStateToProps(state, props) {
@@ -58,22 +53,22 @@ class OnboardingCategoriesContainer extends Component {
   componentWillMount() {
     const { dispatch } = this.props
     dispatch(getCategories())
-    this.categoryIds = []
     this.state = { categoryIds: [] }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
   }
 
   onCategoryClick = (id) => {
-    const index = this.categoryIds.indexOf(id)
+    const ids = [...this.state.categoryIds]
+    const index = ids.indexOf(id)
     if (index === -1) {
-      this.categoryIds.push(id)
+      ids.push(id)
     } else {
-      this.categoryIds.splice(index, 1)
+      ids.splice(index, 1)
     }
-    this.setState({ categoryIds: this.categoryIds })
+    this.setState({ categoryIds: ids })
   }
 
   onDoneClick = () => {
