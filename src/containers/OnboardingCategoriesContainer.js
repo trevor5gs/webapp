@@ -104,7 +104,9 @@ class OnboardingCategoriesContainer extends Component {
     const { categories, createdAt } = this.props
     const { categoryIds } = this.state
     const isNextDisabled = getIsNextDisabled(this.state, createdAt)
-    const selected = isNextDisabled ? categoryIds.length : CATEGORIES_NEEDED
+    const selected = hasSelectedCategoriesNeeded(this.state) ?
+      categoryIds.length :
+      CATEGORIES_NEEDED
     const counterText = `${selected} of ${CATEGORIES_NEEDED}`
     return (
       <OnboardingCategories
