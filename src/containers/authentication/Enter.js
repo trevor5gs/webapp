@@ -60,11 +60,8 @@ class Enter extends Component {
     if (typeof this.props.webOnboardingVersionSeen === 'undefined' &&
         this.props.webOnboardingVersionSeen !== nextProps.webOnboardingVersionSeen) {
       const { currentStream, dispatch } = this.props
-      if (nextProps.webOnboardingVersionSeen &&
-          nextProps.webOnboardingVersionSeen !== ONBOARDING_VERSION) {
+      if (!nextProps.webOnboardingVersionSeen) {
         dispatch(replace({ pathname: '/onboarding' }))
-      } else if (!nextProps.webOnboardingVersionSeen) {
-        dispatch(replace({ pathname: currentStream }))
         dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
       } else {
         dispatch(replace({ pathname: currentStream }))
