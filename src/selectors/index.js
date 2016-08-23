@@ -152,7 +152,7 @@ const selectStreamDeletions = (state, props) => {
     (meta.resultFilter && result.type !== meta.mappingType)
 }
 
-const selectRoutingPathname = (state) =>
+export const selectRoutingPathname = (state) =>
   get(state, 'routing.location.pathname')
 
 const selectPagingPath = (state, props) =>

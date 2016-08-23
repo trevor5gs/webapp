@@ -106,8 +106,7 @@ class SearchContainer extends Component {
     if (typeof vo.type === 'string' && vo.type === 'posts') {
       vo.type = null
     }
-    const uri = pathname + updateQueryParams(vo)
-    dispatch(replace(uri))
+    dispatch(replace({ pathname, search: updateQueryParams(vo) }))
 
     if (vo.terms && vo.terms.length > 1) {
       const label = vo.type && vo.type === 'users' ? 'people' : 'posts'
