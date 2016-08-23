@@ -16,7 +16,7 @@ class LinksControl extends Component {
     id: 'external_links',
     label: 'Links',
     name: 'user[links]',
-    placeholder: 'Links (optional)',
+    placeholder: 'Links',
   }
 
   getLinks() {

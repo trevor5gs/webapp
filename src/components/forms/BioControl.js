@@ -15,7 +15,7 @@ class BioControl extends Component {
     id: 'unsanitized_short_bio',
     label: 'Bio',
     name: 'user[unsanitized_short_bio]',
-    placeholder: 'Bio (optional)',
+    placeholder: 'Bio',
   }
 
   componentWillMount() {
