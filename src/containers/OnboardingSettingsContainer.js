@@ -26,14 +26,14 @@ function mapStateToProps(state) {
   const avatar = selectAvatar(state)
   const coverImage = selectCoverImage(state)
   const isAvatarBlank = selectIsAvatarBlank(state)
-  const isCoverBlank = selectIsCoverImageBlank(state)
+  const isCoverImageBlank = selectIsCoverImageBlank(state)
   const isInfoFormBlank = selectIsInfoFormBlank(state)
-  const isNextDisabled = isAvatarBlank && isCoverBlank && isInfoFormBlank
+  const isNextDisabled = isAvatarBlank && isCoverImageBlank && isInfoFormBlank
   return {
     avatar,
     coverImage,
     isAvatarBlank,
-    isCoverBlank,
+    isCoverImageBlank,
     isNextDisabled,
   }
 }
@@ -45,7 +45,7 @@ class OnboardingSettingsContainer extends Component {
     coverImage: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     isAvatarBlank: PropTypes.bool.isRequired,
-    isCoverBlank: PropTypes.bool.isRequired,
+    isCoverImageBlank: PropTypes.bool.isRequired,
     isNextDisabled: PropTypes.bool.isRequired,
   }
 
@@ -54,7 +54,7 @@ class OnboardingSettingsContainer extends Component {
     closeAlert: PropTypes.func,
     coverImage: PropTypes.object,
     isAvatarBlank: PropTypes.bool,
-    isCoverBlank: PropTypes.bool,
+    isCoverImageBlank: PropTypes.bool,
     nextLabel: PropTypes.string,
     onDoneClick: PropTypes.func,
     onNextClick: PropTypes.func,
@@ -64,13 +64,13 @@ class OnboardingSettingsContainer extends Component {
   }
 
   getChildContext() {
-    const { avatar, dispatch, coverImage, isAvatarBlank, isCoverBlank, isNextDisabled } = this.props
+    const { avatar, dispatch, coverImage, isAvatarBlank, isCoverImageBlank, isNextDisabled } = this.props
     return {
       avatar,
       closeAlert: bindActionCreators(closeAlert, dispatch),
       coverImage,
       isAvatarBlank,
-      isCoverBlank,
+      isCoverImageBlank,
       nextLabel: 'Invite Cool People',
       onDoneClick: isNextDisabled ? null : this.onDoneClick,
       onNextClick: this.onNextClick,

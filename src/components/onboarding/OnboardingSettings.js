@@ -10,7 +10,7 @@ import CoverMini from '../assets/CoverMini'
 
 const OnboardingSettings = (props, context) => {
   const { avatar, isAvatarBlank, saveAvatar } = context
-  const { coverImage, isCoverBlank, saveCover } = context
+  const { coverImage, isCoverImageBlank, saveCover } = context
   const { closeAlert, openAlert } = context
   const { isNextDisabled } = props
   return (
@@ -21,7 +21,7 @@ const OnboardingSettings = (props, context) => {
       </h1>
       <div className="OnboardingCoverPicker">
         <Uploader
-          className={classNames('isCoverUploader', { isCoverBlank })}
+          className={classNames('isCoverUploader', { isCoverImageBlank })}
           closeAlert={closeAlert}
           line1="2560 x 1440"
           line2="Animated Gifs work too"
@@ -74,7 +74,7 @@ OnboardingSettings.contextTypes = {
   closeAlert: PropTypes.func.isRequired,
   coverImage: PropTypes.object,
   isAvatarBlank: PropTypes.bool,
-  isCoverBlank: PropTypes.bool,
+  isCoverImageBlank: PropTypes.bool,
   openAlert: PropTypes.func.isRequired,
   saveAvatar: PropTypes.func.isRequired,
   saveCover: PropTypes.func.isRequired,
