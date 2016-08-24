@@ -1,6 +1,6 @@
 import 'babel-polyfill'
-import fs from 'fs'
-import path from 'path'
+// import fs from 'fs'
+// import path from 'path'
 import jsdom from 'jsdom'
 import dotenv from 'dotenv'
 import chai, { expect } from 'chai'
@@ -20,19 +20,29 @@ global.chai = chai
 global.expect = expect
 global.sinon = sinon
 
-if (!global.document) {
-  const html = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf-8')
-  const exposedProperties = ['window', 'navigator', 'document'];
+// Pending till we can figure out the jsdom issue
+// Need to call npm install twice - wtf?
+// There's also this issue: https://github.com/airbnb/enzyme/issues/507
+if (!true && !global.document) {
+  // const html = fs.readFileSync(path.join(__dirname, '../public/template.html'), 'utf-8')
+  const html = '<html><body><div id="root"></div></body></html>'
+  const exposedProperties = ['document', 'navigator', 'window']
 
   global.document = jsdom.jsdom(html)
   global.window = document.defaultView
-  Object.keys(document.defaultView).forEach((property) => {
+  global.navigator = { userAgent: 'node.js' }
+  global.URL = { createObjectURL: (input) => input }
+
+  const enums = [
+    ...Object.keys(document.defaultView),
+    ...['Image'],
+  ]
+
+  enums.forEach((property) => {
     if (typeof global[property] === 'undefined') {
       exposedProperties.push(property)
       global[property] = document.defaultView[property]
     }
   })
-  global.navigator = { userAgent: 'node.js' }
-  global.URL = { createObjectURL: (input) => input }
 }
 
