@@ -428,7 +428,6 @@ class Settings extends Component {
           <p className="SettingsLinks">
             <Link to={`/${profile.username}`}>View profile</Link>
             <Link to="/invitations">Invite people</Link>
-            <Link to="/onboarding">Launch on-boarding</Link>
           </p>
 
           <div className="SettingsPreferences">
