@@ -1,6 +1,5 @@
 import 'babel-polyfill'
 import 'isomorphic-fetch'
-import 'react-fastclick'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -10,7 +9,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { persistStore, storages } from 'redux-persist'
 
 import './main.sass'
-import { addFeatureDetection } from './vendor/jello'
+import { addFeatureDetection, isIOS } from './vendor/jello'
 import { scrollToOffsetTop } from './vendor/scrolling'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import store from './store'
@@ -21,6 +20,13 @@ import MemoryStore from './vendor/memory_store'
 
 import './vendor/embetter'
 import './vendor/embetter_initializer'
+
+/* eslint-disable global-require */
+// only use fastclick if we are on iOS
+if (isIOS()) {
+  require('react-fastclick')
+}
+/* eslint-enable global-require */
 
 Honeybadger.configure({
   api_key: ENV.HONEYBADGER_API_KEY,
