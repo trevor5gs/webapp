@@ -17,7 +17,7 @@ import {
 import { ElloMark } from '../components/svg/ElloIcons'
 import { Paginator } from '../components/streams/Paginator'
 import { ErrorState4xx } from '../components/errors/Errors'
-import { makeSelectStreamProps } from '../selectors'
+import { makeSelectStreamProps, selectRoutingPathname } from '../selectors'
 import Session from '../vendor/session'
 
 export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
@@ -63,6 +63,7 @@ export function makeMapStateToProps() {
       json: state.json,
       isGridMode: state.gui.isGridMode,
       omnibar: state.omnibar,
+      pathname: selectRoutingPathname(state),
       routerState: state.routing.location.state || {},
       stream: state.stream,
     }
@@ -89,6 +90,7 @@ class StreamContainer extends Component {
     json: PropTypes.object.isRequired,
     omnibar: PropTypes.object,
     paginatorText: PropTypes.string,
+    pathname: PropTypes.string,
     renderObj: PropTypes.object.isRequired,
     result: PropTypes.object.isRequired,
     resultPath: PropTypes.string,
@@ -106,7 +108,7 @@ class StreamContainer extends Component {
   }
 
   componentWillMount() {
-    const { action, dispatch, omnibar } = this.props
+    const { action, dispatch, omnibar, pathname } = this.props
     if (typeof window !== 'undefined' && action) {
       dispatch(action)
     }
@@ -121,7 +123,7 @@ class StreamContainer extends Component {
       }
     }
     const unlisten = browserListen(location => {
-      this.state = { action, locationKey: location.key }
+      this.state = { action, locationKey: /\/search/.test(pathname) ? '/search' : location.key }
     })
     unlisten()
     this.setScroll = _.debounce(this.setScroll, 300)
@@ -314,6 +316,7 @@ class StreamContainer extends Component {
   loadPage(rel) {
     const { dispatch, result, stream } = this.props
     const { action } = this.state
+    if (!action) { return }
     const { meta } = action
     const { pagination } = result
     if (!action.payload.endpoint || !pagination[rel] ||
