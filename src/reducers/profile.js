@@ -61,8 +61,7 @@ export function profile(state = {}, action) {
       }
     case PROFILE.SAVE_SUCCESS:
       return {
-        ...state,
-        ...action.payload.response.users,
+        ..._.merge(state, action.payload.response.users),
         availability: null,
         id: `${action.payload.response.users.id}`,
       }
