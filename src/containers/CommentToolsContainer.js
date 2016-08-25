@@ -25,7 +25,7 @@ export function mapStateToProps(state, props) {
   const isOwnPost = currentUser && `${post.authorId}` === `${currentUser.id}`
   let canDeleteComment = isOwnPost
   if (post.repostId) {
-    canDeleteComment = isOwnPost && comment.postId === post.id
+    canDeleteComment = isOwnPost && comment.originalPostId === post.id
   }
   return {
     canDeleteComment,
