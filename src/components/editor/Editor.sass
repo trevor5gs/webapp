@@ -136,6 +136,10 @@ body.isDragging .editor-block
   padding: rem(20)
   background-color: rgba(black, 0.5)
 
+@media(min-width: #{em(375)})
+  .editor-actions .PostActionButton + .PostActionButton
+    margin-left: rem(10)
+
 @media(min-width: #{$break-2})
   .editor.isComment
     padding-left: rem(60)
