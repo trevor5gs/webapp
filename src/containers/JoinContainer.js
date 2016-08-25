@@ -149,6 +149,14 @@ class JoinContainer extends Component {
     const { usernameState } = this.state
     const currentStatus = usernameState.status
     const newState = getUsernameStateFromServer({ availability, currentStatus })
+    if (!this.usernameValue.length) {
+      if (currentStatus !== STATUS.INDETERMINATE) {
+        requestAnimationFrame(() => {
+          this.setState({ usernameState: { ...newState, status: STATUS.INDETERMINATE } })
+        })
+      }
+      return
+    }
     if (newState.status !== currentStatus) {
       requestAnimationFrame(() => {
         this.setState({ usernameState: newState })
@@ -179,11 +187,15 @@ class JoinContainer extends Component {
   }
 
   delayedShowPasswordError = () => {
-    this.setState({ showPasswordError: true })
+    if (this.passwordValue.length) {
+      this.setState({ showPasswordError: true })
+    }
   }
 
   delayedShowUsernameError = () => {
-    this.setState({ showUsernameError: true })
+    if (this.usernameValue.length) {
+      this.setState({ showUsernameError: true })
+    }
   }
 
   renderStatus(state) {
@@ -191,7 +203,6 @@ class JoinContainer extends Component {
       if (state.status === STATUS.FAILURE) {
         return <p className="FormControlStatusMessage">{state.message}</p>
       }
-
       return ''
     }
   }
