@@ -37,7 +37,7 @@ body.isDragging .editor-block
   background-color: white
 
 .editor-actions .PostActionButton + .PostActionButton
-  margin-left: rem(20)
+  margin-left: rem(5)
 
 .editor.isComment
   margin-top: rem(10)
@@ -136,6 +136,10 @@ body.isDragging .editor-block
   padding: rem(20)
   background-color: rgba(black, 0.5)
 
+@media(min-width: #{em(375)})
+  .editor-actions .PostActionButton + .PostActionButton
+    margin-left: rem(10)
+
 @media(min-width: #{$break-2})
   .editor.isComment
     padding-left: rem(60)
@@ -156,4 +160,6 @@ body.isDragging .editor-block
     left: rem(101)
   .editor.isComment .DragBlock
     left: rem(80)
+  .editor-actions .PostActionButton + .PostActionButton
+    margin-left: rem(20)
 
