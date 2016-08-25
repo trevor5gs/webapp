@@ -116,6 +116,9 @@ methods.addParentPostIdToComments = (state, action) => {
     if (post) {
       for (const model of response[MAPPING_TYPES.COMMENTS]) {
         if (!state[MAPPING_TYPES.POSTS][model.postId]) {
+          // need this to determine if a user can
+          // delete comments on their own repost
+          model.originalPostId = model.postId
           model.postId = post.id
         }
       }
