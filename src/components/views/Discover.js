@@ -8,7 +8,7 @@ import { ZeroStream } from '../zeros/Zeros'
 
 const DiscoverZeroStream = ({ onDismissZeroStream }) =>
   <ZeroStream onDismiss={onDismissZeroStream}>
-    Explore creators and communities. Realize the promise of the internet.
+    Explore creators, curated categories and communities.
   </ZeroStream>
 
 DiscoverZeroStream.propTypes = {
