@@ -18,7 +18,10 @@ class UsernameControl extends Component {
 
   onClickUsernameSuggestion = (e) => {
     const val = e.target.title
-    this.formControl.onChangeControl({ target: { value: val } })
+    const element = document.getElementById('username')
+    if (element) {
+      element.value = val
+    }
   }
 
   renderSuggestions = () => {
@@ -54,7 +57,6 @@ class UsernameControl extends Component {
         {...this.props}
         autoCapitalize="off"
         autoCorrect="off"
-        ref={(comp) => { this.formControl = comp }}
         maxLength="50"
         renderFeedback={this.renderSuggestions}
         trimWhitespace
