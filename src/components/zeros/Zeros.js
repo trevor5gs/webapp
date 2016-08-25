@@ -29,7 +29,7 @@ export const ZeroFollowingStream = () =>
 
 export const ZeroStarredStream = () =>
   <ZeroStream emoji="star">
-    Star creators and communities to curate your second stream.
+    Star creators and communities to curate a second stream.
   </ZeroStream>
 
 // -------------------------------------
