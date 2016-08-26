@@ -1,7 +1,7 @@
 import Enter from '../../containers/authentication/Enter'
 import JoinContainer from '../../containers/JoinContainer'
 import SignUpContainer from '../../containers/SignUpContainer'
-import ForgotPassword from '../../containers/authentication/ForgotPassword'
+import ForgotPasswordContainer from '../../containers/ForgotPasswordContainer'
 
 export default (store) => {
   function onEnter(nextState, replace) {
@@ -39,7 +39,7 @@ export default (store) => {
     {
       path: 'forgot-password',
       getComponents(location, cb) {
-        cb(null, ForgotPassword)
+        cb(null, ForgotPasswordContainer)
       },
       onEnter,
     },
