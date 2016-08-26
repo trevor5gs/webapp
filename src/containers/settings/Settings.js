@@ -420,8 +420,8 @@ class Settings extends Component {
           </form>
 
           <InfoForm
+            className="SettingsInfoForm"
             controlClassModifiers={boxControlClassNames}
-            showSaveMessage
             tabIndexStart={requiresSave ? 5 : 4}
           />
 

@@ -55,7 +55,6 @@ const OnboardingSettings = (props, context) => {
       <InfoForm
         className="OnboardingInfoForm"
         controlClassModifiers="isOnboardingControl"
-        showSaveMessage
         tabIndexStart={1}
       />
       <OnboardingNavbar

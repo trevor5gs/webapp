@@ -1,44 +1,10 @@
 @import ../../vendor/lib
 
-@keyframes showWaitThenHide
-  0%
-    opacity: 0
-  10%
-    opacity: 1
-  90%
-    opacity: 1
-  100%
-    opacity: 0
-
-.InfoFormStatus
-  +sans-typeset
-  transition: opacity $speed2
-  position: absolute
-  right: 0
-  padding: 0 rem(15)
-  min-width: rem(240)
-  height: rem(30)
-  border-radius: rem(15)
-  line-height: rem(30)
-  text-align: center
-  background-color: black
-  border: 1px solid black
-  color: white
-  opacity: 0
-  display: none
-
-.InfoFormStatus.showThenHideMessage
-  display: inline
-  animation: showWaitThenHide 3s 1 linear
-
-.Settings .FormControlStatus .SuccessIcon
+.SettingsInfoForm .isInitialValue .FormControlStatus
   display: none
 
 .OnboardingInfoForm
   padding: rem(20) rem(10) rem(80)
-
-.OnboardingInfoForm .InfoFormStatus
-  display: none
 
 .OnboardingInfoForm .FormControlStatus
   top: rem(10)

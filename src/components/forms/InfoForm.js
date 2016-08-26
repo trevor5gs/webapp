@@ -3,11 +3,27 @@ import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { debounce, isEqual } from 'lodash'
 import { hideSoftKeyboard } from '../../vendor/jello'
+import {
+  selectExternalLinksList, selectName, selectShortBio, selectUsername,
+} from '../../selectors/profile'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { saveProfile } from '../../actions/profile'
 import BioControl from '../forms/BioControl'
 import NameControl from '../forms/NameControl'
 import LinksControl from '../forms/LinksControl'
+
+function mapStateToProps(state) {
+  const externalLinksList = selectExternalLinksList(state)
+  const name = selectName(state)
+  const shortBio = selectShortBio(state)
+  const username = selectUsername(state)
+  return {
+    externalLinksList,
+    name,
+    shortBio,
+    username,
+  }
+}
 
 class InfoForm extends Component {
 
@@ -15,8 +31,11 @@ class InfoForm extends Component {
     className: PropTypes.string,
     controlClassModifiers: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    profile: PropTypes.object,
+    externalLinksList: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    name: PropTypes.string,
+    shortBio: PropTypes.string,
     tabIndexStart: PropTypes.number,
+    username: PropTypes.string,
   }
 
   static defaultProps = {
@@ -30,45 +49,44 @@ class InfoForm extends Component {
       nameStatus: STATUS.INDETERMINATE,
       showThenHideMessage: false,
     }
-    this.saveForm = debounce(this.saveForm, 300)
-    this.hideStatusMessage = debounce(this.hideStatusMessage, 3500, {
-      leading: false,
-      trailing: true,
-    })
+    this.saveForm = debounce(this.saveForm, 300, { leading: true })
     this.componentWillReceiveProps(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
-    const showThenHideMessage = nextProps.showSaveMessage &&
-                                !isEqual(nextProps.profile, this.props.profile)
-
-    // Remove this class about half a second after its animation finishes
-    this.hideStatusMessage()
-    const { profile } = nextProps
-    const { externalLinksList, name, shortBio } = profile
-
+    const { externalLinksList, name, shortBio } = nextProps
     this.setState({
-      bioStatus: shortBio && shortBio.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
+      bioStatus: shortBio.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
       linksStatus: externalLinksList.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
-      nameStatus: name && name.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
-      showThenHideMessage,
+      nameStatus: name.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
     })
   }
 
-  componentWillUnmount() {
-    this.hideStatusMessage.cancel()
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(nextProps, this.props) || !isEqual(nextState, this.state)
+  }
+
+  onChangeControl = (vo, prop) => {
+    const status = this.state[prop]
+    const hasValue = !!(Object.values(vo)[0].length)
+    if (status !== STATUS.INDETERMINATE && !hasValue) {
+      this.setState({ [prop]: STATUS.INDETERMINATE })
+    } else if (status !== STATUS.REQUEST) {
+      this.setState({ [prop]: STATUS.REQUEST })
+    }
+    this.saveForm(vo)
   }
 
   onChangeNameControl = (vo) => {
-    this.controlWasChanged(vo, 'nameStatus')
+    this.onChangeControl(vo, 'nameStatus')
   }
 
   onChangeBioControl = (vo) => {
-    this.controlWasChanged(vo, 'bioStatus')
+    this.onChangeControl(vo, 'bioStatus')
   }
 
   onChangeLinksControl = (vo) => {
-    this.controlWasChanged(vo, 'linksStatus')
+    this.onChangeControl(vo, 'linksStatus')
   }
 
   onSubmit(e) {
@@ -76,32 +94,17 @@ class InfoForm extends Component {
     hideSoftKeyboard()
   }
 
-  controlWasChanged(vo, prop) {
-    const status = this.state[prop]
-    if (status !== STATUS.REQUEST) {
-      this.setState({
-        [prop]: STATUS.REQUEST,
-        showThenHideMessage: false,
-      })
-    }
-    this.saveForm(vo)
-  }
-
   saveForm(vo) {
     this.props.dispatch(saveProfile(vo))
   }
 
-  hideStatusMessage() {
-    this.setState({
-      showThenHideMessage: false,
-    })
-  }
-
   render() {
-    const { bioStatus, linksStatus, nameStatus, showThenHideMessage } = this.state
-    const { className, controlClassModifiers, profile, tabIndexStart } = this.props
-    if (!profile.username) {
-      return <div />
+    const { bioStatus, linksStatus, nameStatus } = this.state
+    const {
+      className, controlClassModifiers, externalLinksList, name, shortBio, tabIndexStart, username,
+    } = this.props
+    if (!username) {
+      return null
     }
     return (
       <form
@@ -115,35 +118,24 @@ class InfoForm extends Component {
           onChange={this.onChangeNameControl}
           status={nameStatus}
           tabIndex={`${tabIndexStart}`}
-          text={profile.name || ''}
+          text={name || ''}
         />
         <BioControl
           classList={controlClassModifiers}
           onChange={this.onChangeBioControl}
           status={bioStatus}
           tabIndex={`${tabIndexStart + 1}`}
-          text={profile.shortBio || ''}
+          text={shortBio || ''}
         />
         <LinksControl
           classList={controlClassModifiers}
           onChange={this.onChangeLinksControl}
           status={linksStatus}
           tabIndex={`${tabIndexStart + 2}`}
-          text={profile.externalLinksList}
+          text={externalLinksList}
         />
-        <span
-          className={classNames('InfoFormStatus', { showThenHideMessage })}
-        >
-          Profile updated successfully
-        </span>
       </form>
     )
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-    profile: state.profile,
   }
 }
 
