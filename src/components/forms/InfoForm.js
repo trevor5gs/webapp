@@ -55,10 +55,11 @@ class InfoForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { externalLinksList, name, shortBio } = nextProps
+    const links = externalLinksList
     this.setState({
-      bioStatus: shortBio.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
-      linksStatus: externalLinksList.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
-      nameStatus: name.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
+      bioStatus: shortBio && shortBio.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
+      linksStatus: links && links.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
+      nameStatus: name && name.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
     })
   }
 
