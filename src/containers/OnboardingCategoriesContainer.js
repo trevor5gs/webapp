@@ -47,8 +47,15 @@ class OnboardingCategoriesContainer extends Component {
   }
 
   getChildContext() {
+    const { categoryIds } = this.state
+    let nextLabel = ''
+    if (CATEGORIES_NEEDED > categoryIds.length) {
+      nextLabel = `Pick ${CATEGORIES_NEEDED - categoryIds.length}`
+    } else {
+      nextLabel = 'Create Your Profile'
+    }
     return {
-      nextLabel: 'Create Your Profile',
+      nextLabel,
       onDoneClick: hasSelectedCategoriesNeeded(this.state) ? null : this.onDoneClick,
       onNextClick: this.onNextClick,
     }
@@ -90,15 +97,10 @@ class OnboardingCategoriesContainer extends Component {
 
   render() {
     const { categories } = this.props
-    const { categoryIds } = this.state
     const isNextDisabled = hasSelectedCategoriesNeeded(this.state)
-    const selected = isNextDisabled ? categoryIds.length : CATEGORIES_NEEDED
-    const counterText = `${selected} of ${CATEGORIES_NEEDED}`
     return (
       <OnboardingCategories
         categories={categories}
-        counterText={counterText}
-        isCounterSuccess={selected === CATEGORIES_NEEDED}
         isNextDisabled={isNextDisabled}
         onCategoryClick={this.onCategoryClick}
       />
