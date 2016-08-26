@@ -2,6 +2,7 @@ let memoizedIsAndroid
 let memoizedIsChrome
 let memoizedIsElloAndroid
 let memoizedIsFirefox
+let memoizedIsIE11
 let memoizedIsIOS
 let memoizedIsSafari
 
@@ -47,6 +48,14 @@ export function isIOS() {
   return memoizedIsIOS
 }
 
+export function isIE11() {
+  if (typeof window === 'undefined') { return false }
+  if (typeof memoizedIsIE11 !== 'undefined') { return memoizedIsIE11 }
+  const docStyle = document.documentElement.style
+  memoizedIsIE11 = '-ms-scroll-limit' in docStyle && '-ms-ime-align' in docStyle
+  return memoizedIsIE11
+}
+
 export function getElloPlatform() {
   return isElloAndroid() ? 'ello-android-app' : 'ello-webapp'
 }
@@ -65,6 +74,7 @@ export function addFeatureDetection() {
   }
   if (isChrome()) { cl.add('isChrome') }
   if (isFirefox()) { cl.add('isFirefox') }
+  if (isIE11()) { cl.add('isIE11') }
   document.addEventListener('touchstart', onTouchStart)
 }
 

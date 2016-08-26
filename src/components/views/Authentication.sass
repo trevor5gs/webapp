@@ -43,7 +43,6 @@
   transform: translate3d(0, 0, 0)
   visibility: visible
 
-
 .isJoinForm ~ .Navbar,
 .isJoinForm ~ .Footer
   display: none
@@ -62,6 +61,8 @@
 @media(min-width: #{$break-2})
   .AuthenticationFormDialog
     margin: auto
+  .isIE11 .AuthenticationFormDialog
+    margin-top: rem(120)
   .Authentication h1,
   .AuthenticationFormDialog h1
     padding-top: 0
