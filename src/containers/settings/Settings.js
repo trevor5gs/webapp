@@ -341,7 +341,7 @@ class Settings extends Component {
         <div className="SettingsBody" >
           <div className="SettingsAvatarPicker" >
             <Uploader
-              className="isAvatarUploader isLGUploader"
+              className="isAvatarUploader isSettingsAvatarUploader isLGUploader"
               title="Upload Avatar"
               line1="360 x 360"
               line2="Animated Gifs work too"

@@ -2,6 +2,8 @@
 
 .Uploader
   position: relative
+  z-index: 2
+  background-color: rgba(magenta, 0.4)
 
 .isAvatarUploader
   text-align: center
@@ -17,6 +19,7 @@
   left: 0
   right: 0
   bottom: 0
+  width: 100%
 
 .isXLUploader
   padding-top: rem(240)
@@ -51,6 +54,8 @@
   width: rem(120)
   height: rem(120)
 
+.isSettingsAvatarUploader
+  width: 100%
 
 .UploaderButton
   +sans-typeset
@@ -104,6 +109,9 @@
   .isLGUploader:before
     width: rem(180)
     height: rem(180)
+  .isSettingsAvatarUploader
+    width: 100%
+    max-width: rem(400)
 
 @media(min-width: #{em(1160)})
   .OnboardingCoverPicker .UploaderMessages
