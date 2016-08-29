@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import { expect } from '../../spec_helper'
 import * as subject from '../../../src/reducers'
 
 describe('stream.js', () => {

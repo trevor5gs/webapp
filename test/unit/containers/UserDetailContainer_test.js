@@ -1,5 +1,4 @@
-import { expect } from '../../spec_helper'
-import { stub } from '../../stubs'
+import { stub } from '../../support/stubs'
 import {
   getStreamAction, mapStateToProps, shouldContainerUpdate,
 } from '../../../src/containers/UserDetailContainer'

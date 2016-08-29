@@ -1,5 +1,4 @@
-import { expect } from '../../spec_helper'
-import { stubJSONStore } from '../../stubs'
+import { stubJSONStore } from '../../support/stubs'
 import { sortCategories } from '../../../src/selectors'
 import {
   loadCategoryPosts,

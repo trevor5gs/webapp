@@ -1,7 +1,5 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { expect } from '../../spec_helper'
 import { routeReducer as reducer } from '../../../src/reducers/routing'
-
 
 describe('promotions reducer', () => {
   context('#initialState', () => {

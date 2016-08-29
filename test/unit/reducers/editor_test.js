@@ -1,5 +1,4 @@
 import { REHYDRATE } from 'redux-persist/constants'
-import { expect, sinon } from '../../spec_helper'
 import * as subject from '../../../src/reducers/editor'
 import { AUTHENTICATION, EDITOR, PROFILE } from '../../../src/constants/action_types'
 

@@ -1,5 +1,4 @@
 import { channel } from 'redux-saga'
-import { expect } from '../../spec_helper'
 import { loadDiscoverPosts } from '../../../src/actions/discover'
 import { refreshAuthenticationToken } from '../../../src/actions/authentication'
 import { isLoggedInSelector, refreshTokenSelector } from '../../../src/sagas/selectors'

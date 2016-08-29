@@ -1,4 +1,4 @@
-import { expect, getRenderedComponent } from '../../../spec_helper'
+import { getRenderedComponent } from '../../../support/test_helpers'
 import { RELATIONSHIP_PRIORITY } from '../../../../src/constants/relationship_types'
 import {
   default as subject,

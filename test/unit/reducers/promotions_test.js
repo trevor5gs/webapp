@@ -1,5 +1,4 @@
-import { expect } from '../../spec_helper'
-import { stubAuthPromotion, stubPromotion } from '../../stubs'
+import { stubAuthPromotion, stubPromotion } from '../../support/stubs'
 import { promotions as reducer } from '../../../src/reducers/promotions'
 import { PROMOTIONS } from '../../../src/constants/action_types'
 

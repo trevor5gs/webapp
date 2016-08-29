@@ -1,0 +1,12 @@
+{
+  "globals": {
+    "chai": false,
+    "expect": false,
+    "sinon": false
+  },
+  "rules": {
+    "func-names": 0,
+    "import/no-extraneous-dependencies": [2, {"devDependencies": true}],
+    "prefer-arrow-callback": 0
+  }
+}

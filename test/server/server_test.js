@@ -1,7 +1,6 @@
 /* eslint-disable max-len,func-names */
 import nock from 'nock'
 import jsdom from 'jsdom'
-import { chai, expect } from '../spec_helper'
 import app, { canPrerenderRequest } from '../../src/server-iso'
 import { fetchOauthToken } from '../../oauth'
 

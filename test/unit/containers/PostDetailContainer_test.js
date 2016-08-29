@@ -1,6 +1,5 @@
 import { get } from 'lodash'
-import { expect } from '../../spec_helper'
-import { stubJSONStore } from '../../stubs'
+import { stubJSONStore } from '../../support/stubs'
 import { shouldContainerUpdate, mapStateToProps } from '../../../src/containers/PostDetailContainer'
 
 describe('PostDetailContainer', () => {

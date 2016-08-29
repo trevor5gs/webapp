@@ -1,4 +1,4 @@
-import { expect, isFSA, isFSAName } from '../../spec_helper'
+import { isFSA, isFSAName } from '../../support/test_helpers'
 import * as subject from '../../../src/actions/profile'
 import { userResults } from '../../../src/components/streams/StreamFilters'
 import {

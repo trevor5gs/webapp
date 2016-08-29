@@ -1,5 +1,4 @@
-import { expect } from '../../spec_helper'
-import { stubAvatar } from '../../stubs'
+import { stubAvatar } from '../../support/stubs'
 import { shouldContainerUpdate } from '../../../src/containers/OmnibarContainer'
 
 describe('OmnibarContainer', () => {

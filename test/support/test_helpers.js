@@ -3,27 +3,6 @@
 import React from 'react'
 import TestUtils from 'react-addons-test-utils'
 import { camelize } from 'humps'
-import chai, { expect } from 'chai'
-import sinon from 'sinon'
-import chaiHttp from 'chai-http'
-import sinonChai from 'sinon-chai'
-import chaiSaga from './support/saga_helpers'
-
-require('dotenv').load()
-
-global.URL = { createObjectURL: (input) => input }
-global.ENV = JSON.stringify(require('../env'))
-
-chai.use(chaiSaga)
-chai.use(chaiHttp)
-chai.use(sinonChai)
-
-
-// Ease of use
-export { chai }
-export { sinon }
-export { expect }
-export { clearJSON, json, stub } from './stubs'
 
 // React helpers
 export function getRenderedComponent(component, options = {}, children = null) {

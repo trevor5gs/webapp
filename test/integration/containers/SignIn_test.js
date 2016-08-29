@@ -1,8 +1,6 @@
-/* eslint no-param-reassign: ["error", { props: false } ] */
 import React from 'react'
 import { mount } from 'enzyme'
-import { expect } from 'chai'
-import { pretendServer } from '../spec_helper.js'
+import { pretendServer } from '../../support/pretender'
 import { createElloStore } from '../../../src/store'
 import TextControl from '../../../src/components/forms/TextControl'
 import PasswordControl from '../../../src/components/forms/PasswordControl'
@@ -33,7 +31,8 @@ describe('SignIn', function () {
     this.server.shutdown()
   })
 
-  it('signs you in', function () {
+  // See notes in test/setup.js why this is pending
+  xit('signs you in', function () {
     const store = createElloStore()
 
     store.dispatch({

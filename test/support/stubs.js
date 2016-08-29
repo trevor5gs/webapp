@@ -1,5 +1,5 @@
 import { upperFirst } from 'lodash'
-import * as MAPPING_TYPES from '../src/constants/mapping_types'
+import * as MAPPING_TYPES from '../../src/constants/mapping_types'
 
 const json = {}
 

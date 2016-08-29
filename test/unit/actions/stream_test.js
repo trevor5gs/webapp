@@ -1,4 +1,4 @@
-import { expect, isFSA, isFSAName } from '../../spec_helper'
+import { isFSA, isFSAName } from '../../support/test_helpers'
 import * as subject from '../../../src/actions/stream'
 import { postsAsGrid, postsAsList } from '../../../src/components/streams/StreamRenderables'
 import { postsFromActivities } from '../../../src/components/streams/StreamFilters'

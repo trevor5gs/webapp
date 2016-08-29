@@ -1,4 +1,3 @@
-import { expect } from '../../spec_helper'
 import { shouldContainerUpdate } from '../../../src/containers/AnalyticsContainer'
 
 describe('AnalyticsContainer', () => {

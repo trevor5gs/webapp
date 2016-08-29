@@ -1,5 +1,3 @@
-import { expect } from '../../spec_helper'
-
 import { fetchCredentials, parseJSON, checkStatus } from '../../../src/sagas/uploader'
 
 const pretendAccessToken = 'pretendToken'

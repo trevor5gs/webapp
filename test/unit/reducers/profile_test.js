@@ -1,5 +1,4 @@
-import { expect } from '../../spec_helper'
-import { stubAvatar, stubCoverImage, stubUser } from '../../stubs'
+import { stubAvatar, stubCoverImage, stubUser } from '../../support/stubs'
 import { profile as reducer } from '../../../src/reducers/profile'
 import { AUTHENTICATION, INVITATIONS, PROFILE } from '../../../src/constants/action_types'
 

@@ -1,4 +1,3 @@
-import { expect } from '../../spec_helper'
 import { AUTHENTICATION, PROFILE } from '../../../src/constants/action_types'
 import { loginPushSubscribe, logoutPushUnsubscribe } from '../../../src/sagas/push_subscription'
 import {
