@@ -151,16 +151,12 @@ class JoinContainer extends Component {
     const newState = getUsernameStateFromServer({ availability, currentStatus })
     if (!this.usernameValue.length) {
       if (currentStatus !== STATUS.INDETERMINATE) {
-        requestAnimationFrame(() => {
-          this.setState({ usernameState: { ...newState, status: STATUS.INDETERMINATE } })
-        })
+        this.setState({ usernameState: { ...newState, status: STATUS.INDETERMINATE } })
       }
       return
     }
     if (newState.status !== currentStatus) {
-      requestAnimationFrame(() => {
-        this.setState({ usernameState: newState })
-      })
+      this.setState({ usernameState: newState })
     }
   }
 
@@ -169,9 +165,7 @@ class JoinContainer extends Component {
     const currentStatus = emailState.status
     const newState = getEmailStateFromServer({ availability, currentStatus })
     if (newState.status !== currentStatus) {
-      requestAnimationFrame(() => {
-        this.setState({ emailState: newState })
-      })
+      this.setState({ emailState: newState })
     }
   }
 
@@ -180,9 +174,7 @@ class JoinContainer extends Component {
     const currentStatus = invitationCodeState.status
     const newState = getInvitationCodeStateFromServer({ availability, currentStatus })
     if (newState.status !== currentStatus) {
-      requestAnimationFrame(() => {
-        this.setState({ invitationCodeState: newState })
-      })
+      this.setState({ invitationCodeState: newState })
     }
   }
 

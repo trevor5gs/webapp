@@ -413,10 +413,10 @@ export default function json(state = {}, action = { type: '' }) {
         const curUser = methods.getCurrentUser(action.payload.json)
         if (curUser) {
           if (curUser.avatar && curUser.avatar.tmp) {
-            delete curUser.avatar
+            delete curUser.avatar.tmp
           }
           if (curUser.coverImage && curUser.coverImage.tmp) {
-            delete curUser.coverImage
+            delete curUser.coverImage.tmp
           }
           setWith(keepers, [MAPPING_TYPES.USERS, curUser.id], curUser, Object)
         }

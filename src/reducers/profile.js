@@ -97,10 +97,10 @@ export function profile(state = {}, action) {
         dataExport: null,
       }
       if (_.get(assetState, 'avatar.tmp')) {
-        delete assetState.avatar
+        delete assetState.avatar.tmp
       }
       if (_.get(assetState, 'coverImage.tmp')) {
-        delete assetState.coverImage
+        delete assetState.coverImage.tmp
       }
       return assetState
     case PROFILE.SAVE_AVATAR_SUCCESS:
