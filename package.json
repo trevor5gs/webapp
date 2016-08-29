@@ -61,7 +61,8 @@
       },
       "production": {
         "plugins": [
-          "transform-react-constant-elements"
+          "transform-react-constant-elements",
+          "transform-react-remove-prop-types"
         ]
       }
     }
@@ -112,6 +113,7 @@
     "babel-loader": "6.2.5",
     "babel-plugin-lodash": "3.2.8",
     "babel-plugin-transform-react-constant-elements": "6.9.1",
+    "babel-plugin-transform-react-remove-prop-types": "0.2.9",
     "babel-polyfill": "6.13.0",
     "babel-preset-es2015": "6.13.2",
     "babel-preset-react": "6.11.1",
