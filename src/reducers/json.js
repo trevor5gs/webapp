@@ -308,10 +308,10 @@ methods.updateCurrentUser = (newState, action) => {
   if (!newState[MAPPING_TYPES.USERS]) { newState[MAPPING_TYPES.USERS] = {} }
   const curUser = newState[MAPPING_TYPES.USERS][`${response[MAPPING_TYPES.USERS].id}`]
   const newUser = curUser ? { ...curUser, ...response[MAPPING_TYPES.USERS] } : response[MAPPING_TYPES.USERS]
-  if (curUser.avatar.tmp) {
+  if (get(curUser, 'avatar.tmp')) {
     newUser.avatar.tmp = curUser.avatar.tmp
   }
-  if (curUser.coverImage.tmp) {
+  if (get(curUser, 'coverImage.tmp')) {
     newUser.coverImage.tmp = curUser.coverImage.tmp
   }
   newState[MAPPING_TYPES.USERS][`${response[MAPPING_TYPES.USERS].id}`] = newUser

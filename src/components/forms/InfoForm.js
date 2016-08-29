@@ -49,7 +49,7 @@ class InfoForm extends Component {
       nameStatus: STATUS.INDETERMINATE,
       showThenHideMessage: false,
     }
-    this.saveForm = debounce(this.saveForm, 300, { leading: true })
+    this.saveForm = debounce(this.saveForm, 300)
     this.componentWillReceiveProps(this.props)
   }
 

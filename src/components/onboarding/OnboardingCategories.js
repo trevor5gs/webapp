@@ -42,8 +42,6 @@ class CategoryButton extends Component {
 
 const OnboardingCategories = ({
   categories,
-  counterText,
-  isCounterSuccess,
   isNextDisabled,
   onCategoryClick,
 }) =>
@@ -63,17 +61,11 @@ const OnboardingCategories = ({
         )}
       </div>
     </section>
-    <OnboardingNavbar
-      counterText={counterText}
-      isCounterSuccess={isCounterSuccess}
-      isNextDisabled={isNextDisabled}
-    />
+    <OnboardingNavbar isNextDisabled={isNextDisabled} />
   </MainView>
 
 OnboardingCategories.propTypes = {
   categories: PropTypes.array,
-  counterText: PropTypes.string.isRequired,
-  isCounterSuccess: PropTypes.bool.isRequired,
   isNextDisabled: PropTypes.bool.isRequired,
   onCategoryClick: PropTypes.func.isRequired,
 }
