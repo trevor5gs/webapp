@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { debounce, isEqual } from 'lodash'
 import { hideSoftKeyboard } from '../../vendor/jello'
 import {
-  selectExternalLinksList, selectName, selectShortBio, selectUsername,
+  selectLinksAsText, selectName, selectShortBio, selectUsername,
 } from '../../selectors/profile'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { saveProfile } from '../../actions/profile'
@@ -13,12 +13,12 @@ import NameControl from '../forms/NameControl'
 import LinksControl from '../forms/LinksControl'
 
 function mapStateToProps(state) {
-  const externalLinksList = selectExternalLinksList(state)
+  const linksText = selectLinksAsText(state)
   const name = selectName(state)
   const shortBio = selectShortBio(state)
   const username = selectUsername(state)
   return {
-    externalLinksList,
+    linksText,
     name,
     shortBio,
     username,
@@ -31,7 +31,7 @@ class InfoForm extends Component {
     className: PropTypes.string,
     controlClassModifiers: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    externalLinksList: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    linksText: PropTypes.string,
     name: PropTypes.string,
     shortBio: PropTypes.string,
     tabIndexStart: PropTypes.number,
@@ -54,11 +54,10 @@ class InfoForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { externalLinksList, name, shortBio } = nextProps
-    const links = externalLinksList
+    const { linksText, name, shortBio } = nextProps
     this.setState({
       bioStatus: shortBio && shortBio.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
-      linksStatus: links && links.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
+      linksStatus: linksText && linksText.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
       nameStatus: name && name.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
     })
   }
@@ -102,7 +101,7 @@ class InfoForm extends Component {
   render() {
     const { bioStatus, linksStatus, nameStatus } = this.state
     const {
-      className, controlClassModifiers, externalLinksList, name, shortBio, tabIndexStart, username,
+      className, controlClassModifiers, linksText, name, shortBio, tabIndexStart, username,
     } = this.props
     if (!username) {
       return null
@@ -133,7 +132,7 @@ class InfoForm extends Component {
           onChange={this.onChangeLinksControl}
           status={linksStatus}
           tabIndex={`${tabIndexStart + 2}`}
-          text={externalLinksList}
+          text={linksText}
         />
       </form>
     )

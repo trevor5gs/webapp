@@ -59,12 +59,21 @@ export function profile(state = {}, action) {
         ...state,
         errors: null,
       }
-    case PROFILE.SAVE_SUCCESS:
-      return {
-        ..._.merge(state, action.payload.response.users),
+    case PROFILE.SAVE_SUCCESS: {
+      const obj = {
+        ...state,
+        ...action.payload.response.users,
         availability: null,
         id: `${action.payload.response.users.id}`,
       }
+      if (state.avatar.tmp) {
+        obj.avatar.tmp = state.avatar.tmp
+      }
+      if (state.coverImage.tmp) {
+        obj.coverImage.tmp = state.coverImage.tmp
+      }
+      return obj
+    }
     // should only happen if we get a 422 meaning
     // the current password entered was wrong
     case PROFILE.SAVE_FAILURE:

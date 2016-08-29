@@ -29,3 +29,13 @@ export const selectIsInfoFormBlank = createSelector(
   }
 )
 
+export const selectLinksAsText = createSelector(
+  [selectExternalLinksList], (externalLinksList) => {
+    const links = externalLinksList || ''
+    if (typeof links === 'string') {
+      return links
+    }
+    return links.map((link) => link.text).join(', ')
+  }
+)
+
