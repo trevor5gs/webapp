@@ -20,6 +20,12 @@ class SearchControl extends Component {
     placeholder: 'Search',
   }
 
+  componentDidMount() {
+    requestAnimationFrame(() => {
+      this.text.input.focus()
+    })
+  }
+
   shouldComponentUpdate(nextProps) {
     return this.props.text !== nextProps.text || this.props.activeType !== nextProps.activeType
   }
@@ -33,7 +39,7 @@ class SearchControl extends Component {
           autoCapitalize="off"
           autoCorrect="off"
           autoComplete="off"
-          autoFocus
+          ref={(comp) => { this.text = comp }}
           type="text"
         />
         <TabListButtons

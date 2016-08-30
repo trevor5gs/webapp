@@ -16,8 +16,7 @@ const TABS = [
   { type: 'users', children: 'People' },
 ]
 
-export function getStreamAction(state) {
-  const { terms, type } = state
+export function getStreamAction(terms, type) {
   if (terms && terms.length > 1) {
     return type === 'users' ? searchForUsers(terms) : searchForPosts(terms)
   }
@@ -25,7 +24,7 @@ export function getStreamAction(state) {
 }
 
 export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
-  const pickProps = ['coverDPI', 'isLoggedIn', 'pathname', 'promotions']
+  const pickProps = ['coverDPI', 'isLoggedIn', 'pathname', 'promotions', 'terms']
   const thisCompare = pick(thisProps, pickProps)
   const nextCompare = pick(nextProps, pickProps)
   return !isEqual(thisCompare, nextCompare) || !isEqual(thisState, nextState)
@@ -64,15 +63,16 @@ class SearchContainer extends Component {
   }
 
   componentWillMount() {
-    const { debounceWait = 666, promotions, terms, type } = this.props
+    const { debounceWait = 666, promotions, type } = this.props
     if (debounceWait > 0) {
       this.search = debounce(this.search, debounceWait)
     }
-    this.state = { promotion: sample(promotions), terms, type }
+    this.state = { promotion: sample(promotions), type }
   }
 
   componentDidMount() {
-    const { terms, type } = this.state
+    const { terms } = this.props
+    const { type } = this.state
     this.search({ terms, type })
   }
 
@@ -88,7 +88,9 @@ class SearchContainer extends Component {
 
   onChangeControl = (vo) => {
     this.search(vo)
-    this.setState(vo)
+    if (vo.type) {
+      this.setState(vo)
+    }
   }
 
   onSubmit = (e) => {
@@ -120,8 +122,8 @@ class SearchContainer extends Component {
   }
 
   render() {
-    const { coverDPI, isLoggedIn } = this.props
-    const { promotion, terms, type } = this.state
+    const { coverDPI, isLoggedIn, terms } = this.props
+    const { promotion, type } = this.state
     return (
       <MainView className="Search">
         <Promotion
@@ -138,7 +140,7 @@ class SearchContainer extends Component {
           text={terms}
         />
         <StreamContainer
-          action={getStreamAction(this.state)}
+          action={getStreamAction(terms, type)}
           key={`search_${type}_${terms}`}
         />
       </MainView>
