@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { isEqual } from 'lodash'
+import { isIOS } from '../vendor/jello'
 import { scrollToTop } from '../vendor/scrolling'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
@@ -186,7 +187,9 @@ class NavbarContainer extends Component {
     if (isProfileMenuActive) { return }
     dispatch(setIsProfileMenuActive({ isActive: true }))
     document.addEventListener('click', this.onClickDocument)
-    document.addEventListener('touchstart', this.onClickDocument)
+    if (isIOS()) {
+      document.addEventListener('touchstart', this.onClickDocument)
+    }
   }
 
   deactivateProfileMenu() {
@@ -194,7 +197,9 @@ class NavbarContainer extends Component {
     if (!isProfileMenuActive) { return }
     dispatch(setIsProfileMenuActive({ isActive: false }))
     document.removeEventListener('click', this.onClickDocument)
-    document.removeEventListener('touchstart', this.onClickDocument)
+    if (isIOS()) {
+      document.removeEventListener('touchstart', this.onClickDocument)
+    }
   }
 
   render() {
