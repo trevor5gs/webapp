@@ -19,7 +19,12 @@ import { accessTokenSelector } from './selectors'
 import { openAlert } from '../actions/modals'
 import { temporaryEditorAssetCreated } from '../actions/editor'
 import { temporaryAssetCreated } from '../actions/profile'
-import { isValidFileType, processImage, SUPPORTED_IMAGE_TYPES } from '../helpers/file_helper'
+import {
+  imageGuid,
+  isValidFileType,
+  processImage,
+  SUPPORTED_IMAGE_TYPES,
+} from '../helpers/file_helper'
 
 function getCredentialsHeader(accessToken) {
   return {
@@ -27,14 +32,6 @@ function getCredentialsHeader(accessToken) {
     Accept: 'application/json',
     'Content-Type': 'application/json',
   }
-}
-
-function imageGuid() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = Math.random() * 16 | 0
-    const v = (c === 'x' ? r : (r & 0x3) | 0x8)
-    return v.toString(16)
-  })
 }
 
 const uploadTypes = [
