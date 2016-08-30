@@ -6,26 +6,29 @@ import { updateQueryParams } from '../helpers/uri_helper'
 import { searchForPosts, searchForUsers } from '../actions/search'
 import { trackEvent } from '../actions/tracking'
 import { hideSoftKeyboard } from '../vendor/jello'
-import { Search } from '../components/views/Search'
+import SearchControl from '../components/forms/SearchControl'
+import StreamContainer from './StreamContainer'
+import { MainView } from '../components/views/MainView'
+import Promotion from '../components/assets/Promotion'
 
 const TABS = [
   { type: 'posts', children: 'Posts' },
   { type: 'users', children: 'People' },
 ]
 
-export function getStreamAction(props) {
-  const { terms, type } = props
+export function getStreamAction(state) {
+  const { terms, type } = state
   if (terms && terms.length > 1) {
     return type === 'users' ? searchForUsers(terms) : searchForPosts(terms)
   }
   return null
 }
 
-export function shouldContainerUpdate(thisProps, nextProps) {
-  const pickProps = ['coverDPI', 'isLoggedIn', 'pathname', 'promotions', 'terms', 'type']
+export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
+  const pickProps = ['coverDPI', 'isLoggedIn', 'pathname', 'promotions']
   const thisCompare = pick(thisProps, pickProps)
   const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare)
+  return !isEqual(thisCompare, nextCompare) || !isEqual(thisState, nextState)
 }
 
 export function mapStateToProps(state, props) {
@@ -61,15 +64,15 @@ class SearchContainer extends Component {
   }
 
   componentWillMount() {
-    const { debounceWait = 666, promotions } = this.props
+    const { debounceWait = 666, promotions, terms, type } = this.props
     if (debounceWait > 0) {
-      this.search = debounce(this.search, debounceWait, { leading: true })
+      this.search = debounce(this.search, debounceWait)
     }
-    this.state = { promotion: sample(promotions) }
+    this.state = { promotion: sample(promotions), terms, type }
   }
 
   componentDidMount() {
-    const { terms, type } = this.props
+    const { terms, type } = this.state
     this.search({ terms, type })
   }
 
@@ -79,12 +82,13 @@ class SearchContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
   }
 
   onChangeControl = (vo) => {
     this.search(vo)
+    this.setState(vo)
   }
 
   onSubmit = (e) => {
@@ -116,22 +120,29 @@ class SearchContainer extends Component {
   }
 
   render() {
-    const { coverDPI, isLoggedIn, terms, type } = this.props
-    const { promotion } = this.state
-    const props = {
-      coverDPI,
-      isLoggedIn,
-      onChange: this.onChangeControl,
-      onClickTrackCredits: this.onClickTrackCredits,
-      onSubmit: this.onSubmit,
-      promotion,
-      streamAction: getStreamAction(this.props),
-      streamKey: `search_${type}_${terms}`,
-      tabs: TABS,
-      terms,
-      type,
-    }
-    return <Search {...props} />
+    const { coverDPI, isLoggedIn } = this.props
+    const { promotion, terms, type } = this.state
+    return (
+      <MainView className="Search">
+        <Promotion
+          coverDPI={coverDPI}
+          isLoggedIn={isLoggedIn}
+          onClickTrackCredits={this.onClickTrackCredits}
+          promotion={promotion}
+        />
+        <SearchControl
+          activeType={type}
+          onChange={this.onChangeControl}
+          onSubmit={this.onSubmit}
+          tabs={TABS}
+          text={terms}
+        />
+        <StreamContainer
+          action={getStreamAction(this.state)}
+          key={`search_${type}_${terms}`}
+        />
+      </MainView>
+    )
   }
 }
 

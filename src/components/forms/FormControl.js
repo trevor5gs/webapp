@@ -159,13 +159,15 @@ class FormControl extends Component {
   getElementProps() {
     const elementProps = { ...this.props }
     const blacklistedProps = [
+      'activeType',
       'classList',
+      'renderFeedback',
       'renderStatus',
       'status',
       'suggestions',
-      'renderFeedback',
-      'trimWhitespace',
+      'tabs',
       'text',
+      'trimWhitespace',
     ]
     blacklistedProps.forEach(prop => {
       delete elementProps[prop]
