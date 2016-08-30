@@ -9,6 +9,18 @@ import { ErrorState } from '../components/errors/Errors'
 import { trackEvent } from '../actions/analytics'
 import store from '../store'
 
+export function followCategories(catIds) {
+  return {
+    type: PROFILE.FOLLOW_CATEGORIES,
+    payload: {
+      body: { followed_category_ids: catIds },
+      endpoint: api.followCategories(),
+      method: 'PUT',
+    },
+    meta: {},
+  }
+}
+
 export function loadProfile() {
   return {
     type: PROFILE.LOAD,

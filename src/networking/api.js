@@ -105,6 +105,11 @@ export function profileExport() {
     path: getAPIPath('profile/export'),
   }
 }
+export function followCategories() {
+  return {
+    path: getAPIPath('profile/followed_categories'),
+  }
+}
 // Onboarding
 export function awesomePeoplePath() {
   const params = { per_page: PER_PAGE }
@@ -324,11 +329,6 @@ export function flagUser(idOrUsername, kind) {
 export function hireUser(id) {
   return {
     path: getAPIPath(`users/${id}/hire_me`),
-  }
-}
-export function followCategories(id) {
-  return {
-    path: getAPIPath(`users/${id}/followed_category_ids`),
   }
 }
 // Search

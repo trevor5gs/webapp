@@ -6,15 +6,13 @@ import OnboardingCategories from '../components/onboarding/OnboardingCategories'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { trackEvent } from '../actions/analytics'
 import { getCategories } from '../actions/discover'
-import { saveProfile } from '../actions/profile'
-import { followCategories } from '../actions/user'
+import { followCategories, saveProfile } from '../actions/profile'
 import { selectCategories } from '../selectors'
-import { selectId } from '../selectors/profile'
 
 const CATEGORIES_NEEDED = 3
 
 function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
-  const pickProps = ['categories', 'userId']
+  const pickProps = ['categories']
   const thisCompare = pick(thisProps, pickProps)
   const nextCompare = pick(nextProps, pickProps)
   return !isEqual(thisCompare, nextCompare) || !isEqual(thisState, nextState)
@@ -24,7 +22,6 @@ function mapStateToProps(state, props) {
   const catLevels = selectCategories(state, props)
   return {
     categories: catLevels.primary.concat(catLevels.secondary, catLevels.tertiary),
-    userId: `${selectId(state)}`,
   }
 }
 
@@ -37,7 +34,6 @@ class OnboardingCategoriesContainer extends Component {
   static propTypes = {
     categories: PropTypes.array,
     dispatch: PropTypes.func.isRequired,
-    userId: PropTypes.string.isRequired,
   }
 
   static childContextTypes = {
@@ -89,9 +85,9 @@ class OnboardingCategoriesContainer extends Component {
   }
 
   onNextClick = () => {
-    const { dispatch, userId } = this.props
+    const { dispatch } = this.props
     dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
-    dispatch(followCategories(userId, this.state.categoryIds))
+    dispatch(followCategories(this.state.categoryIds))
     dispatch(push('/onboarding/settings'))
   }
 
