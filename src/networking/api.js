@@ -328,7 +328,7 @@ export function hireUser(id) {
 }
 export function followCategories(id) {
   return {
-    path: getAPIPath(`users/${id}/followed_categories`),
+    path: getAPIPath(`users/${id}/followed_category_ids`),
   }
 }
 // Search
