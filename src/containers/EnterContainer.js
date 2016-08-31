@@ -3,26 +3,26 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { replace } from 'react-router-redux'
 import { debounce, sample, set } from 'lodash'
-import { isAndroid, isElloAndroid } from '../../vendor/jello'
-import { ONBOARDING_VERSION } from '../../constants/application_types'
-import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
-import { loadProfile, requestPushSubscription, saveProfile } from '../../actions/profile'
-import { signIn } from '../../actions/authentication'
-import { trackEvent } from '../../actions/analytics'
-import { AppleStore, GooglePlayStore } from '../../components/assets/AppStores'
-import Cover from '../../components/assets/Cover'
-import Credits from '../../components/assets/Credits'
-import TextControl from '../../components/forms/TextControl'
-import PasswordControl from '../../components/forms/PasswordControl'
-import FormButton from '../../components/forms/FormButton'
+import { isAndroid, isElloAndroid } from '../vendor/jello'
+import { ONBOARDING_VERSION } from '../constants/application_types'
+import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
+import { loadProfile, requestPushSubscription, saveProfile } from '../actions/profile'
+import { signIn } from '../actions/authentication'
+import { trackEvent } from '../actions/analytics'
+import { AppleStore, GooglePlayStore } from '../components/assets/AppStores'
+import Cover from '../components/assets/Cover'
+import Credits from '../components/assets/Credits'
+import TextControl from '../components/forms/TextControl'
+import PasswordControl from '../components/forms/PasswordControl'
+import FormButton from '../components/forms/FormButton'
 import {
   isFormValid,
   getUserStateFromClient,
   getPasswordState,
-} from '../../components/forms/Validators'
-import { MainView } from '../../components/views/MainView'
+} from '../components/forms/Validators'
+import { MainView } from '../components/views/MainView'
 
-class Enter extends Component {
+class EnterContainer extends Component {
 
   static propTypes = {
     buildVersion: PropTypes.string,
@@ -236,5 +236,5 @@ const mapStateToProps = (state) => {
   return obj
 }
 
-export default connect(mapStateToProps)(Enter)
+export default connect(mapStateToProps)(EnterContainer)
 
