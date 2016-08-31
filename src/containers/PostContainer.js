@@ -18,7 +18,7 @@ import {
 export function shouldContainerUpdate(thisProps, nextProps) {
   if (!nextProps.post) { return false }
   const pickProps = ['columnWidth', 'isEditing', 'isReposting', 'showComments',
-                     'showLovers', 'showReposters', 'showEditor']
+                     'showCommentEditor', 'showLovers', 'showReposters', 'showEditor']
   const pickPosts = ['summary', 'content', 'repostContent', 'body']
   const thisCompare = { ...pick(thisProps.post, pickPosts), ...pick(thisProps, pickProps) }
   const nextCompare = { ...pick(nextProps.post, pickPosts), ...pick(nextProps, pickProps) }
