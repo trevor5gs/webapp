@@ -14,7 +14,6 @@ function parseJWT(token) {
 
 export function profile(state = {}, action) {
   let assetState = null
-  let assetType = null
   switch (action.type) {
     case PROFILE.AVAILABILITY_SUCCESS:
       return {
@@ -83,12 +82,16 @@ export function profile(state = {}, action) {
       }
     // Store a base64 reprensentation of the asset in `tmp` while uploading
     case PROFILE.TMP_AVATAR_CREATED:
-    case PROFILE.TMP_COVER_CREATED:
-      assetType = action.type === PROFILE.TMP_AVATAR_CREATED ? 'avatar' : 'coverImage'
+    case PROFILE.TMP_COVER_CREATED: {
+      const { type } = action
+      const assetType = type === PROFILE.TMP_AVATAR_CREATED ? 'avatar' : 'coverImage'
+      const key = type === PROFILE.TMP_AVATAR_CREATED ? 'hasAvatarPresent' : 'hasCoverImagePresent'
       return {
         ...state,
         [assetType]: { ...state[assetType], ...action.payload },
+        [key]: true,
       }
+    }
     case REHYDRATE:
       if (!action.payload.profile) { return state }
       assetState = {
