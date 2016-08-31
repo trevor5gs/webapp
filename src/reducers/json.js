@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
-import { cloneDeep, get, merge, setWith, uniq, values } from 'lodash'
+import { cloneDeep, get, isEqual, merge, setWith, uniq, values } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
@@ -249,7 +249,9 @@ methods.updateResult = (response, newState, action) => {
       // to avoid duplicate results
       newState.pages[resultPath] = { ...existingResult, ...result }
     }
-  } else if (existingResult) {
+  } else if (existingResult && !isEqual(existingResult.pagination, emptyPagination())) {
+    // make sure we don't have an empty pagination object
+    // which usually results from clearing out the search result
     // keeping the existingResult pagination keeps
     // the results correct when refreshing a page
     newState.pages[resultPath] = { ...result, pagination: existingResult.pagination, next: existingResult.next }
