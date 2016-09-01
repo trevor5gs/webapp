@@ -5,7 +5,7 @@ import { ZeroStream } from '../zeros/Zeros'
 
 const StarredZeroStream = ({ onDismissZeroStream }) =>
   <ZeroStream onDismiss={onDismissZeroStream}>
-    Star creators and communities to curate your second stream.
+    Star creators and communities to curate a second stream.
   </ZeroStream>
 
 StarredZeroStream.propTypes = {
