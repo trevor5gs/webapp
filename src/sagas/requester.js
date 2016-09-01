@@ -13,7 +13,6 @@ import {
 import { fetchCredentials, getClientCredentials, sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
 import Dialog from '../components/dialogs/Dialog'
-import { imageGuid } from '../helpers/file_helper'
 
 export const requestTypes = [
   ACTION_TYPES.AUTHENTICATION.FORGOT_PASSWORD,
@@ -253,9 +252,7 @@ export function* performRequest(action) {
   let response
 
   try {
-    const separator = endpoint.path.indexOf('?') > -1 ? '&' : '?'
-    const cacheBustPath = `${endpoint.path}${separator}${imageGuid()}`
-    response = yield call(sagaFetch, cacheBustPath, options)
+    response = yield call(sagaFetch, endpoint.path, options)
   } catch (error) {
     updateRunningFetches(error.response)
     yield fork(handleRequestError, error, action)
