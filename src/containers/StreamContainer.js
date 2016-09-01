@@ -8,6 +8,13 @@ import scrollTop from '../vendor/scrolling'
 import { runningFetches } from '../sagas/requester'
 import * as ACTION_TYPES from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
+import {
+  selectColumnCount,
+  selectHistory,
+  selectInnerHeight,
+  selectInnerWidth,
+  selectIsGridMode,
+} from '../selectors/gui'
 import { findModel } from '../helpers/json_helper'
 import {
   addScrollObject,
@@ -27,12 +34,12 @@ export function makeMapStateToProps() {
     const streamProps = getStreamProps(state, props)
     return {
       ...streamProps,
-      columnCount: state.gui.columnCount,
-      history: state.gui.history,
-      innerHeight: state.gui.innerHeight,
-      innerWidth: state.gui.innerWidth,
+      columnCount: selectColumnCount(state),
+      history: selectHistory(state),
+      innerHeight: selectInnerHeight(state),
+      innerWidth: selectInnerWidth(state),
       json: state.json,
-      isGridMode: state.gui.isGridMode,
+      isGridMode: selectIsGridMode(state),
       omnibar: state.omnibar,
       pathname: selectRoutingPathname(state),
       routerState: state.routing.location.state || {},

@@ -1,12 +1,19 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
+import { selectDeviceSize } from '../../selectors/gui'
 import {
   BrowseIcon, CheckIcon, CameraIcon, CancelIcon, PostIcon, ReplyAllIcon, MoneyIcon,
 } from './EditorIcons'
 import { openModal, closeModal } from '../../actions/modals'
 import { updateBuyLink } from '../../actions/editor'
 import BuyLinkDialog from '../dialogs/BuyLinkDialog'
+
+function mapStateToProps(state) {
+  return {
+    deviceSize: selectDeviceSize(state),
+  }
+}
 
 class PostActionBar extends Component {
 
@@ -123,13 +130,6 @@ class PostActionBar extends Component {
         />
       </div>
     )
-  }
-}
-
-const mapStateToProps = (state) => {
-  const { gui } = state
-  return {
-    deviceSize: gui.deviceSize,
   }
 }
 

@@ -4,6 +4,7 @@ import { get } from 'lodash'
 import { camelizeKeys } from 'humps'
 import { actionChannel, call, fork, put, select, take } from 'redux-saga/effects'
 import * as ACTION_TYPES from '../constants/action_types'
+import { selectLastNotificationCheck } from '../selectors/gui'
 import { refreshAuthenticationToken } from '../actions/authentication'
 import { pauseRequester, unpauseRequester } from '../actions/api'
 import {
@@ -188,7 +189,6 @@ export function* handleRequestError(error, action) {
 }
 
 const pathnameSelector = state => get(state, 'routing.location.pathname', '')
-const lastNotificationCheckSelector = state => get(state, 'gui.lastNotificationCheck')
 
 export function* performRequest(action) {
   const {
@@ -243,7 +243,7 @@ export function* performRequest(action) {
     case 'HEAD':
       options.headers = getHeadHeader(
         accessToken,
-        yield select(lastNotificationCheckSelector)
+        yield select(selectLastNotificationCheck)
       )
       break
     default:

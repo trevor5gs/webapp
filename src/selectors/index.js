@@ -27,6 +27,9 @@ export function sortCategories(a, b) {
 }
 
 // TODO: See RelationshipContainer
+// TODO: See sagas/selectors
+// TODO: See sagas/requester
+// TODO: Search for localized selectors (i.e. createSelector)
 
 // Top level state and props
 const selectJSON = (state) => state.json
