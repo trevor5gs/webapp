@@ -26,6 +26,8 @@ export function sortCategories(a, b) {
   return 0
 }
 
+// TODO: See RelationshipContainer
+
 // Top level state and props
 const selectJSON = (state) => state.json
 
@@ -39,10 +41,6 @@ export const selectParamsUsername = (state, props) => get(props, 'params.usernam
 
 // props.location.xxx
 const selectLocationPathname = (state, props) => get(props, 'location.pathname')
-
-// state.gui.xxx
-const selectSaidHelloTo = (state) => get(state, 'gui.saidHelloTo')
-export const selectActiveUserFollowingType = (state) => get(state, 'gui.activeUserFollowingType')
 
 // state.json.xxx
 const selectCategoryCollection = (state) => get(state, 'json.categories')
@@ -207,8 +205,4 @@ export const makeSelectStreamProps = () =>
       return { renderObj, result, resultPath }
     }
   )
-export const selectHasSaidHelloTo = createSelector(
-  [selectSaidHelloTo, selectParamsUsername], (saidHelloTo, username) =>
-    saidHelloTo.indexOf(username) !== -1
-)
 

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { get, isEqual } from 'lodash'
+import { selectIsMobileGridStream, selectIsNavbarHidden } from '../../selectors/gui'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
@@ -436,8 +437,8 @@ function mapStateToProps(state, ownProps) {
     hasMention: editor.hasMention,
     isLoading: editor.isLoading,
     isPosting: editor.isPosting,
-    isMobileGridStream: state.gui.deviceSize === 'mobile' && state.gui.isGridMode,
-    isNavbarHidden: state.gui.isNavbarHidden,
+    isMobileGridStream: selectIsMobileGridStream(state),
+    isNavbarHidden: selectIsNavbarHidden(state),
     order: editor.order,
     orderLength: get(editor, 'order.length'),
     pathname: state.routing.location.pathname,

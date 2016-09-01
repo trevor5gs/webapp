@@ -5,6 +5,15 @@ import { isIOS } from '../vendor/jello'
 import { scrollToTop } from '../vendor/scrolling'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
+import {
+  selectCurrentStream,
+  selectDeviceSize,
+  selectIsGridMode,
+  selectIsLayoutToolHidden,
+  selectIsNotificationsActive,
+  selectIsNotificationsUnread,
+  selectIsProfileMenuActive,
+} from '../selectors/gui'
 import { logout } from '../actions/authentication'
 import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
 import { checkForNewNotifications } from '../actions/notifications'
@@ -16,8 +25,8 @@ import { getDiscoverAction } from '../containers/DiscoverContainer'
 import Session from '../vendor/session'
 
 function mapStateToProps(state) {
-  const { authentication, gui, json, profile, routing } = state
-  const currentStream = gui.currentStream
+  const { authentication, json, profile, routing } = state
+  const currentStream = selectCurrentStream(state)
   const isLoggedIn = authentication.isLoggedIn
   const pathname = routing.location.pathname
   const result = json.pages ? json.pages[pathname] : null
@@ -26,15 +35,15 @@ function mapStateToProps(state) {
   if (isLoggedIn) {
     return {
       avatar: profile.avatar,
-      deviceSize: gui.deviceSize,
+      deviceSize: selectDeviceSize(state),
       currentStream,
       hasLoadMoreButton,
-      isGridMode: gui.isGridMode,
-      isLayoutToolHidden: gui.isLayoutToolHidden,
+      isGridMode: selectIsGridMode(state),
+      isLayoutToolHidden: selectIsLayoutToolHidden(state),
       isLoggedIn,
-      isNotificationsActive: gui.isNotificationsActive,
-      isNotificationsUnread: gui.isNotificationsUnread,
-      isProfileMenuActive: gui.isProfileMenuActive,
+      isNotificationsActive: selectIsNotificationsActive(state),
+      isNotificationsUnread: selectIsNotificationsUnread(state),
+      isProfileMenuActive: selectIsProfileMenuActive(state),
       pathname,
       username: profile.username,
     }

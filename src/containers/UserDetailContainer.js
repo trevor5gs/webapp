@@ -4,13 +4,15 @@ import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
 import shallowCompare from 'react-addons-shallow-compare'
 import { USER } from '../constants/action_types'
+import { selectParamsType, selectParamsUsername, selectUser } from '../selectors'
 import {
   selectActiveUserFollowingType,
+  selectCoverDPI,
+  selectCoverOffset,
   selectHasSaidHelloTo,
-  selectParamsType,
-  selectParamsUsername,
-  selectUser,
-} from '../selectors'
+  selectIsCoverHidden,
+  selectIsOmnibarActive,
+} from '../selectors/gui'
 import { setActiveUserFollowingType } from '../actions/gui'
 import { sayHello } from '../actions/zeros'
 import {
@@ -46,11 +48,11 @@ const selectUserDetailStreamAction = createSelector(
 )
 
 export function mapStateToProps(state, props) {
-  const { authentication, gui, stream } = state
+  const { authentication, stream } = state
   const type = selectParamsType(state, props) || 'posts'
   const username = selectParamsUsername(state, props)
   const user = selectUser(state, props)
-  const activeUserFollowingType = gui.activeUserFollowingType
+  const activeUserFollowingType = selectActiveUserFollowingType(state)
   const isLoggedIn = authentication.isLoggedIn
   const isSelf = isLoggedIn && user ? user.relationshipPriority === 'self' : false
   const hasSaidHelloTo = user ? !isSelf && selectHasSaidHelloTo(state, props) : false
@@ -59,11 +61,11 @@ export function mapStateToProps(state, props) {
 
   return {
     activeUserFollowingType,
-    coverDPI: gui.coverDPI,
+    coverDPI: selectCoverDPI(state),
     coverImage: user && user.coverImage ? user.coverImage : null,
-    coverOffset: gui.coverOffset,
-    isCoverActive: !gui.isOmnibarActive,
-    isCoverHidden: gui.isCoverHidden,
+    coverOffset: selectCoverOffset(state),
+    isCoverActive: !selectIsOmnibarActive(state),
+    isCoverHidden: selectIsCoverHidden(state),
     isLoggedIn,
     isSelf,
     hasZeroFollowers: user ? user.followersCount < 1 : false,

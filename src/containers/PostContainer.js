@@ -3,6 +3,13 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { get } from 'lodash'
 import * as MAPPING_TYPES from '../constants/mapping_types'
+import {
+  selectColumnWidth,
+  selectCommentOffset,
+  selectContentWidth,
+  selectInnerHeight,
+  selectIsGridMode,
+} from '../selectors/gui'
 import { getLinkObject } from '../helpers/json_helper'
 import Editor from '../components/editor/Editor'
 import {
@@ -17,7 +24,7 @@ import {
 } from '../components/posts/PostRenderables'
 
 export function mapStateToProps(state, props) {
-  const { gui, json, profile: currentUser, routing: { location: { pathname } } } = state
+  const { json, profile: currentUser, routing: { location: { pathname } } } = state
   const post = json[MAPPING_TYPES.POSTS][props.post.id]
   const author = json[MAPPING_TYPES.USERS][post.authorId]
   const assets = json.assets
@@ -33,20 +40,20 @@ export function mapStateToProps(state, props) {
   const repostsCount = post.repostsCount
   const showCommentEditor = !showEditor && !props.isPostDetail && post.showComments
   const showComments = showCommentEditor && post.commentsCount > 0
-  const isGridMode = props.isPostDetail ? false : gui.isGridMode
+  const isGridMode = props.isPostDetail ? false : selectIsGridMode(state)
 
   let newProps = {
     assets,
     author,
     categoryName: category ? category.name : null,
     categoryPath: category ? `/discover/${category.slug}` : null,
-    columnWidth: gui.columnWidth,
-    commentOffset: gui.deviceSize === 'mobile' ? 40 : 60,
+    columnWidth: selectColumnWidth(state),
+    commentOffset: selectCommentOffset(state),
     commentsCount: post.commentsCount,
     contentWarning: post.contentWarning,
-    contentWidth: gui.contentWidth,
+    contentWidth: selectContentWidth(state),
     currentUser,
-    innerHeight: gui.innerHeight,
+    innerHeight: selectInnerHeight(state),
     isGridMode,
     isOnFeaturedCategory,
     isRepost,

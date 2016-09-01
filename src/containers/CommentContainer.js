@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import * as MAPPING_TYPES from '../constants/mapping_types'
+import { selectIsGridMode } from '../selectors/gui'
 import Editor from '../components/editor/Editor'
 import {
   CommentBody,
@@ -10,7 +11,7 @@ import {
 } from '../components/comments/CommentRenderables'
 
 export function mapStateToProps(state, props) {
-  const { gui, json, profile } = state
+  const { json, profile } = state
   const comment = json[MAPPING_TYPES.COMMENTS][props.comment.id]
   const author = json[MAPPING_TYPES.USERS][comment.authorId]
   const post = props.post || json[MAPPING_TYPES.POSTS][comment.postId]
@@ -21,7 +22,7 @@ export function mapStateToProps(state, props) {
     commentBody: comment.body,
     currentUser: profile,
     isEditing: comment.isEditing,
-    isGridMode: gui.isGridMode,
+    isGridMode: selectIsGridMode(state),
     post,
   }
 }

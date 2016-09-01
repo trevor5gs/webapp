@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import * as ACTION_TYPES from '../constants/action_types'
+import { selectDeviceSize, selectIsNavbarHidden } from '../selectors/gui'
 import * as commentActions from '../actions/comments'
 import { openModal, closeModal } from '../actions/modals'
 import ConfirmDialog from '../components/dialogs/ConfirmDialog'
@@ -21,9 +22,9 @@ export function mapStateToProps(state, props) {
   }
   return {
     canDeleteComment,
-    deviceSize: state.gui.deviceSize,
+    deviceSize: selectDeviceSize(state),
     isLoggedIn: state.authentication.isLoggedIn,
-    isNavbarHidden: state.gui.isNavbarHidden,
+    isNavbarHidden: selectIsNavbarHidden(state),
     isOwnComment,
   }
 }

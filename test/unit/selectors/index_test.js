@@ -8,7 +8,6 @@ import {
   selectParamsType,
   selectParamsUsername,
   selectPost,
-  selectHasSaidHelloTo,
   selectUser,
   sortCategories,
 } from '../../../src/selectors'
@@ -140,14 +139,6 @@ describe('selectors', () => {
       const selected = selectCategories(state, props)
       const compare = { primary, secondary, tertiary }
       expect(selected).to.deep.equal(compare)
-    })
-  })
-
-  context('#selectHasSaidHelloTo', () => {
-    it('returns the gui.saidHelloTo', () => {
-      const state = { json, gui: { saidHelloTo: ['archer', 'lana'] } }
-      const props = { params: { ...params, username: 'archer' }, location }
-      expect(selectHasSaidHelloTo(state, props)).to.be.true
     })
   })
 })

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { sample } from 'lodash'
 import { selectCategories, selectCategoryPageTitle } from '../selectors'
+import { selectCoverDPI } from '../selectors/gui'
 import {
   bindDiscoverKey,
   getCategories,
@@ -89,7 +90,7 @@ function mapStateToProps(state, props) {
   const titlePrefix = pageTitle ? `${pageTitle} | ` : ''
   const title = `${titlePrefix} Ello`
   return {
-    coverDPI: gui.coverDPI,
+    coverDPI: selectCoverDPI(state),
     isBeaconActive: isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
     isLoggedIn,
     pageTitle,
