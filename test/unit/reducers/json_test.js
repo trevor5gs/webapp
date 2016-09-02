@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import { LOCATION_CHANGE } from 'react-router-redux'
 import { isValidResult } from '../../support/test_helpers'
 import { stub, json, clearJSON } from '../../support/stubs'
 import * as subject from '../../../src/reducers/json'
@@ -399,22 +398,6 @@ describe('json reducer', () => {
           ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS,
           ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE,
         ])
-      })
-    })
-
-    context('when the action is LOCATION_CHANGE', () => {
-      it('calls #methods.clearSearchResults if query params are different', () => {
-        const spy = sinon.stub(subject.methods, 'clearSearchResults')
-        const action = {
-          type: LOCATION_CHANGE,
-          payload: {
-            pathname: 'ants',
-            query: { terms: 'awesome search' },
-          },
-        }
-        subject.json(json, action)
-        expect(spy.called).to.be.true
-        subject.methods.clearSearchResults.restore()
       })
     })
 
