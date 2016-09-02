@@ -1,38 +1,24 @@
-import Communities from '../../containers/onboarding/Communities'
-import AwesomePeople from '../../containers/onboarding/AwesomePeople'
-import ProfileHeader from '../../containers/onboarding/ProfileHeader'
-import ProfileAvatar from '../../containers/onboarding/ProfileAvatar'
-import ProfileBio from '../../containers/onboarding/ProfileBio'
+import OnboardingCategoriesContainer from '../../containers/OnboardingCategoriesContainer'
+import OnboardingInvitationsContainer from '../../containers/OnboardingInvitationsContainer'
+import OnboardingSettingsContainer from '../../containers/OnboardingSettingsContainer'
 
 export default [
   {
-    path: 'onboarding/communities',
+    path: 'onboarding/categories',
     getComponent(location, cb) {
-      cb(null, Communities)
+      cb(null, OnboardingCategoriesContainer)
     },
   },
   {
-    path: 'onboarding/awesome-people',
+    path: 'onboarding/settings',
     getComponent(location, cb) {
-      cb(null, AwesomePeople)
+      cb(null, OnboardingSettingsContainer)
     },
   },
   {
-    path: 'onboarding/profile-header',
+    path: 'onboarding/invitations',
     getComponent(location, cb) {
-      cb(null, ProfileHeader)
-    },
-  },
-  {
-    path: 'onboarding/profile-avatar',
-    getComponent(location, cb) {
-      cb(null, ProfileAvatar)
-    },
-  },
-  {
-    path: 'onboarding/profile-bio',
-    getComponent(location, cb) {
-      cb(null, ProfileBio)
+      cb(null, OnboardingInvitationsContainer)
     },
   },
 ]

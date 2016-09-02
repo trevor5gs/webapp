@@ -21,7 +21,7 @@ function mapStateToProps(state) {
   const isLoggedIn = authentication.isLoggedIn
   const pathname = routing.location.pathname
   const result = json.pages ? json.pages[pathname] : null
-  const hasLoadMoreButton = Boolean(result && result.newIds)
+  const hasLoadMoreButton = Boolean(result && result.morePostIds)
 
   if (isLoggedIn) {
     return {

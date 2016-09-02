@@ -1,7 +1,7 @@
 import { isFSA } from '../../support/test_helpers'
-import * as subject from '../../../src/actions/tracking'
+import * as subject from '../../../src/actions/analytics'
 
-describe('tracking actions', () => {
+describe('analytics actions', () => {
   context('#trackEvent', () => {
     const action = subject.trackEvent('event-to-track', { sentAt: 'today' })
 

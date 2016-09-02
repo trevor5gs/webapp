@@ -26,12 +26,16 @@
   background-color: rgba(black, 0.4)
 .no-touch .Categories .CategoryLink:hover:before
   background-color: rgba(black, 0.6)
+.Categories .CategoryLink.isActive:before
+  background-color: rgba(black, 0.8)
 
 .CategoryLinkName
   position: relative
   display: inline-block
   z-index: 3
   margin-top: rem(72)
+button.CategoryLink .CategoryLinkName
+  margin-top: rem(10)
 
 .CategoryLinkName:after
   transition: width $speed $ease
@@ -45,12 +49,25 @@
 .no-touch .Categories .CategoryLink:hover .CategoryLinkName:after
   width: 100%
 
+.CategoryLinkName .CheckMark
+  position: absolute
+  top: 0
+  left: rem(-25)
+  transform: scale(0.6)
+.CategoryLinkName .CheckMark g
+  stroke: #00d100
+  stroke-width: 2
+
 @media(min-width: #{$break-2})
+  .CategoryLinkName .CheckMark
+    top: rem(5)
   .Categories .CategoryLink
     height: rem(275)
     font-size: rem(24)
   .CategoryLinkName
     margin-top: rem(130)
+  button.CategoryLink .CategoryLinkName
+    margin-top: rem(20)
   .CategoryLinkName:after
     top: rem(32)
 

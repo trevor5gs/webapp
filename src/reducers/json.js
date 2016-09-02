@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
-import { cloneDeep, get, isEqual, merge, setWith, uniq, values } from 'lodash'
+import { cloneDeep, get, isEqual, merge, setWith, union, uniq, values } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
@@ -164,9 +164,12 @@ methods.addModels = (state, type, data) => {
 
 methods.addNewIdsToResult = (state, newState) => {
   const result = newState.pages[path]
-  if (!result || !result.newIds) { return state }
-  result.ids = result.newIds.concat(result.ids)
-  delete result.newIds
+  if (!result || !result.morePostIds) { return state }
+  // if you have created a post it gets prepended to the result ids
+  // when we come back with additional ids we want them to be unique
+  // and in descending order, which fills in the gaps and is what union does
+  result.ids = union(result.morePostIds, result.ids)
+  delete result.morePostIds
   return newState
 }
 
@@ -221,33 +224,19 @@ methods.updateResult = (response, newState, action) => {
     }
     // need to check agianst the typeof the result ids since we hack this for
     // notifications and the ids is actually an array of notificaitons not ids
-  } else if (existingResult &&
-             (typeof existingResult.ids[0] === 'string' || typeof existingResult.ids[0] === 'number') &&
-             existingResult.ids[0] !== result.ids[0]) {
+  } else if (existingResult && typeof existingResult.ids[0] === 'string') {
     // only do this for top level streams, nested ones like lovers/reposters
     // should just update with the new results
-    if (hasLoadedFirstStream && !resultKey && !pathname.match(/\/(find|search)/)) {
-      let existingIndex = -1
-      if (existingResult.newIds && existingResult.newIds.length) {
-        existingIndex = result.ids.indexOf(existingResult.newIds[0])
-        if (existingIndex > 0) {
-          existingResult.newIds = result.ids.slice(0, existingIndex).concat(existingResult.newIds)
-        }
+    if (existingResult.ids.indexOf(result.ids[result.ids.length - 1]) === -1) {
+      newState.pages[resultPath] = result
+    } else if (hasLoadedFirstStream && !resultKey && !pathname.match(/\/(find|search)/)) {
+      if (existingResult.morePostIds && existingResult.morePostIds.length) {
+        existingResult.morePostIds = union(result.ids, existingResult.morePostIds)
       } else {
-        existingIndex = result.ids.indexOf(existingResult.ids[0])
-        if (existingIndex > 0) {
-          existingResult.newIds = result.ids.slice(0, existingIndex)
-        }
+        existingResult.morePostIds = result.ids
       }
     } else {
-      // this condition should only happen if there was an existingResult
-      // and the new result is more than one page away from the existingResult
-      // resetting the result would clear out any of the 'old' pages in next
-      // this could break down if the results were random and needed a seed
-      // for pagination at which point we would want to check against the seed
-      // and reset the result if the previous seed didn't match the new one
-      // to avoid duplicate results
-      newState.pages[resultPath] = { ...existingResult, ...result }
+      newState.pages[resultPath] = result
     }
   } else if (existingResult && !isEqual(existingResult.pagination, emptyPagination())) {
     // make sure we don't have an empty pagination object
@@ -305,18 +294,16 @@ methods.deleteModel = (state, newState, action, mappingType) => {
 
 methods.updateCurrentUser = (newState, action) => {
   const { response } = action.payload
-  const newProfile = { ...response.users }
-  const curUser = newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id]
-  if (action.type !== ACTION_TYPES.PROFILE.LOAD_SUCCESS) {
-    if (curUser.avatar.tmp) {
-      newProfile.avatar = { ...response.users.avatar, tmp: curUser.avatar.tmp }
-    }
-    if (curUser.coverImage.tmp) {
-      newProfile.coverImage = { ...response.users.coverImage, tmp: curUser.coverImage.tmp }
-    }
+  if (!newState[MAPPING_TYPES.USERS]) { newState[MAPPING_TYPES.USERS] = {} }
+  const curUser = newState[MAPPING_TYPES.USERS][`${response[MAPPING_TYPES.USERS].id}`]
+  const newUser = curUser ? { ...curUser, ...response[MAPPING_TYPES.USERS] } : response[MAPPING_TYPES.USERS]
+  if (get(curUser, 'avatar.tmp')) {
+    newUser.avatar.tmp = curUser.avatar.tmp
   }
-  // updates the whole current user..
-  newState[MAPPING_TYPES.USERS][response[MAPPING_TYPES.USERS].id] = newProfile
+  if (get(curUser, 'coverImage.tmp')) {
+    newUser.coverImage.tmp = curUser.coverImage.tmp
+  }
+  newState[MAPPING_TYPES.USERS][`${response[MAPPING_TYPES.USERS].id}`] = newUser
   return newState
 }
 
@@ -414,11 +401,11 @@ export default function json(state = {}, action = { type: '' }) {
         const keepers = {}
         const curUser = methods.getCurrentUser(action.payload.json)
         if (curUser) {
-          if (curUser.avatar.tmp) {
-            delete curUser.avatar
+          if (curUser.avatar && curUser.avatar.tmp) {
+            delete curUser.avatar.tmp
           }
-          if (curUser.coverImage.tmp) {
-            delete curUser.coverImage
+          if (curUser.coverImage && curUser.coverImage.tmp) {
+            delete curUser.coverImage.tmp
           }
           setWith(keepers, [MAPPING_TYPES.USERS, curUser.id], curUser, Object)
         }

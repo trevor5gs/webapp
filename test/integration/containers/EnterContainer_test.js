@@ -4,10 +4,10 @@ import { pretendServer } from '../../support/pretender'
 import { createElloStore } from '../../../src/store'
 import TextControl from '../../../src/components/forms/TextControl'
 import PasswordControl from '../../../src/components/forms/PasswordControl'
-import SignIn from '../../../src/containers/authentication/SignIn'
+import EnterContainer from '../../../src/containers/EnterContainer'
 import { PROMOTIONS } from '../../../src/constants/action_types'
 
-describe('SignIn', function () {
+describe('EnterContainer', function () {
   beforeEach(function () {
     this.server = pretendServer((server) => {
       server.post(`${ENV.AUTH_DOMAIN}/api/oauth/login`, () => {
@@ -64,7 +64,7 @@ describe('SignIn', function () {
     const { sagaTask } = store
 
     const miniApp = (
-      <SignIn />
+      <EnterContainer />
     )
 
     const wrapper = mount(miniApp, { context: { store } })

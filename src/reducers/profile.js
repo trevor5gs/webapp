@@ -14,7 +14,6 @@ function parseJWT(token) {
 
 export function profile(state = {}, action) {
   let assetState = null
-  let assetType = null
   switch (action.type) {
     case PROFILE.AVAILABILITY_SUCCESS:
       return {
@@ -59,13 +58,21 @@ export function profile(state = {}, action) {
         ...state,
         errors: null,
       }
-    case PROFILE.SAVE_SUCCESS:
-      return {
+    case PROFILE.SAVE_SUCCESS: {
+      const obj = {
         ...state,
         ...action.payload.response.users,
         availability: null,
         id: `${action.payload.response.users.id}`,
       }
+      if (state.avatar.tmp) {
+        obj.avatar.tmp = state.avatar.tmp
+      }
+      if (state.coverImage.tmp) {
+        obj.coverImage.tmp = state.coverImage.tmp
+      }
+      return obj
+    }
     // should only happen if we get a 422 meaning
     // the current password entered was wrong
     case PROFILE.SAVE_FAILURE:
@@ -75,12 +82,16 @@ export function profile(state = {}, action) {
       }
     // Store a base64 reprensentation of the asset in `tmp` while uploading
     case PROFILE.TMP_AVATAR_CREATED:
-    case PROFILE.TMP_COVER_CREATED:
-      assetType = action.type === PROFILE.TMP_AVATAR_CREATED ? 'avatar' : 'coverImage'
+    case PROFILE.TMP_COVER_CREATED: {
+      const { type } = action
+      const assetType = type === PROFILE.TMP_AVATAR_CREATED ? 'avatar' : 'coverImage'
+      const key = type === PROFILE.TMP_AVATAR_CREATED ? 'hasAvatarPresent' : 'hasCoverImagePresent'
       return {
         ...state,
         [assetType]: { ...state[assetType], ...action.payload },
+        [key]: true,
       }
+    }
     case REHYDRATE:
       if (!action.payload.profile) { return state }
       assetState = {
@@ -89,10 +100,10 @@ export function profile(state = {}, action) {
         dataExport: null,
       }
       if (_.get(assetState, 'avatar.tmp')) {
-        delete assetState.avatar
+        delete assetState.avatar.tmp
       }
       if (_.get(assetState, 'coverImage.tmp')) {
-        delete assetState.coverImage
+        delete assetState.coverImage.tmp
       }
       return assetState
     case PROFILE.SAVE_AVATAR_SUCCESS:

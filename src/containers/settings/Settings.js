@@ -192,7 +192,6 @@ class Settings extends Component {
 
   onConfirmAccountWasDeleted = () => {
     const { dispatch } = this.props
-    this.closeModal()
     dispatch(deleteProfile())
   }
 
@@ -320,19 +319,20 @@ class Settings extends Component {
       <MainView className="Settings">
         <div className="SettingsCoverPicker">
           <Uploader
-            title="Upload a header image"
-            message="Or drag & drop"
-            recommend="Recommended image size: 2560 x 1440"
-            openAlert={bindActionCreators(openAlert, dispatch)}
+            className="isSettingsCoverUploader"
             closeAlert={bindActionCreators(closeAlert, dispatch)}
+            line1="2560 x 1440"
+            line2="Animated Gifs work too"
+            openAlert={bindActionCreators(openAlert, dispatch)}
             saveAction={bindActionCreators(saveCover, dispatch)}
+            title="Upload Header"
           />
           <Cover
             coverDPI={coverDPI}
             coverImage={profile.coverImage}
             coverOffset={coverOffset}
             isHidden={isCoverHidden}
-            isModifiable
+            useGif
           />
         </div>
         <button className="SettingsLogoutButton" onClick={this.onLogOut}>Logout</button>
@@ -340,18 +340,19 @@ class Settings extends Component {
         <div className="SettingsBody" >
           <div className="SettingsAvatarPicker" >
             <Uploader
-              title="Pick an Avatar"
-              message="Or drag & drop it"
-              recommend="Recommended image size: 360 x 360"
+              className="isAvatarUploader isSettingsAvatarUploader isLGUploader"
+              title="Upload Avatar"
+              line1="360 x 360"
+              line2="Animated Gifs work too"
               openAlert={bindActionCreators(openAlert, dispatch)}
               closeAlert={bindActionCreators(closeAlert, dispatch)}
               saveAction={bindActionCreators(saveAvatar, dispatch)}
             />
             <Avatar
               className="isLarge"
-              isModifiable
               size="large"
               sources={profile.avatar}
+              useGif
             />
           </div>
 
@@ -411,20 +412,21 @@ class Settings extends Component {
                 status={currentPasswordState.status}
                 tabIndex={requiresSave ? '4' : '0'}
               />
-              <FormButton disabled={!requiresSave}>Save</FormButton>
+              <FormButton className="FormButton isRounded" disabled={!requiresSave}>
+                Save
+              </FormButton>
             </div>
           </form>
 
           <InfoForm
+            className="SettingsInfoForm"
             controlClassModifiers={boxControlClassNames}
-            showSaveMessage
             tabIndexStart={requiresSave ? 5 : 4}
           />
 
           <p className="SettingsLinks">
             <Link to={`/${profile.username}`}>View profile</Link>
             <Link to="/invitations">Invite people</Link>
-            <Link to="/onboarding">Launch on-boarding</Link>
           </p>
 
           <div className="SettingsPreferences">

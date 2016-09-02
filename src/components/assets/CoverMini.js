@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import ImageAsset from '../assets/ImageAsset'
+import { isGif } from '../../helpers/file_helper'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -11,11 +12,15 @@ const STATUS = {
 }
 
 export function getSource(props) {
-  const { coverImage } = props
+  const { coverImage, useGif } = props
   if (!coverImage) {
     return ''
+  } else if (coverImage.tmp && coverImage.tmp.url) {
+    return coverImage.tmp.url
   } else if (typeof coverImage === 'string') {
     return coverImage
+  } else if (useGif && isGif(coverImage.original.url)) {
+    return coverImage.original.url
   }
   return coverImage.xhdpi ? coverImage.xhdpi.url : null
 }

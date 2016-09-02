@@ -7,7 +7,7 @@ import MessageDialog from '../components/dialogs/MessageDialog'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import { closeModal, openModal } from '../actions/modals'
-import { trackEvent } from '../actions/tracking'
+import { trackEvent } from '../actions/analytics'
 import { sendMessage } from '../actions/user'
 import { getElloPlatform } from '../vendor/jello'
 

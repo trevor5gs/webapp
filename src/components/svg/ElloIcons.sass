@@ -2,7 +2,8 @@
 
 .ElloMark,
 .ElloDonutMark,
-.ElloRainbowMark
+.ElloRainbowMark,
+.ElloOutlineMark
   display: inline-block
   overflow: hidden
   border-radius: rem(40)
@@ -15,4 +16,13 @@
   top: 0
   left: 0
   fill: #ed2224
+
+.ElloOutlineMark
+  border: 1px solid #aaa
+.ElloOutlineMark .FillPath
+  fill: transparent
+.ElloOutlineMark .SmilePath
+  transform: translateX(-1px)
+  stroke: #aaa
+  fill: transparent !important
 

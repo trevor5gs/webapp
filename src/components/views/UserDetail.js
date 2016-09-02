@@ -42,9 +42,7 @@ export const UserDetail = (props) => {
   const useGif = user.viewsAdultContent || !user.postsAdultContent
 
   // construct component props
-  const coverProps = {
-    coverDPI, coverImage, coverOffset, isHidden: isCoverHidden, isModifiable: isSelf, useGif,
-  }
+  const coverProps = { coverDPI, coverImage, coverOffset, isHidden: isCoverHidden, useGif }
   const userListProps = { className: 'isUserDetailHeader', showBlockMuteButton: true, useGif, user }
   const tabProps = { activeType, className: 'LabelTabList', tabClasses: 'LabelTab', tabs }
   const streamProps = { action: streamAction, isUserDetail: true }

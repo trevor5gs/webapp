@@ -111,7 +111,9 @@ class RegistrationRequestForm extends Component {
             <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
             <p className="HoppyStatusMessage"><span /></p>
           }
-          <FormButton disabled={!isValid} tabIndex="2">Sign up</FormButton>
+          <FormButton className="FormButton isRounded" disabled={!isValid} tabIndex="2">
+            Sign up
+          </FormButton>
         </form>
         <Link className="HaveAccountLink" to="/enter">Have an account?</Link>
       </div>

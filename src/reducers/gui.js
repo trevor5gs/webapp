@@ -233,6 +233,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
           ...initialNonPersistedState,
           ...initialScrollState,
           isLayoutToolHidden: state.isLayoutToolHidden,
+          isOnboardingView: state.isOnboardingView,
         }
       }
       return {

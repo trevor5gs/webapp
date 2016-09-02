@@ -154,17 +154,17 @@ describe('json reducer', () => {
 
 
   describe('#addNewIdsToResult', () => {
-    it('returns the original state if no result.newIds', () => {
+    it('returns the original state if no result.morePostIds', () => {
       const state = { yo: 'yo', mama: 'mama' }
       json.pages = { sweetpath: { } }
       expect(subject.methods.addNewIdsToResult(state, json)).to.equal(state)
     })
 
-    it('concats the existing result ids to the newIds and deletes the old newIds', () => {
-      json.pages = { sweetpath: { newIds: ['1', '2', '3'], ids: ['10', '20', '30'] } }
+    it('concats the existing result ids to the morePostIds and deletes the old morePostIds', () => {
+      json.pages = { sweetpath: { morePostIds: ['1', '2', '3'], ids: ['10', '20', '30'] } }
       subject.setPath('sweetpath')
       subject.methods.addNewIdsToResult({}, json)
-      expect(json.pages.sweetpath.newIds).to.be.undefined
+      expect(json.pages.sweetpath.morePostIds).to.be.undefined
       expect(json.pages.sweetpath.ids).to.deep.equal(['1', '2', '3', '10', '20', '30'])
     })
   })
@@ -232,7 +232,7 @@ describe('json reducer', () => {
       })
 
       context('with an existingResult and existingResult.ids[0] !== result.ids[0]', () => {
-        it('adds newIds if hasLoadedFirstStream && it is not a nested result && the index is greater than 0', () => {
+        it('adds morePostIds if hasLoadedFirstStream && it is not a nested result && the index is greater than 0', () => {
           const result = { pagination: 'sweet' }
           sinon.stub(subject.methods, 'getResult', () => result)
           // json.pages = { sweetness: { ids: ['1', '2'], next: { ids: ['1', '2'] } } }

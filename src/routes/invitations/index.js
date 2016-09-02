@@ -1,10 +1,10 @@
-import Invitations from '../../containers/invitations/Invitations'
+import InvitationsContainer from '../../containers//InvitationsContainer'
 
 export default [
   {
     path: 'invitations',
     getComponents(location, cb) {
-      cb(null, Invitations)
+      cb(null, InvitationsContainer)
     },
   },
 ]

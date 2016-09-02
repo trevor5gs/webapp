@@ -54,13 +54,17 @@
 .Cover.hasOverlay:before
   background-color: rgba(black, 0.3)
 
-.Cover.isModifiable:before
-  background-color: rgba(black, 0.1)
+.Cover.hasOverlay60:before
+  background-color: rgba(black, 0.6)
 
-.UserDetailCoverUploader + .Cover.isModifiable:before
-  background-color: transparent
-
-.no-touch .UserDetailCoverUploader:hover + .Cover.isModifiable:before,
-.hasDragOver + .Cover.isModifiable:before
-  background-color: rgba(black, 0.4)
+.AnimatedCover
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  z-index: -1
+  min-height: rem(220)
+  text-align: center
+  background-size: cover
 

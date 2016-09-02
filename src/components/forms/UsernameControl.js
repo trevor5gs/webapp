@@ -18,7 +18,10 @@ class UsernameControl extends Component {
 
   onClickUsernameSuggestion = (e) => {
     const val = e.target.title
-    this.formControl.onChangeControl({ target: { value: val } })
+    const element = document.getElementById('username')
+    if (element) {
+      element.value = val
+    }
   }
 
   renderSuggestions = () => {
@@ -28,12 +31,11 @@ class UsernameControl extends Component {
         <ul className="FormControlSuggestionList hasSuggestions">
           <p>Here are some available usernames &mdash;</p>
           {suggestions.map((suggestion, i) =>
-            <li>
+            <li key={`suggestion_${i}`}>
               <button
                 className="FormControlSuggestionButton"
                 title={suggestion}
                 onClick={this.onClickUsernameSuggestion}
-                key={`suggestion_${i}`}
               >
                 {suggestion}
               </button>
@@ -55,7 +57,6 @@ class UsernameControl extends Component {
         {...this.props}
         autoCapitalize="off"
         autoCorrect="off"
-        ref={(comp) => { this.formControl = comp }}
         maxLength="50"
         renderFeedback={this.renderSuggestions}
         trimWhitespace

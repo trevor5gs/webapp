@@ -1,0 +1,96 @@
+@import ../../vendor/lib
+
+.OnboardingNavbar
+  +sans-typeset
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  height: rem(70)
+  padding: rem(10)
+  background-color: #f0f0f0
+  color: black
+  z-index: $z-navbar
+  text-align: right
+
+.OnboardingNavbar > .ElloMark
+  transform-origin: 0 0
+  position: absolute
+  top: rem(15)
+  left: rem(10)
+
+.OnboardingNextButton:not([disabled])
+  background-color: #00d100
+  border-color: #00d100
+  color: white
+
+.OnboardingNextButton:not([disabled]):active,
+.no-touch .OnboardingNextButton:not([disabled]):hover
+  background-color: #00b100
+  border-color: #00b100
+  color: white
+
+.OnboardingDoneButton
+  color: #aaa
+  margin-left: rem(10)
+
+.OnboardingNavbarCounter
+  float: right
+  position: relative
+  top: rem(15)
+  margin-left: rem(15)
+  color: #aaa
+
+.OnboardingNavbarCounter .CheckMark
+  position: absolute
+  top: rem(-2)
+  left: rem(-17)
+  transform: scale(0.6)
+.OnboardingNavbarCounter .CheckMark g
+  stroke: #00d100
+  stroke-width: 2
+
+@media(max-width: #{$break-2-max})
+  .OnboardingNavbarCounter.isCounterSuccess
+    display: none
+
+@media(min-width: #{$break-2})
+  .OnboardingNavbar
+    top: auto
+    bottom: 0
+    height: rem(100)
+    padding: rem(25) rem(20) rem(20)
+    text-align: center
+  .OnboardingNavbar > .ElloMark
+    top: rem(20)
+    left: rem(20)
+    transform: scale(1.5)
+  .OnboardingDoneButton
+    margin-left: rem(30)
+  .OnboardingNavbarCounter
+    float: none
+    position: absolute
+    top: rem(40)
+    right: rem(20)
+    margin-left: none
+  .OnboardingNavbarCounter .CheckMark
+    left: rem(-20)
+
+
+// -------------------------------------
+// Not the best place for this.
+.OnboardingHeading
+  font-size: rem(16)
+  margin: 0 auto
+  max-width: rem(480)
+  padding: rem(10) rem(10) rem(23)
+.OnboardingHeading > span + span
+  color: #aaa
+
+@media(min-width: #{$break-2})
+  .OnboardingHeading
+    font-size: rem(24)
+    padding: rem(70) rem(10)
+  .OnboardingNavbarCounter
+    right: rem(20)
+

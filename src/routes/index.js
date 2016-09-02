@@ -94,7 +94,7 @@ const routes = (store, isServer = false) => {
         authenticate(NotificationsRoute),
         ...InvitationsRoutes.map(route => authenticate(route)),
         ...SettingsRoutes.map(route => authenticate(route)),
-        createRedirect('onboarding', '/onboarding/communities'),
+        createRedirect('onboarding', '/onboarding/categories'),
         ...OnboardingRoutes.map(route => authenticate(route)),
         ...SearchRoutes,
         UserDetailRoute,

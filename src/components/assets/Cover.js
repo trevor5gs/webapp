@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { isEqual } from 'lodash'
 import classNames from 'classnames'
-import { isGif } from '../../helpers/file_helper'
 import ImageAsset from '../assets/ImageAsset'
+import { isGif } from '../../helpers/file_helper'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -17,8 +17,7 @@ export function getSource(props) {
     return ''
   } else if (coverImage.tmp && coverImage.tmp.url) {
     return coverImage.tmp.url
-  }
-  if (useGif && isGif(coverImage.original.url)) {
+  } else if (useGif && isGif(coverImage.original.url)) {
     return coverImage.original.url
   }
   return coverImage[coverDPI] ? coverImage[coverDPI].url : null
@@ -30,7 +29,6 @@ export default class Cover extends Component {
     coverImage: PropTypes.object,
     coverOffset: PropTypes.number,
     isHidden: PropTypes.bool,
-    isModifiable: PropTypes.bool,
     modifiers: PropTypes.string,
     useGif: PropTypes.bool,
   }
@@ -73,10 +71,10 @@ export default class Cover extends Component {
   }
 
   render() {
-    const { isHidden, isModifiable, modifiers } = this.props
+    const { isHidden, modifiers } = this.props
     const { status } = this.state
     return (
-      <div className={classNames('Cover', status, modifiers, { isHidden }, { isModifiable })}>
+      <div className={classNames('Cover', status, modifiers, { isHidden })}>
         <ImageAsset
           className="CoverImage"
           isBackgroundImage

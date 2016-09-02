@@ -5,10 +5,7 @@ import FormControl from './FormControl'
 class LinksControl extends Component {
 
   static propTypes = {
-    text: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.array,
-    ]),
+    text: PropTypes.string,
   }
 
   static defaultProps = {
@@ -16,16 +13,7 @@ class LinksControl extends Component {
     id: 'external_links',
     label: 'Links',
     name: 'user[links]',
-    placeholder: 'Links (optional)',
-  }
-
-  getLinks() {
-    const { text } = this.props
-    const links = text || ''
-    if (typeof links === 'string') {
-      return links
-    }
-    return links.map((link) => link.text).join(', ')
+    placeholder: 'Links',
   }
 
   render() {
@@ -34,7 +22,6 @@ class LinksControl extends Component {
         {...this.props}
         autoCapitalize="off"
         autoCorrect="off"
-        text={this.getLinks()}
         type="text"
       />
     )

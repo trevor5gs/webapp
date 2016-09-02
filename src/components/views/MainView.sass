@@ -44,6 +44,11 @@
     font-size: rem(24)
     margin: rem(35) 0 0 rem(20)
 
+@media(min-width: #{$break-3})
+  .isOnboardingView ~ .MainView
+    padding-top: 0
+    padding-bottom: rem(80)
+
 @media(min-width: #{$break-4})
   .DiscoverPageTitle
     margin-left: rem(40)

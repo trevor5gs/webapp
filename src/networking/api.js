@@ -105,6 +105,11 @@ export function profileExport() {
     path: getAPIPath('profile/export'),
   }
 }
+export function followCategories() {
+  return {
+    path: getAPIPath('profile/followed_categories'),
+  }
+}
 // Onboarding
 export function awesomePeoplePath() {
   const params = { per_page: PER_PAGE }

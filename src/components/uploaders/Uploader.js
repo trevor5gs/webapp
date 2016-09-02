@@ -6,18 +6,18 @@ class Uploader extends Component {
 
   static propTypes = {
     className: PropTypes.string,
-    message: PropTypes.string,
-    openAlert: PropTypes.func.isRequired,
     closeAlert: PropTypes.func.isRequired,
-    recommend: PropTypes.string,
+    line1: PropTypes.string,
+    line2: PropTypes.string,
+    openAlert: PropTypes.func.isRequired,
     saveAction: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
     className: '',
-    message: null,
-    recommend: null,
+    line1: null,
+    line2: null,
     title: '',
   }
 
@@ -77,28 +77,28 @@ class Uploader extends Component {
   }
 
   render() {
-    const { className, title, message, recommend } = this.props
-    const klassNames = classNames(
+    const { className, title, line1, line2 } = this.props
+    const classList = classNames(
       'Uploader',
       className,
       { hasDragOver: this.state.hasDragOver },
     )
 
     return (
-      <div
-        className={klassNames}
+      <button
+        className={classList}
+        onClick={this.onClickFileBrowser}
         onDrop={this.onDrop}
         onDragOver={this.onDragOver}
         onDragLeave={this.onDragLeave}
       >
-        <button
-          className="UploaderButton"
-          onClick={this.onClickFileBrowser}
-        >
+        <span className="UploaderButton">
           {title}
-        </button>
-        {message ? <p>{message}</p> : null}
-        {recommend ? <p>{recommend}</p> : null}
+        </span>
+        <div className="UploaderMessages">
+          {line1 ? <p>{line1}</p> : null}
+          {line2 ? <p>{line2}</p> : null}
+        </div>
         <input
           className="hidden"
           onChange={this.onFileBrowse}
@@ -106,7 +106,7 @@ class Uploader extends Component {
           type="file"
           accept="image/*"
         />
-      </div>
+      </button>
     )
   }
 }

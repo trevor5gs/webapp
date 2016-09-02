@@ -4,23 +4,12 @@
   position: relative
   z-index: -1
 
-.SettingsCoverPicker > .Uploader
-  position: fixed
-  top: 0
-  left: 0
-  right: 0
-  bottom: 0
-  z-index: 0
-  padding-top: rem(100)
-  text-align: center
-  color: white
-
 .SettingsBody
   position: relative
   max-width: rem(780)
   margin-left: rem(20)
   margin-right: rem(20)
-  margin-bottom: rem(20)
+  padding-bottom: rem(20)
 
 .SettingsLogoutButton
   +sans-typeset
@@ -39,17 +28,20 @@
 .SettingsAvatarPicker
   position: relative
 
-.SettingsAvatarPicker > .Uploader
-  background-color: rgba(black, 0)
-  padding-top: rem(140)
-.SettingsAvatarPicker > .Uploader p
-  color: #aaa
-
 .SettingsAvatarPicker .Avatar
-  pointer-events: none
   position: absolute
   top: 0
   left: 0
+  right: 0
+  z-index: 1
+
+.SettingsAvatarPicker > .Uploader
+  padding-top: rem(20)
+  padding-left: rem(140)
+  text-align: left
+.SettingsAvatarPicker .UploaderMessages
+  width: 160px
+  margin: 0
 
 .SettingsHeader
   margin-top: rem(20)
@@ -97,17 +89,17 @@
 // -------------------------------------
 
 @media(min-width: #{$break-2})
-  .SettingsCoverPicker > .Uploader
-    padding-top: rem(180)
   .SettingsHeading
     font-size: rem(24)
   .SettingsBody
     margin-left: rem(20)
     margin-right: rem(20)
+    max-width: rem(1000)
   .SettingsAvatarPicker > .Uploader
     min-height: rem(180)
     padding-top: rem(40)
     padding-left: rem(220)
+    padding-bottom: rem(40)
 
 @media(min-width: #{$break-3})
   .SettingsBody

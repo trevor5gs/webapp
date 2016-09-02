@@ -6,6 +6,12 @@
 .FormControl.isBoxControl
   margin-bottom: rem(10)
 
+.FormControl.isSimpleWhiteControl
+  margin-bottom: rem(30)
+
+.FormControl.isOnboardingControl
+  margin-bottom: rem(25)
+
 // -------------------------------------
 
 .FormControlInput
@@ -25,6 +31,24 @@
   &::placeholder
     color: #aaa
 
+.FormControlInput.isSimpleWhiteControl
+  border-bottom-color: white
+  font-size: rem(24)
+  min-height: none
+.FormControlInput.isSimpleWhiteControl:focus
+  color: white
+.FormControlInput.isSimpleWhiteControl::placeholder
+  color: white
+
+.FormControlInput.isOnboardingControl
+  border-bottom-color: #f0f0f0
+  font-size: rem(18)
+  padding-right: rem(20)
+
+@media(min-width: #{$break-3})
+  .FormControlInput.isOnboardingControl
+    font-size: rem(24)
+
 .FormControlInput.isBoxControl
   height: rem(60)
   padding: 0 rem(30)
@@ -42,8 +66,25 @@
   border-color: #ccc
   color: black
 
+.FormControlInput.isBoxControl.onGrey
+  background-color: #e2e2e2
+  border: 1px solid #e2e2e2
+.FormControlInput.isBoxControl.onGrey:focus
+  background-color: white
+  border-color: #e2e2e2
+  color: black
+
+
 .hasValue:not(.isInitialValue) > .FormControlInput
   border-color: black
+
+.hasValue:not(.isInitialValue) > .FormControlInput.isSimpleWhiteControl
+  border-color: white
+  color: white
+
+.hasValue:not(.isInitialValue) > .FormControlInput.isOnboardingControl
+  border-color: #f0f0f0
+  color: black
 
 .hasValue:not(.isInitialValue) > .FormControlInput.isBoxControl
   background-color: white
@@ -52,9 +93,15 @@
   background-color: #ccc
   border-color: #ccc
   color: black
+.hasValue:not(.isInitialValue) > .FormControlInput.isBoxControl.onGrey
+  background-color: white
+  border-color: #e2e2e2
+  color: black
+
 
 .isFailing > .FormControlInput,
 .isFailing > .FormControlInput.isBoxControl,
+.isFailing > .FormControlInput.isBoxControl.onGrey,
 .isFailing > .FormControlInput.isBoxControl.onWhite
   border-color: $danger
 
@@ -73,17 +120,24 @@ textarea.FormControlInput.isBoxControl
 .hasFocus > textarea.FormControlInput:not(.isBoxControl)
   height: rem(115)
 
+textarea.FormControlInput.isOnboardingControl
+  height: rem(40)
+  padding-top: 0
+  padding-bottom: 0
+  margin-bottom: 0
+
 @media(min-width: #{$break-3})
   .hasValue > textarea.FormControlInput:not(.isBoxControl),
   .hasFocus > textarea.FormControlInput:not(.isBoxControl)
     height: rem(85)
+  .hasValue > textarea.FormControlInput.isOnboardingControl,
+  .hasFocus > textarea.FormControlInput.isOnboardingControl
+    height: rem(115)
 
+.BatchEmailControl.isBoxControl
+  margin-bottom: rem(25)
 .BatchEmailControl .FormControlInput.isBoxControl
   height: rem(160)
-
-.isOnboardingView ~ .MainView .NameControl > .FormControlInput
-  +sans-bold-family
-  font-size: 1rem
 
 // -------------------------------------
 
@@ -98,6 +152,11 @@ textarea.FormControlInput.isBoxControl
   opacity: 0
   color: #aaa
 
+.FormControlLabel.isSimpleWhiteControl
+  color: white
+  top: rem(33)
+  bottom: auto
+
 .FormControlLabel.isBoxControl
   top: rem(20)
   bottom: auto
@@ -105,6 +164,11 @@ textarea.FormControlInput.isBoxControl
   right: rem(11)
   font-size: rem(11)
   text-align: right
+
+.FormControlLabel.isOnboardingControl
+  display: none
+.hasExceeded .FormControlLabel.isOnboardingControl
+  display: inline-block
 
 .isFailing > .FormControlLabel,
 .hasValue > .FormControlLabel
@@ -120,11 +184,6 @@ textarea.FormControlInput.isBoxControl
 
 .hasExceeded.hasValue > .FormControlLabel
   color: $danger
-
-// Use the older hiding label pattern just for on-boarding
-.isOnboardingView ~ .MainView .InfoForm .hasValue:not(.hasFocus) > .FormControlLabel
-  transform: translate3d(0,rem(-10),0)
-  opacity: 0
 
 // -------------------------------------
 
@@ -143,10 +202,11 @@ textarea.FormControlInput.isBoxControl
   +sans-typeset
   transition: color $speed
   margin-right: rem(10)
-  border-bottom: 1px solid
+  margin-top: rem(5)
+  border-bottom: 1px solid currentColor
 
 .no-touch .FormControlSuggestionButton:hover
-  color: #aaa
+  color: black
 
 .FormControlSuggestionButton:last-of-type
   margin-right: 0
@@ -175,8 +235,11 @@ textarea.FormControlInput.isBoxControl
 .FormControlStatus > .FailureIcon > g
   stroke: $danger
 
-.isOnboardingView ~ .MainView .FormControlStatus
-  display: none
+.FormControlStatus.isSimpleWhiteControl
+  top: rem(5)
+
+.FormControl.isSimpleWhiteControl .FormControlStatusMessage
+  margin-top: rem(30)
 
 .HoppyStatusMessage
   transition: height $speed ease, margin $speed ease, opacity $speed ease

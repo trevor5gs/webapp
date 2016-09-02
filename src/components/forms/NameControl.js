@@ -9,7 +9,7 @@ class NameControl extends Component {
     id: 'name',
     label: 'Name',
     name: 'user[name]',
-    placeholder: 'Name (optional)',
+    placeholder: 'Name',
   }
 
   render() {

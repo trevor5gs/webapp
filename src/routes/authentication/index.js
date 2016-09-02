@@ -1,7 +1,7 @@
-import SignIn from '../../containers/authentication/SignIn'
-import Join from '../../containers/authentication/Join'
-import SignUp from '../../containers/authentication/SignUp'
-import ForgotPassword from '../../containers/authentication/ForgotPassword'
+import EnterContainer from '../../containers/EnterContainer'
+import JoinContainer from '../../containers/JoinContainer'
+import SignUpContainer from '../../containers/SignUpContainer'
+import ForgotPasswordContainer from '../../containers/ForgotPasswordContainer'
 
 export default (store) => {
   function onEnter(nextState, replace) {
@@ -18,28 +18,28 @@ export default (store) => {
     {
       path: 'enter',
       getComponents(location, cb) {
-        cb(null, SignIn)
+        cb(null, EnterContainer)
       },
       onEnter,
     },
     {
       path: 'join(/:invitationCode)',
       getComponents(location, cb) {
-        cb(null, Join)
+        cb(null, JoinContainer)
       },
       onEnter,
     },
     {
       path: 'signup',
       getComponents(location, cb) {
-        cb(null, SignUp)
+        cb(null, SignUpContainer)
       },
       onEnter,
     },
     {
       path: 'forgot-password',
       getComponents(location, cb) {
-        cb(null, ForgotPassword)
+        cb(null, ForgotPasswordContainer)
       },
       onEnter,
     },

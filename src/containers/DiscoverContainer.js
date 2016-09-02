@@ -12,7 +12,7 @@ import {
   // loadFeaturedUsers,
 } from '../actions/discover'
 import { setLastDiscoverBeaconVersion } from '../actions/gui'
-import { trackEvent } from '../actions/tracking'
+import { trackEvent } from '../actions/analytics'
 import { Discover } from '../components/views/Discover'
 
 const BEACON_VERSION = '1'
