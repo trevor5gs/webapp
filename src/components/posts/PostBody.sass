@@ -87,17 +87,19 @@
 .RepostedBody
   position: relative
   min-height: rem(30)
-  padding-top: rem(5)
+  padding-top: rem(40)
+  padding-bottom: rem(20)
   padding-left: rem(40)
 
 .RepostedBody > .Avatar
   position: absolute
-  top: 0
+  top: rem(40)
   left: 0
 
 @media(min-width: #{$break-2})
   .RepostedBody
     min-height: rem(40)
-    padding-top: rem(10)
     padding-left: rem(60)
+  .RepostedBody > .Avatar
+    top: rem(30)
 
