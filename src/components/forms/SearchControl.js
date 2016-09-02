@@ -39,6 +39,7 @@ class SearchControl extends Component {
           autoCapitalize="off"
           autoCorrect="off"
           autoComplete="off"
+          key={activeType}
           ref={(comp) => { this.text = comp }}
           type="text"
         />

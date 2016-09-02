@@ -124,6 +124,12 @@ class SearchContainer extends Component {
   render() {
     const { coverDPI, isLoggedIn, terms } = this.props
     const { promotion, type } = this.state
+    let inputText = terms
+    if (type === 'users' && terms.length === 0) {
+      inputText = '@'
+    } else if (type === 'posts' && terms === '@') {
+      inputText = ''
+    }
     return (
       <MainView className="Search">
         <Promotion
@@ -137,7 +143,7 @@ class SearchContainer extends Component {
           onChange={this.onChangeControl}
           onSubmit={this.onSubmit}
           tabs={TABS}
-          text={terms}
+          text={inputText}
         />
         <StreamContainer
           action={getStreamAction(terms, type)}
