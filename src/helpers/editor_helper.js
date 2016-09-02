@@ -47,6 +47,8 @@ methods.rehydrateEditors = (persistedEditors = {}) => {
           pe.collection[uid] = block
         }
       })
+      pe.isLoading = false
+      pe.isPosting = false
       editors[item] = pe
     }
   })
@@ -299,6 +301,7 @@ methods.getEditorObject = (state = initialState, action) => {
           isLoading: false,
         }
       }
+      newState.isPosting = false
       return newState
     case EDITOR.TMP_IMAGE_CREATED:
       newState = methods.removeEmptyTextBlock(newState)
@@ -315,7 +318,9 @@ methods.getEditorObject = (state = initialState, action) => {
     case EDITOR.UPDATE_BUY_LINK:
       return methods.updateBuyLink(newState, action)
     case EDITOR.UPDATE_BLOCK:
-      return methods.updateBlock(newState, action)
+      newState = methods.updateBlock(newState, action)
+      newState.isPosting = false
+      return newState
     default:
       return state
   }
