@@ -46,7 +46,9 @@ describe('editor helper', () => {
     it('returns persisted editors and not others', () => {
       const persistedEditors = { 0: { collection: {}, shouldPersist: true }, 1: { collection: {} } }
       state = subject.methods.rehydrateEditors(persistedEditors)
-      expect(state).to.deep.equal({ 0: { collection: {}, shouldPersist: true } })
+      expect(state).to.deep.equal({ 0: {
+        collection: {}, isLoading: false, isPosting: false, shouldPersist: true,
+      } })
     })
 
     it('should clear out blobs in image blocks', () => {
@@ -886,9 +888,13 @@ describe('editor helper', () => {
     })
 
     it('calls #updateBlock with EDITOR.UPDATE_BLOCK', () => {
-      spy = sinon.stub(subject.methods, 'updateBlock')
+      spy = sinon.spy(subject.methods, 'updateBlock')
       action = {
         type: EDITOR.UPDATE_BLOCK,
+        payload: {
+          block: {},
+          uid: 1,
+        },
       }
       state = subject.methods.getEditorObject(subject.initialState, action)
       expect(spy.called).to.be.true
