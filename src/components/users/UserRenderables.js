@@ -39,7 +39,10 @@ export const UserCompact = ({ user }) =>
         <span className="UserCompactUsername">{`@${user.username}`}</span>
       </Link>
     </div>
-    <RelationshipContainer user={user} />
+    <RelationshipContainer
+      relationshipPriority={user.relationshipPriority}
+      user={user}
+    />
   </div>
 
 UserCompact.propTypes = {
