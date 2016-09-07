@@ -61,9 +61,9 @@ class InfoForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { linksText, name, shortBio } = nextProps
-    this.linksText = linksText
-    this.nameText = name
-    this.shortBioText = shortBio
+    this.linksText = linksText || ''
+    this.nameText = name || ''
+    this.shortBioText = shortBio || ''
     this.setState({
       bioStatus: this.shortBioText.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
       linksStatus: this.getLinksStatus(),
