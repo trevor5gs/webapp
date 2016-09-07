@@ -66,10 +66,9 @@ class JoinContainer extends Component {
     this.usernameValue = ''
     this.passwordValue = ''
 
+    this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
     this.delayedShowUsernameError = debounce(this.delayedShowUsernameError, 1000)
     this.delayedShowPasswordError = debounce(this.delayedShowPasswordError, 1000)
-
-    this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -146,15 +145,15 @@ class JoinContainer extends Component {
   }
 
   validateUsernameResponse(availability) {
+    if (!this.usernameValue.length) {
+      this.setState({
+        usernameState: { message: '', status: STATUS.INDETERMINATE, suggestions: null },
+      })
+      return
+    }
     const { usernameState } = this.state
     const currentStatus = usernameState.status
     const newState = getUsernameStateFromServer({ availability, currentStatus })
-    if (!this.usernameValue.length) {
-      if (currentStatus !== STATUS.INDETERMINATE) {
-        this.setState({ usernameState: { ...newState, status: STATUS.INDETERMINATE } })
-      }
-      return
-    }
     if (newState.status !== currentStatus) {
       this.setState({ usernameState: newState })
     }

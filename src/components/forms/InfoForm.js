@@ -11,6 +11,7 @@ import { saveProfile } from '../../actions/profile'
 import BioControl from '../forms/BioControl'
 import NameControl from '../forms/NameControl'
 import LinksControl from '../forms/LinksControl'
+import { isValidURL } from '../forms/Validators'
 
 function mapStateToProps(state) {
   const linksText = selectLinksAsText(state)
@@ -49,16 +50,24 @@ class InfoForm extends Component {
       nameStatus: STATUS.INDETERMINATE,
       showThenHideMessage: false,
     }
+
+    this.nameText = ''
+    this.shortBioText = ''
+    this.linkText = ''
+
     this.saveForm = debounce(this.saveForm, 300)
     this.componentWillReceiveProps(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
     const { linksText, name, shortBio } = nextProps
+    this.linksText = linksText
+    this.nameText = name
+    this.shortBioText = shortBio
     this.setState({
-      bioStatus: shortBio && shortBio.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
-      linksStatus: linksText && linksText.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
-      nameStatus: name && name.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
+      bioStatus: this.shortBioText.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
+      linksStatus: this.getLinksStatus(),
+      nameStatus: this.nameText.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
     })
   }
 
@@ -68,24 +77,32 @@ class InfoForm extends Component {
 
   onChangeControl = (vo, prop) => {
     const status = this.state[prop]
-    const hasValue = !!(Object.values(vo)[0].length)
-    if (status !== STATUS.INDETERMINATE && !hasValue) {
+    const value = Object.values(vo)[0]
+    const hasValue = !!(value.length)
+    if (status !== STATUS.INDETERMINATE && !hasValue && status !== STATUS.SUCCESS) {
       this.setState({ [prop]: STATUS.INDETERMINATE })
     } else if (status !== STATUS.REQUEST) {
-      this.setState({ [prop]: STATUS.REQUEST })
+      if (prop === 'linksStatus' && /\s$/.test(value)) {
+        this.setState({ [prop]: status })
+      } else {
+        this.setState({ [prop]: STATUS.REQUEST })
+      }
     }
-    this.saveForm(vo)
+    this.saveForm()
   }
 
   onChangeNameControl = (vo) => {
+    this.nameText = Object.values(vo)[0]
     this.onChangeControl(vo, 'nameStatus')
   }
 
   onChangeBioControl = (vo) => {
+    this.shortBioText = Object.values(vo)[0]
     this.onChangeControl(vo, 'bioStatus')
   }
 
   onChangeLinksControl = (vo) => {
+    this.linksText = Object.values(vo)[0]
     this.onChangeControl(vo, 'linksStatus')
   }
 
@@ -94,8 +111,27 @@ class InfoForm extends Component {
     hideSoftKeyboard()
   }
 
-  saveForm(vo) {
-    this.props.dispatch(saveProfile(vo))
+  getLinksStatus() {
+    if (this.linksText.length === 0) {
+      return STATUS.INDETERMINATE
+    }
+    const linkArr = this.linksText.split(/[,\s]+/)
+    const isValid = linkArr.every((link) => (link.length ? isValidURL(link) : true))
+    return isValid ? STATUS.SUCCESS : STATUS.FAILURE
+  }
+
+  saveForm() {
+    const { dispatch, linksText } = this.props
+    const vo = {
+      name: this.nameText,
+      unsanitized_short_bio: this.shortBioText,
+    }
+    dispatch(saveProfile(vo))
+    const linksStatus = this.getLinksStatus()
+    if (linksStatus === STATUS.SUCCESS && this.linksText !== linksText) {
+      dispatch(saveProfile({ external_links: this.linksText }))
+    }
+    this.setState({ linksStatus })
   }
 
   render() {

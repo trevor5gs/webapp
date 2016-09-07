@@ -18,6 +18,7 @@ export function containsInvalidUsernameCharacters(value) {
 export function isValidURL(value) {
   // this is added since we only validate buy links
   // which would get the protocol prepended if not there
+  // same with the external links in a profile
   let newValue = value
   if (newValue.indexOf('http') !== 0) {
     newValue = `http://${newValue}`
@@ -51,7 +52,7 @@ export function getUsernameStateFromServer({ availability, currentStatus }) {
     return { status: STATUS.FAILURE, suggestions: null, message: ERROR.USERNAME.INVALID }
   }
   const { username, suggestions } = availability
-  if (username && currentStatus !== STATUS.SUCCESS) {
+  if (username) {
     return { status: STATUS.SUCCESS, suggestions: null, message: ERROR.NONE }
   } else if (!username && currentStatus !== STATUS.FAILURE) {
     const list = suggestions.username && suggestions.username.length ? suggestions.username : null
