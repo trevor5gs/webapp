@@ -146,7 +146,9 @@ class JoinContainer extends Component {
 
   validateUsernameResponse(availability) {
     if (!this.usernameValue.length) {
-      this.setState({ usernameState: { message: '', status: STATUS.INDETERMINATE, suggestions: null } })
+      this.setState({
+        usernameState: { message: '', status: STATUS.INDETERMINATE, suggestions: null },
+      })
       return
     }
     const { usernameState } = this.state
