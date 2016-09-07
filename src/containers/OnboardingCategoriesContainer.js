@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import { isEqual, pick } from 'lodash'
+import { isEqual, pick, set } from 'lodash'
 import OnboardingCategories from '../components/onboarding/OnboardingCategories'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { trackEvent } from '../actions/analytics'
@@ -81,9 +81,10 @@ class OnboardingCategoriesContainer extends Component {
   onDoneClick = () => {
     const { dispatch } = this.props
     dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
-    dispatch(followCategories(this.state.categoryIds))
     dispatch(trackEvent('Onboarding.Categories.Done.Clicked'))
-    dispatch(push('/following'))
+    const action = followCategories(this.state.categoryIds)
+    set(action, 'meta.successAction', push('/following'))
+    dispatch(action)
   }
 
   onNextClick = () => {
