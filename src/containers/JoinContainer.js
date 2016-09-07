@@ -18,14 +18,14 @@ function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
   return !isEqual(thisProps, nextProps) || !isEqual(thisState, nextState)
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state, props) {
   const { gui, profile } = state
   return {
     availability: profile.availability,
     coverDPI: gui.coverDPI,
     coverOffset: gui.coverOffset,
     email: profile.email,
-    invitationCode: ownProps.params.invitationCode,
+    invitationCode: props.params.invitationCode,
   }
 }
 
@@ -73,8 +73,10 @@ class JoinContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { availability, dispatch, email, invitationCode } = nextProps
-    if (invitationCode && !email) {
+    if (invitationCode) {
       this.invitationCodeValue = invitationCode
+    }
+    if (invitationCode && !email) {
       dispatch(getInviteEmail(invitationCode))
     } else if (email) {
       this.emailValue = email
