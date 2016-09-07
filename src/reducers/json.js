@@ -230,7 +230,7 @@ methods.updateResult = (response, newState, action) => {
     } else if (hasLoadedFirstStream && !resultKey && !pathname.match(/\/(find|search)/)) {
       if (existingResult.morePostIds && existingResult.morePostIds.length) {
         existingResult.morePostIds = union(result.ids, existingResult.morePostIds)
-      } else {
+      } else if (existingResult.ids[0] !== result.ids[0] && !existingResult.morePostIds) {
         existingResult.morePostIds = result.ids
       }
     } else {
