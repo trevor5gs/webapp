@@ -80,6 +80,8 @@ class OnboardingCategoriesContainer extends Component {
 
   onDoneClick = () => {
     const { dispatch } = this.props
+    dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
+    dispatch(followCategories(this.state.categoryIds))
     dispatch(trackEvent('Onboarding.Categories.Done.Clicked'))
     dispatch(push('/following'))
   }
