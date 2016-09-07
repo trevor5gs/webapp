@@ -17,13 +17,19 @@ export const selectUsername = (state) => get(state, 'profile.username')
 // Memoized Selectors
 
 export const selectIsAvatarBlank = createSelector(
-  [selectHasAvatarPresent, selectAvatar], (hasAvatarPresent, avatar) =>
-    !hasAvatarPresent || !(avatar && (avatar.tmp || avatar.original))
+  [selectHasAvatarPresent, selectAvatar], (hasAvatarPresent, avatar) => {
+    // if we have a tmp we have an avatar locally
+    if (avatar && avatar.tmp) { return false }
+    return !hasAvatarPresent || !(avatar && (avatar.tmp || avatar.original))
+  }
 )
 
 export const selectIsCoverImageBlank = createSelector(
-  [selectHasCoverImagePresent, selectCoverImage], (hasCoverImagePresent, coverImage) =>
-    !hasCoverImagePresent || !(coverImage && (coverImage.tmp || coverImage.original))
+  [selectHasCoverImagePresent, selectCoverImage], (hasCoverImagePresent, coverImage) => {
+    // if we have a tmp we have a coverImage locally
+    if (coverImage && coverImage.tmp) { return false }
+    return !hasCoverImagePresent || !(coverImage && (coverImage.tmp || coverImage.original))
+  }
 )
 
 export const selectIsInfoFormBlank = createSelector(
