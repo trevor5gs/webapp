@@ -419,8 +419,13 @@ class BlockCollection extends Component {
 
 function mapStateToProps(state, ownProps) {
   const editor = get(state, ['editor', ownProps.editorId], {})
+  const { collection, order } = editor
+  let buyLink
+  if (collection && order && collection[order[0]]) {
+    buyLink = collection[order[0]].linkUrl
+  }
   return {
-    buyLink: get(editor, ['collection', editor.order[0], 'linkUrl']),
+    buyLink,
     avatar: state.profile.avatar,
     collection: editor.collection,
     currentUsername: state.profile.username,
