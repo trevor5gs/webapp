@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 let memoizedIsAndroid
 let memoizedIsChrome
 let memoizedIsElloAndroid
@@ -73,6 +75,7 @@ export function addFeatureDetection() {
     cl.add('has-touch')
   }
   if (isChrome()) { cl.add('isChrome') }
+  if (isSafari()) { cl.add('isSafari') }
   if (isFirefox()) { cl.add('isFirefox') }
   if (isIE11()) { cl.add('isIE11') }
   document.addEventListener('touchstart', onTouchStart)
