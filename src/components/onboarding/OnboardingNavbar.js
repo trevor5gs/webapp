@@ -1,15 +1,15 @@
 import React, { PropTypes } from 'react'
+import classNames from 'classnames'
 import { ElloMark } from '../svg/ElloIcons'
 
 const OnboardingNavbar = (props, context) => {
   const { isNextDisabled } = props
   const { nextLabel = 'Continue', onDoneClick, onNextClick } = context
-
   return (
     <header className="OnboardingNavbar">
       <ElloMark />
       <button
-        className="OnboardingNextButton RoundedButton"
+        className={classNames('OnboardingNextButton RoundedButton', { hasDone: !!onDoneClick })}
         disabled={isNextDisabled}
         onClick={onNextClick}
       >
