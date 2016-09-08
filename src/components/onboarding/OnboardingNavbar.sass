@@ -33,6 +33,7 @@
 .OnboardingDoneButton
   color: #aaa
   margin-left: rem(10)
+  width: rem(70)
 
 .OnboardingNavbarCounter
   float: right
@@ -53,6 +54,10 @@
 @media(max-width: #{$break-2-max})
   .OnboardingNavbarCounter.isCounterSuccess
     display: none
+  .OnboardingNextButton
+    width: calc(100% - 60px)
+  .OnboardingNextButton.hasDone
+    width: calc(100% - 140px)
 
 @media(min-width: #{$break-2})
   .OnboardingNavbar
