@@ -1,5 +1,3 @@
-import classNames from 'classnames'
-
 let memoizedIsAndroid
 let memoizedIsChrome
 let memoizedIsElloAndroid
