@@ -54,10 +54,11 @@ class ToggleControl extends Component {
         htmlFor={id}
       >
         <input
-          id={id}
-          type="checkbox"
           checked={checked}
+          className="invisible"
+          id={id}
           onChange={this.onChangeControl}
+          type="checkbox"
         />
         <span>{checked ? 'Yes' : 'No'}</span>
       </label>

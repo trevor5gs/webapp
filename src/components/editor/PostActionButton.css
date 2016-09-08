@@ -1,0 +1,130 @@
+@import "../../lib/styles/properties.css";
+
+.PostActionButton {
+  width: 40px;
+  height: 40px;
+  padding: 0 10px 0 15px;
+  overflow: hidden;
+  line-height: 40px;
+  color: rgba(255, 255, 255, 0);
+  text-align: right;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: #fff;
+  border-radius: 20px;
+  transition:
+    background-color var(--speed) ease,
+    color var(--speed) ease,
+    width var(--speed) var(--ease);
+}
+
+.PostGrid .PostActionButton {
+  margin-right: -10px;
+}
+
+.PostActionButton > .SVGIcon {
+  margin-top: -2px;
+  margin-left: -5px;
+}
+
+.PostActionButton > .SVGIcon > g {
+  stroke: #aaa;
+}
+
+.PostActionButton > .BrowseIcon > g {
+  fill: #fff;
+}
+
+.PostActionButtonLabel {
+  position: absolute;
+  left: 20px;
+}
+
+.PostActionButton .CheckMark {
+  position: absolute;
+  top: 7px;
+  right: 0;
+  display: none;
+  transform: scale(0.6);
+}
+
+.PostActionButton .CheckMark g {
+  stroke: #00d100;
+  stroke-width: 2;
+}
+
+.PostActionButton.isBuyLinked .CheckMark {
+  display: block;
+}
+
+.PostActionButton[disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
+.PostActionButton.forMoney > .SVGIcon.MoneyIcon > g {
+  fill: #aaa;
+  stroke: none;
+}
+
+.PostActionButton.isBuyLinked > .SVGIcon.MoneyIcon > g {
+  fill: #000;
+}
+
+@media (--break-2) {
+  .no-touch .PostActionButton:hover {
+    width: 105px;
+    color: #fff;
+    background-color: #000;
+  }
+
+  .no-touch .PostActionButton:hover > .SVGIcon > g {
+    stroke: #fff;
+  }
+
+  .no-touch .PostActionButton:hover > .BrowseIcon > g {
+    fill: #000;
+  }
+
+  .no-touch .PostActionButton.forMoney:hover > .SVGIcon.MoneyIcon > g {
+    fill: #fff;
+    stroke: none;
+  }
+  /* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
+
+  .no-touch .PostActionButton.forUpload:hover {
+    width: 110px;
+  }
+
+  .no-touch .PostActionButton.forPost:hover,
+  .no-touch .PostActionButton.forMoney:hover {
+    width: 85px;
+  }
+
+  .no-touch .PostActionButton.forComment:hover {
+    width: 125px;
+  }
+
+  .no-touch .PostActionButton.forReplyAll:hover {
+    width: 115px;
+  }
+
+  /* Don't do it in grid */
+  .no-touch .PostGrid .PostActionButton:hover {
+    width: 40px;
+    color: transparent;
+  }
+
+  /* Cancel animation */
+  .no-touch .PostActionButton > .CancelIcon {
+    transition-duration: var(--speed), var(--speed), var(--speed2);
+    transform-origin: center center;
+  }
+
+  .no-touch .PostActionButton:hover > .CancelIcon {
+    transition-delay: 0.5s, 0.5s, 0.7s;
+    transform: rotate(360deg);
+  }
+}
+

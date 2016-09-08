@@ -1,0 +1,26 @@
+@import "../../lib/styles/properties.css";
+
+.SettingsInfoForm .isInitialValue .FormControlStatus {
+  display: none;
+}
+
+.OnboardingInfoForm {
+  padding: 20px 10px 80px;
+}
+
+.OnboardingInfoForm .FormControlStatus {
+  top: 10px;
+}
+
+.OnboardingInfoForm .SVGIcon {
+  transform: scale(0.6);
+}
+
+@media (--break-3) {
+  .OnboardingInfoForm {
+    min-height: 410px;
+    padding-top: 40px;
+    margin-left: 285px;
+  }
+}
+

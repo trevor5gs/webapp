@@ -1,0 +1,205 @@
+@import "../../lib/styles/properties.css";
+
+.isDragging,
+.isDragging .editor-block {
+  user-select: none;
+}
+
+.editor {
+  position: relative;
+  max-width: 840px;
+  font-size: 14px;
+  color: #000;
+}
+
+.editor::before {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 0;
+  height: 0;
+  content: "";
+  border-color: transparent;
+  border-style: solid;
+  border-width: 10px;
+  border-right-color: #e5e5e5;
+  transition: border-color var(--speed) ease;
+}
+
+.editor-region {
+  min-height: 100px;
+  padding: 20px;
+  background-color: #e5e5e5;
+  transition: background-color var(--speed) ease;
+}
+
+.editor-actions {
+  height: 40px;
+  margin-top: 20px;
+  line-height: 40px;
+  text-align: right;
+  background-color: #fff;
+}
+
+.editor-actions .PostActionButton + .PostActionButton {
+  margin-left: 5px;
+}
+
+.editor.isComment {
+  margin-top: 10px;
+}
+
+.editor.isComment::before {
+  display: none;
+}
+
+.editor.isComment .Avatar {
+  margin-bottom: 10px;
+}
+
+/* // "Say Ello" placeholder text */
+.editor::after {
+  position: absolute;
+  top: 71px;
+  left: 61px;
+  color: #999;
+  pointer-events: none;
+  content: attr(data-placeholder);
+}
+
+.editor.hasContent::after {
+  display: none;
+}
+
+.editor.isComment::after {
+  top: 91px;
+  left: 41px;
+}
+
+/* // editor has a mention - turn background yellow */
+.editor.hasMention .editor-region {
+  background-color: #ffc;
+}
+
+.editor.hasMention::before {
+  border-right-color: #ffc;
+}
+
+/* // editor is dragged over with a droppable element - turn background green */
+.editor.hasDragOver::before {
+  border-right-color: #cfc;
+}
+
+.editor.hasDragOver > .editor-region {
+  background-color: #cfc;
+}
+
+.editor-block {
+  position: relative;
+}
+
+.editable {
+  position: relative;
+  min-height: 60px;
+  padding: 30px 20px;
+  white-space: pre-wrap;
+  word-break: break-word; /* stylelint-disable-line */
+  border: 1px dashed #666;
+  outline: 0;
+}
+
+.editor.withQuickEmoji .editable {
+  padding-right: 30px;
+}
+
+.editor-block.readonly {
+  padding: 20px;
+  white-space: pre-wrap;
+  word-break: break-word; /* stylelint-disable-line */
+  border: 1px solid #aaa;
+}
+
+/* // .editor-block.reposted-content [contenteditable="false"] */
+/* //   border: 0 */
+/* //   padding: 0 */
+
+.editor-block + .editor-block {
+  margin-top: 20px;
+}
+
+.DragBlock {
+  position: absolute;
+  right: 20px;
+  left: 20px;
+  z-index: 2;
+}
+
+.Omnibar .DragBlock {
+  right: 40px;
+  left: 40px;
+}
+
+.editor.isComment .DragBlock {
+  left: 20px;
+}
+
+.RepostBlockLabel {
+  margin-bottom: 10px;
+}
+
+.editor-block .isUploading::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 20px;
+  color: #fff;
+  content: "Uploading...";
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* 375 / 16 = 23.4375em */
+@media (min-width: 23.4375em) {
+  .editor-actions .PostActionButton + .PostActionButton {
+    margin-left: 10px;
+  }
+}
+
+@media (--break-2) {
+  .editor.isComment {
+    max-width: 640px;
+    padding-left: 60px;
+  }
+
+  .editor.isComment::before {
+    top: 10px;
+    left: 40px;
+    display: block;
+  }
+
+  .editor.isComment .Avatar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-bottom: 0;
+  }
+
+  .editor.hasContent::after {
+    display: none;
+  }
+
+  .editor.isComment::after {
+    top: 51px;
+    left: 101px;
+  }
+
+  .editor.isComment .DragBlock {
+    left: 80px;
+  }
+
+  .editor-actions .PostActionButton + .PostActionButton {
+    margin-left: 20px;
+  }
+}
+

@@ -1,0 +1,92 @@
+@import "../../lib/styles/properties.css";
+
+body.isModalActive { /* stylelint-disable-line */
+  overflow: hidden;
+}
+
+body.isModalActive .MainView { /* stylelint-disable-line */
+  pointer-events: none;
+}
+
+.Modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--z-modal);
+  padding-top: 40px;
+  color: #fff;
+  pointer-events: none;
+  background-color: transparent;
+  opacity: 0;
+  transition: opacity var(--speed2) var(--ease), background-color var(--speed2) var(--ease);
+}
+
+.Modal.isActive {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  pointer-events: auto;
+  background-color: rgba(26, 26, 26, 0.8);
+  opacity: 1;
+}
+
+.Modal.isActive.isDangerZone {
+  background-color: rgba(255, 0, 0, 0.95);
+}
+
+.Modal.isDecapitated {
+  z-index: var(--z-decapitated);
+}
+
+@media (--break-2) {
+  .Modal {
+    display: flex; /* stylelint-disable-line */
+    align-items: center;
+    padding-top: 0;
+  }
+}
+
+/* ------------------------------------- */
+
+.Alert {
+  position: fixed;
+  top: 30px;
+  right: 10px;
+  z-index: var(--z-modal);
+  width: 95%;
+  max-width: 320px;
+  min-height: 80px;
+  padding: 16px 20px;
+  color: #fff;
+  pointer-events: none;
+  background-color: transparent;
+  opacity: 0;
+  transition: transform $speed var(--ease), opacity var(--speed2) var(--ease), background-color var(--speed2) var(--ease);
+  transform: translate3d(100%, 0, 0);
+}
+
+.Alert.isActive {
+  pointer-events: auto;
+  background-color: #000;
+  opacity: 1;
+  transform: none;
+}
+
+.Alert p:last-of-type {
+  margin-bottom: 0;
+}
+
+@media (--break-2) {
+  .Alert {
+    right: 20px;
+    width: 100%;
+  }
+}
+
+@media (--break-4) {
+  .Alert {
+    right: 40px;
+  }
+}
+

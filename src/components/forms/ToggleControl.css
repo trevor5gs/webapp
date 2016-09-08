@@ -1,0 +1,41 @@
+@import "../../lib/styles/properties.css";
+
+.ToggleControl {
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  font-size: 14px;
+  line-height: 30px;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  background-color: #aaa;
+  border: 1px solid #aaa;
+  border-radius: 15px;
+  transition:
+    background-color var(--speed) ease,
+    border-color var(--speed) ease,
+    color var(--speed) ease,
+    opacity var(--speed) ease;
+}
+
+.isFirefox .ToggleControl {
+  line-height: 28px;
+}
+
+.ToggleControl.isChecked {
+  background-color: #0c0;
+  border-color: #0c0;
+}
+
+.ToggleControl[disabled] {
+  opacity: 0.25;
+}
+
+.no-touch .ToggleControl:hover {
+  color: #aaa;
+  background-color: #fff;
+  border-color: #aaa;
+}
+

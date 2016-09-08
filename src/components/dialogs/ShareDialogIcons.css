@@ -1,0 +1,19 @@
+@import "../../lib/styles/properties.css";
+
+.RedditIcon > circle,
+.RedditIcon > path:nth-of-type(n+3) {
+  fill: #000;
+}
+
+.MailIcon polygon,
+.MailIcon rect {
+  fill: #fff;
+}
+
+/* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
+.no-touch .ShareLink:hover > .SVGBox path:nth-of-type(1),
+.no-touch .ShareLink:hover > .RedditIcon circle {
+  fill: #666;
+}
+/* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
+

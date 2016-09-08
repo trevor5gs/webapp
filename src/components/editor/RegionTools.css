@@ -1,0 +1,48 @@
+@import "../../lib/styles/properties.css";
+
+.RegionTools {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 2;
+  color: #aaa;
+}
+
+.no-touch .RegionTools button:hover .SVGIcon > g { /* stylelint-disable-line */
+  stroke: #000;
+}
+
+.RegionTools .DragHandler {
+  display: none;
+  cursor: move;
+  transform: rotate(90deg);
+}
+
+.no-touch .RegionTools .DragHandler {
+  display: inline-block;
+}
+
+.editor-region[data-num-blocks="1"] .DragHandler {
+  display: none;
+}
+
+.BlockPlaceholder > .RegionTools {
+  display: none;
+}
+
+.editor:not(.hasContent) .BlockRemove {
+  display: none;
+}
+
+@media (--break-2) {
+  .no-touch .BlockRemove > .DeleteIcon {
+    transition-duration: var(--speed), var(--speed), var(--speed2);
+    transform-origin: center center;
+  }
+
+  .no-touch .BlockRemove:hover > .DeleteIcon {
+    transition-delay: 0.5s, 0.5s, 0.7s;
+    transform: rotate(360deg);
+  }
+}
+

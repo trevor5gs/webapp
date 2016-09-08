@@ -1,0 +1,8 @@
+@import "../../lib/styles/properties.css";
+
+.FooterLabel {
+  display: inline-block;
+  font-size: 0.75rem;
+  vertical-align: middle;
+}
+

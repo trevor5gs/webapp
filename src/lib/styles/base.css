@@ -1,0 +1,337 @@
+@import "./properties.css";
+
+/* stylelint-disable no-unsupported-browser-features, property-no-vendor-prefix */
+/* stylelint-disable selector-list-comma-newline-after, selector-no-qualifying-type */
+
+/* Fonts
+------------------------------------- */
+@font-face {
+  font-family: AtlasGroteskRegular;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src:
+    url("//fonts.ello.co/AtlasGrotesk-Regular-Web.eot?#iefix") format("embedded-opentype"),
+    url("//fonts.ello.co/AtlasGrotesk-Regular-Web.woff") format("woff"),
+    url("//fonts.ello.co/AtlasGrotesk-Regular-Web.ttf") format("truetype"),
+    url("//fonts.ello.co/AtlasGrotesk-Regular-Web.svg#AtlasGroteskRegular") format("svg");
+}
+
+@font-face {
+  font-family: AtlasGroteskBold;
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+  src:
+    url("//fonts.ello.co/AtlasGrotesk-Bold-Web.eot?#iefix") format("embedded-opentype"),
+    url("//fonts.ello.co/AtlasGrotesk-Bold-Web.woff") format("woff"),
+    url("//fonts.ello.co/AtlasGrotesk-Bold-Web.ttf") format("truetype"),
+    url("//fonts.ello.co/AtlasGrotesk-Bold-Web.svg#AtlasGroteskBold") format("svg");
+}
+
+@font-face {
+  font-family: AtlasTypewriterRegular;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src:
+    url("//fonts.ello.co/AtlasTypewriter-Regular-Web.eot?#iefix") format("embedded-opentype"),
+    url("//fonts.ello.co/AtlasTypewriter-Regular-Web.woff") format("woff"),
+    url("//fonts.ello.co/AtlasTypewriter-Regular-Web.ttf") format("truetype"),
+    url("//fonts.ello.co/AtlasTypewriter-Regular-Web.svg#AtlasTypewriterRegular") format("svg");
+}
+
+/* Scaffold
+------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+.isChrome *,
+.isChrome *::before,
+.isChrome *::after {
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+html {
+  font: normal 400 100% / 1.5 var(--fontstack-sanserif-regular);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  overflow-x: hidden;
+  background-color: #fff;
+}
+
+main {
+  display: block;
+}
+
+::selection {
+  color: #fff;
+  text-shadow: none;
+  background: #000;
+}
+
+[hidden] {
+  display: none !important;
+  visibility: hidden;
+}
+
+[disabled] {
+  pointer-events: none;
+  cursor: default;
+}
+
+/* Typography
+------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  @apply --sanserif-bold;
+  margin: 0;
+  font-size: 14px;
+}
+
+p {
+  margin: 15px 0;
+}
+
+p, ol, ul, dl {
+  font-size: 14px;
+}
+
+p:empty {
+  display: none;
+}
+
+ol, ul, dl, dd {
+  margin: 0;
+}
+
+ol, ul {
+  padding: 0;
+}
+
+ol {
+  margin-left: 2.2em;
+}
+
+ul {
+  margin-left: 1.2em;
+}
+
+a {
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+  background: transparent;
+  transition: color var(--speed) ease;
+}
+
+a:focus,
+a:active,
+.no-touch a:hover {
+  outline: 0;
+}
+
+p a,
+li a,
+dd a,
+[contenteditable="true"] a {
+  display: inline;
+  border-bottom: 1px solid;
+}
+
+p a:focus,
+p a:active,
+.no-touch p a:hover {
+  color: #aaa;
+}
+
+em, i {
+  @apply --sanserif-italic;
+}
+
+strong, b {
+  @apply --sanserif-bold;
+}
+
+strong em,
+em strong,
+b i,
+i b,
+b em,
+em b,
+strong i,
+i strong {
+  @apply --sanserif-bold-italic;
+}
+
+small {
+  font-size: 0.875em;
+}
+
+sub, sup {
+  position: relative;
+  font-size: 0.75em;
+  line-height: 0;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+mark {
+  padding: 2px 5px;
+  font-size: 0.875em;
+  color: #000;
+  background-color: #ffc;
+}
+
+code, pre {
+  @apply --monospace-regular;
+  font-size: 12px;
+  background-color: #f1f1f1;
+}
+
+code {
+  display: inline-block;
+  padding: 2px 5px;
+}
+
+pre {
+  padding: 15px;
+  margin: 15px 0;
+  overflow: hidden;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+pre code {
+  padding: 0;
+  background-color: transparent;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  padding: 0;
+  margin: 15px 0;
+  border: 0;
+  border-top: 1px solid #f1f1f1;
+}
+
+/* Elements
+------------------------------------- */
+audio, canvas, img, svg, video {
+  vertical-align: middle;
+}
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+figure {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  font-size: 12px;
+  border: 0;
+  outline: 0;
+}
+
+table {
+  width: 100%;
+  font-size: 14px;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+tr {
+  border-bottom: 1px solid #f1f1f1;
+}
+
+td, th {
+  padding: 5px 0;
+  text-align: left;
+}
+
+th {
+  @apply --sanserif-bold;
+  vertical-align: bottom;
+}
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  cursor: pointer;
+  -webkit-appearance: button;
+}
+
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+
+input::-moz-focus-inner,
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+button {
+  @apply --button-reset;
+}
+
+button::before {
+  @apply --hitarea;
+}
+
+input,
+textarea {
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  border-radius: 0;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+input::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+textarea {
+  height: 100%;
+  overflow: auto;
+  resize: none;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+

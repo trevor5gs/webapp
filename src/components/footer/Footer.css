@@ -1,0 +1,84 @@
+@import "../../lib/styles/properties.css";
+
+.Footer {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--z-footer);
+  height: 30px;
+  padding: 0 10px;
+  line-height: 30px;
+  color: #aaa;
+  background-color: #fff;
+  transition: transform 150ms ease;
+}
+
+.isOnboardingView ~ .Footer {
+  display: none;
+}
+
+/* Hide it when the Paginator is visible */
+.Footer.isPaginatoring {
+  transform: translate3d(0, 100%, 0);
+}
+
+/* Piggy back off of the Navbar for the moment */
+.isNavbarFixed.isNavbarHidden ~ .Footer {
+  transform: translate3d(0, 100%, 0);
+}
+
+.FooterTools {
+  position: absolute;
+  top: 0;
+  right: 10px;
+}
+
+.FooterLinks > .FooterLink,
+.FooterTools > .FooterTool {
+  margin-left: 10px;
+}
+
+.FooterTools > .FooterTool:last-child {
+  margin-right: -8px;
+}
+
+/* // MAX-WIDTH! */
+@media (--break-2-max) {
+  .isEditorFocused .Footer {
+    display: none;
+  }
+}
+
+@media (--break-2) {
+  .Footer {
+    padding: 0 20px;
+  }
+
+  .FooterTools {
+    right: 20px;
+  }
+
+  .FooterLinks > .FooterLink {
+    margin-left: 20px;
+  }
+}
+
+@media (--break-4) {
+  .Footer {
+    padding: 0 40px;
+  }
+
+  .FooterTools {
+    right: 40px;
+  }
+
+  .FooterLinks > .FooterLink {
+    margin-left: 40px;
+  }
+}
+
+.isAuthenticationView ~ .Footer {
+  display: none;
+}
+

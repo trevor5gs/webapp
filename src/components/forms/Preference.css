@@ -1,0 +1,29 @@
+@import "../../lib/styles/properties.css";
+
+.Preference {
+  position: relative;
+  padding-top: 30px;
+  padding-bottom: 27px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.Preference dl {
+  width: calc(100% - 80px);
+  max-width: 440px;
+}
+
+.Preference dd {
+  margin-top: 20px;
+  color: #aaa;
+}
+
+.no-touch .Preference dd a:hover { /* stylelint-disable-line */
+  color: #666;
+}
+
+.Preference .ToggleControl {
+  position: absolute;
+  top: 30px;
+  right: 0;
+}
+

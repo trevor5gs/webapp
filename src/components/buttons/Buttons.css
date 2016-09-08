@@ -1,0 +1,35 @@
+@import "../../lib/styles/properties.css";
+
+.MiniPillButton {
+  height: 22px;
+  padding: 1px 15px 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: #535353;
+  background-color: #e8e8e8;
+  border-radius: 11px;
+  transition: background-color var(--speed), color var(--speed);
+}
+
+.no-touch .MiniPillButton:hover {
+  color: #000;
+  background-color: #ccc;
+}
+
+.RoundedButton {
+  height: 50px;
+  padding: 0 30px;
+  color: #aaa;
+  text-align: center;
+  background-color: transparent;
+  border: 1px solid;
+  transition: background-color var(--speed), color var(--speed);
+}
+
+.RoundedButton:active,
+.RoundedButton:hover {
+  color: #fff;
+  background-color: #aaa;
+  border-color: #aaa;
+}
+

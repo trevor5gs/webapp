@@ -1,0 +1,73 @@
+@import "../../lib/styles/properties.css";
+
+.MessageDialog {
+  width: 100%;
+  max-width: 440px;
+}
+
+.MessageMessageControl .FormControlInput.asBoxControl {
+  height: 180px;
+}
+
+.MessageDialogTitle {
+  position: relative;
+  margin-bottom: 30px;
+  font-size: 18px;
+}
+
+.MessageDialogSuccessIcon {
+  position: absolute;
+  top: 7px;
+  left: -40px;
+  transform: scale(0.6);
+}
+
+.MessageDialogSuccessIcon.SVGIcon > g {
+  stroke-linejoin: bevel;
+  stroke: #00d100;
+}
+
+.MessageDialogButton {
+  height: 50px;
+  padding: 0 20px;
+  font-size: 14px;
+  line-height: 50px;
+  color: #aaa;
+  text-align: center;
+  border-radius: 5px;
+  transition: background-color var(--speed) ease, color var(--speed) ease;
+}
+
+.MessageDialogButton:focus,
+.no-touch .MessageDialogButton:hover {
+  color: #fff;
+}
+
+.MessageDialogButton.isConfirmButton {
+  margin-right: 10px;
+  color: #fff;
+  background-color: #00d100;
+}
+
+.MessageDialogButton.isOkayButton {
+  width: 100%;
+  color: #fff;
+  background-color: #aaa;
+}
+
+.MessageDialogButton[disabled] {
+  color: #fff;
+  background-color: #aaa;
+}
+
+.MessageDialogButton.isOkayButton:focus,
+.no-touch .MessageDialogButton.isOkayButton:hover {
+  background-color: #999;
+}
+
+@media (--break-2) {
+  .MessageDialogTitle {
+    font-size: 24px;
+  }
+}
+

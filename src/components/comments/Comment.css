@@ -1,0 +1,177 @@
+@import "../../lib/styles/properties.css";
+
+.Comments {
+  position: relative;
+}
+
+.Comments > .SVGIcon {
+  position: absolute;
+  top: 22px;
+  left: 0;
+}
+
+.CommentHeader {
+  position: relative;
+  height: 30px;
+  font-size: 14px;
+  color: #aaa;
+  background-color: #fff;
+}
+
+.CommentHeader .Avatar {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.CommentHeaderAuthor {
+  position: relative;
+  display: inline-block;
+  max-width: calc(100% - 50px);
+  padding-left: 40px;
+  line-height: 30px;
+  vertical-align: middle;
+}
+
+.CommentHeaderLink {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.no-touch .CommentHeaderLink:hover {
+  color: #535353;
+}
+
+.CommentBody {
+  padding-left: 40px;
+}
+
+.CommentsLink {
+  margin-left: 60px;
+  font-size: 14px;
+  line-height: 10px;
+  color: #aaa;
+  border-bottom: 1px solid #aaa;
+}
+
+/* // TODO: Need to really separate CommentTools from PostTools. */
+.CommentTools {
+  padding-left: 40px;
+}
+
+.Comments .TimeAgoTool,
+.CommentTools .TimeAgoTool {
+  color: #aaa;
+}
+
+/* // Override the hiding of this thing from bad the PostTools */
+.Posts .CommentTools .TimeAgoTool {
+  display: inline-block;
+}
+
+.CommentTools .ReplyTool {
+  margin-left: 10px;
+}
+
+.CommentTools .ReplyTool .SVGIcon {
+  margin-top: -2px;
+}
+
+.CommentTools .MoreTool {
+  position: absolute;
+  right: 0;
+  z-index: 4;
+  transition: transform var(--speed) var(--ease);
+}
+
+.CommentTools .MoreTool > button {
+  padding-right: 0;
+}
+
+/* // MAX WIDTH! */
+@media (--break-2-max) {
+  .CommentTools.isMoreToolActive > .PostTool {
+    transform: translate3d(-80px, 0, 0);
+  }
+
+  .CommentTools:not(.isMoreToolActive) > .ShyTool {
+    display: none;
+  }
+
+  .CommentTools .ShyTool {
+    position: absolute;
+    right: -50px;
+    z-index: 3;
+  }
+
+  .CommentTools .ShyTool + .ShyTool {
+    right: -90px;
+  }
+
+  /* // This is kind of weird */
+  .CommentTools.isMoreToolActive .ShyTool.isSolo + .MoreTool { /* stylelint-disable-line */
+    transform: translate3d(-40px, 0, 0);
+  }
+
+  /* // also weird */
+  .CommentTools .ShyTool.isSolo {
+    right: -90px;
+  }
+
+  .CommentTools.isMoreToolActive .ShyTool {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  .CommentTools .MoreTool .SVGIcon {
+    transform: rotate(180deg);
+  }
+
+  .CommentTools.isMoreToolActive .MoreTool .SVGIcon {
+    color: #000;
+    transform: none;
+  }
+}
+
+/* // MIN WIDTH! */
+@media (--break-2) {
+  .CommentHeader {
+    height: 25px;
+  }
+
+  .CommentHeaderAuthor {
+    padding-left: 60px;
+    line-height: 20px;
+  }
+
+  .CommentBody {
+    padding-left: 60px;
+  }
+
+  .CommentTools {
+    padding-left: 60px;
+  }
+
+  .CommentTools .MoreTool {
+    display: none;
+  }
+
+  .CommentTools .EditTool {
+    margin-left: 15px;
+  }
+
+  .no-touch .CommentTools .ShyTool {
+    display: inline-block !important;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .no-touch .CommentTools:hover .ShyTool {
+    pointer-events: auto;
+    opacity: 1;
+  }
+}
+

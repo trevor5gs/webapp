@@ -1,0 +1,109 @@
+@import "../../lib/styles/properties.css";
+
+.Avatar {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  color: transparent;
+  vertical-align: middle;
+  background: #f0f0f0 no-repeat 50% 50%;
+  background-size: cover;
+  border-radius: 50%;
+  transition: transform var(--speed) var(--ease);
+}
+
+.Avatar.isXLarge {
+  width: 220px;
+  height: 220px;
+}
+
+.Avatar.isLarge {
+  width: 120px;
+  height: 120px;
+}
+
+.Avatar.isTiny {
+  width: 30px;
+  height: 30px;
+}
+
+.Avatar.isRequesting {
+  animation: animateLavaLamp 3s infinite linear;
+}
+
+.Avatar.isPending {
+  background-color: #f0f0f0;
+}
+
+.Avatar.isFailing {
+  background-color: var(--color-danger);
+}
+
+.isAvatarBlank ~ .Avatar {
+  display: none;
+}
+
+.AvatarImage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: opacity var(--speed2);
+  object-fit: cover; /* stylelint-disable-line */
+}
+
+.AvatarImage[src=""] {
+  display: none;
+}
+
+.isPending > .AvatarImage,
+.isRequesting > .AvatarImage {
+  opacity: 0;
+}
+
+.isUserDetailHeader .isPending > .AvatarImage,
+.isUserDetailHeader .isRequesting > .AvatarImage,
+.PostHeader .isPending > .AvatarImage,
+.PostHeader .isRequesting > .AvatarImage {
+  opacity: 1;
+}
+
+.Avatar::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  content: "";
+  background-color: transparent;
+  transition: background-color var(--speed) ease;
+}
+
+/* stylelint-disable selector-no-qualifying-type */
+.no-touch a.Avatar:hover::before,
+.no-touch a:hover > .Avatar::before,
+.no-touch button.Avatar:hover::before,
+.no-touch button:hover > .Avatar::before {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+/* stylelint-enable selector-no-qualifying-type */
+
+@media (--break-2) {
+  .Avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .Avatar.isLarge {
+    width: 180px;
+    height: 180px;
+  }
+}
+
