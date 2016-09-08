@@ -1,8 +1,8 @@
-import { noop } from 'lodash'
 import { stubJSONStore, stubUser } from '../../support/stubs'
 import { RELATIONSHIP_PRIORITY as PRIORITY } from '../../../src/constants/relationship_types'
 import {
-  getNextBlockMutePriority, mapStateToProps, shouldContainerUpdate,
+  getNextBlockMutePriority,
+  mapStateToProps,
 } from '../../../src/containers/RelationshipContainer'
 
 describe('RelationshipButton', () => {
@@ -25,56 +25,6 @@ describe('RelationshipButton', () => {
 
     it('returns a INACTIVE priority if it is NOISE and it hits the inner default', () => {
       expect(getNextBlockMutePriority(PRIORITY.NOISE)).to.equal(PRIORITY.INACTIVE)
-    })
-  })
-
-  context('#shouldContainerUpdate', () => {
-    const user = stubUser()
-    const thisProps = {
-      className: '',
-      deviceSize: 'mobile',
-      hasBlockMuteButton: false,
-      isLoggedIn: true,
-      onClickCallback: noop,
-      pathname: '/discover',
-      previousPath: '/following',
-      relationshipPriority: PRIORITY.FRIEND,
-      shouldRenderBlockMute: false,
-      user,
-      userId: user.id,
-      username: user.username,
-    }
-    const sameProps = { ...thisProps }
-    const nextProps = {
-      className: 'isInHeader',
-      deviceSize: 'desktop',
-      hasBlockMuteButton: true,
-      isLoggedIn: true,
-      onClickCallback: noop,
-      pathname: '/onboarding',
-      previousPath: '/discover',
-      relationshipPriority: PRIORITY.FRIEND,
-      shouldRenderBlockMute: false,
-      user,
-      userId: user.id,
-      username: user.username,
-    }
-    const lastProps = { ...nextProps, user: stubUser({ id: '666' }) }
-
-    const shouldSameUpdate = shouldContainerUpdate(thisProps, sameProps)
-    const shouldNextUpdate = shouldContainerUpdate(thisProps, nextProps)
-    const shouldLastUpdate = shouldContainerUpdate(nextProps, lastProps)
-
-    it('should not update state since the values are the same', () => {
-      expect(shouldSameUpdate).to.be.false
-    })
-
-    it('should update state since all value have changed', () => {
-      expect(shouldNextUpdate).to.be.true
-    })
-
-    it('should not update state since a non-picked value changed', () => {
-      expect(shouldLastUpdate).to.be.false
     })
   })
 

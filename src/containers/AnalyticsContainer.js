@@ -1,5 +1,5 @@
 import { Component, PropTypes } from 'react'
-import { isEqual, pick } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 
 export function addSegment(uid, createdAt) {
@@ -24,13 +24,6 @@ export function doesAllowTracking() {
     window.doNotTrack === '1' ||
     window.msDoNotTrack === '1'
   )
-}
-
-export function shouldContainerUpdate(thisProps, nextProps) {
-  const pickProps = ['allowsAnalytics', 'analyticsId', 'isLoggedIn']
-  const thisCompare = pick(thisProps, pickProps)
-  const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare)
 }
 
 function mapStateToProps(state) {
@@ -79,8 +72,8 @@ class AnalyticsContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   render() {

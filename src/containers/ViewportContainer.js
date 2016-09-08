@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import { setIsOffsetLayout, setScrollState, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
@@ -61,8 +61,8 @@ class ViewportContainer extends Component {
     this.updateIsOffsetLayout()
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !isEqual(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {

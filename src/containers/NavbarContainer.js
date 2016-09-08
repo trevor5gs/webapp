@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import { isIOS } from '../vendor/jello'
 import { scrollToTop } from '../vendor/scrolling'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
@@ -66,8 +66,8 @@ class NavbarContainer extends Component {
     this.checkForNotifications()
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !isEqual(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {

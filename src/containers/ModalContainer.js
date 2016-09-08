@@ -1,17 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual, pick } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../constants/application_types'
 import { closeModal, closeAlert } from '../actions/modals'
 import { Modal } from '../components/modals/Modal'
-
-export function shouldContainerUpdate(thisProps, nextProps) {
-  const pickProps = ['classList', 'isActive', 'kind']
-  const thisCompare = pick(thisProps, pickProps)
-  const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare)
-}
 
 export function mapStateToProps(state) {
   return {
@@ -32,8 +25,8 @@ class ModalContainer extends Component {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => { this.close() })
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate() {

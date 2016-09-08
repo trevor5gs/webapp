@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { debounce, isEqual } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
+import { debounce } from 'lodash'
 import { EDITOR } from '../constants/action_types'
 import {
   autoCompleteUsers,
@@ -59,8 +60,8 @@ class EditorToolsContainer extends Component {
     addInputObject(this)
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !isEqual(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {

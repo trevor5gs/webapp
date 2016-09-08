@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push, replace } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
-import { isEqual, omit, set } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
+import { set } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as postActions from '../actions/posts'
@@ -13,15 +14,6 @@ import FlagDialog from '../components/dialogs/FlagDialog'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import { PostTools } from '../components/posts/PostTools'
-
-export function shouldContainerUpdate(thisProps, nextProps) {
-  const omitProps = ['author', 'detailLink', 'deviceSize', 'isOwnPost',
-                     'post', 'pathname', 'previousPath']
-  const thisCompare = omit(thisProps, omitProps)
-  const nextCompare = omit(nextProps, omitProps)
-  return !isEqual(thisCompare, nextCompare)
-}
-
 
 export function mapStateToProps(state, props) {
   const { authentication, gui, json, profile, routing, stream } = state
@@ -86,8 +78,8 @@ class PostToolsContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onClickToggleComments = () => {

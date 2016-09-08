@@ -1,19 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual, pick, sample } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
+import { sample } from 'lodash'
 import { isAndroid } from '../vendor/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
 import { sendForgotPasswordRequest } from '../actions/authentication'
 import { trackEvent } from '../actions/analytics'
 import { isFormValid, getEmailStateFromClient } from '../components/forms/Validators'
 import { ForgotPassword } from '../components/views/ForgotPassword'
-
-function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
-  const pickProps = ['coverDPI', 'coverOffset']
-  const thisCompare = pick(thisProps, pickProps)
-  const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare) || !isEqual(thisState, nextState)
-}
 
 function mapStateToProps(state) {
   const { gui, promotions } = state
@@ -50,7 +44,7 @@ class ForgotPasswordContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onBlurControl = () => {

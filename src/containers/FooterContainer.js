@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import { scrollToTop, scrollToOffsetTop } from '../vendor/scrolling'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { Footer } from '../components/footer/Footer'
@@ -26,8 +26,8 @@ class FooterContainer extends Component {
     isPaginatoring: PropTypes.bool,
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !isEqual(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onClickScrollToTop = () => {

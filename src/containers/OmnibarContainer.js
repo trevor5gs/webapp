@@ -1,17 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual, pick } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../constants/application_types'
 import { closeOmnibar } from '../actions/omnibar'
 import { Omnibar } from '../components/omnibar/Omnibar'
-
-export function shouldContainerUpdate(thisProps, nextProps) {
-  const pickProps = ['classList', 'isActive']
-  const thisCompare = pick(thisProps, pickProps)
-  const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare)
-}
 
 export function mapStateToProps(state) {
   return {
@@ -42,7 +35,7 @@ class OmnibarContainer extends Component {
     if (this.state.isFullScreen !== nextState.isFullScreen) {
       return true
     }
-    return shouldContainerUpdate(this.props, nextProps)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate() {

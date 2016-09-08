@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { isEqual } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 
 export default class ImageAsset extends Component {
 
@@ -15,8 +15,8 @@ export default class ImageAsset extends Component {
     this.createLoader()
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !isEqual(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {

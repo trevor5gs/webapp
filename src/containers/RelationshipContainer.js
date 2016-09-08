@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import { createSelector } from 'reselect'
-import { get, isEqual, omit } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
+import { get } from 'lodash'
 import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
 import { openModal, closeModal } from '../actions/modals'
 import { updateRelationship } from '../actions/relationships'
@@ -58,14 +59,6 @@ export function getNextBlockMutePriority(currentPriority, requestedPriority) {
   }
 }
 
-export function shouldContainerUpdate(thisProps, nextProps) {
-  const omitProps = ['user']
-  const thisCompare = omit(thisProps, omitProps)
-  const nextCompare = omit(nextProps, omitProps)
-  return !isEqual(thisCompare, nextCompare)
-}
-
-
 // TODO: Try and get rid of deviceSize
 export function mapStateToProps(state, props) {
   const { gui, routing } = state
@@ -110,9 +103,9 @@ class RelationshipContainer extends Component {
     hasBlockMuteButton: false,
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     if (!this.props.userId) { return false }
-    return shouldContainerUpdate(this.props, nextProps)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onCloseModal = () => {

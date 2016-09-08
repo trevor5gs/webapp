@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import { isEqual, pick, set } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
+import { set } from 'lodash'
 import OnboardingCategories from '../components/onboarding/OnboardingCategories'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { trackEvent } from '../actions/analytics'
@@ -10,13 +11,6 @@ import { followCategories, saveProfile } from '../actions/profile'
 import { selectCategories } from '../selectors'
 
 const CATEGORIES_NEEDED = 3
-
-function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
-  const pickProps = ['categories']
-  const thisCompare = pick(thisProps, pickProps)
-  const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare) || !isEqual(thisState, nextState)
-}
 
 function mapStateToProps(state, props) {
   const catLevels = selectCategories(state, props)
@@ -64,7 +58,7 @@ class OnboardingCategoriesContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onCategoryClick = (id) => {

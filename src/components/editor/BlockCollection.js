@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { get, isEqual } from 'lodash'
 import Avatar from '../assets/Avatar'
@@ -88,7 +89,7 @@ class BlockCollection extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (!nextProps.collection || !nextProps.order) { return false }
-    return !isEqual(nextProps, this.props) || !isEqual(nextState, this.state)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {

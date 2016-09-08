@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
-import classNames from 'classnames'
 import { connect } from 'react-redux'
-import { get, isEqual, pick } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
+import classNames from 'classnames'
+import { get } from 'lodash'
 import { selectPagination } from '../selectors'
 import { getCategories } from '../actions/discover'
 import { loadNotifications } from '../actions/notifications'
@@ -23,13 +24,6 @@ import {
   fetchLoggedInPromos,
   fetchLoggedOutPromos,
 } from '../actions/promotions'
-
-export function shouldContainerUpdate(thisProps, nextProps) {
-  const pickProps = ['authentication', 'location', 'pagination', 'params']
-  const thisCompare = pick(thisProps, pickProps)
-  const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare)
-}
 
 function mapStateToProps(state, props) {
   const { authentication } = state
@@ -100,8 +94,8 @@ class AppContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {
