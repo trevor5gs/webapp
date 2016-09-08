@@ -14,6 +14,7 @@ import {
   selectIsNotificationsUnread,
   selectIsProfileMenuActive,
 } from '../selectors/gui'
+import { selectAvatar, selectUsername } from '../selectors/profile'
 import { logout } from '../actions/authentication'
 import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
 import { checkForNewNotifications } from '../actions/notifications'
@@ -25,7 +26,7 @@ import { getDiscoverAction } from '../containers/DiscoverContainer'
 import Session from '../vendor/session'
 
 function mapStateToProps(state) {
-  const { authentication, json, profile, routing } = state
+  const { authentication, json, routing } = state
   const currentStream = selectCurrentStream(state)
   const isLoggedIn = authentication.isLoggedIn
   const pathname = routing.location.pathname
@@ -34,7 +35,7 @@ function mapStateToProps(state) {
 
   if (isLoggedIn) {
     return {
-      avatar: profile.avatar,
+      avatar: selectAvatar(state),
       deviceSize: selectDeviceSize(state),
       currentStream,
       hasLoadMoreButton,
@@ -45,7 +46,7 @@ function mapStateToProps(state) {
       isNotificationsUnread: selectIsNotificationsUnread(state),
       isProfileMenuActive: selectIsProfileMenuActive(state),
       pathname,
-      username: profile.username,
+      username: selectUsername(state),
     }
   }
   return {

@@ -1,9 +1,8 @@
 import { AUTHENTICATION, PROFILE } from '../../../src/constants/action_types'
 import { loginPushSubscribe, logoutPushUnsubscribe } from '../../../src/sagas/push_subscription'
+import { selectBundleId, selectRegistrationId } from '../../../src/selectors/profile'
 import {
-  bundleIdSelector,
   isLoggedInSelector,
-  registrationIdSelector,
 } from '../../../src/sagas/selectors'
 import {
   registerForGCM,
@@ -38,8 +37,8 @@ describe('push subscription saga', function () {
       const pushAction = requestPushSubscription(regId)
       const pushHandler = logoutPushUnsubscribe()
       expect(pushHandler).to.take([AUTHENTICATION.LOGOUT, PROFILE.DELETE])
-      expect(pushHandler.next(pushAction)).to.select(registrationIdSelector)
-      expect(pushHandler.next('reg_id')).to.select(bundleIdSelector)
+      expect(pushHandler.next(pushAction)).to.select(selectRegistrationId)
+      expect(pushHandler.next('reg_id')).to.select(selectBundleId)
       expect(pushHandler.next('bundle_id')).to.put(unregisterForGCM('reg_id', 'bundle_id'))
     })
   })

@@ -2,10 +2,9 @@
 import { fork, put, select, take } from 'redux-saga/effects'
 import { registerForGCM, unregisterForGCM } from '../actions/profile'
 import { AUTHENTICATION, PROFILE } from '../constants/action_types'
+import { selectBundleId, selectRegistrationId } from '../selectors/profile'
 import {
-  bundleIdSelector,
   isLoggedInSelector,
-  registrationIdSelector,
 } from './selectors'
 
 export function* loginPushSubscribe() {
@@ -24,8 +23,8 @@ export function* loginPushSubscribe() {
 export function* logoutPushUnsubscribe() {
   while (true) {
     yield take([AUTHENTICATION.LOGOUT, PROFILE.DELETE])
-    const registrationId = yield select(registrationIdSelector)
-    const bundleId = yield select(bundleIdSelector)
+    const registrationId = yield select(selectRegistrationId)
+    const bundleId = yield select(selectBundleId)
     yield put(unregisterForGCM(registrationId, bundleId))
   }
 }

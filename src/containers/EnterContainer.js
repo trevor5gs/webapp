@@ -7,6 +7,13 @@ import { isAndroid, isElloAndroid } from '../vendor/jello'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
 import { selectCurrentStream, selectCoverDPI, selectCoverOffset } from '../selectors/gui'
+import {
+  selectBuildVersion,
+  selectBundleId,
+  selectMarketingVersion,
+  selectRegistrationId,
+  selectWebOnboardingVersion,
+} from '../selectors/profile'
 import { loadProfile, requestPushSubscription, saveProfile } from '../actions/profile'
 import { signIn } from '../actions/authentication'
 import { trackEvent } from '../actions/analytics'
@@ -29,13 +36,13 @@ function mapStateToProps(state) {
     coverDPI: selectCoverDPI(state),
     coverOffset: selectCoverOffset(state),
     promotions: state.promotions.authentication,
-    webOnboardingVersionSeen: state.profile.webOnboardingVersion,
+    webOnboardingVersionSeen: selectWebOnboardingVersion(state),
   }
   if (isElloAndroid()) {
-    obj.buildVersion = state.profile.buildVersion
-    obj.bundleId = state.profile.bundleId
-    obj.marketingVersion = state.profile.marketingVersion
-    obj.registrationId = state.profile.registrationId
+    obj.buildVersion = selectBuildVersion(state)
+    obj.bundleId = selectBundleId(state)
+    obj.marketingVersion = selectMarketingVersion(state)
+    obj.registrationId = selectRegistrationId(state)
   }
   return obj
 }

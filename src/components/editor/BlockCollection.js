@@ -4,6 +4,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { get, isEqual } from 'lodash'
 import { selectIsMobileGridStream, selectIsNavbarHidden } from '../../selectors/gui'
+import { selectAvatar, selectUsername } from '../../selectors/profile'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
@@ -428,9 +429,9 @@ function mapStateToProps(state, ownProps) {
   }
   return {
     buyLink,
-    avatar: state.profile.avatar,
+    avatar: selectAvatar(state),
     collection: editor.collection,
-    currentUsername: state.profile.username,
+    currentUsername: selectUsername(state),
     dragBlock: editor.dragBlock,
     hasContent: editor.hasContent,
     hasMedia: editor.hasMedia,

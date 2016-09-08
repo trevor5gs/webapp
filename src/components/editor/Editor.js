@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
+import { selectId as selectProfileId } from '../../selectors/profile'
 import { openModal, closeModal } from '../../actions/modals'
 import {
   createComment,
@@ -210,11 +211,13 @@ class Editor extends Component {
   }
 }
 
-function mapStateToProps({ authentication, json, profile }, ownProps) {
+function mapStateToProps(state, ownProps) {
+  const { authentication, json } = state
+  const profileId = selectProfileId(state)
   return {
     isLoggedIn: authentication.isLoggedIn,
     post: ownProps.post ? json[MAPPING_TYPES.POSTS][ownProps.post.id] : null,
-    isOwnPost: ownProps.post && `${ownProps.post.authorId}` === `${profile.id}`,
+    isOwnPost: ownProps.post && `${ownProps.post.authorId}` === `${profileId}`,
   }
 }
 

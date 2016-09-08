@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../constants/application_types'
+import { selectAvatar } from '../selectors/profile'
 import { closeOmnibar } from '../actions/omnibar'
 import { Omnibar } from '../components/omnibar/Omnibar'
 
 export function mapStateToProps(state) {
   return {
-    avatar: state.profile.avatar,
+    avatar: selectAvatar(state),
     ...state.omnibar,
   }
 }

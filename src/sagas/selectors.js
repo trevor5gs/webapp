@@ -6,9 +6,6 @@ export const expirationDateSelector = state => get(state, 'authentication.expira
 export const isLoggedInSelector = state => get(state, 'authentication.isLoggedIn')
 export const refreshTokenSelector = state => get(state, 'authentication.refreshToken')
 
-export const registrationIdSelector = state => get(state, 'profile.registrationId')
-export const bundleIdSelector = state => get(state, 'profile.bundleId')
-
 export const shouldUseAccessTokenSelector = createSelector(
   accessTokenSelector, expirationDateSelector, isLoggedInSelector,
   (accessToken, expirationDate, isLoggedIn) =>

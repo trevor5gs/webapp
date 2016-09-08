@@ -1,21 +1,29 @@
 import { createSelector } from 'reselect'
 import { get } from 'lodash'
 
-/* eslint-disable max-len */
+// state.profile.xxx
+export const selectAllowsAnalytics = (state) => get(state, 'profile.allowsAnalytics')
+export const selectAnalyticsId = (state) => get(state, 'profile.analyticsId')
+export const selectAvailability = (state) => get(state, 'profile.availability')
 export const selectAvatar = (state) => get(state, 'profile.avatar')
+export const selectBuildVersion = (state) => get(state, 'profile.buildVersion')
+export const selectBundleId = (state) => get(state, 'profile.bundleId')
 export const selectCoverImage = (state) => get(state, 'profile.coverImage')
 export const selectCreatedAt = (state) => get(state, 'profile.createdAt')
+export const selectEmail = (state) => get(state, 'profile.email')
 export const selectExternalLinksList = (state) => get(state, 'profile.externalLinksList', [])
 export const selectHasAvatarPresent = (state) => get(state, 'profile.hasAvatarPresent', false)
-export const selectHasCoverImagePresent = (state) => get(state, 'profile.hasCoverImagePresent', false)
+export const selectHasCoverImagePresent = (state) => get(state, 'profile.hasCoverImagePresent', false) // eslint-disable-line
 export const selectId = (state) => get(state, 'profile.id')
+export const selectIsPublic = (state) => get(state, 'profile.isPublic')
+export const selectMarketingVersion = (state) => get(state, 'profile.marketingVersion')
 export const selectName = (state) => get(state, 'profile.name', '')
+export const selectRegistrationId = (state) => get(state, 'profile.registrationId')
 export const selectShortBio = (state) => get(state, 'profile.shortBio', '')
 export const selectUsername = (state) => get(state, 'profile.username')
-/* eslint-enable max-len */
+export const selectWebOnboardingVersion = (state) => get(state, 'profile.webOnboardingVersion')
 
 // Memoized Selectors
-
 export const selectIsAvatarBlank = createSelector(
   [selectHasAvatarPresent, selectAvatar], (hasAvatarPresent, avatar) => {
     // if we have a tmp we have an avatar locally
