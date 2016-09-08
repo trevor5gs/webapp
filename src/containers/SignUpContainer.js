@@ -2,14 +2,15 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { sample } from 'lodash'
+import { selectCoverDPI, selectCoverOffset } from '../selectors/gui'
 import { trackEvent } from '../actions/analytics'
 import { SignUp } from '../components/views/SignUp'
 
 function mapStateToProps(state) {
-  const { gui, promotions } = state
+  const { promotions } = state
   return {
-    coverDPI: gui.coverDPI,
-    coverOffset: gui.coverOffset,
+    coverDPI: selectCoverDPI(state),
+    coverOffset: selectCoverOffset(state),
     promotions: promotions.authentication,
   }
 }

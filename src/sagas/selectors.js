@@ -8,7 +8,6 @@ export const refreshTokenSelector = state => get(state, 'authentication.refreshT
 
 export const registrationIdSelector = state => get(state, 'profile.registrationId')
 export const bundleIdSelector = state => get(state, 'profile.bundleId')
-export const activeNotificationsTypeSelector = state => get(state, 'gui.activeNotificationsType')
 
 export const shouldUseAccessTokenSelector = createSelector(
   accessTokenSelector, expirationDateSelector, isLoggedInSelector,
@@ -21,3 +20,4 @@ export const shouldUseRefreshTokenSelector = createSelector(
   (accessToken, expirationDate, isLoggedIn) =>
     isLoggedIn && accessToken && !(expirationDate > new Date())
 )
+
