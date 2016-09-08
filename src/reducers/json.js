@@ -382,12 +382,20 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_REQUEST:
     case ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS:
       return relationshipMethods.updateRelationship(newState, action)
-    case REHYDRATE:
+    case REHYDRATE: {
       // only keep the items that have been deleted
       // so we can still filter them out if needed
+      const keepers = {}
       if (action.payload.json) {
-        const keepers = {}
-        const curUser = methods.getCurrentUser(action.payload.json)
+        Object.keys(action.payload.json).forEach((collection) => {
+          if (/(deleted_|categories)/.test(collection)) {
+            keepers[collection] = action.payload.json[collection]
+          }
+        })
+        keepers.pages = { 'all-categories': action.payload.json.pages['all-categories'] }
+      }
+      if (action.payload.profile) {
+        const curUser = action.payload.profile
         if (curUser) {
           if (curUser.avatar && curUser.avatar.tmp) {
             delete curUser.avatar.tmp
@@ -397,18 +405,11 @@ export default function json(state = {}, action = { type: '' }) {
           }
           setWith(keepers, [MAPPING_TYPES.USERS, curUser.id], curUser, Object)
         }
-        Object.keys(action.payload.json).forEach((collection) => {
-          if (/(deleted_|categories)/.test(collection)) {
-            keepers[collection] = action.payload.json[collection]
-          }
-        })
-        // hack to keep around the categories
-        newState = { ...newState, ...keepers, pages: { 'all-categories': action.payload.json.pages['all-categories'] } }
       }
-      if (action.payload.profile) {
-        methods.addModels(newState, MAPPING_TYPES.USERS, { users: [action.payload.profile] })
-      }
+      // hack to keep around the categories
+      newState = { ...newState, ...keepers }
       return newState
+    }
     case LOCATION_CHANGE:
       path = action.payload.pathname
       return state
