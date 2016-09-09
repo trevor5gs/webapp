@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { debounce } from 'lodash'
 import { EDITOR } from '../constants/action_types'
+import { selectCompletions } from '../selectors/editor'
 import {
   selectDeviceSize,
   selectIsCompleterActive,
@@ -24,9 +25,9 @@ import { addInputObject, removeInputObject } from '../components/editor/InputCom
 import { replaceWordFromSelection } from '../components/editor/SelectionUtil'
 
 function mapStateToProps(state) {
-  const { editor, emoji } = state
+  const { emoji } = state
   return {
-    completions: editor.completions,
+    completions: selectCompletions(state),
     deviceSize: selectDeviceSize(state),
     emojis: emoji.emojis,
     isCompleterActive: selectIsCompleterActive(state),
