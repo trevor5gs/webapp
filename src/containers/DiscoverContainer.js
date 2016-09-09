@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { sample } from 'lodash'
 import { selectCategories, selectCategoryPageTitle } from '../selectors'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectCoverDPI } from '../selectors/gui'
 import {
   bindDiscoverKey,
@@ -81,9 +82,8 @@ export function generateTabs(primary, secondary, tertiary) {
 }
 
 function mapStateToProps(state, props) {
-  const { authentication, gui } = state
   const { location, params } = props
-  const { isLoggedIn } = authentication
+  const isLoggedIn = selectIsLoggedIn(state)
   const { primary, secondary, tertiary } = selectCategories(state, props)
   const pageTitle = selectCategoryPageTitle(state, props)
   const promotions = isLoggedIn ? state.promotions.loggedIn : state.promotions.loggedOut
@@ -91,7 +91,7 @@ function mapStateToProps(state, props) {
   const title = `${titlePrefix} Ello`
   return {
     coverDPI: selectCoverDPI(state),
-    isBeaconActive: isLoggedIn && gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
+    isBeaconActive: isLoggedIn && state.gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
     isLoggedIn,
     pageTitle,
     paramsType: params.type,
