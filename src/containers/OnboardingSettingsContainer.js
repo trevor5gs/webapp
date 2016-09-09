@@ -83,12 +83,25 @@ class OnboardingSettingsContainer extends Component {
   onDoneClick = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('Onboarding.Settings.Done.Clicked'))
+    this.trackOnboardingEvents()
     dispatch(push('/following'))
   }
 
   onNextClick = () => {
     const { dispatch } = this.props
+    this.trackOnboardingEvents()
     dispatch(push('/onboarding/invitations'))
+  }
+
+  trackOnboardingEvents = () => {
+    const { dispatch, isAvatarBlank, isCoverImageBlank } = this.props
+    if (!isAvatarBlank) {
+      dispatch(trackEvent('Onboarding.Settings.Avatar.Completed'))
+    }
+
+    if (!isCoverImageBlank) {
+      dispatch(trackEvent('Onboarding.Settings.CoverImage.Completed'))
+    }
   }
 
   render() {
