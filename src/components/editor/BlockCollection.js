@@ -302,8 +302,8 @@ class BlockCollection extends Component {
   }
 
   handleTextBlockInput = (vo) => {
-    const { collection, dispatch, editorId } = this.props
-    if (!isEqual(collection[vo.uid], vo)) {
+    const { dragBlock, collection, dispatch, editorId } = this.props
+    if (!dragBlock && !isEqual(collection[vo.uid], vo)) {
       dispatch(updateBlock(vo, vo.uid, editorId))
     }
   }
