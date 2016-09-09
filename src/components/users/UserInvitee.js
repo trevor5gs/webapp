@@ -84,9 +84,9 @@ class UserInvitee extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state, props) {
   return {
-    user: getLinkObject(ownProps.invitation, 'acceptedBy', state.json),
+    user: getLinkObject(props.invitation, 'acceptedBy', state.json),
   }
 }
 

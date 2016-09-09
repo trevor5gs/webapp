@@ -4,6 +4,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { selectPagination } from '../selectors'
 import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectPropsPathname } from '../selectors/routing'
 import { getCategories } from '../actions/discover'
 import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
@@ -29,7 +30,7 @@ function mapStateToProps(state, props) {
   return {
     isLoggedIn: selectIsLoggedIn(state),
     pagination: selectPagination(state, props),
-    pathname: props.location.pathname,
+    pathname: selectPropsPathname(state, props),
   }
 }
 

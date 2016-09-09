@@ -1,18 +1,22 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { selectIsLoggedIn } from '../../selectors/authentication'
+import { selectPropsUserId, selectRelationshipPriority } from '../../selectors/user'
+import { selectPathname } from '../../selectors/routing'
 import { openModal } from '../../actions/modals'
 import { updateRelationship } from '../../actions/relationships'
 import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import RelationshipImageButton from '../relationships/RelationshipImageButton'
 
-function mapStateToProps(state, ownProps) {
-  const user = state.json.users[ownProps.user.id]
+function mapStateToProps(state, props) {
+  const { json } = state
+  const userId = selectPropsUserId(state, props)
   return {
     isLoggedIn: selectIsLoggedIn(state),
-    pathname: state.routing.location.pathname,
-    relationshipPriority: user.relationshipPriority,
-    user,
+    pathname: selectPathname(state),
+    relationshipPriority: selectRelationshipPriority(state, props),
+    user: userId ? json[MAPPING_TYPES.USERS][userId] : null,
   }
 }
 
