@@ -7,16 +7,17 @@ import { SET_LAYOUT_MODE } from '../constants/action_types'
 import { SHORTCUT_KEYS } from '../constants/application_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDiscoverKeyType, selectIsGridMode } from '../selectors/gui'
+import { selectIsModalActive } from '../selectors/modal'
 import { openModal, closeModal } from '../actions/modals'
 import HelpDialog from '../components/dialogs/HelpDialog'
 
 function mapStateToProps(state) {
-  const { modal, routing } = state
+  const { routing } = state
   return {
     discoverKeyType: selectDiscoverKeyType(state),
     isGridMode: selectIsGridMode(state),
     isLoggedIn: selectIsLoggedIn(state),
-    isModalActive: modal.isActive,
+    isModalActive: selectIsModalActive(state),
     pathname: routing.location.pathname,
   }
 }
