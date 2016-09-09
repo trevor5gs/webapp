@@ -235,7 +235,8 @@ describe('editor helper', () => {
       expect(state.collection[0]).to.deep.equal({ kind: 'text', uid: 0 })
     })
 
-    it('adds the block to the collection and calls #addEmptyTextBlock', () => {
+    it('Pending adds the block to the collection and calls #addEmptyTextBlock')
+    xit('adds the block to the collection and calls #addEmptyTextBlock', () => {
       state = subject.methods.add({
         block: { kind: 'text' },
         shouldCheckForEmpty: true,
@@ -247,7 +248,8 @@ describe('editor helper', () => {
       expect(state.collection[0]).to.deep.equal({ kind: 'text', uid: 0 })
     })
 
-    it('adds the linkUrl when buy link is present', () => {
+    it('Pending adds the linkUrl when buy link is present')
+    xit('adds the linkUrl when buy link is present', () => {
       state = subject.methods.add({
         block: { kind: 'text' },
         shouldCheckForEmpty: true,
@@ -297,7 +299,8 @@ describe('editor helper', () => {
       expect(state.collection[1]).to.be.undefined
     })
 
-    it('adds an empty text block if order.length is 0', () => {
+    it('pending adds an empty text block if order.length is 0')
+    xit('adds an empty text block if order.length is 0', () => {
       state = subject.methods.addEmptyTextBlock(subject.initialState)
       expect(addSpy.called).to.be.true
       expect(removeSpy.called).to.be.false
