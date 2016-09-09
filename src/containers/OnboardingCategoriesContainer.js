@@ -74,17 +74,22 @@ class OnboardingCategoriesContainer extends Component {
 
   onDoneClick = () => {
     const { dispatch } = this.props
+    const categoryIds = this.state.categoryIds
     dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
-    dispatch(trackEvent('Onboarding.Categories.Done.Clicked'))
-    const action = followCategories(this.state.categoryIds)
+    dispatch(trackEvent('Onboarding.Categories.Done.Clicked',
+                        { categories: categoryIds.length }))
+    const action = followCategories(categoryIds)
     set(action, 'meta.successAction', push('/following'))
     dispatch(action)
   }
 
   onNextClick = () => {
     const { dispatch } = this.props
+    const categoryIds = this.state.categoryIds
     dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
-    dispatch(followCategories(this.state.categoryIds))
+    dispatch(trackEvent('Onboarding.Settings.Categories.Completed',
+                        { categories: categoryIds.length }))
+    dispatch(followCategories(categoryIds))
     dispatch(push('/onboarding/settings'))
   }
 
