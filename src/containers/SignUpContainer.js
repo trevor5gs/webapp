@@ -1,15 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual, pick, sample } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
+import { sample } from 'lodash'
 import { trackEvent } from '../actions/analytics'
 import { SignUp } from '../components/views/SignUp'
-
-function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
-  const pickProps = ['coverDPI', 'coverOffset']
-  const thisCompare = pick(thisProps, pickProps)
-  const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare) || !isEqual(thisState, nextState)
-}
 
 function mapStateToProps(state) {
   const { gui, promotions } = state
@@ -41,7 +35,7 @@ class SignUpContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onClickTrackCredits = () => {

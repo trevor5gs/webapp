@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual, pick } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as commentActions from '../actions/comments'
 import { openModal, closeModal } from '../actions/modals'
@@ -10,14 +10,6 @@ import { getEditorId } from '../components/editor/Editor'
 import { scrollToLastTextBlock } from '../vendor/scrolling'
 import { CommentTools } from '../components/comments/CommentTools'
 
-
-export function shouldContainerUpdate(thisProps, nextProps) {
-  if (!nextProps.comment) { return false }
-  const pickProps = ['isLoggedIn', 'isNavbarHidden', 'isOwnComment', 'isOwnPost', 'isOwnRepost']
-  const thisCompare = pick(thisProps, pickProps)
-  const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare)
-}
 
 export function mapStateToProps(state, props) {
   const { author, comment, currentUser, post } = props
@@ -56,7 +48,7 @@ class CommentToolsContainer extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.state.isMoreToolActive !== nextState.isMoreToolActive) { return true }
-    return shouldContainerUpdate(this.props, nextProps)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onClickMoreTool = () => {

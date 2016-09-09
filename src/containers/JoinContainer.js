@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { debounce, isEqual } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
+import { debounce } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
 import { getInviteEmail } from '../actions/invitations'
 import { checkAvailability, signUpUser } from '../actions/profile'
@@ -13,10 +14,6 @@ import {
   getEmailStateFromServer,
   getPasswordState,
 } from '../components/forms/Validators'
-
-function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
-  return !isEqual(thisProps, nextProps) || !isEqual(thisState, nextState)
-}
 
 function mapStateToProps(state, props) {
   const { gui, profile } = state
@@ -97,7 +94,7 @@ class JoinContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onChangeUsernameControl = ({ username }) => {

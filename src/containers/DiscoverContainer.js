@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual, pick, sample } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
+import { sample } from 'lodash'
 import { selectCategories, selectCategoryPageTitle } from '../selectors'
 import {
   bindDiscoverKey,
@@ -78,25 +79,6 @@ export function generateTabs(primary, secondary, tertiary) {
   return tabs
 }
 
-export function shouldContainerUpdate(thisProps, nextProps) {
-  const pickProps = [
-    'coverDPI',
-    'isBeaconActive',
-    'isLoggedIn',
-    'location',
-    'params',
-    'pageTitle',
-    'pathname',
-    'promotions',
-    'primary',
-    'secondary',
-    'tertiary',
-  ]
-  const thisCompare = pick(thisProps, pickProps)
-  const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare)
-}
-
 function mapStateToProps(state, props) {
   const { authentication, gui } = state
   const { location, params } = props
@@ -157,8 +139,8 @@ class DiscoverContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
+import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
-import { isEqual } from 'lodash'
 import Credits from '../assets/Credits'
 import ImageAsset from '../assets/ImageAsset'
 
@@ -37,9 +37,7 @@ export default class Promotion extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const thisCompare = { ...this.props, ...this.state }
-    const nextCompare = { ...nextProps, ...nextState }
-    return !isEqual(thisCompare, nextCompare)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onLoadSuccess = () => {

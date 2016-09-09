@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual, pick } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import Editor from '../components/editor/Editor'
 import {
@@ -8,14 +8,6 @@ import {
   CommentFooter,
   CommentHeader,
 } from '../components/comments/CommentRenderables'
-
-export function shouldContainerUpdate(thisProps, nextProps) {
-  if (!nextProps.comment) { return false }
-  const pickProps = ['commentBody', 'isEditing']
-  const thisCompare = pick(thisProps, pickProps)
-  const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare)
-}
 
 export function mapStateToProps(state, props) {
   const { gui, json, profile } = state
@@ -47,8 +39,9 @@ class CommentContainer extends Component {
     post: PropTypes.object,
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!nextProps.comment) { return false }
+    return shallowCompare(this, nextProps, nextState)
   }
 
   render() {

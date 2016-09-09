@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import { loadNoise } from '../actions/stream'
 import { setLastStarredBeaconVersion } from '../actions/gui'
 import { Starred } from '../components/views/Starred'
@@ -23,8 +23,8 @@ class StarredContainer extends Component {
   static preRender = (store) =>
     store.dispatch(loadNoise())
 
-  shouldComponentUpdate(nextProps) {
-    return !isEqual(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onDismissZeroStream = () => {

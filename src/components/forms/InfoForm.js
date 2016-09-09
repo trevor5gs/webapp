@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
-import { debounce, isEqual } from 'lodash'
+import { debounce } from 'lodash'
 import { hideSoftKeyboard } from '../../vendor/jello'
 import {
   selectLinksAsText, selectName, selectShortBio, selectUsername,
@@ -72,7 +73,7 @@ class InfoForm extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return !isEqual(nextProps, this.props) || !isEqual(nextState, this.state)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onChangeControl = (vo, prop) => {

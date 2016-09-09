@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { get, isEqual, pick } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
+import { get } from 'lodash'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { getLinkObject } from '../helpers/json_helper'
 import Editor from '../components/editor/Editor'
@@ -14,16 +15,6 @@ import {
   PostRepostersDrawer,
   RepostHeader,
 } from '../components/posts/PostRenderables'
-
-export function shouldContainerUpdate(thisProps, nextProps) {
-  if (!nextProps.post) { return false }
-  const pickProps = ['columnWidth', 'isEditing', 'isReposting', 'showComments',
-                     'showCommentEditor', 'showLovers', 'showReposters', 'showEditor']
-  const pickPosts = ['summary', 'content', 'repostContent', 'body']
-  const thisCompare = { ...pick(thisProps.post, pickPosts), ...pick(thisProps, pickProps) }
-  const nextCompare = { ...pick(nextProps.post, pickPosts), ...pick(nextProps, pickProps) }
-  return !isEqual(thisCompare, nextCompare)
-}
 
 export function mapStateToProps(state, props) {
   const { gui, json, profile: currentUser, routing: { location: { pathname } } } = state
@@ -106,8 +97,8 @@ class PostContainer extends Component {
     showReposters: PropTypes.bool,
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   render() {

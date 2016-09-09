@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import { loadFriends } from '../actions/stream'
 import { setLastFollowingBeaconVersion } from '../actions/gui'
 import { Following } from '../components/views/Following'
@@ -23,8 +23,8 @@ class FollowingContainer extends Component {
   static preRender = (store) =>
     store.dispatch(loadFriends())
 
-  shouldComponentUpdate(nextProps) {
-    return !isEqual(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onDismissZeroStream = () => {

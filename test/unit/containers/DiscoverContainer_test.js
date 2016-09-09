@@ -9,7 +9,6 @@ import {
 import {
   generateTabs,
   getStreamAction,
-  shouldContainerUpdate,
 } from '../../../src/containers/DiscoverContainer'
 
 describe('DiscoverContainer', () => {
@@ -88,60 +87,6 @@ describe('DiscoverContainer', () => {
       expect(tabs[8]).to.have.property('to', '/discover/interviews')
       expect(tabs[9]).to.have.property('children', 'Collage')
       expect(tabs[9]).to.have.property('to', '/discover/collage')
-    })
-  })
-  context('#shouldContainerUpdate', () => {
-    it('returns the correct stream action for discover', () => {
-      const thisProps = {
-        coverDPI: 'xhdpi',
-        isBeaconActive: true,
-        isLoggedIn: true,
-        location: 'location',
-        params: 'Params',
-        pageTitle: 'PageTitle',
-        primary: ['primary0', 'primary1', 'primary2'],
-        secondary: ['secondary0', 'secondary1', 'secondary2'],
-        tertiary: ['tertiary0', 'tertiary1', 'tertiary2'],
-      }
-      const sameProps = {
-        coverDPI: 'xhdpi',
-        isBeaconActive: true,
-        isLoggedIn: true,
-        location: 'location',
-        params: 'Params',
-        pageTitle: 'PageTitle',
-        primary: ['primary0', 'primary1', 'primary2'],
-        secondary: ['secondary0', 'secondary1', 'secondary2'],
-        tertiary: ['tertiary0', 'tertiary1', 'tertiary2'],
-      }
-      const nextProps = {
-        coverDPI: 'xhdpi',
-        isBeaconActive: false,
-        isLoggedIn: true,
-        location: 'location',
-        params: 'Params2',
-        pageTitle: 'PageTitle',
-        primary: ['primary0', 'primary1', 'primary2'],
-        secondary: ['secondary0', 'secondary1', 'secondary2'],
-        tertiary: ['tertiary0', 'tertiary1', 'tertiary2'],
-      }
-      const lastProps = {
-        coverDPI: 'xhdpi',
-        isBeaconActive: false,
-        isLoggedIn: true,
-        location: 'location',
-        params: 'Params2',
-        pageTitle: 'PageTitle',
-        primary: ['primary00', 'primary01', 'primary02'],
-        secondary: ['secondary00', 'secondary01', 'secondary02'],
-        tertiary: ['tertiary00', 'tertiary01', 'tertiary02'],
-      }
-      const shouldSameUpdate = shouldContainerUpdate(thisProps, sameProps)
-      const shouldNextUpdate = shouldContainerUpdate(thisProps, nextProps)
-      const shouldLastUpdate = shouldContainerUpdate(nextProps, lastProps)
-      expect(shouldSameUpdate).to.be.false
-      expect(shouldNextUpdate).to.be.true
-      expect(shouldLastUpdate).to.be.true
     })
   })
 })

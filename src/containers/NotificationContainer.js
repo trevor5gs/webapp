@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { isEqual } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import { getLinkObject } from '../helpers/json_helper'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import {
@@ -38,10 +38,6 @@ const SUBJECT_TYPE = {
   LOVE: 'love',
   POST: 'post',
   USER: 'user',
-}
-
-function shouldContainerUpdate(thisProps, nextProps) {
-  return !isEqual(thisProps, nextProps)
 }
 
 function mapStateToProps(state, ownProps) {
@@ -133,8 +129,8 @@ class NotificationParser extends Component {
     subject: PropTypes.object.isRequired,
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   render() {

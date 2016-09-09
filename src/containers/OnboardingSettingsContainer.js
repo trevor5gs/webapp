@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import { isEqual, pick } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import { trackEvent } from '../actions/analytics'
 import { openAlert, closeAlert } from '../actions/modals'
 import { saveAvatar, saveCover } from '../actions/profile'
@@ -15,13 +15,6 @@ import {
 } from '../selectors/profile'
 import OnboardingSettings from '../components/onboarding/OnboardingSettings'
 
-
-function shouldContainerUpdate(thisProps, nextProps) {
-  const pickProps = ['avatar', 'coverImage', 'isNextDisabled']
-  const thisCompare = pick(thisProps, pickProps)
-  const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare)
-}
 
 function mapStateToProps(state) {
   const avatar = selectAvatar(state)
@@ -83,8 +76,8 @@ class OnboardingSettingsContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onDoneClick = () => {

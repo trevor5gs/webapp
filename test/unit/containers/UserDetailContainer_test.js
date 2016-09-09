@@ -1,7 +1,5 @@
 import { stub } from '../../support/stubs'
-import {
-  getStreamAction, mapStateToProps, shouldContainerUpdate,
-} from '../../../src/containers/UserDetailContainer'
+import { getStreamAction, mapStateToProps } from '../../../src/containers/UserDetailContainer'
 
 describe('UserDetailContainer', () => {
   context('#getStreamAction', () => {
@@ -27,61 +25,6 @@ describe('UserDetailContainer', () => {
       const vo = { username: 'archer' }
       const action = getStreamAction(vo)
       expect(action.payload.endpoint.path).to.contain('/~archer/posts')
-    })
-  })
-
-  context('#shouldContainerUpdate', () => {
-    const thisProps = {
-      activeUserFollowingType: 'thisActiveUserFollowingType',
-      coverDPI: 'xhdpi',
-      coverImage: {},
-      coverOffset: 10,
-      history: 'thisHistory',
-      isCoverActive: false,
-      isCoverHidden: false,
-      isLoggedIn: false,
-      isSelf: false,
-      hasSaidHelloTo: false,
-      hasZeroFollowers: false,
-      hasZeroPosts: false,
-      paramsType: 'thisParamsType',
-      paramsUsername: 'thisParamsUsername',
-      streamAction: {},
-      tabs: [],
-      user: {},
-      viewKey: 'thisViewKey',
-    }
-    const sameProps = { ...thisProps }
-    const nextProps = {
-      activeUserFollowingType: 'nextActiveUserFollowingType',
-      coverDPI: 'optimized',
-      coverImage: {},
-      coverOffset: 20,
-      history: 'nextHistory',
-      isCoverActive: true,
-      isCoverHidden: true,
-      isLoggedIn: true,
-      isSelf: true,
-      hasSaidHelloTo: false,
-      hasZeroFollowers: false,
-      hasZeroPosts: false,
-      paramsType: 'nextParamsType',
-      paramsUsername: 'nextParamsUsername',
-      streamAction: {},
-      tabs: [],
-      user: {},
-      viewKey: 'nextViewKey',
-    }
-    const defaultState = { isStreamFailing: false }
-    const shouldSameUpdate = shouldContainerUpdate(thisProps, sameProps, defaultState, defaultState)
-    const shouldNextUpdate = shouldContainerUpdate(thisProps, nextProps, defaultState, defaultState)
-
-    it('should not update state since the values are the same', () => {
-      expect(shouldSameUpdate).to.be.false
-    })
-
-    it('should update state since all value have changed', () => {
-      expect(shouldNextUpdate).to.be.true
     })
   })
 

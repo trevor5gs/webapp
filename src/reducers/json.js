@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
-import { cloneDeep, get, isEqual, merge, setWith, union, uniq, values } from 'lodash'
+import { get, isEqual, merge, setWith, union, uniq, values } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
@@ -318,7 +318,7 @@ methods.updatePostDetail = (newState, action) => {
 }
 
 export default function json(state = {}, action = { type: '' }) {
-  let newState = cloneDeep(state)
+  let newState = { ...state }
   if (!newState.pages) { newState.pages = {} }
   // whitelist actions
   switch (action.type) {

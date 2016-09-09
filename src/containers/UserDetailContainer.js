@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
-import { isEqual, omit } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import { USER } from '../constants/action_types'
 import {
   selectActiveUserFollowingType,
@@ -44,16 +44,6 @@ const selectUserDetailStreamAction = createSelector(
   (activeUserFollowingType, type, username) =>
     getStreamAction({ activeUserFollowingType, type, username })
 )
-
-export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
-  if (thisState.isStreamFailing !== nextState.isStreamFailing) {
-    return true
-  } else if (!nextProps.user) { return false }
-  const omitProps = ['children', 'dispatch', 'history', 'route', 'routes']
-  const thisCompare = omit(thisProps, omitProps)
-  const nextCompare = omit(nextProps, omitProps)
-  return !isEqual(thisCompare, nextCompare)
-}
 
 export function mapStateToProps(state, props) {
   const { authentication, gui, stream } = state
@@ -141,7 +131,12 @@ class UserDetailContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
+    if (this.state.isStreamFailing !== nextState.isStreamFailing) {
+      return true
+    } else if (!nextProps.user) {
+      return false
+    }
+    return shallowCompare(this, nextProps, nextState)
   }
 
   render() {

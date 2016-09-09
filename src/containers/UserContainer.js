@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { isEqual, pick } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import { UserAvatar, UserCompact, UserGrid, UserList } from '../components/users/UserRenderables'
 import MessageDialog from '../components/dialogs/MessageDialog'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
@@ -10,30 +10,6 @@ import { closeModal, openModal } from '../actions/modals'
 import { trackEvent } from '../actions/analytics'
 import { sendMessage } from '../actions/user'
 import { getElloPlatform } from '../vendor/jello'
-
-export function shouldContainerUpdate(thisProps, nextProps) {
-  let pickProps = ['avatar', 'relationshipPriority', 'username']
-  switch (nextProps.type) {
-    case 'grid':
-      pickProps = pickProps.concat([
-        'coverImage', 'followersCount', 'followingCount', 'lovesCount', 'postsCount',
-      ])
-      break
-    case 'list':
-      pickProps = pickProps.concat([
-        'coverImage', 'followersCount', 'followingCount', 'lovesCount',
-        'postsAdultContent', 'postsCount', 'viewsAdultContent',
-      ])
-      break
-    default:
-      break
-
-  }
-  const thisPick = pick(thisProps.user, pickProps)
-  const nextPick = pick(nextProps.user, pickProps)
-  const shouldUpdate = !isEqual(thisPick, nextPick)
-  return shouldUpdate
-}
 
 export function mapStateToProps(state, props) {
   const user = state.json.users[props.user.id]
@@ -77,8 +53,8 @@ class UserContainer extends Component {
     useGif: false,
   }
 
-  shouldComponentUpdate(nextProps) {
-    return shouldContainerUpdate(this.props, nextProps)
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onClickShareProfile = () => {

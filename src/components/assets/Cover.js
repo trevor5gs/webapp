@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { isEqual } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import ImageAsset from '../assets/ImageAsset'
 import { isGif } from '../../helpers/file_helper'
@@ -57,9 +57,7 @@ export default class Cover extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const thisCompare = { ...this.props, ...this.state }
-    const nextCompare = { ...nextProps, ...nextState }
-    return !isEqual(thisCompare, nextCompare)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onLoadSuccess = () => {

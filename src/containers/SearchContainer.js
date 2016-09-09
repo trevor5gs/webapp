@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
-import { debounce, get, isEqual, pick, sample } from 'lodash'
+import shallowCompare from 'react-addons-shallow-compare'
+import { debounce, get, sample } from 'lodash'
 import { updateQueryParams } from '../helpers/uri_helper'
 import { searchForPosts, searchForUsers } from '../actions/search'
 import { trackEvent } from '../actions/analytics'
@@ -21,13 +22,6 @@ export function getStreamAction(terms, type) {
     return type === 'users' ? searchForUsers(terms) : searchForPosts(terms)
   }
   return null
-}
-
-export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
-  const pickProps = ['coverDPI', 'isLoggedIn', 'pathname', 'promotions', 'terms']
-  const thisCompare = pick(thisProps, pickProps)
-  const nextCompare = pick(nextProps, pickProps)
-  return !isEqual(thisCompare, nextCompare) || !isEqual(thisState, nextState)
 }
 
 export function mapStateToProps(state, props) {
@@ -83,7 +77,7 @@ class SearchContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onChangeControl = (vo) => {

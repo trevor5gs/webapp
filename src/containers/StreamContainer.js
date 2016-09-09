@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
+import shallowCompare from 'react-addons-shallow-compare'
+import { debounce, get } from 'lodash'
 import classNames from 'classnames'
-import _ from 'lodash'
 import scrollTop from '../vendor/scrolling'
 import { runningFetches } from '../sagas/requester'
 import * as ACTION_TYPES from '../constants/action_types'
@@ -19,36 +20,6 @@ import { Paginator } from '../components/streams/Paginator'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { makeSelectStreamProps, selectRoutingPathname } from '../selectors'
 import Session from '../vendor/session'
-
-export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
-  const { stream } = nextProps
-  const { action } = nextState
-  const updateKey = _.get(action, 'meta.updateKey')
-  const streamPath = _.get(stream, 'payload.endpoint.path', '')
-  // this prevents nested stream components from clobbering parents
-  if (updateKey && !streamPath.match(updateKey)) {
-    return false
-    // when hitting the back button the result can update and
-    // try to feed wrong results to the actions render method
-    // thus causing errors when trying to render wrong results
-  } else if (nextProps.resultPath !== thisProps.resultPath) {
-    return false
-  } else if (nextProps.isGridMode !== thisProps.isGridMode) {
-    return true
-  } else if (thisProps.columnCount !== nextProps.columnCount && nextProps.isGridMode) {
-    return true
-    // allow page loads to fall through and also allow stream
-    // load requests to fall through to show the loader
-    // on an initial page load when endpoints don't match
-  } else if (!/LOAD_NEXT_CONTENT|POST\.|COMMENT\./.test(stream.type) &&
-             stream.type !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
-             streamPath !== _.get(action, 'payload.endpoint.path')) {
-    return false
-  } else if (_.isEqual(nextState, thisState) && _.isEqual(nextProps, thisProps)) {
-    return false
-  }
-  return true
-}
 
 export function makeMapStateToProps() {
   const getStreamProps = makeSelectStreamProps()
@@ -126,8 +97,8 @@ class StreamContainer extends Component {
       this.state = { action, locationKey: /\/search/.test(pathname) ? '/search' : location.key }
     })
     unlisten()
-    this.setScroll = _.debounce(this.setScroll, 300)
-    this.setScrollTarget = _.debounce(this.setScrollTarget, 300)
+    this.setScroll = debounce(this.setScroll, 300)
+    this.setScrollTarget = debounce(this.setScrollTarget, 300)
     this.shouldScroll = true
     this.wasOmnibarActive = omnibar.isActive
   }
@@ -172,8 +143,33 @@ class StreamContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
+    const { stream } = nextProps
+    const { action } = nextState
+    const updateKey = get(action, 'meta.updateKey')
+    const streamPath = get(stream, 'payload.endpoint.path', '')
+    // this prevents nested stream components from clobbering parents
+    if (updateKey && !streamPath.match(updateKey)) {
+      return false
+      // when hitting the back button the result can update and
+      // try to feed wrong results to the actions render method
+      // thus causing errors when trying to render wrong results
+    } else if (nextProps.resultPath !== this.props.resultPath) {
+      return false
+    } else if (nextProps.isGridMode !== this.props.isGridMode) {
+      return true
+    } else if (this.props.columnCount !== nextProps.columnCount && nextProps.isGridMode) {
+      return true
+      // allow page loads to fall through and also allow stream
+      // load requests to fall through to show the loader
+      // on an initial page load when endpoints don't match
+    } else if (!/LOAD_NEXT_CONTENT|POST\.|COMMENT\./.test(stream.type) &&
+              stream.type !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
+              streamPath !== get(action, 'payload.endpoint.path')) {
+      return false
+    }
+    return shallowCompare(this, nextProps, nextState)
   }
+
 
   componentDidUpdate() {
     if (window.embetter) {
@@ -322,7 +318,7 @@ class StreamContainer extends Component {
     if (!action.payload.endpoint || !pagination[rel] ||
         parseInt(pagination.totalPagesRemaining, 10) === 0 || !action ||
         (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS &&
-         _.get(stream, 'payload.serverStatus', 0) === 204)) { return }
+         get(stream, 'payload.serverStatus', 0) === 204)) { return }
     if (runningFetches[pagination[rel]]) { return }
     this.setState({ hidePaginator: false })
     const infiniteAction = {
