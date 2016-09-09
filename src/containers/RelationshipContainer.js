@@ -5,6 +5,7 @@ import { createSelector } from 'reselect'
 import shallowCompare from 'react-addons-shallow-compare'
 import { get } from 'lodash'
 import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize } from '../selectors/gui'
 import { openModal, closeModal } from '../actions/modals'
 import { updateRelationship } from '../actions/relationships'
@@ -18,7 +19,6 @@ import BlockMuteButton from '../components/relationships/BlockMuteButton'
 import RelationshipButton from '../components/relationships/RelationshipButton'
 import StarshipButton from '../components/relationships/StarshipButton'
 
-const selectIsLoggedIn = (state) => state.authentication.isLoggedIn
 const selectRelationshipPriority = (state, props) => props.relationshipPriority
 const selectHasBlockMuteButton = (state, props) => props.hasBlockMuteButton
 const selectUserId = (state, props) => get(props, 'user.id')
@@ -63,7 +63,7 @@ export function getNextBlockMutePriority(currentPriority, requestedPriority) {
 // TODO: Try and get rid of deviceSize
 export function mapStateToProps(state, props) {
   const { routing } = state
-  const isLoggedIn = selectIsLoggedIn(state, props)
+  const isLoggedIn = selectIsLoggedIn(state)
   const user = selectUser(state, props)
   const onClickCallback = selectOnClickCallback(state, props)
   const shouldRenderBlockMute = selectShouldRenderBlockMuteButton(state, props)

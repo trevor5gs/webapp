@@ -4,6 +4,7 @@ import { isEqual } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { selectParamsToken, selectParamsUsername, selectPost } from '../selectors'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import { loadComments, loadPostDetail, toggleLovers, toggleReposters } from '../actions/posts'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { PostDetail, PostDetailError } from '../components/views/PostDetail'
@@ -30,13 +31,13 @@ export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState
 }
 
 export function mapStateToProps(state, props) {
-  const { authentication, json, stream } = state
+  const { json, stream } = state
   const paramsToken = selectParamsToken(state, props)
   const paramsUsername = selectParamsUsername(state, props)
   const post = selectPost(state, props)
   return {
     author: post ? json[MAPPING_TYPES.USERS][post.authorId] : null,
-    isLoggedIn: authentication.isLoggedIn,
+    isLoggedIn: selectIsLoggedIn(state),
     paramsToken,
     paramsUsername,
     post,

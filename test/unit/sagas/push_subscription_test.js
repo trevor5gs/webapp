@@ -1,9 +1,7 @@
 import { AUTHENTICATION, PROFILE } from '../../../src/constants/action_types'
 import { loginPushSubscribe, logoutPushUnsubscribe } from '../../../src/sagas/push_subscription'
 import { selectBundleId, selectRegistrationId } from '../../../src/selectors/profile'
-import {
-  isLoggedInSelector,
-} from '../../../src/sagas/selectors'
+import { selectIsLoggedIn } from '../../../src/selectors/authentication'
 import {
   registerForGCM,
   requestPushSubscription,
@@ -18,7 +16,7 @@ describe('push subscription saga', function () {
       const pushAction = requestPushSubscription(regId)
       const pushHandler = loginPushSubscribe()
       expect(pushHandler).to.take(PROFILE.REQUEST_PUSH_SUBSCRIPTION)
-      expect(pushHandler.next(pushAction)).to.select(isLoggedInSelector)
+      expect(pushHandler.next(pushAction)).to.select(selectIsLoggedIn)
       expect(pushHandler.next(true)).to.put(registerForGCM(regId))
     })
 
@@ -26,7 +24,7 @@ describe('push subscription saga', function () {
       const pushAction = requestPushSubscription(regId)
       const pushHandler = loginPushSubscribe()
       expect(pushHandler).to.take(PROFILE.REQUEST_PUSH_SUBSCRIPTION)
-      expect(pushHandler.next(pushAction)).to.select(isLoggedInSelector)
+      expect(pushHandler.next(pushAction)).to.select(selectIsLoggedIn)
       expect(pushHandler.next(false)).to.take(AUTHENTICATION.USER_SUCCESS)
       expect(pushHandler).to.put(registerForGCM(regId))
     })

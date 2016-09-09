@@ -6,6 +6,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 import { set } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize } from '../selectors/gui'
 import * as postActions from '../actions/posts'
 import { trackEvent } from '../actions/analytics'
@@ -17,7 +18,7 @@ import ShareDialog from '../components/dialogs/ShareDialog'
 import { PostTools } from '../components/posts/PostTools'
 
 export function mapStateToProps(state, props) {
-  const { authentication, json, profile, routing, stream } = state
+  const { json, profile, routing, stream } = state
   const post = json[MAPPING_TYPES.POSTS][props.post.id]
   const isCommentsRequesting = stream.type === ACTION_TYPES.LOAD_STREAM_REQUEST &&
                                stream.meta.mappingType === MAPPING_TYPES.COMMENTS &&
@@ -27,7 +28,7 @@ export function mapStateToProps(state, props) {
     detailLink: `/${props.author.username}/post/${post.token}`,
     deviceSize: selectDeviceSize(state),
     isCommentsRequesting,
-    isLoggedIn: authentication.isLoggedIn,
+    isLoggedIn: selectIsLoggedIn(state),
     isOwnPost: profile && `${props.post.authorId}` === `${profile.id}`,
     pathname: routing.location.pathname,
     postCommentsCount: post.commentsCount,

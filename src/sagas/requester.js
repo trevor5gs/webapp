@@ -7,10 +7,7 @@ import * as ACTION_TYPES from '../constants/action_types'
 import { selectLastNotificationCheck } from '../selectors/gui'
 import { refreshAuthenticationToken } from '../actions/authentication'
 import { pauseRequester, unpauseRequester } from '../actions/api'
-import {
-  isLoggedInSelector,
-  refreshTokenSelector,
-} from './selectors'
+import { selectIsLoggedIn, selectRefreshToken } from '../selectors/authentication'
 import { fetchCredentials, getClientCredentials, sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
 import Dialog from '../components/dialogs/Dialog'
@@ -147,8 +144,8 @@ export function* handleRequestError(error, action) {
   if (error.response) {
     payload.serverStatus = error.response.status
     if (error.response.status === 401) {
-      const isLoggedIn = yield select(isLoggedInSelector)
-      const refreshToken = yield select(refreshTokenSelector)
+      const isLoggedIn = yield select(selectIsLoggedIn)
+      const refreshToken = yield select(selectRefreshToken)
       if (type !== ACTION_TYPES.AUTHENTICATION.LOGOUT &&
           type !== ACTION_TYPES.AUTHENTICATION.REFRESH &&
           isLoggedIn) {

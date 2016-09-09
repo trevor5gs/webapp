@@ -15,7 +15,7 @@ import { PROFILE, EDITOR } from '../constants/action_types'
 import { s3CredentialsPath } from '../networking/api'
 import FileTypeDialog from '../containers/dialogs/FileTypeDialog'
 
-import { accessTokenSelector } from './selectors'
+import { selectAccessToken } from '../selectors/authentication'
 import { openAlert } from '../actions/modals'
 import { temporaryEditorAssetCreated } from '../actions/editor'
 import { temporaryAssetCreated } from '../actions/profile'
@@ -118,7 +118,7 @@ function* performUpload(action) {
   const REQUEST = `${type}_REQUEST`
   const SUCCESS = `${type}_SUCCESS`
   const FAILURE = `${type}_FAILURE`
-  const accessToken = yield select(accessTokenSelector)
+  const accessToken = yield select(selectAccessToken)
   let assetUrl
   let uid
 

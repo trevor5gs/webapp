@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { debounce, get, sample } from 'lodash'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectCoverDPI } from '../selectors/gui'
 import { updateQueryParams } from '../helpers/uri_helper'
 import { searchForPosts, searchForUsers } from '../actions/search'
@@ -26,13 +27,14 @@ export function getStreamAction(terms, type) {
 }
 
 export function mapStateToProps(state, props) {
-  const { authentication, promotions } = state
+  const { promotions } = state
   const { location } = props
+  const isLoggedIn = selectIsLoggedIn(state)
   return {
     coverDPI: selectCoverDPI(state),
-    isLoggedIn: authentication.isLoggedIn,
+    isLoggedIn,
     pathname: get(location, 'pathname', ''),
-    promotions: authentication.isLoggedIn ? promotions.loggedIn : promotions.loggedOut,
+    promotions: isLoggedIn ? promotions.loggedIn : promotions.loggedOut,
     terms: get(location, 'query.terms', ''),
     type: get(location, 'query.type', 'posts'),
   }

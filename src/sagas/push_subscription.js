@@ -2,16 +2,14 @@
 import { fork, put, select, take } from 'redux-saga/effects'
 import { registerForGCM, unregisterForGCM } from '../actions/profile'
 import { AUTHENTICATION, PROFILE } from '../constants/action_types'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectBundleId, selectRegistrationId } from '../selectors/profile'
-import {
-  isLoggedInSelector,
-} from './selectors'
 
 export function* loginPushSubscribe() {
   while (true) {
     const action = yield take(PROFILE.REQUEST_PUSH_SUBSCRIPTION)
     const { buildVersion, bundleId, marketingVersion, registrationId } = action.payload
-    if (yield select(isLoggedInSelector)) {
+    if (yield select(selectIsLoggedIn)) {
       yield put(registerForGCM(registrationId, bundleId, marketingVersion, buildVersion))
     } else {
       yield take(AUTHENTICATION.USER_SUCCESS)

@@ -1,6 +1,7 @@
 import { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectAllowsAnalytics, selectAnalyticsId, selectCreatedAt } from '../selectors/profile'
 
 export function addSegment(uid, createdAt) {
@@ -28,12 +29,11 @@ export function doesAllowTracking() {
 }
 
 function mapStateToProps(state) {
-  const { authentication } = state
   return {
     allowsAnalytics: selectAllowsAnalytics(state),
     analyticsId: selectAnalyticsId(state),
     createdAt: selectCreatedAt(state),
-    isLoggedIn: authentication.isLoggedIn,
+    isLoggedIn: selectIsLoggedIn(state),
   }
 }
 

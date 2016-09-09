@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
 import shallowCompare from 'react-addons-shallow-compare'
 import { USER } from '../constants/action_types'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectParamsType, selectParamsUsername, selectUser } from '../selectors'
 import {
   selectActiveUserFollowingType,
@@ -48,12 +49,12 @@ const selectUserDetailStreamAction = createSelector(
 )
 
 export function mapStateToProps(state, props) {
-  const { authentication, stream } = state
+  const { stream } = state
   const type = selectParamsType(state, props) || 'posts'
   const username = selectParamsUsername(state, props)
   const user = selectUser(state, props)
   const activeUserFollowingType = selectActiveUserFollowingType(state)
-  const isLoggedIn = authentication.isLoggedIn
+  const isLoggedIn = selectIsLoggedIn(state)
   const isSelf = isLoggedIn && user ? user.relationshipPriority === 'self' : false
   const hasSaidHelloTo = user ? !isSelf && selectHasSaidHelloTo(state, props) : false
   const keyPostfix = isSelf && activeUserFollowingType ? `/${activeUserFollowingType}` : ''

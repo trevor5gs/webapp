@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import * as ACTION_TYPES from '../constants/action_types'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize, selectIsNavbarHidden } from '../selectors/gui'
 import * as commentActions from '../actions/comments'
 import { openModal, closeModal } from '../actions/modals'
@@ -23,7 +24,7 @@ export function mapStateToProps(state, props) {
   return {
     canDeleteComment,
     deviceSize: selectDeviceSize(state),
-    isLoggedIn: state.authentication.isLoggedIn,
+    isLoggedIn: selectIsLoggedIn(state),
     isNavbarHidden: selectIsNavbarHidden(state),
     isOwnComment,
   }

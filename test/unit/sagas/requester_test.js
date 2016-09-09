@@ -1,7 +1,7 @@
 import { channel } from 'redux-saga'
+import { selectIsLoggedIn, selectRefreshToken } from '../../../src/selectors/authentication'
 import { loadDiscoverPosts } from '../../../src/actions/discover'
 import { refreshAuthenticationToken } from '../../../src/actions/authentication'
-import { isLoggedInSelector, refreshTokenSelector } from '../../../src/sagas/selectors'
 import {
   handleRequest,
   handleRequestError,
@@ -188,8 +188,8 @@ describe('performRequest', function () {
 
     it('triggers a token refresh and then fires the action again', function () {
       const errorHandler = handleRequestError(responseError, pretendAction)
-      expect(errorHandler).to.select(isLoggedInSelector)
-      expect(errorHandler.next(true)).to.select(refreshTokenSelector)
+      expect(errorHandler).to.select(selectIsLoggedIn)
+      expect(errorHandler.next(true)).to.select(selectRefreshToken)
 
       expect(errorHandler.next('footokenfoo')).to.put(refreshAuthenticationToken('footokenfoo'))
       expect(errorHandler).to.put(pretendAction)

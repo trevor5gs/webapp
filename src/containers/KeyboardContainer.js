@@ -5,16 +5,17 @@ import { push } from 'react-router-redux'
 import Mousetrap from 'mousetrap'
 import { SET_LAYOUT_MODE } from '../constants/action_types'
 import { SHORTCUT_KEYS } from '../constants/application_types'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDiscoverKeyType, selectIsGridMode } from '../selectors/gui'
 import { openModal, closeModal } from '../actions/modals'
 import HelpDialog from '../components/dialogs/HelpDialog'
 
 function mapStateToProps(state) {
-  const { authentication, modal, routing } = state
+  const { modal, routing } = state
   return {
     discoverKeyType: selectDiscoverKeyType(state),
     isGridMode: selectIsGridMode(state),
-    isLoggedIn: authentication.isLoggedIn,
+    isLoggedIn: selectIsLoggedIn(state),
     isModalActive: modal.isActive,
     pathname: routing.location.pathname,
   }

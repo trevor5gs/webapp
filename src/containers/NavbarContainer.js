@@ -5,6 +5,7 @@ import { isIOS } from '../vendor/jello'
 import { scrollToTop } from '../vendor/scrolling'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import {
   selectCurrentStream,
   selectDeviceSize,
@@ -26,9 +27,9 @@ import { getDiscoverAction } from '../containers/DiscoverContainer'
 import Session from '../vendor/session'
 
 function mapStateToProps(state) {
-  const { authentication, json, routing } = state
+  const { json, routing } = state
   const currentStream = selectCurrentStream(state)
-  const isLoggedIn = authentication.isLoggedIn
+  const isLoggedIn = selectIsLoggedIn(state)
   const pathname = routing.location.pathname
   const result = json.pages ? json.pages[pathname] : null
   const hasLoadMoreButton = Boolean(result && result.morePostIds)

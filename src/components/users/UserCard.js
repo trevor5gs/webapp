@@ -1,9 +1,20 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { selectIsLoggedIn } from '../../selectors/authentication'
 import { openModal } from '../../actions/modals'
 import { updateRelationship } from '../../actions/relationships'
 import RegistrationRequestDialog from '../dialogs/RegistrationRequestDialog'
 import RelationshipImageButton from '../relationships/RelationshipImageButton'
+
+function mapStateToProps(state, ownProps) {
+  const user = state.json.users[ownProps.user.id]
+  return {
+    isLoggedIn: selectIsLoggedIn(state),
+    pathname: state.routing.location.pathname,
+    relationshipPriority: user.relationshipPriority,
+    user,
+  }
+}
 
 class UserCard extends Component {
 
@@ -47,16 +58,6 @@ class UserCard extends Component {
         />
       </div>
     )
-  }
-}
-
-function mapStateToProps(state, ownProps) {
-  const user = state.json.users[ownProps.user.id]
-  return {
-    isLoggedIn: state.authentication.isLoggedIn,
-    pathname: state.routing.location.pathname,
-    relationshipPriority: user.relationshipPriority,
-    user,
   }
 }
 

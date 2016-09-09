@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import shallowCompare from 'react-addons-shallow-compare'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import { UserAvatar, UserCompact, UserGrid, UserList } from '../components/users/UserRenderables'
 import MessageDialog from '../components/dialogs/MessageDialog'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
@@ -16,7 +17,7 @@ export function mapStateToProps(state, props) {
   return {
     followersCount: user.followersCount,
     followingCount: user.followingCount,
-    isLoggedIn: state.authentication.isLoggedIn,
+    isLoggedIn: selectIsLoggedIn(state),
     lovesCount: user.lovesCount,
     postsCount: user.postsCount,
     relationshipPriority: user.relationshipPriority,
