@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import _ from 'lodash'
 import { connect } from 'react-redux'
 import { GUI, LOAD_STREAM_SUCCESS } from '../../constants/action_types'
 import { scrollElToTop } from '../../vendor/scrolling'
 import { selectActiveNotificationsType } from '../../selectors/gui'
+import { selectStreamType } from '../../selectors/stream'
 import { toggleNotifications } from '../../actions/gui'
 import { loadNotifications } from '../../actions/notifications'
 import StreamContainer from '../../containers/StreamContainer'
@@ -21,7 +21,7 @@ function mapStateToProps(state) {
   return {
     activeTabType,
     streamAction: loadNotifications({ category: activeTabType }),
-    streamType: _.get(state, 'stream.type'),
+    streamType: selectStreamType(state),
   }
 }
 

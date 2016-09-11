@@ -8,6 +8,18 @@ import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize } from '../selectors/gui'
+import {
+  selectIsOwnPost,
+  selectPostFromPropsPostId,
+  selectPropsPostId,
+  selectPropsPostToken,
+} from '../selectors/post'
+import { selectPathname, selectPreviousPath } from '../selectors/routing'
+import {
+  selectStreamType,
+  selectStreamMappingType,
+  selectStreamPostIdOrToken,
+} from '../selectors/stream'
 import * as postActions from '../actions/posts'
 import { trackEvent } from '../actions/analytics'
 import { openModal, closeModal } from '../actions/modals'
@@ -18,19 +30,23 @@ import ShareDialog from '../components/dialogs/ShareDialog'
 import { PostTools } from '../components/posts/PostTools'
 
 export function mapStateToProps(state, props) {
-  const { json, profile, routing, stream } = state
-  const post = json[MAPPING_TYPES.POSTS][props.post.id]
-  const isCommentsRequesting = stream.type === ACTION_TYPES.LOAD_STREAM_REQUEST &&
-                               stream.meta.mappingType === MAPPING_TYPES.COMMENTS &&
-                               (`${stream.payload.postIdOrToken}` === `${props.post.id}` ||
-                                `${stream.payload.postIdOrToken}` === `${props.post.token}`)
+  const post = selectPostFromPropsPostId(state, props)
+  const propsPostId = selectPropsPostId(state, props)
+  const propsPostToken = selectPropsPostToken(state, props)
+  const streamType = selectStreamType(state)
+  const streamMappingType = selectStreamMappingType(state)
+  const streamPostIdOrToken = selectStreamPostIdOrToken(state)
+  const isCommentsRequesting = streamType === ACTION_TYPES.LOAD_STREAM_REQUEST &&
+                               streamMappingType === MAPPING_TYPES.COMMENTS &&
+                               (`${streamPostIdOrToken}` === `${propsPostId}` ||
+                                `${streamPostIdOrToken}` === `${propsPostToken}`)
   return {
     detailLink: `/${props.author.username}/post/${post.token}`,
     deviceSize: selectDeviceSize(state),
     isCommentsRequesting,
     isLoggedIn: selectIsLoggedIn(state),
-    isOwnPost: profile && `${props.post.authorId}` === `${profile.id}`,
-    pathname: routing.location.pathname,
+    isOwnPost: selectIsOwnPost(state, props),
+    pathname: selectPathname(state),
     postCommentsCount: post.commentsCount,
     postLoved: post.loved,
     postLovesCount: post.lovesCount,
@@ -40,7 +56,7 @@ export function mapStateToProps(state, props) {
     postShowLovers: post.showLovers,
     postShowReposters: post.showReposters,
     postViewsCountRounded: post.viewsCountRounded,
-    previousPath: routing.previousPath,
+    previousPath: selectPreviousPath(state),
   }
 }
 

@@ -36,7 +36,7 @@ export const selectSaidHelloTo = (state) => get(state, 'gui.saidHelloTo')
 export const selectTextToolsCoordinates = (state) => get(state, 'gui.textToolsCoordinates')
 export const selectTextToolsStates = (state) => get(state, 'gui.textToolsStates')
 
-// Memoized Selectors
+// Memoized selectors
 export const selectCommentOffset = createSelector(
   [selectDeviceSize], (deviceSize) =>
     (deviceSize === 'mobile' ? 40 : 60)

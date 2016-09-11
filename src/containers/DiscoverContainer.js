@@ -2,9 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { sample } from 'lodash'
-import { selectCategories, selectCategoryPageTitle } from '../selectors'
 import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectCategories, selectCategoryPageTitle } from '../selectors/categories'
 import { selectCoverDPI } from '../selectors/gui'
+import { selectParamsType } from '../selectors/params'
+import { selectPromotions } from '../selectors/promotions'
+import { selectPropsPathname } from '../selectors/routing'
 import {
   bindDiscoverKey,
   getCategories,
@@ -82,11 +85,9 @@ export function generateTabs(primary, secondary, tertiary) {
 }
 
 function mapStateToProps(state, props) {
-  const { location, params } = props
   const isLoggedIn = selectIsLoggedIn(state)
   const { primary, secondary, tertiary } = selectCategories(state, props)
   const pageTitle = selectCategoryPageTitle(state, props)
-  const promotions = isLoggedIn ? state.promotions.loggedIn : state.promotions.loggedOut
   const titlePrefix = pageTitle ? `${pageTitle} | ` : ''
   const title = `${titlePrefix} Ello`
   return {
@@ -94,9 +95,9 @@ function mapStateToProps(state, props) {
     isBeaconActive: isLoggedIn && state.gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
     isLoggedIn,
     pageTitle,
-    paramsType: params.type,
-    pathname: location.pathname,
-    promotions,
+    paramsType: selectParamsType(state, props),
+    pathname: selectPropsPathname(state, props),
+    promotions: selectPromotions(state),
     primary,
     secondary,
     tertiary,

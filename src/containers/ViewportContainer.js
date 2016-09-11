@@ -16,6 +16,7 @@ import {
   selectIsProfileMenuActive,
   selectScrollDirectionOffset,
 } from '../selectors/gui'
+import { selectPathname } from '../selectors/routing'
 import { setIsOffsetLayout, setScrollState, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
@@ -23,10 +24,8 @@ import { Viewport } from '../components/viewport/Viewport'
 
 
 function mapStateToProps(state) {
-  const { routing } = state
-  const coverOffset = selectCoverOffset(state)
   return {
-    coverOffset,
+    coverOffset: selectCoverOffset(state),
     innerHeight: selectInnerHeight(state),
     innerWidth: selectInnerWidth(state),
     isAuthenticationView: selectIsAuthenticationView(state),
@@ -39,7 +38,7 @@ function mapStateToProps(state) {
     isOnboardingView: selectIsOnboardingView(state),
     isProfileMenuActive: selectIsProfileMenuActive(state),
     offset: selectScrollDirectionOffset(state),
-    pathname: routing.location.pathname,
+    pathname: selectPathname(state),
   }
 }
 

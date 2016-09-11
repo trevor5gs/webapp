@@ -16,6 +16,8 @@ import {
   selectIsProfileMenuActive,
 } from '../selectors/gui'
 import { selectAvatar, selectUsername } from '../selectors/profile'
+import { selectPage } from '../selectors/pages'
+import { selectPathname } from '../selectors/routing'
 import { logout } from '../actions/authentication'
 import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
 import { checkForNewNotifications } from '../actions/notifications'
@@ -27,12 +29,11 @@ import { getDiscoverAction } from '../containers/DiscoverContainer'
 import Session from '../vendor/session'
 
 function mapStateToProps(state) {
-  const { json, routing } = state
   const currentStream = selectCurrentStream(state)
   const isLoggedIn = selectIsLoggedIn(state)
-  const pathname = routing.location.pathname
-  const result = json.pages ? json.pages[pathname] : null
-  const hasLoadMoreButton = Boolean(result && result.morePostIds)
+  const pathname = selectPathname(state)
+  const result = selectPage(state)
+  const hasLoadMoreButton = !!(result && result.morePostIds)
 
   if (isLoggedIn) {
     return {

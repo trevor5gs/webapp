@@ -5,5 +5,5 @@ import { get } from 'lodash'
 export const selectIsModalActive = (state) => get(state, 'modal.isActive')
 export const selectModalKind = (state) => get(state, 'modal.kind')
 
-// Memoized Selectors
+// Memoized selectors
 

@@ -4,6 +4,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 import { debounce } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
 import { selectCoverDPI, selectCoverOffset } from '../selectors/gui'
+import { selectInvitationCode } from '../selectors/params'
 import { selectAvailability, selectEmail } from '../selectors/profile'
 import { getInviteEmail } from '../actions/invitations'
 import { checkAvailability, signUpUser } from '../actions/profile'
@@ -23,7 +24,7 @@ function mapStateToProps(state, props) {
     coverDPI: selectCoverDPI(state),
     coverOffset: selectCoverOffset(state),
     email: selectEmail(state),
-    invitationCode: props.params.invitationCode,
+    invitationCode: selectInvitationCode(state, props),
   }
 }
 

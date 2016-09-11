@@ -7,19 +7,19 @@ import {
   selectIsLayoutToolHidden,
   selectIsOffsetLayout,
 } from '../selectors/gui'
+import { selectStreamType } from '../selectors/stream'
 import { scrollToTop, scrollToOffsetTop } from '../vendor/scrolling'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { Footer } from '../components/footer/Footer'
 
 function mapStateToProps(state) {
-  const { stream } = state
   const deviceSize = selectDeviceSize(state)
-  const isPaginatoring = stream.type === LOAD_NEXT_CONTENT_REQUEST && deviceSize === 'mobile'
+  const streamType = selectStreamType(state)
   return {
     isGridMode: selectIsGridMode(state),
     isLayoutToolHidden: selectIsLayoutToolHidden(state),
     isOffsetLayout: selectIsOffsetLayout(state),
-    isPaginatoring,
+    isPaginatoring: streamType === LOAD_NEXT_CONTENT_REQUEST && deviceSize === 'mobile',
   }
 }
 

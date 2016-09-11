@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import { scrollToTop } from '../../vendor/scrolling'
+import { selectPropsPathname } from '../../selectors/routing'
+import { selectStreamType } from '../../selectors/stream'
 import { loadNotifications } from '../../actions/notifications'
 import StreamContainer from '../../containers/StreamContainer'
 import { LOAD_STREAM_SUCCESS } from '../../constants/action_types'
@@ -108,9 +110,9 @@ function mapStateToProps(state, props) {
   const category = _.get(props, 'params.category', 'all')
   return {
     category,
-    pathname: props.location.pathname,
+    pathname: selectPropsPathname(state, props),
     streamAction: loadNotifications({ category }),
-    streamType: _.get(state, 'stream.type'),
+    streamType: selectStreamType(state),
   }
 }
 

@@ -3,15 +3,15 @@ import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import { createSelector } from 'reselect'
 import shallowCompare from 'react-addons-shallow-compare'
-import { get } from 'lodash'
 import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize } from '../selectors/gui'
+import { selectPathname, selectPreviousPath } from '../selectors/routing'
+import { selectUser } from '../selectors/user'
 import { openModal, closeModal } from '../actions/modals'
 import { updateRelationship } from '../actions/relationships'
 import { trackEvent } from '../actions/analytics'
 import { flagUser } from '../actions/user'
-import { selectUsers } from '../selectors'
 import BlockMuteDialog from '../components/dialogs/BlockMuteDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
@@ -21,11 +21,6 @@ import StarshipButton from '../components/relationships/StarshipButton'
 
 const selectRelationshipPriority = (state, props) => props.relationshipPriority
 const selectHasBlockMuteButton = (state, props) => props.hasBlockMuteButton
-const selectUserId = (state, props) => get(props, 'user.id')
-
-const selectUser = createSelector(
-  [selectUsers, selectUserId], (users, userId) => users[userId]
-)
 
 const selectOnClickCallback = createSelector(
   [selectIsLoggedIn, selectRelationshipPriority], (isLoggedIn, relationshipPriority) => {
@@ -62,7 +57,6 @@ export function getNextBlockMutePriority(currentPriority, requestedPriority) {
 
 // TODO: Try and get rid of deviceSize
 export function mapStateToProps(state, props) {
-  const { routing } = state
   const isLoggedIn = selectIsLoggedIn(state)
   const user = selectUser(state, props)
   const onClickCallback = selectOnClickCallback(state, props)
@@ -71,8 +65,8 @@ export function mapStateToProps(state, props) {
     deviceSize: selectDeviceSize(state),
     isLoggedIn,
     onClickCallback,
-    pathname: routing.location.pathname,
-    previousPath: routing.previousPath,
+    pathname: selectPathname(state),
+    previousPath: selectPreviousPath(state),
     relationshipPriority: user.relationshipPriority,
     shouldRenderBlockMute,
     userId: user.id,

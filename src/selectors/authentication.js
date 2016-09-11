@@ -7,7 +7,7 @@ export const selectExpirationDate = state => get(state, 'authentication.expirati
 export const selectIsLoggedIn = (state) => get(state, 'authentication.isLoggedIn')
 export const selectRefreshToken = (state) => get(state, 'authentication.refreshToken')
 
-// Memoized Selectors
+// Memoized selectors
 export const selectShouldUseAccessToken = createSelector(
   selectAccessToken, selectExpirationDate, selectIsLoggedIn,
   (accessToken, expirationDate, isLoggedIn) =>

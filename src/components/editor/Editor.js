@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { selectIsLoggedIn } from '../../selectors/authentication'
-import { selectPropsPostId, selectIsOwnPost } from '../../selectors/post'
+import { selectPostFromPropsPostId, selectIsOwnPost } from '../../selectors/post'
 import { openModal, closeModal } from '../../actions/modals'
 import {
   createComment,
@@ -41,11 +40,9 @@ export function getEditorId(post, comment, isComment, isZero) {
 }
 
 function mapStateToProps(state, props) {
-  const { json } = state
-  const postId = selectPropsPostId(state, props)
   return {
     isLoggedIn: selectIsLoggedIn(state),
-    post: postId ? json[MAPPING_TYPES.POSTS][postId] : null,
+    post: selectPostFromPropsPostId(state, props),
     isOwnPost: selectIsOwnPost(state, props),
   }
 }

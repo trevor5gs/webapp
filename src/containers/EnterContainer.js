@@ -14,6 +14,7 @@ import {
   selectRegistrationId,
   selectWebOnboardingVersion,
 } from '../selectors/profile'
+import { selectPromotionsAuthentication } from '../selectors/promotions'
 import { loadProfile, requestPushSubscription, saveProfile } from '../actions/profile'
 import { signIn } from '../actions/authentication'
 import { trackEvent } from '../actions/analytics'
@@ -35,7 +36,7 @@ function mapStateToProps(state) {
     currentStream: selectCurrentStream(state),
     coverDPI: selectCoverDPI(state),
     coverOffset: selectCoverOffset(state),
-    promotions: state.promotions.authentication,
+    promotions: selectPromotionsAuthentication(state),
     webOnboardingVersionSeen: selectWebOnboardingVersion(state),
   }
   if (isElloAndroid()) {

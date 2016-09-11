@@ -3,7 +3,9 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import * as ACTION_TYPES from '../constants/action_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectIsOwnComment } from '../selectors/comment'
 import { selectDeviceSize, selectIsNavbarHidden } from '../selectors/gui'
+import { selectIsOwnPost } from '../selectors/post'
 import * as commentActions from '../actions/comments'
 import { openModal, closeModal } from '../actions/modals'
 import ConfirmDialog from '../components/dialogs/ConfirmDialog'
@@ -14,9 +16,9 @@ import { CommentTools } from '../components/comments/CommentTools'
 
 
 export function mapStateToProps(state, props) {
-  const { author, comment, currentUser, post } = props
-  const isOwnComment = currentUser && `${author.id}` === `${currentUser.id}`
-  const isOwnPost = currentUser && `${post.authorId}` === `${currentUser.id}`
+  const { comment, post } = props
+  const isOwnComment = selectIsOwnComment(state, props)
+  const isOwnPost = selectIsOwnPost(state, props)
   let canDeleteComment = isOwnPost
   if (post.repostId) {
     canDeleteComment = isOwnPost && comment.originalPostId === post.id

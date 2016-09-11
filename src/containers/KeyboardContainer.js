@@ -8,17 +8,17 @@ import { SHORTCUT_KEYS } from '../constants/application_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDiscoverKeyType, selectIsGridMode } from '../selectors/gui'
 import { selectIsModalActive } from '../selectors/modal'
+import { selectPathname } from '../selectors/routing'
 import { openModal, closeModal } from '../actions/modals'
 import HelpDialog from '../components/dialogs/HelpDialog'
 
 function mapStateToProps(state) {
-  const { routing } = state
   return {
     discoverKeyType: selectDiscoverKeyType(state),
     isGridMode: selectIsGridMode(state),
     isLoggedIn: selectIsLoggedIn(state),
     isModalActive: selectIsModalActive(state),
-    pathname: routing.location.pathname,
+    pathname: selectPathname(state),
   }
 }
 

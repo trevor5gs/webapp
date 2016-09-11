@@ -10,6 +10,7 @@ import {
   selectInnerHeight,
   selectIsGridMode,
 } from '../selectors/gui'
+import { selectPostFromPropsPostId } from '../selectors/post'
 import { getLinkObject } from '../helpers/json_helper'
 import Editor from '../components/editor/Editor'
 import {
@@ -25,7 +26,7 @@ import {
 
 export function mapStateToProps(state, props) {
   const { json, profile: currentUser, routing: { location: { pathname } } } = state
-  const post = json[MAPPING_TYPES.POSTS][props.post.id]
+  const post = selectPostFromPropsPostId(state, props)
   const author = json[MAPPING_TYPES.USERS][post.authorId]
   const assets = json.assets
   const categories = post.links.categories
