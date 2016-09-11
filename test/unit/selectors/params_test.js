@@ -1,5 +1,6 @@
 import { stubJSONStore } from '../../support/stubs'
 import {
+  selectParamsInvitationCode,
   selectParamsToken,
   selectParamsType,
   selectParamsUsername,
@@ -12,7 +13,7 @@ describe('params selectors', () => {
   let location
   beforeEach(() => {
     json = stubJSONStore()
-    params = { token: 'paramsToken', type: 'paramsType' }
+    params = { token: 'paramsToken', type: 'paramsType', invitationCode: '8675309' }
     location = { pathname: '/discover' }
   })
 
@@ -49,6 +50,14 @@ describe('params selectors', () => {
     it('returns the correct params username', () => {
       const nextProps = { params: { ...params, username: 'username' }, location }
       expect(selectParamsUsername(state, nextProps)).to.equal('username')
+    })
+  })
+
+  context('#selectParamsInvitationCode', () => {
+    it('returns the params invitationCode', () => {
+      const state = { json }
+      const props = { params, location }
+      expect(selectParamsInvitationCode(state, props)).to.equal('8675309')
     })
   })
 })

@@ -40,6 +40,7 @@ const selectStreamDeletions = (state, props) => {
 const selectPagingPath = (state, props) => get(props, 'action.payload.endpoint.pagingPath')
 
 // Memoized selectors
+// TODO: We need to test this :(
 export const makeSelectStreamProps = () =>
   createSelector(
     [
@@ -80,13 +81,12 @@ export const makeSelectStreamProps = () =>
           for (const nextId of result.next.ids) {
             const model = get(json, [result.next.type, nextId])
             if (model && (path === '/settings' ||
-              (!nDelTypes || nDelTypes.indexOf(nextId) === -1))) {
-                renderObj[dataProp].push(model)
-              }
+                (!nDelTypes || nDelTypes.indexOf(nextId) === -1))) {
+              renderObj[dataProp].push(model)
+            }
           }
         }
       }
       return { renderObj, result, resultPath }
     }
   )
-

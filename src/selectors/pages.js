@@ -13,7 +13,6 @@ export const selectPagesResult = (state, props) => {
   return get(state, ['json', 'pages', resultPath], { ids: [], pagination: emptyPagination() })
 }
 
-
 // Memoized selectors
 export const selectPage = createSelector(
   [selectPages, selectPathname], (pages, pathname) =>

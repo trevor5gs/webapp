@@ -20,6 +20,15 @@ function addToJSON(collection, model) {
   json[collection][model.id] = model
 }
 
+export function stubAuthenticationStore(isLoggedIn = true) {
+  return {
+    accessToken: 'authenticationAccessToken',
+    expirationDate: 'authenticationExpirationDate',
+    isLoggedIn,
+    refreshToken: 'authenticationRefreshToken',
+  }
+}
+
 export function stubAvatar(url = '') {
   return {
     original: {
@@ -88,6 +97,7 @@ function stubUser(properties) {
     followingCount: 0,
     lovesCount: 0,
     formattedShortBio: '<p>Formatted Short Bio</p>',
+    shortBio: '<p>Formatted Short Bio</p>',
     externalLinksList: [
       {
         url: 'http://www.google.com',
