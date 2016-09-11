@@ -33,3 +33,14 @@ export const selectRelationshipPriority = createSelector(
   [selectUser], (user) => get(user, 'relationshipPriority')
 )
 
+//   context('#selectUser', () => {
+//     it('returns the user object with memoization', () => {
+//       const state = { json }
+//       const props = { params: { ...params, username: 'archer' }, location }
+//       const testUser = get(json, 'users.1')
+//       expect(selectUser(state, props)).to.deep.equal(testUser)
+//       const nextState = { ...state, blah: 1 }
+//       expect(selectUser(nextState, props)).to.deep.equal(testUser)
+//     })
+//   })
+

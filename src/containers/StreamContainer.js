@@ -15,6 +15,7 @@ import {
   selectInnerWidth,
   selectIsGridMode,
 } from '../selectors/gui'
+import { selectPathname } from '../selectors/routing'
 import { findModel } from '../helpers/json_helper'
 import {
   addScrollObject,
@@ -25,7 +26,7 @@ import {
 import { ElloMark } from '../components/svg/ElloIcons'
 import { Paginator } from '../components/streams/Paginator'
 import { ErrorState4xx } from '../components/errors/Errors'
-import { makeSelectStreamProps, selectRoutingPathname } from '../selectors'
+import { makeSelectStreamProps } from '../selectors/stream'
 import Session from '../vendor/session'
 
 export function makeMapStateToProps() {
@@ -41,7 +42,7 @@ export function makeMapStateToProps() {
       json: state.json,
       isGridMode: selectIsGridMode(state),
       omnibar: state.omnibar,
-      pathname: selectRoutingPathname(state),
+      pathname: selectPathname(state),
       routerState: state.routing.location.state || {},
       stream: state.stream,
     }

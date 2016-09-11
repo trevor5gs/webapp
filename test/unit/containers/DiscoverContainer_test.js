@@ -1,5 +1,5 @@
 import { stubJSONStore } from '../../support/stubs'
-import { sortCategories } from '../../../src/selectors'
+import { sortCategories } from '../../../src/selectors/categories'
 import {
   loadCategoryPosts,
   loadDiscoverPosts,

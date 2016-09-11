@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 import { get } from 'lodash'
-import { selectParamsUsername } from '../selectors'
+import { selectParamsUsername } from './params'
 
 // state.gui.xxx
 export const selectActiveUserFollowingType = (state) => get(state, 'gui.activeUserFollowingType')

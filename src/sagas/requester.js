@@ -4,10 +4,11 @@ import { get } from 'lodash'
 import { camelizeKeys } from 'humps'
 import { actionChannel, call, fork, put, select, take } from 'redux-saga/effects'
 import * as ACTION_TYPES from '../constants/action_types'
+import { selectIsLoggedIn, selectRefreshToken } from '../selectors/authentication'
 import { selectLastNotificationCheck } from '../selectors/gui'
+import { selectPathname } from '../selectors/routing'
 import { refreshAuthenticationToken } from '../actions/authentication'
 import { pauseRequester, unpauseRequester } from '../actions/api'
-import { selectIsLoggedIn, selectRefreshToken } from '../selectors/authentication'
 import { fetchCredentials, getClientCredentials, sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
 import Dialog from '../components/dialogs/Dialog'
@@ -185,8 +186,6 @@ export function* handleRequestError(error, action) {
   return false
 }
 
-const pathnameSelector = state => get(state, 'routing.location.pathname', '')
-
 export function* performRequest(action) {
   const {
     type,
@@ -195,7 +194,7 @@ export function* performRequest(action) {
   } = action
   let { payload } = action
 
-  const pathname = yield select(pathnameSelector)
+  const pathname = yield select(selectPathname)
   payload = {
     ...payload,
     pathname,

@@ -29,3 +29,16 @@ export const selectPostFromToken = createSelector(
     findModel(json, { collection: MAPPING_TYPES.POSTS, findObj: { token } })
 )
 
+//   context('#selectPost', () => {
+//     it('returns the post object with memoization', () => {
+//       const state = { json }
+//       const thisParams = { token: 'token1', type: 'paramsType' }
+//       const props = { params: thisParams, location }
+//       const testPost = get(json, 'posts.1')
+//       expect(selectPost(state, props)).to.deep.equal(testPost)
+//       const nextState = { ...state, blah: 1 }
+//       expect(selectPost(nextState, props)).to.deep.equal(testPost)
+//       expect(selectPost.recomputations()).to.equal(1)
+//     })
+//   })
+
