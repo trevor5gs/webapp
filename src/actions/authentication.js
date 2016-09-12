@@ -56,7 +56,9 @@ export function logout() {
     meta: {
       successAction: () => {
         localStorage.clear()
-        window.location.href = '/enter'
+        requestAnimationFrame(() => {
+          window.location.href = '/enter'
+        })
       },
     },
   }
