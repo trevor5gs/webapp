@@ -31,6 +31,6 @@
 .ElloOutlineMark .SmilePath {
   fill: transparent !important;
   stroke: #aaa;
-  transform: translateX(-1px);
+  transform: translateX(-2px);
 }
 

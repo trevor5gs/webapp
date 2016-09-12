@@ -63,6 +63,15 @@
   .OnboardingNavbarCounter.isCounterSuccess {
     display: none;
   }
+
+  .OnboardingNextButton {
+    width: calc(100% - 60px);
+  }
+
+  .OnboardingNextButton.hasDone {
+    width: calc(100% - 140px);
+  }
+
 }
 
 @media (--break-2) {

@@ -293,6 +293,10 @@ textarea.FormControlInput.isOnboardingControl {
   opacity: 0;
 }
 
+.isSafari .PasswordControl .FormControlStatus {
+  right: 20px;
+}
+
 .FormControlStatus > .SVGIcon > g {
   stroke-width: 2;
 }
