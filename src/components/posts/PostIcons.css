@@ -47,8 +47,8 @@
 }
 
 .no-touch .LoveTool > button.isActive:hover > .HeartIcon > g {
-  fill: #ff9;
-  stroke: #ff9;
+  fill: #f99;
+  stroke: #f99;
 }
 
 .ViewsTool .EyeIcon > circle {
