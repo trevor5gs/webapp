@@ -72,7 +72,9 @@ export function deleteProfile() {
     meta: {
       successAction: () => {
         localStorage.clear()
-        window.location.href = '/'
+        requestAnimationFrame(() => {
+          window.location.href = '/'
+        })
       },
     },
     payload: {
