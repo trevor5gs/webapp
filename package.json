@@ -110,6 +110,7 @@
     "extends": "stylelint-config-primer",
     "rules": {
       "selector-class-pattern": null,
+      "selector-no-type": null,
       "comment-empty-line-before": [
         "always",
         {
@@ -148,7 +149,7 @@
     "babel-preset-react": "6.11.1",
     "babel-preset-stage-0": "6.5.0",
     "classnames": "2.2.5",
-    "css-loader": "0.24.0",
+    "css-loader": "0.25.0",
     "dotenv": "2.0.0",
     "estraverse-fb": "1.3.1",
     "exif-js": "2.1.1",
@@ -171,14 +172,14 @@
     "node-libs-browser": "1.0.0",
     "node-static": "0.7.8",
     "pm2": "1.1.3",
-    "postcss": "5.1.2",
+    "postcss": "5.2.0",
     "postcss-apply": "0.3.0",
     "postcss-calc": "5.3.1",
     "postcss-color-function": "2.0.1",
     "postcss-custom-media": "5.0.1",
     "postcss-custom-properties": "5.0.1",
     "postcss-import": "7.1.3",
-    "postcss-loader": "0.11.1",
+    "postcss-loader": "0.13.0",
     "postcss-pxtorem": "3.3.1",
     "postcss-reporter": "1.4.1",
     "postcss-url": "5.1.2",
@@ -225,7 +226,7 @@
     "sinon-chai": "2.8.0",
     "source-map-support": "0.4.2",
     "stylelint": "7.2.0",
-    "stylelint-config-primer": "1.1.0",
+    "stylelint-config-primer": "1.2.0",
     "webpack-dev-middleware": "1.6.1",
     "webpack-hot-middleware": "2.12.2"
   }
