@@ -1,0 +1,31 @@
+@import "../../lib/styles/properties.css";
+
+.BlockMuteButton {
+  width: 30px;
+  height: 30px;
+}
+
+.BlockMuteButton > .DotsIcon > g {
+  fill: #aaa;
+  stroke: transparent;
+}
+
+/* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
+.no-touch .BlockMuteButton:hover > .DotsIcon > g {
+  fill: #000;
+}
+/* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
+
+.BlockMuteButton .Hint {
+  top: 5px;
+  left: 30px;
+  font-size: 14px;
+}
+
+@media (--break-2) {
+  .BlockMuteButton .Hint {
+    top: 5px;
+    left: -160px;
+  }
+}
+

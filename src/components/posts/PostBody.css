@@ -1,0 +1,132 @@
+@import "../../lib/styles/properties.css";
+
+.MainView:not(.PostDetail) .ContentWarningButton:not(.isOpen) + .PostBody {
+  height: 0;
+  overflow: hidden;
+}
+
+.PostBody h1,
+.PostBody h2,
+.PostBody h3,
+.PostBody h4,
+.PostBody h5,
+.PostBody h6 {
+  @apply --sanserif-bold;
+}
+
+.ImageRegion + .ImageRegion,
+.ImageRegion + .EmbedRegion,
+.EmbedRegion + .ImageRegion,
+.EmbedRegion + .EmbedRegion {
+  margin-top: 10px;
+}
+
+.PostBody + .PostBody,
+.TextRegion + .TextRegion,
+.TextRegion + .ImageRegion,
+.TextRegion + .EmbedRegion,
+.ImageRegion + .TextRegion,
+.EmbedRegion + .TextRegion {
+  margin-top: 20px;
+}
+
+.TextRegion {
+  max-width: 780px;
+  word-wrap: break-word;
+}
+
+.EmbedRegion {
+  position: relative;
+  max-width: 1280px;
+  overflow: hidden;
+}
+
+/* // Todo: We should be able to rip this out when we convert your fake `span` */
+/* // elements over to links */
+.TextRegion .hashtag-link {
+  display: inline;
+  cursor: pointer;
+  border-bottom: 1px solid;
+  transition: color var(--speed) ease;
+}
+
+.no-touch .TextRegion .hashtag-link:hover {
+  color: #aaa;
+}
+
+.RegionContent {
+  position: relative;
+  transition: background-color var(--speed2), transform 300ms ease, margin-bottom 300ms ease;
+  transform-origin: 0 0;
+  will-change: transform, margin-bottom;  /* stylelint-disable-line */
+}
+
+.RegionContent.isHot {
+  cursor: pointer;
+}
+
+.ImageRegion > .RegionContent {
+  display: inline-block;
+  color: rgba(0, 0, 0, 0);
+}
+
+.ImageAttachment {
+  transition: opacity var(--speed2);
+}
+
+.isPending .ImageAttachment,
+.isRequesting .ImageAttachment {
+  opacity: 0;
+}
+
+.isPending.ImageRegion > .RegionContent {
+  background-color: #f0f0f0;
+}
+
+.isRequesting.ImageRegion > .RegionContent {
+  animation: animateLavaLamp 3s infinite linear;
+}
+
+/* // Always get's rid of the first and last child's margin and protect against */
+/* // potentially nested elements */
+.RegionContent > *:first-child,
+.RegionContent:first-child > *:first-child {
+  margin-top: 0;
+}
+
+.RegionContent > *:last-child,
+.RegionContent:last-child > *:last-child {
+  margin-bottom: 0;
+}
+
+.EmbedRegionContent {
+  background-color: #000;
+}
+
+/* // ------------------------------------- */
+
+.RepostedBody {
+  position: relative;
+  min-height: 30px;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  padding-left: 40px;
+}
+
+.RepostedBody > .Avatar {
+  position: absolute;
+  top: 40px;
+  left: 0;
+}
+
+@media (--break-2) {
+  .RepostedBody {
+    min-height: 40px;
+    padding-left: 60px;
+  }
+
+  .RepostedBody > .Avatar {
+    top: 30px;
+  }
+}
+

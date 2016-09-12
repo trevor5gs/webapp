@@ -1,0 +1,23 @@
+@import "../../lib/styles/properties.css";
+
+.ContentWarningButton {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 14px;
+  color: #999;
+  transition: color var(--speed);
+}
+
+.no-touch .ContentWarningButton:hover {
+  color: #000;
+}
+
+.ContentWarningButtonStateLabel {
+  margin-left: 5px;
+  border-bottom: 1px solid;
+}
+
+.PostDetail.MainView .ContentWarningButton {
+  display: none;
+}
+

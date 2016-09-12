@@ -7,13 +7,12 @@
 
 @custom-media --break-2-max (max-width: 39.9375em);    /* 2: 639  / 16 = 39.9375em */
 
-/* $break-3-max: em(959) */
-/* $break-4-max: em(1359) */
-
 :root {
   --speed: 0.2s;
   --speed2: 0.4s;
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
   --color-danger: #f00;
   --color-success: #06a54f;
 
@@ -84,6 +83,16 @@
     z-index: 2;
     content: "";
     background-color: rgba(0, 0, 0, 0);
+  }
+
+  --show-tool {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  --hide-tool {
+    pointer-events: none;
+    opacity: 0;
   }
 }
 

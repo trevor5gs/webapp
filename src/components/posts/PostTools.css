@@ -1,0 +1,252 @@
+@import "../../lib/styles/properties.css";
+
+/* stylelint-disable selector-max-specificity */
+
+/* // ------------------------------------- */
+/* // @see PostIcons for icon animations and coloring */
+
+.PostTools {
+  position: relative;
+  height: 60px;
+  padding-top: 20px;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: transform var(--speed) var(--ease);
+}
+
+.PostTool {
+  position: relative;
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
+  transition: transform var(--speed) var(--ease);
+}
+
+/* .PostTool + .PostTool { */
+/*   margin-left: 3px; */
+/* } */
+
+.PostTool > a,
+.PostTool > button {
+  padding-right: 8px;
+  padding-left: 8px;
+  color: #aaa;
+  transition: color var(--speed) ease;
+}
+
+.PostTool:not([data-count="0"]) > button.hasPostToolDrawer { /* stylelint-disable-line */
+  padding-right: 5px !important;
+}
+
+.PostTool > button.PostToolDrawerButton { /* stylelint-disable-line */
+  padding-left: 0 !important;
+}
+
+.PostTool[data-count="0"] > button.PostToolDrawerButton { /* stylelint-disable-line */
+  display: none;
+}
+
+.PostTool > a {
+  vertical-align: middle;
+}
+
+.no-touch .PostTool a:hover,
+.no-touch .PostTool button:hover {
+  color: #000;
+}
+
+/* // Specific tools */
+.ViewsTool {
+  margin-left: -8px;
+}
+
+.ViewsTool.isPill {
+  height: 22px;
+  margin-right: 10px;
+  margin-left: 0;
+  line-height: 22px;
+}
+
+.ViewsTool.isPill > a {
+  padding-right: 11px;
+  padding-left: 11px;
+  color: #535353;
+  background-color: #e8e8e8;
+  border-radius: 11px;
+  transition: color var(--speed) ease, background-color var(--speed) ease;
+}
+
+.ViewsTool.isPill > a .SVGIcon,
+.ViewsTool.isPill > a .PostToolValue {
+  position: relative;
+  top: 1px;
+}
+
+.no-touch .ViewsTool.isPill a:hover {
+  background-color: #ccc;
+}
+
+.no-touch .LoveTool > button.isActive:hover { /* stylelint-disable-line */
+  color: #aaa;
+}
+
+.PostTool .EyeIcon,
+.PostTool .BubbleIcon,
+.PostTool .HeartIcon {
+  margin-top: -2px;
+}
+
+.PostTool .ShareIcon {
+  margin-top: -2px;
+}
+
+.PostTool .RepostIcon,
+.PostTool .PencilIcon {
+  margin-top: -4px;
+}
+
+.PostTool .XBoxIcon {
+  padding-left: 1px;
+}
+
+.PostTool .SVGIcon + .PostToolValue {
+  margin-left: 5px;
+}
+
+.ViewsTool .Hint {
+  left: 10px;
+}
+
+.ShareTool {
+  position: absolute;
+  top: 19px;
+  right: -10px;
+}
+
+.ShareTool .Hint {
+  left: calc(-100% - 2px);
+}
+
+.ShareTool.isPill {
+  right: 0;
+  height: 22px;
+  line-height: 22px;
+}
+
+.ShareTool.isPill > button {
+  padding-right: 11px;
+  padding-left: 11px;
+  background-color: #e8e8e8;
+  border-radius: 11px;
+  transition: color var(--speed) ease, background-color var(--speed) ease;
+}
+
+.no-touch .ShareTool.isPill > button:hover {
+  background-color: #ccc;
+}
+
+.ShareTool.isPill .ShareIcon {
+  display: none;
+}
+
+.ShareTool.isPill > button > .Hint {
+  position: static;
+  display: inline-block;
+  padding: 0;
+  color: #535353;
+  visibility: visible;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  opacity: 1;
+}
+
+.no-touch .ShareTool.isPill > button:hover > .Hint { /* stylelint-disable-line */
+  color: #000;
+  transition-delay: 0s;
+  transition-duration: var(--speed);
+}
+
+.ShyTool {
+  @apply --hide-tool;
+  transition: opacity var(--speed) ease;
+}
+
+.Posts .TimeAgoTool {
+  display: none;
+}
+
+.Posts.asGrid .RepostedByHint {
+  left: -30px;
+}
+
+/* // MAX WIDTH for hiding MOBILE in a GRID. 449 / 16 = 28.0625em */
+@media (max-width: 28.0625em) {
+  .Posts.asGrid .ShareTool {
+    display: none;
+  }
+}
+
+@media (--break-2-max) {
+  .Posts.asGrid .CommentTool {
+    margin-left: -10px;
+  }
+
+  .Posts.asGrid .ViewsTool {
+    display: none;
+  }
+
+  .Posts.asList .PostTools .EditTool,
+  .Posts.asList .PostTools .DeleteTool,
+  .PostDetail .Posts.asList .PostTools .ShyTool {
+    @apply --show-tool;
+  }
+}
+
+/* // MIN WIDTH  450 / 16 = 28.125em */
+@media (min-width: 28.125em) {
+  .Posts.asGrid .ShyTool {
+    display: none;
+  }
+
+  .Posts.asList .ShyTool {
+    @apply --show-tool;
+  }
+}
+
+@media (--break-2) {
+  .no-touch .Posts.asList .ShyTool {
+    @apply --hide-tool;
+  }
+
+  .no-touch .Posts.asList .PostTools:hover .ShyTool {
+    @apply --show-tool;
+  }
+
+  .Posts.asList .TimeAgoTool {
+    display: inline-block;
+  }
+
+  .Posts.asList .ShareTool {
+    position: static;
+    top: auto;
+    right: auto;
+  }
+
+  .Posts.asList .ShareTool .Hint {
+    left: 0;
+  }
+}
+
+@media (--break-3) {
+  .Posts.asList .PostTool > a,
+  .Posts.asList .PostTool > button {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .Posts.asList .ViewsTool.isPill {
+    margin-right: 15px;
+  }
+}
+

@@ -1,0 +1,135 @@
+@import "../../lib/styles/properties.css";
+
+/* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
+
+.Navbar .BoltIcon > g {
+  stroke-linejoin: bevel;
+}
+
+.Navbar .SearchIcon > g,
+.Navbar .StarIcon > g {
+  stroke-linejoin: round;
+}
+
+.Navbar .PencilIcon > g {
+  stroke-linecap: square;
+  transition-delay: 0.1s, 0s, 0s;
+}
+
+/* NavbarLink
+------------------------------------- */
+
+.NavbarLink.isActive > .SVGIcon > g,
+.NavbarLink:active > .SVGIcon > g,
+.no-touch .NavbarLink:hover > .SVGIcon > g {
+  stroke: #000;
+}
+
+.NavbarLink.isActive > .SVGIcon:not(.SearchIcon) g,
+.NavbarLink:active > .SVGIcon:not(.SearchIcon) g,
+.no-touch .NavbarLink:hover > .SVGIcon:not(.SearchIcon) g {
+  fill: #000;
+}
+
+/* // Label only (icon is hidden) */
+.NavbarLink.LabelOnly > .SVGIcon {
+  width: 0;
+  opacity: 0;
+  transition:
+    width var(--speed) var(--ease),
+    opacity var(--speed) ease,
+    transform var(--speed) var(--ease);
+}
+
+/* // Icon only (label is hidden) */
+.NavbarLink.IconOnly {
+  width: 20px;
+}
+
+.isNotificationsActive ~ .Navbar .NavbarLink[href^="/notifications"] > .SVGIcon > g {
+  fill: #000;
+  stroke: #000;
+}
+
+/* Show the icon and label when we have enough room for Starred:  375 / 16 = 23.4375em */
+@media (min-width: 23.4375em) {
+  .NavbarLink > .StarIcon {
+    width: 20px;
+    opacity: 1;
+  }
+}
+
+/* // Animations once we have room */
+@media (--break-2) {
+  /* // Show the icon on rollover for desktop */
+  .no-touch .NavbarLink.LabelOnly:hover > .SVGIcon {
+    width: 20px;
+    opacity: 1;
+    transition-delay: 0.5s;
+  }
+
+  /* // Show the label on rollover for desktop */
+  .no-touch .NavbarLink.IconOnly {
+    transition-delay: 0.5s;
+  }
+
+  .no-touch .NavbarLink.IconOnly:hover > .NavbarLinkLabel::after {
+    transition-delay: 0.6s;
+  }
+
+  /* // Specific widths for the labels */
+  /* // TODO: will need to figure out how to do this for i18n */
+  .no-touch .NavbarLink[href^="/notifications"]:hover {
+    width: 110px;
+  }
+
+  .no-touch .NavbarLink[href^="/find"]:hover,
+  .no-touch .NavbarLink[href^="/search"]:hover {
+    width: 72px;
+  }
+
+  /* // Circle animation */
+  .no-touch .NavbarLink > .CircleIcon {
+    transition-delay: var(--speed), var(--speed), 0s;
+    transform: scale(0.5);
+    transform-origin: 0.71875rem; /* 11.5 / 16 */
+  }
+
+  .no-touch .NavbarLink:hover > .CircleIcon {
+    transition-delay: 0.5s, 0.5s, 0.7s;
+    transform: none;
+  }
+
+  .no-touch .NavbarLink > .CircleIcon > g {
+    transition-delay: 0s;
+  }
+
+  .no-touch .NavbarLink:hover > .CircleIcon > g {
+    transition-delay: 0.7s;
+  }
+
+  /* // Star animation */
+  .no-touch .NavbarLink > .StarIcon {
+    transition-duration: var(--speed), var(--speed), var(--speed2);
+    transform-origin: center center;
+  }
+
+  .no-touch .NavbarLink:hover > .StarIcon {
+    transition-delay: 0.5s, 0.5s, 0.7s;
+    transform: rotate(360deg);
+  }
+
+  /* // Sparkles animation */
+  .no-touch .NavbarLink:hover > .SparklesIcon > g {
+    transition-delay: 0.6s;
+  }
+
+  .no-touch .NavbarLink:hover > .SparklesIcon > g:nth-of-type(2) {
+    transition-delay: 0.7s;
+  }
+
+  .no-touch .NavbarLink:hover > .SparklesIcon > g:nth-of-type(3) {
+    transition-delay: 1.05s;
+  }
+}
+

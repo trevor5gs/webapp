@@ -1,0 +1,127 @@
+@import "../../lib/styles/properties.css";
+
+.NavbarProfile {
+  transition: transform var(--speed) var(--ease);
+}
+
+.NavbarProfileLinks {
+  position: absolute;
+  z-index: 2;
+  min-width: 140px;
+  padding: 5px 10px;
+  overflow: hidden;
+  color: #aaa;
+  pointer-events: none;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-top: 0;
+  opacity: 0;
+  transition: opacity var(--speed) ease;
+}
+
+.NavbarProfileLinks.isActive {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.NavbarProfileLink {
+  display: block;
+  height: 30px;
+  font-size: 14px;
+  line-height: 30px;
+}
+
+.no-touch .NavbarProfileLink:hover {
+  color: #000;
+}
+
+.NavbarProfileLinkDivider {
+  margin: 4px -10px;
+  border-color: #ccc;
+}
+
+.NavbarProfileLinkDivider ~ .NavbarProfileLink {
+  height: 25px;
+  font-size: 12px;
+  line-height: 25px;
+  color: #ccc;
+}
+
+.NavbarProfileCloseButton {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: none;
+}
+
+@media (--break-2-max) {
+  .isProfileMenuActive ~ .MainView,
+  .isProfileMenuActive ~ .Footer {
+    display: none;
+  }
+
+  .isProfileMenuActive ~ .Navbar > *:not(.NavbarProfile) {
+    display: none;
+  }
+
+  .isProfileMenuActive ~ .NavbarProfile > .Avatar {
+    pointer-events: none;
+  }
+
+  .NavbarProfileLinks {
+    top: -10px;
+    left: -10px;
+    width: 100vw; /* stylelint-disable-line */
+    height: 100vh; /* stylelint-disable-line */
+    padding: 0;
+  }
+
+  .NavbarProfileLink {
+    height: 50px;
+    line-height: 50px;
+    color: #000;
+    text-indent: 10px;
+    border-bottom: 1px solid;
+  }
+
+  .NavbarProfileLinkDivider {
+    border-color: transparent;
+  }
+
+  .NavbarProfileLinkDivider ~ .NavbarProfileLink {
+    height: 30px;
+    line-height: 30px;
+    border: 0;
+  }
+
+  .NavbarProfileCloseButton {
+    display: block;
+  }
+}
+
+@media (--break-2) {
+  .NavbarProfileLinks {
+    top: 40px;
+    right: 0;
+    left: auto;
+    max-width: 180px;
+  }
+
+  /* Give the hover target a bigger footprint */
+  .no-touch .NavbarProfile:hover .NavbarProfileLinks {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  .no-touch .NavbarProfile:hover::before {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    width: 100px;
+    height: 30px;
+    content: "";
+    background-color: rgba(0, 0, 0, 0);
+    transform: translateX(-100%);
+  }
+}
+

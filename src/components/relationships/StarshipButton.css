@@ -1,0 +1,77 @@
+@import "../../lib/styles/properties.css";
+
+/* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
+
+.StarshipButton {
+  width: 30px;
+  height: 30px;
+}
+
+.StarshipButtonLabel {
+  display: none;
+}
+
+.StarshipButton[data-priority="noise"] .StarIcon > g,
+.no-touch .StarshipButton:hover > .StarIcon > g {
+  fill: #000;
+  stroke: #000;
+}
+
+.StarshipButton.isInHeader {
+  width: 20px;
+  height: 20px;
+  padding-left: 3px;
+  font-size: 0;
+  color: #aaa;
+}
+
+.ZeroStates .StarshipButton .StarIcon > g,
+.StarshipButton.isInHeader .StarIcon {
+  position: relative;
+  top: 0;
+}
+
+.StarshipButton.isInHeader .StarIcon > g {
+  stroke: #aaa;
+}
+
+.StarshipButton.isInHeader[data-priority="noise"] .StarIcon > g {
+  fill: #aaa;
+  stroke: #aaa;
+}
+
+.no-touch .StarshipButton.isInHeader:hover > .StarIcon > g {
+  fill: #535353;
+  stroke: #535353;
+}
+
+@media (--break-2) {
+  /* // Hints */
+  .no-touch .StarshipButton.isInHeader {
+    font-size: 0.75rem;
+  }
+
+  .no-touch .StarshipButton.isInHeader .StarshipButtonLabel {
+    position: absolute;
+    top: -25px;
+    left: -50%;
+    display: inline-block;
+    height: 22px;
+    padding: 0 11px;
+    line-height: 22px;
+    color: #fff;
+    white-space: nowrap;
+    visibility: hidden;
+    background-color: #000;
+    border-radius: 11px;
+    opacity: 0;
+    transition: opacity var(--speed) ease, visibility 0s ease var(--speed);
+  }
+
+  .no-touch .StarshipButton.isInHeader:hover .StarshipButtonLabel {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0.5s, 0s;
+  }
+}
+

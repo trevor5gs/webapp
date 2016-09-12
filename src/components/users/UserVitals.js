@@ -5,10 +5,10 @@ import { numberToHuman } from '../../vendor/number_to_human'
 
 export const UserDetailUserNames = ({ user }) =>
   <div className="UserNames">
-    <h1 className="UserUsername">
+    <h1 className="UserUsername truncate">
       <Link to={`/${user.username}`} >{user.name ? user.name : `@${user.username}`}</Link>
     </h1>
-    {user.name ? <h2 className="UserName">@{user.username}</h2> : null}
+    {user.name ? <h2 className="UserName truncate">@{user.username}</h2> : null}
   </div>
 
 UserDetailUserNames.propTypes = {
@@ -20,10 +20,10 @@ UserDetailUserNames.propTypes = {
 
 export const UserNames = ({ user }) =>
   <div className="UserNames">
-    <h2 className="UserUsername">
+    <h2 className="UserUsername truncate">
       <Link to={`/${user.username}`} >@{user.username}</Link>
     </h2>
-    <h3 className="UserName">{user.name}</h3>
+    <h3 className="UserName truncate">{user.name}</h3>
   </div>
 
 UserNames.propTypes = {

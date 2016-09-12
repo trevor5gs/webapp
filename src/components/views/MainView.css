@@ -1,0 +1,77 @@
+@import "../../lib/styles/properties.css";
+
+.MainView {
+  padding-top: 85px;
+  background-color: #fff;
+}
+
+.UserDetail.MainView,
+.Settings.MainView {
+  min-height: 100vh; /* stylelint-disable-line */
+  padding-top: 40px;
+  margin-top: calc(56.25% + 40px);
+}
+
+.PostDetail.MainView {
+  padding-bottom: 30px;
+}
+
+.UserDetail.MainView.isCoverInactive {
+  margin-top: 0;
+}
+
+.DiscoverPageTitle {
+  display: inline-block;
+  margin: 18px 0 0 10px;
+  font-size: 18px;
+  color: #000;
+  border-bottom: 1px solid;
+}
+
+@media (--break-2-max) {
+  .isLoggedOut .MainView {
+    padding-top: 50px;
+  }
+}
+
+/* 375 / 16 = 23.4375em */
+@media (min-width: 23.4375em) {
+  .UserDetail.MainView,
+  .Settings.MainView {
+    margin-top: calc(56.25% + 20px);
+  }
+}
+
+@media (--break-2) {
+  .MainView {
+    padding-top: 80px;
+  }
+
+  .Authentication.MainView {
+    padding-top: 0;
+  }
+
+  .UserDetail.MainView,
+  .Settings.MainView {
+    margin-top: 56.25%;
+  }
+
+  .DiscoverPageTitle {
+    margin: 35px 0 0 20px;
+    font-size: 24px;
+  }
+}
+
+@media (--break-3) {
+  .isOnboardingView ~ .MainView {
+    padding-top: 0;
+    padding-bottom: 80px;
+  }
+}
+
+@media (--break-4) {
+  .DiscoverPageTitle {
+    margin-left: 40px;
+  }
+}
+

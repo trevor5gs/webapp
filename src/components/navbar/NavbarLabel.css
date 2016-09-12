@@ -1,0 +1,7 @@
+@import "../../lib/styles/properties.css";
+
+.NavbarLabel {
+  font-size: 14px;
+  line-height: 1;
+}
+

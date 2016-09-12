@@ -1,0 +1,149 @@
+@import "../../lib/styles/properties.css";
+
+/* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
+
+.ZeroStream {
+  position: relative;
+  max-width: 540px;
+  padding: 20px 10px;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+.ZeroStreamHeading {
+  font-size: 18px;
+}
+
+.ZeroStreamButton {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #aaa;
+  transition: color var(--speed);
+}
+
+.no-touch .ZeroStreamButton:hover {
+  color: #000;
+}
+
+/* // Deal with the rare case of double zero streams. */
+.Following.MainView .ZeroStream + .StreamContainer > .ZeroStream,
+.Starred.MainView .ZeroStream + .StreamContainer > .ZeroStream {
+  display: none;
+}
+
+@media (--break-2) {
+  .ZeroStreamHeading {
+    font-size: 24px;
+  }
+}
+
+/* // ------------------------------------- */
+
+.ZeroStates {
+  max-width: 560px;
+  padding: 10px;
+}
+
+.ZeroState {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.ZeroStates > .ZeroState {
+  margin-top: 60px;
+}
+
+.ZeroStateTitle {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #aaa;
+}
+
+.ZeroStateUsername {
+  text-decoration: underline;
+}
+
+.ZeroState .RelationshipButton {
+  color: #000;
+}
+
+@media (--break-2) {
+  .ZeroStates {
+    padding: 0;
+  }
+
+  .ZeroStateTitle {
+    font-size: 24px;
+  }
+
+  .UserDetails .ZeroStates {
+    max-width: 800px; /* 560 + 240 */
+  }
+
+  .UserDetails .ZeroState {
+    position: relative;
+    padding-left: 240px;
+  }
+
+  .UserDetails .StreamContainer .ZeroState {
+    margin-left: -20px;
+  }
+}
+
+@media (--break-4) {
+  .UserDetails .ZeroStates {
+    max-width: 820px; /* 560 + 260 */
+  }
+
+  .UserDetails .ZeroState {
+    padding-left: 260px;
+  }
+
+  .UserDetails .StreamContainer .ZeroState {
+    margin-left: -40px;
+  }
+}
+
+/* // ------------------------------------- */
+/* // This should become a `ZeroStateEditor` at some point, */
+/* // but waiting for the editor API to settle a little more */
+
+.ZeroState .editor {
+  color: #666;
+}
+
+.ZeroState .editor::before {
+  display: none;
+}
+
+.ZeroState .editor-region {
+  min-height: 60px;
+}
+
+.ZeroState .editable {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ZeroState .editor.hasMention .editor-region {
+  background-color: #e5e5e5;
+}
+
+.ZeroState .RegionTools {
+  display: none;
+}
+
+.ZeroState .PostActionButton {
+  color: #aaa;
+  border: 1px solid currentColor;
+}
+
+.ZeroState .PostActionButton:not(.forPost) {
+  display: none;
+}
+
+.ZeroState .PostActionButton.forPost {
+  width: 85px;
+}
+

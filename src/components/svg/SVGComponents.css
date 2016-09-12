@@ -1,0 +1,33 @@
+@import "../../lib/styles/properties.css";
+
+.SVGIcon > g {
+  fill: transparent;
+  stroke: currentColor;
+  stroke-miterlimit: 10;
+  stroke-width: 1.25;
+  transition: fill var(--speed) ease 0.1s, stroke var(--speed) ease, transform var(--speed) ease;
+  transform-origin: center center;
+}
+
+.SVGIcon > g:nth-of-type(2) {
+  transition-delay: var(--speed), 0.1s, 0.1s;
+}
+
+.SVGIcon > g:nth-of-type(3) {
+  transition-delay: 0.3s, var(--speed), var(--speed);
+}
+
+.SVGIcon > g:nth-of-type(4) {
+  transition-delay: var(--speed2), var(--speed), var(--speed);
+}
+
+/* ------------------------------------- */
+
+.SVGBox path:nth-of-type(1) {
+  transition: fill var(--speed) ease;
+}
+
+.SVGBox path:nth-of-type(n+2) {
+  fill: #fff;
+}
+

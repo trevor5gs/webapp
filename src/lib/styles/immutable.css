@@ -29,3 +29,18 @@
   font-size: 12px;
 }
 
+.subheading {
+  @apply --sanserif-bold;
+  font-size: 1.5rem;
+  line-height: 1.35;
+  color: #000;
+  text-rendering: optimizeLegibility; /* stylelint-disable-line */
+}
+
+.truncate {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+

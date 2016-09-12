@@ -27,7 +27,7 @@ class UserInvitee extends Component {
     const { email } = invitation
     return (
       <div className="UserInviteeHeader">
-        <a className="UserInviteeUserLink" href={`mailto: ${email}`}>
+        <a className="UserInviteeUserLink truncate" href={`mailto: ${email}`}>
           <Avatar />
           <span className="UserInviteeEmail">{email}</span>
         </a>
@@ -57,7 +57,7 @@ class UserInvitee extends Component {
     return (
       <div className={classNames(this.props.className, 'UserInvitee')}>
         <div className="UserInviteeHeader">
-          <Link className="UserInviteeUserLink" to={`/${user.username}`}>
+          <Link className="UserInviteeUserLink truncate" to={`/${user.username}`}>
             <Avatar
               priority={user.relationshipPriority}
               sources={user.avatar}

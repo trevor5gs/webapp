@@ -1,0 +1,97 @@
+@import "../../lib/styles/properties.css";
+
+/* stylelint-disable no-unsupported-browser-features */
+.Authentication {
+  display: flex;
+  min-width: 100vw;
+  min-height: 100vh;
+  color: #fff;
+  background-color: transparent;
+}
+/* stylelint-enable no-unsupported-browser-features */
+
+.AuthenticationFormDialog {
+  width: 300px;
+  margin: 0 auto;
+}
+
+.Authentication h1,
+.AuthenticationFormDialog h1 {
+  padding-top: 100px;
+  margin-bottom: 20px;
+  font-size: 24px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.Authentication h1 > .Emoji {
+  margin-right: 10px;
+}
+
+.AuthenticationForm {
+  max-width: 320px;
+}
+
+.AuthenticationFormDialog > p {
+  margin-top: 55px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.AuthenticationError.accessDenied {
+  padding-top: 12px;
+  color: #f00;
+}
+
+.AuthenticationFormDialog a:focus,
+.AuthenticationFormDialog a:active,
+.no-touch .AuthenticationFormDialog a:hover {
+  color: #fff;
+}
+
+.isAuthenticationView.isNavbarFixed.isNavbarHidden ~ .Navbar {
+  visibility: visible;
+  transform: translate3d(0, 0, 0);
+}
+
+.isJoinForm ~ .Navbar,
+.isJoinForm ~ .Footer {
+  display: none;
+}
+
+/* stylelint-disable no-unsupported-browser-features */
+@media (--break-2-max) {
+  .Authentication .Cover {
+    min-width: 100vw;
+    min-height: 100vh;
+  }
+
+  .isJoinForm {
+    margin-top: 70px;
+  }
+}
+/* stylelint-enable no-unsupported-browser-features */
+
+/* 350 / 16 = 21.875em */
+@media (min-width: 21.875em) {
+  .AuthenticationFormDialog {
+    width: 320px;
+  }
+}
+
+@media (--break-2) {
+  .AuthenticationFormDialog {
+    margin: auto;
+  }
+
+  .isIE11 .AuthenticationFormDialog {
+    margin-top: 120px;
+  }
+
+  .Authentication h1,
+  .AuthenticationFormDialog h1 {
+    padding-top: 0;
+    margin-bottom: 70px;
+  }
+}
+

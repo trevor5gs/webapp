@@ -1,0 +1,74 @@
+@import "../../lib/styles/properties.css";
+
+.InvitationsHeader {
+  max-width: 440px;
+  margin: 20px 10px 0;
+}
+
+.InvitationsHeading,
+.InvitationsStreamHeading {
+  height: 30px;
+  font-size: 18px;
+  line-height: 30px;
+  white-space: nowrap;
+}
+
+.InvitationsForm {
+  max-width: 440px;
+  margin: 0 10px;
+}
+
+.InvitationsStreamHeading {
+  margin: 80px 10px 0;
+}
+
+.InvitationsForm .FormButton {
+  float: right;
+}
+
+.Onboarding .InvitationsForm {
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+.InvitationForm .BatchEmailControlSuggestions {
+  max-width: calc(100% - 120px);
+}
+
+@media (--break-2) {
+  .InvitationsHeader {
+    margin: 40px 20px 20px;
+  }
+
+  .InvitationsHeading,
+  .InvitationsStreamHeading {
+    height: 40px;
+    font-size: 24px;
+    line-height: 40px;
+  }
+
+  .InvitationsForm {
+    max-width: 720px;
+    margin-top: -3px;
+  }
+
+  .InvitationsForm,
+  .InvitationsStreamHeading {
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+
+  .InvitationForm .BatchEmailControlSuggestions {
+    max-width: 380px;
+  }
+}
+
+@media (--break-4) {
+  .InvitationsForm,
+  .InvitationsHeader,
+  .InvitationsStreamHeading {
+    margin-right: 40px;
+    margin-left: 40px;
+  }
+}
+

@@ -1,0 +1,80 @@
+@import "../../lib/styles/properties.css";
+
+.StreamContainer {
+  padding: 10px;
+}
+
+.StreamContainer.isFullWidth {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+@media (--break-2) {
+  .StreamContainer {
+    padding: 20px;
+  }
+
+  .PostList .CommentStreamContainer {
+    padding-top: 0;
+  }
+}
+
+@media (--break-4) {
+  .StreamContainer {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+
+/* ------------------------------------- */
+
+.StreamContainer.isBusy {
+  text-align: center;
+}
+
+.PostList .CommentStreamContainer.isBusy {
+  max-width: 720px;
+}
+
+.StreamBusyIndicator {
+  position: relative;
+  top: 20px;
+}
+
+.StreamBusyIndicator .ElloMark {
+  animation: animateStreamIsBusy 1.03333s infinite var(--ease-in-out-cubic);
+}
+
+.StreamBusyIndicator .ElloMark .FillPath {
+  fill: transparent;
+}
+
+.StreamBusyIndicator .ElloMark .SmilePath {
+  fill: #aaa;
+}
+
+/* ------------------------------------- */
+
+.MainView > .StreamContainer.isError,
+.MainView > .UserDetails > .StreamContainer.isError,
+.MainView > .PostDetails > .StreamContainer.isError {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.MainView > .StreamContainer .StreamBusyIndicator {
+  top: 80px;
+}
+
+@media (--break-2) {
+  .MainView > .StreamContainer .StreamBusyIndicator {
+    top: 120px;
+  }
+}
+
+@media (--break-5) {
+  .View > .StreamContainer .StreamBusyIndicator {
+    top: 240px;
+  }
+}
+

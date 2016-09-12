@@ -1,0 +1,85 @@
+@import "../../lib/styles/properties.css";
+
+.Paginator {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 0;
+  overflow: hidden;
+  font-size: 14px;
+  color: #aaa;
+  text-align: center;
+  background-color: transparent;
+  transition: transform var(--speed) var(--ease), height var(--speed) var(--ease), background-color var(--speed) var(--ease);
+  transform: translate3d(0, 100%, 0);
+}
+
+.Paginator.isBusy.NotificationReload {
+  position: relative;
+  bottom: auto;
+  margin-top: 15px;
+}
+
+.Paginator.isBusy {
+  height: 40px;
+  line-height: 40px;
+  background-color: #fff;
+  transform: translate3d(0, 0, 0);
+}
+
+.Paginator .ElloMark {
+  transform: scale(0);
+}
+
+.PaginatorMessage {
+  margin-left: 10px;
+}
+
+.Paginator .ElloMark .FillPath {
+  fill: transparent;
+}
+
+.Paginator .ElloMark .SmilePath {
+  fill: #aaa;
+}
+
+.Paginator.isBusy .ElloMark {
+  animation: animatePaginatorSpinner 1.03333s infinite var(--ease-in-out-cubic);
+}
+
+/* // Position to the right for Lovers/Reposter drawers */
+.UserDrawer .Paginator {
+  position: static;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  line-height: 30px;
+  vertical-align: middle;
+  transform: none;
+}
+
+.UserDrawer .Paginator:not(.isBusy) .ElloMark {
+  display: none;
+}
+
+@media (--break-2) {
+  .UserDrawer .Paginator {
+    line-height: 40px;
+  }
+}
+
+/* // Position bottom left for see more on settings */
+.BlockedUsers .Paginator,
+.MutedUsers .Paginator {
+  right: auto;
+  bottom: -60px;
+  height: auto;
+  transform: translate3d(0, 0, 0);
+}
+
+.BlockedUsers,
+.MutedUsers {
+  margin-bottom: 80px;
+}
+

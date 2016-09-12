@@ -1,0 +1,21 @@
+@import "../../lib/styles/properties.css";
+
+.TreePanel {
+  padding-left: 30px;
+  overflow: hidden;
+}
+
+.TreeButton.isCollapsed + .TreePanel {
+  height: 0;
+}
+
+.TreePanel > p:first-child {
+  margin-top: 0;
+}
+
+@media (--break-3) {
+  .TreePanel {
+    padding-left: 0;
+  }
+}
+

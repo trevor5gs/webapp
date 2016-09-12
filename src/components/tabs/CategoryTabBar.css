@@ -1,0 +1,127 @@
+@import "../../lib/styles/properties.css";
+
+.CategoryTabBar {
+  height: 75px;
+  font-size: 14px;
+  white-space: nowrap;
+  background-color: #e8e8e8;
+}
+
+.CategoryTabBarLinks {
+  display: inline-block;
+  max-width: calc(100% - 70px);
+  height: 100%;
+  padding: 0 10px;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.CategoryTabBarUtility {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  height: 100%;
+  padding-right: 10px;
+  text-align: right;
+  white-space: nowrap;
+  vertical-align: top;
+  background-color: #e8e8e8;
+}
+
+.CategoryTabBarUtility::before {
+  position: absolute;
+  top: 0;
+  left: -20px;
+  z-index: 2;
+  width: 20px;
+  height: 100%;
+  content: "";
+  background: linear-gradient(to right, rgba(#e8e8e8, 0) 0%, rgba(#e8e8e8, 1) 90%);
+}
+
+.CategoryLabelTab {
+  position: relative;
+  display: inline-block;
+  height: 75px;
+  overflow: hidden;
+  line-height: 75px;
+  color: #aaa;
+  white-space: nowrap;
+  transition: color var(--speed) ease;
+}
+
+.CategoryLabelTab::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  content: "";
+  background-color: transparent;
+  transition: width var(--speed) var(--ease), background-color var(--speed) ease;
+}
+
+.CategoryLabelTab.isActive,
+.CategoryLabelTab:active,
+.no-touch .CategoryLabelTab:hover {
+  color: #888;
+}
+
+.CategoryLabelTab.isActive::before,
+.CategoryLabelTab:active::before,
+.no-touch .CategoryLabelTab:hover::before {
+  width: 100%;
+  background-color: #aaa;
+}
+
+.CategoryLabelTab + .CategoryLabelTab {
+  margin-left: 20px;
+}
+
+.CategoryTabBarLinks .TabDivider {
+  display: inline-block;
+  width: 1px;
+  height: 30px;
+  margin: 22px 20px 0;
+  vertical-align: top;
+  background-color: #fff;
+}
+
+@media (--break-2) {
+  .CategoryTabBarLinks {
+    padding-right: 30px;
+    padding-left: 20px;
+  }
+
+  .CategoryLabelTab + .CategoryLabelTab {
+    margin-left: 30px;
+  }
+
+  .CategoryTabBarLinks .TabDivider {
+    margin-right: 30px;
+    margin-left: 30px;
+  }
+
+  .CategoryTabBarUtility {
+    padding-right: 20px;
+  }
+
+  .CategoryTabBarUtility::before {
+    left: -30px;
+    width: 30px;
+  }
+}
+
+@media (--break-4) {
+  .CategoryTabBarLinks {
+    padding-left: 40px;
+  }
+
+  .CategoryTabBarUtility {
+    padding-right: 40px;
+  }
+}
+

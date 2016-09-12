@@ -1,0 +1,42 @@
+@import "../../lib/styles/properties.css";
+
+.NavbarOmniButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  height: 30px;
+  padding: 0 15px 0 10px;
+  font-size: 14px;
+  line-height: 30px;
+  color: #fff;
+  background-color: #000;
+  border-radius: 15px;
+  transition: background-color var(--speed) ease;
+}
+
+.NavbarOmniButton .SVGIcon {
+  margin-right: 5px;
+}
+
+.no-touch .NavbarOmniButton:hover {
+  background-color: #666;
+}
+
+@media (--break-2) {
+  .NavbarOmniButton {
+    top: 20px;
+    right: auto;
+    left: 80px;
+    width: 100px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 20px;
+  }
+}
+
+@media (--break-4) {
+  .NavbarOmniButton {
+    left: 100px;
+  }
+}
+

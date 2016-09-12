@@ -1,0 +1,48 @@
+@import "../../lib/styles/properties.css";
+
+.TreeButton {
+  position: relative;
+  height: 40px;
+  padding-left: 30px;
+  font-size: 18px;
+  color: #000;
+  white-space: nowrap;
+  vertical-align: top;
+  transition: color var(--speed);
+}
+
+.TreeButton:hover {
+  color: #aaa;
+}
+
+.TreeIcon {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  transition: transform var(--speed) var(--ease);
+}
+
+.TreeButton.isCollapsed .TreeIcon {
+  transform: rotate(90deg);
+}
+
+.TreeButton.isCollapsed .TreeIcon > g {
+  stroke: #aaa;
+}
+
+@media (--break-2) {
+  .TreeButton {
+    font-size: 24px;
+  }
+}
+
+@media (--break-3) {
+  .TreeButton {
+    padding-left: 0;
+  }
+
+  .TreeIcon {
+    left: -30px;
+  }
+}
+

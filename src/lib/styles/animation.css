@@ -40,3 +40,37 @@
   animation: animateCachefloweBackground 30s linear infinite;
 }
 
+@keyframes animateCommentsLoading {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(9px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes animatePaginatorSpinner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(720deg);
+  }
+}
+
+@keyframes animateStreamIsBusy {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(720deg);
+  }
+}
+
