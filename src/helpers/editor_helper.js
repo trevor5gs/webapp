@@ -1,4 +1,4 @@
-import { reduce, get, values } from 'lodash'
+import { cloneDeep, reduce, get, values } from 'lodash'
 import { suggestEmoji } from '../components/completers/EmojiSuggester'
 import { userRegex } from '../components/completers/Completer'
 import { COMMENT, EDITOR, POST } from '../constants/action_types'
@@ -18,7 +18,7 @@ const initialState = {
 }
 
 methods.addCompletions = (state, action) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { payload } = action
   if (payload && payload.response) {
     const { type = 'user', word } = payload
@@ -56,7 +56,7 @@ methods.rehydrateEditors = (persistedEditors = {}) => {
 }
 
 methods.addHasContent = (state) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
   const firstBlock = collection[order[0]]
   if (!firstBlock) { return state }
@@ -71,14 +71,14 @@ methods.addHasContent = (state) => {
 }
 
 methods.addHasMedia = (state) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
   newState.hasMedia = order.some((uid) => /embed|image/.test(collection[uid].kind))
   return newState
 }
 
 methods.addHasMention = (state) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
   let hasMention = false
   for (const uid of order) {
@@ -93,7 +93,7 @@ methods.addHasMention = (state) => {
 }
 
 methods.addIsLoading = (state) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection } = newState
   let isLoading = values(collection).some((block) =>
     /image/.test(block.kind) && block.isLoading
@@ -104,7 +104,7 @@ methods.addIsLoading = (state) => {
 }
 
 methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
   const newBlock = { ...block, uid: newState.uid }
   if (newState.postBuyLink) {
@@ -118,7 +118,7 @@ methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
 }
 
 methods.addEmptyTextBlock = (state, shouldCheckForEmpty = false) => {
-  let newState = { ...state }
+  let newState = cloneDeep(state)
   const { collection, order } = newState
   if (order.length > 1) {
     const last = collection[order[order.length - 1]]
@@ -134,7 +134,7 @@ methods.addEmptyTextBlock = (state, shouldCheckForEmpty = false) => {
 }
 
 methods.remove = ({ shouldCheckForEmpty = true, state, uid }) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
   delete collection[uid]
   order.splice(order.indexOf(uid), 1)
@@ -143,7 +143,7 @@ methods.remove = ({ shouldCheckForEmpty = true, state, uid }) => {
 }
 
 methods.removeEmptyTextBlock = (state) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
   if (order.length > 0) {
     const last = collection[order[order.length - 1]]
@@ -156,14 +156,14 @@ methods.removeEmptyTextBlock = (state) => {
 }
 
 methods.updateBlock = (state, action) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { block, uid } = action.payload
   newState.collection[uid] = block
   return newState
 }
 
 methods.reorderBlocks = (state, action) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { order } = newState
   const { delta, uid } = action.payload
   const index = order.indexOf(uid)
@@ -175,7 +175,7 @@ methods.reorderBlocks = (state, action) => {
 }
 
 methods.appendText = (state, text) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
   const textBlocks = order.filter((orderUid) => /text/.test(collection[orderUid].kind))
   const lastTextBlock = collection[textBlocks[textBlocks.length - 1]]
@@ -187,7 +187,7 @@ methods.appendText = (state, text) => {
 }
 
 methods.appendUsernames = (state, usernames) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection, order } = newState
   const textBlocks = order.filter((orderUid) => /text/.test(collection[orderUid].kind))
   const lastTextBlock = collection[textBlocks[textBlocks.length - 1]]
@@ -200,7 +200,7 @@ methods.appendUsernames = (state, usernames) => {
 }
 
 methods.replaceText = (state, action) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { collection } = newState
   const { editorId, uid } = action.payload
   if (/text/.test(collection[uid].kind)) {
@@ -214,7 +214,7 @@ methods.replaceText = (state, action) => {
 }
 
 methods.updateBuyLink = (state, action) => {
-  const newState = { ...state }
+  const newState = cloneDeep(state)
   const { payload: { link } } = action
   // once individual blocks can get their own links
   // we can rip out this overall property on editor
@@ -231,7 +231,7 @@ methods.updateBuyLink = (state, action) => {
 }
 
 methods.getEditorObject = (state = initialState, action) => {
-  let newState = { ...state }
+  let newState = cloneDeep(state)
   switch (action.type) {
     case EDITOR.ADD_BLOCK:
       return methods.add({
