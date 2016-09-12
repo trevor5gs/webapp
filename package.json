@@ -9,7 +9,7 @@
     "build:web": "NODE_ENV=production node ./node_modules/webpack/bin/webpack.js -p --config=webpack.prod.config.js",
     "dev": "npm run clean && DEBUG=express:* NODE_ENV=development babel-node server-dev.js",
     "lint": "npm run lint:js && npm run lint:css",
-    "lint:css": "stylelint ./src/**/*.css",
+    "lint:css": "stylelint 'src/**/*.css'",
     "lint:js": "eslint src test",
     "lint:js:fix": "eslint src test --fix",
     "start": "NODE_ENV=production node dist/server-iso-entrypoint.js",
@@ -109,7 +109,19 @@
   "stylelint": {
     "extends": "stylelint-config-primer",
     "rules": {
-      "comment-empty-line-before": false,
+      "selector-class-pattern": null,
+      "comment-empty-line-before": [
+        "always",
+        {
+          "except": [
+            "first-nested"
+          ],
+          "ignore": [
+            "between-comments",
+            "stylelint-commands"
+          ]
+        }
+      ],
       "no-unsupported-browser-features": [
         true,
         {
@@ -118,8 +130,7 @@
             "calc"
           ]
         }
-      ],
-      "selector-class-pattern": false
+      ]
     }
   },
   "dependencies": {
