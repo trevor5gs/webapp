@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const autoprefixer = require('autoprefixer')
 const postcssApply = require('postcss-apply')
 const postcssCalc = require('postcss-calc')
@@ -44,6 +45,8 @@ module.exports = {
       template: 'public/template.html',
       inject: 'body',
     }),
+    new LodashModuleReplacementPlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(true),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -51,7 +54,6 @@ module.exports = {
         warnings: false,
       },
     }),
-    new webpack.optimize.OccurenceOrderPlugin(true),
   ],
   module: {
     loaders: [
@@ -60,6 +62,9 @@ module.exports = {
         loader: 'babel',
         include: path.join(__dirname, 'src'),
         exclude: /node_modules/,
+        query: {
+          plugins: ['lodash'],
+        },
       },
       {
         test: /\.css$/,

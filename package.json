@@ -165,6 +165,7 @@
     "jwt-decode": "2.1.0",
     "librato-node": "4.1.0",
     "lodash": "4.15.0",
+    "lodash-webpack-plugin": "0.10.0",
     "memjs": "0.10.0",
     "morgan": "1.7.0",
     "mousetrap": "1.6.0",
