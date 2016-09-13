@@ -4,13 +4,18 @@ import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
 import shallowCompare from 'react-addons-shallow-compare'
 import { USER } from '../constants/action_types'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import {
   selectActiveUserFollowingType,
+  selectCoverDPI,
+  selectCoverOffset,
   selectHasSaidHelloTo,
-  selectParamsType,
-  selectParamsUsername,
-  selectUser,
-} from '../selectors'
+  selectIsCoverHidden,
+  selectIsOmnibarActive,
+} from '../selectors/gui'
+import { selectParamsType, selectParamsUsername } from '../selectors/params'
+import { selectStreamType } from '../selectors/stream'
+import { selectUserFromUsername } from '../selectors/user'
 import { setActiveUserFollowingType } from '../actions/gui'
 import { sayHello } from '../actions/zeros'
 import {
@@ -46,12 +51,11 @@ const selectUserDetailStreamAction = createSelector(
 )
 
 export function mapStateToProps(state, props) {
-  const { authentication, gui, stream } = state
   const type = selectParamsType(state, props) || 'posts'
   const username = selectParamsUsername(state, props)
-  const user = selectUser(state, props)
-  const activeUserFollowingType = gui.activeUserFollowingType
-  const isLoggedIn = authentication.isLoggedIn
+  const user = selectUserFromUsername(state, props)
+  const activeUserFollowingType = selectActiveUserFollowingType(state)
+  const isLoggedIn = selectIsLoggedIn(state)
   const isSelf = isLoggedIn && user ? user.relationshipPriority === 'self' : false
   const hasSaidHelloTo = user ? !isSelf && selectHasSaidHelloTo(state, props) : false
   const keyPostfix = isSelf && activeUserFollowingType ? `/${activeUserFollowingType}` : ''
@@ -59,11 +63,11 @@ export function mapStateToProps(state, props) {
 
   return {
     activeUserFollowingType,
-    coverDPI: gui.coverDPI,
+    coverDPI: selectCoverDPI(state),
     coverImage: user && user.coverImage ? user.coverImage : null,
-    coverOffset: gui.coverOffset,
-    isCoverActive: !gui.isOmnibarActive,
-    isCoverHidden: gui.isCoverHidden,
+    coverOffset: selectCoverOffset(state),
+    isCoverActive: !selectIsOmnibarActive(state),
+    isCoverHidden: selectIsCoverHidden(state),
     isLoggedIn,
     isSelf,
     hasZeroFollowers: user ? user.followersCount < 1 : false,
@@ -72,7 +76,7 @@ export function mapStateToProps(state, props) {
     paramsType: type,
     paramsUsername: username,
     streamAction,
-    streamType: stream.type,
+    streamType: selectStreamType(state),
     tabs: isSelf && type === 'following' ? followingTabs : null,
     user,
     viewKey: `userDetail/${username}/${type}${keyPostfix}`,

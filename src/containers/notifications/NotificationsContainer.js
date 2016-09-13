@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import _ from 'lodash'
 import { connect } from 'react-redux'
 import { GUI, LOAD_STREAM_SUCCESS } from '../../constants/action_types'
 import { scrollElToTop } from '../../vendor/scrolling'
+import { selectActiveNotificationsType } from '../../selectors/gui'
+import { selectStreamType } from '../../selectors/stream'
 import { toggleNotifications } from '../../actions/gui'
 import { loadNotifications } from '../../actions/notifications'
 import StreamContainer from '../../containers/StreamContainer'
@@ -14,6 +15,15 @@ import {
 } from '../../components/notifications/NotificationIcons'
 import { TabListButtons } from '../../components/tabs/TabList'
 import { Paginator } from '../../components/streams/Paginator'
+
+function mapStateToProps(state) {
+  const activeTabType = selectActiveNotificationsType(state)
+  return {
+    activeTabType,
+    streamAction: loadNotifications({ category: activeTabType }),
+    streamType: selectStreamType(state),
+  }
+}
 
 class NotificationsContainer extends Component {
 
@@ -148,15 +158,6 @@ class NotificationsContainer extends Component {
         </div>
       </div>
     )
-  }
-}
-
-function mapStateToProps(state) {
-  const activeTabType = state.gui.activeNotificationsType
-  return {
-    activeTabType,
-    streamAction: loadNotifications({ category: activeTabType }),
-    streamType: _.get(state, 'stream.type'),
   }
 }
 

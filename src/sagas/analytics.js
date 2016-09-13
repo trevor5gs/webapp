@@ -3,7 +3,7 @@ import { actionChannel, fork, select, take } from 'redux-saga/effects'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { get } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
-import { activeNotificationsTypeSelector } from './selectors'
+import { selectActiveNotificationsType } from '../selectors/gui'
 
 const pageTrackTypes = [
   ACTION_TYPES.GUI.NOTIFICATIONS_TAB,
@@ -32,7 +32,7 @@ function* trackPage(pageTrackChannel) {
     if (action.type === ACTION_TYPES.GUI.NOTIFICATIONS_TAB) {
       pageProps.path = `/notifications/${get(action, 'payload.activeTabType', '')}`
     } else if (action.type === ACTION_TYPES.GUI.TOGGLE_NOTIFICATIONS) {
-      const lastTabType = yield select(activeNotificationsTypeSelector)
+      const lastTabType = yield select(selectActiveNotificationsType)
       pageProps.path = `/notifications/${lastTabType === 'all' ? '' : lastTabType}`
     }
     if (window.analytics) {

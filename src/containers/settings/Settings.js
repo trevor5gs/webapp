@@ -7,6 +7,8 @@ import { debounce, isEmpty, get } from 'lodash'
 import { PREFERENCES, SETTINGS } from '../../constants/locales/en'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
+import { selectCoverDPI, selectCoverOffset, selectIsCoverHidden } from '../../selectors/gui'
+import { selectAvailability, selectBlockedCount, selectMutedCount } from '../../selectors/profile'
 import { openModal, closeModal, openAlert, closeAlert } from '../../actions/modals'
 import { logout } from '../../actions/authentication'
 import {
@@ -566,12 +568,12 @@ class Settings extends Component {
 
 function mapStateToProps(state) {
   return {
-    availability: state.profile.availability,
-    blockedCount: state.profile.blockedCount || 0,
-    coverDPI: state.gui.coverDPI,
-    coverOffset: state.gui.coverOffset,
-    isCoverHidden: state.gui.isCoverHidden,
-    mutedCount: state.profile.mutedCount || 0,
+    availability: selectAvailability(state),
+    blockedCount: selectBlockedCount(state) || 0,
+    coverDPI: selectCoverDPI(state),
+    coverOffset: selectCoverOffset(state),
+    isCoverHidden: selectIsCoverHidden(state),
+    mutedCount: selectMutedCount(state) || 0,
     profile: state.profile,
   }
 }

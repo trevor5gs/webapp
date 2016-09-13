@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import * as MAPPING_TYPES from '../../constants/mapping_types'
+import { selectIsLoggedIn } from '../../selectors/authentication'
+import { selectPostFromPropsPostId, selectIsOwnPost } from '../../selectors/post'
 import { openModal, closeModal } from '../../actions/modals'
 import {
   createComment,
@@ -36,6 +37,14 @@ export function getEditorId(post, comment, isComment, isZero) {
     return editorUniqueIdentifiers[fullPrefix]
   }
   return fullPrefix
+}
+
+function mapStateToProps(state, props) {
+  return {
+    isLoggedIn: selectIsLoggedIn(state),
+    post: selectPostFromPropsPostId(state, props),
+    isOwnPost: selectIsOwnPost(state, props),
+  }
 }
 
 class Editor extends Component {
@@ -207,14 +216,6 @@ class Editor extends Component {
         submitText={submitText}
       />
     )
-  }
-}
-
-function mapStateToProps({ authentication, json, profile }, ownProps) {
-  return {
-    isLoggedIn: authentication.isLoggedIn,
-    post: ownProps.post ? json[MAPPING_TYPES.POSTS][ownProps.post.id] : null,
-    isOwnPost: ownProps.post && `${ownProps.post.authorId}` === `${profile.id}`,
   }
 }
 

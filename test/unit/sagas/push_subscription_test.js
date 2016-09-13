@@ -1,10 +1,7 @@
 import { AUTHENTICATION, PROFILE } from '../../../src/constants/action_types'
 import { loginPushSubscribe, logoutPushUnsubscribe } from '../../../src/sagas/push_subscription'
-import {
-  bundleIdSelector,
-  isLoggedInSelector,
-  registrationIdSelector,
-} from '../../../src/sagas/selectors'
+import { selectBundleId, selectRegistrationId } from '../../../src/selectors/profile'
+import { selectIsLoggedIn } from '../../../src/selectors/authentication'
 import {
   registerForGCM,
   requestPushSubscription,
@@ -19,7 +16,7 @@ describe('push subscription saga', function () {
       const pushAction = requestPushSubscription(regId)
       const pushHandler = loginPushSubscribe()
       expect(pushHandler).to.take(PROFILE.REQUEST_PUSH_SUBSCRIPTION)
-      expect(pushHandler.next(pushAction)).to.select(isLoggedInSelector)
+      expect(pushHandler.next(pushAction)).to.select(selectIsLoggedIn)
       expect(pushHandler.next(true)).to.put(registerForGCM(regId))
     })
 
@@ -27,7 +24,7 @@ describe('push subscription saga', function () {
       const pushAction = requestPushSubscription(regId)
       const pushHandler = loginPushSubscribe()
       expect(pushHandler).to.take(PROFILE.REQUEST_PUSH_SUBSCRIPTION)
-      expect(pushHandler.next(pushAction)).to.select(isLoggedInSelector)
+      expect(pushHandler.next(pushAction)).to.select(selectIsLoggedIn)
       expect(pushHandler.next(false)).to.take(AUTHENTICATION.USER_SUCCESS)
       expect(pushHandler).to.put(registerForGCM(regId))
     })
@@ -38,8 +35,8 @@ describe('push subscription saga', function () {
       const pushAction = requestPushSubscription(regId)
       const pushHandler = logoutPushUnsubscribe()
       expect(pushHandler).to.take([AUTHENTICATION.LOGOUT, PROFILE.DELETE])
-      expect(pushHandler.next(pushAction)).to.select(registrationIdSelector)
-      expect(pushHandler.next('reg_id')).to.select(bundleIdSelector)
+      expect(pushHandler.next(pushAction)).to.select(selectRegistrationId)
+      expect(pushHandler.next('reg_id')).to.select(selectBundleId)
       expect(pushHandler.next('bundle_id')).to.put(unregisterForGCM('reg_id', 'bundle_id'))
     })
   })

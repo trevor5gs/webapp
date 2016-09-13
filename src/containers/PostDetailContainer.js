@@ -3,7 +3,10 @@ import { connect } from 'react-redux'
 import { isEqual } from 'lodash'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
-import { selectParamsToken, selectParamsUsername, selectPost } from '../selectors'
+import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectParamsToken, selectParamsUsername } from '../selectors/params'
+import { selectPostFromToken } from '../selectors/post'
+import { selectStreamType } from '../selectors/stream'
 import { loadComments, loadPostDetail, toggleLovers, toggleReposters } from '../actions/posts'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { PostDetail, PostDetailError } from '../components/views/PostDetail'
@@ -30,17 +33,14 @@ export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState
 }
 
 export function mapStateToProps(state, props) {
-  const { authentication, json, stream } = state
-  const paramsToken = selectParamsToken(state, props)
-  const paramsUsername = selectParamsUsername(state, props)
-  const post = selectPost(state, props)
+  const post = selectPostFromToken(state, props)
   return {
-    author: post ? json[MAPPING_TYPES.USERS][post.authorId] : null,
-    isLoggedIn: authentication.isLoggedIn,
-    paramsToken,
-    paramsUsername,
+    author: post ? state.json[MAPPING_TYPES.USERS][post.authorId] : null,
+    isLoggedIn: selectIsLoggedIn(state),
+    paramsToken: selectParamsToken(state, props),
+    paramsUsername: selectParamsUsername(state, props),
     post,
-    streamType: stream.type,
+    streamType: selectStreamType(state),
   }
 }
 

@@ -5,6 +5,19 @@ import { isIOS } from '../vendor/jello'
 import { scrollToTop } from '../vendor/scrolling'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
+import { selectIsLoggedIn } from '../selectors/authentication'
+import {
+  selectCurrentStream,
+  selectDeviceSize,
+  selectIsGridMode,
+  selectIsLayoutToolHidden,
+  selectIsNotificationsActive,
+  selectIsNotificationsUnread,
+  selectIsProfileMenuActive,
+} from '../selectors/gui'
+import { selectAvatar, selectUsername } from '../selectors/profile'
+import { selectPage } from '../selectors/pages'
+import { selectPathname } from '../selectors/routing'
 import { logout } from '../actions/authentication'
 import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
 import { checkForNewNotifications } from '../actions/notifications'
@@ -16,27 +29,26 @@ import { getDiscoverAction } from '../containers/DiscoverContainer'
 import Session from '../vendor/session'
 
 function mapStateToProps(state) {
-  const { authentication, gui, json, profile, routing } = state
-  const currentStream = gui.currentStream
-  const isLoggedIn = authentication.isLoggedIn
-  const pathname = routing.location.pathname
-  const result = json.pages ? json.pages[pathname] : null
-  const hasLoadMoreButton = Boolean(result && result.morePostIds)
+  const currentStream = selectCurrentStream(state)
+  const isLoggedIn = selectIsLoggedIn(state)
+  const pathname = selectPathname(state)
+  const result = selectPage(state)
+  const hasLoadMoreButton = !!(result && result.morePostIds)
 
   if (isLoggedIn) {
     return {
-      avatar: profile.avatar,
-      deviceSize: gui.deviceSize,
+      avatar: selectAvatar(state),
+      deviceSize: selectDeviceSize(state),
       currentStream,
       hasLoadMoreButton,
-      isGridMode: gui.isGridMode,
-      isLayoutToolHidden: gui.isLayoutToolHidden,
+      isGridMode: selectIsGridMode(state),
+      isLayoutToolHidden: selectIsLayoutToolHidden(state),
       isLoggedIn,
-      isNotificationsActive: gui.isNotificationsActive,
-      isNotificationsUnread: gui.isNotificationsUnread,
-      isProfileMenuActive: gui.isProfileMenuActive,
+      isNotificationsActive: selectIsNotificationsActive(state),
+      isNotificationsUnread: selectIsNotificationsUnread(state),
+      isProfileMenuActive: selectIsProfileMenuActive(state),
       pathname,
-      username: profile.username,
+      username: selectUsername(state),
     }
   }
   return {

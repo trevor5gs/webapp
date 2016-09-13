@@ -1,6 +1,22 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
+import {
+  selectCoverOffset,
+  selectInnerHeight,
+  selectInnerWidth,
+  selectIsAuthenticationView,
+  selectIsCoverHidden,
+  selectIsNavbarFixed,
+  selectIsNavbarHidden,
+  selectIsNavbarSkippingTransition,
+  selectIsNotificationsActive,
+  selectIsOffsetLayout,
+  selectIsOnboardingView,
+  selectIsProfileMenuActive,
+  selectScrollDirectionOffset,
+} from '../selectors/gui'
+import { selectPathname } from '../selectors/routing'
 import { setIsOffsetLayout, setScrollState, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
@@ -8,22 +24,21 @@ import { Viewport } from '../components/viewport/Viewport'
 
 
 function mapStateToProps(state) {
-  const { gui, routing } = state
   return {
-    coverOffset: gui.coverOffset,
-    innerHeight: gui.innerHeight,
-    innerWidth: gui.innerWidth,
-    isAuthenticationView: gui.isAuthenticationView,
-    isCoverHidden: gui.isCoverHidden,
-    isNavbarFixed: gui.isNavbarFixed,
-    isNavbarHidden: gui.isNavbarHidden,
-    isNavbarSkippingTransition: gui.isNavbarSkippingTransition,
-    isNotificationsActive: gui.isNotificationsActive,
-    isOffsetLayout: gui.isOffsetLayout,
-    isOnboardingView: gui.isOnboardingView,
-    isProfileMenuActive: gui.isProfileMenuActive,
-    offset: gui.coverOffset ? gui.coverOffset - 80 : 160,
-    pathname: routing.location.pathname,
+    coverOffset: selectCoverOffset(state),
+    innerHeight: selectInnerHeight(state),
+    innerWidth: selectInnerWidth(state),
+    isAuthenticationView: selectIsAuthenticationView(state),
+    isCoverHidden: selectIsCoverHidden(state),
+    isNavbarFixed: selectIsNavbarFixed(state),
+    isNavbarHidden: selectIsNavbarHidden(state),
+    isNavbarSkippingTransition: selectIsNavbarSkippingTransition(state),
+    isNotificationsActive: selectIsNotificationsActive(state),
+    isOffsetLayout: selectIsOffsetLayout(state),
+    isOnboardingView: selectIsOnboardingView(state),
+    isProfileMenuActive: selectIsProfileMenuActive(state),
+    offset: selectScrollDirectionOffset(state),
+    pathname: selectPathname(state),
   }
 }
 

@@ -8,14 +8,13 @@ import { ONBOARDING_VERSION } from '../constants/application_types'
 import { trackEvent } from '../actions/analytics'
 import { getCategories } from '../actions/discover'
 import { followCategories, saveProfile } from '../actions/profile'
-import { selectCategories } from '../selectors'
+import { selectCategoriesAsArray } from '../selectors/categories'
 
 const CATEGORIES_NEEDED = 3
 
-function mapStateToProps(state, props) {
-  const catLevels = selectCategories(state, props)
+function mapStateToProps(state) {
   return {
-    categories: catLevels.primary.concat(catLevels.secondary, catLevels.tertiary),
+    categories: selectCategoriesAsArray(state),
   }
 }
 

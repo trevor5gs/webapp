@@ -4,17 +4,18 @@ import shallowCompare from 'react-addons-shallow-compare'
 import { sample } from 'lodash'
 import { isAndroid } from '../vendor/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
+import { selectCoverDPI, selectCoverOffset } from '../selectors/gui'
+import { selectPromotionsAuthentication } from '../selectors/promotions'
 import { sendForgotPasswordRequest } from '../actions/authentication'
 import { trackEvent } from '../actions/analytics'
 import { isFormValid, getEmailStateFromClient } from '../components/forms/Validators'
 import { ForgotPassword } from '../components/views/ForgotPassword'
 
 function mapStateToProps(state) {
-  const { gui, promotions } = state
   return {
-    coverDPI: gui.coverDPI,
-    coverOffset: gui.coverOffset,
-    promotions: promotions.authentication,
+    coverDPI: selectCoverDPI(state),
+    coverOffset: selectCoverOffset(state),
+    promotions: selectPromotionsAuthentication(state),
   }
 }
 

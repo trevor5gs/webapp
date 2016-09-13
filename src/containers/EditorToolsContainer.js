@@ -3,6 +3,15 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { debounce } from 'lodash'
 import { EDITOR } from '../constants/action_types'
+import { selectCompletions } from '../selectors/editor'
+import { selectEmojis } from '../selectors/emoji'
+import {
+  selectDeviceSize,
+  selectIsCompleterActive,
+  selectIsTextToolsActive,
+  selectTextToolsCoordinates,
+  selectTextToolsStates,
+} from '../selectors/gui'
 import {
   autoCompleteUsers,
   loadEmojis,
@@ -17,15 +26,14 @@ import { addInputObject, removeInputObject } from '../components/editor/InputCom
 import { replaceWordFromSelection } from '../components/editor/SelectionUtil'
 
 function mapStateToProps(state) {
-  const { editor, emoji, gui } = state
   return {
-    completions: editor.completions,
-    emojis: emoji.emojis,
-    isCompleterActive: gui.isCompleterActive,
-    isTextToolsActive: gui.isTextToolsActive,
-    textToolsStates: gui.textToolsStates,
-    textToolsCoordinates: gui.textToolsCoordinates,
-    deviceSize: gui.deviceSize,
+    completions: selectCompletions(state),
+    deviceSize: selectDeviceSize(state),
+    emojis: selectEmojis(state),
+    isCompleterActive: selectIsCompleterActive(state),
+    isTextToolsActive: selectIsTextToolsActive(state),
+    textToolsCoordinates: selectTextToolsCoordinates(state),
+    textToolsStates: selectTextToolsStates(state),
   }
 }
 

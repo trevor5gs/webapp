@@ -3,6 +3,9 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { debounce } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
+import { selectCoverDPI, selectCoverOffset } from '../selectors/gui'
+import { selectParamsInvitationCode } from '../selectors/params'
+import { selectAvailability, selectEmail } from '../selectors/profile'
 import { getInviteEmail } from '../actions/invitations'
 import { checkAvailability, signUpUser } from '../actions/profile'
 import Join from '../components/views/Join'
@@ -16,13 +19,12 @@ import {
 } from '../components/forms/Validators'
 
 function mapStateToProps(state, props) {
-  const { gui, profile } = state
   return {
-    availability: profile.availability,
-    coverDPI: gui.coverDPI,
-    coverOffset: gui.coverOffset,
-    email: profile.email,
-    invitationCode: props.params.invitationCode,
+    availability: selectAvailability(state),
+    coverDPI: selectCoverDPI(state),
+    coverOffset: selectCoverOffset(state),
+    email: selectEmail(state),
+    invitationCode: selectParamsInvitationCode(state, props),
   }
 }
 

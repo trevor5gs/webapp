@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
-import { get } from 'lodash'
-import { selectPagination } from '../selectors'
+import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectPagination } from '../selectors/pagination'
+import { selectPropsPathname } from '../selectors/routing'
 import { getCategories } from '../actions/discover'
 import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
@@ -26,20 +27,19 @@ import {
 } from '../actions/promotions'
 
 function mapStateToProps(state, props) {
-  const { authentication } = state
   return {
-    authentication,
+    isLoggedIn: selectIsLoggedIn(state),
     pagination: selectPagination(state, props),
-    pathname: props.location.pathname,
+    pathname: selectPropsPathname(state, props),
   }
 }
 
 class AppContainer extends Component {
 
   static propTypes = {
-    authentication: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }).isRequired,
@@ -68,8 +68,8 @@ class AppContainer extends Component {
   componentDidMount() {
     addGlobalDrag()
     startRefreshTimer()
-    const { dispatch } = this.props
-    if (get(this.props, 'authentication.isLoggedIn')) {
+    const { dispatch, isLoggedIn } = this.props
+    if (isLoggedIn) {
       dispatch(loadProfile())
       dispatch(loadNotifications({ category: 'all' }))
       dispatch(fetchLoggedInPromos())
@@ -81,16 +81,13 @@ class AppContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const prevAuthentication = this.props.authentication
-    const { authentication, dispatch } = nextProps
-    if (authentication) {
-      if (!prevAuthentication.isLoggedIn && authentication.isLoggedIn) {
-        dispatch(loadProfile())
-        dispatch(fetchLoggedInPromos())
-      } else if (prevAuthentication.isLoggedIn && !authentication.isLoggedIn) {
-        dispatch(fetchAuthenticationPromos())
-        dispatch(fetchLoggedOutPromos())
-      }
+    const { dispatch } = nextProps
+    if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
+      dispatch(loadProfile())
+      dispatch(fetchLoggedInPromos())
+    } else if (this.props.isLoggedIn && !nextProps.isLoggedIn) {
+      dispatch(fetchAuthenticationPromos())
+      dispatch(fetchLoggedOutPromos())
     }
   }
 
@@ -103,8 +100,7 @@ class AppContainer extends Component {
   }
 
   render() {
-    const { authentication, children, params, pagination, pathname } = this.props
-    const { isLoggedIn } = authentication
+    const { children, isLoggedIn, params, pagination, pathname } = this.props
     const appClasses = classNames(
       'AppContainer',
       { isLoggedIn },

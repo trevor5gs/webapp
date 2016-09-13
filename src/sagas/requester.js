@@ -4,12 +4,11 @@ import { get } from 'lodash'
 import { camelizeKeys } from 'humps'
 import { actionChannel, call, fork, put, select, take } from 'redux-saga/effects'
 import * as ACTION_TYPES from '../constants/action_types'
+import { selectIsLoggedIn, selectRefreshToken } from '../selectors/authentication'
+import { selectLastNotificationCheck } from '../selectors/gui'
+import { selectPathname } from '../selectors/routing'
 import { refreshAuthenticationToken } from '../actions/authentication'
 import { pauseRequester, unpauseRequester } from '../actions/api'
-import {
-  isLoggedInSelector,
-  refreshTokenSelector,
-} from './selectors'
 import { fetchCredentials, getClientCredentials, sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
 import Dialog from '../components/dialogs/Dialog'
@@ -146,8 +145,8 @@ export function* handleRequestError(error, action) {
   if (error.response) {
     payload.serverStatus = error.response.status
     if (error.response.status === 401) {
-      const isLoggedIn = yield select(isLoggedInSelector)
-      const refreshToken = yield select(refreshTokenSelector)
+      const isLoggedIn = yield select(selectIsLoggedIn)
+      const refreshToken = yield select(selectRefreshToken)
       if (type !== ACTION_TYPES.AUTHENTICATION.LOGOUT &&
           type !== ACTION_TYPES.AUTHENTICATION.REFRESH &&
           isLoggedIn) {
@@ -187,9 +186,6 @@ export function* handleRequestError(error, action) {
   return false
 }
 
-const pathnameSelector = state => get(state, 'routing.location.pathname', '')
-const lastNotificationCheckSelector = state => get(state, 'gui.lastNotificationCheck')
-
 export function* performRequest(action) {
   const {
     type,
@@ -198,7 +194,7 @@ export function* performRequest(action) {
   } = action
   let { payload } = action
 
-  const pathname = yield select(pathnameSelector)
+  const pathname = yield select(selectPathname)
   payload = {
     ...payload,
     pathname,
@@ -243,7 +239,7 @@ export function* performRequest(action) {
     case 'HEAD':
       options.headers = getHeadHeader(
         accessToken,
-        yield select(lastNotificationCheckSelector)
+        yield select(selectLastNotificationCheck)
       )
       break
     default:

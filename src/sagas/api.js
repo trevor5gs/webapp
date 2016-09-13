@@ -2,26 +2,24 @@
 import 'isomorphic-fetch'
 import { call, put, select, take } from 'redux-saga/effects'
 import { AUTHENTICATION } from '../constants/action_types'
-
 import {
-  accessTokenSelector,
-  refreshTokenSelector,
-  shouldUseAccessTokenSelector,
-  shouldUseRefreshTokenSelector,
-} from './selectors'
-
+  selectAccessToken,
+  selectRefreshToken,
+  selectShouldUseAccessToken,
+  selectShouldUseRefreshToken,
+} from '../selectors/authentication'
 import { refreshAuthenticationToken } from '../actions/authentication'
 
 export function* fetchCredentials() {
-  const accessToken = yield select(accessTokenSelector)
-  if (yield select(shouldUseAccessTokenSelector)) {
+  const accessToken = yield select(selectAccessToken)
+  if (yield select(selectShouldUseAccessToken)) {
     return {
       token: {
         access_token: accessToken,
       },
     }
-  } else if (yield select(shouldUseRefreshTokenSelector)) {
-    const refreshToken = yield select(refreshTokenSelector)
+  } else if (yield select(selectShouldUseRefreshToken)) {
+    const refreshToken = yield select(selectRefreshToken)
     yield put(refreshAuthenticationToken(refreshToken))
     // Wait for the refresh to resolve one way or another before firing
     // fetchCredentials again

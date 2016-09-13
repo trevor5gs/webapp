@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import shallowCompare from 'react-addons-shallow-compare'
+import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectUserFromPropsUserId } from '../selectors/user'
 import { UserAvatar, UserCompact, UserGrid, UserList } from '../components/users/UserRenderables'
 import MessageDialog from '../components/dialogs/MessageDialog'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
@@ -12,11 +14,11 @@ import { sendMessage } from '../actions/user'
 import { getElloPlatform } from '../vendor/jello'
 
 export function mapStateToProps(state, props) {
-  const user = state.json.users[props.user.id]
+  const user = selectUserFromPropsUserId(state, props)
   return {
     followersCount: user.followersCount,
     followingCount: user.followingCount,
-    isLoggedIn: state.authentication.isLoggedIn,
+    isLoggedIn: selectIsLoggedIn(state),
     lovesCount: user.lovesCount,
     postsCount: user.postsCount,
     relationshipPriority: user.relationshipPriority,
@@ -26,7 +28,6 @@ export function mapStateToProps(state, props) {
 }
 
 class UserContainer extends Component {
-
   static propTypes = {
     className: PropTypes.string,
     dispatch: PropTypes.func,

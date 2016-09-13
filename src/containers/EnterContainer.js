@@ -6,6 +6,15 @@ import { debounce, sample, set } from 'lodash'
 import { isAndroid, isElloAndroid } from '../vendor/jello'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
+import { selectCurrentStream, selectCoverDPI, selectCoverOffset } from '../selectors/gui'
+import {
+  selectBuildVersion,
+  selectBundleId,
+  selectMarketingVersion,
+  selectRegistrationId,
+  selectWebOnboardingVersion,
+} from '../selectors/profile'
+import { selectPromotionsAuthentication } from '../selectors/promotions'
 import { loadProfile, requestPushSubscription, saveProfile } from '../actions/profile'
 import { signIn } from '../actions/authentication'
 import { trackEvent } from '../actions/analytics'
@@ -21,6 +30,23 @@ import {
   getPasswordState,
 } from '../components/forms/Validators'
 import { MainView } from '../components/views/MainView'
+
+function mapStateToProps(state) {
+  const obj = {
+    currentStream: selectCurrentStream(state),
+    coverDPI: selectCoverDPI(state),
+    coverOffset: selectCoverOffset(state),
+    promotions: selectPromotionsAuthentication(state),
+    webOnboardingVersionSeen: selectWebOnboardingVersion(state),
+  }
+  if (isElloAndroid()) {
+    obj.buildVersion = selectBuildVersion(state)
+    obj.bundleId = selectBundleId(state)
+    obj.marketingVersion = selectMarketingVersion(state)
+    obj.registrationId = selectRegistrationId(state)
+  }
+  return obj
+}
 
 class EnterContainer extends Component {
 
@@ -217,23 +243,6 @@ class EnterContainer extends Component {
       </MainView>
     )
   }
-}
-
-const mapStateToProps = (state) => {
-  const obj = {
-    currentStream: state.gui.currentStream,
-    coverDPI: state.gui.coverDPI,
-    coverOffset: state.gui.coverOffset,
-    promotions: state.promotions.authentication,
-    webOnboardingVersionSeen: state.profile.webOnboardingVersion,
-  }
-  if (isElloAndroid()) {
-    obj.buildVersion = state.profile.buildVersion
-    obj.bundleId = state.profile.bundleId
-    obj.marketingVersion = state.profile.marketingVersion
-    obj.registrationId = state.profile.registrationId
-  }
-  return obj
 }
 
 export default connect(mapStateToProps)(EnterContainer)

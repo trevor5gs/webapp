@@ -15,15 +15,11 @@ import LinksControl from '../forms/LinksControl'
 import { isValidURL } from '../forms/Validators'
 
 function mapStateToProps(state) {
-  const linksText = selectLinksAsText(state)
-  const name = selectName(state)
-  const shortBio = selectShortBio(state)
-  const username = selectUsername(state)
   return {
-    linksText,
-    name,
-    shortBio,
-    username,
+    linksText: selectLinksAsText(state),
+    name: selectName(state),
+    shortBio: selectShortBio(state),
+    username: selectUsername(state),
   }
 }
 
