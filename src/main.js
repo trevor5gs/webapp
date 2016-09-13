@@ -29,6 +29,15 @@ if (isIOS()) {
 }
 /* eslint-enable global-require */
 
+
+// ONLY FOR PERFORMANCE TESTING!
+// if (process.env.NODE_ENV !== 'production') {
+//   const { Perf } = require('react-addons-perf')
+//   const { whyDidYouUpdate } = require('why-did-you-update')
+//   window.Perf = Perf
+//   whyDidYouUpdate(React)
+// }
+
 Honeybadger.configure({
   api_key: ENV.HONEYBADGER_API_KEY,
   environment: ENV.HONEYBADGER_ENVIRONMENT,

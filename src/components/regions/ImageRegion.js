@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { Link } from 'react-router'
-import _ from 'lodash'
+import { get } from 'lodash'
 import classNames from 'classnames'
 import ImageAsset from '../assets/ImageAsset'
 import { ElloBuyButton } from '../editor/ElloBuyButton'
@@ -42,13 +43,13 @@ class ImageRegion extends Component {
     if (assetMatch && assets) {
       const assetId = assetMatch[1]
       const asset = this.props.assets[assetId] || this.props.assets[parseInt(assetId, 10)]
-      const imageHeight = parseInt(_.get(asset, 'attachment.original.metadata.height'), 10)
+      const imageHeight = parseInt(get(asset, 'attachment.original.metadata.height'), 10)
       scale = innerHeight / imageHeight
     }
 
     this.state = {
       marginBottom: null,
-      scale,
+      scale: isNaN(scale) ? null : scale,
       status: STATUS.REQUEST,
     }
   }
@@ -58,6 +59,10 @@ class ImageRegion extends Component {
     if (scale) {
       this.setImageScale()
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onClickStaticImageRegion = () => {
