@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import ImageAsset from './ImageAsset'
@@ -57,6 +58,10 @@ export default class Avatar extends Component {
         status: nextSource ? STATUS.REQUEST : STATUS.PENDING,
       })
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onLoadSuccess = () => {
