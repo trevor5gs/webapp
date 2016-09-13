@@ -13,8 +13,10 @@ import { selectCategoriesAsArray } from '../selectors/categories'
 const CATEGORIES_NEEDED = 3
 
 function mapStateToProps(state) {
+  let categories = selectCategoriesAsArray(state)
+  categories = categories.filter((cat) => cat.allowInOnboarding)
   return {
-    categories: selectCategoriesAsArray(state),
+    categories,
   }
 }
 
