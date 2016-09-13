@@ -221,7 +221,10 @@ class StreamContainer extends Component {
   }
 
   onScrollBottom() {
-    this.onLoadNextPage()
+    const path = get(this.state, 'action.payload.endpoint.path')
+    if (path && !/lovers|reposters/.test(path)) {
+      this.onLoadNextPage()
+    }
   }
 
   onScrollBottomTarget() {
