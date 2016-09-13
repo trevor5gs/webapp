@@ -1,0 +1,60 @@
+@import "../../lib/styles/properties.css";
+
+.QuickEmoji {
+  position: absolute;
+  z-index: 2;
+  color: #999;
+  white-space: nowrap;
+}
+
+.QuickEmoji.isActive {
+  color: #535353;
+}
+
+.QuickEmojiButton {
+  transition: color var(--speed);
+}
+
+.no-touch .QuickEmojiButton:hover {
+  color: #535353;
+}
+
+.QuickEmojiList {
+  position: absolute;
+  top: 0;
+  left: -150px;
+  padding-left: 10px;
+  background-color: #e5e5e5;
+  opacity: 0;
+  transition: opacity var(--speed);
+}
+
+.QuickEmoji.isActive .QuickEmojiList {
+  opacity: 1;
+}
+
+.QuickEmojiChoiceButton {
+  margin-top: -5px;
+  transition: opacity var(--speed);
+}
+
+.no-touch .QuickEmojiChoiceButton:hover {
+  opacity: 0.5;
+}
+
+.QuickEmojiChoiceButton + .QuickEmojiChoiceButton {
+  margin-left: 20px;
+}
+
+.editor.isComment .QuickEmoji {
+  top: 92px;
+  right: 30px;
+}
+
+@media (--break-2) {
+  .editor.isComment .QuickEmoji {
+    top: 52px;
+    right: 30px;
+  }
+}
+

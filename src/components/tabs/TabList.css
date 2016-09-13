@@ -1,0 +1,103 @@
+@import "../../lib/styles/properties.css";
+
+.LabelTabList {
+  padding: 20px 10px 0;
+}
+
+.Discover > .LabelTabList {
+  display: inline-block;
+}
+
+.Discover > .LabelTabList > .LabelTab {
+  display: inline;
+}
+
+@media (--break-2) {
+  .LabelTabList {
+    padding: 40px 20px 20px;
+  }
+}
+
+@media (--break-4) {
+  .LabelTabList {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+
+/* // ------------------------------------- */
+
+.LabelTab {
+  position: relative;
+  height: 30px;
+  overflow: hidden;
+  font-size: 18px;
+  line-height: 30px;
+  color: #aaa;
+  white-space: nowrap;
+  transition: color var(--speed) ease;
+}
+
+.LabelTab::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  content: "";
+  background-color: transparent;
+  transition: width var(--speed) var(--ease), background-color var(--speed) ease;
+}
+
+.LabelTab.isActive,
+.LabelTab:active,
+.no-touch .LabelTab:hover {
+  color: #000;
+}
+
+.LabelTab.isActive::after,
+.LabelTab:active::after,
+.no-touch .LabelTab:hover::after {
+  width: 100%;
+  background-color: #000;
+}
+
+.LabelTab + .LabelTab {
+  margin-left: 20px;
+}
+
+@media (--break-2) {
+  .LabelTab + .LabelTab {
+    margin-left: 30px;
+  }
+
+  .LabelTab:not(.SearchLabelTab) {
+    height: 40px;
+    font-size: 24px;
+    line-height: 40px;
+  }
+}
+
+/* // ------------------------------------- */
+
+.IconTab {
+  height: 30px;
+  font-size: 12px;
+  line-height: 30px;
+  color: #aaa;
+  text-align: center;
+  background-color: #e5e5e5;
+  transition: background-color var(--speed) ease, color var(--speed) ease;
+}
+
+.IconTab + .IconTab {
+  border-left: 1px solid #fff;
+}
+
+.IconTab.isActive,
+.IconTab:active,
+.no-touch .IconTab:hover {
+  color: #fff;
+  background-color: #000;
+}
+

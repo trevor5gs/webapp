@@ -1,0 +1,63 @@
+@import "../../lib/styles/properties.css";
+
+.DT-vertical-grid,
+.DT-horizontal-grid {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--z-grid);
+  pointer-events: none;
+  background: transparent 0 0 repeat;
+  opacity: 0.15;
+}
+
+.DT-vertical-grid {
+  background-image: url("data:image/svg+xml;charset=utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><g fill='none' stroke-miter-limit='10'><line stroke='rgba(255,0,255,0.5)' stroke-dasharray='8, 2' x1='19.5' y1='0' x2='19.5' y2='40'/><line stroke='rgb(255,0,255)' x1='39.5' y1='0' x2='39.5' y2='40'/></g></svg>");
+}
+
+.DT-horizontal-grid {
+  background-image: url("data:image/svg+xml;charset=utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><g fill='none' stroke-miter-limit='10'><line stroke='rgba(255,0,255,0.5)' stroke-dasharray='8, 2' x1='0' y1='19.5' x2='40' y2='19.5'/><line stroke='rgb(255,0,255)' x1='0' y1='39.5' x2='40' y2='39.5'/></g></svg>");
+}
+
+/* stylelint-disable color-named */
+.highlightContainers .Navbar,
+.highlightContainers .OnboardingNavbar {
+  background-color: purple;
+}
+
+.highlightContainers .SearchBar {
+  background-color: lightseagreen;
+}
+
+.highlightContainers .Footer {
+  background-color: lightcyan;
+}
+
+.highlightContainers .PostHeader,
+.highlightContainers .RepostHeader {
+  background-color: lightblue;
+}
+
+.highlightContainers .PostBody {
+  background-color: lightyellow;
+}
+
+.highlightContainers .PostTools {
+  background-color: lightgreen;
+}
+
+.highlightContainers .UserDrawer {
+  background-color: lightslategrey;
+}
+
+.highlightContainers .UserDrawer + .UserDrawer {
+  background-color: lightsalmon;
+}
+
+.highlightContainers .Comments {
+  background-color: lightgrey;
+}
+/* stylelint-enable color-named */
+

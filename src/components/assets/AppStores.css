@@ -1,0 +1,46 @@
+@import "../../lib/styles/properties.css";
+
+.AppStore {
+  position: absolute;
+  bottom: 10px;
+  display: none;
+  width: 135px;
+  height: 40px;
+  background: transparent url("/static/images/support/app-store-sprite.png") no-repeat 0 0;
+  background-size: cover;
+}
+
+.AppleStore {
+  left: 10px;
+}
+
+.GooglePlayStore {
+  left: 155px;
+  background-position: -135px 0;
+}
+
+@media (--break-2) {
+  .AppStore {
+    bottom: 20px;
+    display: block;
+  }
+
+  .AppleStore {
+    left: 20px;
+  }
+
+  .GooglePlayStore {
+    left: 165px;
+  }
+}
+
+@media (--break-4) {
+  .AppleStore {
+    left: 40px;
+  }
+
+  .GooglePlayStore {
+    left: 185px;
+  }
+}
+

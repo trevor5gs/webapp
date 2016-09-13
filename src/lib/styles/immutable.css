@@ -1,0 +1,46 @@
+@import "./properties.css";
+
+/* stylelint-disable primer/selector-no-utility */
+
+/* Totally hidden from screen readers and browsers */
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+
+/* Hide visually and remove from layout (useful for the checkbox hack) */
+.invisible {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.unselectable {
+  user-select: none;
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
+.monospace {
+  @apply --monospace-regular;
+  font-size: 12px;
+}
+
+.subheading {
+  @apply --sanserif-bold;
+  font-size: 1.5rem;
+  line-height: 1.35;
+  color: #000;
+  text-rendering: optimizeLegibility; /* stylelint-disable-line */
+}
+
+.truncate {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+

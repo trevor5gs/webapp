@@ -1,0 +1,51 @@
+@import "../../lib/styles/properties.css";
+
+.Search {
+  padding-bottom: 80px;
+}
+
+.SearchBar {
+  max-width: 680px;
+  padding: 20px 10px 10px;
+}
+
+.Search .FormControl {
+  max-width: none;
+}
+
+.Search .SearchControl .FormControlInput {
+  @apply --sanserif-bold;
+  font-size: 24px;
+}
+
+.Search .SearchControl .FormControlLabel {
+  display: none;
+}
+
+.Search .SearchTabList {
+  margin-top: 20px;
+}
+
+@media (--break-2) {
+  .SearchBar {
+    padding: 40px 20px 10px;
+    margin: 0 auto;
+  }
+
+  .Search .SearchTabList {
+    margin-top: 18px;
+  }
+
+  .SearchBar + .StreamContainer .Users.asList {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+}
+
+@media (--break-4) {
+  .SearchBar {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+

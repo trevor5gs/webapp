@@ -1,0 +1,261 @@
+@import "../../lib/styles/properties.css";
+
+.SettingsCoverPicker {
+  position: relative;
+  z-index: -1;
+}
+
+.SettingsBody {
+  position: relative;
+  max-width: 780px;
+  padding-bottom: 20px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.SettingsLogoutButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #aaa;
+  border-bottom: 1px solid #aaa;
+  transition: color var(--speed), border-bottom var(--speed);
+}
+
+.no-touch .SettingsLogoutButton:hover {
+  color: #000;
+  border-bottom-color: #000;
+}
+
+.SettingsAvatarPicker {
+  position: relative;
+}
+
+.SettingsAvatarPicker .Avatar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.SettingsAvatarPicker > .Uploader {
+  padding-top: 20px;
+  padding-left: 140px;
+  text-align: left;
+}
+
+.SettingsAvatarPicker .UploaderMessages {
+  width: 160px;
+  margin: 0;
+}
+
+.SettingsHeader {
+  margin-top: 20px;
+}
+
+/* // @see Forms.sass for SettingsForms */
+
+.SettingsPreferences {
+  margin-top: 50px;
+}
+
+.SettingsPreferences .StreamContainer {
+  position: relative;
+  padding: 0;
+}
+
+.SettingsHeading {
+  height: 40px;
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.SettingsHeader > p {
+  max-width: 480px;
+  margin: 0 0 18px;
+  color: #aaa;
+}
+
+.SettingsLinks {
+  margin-left: -15px;
+}
+
+.SettingsLinks > * {
+  margin-left: 15px;
+}
+
+.SettingsCredentialActions {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  text-align: right;
+  transition: height var(--speed) ease;
+}
+
+.SettingsCredentialActions.requiresSave {
+  height: 240px;
+}
+
+.SettingsCredentialActions p {
+  text-align: left;
+}
+
+.SettingsCredentialActions .FormButton {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+/* // ------------------------------------- */
+
+@media (--break-2) {
+  .SettingsHeading {
+    font-size: 24px;
+  }
+
+  .SettingsBody {
+    max-width: 1000px;
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+
+  .SettingsAvatarPicker > .Uploader {
+    min-height: 180px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    padding-left: 220px;
+  }
+}
+
+@media (--break-3) {
+  .SettingsBody {
+    max-width: 1000px;
+    padding-left: 220px;
+  }
+
+  .SettingsAvatarPicker > .Uploader {
+    margin-left: -220px;
+  }
+
+  .SettingsAvatarPicker .Avatar {
+    left: -220px;
+  }
+}
+
+@media (--break-4) {
+  .SettingsBody {
+    margin-right: 40px;
+    margin-left: 40px;
+  }
+
+  .SettingsLogoutButton {
+    right: 40px;
+  }
+}
+
+/* // ------------------------------------- */
+
+/* // Same as a Preference */
+.SettingsCell {
+  position: relative;
+  padding-top: 30px;
+  padding-bottom: 27px;
+}
+
+.SettingsButton {
+  display: inline-block;
+  min-width: 80px;
+  height: 30px;
+  padding: 0 15px;
+  font-size: 14px;
+  line-height: 30px;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  background-color: #aaa;
+  border: 1px solid #aaa;
+  border-radius: 15px;
+  transition:
+    background-color var(--speed) ease,
+    border-color var(--speed) ease,
+    color var(--speed) ease;
+}
+
+.isFirefox .SettingsButton {
+  line-height: 28px;
+}
+
+.no-touch .SettingsButton:hover {
+  color: #aaa;
+  background-color: #fff;
+  border-color: #aaa;
+}
+
+.no-touch .SettingsButton.asDangerous {
+  color: #fff;
+  background-color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.SettingsCell .SettingsButton {
+  position: absolute;
+  top: 30px;
+  right: 0;
+}
+
+/* // ------------------------------------- */
+.SettingsDataDescription {
+  max-width: 600px;
+  margin-top: 30px !important;
+  color: #aaa;
+}
+
+/* // ------------------------------------- */
+/* // Same as a Preference dl */
+.SettingsDefinition {
+  width: calc(100% - 100px);
+  max-width: 440px;
+}
+
+.SettingsDefinition dd {
+  margin-top: 20px;
+  color: #aaa;
+}
+
+/* stylelint-disable selector-max-compound-selectors */
+.no-touch .SettingsDefinition dd a:hover {
+  color: #666;
+}
+/* stylelint-enable selector-max-compound-selectors */
+
+/* // ------------------------------------- */
+
+.SettingsDefinitionValues {
+  line-height: 40px;
+  color: #aaa;
+}
+
+.SettingsDefinitionValues dt {
+  float: left;
+  width: 100px;
+  overflow: hidden;
+  clear: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.SettingsDefinitionValues dd {
+  margin-left: 120px;
+}
+
+.SettingsDefinitionValues a {
+  text-decoration: underline;
+  border-bottom: 0;
+}
+
+.no-touch .SettingsDefinitionValues a:hover {
+  color: #666;
+}
+

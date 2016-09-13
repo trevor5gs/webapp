@@ -1,0 +1,98 @@
+@import "../../lib/styles/properties.css";
+
+.Promotion {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 240px;
+  min-height: 240px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.1) no-repeat 50% 50%;
+  background-size: cover;
+}
+
+/* // The animation lives in global.sass :( */
+.Promotion.isRequesting {
+  animation: animateLavaLamp 3s infinite linear;
+}
+
+.Promotion.isFailing {
+  background-color: var(--color-danger);
+}
+
+.PromotionImage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: transparent no-repeat 50% 50%;
+  background-size: cover;
+  transition: opacity var(--speed2);
+}
+
+.isRequesting > .PromotionImage {
+  opacity: 0;
+}
+
+.Promotion::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  content: "";
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: background-color var(--speed) ease;
+}
+
+.Promotion::before,
+.PromotionCaption,
+.Promotion > .Credits {
+  z-index: 1;
+}
+
+.PromotionCaption {
+  position: relative;
+  top: 50%;
+  left: 10px;
+  max-width: calc(100% - 20px);
+  font-size: 14px;
+  transform: translateY(-50%);
+}
+
+.PromotionCaption > h1 {
+  font-size: 18px;
+}
+
+.PromotionCaption > a {
+  margin-top: 20px;
+  line-height: 1.3;
+  border-bottom: 1px solid;
+}
+
+.no-touch .PromotionCaption a:hover {
+  color: #ccc;
+}
+
+@media (--break-2) {
+  .Promotion {
+    height: 380px;
+    min-height: 380px;
+  }
+
+  .PromotionCaption {
+    left: 20px;
+  }
+
+  .PromotionCaption > h1 {
+    font-size: 48px;
+  }
+}
+
+@media (--break-4) {
+  .PromotionCaption {
+    left: 40px;
+  }
+}
+

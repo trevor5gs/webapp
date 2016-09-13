@@ -1,0 +1,48 @@
+@import "../../lib/styles/properties.css";
+
+.FormButton {
+  width: 100%;
+  height: 60px;
+  padding: 0 30px;
+  font-size: 14px;
+  line-height: 60px;
+  color: #fff;
+  text-align: center;
+  background-color: #00d100;
+  border: 1px solid #00d100;
+  transition:
+    background-color var(--speed) var(--ease),
+    border-color var(--speed) var(--ease),
+    color var(--speed) var(--ease),
+    width var(--speed) var(--ease);
+}
+
+.FormButton.isRounded {
+  border-radius: 5px;
+}
+
+.FormButton.isAutoSize {
+  width: auto;
+  height: 40px;
+  line-height: 40px;
+}
+
+.FormButton:not([disabled]):active,
+.no-touch .FormButton:not([disabled]):hover {
+  color: #fff;
+  background-color: #00b100;
+  border-color: #00b100;
+}
+
+.FormButton[disabled] {
+  color: #666;
+  background-color: #000;
+  border: 1px solid #000;
+}
+
+.FormButton.isOutlined[disabled] {
+  color: #aaa;
+  background-color: transparent;
+  border-color: #aaa;
+}
+

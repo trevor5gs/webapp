@@ -1,0 +1,98 @@
+@custom-media --break-2 (min-width: 40em);    /* 2: 640  / 16 = 40em */
+@custom-media --break-3 (min-width: 60em);    /* 3: 960  / 16 = 60em */
+@custom-media --break-4 (min-width: 85em);    /* 4: 1360 / 16 = 85em */
+@custom-media --break-5 (min-width: 107.5em); /* 5: 1720 / 16 = 107.5em */
+@custom-media --break-6 (min-width: 130em);   /* 6: 2080 / 16 = 130em */
+@custom-media --break-7 (min-width: 152.5em); /* 7: 2440 / 16 = 152.5em */
+
+@custom-media --break-2-max (max-width: 39.9375em);    /* 2: 639  / 16 = 39.9375em */
+
+:root {
+  --speed: 0.2s;
+  --speed2: 0.4s;
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --color-danger: #f00;
+  --color-success: #06a54f;
+
+  --z-popover: 1020;
+  --z-footer: 1030;
+  --z-decapitated: 1035;
+  --z-navbar: 1040;
+  --z-omnibar: 1060;
+  --z-tools: 1070;
+  --z-modal: 1080;
+  --z-grid: 3000;
+
+  --fontstack-sanserif-regular: "AtlasGroteskRegular", "AtlasGrotesk-Regular", "Helvetica Neue", "HelveticaNeue", "Helvetica", sans-serif;
+  --fontstack-sanserif-bold: "AtlasGroteskBold", "AtlasGrotesk-Bold", "Helvetica Neue", "HelveticaNeue", "Helvetica", sans-serif;
+  --fontstack-monospace-regular: "AtlasTypewriterRegular", "AtlasTypewriter-Regular", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace;
+
+  --sanserif-regular {
+    font-family: var(--fontstack-sanserif-regular);
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  --sanserif-italic {
+    font-family: var(--fontstack-sanserif-regular);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  --sanserif-bold {
+    font-family: var(--fontstack-sanserif-bold);
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  --sanserif-bold-italic {
+    font-family: var(--fontstack-sanserif-bold);
+    font-style: italic;
+    font-weight: 700;
+  }
+
+  --monospace-regular {
+    font-family: var(--fontstack-monospace-regular);
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  --button-reset {
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-transform: none;
+    vertical-align: middle;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    outline: 0;
+  }
+
+  --hitarea {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    content: "";
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  --show-tool {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  --hide-tool {
+    pointer-events: none;
+    opacity: 0;
+  }
+}
+

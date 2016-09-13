@@ -18,13 +18,13 @@ export const NavbarProfile = ({
       <span className="NavbarProfile">
         <Avatar sources={avatar} onClick={onClickAvatar} />
         <nav className={classNames('NavbarProfileLinks', { isActive: isProfileMenuActive })} >
-          <Link className="NavbarProfileLink" to={`/${username}`}>{`@${username}`}</Link>
-          <Link className="NavbarProfileLink" to={`/${username}/loves`}>Loves</Link>
-          <Link className="NavbarProfileLink" to="/invitations">Invite</Link>
-          <Link className="NavbarProfileLink" to="/settings">Settings</Link>
+          <Link className="NavbarProfileLink truncate" to={`/${username}`}>{`@${username}`}</Link>
+          <Link className="NavbarProfileLink truncate" to={`/${username}/loves`}>Loves</Link>
+          <Link className="NavbarProfileLink truncate" to="/invitations">Invite</Link>
+          <Link className="NavbarProfileLink truncate" to="/settings">Settings</Link>
           <hr className="NavbarProfileLinkDivider" />
           <a
-            className="NavbarProfileLink"
+            className="NavbarProfileLink truncate"
             href={`${ENV.AUTH_DOMAIN}/wtf/resources/community-directory/`}
             rel="noopener noreferrer"
             target="_blank"
@@ -32,7 +32,7 @@ export const NavbarProfile = ({
             Communities
           </a>
           <a
-            className="NavbarProfileLink"
+            className="NavbarProfileLink truncate"
             href={`${ENV.AUTH_DOMAIN}/wtf`}
             rel="noopener noreferrer"
             target="_blank"
@@ -40,14 +40,14 @@ export const NavbarProfile = ({
             Help
           </a>
           <a
-            className="NavbarProfileLink"
+            className="NavbarProfileLink truncate"
             href={threadlessLink}
             rel="noopener noreferrer"
             target="_blank"
           >
             Store
           </a>
-          <button className="NavbarProfileLink" onClick={onLogOut}>Logout</button>
+          <button className="NavbarProfileLink truncate" onClick={onLogOut}>Logout</button>
           <button className="NavbarProfileCloseButton">
             <ExIcon />
           </button>

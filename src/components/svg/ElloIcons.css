@@ -1,0 +1,36 @@
+@import "../../lib/styles/properties.css";
+
+.ElloMark,
+.ElloDonutMark,
+.ElloRainbowMark,
+.ElloOutlineMark {
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 40px;
+}
+
+.ElloRainbowMark path {
+  fill: #fff;
+}
+
+.ElloNinjaSuit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  fill: #ed2224;
+}
+
+.ElloOutlineMark {
+  border: 1px solid #aaa;
+}
+
+.ElloOutlineMark .FillPath {
+  fill: transparent;
+}
+
+.ElloOutlineMark .SmilePath {
+  fill: transparent !important;
+  stroke: #aaa;
+  transform: translateX(-2px);
+}
+

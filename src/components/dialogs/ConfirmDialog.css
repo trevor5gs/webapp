@@ -1,0 +1,55 @@
+@import "../../lib/styles/properties.css";
+
+.ConfirmDialog {
+  text-align: center;
+}
+
+.ConfirmDialog h2 {
+  height: 30px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  line-height: 30px;
+  white-space: nowrap;
+}
+
+.ConfirmDialogButton {
+  display: inline-block;
+  width: 60px;
+  height: 40px;
+  font-size: 14px;
+  line-height: 40px;
+  color: #000;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: #fff;
+  border: 1px solid #fff;
+  border-radius: 20px;
+  transition:
+    background-color var(--speed) ease,
+    border-color var(--speed) ease,
+    color var(--speed) ease,
+    opacity var(--speed) ease;
+}
+
+.ConfirmDialogButton.isActive,
+.no-touch .ConfirmDialogButton:hover {
+  color: #fff;
+  background-color: #000;
+  border-color: #000;
+}
+
+.ConfirmDialogButton + .ConfirmDialogButton {
+  margin-left: 5px;
+}
+
+@media (--break-2) {
+  .ConfirmDialog h2 {
+    display: inline-block;
+    margin-right: 20px;
+    margin-bottom: 0;
+    font-size: 24px;
+    vertical-align: middle;
+  }
+}
+

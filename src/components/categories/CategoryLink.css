@@ -1,0 +1,139 @@
+@import "../../lib/styles/properties.css";
+
+/* TODO: There's some gnar in here */
+.Categories {
+  margin-top: 10px;
+  margin-left: -20px;
+  color: #fff;
+}
+
+.Categories .CategoryLink {
+  position: relative;
+  display: inline-block;
+  width: calc(50% - 20px);
+  height: 144px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  font-size: 16px;
+  text-align: center;
+  background-size: cover;
+}
+
+.Categories .CategoryLink::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  content: "";
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: background-color var(--speed);
+}
+
+.no-touch .Categories .CategoryLink:hover::before { /* stylelint-disable-line */
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.Categories .CategoryLink.isActive::before {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.CategoryLinkName {
+  position: relative;
+  z-index: 3;
+  display: inline-block;
+  margin-top: 72px;
+}
+
+button.CategoryLink .CategoryLinkName { /* stylelint-disable-line */
+  margin-top: 10px;
+}
+
+.CategoryLinkName::after {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  content: "";
+  background-color: #fff;
+  transition: width var(--speed) var(--ease);
+}
+
+.no-touch .Categories .CategoryLink:hover .CategoryLinkName::after { /* stylelint-disable-line */
+  width: 100%;
+}
+
+.CategoryLinkName .CheckMark {
+  position: absolute;
+  top: 0;
+  left: -25px;
+  transform: scale(0.6);
+}
+
+.CategoryLinkName .CheckMark g {
+  stroke: #00d100;
+  stroke-width: 2;
+}
+
+@media (--break-2) {
+  .CategoryLinkName .CheckMark {
+    top: 5px;
+  }
+
+  .Categories .CategoryLink {
+    height: 275px;
+    font-size: 24px;
+  }
+
+  .CategoryLinkName {
+    margin-top: 130px;
+  }
+
+  button.CategoryLink .CategoryLinkName { /* stylelint-disable-line */
+    margin-top: 20px;
+  }
+
+  .CategoryLinkName::after {
+    top: 32px;
+  }
+}
+
+@media (--break-3) {
+  .Categories .CategoryLink {
+    width: calc(33.33333% - 20px);
+  }
+}
+
+@media (--break-4) {
+  .Categories {
+    margin-top: 20px;
+    margin-left: -40px;
+  }
+
+  .Categories .CategoryLink {
+    width: calc(25% - 40px);
+    margin-bottom: 40px;
+    margin-left: 40px;
+  }
+}
+
+@media (--break-5) {
+  .Categories .CategoryLink {
+    width: calc(20% - 40px);
+  }
+}
+
+@media (--break-6) {
+  .Categories .CategoryLink {
+    width: calc(16.66666% - 40px);
+  }
+}
+
+@media (--break-7) {
+  .Categories .CategoryLink {
+    width: calc(14.28571% - 40px);
+  }
+}
+

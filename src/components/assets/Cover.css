@@ -1,0 +1,81 @@
+@import "../../lib/styles/properties.css";
+
+.Cover {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: -2;
+  min-height: 220px;
+  padding-bottom: 56.25%;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.2) no-repeat 50% 50%;
+  background-size: cover;
+  transition: background-color var(--speed) ease, opacity var(--speed2) ease;
+}
+
+.Cover.isHidden {
+  opacity: 0;
+}
+
+.Cover.isFullScreen {
+  bottom: 0;
+  padding-bottom: 0;
+}
+
+/* The animation lives in global.sass :( */
+.Cover.isRequesting {
+  animation: animateLavaLamp 3s infinite linear;
+}
+
+.Cover.isFailing {
+  background-color: var(--color-danger);
+}
+
+.CoverImage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: transparent no-repeat 50% 50%;
+  background-size: cover;
+  transition: opacity var(--speed2);
+}
+
+.isRequesting > .CoverImage {
+  opacity: 0;
+}
+
+.Cover::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  content: "";
+  background-color: transparent;
+  transition: background-color var(--speed) ease;
+}
+
+.Cover.hasOverlay::before {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.Cover.hasOverlay60::before {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.AnimatedCover {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  min-height: 220px;
+  text-align: center;
+  background-size: cover;
+}
+

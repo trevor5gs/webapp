@@ -29,7 +29,7 @@ UserAvatar.propTypes = {
 export const UserCompact = ({ user }) =>
   <div className="UserCompact">
     <div className="UserCompactHeader">
-      <Link className="UserCompactUserLink" to={`/${user.username}`}>
+      <Link className="UserCompactUserLink truncate" to={`/${user.username}`}>
         <Avatar
           priority={user.relationshipPriority}
           sources={user.avatar}

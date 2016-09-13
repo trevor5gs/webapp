@@ -1,0 +1,108 @@
+@import "../../lib/styles/properties.css";
+
+.TextTools {
+  position: fixed;
+  z-index: 2;
+  width: 93px;
+  margin-left: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width var(--speed) var(--ease), opacity var(--speed) var(--ease);
+}
+
+.TextTools.asShowLinkForm {
+  width: 215px;
+}
+
+.TextTools.isHidden {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.TextToolButton {
+  position: relative;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  margin-left: 1px;
+  font-size: 14px;
+  line-height: 30px;
+  color: #aaa;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: border-radius var(--speed) var(--ease), color var(--speed), width var(--speed) var(--ease);
+}
+
+.TextToolButton.forItalic > em {
+  @apply --monospace-regular;
+  margin-left: -2px;
+  font-style: italic;
+}
+
+.TextToolButton.forLink > .SVGIcon {
+  margin-top: -2px;
+  margin-left: -1px;
+}
+
+.TextTools.asShowLinkForm .TextToolButton.forBold,
+.TextTools.asShowLinkForm .TextToolButton.forItalic {
+  width: 0;
+}
+
+.TextTools.asShowLinkForm .TextToolButton.forLink {
+  border-radius: 50% 0 0 50%;
+}
+
+.no-touch .TextToolButton:hover,
+.TextToolButton.isActive {
+  color: #000;
+}
+
+.TextToolForm {
+  z-index: 0;
+  display: inline-block;
+  height: 30px;
+  vertical-align: middle;
+  transition: transform var(--speed) var(--ease);
+}
+
+.TextTools.asShowLinkForm .TextToolForm {
+  transform: translateX(-30px);
+}
+
+.TextToolLinkInput {
+  display: inline-block;
+  width: 210px;
+  height: 30px;
+  padding: 0 10px 0 35px;
+  font-size: 14px;
+  color: #000;
+  vertical-align: baseline;
+  background-color: #fff;
+  border: 0;
+  border-radius: 15px;
+  outline: 0;
+  transition:
+    background-color var(--speed) var(--ease),
+    color var(--speed) var(--ease),
+    width var(--speed) var(--ease),
+    height var(--speed) var(--ease);
+}
+
+.TextToolLinkInput:focus {
+  outline: 0;
+}
+
+.TextToolLinkInput::placeholder {
+  color: #aaa;
+}
+
+/* TODO: We should really disable the tools */
+@media (--break-2-max) {
+  .TextTools {
+    display: none;
+  }
+}
+

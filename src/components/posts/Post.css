@@ -1,0 +1,65 @@
+@import "../../lib/styles/properties.css";
+
+.Posts.asGrid {
+  margin-left: -20px;
+}
+
+.Post {
+  position: relative;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.Column {
+  display: inline-block;
+  width: calc(50% - 20px);
+  margin-left: 20px;
+  vertical-align: top;
+}
+
+@media (--break-2) {
+  .PostDetail .Post,
+  .no-touch .Posts.asGrid .Post {
+    overflow: visible;
+  }
+}
+
+@media (--break-3) {
+  .Column {
+    width: calc(33.33333% - 20px);
+  }
+}
+
+@media (--break-4) {
+  .Posts.asGrid {
+    margin-left: -40px;
+  }
+
+  .Post {
+    margin-bottom: 40px;
+  }
+
+  .Column {
+    width: calc(25% - 40px);
+    margin-left: 40px;
+  }
+}
+
+@media (--break-5) {
+  .Column {
+    width: calc(20% - 40px);
+  }
+}
+
+@media (--break-6) {
+  .Column {
+    width: calc(16.66666% - 40px);
+  }
+}
+
+@media (--break-7) {
+  .Column {
+    width: calc(14.28571% - 40px);
+  }
+}
+

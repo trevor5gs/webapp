@@ -1,0 +1,28 @@
+@import "../../lib/styles/properties.css";
+
+.Completion {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  overflow: hidden;
+  color: #fff;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: rgba(0, 0, 0, 0.95);
+  transition: background-color var(--speed);
+}
+
+.Completion.isActive,
+.no-touch .Completion:hover {
+  background-color: #4d4d4d;
+}
+
+.Completion + .Completion {
+  border-top: 1px solid #fff;
+}
+
+.CompletionLabel {
+  margin-left: 10px;
+}
+

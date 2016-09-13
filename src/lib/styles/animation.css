@@ -1,0 +1,76 @@
+@keyframes animateLavaLamp {
+  0% {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  25% {
+    background-color: rgba(128, 0, 128, 0.1);
+  }
+
+  50% {
+    background-color: rgba(0, 128, 0, 0.1);
+  }
+
+  75% {
+    background-color: rgba(128, 0, 128, 0.1);
+  }
+
+  100% {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+@keyframes animateCachefloweBackground {
+  0% {
+    background-position: 0% 15%;
+  }
+
+  50% {
+    background-position: 100% 85%;
+  }
+
+  100% {
+    background-position: 0% 15%;
+  }
+}
+
+.animationCachefloweBackground {
+  background: linear-gradient(315deg, #673f00, #67191f, #67325c, #2b3967, #2a624d, #673f00);
+  background-size: 1200% 1200% !important;
+  animation: animateCachefloweBackground 30s linear infinite;
+}
+
+@keyframes animateCommentsLoading {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(9px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes animatePaginatorSpinner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(720deg);
+  }
+}
+
+@keyframes animateStreamIsBusy {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(720deg);
+  }
+}
+

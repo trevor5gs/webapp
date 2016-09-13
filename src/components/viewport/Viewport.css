@@ -1,0 +1,60 @@
+@import "../../lib/styles/properties.css";
+
+/* stylelint-disable selector-max-specificity, selector-no-id */
+
+.Viewport {
+  display: none !important;
+  visibility: hidden;
+}
+
+/*
+ * A probe into CSS used by the ResizeComponent
+ * Has to be the #root element since it is already present in the DOM. Would be
+ * nice to stick it on Viewport but it would be null on the first hit. The
+ * z-index is related to number of columns for grid mode.
+*/
+#root::after {
+  position: absolute;
+  z-index: 2;
+  display: none !important;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+@media (--break-2) {
+  #root::after {
+    z-index: 2;
+  }
+}
+
+@media (--break-3) {
+  #root::after {
+    z-index: 3;
+  }
+}
+
+@media (--break-4) {
+  #root::after {
+    z-index: 4;
+  }
+}
+
+@media (--break-5) {
+  #root::after {
+    z-index: 5;
+  }
+}
+
+@media (--break-6) {
+  #root::after {
+    z-index: 6;
+  }
+}
+
+@media (--break-7) {
+  #root::after {
+    z-index: 7;
+  }
+}
+

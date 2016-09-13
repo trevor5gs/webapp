@@ -1,0 +1,340 @@
+@import "../../lib/styles/properties.css";
+
+.FormControl {
+  position: relative;
+}
+
+.FormControl.isBoxControl {
+  margin-bottom: 10px;
+}
+
+.FormControl.isSimpleWhiteControl {
+  margin-bottom: 30px;
+}
+
+.FormControl.isOnboardingControl {
+  margin-bottom: 25px;
+}
+
+/* // ------------------------------------- */
+
+.FormControlInput {
+  display: inline-block;
+  width: 100%;
+  min-height: 40px;
+  font-size: 14px;
+  color: #000;
+  vertical-align: baseline;
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid #aaa;
+  transition:
+    background-color var(--speed) var(--ease),
+    border-color var(--speed) var(--ease),
+    color var(--speed) var(--ease),
+    width var(--speed) var(--ease),
+    height var(--speed) var(--ease);
+}
+
+.FormControlInput:focus {
+  border-color: #000;
+  outline: 0;
+}
+
+.FormControlInput::placeholder {
+  color: #aaa;
+}
+
+.FormControlInput.isSimpleWhiteControl {
+  min-height: none;
+  font-size: 24px;
+  border-bottom-color: #fff;
+}
+
+.FormControlInput.isSimpleWhiteControl:focus {
+  color: #fff;
+}
+
+.FormControlInput.isSimpleWhiteControl::placeholder {
+  color: #fff;
+}
+
+.FormControlInput.isOnboardingControl {
+  padding-right: 20px;
+  font-size: 18px;
+  border-bottom-color: #f0f0f0;
+}
+
+@media (--break-3) {
+  .FormControlInput.isOnboardingControl {
+    font-size: 24px;
+  }
+}
+
+.FormControlInput.isBoxControl {
+  height: 60px;
+  padding: 0 30px;
+  color: #000;
+  background-color: #d8d8d8;
+  border: 1px solid #d8d8d8;
+}
+
+.FormControlInput.isBoxControl.onWhite {
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+
+.FormControlInput.isBoxControl:focus {
+  background-color: #fff;
+  border-color: #fff;
+}
+
+.FormControlInput.isBoxControl.onWhite:focus {
+  color: #000;
+  background-color: #ccc;
+  border-color: #ccc;
+}
+
+.FormControlInput.isBoxControl.onGrey {
+  background-color: #e2e2e2;
+  border: 1px solid #e2e2e2;
+}
+
+.FormControlInput.isBoxControl.onGrey:focus {
+  color: #000;
+  background-color: #fff;
+  border-color: #e2e2e2;
+}
+
+.hasValue:not(.isInitialValue) > .FormControlInput {
+  border-color: #000;
+}
+
+.hasValue:not(.isInitialValue) > .FormControlInput.isSimpleWhiteControl {
+  color: #fff;
+  border-color: #fff;
+}
+
+.hasValue:not(.isInitialValue) > .FormControlInput.isOnboardingControl {
+  color: #000;
+  border-color: #f0f0f0;
+}
+
+.hasValue:not(.isInitialValue) > .FormControlInput.isBoxControl {
+  background-color: #fff;
+  border-color: #fff;
+}
+
+.hasValue:not(.isInitialValue) > .FormControlInput.isBoxControl.onWhite {
+  color: #000;
+  background-color: #ccc;
+  border-color: #ccc;
+}
+
+.hasValue:not(.isInitialValue) > .FormControlInput.isBoxControl.onGrey {
+  color: #000;
+  background-color: #fff;
+  border-color: #e2e2e2;
+}
+
+.isFailing > .FormControlInput,
+.isFailing > .FormControlInput.isBoxControl,
+.isFailing > .FormControlInput.isBoxControl.onGrey,
+.isFailing > .FormControlInput.isBoxControl.onWhite {
+  border-color: var(--color-danger);
+}
+
+/* stylelint-disable selector-no-qualifying-type */
+textarea.FormControlInput:not(.isBoxControl) {
+  height: 30px;
+  min-height: 0;
+  margin-top: 10px;
+}
+
+textarea.FormControlInput.isBoxControl {
+  height: 120px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-bottom: -5px;
+}
+
+.hasValue > textarea.FormControlInput:not(.isBoxControl),
+.hasFocus > textarea.FormControlInput:not(.isBoxControl) {
+  height: 115px;
+}
+
+textarea.FormControlInput.isOnboardingControl {
+  height: 40px;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+@media (--break-3) {
+  .hasValue > textarea.FormControlInput:not(.isBoxControl),
+  .hasFocus > textarea.FormControlInput:not(.isBoxControl) {
+    height: 85px;
+  }
+
+  .hasValue > textarea.FormControlInput.isOnboardingControl,
+  .hasFocus > textarea.FormControlInput.isOnboardingControl {
+    height: 115px;
+  }
+}
+/* stylelint-enable selector-no-qualifying-type */
+
+.BatchEmailControl.isBoxControl {
+  margin-bottom: 25px;
+}
+
+.BatchEmailControl .FormControlInput.isBoxControl {
+  height: 160px;
+}
+
+/* ------------------------------------- */
+
+.FormControlLabel {
+  position: absolute;
+  right: 0;
+  bottom: -15px;
+  display: inline-block;
+  font-size: 14px;
+  color: #aaa;
+  vertical-align: baseline;
+  opacity: 0;
+  transition: transform var(--speed2) var(--ease), opacity var(--speed2) var(--ease), color var(--speed2) var(--ease);
+}
+
+.FormControlLabel.isSimpleWhiteControl {
+  top: 33px;
+  bottom: auto;
+  color: #fff;
+}
+
+.FormControlLabel.isBoxControl {
+  top: 20px;
+  right: 11px;
+  bottom: auto;
+  left: auto;
+  font-size: 11px;
+  text-align: right;
+}
+
+.FormControlLabel.isOnboardingControl {
+  display: none;
+}
+
+.hasExceeded .FormControlLabel.isOnboardingControl {
+  display: inline-block;
+}
+
+.isFailing > .FormControlLabel,
+.hasValue > .FormControlLabel {
+  opacity: 1;
+  transform: translate3d(0, 10px, 0);
+}
+
+.isFailing > .FormControlLabel.isBoxControl,
+.hasValue > .FormControlLabel.isBoxControl {
+  transform: translate3d(0, -13px, 0);
+}
+
+.isFailing > .FormControlLabel {
+  color: var(--color-danger) !important;
+}
+
+.hasExceeded.hasValue > .FormControlLabel {
+  color: var(--color-danger);
+}
+
+/* ------------------------------------- */
+
+.FormControlSuggestionList {
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+  transition: height var(--speed) var(--ease);
+}
+
+.FormControlSuggestionList.hasSuggestions {
+  height: max-content; /* stylelint-disable-line */
+}
+
+.FormControlSuggestionList > p {
+  margin: 5px 0 0;
+}
+
+.FormControlSuggestionButton {
+  margin-top: 5px;
+  margin-right: 10px;
+  font-size: 14px;
+  border-bottom: 1px solid currentColor;
+  transition: color var(--speed);
+}
+
+.no-touch .FormControlSuggestionButton:hover {
+  color: #000;
+}
+
+.FormControlSuggestionButton:last-of-type {
+  margin-right: 0;
+}
+
+/* // ------------------------------------- */
+
+.FormControlStatus {
+  position: absolute;
+  top: 28px;
+  right: 10px;
+  transition: opacity var(--speed2);
+}
+
+.FormControlStatus:empty {
+  opacity: 0;
+}
+
+.isSafari .PasswordControl .FormControlStatus {
+  right: 20px;
+}
+
+.FormControlStatus > .SVGIcon > g {
+  stroke-width: 2;
+}
+
+.FormControlStatus > .RequestIcon > g {
+  fill: #aaa;
+  stroke: transparent;
+}
+
+.FormControlStatus > .SuccessIcon > g {
+  stroke: var(--color-success);
+  stroke-linejoin: bevel;
+}
+
+.FormControlStatus > .FailureIcon > g {
+  stroke: var(--color-danger);
+}
+
+.FormControlStatus.isSimpleWhiteControl {
+  top: 5px;
+}
+
+.FormControl.isSimpleWhiteControl .FormControlStatusMessage {
+  margin-top: 30px;
+}
+
+.HoppyStatusMessage {
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: height var(--speed) ease, margin var(--speed) ease, opacity var(--speed) ease;
+}
+
+.HoppyStatusMessage.hasContent {
+  height: 40px;
+  margin: 10px 0;
+  opacity: 1;
+  transition-delay: 1s, 1s, 1s;
+}
+

@@ -1,0 +1,15 @@
+@import "../../lib/styles/properties.css";
+
+.RegistrationSuccess {
+  padding-top: 40px;
+  margin: auto;
+  font-size: 24px;
+}
+
+@media (--break-2) {
+  .RegistrationSuccess {
+    width: max-content; /* stylelint-disable-line */
+    padding-top: 0;
+  }
+}
+

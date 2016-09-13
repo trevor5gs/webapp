@@ -1,0 +1,36 @@
+@import "../../lib/styles/properties.css";
+
+.DeleteAccountDialog {
+  position: relative;
+  max-width: 480px;
+  text-align: center;
+}
+
+.DeleteAccountDialog h2 {
+  height: 30px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  line-height: 30px;
+  white-space: nowrap;
+}
+
+.DeleteAccountDialog p {
+  position: absolute;
+  margin-top: 40px;
+  text-align: left;
+}
+
+@media (--break-2) {
+  .DeleteAccountDialog {
+    text-align: left;
+  }
+
+  .DeleteAccountDialog h2 {
+    display: inline-block;
+    margin-right: 20px;
+    margin-bottom: 0;
+    font-size: 24px;
+    vertical-align: middle;
+  }
+}
+

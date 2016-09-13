@@ -1,0 +1,55 @@
+@import "../../lib/styles/properties.css";
+
+.FormDialog {
+  width: 300px;
+  padding-top: 40px;
+  margin: 0 auto;
+}
+
+.FormDialog > h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.FormDialog > p {
+  margin-top: 20px;
+  color: #aaa;
+}
+
+.FormDialog a:focus,
+.FormDialog a:active,
+.no-touch .FormDialog a:hover {
+  color: #fff;
+}
+
+.ForgotPasswordLink,
+.HaveAccountLink {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* 350 / 16 = 21.875em */
+@media (min-width: 21.875em) {
+  .FormDialog {
+    width: 320px;
+  }
+}
+
+@media (--break-2) {
+  .FormDialog {
+    padding-top: 0;
+    margin: auto;
+  }
+
+  .FormDialog > h1 {
+    margin-bottom: 70px;
+  }
+
+  .FormDialog > p {
+    margin-top: 70px;
+  }
+}
+

@@ -1,0 +1,12 @@
+@import "../../lib/styles/properties.css";
+
+/* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
+
+/* meh.. */
+.IconTab.isActive .BubbleIcon > g,
+.IconTab.isActive .HeartIcon > g,
+.no-touch .IconTab:hover .BubbleIcon > g,
+.no-touch .IconTab:hover .HeartIcon > g {
+  fill: #fff;
+}
+

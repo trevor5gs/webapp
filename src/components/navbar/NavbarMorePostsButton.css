@@ -1,0 +1,87 @@
+@import "../../lib/styles/properties.css";
+
+.NavbarMorePostsButton {
+  position: absolute;
+  top: 10px;
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+  line-height: 30px;
+  color: #fff;
+  white-space: nowrap;
+  background-color: #aaa;
+  border: 1px solid #aaa;
+  border-radius: 50%;
+  transition:
+    background-color var(--speed) ease,
+    border-color var(--speed) ease,
+    color var(--speed) ease,
+    opacity var(--speed2) ease;
+}
+
+.isLoggedIn .NavbarMorePostsButton {
+  right: 100px;
+}
+
+.isLoggedOut .NavbarMorePostsButton {
+  left: 50px;
+}
+
+.NavbarMorePostsButton > .ArrowIcon {
+  margin-top: -2px;
+  transform: rotate(270deg);
+}
+
+.NavbarMorePostsButton span {
+  display: none;
+  padding-left: 8px;
+  vertical-align: middle;
+}
+
+.no-touch .NavbarMorePostsButton:hover {
+  color: #666;
+  background-color: #e5e5e5;
+  border-color: #e5e5e5;
+}
+
+@media (--break-2) {
+  .NavbarMorePostsButton {
+    top: 20px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+  }
+
+  .isLoggedIn .NavbarMorePostsButton {
+    right: auto;
+    left: 200px;
+  }
+
+  .isLoggedOut .NavbarMorePostsButton {
+    left: 120px;
+  }
+}
+
+@media (--break-3) {
+  .NavbarMorePostsButton {
+    width: auto;
+    padding: 0 20px 0 15px;
+    border-radius: 20px;
+  }
+
+  .NavbarMorePostsButton span {
+    display: inline-block;
+  }
+}
+
+@media (--break-4) {
+  .isLoggedIn .NavbarMorePostsButton {
+    left: 220px;
+  }
+
+  .isLoggedOut .NavbarMorePostsButton {
+    left: 140px;
+  }
+}
+

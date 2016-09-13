@@ -1,0 +1,46 @@
+.isNotificationsScrolling {
+  overflow: hidden;
+}
+
+.NotificationsContainer {
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  width: 360px;
+  padding-bottom: 10px;
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-top: 0;
+}
+
+.NotificationsContainer > .Scrollable {
+  height: 300px;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
+.NotificationsContainerTabs > .IconTab {
+  width: calc(100% / 6);
+}
+
+@media (--break-4) {
+  .NotificationsContainer {
+    right: 40px;
+  }
+}
+
+/* // MIN HEIGHT!  660 / 16 = 41.25em */
+@media (min-height: 41.25em) {
+  .NotificationsContainer > .Scrollable {
+    height: 505px;
+  }
+}
+
+/* // MIN HEIGHT!  760 / 16 = 47.5em */
+@media (min-height: 47.5em) {
+  .NotificationsContainer > .Scrollable {
+    height: 605px;
+  }
+}
+
