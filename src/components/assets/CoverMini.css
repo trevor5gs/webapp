@@ -15,7 +15,7 @@
 }
 
 .CoverMini.isFailing {
-  background-color: --var(--color-danger);
+  background-color: var(--color-danger);
 }
 
 .CoverMiniImage {
@@ -26,7 +26,7 @@
   left: 0;
   background: transparent no-repeat 50% 50%;
   background-size: cover;
-  transition: opacity --var(--speed2);
+  transition: opacity var(--speed2);
 }
 
 .isRequesting > .CoverMiniImage {
@@ -42,7 +42,7 @@
   z-index: 2;
   content: "";
   background-color: transparent;
-  transition: background-color --var(--speed) ease;
+  transition: background-color var(--speed) ease;
 }
 
 /* stylelint-disable selector-no-qualifying-type */

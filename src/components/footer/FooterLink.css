@@ -12,7 +12,7 @@
   overflow: hidden;
   white-space: nowrap;
   vertical-align: middle;
-  transition: width var--speed) var(--ease);
+  transition: width var(--speed) var(--ease);
 }
 
 .FooterLink > .SVGIcon + span {
