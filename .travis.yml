@@ -1,8 +1,12 @@
 language: node_js
 ruby:
-  - '2.3.1'
+- 2.3.1
 before_install:
-  - cp .env.example .env
+- cp .env.example .env
 after_success:
-  - gem install danger -v 2.0.1
-  - danger
+- gem install danger -v 2.0.1
+- danger
+notifications:
+  email: false
+  slack:
+    secure: fMqVC9A+xxC3Zi/SOJFi45ZH44o7wOtqMh2Jl/D2TR4n+lkmJi2XfcCRcJkQBm54UDkcEMNbSmvR5XYAlCS3n39aC3HvhgSeg6WvWAqOThqN7bqHz1sK/Fci5w44O4nQnjLUU39FqHZiOHcf2azTFQj1T/S0+AOyJBfr6Ud/VYmTtx+NrHouNrnUZmR4zCcD5mxKileWlFniGtliJ1C4lt9gFwLSnB5FmuixCk725qKyWxbE3hQi0xTDZas7Q9MJ6kSCO7Aqo6rwgtN0laB4sTuqHKfad+vbXhhQOHOqLYqnbLOOfJT1UMO9F0Z4QhAlYNI6LhcZZAfcNAZRGJR8iWkvwec0OYSmI/9l1+9TzpW4MyFCn1WIBFOgamZU4ydgXSEujhpsFvgXP87Gu0ejmqUBqRN7UjE9YOsOXF7sFpZpHvxzkqM9nIBji7huZH3SLHU5hL5CsogSCQWHlH7B9NGA2EBFK3Ls6U4GIHYcXjvQRVJMSQcJ70Ykk/j0ZNIAYjzeoZzLOtinbwP3We33HSavtc1nCRX38qRcvfxFHtecSccWlMWc6KncwQM4qGWgnBg92QJ88mRUVemXTPlxqy60zdi/00JBY96l/sXRTwn6iKOSeuxkdlS1sBl8q0dEED/EKbucXDn2kuQmbYp6LVLaMC3M8jfBH/eCYUNmCSg=
