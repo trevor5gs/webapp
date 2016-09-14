@@ -1,27 +1,10 @@
-## Table of Contents
+## Docs
 
-* [Read Me](/Readme.md)
-* [Setup](/docs/setup/Readme.md)
-  * [Environment](/docs/setup/Environment.md)
-  * [Editors](/docs/setup/Editors.md)
-  * [Tasks](/docs/setup/Tasks.md)
-* [Technologies](/docs/technologies/Readme.md)
-  * Redux + React
-  * Sass
-  * Webpack
-* [Src](/docs/src/Readme.md)
-  * Actions
-  * Components
-  * Constants
-  * Containers
-  * Middleware
-  * Networking
-  * Reducers
-  * Routes
-  * Vendor
-* Tests
-* Assets
-  * Images
-  * Fonts
-* [Contributing](/docs/contribute/Readme.md)
+## Emoji autocompleter in dev
+To get the emojis.json file run:
+`curl -o public/static/emojis.json https://ello.co/emojis.json`
+To turn it on add this to your `.env`:
+`USE_LOCAL_EMOJI=true`
+
+:metal::skull::metal:
 
