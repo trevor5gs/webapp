@@ -98,9 +98,17 @@ class OnboardingSettingsContainer extends Component {
     if (!isAvatarBlank) {
       dispatch(trackEvent('Onboarding.Settings.Avatar.Completed'))
     }
-
     if (!isCoverImageBlank) {
       dispatch(trackEvent('Onboarding.Settings.CoverImage.Completed'))
+    }
+    if (document.getElementById('name').value.length) {
+      dispatch(trackEvent('Onboarding.Settings.Name.Completed'))
+    }
+    if (document.getElementById('unsanitized_short_bio').value.length) {
+      dispatch(trackEvent('Onboarding.Settings.Bio.Completed'))
+    }
+    if (document.getElementById('external_links').value.length) {
+      dispatch(trackEvent('Onboarding.Settings.Links.Completed'))
     }
   }
 

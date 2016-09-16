@@ -1,15 +1,24 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { trackEvent } from '../actions/analytics'
 import { inviteUsers } from '../actions/invitations'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
 import BatchEmailControl from '../components/forms/BatchEmailControl'
 import FormButton from '../components/forms/FormButton'
 import { getBatchEmailState } from '../components/forms/Validators'
+import { selectPathname } from '../selectors/routing'
+
+function mapStateToProps(state) {
+  return {
+    pathname: selectPathname(state),
+  }
+}
 
 class InvitationFormContainer extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    pathname: PropTypes.string.isRequired,
   }
 
   componentWillMount() {
@@ -37,10 +46,15 @@ class InvitationFormContainer extends Component {
       this.setState({ formStatus: STATUS.FAILURE })
       return
     }
-    const { dispatch } = this.props
+    const { dispatch, pathname } = this.props
     this.control.clear()
     dispatch(inviteUsers(this.batchEmailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
+    if (/\/onboarding\/invitations/.test(pathname) &&
+        this.batchEmailValue.every((email) => email.length > 0)) {
+      dispatch(trackEvent('Onboarding.Invitations.Emails.Completed',
+                          { emails: this.batchEmailValue.length }))
+    }
   }
 
   renderMessage() {
@@ -94,5 +108,5 @@ class InvitationFormContainer extends Component {
 
 }
 
-export default connect()(InvitationFormContainer)
+export default connect(mapStateToProps)(InvitationFormContainer)
 
