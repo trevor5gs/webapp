@@ -3,8 +3,9 @@ ruby:
 - 2.3.1
 before_install:
 - cp .env.example .env
-after_success:
-- gem install danger -v 2.0.1
+script:
+- npm test
+- gem install danger
 - danger
 notifications:
   email: false
