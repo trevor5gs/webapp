@@ -85,7 +85,7 @@ function onKeyUp(e) {
     callMethod('onHideCompleter')
   }
 }
-methods.onKeyUp = (e) =>
+methods.onKeyUp = e =>
   onKeyUp(e)
 
 function onKeyDown(e) {
@@ -108,7 +108,7 @@ function onKeyDown(e) {
     document.execCommand('insertHTML', false, '<br/><br/>')
   }
 }
-methods.onKeyDown = (e) =>
+methods.onKeyDown = e =>
   onKeyDown(e)
 
 function onClick(e) {

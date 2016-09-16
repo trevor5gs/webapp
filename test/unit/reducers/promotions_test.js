@@ -4,9 +4,9 @@ import { PROMOTIONS } from '../../../src/constants/action_types'
 
 
 describe('promotions reducer', () => {
-  const loggedIn = ['mk', '666', 'jayzes'].map((username) => stubPromotion(username))
-  const loggedOut = ['mansfield', 'potus', 'bear'].map((username) => stubPromotion(username))
-  const authentication = ['archer', 'pam', 'malory'].map((username) => stubAuthPromotion(username))
+  const loggedIn = ['mk', '666', 'jayzes'].map(username => stubPromotion(username))
+  const loggedOut = ['mansfield', 'potus', 'bear'].map(username => stubPromotion(username))
+  const authentication = ['archer', 'pam', 'malory'].map(username => stubAuthPromotion(username))
 
   context('#initialState', () => {
     it('sets up a default initialState', () => {

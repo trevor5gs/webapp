@@ -28,7 +28,6 @@ Credits.propTypes = {
   onClick: PropTypes.func,
   user: PropTypes.shape({
     avatar: PropTypes.shape({}),
-    username: PropTypes.string,
   }),
 }
 

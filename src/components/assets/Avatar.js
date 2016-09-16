@@ -30,10 +30,7 @@ export default class Avatar extends Component {
     className: PropTypes.string,
     onClick: PropTypes.func,
     priority: PropTypes.string,
-    size: PropTypes.string,
-    sources: PropTypes.object,
     to: PropTypes.string,
-    useGif: PropTypes.bool,
     userId: PropTypes.string,
     username: PropTypes.string,
   }

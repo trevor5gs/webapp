@@ -4,7 +4,7 @@
 import { get } from 'lodash'
 
 // state.editor.xxx
-export const selectCompletions = (state) => get(state, 'editor.completions')
+export const selectCompletions = state => get(state, 'editor.completions')
 
 // Memoized selectors
 

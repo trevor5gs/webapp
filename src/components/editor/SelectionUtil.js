@@ -17,7 +17,7 @@ export function getWordFromSelection() {
   let index = endIndex
   while (index > -1) {
     const letter = wordArr[index]
-    index--
+    index -= 1
     if (!letter) break
     if (letter.match(/\s/)) {
       break

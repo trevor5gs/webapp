@@ -260,7 +260,7 @@ class Settings extends Component {
 
   shouldRequireCredentialsSave() {
     const { currentPasswordState, emailState, passwordState, usernameState } = this.state
-    const credentialsSuccess = [emailState, passwordState, usernameState].some((state) =>
+    const credentialsSuccess = [emailState, passwordState, usernameState].some(state =>
       state.status === STATUS.SUCCESS
     )
     return currentPasswordState.status === STATUS.FAILURE || credentialsSuccess

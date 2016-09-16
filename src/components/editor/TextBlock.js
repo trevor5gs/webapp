@@ -85,6 +85,7 @@ class TextBlock extends Component {
 
   render() {
     const { data } = this.props
+    /* eslint-disable react/no-danger */
     return (
       <Block {...this.props}>
         <div
@@ -98,6 +99,7 @@ class TextBlock extends Component {
         />
       </Block>
     )
+    /* eslint-enable react/no-danger */
   }
 }
 

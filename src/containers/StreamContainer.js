@@ -101,7 +101,7 @@ class StreamContainer extends Component {
         return () => null
       }
     }
-    const unlisten = browserListen(location => {
+    const unlisten = browserListen((location) => {
       this.state = { action, locationKey: /\/search/.test(pathname) ? '/search' : location.key }
     })
     unlisten()

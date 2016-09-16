@@ -34,7 +34,7 @@ class DeleteAccountDialog extends Component {
   onClickConfirmReally = () => {
     this.setState({ scene: 'renderCountdown' })
     this.interval = setInterval(() => {
-      this.counter--
+      this.counter -= 1
       this.counterEl.innerHTML = this.counter
       if (this.counter === 0) {
         this.onClickNotKidding()

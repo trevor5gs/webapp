@@ -31,7 +31,7 @@ if (!true && !global.document) {
   global.document = jsdom.jsdom(html)
   global.window = document.defaultView
   global.navigator = { userAgent: 'node.js' }
-  global.URL = { createObjectURL: (input) => input }
+  global.URL = { createObjectURL: input => input }
 
   const enums = [
     ...Object.keys(document.defaultView),

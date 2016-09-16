@@ -60,7 +60,7 @@ export default class Completer extends Component {
   nextSelection() {
     const { completions } = this.props
     let { selectedIndex } = this.state
-    selectedIndex++
+    selectedIndex += 1
     if (selectedIndex > completions.data.length - 1) selectedIndex = 0
     this.setState({ selectedIndex })
   }
@@ -68,7 +68,7 @@ export default class Completer extends Component {
   prevSelection() {
     const { completions } = this.props
     let { selectedIndex } = this.state
-    selectedIndex--
+    selectedIndex -= 1
     if (selectedIndex < 0) selectedIndex = completions.data.length - 1
     this.setState({ selectedIndex })
   }
@@ -119,7 +119,7 @@ export default class Completer extends Component {
       return null
     }
 
-    let style = null
+    let style = {}
     const pos = getPositionFromSelection()
     if (!pos) {
       style = { top: -200, left: -666 }

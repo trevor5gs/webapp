@@ -233,7 +233,7 @@ class BlockCollection extends Component {
   onSubmitPost() {
     const { collection, editorId, hasContent } = this.props
     if (document.activeElement.parentNode.dataset.editorId === editorId &&
-        !Object.values(collection).some((block) => block.isLoading) && hasContent) {
+        !Object.values(collection).some(block => block.isLoading) && hasContent) {
       this.submit()
     }
   }
@@ -397,7 +397,7 @@ class BlockCollection extends Component {
           className="editor-region"
           data-num-blocks={order.length}
         >
-          {order.map((uid) => this.getBlockElement(collection[uid]))}
+          {order.map(uid => this.getBlockElement(collection[uid]))}
           {dragBlock ?
             <div className="DragBlock" style={{ top: dragBlockTop }}>
               {this.getBlockElement(dragBlock)}

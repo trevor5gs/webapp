@@ -4,13 +4,7 @@ import Block from './Block'
 class EmbedBlock extends Component {
 
   static propTypes = {
-    data: PropTypes.shape({
-      url: PropTypes.string,
-      service: PropTypes.string,
-      id: PropTypes.string,
-      thumbnailLargeUrl: PropTypes.string,
-      thumbnailSmallUrl: PropTypes.string,
-    }),
+    data: PropTypes.shape(),
   }
 
   static defaultProps = {
@@ -41,6 +35,7 @@ class EmbedBlock extends Component {
         id
       ) :
       null
+    /* eslint-disable react/no-danger */
     return (
       <Block
         {...this.props}
@@ -51,6 +46,7 @@ class EmbedBlock extends Component {
         />
       </Block>
     )
+    /* eslint-enable react/no-danger */
   }
 
 }

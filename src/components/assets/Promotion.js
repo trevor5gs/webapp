@@ -22,7 +22,6 @@ export function getSource(props) {
 export default class Promotion extends Component {
 
   static propTypes = {
-    coverDPI: PropTypes.string,
     isLoggedIn: PropTypes.bool.isRequired,
     onClickTrackCredits: PropTypes.func,
     promotion: PropTypes.object,

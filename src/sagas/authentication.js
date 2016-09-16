@@ -20,7 +20,7 @@ const toMilliseconds = seconds => seconds * 1000
 
 // Get a timeout value about 100ms before a given date,
 // or at least not in the past
-const futureTimeout = time => {
+const futureTimeout = (time) => {
   let msFromNow = time - new Date()
 
   // Establish a lead time of 100ms before expiration date

@@ -4,19 +4,19 @@ import { selectPathname } from './routing'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { emptyPagination } from '../components/streams/Paginator'
 
-const selectJson = (state) => state.json
+const selectJson = state => state.json
 
 // props.xxx
 const selectMeta = (state, props) => get(props, 'action.meta', {})
 
 // state.stream.xxx
-export const selectStreamType = (state) => get(state, 'stream.type')
+export const selectStreamType = state => get(state, 'stream.type')
 
 // state.stream.meta.xxx
-export const selectStreamMappingType = (state) => get(state, 'stream.meta.mappingType')
+export const selectStreamMappingType = state => get(state, 'stream.meta.mappingType')
 
 // state.stream.payload.xxx
-export const selectStreamPostIdOrToken = (state) => get(state, 'stream.payload.postIdOrToken')
+export const selectStreamPostIdOrToken = state => get(state, 'stream.payload.postIdOrToken')
 
 const selectStreamResult = (state, props) => {
   const meta = selectMeta(state, props)

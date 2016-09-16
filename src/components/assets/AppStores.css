@@ -6,6 +6,7 @@
   display: none;
   width: 135px;
   height: 40px;
+  color: transparent;
   background: transparent url("/static/images/support/app-store-sprite.png") no-repeat 0 0;
   background-size: cover;
 }

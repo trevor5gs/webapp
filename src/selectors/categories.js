@@ -13,7 +13,7 @@ export function sortCategories(a, b) {
 }
 
 // state.json.categories.xxx
-export const selectCategoryCollection = (state) => get(state, 'json.categories')
+export const selectCategoryCollection = state => get(state, 'json.categories')
 
 // Memoized selectors
 export const selectCategories = createSelector(
@@ -54,7 +54,7 @@ export const selectCategories = createSelector(
 )
 
 export const selectCategoriesAsArray = createSelector(
-  [selectCategories], (categories) =>
+  [selectCategories], categories =>
     categories.primary.concat(categories.secondary, categories.tertiary)
 )
 
@@ -68,7 +68,7 @@ export const selectCategoryPageTitle = createSelector(
         return 'Featured'
       default: {
         const key = categories &&
-          Object.keys(categories).find((k) => categories[k].slug === paramsType)
+          Object.keys(categories).find(k => categories[k].slug === paramsType)
         return key ? categories[key].name : startCase(paramsType).replace(/\sX\s/, ' x ')
       }
     }
