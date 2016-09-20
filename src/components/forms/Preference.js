@@ -20,7 +20,7 @@ const Preference = ({ className, definition, id, isChecked, isDisabled, onToggle
 
 Preference.propTypes = {
   className: PropTypes.string,
-  definition: PropTypes.shape({}).isRequired,
+  definition: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   isChecked: PropTypes.bool,
   isDisabled: PropTypes.bool,

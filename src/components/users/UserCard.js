@@ -23,8 +23,7 @@ class UserCard extends Component {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     pathname: PropTypes.string,
-    user: PropTypes.shape({
-    }).isRequired,
+    user: PropTypes.object.isRequired,
     relationshipPriority: PropTypes.string,
   }
 

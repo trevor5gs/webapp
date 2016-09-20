@@ -86,7 +86,7 @@ class UserDetailContainer extends Component {
   static propTypes = {
     activeUserFollowingType: PropTypes.string,
     coverDPI: PropTypes.string,
-    coverImage: PropTypes.shape({}),
+    coverImage: PropTypes.object,
     coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     isCoverActive: PropTypes.bool.isRequired,

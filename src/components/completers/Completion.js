@@ -6,7 +6,7 @@ import { getSelectionContainerElement } from '../editor/SelectionUtil'
 export default class Completion extends Component {
 
   static propTypes = {
-    asset: PropTypes.shape({}),
+    asset: PropTypes.object,
     className: PropTypes.string,
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,

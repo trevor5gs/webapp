@@ -16,7 +16,7 @@ export function mapStateToProps(state) {
 
 class OmnibarContainer extends Component {
   static propTypes = {
-    avatar: PropTypes.shape({}),
+    avatar: PropTypes.object,
     classList: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isActive: PropTypes.bool.isRequired,

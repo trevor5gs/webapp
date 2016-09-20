@@ -11,8 +11,8 @@ function prefixLink(text) {
 export default class TextTools extends Component {
 
   static propTypes = {
-    activeTools: PropTypes.shape(),
-    coordinates: PropTypes.shape(),
+    activeTools: PropTypes.object,
+    coordinates: PropTypes.object,
     isHidden: PropTypes.bool,
     text: PropTypes.string,
   }

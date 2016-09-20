@@ -27,7 +27,7 @@ class KeyboardContainer extends Component {
     isGridMode: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isModalActive: PropTypes.bool,
-    shortcuts: PropTypes.shape({}).isRequired,
+    shortcuts: PropTypes.object.isRequired,
   }
 
   static defaultProps = {

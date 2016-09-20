@@ -29,7 +29,7 @@ export const Omnibar = ({ avatar, classList, isActive, isFullScreen, onClickClos
 }
 
 Omnibar.propTypes = {
-  avatar: PropTypes.shape({}),
+  avatar: PropTypes.object,
   classList: PropTypes.string,
   isActive: PropTypes.bool.isRequired,
   isFullScreen: PropTypes.bool,

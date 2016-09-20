@@ -4,7 +4,7 @@ import Block from './Block'
 class EmbedBlock extends Component {
 
   static propTypes = {
-    data: PropTypes.shape(),
+    data: PropTypes.object,
   }
 
   static defaultProps = {

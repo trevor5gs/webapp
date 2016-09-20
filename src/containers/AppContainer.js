@@ -40,9 +40,6 @@ class AppContainer extends Component {
     children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    location: PropTypes.shape({
-      pathname: PropTypes.string,
-    }).isRequired,
     pagination: PropTypes.object,
     pathname: PropTypes.string.isRequired,
     params: PropTypes.object.isRequired,

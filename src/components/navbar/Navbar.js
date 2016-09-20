@@ -169,7 +169,7 @@ export const NavbarLoggedIn = ({
   </nav>
 
 NavbarLoggedIn.propTypes = {
-  avatar: PropTypes.shape({}),
+  avatar: PropTypes.object,
   currentStream: PropTypes.string.isRequired,
   deviceSize: PropTypes.string.isRequired,
   hasLoadMoreButton: PropTypes.bool.isRequired,

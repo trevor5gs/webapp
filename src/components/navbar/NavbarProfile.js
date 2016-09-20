@@ -63,7 +63,7 @@ export const NavbarProfile = ({
 }
 
 NavbarProfile.propTypes = {
-  avatar: PropTypes.shape({}),
+  avatar: PropTypes.object,
   isProfileMenuActive: PropTypes.bool,
   onClickAvatar: PropTypes.func,
   onLogOut: PropTypes.func,
