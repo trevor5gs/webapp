@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 
 export const AppleStore = ({ to }) =>
-  <a href={to} target="_blank" rel="noopener noreferrer" className="AppStore AppleStore">Apple Store</a>
+  <a href={to} target="_blank" rel="noopener noreferrer" className="AppStore AppleStore"><span className="invisible">Apple Store</span></a>
 
 AppleStore.propTypes = {
   to: PropTypes.string.isRequired,
@@ -12,7 +12,7 @@ AppleStore.defaultProps = {
 }
 
 export const GooglePlayStore = ({ to }) =>
-  <a href={to} target="_blank" rel="noopener noreferrer" className="AppStore GooglePlayStore">Google Play Store</a>
+  <a href={to} target="_blank" rel="noopener noreferrer" className="AppStore GooglePlayStore"><span className="invisible">Google Play Store</span></a>
 
 GooglePlayStore.propTypes = {
   to: PropTypes.string.isRequired,
