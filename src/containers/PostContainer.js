@@ -25,7 +25,7 @@ import {
 } from '../components/posts/PostRenderables'
 
 export function mapStateToProps(state, props) {
-  const { json, profile: currentUser, routing: { location: { pathname } } } = state
+  const { json, routing: { location: { pathname } } } = state
   const post = selectPostFromPropsPostId(state, props)
   const author = json[MAPPING_TYPES.USERS][post.authorId]
   const assets = json.assets
@@ -53,7 +53,6 @@ export function mapStateToProps(state, props) {
     commentsCount: post.commentsCount,
     contentWarning: post.contentWarning,
     contentWidth: selectContentWidth(state),
-    currentUser,
     innerHeight: selectInnerHeight(state),
     isGridMode,
     isOnFeaturedCategory,
@@ -80,7 +79,7 @@ export function mapStateToProps(state, props) {
 
 class PostContainer extends Component {
   static propTypes = {
-    assets: PropTypes.any,
+    assets: PropTypes.object,
     author: PropTypes.object,
     authorLinkObject: PropTypes.object,
     categoryName: PropTypes.string,
@@ -89,7 +88,6 @@ class PostContainer extends Component {
     commentOffset: PropTypes.number,
     contentWarning: PropTypes.string,
     contentWidth: PropTypes.number,
-    currentUser: PropTypes.object,
     innerHeight: PropTypes.number,
     isGridMode: PropTypes.bool,
     isOnFeaturedCategory: PropTypes.bool,

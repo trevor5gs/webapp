@@ -35,7 +35,6 @@ class EmbedBlock extends Component {
         id
       ) :
       null
-    /* eslint-disable react/no-danger */
     return (
       <Block
         {...this.props}
@@ -46,7 +45,6 @@ class EmbedBlock extends Component {
         />
       </Block>
     )
-    /* eslint-enable react/no-danger */
   }
 
 }

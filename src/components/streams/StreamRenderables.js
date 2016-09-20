@@ -91,7 +91,7 @@ export function usersAsInviteeGrid(invitations) {
 
 export function postsAsGrid(posts, columnCount) {
   const columns = []
-  for (let i = 0; i < columnCount; i++) {
+  for (let i = 0; i < columnCount; i += 1) {
     columns.push([])
   }
   Object.keys(posts.data).forEach((index) => {

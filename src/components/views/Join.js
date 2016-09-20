@@ -63,7 +63,6 @@ const Join = (props) => {
 
 Join.propTypes = {
   email: PropTypes.string,
-  invitationCode: PropTypes.string,
   isValid: PropTypes.bool.isRequired,
   onChangePasswordControl: PropTypes.func.isRequired,
   onChangeUsernameControl: PropTypes.func.isRequired,

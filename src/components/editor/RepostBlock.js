@@ -26,11 +26,9 @@ class RepostBlock extends Component {
           <img key={`repostImage_${uid}`} src={data.url} alt={data.alt} />
         )
       case 'text':
-        /* eslint-disable react/no-danger */
         return (
           <div key={`repostText_${uid}`} dangerouslySetInnerHTML={{ __html: data }} />
         )
-        /* eslint-enable react/no-danger */
       default:
         return null
     }

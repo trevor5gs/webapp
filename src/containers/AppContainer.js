@@ -43,15 +43,9 @@ class AppContainer extends Component {
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }).isRequired,
-    pagination: PropTypes.shape({
-      next: PropTypes.string,
-    }),
+    pagination: PropTypes.object,
     pathname: PropTypes.string.isRequired,
-    params: PropTypes.shape({
-      username: PropTypes.string,
-      token: PropTypes.string,
-      type: PropTypes.string,
-    }).isRequired,
+    params: PropTypes.object.isRequired,
   }
 
   static preRender = (store) => {

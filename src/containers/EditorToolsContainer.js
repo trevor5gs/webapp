@@ -42,22 +42,12 @@ class EditorToolsContainer extends Component {
   static propTypes = {
     deviceSize: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    completions: PropTypes.shape({
-      data: PropTypes.array,
-      type: PropTypes.string,
-    }),
+    completions: PropTypes.object,
     emojis: PropTypes.array,
     isCompleterActive: PropTypes.bool.isRequired,
     isTextToolsActive: PropTypes.bool.isRequired,
-    textToolsCoordinates: PropTypes.shape({
-      left: PropTypes.number,
-      top: PropTypes.number,
-    }),
-    textToolsStates: PropTypes.shape({
-      isBoldActive: PropTypes.bool,
-      isItalicActive: PropTypes.bool,
-      isLinkActive: PropTypes.bool,
-    }),
+    textToolsCoordinates: PropTypes.object,
+    textToolsStates: PropTypes.object,
   }
 
   componentWillMount() {

@@ -12,10 +12,7 @@ export const UserDetailUserNames = ({ user }) =>
   </div>
 
 UserDetailUserNames.propTypes = {
-  user: PropTypes.shape({
-    name: PropTypes.string,
-    username: PropTypes.string.isRequired,
-  }).isRequired,
+  user: PropTypes.object.isRequired,
 }
 
 export const UserNames = ({ user }) =>
@@ -27,10 +24,7 @@ export const UserNames = ({ user }) =>
   </div>
 
 UserNames.propTypes = {
-  user: PropTypes.shape({
-    name: PropTypes.string,
-    username: PropTypes.string.isRequired,
-  }).isRequired,
+  user: PropTypes.object.isRequired,
 }
 
 const UserStatsLink = ({ asDisabled = false, children, to }) =>
@@ -115,9 +109,6 @@ export const UserInfo = ({ user }) => {
 }
 
 UserInfo.propTypes = {
-  user: PropTypes.shape({
-    externalLinksList: PropTypes.array,
-    formattedShortBio: PropTypes.string,
-  }).isRequired,
+  user: PropTypes.object.isRequired,
 }
 

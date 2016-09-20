@@ -112,7 +112,7 @@ methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
   }
   collection[newState.uid] = newBlock
   order.push(newState.uid)
-  newState.uid++
+  newState.uid += 1
   if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(newState) }
   return newState
 }

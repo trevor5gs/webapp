@@ -8,7 +8,6 @@ import { SHORTCUT_KEYS } from '../constants/application_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDiscoverKeyType, selectIsGridMode } from '../selectors/gui'
 import { selectIsModalActive } from '../selectors/modal'
-import { selectPathname } from '../selectors/routing'
 import { openModal, closeModal } from '../actions/modals'
 import HelpDialog from '../components/dialogs/HelpDialog'
 
@@ -18,7 +17,6 @@ function mapStateToProps(state) {
     isGridMode: selectIsGridMode(state),
     isLoggedIn: selectIsLoggedIn(state),
     isModalActive: selectIsModalActive(state),
-    pathname: selectPathname(state),
   }
 }
 
@@ -29,7 +27,6 @@ class KeyboardContainer extends Component {
     isGridMode: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isModalActive: PropTypes.bool,
-    pathname: PropTypes.string.isRequired,
     shortcuts: PropTypes.shape({}).isRequired,
   }
 

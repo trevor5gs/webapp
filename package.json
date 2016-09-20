@@ -83,14 +83,12 @@
       "ENV": false
     },
     "rules": {
-      "react/forbid-prop-types": [
-        1,
-        {
-          "forbid": ["any"]
-        }
-      ],
+      "class-methods-use-this": 0,
+      "jsx-a11y/no-static-element-interactions": 0,
+      "jsx-a11y/tabindex-no-positive": 0,
       "no-alert": 2,
       "no-console": 2,
+      "react/no-danger": 0,
       "no-debugger": 2,
       "no-multiple-empty-lines": [
         2,
@@ -100,6 +98,12 @@
         }
       ],
       "no-unused-expressions": 0,
+      "react/forbid-prop-types": [
+        1,
+        {
+          "forbid": ["any"]
+        }
+      ],
       "react/jsx-filename-extension": [
         1,
         {

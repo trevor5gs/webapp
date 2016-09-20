@@ -31,7 +31,7 @@ export function mapStateToProps(state, props) {
 class CommentContainer extends Component {
 
   static propTypes = {
-    assets: PropTypes.any,
+    assets: PropTypes.object,
     author: PropTypes.object,
     comment: PropTypes.object,
     commentBody: PropTypes.array,

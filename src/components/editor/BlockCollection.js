@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { get, isEqual } from 'lodash'
 import { selectIsMobileGridStream, selectIsNavbarHidden } from '../../selectors/gui'
 import { selectPropsPostId } from '../../selectors/post'
-import { selectAvatar, selectUsername } from '../../selectors/profile'
+import { selectAvatar } from '../../selectors/profile'
 import { selectPathname } from '../../selectors/routing'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
@@ -39,7 +39,6 @@ class BlockCollection extends Component {
     avatar: PropTypes.object,
     blocks: PropTypes.array,
     cancelAction: PropTypes.func.isRequired,
-    currentUsername: PropTypes.string,
     collection: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     dragBlock: PropTypes.object,
@@ -433,7 +432,6 @@ function mapStateToProps(state, props) {
     buyLink,
     avatar: selectAvatar(state),
     collection: editor.collection,
-    currentUsername: selectUsername(state),
     dragBlock: editor.dragBlock,
     hasContent: editor.hasContent,
     hasMedia: editor.hasMedia,

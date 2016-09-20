@@ -54,7 +54,7 @@ class StreamContainer extends Component {
 
   static propTypes = {
     action: PropTypes.object,
-    children: PropTypes.any,
+    children: PropTypes.node,
     className: PropTypes.string,
     columnCount: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
