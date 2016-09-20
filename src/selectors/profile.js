@@ -14,7 +14,7 @@ export const selectCreatedAt = state => get(state, 'profile.createdAt')
 export const selectEmail = state => get(state, 'profile.email')
 export const selectExternalLinksList = state => get(state, 'profile.externalLinksList', [])
 export const selectHasAvatarPresent = state => get(state, 'profile.hasAvatarPresent', false)
-export const selectHasCoverImagePresent = (state) => get(state, 'profile.hasCoverImagePresent', false) // eslint-disable-line
+export const selectHasCoverImagePresent = state => get(state, 'profile.hasCoverImagePresent', false)
 export const selectId = state => get(state, 'profile.id')
 export const selectIsPublic = state => get(state, 'profile.isPublic')
 export const selectMarketingVersion = state => get(state, 'profile.marketingVersion')

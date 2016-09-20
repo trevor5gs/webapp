@@ -23,7 +23,7 @@ export const selectIsGridMode = state => get(state, 'gui.isGridMode')
 export const selectIsLayoutToolHidden = state => get(state, 'gui.isLayoutToolHidden')
 export const selectIsNavbarFixed = state => get(state, 'gui.isNavbarFixed')
 export const selectIsNavbarHidden = state => get(state, 'gui.isNavbarHidden')
-export const selectIsNavbarSkippingTransition = (state) => get(state, 'gui.isNavbarSkippingTransition') // eslint-disable-line
+export const selectIsNavbarSkippingTransition = state => get(state, 'gui.isNavbarSkippingTransition') // eslint-disable-line
 export const selectIsNotificationsActive = state => get(state, 'gui.isNotificationsActive')
 export const selectIsNotificationsUnread = state => get(state, 'gui.isNotificationsUnread')
 export const selectIsOffsetLayout = state => get(state, 'gui.isOffsetLayout')
