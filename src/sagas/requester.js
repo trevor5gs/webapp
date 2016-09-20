@@ -308,7 +308,7 @@ export function* handleRequest(requestChannel) {
         yield call(waitForUnpause)
       }
 
-      if (endpoint.method === 'GET') {
+      if (!endpoint.method || endpoint.method === 'GET') {
         runningFetches[endpoint.path] = true
       }
 
