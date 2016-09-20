@@ -26,10 +26,7 @@ const Credits = ({ user, onClick }) => {
 
 Credits.propTypes = {
   onClick: PropTypes.func,
-  user: PropTypes.shape({
-    avatar: PropTypes.shape({}),
-    username: PropTypes.string,
-  }),
+  user: PropTypes.object,
 }
 
 export default Credits

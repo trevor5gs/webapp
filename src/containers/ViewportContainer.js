@@ -42,6 +42,7 @@ function mapStateToProps(state) {
   }
 }
 
+/* eslint-disable react/no-unused-prop-types */
 class ViewportContainer extends Component {
   static propTypes = {
     coverOffset: PropTypes.number,
@@ -181,6 +182,7 @@ class ViewportContainer extends Component {
   }
 
 }
+/* eslint-enable react/no-unused-prop-types */
 
 export default connect(mapStateToProps)(ViewportContainer)
 

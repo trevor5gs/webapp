@@ -20,7 +20,7 @@ class FollowingContainer extends Component {
     isBeaconActive: PropTypes.bool.isRequired,
   }
 
-  static preRender = (store) =>
+  static preRender = store =>
     store.dispatch(loadFriends())
 
   shouldComponentUpdate(nextProps, nextState) {

@@ -53,7 +53,6 @@ class PostDetailContainer extends Component {
     post: PropTypes.object,
     paramsToken: PropTypes.string.isRequired,
     paramsUsername: PropTypes.string.isRequired,
-    streamType: PropTypes.string,
   }
 
   static preRender = (store, routerState) => {

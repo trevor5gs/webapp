@@ -195,7 +195,7 @@ describe('json reducer', () => {
       action.meta.mappingType = MAPPING_TYPES.USERS
       action.payload = { pagination: '' }
       action.meta.resultFilter = (users) => {
-        const stuff = { usernames: users.map((user) => user.username) }
+        const stuff = { usernames: users.map(user => user.username) }
         return stuff
       }
       const result = subject.methods.getResult(response, json, action)

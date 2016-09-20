@@ -7,7 +7,7 @@ export const SUPPORTED_IMAGE_TYPES = {
   PNG: 'image/png',
 }
 
-export const isGif = (filename) => /gif$/.test(filename)
+export const isGif = filename => /gif$/.test(filename)
 
 export function isValidFileType(file) {
   return new Promise((resolve, reject) => {
@@ -128,7 +128,7 @@ export function getBlobFromBase64(b64Data, contentType, sliceSize) {
     let i = 0
     while (i < slice.length) {
       byteNumbers[i] = slice.charCodeAt(i)
-      i++
+      i += 1
     }
     const byteArray = new Uint8Array(byteNumbers)
     byteArrays.push(byteArray)
@@ -155,6 +155,7 @@ export function processImage({ exifData, file, fileType, maxWidth = 2560, maxHei
   })
 }
 
+/* eslint-disable no-bitwise */
 export function imageGuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = Math.random() * 16 | 0
@@ -162,4 +163,5 @@ export function imageGuid() {
     return v.toString(16)
   })
 }
+/* eslint-enable no-bitwise */
 

@@ -3,7 +3,7 @@ import { get } from 'lodash'
 import { selectId as selectProfileId } from './profile'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 
-const selectJson = (state) => get(state, 'json')
+const selectJson = state => get(state, 'json')
 
 // props.comment.xxx
 export const selectPropsComment = (state, props) => get(props, 'comment')

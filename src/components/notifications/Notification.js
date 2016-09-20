@@ -35,10 +35,7 @@ function renderBody({ children, summary }) {
 }
 renderBody.propTypes = {
   children: PropTypes.node,
-  summary: PropTypes.shape({
-    assets: PropTypes.arrayOf(PropTypes.node),
-    texts: PropTypes.arrayOf(PropTypes.node),
-  }),
+  summary: PropTypes.object,
 }
 
 
@@ -50,20 +47,16 @@ function renderAssets({ summary }) {
 }
 
 renderAssets.propTypes = {
-  summary: PropTypes.shape({
-    assets: PropTypes.arrayOf(PropTypes.node),
-    texts: PropTypes.arrayOf(PropTypes.node),
-  }),
+  summary: PropTypes.object,
 }
 
-function renderFooter({ activityPath, createdAt, retort }) {
+function renderFooter({ activityPath, createdAt }) {
   if (!createdAt) { return null }
   return (
     <footer className="NotificationFooter">
       <Link className="NotificationFooterTimestamp" to={activityPath}>
         {new Date(createdAt).timeAgoInWords()}
       </Link>
-      {retort}
     </footer>
   )
 }
@@ -71,7 +64,6 @@ function renderFooter({ activityPath, createdAt, retort }) {
 renderFooter.propTypes = {
   activityPath: PropTypes.string.isRequired,
   createdAt: PropTypes.string,
-  retort: PropTypes.any,
 }
 
 export const Notification = ({
@@ -80,7 +72,6 @@ export const Notification = ({
   className,
   createdAt,
   notifier,
-  retort,
   summary,
   }) => {
   const hasAsset = summary && summary.assets && summary.assets.length
@@ -89,7 +80,7 @@ export const Notification = ({
       {renderHeader({ notifier })}
       {renderAssets({ summary })}
       {renderBody({ children, summary })}
-      {renderFooter({ activityPath, createdAt, retort })}
+      {renderFooter({ activityPath, createdAt })}
     </div>
   )
 }
@@ -101,11 +92,7 @@ Notification.propTypes = {
   className: PropTypes.string,
   createdAt: PropTypes.string,
   notifier: PropTypes.object,
-  retort: PropTypes.any,
-  summary: PropTypes.shape({
-    assets: PropTypes.arrayOf(PropTypes.node),
-    texts: PropTypes.arrayOf(PropTypes.node),
-  }),
+  summary: PropTypes.object,
 }
 
 export default Notification

@@ -4,7 +4,7 @@ import { Invitations } from '../components/views/Invitations'
 
 class InvitationsContainer extends Component {
 
-  static preRender = (store) =>
+  static preRender = store =>
     store.dispatch(loadInvitedUsers())
 
   render() {

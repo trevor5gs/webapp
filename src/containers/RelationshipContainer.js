@@ -57,13 +57,11 @@ export function getNextBlockMutePriority(currentPriority, requestedPriority) {
 
 // TODO: Try and get rid of deviceSize
 export function mapStateToProps(state, props) {
-  const isLoggedIn = selectIsLoggedIn(state)
   const user = selectUser(state, props)
   const onClickCallback = selectOnClickCallback(state, props)
   const shouldRenderBlockMute = selectShouldRenderBlockMuteButton(state, props)
   return {
     deviceSize: selectDeviceSize(state),
-    isLoggedIn,
     onClickCallback,
     pathname: selectPathname(state),
     previousPath: selectPreviousPath(state),
@@ -79,23 +77,16 @@ class RelationshipContainer extends Component {
     className: PropTypes.string,
     deviceSize: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    hasBlockMuteButton: PropTypes.bool.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
     onClickCallback: PropTypes.string.isRequired,
     pathname: PropTypes.string.isRequired,
     previousPath: PropTypes.string,
     relationshipPriority: PropTypes.string,
     shouldRenderBlockMute: PropTypes.bool,
-    user: PropTypes.object.isRequired,
     userId: PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.string,
     ]).isRequired,
     username: PropTypes.string.isRequired,
-  }
-
-  static defaultProps = {
-    hasBlockMuteButton: false,
   }
 
   shouldComponentUpdate(nextProps, nextState) {

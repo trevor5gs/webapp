@@ -113,7 +113,7 @@ class InfoForm extends Component {
       return STATUS.INDETERMINATE
     }
     const linkArr = this.linksText.split(/[,\s]+/)
-    const isValid = linkArr.every((link) => (link.length ? isValidURL(link) : true))
+    const isValid = linkArr.every(link => (link.length ? isValidURL(link) : true))
     return isValid ? STATUS.SUCCESS : STATUS.FAILURE
   }
 

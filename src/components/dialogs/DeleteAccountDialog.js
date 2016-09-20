@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react'
 class DeleteAccountDialog extends Component {
 
   static propTypes = {
-    user: PropTypes.shape({}),
     onConfirm: PropTypes.func,
     onDismiss: PropTypes.func,
   }
@@ -34,7 +33,7 @@ class DeleteAccountDialog extends Component {
   onClickConfirmReally = () => {
     this.setState({ scene: 'renderCountdown' })
     this.interval = setInterval(() => {
-      this.counter--
+      this.counter -= 1
       this.counterEl.innerHTML = this.counter
       if (this.counter === 0) {
         this.onClickNotKidding()

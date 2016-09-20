@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { get, isEqual } from 'lodash'
 import { selectIsMobileGridStream, selectIsNavbarHidden } from '../../selectors/gui'
 import { selectPropsPostId } from '../../selectors/post'
-import { selectAvatar, selectUsername } from '../../selectors/profile'
+import { selectAvatar } from '../../selectors/profile'
 import { selectPathname } from '../../selectors/routing'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
@@ -39,7 +39,6 @@ class BlockCollection extends Component {
     avatar: PropTypes.object,
     blocks: PropTypes.array,
     cancelAction: PropTypes.func.isRequired,
-    currentUsername: PropTypes.string,
     collection: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     dragBlock: PropTypes.object,
@@ -233,7 +232,7 @@ class BlockCollection extends Component {
   onSubmitPost() {
     const { collection, editorId, hasContent } = this.props
     if (document.activeElement.parentNode.dataset.editorId === editorId &&
-        !Object.values(collection).some((block) => block.isLoading) && hasContent) {
+        !Object.values(collection).some(block => block.isLoading) && hasContent) {
       this.submit()
     }
   }
@@ -397,7 +396,7 @@ class BlockCollection extends Component {
           className="editor-region"
           data-num-blocks={order.length}
         >
-          {order.map((uid) => this.getBlockElement(collection[uid]))}
+          {order.map(uid => this.getBlockElement(collection[uid]))}
           {dragBlock ?
             <div className="DragBlock" style={{ top: dragBlockTop }}>
               {this.getBlockElement(dragBlock)}
@@ -433,7 +432,6 @@ function mapStateToProps(state, props) {
     buyLink,
     avatar: selectAvatar(state),
     collection: editor.collection,
-    currentUsername: selectUsername(state),
     dragBlock: editor.dragBlock,
     hasContent: editor.hasContent,
     hasMedia: editor.hasMedia,

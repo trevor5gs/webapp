@@ -153,7 +153,7 @@ export function canPrerenderRequest(req) {
   if (req.get('X-Skip-Prerender') === 'true') {
     return false
   }
-  return values(noPreRenderPaths).every((regex) =>
+  return values(noPreRenderPaths).every(regex =>
     !req.url.match(regex)
   )
 }

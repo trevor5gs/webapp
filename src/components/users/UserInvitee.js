@@ -13,7 +13,7 @@ class UserInvitee extends Component {
   static propTypes = {
     className: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    invitation: PropTypes.shape({}).isRequired,
+    invitation: PropTypes.object.isRequired,
     user: PropTypes.object,
   }
 

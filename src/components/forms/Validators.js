@@ -3,7 +3,7 @@ import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { ERROR_MESSAGES as ERROR } from '../../constants/locales/en'
 
 export function isFormValid(states) {
-  return states.every((state) => state.status === STATUS.SUCCESS)
+  return states.every(state => state.status === STATUS.SUCCESS)
 }
 
 
@@ -81,7 +81,7 @@ export function getEmailStateFromClient({ currentStatus, value }) {
   )
 }
 
-export const isValidInvitationCode = (value) => value.match(/^\S+$/)
+export const isValidInvitationCode = value => value.match(/^\S+$/)
 
 export function getInvitationCodeStateFromClient({ currentStatus, value }) {
   if (!value && !value.length && currentStatus) {

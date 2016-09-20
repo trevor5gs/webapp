@@ -51,7 +51,7 @@ class InvitationFormContainer extends Component {
     dispatch(inviteUsers(this.batchEmailValue))
     this.setState({ formStatus: STATUS.SUBMITTED })
     if (/\/onboarding\/invitations/.test(pathname) &&
-        this.batchEmailValue.every((email) => email.length > 0)) {
+        this.batchEmailValue.every(email => email.length > 0)) {
       dispatch(trackEvent('Onboarding.Invitations.Emails.Completed',
                           { emails: this.batchEmailValue.length }))
     }

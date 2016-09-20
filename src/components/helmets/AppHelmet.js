@@ -40,9 +40,7 @@ export const AppHelmet = ({ pagination, pathname }) =>
   />
 
 AppHelmet.propTypes = {
-  pagination: PropTypes.shape({
-    next: PropTypes.string,
-  }),
+  pagination: PropTypes.object,
   pathname: PropTypes.string.isRequired,
 }
 

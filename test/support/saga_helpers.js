@@ -65,7 +65,7 @@ export default function (chai, utils) {
       const actual = utils.flag(this, 'yield.call')
       if (actual) {
         const assertion = new Assertion(actual).to.have.deep.property('CALL.args')
-        args.forEach(arg => {
+        args.forEach((arg) => {
           if (arg instanceof RegExp) {
             assertion.to.match(arg)
           } else {

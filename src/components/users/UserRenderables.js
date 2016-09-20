@@ -147,7 +147,6 @@ export const UserList = (props) => {
 
 UserList.propTypes = {
   className: PropTypes.string,
-  isLoggedIn: PropTypes.bool,
   isUserDetail: PropTypes.bool,
   onClickHireMe: PropTypes.func,
   onClickShareProfile: PropTypes.func,

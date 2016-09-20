@@ -4,7 +4,6 @@ import shallowCompare from 'react-addons-shallow-compare'
 export default class ImageAsset extends Component {
 
   static propTypes = {
-    isBackgroundImage: PropTypes.bool,
     onLoadSuccess: PropTypes.func,
     onLoadFailure: PropTypes.func,
     src: PropTypes.string.isRequired,

@@ -7,7 +7,7 @@ import { selectPropsPathname } from './routing'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { findModel } from '../helpers/json_helper'
 
-const selectJson = (state) => get(state, 'json')
+const selectJson = state => get(state, 'json')
 
 const PAGING_BLACKLIST = [
   /^\/enter\b/,
@@ -27,7 +27,7 @@ export const selectPagination = createSelector(
   [selectJson, selectPages, selectPropsPathname, selectPagesResult, selectParamsToken],
   (json, pages, pathname, pagingResult, paramsToken) => {
     let result = pagingResult
-    const isPagingEnabled = !(PAGING_BLACKLIST.every((re) => re.test(pathname)))
+    const isPagingEnabled = !(PAGING_BLACKLIST.every(re => re.test(pathname)))
     if (pages && isPagingEnabled) {
       if (!pagingResult && paramsToken) {
         const post = findModel(json, {

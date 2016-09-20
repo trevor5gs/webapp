@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 
-export const Viewport = (props) =>
+export const Viewport = props =>
   <div
     className={classNames(
       'Viewport',

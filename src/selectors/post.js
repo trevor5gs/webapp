@@ -5,7 +5,7 @@ import { selectId as selectProfileId } from './profile'
 import { findModel } from '../helpers/json_helper'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 
-const selectJson = (state) => get(state, 'json')
+const selectJson = state => get(state, 'json')
 
 // props.post.xxx
 export const selectPropsPost = (state, props) => get(props, 'post')

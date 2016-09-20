@@ -4,14 +4,14 @@ import { selectParamsUsername } from './params'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { findModel } from '../helpers/json_helper'
 
-const selectJson = (state) => get(state, 'json')
+const selectJson = state => get(state, 'json')
 
 // props.user.xxx
 export const selectPropsUser = (state, props) => get(props, 'user')
 export const selectPropsUserId = (state, props) => get(props, 'user.id')
 
 // state.json.users.xxx
-export const selectUsers = (state) => get(state, 'json.users')
+export const selectUsers = state => get(state, 'json.users')
 
 // Memoized selectors
 export const selectUser = createSelector(
@@ -30,6 +30,6 @@ export const selectUserFromUsername = createSelector(
 )
 
 export const selectRelationshipPriority = createSelector(
-  [selectUser], (user) => get(user, 'relationshipPriority')
+  [selectUser], user => get(user, 'relationshipPriority')
 )
 

@@ -73,7 +73,7 @@ methods.addHasContent = (state) => {
 methods.addHasMedia = (state) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
-  newState.hasMedia = order.some((uid) => /embed|image/.test(collection[uid].kind))
+  newState.hasMedia = order.some(uid => /embed|image/.test(collection[uid].kind))
   return newState
 }
 
@@ -95,7 +95,7 @@ methods.addHasMention = (state) => {
 methods.addIsLoading = (state) => {
   const newState = cloneDeep(state)
   const { collection } = newState
-  let isLoading = values(collection).some((block) =>
+  let isLoading = values(collection).some(block =>
     /image/.test(block.kind) && block.isLoading
   )
   if (!isLoading && newState.dragBlock) { isLoading = newState.dragBlock.isLoading }
@@ -112,7 +112,7 @@ methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
   }
   collection[newState.uid] = newBlock
   order.push(newState.uid)
-  newState.uid++
+  newState.uid += 1
   if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(newState) }
   return newState
 }
@@ -177,7 +177,7 @@ methods.reorderBlocks = (state, action) => {
 methods.appendText = (state, text) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
-  const textBlocks = order.filter((orderUid) => /text/.test(collection[orderUid].kind))
+  const textBlocks = order.filter(orderUid => /text/.test(collection[orderUid].kind))
   const lastTextBlock = collection[textBlocks[textBlocks.length - 1]]
   if (lastTextBlock) {
     lastTextBlock.data += text
@@ -189,7 +189,7 @@ methods.appendText = (state, text) => {
 methods.appendUsernames = (state, usernames) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
-  const textBlocks = order.filter((orderUid) => /text/.test(collection[orderUid].kind))
+  const textBlocks = order.filter(orderUid => /text/.test(collection[orderUid].kind))
   const lastTextBlock = collection[textBlocks[textBlocks.length - 1]]
   const text = reduce(usernames, (memo, { username }) => `${memo}@${username} `, '')
   if (lastTextBlock && !lastTextBlock.data.includes(text)) {

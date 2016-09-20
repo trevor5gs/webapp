@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import * as ACTION_TYPES from '../constants/action_types'
-import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectIsOwnComment } from '../selectors/comment'
 import { selectDeviceSize, selectIsNavbarHidden } from '../selectors/gui'
 import { selectIsOwnPost } from '../selectors/post'
@@ -26,7 +25,6 @@ export function mapStateToProps(state, props) {
   return {
     canDeleteComment,
     deviceSize: selectDeviceSize(state),
-    isLoggedIn: selectIsLoggedIn(state),
     isNavbarHidden: selectIsNavbarHidden(state),
     isOwnComment,
   }
@@ -36,10 +34,8 @@ class CommentToolsContainer extends Component {
   static propTypes = {
     author: PropTypes.object.isRequired,
     comment: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired,
     deviceSize: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
     isNavbarHidden: PropTypes.bool,
     post: PropTypes.object.isRequired,
   }

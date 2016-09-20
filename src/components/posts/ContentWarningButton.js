@@ -5,9 +5,7 @@ export default class ContentWarningButton extends Component {
 
   static propTypes = {
     onClick: PropTypes.func,
-    post: PropTypes.shape({
-      contentWarning: PropTypes.string,
-    }).isRequired,
+    post: PropTypes.object.isRequired,
   }
 
   componentWillMount() {

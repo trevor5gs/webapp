@@ -2,18 +2,17 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { LinkIcon } from './EditorIcons'
 
+function prefixLink(text) {
+  const linkPrefix = /((ftp|http|https):\/\/.)|mailto(?=:[-\.\w]+@)/
+  if (!linkPrefix.test(text)) return `http://${text}`
+  return text
+}
+
 export default class TextTools extends Component {
 
   static propTypes = {
-    activeTools: PropTypes.shape({
-      isBoldActive: PropTypes.bool,
-      isItalicActive: PropTypes.bool,
-      isLinkActive: PropTypes.bool,
-    }),
-    coordinates: PropTypes.shape({
-      left: PropTypes.number,
-      top: PropTypes.number,
-    }),
+    activeTools: PropTypes.object,
+    coordinates: PropTypes.object,
     isHidden: PropTypes.bool,
     text: PropTypes.string,
   }
@@ -99,7 +98,7 @@ export default class TextTools extends Component {
   createLink(text) {
     this.setState({ isLinkActive: true, isLinkInputOpen: false })
     requestAnimationFrame(() => {
-      document.execCommand('createLink', false, this.prefixLink(text))
+      document.execCommand('createLink', false, prefixLink(text))
       this.saveSelection()
     })
   }
@@ -120,12 +119,6 @@ export default class TextTools extends Component {
     const sel = window.getSelection()
     sel.removeAllRanges()
     sel.addRange(this.range)
-  }
-
-  prefixLink(text) {
-    const linkPrefix = /((ftp|http|https):\/\/.)|mailto(?=:[-\.\w]+@)/
-    if (!linkPrefix.test(text)) return `http://${text}`
-    return text
   }
 
   render() {

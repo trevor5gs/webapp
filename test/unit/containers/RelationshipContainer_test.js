@@ -44,7 +44,6 @@ describe('RelationshipButton', () => {
 
     const expected = {
       deviceSize: 'mobile',
-      isLoggedIn: true,
       onClickCallback: 'onRelationshipUpdate',
       pathname: '/discover',
       previousPath: '/onboarding',

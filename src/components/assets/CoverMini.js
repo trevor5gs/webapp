@@ -28,7 +28,6 @@ export function getSource(props) {
 export default class CoverMini extends Component {
 
   static propTypes = {
-    coverImage: PropTypes.any,
     to: PropTypes.string,
   }
 

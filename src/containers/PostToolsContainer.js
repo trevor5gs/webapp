@@ -60,6 +60,7 @@ export function mapStateToProps(state, props) {
   }
 }
 
+/* eslint-disable react/no-unused-prop-types */
 class PostToolsContainer extends Component {
 
   static propTypes = {
@@ -243,6 +244,7 @@ class PostToolsContainer extends Component {
     return <PostTools {...toolProps} />
   }
 }
+/* eslint-enable react/no-unused-prop-types */
 
 export default connect(mapStateToProps)(PostToolsContainer)
 

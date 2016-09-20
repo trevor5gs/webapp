@@ -4,13 +4,7 @@ import Block from './Block'
 class EmbedBlock extends Component {
 
   static propTypes = {
-    data: PropTypes.shape({
-      url: PropTypes.string,
-      service: PropTypes.string,
-      id: PropTypes.string,
-      thumbnailLargeUrl: PropTypes.string,
-      thumbnailSmallUrl: PropTypes.string,
-    }),
+    data: PropTypes.object,
   }
 
   static defaultProps = {

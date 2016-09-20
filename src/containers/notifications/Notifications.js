@@ -24,9 +24,6 @@ class Notifications extends Component {
   static propTypes = {
     category: PropTypes.string,
     pathname: PropTypes.string,
-    params: PropTypes.shape({
-      category: PropTypes.string,
-    }),
     streamAction: PropTypes.object,
   }
 

@@ -9,12 +9,6 @@ class Block extends Component {
     children: PropTypes.element,
     className: PropTypes.string,
     editorId: PropTypes.string.isRequired,
-    kind: PropTypes.oneOf([
-      'block',
-      'embed',
-      'image',
-      'text',
-    ]).isRequired,
     linkURL: PropTypes.string,
     onRemoveBlock: PropTypes.func.isRequired,
     uid: PropTypes.number.isRequired,

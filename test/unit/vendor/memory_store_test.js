@@ -23,7 +23,7 @@ describe('MemoryStore', () => {
 
   it('can store with promises', (done) => {
     MemoryStore.setItem('test', 2).then(() => {
-      MemoryStore.getItem('test').then(val => {
+      MemoryStore.getItem('test').then((val) => {
         expect(val).to.eq(2)
         done()
       })

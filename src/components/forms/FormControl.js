@@ -12,15 +12,12 @@ class FormControl extends Component {
     id: PropTypes.string.isRequired,
     kind: PropTypes.string,
     label: PropTypes.string,
-    name: PropTypes.string,
     onBlur: PropTypes.func,
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
-    placeholder: PropTypes.string,
     renderStatus: PropTypes.func,
     renderFeedback: PropTypes.func,
     status: PropTypes.string,
-    tabIndex: PropTypes.string.isRequired,
     trimWhitespace: PropTypes.bool,
     text: PropTypes.string,
   }
@@ -169,7 +166,7 @@ class FormControl extends Component {
       'text',
       'trimWhitespace',
     ]
-    blacklistedProps.forEach(prop => {
+    blacklistedProps.forEach((prop) => {
       delete elementProps[prop]
     })
     return elementProps

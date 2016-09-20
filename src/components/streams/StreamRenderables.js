@@ -35,7 +35,7 @@ export function categoriesAsGrid(categories) {
 export function usersAsCards(users) {
   return (
     <div className="Cards">
-      {users.data.map((user) =>
+      {users.data.map(user =>
         <UserCard user={user} key={`userCard_${user.id}`} />
       )}
     </div>
@@ -45,7 +45,7 @@ export function usersAsCards(users) {
 export function usersAsGrid(users) {
   return (
     <div className="Users asGrid">
-      {users.data.map((user) =>
+      {users.data.map(user =>
         <UserContainer user={user} key={`userGrid_${user.id}`} type="grid" />
       )}
     </div>
@@ -55,7 +55,7 @@ export function usersAsGrid(users) {
 export function usersAsList(users) {
   return (
     <div className="Users asList">
-      {users.data.map((user) =>
+      {users.data.map(user =>
         <UserContainer user={user} key={`userList_${user.id}`} type="list" />
       )}
     </div>
@@ -65,7 +65,7 @@ export function usersAsList(users) {
 export function usersAsInviteeList(invitations) {
   return (
     <div className="Users asInviteeList">
-      {invitations.data.map((invitation) =>
+      {invitations.data.map(invitation =>
         <UserInvitee
           invitation={invitation}
           key={`userInviteeList_${invitation.id}`}
@@ -78,7 +78,7 @@ export function usersAsInviteeList(invitations) {
 export function usersAsInviteeGrid(invitations) {
   return (
     <div className="Users asInviteeGrid">
-      {invitations.data.map((invitation) =>
+      {invitations.data.map(invitation =>
         <UserInvitee
           className="UserInviteeGrid"
           invitation={invitation}
@@ -91,7 +91,7 @@ export function usersAsInviteeGrid(invitations) {
 
 export function postsAsGrid(posts, columnCount) {
   const columns = []
-  for (let i = 0; i < columnCount; i++) {
+  for (let i = 0; i < columnCount; i += 1) {
     columns.push([])
   }
   Object.keys(posts.data).forEach((index) => {
@@ -101,7 +101,7 @@ export function postsAsGrid(posts, columnCount) {
     <div className="Posts asGrid">
       {columns.map((columnPosts, index) =>
         <div className="Column" key={`column_${index}`}>
-          {columnPosts.map((post) =>
+          {columnPosts.map(post =>
             <article className="PostGrid" key={`postsAsGrid_${post.id}`}>
               <PostContainer post={post} />
             </article>
@@ -115,7 +115,7 @@ export function postsAsGrid(posts, columnCount) {
 export function postsAsList(posts) {
   return (
     <div className="Posts asList">
-      {posts.data.map((post) =>
+      {posts.data.map(post =>
         <article className="PostList" key={`postsAsList_${post.id}`}>
           <PostContainer post={post} />
         </article>
@@ -153,9 +153,9 @@ export function notificationList(notifications) {
 }
 
 export function userAvatars(users) {
-  const uniqUsers = uniqBy(users.data, (user) => user.id)
+  const uniqUsers = uniqBy(users.data, user => user.id)
   return (
-    uniqUsers.map((user) =>
+    uniqUsers.map(user =>
       <UserContainer user={user} key={`userAvatar_${user.id}`} type="avatar" />
     )
   )
@@ -169,7 +169,7 @@ export function profileToggles(settings) {
       arr.push(
         <TreePanel key={`settingItems${index}`}>
           {
-            setting.items.map((item) =>
+            setting.items.map(item =>
               <Preference
                 definition={{ term: item.label, desc: item.info }}
                 id={item.key}
@@ -187,7 +187,7 @@ export function profileToggles(settings) {
 
 export function blockedMutedUserList(users) {
   return (
-    users.data.map((user) =>
+    users.data.map(user =>
       <UserContainer user={user} key={`userCompact_${user.id}`} type="compact" />
     )
   )

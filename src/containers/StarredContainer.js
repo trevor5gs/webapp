@@ -20,7 +20,7 @@ class StarredContainer extends Component {
     isBeaconActive: PropTypes.bool.isRequired,
   }
 
-  static preRender = (store) =>
+  static preRender = store =>
     store.dispatch(loadNoise())
 
   shouldComponentUpdate(nextProps, nextState) {

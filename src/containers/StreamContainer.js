@@ -54,7 +54,7 @@ class StreamContainer extends Component {
 
   static propTypes = {
     action: PropTypes.object,
-    children: PropTypes.any,
+    children: PropTypes.node,
     className: PropTypes.string,
     columnCount: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
@@ -101,7 +101,7 @@ class StreamContainer extends Component {
         return () => null
       }
     }
-    const unlisten = browserListen(location => {
+    const unlisten = browserListen((location) => {
       this.state = { action, locationKey: /\/search/.test(pathname) ? '/search' : location.key }
     })
     unlisten()
