@@ -6,6 +6,7 @@ import values from 'lodash/values'
 import Honeybadger from 'honeybadger'
 import express from 'express'
 import cookieParser from 'cookie-parser'
+import helmet from 'helmet'
 import morgan from 'morgan'
 import librato from 'librato-node'
 import path from 'path'
@@ -56,6 +57,9 @@ app.use(librato.middleware())
 librato.on('error', (err) => {
   console.log('ELLO LIBRATO ERROR', err)
 })
+
+// Use Helmet to lock things down
+app.use(helmet())
 
 const indexStr = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf-8')
 
