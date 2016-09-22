@@ -325,6 +325,7 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.ADD_NEW_IDS_TO_RESULT:
       return methods.addNewIdsToResult(state, newState)
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
+    case ACTION_TYPES.COMMENT.CREATE_REQUEST:
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
       methods.parseLinked(get(action, 'payload.response.linked'), newState)
@@ -360,7 +361,7 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.POST.WATCH_REQUEST:
     case ACTION_TYPES.POST.WATCH_SUCCESS:
     case ACTION_TYPES.POST.WATCH_FAILURE:
-      return postMethods.updatePostWatch(state, newState, action)
+      return postMethods.updatePostWatch(newState, action)
     case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_COVER_SUCCESS:

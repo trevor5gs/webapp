@@ -82,7 +82,7 @@ methods.updatePostLoves = (state, newState, action) => {
   return newState
 }
 
-methods.updatePostWatch = (state, newState, action) => {
+methods.updatePostWatch = (newState, action) => {
   const { method, model } = action.payload
   const newPost = {
     id: model ? model.id : '',
