@@ -4,14 +4,6 @@ import { sampleSize } from 'lodash'
 import Emoji from '../assets/Emoji'
 import { SVGIcon } from '../svg/SVGComponents'
 
-// Usage:
-
-// onInsertEmoji = ({ value }) => {
-//   console.log('insert the value', value)
-// }
-
-// <QuickEmoji onAddEmoji={ this.onInsertEmoji }/>
-
 const options = [
   '+1', 'sparkles', 'metal', 'ok_hand', 'v', 'snowman', 'heart', 'panda_face',
   'clap', 'boom', 'star', 'wave', 'raised_hands', 'dizzy', 'sparkling_heart',

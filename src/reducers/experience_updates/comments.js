@@ -3,6 +3,7 @@ import _ from 'lodash'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as jsonReducer from '../../reducers/json'
+import postMethods from './posts'
 
 const methods = {}
 
@@ -24,6 +25,10 @@ methods.addOrUpdateComment = (newState, action) => {
   const post = newState[MAPPING_TYPES.POSTS][postId]
   let index = null
   switch (action.type) {
+    case ACTION_TYPES.COMMENT.CREATE_REQUEST:
+      return postMethods.updatePostWatch(newState, {
+        payload: { method: 'POST', model: post },
+      })
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
       _.setWith(newState,
@@ -31,6 +36,10 @@ methods.addOrUpdateComment = (newState, action) => {
                 response[MAPPING_TYPES.COMMENTS],
                 Object)
       if (action.type === ACTION_TYPES.COMMENT.UPDATE_SUCCESS) { return newState }
+      // update post watching prop
+      newState = postMethods.updatePostWatch(newState, {
+        payload: { method: 'POST', model: post },
+      })
       // add the comment to the linked array
       if (post.links && post.links.comments) {
         post.links.comments.ids.unshift(`${response[MAPPING_TYPES.COMMENTS].id}`)
@@ -50,6 +59,9 @@ methods.addOrUpdateComment = (newState, action) => {
       jsonReducer.methods.removePageId(newState, `/posts/${postId}/comments`, model.id)
       return methods.updateCommentsCount(newState, postId, -1)
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
+      postMethods.updatePostWatch(newState, {
+        payload: { method: 'DELETE', model: post },
+      })
       return methods.updateCommentsCount(newState, postId, -1)
     default:
       return newState
