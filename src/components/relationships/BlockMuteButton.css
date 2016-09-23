@@ -35,10 +35,12 @@
   }
 }
 
-/* Temporary till we can fix the layout position for these in UserProfile */
+/* Temporary till we can do this the right way */
 @media (--break-2-max) {
-  .BlockMuteButton > .DotsIcon > g {
-    fill: #aaa;
+  .BlockMuteButton.inUserProfile {
+    top: -285px;
+    right: auto;
+    left: 0;
   }
 }
 
