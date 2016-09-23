@@ -114,7 +114,7 @@ class Editor extends Component {
     }
     if (onSubmit) { onSubmit() }
     // if on own page scroll down to top of post content
-    if (isOwnPage) {
+    if (isOwnPage && !isComment) {
       const { onClickScrollToContent } = this.context
       onClickScrollToContent()
     }
