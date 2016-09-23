@@ -97,7 +97,7 @@ class AppContainer extends Component {
   }
 
   onClickScrollToContent = () => {
-    scrollTo(0, window.innerHeight)
+    scrollTo(0, document.querySelector('.Hero').offsetHeight)
   }
 
   render() {
