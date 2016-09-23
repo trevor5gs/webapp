@@ -4,8 +4,9 @@ import { ZeroStream } from '../zeros/Zeros'
 import UserContainer from '../../containers/UserContainer'
 import BackgroundImage from '../assets/BackgroundImage'
 import { SVGIcon } from '../svg/SVGComponents'
+import { ShareIcon } from '../users/UserParts'
 
-const ScrollToContentIcon = (props, { onClickScrollToContent }) =>
+const ScrollToContentButton = (props, { onClickScrollToContent }) =>
   <button className="ScrollToContentButton" onClick={onClickScrollToContent}>
     <SVGIcon className="ScrollToContentIcon">
       <g>
@@ -14,8 +15,16 @@ const ScrollToContentIcon = (props, { onClickScrollToContent }) =>
       </g>
     </SVGIcon>
   </button>
-ScrollToContentIcon.contextTypes = {
-  onClickScrollToContent: React.PropTypes.func,
+ScrollToContentButton.contextTypes = {
+  onClickScrollToContent: PropTypes.func,
+}
+
+const UserDirtShareHeroButton = (props, { onClickShareProfile }) =>
+  <button className="UserDirtShareHeroButton" onClick={onClickShareProfile} >
+    <ShareIcon />
+  </button>
+UserDirtShareHeroButton.contextTypes = {
+  onClickShareProfile: PropTypes.func,
 }
 
 const HeroProfile = ({ dpi, pathname, sources, userId, useGif }) =>
@@ -27,7 +36,8 @@ const HeroProfile = ({ dpi, pathname, sources, userId, useGif }) =>
       useGif={useGif}
     />
     <UserContainer userId={userId} type="profile" key={`HeroProfile_${pathname}`} />
-    <ScrollToContentIcon />
+    <UserDirtShareHeroButton />
+    <ScrollToContentButton />
   </div>
 HeroProfile.propTypes = {
   dpi: PropTypes.string.isRequired,

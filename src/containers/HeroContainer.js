@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
 import sample from 'lodash/sample'
 import shallowCompare from 'react-addons-shallow-compare'
@@ -20,6 +21,8 @@ import {
   setLastFollowingBeaconVersion,
   setLastStarredBeaconVersion,
 } from '../actions/gui'
+import { openModal } from '../actions/modals'
+import ShareDialog from '../components/dialogs/ShareDialog'
 import Hero from '../components/heros/Hero'
 
 const PROMOTION_ROUTES = [
@@ -78,6 +81,16 @@ class HeroContainer extends Component {
     viewName: PropTypes.string.isRequired,
   }
 
+  static childContextTypes = {
+    onClickShareProfile: PropTypes.func,
+  }
+
+  getChildContext() {
+    return {
+      onClickShareProfile: this.onClickShareProfile,
+    }
+  }
+
   componentWillMount() {
     this.state = { promotion: null, broadcast: this.props.broadcast }
   }
@@ -97,6 +110,13 @@ class HeroContainer extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState)
+  }
+
+  onClickShareProfile = () => {
+    const { dispatch, user } = this.props
+    const action = bindActionCreators(trackEvent, dispatch)
+    dispatch(openModal(<ShareDialog user={user} trackEvent={action} />))
+    dispatch(trackEvent('open-share-dialog-profile'))
   }
 
   onClickTrackCredits = () => {
