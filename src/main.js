@@ -4,18 +4,18 @@ import 'isomorphic-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { Router, browserHistory } from 'react-router'
+import { applyRouterMiddleware, browserHistory, Router } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
+import useScroll from 'react-router-scroll/lib/useScroll'
 import { persistStore, storages } from 'redux-persist'
 
 // import './main.sass'
 import './main.css'
 import { addFeatureDetection, isIOS } from './vendor/jello'
-import { scrollToOffsetTop } from './vendor/scrolling'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import store from './store'
 import createRoutes from './routes'
-import session from './vendor/session'
+import Session from './vendor/session'
 import Honeybadger from './vendor/honeybadger'
 import MemoryStore from './vendor/memory_store'
 
@@ -29,6 +29,13 @@ if (isIOS()) {
 }
 /* eslint-enable global-require */
 
+function shouldScroll(prevRouterProps, { location }) {
+  const notificationScrollY = Session.getItem(`${location.pathname}/scrollY`)
+  if (/\/notifications\b/.test(location.pathname) && notificationScrollY) {
+    return [0, notificationScrollY]
+  }
+  return location.action !== 'REPLACE'
+}
 
 // ONLY FOR PERFORMANCE TESTING!
 // if (process.env.NODE_ENV !== 'production') {
@@ -51,7 +58,11 @@ const history = syncHistoryWithStore(browserHistory, store)
 const routes = createRoutes(store)
 const element = (
   <Provider store={store}>
-    <Router history={history} routes={routes} />
+    <Router
+      history={history}
+      render={applyRouterMiddleware(useScroll(shouldScroll))}
+      routes={routes}
+    />
   </Provider>
 )
 
@@ -62,15 +73,6 @@ const launchApplication = (storage, hasLocalStorage = false) => {
   const persistor = persistStore(store, { storage, whitelist }, () => {
     const root = document.getElementById('root')
     ReactDOM.render(element, root)
-
-    // Scroll fix for layouts with Covers and universal rendering Normally we
-    // call this in componentDidMount, but for the server rendered pages that
-    // happens well after the page has drawn. Calling it here tries to prevent
-    // the jumpiness for the initial page load.
-    const viewport = root.querySelector('.Viewport.isOffsetLayout')
-    if (viewport) {
-      scrollToOffsetTop()
-    }
   })
 
   // check and update current version and only kill off the persisted reducers
@@ -79,14 +81,14 @@ const launchApplication = (storage, hasLocalStorage = false) => {
   if (hasLocalStorage) {
     if (localStorage.getItem('APP_VERSION') !== APP_VERSION) {
       persistor.purge(['json'])
-      session.clear()
+      Session.clear()
       storage.setItem('APP_VERSION', APP_VERSION, () => {})
     }
   } else {
     storage.getItem('APP_VERSION', (error, result) => {
       if (result && result !== APP_VERSION) {
         persistor.purge(['json'])
-        session.clear()
+        Session.clear()
         storage.setItem('APP_VERSION', APP_VERSION, () => {})
       }
     })

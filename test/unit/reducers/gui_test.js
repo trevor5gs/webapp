@@ -25,7 +25,6 @@ describe('gui reducer', () => {
       'columnWidth',
       'contentWidth',
       'coverDPI',
-      'coverOffset',
       'currentStream',
       'deviceSize',
       'discoverKeyType',
@@ -34,15 +33,11 @@ describe('gui reducer', () => {
       'innerWidth',
       'isAuthenticationView',
       'isCompleterActive',
-      'isCoverHidden',
       'isGridMode',
       'isLayoutToolHidden',
-      'isNavbarFixed',
       'isNavbarHidden',
-      'isNavbarSkippingTransition',
       'isNotificationsActive',
       'isNotificationsUnread',
-      'isOffsetLayout',
       'isOmnibarActive',
       'isOnboardingView',
       'isProfileMenuActive',
@@ -135,12 +130,6 @@ describe('gui reducer', () => {
       expect(reducer(reducer, action)).to.have.property('activeUserFollowingType', 'noise')
     })
 
-    it('GUI.SET_IS_OFFSET_LAYOUT updates isOffsetLayout', () => {
-      expect(reducer(undefined, {})).to.have.property('isOffsetLayout', false)
-      const action = { type: GUI.SET_IS_OFFSET_LAYOUT, payload: { isOffsetLayout: true } }
-      expect(reducer(reducer, action)).to.have.property('isOffsetLayout', true)
-    })
-
     it('GUI.SET_IS_PROFILE_MENU_ACTIVE updates isProfileMenuActive', () => {
       expect(reducer(undefined, {})).to.have.property('isProfileMenuActive', false)
       const isProfileMenuActive = true
@@ -166,39 +155,19 @@ describe('gui reducer', () => {
       expect(reducer(undefined, action)).to.have.property('lastStarredBeaconVersion', '667')
     })
 
-    it('GUI.SET_SCROLL', () => {
+    it('GUI.SET_IS_NAVBAR_HIDDEN updates properties from the initialScrollState', () => {
       const initialState = reducer(undefined, {})
-      expect(initialState.history).to.be.empty
-      const action1 = { type: GUI.SET_SCROLL, payload: { key: '1', scrollTop: 0 } }
-      const nextState = reducer(initialState, action1)
-      expect(nextState.history['1']).to.deep.equal(action1.payload)
-      const action2 = { type: GUI.SET_SCROLL, payload: { key: '2', scrollTop: 800 } }
-      const lastState = reducer(nextState, action2)
-      expect(lastState.history['2']).to.deep.equal({ ...action1.payload, ...action2.payload })
-    })
-
-    it('GUI.SET_SCROLL_STATE updates properties from the initialScrollState', () => {
-      const initialState = reducer(undefined, {})
-      expect(initialState).to.have.property('isCoverHidden', false)
-      expect(initialState).to.have.property('isNavbarFixed', false)
       expect(initialState).to.have.property('isNavbarHidden', false)
-      expect(initialState).to.have.property('isNavbarSkippingTransition', false)
 
       const action = {
-        type: GUI.SET_SCROLL_STATE,
+        type: GUI.SET_IS_NAVBAR_HIDDEN,
         payload: {
-          isCoverHidden: true,
-          isNavbarFixed: true,
           isNavbarHidden: true,
-          isNavbarSkippingTransition: true,
         },
       }
 
       const nextState = reducer(initialState, action)
-      expect(nextState).to.have.property('isCoverHidden', true)
-      expect(nextState).to.have.property('isNavbarFixed', true)
       expect(nextState).to.have.property('isNavbarHidden', true)
-      expect(nextState).to.have.property('isNavbarSkippingTransition', true)
     })
 
     it('GUI.SET_VIEWPORT_SIZE_ATTRIBUTES', () => {
@@ -207,7 +176,6 @@ describe('gui reducer', () => {
       expect(initialState).to.have.property('columnWidth', 0)
       expect(initialState).to.have.property('contentWidth', 0)
       expect(initialState).to.have.property('coverDPI', 'xhdpi')
-      expect(initialState).to.have.property('coverOffset', 0)
       expect(initialState).to.have.property('deviceSize', 'tablet')
       expect(initialState).to.have.property('innerHeight', 0)
       expect(initialState).to.have.property('innerWidth', 0)
@@ -218,7 +186,6 @@ describe('gui reducer', () => {
           columnWidth: 320,
           contentWidth: 1280,
           coverDPI: 'optimized',
-          coverOffset: 200,
           deviceSize: 'desktop',
           innerHeight: 768,
           innerWidth: 1360,
@@ -230,7 +197,6 @@ describe('gui reducer', () => {
       expect(nextState.columnWidth).to.equal(320)
       expect(nextState.contentWidth).to.equal(1280)
       expect(nextState.coverDPI).to.equal('optimized')
-      expect(nextState.coverOffset).to.equal(200)
       expect(nextState.deviceSize).to.equal('desktop')
       expect(nextState.innerHeight).to.equal(768)
       expect(nextState.innerWidth).to.equal(1360)

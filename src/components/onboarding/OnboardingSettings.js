@@ -6,7 +6,7 @@ import { ElloOutlineMark } from '../svg/ElloIcons'
 import InfoForm from '../forms/InfoForm'
 import Uploader from '../uploaders/Uploader'
 import Avatar from '../assets/Avatar'
-import CoverMini from '../assets/CoverMini'
+import BackgroundImage from '../assets/BackgroundImage'
 
 const OnboardingSettings = (props, context) => {
   const { avatar, isAvatarBlank, saveAvatar } = context
@@ -29,8 +29,9 @@ const OnboardingSettings = (props, context) => {
           saveAction={saveCover}
           title="Upload Header"
         />
-        <CoverMini
-          coverImage={coverImage}
+        <BackgroundImage
+          className="hasOverlay inOnboarding"
+          sources={coverImage}
           useGif
         />
       </div>

@@ -6,11 +6,8 @@ export const Viewport = props =>
     className={classNames(
       'Viewport',
       { isAuthenticationView: props.isAuthenticationView },
-      { isNavbarFixed: props.isNavbarFixed },
       { isNavbarHidden: props.isNavbarHidden },
-      { isNavbarSkippingTransition: props.isNavbarSkippingTransition },
       { isNotificationsActive: props.isNotificationsActive },
-      { isOffsetLayout: props.isOffsetLayout },
       { isOnboardingView: props.isOnboardingView },
       { isProfileMenuActive: props.isProfileMenuActive },
     )}
@@ -19,11 +16,8 @@ export const Viewport = props =>
 
 Viewport.propTypes = {
   isAuthenticationView: PropTypes.bool.isRequired,
-  isNavbarFixed: PropTypes.bool.isRequired,
   isNavbarHidden: PropTypes.bool.isRequired,
-  isNavbarSkippingTransition: PropTypes.bool.isRequired,
   isNotificationsActive: PropTypes.bool.isRequired,
-  isOffsetLayout: PropTypes.bool.isRequired,
   isOnboardingView: PropTypes.bool.isRequired,
   isProfileMenuActive: PropTypes.bool.isRequired,
 }

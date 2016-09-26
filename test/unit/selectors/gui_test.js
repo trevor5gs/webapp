@@ -2,7 +2,7 @@ import {
   selectCommentOffset,
   selectIsMobileGridStream,
   selectHasSaidHelloTo,
-  selectScrollDirectionOffset,
+  selectScrollOffset,
 } from '../../../src/selectors/gui'
 
 describe('gui selectors', () => {
@@ -50,18 +50,18 @@ describe('gui selectors', () => {
     })
   })
 
-  context('#selectScrollDirectionOffset', () => {
-    it('selects with memoization the comment offset', () => {
-      let state = { gui: { coverOffset: 0, change: false } }
-      expect(selectScrollDirectionOffset(state)).to.equal(160)
+  context('#selectScrollOffset', () => {
+    it('selects with memoization the scroll offset', () => {
+      let state = { gui: { innerHeight: 100, change: false } }
+      expect(selectScrollOffset(state)).to.equal(20)
 
-      state = { gui: { coverOffset: 0, change: true } }
-      expect(selectScrollDirectionOffset(state)).to.equal(160)
-      expect(selectScrollDirectionOffset.recomputations()).to.equal(1)
+      state = { gui: { innerHeight: 100, change: true } }
+      expect(selectScrollOffset(state)).to.equal(20)
+      expect(selectScrollOffset.recomputations()).to.equal(1)
 
-      state = { gui: { coverOffset: 100, change: true } }
-      expect(selectScrollDirectionOffset(state)).to.equal(20)
-      expect(selectScrollDirectionOffset.recomputations()).to.equal(2)
+      state = { gui: { innerHeight: 666, change: true } }
+      expect(selectScrollOffset(state)).to.equal(586)
+      expect(selectScrollOffset.recomputations()).to.equal(2)
     })
   })
 })

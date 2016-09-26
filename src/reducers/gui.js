@@ -1,5 +1,5 @@
 import { REHYDRATE } from 'redux-persist/constants'
-import _ from 'lodash'
+import get from 'lodash/get'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   AUTHENTICATION,
@@ -41,7 +41,16 @@ const NO_LAYOUT_TOOLS = [
   /^\/notifications\b/,
   /^\/settings\b/,
   /^\/onboarding\b/,
+  /^\/[\w\-]+\/following\b/,
+  /^\/[\w\-]+\/followers\b/,
 ]
+
+function getIsLayoutToolHidden() {
+  const pathname = location.pathname
+  const locationType = get(location, 'query.type')
+  const isUserSearch = locationType === 'users' && /^\/search\b/.test(pathname)
+  return isUserSearch || NO_LAYOUT_TOOLS.some(pagex => pagex.test(pathname))
+}
 
 export const findLayoutMode = (modes) => {
   for (const mode of modes) {
@@ -64,17 +73,13 @@ const initialSizeState = {
   columnWidth: 0,
   contentWidth: 0,
   coverDPI: 'xhdpi',
-  coverOffset: 0,
   deviceSize: 'tablet',
   innerHeight: 0,
   innerWidth: 0,
 }
 
 const initialScrollState = {
-  isCoverHidden: false,
-  isNavbarFixed: false,
   isNavbarHidden: false,
-  isNavbarSkippingTransition: false,
 }
 
 const initialNonPersistedState = {
@@ -101,7 +106,6 @@ export const initialState = {
   isGridMode: true,
   isLayoutToolHidden: false,
   isNotificationsUnread: false,
-  isOffsetLayout: false,
   isOnboardingView: false,
   lastDiscoverBeaconVersion: '0',
   lastFollowingBeaconVersion: '0',
@@ -153,28 +157,19 @@ export const gui = (state = initialState, action = { type: '' }) => {
       return { ...state, activeNotificationsType: action.payload.activeTabType }
     case GUI.SET_ACTIVE_USER_FOLLOWING_TYPE:
       return { ...state, activeUserFollowingType: action.payload.tab }
+    case GUI.SET_IS_NAVBAR_HIDDEN:
+      return {
+        ...state,
+        isNavbarHidden: get(action.payload, 'isNavbarHidden', state.isNavbarHidden),
+      }
     case GUI.SET_IS_PROFILE_MENU_ACTIVE:
       return { ...state, isProfileMenuActive: action.payload.isProfileMenuActive }
-    case GUI.SET_IS_OFFSET_LAYOUT:
-      return { ...state, isOffsetLayout: action.payload.isOffsetLayout }
     case GUI.SET_LAST_DISCOVER_BEACON_VERSION:
       return { ...state, lastDiscoverBeaconVersion: action.payload.version }
     case GUI.SET_LAST_FOLLOWING_BEACON_VERSION:
       return { ...state, lastFollowingBeaconVersion: action.payload.version }
     case GUI.SET_LAST_STARRED_BEACON_VERSION:
       return { ...state, lastStarredBeaconVersion: action.payload.version }
-    case GUI.SET_SCROLL:
-      newState.history[action.payload.key] = { ...action.payload }
-      return newState
-    case GUI.SET_SCROLL_STATE:
-      return {
-        ...state,
-        isCoverHidden: _.get(action.payload, 'isCoverHidden', state.isCoverHidden),
-        isNavbarFixed: _.get(action.payload, 'isNavbarFixed', state.isNavbarFixed),
-        isNavbarHidden: _.get(action.payload, 'isNavbarHidden', state.isNavbarHidden),
-        isNavbarSkippingTransition:
-          _.get(action.payload, 'isNavbarSkippingTransition', state.isNavbarSkippingTransition),
-      }
     case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
       return { ...state, ...action.payload }
     case GUI.TOGGLE_NOTIFICATIONS:
@@ -195,13 +190,13 @@ export const gui = (state = initialState, action = { type: '' }) => {
         }
       }
       return state
-    case LOCATION_CHANGE:
+    case LOCATION_CHANGE: {
       location = action.payload
       pathname = location.pathname
-      isAuthenticationView = _.some(AUTHENTICATION_WHITELIST, pagex => pagex.test(pathname))
-      isLayoutToolHidden = _.some(NO_LAYOUT_TOOLS, pagex => pagex.test(pathname))
-      isOnboardingView = _.some(ONBOARDING_WHITELIST, pagex => pagex.test(pathname))
-      if (_.some(STREAMS_WHITELIST, re => re.test(pathname))) {
+      isAuthenticationView = AUTHENTICATION_WHITELIST.some(pagex => pagex.test(pathname))
+      isLayoutToolHidden = getIsLayoutToolHidden(location)
+      isOnboardingView = ONBOARDING_WHITELIST.some(pagex => pagex.test(pathname))
+      if (STREAMS_WHITELIST.some(re => re.test(pathname))) {
         return {
           ...state,
           ...initialScrollState,
@@ -220,6 +215,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
         isGridMode: getIsGridMode(state.modes),
         isOnboardingView,
       }
+    }
     case OMNIBAR.OPEN:
     case OMNIBAR.CLOSE:
       return { ...state, isOmnibarActive: action.payload.isActive }

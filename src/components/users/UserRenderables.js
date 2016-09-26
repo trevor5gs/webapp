@@ -1,15 +1,23 @@
 import React, { PropTypes } from 'react'
-import classNames from 'classnames'
 import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
-import CoverMini from '../assets/CoverMini'
+import BackgroundImage from '../assets/BackgroundImage'
 import Hint from '../hints/Hint'
 import { loadUserDrawer } from '../../actions/user'
 import RelationshipContainer from '../../containers/RelationshipContainer'
 import StreamContainer from '../../containers/StreamContainer'
-import { MiniPillButton } from '../buttons/Buttons'
-import { ShareIcon } from './UserIcons'
-import { UserDetailUserNames, UserNames, UserStats, UserInfo } from './UserVitals'
+import {
+  UserDirtCell,
+  UserInfoCell,
+  UserLinksCell,
+  UserNamesCell,
+  UserNamesCellCard,
+  UserProfileButtons,
+  UserStatsCell,
+} from './UserParts'
+
+// -------------------------------------
+// User renderables
 
 export const UserAvatar = ({ user }) =>
   <Link className="UserAvatar" to={`/${user.username}`}>
@@ -25,6 +33,8 @@ export const UserAvatar = ({ user }) =>
 UserAvatar.propTypes = {
   user: PropTypes.object,
 }
+
+// -----------------
 
 export const UserCompact = ({ user }) =>
   <div className="UserCompact">
@@ -49,6 +59,8 @@ UserCompact.propTypes = {
   user: PropTypes.object,
 }
 
+// -----------------
+
 export const UserDrawer = ({ endpoint, icon, post, resultType }) =>
   <section className="UserDrawer">
     {icon}
@@ -66,92 +78,135 @@ UserDrawer.propTypes = {
   resultType: PropTypes.string.isRequired,
 }
 
-export const UserGrid = ({ user }) =>
-  <div className="UserGrid" >
-    <CoverMini to={`/${user.username}`} coverImage={user.coverImage} />
+// -----------------
+
+export const UserProfileCard = ({ isMobile, onClickCollab, onClickHireMe, user }) =>
+  <div className="UserProfileCard" >
     <Avatar
+      className="inUserProfileCard"
       priority={user.relationshipPriority}
+      size={isMobile ? 'regular' : 'large'}
       sources={user.avatar}
       to={`/${user.username}`}
       userId={`${user.id}`}
       username={user.username}
     />
-    <RelationshipContainer
-      user={user}
-      relationshipPriority={user.relationshipPriority}
+    <UserProfileButtons
+      className="inUserProfileCard"
+      onClickCollab={user.isCollaborateable ? onClickCollab : null}
+      onClickHireMe={user.isHireable ? onClickHireMe : null}
+    >
+      <RelationshipContainer
+        className="isPill inUserProfileCard"
+        relationshipPriority={user.relationshipPriority}
+        user={user}
+      />
+    </UserProfileButtons>
+    <UserNamesCellCard
+      className="inUserProfileCard"
+      name={user.name}
+      username={user.username}
     />
-    <UserStats
+    <UserStatsCell
+      className="inUserProfileCard"
       followingCount={user.followingCount}
       followersCount={user.followersCount}
       lovesCount={user.lovesCount}
       postsCount={user.postsCount}
       username={user.username}
     />
-    <UserNames user={user} />
-    <UserInfo user={user} />
+    { !isMobile ?
+      <UserInfoCell
+        className="inUserProfileCard"
+        shortBio={user.formattedShortBio}
+      /> : null
+    }
+    <BackgroundImage
+      className="hasOverlay inUserProfileCard"
+      sources={user.coverImage}
+      to={`/${user.username}`}
+    />
   </div>
 
-UserGrid.propTypes = {
+UserProfileCard.propTypes = {
+  isMobile: PropTypes.bool,
+  onClickCollab: PropTypes.func,
+  onClickHireMe: PropTypes.func,
   user: PropTypes.object,
 }
 
-export const UserList = (props) => {
-  const { className, isUserDetail, onClickHireMe, onClickShareProfile,
-    showBlockMuteButton, useGif, user } = props
-  return (
-    <div className={classNames(className, 'UserList')}>
-      <Avatar
-        alt={isUserDetail && user.name ? user.name : user.username}
-        className="isLarge"
-        priority={user.relationshipPriority}
-        size="large"
-        sources={user.avatar}
-        to={`/${user.username}`}
-        useGif={useGif && (user.viewsAdultContent || !user.postsAdultContent)}
-        userId={user.id}
-        username={user.username}
-      />
+// -----------------
+
+export const UserProfile = ({ isLoggedIn, user, onClickCollab,
+  onClickHireMe, onClickShareProfile }) =>
+  <div className="UserProfile">
+    <Avatar
+      alt={user.name ? user.name : user.username}
+      className="inUserProfile"
+      priority={user.relationshipPriority}
+      size="large"
+      sources={user.avatar}
+      to={`/${user.username}`}
+      useGif={(user.viewsAdultContent || !user.postsAdultContent)}
+      userId={`${user.id}`}
+      username={user.username}
+    />
+    <UserNamesCell
+      className="inUserProfile"
+      name={user.name}
+      username={user.username}
+    >
+      {isLoggedIn && user.relationshipPriority !== 'self' ?
+        <RelationshipContainer
+          hasBlockMuteButton
+          className="inUserProfile"
+          relationshipPriority={user.relationshipPriority}
+          user={user}
+        /> : null
+      }
+    </UserNamesCell>
+    {user.totalPostViewsCount && parseInt(user.totalPostViewsCount, 10) > 0 ?
+      <UserDirtCell
+        className="inUserProfile"
+        onClickShareProfile={onClickShareProfile}
+        totalPostViewsCount={user.totalPostViewsCount}
+      /> : null
+    }
+    <UserStatsCell
+      className="inUserProfile"
+      followersCount={user.followersCount}
+      followingCount={user.followingCount}
+      lovesCount={user.lovesCount}
+      postsCount={user.postsCount}
+      username={user.username}
+    />
+    <UserInfoCell
+      className="inUserProfile"
+      location={user.location}
+      shortBio={user.formattedShortBio}
+    />
+    <UserLinksCell
+      className="inUserProfile"
+      externalLinksList={user.externalLinksList}
+    />
+    <UserProfileButtons
+      className="inUserProfile"
+      onClickCollab={user.isCollaborateable ? onClickCollab : null}
+      onClickHireMe={user.isHireable ? onClickHireMe : null}
+    >
       <RelationshipContainer
-        hasBlockMuteButton={showBlockMuteButton}
+        className="isPill inUserProfile"
         relationshipPriority={user.relationshipPriority}
         user={user}
       />
-      {isUserDetail ? <UserDetailUserNames user={user} /> : <UserNames user={user} />}
-      <UserStats
-        followersCount={user.followersCount}
-        followingCount={user.followingCount}
-        lovesCount={user.lovesCount}
-        postsCount={user.postsCount}
-        username={user.username}
-      />
-      <UserInfo user={user} />
-      {user.isHireable ?
-        <div className="ProfileButtons">
-          <MiniPillButton onClick={onClickHireMe} >
-            Hire Me
-          </MiniPillButton>
-          <button className="ProfileButtonsShareButton" onClick={onClickShareProfile} >
-            <ShareIcon />
-          </button>
-        </div>
-        :
-        <div className="ProfileButtons">
-          <MiniPillButton onClick={onClickShareProfile} >
-            Share Profile
-          </MiniPillButton>
-        </div>
-      }
-    </div>
-  )
-}
+    </UserProfileButtons>
+  </div>
 
-UserList.propTypes = {
-  className: PropTypes.string,
-  isUserDetail: PropTypes.bool,
+UserProfile.propTypes = {
+  isLoggedIn: PropTypes.bool,
+  onClickCollab: PropTypes.func,
   onClickHireMe: PropTypes.func,
   onClickShareProfile: PropTypes.func,
-  showBlockMuteButton: PropTypes.bool,
-  useGif: PropTypes.bool,
   user: PropTypes.object,
 }
 

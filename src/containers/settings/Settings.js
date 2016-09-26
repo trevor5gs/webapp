@@ -7,7 +7,6 @@ import { debounce, isEmpty, get } from 'lodash'
 import { PREFERENCES, SETTINGS } from '../../constants/locales/en'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
-import { selectCoverDPI, selectCoverOffset, selectIsCoverHidden } from '../../selectors/gui'
 import { selectAvailability, selectBlockedCount, selectMutedCount } from '../../selectors/profile'
 import { openModal, closeModal, openAlert, closeAlert } from '../../actions/modals'
 import { logout } from '../../actions/authentication'
@@ -39,7 +38,7 @@ import {
 } from '../../components/forms/Validators'
 import Uploader from '../../components/uploaders/Uploader'
 import Avatar from '../../components/assets/Avatar'
-import Cover from '../../components/assets/Cover'
+import BackgroundImage from '../../components/assets/BackgroundImage'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
 import StreamContainer from '../../containers/StreamContainer'
@@ -51,10 +50,7 @@ class Settings extends Component {
 
   static propTypes = {
     blockedCount: PropTypes.number.isRequired,
-    coverDPI: PropTypes.string,
-    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
-    isCoverHidden: PropTypes.bool,
     mutedCount: PropTypes.number.isRequired,
     profile: PropTypes.object,
   }
@@ -72,12 +68,6 @@ class Settings extends Component {
     this.emailValue = profile.email
     this.usernameValue = profile.username
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 666)
-  }
-
-  componentDidMount() {
-    // Calculate the cover height (ResizeComponent isn't initialized yet)
-    const offset = Math.round((window.innerWidth * 0.5625)) - 200
-    window.scrollTo(0, offset)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -303,7 +293,7 @@ class Settings extends Component {
 
   render() {
     const {
-      blockedCount, coverDPI, coverOffset, dispatch, isCoverHidden, mutedCount, profile,
+      blockedCount, dispatch, mutedCount, profile,
     } = this.props
     const { currentPasswordState, emailState, passwordState, usernameState } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
@@ -313,7 +303,6 @@ class Settings extends Component {
       return null
     }
 
-    // const { isInfoFormSaving } = this.state
     const mdash = <span>&mdash;</span>
     const boxControlClassNames = 'isBoxControl onWhite'
 
@@ -321,7 +310,7 @@ class Settings extends Component {
       <MainView className="Settings">
         <div className="SettingsCoverPicker">
           <Uploader
-            className="isSettingsCoverUploader"
+            className="isCoverUploader"
             closeAlert={bindActionCreators(closeAlert, dispatch)}
             line1="2560 x 1440"
             line2="Animated Gifs work too"
@@ -329,17 +318,14 @@ class Settings extends Component {
             saveAction={bindActionCreators(saveCover, dispatch)}
             title="Upload Header"
           />
-          <Cover
-            coverDPI={coverDPI}
-            coverImage={profile.coverImage}
-            coverOffset={coverOffset}
-            isHidden={isCoverHidden}
+          <BackgroundImage
+            className="hasOverlay inSettings"
+            sources={profile.coverImage}
             useGif
           />
         </div>
         <button className="SettingsLogoutButton" onClick={this.onLogOut}>Logout</button>
-
-        <div className="SettingsBody" >
+        <div className="SettingsBody">
           <div className="SettingsAvatarPicker" >
             <Uploader
               className="isAvatarUploader isSettingsAvatarUploader isLGUploader"
@@ -427,8 +413,8 @@ class Settings extends Component {
           />
 
           <p className="SettingsLinks">
-            <Link to={`/${profile.username}`}>View profile</Link>
-            <Link to="/invitations">Invite people</Link>
+            <Link className="MiniPillButton isLink" to={`/${profile.username}`}>View profile</Link>
+            <Link className="MiniPillButton isLink" to="/invitations">Invite people</Link>
           </p>
 
           <div className="SettingsPreferences">
@@ -570,9 +556,6 @@ function mapStateToProps(state) {
   return {
     availability: selectAvailability(state),
     blockedCount: selectBlockedCount(state) || 0,
-    coverDPI: selectCoverDPI(state),
-    coverOffset: selectCoverOffset(state),
-    isCoverHidden: selectIsCoverHidden(state),
     mutedCount: selectMutedCount(state) || 0,
     profile: state.profile,
   }

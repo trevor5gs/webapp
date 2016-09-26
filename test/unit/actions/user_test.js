@@ -1,7 +1,7 @@
 import { isFSA, isFSAName } from '../../support/test_helpers'
 import * as subject from '../../../src/actions/user'
 import {
-  postsAsGrid, postsAsList, userAvatars, usersAsGrid, usersAsList,
+  postsAsGrid, postsAsList, userAvatars, usersAsGrid,
 } from '../../../src/components/streams/StreamRenderables'
 import { postsFromLoves } from '../../../src/components/streams/StreamFilters'
 import { postLovers } from '../../../src/networking/api'
@@ -126,7 +126,7 @@ describe('user actions', () => {
     })
 
     it('has asList and asGrid properties on renderStreams in the action', () => {
-      expect(action.meta.renderStream.asList).to.equal(usersAsList)
+      expect(action.meta.renderStream.asList).to.equal(usersAsGrid)
       expect(action.meta.renderStream.asGrid).to.equal(usersAsGrid)
     })
 
@@ -155,7 +155,7 @@ describe('user actions', () => {
     })
 
     it('has asList and asGrid properties on renderStreams in the action', () => {
-      expect(action.meta.renderStream.asList).to.equal(usersAsList)
+      expect(action.meta.renderStream.asList).to.equal(usersAsGrid)
       expect(action.meta.renderStream.asGrid).to.equal(usersAsGrid)
     })
   })
@@ -195,8 +195,8 @@ describe('user actions', () => {
     })
   })
 
-  context('#sendMessage', () => {
-    const action = subject.sendMessage('1', 'message body')
+  context('#hireUser', () => {
+    const action = subject.hireUser('1', 'message body')
 
     it('is an FSA compliant action', () => {
       expect(isFSA(action)).to.be.true
@@ -204,6 +204,26 @@ describe('user actions', () => {
 
     it('has the correct api endpoint in the action', () => {
       expect(action.payload.endpoint.path).to.contain('/users/1/hire_me')
+    })
+
+    it('send the message via post', () => {
+      expect(action.payload.method).to.equal('POST')
+    })
+
+    it('has the expected body for sending a message', () => {
+      expect(action.payload.body.body).to.equal('message body')
+    })
+  })
+
+  context('#collabWithUser', () => {
+    const action = subject.collabWithUser('1', 'message body')
+
+    it('is an FSA compliant action', () => {
+      expect(isFSA(action)).to.be.true
+    })
+
+    it('has the correct api endpoint in the action', () => {
+      expect(action.payload.endpoint.path).to.contain('/users/1/collaborate')
     })
 
     it('send the message via post', () => {

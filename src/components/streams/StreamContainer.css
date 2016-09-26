@@ -1,5 +1,7 @@
 @import "../../lib/styles/properties.css";
 
+/* stylelint-disable no-unsupported-browser-features */
+
 .StreamContainer {
   padding: 10px;
 }
@@ -64,6 +66,10 @@
 
 .MainView > .StreamContainer .StreamBusyIndicator {
   top: 80px;
+}
+
+.MainView > .UserDetails {
+  min-height: 100vh;
 }
 
 @media (--break-2) {

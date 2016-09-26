@@ -65,7 +65,7 @@ export function loadUserFollowing(username, priority) {
     meta: {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
-        asList: StreamRenderables.usersAsList,
+        asList: StreamRenderables.usersAsGrid,
         asGrid: StreamRenderables.usersAsGrid,
       },
       resultKey: `/${username}/following?per_page=10&priority=${priority}`,
@@ -79,7 +79,7 @@ export function loadUserUsers(username, type) {
     meta: {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
-        asList: StreamRenderables.usersAsList,
+        asList: StreamRenderables.usersAsGrid,
         asGrid: StreamRenderables.usersAsGrid,
       },
     },
@@ -103,7 +103,18 @@ export function loadUserDrawer(endpoint, post, resultType) {
   }
 }
 
-export function sendMessage(id, message) {
+export function collabWithUser(id, message) {
+  return {
+    type: ACTION_TYPES.USER.COLLAB_WITH,
+    payload: {
+      body: { body: message },
+      endpoint: api.collabWithUser(id),
+      method: 'POST',
+    },
+  }
+}
+
+export function hireUser(id, message) {
   return {
     type: ACTION_TYPES.USER.HIRE_ME,
     payload: {
@@ -113,3 +124,4 @@ export function sendMessage(id, message) {
     },
   }
 }
+

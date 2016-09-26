@@ -1,0 +1,95 @@
+@import "../../lib/styles/properties.css";
+
+/* stylelint-disable no-unsupported-browser-features */
+
+.Hero {
+  padding-top: 85px;
+  background-color: #fff;
+}
+
+.HeroImage {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+}
+
+.isOnboardingView ~ .Hero,
+.isAuthenticationView ~ .Hero {
+  padding-top: 0 !important;
+}
+
+.ScrollToContentButton {
+  position: absolute;
+  bottom: 40px;
+  left: calc(50% - 20px);
+  display: none;
+  width: 40px;
+  height: 40px;
+  background-color: #000;
+  border-radius: 20px;
+}
+
+.ScrollToContentButton .ScrollToContentIcon {
+  margin-top: -4px;
+}
+
+.ScrollToContentButton .ScrollToContentIcon circle,
+.ScrollToContentButton .ScrollToContentIcon g,
+.ScrollToContentButton .ScrollToContentIcon polyline {
+  fill: none;
+  stroke: #fff;
+}
+
+.UserDirtShareHeroButton {
+  position: absolute;
+  top: 230px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+}
+
+.UserDirtShareHeroButton .ShareIcon g,
+.UserDirtShareHeroButton .ShareIcon line,
+.UserDirtShareHeroButton .ShareIcon polyline {
+  fill: none;
+  stroke: #aaa;
+}
+
+@media (--break-2-max) {
+  .isLoggedOut .Hero {
+    padding-top: 50px;
+  }
+}
+
+@media (--break-2) {
+  .ScrollToContentButton {
+    display: inline;
+  }
+
+  .Hero {
+    padding-top: 80px;
+  }
+
+  .HeroImage {
+    height: calc(100vh - 80px);
+    min-height: 540px;
+  }
+
+  .UserDirtShareHeroButton {
+    top: 20px;
+    right: 20px;
+    background-color: #000;
+    border-radius: 20px;
+  }
+
+  .UserDirtShareHeroButton .ShareIcon {
+    margin-top: -6px;
+  }
+
+  .UserDirtShareHeroButton .ShareIcon g,
+  .UserDirtShareHeroButton .ShareIcon line,
+  .UserDirtShareHeroButton .ShareIcon polyline {
+    stroke: #fff;
+  }
+}
+

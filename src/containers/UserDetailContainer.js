@@ -5,14 +5,7 @@ import { createSelector } from 'reselect'
 import shallowCompare from 'react-addons-shallow-compare'
 import { USER } from '../constants/action_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import {
-  selectActiveUserFollowingType,
-  selectCoverDPI,
-  selectCoverOffset,
-  selectHasSaidHelloTo,
-  selectIsCoverHidden,
-  selectIsOmnibarActive,
-} from '../selectors/gui'
+import { selectActiveUserFollowingType, selectHasSaidHelloTo } from '../selectors/gui'
 import { selectParamsType, selectParamsUsername } from '../selectors/params'
 import { selectStreamType } from '../selectors/stream'
 import { selectUserFromUsername } from '../selectors/user'
@@ -56,6 +49,7 @@ export function mapStateToProps(state, props) {
   const user = selectUserFromUsername(state, props)
   const activeUserFollowingType = selectActiveUserFollowingType(state)
   const isLoggedIn = selectIsLoggedIn(state)
+  const isPostHeaderHidden = type !== 'loves'
   const isSelf = isLoggedIn && user ? user.relationshipPriority === 'self' : false
   const hasSaidHelloTo = user ? !isSelf && selectHasSaidHelloTo(state, props) : false
   const keyPostfix = isSelf && activeUserFollowingType ? `/${activeUserFollowingType}` : ''
@@ -63,12 +57,8 @@ export function mapStateToProps(state, props) {
 
   return {
     activeUserFollowingType,
-    coverDPI: selectCoverDPI(state),
-    coverImage: user && user.coverImage ? user.coverImage : null,
-    coverOffset: selectCoverOffset(state),
-    isCoverActive: !selectIsOmnibarActive(state),
-    isCoverHidden: selectIsCoverHidden(state),
     isLoggedIn,
+    isPostHeaderHidden,
     isSelf,
     hasZeroFollowers: user ? user.followersCount < 1 : false,
     hasZeroPosts: user ? user.postsCount < 1 : false,
@@ -85,13 +75,9 @@ export function mapStateToProps(state, props) {
 class UserDetailContainer extends Component {
   static propTypes = {
     activeUserFollowingType: PropTypes.string,
-    coverDPI: PropTypes.string,
-    coverImage: PropTypes.object,
-    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
-    isCoverActive: PropTypes.bool.isRequired,
-    isCoverHidden: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
+    isPostHeaderHidden: PropTypes.bool,
     isSelf: PropTypes.bool.isRequired,
     hasSaidHelloTo: PropTypes.bool.isRequired,
     hasZeroFollowers: PropTypes.bool.isRequired,
@@ -142,9 +128,8 @@ class UserDetailContainer extends Component {
 
   render() {
     const { activeUserFollowingType, dispatch, streamAction, tabs, user, viewKey } = this.props
-    const { isLoggedIn, isSelf } = this.props
+    const { isLoggedIn, isPostHeaderHidden, isSelf } = this.props
     const { hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = this.props
-    const { coverDPI, coverImage, coverOffset, isCoverActive, isCoverHidden } = this.props
     const { isStreamFailing } = this.state
     const shouldBindHello = hasZeroPosts && !hasSaidHelloTo
 
@@ -158,12 +143,8 @@ class UserDetailContainer extends Component {
     if (!user) { return null }
     const props = {
       activeType: activeUserFollowingType,
-      coverDPI,
-      coverImage,
-      coverOffset,
-      isCoverActive,
-      isCoverHidden,
       isLoggedIn,
+      isPostHeaderHidden,
       isSelf,
       hasSaidHelloTo,
       hasZeroFollowers,

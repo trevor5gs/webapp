@@ -3,34 +3,32 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import { selectPagination } from '../selectors/pagination'
-import { selectPropsPathname } from '../selectors/routing'
 import { getCategories } from '../actions/discover'
 import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
-import DevTools from '../components/devtools/DevTools'
-import { AppHelmet } from '../components/helmets/AppHelmet'
-import { addGlobalDrag, removeGlobalDrag } from '../components/viewport/GlobalDrag'
-import { startRefreshTimer } from '../components/viewport/RefreshOnFocus'
-import AnalyticsContainer from '../containers/AnalyticsContainer'
-import EditorToolsContainer from '../containers/EditorToolsContainer'
-import FooterContainer from '../containers/FooterContainer'
-import KeyboardContainer from '../containers/KeyboardContainer'
-import ModalContainer from '../containers/ModalContainer'
-import NavbarContainer from '../containers/NavbarContainer'
-import OmnibarContainer from '../containers/OmnibarContainer'
-import ViewportContainer from '../containers/ViewportContainer'
 import {
   fetchAuthenticationPromos,
   fetchLoggedInPromos,
   fetchLoggedOutPromos,
 } from '../actions/promotions'
+import DevTools from '../components/devtools/DevTools'
+import { addGlobalDrag, removeGlobalDrag } from '../components/viewport/GlobalDrag'
+import { startRefreshTimer } from '../components/viewport/RefreshOnFocus'
+import AnalyticsContainer from '../containers/AnalyticsContainer'
+import EditorToolsContainer from '../containers/EditorToolsContainer'
+import FooterContainer from '../containers/FooterContainer'
+import HeroContainer from '../containers/HeroContainer'
+import KeyboardContainer from '../containers/KeyboardContainer'
+import MetaContainer from '../containers/MetaContainer'
+import ModalContainer from '../containers/ModalContainer'
+import NavbarContainer from '../containers/NavbarContainer'
+import OmnibarContainer from '../containers/OmnibarContainer'
+import ViewportContainer from '../containers/ViewportContainer'
+import { scrollTo } from '../vendor/jello'
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
   return {
     isLoggedIn: selectIsLoggedIn(state),
-    pagination: selectPagination(state, props),
-    pathname: selectPropsPathname(state, props),
   }
 }
 
@@ -40,8 +38,6 @@ class AppContainer extends Component {
     children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    pagination: PropTypes.object,
-    pathname: PropTypes.string.isRequired,
     params: PropTypes.object.isRequired,
   }
 
@@ -54,6 +50,16 @@ class AppContainer extends Component {
       ])
     }
     return store.dispatch(getCategories())
+  }
+
+  static childContextTypes = {
+    onClickScrollToContent: PropTypes.func,
+  }
+
+  getChildContext() {
+    return {
+      onClickScrollToContent: this.onClickScrollToContent,
+    }
   }
 
   componentDidMount() {
@@ -90,8 +96,12 @@ class AppContainer extends Component {
     removeGlobalDrag()
   }
 
+  onClickScrollToContent = () => {
+    scrollTo(0, document.querySelector('.Hero').offsetHeight)
+  }
+
   render() {
-    const { children, isLoggedIn, params, pagination, pathname } = this.props
+    const { children, isLoggedIn, params } = this.props
     const appClasses = classNames(
       'AppContainer',
       { isLoggedIn },
@@ -99,11 +109,12 @@ class AppContainer extends Component {
     )
     return (
       <section className={appClasses}>
-        <AppHelmet pagination={pagination} pathname={pathname} />
-        <ViewportContainer routerParams={params} />
+        <MetaContainer params={params} />
+        <ViewportContainer />
         {isLoggedIn ? <OmnibarContainer /> : null}
+        <HeroContainer params={params} />
         {children}
-        <NavbarContainer routerParams={params} />
+        <NavbarContainer params={params} />
         <FooterContainer />
         {isLoggedIn ? <EditorToolsContainer /> : null}
         <ModalContainer />

@@ -1,0 +1,98 @@
+@import "../../lib/styles/properties.css";
+
+/* stylelint-disable no-unsupported-browser-features */
+
+.BackgroundImage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2) no-repeat 50% 50%;
+  background-size: cover;
+  transition: background-color var(--speed) ease, opacity var(--speed2) ease;
+}
+
+.BackgroundImage.inHero {
+  height: 220px;
+}
+
+.BackgroundImage.inOnboarding,
+.BackgroundImage.inSettings {
+  height: 220px;
+}
+
+.BackgroundImage.inUserProfileCard {
+  height: 250px;
+}
+
+.BackgroundImage.isRequesting {
+  animation: animateLavaLamp 3s infinite linear;
+}
+
+.BackgroundImage.isFailing {
+  background-color: var(--color-danger);
+}
+
+.BackgroundImageAsset {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: transparent no-repeat 50% 50%;
+  background-size: cover;
+  transition: opacity var(--speed2);
+}
+
+.isRequesting > .BackgroundImageAsset {
+  opacity: 0;
+}
+
+.BackgroundImage::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  content: "";
+  background-color: transparent;
+  transition: background-color var(--speed) ease;
+}
+
+.BackgroundImage.hasOverlay::before {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* stylelint-disable selector-max-specificity */
+.no-touch .BackgroundImage.isLink:hover::before {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+/* stylelint-enable selector-max-specificity */
+
+@media (--break-2) {
+  .BackgroundImage.inHero {
+    height: auto;
+  }
+
+  .BackgroundImage.inUserProfileCard {
+    height: auto;
+    min-height: 540px;
+  }
+}
+
+/* .AnimatedCover { */
+/*   position: fixed; */
+/*   top: 0; */
+/*   right: 0; */
+/*   bottom: 0; */
+/*   left: 0; */
+/*   z-index: -1; */
+/*   min-height: 220px; */
+/*   text-align: center; */
+/*   background-size: cover; */
+/* } */
+

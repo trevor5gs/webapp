@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import { isIOS } from '../vendor/jello'
-import { scrollToTop } from '../vendor/scrolling'
+import { isIOS, scrollTo } from '../vendor/jello'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
@@ -69,7 +68,11 @@ class NavbarContainer extends Component {
     isLoggedIn: PropTypes.bool.isRequired,
     isNotificationsActive: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
-    routerParams: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired,
+  }
+
+  static contextTypes = {
+    onClickScrollToContent: PropTypes.func,
   }
 
   componentWillMount() {
@@ -109,31 +112,37 @@ class NavbarContainer extends Component {
   }
 
   onClickLoadMorePosts = () => {
-    const { dispatch } = this.props
+    const { dispatch, params } = this.props
     dispatch({ type: ADD_NEW_IDS_TO_RESULT })
-    scrollToTop()
+    // if on user page and more content scroll to top of content
+    if (params.username && !params.token) {
+      const { onClickScrollToContent } = this.context
+      onClickScrollToContent()
+    } else {
+      scrollTo(0, 0)
+    }
   }
 
   onClickNavbarMark = () => {
-    const { currentStream, dispatch, pathname, routerParams } = this.props
+    const { currentStream, dispatch, pathname, params } = this.props
     if (currentStream === pathname) {
       if (/^\/discover/.test(pathname)) {
-        if (routerParams.type) {
-          dispatch(getDiscoverAction(routerParams.type))
+        if (params.type) {
+          dispatch(getDiscoverAction(params.type))
         }
       } else if (/^\/following$/.test(pathname)) {
         dispatch(loadFriends())
       } else if (/^\/starred/.test(pathname)) {
         dispatch(loadNoise())
       }
-      scrollToTop()
+      scrollTo(0, 0)
     }
   }
 
   onClickOmniButton = () => {
     const { dispatch } = this.props
     dispatch(openOmnibar())
-    scrollToTop()
+    scrollTo(0, 0)
   }
 
   onClickToggleLayoutMode = () => {

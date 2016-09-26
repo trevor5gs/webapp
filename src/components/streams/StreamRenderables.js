@@ -6,7 +6,6 @@ import PostContainer from '../../containers/PostContainer'
 import CommentContainer from '../../containers/CommentContainer'
 import NotificationContainer from '../../containers/NotificationContainer'
 import UserContainer from '../../containers/UserContainer'
-import UserCard from '../users/UserCard'
 import UserInvitee from '../users/UserInvitee'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
@@ -30,33 +29,11 @@ export function categoriesAsGrid(categories) {
   )
 }
 
-// TODO: convert these into react components (@see UserVitals)
-// to hopefully get better errors out of rendering streams
-export function usersAsCards(users) {
-  return (
-    <div className="Cards">
-      {users.data.map(user =>
-        <UserCard user={user} key={`userCard_${user.id}`} />
-      )}
-    </div>
-  )
-}
-
 export function usersAsGrid(users) {
   return (
     <div className="Users asGrid">
       {users.data.map(user =>
         <UserContainer user={user} key={`userGrid_${user.id}`} type="grid" />
-      )}
-    </div>
-  )
-}
-
-export function usersAsList(users) {
-  return (
-    <div className="Users asList">
-      {users.data.map(user =>
-        <UserContainer user={user} key={`userList_${user.id}`} type="list" />
       )}
     </div>
   )
@@ -89,7 +66,7 @@ export function usersAsInviteeGrid(invitations) {
   )
 }
 
-export function postsAsGrid(posts, columnCount) {
+export function postsAsGrid(posts, columnCount, isPostHeaderHidden = false) {
   const columns = []
   for (let i = 0; i < columnCount; i += 1) {
     columns.push([])
@@ -103,7 +80,7 @@ export function postsAsGrid(posts, columnCount) {
         <div className="Column" key={`column_${index}`}>
           {columnPosts.map(post =>
             <article className="PostGrid" key={`postsAsGrid_${post.id}`}>
-              <PostContainer post={post} />
+              <PostContainer post={post} isPostHeaderHidden={isPostHeaderHidden} />
             </article>
           )}
         </div>
@@ -112,12 +89,12 @@ export function postsAsGrid(posts, columnCount) {
   )
 }
 
-export function postsAsList(posts) {
+export function postsAsList(posts, columnCount, isPostHeaderHidden = false) {
   return (
     <div className="Posts asList">
       {posts.data.map(post =>
         <article className="PostList" key={`postsAsList_${post.id}`}>
-          <PostContainer post={post} />
+          <PostContainer post={post} isPostHeaderHidden={isPostHeaderHidden} />
         </article>
       )}
     </div>

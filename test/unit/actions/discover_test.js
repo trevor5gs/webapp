@@ -4,9 +4,7 @@ import { mostRecentPostsFromUsers } from '../../../src/components/streams/Stream
 import {
   postsAsGrid,
   postsAsList,
-  usersAsCards,
   usersAsGrid,
-  usersAsList,
 } from '../../../src/components/streams/StreamRenderables'
 
 describe('discover actions', () => {
@@ -85,8 +83,8 @@ describe('discover actions', () => {
     })
 
     it('has asList, asGrid and asZero properties on renderStreams in the action', () => {
-      expect(action.meta.renderStream.asList).to.equal(usersAsCards)
-      expect(action.meta.renderStream.asGrid).to.equal(usersAsCards)
+      expect(action.meta.renderStream.asList).to.equal(usersAsGrid)
+      expect(action.meta.renderStream.asGrid).to.equal(usersAsGrid)
     })
   })
 
@@ -110,7 +108,7 @@ describe('discover actions', () => {
     })
 
     it('has asList, asGrid and asZero properties on renderStreams in the action', () => {
-      expect(action.meta.renderStream.asList).to.equal(usersAsList)
+      expect(action.meta.renderStream.asList).to.equal(usersAsGrid)
       expect(action.meta.renderStream.asGrid).to.equal(usersAsGrid)
     })
   })

@@ -25,13 +25,11 @@ export function getSource(props) {
 
 export default class Cover extends Component {
   static propTypes = {
-    isHidden: PropTypes.bool,
     modifiers: PropTypes.string,
   }
 
   static defaultProps = {
     coverDPI: 'xhdpi',
-    isHidden: false,
     modifiers: '',
     useGif: false,
   }
@@ -65,10 +63,10 @@ export default class Cover extends Component {
   }
 
   render() {
-    const { isHidden, modifiers } = this.props
+    const { modifiers } = this.props
     const { status } = this.state
     return (
-      <div className={classNames('Cover', status, modifiers, { isHidden })}>
+      <div className={classNames('Cover', status, modifiers)}>
         <ImageAsset
           className="CoverImage"
           isBackgroundImage
