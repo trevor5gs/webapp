@@ -111,9 +111,12 @@ User Names  */
 }
 
 .UserUsername {
-  margin-top: -8px;
   margin-bottom: 10px;
   color: #aaa;
+}
+
+.isChrome .UserUsername {
+  margin-top: -8px;
 }
 
 @media (--break-2) {
