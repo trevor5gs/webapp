@@ -1,6 +1,20 @@
 /* eslint-disable import/no-mutable-exports */
+
+function isSessionStorageSupported() {
+  if (typeof window === 'undefined') { return false }
+  const testKey = 'test-sessionStorage'
+  const storage = window.sessionStorage
+  try {
+    storage.setItem(testKey, '1')
+    storage.removeItem(testKey)
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
 let session
-if (typeof sessionStorage !== 'undefined') {
+if (isSessionStorageSupported()) {
   session = sessionStorage
 } else {
   const storage = {}
