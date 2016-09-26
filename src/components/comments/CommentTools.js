@@ -68,7 +68,7 @@ FlagTool.propTypes = {
 }
 
 const MoreTool = ({ onClickMoreTool }) =>
-  <span className={"PostTool MoreTool"}>
+  <span className="PostTool MoreTool">
     <button onClick={onClickMoreTool}>
       <ChevronIcon />
       <Hint>More</Hint>
