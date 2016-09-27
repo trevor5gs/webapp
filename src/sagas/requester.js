@@ -64,6 +64,7 @@ export const requestTypes = [
 ]
 
 let requesterIsPaused = false
+let breakRefreshCycle = false
 
 const runningFetches = {}
 function updateRunningFetches(serverResponse) {
@@ -155,6 +156,16 @@ export function* handleRequestError(error, action) {
         // trigger a refresh then put the request back on the queue
         yield put(refreshAuthenticationToken(refreshToken))
         yield put(action)
+        return true
+      } else if (type === ACTION_TYPES.AUTHENTICATION.REFRESH) {
+        if (!breakRefreshCycle) {
+          breakRefreshCycle = true
+        } else {
+          breakRefreshCycle = false
+          localStorage.clear()
+          yield put(refreshAuthenticationToken(refreshToken))
+          yield put(action)
+        }
         return true
       }
     }
@@ -332,7 +343,6 @@ export default function* requester() {
   const requestChannel = yield actionChannel(requestTypes)
   yield fork(pauseMechanism)
   yield fork(handleRequest, requestChannel)
-  // yield fork(requestSaga, requestChannel)
 }
 
 export { runningFetches }
