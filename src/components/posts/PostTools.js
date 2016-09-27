@@ -131,7 +131,8 @@ RepostTool.propTypes = {
   postRepostsCount: PropTypes.number,
 }
 
-const WatchTool = ({ isMobile, isWatchingPost, onClickWatchPost }) =>
+// In use by the PostContainer for a weird design around the watch tool in mobile
+export const WatchTool = ({ isMobile, isWatchingPost, onClickWatchPost }) =>
   <span className={classNames('PostTool WatchTool', { isWatchingPost }, { isPill: isMobile })}>
     <button className={classNames({ isActive: isWatchingPost })} onClick={onClickWatchPost}>
       <BoltIcon />
@@ -200,6 +201,7 @@ export const PostTools = (props) => {
     isCommentsActive,
     isCommentsRequesting,
     isLoggedIn,
+    isMobile,
     isOwnPost,
     postRepostsCount,
     post,
@@ -218,7 +220,7 @@ export const PostTools = (props) => {
     cells.push(<RepostTool key={`RepostTool_${postId}`} {...props} />)
   }
 
-  if (!isOwnPost) {
+  if (!isOwnPost && !isMobile) {
     cells.push(<WatchTool key={`WatchTool_${postId}`} {...props} />)
   }
 
@@ -245,6 +247,7 @@ PostTools.propTypes = {
   isCommentsActive: PropTypes.bool.isRequired,
   isCommentsRequesting: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
+  isMobile: PropTypes.bool,
   isOwnPost: PropTypes.bool,
   post: PropTypes.object.isRequired,
   postRepostsCount: PropTypes.number,
