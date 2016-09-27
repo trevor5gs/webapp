@@ -124,7 +124,8 @@ class InfoForm extends Component {
       unsanitized_short_bio: this.shortBioText,
     }
     const linksStatus = this.getLinksStatus()
-    if (linksStatus === STATUS.SUCCESS && this.linksText !== linksText) {
+    if (this.linksText !== linksText &&
+        (linksStatus === STATUS.SUCCESS || /^\s+$/.test(this.linksText))) {
       vo.external_links = this.linksText
     }
     dispatch(saveProfile(vo))
