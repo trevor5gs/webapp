@@ -123,11 +123,11 @@ class InfoForm extends Component {
       name: this.nameText,
       unsanitized_short_bio: this.shortBioText,
     }
-    dispatch(saveProfile(vo))
     const linksStatus = this.getLinksStatus()
     if (linksStatus === STATUS.SUCCESS && this.linksText !== linksText) {
-      dispatch(saveProfile({ external_links: this.linksText }))
+      vo.external_links = this.linksText
     }
+    dispatch(saveProfile(vo))
     this.setState({ linksStatus })
   }
 

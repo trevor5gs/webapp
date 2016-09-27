@@ -307,9 +307,7 @@ export function* handleRequest(requestChannel) {
         yield call(waitForUnpause)
       }
 
-      if (!endpoint.method || endpoint.method === 'GET') {
-        runningFetches[endpoint.path] = true
-      }
+      runningFetches[endpoint.path] = true
 
       if (get(meta, 'pauseRequester')) {
         yield put(pauseRequester())
