@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import { set } from 'lodash'
 import OnboardingCategories from '../components/onboarding/OnboardingCategories'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { trackEvent } from '../actions/analytics'
@@ -33,7 +32,6 @@ class OnboardingCategoriesContainer extends Component {
 
   static childContextTypes = {
     nextLabel: PropTypes.string,
-    onDoneClick: PropTypes.func,
     onNextClick: PropTypes.func.isRequired,
   }
 
@@ -47,7 +45,6 @@ class OnboardingCategoriesContainer extends Component {
     }
     return {
       nextLabel,
-      onDoneClick: hasSelectedCategoriesNeeded(this.state) ? null : this.onDoneClick,
       onNextClick: this.onNextClick,
     }
   }
@@ -71,17 +68,6 @@ class OnboardingCategoriesContainer extends Component {
       ids.splice(index, 1)
     }
     this.setState({ categoryIds: ids })
-  }
-
-  onDoneClick = () => {
-    const { dispatch } = this.props
-    const categoryIds = this.state.categoryIds
-    dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
-    dispatch(trackEvent('Onboarding.Categories.Done.Clicked',
-                        { categories: categoryIds.length }))
-    const action = followCategories(categoryIds)
-    set(action, 'meta.successAction', push('/following'))
-    dispatch(action)
   }
 
   onNextClick = () => {
