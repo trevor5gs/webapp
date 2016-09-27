@@ -163,11 +163,14 @@ export function* handleRequestError(error, action) {
         // and then refresh it again
         if (!breakRefreshCycle) {
           breakRefreshCycle = true
+          yield put(refreshAuthenticationToken(refreshToken))
         } else {
           breakRefreshCycle = false
           localStorage.clear()
+          // by not passing the refreshToken this should try to
+          // authenticate through the rails session
+          yield put(refreshAuthenticationToken())
         }
-        yield put(refreshAuthenticationToken(refreshToken))
         yield put(action)
         return true
       }
