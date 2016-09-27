@@ -158,14 +158,17 @@ export function* handleRequestError(error, action) {
         yield put(action)
         return true
       } else if (type === ACTION_TYPES.AUTHENTICATION.REFRESH) {
+        // should allow one try to refresh the token itself
+        // if it fails again it will try to clear local storage
+        // and then refresh it again
         if (!breakRefreshCycle) {
           breakRefreshCycle = true
         } else {
           breakRefreshCycle = false
           localStorage.clear()
-          yield put(refreshAuthenticationToken(refreshToken))
-          yield put(action)
         }
+        yield put(refreshAuthenticationToken(refreshToken))
+        yield put(action)
         return true
       }
     }
