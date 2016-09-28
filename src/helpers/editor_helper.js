@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep'
-import reduce from 'lodash/reduce'
 import get from 'lodash/get'
+import reduce from 'lodash/reduce'
 import values from 'lodash/values'
 import { suggestEmoji } from '../components/completers/EmojiSuggester'
 import { userRegex } from '../components/completers/Completer'
