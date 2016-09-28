@@ -12,7 +12,7 @@ import {
   fetchLoggedOutPromos,
 } from '../actions/promotions'
 import DevTools from '../components/devtools/DevTools'
-import { addGlobalDrag, removeGlobalDrag } from '../components/viewport/GlobalDrag'
+import { addGlobalDrag, removeGlobalDrag } from '../components/viewport/GlobalDragComponent'
 import { startRefreshTimer } from '../components/viewport/RefreshOnFocus'
 import AnalyticsContainer from '../containers/AnalyticsContainer'
 import EditorToolsContainer from '../containers/EditorToolsContainer'
