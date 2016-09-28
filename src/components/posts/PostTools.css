@@ -134,6 +134,9 @@
 
 .PostDetail .WatchTool.isPill {
   display: inline-block;
+}
+
+.isLoggedIn .PostDetail .WatchTool.isPill {
   margin-top: 25px;
 }
 
