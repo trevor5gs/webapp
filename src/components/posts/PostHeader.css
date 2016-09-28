@@ -4,7 +4,7 @@
 .CategoryHeader,
 .RepostHeader {
   position: relative;
-  height: rem(60);
+  height: 60px;
   font-size: 14px;
   color: #aaa;
 }
