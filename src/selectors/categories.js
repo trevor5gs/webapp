@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
-import { get, startCase } from 'lodash'
+import get from 'lodash/get'
+import startCase from 'lodash/startCase'
 import { selectParamsType } from './params'
 import { selectAllCategories } from './pages'
 

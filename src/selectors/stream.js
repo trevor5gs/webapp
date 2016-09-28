@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { get } from 'lodash'
+import get from 'lodash/get'
 import { selectPathname } from './routing'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { emptyPagination } from '../components/streams/Paginator'

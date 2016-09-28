@@ -1,7 +1,7 @@
 /* eslint-disable no-constant-condition */
 import { actionChannel, fork, select, take } from 'redux-saga/effects'
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { get } from 'lodash'
+import get from 'lodash/get'
 import * as ACTION_TYPES from '../constants/action_types'
 import { selectActiveNotificationsType } from '../selectors/gui'
 

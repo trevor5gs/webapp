@@ -2,7 +2,7 @@
 import 'newrelic'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
-import { values } from 'lodash'
+import values from 'lodash/values'
 import Honeybadger from 'honeybadger'
 import express from 'express'
 import morgan from 'morgan'

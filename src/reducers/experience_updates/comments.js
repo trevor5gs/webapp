@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import _ from 'lodash'
+import setWith from 'lodash/setWith'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as jsonReducer from '../../reducers/json'
@@ -31,7 +31,7 @@ methods.addOrUpdateComment = (newState, action) => {
       })
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
-      _.setWith(newState,
+      setWith(newState,
                 [MAPPING_TYPES.COMMENTS, response[MAPPING_TYPES.COMMENTS].id],
                 response[MAPPING_TYPES.COMMENTS],
                 Object)

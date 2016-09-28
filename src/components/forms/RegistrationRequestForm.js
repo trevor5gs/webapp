@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 import { isAndroid } from '../../vendor/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { requestInvite } from '../../actions/profile'

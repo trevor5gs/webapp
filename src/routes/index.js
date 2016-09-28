@@ -1,4 +1,4 @@
-import { set } from 'lodash'
+import set from 'lodash/set'
 import AppContainer from '../containers/AppContainer'
 import { refreshAuthenticationToken } from '../actions/authentication'
 import {

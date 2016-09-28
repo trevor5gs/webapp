@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { get, uniqBy } from 'lodash'
+import get from 'lodash/get'
+import uniqBy from 'lodash/uniqBy'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import PostContainer from '../../containers/PostContainer'
 import CommentContainer from '../../containers/CommentContainer'

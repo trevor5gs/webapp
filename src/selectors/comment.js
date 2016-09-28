@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { get } from 'lodash'
+import get from 'lodash/get'
 import { selectId as selectProfileId } from './profile'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { Link } from 'react-router'
-import { get } from 'lodash'
+import get from 'lodash/get'
 import classNames from 'classnames'
 import ImageAsset from '../assets/ImageAsset'
 import { ElloBuyButton } from '../editor/ElloBuyButton'

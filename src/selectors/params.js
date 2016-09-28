@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { get } from 'lodash'
+import get from 'lodash/get'
 
 // props.params.xxx
 export const selectParamsInvitationCode = (state, props) => get(props, 'params.invitationCode')

@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import _ from 'lodash'
+import setWith from 'lodash/setWith'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as jsonReducer from '../../reducers/json'
@@ -111,7 +111,7 @@ methods.addOrUpdatePost = (newState, action) => {
   switch (action.type) {
     case ACTION_TYPES.POST.CREATE_SUCCESS:
     case ACTION_TYPES.POST.UPDATE_SUCCESS:
-      _.setWith(newState,
+      setWith(newState,
                 [MAPPING_TYPES.POSTS, response[MAPPING_TYPES.POSTS].id],
                 response[MAPPING_TYPES.POSTS],
                 Object)

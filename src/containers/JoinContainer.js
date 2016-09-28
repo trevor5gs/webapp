@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
 import { selectCoverDPI } from '../selectors/gui'
 import { selectParamsInvitationCode } from '../selectors/params'

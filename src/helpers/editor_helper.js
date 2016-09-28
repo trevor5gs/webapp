@@ -1,4 +1,7 @@
-import { cloneDeep, reduce, get, values } from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
+import reduce from 'lodash/reduce'
+import get from 'lodash/get'
+import values from 'lodash/values'
 import { suggestEmoji } from '../components/completers/EmojiSuggester'
 import { userRegex } from '../components/completers/Completer'
 import { COMMENT, EDITOR, POST } from '../constants/action_types'

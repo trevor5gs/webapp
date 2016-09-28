@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import { sample } from 'lodash'
+import sample from 'lodash/sample'
 import { selectCoverDPI } from '../selectors/gui'
 import { selectPromotionsAuthentication } from '../selectors/promotions'
 import { trackEvent } from '../actions/analytics'
