@@ -35,7 +35,6 @@ export const UserDetail = (props) => {
   const { isLoggedIn, isPostHeaderHidden, isSelf } = props
   const { hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = props
   const { activeType, onSubmitHello, onTabClick, streamAction, tabs, user } = props
-  // const useGif = user.viewsAdultContent || !user.postsAdultContent
 
   // construct component props
   const tabProps = { activeType, className: 'LabelTabList', tabClasses: 'LabelTab', tabs }

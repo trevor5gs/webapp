@@ -146,7 +146,6 @@ export const UserProfile = ({ isLoggedIn, user, onClickCollab,
       priority={user.relationshipPriority}
       size="large"
       sources={user.avatar}
-      to={`/${user.username}`}
       useGif={(user.viewsAdultContent || !user.postsAdultContent)}
       userId={`${user.id}`}
       username={user.username}
