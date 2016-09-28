@@ -4,6 +4,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
 import classNames from 'classnames'
+import Session from '../lib/session'
 import { runningFetches } from '../sagas/requester'
 import * as ACTION_TYPES from '../constants/action_types'
 import {
@@ -25,7 +26,6 @@ import { ElloMark } from '../components/svg/ElloIcons'
 import { Paginator } from '../components/streams/Paginator'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { makeSelectStreamProps } from '../selectors/stream'
-import Session from '../vendor/session'
 
 export function makeMapStateToProps() {
   const getStreamProps = makeSelectStreamProps()

@@ -11,14 +11,13 @@ import { persistStore, storages } from 'redux-persist'
 
 // import './main.sass'
 import './main.css'
-import { addFeatureDetection, isIOS } from './vendor/jello'
-import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
+import { addFeatureDetection, isIOS } from './lib/jello'
+import MemoryStore from './lib/memory_store'
+import Session from './lib/session'
+import { updateStrings as updateTimeAgoStrings } from './lib/time_ago_in_words'
 import store from './store'
 import createRoutes from './routes'
-import Session from './vendor/session'
 import Honeybadger from './vendor/honeybadger'
-import MemoryStore from './vendor/memory_store'
-
 import './vendor/embetter'
 import './vendor/embetter_initializer'
 

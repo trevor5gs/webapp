@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
-import { isElloAndroid } from '../../vendor/jello'
+import { isElloAndroid } from '../../lib/jello'
 import { NavbarLabel } from './NavbarLabel'
 import { NavbarLayoutTool } from './NavbarLayoutTool'
 import { NavbarLink } from './NavbarLink'

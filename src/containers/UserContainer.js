@@ -17,7 +17,7 @@ import ShareDialog from '../components/dialogs/ShareDialog'
 import { closeModal, openModal } from '../actions/modals'
 import { trackEvent } from '../actions/analytics'
 import { collabWithUser, hireUser } from '../actions/user'
-import { getElloPlatform } from '../vendor/jello'
+import { getElloPlatform } from '../lib/jello'
 
 export function mapStateToProps(state, props) {
   const user = selectUserFromPropsUserId(state, props)

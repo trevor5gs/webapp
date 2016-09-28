@@ -46,7 +46,7 @@ import TreePanel from '../../components/navigation/TreePanel'
 import StreamContainer from '../../containers/StreamContainer'
 import InfoForm from '../../components/forms/InfoForm'
 import { MainView } from '../../components/views/MainView'
-import { isElloAndroid } from '../../vendor/jello'
+import { isElloAndroid } from '../../lib/jello'
 
 class Settings extends Component {
 

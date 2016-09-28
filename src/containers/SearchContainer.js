@@ -11,7 +11,7 @@ import {
 import { updateQueryParams } from '../helpers/uri_helper'
 import { searchForPosts, searchForUsers } from '../actions/search'
 import { trackEvent } from '../actions/analytics'
-import { hideSoftKeyboard } from '../vendor/jello'
+import { hideSoftKeyboard } from '../lib/jello'
 import SearchControl from '../components/forms/SearchControl'
 import StreamContainer from './StreamContainer'
 import { MainView } from '../components/views/MainView'

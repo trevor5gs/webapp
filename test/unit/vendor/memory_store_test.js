@@ -1,4 +1,4 @@
-import MemoryStore from '../../../src/vendor/memory_store'
+import MemoryStore from '../../../src/lib/memory_store'
 
 describe('MemoryStore', () => {
   beforeEach((done) => {

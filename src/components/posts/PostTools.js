@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 import { Link } from 'react-router'
+import { numberToHuman } from '../../lib/number_to_human'
 import Hint from '../hints/Hint'
 import {
   BoltIcon,
@@ -13,7 +14,6 @@ import {
   ShareIcon,
   XBoxIcon,
 } from '../posts/PostIcons'
-import { numberToHuman } from '../../vendor/number_to_human'
 
 const ViewsTool = ({ detailLink, isLoggedIn, postViewsCountRounded }) =>
   <span className={classNames('PostTool', 'ViewsTool', { isPill: isLoggedIn })}>
