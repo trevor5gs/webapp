@@ -40,7 +40,7 @@
   stroke: #fff;
 }
 
-.UserDirtShareHeroButton {
+.UserFiguresShareHeroButton {
   position: absolute;
   top: 230px;
   right: 10px;
@@ -48,9 +48,9 @@
   height: 40px;
 }
 
-.UserDirtShareHeroButton .ShareIcon g,
-.UserDirtShareHeroButton .ShareIcon line,
-.UserDirtShareHeroButton .ShareIcon polyline {
+.UserFiguresShareHeroButton .ShareIcon g,
+.UserFiguresShareHeroButton .ShareIcon line,
+.UserFiguresShareHeroButton .ShareIcon polyline {
   fill: none;
   stroke: #aaa;
 }
@@ -75,20 +75,20 @@
     min-height: 540px;
   }
 
-  .UserDirtShareHeroButton {
+  .UserFiguresShareHeroButton {
     top: 20px;
     right: 20px;
     background-color: #000;
     border-radius: 20px;
   }
 
-  .UserDirtShareHeroButton .ShareIcon {
+  .UserFiguresShareHeroButton .ShareIcon {
     margin-top: -6px;
   }
 
-  .UserDirtShareHeroButton .ShareIcon g,
-  .UserDirtShareHeroButton .ShareIcon line,
-  .UserDirtShareHeroButton .ShareIcon polyline {
+  .UserFiguresShareHeroButton .ShareIcon g,
+  .UserFiguresShareHeroButton .ShareIcon line,
+  .UserFiguresShareHeroButton .ShareIcon polyline {
     stroke: #fff;
   }
 }

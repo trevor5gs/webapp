@@ -19,11 +19,11 @@ ScrollToContentButton.contextTypes = {
   onClickScrollToContent: PropTypes.func,
 }
 
-const UserDirtShareHeroButton = (props, { onClickShareProfile }) =>
-  <button className="UserDirtShareHeroButton" onClick={onClickShareProfile} >
+const UserFiguresShareHeroButton = (props, { onClickShareProfile }) =>
+  <button className="UserFiguresShareHeroButton" onClick={onClickShareProfile} >
     <ShareIcon />
   </button>
-UserDirtShareHeroButton.contextTypes = {
+UserFiguresShareHeroButton.contextTypes = {
   onClickShareProfile: PropTypes.func,
 }
 
@@ -36,7 +36,7 @@ const HeroProfile = ({ dpi, pathname, sources, userId, useGif }) =>
       useGif={useGif}
     />
     <UserContainer userId={userId} type="profile" key={`HeroProfile_${pathname}`} />
-    <UserDirtShareHeroButton />
+    <UserFiguresShareHeroButton />
     <ScrollToContentButton />
   </div>
 HeroProfile.propTypes = {

@@ -7,7 +7,7 @@ import { loadUserDrawer } from '../../actions/user'
 import RelationshipContainer from '../../containers/RelationshipContainer'
 import StreamContainer from '../../containers/StreamContainer'
 import {
-  UserDirtCell,
+  UserFiguresCell,
   UserInfoCell,
   UserLinksCell,
   UserNamesCell,
@@ -165,7 +165,7 @@ export const UserProfile = ({ isLoggedIn, user, onClickCollab,
       }
     </UserNamesCell>
     {user.totalPostViewsCount && parseInt(user.totalPostViewsCount, 10) > 0 ?
-      <UserDirtCell
+      <UserFiguresCell
         className="inUserProfile"
         onClickShareProfile={onClickShareProfile}
         totalPostViewsCount={user.totalPostViewsCount}

@@ -75,18 +75,18 @@ UserNamesCellCard.propTypes = {
 
 // -----------------
 
-export const UserDirtCell = ({ className, onClickShareProfile, totalPostViewsCount }) =>
-  <div className={classNames('UserCell UserDirtCell', className)}>
-    { totalPostViewsCount ? <span className="UserDirtCount uppercase">{totalPostViewsCount} </span> : null }
-    { totalPostViewsCount ? <span className="UserDirtLabel">Total Views</span> : null }
+export const UserFiguresCell = ({ className, onClickShareProfile, totalPostViewsCount }) =>
+  <div className={classNames('UserCell UserFiguresCell', className)}>
+    { totalPostViewsCount ? <span className="UserFiguresCount uppercase">{totalPostViewsCount} </span> : null }
+    { totalPostViewsCount ? <span className="UserFiguresLabel">Total Views</span> : null }
     { onClickShareProfile ?
-      <button className="UserDirtShareButton" onClick={onClickShareProfile} >
+      <button className="UserFiguresShareButton" onClick={onClickShareProfile} >
         <ShareIcon />
       </button> : null
     }
   </div>
 
-UserDirtCell.propTypes = {
+UserFiguresCell.propTypes = {
   className: PropTypes.string,
   onClickShareProfile: PropTypes.func,
   totalPostViewsCount: PropTypes.string,

@@ -126,30 +126,30 @@ User Names  */
 }
 
 /* -------------------------------------
-User Dirt */
+User Figures */
 
-.UserDirtLabel {
+.UserFiguresLabel {
   color: #aaa;
 }
 
-.UserDirtShareButton {
+.UserFiguresShareButton {
   position: absolute;
   top: 15px;
   right: 0;
 }
 
 @media (--break-2-max) {
-  .UserDirtShareButton {
+  .UserFiguresShareButton {
     color: #aaa;
   }
 }
 
 @media (--break-2) {
-  .UserDirtLabel {
+  .UserFiguresLabel {
     color: #ccc;
   }
 
-  .no-touch .UserDirtShareButton {
+  .no-touch .UserFiguresShareButton {
     display: none;
   }
 }
