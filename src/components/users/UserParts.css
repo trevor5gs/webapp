@@ -229,10 +229,15 @@ User Info */
 
 .UserInfoCell.inUserProfileCard > .UserShortBio {
   height: 85px;
+  line-height: 16px;
 }
 
 .UserLocation {
   margin-bottom: 0;
+}
+
+.UserShortBio a {
+  border-color: #aaa;
 }
 
 /* -------------------------------------
