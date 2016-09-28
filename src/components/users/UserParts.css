@@ -229,7 +229,6 @@ User Info */
 
 .UserInfoCell.inUserProfileCard > .UserShortBio {
   height: 85px;
-  line-height: 16px;
 }
 
 .UserLocation {
@@ -255,7 +254,7 @@ User Links */
 .UserExternalLinksLabel {
   display: block;
   margin-bottom: 10px;
-  line-height: 16px;
+  line-height: 1.3;
 }
 
 .UserExternalLinksLabel > a {
