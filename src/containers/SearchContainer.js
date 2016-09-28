@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import { debounce, get } from 'lodash'
+import debounce from 'lodash/debounce'
+import get from 'lodash/get'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
   selectPropsPathname, selectPropsQueryTerms, selectPropsQueryType,

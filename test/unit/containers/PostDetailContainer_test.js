@@ -1,4 +1,4 @@
-import { get } from 'lodash'
+import get from 'lodash/get'
 import { stubJSONStore } from '../../support/stubs'
 import { shouldContainerUpdate, mapStateToProps } from '../../../src/containers/PostDetailContainer'
 

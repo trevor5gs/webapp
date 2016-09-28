@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 import { EDITOR } from '../constants/action_types'
 import { selectCompletions } from '../selectors/editor'
 import { selectEmojis } from '../selectors/emoji'

@@ -3,7 +3,7 @@
 * TODO: Pending this test till we can figure out how to mock history
 
 import React from 'react'
-import { get } from 'lodash'
+import get from 'lodash/get'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { mount } from 'enzyme'
 import { updateQueryParams } from '../../../src/helpers/uri_helper'

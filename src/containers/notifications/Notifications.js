@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import _ from 'lodash'
+import get from 'lodash/get'
 import { scrollTo } from '../../vendor/jello'
 import { selectPropsPathname } from '../../selectors/routing'
 import { selectStreamType } from '../../selectors/stream'
@@ -104,7 +104,7 @@ class Notifications extends Component {
 }
 
 function mapStateToProps(state, props) {
-  const category = _.get(props, 'params.category', 'all')
+  const category = get(props, 'params.category', 'all')
   return {
     category,
     pathname: selectPropsPathname(state, props),

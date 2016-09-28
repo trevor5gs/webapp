@@ -1,5 +1,6 @@
 import { REHYDRATE } from 'redux-persist/constants'
-import { cloneDeep, get } from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
+import get from 'lodash/get'
 import { AUTHENTICATION, EDITOR, PROFILE } from '../constants/action_types'
 import editorMethods from '../helpers/editor_helper'
 

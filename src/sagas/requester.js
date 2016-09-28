@@ -1,6 +1,6 @@
 /* eslint-disable no-constant-condition */
 import React from 'react'
-import { get } from 'lodash'
+import get from 'lodash/get'
 import { camelizeKeys } from 'humps'
 import { actionChannel, call, fork, put, select, take } from 'redux-saga/effects'
 import * as ACTION_TYPES from '../constants/action_types'

@@ -1,6 +1,6 @@
 import { camelizeKeys } from 'humps'
 import jwtDecode from 'jwt-decode'
-import _ from 'lodash'
+import get from 'lodash/get'
 import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, INVITATIONS, PROFILE } from '../constants/action_types'
 
@@ -78,7 +78,7 @@ export function profile(state = {}, action) {
     case PROFILE.SAVE_FAILURE:
       return {
         ...state,
-        errors: _.get(action, 'payload.response.errors'),
+        errors: get(action, 'payload.response.errors'),
       }
     // Store a base64 reprensentation of the asset in `tmp` while uploading
     case PROFILE.TMP_AVATAR_CREATED:
@@ -99,10 +99,10 @@ export function profile(state = {}, action) {
         availability: null,
         dataExport: null,
       }
-      if (_.get(assetState, 'avatar.tmp')) {
+      if (get(assetState, 'avatar.tmp')) {
         delete assetState.avatar.tmp
       }
-      if (_.get(assetState, 'coverImage.tmp')) {
+      if (get(assetState, 'coverImage.tmp')) {
         delete assetState.coverImage.tmp
       }
       return assetState
@@ -131,7 +131,7 @@ export function profile(state = {}, action) {
     case INVITATIONS.GET_EMAIL_SUCCESS:
       return {
         ...state,
-        email: _.get(action, 'payload.response.invitations.email'),
+        email: get(action, 'payload.response.invitations.email'),
       }
     default:
       return state

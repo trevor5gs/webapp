@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { trim } from 'lodash'
+import trim from 'lodash/trim'
 import classNames from 'classnames'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { RequestIcon, SuccessIcon, FailureIcon } from '../forms/FormIcons'

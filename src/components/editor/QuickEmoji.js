@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
-import { sampleSize } from 'lodash'
+import sampleSize from 'lodash/sampleSize'
 import Emoji from '../assets/Emoji'
 import { SVGIcon } from '../svg/SVGComponents'
 

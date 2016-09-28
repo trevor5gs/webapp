@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-import { isNil } from 'lodash'
+import isNil from 'lodash/isNil'
 import Avatar from '../assets/Avatar'
 
 const Credits = ({ user, onClick }) => {

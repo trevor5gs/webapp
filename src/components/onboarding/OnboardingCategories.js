@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { get } from 'lodash'
+import get from 'lodash/get'
 import OnboardingNavbar from './OnboardingNavbar'
 import { MainView } from '../views/MainView'
 import { CheckIcon } from '../editor/EditorIcons'

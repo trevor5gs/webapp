@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { createSelector } from 'reselect'
-import { get } from 'lodash'
+import get from 'lodash/get'
 import { selectPages, selectPagesResult } from './pages'
 import { selectParamsToken } from './params'
 import { selectPropsPathname } from './routing'

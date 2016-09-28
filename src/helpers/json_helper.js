@@ -1,4 +1,4 @@
-import { get } from 'lodash'
+import get from 'lodash/get'
 
 // TODO: test these as they are data related
 // TODO: We introduced a bug trying to conform to no-restricted-syntax, need to

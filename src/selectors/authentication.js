@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { get } from 'lodash'
+import get from 'lodash/get'
 
 // state.authentication.xxx
 export const selectAccessToken = state => get(state, 'authentication.accessToken')
