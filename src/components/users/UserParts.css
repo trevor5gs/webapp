@@ -258,6 +258,7 @@ User Links */
 }
 
 .UserExternalLinksLabel > a {
+  display: inline;
   border-bottom: 1px solid #aaa;
 }
 
