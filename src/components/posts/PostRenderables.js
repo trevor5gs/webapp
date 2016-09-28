@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
+import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
 import { UserDrawer } from '../users/UserRenderables'
 import ContentWarningButton from '../posts/ContentWarningButton'
@@ -164,11 +165,11 @@ CategoryHeader.propTypes = {
   post: PropTypes.object,
 }
 
-export const RepostHeader = ({ post, repostAuthor, repostedBy }) => {
+export const RepostHeader = ({ post, repostAuthor, repostedBy, inUserDetail }) => {
   if (!post || !repostedBy) { return null }
   const postDetailPath = getPostDetailPath(repostAuthor, post)
   return (
-    <header className="RepostHeader" key={`RepostHeader_${post.id}`}>
+    <header className={classNames('RepostHeader', { inUserDetail })} key={`RepostHeader_${post.id}`}>
       <div className="RepostHeaderAuthor">
         <Link className="PostHeaderLink" to={`/${repostAuthor.username}`}>
           <Avatar
@@ -209,6 +210,7 @@ export const RepostHeader = ({ post, repostAuthor, repostedBy }) => {
 }
 
 RepostHeader.propTypes = {
+  inUserDetail: PropTypes.bool,
   post: PropTypes.object,
   repostAuthor: PropTypes.object,
   repostedBy: PropTypes.object,
