@@ -177,7 +177,12 @@ class PostContainer extends Component {
     let postHeader
     if (isRepost) {
       const { authorLinkObject } = this.props
-      const reProps = { post, repostAuthor: authorLinkObject, repostedBy: author }
+      const reProps = {
+        inUserDetail: isPostHeaderHidden,
+        post,
+        repostAuthor: authorLinkObject,
+        repostedBy: author,
+      }
       postHeader = <RepostHeader {...reProps} />
     } else if (isPostHeaderHidden) {
       postHeader = null

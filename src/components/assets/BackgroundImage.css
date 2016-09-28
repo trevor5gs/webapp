@@ -63,7 +63,11 @@
   transition: background-color var(--speed) ease;
 }
 
-.BackgroundImage.hasOverlay::before {
+.BackgroundImage.hasOverlay4::before {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.BackgroundImage.hasOverlay6::before {
   background-color: rgba(0, 0, 0, 0.6);
 }
 

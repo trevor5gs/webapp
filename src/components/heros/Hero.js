@@ -30,7 +30,7 @@ UserDirtShareHeroButton.contextTypes = {
 const HeroProfile = ({ dpi, pathname, sources, userId, useGif }) =>
   <div className="HeroImage">
     <BackgroundImage
-      className="hasOverlay inHero"
+      className="hasOverlay6 inHero"
       sources={sources}
       dpi={dpi}
       useGif={useGif}

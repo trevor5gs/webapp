@@ -321,7 +321,7 @@ class Settings extends Component {
             title="Upload Header"
           />
           <BackgroundImage
-            className="hasOverlay inSettings"
+            className="hasOverlay6 inSettings"
             sources={profile.coverImage}
             useGif
           />

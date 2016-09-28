@@ -30,7 +30,7 @@ const OnboardingSettings = (props, context) => {
           title="Upload Header"
         />
         <BackgroundImage
-          className="hasOverlay inOnboarding"
+          className="hasOverlay6 inOnboarding"
           sources={coverImage}
           useGif
         />

@@ -4,7 +4,7 @@
 .CategoryHeader,
 .RepostHeader {
   position: relative;
-  height: rem(60);
+  height: 60px;
   font-size: 14px;
   color: #aaa;
 }
@@ -104,6 +104,28 @@
   color: #535353;
 }
 
+/* Weird layout for reposts headers when in a UserDetail template */
+.RepostHeader.inUserDetail > .RepostHeaderReposter {
+  position: absolute;
+  top: 32px;
+  left: -40px;
+  z-index: 2;
+}
+
+.RepostHeader.inUserDetail > .RepostHeaderReposter .DraggableUsername {
+  display: none;
+}
+
+.RepostHeader.inUserDetail > .CategoryHeaderAuthor,
+.RepostHeader.inUserDetail > .RepostHeaderAuthor {
+  padding-left: 65px;
+  line-height: 60px;
+}
+
+.RepostHeader.inUserDetail .Avatar {
+  left: 25px;
+}
+
 /* MIN WIDTH!!! */
 @media (--break-2) {
   .PostHeader,
@@ -139,6 +161,18 @@
   .PostHeaderTimeAgoLink {
     top: 30px;
   }
+
+  .RepostHeader.inUserDetail > .CategoryHeaderAuthor,
+  .RepostHeader.inUserDetail > .RepostHeaderAuthor {
+    padding-left: 75px;
+    line-height: 80px;
+  }
+
+  .RepostHeader.inUserDetail > .RepostHeaderReposter {
+    top: 52px;
+    left: -60px;
+  }
+
 }
 
 @media (--break-3) {
