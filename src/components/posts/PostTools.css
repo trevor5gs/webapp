@@ -117,23 +117,24 @@
   left: 10px;
 }
 
+/* This is actually in the PostContainer */
 .WatchTool.isPill {
   position: absolute;
   right: 0;
-  bottom: -35px;
   display: none;
   height: 22px;
+  margin-top: 15px;
   line-height: 22px;
   color: #fff;
 }
 
-.isCommentsActive .WatchTool.isPill {
-  display: block;
+.isCommentsActive ~ .WatchTool.isPill {
+  display: inline-block;
 }
 
 .PostDetail .WatchTool.isPill {
-  bottom: -45px;
-  display: block;
+  display: inline-block;
+  margin-top: 25px;
 }
 
 .WatchTool.isPill > button > .SVGIcon {

@@ -40,6 +40,11 @@ export const selectCommentOffset = createSelector(
     (deviceSize === 'mobile' ? 40 : 60)
 )
 
+export const selectIsMobile = createSelector(
+  [selectDeviceSize], deviceSize =>
+    deviceSize === 'mobile'
+)
+
 export const selectIsMobileGridStream = createSelector(
   [selectDeviceSize, selectIsGridMode], (deviceSize, isGridMode) =>
     deviceSize === 'mobile' && isGridMode

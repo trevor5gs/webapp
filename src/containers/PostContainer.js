@@ -4,15 +4,21 @@ import classNames from 'classnames'
 import shallowCompare from 'react-addons-shallow-compare'
 import { get } from 'lodash'
 import * as MAPPING_TYPES from '../constants/mapping_types'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import {
   selectColumnWidth,
   selectCommentOffset,
   selectContentWidth,
   selectInnerHeight,
+  selectIsMobile,
   selectIsGridMode,
 } from '../selectors/gui'
 import { selectPostFromPropsPostId } from '../selectors/post'
 import { getLinkObject } from '../helpers/json_helper'
+import { trackEvent } from '../actions/analytics'
+import { watchPost, unwatchPost } from '../actions/posts'
+import { openModal } from '../actions/modals'
+import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import Editor from '../components/editor/Editor'
 import {
   CategoryHeader,
@@ -24,6 +30,7 @@ import {
   PostRepostersDrawer,
   RepostHeader,
 } from '../components/posts/PostRenderables'
+import { WatchTool } from '../components/posts/PostTools'
 
 export function mapStateToProps(state, props) {
   const { json, routing: { location: { pathname } } } = state
@@ -32,6 +39,7 @@ export function mapStateToProps(state, props) {
   const assets = json.assets
   const categories = post.links.categories
   const category = get(json, ['categories', categories ? categories[0] : null])
+  const isLoggedIn = selectIsLoggedIn(state)
   const isOnFeaturedCategory = /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname)
   const isRepost = !!(post.repostContent && post.repostContent.length)
   const isEditing = post.isEditing || false
@@ -56,9 +64,12 @@ export function mapStateToProps(state, props) {
     contentWidth: selectContentWidth(state),
     innerHeight: selectInnerHeight(state),
     isGridMode,
+    isLoggedIn,
+    isMobile: selectIsMobile(state),
     isOnFeaturedCategory,
     isRepost,
     isReposting,
+    isWatchingPost: isLoggedIn && post.watching,
     post,
     postBody,
     showCommentEditor,
@@ -89,13 +100,17 @@ class PostContainer extends Component {
     commentOffset: PropTypes.number,
     contentWarning: PropTypes.string,
     contentWidth: PropTypes.number,
+    dispatch: PropTypes.func.isRequired,
     innerHeight: PropTypes.number,
     isGridMode: PropTypes.bool,
+    isLoggedIn: PropTypes.bool,
+    isMobile: PropTypes.bool,
     isOnFeaturedCategory: PropTypes.bool,
     isPostDetail: PropTypes.bool,
     isPostHeaderHidden: PropTypes.bool,
     isRepost: PropTypes.bool,
     isReposting: PropTypes.bool,
+    isWatchingPost: PropTypes.bool,
     post: PropTypes.object,
     postBody: PropTypes.array,
     showCommentEditor: PropTypes.bool,
@@ -107,6 +122,27 @@ class PostContainer extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState)
+  }
+
+  onClickWatchPost = () => {
+    const { dispatch, isLoggedIn, post, isWatchingPost } = this.props
+    if (!isLoggedIn) {
+      this.onSignUp()
+      return
+    }
+    if (isWatchingPost) {
+      dispatch(unwatchPost(post))
+      dispatch(trackEvent('unwatched-post'))
+    } else {
+      dispatch(watchPost(post))
+      dispatch(trackEvent('watched-post'))
+    }
+  }
+
+  onSignUp = () => {
+    const { dispatch } = this.props
+    dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
+    dispatch(trackEvent('open-registration-request-post-tools'))
   }
 
   render() {
@@ -121,11 +157,13 @@ class PostContainer extends Component {
       contentWidth,
       innerHeight,
       isGridMode,
+      isMobile,
       isOnFeaturedCategory,
       isPostDetail,
       isPostHeaderHidden,
       isRepost,
       isReposting,
+      isWatchingPost,
       post,
       postBody,
       showCommentEditor,
@@ -176,6 +214,13 @@ class PostContainer extends Component {
         />
         {showLovers ? <PostLoversDrawer post={post} /> : null}
         {showReposters ? <PostRepostersDrawer post={post} /> : null}
+        {isMobile ?
+          <WatchTool
+            isMobile
+            isWatchingPost={isWatchingPost}
+            onClickWatchPost={this.onClickWatchPost}
+          /> : null
+        }
         {showCommentEditor ? <Editor post={post} isComment /> : null}
         {showComments ? <CommentStream post={post} author={author} /> : null}
       </div>)

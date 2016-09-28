@@ -41,7 +41,7 @@ class UserContainer extends Component {
     className: PropTypes.string,
     dispatch: PropTypes.func,
     followingCount: PropTypes.number,
-    followersCount: PropTypes.number,
+    followersCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     isLoggedIn: PropTypes.bool,
     isMobile: PropTypes.bool,
     lovesCount: PropTypes.number,
