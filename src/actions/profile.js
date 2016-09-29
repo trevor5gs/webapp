@@ -37,7 +37,7 @@ export function signUpUser(email, username, password, invitationCode) {
     type: PROFILE.SIGNUP,
     meta: {
       successAction: () => {
-        store.dispatch(replace({ pathname: '/onboarding' }))
+        store.dispatch(replace({ pathname: '/onboarding/categories' }))
         store.dispatch(trackEvent('join-successful'))
       },
     },
