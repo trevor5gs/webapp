@@ -177,7 +177,9 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case HEAD_FAILURE:
       return { ...state, isNotificationsUnread: false }
     case HEAD_SUCCESS:
-      if (action.payload.serverStatus === 204) {
+      if (action.payload.serverStatus === 304) {
+        return { ...state, isNotificationsUnread: false }
+      } else if (action.payload.serverStatus === 204) {
         return { ...state, isNotificationsUnread: true }
       }
       return state
