@@ -40,5 +40,6 @@ fetchOauthToken(() => {
       return
     }
     console.log('Listening at http://localhost:6660')
+    console.log(`AUTH_DOMAIN: ${process.env.AUTH_DOMAIN}`)
   })
 })

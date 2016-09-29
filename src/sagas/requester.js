@@ -4,11 +4,10 @@ import get from 'lodash/get'
 import { camelizeKeys } from 'humps'
 import { actionChannel, call, fork, put, select, take } from 'redux-saga/effects'
 import * as ACTION_TYPES from '../constants/action_types'
-import { selectIsLoggedIn, selectRefreshToken } from '../selectors/authentication'
+import { selectRefreshToken } from '../selectors/authentication'
 import { selectLastNotificationCheck } from '../selectors/gui'
 import { selectPathname } from '../selectors/routing'
 import { refreshAuthenticationToken } from '../actions/authentication'
-import { pauseRequester, unpauseRequester } from '../actions/api'
 import { fetchCredentials, getClientCredentials, sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
 import Dialog from '../components/dialogs/Dialog'
@@ -63,10 +62,18 @@ export const requestTypes = [
   ACTION_TYPES.USER.HIRE_ME,
 ]
 
-let requesterIsPaused = false
-let breakRefreshCycle = false
+// this is for requests that don't require any
+// kind of authentication like .json file loads
+const runningFetchesBlacklist = [
+  ACTION_TYPES.EDITOR.EMOJI_COMPLETER,
+  ACTION_TYPES.PROMOTIONS.AUTHENTICATION,
+  ACTION_TYPES.PROMOTIONS.LOGGED_IN,
+  ACTION_TYPES.PROMOTIONS.LOGGED_OUT,
+]
 
+let unauthorizedActionQueue = []
 const runningFetches = {}
+
 function updateRunningFetches(serverResponse) {
   if (!serverResponse) { return }
   const serverResponseUrl = serverResponse.url && serverResponse.url.length
@@ -145,38 +152,20 @@ export function* handleRequestError(error, action) {
   }
 
   if (error.response) {
-    payload.serverStatus = error.response.status
-    if (error.response.status === 401) {
-      const isLoggedIn = yield select(selectIsLoggedIn)
+    const { status } = error.response
+    payload.serverStatus = status
+    if ((status === 401) &&
+        type !== ACTION_TYPES.AUTHENTICATION.REFRESH &&
+        type !== ACTION_TYPES.AUTHENTICATION.USER) {
       const refreshToken = yield select(selectRefreshToken)
-      if (type !== ACTION_TYPES.AUTHENTICATION.LOGOUT &&
-          type !== ACTION_TYPES.AUTHENTICATION.REFRESH &&
-          isLoggedIn) {
-        // If we just have an expired session,
-        // trigger a refresh then put the request back on the queue
+      unauthorizedActionQueue.push(action)
+      if (Object.keys(runningFetches).length === 0) {
         yield put(refreshAuthenticationToken(refreshToken))
-        yield put(action)
-        return true
-      } else if (type === ACTION_TYPES.AUTHENTICATION.REFRESH && isLoggedIn) {
-        // should allow one try to refresh the token itself
-        // if it fails again it will try to clear local storage
-        // and then refresh it again
-        if (!breakRefreshCycle) {
-          breakRefreshCycle = true
-          yield put(refreshAuthenticationToken(refreshToken))
-        } else {
-          breakRefreshCycle = false
-          localStorage.clear()
-          // by not passing the refreshToken this should try to
-          // authenticate through the rails session
-          yield put(refreshAuthenticationToken())
-        }
-        yield put(action)
-        return true
       }
+      return true
     }
 
-    if (error.response.status === 420) {
+    if (status === 420) {
       yield put(openAlert(
         <Dialog
           title="Take a breath. You're doing Ello way too fast. A few more seconds. That's better."
@@ -309,45 +298,37 @@ export function* performRequest(action) {
   return true
 }
 
-function* waitForUnpause() {
-  yield take(ACTION_TYPES.REQUESTER.UNPAUSE)
-}
-
 export function* handleRequest(requestChannel) {
   while (true) {
     const action = yield take(requestChannel)
-
-    const { meta, payload: { endpoint } } = action
+    const { payload: { endpoint } } = action
 
     if (!runningFetches[endpoint.path]) {
-      if (requesterIsPaused) {
-        yield call(waitForUnpause)
+      if (runningFetchesBlacklist.indexOf(action.type) === -1) {
+        runningFetches[endpoint.path] = true
       }
-
-      runningFetches[endpoint.path] = true
-
-      if (get(meta, 'pauseRequester')) {
-        yield put(pauseRequester())
-        yield call(performRequest, action)
-        yield put(unpauseRequester())
-      } else {
-        yield fork(performRequest, action)
-      }
+      yield fork(performRequest, action)
     }
   }
 }
 
-function* pauseMechanism() {
-  while (yield take(ACTION_TYPES.REQUESTER.PAUSE)) {
-    requesterIsPaused = true
-    yield take(ACTION_TYPES.REQUESTER.UNPAUSE)
-    requesterIsPaused = false
+function* refireUnauthorizedActions(authSuccessChannel) {
+  while (true) {
+    const successAction = yield take(authSuccessChannel)
+    if (successAction && unauthorizedActionQueue.length) {
+      yield unauthorizedActionQueue.map(action => put(action))
+      unauthorizedActionQueue = []
+    }
   }
 }
 
 export default function* requester() {
   const requestChannel = yield actionChannel(requestTypes)
-  yield fork(pauseMechanism)
+  const authSuccessChannel = yield actionChannel([
+    ACTION_TYPES.AUTHENTICATION.REFRESH_SUCCESS,
+    ACTION_TYPES.AUTHENTICATION.USER_SUCCESS,
+  ])
+  yield fork(refireUnauthorizedActions, authSuccessChannel)
   yield fork(handleRequest, requestChannel)
 }
 

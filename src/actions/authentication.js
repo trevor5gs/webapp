@@ -39,10 +39,7 @@ export function getUserCredentials(email, password, meta) {
         password,
       },
     },
-    meta: {
-      ...meta,
-      pauseRequester: true,
-    },
+    meta,
   }
 }
 
@@ -73,9 +70,6 @@ export function refreshAuthenticationToken(refreshToken) {
       body: {
         refresh_token: refreshToken,
       },
-    },
-    meta: {
-      pauseRequester: true,
     },
   }
 }
