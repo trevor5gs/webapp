@@ -125,7 +125,7 @@ class InfoForm extends Component {
     }
     const linksStatus = this.getLinksStatus()
     if (this.linksText !== linksText &&
-        (linksStatus === STATUS.SUCCESS || /^\s+$/.test(this.linksText))) {
+        (linksStatus === STATUS.SUCCESS || /^\s?$/.test(this.linksText))) {
       vo.external_links = this.linksText
     }
     dispatch(saveProfile(vo))
