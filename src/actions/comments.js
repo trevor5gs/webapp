@@ -12,7 +12,7 @@ export function createComment(body, editorId, postId, hasAutoWatchEnabled) {
       endpoint: api.createComment(postId),
       method: 'POST',
       postId,
-      hasAutoWatchEnabled: hasAutoWatchEnabled,
+      hasAutoWatchEnabled,
     },
     meta: {
       mappingType: MAPPING_TYPES.COMMENTS,

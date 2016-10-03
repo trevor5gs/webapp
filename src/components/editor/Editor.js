@@ -68,6 +68,7 @@ class Editor extends Component {
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
     shouldPersist: PropTypes.bool,
+    allowsAutoWatch: PropTypes.bool,
   }
 
   static defaultProps = {

@@ -27,7 +27,7 @@ methods.addOrUpdateComment = (newState, action) => {
   switch (action.type) {
     case ACTION_TYPES.COMMENT.CREATE_REQUEST:
       return postMethods.updatePostWatch(newState, {
-        payload: { method: 'POST', model: post, hasAutoWatchEnabled: hasAutoWatchEnabled },
+        payload: { method: 'POST', model: post, hasAutoWatchEnabled },
       })
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
