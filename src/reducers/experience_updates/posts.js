@@ -86,7 +86,7 @@ methods.updatePostWatch = (newState, action) => {
   const { method, model, hasAutoWatchEnabled } = action.payload
   const newPost = {
     id: model ? model.id : '',
-    watching: hasAutoWatchEnabled,
+    watching: method === 'POST' ? (action.type === ACTION_TYPES.POST.WATCH_SUCCESS ? true : hasAutoWatchEnabled) : false
   }
   if (action.type === ACTION_TYPES.POST.WATCH_FAILURE) {
     if (method === 'POST') {
