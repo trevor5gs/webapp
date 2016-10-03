@@ -25,6 +25,7 @@ export const selectRegistrationId = state => get(state, 'profile.registrationId'
 export const selectShortBio = state => get(state, 'profile.shortBio', '')
 export const selectUsername = state => get(state, 'profile.username')
 export const selectWebOnboardingVersion = state => get(state, 'profile.webOnboardingVersion')
+export const selectAllowsAutoWatch = state => get(state, 'profile.hasAutoWatchEnabled')
 
 // Memoized selectors
 export const selectIsAvatarBlank = createSelector(
