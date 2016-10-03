@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { selectIsLoggedIn } from '../../selectors/authentication'
-import { selectIsOwnPage } from '../../selectors/profile'
+import {
+  selectIsOwnPage,
+  selectAllowsAutoWatch,
+} from '../../selectors/profile'
 import { selectPostFromPropsPostId, selectIsOwnPost } from '../../selectors/post'
 import { openModal, closeModal } from '../../actions/modals'
 import {
@@ -46,6 +49,7 @@ function mapStateToProps(state, props) {
     post: selectPostFromPropsPostId(state, props),
     isOwnPage: selectIsOwnPage(state),
     isOwnPost: selectIsOwnPost(state, props),
+    allowsAutoWatch: selectAllowsAutoWatch(state),
   }
 }
 
@@ -90,13 +94,13 @@ class Editor extends Component {
   }
 
   submit = (data) => {
-    const { comment, dispatch, isComment, isOwnPage, onSubmit, post } = this.props
+    const { comment, dispatch, isComment, isOwnPage, onSubmit, post, allowsAutoWatch } = this.props
     if (isComment) {
       if (comment && comment.isEditing) {
         dispatch(toggleCommentEditing(comment, false))
         dispatch(updateComment(comment, data, this.getEditorIdentifier()))
       } else {
-        dispatch(createComment(data, this.getEditorIdentifier(), post.id))
+        dispatch(createComment(data, this.getEditorIdentifier(), post.id, allowsAutoWatch))
       }
     } else if (!post) {
       dispatch(closeOmnibar())

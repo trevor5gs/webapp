@@ -3,7 +3,7 @@ import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
 import { resetEditor } from '../actions/editor'
 
-export function createComment(body, editorId, postId) {
+export function createComment(body, editorId, postId, hasAutoWatchEnabled) {
   return {
     type: COMMENT.CREATE,
     payload: {
@@ -12,6 +12,7 @@ export function createComment(body, editorId, postId) {
       endpoint: api.createComment(postId),
       method: 'POST',
       postId,
+      hasAutoWatchEnabled: hasAutoWatchEnabled,
     },
     meta: {
       mappingType: MAPPING_TYPES.COMMENTS,
