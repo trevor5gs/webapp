@@ -21,13 +21,13 @@ methods.updateCommentsCount = (newState, postId, delta) => {
 }
 
 methods.addOrUpdateComment = (newState, action) => {
-  const { model, postId, response } = action.payload
+  const { model, postId, response, hasAutoWatchEnabled } = action.payload
   const post = newState[MAPPING_TYPES.POSTS][postId]
   let index = null
   switch (action.type) {
     case ACTION_TYPES.COMMENT.CREATE_REQUEST:
       return postMethods.updatePostWatch(newState, {
-        payload: { method: 'POST', model: post },
+        payload: { method: 'POST', model: post, hasAutoWatchEnabled: hasAutoWatchEnabled },
       })
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:

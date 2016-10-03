@@ -83,10 +83,10 @@ methods.updatePostLoves = (state, newState, action) => {
 }
 
 methods.updatePostWatch = (newState, action) => {
-  const { method, model } = action.payload
+  const { method, model, hasAutoWatchEnabled } = action.payload
   const newPost = {
     id: model ? model.id : '',
-    watching: method === 'POST',
+    watching: hasAutoWatchEnabled,
   }
   if (action.type === ACTION_TYPES.POST.WATCH_FAILURE) {
     if (method === 'POST') {
