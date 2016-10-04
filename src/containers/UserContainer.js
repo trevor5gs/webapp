@@ -69,7 +69,7 @@ class UserContainer extends Component {
   onClickShareProfile = () => {
     const { dispatch, user } = this.props
     const action = bindActionCreators(trackEvent, dispatch)
-    dispatch(openModal(<ShareDialog user={user} trackEvent={action} />))
+    dispatch(openModal(<ShareDialog username={user.username} trackEvent={action} />))
     dispatch(trackEvent('open-share-dialog-profile'))
   }
 

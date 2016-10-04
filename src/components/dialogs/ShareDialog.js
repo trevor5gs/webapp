@@ -36,19 +36,19 @@ class ShareDialog extends Component {
   static propTypes = {
     author: PropTypes.object,
     post: PropTypes.object,
-    user: PropTypes.object,
+    username: PropTypes.string,
     trackEvent: PropTypes.func,
   }
 
   componentWillMount() {
-    const { user } = this.props
-    return user ? this.getMountShareUser() : this.getMountSharePost()
+    const { username } = this.props
+    return username ? this.getMountShareUser() : this.getMountSharePost()
   }
 
   onClickOpenShareWindow = (e) => {
     const type = e.target.dataset.type
     const url = this.getUrl(type)
-    const { trackEvent, user } = this.props
+    const { trackEvent, username } = this.props
     if (url.indexOf('mailto') === 0) {
       document.location.href = url
     } else {
@@ -57,7 +57,7 @@ class ShareDialog extends Component {
       window.open(url, 'sharewindow', `width=${width}, height=${height}, left=${(window.innerWidth / 2) - (width / 2)}, top=${(window.innerHeight / 2) - (height / 2)}, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0`)
     }
     if (trackEvent) {
-      const eventType = user ? `share-user-to-${type}-profile` : `share-to-${type}`
+      const eventType = username ? `share-user-to-${type}-profile` : `share-to-${type}`
       trackEvent(eventType)
     }
   }
@@ -103,9 +103,9 @@ class ShareDialog extends Component {
   }
 
   getMountShareUser() {
-    const { user } = this.props
-    const summary = `Check out @${user.username} on Ello`
-    this.shareLink = `${window.location.protocol}//${window.location.host}/${user.username}`
+    const { username } = this.props
+    const summary = `Check out @${username} on Ello`
+    this.shareLink = `${window.location.protocol}//${window.location.host}/${username}`
     this.shareLinkSafe = window.encodeURIComponent(this.shareLink)
     this.summarySafe = window.encodeURIComponent(summary)
     this.tweetSummarySafe = this.summarySafe
