@@ -17,7 +17,6 @@ import {
 } from './UserParts'
 
 // -------------------------------------
-// User renderables
 
 export const UserAvatar = ({ user }) =>
   <Link className="UserAvatar" to={`/${user.username}`}>

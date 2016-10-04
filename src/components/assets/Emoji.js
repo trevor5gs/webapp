@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 
-// TODO: The path needs to be the emoji server and not static here
 const Emoji = (props) => {
   const { alt, className, name = 'ello', size = 20, src, title, width, height } = props
   const tip = name.replace(/_|-/, ' ')

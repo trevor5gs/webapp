@@ -6,7 +6,6 @@ import { SVGIcon } from '../svg/SVGComponents'
 import { MiniPillButton } from '../buttons/Buttons'
 
 // -------------------------------------
-// UserProfile Cells and parts
 
 export const ShareIcon = () =>
   <SVGIcon className="ShareIcon">
