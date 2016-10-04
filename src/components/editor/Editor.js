@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { selectIsLoggedIn } from '../../selectors/authentication'
 import {
+  selectHasAutoWatchEnabled,
   selectIsOwnPage,
-  selectAllowsAutoWatch,
 } from '../../selectors/profile'
 import { selectPostFromPropsPostId, selectIsOwnPost } from '../../selectors/post'
 import { openModal, closeModal } from '../../actions/modals'
@@ -45,17 +45,18 @@ export function getEditorId(post, comment, isComment, isZero) {
 
 function mapStateToProps(state, props) {
   return {
+    allowsAutoWatch: selectHasAutoWatchEnabled(state),
     isLoggedIn: selectIsLoggedIn(state),
     post: selectPostFromPropsPostId(state, props),
     isOwnPage: selectIsOwnPage(state),
     isOwnPost: selectIsOwnPost(state, props),
-    allowsAutoWatch: selectAllowsAutoWatch(state),
   }
 }
 
 class Editor extends Component {
 
   static propTypes = {
+    allowsAutoWatch: PropTypes.bool,
     autoPopulate: PropTypes.string,
     comment: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
@@ -68,7 +69,6 @@ class Editor extends Component {
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
     shouldPersist: PropTypes.bool,
-    allowsAutoWatch: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -95,13 +95,13 @@ class Editor extends Component {
   }
 
   submit = (data) => {
-    const { comment, dispatch, isComment, isOwnPage, onSubmit, post, allowsAutoWatch } = this.props
+    const { allowsAutoWatch, comment, dispatch, isComment, isOwnPage, onSubmit, post } = this.props
     if (isComment) {
       if (comment && comment.isEditing) {
         dispatch(toggleCommentEditing(comment, false))
         dispatch(updateComment(comment, data, this.getEditorIdentifier()))
       } else {
-        dispatch(createComment(data, this.getEditorIdentifier(), post.id, allowsAutoWatch))
+        dispatch(createComment(allowsAutoWatch, data, this.getEditorIdentifier(), post.id))
       }
     } else if (!post) {
       dispatch(closeOmnibar())

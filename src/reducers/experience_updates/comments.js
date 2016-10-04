@@ -21,7 +21,7 @@ methods.updateCommentsCount = (newState, postId, delta) => {
 }
 
 methods.addOrUpdateComment = (newState, action) => {
-  const { model, postId, response, hasAutoWatchEnabled } = action.payload
+  const { hasAutoWatchEnabled, model, postId, response } = action.payload
   const post = newState[MAPPING_TYPES.POSTS][postId]
   let index = null
   switch (action.type) {
