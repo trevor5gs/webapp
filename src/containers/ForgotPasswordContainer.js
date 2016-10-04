@@ -24,12 +24,6 @@ class ForgotPasswordContainer extends Component {
     return shallowCompare(this, nextProps, nextState)
   }
 
-  onBlurControl = () => {
-    if (isAndroid()) {
-      document.body.classList.remove('isCreditsHidden')
-    }
-  }
-
   onChangeControl = ({ email }) => {
     this.emailValue = email
     const { emailState } = this.state
@@ -37,12 +31,6 @@ class ForgotPasswordContainer extends Component {
     const newState = getEmailStateFromClient({ value: email, currentStatus })
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
-    }
-  }
-
-  onFocusControl = () => {
-    if (isAndroid()) {
-      document.body.classList.add('isCreditsHidden')
     }
   }
 
@@ -67,10 +55,10 @@ class ForgotPasswordContainer extends Component {
         emailState={emailState}
         isSubmitted={formStatus === STATUS.SUBMITTED}
         isFormValid={isFormValid([emailState])}
-        onBlurControl={this.onBlurControl}
+        onBlur={isAndroid() ? () => document.body.classList.remove('isCreditsHidden') : null}
+        onFocus={isAndroid() ? () => document.body.classList.add('isCreditsHidden') : null}
         onChangeControl={this.onChangeControl}
         onClickTrackCredits={this.onClickTrackCredits}
-        onFocusControl={this.onFocusControl}
         onSubmit={this.onSubmit}
       />
     )

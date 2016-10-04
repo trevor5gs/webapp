@@ -86,12 +86,6 @@ class EnterContainer extends Component {
     this.delayedShowPasswordError.cancel()
   }
 
-  onBlurControl = () => {
-    if (isAndroid()) {
-      document.body.classList.remove('isCreditsHidden')
-    }
-  }
-
   onChangeUserControl = ({ usernameOrEmail }) => {
     this.setState({ showUserError: false })
     this.delayedShowUserError()
@@ -113,12 +107,6 @@ class EnterContainer extends Component {
     const newState = getPasswordState({ value: password, currentStatus })
     if (newState.status !== currentStatus) {
       this.setState({ passwordState: newState })
-    }
-  }
-
-  onFocusControl = () => {
-    if (isAndroid()) {
-      document.body.classList.add('isCreditsHidden')
     }
   }
 
@@ -164,6 +152,8 @@ class EnterContainer extends Component {
   render() {
     const { userState, showUserError, passwordState, showPasswordError } = this.state
     const isValid = isFormValid([userState, passwordState])
+    const droidBlur = isAndroid() ? () => document.body.classList.remove('isCreditsHidden') : null
+    const droidFocus = isAndroid() ? () => document.body.classList.add('isCreditsHidden') : null
     return (
       <MainView className="Authentication">
         <div className="AuthenticationFormDialog">
@@ -180,9 +170,9 @@ class EnterContainer extends Component {
               id="usernameOrEmail"
               label="Username or Email"
               name="user[usernameOrEmail]"
-              onBlur={this.onBlurControl}
+              onBlur={droidBlur}
+              onFocus={droidFocus}
               onChange={this.onChangeUserControl}
-              onFocus={this.onFocusControl}
               placeholder="Enter your username or email"
               renderStatus={showUserError ? this.renderStatus(userState) : null}
               tabIndex="1"
@@ -191,9 +181,9 @@ class EnterContainer extends Component {
             <PasswordControl
               classList="isBoxControl"
               label="Password"
-              onBlur={this.onBlurControl}
+              onBlur={droidBlur}
+              onFocus={droidFocus}
               onChange={this.onChangePasswordControl}
-              onFocus={this.onFocusControl}
               renderStatus={showPasswordError ? this.renderStatus(passwordState) : null}
               tabIndex="2"
             />

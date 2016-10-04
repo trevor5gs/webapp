@@ -117,7 +117,7 @@ Hero Promotion */
   transition: color var(--speed) ease, opacity var(--speed) ease;
 }
 
-/* TODO: Fix android auth layouts - search for isCreditsHidden */
+/* Fix for android auth layouts (search for isCreditsHidden) */
 .isCreditsHidden .HeroPromotionCredits {
   pointer-events: none;
   opacity: 0;
