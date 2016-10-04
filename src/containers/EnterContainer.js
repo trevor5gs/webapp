@@ -3,12 +3,11 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { replace } from 'react-router-redux'
 import debounce from 'lodash/debounce'
-import sample from 'lodash/sample'
 import set from 'lodash/set'
 import { isAndroid, isElloAndroid } from '../lib/jello'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
-import { selectCurrentStream, selectCoverDPI } from '../selectors/gui'
+import { selectCurrentStream } from '../selectors/gui'
 import {
   selectBuildVersion,
   selectBundleId,
@@ -16,13 +15,8 @@ import {
   selectRegistrationId,
   selectWebOnboardingVersion,
 } from '../selectors/profile'
-import { selectPromotionsAuthentication } from '../selectors/promotions'
 import { loadProfile, requestPushSubscription, saveProfile } from '../actions/profile'
 import { signIn } from '../actions/authentication'
-import { trackEvent } from '../actions/analytics'
-import { AppleStore, GooglePlayStore } from '../components/assets/AppStores'
-import Cover from '../components/assets/Cover'
-import Credits from '../components/assets/Credits'
 import TextControl from '../components/forms/TextControl'
 import PasswordControl from '../components/forms/PasswordControl'
 import FormButton from '../components/forms/FormButton'
@@ -36,8 +30,6 @@ import { MainView } from '../components/views/MainView'
 function mapStateToProps(state) {
   const obj = {
     currentStream: selectCurrentStream(state),
-    coverDPI: selectCoverDPI(state),
-    promotions: selectPromotionsAuthentication(state),
     webOnboardingVersionSeen: selectWebOnboardingVersion(state),
   }
   if (isElloAndroid()) {
@@ -54,20 +46,16 @@ class EnterContainer extends Component {
   static propTypes = {
     buildVersion: PropTypes.string,
     bundleId: PropTypes.string,
-    coverDPI: PropTypes.string,
     currentStream: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     marketingVersion: PropTypes.string,
-    promotions: PropTypes.array.isRequired,
     registrationId: PropTypes.string,
     webOnboardingVersionSeen: PropTypes.string,
   }
 
   componentWillMount() {
-    const { promotions } = this.props
     this.state = {
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
-      promotion: sample(promotions),
       showPasswordError: false,
       showUserError: false,
       userState: { status: STATUS.INDETERMINATE, message: '' },
@@ -80,9 +68,6 @@ class EnterContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.state.promotion) {
-      this.setState({ promotion: sample(nextProps.promotions) })
-    }
     if (typeof this.props.webOnboardingVersionSeen === 'undefined' &&
         this.props.webOnboardingVersionSeen !== nextProps.webOnboardingVersionSeen) {
       const { currentStream, dispatch } = this.props
@@ -159,11 +144,6 @@ class EnterContainer extends Component {
     dispatch(action)
   }
 
-  onClickTrackCredits = () => {
-    const { dispatch } = this.props
-    dispatch(trackEvent('authentication-credits-clicked'))
-  }
-
   delayedShowUserError = () => {
     this.setState({ showUserError: true })
   }
@@ -182,19 +162,12 @@ class EnterContainer extends Component {
   }
 
   render() {
-    const { coverDPI } = this.props
-    const {
-      userState, showUserError,
-      passwordState, showPasswordError,
-      failureMessage, promotion,
-    } = this.state
+    const { userState, showUserError, passwordState, showPasswordError } = this.state
     const isValid = isFormValid([userState, passwordState])
     return (
       <MainView className="Authentication">
         <div className="AuthenticationFormDialog">
-          <h1>
-            Welcome back.
-          </h1>
+          <h1>Welcome back.</h1>
           <form
             className="AuthenticationForm"
             id="NewSessionForm"
@@ -224,21 +197,13 @@ class EnterContainer extends Component {
               renderStatus={showPasswordError ? this.renderStatus(passwordState) : null}
               tabIndex="2"
             />
-            {failureMessage ? <p>{failureMessage}</p> : null}
+            {this.state.failureMessage ? <p>{this.state.failureMessage}</p> : null}
             <FormButton className="FormButton isRounded" disabled={!isValid} tabIndex="3">
               Log in
             </FormButton>
           </form>
           <Link className="ForgotPasswordLink" to="/forgot-password">Forgot password?</Link>
         </div>
-        <AppleStore />
-        <GooglePlayStore />
-        <Credits onClick={this.onClickTrackCredits} user={promotion} />
-        <Cover
-          coverDPI={coverDPI}
-          coverImage={promotion ? promotion.coverImage : null}
-          modifiers="isFullScreen hasOverlay"
-        />
       </MainView>
     )
   }

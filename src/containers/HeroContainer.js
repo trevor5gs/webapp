@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
+import get from 'lodash/get'
 import sample from 'lodash/sample'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
@@ -12,7 +13,7 @@ import {
   selectLastFollowingBeaconVersion,
   selectLastStarredBeaconVersion,
 } from '../selectors/gui'
-import { selectPromotions } from '../selectors/promotions'
+import { selectCurrentPromotions } from '../selectors/promotions'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
 import { selectUserFromUsername } from '../selectors/user'
 import { trackEvent } from '../actions/analytics'
@@ -23,19 +24,21 @@ import {
 } from '../actions/gui'
 import { openModal } from '../actions/modals'
 import ShareDialog from '../components/dialogs/ShareDialog'
-import Hero from '../components/heros/Hero'
+import { HeroBackgroundCycle, HeroBroadcast, HeroProfile, HeroPromotion, HeroPromotionAuth } from '../components/heros/HeroRenderables'
 
-const PROMOTION_ROUTES = [
-  /^\/discover/,
-  /^\/search/,
-]
-
-export const selectHasPromotion = createSelector(
-  [selectPathname], pathname =>
-    (pathname === '/' || PROMOTION_ROUTES.some(route => route.test(pathname)))
+export const selectIsAuthenticationLayout = createSelector(
+  [selectViewNameFromRoute], viewName => viewName === 'authentication'
 )
 
-export const selectHasCoverProfile = createSelector(
+export const selectIsBackgroundCycleLayout = createSelector(
+  [selectViewNameFromRoute], viewName => viewName === 'join'
+)
+
+export const selectIsPromotionLayout = createSelector(
+  [selectViewNameFromRoute], viewName => viewName === 'discover' || viewName === 'search'
+)
+
+export const selectIsUserProfileLayout = createSelector(
   [selectViewNameFromRoute], viewName => viewName === 'userDetail'
 )
 
@@ -55,16 +58,22 @@ export const selectBroadcast = createSelector(
 )
 
 function mapStateToProps(state, props) {
+  const user = selectUserFromUsername(state, props)
   return {
     broadcast: selectBroadcast(state),
-    coverDPI: selectCoverDPI(state),
-    hasPromotion: selectHasPromotion(state),
-    hasCoverProfile: selectHasCoverProfile(state, props),
+    dpi: selectCoverDPI(state),
+    isAuthenticationLayout: selectIsAuthenticationLayout(state),
+    isBackgroundCycleLayout: selectIsBackgroundCycleLayout(state),
     isLoggedIn: selectIsLoggedIn(state),
+    isPromotionLayout: selectIsPromotionLayout(state),
+    isUserProfileLayout: selectIsUserProfileLayout(state, props),
     pathname: selectPathname(state),
-    promotions: selectPromotions(state),
+    promotions: selectCurrentPromotions(state),
+    useGif: user && (user.viewsAdultContent || !user.postsAdultContent),
+    userCoverImage: user && user.coverImage,
+    userId: user && user.id,
+    username: user && user.username,
     viewName: selectViewNameFromRoute(state, props),
-    user: selectUserFromUsername(state, props),
   }
 }
 
@@ -72,22 +81,29 @@ class HeroContainer extends Component {
   static propTypes = {
     broadcast: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    coverDPI: PropTypes.string.isRequired,
-    hasCoverProfile: PropTypes.bool,
-    hasPromotion: PropTypes.bool,
+    dpi: PropTypes.string.isRequired,
+    isAuthenticationLayout: PropTypes.bool,
+    isBackgroundCycleLayout: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
+    isPromotionLayout: PropTypes.bool,
+    isUserProfileLayout: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
-    user: PropTypes.object,
+    useGif: PropTypes.bool,
+    userCoverImage: PropTypes.object,
+    userId: PropTypes.string,
+    username: PropTypes.string,
     viewName: PropTypes.string.isRequired,
   }
 
   static childContextTypes = {
     onClickShareProfile: PropTypes.func,
+    onClickTrackCredits: PropTypes.func,
   }
 
   getChildContext() {
     return {
       onClickShareProfile: this.onClickShareProfile,
+      onClickTrackCredits: this.onClickTrackCredits,
     }
   }
 
@@ -96,10 +112,10 @@ class HeroContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { broadcast, hasPromotion, pathname } = nextProps
+    const { broadcast, isPromotionLayout, pathname } = nextProps
     const hasPathChanged = this.props.pathname !== pathname
 
-    if ((hasPathChanged && hasPromotion) || !this.state.promotion) {
+    if ((hasPathChanged && isPromotionLayout) || !this.state.promotion) {
       this.setState({ promotion: sample(nextProps.promotions) })
     }
 
@@ -113,17 +129,19 @@ class HeroContainer extends Component {
   }
 
   onClickShareProfile = () => {
-    const { dispatch, user } = this.props
+    const { dispatch, username } = this.props
     const action = bindActionCreators(trackEvent, dispatch)
-    dispatch(openModal(<ShareDialog user={user} trackEvent={action} />))
+    dispatch(openModal(<ShareDialog username={username} trackEvent={action} />))
     dispatch(trackEvent('open-share-dialog-profile'))
   }
 
   onClickTrackCredits = () => {
-    this.props.dispatch(trackEvent('banderole-credits-clicked'))
+    const { dispatch, isPromotionLayout } = this.props
+    const label = `${isPromotionLayout ? 'banderole' : 'authentication'}-credits-clicked`
+    dispatch(trackEvent(label))
   }
 
-  onDismissZeroStream = () => {
+  onDismissBroadcast = () => {
     const { dispatch, viewName } = this.props
     if (viewName === 'discover') {
       dispatch(setLastDiscoverBeaconVersion({ version: DISCOVER.BEACON_VERSION }))
@@ -137,23 +155,62 @@ class HeroContainer extends Component {
     }
   }
 
+  getHeroProfile() {
+    const { dpi, pathname, userCoverImage, useGif, userId } = this.props
+    const props = { dpi, pathname, sources: userCoverImage, useGif, userId }
+    return <HeroProfile key="HeroProfile" {...props} />
+  }
+
+  getHeroPromotion() {
+    const { dpi, isLoggedIn } = this.props
+    const { promotion } = this.state
+    const caption = get(promotion, 'caption', '')
+    const creditSources = get(promotion, 'avatar', null)
+    const creditUsername = get(promotion, 'username', null)
+    const ctaCaption = get(promotion, 'cta.caption')
+    const ctaHref = get(promotion, 'cta.href')
+    const sources = get(promotion, 'coverImage', null)
+    const props = { caption, creditSources, creditUsername, dpi, sources }
+    const ctaProps = { ctaCaption, ctaHref, isLoggedIn }
+    return <HeroPromotion key="HeroPromotion" {...props} {...ctaProps} />
+  }
+
+  getHeroPromotionAuth() {
+    const { dpi } = this.props
+    const { promotion } = this.state
+    const creditSources = get(promotion, 'avatar', null)
+    const creditUsername = get(promotion, 'username', null)
+    const sources = get(promotion, 'coverImage', null)
+    const props = { creditSources, creditUsername, dpi, sources }
+    return <HeroPromotionAuth key="HeroPromotionAuth" {...props} />
+  }
+
   render() {
-    const { user } = this.props
-    const props = {
-      broadcast: this.state.broadcast,
-      dpi: this.props.coverDPI,
-      hasCoverProfile: this.props.hasCoverProfile,
-      hasPromotion: this.props.hasPromotion,
-      isLoggedIn: this.props.isLoggedIn,
-      onClickTrackCredits: this.onClickTrackCredits,
-      onDismissZeroStream: this.onDismissZeroStream,
-      pathname: this.props.pathname,
-      promotion: this.state.promotion,
-      sources: user && user.coverImage,
-      userId: user && user.id,
-      useGif: user && (user.viewsAdultContent || !user.postsAdultContent),
+    const children = []
+    const { broadcast } = this.state
+    const { isAuthenticationLayout, isBackgroundCycleLayout } = this.props
+    const { isPromotionLayout, isUserProfileLayout, userId } = this.props
+
+    if (broadcast) {
+      const props = { broadcast, onDismiss: this.onDismissBroadcast }
+      children.push(<HeroBroadcast key="HeroBroadcast" {...props} />)
     }
-    return <Hero {...props} />
+
+    // Pick a background
+    if (isPromotionLayout) {
+      children.push(this.getHeroPromotion())
+    } else if (isUserProfileLayout && userId) {
+      children.push(this.getHeroProfile())
+    } else if (isAuthenticationLayout) {
+      children.push(this.getHeroPromotionAuth())
+    } else if (isBackgroundCycleLayout) {
+      children.push(<HeroBackgroundCycle key="HeroBackgroundCycle" />)
+    }
+    return (
+      <div className="Hero">
+        {children}
+      </div>
+    )
   }
 }
 

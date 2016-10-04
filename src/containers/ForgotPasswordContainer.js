@@ -1,45 +1,23 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import sample from 'lodash/sample'
 import { isAndroid } from '../lib/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
-import { selectCoverDPI } from '../selectors/gui'
-import { selectPromotionsAuthentication } from '../selectors/promotions'
 import { sendForgotPasswordRequest } from '../actions/authentication'
-import { trackEvent } from '../actions/analytics'
 import { isFormValid, getEmailStateFromClient } from '../components/forms/Validators'
 import { ForgotPassword } from '../components/views/ForgotPassword'
 
-function mapStateToProps(state) {
-  return {
-    coverDPI: selectCoverDPI(state),
-    promotions: selectPromotionsAuthentication(state),
-  }
-}
-
 class ForgotPasswordContainer extends Component {
-
   static propTypes = {
-    coverDPI: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    promotions: PropTypes.array.isRequired,
   }
 
   componentWillMount() {
-    const { promotions } = this.props
     this.state = {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
       formStatus: STATUS.INDETERMINATE,
-      promotion: sample(promotions),
     }
     this.emailValue = ''
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.state.promotion) {
-      this.setState({ promotion: sample(nextProps.promotions) })
-    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -82,17 +60,10 @@ class ForgotPasswordContainer extends Component {
     }
   }
 
-  onClickTrackCredits = () => {
-    const { dispatch } = this.props
-    dispatch(trackEvent('authentication-credits-clicked'))
-  }
-
   render() {
-    const { coverDPI } = this.props
-    const { emailState, formStatus, promotion } = this.state
+    const { emailState, formStatus } = this.state
     return (
       <ForgotPassword
-        coverDPI={coverDPI}
         emailState={emailState}
         isSubmitted={formStatus === STATUS.SUBMITTED}
         isFormValid={isFormValid([emailState])}
@@ -101,11 +72,10 @@ class ForgotPasswordContainer extends Component {
         onClickTrackCredits={this.onClickTrackCredits}
         onFocusControl={this.onFocusControl}
         onSubmit={this.onSubmit}
-        promotion={promotion}
       />
     )
   }
 }
 
-export default connect(mapStateToProps)(ForgotPasswordContainer)
+export default connect()(ForgotPasswordContainer)
 

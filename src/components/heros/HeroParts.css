@@ -1,0 +1,162 @@
+@import "../../lib/styles/properties.css";
+
+/* -------------------------------------
+Hero App store buttons */
+
+.HeroAppStores {
+  position: absolute;
+  bottom: 12px;
+  left: 10px;
+  z-index: 2;
+  display: none;
+}
+
+@media (--break-2) {
+  .HeroAppStores {
+    left: 20px;
+    display: block;
+  }
+}
+
+@media (--break-4) {
+  .HeroAppStores {
+    left: 40px;
+  }
+}
+
+/* -------------------------------------
+Hero scroll to content button (hidden on mobile) */
+
+.HeroScrollToContentButton {
+  position: absolute;
+  bottom: 40px;
+  left: calc(50% - 20px);
+  width: 40px;
+  height: 40px;
+  background-color: #000;
+  border-radius: 20px;
+}
+
+.HeroScrollToContentButton .ScrollToContentIcon {
+  margin-top: -2px;
+}
+
+.HeroScrollToContentButton .ScrollToContentIcon g {
+  fill: none;
+  stroke: #fff;
+}
+
+@media (--break-2-max) {
+  .HeroScrollToContentButton {
+    display: none;
+  }
+}
+
+/* -------------------------------------
+Hero share user button */
+
+.HeroShareUserButton {
+  position: absolute;
+  top: 230px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+}
+
+.HeroShareUserButton .ShareIcon g {
+  fill: none;
+  stroke: #aaa;
+}
+
+@media (--break-2) {
+  .HeroShareUserButton {
+    top: 20px;
+    right: 20px;
+    background-color: #000;
+    border-radius: 20px;
+  }
+
+  .HeroShareUserButton .ShareIcon {
+    margin-top: -6px;
+  }
+
+  .HeroShareUserButton .ShareIcon g {
+    stroke: #fff;
+  }
+}
+
+/* -------------------------------------
+Hero Promotion */
+
+.HeroPromotionCaption {
+  position: relative;
+  top: 50%;
+  left: 10px;
+  max-width: calc(100% - 20px);
+  font-size: 14px;
+  transform: translateY(-50%);
+}
+
+.HeroPromotionHeading {
+  font-size: 18px;
+}
+
+.HeroPromotionCTA {
+  margin-top: 20px;
+  line-height: 1.3;
+  border-bottom: 1px solid;
+}
+
+.HeroPromotionCredits {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 1;
+  font-size: 14px;
+  color: #fff;
+  transition: color var(--speed) ease, opacity var(--speed) ease;
+}
+
+/* TODO: Fix android auth layouts - search for isCreditsHidden */
+.isCreditsHidden .HeroPromotionCredits {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.no-touch .HeroPromotionCredits:hover {
+  color: #ccc;
+}
+
+.HeroPromotionCreditsAuthor {
+  display: inline-block;
+  margin-right: 15px;
+  margin-left: 10px;
+  line-height: 1.2;
+  border-bottom: 1px solid;
+}
+
+@media (--break-2) {
+  .HeroPromotionCaption {
+    left: 20px;
+  }
+
+  .HeroPromotionHeading {
+    font-size: 48px;
+  }
+
+  .HeroPromotionCredits {
+    right: 20px;
+    bottom: 20px;
+  }
+}
+
+@media (--break-4) {
+  .HeroPromotionCaption {
+    left: 40px;
+  }
+
+  .HeroPromotionCredits {
+    right: 40px;
+  }
+}
+
