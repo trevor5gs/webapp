@@ -250,11 +250,7 @@ export function* performRequest(action) {
       )
       break
     default:
-      // don't send the auth headers on logout as it seems like
-      // this somehow seems to keep the rails session logged in
-      if (action.type !== ACTION_TYPES.AUTHENTICATION.LOGOUT) {
-        options.headers = getHeaders(accessToken)
-      }
+      options.headers = getHeaders(accessToken)
       break
   }
 
