@@ -69,6 +69,7 @@ export default class ImageAsset extends Component {
     delete elementProps.onLoadSuccess
     if (elementProps.isBackgroundImage) {
       const style = elementProps.src ? { backgroundImage: `url(${elementProps.src})` } : null
+      delete elementProps.src
       delete elementProps.isBackgroundImage
       return (
         <figure {...elementProps} style={style} />
