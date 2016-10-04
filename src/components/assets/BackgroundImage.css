@@ -15,25 +15,17 @@
   transition: background-color var(--speed) ease, opacity var(--speed2) ease;
 }
 
-.BackgroundImage.inHero {
-  height: 220px;
-}
-
-.BackgroundImage.inOnboarding,
-.BackgroundImage.inSettings {
-  height: 220px;
-}
-
-.BackgroundImage.inUserProfileCard {
-  height: 250px;
-}
-
 .BackgroundImage.isRequesting {
   animation: animateLavaLamp 3s infinite linear;
 }
 
 .BackgroundImage.isFailing {
   background-color: var(--color-danger);
+}
+
+.BackgroundImage.inOnboarding,
+.BackgroundImage.inSettings {
+  height: 220px;
 }
 
 .BackgroundImageAsset {
@@ -63,6 +55,10 @@
   transition: background-color var(--speed) ease;
 }
 
+.BackgroundImage.hasOverlay3::before {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
 .BackgroundImage.hasOverlay4::before {
   background-color: rgba(0, 0, 0, 0.4);
 }
@@ -77,26 +73,19 @@
 }
 /* stylelint-enable selector-max-specificity */
 
-@media (--break-2) {
-  .BackgroundImage.inHero {
-    height: auto;
+@media (--break-2-max) {
+  .BackgroundImage.inHeroProfile {
+    height: 220px;
   }
 
   .BackgroundImage.inUserProfileCard {
-    height: auto;
-    min-height: 540px;
+    height: 250px;
   }
 }
 
-/* .AnimatedCover { */
-/*   position: fixed; */
-/*   top: 0; */
-/*   right: 0; */
-/*   bottom: 0; */
-/*   left: 0; */
-/*   z-index: -1; */
-/*   min-height: 220px; */
-/*   text-align: center; */
-/*   background-size: cover; */
-/* } */
+@media (--break-2) {
+  .BackgroundImage.inUserProfileCard {
+    min-height: 540px;
+  }
+}
 
