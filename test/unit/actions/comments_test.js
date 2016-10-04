@@ -6,7 +6,7 @@ import * as subject from '../../../src/actions/comments'
 describe('comments actions', () => {
   context('#createComment', () => {
     const body = [{ kind: 'text', data: 'what?' }, { kind: 'image', data: 'image.jpg' }]
-    const action = subject.createComment(body, 'commentEditor_1', 'postId_1')
+    const action = subject.createComment(true, body, 'commentEditor_1', 'postId_1')
 
     it('is an FSA compliant action', () => {
       expect(isFSA(action)).to.be.true
