@@ -4,7 +4,7 @@ import authenticationSaga from './authentication'
 import pushSubscriptionSaga from './push_subscription'
 import requesterSaga from './requester'
 import uploaderSaga from './uploader'
-import { isElloAndroid } from '../vendor/jello'
+import { isElloAndroid } from '../lib/jello'
 
 export function* serverRoot() {
   yield [

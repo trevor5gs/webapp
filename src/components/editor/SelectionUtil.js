@@ -1,4 +1,4 @@
-import { isIOS } from '../../vendor/jello'
+import { isIOS } from '../../lib/jello'
 
 let node = null
 let startIndex = -1

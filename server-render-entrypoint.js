@@ -7,12 +7,12 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import Honeybadger from 'honeybadger'
 import { createMemoryHistory, match, RouterContext } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
+import { updateStrings as updateTimeAgoStrings } from './src/lib/time_ago_in_words'
 import { createElloStore } from './src/store'
 import createRoutes from './src/routes'
-import { syncHistoryWithStore } from 'react-router-redux'
 import { serverRoot } from './src/sagas'
-import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
 
 const indexStr = fs.readFileSync(path.join(__dirname, './public/index.html'), 'utf-8')
 

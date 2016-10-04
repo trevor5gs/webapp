@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
-import { numberToHuman } from '../../vendor/number_to_human'
+import { numberToHuman } from '../../lib/number_to_human'
 import { SVGIcon } from '../svg/SVGComponents'
 import { MiniPillButton } from '../buttons/Buttons'
 

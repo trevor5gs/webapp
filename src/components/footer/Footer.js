@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
-import { isAndroid } from '../../vendor/jello'
+import { isAndroid } from '../../lib/jello'
 import { PhoneIcon, ChevronIcon, ListIcon, GridIcon } from '../footer/FooterIcons'
 import { FooterLabel } from '../footer/FooterLabel'
 import { FooterLink } from '../footer/FooterLink'

@@ -1,7 +1,7 @@
 import { decamelizeKeys } from 'humps'
 import store from '../store'
 import { requestPushSubscription, saveProfile } from '../actions/profile'
-import { isElloAndroid } from '../vendor/jello'
+import { isElloAndroid } from '../lib/jello'
 import { trackEvent } from '../actions/analytics'
 
 export function preferenceToggleChanged(obj) {

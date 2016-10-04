@@ -1,6 +1,6 @@
 import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, PROFILE } from '../constants/action_types'
-import session from '../vendor/session'
+import Session from '../lib/session'
 
 export const initialState = {
   accessToken: null,
@@ -25,7 +25,7 @@ export function authentication(state = initialState, action) {
       return initialState
     case AUTHENTICATION.LOGOUT_SUCCESS:
     case AUTHENTICATION.LOGOUT_FAILURE:
-      session.clear()
+      Session.clear()
       return { ...initialState }
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }

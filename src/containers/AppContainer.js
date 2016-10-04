@@ -24,7 +24,7 @@ import ModalContainer from '../containers/ModalContainer'
 import NavbarContainer from '../containers/NavbarContainer'
 import OmnibarContainer from '../containers/OmnibarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
-import { scrollTo } from '../vendor/jello'
+import { scrollTo } from '../lib/jello'
 
 function mapStateToProps(state) {
   return {

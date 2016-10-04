@@ -3,7 +3,7 @@ import express from 'express'
 import webpack from 'webpack'
 import config from './webpack.dev.config'
 import { addOauthRoute, fetchOauthToken } from './oauth'
-import { updateStrings as updateTimeAgoStrings } from './src/vendor/time_ago_in_words'
+import { updateStrings as updateTimeAgoStrings } from './src/lib/time_ago_in_words'
 
 const app = express()
 const compiler = webpack(config)

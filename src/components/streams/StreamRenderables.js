@@ -11,7 +11,7 @@ import UserInvitee from '../users/UserInvitee'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
-import { isElloAndroid } from '../../vendor/jello'
+import { isElloAndroid } from '../../lib/jello'
 
 export function categoriesAsGrid(categories) {
   return (

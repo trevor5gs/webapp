@@ -1,4 +1,4 @@
-import Session from '../../../src/vendor/session'
+import Session from '../../../src/lib/session'
 
 describe('Sessh', () => {
   it('can store values', () => {

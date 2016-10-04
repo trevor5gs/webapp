@@ -13,7 +13,7 @@ import semaphore from 'semaphore'
 import cp from 'child_process'
 import memjs from 'memjs'
 import crypto from 'crypto'
-import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
+import { updateStrings as updateTimeAgoStrings } from './lib/time_ago_in_words'
 import { addOauthRoute, currentToken } from '../oauth'
 
 function handleZlibError(error) {

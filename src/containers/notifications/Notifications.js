@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
-import { scrollTo } from '../../vendor/jello'
+import { scrollTo } from '../../lib/jello'
+import Session from '../../lib/session'
 import { selectPropsPathname } from '../../selectors/routing'
 import { selectStreamType } from '../../selectors/stream'
 import { loadNotifications } from '../../actions/notifications'
@@ -16,7 +17,6 @@ import {
 } from '../../components/notifications/NotificationIcons'
 import { TabListLinks } from '../../components/tabs/TabList'
 import { Paginator } from '../../components/streams/Paginator'
-import Session from '../../../src/vendor/session'
 import { MainView } from '../../components/views/MainView'
 
 class Notifications extends Component {

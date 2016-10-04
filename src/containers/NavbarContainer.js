@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import { isIOS, scrollTo } from '../vendor/jello'
+import { isIOS, scrollTo } from '../lib/jello'
+import Session from '../lib/session'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
@@ -25,7 +26,6 @@ import { updateRelationship } from '../actions/relationships'
 import { loadFriends, loadNoise } from '../actions/stream'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/Navbar'
 import { getDiscoverAction } from '../containers/DiscoverContainer'
-import Session from '../vendor/session'
 
 function mapStateToProps(state) {
   const currentStream = selectCurrentStream(state)

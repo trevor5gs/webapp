@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import debounce from 'lodash/debounce'
-import { hideSoftKeyboard } from '../../vendor/jello'
+import { hideSoftKeyboard } from '../../lib/jello'
 import {
   selectLinksAsText, selectName, selectShortBio, selectUsername,
 } from '../../selectors/profile'

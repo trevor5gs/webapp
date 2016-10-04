@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { GUI, LOAD_STREAM_REQUEST, LOAD_STREAM_SUCCESS } from '../../constants/action_types'
-import { scrollTo } from '../../vendor/jello'
+import { scrollTo } from '../../lib/jello'
+import Session from '../../lib/session'
 import { selectActiveNotificationsType } from '../../selectors/gui'
 import { selectStreamType } from '../../selectors/stream'
 import { toggleNotifications } from '../../actions/gui'
@@ -15,7 +16,6 @@ import {
 } from '../../components/notifications/NotificationIcons'
 import { TabListButtons } from '../../components/tabs/TabList'
 import { Paginator } from '../../components/streams/Paginator'
-import Session from '../../vendor/session'
 
 function mapStateToProps(state) {
   const activeTabType = selectActiveNotificationsType(state)
