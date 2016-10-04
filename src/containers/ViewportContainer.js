@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
+import { createSelector } from 'reselect'
 import {
   selectInnerHeight,
   selectInnerWidth,
@@ -11,13 +12,23 @@ import {
   selectIsProfileMenuActive,
   selectScrollOffset,
 } from '../selectors/gui'
-import { selectPathname } from '../selectors/routing'
+import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
 import { setIsNavbarHidden, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
 
-function mapStateToProps(state) {
+export const selectUserDetailPathClassName = createSelector(
+  [selectViewNameFromRoute, selectPathname], (viewName, pathname) => {
+    if (viewName !== 'userDetail') { return null }
+    if (/\/following\b/.test(pathname)) { return 'isUserDetailFollowing' }
+    if (/\/followers\b/.test(pathname)) { return 'isUserDetailFollowers' }
+    if (/\/loves\b/.test(pathname)) { return 'isUserDetailLoves' }
+    return 'isUserDetailPosts'
+  }
+)
+
+function mapStateToProps(state, props) {
   return {
     innerHeight: selectInnerHeight(state),
     innerWidth: selectInnerWidth(state),
@@ -28,10 +39,10 @@ function mapStateToProps(state) {
     isProfileMenuActive: selectIsProfileMenuActive(state),
     pathname: selectPathname(state),
     scrollOffset: selectScrollOffset(state),
+    userDetailPathClassName: selectUserDetailPathClassName(state, props),
   }
 }
 
-/* eslint-disable react/no-unused-prop-types */
 class ViewportContainer extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -44,6 +55,7 @@ class ViewportContainer extends Component {
     isProfileMenuActive: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
     scrollOffset: PropTypes.number,
+    userDetailPathClassName: PropTypes.string,
   }
 
   componentWillMount() {
@@ -105,10 +117,17 @@ class ViewportContainer extends Component {
   }
 
   render() {
-    return <Viewport {...this.props} />
+    const props = {
+      isAuthenticationView: this.props.isAuthenticationView,
+      isNavbarHidden: this.props.isNavbarHidden,
+      isNotificationsActive: this.props.isNotificationsActive,
+      isOnboardingView: this.props.isOnboardingView,
+      isProfileMenuActive: this.props.isProfileMenuActive,
+      userDetailPathClassName: this.props.userDetailPathClassName,
+    }
+    return <Viewport {...props} />
   }
 }
-/* eslint-enable react/no-unused-prop-types */
 
 export default connect(mapStateToProps)(ViewportContainer)
 

@@ -110,7 +110,7 @@ class AppContainer extends Component {
     return (
       <section className={appClasses}>
         <MetaContainer params={params} />
-        <ViewportContainer />
+        <ViewportContainer params={params} />
         {isLoggedIn ? <OmnibarContainer /> : null}
         <HeroContainer params={params} />
         {children}

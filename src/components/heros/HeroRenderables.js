@@ -27,7 +27,7 @@ HeroBroadcast.propTypes = {
 
 // -----------------
 
-export const HeroProfile = ({ dpi, pathname, sources, userId, useGif }) =>
+export const HeroProfile = ({ dpi, sources, userId, useGif }) =>
   <div className="HeroProfile">
     <BackgroundImage
       className="inHeroProfile hasOverlay6"
@@ -35,14 +35,13 @@ export const HeroProfile = ({ dpi, pathname, sources, userId, useGif }) =>
       sources={sources}
       useGif={useGif}
     />
-    <UserContainer userId={userId} type="profile" key={`HeroProfile_${pathname}`} />
+    <UserContainer userId={userId} type="profile" />
     <HeroShareUserButton />
     <HeroScrollToContentButton />
   </div>
 
 HeroProfile.propTypes = {
   dpi: PropTypes.string.isRequired,
-  pathname: PropTypes.string,
   sources: PropTypes.object,
   userId: PropTypes.string,
   useGif: PropTypes.bool,

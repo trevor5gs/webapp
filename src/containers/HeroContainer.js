@@ -156,8 +156,8 @@ class HeroContainer extends Component {
   }
 
   getHeroProfile() {
-    const { dpi, pathname, userCoverImage, useGif, userId } = this.props
-    const props = { dpi, pathname, sources: userCoverImage, useGif, userId }
+    const { dpi, userCoverImage, useGif, userId } = this.props
+    const props = { dpi, sources: userCoverImage, useGif, userId }
     return <HeroProfile key="HeroProfile" {...props} />
   }
 
