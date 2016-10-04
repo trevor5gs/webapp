@@ -124,7 +124,7 @@ methods.addOrUpdatePost = (newState, action) => {
       if (action.type === ACTION_TYPES.POST.UPDATE_SUCCESS) { return newState }
       jsonReducer.methods.appendPageId(
         newState, '/following',
-        MAPPING_TYPES.POSTS, response[MAPPING_TYPES.POSTS].id, false)
+        MAPPING_TYPES.POSTS, response[MAPPING_TYPES.POSTS].id, true)
 
       if (action.meta.repostId) {
         jsonReducer.methods.updatePostCount(newState, action.meta.repostId, 'repostsCount', 1)
@@ -152,7 +152,7 @@ methods.addOrUpdatePost = (newState, action) => {
         jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', 1)
         jsonReducer.methods.appendPageId(
           newState, `/${user.username}`,
-          MAPPING_TYPES.POSTS, response[MAPPING_TYPES.POSTS].id, false)
+          MAPPING_TYPES.POSTS, response[MAPPING_TYPES.POSTS].id, true)
       }
       return newState
     case ACTION_TYPES.POST.DELETE_SUCCESS:
