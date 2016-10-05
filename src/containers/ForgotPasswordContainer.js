@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import { isAndroid } from '../lib/jello'
+// import { isAndroid } from '../lib/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
 import { sendForgotPasswordRequest } from '../actions/authentication'
 import { isFormValid, getEmailStateFromClient } from '../components/forms/Validators'
@@ -55,8 +55,6 @@ class ForgotPasswordContainer extends Component {
         emailState={emailState}
         isSubmitted={formStatus === STATUS.SUBMITTED}
         isFormValid={isFormValid([emailState])}
-        onBlur={isAndroid() ? () => document.body.classList.remove('isCreditsHidden') : null}
-        onFocus={isAndroid() ? () => document.body.classList.add('isCreditsHidden') : null}
         onChangeControl={this.onChangeControl}
         onClickTrackCredits={this.onClickTrackCredits}
         onSubmit={this.onSubmit}
