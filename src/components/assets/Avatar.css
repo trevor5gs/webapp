@@ -29,6 +29,10 @@
   background-color: transparent;
 }
 
+.Avatar.inHeroPromotionCredits {
+  background-color: transparent;
+}
+
 .Avatar.isXLarge {
   width: 220px;
   height: 220px;
@@ -54,6 +58,10 @@
 
 .Avatar.isFailing {
   background-color: var(--color-danger);
+}
+
+.Avatar.inHeroPromotionCredits.isFailing {
+  display: none;
 }
 
 .isAvatarBlank ~ .Avatar {

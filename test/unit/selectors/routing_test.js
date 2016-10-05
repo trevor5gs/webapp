@@ -135,7 +135,19 @@ describe('routing selectors', () => {
       state = { routing: { location: { pathname: '/mk/post/etlb9br06dh6tleztw4g', change: true } } }
       expect(selectViewNameFromRoute(state, props)).not.to.equal('userDetail')
 
-      expect(selectViewNameFromRoute.recomputations()).to.equal(15)
+      state = { routing: { location: { pathname: '/join', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('join')
+
+      state = { routing: { location: { pathname: '/enter', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('authentication')
+
+      state = { routing: { location: { pathname: '/forgot-password', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('authentication')
+
+      state = { routing: { location: { pathname: '/signup', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('authentication')
+
+      expect(selectViewNameFromRoute.recomputations()).to.equal(19)
       selectViewNameFromRoute.resetRecomputations()
     })
   })

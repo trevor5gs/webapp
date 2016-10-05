@@ -1,4 +1,4 @@
-import { getSource } from '../../../../src/components/assets/Cover'
+import { getSource } from '../../../../src/components/assets/BackgroundImage'
 
 function tmpCover() {
   return {
@@ -25,15 +25,15 @@ function gifCover() {
   }
 }
 
-describe('Cover', () => {
+describe('BackgroundImage', () => {
   context('#getSource', () => {
-    const props1 = { coverDPI: 'xhdpi', coverImage: null, useGif: false }
-    const props2 = { coverDPI: 'xhdpi', coverImage: tmpCover(), useGif: false }
-    const props3 = { coverDPI: 'xhdpi', coverImage: gifCover(), useGif: true }
-    const props4 = { coverDPI: 'xhdpi', coverImage: jpgCover(), useGif: true }
-    const props5 = { coverDPI: 'optimized', coverImage: jpgCover(), useGif: false }
+    const props1 = { dpi: 'xhdpi', sources: null, useGif: false }
+    const props2 = { dpi: 'xhdpi', sources: tmpCover(), useGif: false }
+    const props3 = { dpi: 'xhdpi', sources: gifCover(), useGif: true }
+    const props4 = { dpi: 'xhdpi', sources: jpgCover(), useGif: true }
+    const props5 = { dpi: 'optimized', sources: jpgCover(), useGif: false }
 
-    it('returns an empty string if the coverImage is null', () => {
+    it('returns an empty string if the sources is null', () => {
       expect(getSource(props1)).to.equal('')
     })
 
@@ -41,7 +41,7 @@ describe('Cover', () => {
       expect(getSource(props2)).to.equal('cover-tmp.jpg')
     })
 
-    it('returns the source to the original when useGif is truen and the file is a gif', () => {
+    it('returns the source to the original when useGif is true and the file is a gif', () => {
       expect(getSource(props3)).to.equal('cover-original.gif')
     })
 

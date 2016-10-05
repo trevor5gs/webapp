@@ -126,30 +126,30 @@ User Names  */
 }
 
 /* -------------------------------------
-User Dirt */
+User Figures */
 
-.UserDirtLabel {
+.UserFiguresLabel {
   color: #aaa;
 }
 
-.UserDirtShareButton {
+.UserFiguresShareButton {
   position: absolute;
   top: 15px;
   right: 0;
 }
 
 @media (--break-2-max) {
-  .UserDirtShareButton {
+  .UserFiguresShareButton {
     color: #aaa;
   }
 }
 
 @media (--break-2) {
-  .UserDirtLabel {
+  .UserFiguresLabel {
     color: #ccc;
   }
 
-  .no-touch .UserDirtShareButton {
+  .no-touch .UserFiguresShareButton {
     display: none;
   }
 }
@@ -183,7 +183,14 @@ User Stats */
   padding-bottom: 2px;
 }
 
-.UserStatsLink.isActive dd,
+/* This keeps the entire UserProfile from re-rendering on page changes.
+ * Dirty but efficient. Same below in the media query. */
+
+/* stylelint-disable selector-max-compound-selectors */
+.isUserDetailPosts ~ .Hero dl:nth-child(1) dd,
+.isUserDetailFollowing ~ .Hero dl:nth-child(2) dd,
+.isUserDetailFollowers ~ .Hero dl:nth-child(3) dd,
+.isUserDetailLoves ~ .Hero dl:nth-child(4) dd,
 .no-touch .UserStatsLink:not(.asDisabled):hover dd {
   color: #000;
 }
@@ -204,10 +211,14 @@ User Stats */
     color: #ccc;
   }
 
-  .UserStatsLink.isActive dd,
+  .isUserDetailPosts ~ .Hero dl:nth-child(1) dd,
+  .isUserDetailFollowing ~ .Hero dl:nth-child(2) dd,
+  .isUserDetailFollowers ~ .Hero dl:nth-child(3) dd,
+  .isUserDetailLoves ~ .Hero dl:nth-child(4) dd,
   .no-touch .UserStatsLink:not(.asDisabled):hover dd {
     color: #fff;
   }
+  /* stylelint-enable selector-max-compound-selectors */
 }
 
 /* -------------------------------------

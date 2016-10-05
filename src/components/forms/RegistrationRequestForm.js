@@ -22,7 +22,6 @@ class RegistrationRequestForm extends Component {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
     }
     this.emailValue = ''
-
     this.delayedShowEmailError = debounce(this.delayedShowEmailError, 1000)
   }
 
@@ -30,12 +29,6 @@ class RegistrationRequestForm extends Component {
     const { availability } = nextProps
     if (availability && {}.hasOwnProperty.call(availability, 'email')) {
       this.onValidateEmailResponse(availability)
-    }
-  }
-
-  onBlurControl = () => {
-    if (isAndroid()) {
-      document.body.classList.remove('isCreditsHidden')
     }
   }
 
@@ -48,12 +41,6 @@ class RegistrationRequestForm extends Component {
     const newState = getEmailStateFromClient({ value: email, currentStatus })
     if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
-    }
-  }
-
-  onFocusControl = () => {
-    if (isAndroid()) {
-      document.body.classList.add('isCreditsHidden')
     }
   }
 
@@ -102,9 +89,9 @@ class RegistrationRequestForm extends Component {
           <EmailControl
             classList="isBoxControl"
             label="Email"
-            onBlur={this.onBlurControl}
             onChange={this.onChangeEmailControl}
-            onFocus={this.onFocusControl}
+            onBlur={isAndroid() ? () => document.body.classList.remove('isCreditsHidden') : null}
+            onFocus={isAndroid() ? () => document.body.classList.add('isCreditsHidden') : null}
             tabIndex="1"
           />
           {(showEmailError && emailState.status !== STATUS.INDETERMINATE) ?

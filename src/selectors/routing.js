@@ -4,6 +4,12 @@ import { selectParamsUsername } from './params'
 
 const POST_DETAIL_EXPRESSION = /^\/[\w\-]+\/post\/.+/
 
+const AUTHENTICATION_ROUTES = [
+  /^\/enter\b/,
+  /^\/forgot-password\b/,
+  /^\/signup\b/,
+]
+
 // props.routing.xxx
 export const selectPropsPathname = (state, props) => get(props, 'location.pathname')
 export const selectPropsQueryTerms = (state, props) => get(props, 'location.query.terms')
@@ -19,29 +25,35 @@ export const selectPathname = state => get(state, 'routing.location.pathname')
 // Memoized selectors
 export const selectViewNameFromRoute = createSelector(
   [selectPathname, selectParamsUsername], (pathname, username) => {
-    if (/^\/following/.test(pathname)) {
+    if (/^\/following\b/.test(pathname)) {
       return 'following'
     }
-    if (/^\/starred/.test(pathname)) {
+    if (/^\/starred\b/.test(pathname)) {
       return 'starred'
     }
-    if (/^\/search/.test(pathname)) {
+    if (/^\/search\b/.test(pathname)) {
       return 'search'
     }
-    if (pathname === '/' || /^\/discover/.test(pathname)) {
+    if (pathname === '/' || /^\/discover\b/.test(pathname)) {
       return 'discover'
     }
-    if (/^\/invitations/.test(pathname)) {
+    if (/^\/invitations\b/.test(pathname)) {
       return 'invitations'
     }
-    if (/^\/settings/.test(pathname)) {
+    if (/^\/settings\b/.test(pathname)) {
       return 'settings'
     }
-    if (/^\/notifications/.test(pathname)) {
+    if (/^\/notifications\b/.test(pathname)) {
       return 'notifications'
     }
     if (POST_DETAIL_EXPRESSION.test(pathname)) {
       return 'postDetail'
+    }
+    if (/^\/join\b/.test(pathname)) {
+      return 'join'
+    }
+    if (AUTHENTICATION_ROUTES.some(route => route.test(pathname))) {
+      return 'authentication'
     }
     // Yo! to get 'userDetail' you have to pass in props... for now
     if (username) {

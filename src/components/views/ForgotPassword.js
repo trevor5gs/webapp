@@ -1,8 +1,5 @@
 import React, { PropTypes } from 'react'
 import { MainView } from '../views/MainView'
-import { AppleStore, GooglePlayStore } from '../assets/AppStores'
-import Cover from '../assets/Cover'
-import Credits from '../assets/Credits'
 import Emoji from '../assets/Emoji'
 import EmailControl from '../forms/EmailControl'
 import FormButton from '../forms/FormButton'
@@ -54,8 +51,8 @@ ForgotPasswordForm.propTypes = {
 }
 
 export const ForgotPassword = (props) => {
-  const { coverDPI, emailState, isFormValid, isSubmitted, promotion } = props
-  const { onBlurControl, onChangeControl, onClickTrackCredits, onFocusControl, onSubmit } = props
+  const { emailState, isFormValid, isSubmitted } = props
+  const { onBlurControl, onChangeControl, onFocusControl, onSubmit } = props
   return (
     <MainView className="Authentication isForgotPassword">
       <div className="AuthenticationFormDialog">
@@ -75,29 +72,18 @@ export const ForgotPassword = (props) => {
           />
         }
       </div>
-      <AppleStore />
-      <GooglePlayStore />
-      <Credits onClick={onClickTrackCredits} user={promotion} />
-      <Cover
-        coverDPI={coverDPI}
-        coverImage={promotion ? promotion.coverImage : null}
-        modifiers="isFullScreen hasOverlay"
-      />
     </MainView>
   )
 }
 
 ForgotPassword.propTypes = {
-  coverDPI: PropTypes.string.isRequired,
   emailState: PropTypes.object.isRequired,
   isSubmitted: PropTypes.bool.isRequired,
   isFormValid: PropTypes.bool.isRequired,
   onBlurControl: PropTypes.func.isRequired,
   onChangeControl: PropTypes.func.isRequired,
-  onClickTrackCredits: PropTypes.func.isRequired,
   onFocusControl: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  promotion: PropTypes.object,
 }
 
 export default ForgotPassword

@@ -56,7 +56,6 @@ const Join = (props) => {
       <OnboardingNavbar
         isNextDisabled={!isValid}
       />
-      <div className="AnimatedCover animationCachefloweBackground" />
     </MainView>
   )
 }
@@ -74,5 +73,5 @@ Join.propTypes = {
   usernameSuggestions: PropTypes.array,
 }
 
-
 export default Join
+

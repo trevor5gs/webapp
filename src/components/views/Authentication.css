@@ -11,6 +11,8 @@
 /* stylelint-enable no-unsupported-browser-features */
 
 .AuthenticationFormDialog {
+  position: relative;
+  z-index: 1;
   width: 300px;
   margin: 0 auto;
 }
@@ -60,13 +62,8 @@
 
 /* stylelint-disable no-unsupported-browser-features */
 @media (--break-2-max) {
-  .Authentication .Cover {
-    min-width: 100vw;
-    min-height: 100vh;
-  }
-
   .isJoinForm {
-    margin-top: 70px;
+    margin-top: 120px;
   }
 }
 /* stylelint-enable no-unsupported-browser-features */

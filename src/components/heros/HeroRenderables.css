@@ -1,0 +1,55 @@
+@import "../../lib/styles/properties.css";
+
+/* stylelint-disable no-unsupported-browser-features */
+
+.Hero {
+  padding-top: 85px;
+  background-color: #fff;
+}
+
+.isOnboardingView ~ .Hero,
+.isAuthenticationView ~ .Hero {
+  padding-top: 0 !important;
+}
+
+.HeroProfile {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+}
+
+.HeroPromotion {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  color: #fff;
+}
+
+.HeroBackgroundCycle {
+  background-image: linear-gradient(315deg, #673f00, #67191f, #67325c, #2b3967, #2a624d, #673f00);
+  background-size: 1200% 1200%;
+  animation: animateBackgroundCycle 30s linear infinite;
+}
+
+@media (--break-2-max) {
+  .isLoggedOut .Hero {
+    padding-top: 50px;
+  }
+}
+
+@media (--break-2) {
+  .Hero {
+    padding-top: 80px;
+  }
+
+  .HeroProfile {
+    height: calc(100vh - 80px);
+    min-height: 540px;
+  }
+
+  .HeroPromotion {
+    height: 380px;
+  }
+}
+

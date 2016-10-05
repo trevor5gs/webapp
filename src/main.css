@@ -3,13 +3,10 @@
 @import "lib/styles/animation.css";
 
 /* A, B, C, D, E, F... */
-@import "components/assets/AppStores.css";
 @import "components/assets/Avatar.css";
 @import "components/assets/BackgroundImage.css";
-@import "components/assets/Cover.css";
-@import "components/assets/Credits.css";
 @import "components/assets/Emoji.css";
-@import "components/assets/Promotion.css";
+@import "components/assets/Sprites.css";
 
 @import "components/buttons/Buttons.css";
 
@@ -57,7 +54,8 @@
 @import "components/forms/RegistrationRequestForm.css";
 @import "components/forms/ToggleControl.css";
 
-@import "components/heros/Hero.css";
+@import "components/heros/HeroParts.css";
+@import "components/heros/HeroRenderables.css";
 
 @import "components/hints/Hint.css";
 

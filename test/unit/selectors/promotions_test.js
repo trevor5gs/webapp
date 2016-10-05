@@ -4,6 +4,7 @@ import {
   selectPromotionsLoggedIn,
   selectPromotionsLoggedOut,
   selectPromotions,
+  selectCurrentPromotions,
 } from '../../../src/selectors/promotions'
 
 describe('promotions selectors', () => {
@@ -60,6 +61,42 @@ describe('promotions selectors', () => {
       expect(selectPromotions(nextState)).to.deep.equal(promotions.loggedOut)
       // Scoped to 2 since recomputations are part of the context block
       expect(selectPromotions.recomputations()).to.equal(2)
+    })
+  })
+
+  context('#selectCurrentPromotions', () => {
+    it('returns the promotions.loggedIn when logged in', () => {
+      const state = { authentication, promotions, gui: { isAuthenticationView: false } }
+      expect(selectCurrentPromotions(state)).to.deep.equal(promotions.loggedIn)
+      const nextState = { ...state, change: 1 }
+      expect(selectCurrentPromotions(nextState)).to.deep.equal(promotions.loggedIn)
+      expect(selectCurrentPromotions.recomputations()).to.equal(1)
+    })
+
+    it('returns the promotions.loggedOut when logged out', () => {
+      const state = {
+        authentication: { isLoggedIn: false },
+        promotions,
+        gui: { isAuthenticationView: false },
+      }
+      expect(selectCurrentPromotions(state)).to.deep.equal(promotions.loggedOut)
+      const nextState = { ...state, change: 1 }
+      expect(selectCurrentPromotions(nextState)).to.deep.equal(promotions.loggedOut)
+      // Scoped to 2 since recomputations are part of the context block
+      expect(selectCurrentPromotions.recomputations()).to.equal(2)
+    })
+
+    it('returns the promotions.loggedOut when logged out', () => {
+      const state = {
+        authentication: { isLoggedIn: false },
+        promotions,
+        gui: { isAuthenticationView: true },
+      }
+      expect(selectCurrentPromotions(state)).to.deep.equal(promotions.authentication)
+      const nextState = { ...state, change: 1 }
+      expect(selectCurrentPromotions(nextState)).to.deep.equal(promotions.authentication)
+      // Scoped to 3 since recomputations are part of the context block
+      expect(selectCurrentPromotions.recomputations()).to.equal(3)
     })
   })
 })

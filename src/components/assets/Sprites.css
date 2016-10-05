@@ -1,0 +1,21 @@
+@import "../../lib/styles/properties.css";
+
+.AppStore {
+  width: 135px;
+  height: 40px;
+  background: transparent url("/static/images/support/app-store-sprite.png") no-repeat 0 0;
+  background-size: cover;
+}
+
+.AppStore + .AppStore {
+  margin-left: 10px;
+}
+
+.AppleStore {
+  background-position: 0 0;
+}
+
+.GooglePlayStore {
+  background-position: -135px 0;
+}
+
