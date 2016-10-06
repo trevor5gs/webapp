@@ -71,7 +71,9 @@ class TextBlock extends Component {
     const { dispatch, editorId, uid } = this.props
     // order matters here!
     pasted(e, dispatch, editorId, uid)
-    this.updateTextBlock()
+    requestAnimationFrame(() => {
+      this.updateTextBlock()
+    })
   }
 
   getData() {
