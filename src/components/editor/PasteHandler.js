@@ -1,3 +1,4 @@
+import some from 'lodash/some'
 import { replaceSelectionWithText } from './SelectionUtil'
 import { postPreviews, saveAsset } from '../../actions/editor'
 import { getBlobFromBase64 } from '../../helpers/file_helper'
@@ -27,10 +28,14 @@ function handlePlainText(text) {
 }
 
 function handleClipboardItems(items) {
+  const isImage = some(items, item => /image/.test(item.type))
   Object.keys(items).forEach((key) => {
     const item = items[key]
-    if (item.type.indexOf('image') === 0) {
-      dispatch(saveAsset(item.getAsFile(), editorId))
+    if (isImage && /image/.test(item.type)) {
+      const file = item.getAsFile()
+      if (file) {
+        dispatch(saveAsset(file, editorId))
+      }
     }
   })
 }
@@ -51,24 +56,28 @@ function checkForImages(e) {
       // creates markdown of the image when right clicking on image to copy in FF
       handlePlainText(`![Pasted Image](${image.src})`)
     }
-    e.target.parentNode.removeChild(image)
+    image.parentNode.removeChild(image)
   }
 }
 
 export function pasted(e, d, id) {
   dispatch = d
   editorId = id
+  const items = e.clipboardData.items || {}
   const text = e.clipboardData.getData('text/plain')
-  const items = e.clipboardData.items
-  if (text.length) {
+  const isImage = some(items, item => /image/.test(item.type))
+  if (items && isImage) {
     e.preventDefault()
-    handlePlainText(text)
-  } else if (items) {
     handleClipboardItems(items)
+  } else if (text.length) {
+    e.preventDefault()
+    // this is for safari to strip out the HTML from text
+    handlePlainText(text)
   } else {
-    setTimeout(() => {
+    e.persist()
+    requestAnimationFrame(() => {
       checkForImages(e)
-    }, 1)
+    })
   }
 }
 
