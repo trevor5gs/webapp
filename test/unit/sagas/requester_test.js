@@ -1,5 +1,5 @@
 import { channel } from 'redux-saga'
-import { selectIsLoggedIn, selectRefreshToken } from '../../../src/selectors/authentication'
+import { selectRefreshToken } from '../../../src/selectors/authentication'
 import { loadDiscoverPosts } from '../../../src/actions/discover'
 import { refreshAuthenticationToken } from '../../../src/actions/authentication'
 import {
@@ -171,6 +171,7 @@ describe('performRequest', function () {
     // At this point the requester is done, and the error handler takes over.
     expect(requester).to.return(false)
   })
+
   describe('the error handler', function () {
     const fakeResponse = new Response(
       'Oh-oh',
@@ -188,11 +189,10 @@ describe('performRequest', function () {
 
     it('triggers a token refresh and then fires the action again', function () {
       const errorHandler = handleRequestError(responseError, pretendAction)
-      expect(errorHandler).to.select(selectIsLoggedIn)
-      expect(errorHandler.next(true)).to.select(selectRefreshToken)
+      expect(errorHandler).to.select(selectRefreshToken)
 
       expect(errorHandler.next('footokenfoo')).to.put(refreshAuthenticationToken('footokenfoo'))
-      expect(errorHandler).to.put(pretendAction)
     })
   })
 })
+

@@ -154,7 +154,7 @@ export function* handleRequestError(error, action) {
   if (error.response) {
     const { status } = error.response
     payload.serverStatus = status
-    if ((status === 401) &&
+    if (status === 401 &&
         type !== ACTION_TYPES.AUTHENTICATION.REFRESH &&
         type !== ACTION_TYPES.AUTHENTICATION.USER) {
       const refreshToken = yield select(selectRefreshToken)
