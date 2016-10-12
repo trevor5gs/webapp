@@ -27,6 +27,7 @@ export function mapStateToProps(state, props) {
   return {
     followersCount: user.followersCount,
     followingCount: user.followingCount,
+    isFeatured: !!(user.categories && user.categories.length),
     isLoggedIn: selectIsLoggedIn(state),
     isShortBioTruncated: truncatedShortBio.text.length >= 150,
     isMobile: deviceSize === 'mobile',
@@ -46,6 +47,7 @@ class UserContainer extends Component {
     dispatch: PropTypes.func,
     followingCount: PropTypes.number,
     followersCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    isFeatured: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     isShortBioTruncated: PropTypes.bool,
     isMobile: PropTypes.bool,
@@ -85,6 +87,13 @@ class UserContainer extends Component {
     const action = bindActionCreators(trackEvent, dispatch)
     dispatch(openModal(<ShareDialog username={user.username} trackEvent={action} />))
     dispatch(trackEvent('open-share-dialog-profile'))
+  }
+
+  onClickOpenFeaturedModal = () => {
+    const { user } = this.props
+    const cats = user.categories.map(category => ({ name: category.name, slug: category.slug }))
+    // console.log(user.username, cats)
+    return cats
   }
 
   onOpenCollabModal = () => {
@@ -138,7 +147,14 @@ class UserContainer extends Component {
 
   render() {
     const {
-      className, isLoggedIn, isMobile, isShortBioTruncated, truncatedShortBio, type, user,
+      className,
+      isFeatured,
+      isLoggedIn,
+      isMobile,
+      isShortBioTruncated,
+      truncatedShortBio,
+      type,
+      user,
     } = this.props
     const onHireMeFunc = isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal
     const onCollabFunc = isLoggedIn ? this.onOpenCollabModal : this.onOpenSignupModal
@@ -165,8 +181,9 @@ class UserContainer extends Component {
             isMobile={isMobile}
             onClickCollab={onCollabFunc}
             onClickHireMe={onHireMeFunc}
-            onClickShareProfile={this.onClickShareProfile}
             onClickOpenBio={onClickOpenBio}
+            onClickOpenFeaturedModal={isFeatured ? this.onClickOpenFeaturedModal : null}
+            onClickShareProfile={this.onClickShareProfile}
             truncatedShortBio={truncatedShortBio}
             user={user}
           />

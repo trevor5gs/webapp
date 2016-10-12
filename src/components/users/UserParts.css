@@ -132,10 +132,22 @@ User Figures */
   color: #aaa;
 }
 
-.UserFiguresShareButton {
+.UserFiguresButtons {
   position: absolute;
   top: 15px;
   right: 0;
+}
+
+.UserFiguresFeaturedButton {
+  color: #00d101;
+}
+
+.UserFiguresFeaturedButton .CheckShape {
+  stroke: #fff;
+}
+
+.UserFiguresFeaturedButton + .UserFiguresShareButton {
+  margin-left: 10px;
 }
 
 @media (--break-2-max) {
@@ -147,10 +159,6 @@ User Figures */
 @media (--break-2) {
   .UserFiguresLabel {
     color: #ccc;
-  }
-
-  .no-touch .UserFiguresShareButton {
-    display: none;
   }
 }
 

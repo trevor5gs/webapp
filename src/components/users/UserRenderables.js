@@ -149,6 +149,7 @@ export const UserProfile = ({
   onClickCollab,
   onClickHireMe,
   onClickOpenBio,
+  onClickOpenFeaturedModal,
   onClickShareProfile,
   truncatedShortBio,
   user,
@@ -181,6 +182,7 @@ export const UserProfile = ({
     {user.totalPostViewsCount && parseInt(user.totalPostViewsCount, 10) > 0 ?
       <UserFiguresCell
         className="inUserProfile"
+        onClickOpenFeaturedModal={onClickOpenFeaturedModal}
         onClickShareProfile={onClickShareProfile}
         totalPostViewsCount={user.totalPostViewsCount}
       /> : null
@@ -223,6 +225,7 @@ UserProfile.propTypes = {
   onClickCollab: PropTypes.func,
   onClickHireMe: PropTypes.func,
   onClickOpenBio: PropTypes.func,
+  onClickOpenFeaturedModal: PropTypes.func,
   onClickShareProfile: PropTypes.func,
   truncatedShortBio: PropTypes.string,
   user: PropTypes.object,
