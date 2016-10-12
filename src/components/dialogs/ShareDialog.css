@@ -41,6 +41,10 @@
   background-color: #000;
 }
 
+.no-touch .ShareLink:hover {
+  color: #666;
+}
+
 @media (--break-2) {
   .ShareDialog {
     max-width: 630px;

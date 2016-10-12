@@ -36,18 +36,6 @@
   margin-left: 10px;
 }
 
-.Paginator .ElloMark .FillPath {
-  fill: transparent;
-}
-
-.Paginator .ElloMark .SmilePath {
-  fill: #aaa;
-}
-
-.Paginator.isBusy .ElloMark {
-  animation: animatePaginatorSpinner 1.03333s infinite var(--ease-in-out-cubic);
-}
-
 /* // Position to the right for Lovers/Reposter drawers */
 .UserDrawer .Paginator {
   position: static;

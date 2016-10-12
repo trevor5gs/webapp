@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
+import { ShareIcon } from '../assets/Icons'
 import { AppleStore, GooglePlayStore } from '../assets/Sprites'
 import { SVGIcon } from '../svg/SVGComponents'
-import { ShareIcon } from '../users/UserParts'
 
 // -------------------------------------
 

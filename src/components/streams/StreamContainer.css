@@ -43,18 +43,6 @@
   top: 20px;
 }
 
-.StreamBusyIndicator .ElloMark {
-  animation: animateStreamIsBusy 1.03333s infinite var(--ease-in-out-cubic);
-}
-
-.StreamBusyIndicator .ElloMark .FillPath {
-  fill: transparent;
-}
-
-.StreamBusyIndicator .ElloMark .SmilePath {
-  fill: #aaa;
-}
-
 /* ------------------------------------- */
 
 .MainView > .StreamContainer.isError,
