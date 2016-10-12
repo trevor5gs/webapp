@@ -138,67 +138,67 @@ UserProfileCard.propTypes = {
 
 export const UserProfile = ({ isLoggedIn, user, onClickCollab,
   onClickHireMe, onClickShareProfile }) =>
-  <div className="UserProfile">
-    <Avatar
-      alt={user.name ? user.name : user.username}
-      className="inUserProfile"
-      priority={user.relationshipPriority}
-      size="large"
-      sources={user.avatar}
-      useGif={(user.viewsAdultContent || !user.postsAdultContent)}
-      userId={`${user.id}`}
-      username={user.username}
-    />
-    <UserNamesCell
-      className="inUserProfile"
-      name={user.name}
-      username={user.username}
-    >
-      {isLoggedIn && user.relationshipPriority !== 'self' ?
-        <RelationshipContainer
-          hasBlockMuteButton
+    <div className="UserProfile">
+      <Avatar
+        alt={user.name ? user.name : user.username}
+        className="inUserProfile"
+        priority={user.relationshipPriority}
+        size="large"
+        sources={user.avatar}
+        useGif={(user.viewsAdultContent || !user.postsAdultContent)}
+        userId={`${user.id}`}
+        username={user.username}
+      />
+      <UserNamesCell
+        className="inUserProfile"
+        name={user.name}
+        username={user.username}
+      >
+        {isLoggedIn && user.relationshipPriority !== 'self' ?
+          <RelationshipContainer
+            hasBlockMuteButton
+            className="inUserProfile"
+            relationshipPriority={user.relationshipPriority}
+            user={user}
+          /> : null
+        }
+      </UserNamesCell>
+      {user.totalPostViewsCount && parseInt(user.totalPostViewsCount, 10) > 0 ?
+        <UserFiguresCell
           className="inUserProfile"
-          relationshipPriority={user.relationshipPriority}
-          user={user}
+          onClickShareProfile={onClickShareProfile}
+          totalPostViewsCount={user.totalPostViewsCount}
         /> : null
       }
-    </UserNamesCell>
-    {user.totalPostViewsCount && parseInt(user.totalPostViewsCount, 10) > 0 ?
-      <UserFiguresCell
+      <UserStatsCell
         className="inUserProfile"
-        onClickShareProfile={onClickShareProfile}
-        totalPostViewsCount={user.totalPostViewsCount}
-      /> : null
-    }
-    <UserStatsCell
-      className="inUserProfile"
-      followersCount={user.followersCount}
-      followingCount={user.followingCount}
-      lovesCount={user.lovesCount}
-      postsCount={user.postsCount}
-      username={user.username}
-    />
-    <UserInfoCell
-      className="inUserProfile"
-      location={user.location}
-      shortBio={user.formattedShortBio}
-    />
-    <UserLinksCell
-      className="inUserProfile"
-      externalLinksList={user.externalLinksList}
-    />
-    <UserProfileButtons
-      className="inUserProfile"
-      onClickCollab={user.isCollaborateable ? onClickCollab : null}
-      onClickHireMe={user.isHireable ? onClickHireMe : null}
-    >
-      <RelationshipContainer
-        className="isPill inUserProfile"
-        relationshipPriority={user.relationshipPriority}
-        user={user}
+        followersCount={user.followersCount}
+        followingCount={user.followingCount}
+        lovesCount={user.lovesCount}
+        postsCount={user.postsCount}
+        username={user.username}
       />
-    </UserProfileButtons>
-  </div>
+      <UserInfoCell
+        className="inUserProfile"
+        location={user.location}
+        shortBio={user.formattedShortBio}
+      />
+      <UserLinksCell
+        className="inUserProfile"
+        externalLinksList={user.externalLinksList}
+      />
+      <UserProfileButtons
+        className="inUserProfile"
+        onClickCollab={user.isCollaborateable ? onClickCollab : null}
+        onClickHireMe={user.isHireable ? onClickHireMe : null}
+      >
+        <RelationshipContainer
+          className="isPill inUserProfile"
+          relationshipPriority={user.relationshipPriority}
+          user={user}
+        />
+      </UserProfileButtons>
+    </div>
 
 UserProfile.propTypes = {
   isLoggedIn: PropTypes.bool,

@@ -16,9 +16,7 @@ const OnboardingNavbar = (props, context) => {
         {nextLabel}
       </button>
       {onDoneClick ?
-        <button className="OnboardingDoneButton" onClick={onDoneClick} >
-          I'm Done
-        </button>
+        <button className="OnboardingDoneButton" onClick={onDoneClick} >{'I\'m Done'}</button>
         : null
       }
     </header>

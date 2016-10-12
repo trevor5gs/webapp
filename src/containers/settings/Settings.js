@@ -246,7 +246,7 @@ class Settings extends Component {
       >
         View original image
       </a> :
-      <span>&mdash;</span>
+        <span>&mdash;</span>
     )
   }
 
@@ -514,13 +514,13 @@ class Settings extends Component {
                   >
                     Download Export
                   </a> :
-                  <button
-                    className="SettingsButton"
-                    onClick={this.onClickRequestDataExport}
-                    ref={(comp) => { this.exportButton = comp }}
-                  >
-                    Request Export
-                  </button>
+                    <button
+                      className="SettingsButton"
+                      onClick={this.onClickRequestDataExport}
+                      ref={(comp) => { this.exportButton = comp }}
+                    >
+                      Request Export
+                    </button>
                 }
               </div>
             </TreePanel>

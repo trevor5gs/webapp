@@ -7,17 +7,17 @@ import { ZeroStateCreateRelationship, ZeroStateFirstPost, ZeroStateSayHello } fr
 const ZeroStates = ({
   isLoggedIn, isSelf, hasSaidHelloTo, hasZeroFollowers, hasZeroPosts, onSubmitHello, user,
   }) =>
-  <div className="ZeroStates">
-    {isSelf && hasZeroPosts ? <ZeroStateFirstPost /> : null}
-    {!isSelf && hasZeroFollowers ? <ZeroStateCreateRelationship user={user} /> : null}
-    {isLoggedIn && !isSelf && hasZeroPosts ?
-      <ZeroStateSayHello
-        onSubmit={() => onSubmitHello({ username: user.username })}
-        hasPosted={hasSaidHelloTo}
-        user={user}
-      /> : null
-    }
-  </div>
+    <div className="ZeroStates">
+      {isSelf && hasZeroPosts ? <ZeroStateFirstPost /> : null}
+      {!isSelf && hasZeroFollowers ? <ZeroStateCreateRelationship user={user} /> : null}
+      {isLoggedIn && !isSelf && hasZeroPosts ?
+        <ZeroStateSayHello
+          onSubmit={() => onSubmitHello({ username: user.username })}
+          hasPosted={hasSaidHelloTo}
+          user={user}
+        /> : null
+      }
+    </div>
 
 ZeroStates.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
