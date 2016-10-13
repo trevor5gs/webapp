@@ -42,7 +42,7 @@ const BlockMuteDialog = ({
           <p>
             Blocking mutes a user, and disables them from viewing your profile
             and posts. When blocking, we recommend setting your account to
-            "Non-Public" to disable your profile from being viewed by people
+            &quot;Non-Public&quot; to disable your profile from being viewed by people
             outside of the Ello network.
           </p>
         </div>

@@ -53,13 +53,13 @@ const CommentTool = ({ detailLink, isLoggedIn, onClickToggleComments, postCommen
         </span>
         <Hint>Comment</Hint>
       </button> :
-      <Link to={detailLink}>
-        <BubbleIcon />
-        <span className="PostToolValue" >
-          {numberToHuman(postCommentsCount, false)}
-        </span>
-        <Hint>Comment</Hint>
-      </Link>
+        <Link to={detailLink}>
+          <BubbleIcon />
+          <span className="PostToolValue" >
+            {numberToHuman(postCommentsCount, false)}
+          </span>
+          <Hint>Comment</Hint>
+        </Link>
     }
   </span>
 

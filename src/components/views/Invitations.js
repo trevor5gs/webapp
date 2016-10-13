@@ -10,7 +10,7 @@ export const Invitations = ({ streamAction }) =>
       <p>Help Ello grow.</p>
     </header>
     <InvitationFormContainer />
-    <h2 className="InvitationsStreamHeading">People you've invited</h2>
+    <h2 className="InvitationsStreamHeading">{'People you\'ve invited'}</h2>
     <StreamContainer action={streamAction} />
   </MainView>
 

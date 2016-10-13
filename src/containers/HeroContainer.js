@@ -5,7 +5,7 @@ import get from 'lodash/get'
 import sample from 'lodash/sample'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
-import { DISCOVER, FOLLOWING, STARRED } from '../constants/locales/en.js'
+import { DISCOVER, FOLLOWING, STARRED } from '../constants/locales/en'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
   selectCoverDPI,

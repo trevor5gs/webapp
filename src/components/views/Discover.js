@@ -11,18 +11,18 @@ export const Discover = ({
   tabs,
   title,
   }) =>
-  <MainView className="Discover">
-    <Helmet
-      title={title}
-      meta={[
-        { property: 'og:title', content: title },
-        { name: 'name', itemprop: 'name', content: title },
-      ]}
-    />
-    <CategoryTabBar pathname={pathname} tabs={tabs} />
-    {pageTitle ? <h1 className="DiscoverPageTitle">{pageTitle}</h1> : null}
-    <StreamContainer action={streamAction} />
-  </MainView>
+    <MainView className="Discover">
+      <Helmet
+        title={title}
+        meta={[
+          { property: 'og:title', content: title },
+          { name: 'name', itemprop: 'name', content: title },
+        ]}
+      />
+      <CategoryTabBar pathname={pathname} tabs={tabs} />
+      {pageTitle ? <h1 className="DiscoverPageTitle">{pageTitle}</h1> : null}
+      <StreamContainer action={streamAction} />
+    </MainView>
 
 Discover.propTypes = {
   pageTitle: PropTypes.string,

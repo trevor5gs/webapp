@@ -58,14 +58,14 @@ class CommentContainer extends Component {
         }
         {isEditing && commentBody ?
           <Editor isComment comment={comment} /> :
-          <CommentBody
-            assets={assets}
-            author={author}
-            comment={comment}
-            currentUser={currentUser}
-            isGridMode={isGridMode}
-            post={post}
-          />
+            <CommentBody
+              assets={assets}
+              author={author}
+              comment={comment}
+              currentUser={currentUser}
+              isGridMode={isGridMode}
+              post={post}
+            />
         }
         <CommentFooter
           author={author}

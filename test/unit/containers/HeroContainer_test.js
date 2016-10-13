@@ -1,4 +1,4 @@
-import { DISCOVER, FOLLOWING, STARRED } from '../../../src/constants/locales/en.js'
+import { DISCOVER, FOLLOWING, STARRED } from '../../../src/constants/locales/en'
 import {
   selectBroadcast,
   selectIsAuthenticationLayout,

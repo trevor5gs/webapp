@@ -25,9 +25,9 @@ const UserStatsLink = ({ asDisabled = false, children, to }, { onClickScrollToCo
     <span className="UserStatsLink asDisabled">
       {children}
     </span> :
-    <Link onClick={onClickScrollToContent} className="UserStatsLink" to={to}>
-      {children}
-    </Link>)
+      <Link onClick={onClickScrollToContent} className="UserStatsLink" to={to}>
+        {children}
+      </Link>)
 
 UserStatsLink.propTypes = {
   asDisabled: PropTypes.bool,
