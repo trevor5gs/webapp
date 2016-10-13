@@ -138,16 +138,23 @@ User Figures */
   right: 0;
 }
 
-.UserFiguresFeaturedButton {
+.UserFeaturedButton {
   color: #00d101;
 }
 
-.UserFiguresFeaturedButton .CheckShape {
+.UserFeaturedButton .CheckShape {
   stroke: #fff;
 }
 
-.UserFiguresFeaturedButton + .UserFiguresShareButton {
+.UserFeaturedButton.inUserProfile + .UserFiguresShareButton {
   margin-left: 10px;
+}
+
+.UserFeaturedButton.inUserProfileCard {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
 }
 
 @media (--break-2-max) {

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsLoggedIn } from '../selectors/authentication'
@@ -14,7 +15,7 @@ import {
 import MessageDialog from '../components/dialogs/MessageDialog'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
-import { TextMarkupDialog } from '../components/dialogs/DialogRenderables'
+import { TextMarkupDialog, FeaturedInDialog } from '../components/dialogs/DialogRenderables'
 import { closeModal, openModal } from '../actions/modals'
 import { trackEvent } from '../actions/analytics'
 import { collabWithUser, hireUser } from '../actions/user'
@@ -90,10 +91,21 @@ class UserContainer extends Component {
   }
 
   onClickOpenFeaturedModal = () => {
-    const { user } = this.props
-    const cats = user.categories.map(category => ({ name: category.name, slug: category.slug }))
-    // console.log(user.username, cats)
-    return cats
+    const { dispatch, isMobile, user } = this.props
+    const len = user.categories.length
+    const links = user.categories.map((category, index) => {
+      let postfix = ''
+      if (index < len - 2) {
+        postfix = ', '
+      } else if (index < len - 1) {
+        postfix = ', & '
+      }
+      return [<Link to={`/discover/${category.slug}`}>{category.name}</Link>, postfix]
+    })
+    dispatch(openModal(
+      <FeaturedInDialog>{['Featured in '].concat(links)}</FeaturedInDialog>,
+      isMobile ? 'isFlex' : null
+    ))
   }
 
   onOpenCollabModal = () => {
@@ -159,6 +171,7 @@ class UserContainer extends Component {
     const onHireMeFunc = isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal
     const onCollabFunc = isLoggedIn ? this.onOpenCollabModal : this.onOpenSignupModal
     const onClickOpenBio = isShortBioTruncated ? this.onClickOpenBio : null
+    const onClickOpenFeaturedModal = isFeatured ? this.onClickOpenFeaturedModal : null
     switch (type) {
       case 'avatar':
         return <UserAvatar user={user} />
@@ -170,6 +183,7 @@ class UserContainer extends Component {
             isMobile={isMobile}
             onClickCollab={onCollabFunc}
             onClickHireMe={onHireMeFunc}
+            onClickOpenFeaturedModal={onClickOpenFeaturedModal}
             truncatedShortBio={truncatedShortBio}
             user={user}
           />
@@ -182,7 +196,7 @@ class UserContainer extends Component {
             onClickCollab={onCollabFunc}
             onClickHireMe={onHireMeFunc}
             onClickOpenBio={onClickOpenBio}
-            onClickOpenFeaturedModal={isFeatured ? this.onClickOpenFeaturedModal : null}
+            onClickOpenFeaturedModal={onClickOpenFeaturedModal}
             onClickShareProfile={this.onClickShareProfile}
             truncatedShortBio={truncatedShortBio}
             user={user}

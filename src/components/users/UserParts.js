@@ -27,6 +27,18 @@ UserStatsLink.contextTypes = {
 
 // -----------------
 
+export const UserFeaturedButton = ({ className, onClick }) =>
+  <button className={classNames('UserFeaturedButton', className)} onClick={onClick} >
+    <BadgeCheckIcon />
+  </button>
+
+UserFeaturedButton.propTypes = {
+  className: PropTypes.string,
+  onClick: PropTypes.func,
+}
+
+// -----------------
+
 export const UserNamesCell = ({ className, name, username, children }) =>
   <div className={classNames('UserCell UserNamesCell', className, { isSingle: !name })}>
     <h1 className="UserName">
@@ -72,16 +84,15 @@ export const UserFiguresCell = ({
     { totalPostViewsCount ? <span className="UserFiguresLabel">Total Views</span> : null }
     { onClickOpenFeaturedModal || onClickShareProfile ?
       <div className="UserFiguresButtons">
-      { onClickOpenFeaturedModal ?
-        <button className="UserFiguresFeaturedButton" onClick={onClickOpenFeaturedModal} >
-          <BadgeCheckIcon />
-        </button> : null
-      }
-      { onClickShareProfile ?
-        <button className="UserFiguresShareButton" onClick={onClickShareProfile} >
-          <ShareIcon />
-        </button> : null
-      }
+        { onClickOpenFeaturedModal ?
+          <UserFeaturedButton className={className} onClick={onClickOpenFeaturedModal} />
+          : null
+        }
+        { onClickShareProfile ?
+          <button className="UserFiguresShareButton" onClick={onClickShareProfile} >
+            <ShareIcon />
+          </button> : null
+        }
       </div> : null
     }
   </div>

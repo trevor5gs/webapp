@@ -7,6 +7,7 @@ import { loadUserDrawer } from '../../actions/user'
 import RelationshipContainer from '../../containers/RelationshipContainer'
 import StreamContainer from '../../containers/StreamContainer'
 import {
+  UserFeaturedButton,
   UserFiguresCell,
   UserInfoCell,
   UserLinksCell,
@@ -83,6 +84,7 @@ export const UserProfileCard = ({
   isMobile,
   onClickCollab,
   onClickHireMe,
+  onClickOpenFeaturedModal,
   truncatedShortBio,
   user,
 }) =>
@@ -131,12 +133,17 @@ export const UserProfileCard = ({
       sources={user.coverImage}
       to={`/${user.username}`}
     />
+    { onClickOpenFeaturedModal ?
+      <UserFeaturedButton className="inUserProfileCard" onClick={onClickOpenFeaturedModal} />
+      : null
+    }
   </div>
 
 UserProfileCard.propTypes = {
   isMobile: PropTypes.bool,
   onClickCollab: PropTypes.func,
   onClickHireMe: PropTypes.func,
+  onClickOpenFeaturedModal: PropTypes.func,
   truncatedShortBio: PropTypes.string,
   user: PropTypes.object,
 }

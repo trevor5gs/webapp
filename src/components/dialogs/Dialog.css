@@ -31,6 +31,14 @@
 }
 
 .TextDialog a {
+  font-size: 18px;
+}
+
+.FeaturedInDialog {
+  font-size: 18px;
+}
+
+.FeaturedInDialog a {
   line-height: 1;
   border-bottom: 1px solid;
 }

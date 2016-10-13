@@ -11,5 +11,12 @@ TextMarkupDialog.propTypes = {
   html: PropTypes.string,
 }
 
-export default TextMarkupDialog
+export const FeaturedInDialog = ({ children }) =>
+  <div className="Dialog FeaturedInDialog">
+    {children}
+  </div>
+
+FeaturedInDialog.propTypes = {
+  children: PropTypes.node,
+}
 
