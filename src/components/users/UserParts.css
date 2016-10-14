@@ -290,18 +290,53 @@ User Info */
 User Links */
 
 .UserLinksCell {
+  position: relative;
   text-align: left;
 }
 
-.UserExternalLinks {
+.UserExternalLinksLeft {
+  width: calc(100% - 96px);
   font-size: 14px;
   word-wrap: break-word;
+}
+
+.UserLinksCell[data-num-icons="2"] .UserExternalLinksLeft {
+  width: calc(100% - 64px);
+}
+
+.UserLinksCell[data-num-icons="1"] .UserExternalLinksLeft {
+  width: calc(100% - 32px);
+}
+
+.UserLinksCell[data-num-icons="0"] .UserExternalLinksLeft {
+  width: 100%;
+}
+
+.UserExternalLinksRight {
+  position: absolute;
+  top: 5px;
+  left: calc(100% - 96px);
+}
+
+.UserLinksCell[data-num-icons="2"] .UserExternalLinksRight {
+  left: calc(100% - 64px);
+}
+
+.UserLinksCell[data-num-icons="1"] .UserExternalLinksRight {
+  left: calc(100% - 32px);
+}
+
+.UserLinksCell[data-num-icons="0"] .UserExternalLinksRight {
+  display: none;
 }
 
 .UserExternalLinksLabel {
   display: block;
   margin-bottom: 10px;
+  overflow: hidden;
   line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .UserExternalLinksLabel > a {
@@ -309,9 +344,49 @@ User Links */
   border-bottom: 1px solid #aaa;
 }
 
+.UserExternalLinksIcon > a {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: #e8e8e8;
+  border-radius: 11px;
+}
+
+.UserExternalLinksIcon img {
+  width: 22px;
+  height: 22px;
+}
+
 @media (--break-2) {
   .no-touch .UserExternalLinksLabel > a:hover {
     color: #aaa;
   }
+
+  .no-touch .UserExternalLinksIcon > a:hover {
+    background-color: #eee;
+  }
+
+  .UserExternalLinksLeft {
+    width: calc(100% - 128px);
+  }
+
+  .UserLinksCell[data-num-icons="3"] .UserExternalLinksLeft {
+    width: calc(100% - 96px);
+  }
+
+  .UserExternalLinksRight {
+    left: calc(100% - 128px);
+  }
+
+  .UserLinksCell[data-num-icons="3"] .UserExternalLinksRight {
+    left: calc(100% - 96px);
+  }
+
+  .UserExternalLinksIcon > a {
+    background-color: #fff;
+  }
+
 }
 

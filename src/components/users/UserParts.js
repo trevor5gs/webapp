@@ -168,19 +168,47 @@ UserInfoCell.propTypes = {
 
 // -----------------
 
-export const UserLinksCell = ({ className, externalLinksList }) => {
-  let externalLinks = []
-  if (externalLinksList) {
-    externalLinks = externalLinksList.map((link, i) =>
-      <span className="UserExternalLinksLabel" key={i}>
-        <a href={link.url} rel="noopener noreferrer" target="_blank">{link.text}</a>
-      </span>
-    )
+export const UserLinksCell = ({ className, externalLinksList, isMobile }) => {
+  const externalLinks = []
+  const externalLinksIcon = []
+  if (externalLinksList && externalLinksList.length) {
+    externalLinksList.forEach((link, i) => {
+      if (link.icon) {
+        externalLinksIcon.push(
+          <span className="UserExternalLinksIcon" key={i}>
+            <a href={link.url} rel="noopener noreferrer" target="_blank">
+              <img alt={link.type} src={link.icon} />
+            </a>
+          </span>
+        )
+      } else {
+        externalLinks.push(
+          <span className="UserExternalLinksLabel" key={i}>
+            <a href={link.url} rel="noopener noreferrer" target="_blank">{link.text}</a>
+          </span>
+        )
+      }
+    })
   }
+  // Magic numbers explained:
+  // 32 = the height of an icon (22) + the margin-top (10)
+  // 34 = the top/bottom padding of the container (17)
+  // 5 = top position of the right icon content
+  const linkIconHeight = isMobile ?
+    (Math.ceil(externalLinksIcon.length / 3) * 32) + 34 + 5 :
+    (Math.ceil(externalLinksIcon.length / 4) * 32) + 34 + 5
+  const style = externalLinksIcon.length > 0 ? { height: linkIconHeight } : { height: null }
   return (
-    <div className={classNames('UserCell UserLinksCell', className)}>
-      <div className="UserExternalLinks">
+    <div
+      className={classNames('UserCell UserLinksCell', className)}
+      data-num-icons={externalLinksIcon.length}
+      style={style}
+    >
+      <div className="UserExternalLinksLeft">
         {externalLinks}
+      </div>
+      <div className="UserExternalLinksRight">
+        {externalLinksIcon}
       </div>
     </div>
   )
@@ -189,6 +217,7 @@ export const UserLinksCell = ({ className, externalLinksList }) => {
 UserLinksCell.propTypes = {
   className: PropTypes.string,
   externalLinksList: PropTypes.array,
+  isMobile: PropTypes.bool,
 }
 
 export const UserProfileButtons = ({ children, className, onClickCollab, onClickHireMe }) =>

@@ -162,6 +162,7 @@ class UserContainer extends Component {
         return (
           <UserProfile
             isLoggedIn={isLoggedIn}
+            isMobile={isMobile}
             onClickCollab={onCollabFunc}
             onClickHireMe={onHireMeFunc}
             onClickShareProfile={this.onClickShareProfile}
