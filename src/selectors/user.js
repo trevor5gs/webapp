@@ -36,7 +36,7 @@ export const selectRelationshipPriority = createSelector(
 
 export const selectTruncatedShortBio = createSelector(
   [selectUserFromPropsUserId], user =>
-    trunc(user.formattedShortBio || '', 200)
+    trunc(user.formattedShortBio || '', 160)
 )
 
 export const selectUserMetaDescription = createSelector(

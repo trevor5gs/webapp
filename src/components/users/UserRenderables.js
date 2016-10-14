@@ -83,7 +83,6 @@ export const UserProfileCard = ({
   isMobile,
   onClickCollab,
   onClickHireMe,
-  onClickOpenBio,
   truncatedShortBio,
   user,
 }) =>
@@ -124,7 +123,6 @@ export const UserProfileCard = ({
     { !isMobile ?
       <UserInfoCell
         className="inUserProfileCard"
-        onClickOpenBio={onClickOpenBio}
         truncatedShortBio={truncatedShortBio}
       /> : null
     }
@@ -139,7 +137,6 @@ UserProfileCard.propTypes = {
   isMobile: PropTypes.bool,
   onClickCollab: PropTypes.func,
   onClickHireMe: PropTypes.func,
-  onClickOpenBio: PropTypes.func,
   truncatedShortBio: PropTypes.string,
   user: PropTypes.object,
 }

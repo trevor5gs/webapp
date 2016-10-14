@@ -77,11 +77,11 @@ describe('post selectors', () => {
   })
 
   context('#selectTruncatedShortBio', () => {
-    it('returns a truncated short bio to 200 characters', () => {
+    it('returns a truncated short bio to 160 characters', () => {
       const state = { json: { users: { 1: { ...stateUser, formattedShortBio: pad('', 500, '<b>this is some bold text</b>') } } } }
       const props = { user: { id: '1' } }
       const truncatedShortBio = selector.selectTruncatedShortBio(state, props)
-      expect(truncatedShortBio.text.length).to.equal(200)
+      expect(truncatedShortBio.text.length).to.equal(160)
       expect(truncatedShortBio.html).to.contain('<b>')
     })
   })

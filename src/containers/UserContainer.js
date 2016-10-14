@@ -28,7 +28,7 @@ export function mapStateToProps(state, props) {
     followersCount: user.followersCount,
     followingCount: user.followingCount,
     isLoggedIn: selectIsLoggedIn(state),
-    isShortBioTruncated: truncatedShortBio.text.length >= 200,
+    isShortBioTruncated: truncatedShortBio.text.length >= 160,
     isMobile: deviceSize === 'mobile',
     lovesCount: user.lovesCount,
     postsCount: user.postsCount,
@@ -154,7 +154,6 @@ class UserContainer extends Component {
             isMobile={isMobile}
             onClickCollab={onCollabFunc}
             onClickHireMe={onHireMeFunc}
-            onClickOpenBio={onClickOpenBio}
             truncatedShortBio={truncatedShortBio}
             user={user}
           />
