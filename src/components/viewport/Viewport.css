@@ -7,6 +7,10 @@
   visibility: hidden;
 }
 
+#root {
+  overflow-x: hidden;
+}
+
 /*
  * A probe into CSS used by the ResizeComponent
  * Has to be the #root element since it is already present in the DOM. Would be
