@@ -1,3 +1,4 @@
+import pad from 'lodash/pad'
 import { stub } from '../../support/stubs'
 import * as selector from '../../../src/selectors/user'
 
@@ -72,6 +73,16 @@ describe('post selectors', () => {
       const state = { json: { users: { 1: { ...stateUser, relationshipPriority: 'friend' } } } }
       const props = { user: { id: '1' } }
       expect(selector.selectRelationshipPriority(state, props)).to.equal('friend')
+    })
+  })
+
+  context('#selectTruncatedShortBio', () => {
+    it('returns a truncated short bio to 200 characters', () => {
+      const state = { json: { users: { 1: { ...stateUser, formattedShortBio: pad('', 500, '<b>this is some bold text</b>') } } } }
+      const props = { user: { id: '1' } }
+      const truncatedShortBio = selector.selectTruncatedShortBio(state, props)
+      expect(truncatedShortBio.text.length).to.equal(200)
+      expect(truncatedShortBio.html).to.contain('<b>')
     })
   })
 

@@ -20,6 +20,21 @@
   color: #aaa;
 }
 
+.TextDialog {
+  max-width: 400px;
+  font-size: 18px;
+}
+
+/* Short bios... */
+.TextDialog p {
+  font-size: 18px;
+}
+
+.TextDialog a {
+  line-height: 1;
+  border-bottom: 1px solid;
+}
+
 @media (--break-2) {
   .Modal > .Dialog {
     padding: 20px;

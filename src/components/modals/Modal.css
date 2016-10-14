@@ -39,6 +39,12 @@ body.isModalActive .MainView { /* stylelint-disable-line */
   z-index: var(--z-decapitated);
 }
 
+.Modal.isFlex {
+  display: flex; /* stylelint-disable-line */
+  align-items: center;
+  padding-top: 0;
+}
+
 @media (--break-2) {
   .Modal {
     display: flex; /* stylelint-disable-line */

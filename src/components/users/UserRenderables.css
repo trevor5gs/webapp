@@ -137,7 +137,7 @@ User Cards  */
   .UserProfileCard {
     display: inline-block;
     width: calc(50% - 20px);
-    height: 540px;
+    height: 580px;
     margin-top: 20px;
     margin-left: 20px;
     vertical-align: top;
