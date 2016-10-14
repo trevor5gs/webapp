@@ -76,7 +76,7 @@ class UserContainer extends Component {
     const { dispatch, isMobile, user } = this.props
     dispatch(openModal(
       <TextMarkupDialog html={user.formattedShortBio} />,
-      isMobile ? 'isFlex' : null
+      isMobile ? 'isFlex hasOverlay9' : 'hasOverlay9'
     ))
   }
 
