@@ -6,7 +6,7 @@ describe('post selectors', () => {
   let propsPost
   beforeEach(() => {
     statePost = stub('post', { authorId: 'statePost' })
-    propsPost = stub('post', { authorId: 'propPost', id: '666' })
+    propsPost = stub('post', { authorId: 'propPost', id: '666', links: { repostAuthor: { id: '9' } } })
   })
 
   afterEach(() => {
@@ -43,6 +43,35 @@ describe('post selectors', () => {
       const state = { json: { posts: statePost } }
       const props = { post: propsPost }
       expect(selector.selectPropsPostAuthorId(state, props)).to.equal('propPost')
+    })
+  })
+
+  context('#selectPropsRepostAuthorId', () => {
+    it('returns the correct props post repost author id', () => {
+      const state = { json: { posts: statePost } }
+      const props = { post: propsPost }
+      expect(selector.selectPropsRepostAuthorId(state, props)).to.equal('9')
+    })
+  })
+
+  context('#selectIsOwnOriginalPost', () => {
+    it('returns if the post is the users own', () => {
+      const state = { json: { posts: statePost }, profile: { id: '9' } }
+      const props = { post: propsPost }
+      expect(selector.selectIsOwnOriginalPost(state, props)).to.equal(true)
+      const nextState = { ...state, change: 1 }
+      expect(selector.selectIsOwnOriginalPost(nextState, props)).to.equal(true)
+      expect(selector.selectIsOwnOriginalPost.recomputations()).to.equal(1)
+    })
+
+    it('returns if the post is not the users own', () => {
+      const state = { json: { posts: statePost }, profile: { id: 'statePost' } }
+      const props = { post: propsPost }
+      expect(selector.selectIsOwnOriginalPost(state, props)).to.equal(false)
+      const nextState = { ...state, change: 1 }
+      expect(selector.selectIsOwnOriginalPost(nextState, props)).to.equal(false)
+      // 2 since the memoization is from the context block
+      expect(selector.selectIsOwnOriginalPost.recomputations()).to.equal(2)
     })
   })
 

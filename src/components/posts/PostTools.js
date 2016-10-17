@@ -203,6 +203,7 @@ export const PostTools = (props) => {
     isGridMode,
     isLoggedIn,
     isMobile,
+    isOwnOriginalPost,
     isOwnPost,
     postRepostsCount,
     post,
@@ -221,7 +222,7 @@ export const PostTools = (props) => {
     cells.push(<RepostTool key={`RepostTool_${postId}`} {...props} />)
   }
 
-  if (!isOwnPost && !isMobile && !isGridMode) {
+  if (!isOwnPost && !isOwnOriginalPost && !isMobile && !isGridMode) {
     cells.push(<WatchTool key={`WatchTool_${postId}`} {...props} />)
   }
 
@@ -250,6 +251,7 @@ PostTools.propTypes = {
   isGridMode: PropTypes.bool,
   isLoggedIn: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool,
+  isOwnOriginalPost: PropTypes.bool,
   isOwnPost: PropTypes.bool,
   post: PropTypes.object.isRequired,
   postRepostsCount: PropTypes.number,
