@@ -9,6 +9,7 @@ import * as MAPPING_TYPES from '../constants/mapping_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize } from '../selectors/gui'
 import {
+  selectIsOwnOriginalPost,
   selectIsOwnPost,
   selectPostFromPropsPostId,
   selectPropsPostId,
@@ -48,8 +49,9 @@ export function mapStateToProps(state, props) {
     isCommentsRequesting,
     isLoggedIn,
     isMobile: deviceSize === 'mobile',
-    isWatchingPost: isLoggedIn && post.watching,
+    isOwnOriginalPost: selectIsOwnOriginalPost(state, props),
     isOwnPost: selectIsOwnPost(state, props),
+    isWatchingPost: isLoggedIn && post.watching,
     pathname: selectPathname(state),
     postCommentsCount: post.commentsCount,
     postLoved: post.loved,
@@ -75,6 +77,7 @@ class PostToolsContainer extends Component {
     isCommentsRequesting: PropTypes.bool,
     isGridMode: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
+    isOwnOriginalPost: PropTypes.bool.isRequired,
     isOwnPost: PropTypes.bool.isRequired,
     isRepostAnimating: PropTypes.bool,
     isWatchingPost: PropTypes.bool,

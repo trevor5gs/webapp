@@ -13,8 +13,15 @@ export const selectPropsPost = (state, props) => get(props, 'post')
 export const selectPropsPostId = (state, props) => get(props, 'post.id')
 export const selectPropsPostToken = (state, props) => get(props, 'post.token')
 export const selectPropsPostAuthorId = (state, props) => get(props, 'post.authorId')
+export const selectPropsRepostAuthorId = (state, props) => get(props, 'post.links.repostAuthor.id')
 
 // Memoized selectors
+export const selectIsOwnOriginalPost = createSelector(
+  [selectPropsPost, selectPropsRepostAuthorId, selectProfileId],
+  (post, repostAuthorId, profileId) =>
+    post && `${repostAuthorId}` === `${profileId}`
+)
+
 export const selectIsOwnPost = createSelector(
   [selectPropsPost, selectPropsPostAuthorId, selectProfileId], (post, authorId, profileId) =>
     post && `${authorId}` === `${profileId}`
