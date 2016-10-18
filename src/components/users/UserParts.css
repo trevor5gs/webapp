@@ -231,14 +231,10 @@ User Info */
 
 .UserShortBio {
   position: relative;
-  max-height: 92px;
+  max-height: 103px;
   overflow: hidden;
   line-height: 1.3;
   word-wrap: break-word;
-}
-
-.UserInfoCell.inUserProfileCard > .UserShortBio {
-  height: 103px;
 }
 
 .UserLocation {

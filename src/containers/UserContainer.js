@@ -28,7 +28,7 @@ export function mapStateToProps(state, props) {
     followersCount: user.followersCount,
     followingCount: user.followingCount,
     isLoggedIn: selectIsLoggedIn(state),
-    isShortBioTruncated: truncatedShortBio.text.length >= 160,
+    isShortBioTruncated: truncatedShortBio.text.length >= 150,
     isMobile: deviceSize === 'mobile',
     lovesCount: user.lovesCount,
     postsCount: user.postsCount,
