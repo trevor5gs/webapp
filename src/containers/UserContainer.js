@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
+import { createSelector } from 'reselect'
 import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize } from '../selectors/gui'
@@ -20,15 +21,25 @@ import { closeModal, openModal } from '../actions/modals'
 import { trackEvent } from '../actions/analytics'
 import { collabWithUser, hireUser } from '../actions/user'
 import { getElloPlatform } from '../lib/jello'
+import { getLinkArray } from '../helpers/json_helper'
+
+const selectJson = state => state.json || {}
+
+const selectUserCategories = createSelector(
+  [selectUserFromPropsUserId, selectJson], (user, json) =>
+    getLinkArray(user, 'categories', json) || []
+)
 
 export function mapStateToProps(state, props) {
   const user = selectUserFromPropsUserId(state, props)
+  const categories = selectUserCategories(state, props)
   const truncatedShortBio = selectTruncatedShortBio(state, props)
   const deviceSize = selectDeviceSize(state)
   return {
+    categories,
     followersCount: user.followersCount,
     followingCount: user.followingCount,
-    isFeatured: !!(user.categories && user.categories.length),
+    isFeatured: !!(categories && categories.length),
     isLoggedIn: selectIsLoggedIn(state),
     isShortBioTruncated: truncatedShortBio.text.length >= 150,
     isMobile: deviceSize === 'mobile',
@@ -44,6 +55,7 @@ export function mapStateToProps(state, props) {
 /* eslint-disable react/no-unused-prop-types */
 class UserContainer extends Component {
   static propTypes = {
+    categories: PropTypes.array,
     className: PropTypes.string,
     dispatch: PropTypes.func,
     followingCount: PropTypes.number,
@@ -91,9 +103,9 @@ class UserContainer extends Component {
   }
 
   onClickOpenFeaturedModal = () => {
-    const { dispatch, isMobile, user } = this.props
-    const len = user.categories.length
-    const links = user.categories.map((category, index) => {
+    const { categories, dispatch, isMobile } = this.props
+    const len = categories.length
+    const links = categories.map((category, index) => {
       let postfix = ''
       if (index < len - 2) {
         postfix = ', '
