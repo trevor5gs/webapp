@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
-import { ElloMark } from '../svg/ElloIcons'
+import { ElloMark } from '../assets/Icons'
 
 export function emptyPagination() {
   return {
@@ -32,7 +32,7 @@ export const Paginator = ({
   const message = getMessage({ hasShowMoreButton, messageText, totalPages, totalPagesRemaining })
   return (
     <div className={classNames('Paginator', { isBusy: !isHidden }, className)}>
-      <ElloMark />
+      <ElloMark className="isSpinner" />
       {
         hasShowMoreButton ?
           <button onClick={loadNextPage}>{message}</button> :

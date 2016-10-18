@@ -57,31 +57,23 @@ Hero share user button */
 
 .HeroShareUserButton {
   position: absolute;
-  top: 230px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
+  display: none;
   width: 40px;
   height: 40px;
+  background-color: #000;
+  border-radius: 20px;
 }
 
-.HeroShareUserButton .ShareIcon g {
-  fill: none;
-  stroke: #aaa;
+.HeroShareUserButton .ShareIcon {
+  margin-top: -6px;
+  color: #fff;
 }
 
 @media (--break-2) {
   .HeroShareUserButton {
-    top: 20px;
-    right: 20px;
-    background-color: #000;
-    border-radius: 20px;
-  }
-
-  .HeroShareUserButton .ShareIcon {
-    margin-top: -6px;
-  }
-
-  .HeroShareUserButton .ShareIcon g {
-    stroke: #fff;
+    display: block;
   }
 }
 

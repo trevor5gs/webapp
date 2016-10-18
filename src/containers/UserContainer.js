@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
+import { createSelector } from 'reselect'
 import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize } from '../selectors/gui'
@@ -14,19 +16,30 @@ import {
 import MessageDialog from '../components/dialogs/MessageDialog'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
-import { TextMarkupDialog } from '../components/dialogs/DialogRenderables'
+import { TextMarkupDialog, FeaturedInDialog } from '../components/dialogs/DialogRenderables'
 import { closeModal, openModal } from '../actions/modals'
 import { trackEvent } from '../actions/analytics'
 import { collabWithUser, hireUser } from '../actions/user'
 import { getElloPlatform } from '../lib/jello'
+import { getLinkArray } from '../helpers/json_helper'
+
+const selectJson = state => state.json || {}
+
+const selectUserCategories = createSelector(
+  [selectUserFromPropsUserId, selectJson], (user, json) =>
+    getLinkArray(user, 'categories', json) || []
+)
 
 export function mapStateToProps(state, props) {
   const user = selectUserFromPropsUserId(state, props)
+  const categories = selectUserCategories(state, props)
   const truncatedShortBio = selectTruncatedShortBio(state, props)
   const deviceSize = selectDeviceSize(state)
   return {
+    categories,
     followersCount: user.followersCount,
     followingCount: user.followingCount,
+    isFeatured: !!(categories && categories.length),
     isLoggedIn: selectIsLoggedIn(state),
     isShortBioTruncated: truncatedShortBio.text.length >= 150,
     isMobile: deviceSize === 'mobile',
@@ -42,10 +55,12 @@ export function mapStateToProps(state, props) {
 /* eslint-disable react/no-unused-prop-types */
 class UserContainer extends Component {
   static propTypes = {
+    categories: PropTypes.array,
     className: PropTypes.string,
     dispatch: PropTypes.func,
     followingCount: PropTypes.number,
     followersCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    isFeatured: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     isShortBioTruncated: PropTypes.bool,
     isMobile: PropTypes.bool,
@@ -85,6 +100,24 @@ class UserContainer extends Component {
     const action = bindActionCreators(trackEvent, dispatch)
     dispatch(openModal(<ShareDialog username={user.username} trackEvent={action} />))
     dispatch(trackEvent('open-share-dialog-profile'))
+  }
+
+  onClickOpenFeaturedModal = () => {
+    const { categories, dispatch, isMobile } = this.props
+    const len = categories.length
+    const links = categories.map((category, index) => {
+      let postfix = ''
+      if (index < len - 2) {
+        postfix = ', '
+      } else if (index < len - 1) {
+        postfix = ', & '
+      }
+      return [<Link to={`/discover/${category.slug}`}>{category.name}</Link>, postfix]
+    })
+    dispatch(openModal(
+      <FeaturedInDialog>{['Featured in '].concat(links)}</FeaturedInDialog>,
+      isMobile ? 'isFlex' : null
+    ))
   }
 
   onOpenCollabModal = () => {
@@ -138,11 +171,19 @@ class UserContainer extends Component {
 
   render() {
     const {
-      className, isLoggedIn, isMobile, isShortBioTruncated, truncatedShortBio, type, user,
+      className,
+      isFeatured,
+      isLoggedIn,
+      isMobile,
+      isShortBioTruncated,
+      truncatedShortBio,
+      type,
+      user,
     } = this.props
     const onHireMeFunc = isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal
     const onCollabFunc = isLoggedIn ? this.onOpenCollabModal : this.onOpenSignupModal
     const onClickOpenBio = isShortBioTruncated ? this.onClickOpenBio : null
+    const onClickOpenFeaturedModal = isFeatured ? this.onClickOpenFeaturedModal : null
     switch (type) {
       case 'avatar':
         return <UserAvatar user={user} />
@@ -154,6 +195,7 @@ class UserContainer extends Component {
             isMobile={isMobile}
             onClickCollab={onCollabFunc}
             onClickHireMe={onHireMeFunc}
+            onClickOpenFeaturedModal={onClickOpenFeaturedModal}
             truncatedShortBio={truncatedShortBio}
             user={user}
           />
@@ -165,8 +207,9 @@ class UserContainer extends Component {
             isMobile={isMobile}
             onClickCollab={onCollabFunc}
             onClickHireMe={onHireMeFunc}
-            onClickShareProfile={this.onClickShareProfile}
             onClickOpenBio={onClickOpenBio}
+            onClickOpenFeaturedModal={onClickOpenFeaturedModal}
+            onClickShareProfile={this.onClickShareProfile}
             truncatedShortBio={truncatedShortBio}
             user={user}
           />

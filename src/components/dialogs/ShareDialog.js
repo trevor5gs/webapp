@@ -9,7 +9,7 @@ import {
   RedditIcon,
   TumblrIcon,
   TwitterIcon,
-} from './ShareDialogIcons'
+} from '../assets/Icons'
 
 const SHARE_TYPES = {
   EMAIL: 'email',

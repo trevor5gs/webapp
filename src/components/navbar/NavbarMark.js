@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-import { ElloMark, ElloRainbowMark, ElloDonutMark, ElloNinjaSuit } from '../svg/ElloIcons'
+import { ElloMark, ElloRainbowMark, ElloDonutMark, ElloNinjaSuit } from '../assets/Icons'
 
 const getLogoMark = (mark) => {
   switch (mark) {

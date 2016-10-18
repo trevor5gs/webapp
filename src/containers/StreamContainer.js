@@ -22,7 +22,7 @@ import {
   removeScrollObject,
   removeScrollTarget,
 } from '../components/viewport/ScrollComponent'
-import { ElloMark } from '../components/svg/ElloIcons'
+import { ElloMark } from '../components/assets/Icons'
 import { Paginator } from '../components/streams/Paginator'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { makeSelectStreamProps } from '../selectors/stream'
@@ -250,7 +250,7 @@ class StreamContainer extends Component {
     return (
       <section className={classNames('StreamContainer isBusy', className)} >
         <div className="StreamBusyIndicator">
-          <ElloMark />
+          <ElloMark className="isSpinner" />
         </div>
       </section>
     )

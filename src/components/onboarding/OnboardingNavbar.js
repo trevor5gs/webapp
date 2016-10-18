@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
-import { ElloMark } from '../svg/ElloIcons'
+import { ElloMark } from '../assets/Icons'
 
 const OnboardingNavbar = (props, context) => {
   const { isNextDisabled } = props

@@ -2,11 +2,13 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
 import BackgroundImage from '../assets/BackgroundImage'
+import { ShareIcon } from '../assets/Icons'
 import Hint from '../hints/Hint'
 import { loadUserDrawer } from '../../actions/user'
 import RelationshipContainer from '../../containers/RelationshipContainer'
 import StreamContainer from '../../containers/StreamContainer'
 import {
+  UserFeaturedButton,
   UserFiguresCell,
   UserInfoCell,
   UserLinksCell,
@@ -83,6 +85,7 @@ export const UserProfileCard = ({
   isMobile,
   onClickCollab,
   onClickHireMe,
+  onClickOpenFeaturedModal,
   truncatedShortBio,
   user,
 }) =>
@@ -131,12 +134,17 @@ export const UserProfileCard = ({
       sources={user.coverImage}
       to={`/${user.username}`}
     />
+    { onClickOpenFeaturedModal ?
+      <UserFeaturedButton className="inUserProfileCard" onClick={onClickOpenFeaturedModal} />
+      : null
+    }
   </div>
 
 UserProfileCard.propTypes = {
   isMobile: PropTypes.bool,
   onClickCollab: PropTypes.func,
   onClickHireMe: PropTypes.func,
+  onClickOpenFeaturedModal: PropTypes.func,
   truncatedShortBio: PropTypes.string,
   user: PropTypes.object,
 }
@@ -149,6 +157,7 @@ export const UserProfile = ({
   onClickCollab,
   onClickHireMe,
   onClickOpenBio,
+  onClickOpenFeaturedModal,
   onClickShareProfile,
   truncatedShortBio,
   user,
@@ -181,9 +190,13 @@ export const UserProfile = ({
     {user.totalPostViewsCount && parseInt(user.totalPostViewsCount, 10) > 0 ?
       <UserFiguresCell
         className="inUserProfile"
+        onClickOpenFeaturedModal={onClickOpenFeaturedModal}
         onClickShareProfile={onClickShareProfile}
         totalPostViewsCount={user.totalPostViewsCount}
-      /> : null
+      /> :
+        <button className="UserFiguresShareButton withoutTotalViewCount" onClick={onClickShareProfile} >
+          <ShareIcon />
+        </button>
     }
     <UserStatsCell
       className="inUserProfile"
@@ -223,6 +236,7 @@ UserProfile.propTypes = {
   onClickCollab: PropTypes.func,
   onClickHireMe: PropTypes.func,
   onClickOpenBio: PropTypes.func,
+  onClickOpenFeaturedModal: PropTypes.func,
   onClickShareProfile: PropTypes.func,
   truncatedShortBio: PropTypes.string,
   user: PropTypes.object,

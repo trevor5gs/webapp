@@ -1,0 +1,123 @@
+@import "../../lib/styles/properties.css";
+
+/* TODO: Move to immutable? */
+.svg-fill {
+  fill: currentColor;
+  stroke: none;
+  transition: fill var(--speed) ease;
+}
+
+.svg-fill-transparent {
+  fill: transparent;
+  stroke: none;
+  transition: fill var(--speed) ease;
+}
+
+.svg-stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-miterlimit: 10;
+  stroke-width: 1.25;
+  transition: stroke var(--speed) ease, transform var(--speed) ease;
+  transform-origin: center center;
+}
+
+.svg-stroke-bevel {
+  stroke-linejoin: bevel;
+}
+
+.svg-stroke-round {
+  stroke-linejoin: round;
+}
+
+.svg-fill-stroke {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-miterlimit: 10;
+  stroke-width: 1.25;
+  transition: fill var(--speed) ease, stroke var(--speed) ease;
+}
+
+/* ------------------------------------- */
+
+.SVGBoxFG,
+.SVGBoxBG {
+  stroke: none;
+  transition: fill var(--speed) ease;
+}
+
+.SVGBoxFG {
+  fill: #fff;
+}
+
+.SVGBoxBG {
+  fill: currentColor;
+}
+
+/* ------------------------------------- */
+
+.SVGIcon > g {
+  fill: transparent;
+  stroke: currentColor;
+  stroke-miterlimit: 10;
+  stroke-width: 1.25;
+  transition: fill var(--speed) ease 0.1s, stroke var(--speed) ease, transform var(--speed) ease;
+  transform-origin: center center;
+}
+
+.SVGIcon > g:nth-of-type(2) {
+  transition-delay: var(--speed), 0.1s, 0.1s;
+}
+
+.SVGIcon > g:nth-of-type(3) {
+  transition-delay: 0.3s, var(--speed), var(--speed);
+}
+
+.SVGIcon > g:nth-of-type(4) {
+  transition-delay: var(--speed2), var(--speed), var(--speed);
+}
+
+/* ------------------------------------- */
+
+.ElloMark,
+.ElloDonutMark,
+.ElloRainbowMark,
+.ElloOutlineMark {
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 40px;
+}
+
+.SmileShape {
+  fill: #fff;
+}
+
+.ElloOutlineMark {
+  border: 1px solid #aaa;
+}
+
+.ElloOutlineMark > .SmileShape {
+  fill: transparent !important;
+  stroke: #aaa !important;
+  transform: translateX(-2px);
+}
+
+.ElloNinjaSuit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  fill: #ed2224;
+}
+
+.ElloMark.isSpinner {
+  animation: animateIsBusy 1.03333s infinite var(--ease-in-out-cubic);
+}
+
+.ElloMark.isSpinner > .SVGBoxBG {
+  fill: transparent !important;
+}
+
+.ElloMark.isSpinner > .SmileShape {
+  fill: #aaa !important;
+}
+
