@@ -6,6 +6,7 @@ import Session from '../lib/session'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectCategoryTabs } from '../selectors/categories'
 import {
   selectCurrentStream,
   selectDeviceSize,
@@ -17,7 +18,7 @@ import {
 } from '../selectors/gui'
 import { selectAvatar, selectUsername } from '../selectors/profile'
 import { selectPage } from '../selectors/pages'
-import { selectPathname } from '../selectors/routing'
+import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
 import { logout } from '../actions/authentication'
 import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
 import { checkForNewNotifications } from '../actions/notifications'
@@ -33,10 +34,13 @@ function mapStateToProps(state) {
   const pathname = selectPathname(state)
   const result = selectPage(state)
   const hasLoadMoreButton = !!(result && result.morePostIds)
+  const viewName = selectViewNameFromRoute(state)
+  const categoryTabs = viewName === 'discover' ? selectCategoryTabs(state) : null
 
   if (isLoggedIn) {
     return {
       avatar: selectAvatar(state),
+      categoryTabs,
       deviceSize: selectDeviceSize(state),
       currentStream,
       hasLoadMoreButton,
@@ -48,13 +52,16 @@ function mapStateToProps(state) {
       isProfileMenuActive: selectIsProfileMenuActive(state),
       pathname,
       username: selectUsername(state),
+      viewName,
     }
   }
   return {
+    categoryTabs,
     currentStream,
     hasLoadMoreButton,
     isLoggedIn,
     pathname,
+    viewName,
   }
 }
 
@@ -69,6 +76,7 @@ class NavbarContainer extends Component {
     isNotificationsActive: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
     params: PropTypes.object.isRequired,
+    viewName: PropTypes.string.isRequired,
   }
 
   static contextTypes = {
@@ -124,15 +132,15 @@ class NavbarContainer extends Component {
   }
 
   onClickNavbarMark = () => {
-    const { currentStream, dispatch, pathname, params } = this.props
+    const { currentStream, dispatch, pathname, params, viewName } = this.props
     if (currentStream === pathname) {
-      if (/^\/discover/.test(pathname)) {
+      if (viewName === 'discover') {
         if (params.type) {
           dispatch(getDiscoverAction(params.type))
         }
-      } else if (/^\/following$/.test(pathname)) {
+      } else if (viewName === 'following') {
         dispatch(loadFriends())
-      } else if (/^\/starred/.test(pathname)) {
+      } else if (viewName === 'starred') {
         dispatch(loadNoise())
       }
       scrollTo(0, 0)
@@ -188,8 +196,8 @@ class NavbarContainer extends Component {
   // on any other page, we have the notifications link go back to whatever
   // category you were viewing last.
   getNotificationCategory() {
-    const { pathname } = this.props
-    if (pathname.match(/^\/notifications\b/)) { return '' }
+    const { viewName } = this.props
+    if (viewName === 'notifications') { return '' }
     return (
       Session.getItem(SESSION_KEYS.NOTIFICATIONS_FILTER) ?
         `/${Session.getItem(SESSION_KEYS.NOTIFICATIONS_FILTER)}` : ''

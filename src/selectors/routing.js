@@ -31,10 +31,10 @@ export const selectViewNameFromRoute = createSelector(
     if (/^\/starred\b/.test(pathname)) {
       return 'starred'
     }
-    if (/^\/search\b/.test(pathname)) {
+    if (/^\/find\b|^\/search\b/.test(pathname)) {
       return 'search'
     }
-    if (pathname === '/' || /^\/discover\b/.test(pathname)) {
+    if (pathname === '/' || /^\/discover\b|^\/explore\b/.test(pathname)) {
       return 'discover'
     }
     if (/^\/invitations\b/.test(pathname)) {

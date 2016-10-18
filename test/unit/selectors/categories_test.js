@@ -4,6 +4,7 @@ import {
   selectCategoriesAsArray,
   selectCategoryCollection,
   selectCategoryPageTitle,
+  selectCategoryTabs,
   sortCategories,
 } from '../../../src/selectors/categories'
 
@@ -86,6 +87,32 @@ describe('categories selectors', () => {
       expect(selectCategoryPageTitle(state, nextNextProps)).to.be.null
       const lastProps = { ...nextNextProps, params: { token: 'paramsToken', type: 'recommended' } }
       expect(selectCategoryPageTitle(state, lastProps)).to.equal('Featured')
+    })
+  })
+
+  context('#selectCategoryTabs', () => {
+    it('returns the correct stream action for featured and recommended', () => {
+      const categories = json.categories
+      const tabs = selectCategoryTabs({ json: { categories, pages: { 'all-categories': { ids: ['1', '2', '3', '4', '5', '6'] } } } })
+      expect(tabs[0]).to.have.property('children', 'Featured')
+      expect(tabs[0]).to.have.property('to', '/discover')
+      expect(tabs[1]).to.have.property('children', 'Trending')
+      expect(tabs[1]).to.have.property('to', '/discover/trending')
+      expect(tabs[2]).to.have.property('children', 'Recent')
+      expect(tabs[2]).to.have.property('to', '/discover/recent')
+      expect(tabs[3]).to.have.property('kind', 'divider')
+      expect(tabs[4]).to.have.property('children', 'Art')
+      expect(tabs[4]).to.have.property('to', '/discover/art')
+      expect(tabs[5]).to.have.property('children', 'Design')
+      expect(tabs[5]).to.have.property('to', '/discover/design')
+      expect(tabs[6]).to.have.property('children', 'Photography')
+      expect(tabs[6]).to.have.property('to', '/discover/photography')
+      expect(tabs[7]).to.have.property('children', 'Architecture')
+      expect(tabs[7]).to.have.property('to', '/discover/architecture')
+      expect(tabs[8]).to.have.property('children', 'Interviews')
+      expect(tabs[8]).to.have.property('to', '/discover/interviews')
+      expect(tabs[9]).to.have.property('children', 'Collage')
+      expect(tabs[9]).to.have.property('to', '/discover/collage')
     })
   })
 })

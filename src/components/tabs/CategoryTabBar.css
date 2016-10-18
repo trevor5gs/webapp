@@ -1,6 +1,10 @@
 @import "../../lib/styles/properties.css";
 
 .CategoryTabBar {
+  position: absolute;
+  right: 0;
+  bottom: -75px;
+  left: 0;
   height: 75px;
   font-size: 14px;
   white-space: nowrap;

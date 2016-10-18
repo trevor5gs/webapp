@@ -11,10 +11,12 @@ import { NavbarProfile } from './NavbarProfile'
 import {
   BoltIcon, CircleIcon, GridIcon, ListIcon, SearchIcon, SparklesIcon, StarIcon,
 } from './NavbarIcons'
+import { CategoryTabBar } from '../tabs/CategoryTabBar'
 // yuck..
 import NotificationsContainer from '../../containers/notifications/NotificationsContainer'
 
 export const NavbarLoggedOut = ({
+  categoryTabs,
   currentStream,
   hasLoadMoreButton,
   isLoggedIn,
@@ -58,9 +60,11 @@ export const NavbarLoggedOut = ({
         to="/signup"
       />
     </div>
+    {categoryTabs ? <CategoryTabBar pathname={pathname} tabs={categoryTabs} /> : null}
   </nav>
 
 NavbarLoggedOut.propTypes = {
+  categoryTabs: PropTypes.array,
   currentStream: PropTypes.string.isRequired,
   hasLoadMoreButton: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
@@ -71,6 +75,7 @@ NavbarLoggedOut.propTypes = {
 
 export const NavbarLoggedIn = ({
   avatar,
+  categoryTabs,
   currentStream,
   deviceSize,
   hasLoadMoreButton,
@@ -166,10 +171,12 @@ export const NavbarLoggedIn = ({
     {deviceSize !== 'mobile' && isNotificationsActive ?
       <NotificationsContainer /> : null
     }
+    {categoryTabs ? <CategoryTabBar pathname={pathname} tabs={categoryTabs} /> : null}
   </nav>
 
 NavbarLoggedIn.propTypes = {
   avatar: PropTypes.object,
+  categoryTabs: PropTypes.array,
   currentStream: PropTypes.string.isRequired,
   deviceSize: PropTypes.string.isRequired,
   hasLoadMoreButton: PropTypes.bool.isRequired,
