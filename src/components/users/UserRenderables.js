@@ -213,7 +213,6 @@ export const UserProfile = ({
         className="isPill inUserProfile"
         relationshipPriority={user.relationshipPriority}
         user={user}
-        location={user.location}
       />
     </UserProfileButtons>
   </div>
