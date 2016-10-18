@@ -31,12 +31,22 @@ body.isModalActive .MainView { /* stylelint-disable-line */
   opacity: 1;
 }
 
+.Modal.isActive.hasOverlay9 {
+  background-color: rgba(26, 26, 26, 0.9);
+}
+
 .Modal.isActive.isDangerZone {
   background-color: rgba(255, 0, 0, 0.95);
 }
 
 .Modal.isDecapitated {
   z-index: var(--z-decapitated);
+}
+
+.Modal.isFlex {
+  display: flex; /* stylelint-disable-line */
+  align-items: center;
+  padding-top: 0;
 }
 
 @media (--break-2) {

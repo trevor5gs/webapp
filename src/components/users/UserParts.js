@@ -146,18 +146,24 @@ UserStatsCell.propTypes = {
 
 // -----------------
 
-export const UserInfoCell = ({ className, shortBio, location }) =>
+export const UserInfoCell = ({ className, location, onClickOpenBio, truncatedShortBio }) =>
   <div className={classNames('UserCell UserInfoCell', className)}>
-    { shortBio ?
-      <div className="UserShortBio" dangerouslySetInnerHTML={{ __html: shortBio }} /> : null
+    { truncatedShortBio && truncatedShortBio.length ?
+      <div className="UserShortBio" dangerouslySetInnerHTML={{ __html: truncatedShortBio }} /> : null
+    }
+    { onClickOpenBio ?
+      <button className="MoreBioButton" onClick={onClickOpenBio} >
+        <span className="MoreBioButtonLabel">See More</span>
+      </button> : null
     }
     { location ? <p className="UserLocation">{location}</p> : null }
   </div>
 
 UserInfoCell.propTypes = {
   className: PropTypes.string,
-  shortBio: PropTypes.string,
   location: PropTypes.string,
+  onClickOpenBio: PropTypes.func,
+  truncatedShortBio: PropTypes.string,
 }
 
 // -----------------

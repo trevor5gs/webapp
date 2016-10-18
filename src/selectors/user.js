@@ -34,6 +34,11 @@ export const selectRelationshipPriority = createSelector(
   [selectUser], user => get(user, 'relationshipPriority')
 )
 
+export const selectTruncatedShortBio = createSelector(
+  [selectUserFromPropsUserId], user =>
+    trunc(user.formattedShortBio || '', 160)
+)
+
 export const selectUserMetaDescription = createSelector(
   [selectUserFromUsername], (user) => {
     if (!user) { return null }
