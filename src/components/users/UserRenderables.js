@@ -145,6 +145,7 @@ UserProfileCard.propTypes = {
 
 export const UserProfile = ({
   isLoggedIn,
+  isMobile,
   onClickCollab,
   onClickHireMe,
   onClickOpenBio,
@@ -201,6 +202,7 @@ export const UserProfile = ({
     <UserLinksCell
       className="inUserProfile"
       externalLinksList={user.externalLinksList}
+      isMobile={isMobile}
     />
     <UserProfileButtons
       className="inUserProfile"
@@ -217,6 +219,7 @@ export const UserProfile = ({
 
 UserProfile.propTypes = {
   isLoggedIn: PropTypes.bool,
+  isMobile: PropTypes.bool,
   onClickCollab: PropTypes.func,
   onClickHireMe: PropTypes.func,
   onClickOpenBio: PropTypes.func,
