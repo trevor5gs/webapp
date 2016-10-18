@@ -214,7 +214,6 @@ export const UserProfile = ({
         relationshipPriority={user.relationshipPriority}
         user={user}
         location={user.location}
-        shortBio={user.formattedShortBio}
       />
     </UserProfileButtons>
   </div>
