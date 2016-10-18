@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
 import BackgroundImage from '../assets/BackgroundImage'
+import { ShareIcon } from '../assets/Icons'
 import Hint from '../hints/Hint'
 import { loadUserDrawer } from '../../actions/user'
 import RelationshipContainer from '../../containers/RelationshipContainer'
@@ -192,7 +193,10 @@ export const UserProfile = ({
         onClickOpenFeaturedModal={onClickOpenFeaturedModal}
         onClickShareProfile={onClickShareProfile}
         totalPostViewsCount={user.totalPostViewsCount}
-      /> : null
+      /> :
+        <button className="UserFiguresShareButton withoutTotalViewCount" onClick={onClickShareProfile} >
+          <ShareIcon />
+        </button>
     }
     <UserStatsCell
       className="inUserProfile"

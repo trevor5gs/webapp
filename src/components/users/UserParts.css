@@ -65,7 +65,6 @@ User Buttons */
   margin-bottom: 15px;
 }
 
-/* TODO: Just until we get rid of the star... */
 @media (--break-2-max) {
   .Avatar.inUserProfile[data-priority="self"] ~ .UserProfileButtons {
     right: 10px;
@@ -157,9 +156,21 @@ User Figures */
   z-index: 2;
 }
 
+.UserFiguresShareButton.withoutTotalViewCount {
+  display: none;
+}
+
 @media (--break-2-max) {
   .UserFiguresShareButton {
     color: #aaa;
+  }
+
+  .UserFiguresShareButton.withoutTotalViewCount {
+    position: absolute;
+    top: 240px;
+    right: 20px;
+    z-index: 2;
+    display: block;
   }
 }
 
