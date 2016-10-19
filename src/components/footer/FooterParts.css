@@ -1,0 +1,80 @@
+@import "../../lib/styles/properties.css";
+
+/* ------------------------------------- */
+
+.FooterLabel {
+  display: inline-block;
+  font-size: 0.75rem;
+  vertical-align: middle;
+}
+
+/* ------------------------------------- */
+
+.FooterLink {
+  display: inline-block;
+  font-size: 0.75rem;
+  vertical-align: middle;
+  border-bottom: 0;
+}
+
+.FooterLink > span {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: middle;
+  transition: width var(--speed) var(--ease);
+}
+
+.FooterLink > .SVGIcon + span {
+  width: 0;
+  margin-left: 5px;
+}
+
+.no-touch .FooterLink:hover {
+  color: #000;
+}
+
+/* // Only setup for `Get the app` link */
+.no-touch .FooterLink:hover > .SVGIcon + span { /* stylelint-disable-line */
+  width: 90px;
+}
+
+/* ------------------------------------- */
+
+.FooterTool {
+  font-size: 0.75rem;
+  text-align: left;
+}
+
+.FooterTool > span {
+  display: inline-block;
+  width: 0;
+  margin-left: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: middle;
+  transition: width var(--speed) var(--ease), color var(--speed);
+}
+
+.FooterTool.LayoutTool > .SVGIcon {
+  margin-top: -2px;
+}
+
+.no-touch .FooterTool:hover {
+  color: #000;
+}
+
+.no-touch .FooterTool.TopTool:hover > span { /* stylelint-disable-line */
+  width: 30px;
+}
+
+.no-touch .FooterTool.LayoutTool:hover > span { /* stylelint-disable-line */
+  width: 66px;
+}
+
+@media (--break-2-max) {
+  .FooterTool.LayoutTool {
+    display: none;
+  }
+}
+

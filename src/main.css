@@ -41,10 +41,8 @@
 
 @import "components/errors/Errors.css";
 
-@import "components/footer/Footer.css";
-@import "components/footer/FooterLabel.css";
-@import "components/footer/FooterLink.css";
-@import "components/footer/FooterTool.css";
+@import "components/footer/FooterParts.css";
+@import "components/footer/FooterRenderables.css";
 
 @import "components/forms/FormButton.css";
 @import "components/forms/FormControl.css";

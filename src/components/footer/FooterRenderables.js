@@ -1,10 +1,8 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 import { isAndroid } from '../../lib/jello'
-import { PhoneIcon, ChevronIcon, ListIcon, GridIcon } from '../footer/FooterIcons'
-import { FooterLabel } from '../footer/FooterLabel'
-import { FooterLink } from '../footer/FooterLink'
-import { FooterTool } from '../footer/FooterTool'
+import { PhoneIcon, ChevronIcon, ListIcon, GridIcon } from '../assets/Icons'
+import { FooterLabel, FooterLink, FooterTool } from '../footer/FooterParts'
 
 export const Footer = ({
   isGridMode,
