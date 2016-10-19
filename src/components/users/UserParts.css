@@ -379,7 +379,7 @@ User Links */
 .UserExternalLinksIcon img {
   width: 22px;
   height: 22px;
-  margin-top: -4px;
+  margin-top: -2px;
 }
 
 @media (--break-2) {
@@ -411,5 +411,8 @@ User Links */
     background-color: #fff;
   }
 
+  .UserExternalLinksIcon img {
+    margin-top: -4px;
+  }
 }
 
