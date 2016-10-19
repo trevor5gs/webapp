@@ -215,6 +215,7 @@ export const UserLinksCell = ({ className, externalLinksList, isMobile }) => {
     <div
       className={classNames('UserCell UserLinksCell', className)}
       data-num-icons={externalLinksIcon.length}
+      data-num-links={externalLinks.length}
       style={style}
     >
       <div className="UserExternalLinksLeft">

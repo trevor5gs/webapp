@@ -334,6 +334,10 @@ User Links */
   width: 100%;
 }
 
+.UserLinksCell[data-num-links="0"] .UserExternalLinksLeft {
+  display: none;
+}
+
 .UserExternalLinksRight {
   position: absolute;
   top: 5px;
@@ -350,6 +354,15 @@ User Links */
 
 .UserLinksCell[data-num-icons="0"] .UserExternalLinksRight {
   display: none;
+}
+
+.UserLinksCell[data-num-links="0"] .UserExternalLinksRight {
+  left: 0;
+}
+
+.UserLinksCell[data-num-links="0"] .UserExternalLinksRight > .UserExternalLinksIcon > a { /* stylelint-disable-line */
+  margin-right: 10px;
+  margin-left: 0;
 }
 
 .UserExternalLinksLabel {
