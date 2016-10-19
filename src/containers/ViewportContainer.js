@@ -33,6 +33,7 @@ function mapStateToProps(state, props) {
     innerHeight: selectInnerHeight(state),
     innerWidth: selectInnerWidth(state),
     isAuthenticationView: selectIsAuthenticationView(state),
+    isDiscoverView: selectViewNameFromRoute(state) === 'discover',
     isNavbarHidden: selectIsNavbarHidden(state),
     isNotificationsActive: selectIsNotificationsActive(state),
     isOnboardingView: selectIsOnboardingView(state),
@@ -49,6 +50,7 @@ class ViewportContainer extends Component {
     innerHeight: PropTypes.number,
     innerWidth: PropTypes.number,
     isAuthenticationView: PropTypes.bool,
+    isDiscoverView: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
     isNotificationsActive: PropTypes.bool,
     isOnboardingView: PropTypes.bool,
@@ -119,6 +121,7 @@ class ViewportContainer extends Component {
   render() {
     const props = {
       isAuthenticationView: this.props.isAuthenticationView,
+      isDiscoverView: this.props.isDiscoverView,
       isNavbarHidden: this.props.isNavbarHidden,
       isNotificationsActive: this.props.isNotificationsActive,
       isOnboardingView: this.props.isOnboardingView,
