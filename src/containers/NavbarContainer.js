@@ -25,7 +25,7 @@ import { checkForNewNotifications } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
 import { loadFriends, loadNoise } from '../actions/stream'
-import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/Navbar'
+import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/NavbarRenderables'
 import { getDiscoverAction } from '../containers/DiscoverContainer'
 
 function mapStateToProps(state) {

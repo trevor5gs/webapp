@@ -1,15 +1,23 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 import { isElloAndroid } from '../../lib/jello'
-import { NavbarLabel } from './NavbarLabel'
-import { NavbarLayoutTool } from './NavbarLayoutTool'
-import { NavbarLink } from './NavbarLink'
-import { NavbarMark } from './NavbarMark'
-import { NavbarMorePostsButton } from './NavbarMorePostsButton'
-import { NavbarOmniButton } from './NavbarOmniButton'
-import { NavbarProfile } from './NavbarProfile'
 import {
-  BoltIcon, CircleIcon, GridIcon, ListIcon, SearchIcon, SparklesIcon, StarIcon,
+  NavbarLabel,
+  NavbarLayoutTool,
+  NavbarLink,
+  NavbarMark,
+  NavbarMorePostsButton,
+  NavbarOmniButton,
+  NavbarProfile,
+} from './NavbarParts'
+import {
+  BoltIcon,
+  CircleIcon,
+  GridIcon,
+  ListIcon,
+  SearchIcon,
+  SparklesIcon,
+  StarIcon,
 } from './NavbarIcons'
 import { CategoryTabBar } from '../tabs/CategoryTabBar'
 // yuck..
