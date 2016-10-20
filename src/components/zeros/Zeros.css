@@ -5,14 +5,9 @@
 .ZeroStream {
   position: relative;
   max-width: 540px;
-  padding: 20px 10px;
+  padding: 53px 10px;
   margin: 0 auto;
   background-color: #fff;
-}
-
-.isDiscoverView ~ .Hero .ZeroStream {
-  padding-top: 53px;
-  padding-bottom: 53px;
 }
 
 .ZeroStreamHeading {
