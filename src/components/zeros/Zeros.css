@@ -10,6 +10,11 @@
   background-color: #fff;
 }
 
+.isDiscoverView ~ .Hero .ZeroStream {
+  padding-top: 53px;
+  padding-bottom: 53px;
+}
+
 .ZeroStreamHeading {
   font-size: 18px;
 }
