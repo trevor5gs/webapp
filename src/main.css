@@ -41,10 +41,8 @@
 
 @import "components/errors/Errors.css";
 
-@import "components/footer/Footer.css";
-@import "components/footer/FooterLabel.css";
-@import "components/footer/FooterLink.css";
-@import "components/footer/FooterTool.css";
+@import "components/footer/FooterParts.css";
+@import "components/footer/FooterRenderables.css";
 
 @import "components/forms/FormButton.css";
 @import "components/forms/FormControl.css";
@@ -61,14 +59,9 @@
 
 @import "components/modals/Modal.css";
 
-@import "components/navbar/Navbar.css";
 @import "components/navbar/NavbarIcons.css";
-@import "components/navbar/NavbarLabel.css";
-@import "components/navbar/NavbarLink.css";
-@import "components/navbar/NavbarMark.css";
-@import "components/navbar/NavbarMorePostsButton.css";
-@import "components/navbar/NavbarOmniButton.css";
-@import "components/navbar/NavbarProfile.css";
+@import "components/navbar/NavbarParts.css";
+@import "components/navbar/NavbarRenderables.css";
 
 @import "components/navigation/TreeButton.css";
 @import "components/navigation/TreePanel.css";

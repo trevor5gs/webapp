@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import { selectCategories, selectCategoryPageTitle } from '../selectors/categories'
+import { selectCategoryPageTitle } from '../selectors/categories'
 import { selectParamsType } from '../selectors/params'
 import { selectPropsPathname } from '../selectors/routing'
 import {
@@ -37,49 +37,8 @@ export function getStreamAction(type) {
   }
 }
 
-// TODO: Combine with selectCategories or move to its own selector
-export function generateTabs(primary, secondary, tertiary) {
-  const tabs = []
-  // add featured/trending/recent by default
-  tabs.push({
-    to: '/discover',
-    children: 'Featured',
-    activePattern: /^\/(?:discover(\/featured|\/recommended)?)?$/,
-  })
-  tabs.push({
-    to: '/discover/trending',
-    children: 'Trending',
-  })
-  tabs.push({
-    to: '/discover/recent',
-    children: 'Recent',
-  })
-  // add line to split categories
-  tabs.push({ kind: 'divider' })
-  for (const category of primary) {
-    tabs.push({
-      to: `/discover/${category.slug}`,
-      children: category.name,
-    })
-  }
-  for (const category of secondary) {
-    tabs.push({
-      to: `/discover/${category.slug}`,
-      children: category.name,
-    })
-  }
-  for (const category of tertiary) {
-    tabs.push({
-      to: `/discover/${category.slug}`,
-      children: category.name,
-    })
-  }
-  return tabs
-}
-
 function mapStateToProps(state, props) {
   const isLoggedIn = selectIsLoggedIn(state)
-  const { primary, secondary, tertiary } = selectCategories(state, props)
   const pageTitle = selectCategoryPageTitle(state, props)
   const titlePrefix = pageTitle ? `${pageTitle} | ` : ''
   const title = `${titlePrefix} Ello`
@@ -88,9 +47,6 @@ function mapStateToProps(state, props) {
     pageTitle,
     paramsType: selectParamsType(state, props),
     pathname: selectPropsPathname(state, props),
-    primary,
-    secondary,
-    tertiary,
     title,
   }
 }
@@ -102,9 +58,6 @@ class DiscoverContainer extends Component {
     pageTitle: PropTypes.string,
     paramsType: PropTypes.string.isRequired,
     pathname: PropTypes.string.isRequired,
-    primary: PropTypes.array,
-    secondary: PropTypes.array,
-    tertiary: PropTypes.array,
     title: PropTypes.string.isRequired,
   }
 
@@ -133,13 +86,12 @@ class DiscoverContainer extends Component {
 
   render() {
     const { isLoggedIn, pageTitle, paramsType, pathname } = this.props
-    const { primary, secondary, tertiary, title } = this.props
+    const { title } = this.props
     const props = {
       isLoggedIn,
       pageTitle,
       pathname,
       streamAction: getStreamAction(paramsType),
-      tabs: generateTabs(primary, secondary, tertiary),
       title,
     }
     return <Discover key={`discover_${paramsType}`} {...props} />

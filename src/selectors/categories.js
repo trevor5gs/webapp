@@ -76,3 +76,45 @@ export const selectCategoryPageTitle = createSelector(
   }
 )
 
+export const selectCategoryTabs = createSelector(
+  [selectCategories], (categories) => {
+    const { primary, secondary, tertiary } = categories
+    const tabs = []
+    // add featured/trending/recent by default
+    tabs.push({
+      to: '/discover',
+      children: 'Featured',
+      activePattern: /^\/(?:discover(\/featured|\/recommended)?)?$/,
+    })
+    tabs.push({
+      to: '/discover/trending',
+      children: 'Trending',
+    })
+    tabs.push({
+      to: '/discover/recent',
+      children: 'Recent',
+    })
+    // add line to split categories
+    tabs.push({ kind: 'divider' })
+    for (const category of primary) {
+      tabs.push({
+        to: `/discover/${category.slug}`,
+        children: category.name,
+      })
+    }
+    for (const category of secondary) {
+      tabs.push({
+        to: `/discover/${category.slug}`,
+        children: category.name,
+      })
+    }
+    for (const category of tertiary) {
+      tabs.push({
+        to: `/discover/${category.slug}`,
+        children: category.name,
+      })
+    }
+    return tabs
+  }
+)
+
