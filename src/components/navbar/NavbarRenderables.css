@@ -122,7 +122,7 @@
 
   /* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
   .no-touch .isNavbarHidden ~ .Discover + .Navbar:hover {
-    transition-delay: 2s;
+    transition-delay: 1.5s;
   }
 
   .no-touch .isNavbarHidden ~ .Navbar:hover .NavbarMain {
@@ -131,7 +131,7 @@
   }
 
   .no-touch .isNavbarHidden ~ .Discover + .Navbar:hover .NavbarMain {
-    transition-delay: 2s;
+    transition-delay: 1.5s;
   }
   /* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
 
