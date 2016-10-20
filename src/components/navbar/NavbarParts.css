@@ -330,13 +330,17 @@
 
 @media (--break-2-max) {
   .isProfileMenuActive ~ .MainView,
+  .isProfileMenuActive ~ .Hero,
   .isProfileMenuActive ~ .Footer {
     display: none;
   }
 
-  .isProfileMenuActive ~ .Navbar > *:not(.NavbarProfile) {
+  /* stylelint-disable selector-max-compound-selectors */
+  .isProfileMenuActive ~ .Navbar .CategoryTabBar,
+  .isProfileMenuActive ~ .Navbar .NavbarMain > *:not(.NavbarProfile) {
     display: none;
   }
+  /* stylelint-enable selector-max-compound-selectors */
 
   .isProfileMenuActive ~ .NavbarProfile > .Avatar {
     pointer-events: none;
