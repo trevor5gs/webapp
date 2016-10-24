@@ -257,7 +257,7 @@ User Info */
 
 .UserShortBio {
   position: relative;
-  max-height: 103px;
+  max-height: 100px;
   overflow: hidden;
   line-height: 1.3;
   word-wrap: break-word;
@@ -297,6 +297,7 @@ User Info */
 
 @media (--break-2) {
   .MoreBioButton {
+    margin-top: 10px;
     font-size: 14px;
     line-height: 1;
     border-bottom: 1px solid;
