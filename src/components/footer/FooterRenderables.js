@@ -20,7 +20,7 @@ export const Footer = ({
       <FooterLink
         className="asLabel"
         href={`${ENV.AUTH_DOMAIN}/wtf`}
-        label="WTF"
+        label="Help"
       />
       {isAndroid() ?
         null :
