@@ -171,14 +171,6 @@ export const NavbarProfile = ({
           <hr className="NavbarProfileLinkDivider" />
           <a
             className="NavbarProfileLink truncate"
-            href={`${ENV.AUTH_DOMAIN}/wtf/resources/community-directory/`}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Communities
-          </a>
-          <a
-            className="NavbarProfileLink truncate"
             href={`${ENV.AUTH_DOMAIN}/wtf`}
             rel="noopener noreferrer"
             target="_blank"
