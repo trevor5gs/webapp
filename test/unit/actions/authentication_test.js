@@ -73,12 +73,6 @@ describe('authentication actions', () => {
         password: '12345666',
       })
     })
-
-    it('has the correct meta in the action', () => {
-      expect(action.meta).to.deep.equal({
-        pauseRequester: true,
-      })
-    })
   })
 
   context('#logout', () => {
@@ -123,10 +117,6 @@ describe('authentication actions', () => {
 
     it('has the refresh token in the body of the action', () => {
       expect(action.payload.body.refresh_token).to.equal('22:22')
-    })
-
-    it('has the pauseRequester in the meta as true', () => {
-      expect(action.meta.pauseRequester).to.be.true
     })
   })
 
