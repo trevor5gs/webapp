@@ -56,7 +56,7 @@ function selectionIsText() {
   return false
 }
 
-function onKeyUp(e) {
+methods.onKeyUp = (e) => {
   // Handles text tools show/hide and position
   if (!selectionIsText()) { return }
   toggleTools(window.getSelection().toString())
@@ -85,10 +85,8 @@ function onKeyUp(e) {
     callMethod('onHideCompleter')
   }
 }
-methods.onKeyUp = e =>
-  onKeyUp(e)
 
-function onKeyDown(e) {
+methods.onKeyDown = (e) => {
   if (!e.target.classList || !e.target.classList.contains('text')) { return }
   // b or i for key commands
   if ((e.keyCode === 66 || e.keyCode === 73) && (e.metaKey || e.ctrlKey)) {
@@ -105,11 +103,9 @@ function onKeyDown(e) {
   const completerActive = document.body.querySelector('.Completion.isActive')
   if (e.keyCode === 13 && !isFirefox() && !completerActive) {
     e.preventDefault() // Prevent DIVs from being created
-    document.execCommand('insertHTML', false, '<br/><br/>')
+    document.execCommand('insertHTML', false, '\n\n')
   }
 }
-methods.onKeyDown = e =>
-  onKeyDown(e)
 
 function onClick(e) {
   const classList = e.target.classList
@@ -121,7 +117,7 @@ function onClick(e) {
     callMethod('onHideTextTools', { activeTools: null })
   } else if (selectionIsText()) {
     requestAnimationFrame(() => {
-      onKeyUp(e)
+      methods.onKeyUp(e)
     })
   } else if (!classList.contains('TextToolButton') &&
       !classList.contains('TextToolForm') &&
