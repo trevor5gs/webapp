@@ -31,6 +31,7 @@
 /* ------------------------------------- */
 
 .StreamContainer.isBusy {
+  min-height: 120px;
   text-align: center;
 }
 
@@ -52,6 +53,10 @@
   margin: 0 auto;
 }
 
+.MainView > .StreamContainer.isBusy {
+  min-height: 180px;
+}
+
 .MainView > .StreamContainer .StreamBusyIndicator {
   top: 80px;
 }
@@ -61,12 +66,20 @@
 }
 
 @media (--break-2) {
+  .MainView > .StreamContainer.isBusy {
+    min-height: 220px;
+  }
+
   .MainView > .StreamContainer .StreamBusyIndicator {
     top: 120px;
   }
 }
 
 @media (--break-5) {
+  .View > .StreamContainer.isBusy {
+    min-height: 340px;
+  }
+
   .View > .StreamContainer .StreamBusyIndicator {
     top: 240px;
   }
