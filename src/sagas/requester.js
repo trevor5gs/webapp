@@ -180,9 +180,9 @@ export function* handleRequestError(error, action) {
     if (contentType && contentType.indexOf('application/json') > -1) {
       const errorJson = yield call(extractJSON, error.response)
       payload.response = camelizeKeys(errorJson)
-      yield put({ error, meta, payload, type: FAILURE })
-      yield call(fireFailureAction)
     }
+    yield put({ error, meta, payload, type: FAILURE })
+    yield call(fireFailureAction)
   } else {
     if (/Failed to fetch/.test(error)) {
       payload.serverStatus = 404
