@@ -48,22 +48,24 @@ export function getPositionFromSelection() {
   }
 }
 
-// getPositionOfCaret: ->
-//   selection = document.getSelection()
-//   return unless node = selection.anchorNode
-//   return unless selection.type = "Caret"
-//   range = selection.getRangeAt(0)
-//   if range.getClientRects().length
-//     pos = range.getClientRects()[0]
-//     {
-//       top: pos.top
-//       left: pos.left + @getFirefoxOffset()
-//       height: pos.height
-//       width: pos.width
-//     }
-//   else
-//     # newline doesn't give us a good clientRect
+// export function getPositionOfCaret() {
+//   const selection = document.getSelection()
+//   if (node !== selection.anchorNode || selection.type !== 'Caret') {
 //     return null
+//   }
+//   const range = selection.getRangeAt(0)
+//   if (range.getClientRects().length) {
+//     const pos = range.getClientRects()[0]
+//     return {
+//       top: pos.top,
+//       left: pos.left,
+//       height: pos.height,
+//       width: pos.width,
+//     }
+//   }
+//   // newline doesn't give us a good clientRect
+//   return null
+// }
 
 export function replaceWordFromSelection(word) {
   getWordFromSelection()
