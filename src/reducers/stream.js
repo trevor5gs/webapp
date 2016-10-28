@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 import { AUTHENTICATION, POST, PROFILE, USER } from '../constants/action_types'
 
 export function stream(state = {}, action = { type: '' }) {
@@ -16,11 +17,24 @@ export function stream(state = {}, action = { type: '' }) {
              action.type.indexOf('LOAD_NEXT_CONTENT_') === 0 ||
              (action.type.indexOf('COMMENT.') === 0 && action.type.indexOf('SUCCESS') > -1) ||
              (action.type.indexOf('POST.') === 0 && action.type.indexOf('SUCCESS') > -1)) {
+    let should404 = false
+    switch (action.type) {
+      case POST.DETAIL_FAILURE:
+      case USER.DETAIL_FAILURE:
+        if (get(action, 'error.response.status') === 404) {
+          should404 = true
+        }
+        break
+      default:
+        should404 = false
+        break
+    }
     return {
       ...state,
       error: action.error,
       meta: action.meta,
       payload: action.payload,
+      should404,
       type: action.type,
     }
   }

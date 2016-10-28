@@ -108,6 +108,11 @@ function renderFromServer(req, res, cacheKey) {
             librato.increment('webapp-server-render-error')
             res.status(500).end()
             break
+          case '404':
+            console.log('-- Rendering 404 response')
+            librato.increment('webapp-server-render-404')
+            res.status(404).end()
+            break
           default:
             // No-op
         }
