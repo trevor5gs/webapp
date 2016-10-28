@@ -187,6 +187,7 @@ class Settings extends Component {
   onConfirmAccountWasDeleted = () => {
     const { dispatch } = this.props
     dispatch(deleteProfile())
+    dispatch(logout())
   }
 
   onSubmit = (e) => {
