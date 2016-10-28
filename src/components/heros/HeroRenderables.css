@@ -40,6 +40,10 @@
   .isLoggedOut .Hero {
     padding-top: 50px;
   }
+
+  .isLoggedOut .isDiscoverView ~ .Hero {
+    padding-top: 125px !important;
+  }
 }
 
 @media (--break-2) {
