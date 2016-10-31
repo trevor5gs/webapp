@@ -1,6 +1,8 @@
 import get from 'lodash/get'
 import { AUTHENTICATION, POST, PROFILE, USER } from '../constants/action_types'
 
+let should404 = false
+
 export function stream(state = {}, action = { type: '' }) {
   if (action.type === AUTHENTICATION.LOGOUT || action.type === PROFILE.DELETE_SUCCESS) {
     return {}
@@ -17,7 +19,6 @@ export function stream(state = {}, action = { type: '' }) {
              action.type.indexOf('LOAD_NEXT_CONTENT_') === 0 ||
              (action.type.indexOf('COMMENT.') === 0 && action.type.indexOf('SUCCESS') > -1) ||
              (action.type.indexOf('POST.') === 0 && action.type.indexOf('SUCCESS') > -1)) {
-    let should404 = false
     switch (action.type) {
       case POST.DETAIL_FAILURE:
       case USER.DETAIL_FAILURE:
@@ -26,7 +27,6 @@ export function stream(state = {}, action = { type: '' }) {
         }
         break
       default:
-        should404 = false
         break
     }
     return {
