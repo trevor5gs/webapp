@@ -1,5 +1,5 @@
 import get from 'lodash/get'
-import { AUTHENTICATION, POST, PROFILE, USER } from '../constants/action_types'
+import { AUTHENTICATION, LOAD_STREAM_FAILURE, POST, PROFILE, USER } from '../constants/action_types'
 
 let should404 = false
 
@@ -26,6 +26,15 @@ export function stream(state = {}, action = { type: '' }) {
           should404 = true
         }
         break
+      case LOAD_STREAM_FAILURE: {
+        const path = get(action, 'payload.endpoint.path')
+        if (/\/categories/.test(path)) {
+          if (get(action, 'error.response.status') === 404) {
+            should404 = true
+          }
+        }
+        break
+      }
       default:
         break
     }
