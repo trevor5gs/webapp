@@ -2,6 +2,7 @@
 /* eslint-disable no-param-reassign */
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
+import { camelize } from 'humps'
 import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
@@ -133,34 +134,34 @@ methods.addParentPostIdToComments = (state, action) => {
 
 methods.addModels = (state, type, data) => {
   // add state['modelType']
-  if (!state[type]) { state[type] = {} }
+  const camelType = camelize(type)
+  if (!state[camelType]) { state[camelType] = {} }
   const ids = []
-  if (type === MAPPING_TYPES.CATEGORIES) {
-    data[type].forEach((item) => {
-      const newType = { ...state[type] }
+  if (camelType === MAPPING_TYPES.CATEGORIES) {
+    const newType = { ...state[camelType] }
+    data[camelType].forEach((item) => {
       const id = `${item.id}`
-      newType[id] = item
-      state[type] = newType
+      state[camelType][id] = merge(newType[id], item)
       ids.push(id)
     })
-  } else if (type === MAPPING_TYPES.SETTINGS) {
-    data[type].forEach((item, index) => {
-      const newType = { ...state[type] }
+  } else if (camelType === MAPPING_TYPES.SETTINGS) {
+    data[camelType].forEach((item, index) => {
+      const newType = { ...state[camelType] }
       const id = index + 1
       newType[id] = item
-      state[type] = newType
+      state[camelType] = newType
       ids.push(id)
     })
-  } else if (data[type] && data[type].length) {
+  } else if (data[camelType] && data[camelType].length) {
     // add arrays of models to state['modelType']['id']
-    data[type].forEach((model) => {
-      methods.mergeModel(state, type, model)
+    data[camelType].forEach((model) => {
+      methods.mergeModel(state, camelType, model)
       ids.push(`${model.id}`)
     })
-  } else if (data[type] && typeof data[type] === 'object') {
+  } else if (data[camelType] && typeof data[camelType] === 'object') {
     // add single model objects to state['modelType']['id']
-    const model = data[type]
-    methods.mergeModel(state, type, model)
+    const model = data[camelType]
+    methods.mergeModel(state, camelType, model)
     ids.push(`${model.id}`)
   }
   return ids
