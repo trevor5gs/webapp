@@ -156,6 +156,17 @@ User Figures */
   z-index: 2;
 }
 
+.UserFeaturedButton.inUserProfile.withoutTotalViewCount {
+  position: absolute;
+  top: -55px;
+  right: 0;
+}
+
+/* stylelint-disable selector-max-specificity */
+.UserFeaturedButton.withoutTotalViewCount + .RelationshipContainer .BlockMuteButton.inUserProfile {
+  right: 40px;
+}
+
 .UserFiguresShareButton.withoutTotalViewCount {
   display: none;
 }
@@ -168,7 +179,7 @@ User Figures */
   .UserFiguresShareButton.withoutTotalViewCount {
     position: absolute;
     top: 240px;
-    right: 20px;
+    right: 45px;
     z-index: 2;
     display: block;
   }
@@ -177,6 +188,10 @@ User Figures */
 @media (--break-2) {
   .UserFiguresLabel {
     color: #ccc;
+  }
+
+  .UserFeaturedButton.inUserProfile.withoutTotalViewCount {
+    top: 2px;
   }
 }
 

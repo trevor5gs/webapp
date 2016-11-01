@@ -178,6 +178,10 @@ export const UserProfile = ({
       name={user.name}
       username={user.username}
     >
+      {user.totalPostViewsCount && parseInt(user.totalPostViewsCount, 10) > 0 ?
+          null :
+            <UserFeaturedButton className="inUserProfile withoutTotalViewCount" onClick={onClickOpenFeaturedModal} />
+      }
       {isLoggedIn && user.relationshipPriority !== 'self' ?
         <RelationshipContainer
           hasBlockMuteButton
