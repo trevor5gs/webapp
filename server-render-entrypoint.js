@@ -69,7 +69,9 @@ function handlePrerender(context) {
       const head = Helmet.rewind()
       const state = store.getState()
       if (get(state, 'stream.should404') === true) {
-        process.send({ type: '404' })
+        process.send({ type: '404' }, null, {}, () => {
+          process.exit(1)
+        })
       } else {
         const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
         // Add helmet's stuff after the last statically rendered meta tag
