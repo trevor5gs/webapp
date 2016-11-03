@@ -178,9 +178,9 @@ export const UserProfile = ({
       name={user.name}
       username={user.username}
     >
-      {user.totalPostViewsCount && parseInt(user.totalPostViewsCount, 10) > 0 ?
-          null :
-            <UserFeaturedButton className="inUserProfile withoutTotalViewCount" onClick={onClickOpenFeaturedModal} />
+      {onClickOpenFeaturedModal && !user.totalPostViewsCount ?
+        <UserFeaturedButton className="inUserProfile withoutTotalViewCount" onClick={onClickOpenFeaturedModal} />
+        : null
       }
       {isLoggedIn && user.relationshipPriority !== 'self' ?
         <RelationshipContainer
