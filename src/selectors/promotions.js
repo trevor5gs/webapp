@@ -11,17 +11,14 @@ export const selectPagePromotionals = state => get(state, 'json.pagePromotionals
 export const selectCategoryData = createSelector(
   [selectPathname, selectJson, selectCats], (pathname, json, categories) => {
     const slug = pathname.replace('/discover/', '')
-    let cat = null
+    let cat = {}
     Object.keys(categories).map(key => categories[key]).forEach((category) => {
       if (category.slug === slug) { cat = category }
     })
-    if (cat) {
-      return {
-        category: cat,
-        promotionals: getLinkArray(cat, 'promotionals', json) || [],
-      }
+    return {
+      category: cat,
+      promotionals: getLinkArray(cat, 'promotionals', json) || [],
     }
-    return null
   }
 )
 
@@ -34,3 +31,7 @@ export const selectIsPagePromotion = createSelector(
     (viewName === 'discover' && /\/featured\b|\/trending\b|\/recent\b/.test(pathname))
 )
 
+export const selectIsCategoryPromotion = createSelector(
+  [selectViewNameFromRoute, selectIsPagePromotion], (viewName, isPagePromotion) =>
+    (viewName === 'discover' && !isPagePromotion)
+)

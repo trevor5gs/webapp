@@ -18,6 +18,7 @@ import { selectViewsAdultContent } from '../selectors/profile'
 import {
   selectAuthPromotionals,
   selectCategoryData,
+  selectIsCategoryPromotion,
   selectIsPagePromotion,
   selectPagePromotionals,
 } from '../selectors/promotions'
@@ -73,12 +74,13 @@ function mapStateToProps(state, props) {
   const user = selectUserFromUsername(state, props)
   const isAuthentication = selectIsAuthentication(state)
   const isPagePromotion = selectIsPagePromotion(state)
+  const isCategoryPromotion = selectIsCategoryPromotion(state)
   let promotions
   if (isAuthentication) {
     promotions = selectAuthPromotionals(state)
   } else if (isPagePromotion) {
     promotions = selectPagePromotionals(state)
-  } else if (categoryData) {
+  } else if (isCategoryPromotion) {
     promotions = categoryData.promotionals
   }
   return {
@@ -87,6 +89,7 @@ function mapStateToProps(state, props) {
     categoryData,
     dpi: selectCoverDPI(state),
     isAuthentication,
+    isCategoryPromotion,
     isBackgroundCycle: selectIsBackgroundCycle(state),
     isLoggedIn: selectIsLoggedIn(state),
     isPagePromotion,
@@ -110,6 +113,7 @@ class HeroContainer extends Component {
     dpi: PropTypes.string.isRequired,
     isAuthentication: PropTypes.bool,
     isBackgroundCycle: PropTypes.bool,
+    isCategoryPromotion: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     isPagePromotion: PropTypes.bool,
     isUserProfile: PropTypes.bool,
@@ -264,8 +268,14 @@ class HeroContainer extends Component {
   render() {
     const children = []
     const { broadcast } = this.state
-    const { categoryData, isAuthentication, isBackgroundCycle,
-      isPagePromotion, isUserProfile, userId } = this.props
+    const {
+      isAuthentication,
+      isBackgroundCycle,
+      isCategoryPromotion,
+      isPagePromotion,
+      isUserProfile,
+      userId,
+    } = this.props
 
     if (broadcast) {
       const props = { broadcast, onDismiss: this.onDismissBroadcast }
@@ -273,7 +283,7 @@ class HeroContainer extends Component {
     }
 
     // Pick a background
-    if (categoryData) {
+    if (isCategoryPromotion) {
       children.push(this.getHeroPromotionCategory())
     } else if (isPagePromotion) {
       children.push(this.getHeroPromotionPage())

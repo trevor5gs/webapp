@@ -145,11 +145,10 @@ export const selectDiscoverMetaData = createSelector(
         description = META.ALL_PAGE_DESCRIPTION
         break
       default: {
-        if (!categoryData) { description = null }
         const { category, promotionals } = categoryData
         description = category && category.description ?
-          trunc(category.description, 160).text : null
-        image = promotionals[0].image.hdpi.url
+          trunc(category.description, 160).text : META.DESCRIPTION
+        image = promotionals[0] ? promotionals[0].image.hdpi.url : META.IMAGE
         break
       }
     }
