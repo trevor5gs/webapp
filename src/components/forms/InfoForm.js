@@ -5,18 +5,26 @@ import classNames from 'classnames'
 import debounce from 'lodash/debounce'
 import { hideSoftKeyboard } from '../../lib/jello'
 import {
-  selectLinksAsText, selectName, selectShortBio, selectUsername,
+  selectLinksAsText,
+  selectLocation,
+  selectName,
+  selectShortBio,
+  selectUsername,
 } from '../../selectors/profile'
+import { selectIsCompleterActive } from '../../selectors/gui'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { saveProfile } from '../../actions/profile'
 import BioControl from '../forms/BioControl'
 import NameControl from '../forms/NameControl'
 import LinksControl from '../forms/LinksControl'
+import TextControl from '../forms/TextControl'
 import { isValidURL } from '../forms/Validators'
 
 function mapStateToProps(state) {
   return {
+    isCompleterActive: selectIsCompleterActive(state),
     linksText: selectLinksAsText(state),
+    location: selectLocation(state),
     name: selectName(state),
     shortBio: selectShortBio(state),
     username: selectUsername(state),
@@ -30,6 +38,7 @@ class InfoForm extends Component {
     controlClassModifiers: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     linksText: PropTypes.string,
+    location: PropTypes.string,
     name: PropTypes.string,
     shortBio: PropTypes.string,
     tabIndexStart: PropTypes.number,
@@ -44,6 +53,7 @@ class InfoForm extends Component {
     this.state = {
       bioStatus: STATUS.INDETERMINATE,
       linksStatus: STATUS.INDETERMINATE,
+      locationStatus: STATUS.INDETERMINATE,
       nameStatus: STATUS.INDETERMINATE,
       showThenHideMessage: false,
     }
@@ -51,19 +61,22 @@ class InfoForm extends Component {
     this.nameText = ''
     this.shortBioText = ''
     this.linkText = ''
+    this.locationText = ''
 
     this.saveForm = debounce(this.saveForm, 300)
     this.componentWillReceiveProps(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
-    const { linksText, name, shortBio } = nextProps
+    const { linksText, location, name, shortBio } = nextProps
     this.linksText = linksText || ''
+    this.locationText = location || ''
     this.nameText = name || ''
     this.shortBioText = shortBio || ''
     this.setState({
       bioStatus: this.shortBioText.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
       linksStatus: this.getLinksStatus(),
+      locationStatus: this.locationText.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
       nameStatus: this.nameText.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
     })
   }
@@ -103,6 +116,11 @@ class InfoForm extends Component {
     this.onChangeControl(vo, 'linksStatus')
   }
 
+  onChangeLocationControl = (vo) => {
+    this.locationText = Object.values(vo)[0]
+    this.onChangeControl(vo, 'locationStatus')
+  }
+
   onSubmit(e) {
     e.preventDefault()
     hideSoftKeyboard()
@@ -120,6 +138,7 @@ class InfoForm extends Component {
   saveForm() {
     const { dispatch, linksText } = this.props
     const vo = {
+      location: this.locationText,
       name: this.nameText,
       unsanitized_short_bio: this.shortBioText,
     }
@@ -133,9 +152,16 @@ class InfoForm extends Component {
   }
 
   render() {
-    const { bioStatus, linksStatus, nameStatus } = this.state
+    const { bioStatus, linksStatus, locationStatus, nameStatus } = this.state
     const {
-      className, controlClassModifiers, linksText, name, shortBio, tabIndexStart, username,
+      className,
+      controlClassModifiers,
+      linksText,
+      location,
+      name,
+      shortBio,
+      tabIndexStart,
+      username,
     } = this.props
     if (!username) {
       return null
@@ -154,18 +180,29 @@ class InfoForm extends Component {
           tabIndex={`${tabIndexStart}`}
           text={name || ''}
         />
+        <TextControl
+          classList={classNames(controlClassModifiers, 'LocationControl', 'text')}
+          id="location"
+          label="Location"
+          name="user[location]"
+          onChange={this.onChangeLocationControl}
+          placeholder="Location"
+          status={locationStatus}
+          tabIndex={`${tabIndexStart + 1}`}
+          text={location || ''}
+        />
         <BioControl
           classList={controlClassModifiers}
           onChange={this.onChangeBioControl}
           status={bioStatus}
-          tabIndex={`${tabIndexStart + 1}`}
+          tabIndex={`${tabIndexStart + 2}`}
           text={shortBio || ''}
         />
         <LinksControl
           classList={controlClassModifiers}
           onChange={this.onChangeLinksControl}
           status={linksStatus}
-          tabIndex={`${tabIndexStart + 2}`}
+          tabIndex={`${tabIndexStart + 3}`}
           text={linksText}
         />
       </form>

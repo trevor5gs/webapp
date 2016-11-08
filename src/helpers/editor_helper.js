@@ -25,8 +25,11 @@ methods.addCompletions = (state, action) => {
   const { payload } = action
   if (payload && payload.response) {
     const { type = 'user', word } = payload
-    if (type === 'user') {
+    if (type === 'user' || type === 'location') {
       newState.completions = { data: payload.response.autocompleteResults, type }
+      if (type === 'location' && !document.activeElement.classList.contains('LocationControl')) {
+        newState.completions = null
+      }
     } else if (type === 'emoji') {
       newState.completions = { data: suggestEmoji(word, payload.response.emojis), type }
     }
@@ -41,7 +44,7 @@ methods.rehydrateEditors = (persistedEditors = {}) => {
   const editors = {}
   Object.keys(persistedEditors).forEach((item) => {
     const pe = persistedEditors[item]
-    if (pe.shouldPersist) {
+    if (pe && pe.shouldPersist) {
       // clear out the blobs
       Object.keys(pe.collection).forEach((uid) => {
         const block = pe.collection[uid]

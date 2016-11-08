@@ -33,7 +33,7 @@
 
 @import "components/editor/ElloBuyButton.css";
 @import "components/editor/Editor.css";
-@import "components/editor/EditorTools.css";
+@import "components/editor/InputContainer.css";
 @import "components/editor/PostActionButton.css";
 @import "components/editor/QuickEmoji.css";
 @import "components/editor/RegionTools.css";

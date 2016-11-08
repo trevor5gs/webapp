@@ -32,6 +32,7 @@ export function editor(state = initialState, action) {
       return newState
     case EDITOR.EMOJI_COMPLETER_SUCCESS:
     case EDITOR.USER_COMPLETER_SUCCESS:
+    case PROFILE.LOCATION_AUTOCOMPLETE_SUCCESS:
       return editorMethods.addCompletions(newState, action)
     case REHYDRATE:
       if (action.payload.editor) {

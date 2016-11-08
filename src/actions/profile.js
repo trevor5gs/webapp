@@ -9,6 +9,16 @@ import { ErrorState } from '../components/errors/Errors'
 import { trackEvent } from '../actions/analytics'
 import store from '../store'
 
+export function autoCompleteLocation(location) {
+  return {
+    type: PROFILE.LOCATION_AUTOCOMPLETE,
+    payload: {
+      endpoint: api.profileLocationAutocomplete(location),
+      type: 'location',
+    },
+  }
+}
+
 export function followCategories(catIds) {
   return {
     type: PROFILE.FOLLOW_CATEGORIES,
