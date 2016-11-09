@@ -36,9 +36,11 @@ HeroPromotionCredits.propTypes = {
 
 export const HeroPromotionCTA = ({ caption, isLoggedIn, to }, { onClickTrackCTA }) => {
   if (caption && to) {
-    return <a className="HeroPromotionCTA" href={to} onClick={onClickTrackCTA}>{caption}</a>
-  } else if (!isLoggedIn) {
-    return <Link className="HeroPromotionCTA" onClick={onClickTrackCTA} to="https://ello.co/signup">Sign Up</Link>
+    const re = new RegExp(ENV.AUTH_DOMAIN.replace('https://', ''))
+    if (re.test(to)) {
+      return <Link className="HeroPromotionCTA" onClick={onClickTrackCTA} to={to}>{caption}</Link>
+    }
+    return <a className="HeroPromotionCTA" href={to} onClick={onClickTrackCTA} rel="noopener noreferrer" target="_blank">{caption}</a>
   }
   return null
 }
