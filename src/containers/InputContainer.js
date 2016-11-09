@@ -20,6 +20,7 @@ import {
   setIsTextToolsActive,
   setTextToolsCoordinates,
 } from '../actions/editor'
+import { autoCompleteLocation } from '../actions/profile'
 import Completer from '../components/completers/Completer'
 import TextTools from '../components/editor/TextTools'
 import { addInputObject, removeInputObject } from '../components/editor/InputComponent'
@@ -37,7 +38,7 @@ function mapStateToProps(state) {
   }
 }
 
-class EditorToolsContainer extends Component {
+class InputContainer extends Component {
 
   static propTypes = {
     deviceSize: PropTypes.string,
@@ -52,6 +53,7 @@ class EditorToolsContainer extends Component {
 
   componentWillMount() {
     this.onUserCompleter = debounce(this.onUserCompleter, 300)
+    this.onLocationCompleter = debounce(this.onLocationCompleter, 300)
   }
 
   componentDidMount() {
@@ -87,6 +89,11 @@ class EditorToolsContainer extends Component {
         dispatch(replaceText(collectionId, editorId))
       }
     })
+    this.onCancelAutoCompleter()
+  }
+
+  onLocationCompletion = ({ value }) => {
+    document.querySelector('input.LocationControl').value = value
     this.onCancelAutoCompleter()
   }
 
@@ -127,6 +134,14 @@ class EditorToolsContainer extends Component {
     }
   }
 
+  onLocationCompleter({ location }) {
+    const { dispatch, isCompleterActive } = this.props
+    if (!isCompleterActive) {
+      dispatch(setIsCompleterActive({ isActive: true }))
+    }
+    dispatch(autoCompleteLocation(location))
+  }
+
   onPositionChange({ coordinates }) {
     const { dispatch } = this.props
     dispatch(setTextToolsCoordinates({ textToolsCoordinates: coordinates }))
@@ -149,14 +164,16 @@ class EditorToolsContainer extends Component {
   render() {
     const { completions, deviceSize, isCompleterActive } = this.props
     const { isTextToolsActive, textToolsStates, textToolsCoordinates } = this.props
+    const onCompletion = completions && completions.type === 'location' ?
+      this.onLocationCompletion : this.onCompletion
     return (
-      <div className="EditorTools">
+      <div className="InputContainer">
         {isCompleterActive && completions ?
           <Completer
             completions={completions}
             deviceSize={deviceSize}
             onCancel={this.onCancelAutoCompleter}
-            onCompletion={this.onCompletion}
+            onCompletion={onCompletion}
           /> :
           null
         }
@@ -174,5 +191,5 @@ class EditorToolsContainer extends Component {
   }
 }
 
-export default connect(mapStateToProps)(EditorToolsContainer)
+export default connect(mapStateToProps)(InputContainer)
 

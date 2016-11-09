@@ -279,7 +279,16 @@ User Info */
 }
 
 .UserLocation {
+  position: relative;
+  padding-left: 25px;
   margin-bottom: 0;
+  color: #aaa;
+}
+
+.UserLocation > .SVGIcon {
+  position: absolute;
+  top: -1px;
+  left: 0;
 }
 
 .UserShortBio a {

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
 import Emoji from '../assets/Emoji'
+import { MarkerIcon } from '../assets/Icons'
 import Completion from './Completion'
 import { getPositionFromSelection } from '../editor/SelectionUtil'
 import { addKeyObject, removeKeyObject } from '../viewport/KeyComponent'
@@ -85,7 +86,7 @@ export default class Completer extends Component {
     return (
       completions.data.map((completion, i) =>
         <Completion
-          className={i === selectedIndex ? 'isActive' : null}
+          className={i === selectedIndex ? 'isActive UserCompletion' : 'UserCompletion'}
           key={`completion_${i}`}
           asset={<Avatar className="isTiny" sources={{ tmp: { url: completion.imageUrl } }} />}
           label={`@${completion.name}`}
@@ -102,10 +103,27 @@ export default class Completer extends Component {
     return (
       completions.data.map((completion, i) =>
         <Completion
-          className={i === selectedIndex ? 'isActive' : null}
+          className={i === selectedIndex ? 'isActive EmojiCompletion' : 'EmojiCompletion'}
           key={`completion_${i}`}
           asset={<Emoji key={completion.name} src={completion.imageUrl} />}
           label={`:${completion.name}:`}
+          ref={(comp) => { this[`completion_${i}`] = comp }}
+          onClick={onCompletion}
+        />
+      )
+    )
+  }
+
+  renderLocations() {
+    const { completions, onCompletion } = this.props
+    const { selectedIndex } = this.state
+    return (
+      completions.data.map((completion, i) =>
+        <Completion
+          className={i === selectedIndex ? 'isActive LocationCompletion' : 'LocationCompletion'}
+          key={`completion_${i}`}
+          asset={<MarkerIcon />}
+          label={`${completion.location}`}
           ref={(comp) => { this[`completion_${i}`] = comp }}
           onClick={onCompletion}
         />
@@ -120,17 +138,37 @@ export default class Completer extends Component {
     }
 
     let style = {}
-    const pos = getPositionFromSelection()
-    if (!pos) {
-      style = { top: -200, left: -666 }
-    } else if (deviceSize === 'mobile') {
-      style = { top: pos.top + 20 }
-    } else if (pos) {
-      style = { top: pos.top + 20, left: pos.left }
+
+    if (completions.type === 'location') {
+      const locationPos = document.querySelector('.LocationControl').getBoundingClientRect()
+      style = { top: locationPos.bottom, left: locationPos.left }
+    } else {
+      const pos = getPositionFromSelection()
+      if (!pos) {
+        style = { top: -200, left: -666 }
+      } else if (deviceSize === 'mobile') {
+        style = { top: pos.top + 20 }
+      } else if (pos) {
+        style = { top: pos.top + 20, left: pos.left }
+      }
+    }
+    let completed = null
+    switch (completions.type) {
+      case 'user':
+        completed = this.renderUsers()
+        break
+      case 'emoji':
+        completed = this.renderEmoji()
+        break
+      case 'location':
+        completed = this.renderLocations()
+        break
+      default:
+        break
     }
     return (
       <div style={style} className={classNames(className, 'Completer')}>
-        {completions.type === 'user' ? this.renderUsers() : this.renderEmoji()}
+        {completed}
       </div>
     )
   }

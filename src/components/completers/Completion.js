@@ -17,7 +17,7 @@ export default class Completion extends Component {
     const { onClick } = this.props
     const node = getSelectionContainerElement()
     onClick({ value: this.getValue(), e })
-    node.focus()
+    if (node) { node.focus() }
   }
 
   getValue() {

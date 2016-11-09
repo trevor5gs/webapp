@@ -81,6 +81,8 @@ methods.onKeyUp = (e) => {
     callMethod('onUserCompleter', { word })
   } else if (word.match(emojiRegex)) {
     callMethod('onEmojiCompleter', { word })
+  } else if (e.target.classList.contains('LocationControl')) {
+    callMethod('onLocationCompleter', { location: e.target.value })
   } else {
     callMethod('onHideCompleter')
   }

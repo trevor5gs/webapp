@@ -15,9 +15,9 @@ import DevTools from '../components/devtools/DevTools'
 import { addGlobalDrag, removeGlobalDrag } from '../components/viewport/GlobalDragComponent'
 import { startRefreshTimer } from '../components/viewport/RefreshOnFocus'
 import AnalyticsContainer from '../containers/AnalyticsContainer'
-import EditorToolsContainer from '../containers/EditorToolsContainer'
 import FooterContainer from '../containers/FooterContainer'
 import HeroContainer from '../containers/HeroContainer'
+import InputContainer from '../containers/InputContainer'
 import KeyboardContainer from '../containers/KeyboardContainer'
 import MetaContainer from '../containers/MetaContainer'
 import ModalContainer from '../containers/ModalContainer'
@@ -116,7 +116,7 @@ class AppContainer extends Component {
         {children}
         <NavbarContainer params={params} />
         <FooterContainer />
-        {isLoggedIn ? <EditorToolsContainer /> : null}
+        {isLoggedIn ? <InputContainer /> : null}
         <ModalContainer />
         <DevTools />
         <KeyboardContainer />

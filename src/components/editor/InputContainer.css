@@ -1,6 +1,6 @@
 @import "../../lib/styles/properties.css";
 
-.EditorTools {
+.InputContainer {
   position: fixed;
   top: 0;
   left: 0;

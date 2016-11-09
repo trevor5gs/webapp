@@ -77,6 +77,10 @@
   transition-delay: var(--speed2), var(--speed), var(--speed);
 }
 
+.MarkerIcon {
+  color: #ababab;
+}
+
 /* ------------------------------------- */
 
 .ElloMark,

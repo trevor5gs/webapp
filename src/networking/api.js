@@ -85,6 +85,11 @@ export function profilePath() {
     path: getAPIPath('profile'),
   }
 }
+export function profileLocationAutocomplete(location) {
+  return {
+    path: getAPIPath('profile/location_autocomplete', { location }),
+  }
+}
 export function profileAvailableToggles() {
   return {
     path: getAPIPath('profile/settings'),
