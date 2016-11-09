@@ -14,6 +14,7 @@ import {
 import { selectIsCompleterActive } from '../../selectors/gui'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { saveProfile } from '../../actions/profile'
+import { MarkerIcon } from '../assets/Icons'
 import BioControl from '../forms/BioControl'
 import NameControl from '../forms/NameControl'
 import LinksControl from '../forms/LinksControl'
@@ -37,6 +38,7 @@ class InfoForm extends Component {
     className: PropTypes.string,
     controlClassModifiers: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
+    isOnboardingControl: PropTypes.bool,
     linksText: PropTypes.string,
     location: PropTypes.string,
     name: PropTypes.string,
@@ -156,6 +158,7 @@ class InfoForm extends Component {
     const {
       className,
       controlClassModifiers,
+      isOnboardingControl,
       linksText,
       location,
       name,
@@ -181,8 +184,9 @@ class InfoForm extends Component {
           text={name || ''}
         />
         <TextControl
-          classList={classNames(controlClassModifiers, 'LocationControl', 'text')}
+          classList={classNames(controlClassModifiers, 'LocationControl', 'text', { hasIcon: !isOnboardingControl })}
           id="location"
+          icon={isOnboardingControl ? undefined : <MarkerIcon />}
           label="Location"
           name="user[location]"
           onChange={this.onChangeLocationControl}

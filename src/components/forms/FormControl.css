@@ -16,7 +16,16 @@
   margin-bottom: 25px;
 }
 
-/* // ------------------------------------- */
+/* ------------------------------------- */
+
+.FormIcon {
+  position: absolute;
+  top: calc(50% - 15px);
+  left: 20px;
+  color: #aaa;
+}
+
+/* ------------------------------------- */
 
 .FormControlInput {
   display: inline-block;
@@ -77,6 +86,10 @@
   color: #000;
   background-color: #d8d8d8;
   border: 1px solid #d8d8d8;
+}
+
+.FormControlInput.isBoxControl.hasIcon {
+  padding-left: 50px !important;
 }
 
 .FormControlInput.isBoxControl.onWhite {
@@ -280,7 +293,7 @@ textarea.FormControlInput.isOnboardingControl {
   margin-right: 0;
 }
 
-/* // ------------------------------------- */
+/* ------------------------------------- */
 
 .FormControlStatus {
   position: absolute;

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import { numberToHuman } from '../../lib/number_to_human'
-import { BadgeCheckIcon, ShareIcon } from '../assets/Icons'
+import { BadgeCheckIcon, MarkerIcon, ShareIcon } from '../assets/Icons'
 import { MiniPillButton } from '../buttons/Buttons'
 
 // -------------------------------------
@@ -169,7 +169,13 @@ export const UserInfoCell = ({ className, location, onClickOpenBio, truncatedSho
         <span className="MoreBioButtonLabel">See More</span>
       </button> : null
     }
-    { location ? <p className="UserLocation">{location}</p> : null }
+    { location ?
+      <p className="UserLocation">
+        <MarkerIcon />
+        {location}
+      </p>
+      : null
+    }
   </div>
 
 UserInfoCell.propTypes = {

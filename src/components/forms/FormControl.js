@@ -9,6 +9,7 @@ class FormControl extends Component {
   static propTypes = {
     classList: PropTypes.string,
     className: PropTypes.string,
+    icon: PropTypes.object,
     id: PropTypes.string.isRequired,
     kind: PropTypes.string,
     label: PropTypes.string,
@@ -136,6 +137,11 @@ class FormControl extends Component {
     return classNames('FormControlStatus', classList)
   }
 
+  getIconClassNames() {
+    const { classList } = this.props
+    return classNames('FormIcon', classList)
+  }
+
   getStatusIcon() {
     const { status } = this.props
     switch (status) {
@@ -157,6 +163,7 @@ class FormControl extends Component {
     const elementProps = { ...this.props }
     const blacklistedProps = [
       'activeType',
+      'icon',
       'classList',
       'renderFeedback',
       'renderStatus',
@@ -195,6 +202,16 @@ class FormControl extends Component {
     )
   }
 
+  renderIcon() {
+    const { icon } = this.props
+    const iconClassNames = this.getIconClassNames()
+    return (
+      <span className={iconClassNames}>
+        {icon}
+      </span>
+    )
+  }
+
   renderTextArea(text, inputClassNames) {
     return (
       <textarea
@@ -224,13 +241,14 @@ class FormControl extends Component {
   }
 
   render() {
-    const { kind, label, renderFeedback, renderStatus } = this.props
+    const { icon, kind, label, renderFeedback, renderStatus } = this.props
     const { text } = this.state
     const groupClassNames = this.getGroupClassNames()
     const inputClassNames = this.getInputClassNames()
     const statusClassNames = this.getStatusClassNames()
     return (
       <div className={groupClassNames}>
+        {icon && this.renderIcon()}
         {label && this.renderLabel()}
         {
           kind === 'textarea' ?
@@ -248,3 +266,4 @@ class FormControl extends Component {
 }
 
 export default FormControl
+

@@ -55,6 +55,7 @@ const OnboardingSettings = (props, context) => {
       </div>
       <InfoForm
         className="OnboardingInfoForm"
+        isOnboardingControl
         controlClassModifiers="isOnboardingControl"
         tabIndexStart={1}
       />
