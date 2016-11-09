@@ -6,6 +6,7 @@ import { createSelector } from 'reselect'
 import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize } from '../selectors/gui'
+import { selectViewsAdultContent } from '../selectors/profile'
 import { selectTruncatedShortBio, selectUserFromPropsUserId } from '../selectors/user'
 import {
   UserAvatar,
@@ -47,6 +48,7 @@ export function mapStateToProps(state, props) {
     postsCount: user.postsCount,
     relationshipPriority: user.relationshipPriority,
     truncatedShortBio: truncatedShortBio.html,
+    useGif: selectViewsAdultContent(state) || !user.postsAdultContent,
     user,
     username: user.username,
   }
@@ -74,6 +76,7 @@ class UserContainer extends Component {
       'grid',
       'profile',
     ]).isRequired,
+    useGif: PropTypes.bool,
     user: PropTypes.object,
   }
 
@@ -178,6 +181,7 @@ class UserContainer extends Component {
       isShortBioTruncated,
       truncatedShortBio,
       type,
+      useGif,
       user,
     } = this.props
     const onHireMeFunc = isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal
@@ -211,6 +215,7 @@ class UserContainer extends Component {
             onClickOpenFeaturedModal={onClickOpenFeaturedModal}
             onClickShareProfile={this.onClickShareProfile}
             truncatedShortBio={truncatedShortBio}
+            useGif={useGif}
             user={user}
           />
         )

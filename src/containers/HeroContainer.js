@@ -13,6 +13,7 @@ import {
   selectLastFollowingBeaconVersion,
   selectLastStarredBeaconVersion,
 } from '../selectors/gui'
+import { selectViewsAdultContent } from '../selectors/profile'
 import { selectCurrentPromotions } from '../selectors/promotions'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
 import { selectUserFromUsername } from '../selectors/user'
@@ -69,7 +70,7 @@ function mapStateToProps(state, props) {
     isUserProfileLayout: selectIsUserProfileLayout(state, props),
     pathname: selectPathname(state),
     promotions: selectCurrentPromotions(state),
-    useGif: user && (user.viewsAdultContent || !user.postsAdultContent),
+    useGif: user && (selectViewsAdultContent(state) || !user.postsAdultContent),
     userCoverImage: user && user.coverImage,
     userId: user && user.id,
     username: user && user.username,

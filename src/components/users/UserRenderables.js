@@ -160,6 +160,7 @@ export const UserProfile = ({
   onClickOpenFeaturedModal,
   onClickShareProfile,
   truncatedShortBio,
+  useGif,
   user,
 }) =>
   <div className="UserProfile">
@@ -169,7 +170,7 @@ export const UserProfile = ({
       priority={user.relationshipPriority}
       size="large"
       sources={user.avatar}
-      useGif={(user.viewsAdultContent || !user.postsAdultContent)}
+      useGif={useGif}
       userId={`${user.id}`}
       username={user.username}
     />
@@ -243,6 +244,7 @@ UserProfile.propTypes = {
   onClickOpenFeaturedModal: PropTypes.func,
   onClickShareProfile: PropTypes.func,
   truncatedShortBio: PropTypes.string,
+  useGif: PropTypes.bool,
   user: PropTypes.object,
 }
 

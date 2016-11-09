@@ -14,6 +14,7 @@ export const selectCoverImage = state => get(state, 'profile.coverImage')
 export const selectCreatedAt = state => get(state, 'profile.createdAt')
 export const selectEmail = state => get(state, 'profile.email')
 export const selectExternalLinksList = state => get(state, 'profile.externalLinksList', [])
+export const selectHasAutoWatchEnabled = state => get(state, 'profile.hasAutoWatchEnabled')
 export const selectHasAvatarPresent = state => get(state, 'profile.hasAvatarPresent', false)
 export const selectHasCoverImagePresent = state => get(state, 'profile.hasCoverImagePresent', false)
 export const selectId = state => get(state, 'profile.id')
@@ -25,8 +26,8 @@ export const selectName = state => get(state, 'profile.name', '')
 export const selectRegistrationId = state => get(state, 'profile.registrationId')
 export const selectShortBio = state => get(state, 'profile.shortBio', '')
 export const selectUsername = state => get(state, 'profile.username')
+export const selectViewsAdultContent = state => get(state, 'profile.viewsAdultContent')
 export const selectWebOnboardingVersion = state => get(state, 'profile.webOnboardingVersion')
-export const selectHasAutoWatchEnabled = state => get(state, 'profile.hasAutoWatchEnabled')
 
 // Memoized selectors
 export const selectIsAvatarBlank = createSelector(
