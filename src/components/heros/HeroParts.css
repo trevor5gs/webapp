@@ -82,17 +82,13 @@ Hero Promotion */
 
 .HeroPromotionCaption {
   position: relative;
-  top: 50%;
-  left: 10px;
-  max-width: calc(100% - 20px);
+  padding: 20px 0 50px;
+  margin: 0 10px;
   font-size: 14px;
-  transform: translateY(-50%);
 }
 
 .HeroPromotionCaption.isCentered {
-  left: auto !important;
   max-width: 500px;
-  margin: 0 10px;
 }
 
 .HeroPromotionCategoryHeading {
@@ -154,7 +150,7 @@ Hero Promotion */
 
 @media (--break-2) {
   .HeroPromotionCaption {
-    left: 20px;
+    margin: 0 20px;
   }
 
   .HeroPromotionCaption.isCentered {
@@ -185,7 +181,12 @@ Hero Promotion */
 
 @media (--break-4) {
   .HeroPromotionCaption {
-    left: 40px;
+    padding-right: 40px;
+    margin: 0 40px;
+  }
+
+  .HeroPromotionCaption.isCentered {
+    padding-right: 0;
   }
 
   .HeroPromotionCredits {
