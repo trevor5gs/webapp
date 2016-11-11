@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import { selectParamsUsername } from './params'
 
-const POST_DETAIL_EXPRESSION = /^\/[\w\-]+\/post\/.+/
+const POST_DETAIL_EXPRESSION = /^\/[\w-]+\/post\/.+/
 
 const AUTHENTICATION_ROUTES = [
   /^\/enter\b/,
@@ -60,6 +60,6 @@ export const selectViewNameFromRoute = createSelector(
       return 'userDetail'
     }
     return 'unknown'
-  }
+  },
 )
 

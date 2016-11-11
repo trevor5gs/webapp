@@ -29,13 +29,13 @@ class TextRegion extends Component {
     if (href && href[0] === '/') {
       e.preventDefault()
       dispatch(push(href))
-      return
+
     // TODO: We have a special `span` based fake link at the moment we have to test
     // for. Once we change this back to an `<a> element we can rip this out.
     } else if (classList.contains('hashtag-link')) {
       e.preventDefault()
       dispatch(push(dataset.href))
-      return
+
 
     // Treat non links within grid layouts as a push to it's detail path
     } else if (isGridMode && postDetailPath && !isLink(e.target)) {
@@ -52,7 +52,6 @@ class TextRegion extends Component {
       }
       // ..otherwise just push it through..
       dispatch(push(postDetailPath))
-      return
     }
     // The alternative is it's either in list and we ignore it or it's an
     // absolute link and we allow it's default behavior.

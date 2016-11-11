@@ -119,14 +119,14 @@ methods.addParentPostIdToComments = (state, action) => {
   if (postIdOrToken) {
     const post = methods.findPostFromIdOrToken(state, postIdOrToken)
     if (post) {
-      for (const model of response[MAPPING_TYPES.COMMENTS]) {
+      response[MAPPING_TYPES.COMMENTS].forEach((model) => {
         if (!state[MAPPING_TYPES.POSTS][model.postId]) {
           // need this to determine if a user can
           // delete comments on their own repost
           model.originalPostId = model.postId
           model.postId = post.id
         }
-      }
+      })
     }
   }
   return null
@@ -280,7 +280,7 @@ methods.deleteModel = (state, newState, action, mappingType) => {
     newState[mappingType][model.id] = model
     newState[`deleted_${mappingType}`].splice(
       newState[`deleted_${mappingType}`].indexOf(`${model.id}`),
-      1
+      1,
     )
     return newState
   }
@@ -320,7 +320,7 @@ methods.updatePostDetail = (newState, action) => {
   return methods.mergeModel(
     newState,
     action.meta.mappingType,
-    { id: post.id, showLovers: parseInt(post.lovesCount, 10) > 0, showReposters: parseInt(post.repostsCount, 10) > 0 }
+    { id: post.id, showLovers: parseInt(post.lovesCount, 10) > 0, showReposters: parseInt(post.repostsCount, 10) > 0 },
   )
 }
 

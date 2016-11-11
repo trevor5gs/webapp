@@ -70,7 +70,7 @@ methods.addHasContent = (state) => {
     order.length > 1 ||
     (firstBlock &&
     firstBlock.data.length &&
-    firstBlock.data !== '<br>')
+    firstBlock.data !== '<br>'),
   )
   newState.hasContent = hasContent
   return newState
@@ -86,15 +86,7 @@ methods.addHasMedia = (state) => {
 methods.addHasMention = (state) => {
   const newState = cloneDeep(state)
   const { collection, order } = newState
-  let hasMention = false
-  for (const uid of order) {
-    const block = collection[uid]
-    if (block && /text/.test(block.kind) && userRegex.test(block.data)) {
-      hasMention = true
-      break
-    }
-  }
-  newState.hasMention = hasMention
+  newState.hasMention = order.some(uid => /text/.test(collection[uid].kind) && userRegex.test(collection[uid].data))
   return newState
 }
 
@@ -102,7 +94,7 @@ methods.addIsLoading = (state) => {
   const newState = cloneDeep(state)
   const { collection } = newState
   let isLoading = values(collection).some(block =>
-    /image/.test(block.kind) && block.isLoading
+    /image/.test(block.kind) && block.isLoading,
   )
   if (!isLoading && newState.dragBlock) { isLoading = newState.dragBlock.isLoading }
   newState.isLoading = isLoading

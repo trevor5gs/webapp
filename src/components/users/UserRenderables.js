@@ -199,9 +199,9 @@ export const UserProfile = ({
         onClickShareProfile={onClickShareProfile}
         totalPostViewsCount={user.totalPostViewsCount}
       /> :
-        <button className="UserFiguresShareButton withoutTotalViewCount" onClick={onClickShareProfile} >
-          <ShareIcon />
-        </button>
+      <button className="UserFiguresShareButton withoutTotalViewCount" onClick={onClickShareProfile} >
+        <ShareIcon />
+      </button>
     }
     <UserStatsCell
       className="inUserProfile"

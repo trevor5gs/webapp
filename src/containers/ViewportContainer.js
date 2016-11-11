@@ -25,7 +25,7 @@ export const selectUserDetailPathClassName = createSelector(
     if (/\/followers\b/.test(pathname)) { return 'isUserDetailFollowers' }
     if (/\/loves\b/.test(pathname)) { return 'isUserDetailLoves' }
     return 'isUserDetailPosts'
-  }
+  },
 )
 
 function mapStateToProps(state, props) {
@@ -38,7 +38,6 @@ function mapStateToProps(state, props) {
     isNotificationsActive: selectIsNotificationsActive(state),
     isOnboardingView: selectIsOnboardingView(state),
     isProfileMenuActive: selectIsProfileMenuActive(state),
-    pathname: selectPathname(state),
     scrollOffset: selectScrollOffset(state),
     userDetailPathClassName: selectUserDetailPathClassName(state, props),
   }
@@ -55,7 +54,6 @@ class ViewportContainer extends Component {
     isNotificationsActive: PropTypes.bool,
     isOnboardingView: PropTypes.bool,
     isProfileMenuActive: PropTypes.bool,
-    pathname: PropTypes.string.isRequired,
     scrollOffset: PropTypes.number,
     userDetailPathClassName: PropTypes.string,
   }
@@ -71,10 +69,6 @@ class ViewportContainer extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState)
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.pathname === this.props.pathname) { return }
   }
 
   componentWillUnmount() {
@@ -114,7 +108,6 @@ class ViewportContainer extends Component {
     }
     if (isNavbarHidden && scrollDirection === 'up') {
       dispatch(setIsNavbarHidden({ isHidden: false }))
-      return
     }
   }
 

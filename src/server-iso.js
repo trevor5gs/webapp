@@ -46,7 +46,7 @@ app.use(morgan('combined'))
 
 // Send stats to Librato
 librato.configure({ email: process.env.LIBRATO_EMAIL,
-                    token: process.env.LIBRATO_TOKEN })
+  token: process.env.LIBRATO_TOKEN })
 librato.start()
 app.use(librato.middleware())
 
@@ -159,7 +159,7 @@ export function canPrerenderRequest(req) {
     return false
   }
   return values(noPreRenderPaths).every(regex =>
-    !req.url.match(regex)
+    !req.url.match(regex),
   )
 }
 

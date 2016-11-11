@@ -77,7 +77,7 @@ function getScrollProperties() {
 }
 
 function scrolled() {
-  for (const obj of scrollObjects) {
+  scrollObjects.forEach((obj) => {
     const scrollProperties = getScrollProperties()
     const scrollAction = getScrollAction(scrollProperties)
     callMethod(obj, 'onScroll', scrollProperties)
@@ -86,7 +86,7 @@ function scrolled() {
     }
     lastScrollY = scrollProperties.scrollY
     lastScrollDirection = scrollProperties.scrollDirection
-  }
+  })
 }
 
 function windowWasScrolled() {
@@ -148,14 +148,14 @@ function getTargetScrollProperties(el) {
 }
 
 function targetScrolled() {
-  for (const obj of scrollTargetObjects) {
+  scrollTargetObjects.forEach((obj) => {
     const scrollProperties = getTargetScrollProperties(obj.element)
     const scrollAction = getScrollAction(scrollProperties)
     callMethod(obj.component, 'onScrollTarget', scrollProperties)
     if (scrollAction) {
       callMethod(obj.component, `${scrollAction}Target`, scrollProperties)
     }
-  }
+  })
 }
 
 function targetWasScrolled() {

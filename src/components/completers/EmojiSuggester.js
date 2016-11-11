@@ -24,7 +24,7 @@ export function suggestEmoji(word, e) {
   sortEmojis(e)
   const partial = word.substring(word.lastIndexOf(':') + 1, word.length).toLowerCase()
   let suggestions = emojis.filter(emoji =>
-    emoji.name.indexOf(partial) !== -1
+    emoji.name.indexOf(partial) !== -1,
   )
   suggestions = suggestions.sort((emoji, otherEmoji) => {
     if (emoji.name.indexOf(partial) > otherEmoji.name.indexOf(partial)) return 1

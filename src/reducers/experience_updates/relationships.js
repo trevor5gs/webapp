@@ -128,23 +128,23 @@ methods.updateRelationship = (newState, action) => {
     {
       id: userId,
       relationshipPriority: priority,
-    }
+    },
   )
   return newState
 }
 
 methods.batchUpdateRelationship = (newState, action) => {
   const { priority, userIds } = action.payload
-  for (const id of userIds) {
+  userIds.forEach((id) => {
     jsonReducer.methods.mergeModel(
       newState,
       MAPPING_TYPES.USERS,
       {
         id,
         relationshipPriority: priority,
-      }
+      },
     )
-  }
+  })
   return newState
 }
 

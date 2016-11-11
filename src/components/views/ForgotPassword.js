@@ -35,7 +35,7 @@ const ForgotPasswordForm = (props) => {
       />
       {emailState.message ?
         <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
-          <p className="HoppyStatusMessage"><span /></p>
+        <p className="HoppyStatusMessage"><span /></p>
       }
       <FormButton className="FormButton isRounded" disabled={!isFormValid} tabIndex="2">
         Reset password
@@ -65,14 +65,14 @@ export const ForgotPassword = (props) => {
         </h1>
         {isSubmitted ?
           <SubmittedState /> :
-            <ForgotPasswordForm
-              emailState={emailState}
-              isFormValid={isFormValid}
-              onBlurControl={onBlurControl}
-              onChangeControl={onChangeControl}
-              onFocusControl={onFocusControl}
-              onSubmit={onSubmit}
-            />
+          <ForgotPasswordForm
+            emailState={emailState}
+            isFormValid={isFormValid}
+            onBlurControl={onBlurControl}
+            onChangeControl={onChangeControl}
+            onFocusControl={onFocusControl}
+            onSubmit={onSubmit}
+          />
         }
       </div>
     </MainView>

@@ -28,11 +28,11 @@ function getActiveTextTools() {
 }
 
 function callMethod(method, vo) {
-  for (const obj of inputObjects) {
+  inputObjects.forEach((obj) => {
     if (obj[method]) {
       obj[method](vo)
     }
-  }
+  })
 }
 
 function toggleTools(input) {

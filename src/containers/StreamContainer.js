@@ -239,7 +239,7 @@ class StreamContainer extends Component {
       <section className="StreamContainer isError">
         {meta && meta.renderStream && meta.renderStream.asError ?
           meta.renderStream.asError :
-            <ErrorState4xx />
+          <ErrorState4xx />
         }
       </section>
     )

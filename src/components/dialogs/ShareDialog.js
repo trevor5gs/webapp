@@ -74,7 +74,7 @@ class ShareDialog extends Component {
     const emailSubject = `${summary}, via @${author.username}`
     // grab out the image and summary from the post
     this.image = null
-    for (const region of post.summary) {
+    post.summary.forEach((region) => {
       if (/text/.test(region.kind)) {
         const div = document.createElement('div')
         div.innerHTML = region.data
@@ -85,7 +85,7 @@ class ShareDialog extends Component {
           this.image = `http:${this.image}`
         }
       }
-    }
+    })
     // truncate the tweet summary to be <= 140
     let tweetSummary = summary
     if (tweetSummary.length + this.shareLink.length > 139) {

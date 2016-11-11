@@ -257,7 +257,7 @@ export const PostBody = (props) => {
               username={author.username}
             />
             <RegionItems {...regionProps} />
-          </div>
+          </div>,
         )
       }
     }

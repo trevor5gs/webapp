@@ -67,7 +67,7 @@ export const ZeroStateSayHello = ({ hasPosted = false, onSubmit, user }) =>
     </h2>
     {hasPosted ?
       <p>{`Notification to @${user.username} has been sent.`}</p> :
-        <Editor autoPopulate={`Hi @${user.username} :wave:`} onSubmit={onSubmit} />
+      <Editor autoPopulate={`Hi @${user.username} :wave:`} onSubmit={onSubmit} />
     }
   </ZeroState>
 

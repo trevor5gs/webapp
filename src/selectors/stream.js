@@ -57,7 +57,7 @@ export const makeSelectStreamProps = () =>
       shouldRemoveDeletions,
       json,
       path,
-      pagingPath
+      pagingPath,
     ) => {
       const renderObj = { data: [], nestedData: [] }
       if (result && result.type === MAPPING_TYPES.NOTIFICATIONS) {
@@ -69,24 +69,24 @@ export const makeSelectStreamProps = () =>
         const delTypes = json[`deleted_${result.type}`]
         // don't filter out blocked ids if we are in settings
         // since you can unblock/unmute them from here
-        for (const id of result.ids) {
+        result.ids.forEach((id) => {
           const model = get(json, [result.type, id])
           if (model && (path === '/settings' || (!delTypes || delTypes.indexOf(id) === -1))) {
             renderObj.data.push(model)
           }
-        }
+        })
         if (result.next) {
           const nDelTypes = json[`deleted_${result.next.type}`]
           const dataProp = pagingPath ? 'nestedData' : 'data'
-          for (const nextId of result.next.ids) {
+          result.next.ids.forEach((nextId) => {
             const model = get(json, [result.next.type, nextId])
             if (model && (path === '/settings' ||
                 (!nDelTypes || nDelTypes.indexOf(nextId) === -1))) {
               renderObj[dataProp].push(model)
             }
-          }
+          })
         }
       }
       return { renderObj, result, resultPath }
-    }
+    },
   )

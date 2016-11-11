@@ -6,11 +6,11 @@ let hasListeners = false
 let cachedProbe
 
 function callMethod(method, resizeProperties) {
-  for (const obj of resizeObjects) {
+  resizeObjects.forEach((obj) => {
     if (obj[method]) {
       obj[method](resizeProperties)
     }
-  }
+  })
 }
 
 function getProbeElement() {

@@ -84,10 +84,10 @@ class Settings extends Component {
         this.setState(obj)
       }
     } else if (this.props.profile.errors && !nextProps.profile.errors) {
-      const obj = {}
-      for (const attr of ['currentPassword', 'email', 'password', 'username']) {
+      const obj = {};
+      ['currentPassword', 'email', 'password', 'username'].forEach((attr) => {
         obj[`${attr}State`] = { status: STATUS.INDETERMINATE, message: '', suggestions: [] }
-      }
+      })
       this.setState(obj)
     }
     const { availability } = nextProps
@@ -215,7 +215,7 @@ class Settings extends Component {
       dispatch(openModal(
         <AdultPostsDialog
           onConfirm={this.closeModal}
-        />
+        />,
       ))
     }
     preferenceToggleChanged(obj)
@@ -233,7 +233,7 @@ class Settings extends Component {
           style={{ marginRight: `${5 / 16}rem` }}
         >
           {link.text}
-        </a>
+        </a>,
       )
     )
   }
@@ -248,14 +248,14 @@ class Settings extends Component {
       >
         View original image
       </a> :
-        <span>&mdash;</span>
+      <span>&mdash;</span>
     )
   }
 
   shouldRequireCredentialsSave() {
     const { currentPasswordState, emailState, passwordState, usernameState } = this.state
     const credentialsSuccess = [emailState, passwordState, usernameState].some(state =>
-      state.status === STATUS.SUCCESS
+      state.status === STATUS.SUCCESS,
     )
     return currentPasswordState.status === STATUS.FAILURE || credentialsSuccess
   }
@@ -518,11 +518,11 @@ class Settings extends Component {
                   >
                     Download Export
                   </a> :
-                    <button
-                      className="SettingsButton"
-                      onClick={this.onClickRequestDataExport}
-                      ref={(comp) => { this.exportButton = comp }}
-                    >
+                  <button
+                    className="SettingsButton"
+                    onClick={this.onClickRequestDataExport}
+                    ref={(comp) => { this.exportButton = comp }}
+                  >
                       Request Export
                     </button>
                 }

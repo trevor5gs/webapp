@@ -89,7 +89,7 @@ describe('post selectors', () => {
   context('#selectUserMetaDescription', () => {
     it('returns the user meta description', () => {
       const usr = stub('user')
-      const bio = usr.formattedShortBio.replace(/[<\/p>]/gi, '')
+      const bio = usr.formattedShortBio.replace(/[</p>]/gi, '')
       let state = { json: { users: { 1: { ...usr } } } }
       const props = { user: { id: '1' }, params: { username: usr.username } }
       expect(selector.selectUserMetaDescription(state, props)).to.deep.equal(bio)

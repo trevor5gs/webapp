@@ -132,7 +132,7 @@ class JoinContainer extends Component {
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(
-      signUpUser(this.emailValue, this.usernameValue, this.passwordValue, this.invitationCodeValue)
+      signUpUser(this.emailValue, this.usernameValue, this.passwordValue, this.invitationCodeValue),
     )
   }
 

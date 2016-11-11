@@ -99,7 +99,7 @@ class RegistrationRequestForm extends Component {
           />
           {(showEmailError && emailState.status !== STATUS.INDETERMINATE) ?
             <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
-              <p className="HoppyStatusMessage"><span /></p>
+            <p className="HoppyStatusMessage"><span /></p>
           }
           <FormButton className="FormButton isRounded" disabled={!isValid} tabIndex="2">
             Sign up

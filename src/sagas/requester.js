@@ -96,19 +96,19 @@ function parseLink(linksHeader) {
   const entries = linksHeader.split(',')
   // compile regular expressions ahead of time for efficiency
   const relsRegExp = /\brel="?([^"]+)"?\s*;?/
-  const keysRegExp = /(\b[0-9a-z\.-]+\b)/g
+  const keysRegExp = /(\b[0-9a-z.-]+\b)/g
   const sourceRegExp = /^<(.*)>/
-  for (let entry of entries) {
-    entry = entry.trim()
-    const rels = relsRegExp.exec(entry)
+  entries.forEach((entry) => {
+    const trimmed = entry.trim()
+    const rels = relsRegExp.exec(trimmed)
     if (rels) {
       const keys = rels[1].match(keysRegExp)
-      const source = sourceRegExp.exec(entry)[1]
-      for (const key of keys) {
+      const source = sourceRegExp.exec(trimmed)[1]
+      keys.forEach((key) => {
         result[key] = source
-      }
+      })
     }
-  }
+  })
   return result
 }
 
@@ -171,7 +171,7 @@ export function* handleRequestError(error, action) {
         <Dialog
           title="Take a breath. You're doing Ello way too fast. A few more seconds. That's better."
           body="More Ello? Refresh the page to continue."
-        />
+        />,
       ))
       yield put({ error, meta, payload, type: FAILURE })
       return true
@@ -247,7 +247,7 @@ export function* performRequest(action) {
     case 'HEAD':
       options.headers = getHeadHeader(
         accessToken,
-        yield select(selectLastNotificationCheck)
+        yield select(selectLastNotificationCheck),
       )
       break
     default:
@@ -282,14 +282,14 @@ export function* performRequest(action) {
           'links',
           endpoint.pagingPath,
           'pagination',
-        ]
+        ],
       )
     } else {
       const linkPagination = parseLink(serverResponse.headers.get('Link'))
       linkPagination.totalCount = parseInt(serverResponse.headers.get('X-TotalCount'), 10)
       linkPagination.totalPages = parseInt(serverResponse.headers.get('X-Total-Pages'), 10)
       linkPagination.totalPagesRemaining = parseInt(
-        serverResponse.headers.get('X-Total-Pages-Remaining'), 10
+        serverResponse.headers.get('X-Total-Pages-Remaining'), 10,
       )
       payload.pagination = linkPagination
     }

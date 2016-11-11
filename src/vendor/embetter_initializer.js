@@ -18,12 +18,12 @@ window.embetter.stopPlayers = (el = document.body) => {
 }
 window.embetter.removePlayers = (el = document.body) => {
   window.embetter.stopPlayers(el)
-  for (const ready of el.querySelectorAll('.embetter-ready')) {
+  el.querySelectorAll('.embetter-ready').forEach((ready) => {
     ready.classList.remove('embetter-ready')
-  }
-  for (const statix of el.querySelectorAll('.embetter-static')) {
+  })
+  el.querySelectorAll('.embetter-static').forEach((statix) => {
     statix.classList.remove('embetter-static')
-  }
+  })
 }
 window.embetter.reloadPlayers()
 

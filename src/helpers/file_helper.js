@@ -18,9 +18,9 @@ export function isValidFileType(file) {
     fr.onloadend = (e) => {
       const arr = (new Uint8Array(e.target.result)).subarray(0, 4)
       let header = ''
-      for (const value of arr) {
+      arr.forEach((value) => {
         header += value.toString(16)
-      }
+      })
       if (/ffd8ff/i.test(header)) {
         isValid = true // image/jpg
         fileType = SUPPORTED_IMAGE_TYPES.JPG

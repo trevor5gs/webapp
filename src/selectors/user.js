@@ -17,28 +17,28 @@ export const selectUsers = state => get(state, 'json.users')
 // Memoized selectors
 export const selectUser = createSelector(
   [selectUsers, selectPropsUserId], (users, userId) =>
-    users[userId]
+    users[userId],
 )
 
 export const selectUserFromPropsUserId = createSelector(
   [selectJson, selectPropsUserId], (json, userId) =>
-    (userId ? json[MAPPING_TYPES.USERS][userId] : null)
+    (userId ? json[MAPPING_TYPES.USERS][userId] : null),
 )
 
 export const selectUserFromUsername = createSelector(
   [selectJson, selectParamsUsername], (json, username) =>
-    findModel(json, { collection: MAPPING_TYPES.USERS, findObj: { username } })
+    findModel(json, { collection: MAPPING_TYPES.USERS, findObj: { username } }),
 )
 
 export const selectRelationshipPriority = createSelector(
-  [selectUser], user => get(user, 'relationshipPriority')
+  [selectUser], user => get(user, 'relationshipPriority'),
 )
 
 export const selectTruncatedShortBio = createSelector(
   [selectUserFromPropsUserId], user =>
     trunc(user.formattedShortBio || '', 160, { sanitizer:
       { allowedAttributes: { img: ['align', 'alt', 'class', 'height', 'src', 'width'] } },
-    })
+    }),
 )
 
 export const selectUserMetaDescription = createSelector(
@@ -47,25 +47,25 @@ export const selectUserMetaDescription = createSelector(
     const nickname = user.name || `@${user.username}`
     const backupTitle = `See ${nickname}'s work on Ello.`
     return user.formattedShortBio ? trunc(user.formattedShortBio, 160).text : backupTitle
-  }
+  },
 )
 
 export const selectUserMetaImage = createSelector(
   [selectUserFromUsername], user =>
-    get(user, 'coverImage.optimized.url', null)
+    get(user, 'coverImage.optimized.url', null),
 )
 
 export const selectUserMetaRobots = createSelector(
   [selectUserFromUsername], (user) => {
     if (!user) { return null }
     return (user.badForSeo ? 'noindex, follow' : 'index, follow')
-  }
+  },
 )
 
 export const selectUserMetaTitle = createSelector(
   [selectUserFromUsername], (user) => {
     if (!user) { return null }
     return (user.name ? `${user.name} (@${user.username}) | Ello` : `@${user.username} | Ello`)
-  }
+  },
 )
 

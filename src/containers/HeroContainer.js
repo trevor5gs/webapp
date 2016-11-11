@@ -67,7 +67,7 @@ export const selectBroadcast = createSelector(
       return lastStarredBeaconVersion !== STARRED.BEACON_VERSION ? STARRED.BEACON_TEXT : null
     }
     return null
-  }
+  },
 )
 
 function mapStateToProps(state, props) {
@@ -197,13 +197,10 @@ class HeroContainer extends Component {
     const { dispatch, viewName } = this.props
     if (viewName === 'discover') {
       dispatch(setLastDiscoverBeaconVersion({ version: DISCOVER.BEACON_VERSION }))
-      return
     } else if (viewName === 'following') {
       dispatch(setLastFollowingBeaconVersion({ version: FOLLOWING.BEACON_VERSION }))
-      return
     } else if (viewName === 'starred') {
       dispatch(setLastStarredBeaconVersion({ version: STARRED.BEACON_VERSION }))
-      return
     }
   }
 

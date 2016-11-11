@@ -36,13 +36,13 @@ const STREAMS_WHITELIST = [
 ]
 
 const NO_LAYOUT_TOOLS = [
-  /^\/[\w\-]+\/post\/.+/,
+  /^\/[\w-]+\/post\/.+/,
   /^\/discover\/all\b/,
   /^\/notifications\b/,
   /^\/settings\b/,
   /^\/onboarding\b/,
-  /^\/[\w\-]+\/following\b/,
-  /^\/[\w\-]+\/followers\b/,
+  /^\/[\w-]+\/following\b/,
+  /^\/[\w-]+\/followers\b/,
 ]
 
 function getIsLayoutToolHidden() {
@@ -52,15 +52,14 @@ function getIsLayoutToolHidden() {
   return isUserSearch || NO_LAYOUT_TOOLS.some(pagex => pagex.test(pathname))
 }
 
-export const findLayoutMode = (modes) => {
-  for (const mode of modes) {
+export const findLayoutMode = modes =>
+  modes.find((mode) => {
     const regex = new RegExp(mode.regex)
     if (regex.test(location.pathname)) {
       return mode
     }
-  }
-  return null
-}
+    return false
+  })
 
 const getIsGridMode = (modes) => {
   const mode = findLayoutMode(modes)

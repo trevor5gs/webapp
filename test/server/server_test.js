@@ -45,7 +45,7 @@ describe('isomorphically rendering on the server', () => {
             const document = jsdom.jsdom(res.text)
             expect(document.querySelectorAll('main.Discover')).to.have.lengthOf(1)
           })
-      })
+      }),
     )
 
     it('isomorphically renders a user detail', () =>
@@ -60,7 +60,7 @@ describe('isomorphically rendering on the server', () => {
             const document = jsdom.jsdom(res.text)
             expect(document.querySelectorAll('main.UserDetail')).to.have.lengthOf(1)
           })
-      })
+      }),
     )
 
     it('isomorphically renders a post detail', () => {
@@ -136,7 +136,7 @@ describe('isomorphically rendering on the server', () => {
             const document = jsdom.jsdom(res.text)
             expect(document.querySelectorAll('main')).to.have.lengthOf(0)
           })
-      })
+      }),
     )
   })
 })
