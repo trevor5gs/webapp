@@ -70,7 +70,7 @@ methods.addHasContent = (state) => {
     order.length > 1 ||
     (firstBlock &&
     firstBlock.data.length &&
-    firstBlock.data !== '<br>'),
+    firstBlock.data !== '<br>')
   )
   newState.hasContent = hasContent
   return newState
@@ -94,7 +94,7 @@ methods.addIsLoading = (state) => {
   const newState = cloneDeep(state)
   const { collection } = newState
   let isLoading = values(collection).some(block =>
-    /image/.test(block.kind) && block.isLoading,
+    /image/.test(block.kind) && block.isLoading
   )
   if (!isLoading && newState.dragBlock) { isLoading = newState.dragBlock.isLoading }
   newState.isLoading = isLoading

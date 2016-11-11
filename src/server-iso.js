@@ -159,7 +159,7 @@ export function canPrerenderRequest(req) {
     return false
   }
   return values(noPreRenderPaths).every(regex =>
-    !req.url.match(regex),
+    !req.url.match(regex)
   )
 }
 

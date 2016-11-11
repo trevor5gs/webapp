@@ -19,7 +19,7 @@ describe('fetchCredentials', function () {
         headers: {
           'Content-type': 'application/json',
         },
-      },
+      }
     )
 
     const fetchArgs = [

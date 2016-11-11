@@ -70,7 +70,7 @@ export const selectCategoryPageTitle = createSelector(
       default:
         return null
     }
-  },
+  }
 )
 
 export const selectCategoryTabs = createSelector(
@@ -92,7 +92,7 @@ export const selectCategoryTabs = createSelector(
       if (index === 0) { tabs.push({ kind: 'divider' }) }
     })
     return tabs
-  },
+  }
 )
 
 export const selectDiscoverMetaData = createSelector(

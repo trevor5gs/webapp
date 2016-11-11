@@ -89,7 +89,7 @@ describe('performRequest', function () {
           'X-Total-Pages': 1,
           'X-Total-Pages-Remaining': 0,
         },
-      },
+      }
     )
 
     const finalAction = {
@@ -161,7 +161,7 @@ describe('performRequest', function () {
         headers: {
           'Content-type': 'application/json',
         },
-      },
+      }
     )
 
     const responseError = new Error('Oh-oh')
@@ -181,7 +181,7 @@ describe('performRequest', function () {
         headers: {
           'Content-type': 'application/json',
         },
-      },
+      }
     )
 
     const responseError = new Error('Oh-oh')

@@ -27,8 +27,8 @@ const createBrowserStore = (history, passedInitialState = {}) => {
     applyMiddleware(
       sagaMiddleware,
       reduxRouterMiddleware,
-      logger,
-    ),
+      logger
+    )
   )(createStore)(reducer, initialState)
   store.close = () => store.dispatch(END)
 
@@ -41,7 +41,7 @@ const createServerStore = (history, initialState = {}) => {
   const sagaMiddleware = createSagaMiddleware()
   const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
   const store = compose(
-    applyMiddleware(sagaMiddleware, reduxRouterMiddleware, logger),
+    applyMiddleware(sagaMiddleware, reduxRouterMiddleware, logger)
   )(createStore)(reducer, initialState)
 
   store.runSaga = sagaMiddleware.run

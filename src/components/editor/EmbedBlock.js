@@ -32,7 +32,7 @@ class EmbedBlock extends Component {
         window.embetter.services[service],
         url,
         thumbnailLargeUrl,
-        id,
+        id
       ) :
       null
     return (

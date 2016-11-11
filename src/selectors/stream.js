@@ -57,7 +57,7 @@ export const makeSelectStreamProps = () =>
       shouldRemoveDeletions,
       json,
       path,
-      pagingPath,
+      pagingPath
     ) => {
       const renderObj = { data: [], nestedData: [] }
       if (result && result.type === MAPPING_TYPES.NOTIFICATIONS) {
@@ -88,5 +88,5 @@ export const makeSelectStreamProps = () =>
         }
       }
       return { renderObj, result, resultPath }
-    },
+    }
   )

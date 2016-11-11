@@ -57,7 +57,7 @@ const OnboardingCategories = ({
             category={category}
             key={`CategoryLink_${category.slug}_${index}`}
             onCategoryClick={onCategoryClick}
-          />,
+          />
         )}
       </div>
     </section>

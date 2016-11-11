@@ -15,7 +15,7 @@ methods.updateCommentsCount = (newState, postId, delta) => {
     {
       id: postId,
       commentsCount: Number(commentCount) + delta,
-    },
+    }
   )
   return newState
 }

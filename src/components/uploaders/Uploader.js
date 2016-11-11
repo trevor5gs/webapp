@@ -37,7 +37,7 @@ class Uploader extends Component {
         title="Invalid file type"
         body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
         onClick={this.props.closeAlert}
-      />,
+      />
     )
   }
 
@@ -58,7 +58,7 @@ class Uploader extends Component {
         title="Invalid file type"
         body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
         onDismiss={this.onDismissAlert}
-      />,
+      />
     )
   }
 
@@ -81,7 +81,7 @@ class Uploader extends Component {
     const classList = classNames(
       'Uploader',
       className,
-      { hasDragOver: this.state.hasDragOver },
+      { hasDragOver: this.state.hasDragOver }
     )
 
     return (

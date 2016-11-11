@@ -37,25 +37,25 @@ export const selectTextToolsStates = state => get(state, 'gui.textToolsStates')
 // Memoized selectors
 export const selectCommentOffset = createSelector(
   [selectDeviceSize], deviceSize =>
-    (deviceSize === 'mobile' ? 40 : 60),
+    (deviceSize === 'mobile' ? 40 : 60)
 )
 
 export const selectIsMobile = createSelector(
   [selectDeviceSize], deviceSize =>
-    deviceSize === 'mobile',
+    deviceSize === 'mobile'
 )
 
 export const selectIsMobileGridStream = createSelector(
   [selectDeviceSize, selectIsGridMode], (deviceSize, isGridMode) =>
-    deviceSize === 'mobile' && isGridMode,
+    deviceSize === 'mobile' && isGridMode
 )
 
 export const selectHasSaidHelloTo = createSelector(
   [selectSaidHelloTo, selectParamsUsername], (saidHelloTo, username) =>
-    saidHelloTo.indexOf(username) !== -1,
+    saidHelloTo.indexOf(username) !== -1
 )
 
 export const selectScrollOffset = createSelector(
-  [selectInnerHeight], innerHeight => Math.round(innerHeight - 80),
+  [selectInnerHeight], innerHeight => Math.round(innerHeight - 80)
 )
 

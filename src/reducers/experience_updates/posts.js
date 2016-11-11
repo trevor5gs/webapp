@@ -76,7 +76,7 @@ methods.updatePostLoves = (state, newState, action) => {
   jsonReducer.methods.mergeModel(
     newState,
     MAPPING_TYPES.POSTS,
-    newPost,
+    newPost
   )
 
   return newState
@@ -104,7 +104,7 @@ methods.updatePostWatch = (newState, action) => {
   jsonReducer.methods.mergeModel(
     newState,
     MAPPING_TYPES.POSTS,
-    newPost,
+    newPost
   )
   return newState
 }
@@ -134,7 +134,7 @@ methods.addOrUpdatePost = (newState, action) => {
         jsonReducer.methods.mergeModel(
           newState,
           MAPPING_TYPES.POSTS,
-          { id: action.meta.repostId, reposted: true },
+          { id: action.meta.repostId, reposted: true }
         )
       }
       if (action.meta.repostedFromId) {
@@ -145,7 +145,7 @@ methods.addOrUpdatePost = (newState, action) => {
         jsonReducer.methods.mergeModel(
           newState,
           MAPPING_TYPES.POSTS,
-          { id: action.meta.repostedFromId, reposted: true },
+          { id: action.meta.repostedFromId, reposted: true }
         )
       }
       if (user) {

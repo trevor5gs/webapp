@@ -67,7 +67,7 @@ export const selectBroadcast = createSelector(
       return lastStarredBeaconVersion !== STARRED.BEACON_VERSION ? STARRED.BEACON_TEXT : null
     }
     return null
-  },
+  }
 )
 
 function mapStateToProps(state, props) {

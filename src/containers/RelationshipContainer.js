@@ -30,13 +30,13 @@ const selectOnClickCallback = createSelector(
       relationshipPriority === RELATIONSHIP_PRIORITY.BLOCK) ||
       relationshipPriority === RELATIONSHIP_PRIORITY.MUTE
     return isBlockedOrMuted ? 'onOpenBlockMuteModal' : 'onRelationshipUpdate'
-  },
+  }
 )
 
 const selectShouldRenderBlockMuteButton = createSelector(
   [selectIsLoggedIn, selectRelationshipPriority, selectHasBlockMuteButton],
   (isLoggedIn, relationshipPriority, hasBlockMuteButton) =>
-    isLoggedIn && hasBlockMuteButton && relationshipPriority !== RELATIONSHIP_PRIORITY.SELF,
+    isLoggedIn && hasBlockMuteButton && relationshipPriority !== RELATIONSHIP_PRIORITY.SELF
 )
 
 export function getNextBlockMutePriority(currentPriority, requestedPriority) {

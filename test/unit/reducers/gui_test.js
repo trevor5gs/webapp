@@ -17,7 +17,7 @@ describe('gui reducer', () => {
   context('#initialState', () => {
     it('sets up a default initialState', () => {
       expect(
-        reducer(undefined, {}),
+        reducer(undefined, {})
       ).to.have.keys(
       'activeNotificationsType',
       'activeUserFollowingType',
@@ -49,7 +49,7 @@ describe('gui reducer', () => {
       'modes',
       'saidHelloTo',
       'textToolsCoordinates',
-      'textToolsStates',
+      'textToolsStates'
       )
     })
   })

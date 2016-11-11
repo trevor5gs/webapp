@@ -20,7 +20,7 @@ describe('authentication saga', function () {
   const store = createStore(
     reducer,
     badInitialState,
-    applyMiddleware(sagaMiddleware),
+    applyMiddleware(sagaMiddleware)
   )
   sagaMiddleware.run(loginSaga)
 

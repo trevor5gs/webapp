@@ -102,7 +102,7 @@ class AppContainer extends Component {
     const appClasses = classNames(
       'AppContainer',
       { isLoggedIn },
-      { isLoggedOut: !isLoggedIn },
+      { isLoggedOut: !isLoggedIn }
     )
     return (
       <section className={appClasses}>

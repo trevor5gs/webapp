@@ -39,7 +39,7 @@ class UsernameControl extends Component {
               >
                 {suggestion}
               </button>
-            </li>,
+            </li>
             )}
         </ul>
       )

@@ -40,7 +40,7 @@ export function getStreamAction({ activeUserFollowingType = 'friend', type = 'po
 const selectUserDetailStreamAction = createSelector(
   [selectActiveUserFollowingType, selectParamsType, selectParamsUsername],
   (activeUserFollowingType, type, username) =>
-    getStreamAction({ activeUserFollowingType, type, username }),
+    getStreamAction({ activeUserFollowingType, type, username })
 )
 
 export function mapStateToProps(state, props) {

@@ -198,13 +198,13 @@ export const UserLinksCell = ({ className, externalLinksList, isMobile }) => {
             <a href={link.url} rel="noopener noreferrer" target="_blank">
               <img alt={link.type} src={link.icon} />
             </a>
-          </span>,
+          </span>
         )
       } else {
         externalLinks.push(
           <span className="UserExternalLinksLabel" key={i}>
             <a href={link.url} rel="noopener noreferrer" target="_blank">{link.text}</a>
-          </span>,
+          </span>
         )
       }
     })

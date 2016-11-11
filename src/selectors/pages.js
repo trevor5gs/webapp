@@ -16,6 +16,6 @@ export const selectPagesResult = (state, props) => {
 // Memoized selectors
 export const selectPage = createSelector(
   [selectPages, selectPathname], (pages, pathname) =>
-    (pages && pathname ? pages[pathname] : null),
+    (pages && pathname ? pages[pathname] : null)
 )
 

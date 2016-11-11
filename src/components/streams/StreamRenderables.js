@@ -24,7 +24,7 @@ export function categoriesAsGrid(categories) {
           style={{ backgroundImage: `url("${get(category, 'tileImage.large.url')}")` }}
         >
           <span className="CategoryLinkName">{category.name}</span>
-        </Link>,
+        </Link>
       )}
     </div>
   )
@@ -34,7 +34,7 @@ export function usersAsGrid(users) {
   return (
     <div className="Users asGrid">
       {users.data.map(user =>
-        <UserContainer user={user} key={`userGrid_${user.id}`} type="grid" />,
+        <UserContainer user={user} key={`userGrid_${user.id}`} type="grid" />
       )}
     </div>
   )
@@ -47,7 +47,7 @@ export function usersAsInviteeList(invitations) {
         <UserInvitee
           invitation={invitation}
           key={`userInviteeList_${invitation.id}`}
-        />,
+        />
       )}
     </div>
   )
@@ -61,7 +61,7 @@ export function usersAsInviteeGrid(invitations) {
           className="UserInviteeGrid"
           invitation={invitation}
           key={`userInviteeGrid_${invitation.id}`}
-        />,
+        />
       )}
     </div>
   )
@@ -82,9 +82,9 @@ export function postsAsGrid(posts, columnCount, isPostHeaderHidden = false) {
           {columnPosts.map(post =>
             <article className="PostGrid" key={`postsAsGrid_${post.id}`}>
               <PostContainer post={post} isPostHeaderHidden={isPostHeaderHidden} />
-            </article>,
+            </article>
           )}
-        </div>,
+        </div>
       )}
     </div>
   )
@@ -96,7 +96,7 @@ export function postsAsList(posts, columnCount, isPostHeaderHidden = false) {
       {posts.data.map(post =>
         <article className="PostList" key={`postsAsList_${post.id}`}>
           <PostContainer post={post} isPostHeaderHidden={isPostHeaderHidden} />
-        </article>,
+        </article>
       )}
     </div>
   )
@@ -111,7 +111,7 @@ export function commentsAsList(post) {
           isEditing={comment.isEditing}
           key={`commentContainer_${comment.id}`}
           post={post}
-        />,
+        />
       )}
     </div>
   )
@@ -124,7 +124,7 @@ export function notificationList(notifications) {
         <NotificationContainer
           key={`notificationParser${index}_${notification ? notification.createdAt : Date.now()}`}
           notification={notification}
-        />,
+        />
       )}
     </div>
   )
@@ -134,7 +134,7 @@ export function userAvatars(users) {
   const uniqUsers = uniqBy(users.data, user => user.id)
   return (
     uniqUsers.map(user =>
-      <UserContainer user={user} key={`userAvatar_${user.id}`} type="avatar" />,
+      <UserContainer user={user} key={`userAvatar_${user.id}`} type="avatar" />
     )
   )
 }
@@ -153,10 +153,10 @@ export function profileToggles(settings) {
                 id={item.key}
                 key={`preference_${item.key}`}
                 onToggleChange={preferenceToggleChanged}
-              />,
+              />
             )
           }
-        </TreePanel>,
+        </TreePanel>
       )
       return arr
     })
@@ -166,7 +166,7 @@ export function profileToggles(settings) {
 export function blockedMutedUserList(users) {
   return (
     users.data.map(user =>
-      <UserContainer user={user} key={`userCompact_${user.id}`} type="compact" />,
+      <UserContainer user={user} key={`userCompact_${user.id}`} type="compact" />
     )
   )
 }

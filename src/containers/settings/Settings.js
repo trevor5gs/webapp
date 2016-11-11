@@ -215,7 +215,7 @@ class Settings extends Component {
       dispatch(openModal(
         <AdultPostsDialog
           onConfirm={this.closeModal}
-        />,
+        />
       ))
     }
     preferenceToggleChanged(obj)
@@ -233,7 +233,7 @@ class Settings extends Component {
           style={{ marginRight: `${5 / 16}rem` }}
         >
           {link.text}
-        </a>,
+        </a>
       )
     )
   }
@@ -255,7 +255,7 @@ class Settings extends Component {
   shouldRequireCredentialsSave() {
     const { currentPasswordState, emailState, passwordState, usernameState } = this.state
     const credentialsSuccess = [emailState, passwordState, usernameState].some(state =>
-      state.status === STATUS.SUCCESS,
+      state.status === STATUS.SUCCESS
     )
     return currentPasswordState.status === STATUS.FAILURE || credentialsSuccess
   }

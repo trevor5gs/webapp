@@ -28,7 +28,7 @@ const selectJson = state => state.json || {}
 
 const selectUserCategories = createSelector(
   [selectUserFromPropsUserId, selectJson], (user, json) =>
-    getLinkArray(user, 'categories', json) || [],
+    getLinkArray(user, 'categories', json) || []
 )
 
 export function mapStateToProps(state, props) {
@@ -94,7 +94,7 @@ class UserContainer extends Component {
     const { dispatch, isMobile, user } = this.props
     dispatch(openModal(
       <TextMarkupDialog html={user.formattedShortBio} />,
-      isMobile ? 'isFlex hasOverlay9' : 'hasOverlay9',
+      isMobile ? 'isFlex hasOverlay9' : 'hasOverlay9'
     ))
   }
 
@@ -119,7 +119,7 @@ class UserContainer extends Component {
     })
     dispatch(openModal(
       <FeaturedInDialog>{['Featured in '].concat(links)}</FeaturedInDialog>,
-      isMobile ? 'isFlex' : null,
+      isMobile ? 'isFlex' : null
     ))
   }
 
@@ -131,7 +131,7 @@ class UserContainer extends Component {
         onConfirm={this.onConfirmCollab}
         onDismiss={this.onDismissModal}
         titlePrefix="Collaborate with"
-      />,
+      />
     ))
     dispatch(trackEvent('open-collab-dialog-profile', { platform: getElloPlatform() }))
   }
@@ -150,7 +150,7 @@ class UserContainer extends Component {
         onConfirm={this.onConfirmHireMe}
         onDismiss={this.onDismissModal}
         titlePrefix="Hire"
-      />,
+      />
     ))
     dispatch(trackEvent('open-hire-dialog-profile', { platform: getElloPlatform() }))
   }

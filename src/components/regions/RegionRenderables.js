@@ -18,7 +18,7 @@ export function RegionItems(props) {
             isGridMode={isGridMode}
             key={`TextRegion_${i}`}
             postDetailPath={postDetailPath}
-          />,
+          />
         )
         break
       case 'image':
@@ -35,7 +35,7 @@ export function RegionItems(props) {
             key={`ImageRegion_${i}_${JSON.stringify(region.data)}`}
             links={region.links}
             postDetailPath={postDetailPath}
-          />,
+          />
         )
         break
       case 'embed':
@@ -74,7 +74,7 @@ export function regionItemsForNotifications(content, postDetailPath = null, asse
             isGridMode={false}
             key={`TextRegion_${i}`}
             postDetailPath={postDetailPath}
-          />,
+          />
         )
         break
       case 'image':
@@ -88,7 +88,7 @@ export function regionItemsForNotifications(content, postDetailPath = null, asse
             key={`ImageRegion_${i}_${JSON.stringify(region.data)}`}
             links={region.links}
             postDetailPath={postDetailPath}
-          />,
+          />
         )
         break
       case 'embed':

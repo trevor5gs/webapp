@@ -51,7 +51,7 @@ function* userSuccessSaga() {
     const { payload } = action
     yield put(scheduleAuthRefresh(
       payload.response.refreshToken,
-      toMilliseconds(7100),
+      toMilliseconds(7100)
     ))
   }
 }

@@ -50,7 +50,7 @@ export const TabListButtons = ({ activeType, className, onTabClick, tabClasses, 
         type="button"
       >
         {tab.children}
-      </button>,
+      </button>
     )}
   </nav>
 

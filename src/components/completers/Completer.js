@@ -93,7 +93,7 @@ export default class Completer extends Component {
           label={`@${completion.name}`}
           ref={(comp) => { this[`completion_${i}`] = comp }}
           onClick={onCompletion}
-        />,
+        />
       )
     )
   }
@@ -110,7 +110,7 @@ export default class Completer extends Component {
           label={`:${completion.name}:`}
           ref={(comp) => { this[`completion_${i}`] = comp }}
           onClick={onCompletion}
-        />,
+        />
       )
     )
   }
@@ -127,7 +127,7 @@ export default class Completer extends Component {
           label={`${completion.location}`}
           ref={(comp) => { this[`completion_${i}`] = comp }}
           onClick={onCompletion}
-        />,
+        />
       )
     )
   }

@@ -118,7 +118,7 @@ class FormControl extends Component {
       statusClassName,
       { hasFocus },
       { hasValue },
-      { isInitialValue },
+      { isInitialValue }
     )
   }
 

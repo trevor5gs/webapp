@@ -24,7 +24,7 @@ import {
 
 const selectMetaPageType = createSelector(
   [selectViewNameFromRoute], viewName =>
-    (viewName === 'postDetail' || viewName === 'userDetail' ? `${viewName}Tags` : 'defaultTags'),
+    (viewName === 'postDetail' || viewName === 'userDetail' ? `${viewName}Tags` : 'defaultTags')
 )
 
 function mapStateToProps(state, props) {

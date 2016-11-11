@@ -114,7 +114,7 @@ class Editor extends Component {
       const repostId = post.repostId || post.id
       const repostedFromId = post.repostId ? post.id : null
       dispatch(createPost(data, this.getEditorIdentifier(),
-        repostId, repostedFromId),
+        repostId, repostedFromId)
       )
     }
     if (onSubmit) { onSubmit() }

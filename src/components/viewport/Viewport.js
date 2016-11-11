@@ -11,7 +11,7 @@ export const Viewport = props =>
       { isNotificationsActive: props.isNotificationsActive },
       { isOnboardingView: props.isOnboardingView },
       { isProfileMenuActive: props.isProfileMenuActive },
-      props.userDetailPathClassName,
+      props.userDetailPathClassName
     )}
     role="presentation"
   />

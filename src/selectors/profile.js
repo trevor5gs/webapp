@@ -35,7 +35,7 @@ export const selectIsAvatarBlank = createSelector(
     // if we have a tmp we have an avatar locally
     if (avatar && avatar.tmp) { return false }
     return !hasAvatarPresent || !(avatar && (avatar.tmp || avatar.original))
-  },
+  }
 )
 
 export const selectIsCoverImageBlank = createSelector(
@@ -43,7 +43,7 @@ export const selectIsCoverImageBlank = createSelector(
     // if we have a tmp we have a coverImage locally
     if (coverImage && coverImage.tmp) { return false }
     return !hasCoverImagePresent || !(coverImage && (coverImage.tmp || coverImage.original))
-  },
+  }
 )
 
 export const selectIsInfoFormBlank = createSelector(
@@ -52,7 +52,7 @@ export const selectIsInfoFormBlank = createSelector(
     const hasName = name && name.length
     const hasShortBio = shortBio && shortBio.length
     return !hasLinks && !hasName && !hasShortBio
-  },
+  }
 )
 
 export const selectLinksAsText = createSelector(
@@ -62,13 +62,13 @@ export const selectLinksAsText = createSelector(
       return links
     }
     return links.map(link => link.text).join(', ')
-  },
+  }
 )
 
 export const selectIsOwnPage = createSelector(
   [selectUsername, selectPathname], (username, pathname) => {
     const re = new RegExp(`/${username}$`)
     return re.test(pathname)
-  },
+  }
 )
 

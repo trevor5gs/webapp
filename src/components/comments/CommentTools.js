@@ -90,28 +90,28 @@ export const CommentTools = (props) => {
     if (isOwnComment) {
       cells.push(<EditTool key={`EditTool_${cId}`} onClickEditComment={onClickEditComment} />)
       cells.push(
-        <DeleteTool key={`DeleteTool_${cId}`} onClickDeleteComment={onClickDeleteComment} />,
+        <DeleteTool key={`DeleteTool_${cId}`} onClickDeleteComment={onClickDeleteComment} />
       )
     } else if (canDeleteComment) {
       cells.push(
-        <ReplyTool key={`ReplyTool_${cId}`} onClickReplyToComment={onClickReplyToComment} />,
+        <ReplyTool key={`ReplyTool_${cId}`} onClickReplyToComment={onClickReplyToComment} />
       )
       cells.push(
-        <FlagTool key={`FlagTool_${cId}`} onClickFlagComment={onClickFlagComment} />,
+        <FlagTool key={`FlagTool_${cId}`} onClickFlagComment={onClickFlagComment} />
       )
       cells.push(
-        <DeleteTool key={`DeleteTool_${cId}`} onClickDeleteComment={onClickDeleteComment} />,
+        <DeleteTool key={`DeleteTool_${cId}`} onClickDeleteComment={onClickDeleteComment} />
       )
     } else {
       cells.push(
-        <ReplyTool key={`ReplyTool_${cId}`} onClickReplyToComment={onClickReplyToComment} />,
+        <ReplyTool key={`ReplyTool_${cId}`} onClickReplyToComment={onClickReplyToComment} />
       )
       cells.push(
         <FlagTool
           key={`FlagTool_${cId}`}
           className="isSolo"
           onClickFlagComment={onClickFlagComment}
-        />,
+        />
       )
     }
   }

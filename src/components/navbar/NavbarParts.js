@@ -45,7 +45,7 @@ export const NavbarLink = ({
     className,
     {
       isActive: highlightingRules[to] ? pathname.match(highlightingRules[to]) : pathname.match(to),
-    },
+    }
   )
   return (
     <Link
