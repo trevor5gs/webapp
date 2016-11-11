@@ -28,8 +28,6 @@ QuickEmojiChoiceButton.propTypes = {
   onClick: PropTypes.func,
 }
 
-
-
 class QuickEmoji extends Component {
 
   static propTypes = {
