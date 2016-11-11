@@ -35,6 +35,11 @@ function mapStateToProps(state) {
   }
 }
 
+function onSubmit(e) {
+  e.preventDefault()
+  hideSoftKeyboard()
+}
+
 class InfoForm extends Component {
 
   static propTypes = {
@@ -132,11 +137,6 @@ class InfoForm extends Component {
     this.onChangeControl(vo, 'locationStatus')
   }
 
-  onSubmit(e) {
-    e.preventDefault()
-    hideSoftKeyboard()
-  }
-
   getLinksStatus() {
     if (this.linksText.length === 0) {
       return STATUS.INDETERMINATE
@@ -184,7 +184,7 @@ class InfoForm extends Component {
         className={classNames(className, 'InfoForm')}
         method="POST"
         noValidate="novalidate"
-        onSubmit={this.onSubmit}
+        onSubmit={onSubmit}
         role="form"
       >
         <NameControl

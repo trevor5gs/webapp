@@ -128,7 +128,7 @@ methods.updateRelationship = (newState, action) => {
     {
       id: userId,
       relationshipPriority: priority,
-    }
+    },
   )
   return newState
 }
@@ -142,7 +142,7 @@ methods.batchUpdateRelationship = (newState, action) => {
       {
         id,
         relationshipPriority: priority,
-      }
+      },
     )
   })
   return newState

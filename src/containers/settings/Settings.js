@@ -10,7 +10,7 @@ import { PREFERENCES, SETTINGS } from '../../constants/locales/en'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import { selectAvailability, selectBlockedCount, selectMutedCount } from '../../selectors/profile'
-import { openModal, closeModal, openAlert, closeAlert } from '../../actions/modals'
+import { openModal, closeModal } from '../../actions/modals'
 import { logout } from '../../actions/authentication'
 import {
   availableToggles,
@@ -48,6 +48,27 @@ import InfoForm from '../../components/forms/InfoForm'
 import { MainView } from '../../components/views/MainView'
 import { isElloAndroid } from '../../lib/jello'
 import { profilePath } from '../../networking/api'
+
+function getOriginalAssetUrl(asset) {
+  return (
+  asset && asset.original && asset.original.url ?
+    <a
+      href={asset.original.url}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      View original image
+    </a> :
+    <span>&mdash;</span>
+  )
+}
+
+function renderStatus(message) {
+  if (message) {
+    return () => <p>{message}</p>
+  }
+  return null
+}
 
 class Settings extends Component {
 
@@ -215,7 +236,7 @@ class Settings extends Component {
       dispatch(openModal(
         <AdultPostsDialog
           onConfirm={this.closeModal}
-        />
+        />,
       ))
     }
     preferenceToggleChanged(obj)
@@ -233,29 +254,15 @@ class Settings extends Component {
           style={{ marginRight: `${5 / 16}rem` }}
         >
           {link.text}
-        </a>
+        </a>,
       )
-    )
-  }
-
-  getOriginalAssetUrl(asset) {
-    return (
-    asset && asset.original && asset.original.url ?
-      <a
-        href={asset.original.url}
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        View original image
-      </a> :
-      <span>&mdash;</span>
     )
   }
 
   shouldRequireCredentialsSave() {
     const { currentPasswordState, emailState, passwordState, usernameState } = this.state
     const credentialsSuccess = [emailState, passwordState, usernameState].some(state =>
-      state.status === STATUS.SUCCESS
+      state.status === STATUS.SUCCESS,
     )
     return currentPasswordState.status === STATUS.FAILURE || credentialsSuccess
   }
@@ -288,13 +295,6 @@ class Settings extends Component {
     dispatch(closeModal())
   }
 
-  renderStatus(message) {
-    if (message) {
-      return () => <p>{message}</p>
-    }
-    return null
-  }
-
   render() {
     const {
       blockedCount, dispatch, mutedCount, profile,
@@ -315,10 +315,8 @@ class Settings extends Component {
         <div className="SettingsCoverPicker">
           <Uploader
             className="isCoverUploader"
-            closeAlert={bindActionCreators(closeAlert, dispatch)}
             line1="2560 x 1440"
             line2="Animated Gifs work too"
-            openAlert={bindActionCreators(openAlert, dispatch)}
             saveAction={bindActionCreators(saveCover, dispatch)}
             title="Upload Header"
           />
@@ -336,8 +334,6 @@ class Settings extends Component {
               title="Upload Avatar"
               line1="360 x 360"
               line2="Animated Gifs work too"
-              openAlert={bindActionCreators(openAlert, dispatch)}
-              closeAlert={bindActionCreators(closeAlert, dispatch)}
               saveAction={bindActionCreators(saveAvatar, dispatch)}
             />
             <Avatar
@@ -368,7 +364,7 @@ class Settings extends Component {
               classList={boxControlClassNames}
               label="Username"
               onChange={this.onChangeUsernameControl}
-              renderStatus={this.renderStatus(usernameState.message)}
+              renderStatus={renderStatus(usernameState.message)}
               status={usernameState.status}
               suggestions={usernameState.suggestions}
               tabIndex="1"
@@ -378,7 +374,7 @@ class Settings extends Component {
               classList={boxControlClassNames}
               label="Email"
               onChange={this.onChangeEmailControl}
-              renderStatus={this.renderStatus(emailState.message)}
+              renderStatus={renderStatus(emailState.message)}
               status={emailState.status}
               tabIndex="2"
               text={profile.email}
@@ -388,7 +384,7 @@ class Settings extends Component {
               label="Password"
               onChange={this.onChangePasswordControl}
               placeholder="Set a new password"
-              renderStatus={this.renderStatus(passwordState.message)}
+              renderStatus={renderStatus(passwordState.message)}
               ref={(comp) => { this.newPasswordControl = comp }}
               status={passwordState.status}
               tabIndex="3"
@@ -497,9 +493,9 @@ class Settings extends Component {
                     mdash}
                 </dd>
                 <dt>Avatar:</dt>
-                <dd>{this.getOriginalAssetUrl(profile.avatar)}</dd>
+                <dd>{getOriginalAssetUrl(profile.avatar)}</dd>
                 <dt>Header:</dt>
-                <dd>{this.getOriginalAssetUrl(profile.coverImage)}</dd>
+                <dd>{getOriginalAssetUrl(profile.coverImage)}</dd>
               </dl>
               <div className="SettingsCell">
                 <dl className="SettingsDefinition">

@@ -11,12 +11,12 @@ export const selectRefreshToken = state => get(state, 'authentication.refreshTok
 export const selectShouldUseAccessToken = createSelector(
   selectAccessToken, selectExpirationDate, selectIsLoggedIn,
   (accessToken, expirationDate, isLoggedIn) =>
-    isLoggedIn && accessToken && expirationDate > new Date()
+    isLoggedIn && accessToken && expirationDate > new Date(),
 )
 
 export const selectShouldUseRefreshToken = createSelector(
   selectAccessToken, selectExpirationDate, selectIsLoggedIn,
   (accessToken, expirationDate, isLoggedIn) =>
-    isLoggedIn && accessToken && !(expirationDate > new Date())
+    isLoggedIn && accessToken && !(expirationDate > new Date()),
 )
 

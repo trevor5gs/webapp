@@ -60,6 +60,6 @@ export const selectViewNameFromRoute = createSelector(
       return 'userDetail'
     }
     return 'unknown'
-  }
+  },
 )
 

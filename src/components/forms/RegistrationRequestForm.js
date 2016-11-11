@@ -10,6 +10,15 @@ import EmailControl from '../forms/EmailControl'
 import { isFormValid, getEmailStateFromClient } from '../forms/Validators'
 import { invite } from '../../networking/api'
 
+function renderSubmitted() {
+  return (
+    <div className="RegistrationSuccess">
+      Rad.<br />
+      Check your email to complete sign-up.
+    </div>
+  )
+}
+
 class RegistrationRequestForm extends Component {
 
   static propTypes = {
@@ -63,15 +72,6 @@ class RegistrationRequestForm extends Component {
     this.setState({ showEmailError: true })
   }
 
-  renderSubmitted() {
-    return (
-      <div className="RegistrationSuccess">
-        Rad.<br />
-        Check your email to complete sign-up.
-      </div>
-    )
-  }
-
   renderForm() {
     const { emailState, showEmailError } = this.state
     const isValid = isFormValid([emailState])
@@ -112,7 +112,7 @@ class RegistrationRequestForm extends Component {
 
   render() {
     const { formStatus } = this.state
-    return formStatus === STATUS.SUBMITTED ? this.renderSubmitted() : this.renderForm()
+    return formStatus === STATUS.SUBMITTED ? renderSubmitted() : this.renderForm()
   }
 }
 

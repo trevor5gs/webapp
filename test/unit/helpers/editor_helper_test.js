@@ -484,7 +484,7 @@ describe('editor helper', () => {
       }
       state = subject.methods.appendText(newState, ' That\'s like killing a unicorn!')
       expect(state.collection[0].data).to.equal(
-        '@lana You killed a black astronaut, Cyril! That\'s like killing a unicorn!'
+        '@lana You killed a black astronaut, Cyril! That\'s like killing a unicorn!',
       )
     })
 
@@ -524,7 +524,7 @@ describe('editor helper', () => {
       const usernames = [{ username: 'lana' }, { username: 'cyril' }]
       state = subject.methods.appendUsernames(newState, usernames)
       expect(state.collection[0].data).to.equal(
-        '@lana @cyril '
+        '@lana @cyril ',
       )
     })
 
@@ -547,7 +547,7 @@ describe('editor helper', () => {
       const usernames = [{ username: 'lana' }, { username: 'cyril' }]
       state = subject.methods.appendUsernames(newState, usernames)
       expect(state.collection[0].data).to.equal(
-        '@lana @cyril '
+        '@lana @cyril ',
       )
     })
   })

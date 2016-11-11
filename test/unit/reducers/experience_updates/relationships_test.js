@@ -75,7 +75,7 @@ describe('relationships experience update', () => {
             model: json[MAPPING_TYPES.POSTS]['103'],
           },
         },
-        MAPPING_TYPES.POSTS
+        MAPPING_TYPES.POSTS,
       )).to.be.true
       spy.restore()
     })
@@ -117,7 +117,7 @@ describe('relationships experience update', () => {
             model: json[MAPPING_TYPES.USERS]['1'],
           },
         },
-        MAPPING_TYPES.USERS
+        MAPPING_TYPES.USERS,
       )).to.be.true
     })
 
@@ -210,7 +210,7 @@ describe('relationships experience update', () => {
           {
             id: action.payload.userId,
             relationshipPriority: action.payload.priority,
-          }
+          },
         )).to.be.true
       })
 

@@ -34,7 +34,7 @@ methods.updateUserCount = (newState, userId, prop, delta) => {
   return methods.mergeModel(
     newState,
     MAPPING_TYPES.USERS,
-    obj
+    obj,
   )
 }
 
@@ -47,7 +47,7 @@ methods.updatePostCount = (newState, postId, prop, delta) => {
   return methods.mergeModel(
     newState,
     MAPPING_TYPES.POSTS,
-    obj
+    obj,
   )
 }
 
@@ -280,7 +280,7 @@ methods.deleteModel = (state, newState, action, mappingType) => {
     newState[mappingType][model.id] = model
     newState[`deleted_${mappingType}`].splice(
       newState[`deleted_${mappingType}`].indexOf(`${model.id}`),
-      1
+      1,
     )
     return newState
   }
@@ -320,7 +320,7 @@ methods.updatePostDetail = (newState, action) => {
   return methods.mergeModel(
     newState,
     action.meta.mappingType,
-    { id: post.id, showLovers: parseInt(post.lovesCount, 10) > 0, showReposters: parseInt(post.repostsCount, 10) > 0 }
+    { id: post.id, showLovers: parseInt(post.lovesCount, 10) > 0, showReposters: parseInt(post.repostsCount, 10) > 0 },
   )
 }
 

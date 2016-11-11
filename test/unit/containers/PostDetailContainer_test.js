@@ -55,7 +55,7 @@ describe('PostDetailContainer', () => {
 
     it('should update since the stream error type changed', () => {
       expect(shouldContainerUpdate(
-        thisProps, { ...nextProps, streamError: 'Error' }, defaultState, defaultState
+        thisProps, { ...nextProps, streamError: 'Error' }, defaultState, defaultState,
       )).to.be.true
     })
   })

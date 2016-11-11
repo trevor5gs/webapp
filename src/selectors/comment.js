@@ -14,11 +14,11 @@ export const selectPropsCommentAuthorId = (state, props) => get(props, 'comment.
 export const selectIsOwnComment = createSelector(
   [selectPropsComment, selectPropsCommentAuthorId, selectProfileId],
   (comment, authorId, profileId) =>
-    comment && `${authorId}` === `${profileId}`
+    comment && `${authorId}` === `${profileId}`,
 )
 
 export const selectCommentFromPropsCommentId = createSelector(
   [selectJson, selectPropsCommentId], (json, commentId) =>
-    (commentId ? json[MAPPING_TYPES.COMMENTS][commentId] : null)
+    (commentId ? json[MAPPING_TYPES.COMMENTS][commentId] : null),
 )
 

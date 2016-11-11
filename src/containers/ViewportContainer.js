@@ -25,7 +25,7 @@ export const selectUserDetailPathClassName = createSelector(
     if (/\/followers\b/.test(pathname)) { return 'isUserDetailFollowers' }
     if (/\/loves\b/.test(pathname)) { return 'isUserDetailLoves' }
     return 'isUserDetailPosts'
-  }
+  },
 )
 
 function mapStateToProps(state, props) {

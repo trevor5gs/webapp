@@ -26,6 +26,7 @@ import { ElloMark } from '../components/assets/Icons'
 import { Paginator } from '../components/streams/Paginator'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { makeSelectStreamProps } from '../selectors/stream'
+import { reloadPlayers } from '../components/editor/EmbedBlock'
 
 export function makeMapStateToProps() {
   const getStreamProps = makeSelectStreamProps()
@@ -86,9 +87,7 @@ class StreamContainer extends Component {
   }
 
   componentDidMount() {
-    if (window.embetter) {
-      window.embetter.reloadPlayers()
-    }
+    reloadPlayers()
     const { isModalComponent, scrollContainer } = this.props
     if (isModalComponent && scrollContainer) {
       this.scrollObject = { component: this, element: scrollContainer }

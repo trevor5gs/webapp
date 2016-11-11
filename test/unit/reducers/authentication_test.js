@@ -16,7 +16,7 @@ describe('authentication reducer', () => {
   context('initial state', () => {
     it('sets up a default initialState', () => {
       expect(
-        reducer(undefined, {})
+        reducer(undefined, {}),
       ).to.have.keys(
         'accessToken',
         'createdAt',
@@ -25,7 +25,7 @@ describe('authentication reducer', () => {
         'isLoggedIn',
         'refreshTimeoutId',
         'refreshToken',
-        'tokenType'
+        'tokenType',
       )
     })
   })

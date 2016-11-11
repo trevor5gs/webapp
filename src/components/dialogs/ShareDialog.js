@@ -31,6 +31,10 @@ SHARE_DIMENSIONS[SHARE_TYPES.REDDIT] = { width: 540, height: 420 }
 SHARE_DIMENSIONS[SHARE_TYPES.TUMBLR] = { width: 450, height: 430 }
 SHARE_DIMENSIONS[SHARE_TYPES.TWITTER] = { width: 520, height: 250 }
 
+function onClickReadOnlyInput(e) {
+  e.target.select()
+}
+
 class ShareDialog extends Component {
 
   static propTypes = {
@@ -60,10 +64,6 @@ class ShareDialog extends Component {
       const eventType = username ? `share-user-to-${type}-profile` : `share-to-${type}`
       trackEvent(eventType)
     }
-  }
-
-  onClickReadOnlyInput(e) {
-    e.target.select()
   }
 
   getMountSharePost() {
@@ -142,7 +142,7 @@ class ShareDialog extends Component {
           className="ShareControl"
           type="url"
           readOnly
-          onClick={this.onClickReadOnlyInput}
+          onClick={onClickReadOnlyInput}
           value={this.shareLink}
         />
         <div className="ShareLinks">

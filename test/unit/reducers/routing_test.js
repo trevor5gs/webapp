@@ -6,7 +6,7 @@ describe('promotions reducer', () => {
     it('sets up a default initialState', () => {
       expect(reducer(undefined, {})).to.have.keys(
         'locationBeforeTransitions',
-        'previousPath'
+        'previousPath',
       )
     })
   })

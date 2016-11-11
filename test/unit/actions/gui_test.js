@@ -35,7 +35,7 @@ describe('gui actions', () => {
 
     it('has a payload with the correct keys', () => {
       expect(action.payload).to.have.keys(
-        'isNavbarHidden'
+        'isNavbarHidden',
       )
     })
 
@@ -151,7 +151,7 @@ describe('gui actions', () => {
         'coverDPI',
         'deviceSize',
         'innerHeight',
-        'innerWidth'
+        'innerWidth',
       )
     })
 

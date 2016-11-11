@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { trackEvent } from '../actions/analytics'
-import { openAlert, closeAlert } from '../actions/modals'
 import { saveAvatar, saveCover } from '../actions/profile'
 import {
   selectAvatar,
@@ -45,14 +44,12 @@ class OnboardingSettingsContainer extends Component {
 
   static childContextTypes = {
     avatar: PropTypes.object,
-    closeAlert: PropTypes.func,
     coverImage: PropTypes.object,
     isAvatarBlank: PropTypes.bool,
     isCoverImageBlank: PropTypes.bool,
     nextLabel: PropTypes.string,
     onDoneClick: PropTypes.func,
     onNextClick: PropTypes.func,
-    openAlert: PropTypes.func,
     saveAvatar: PropTypes.func,
     saveCover: PropTypes.func,
   }
@@ -63,14 +60,12 @@ class OnboardingSettingsContainer extends Component {
     } = this.props
     return {
       avatar,
-      closeAlert: bindActionCreators(closeAlert, dispatch),
       coverImage,
       isAvatarBlank,
       isCoverImageBlank,
       nextLabel: 'Invite Cool People',
       onDoneClick: isNextDisabled ? null : this.onDoneClick,
       onNextClick: this.onNextClick,
-      openAlert: bindActionCreators(openAlert, dispatch),
       saveAvatar: bindActionCreators(saveAvatar, dispatch),
       saveCover: bindActionCreators(saveCover, dispatch),
     }

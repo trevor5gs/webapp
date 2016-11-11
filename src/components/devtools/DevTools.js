@@ -3,6 +3,17 @@ import Mousetrap from 'mousetrap'
 import shallowCompare from 'react-addons-shallow-compare'
 import { SHORTCUT_KEYS } from '../../constants/application_types'
 
+function toggleContainerColors() {
+  document.body.classList.toggle('highlightContainers')
+}
+
+
+function renderGrid(isVisible, type) {
+  return (
+    isVisible ? <div className={type} /> : <span />
+  )
+}
+
 class DevTools extends Component {
 
   componentWillMount() {
@@ -22,7 +33,7 @@ class DevTools extends Component {
     })
 
     Mousetrap.bind(SHORTCUT_KEYS.DT_CONTAINER_TOGGLE, () => {
-      this.toggleContainerColors()
+      toggleContainerColors()
     })
   }
 
@@ -64,23 +75,12 @@ class DevTools extends Component {
   }
 
 
-  toggleContainerColors() {
-    document.body.classList.toggle('highlightContainers')
-  }
-
-
-  renderGrid(isVisible, type) {
-    return (
-      isVisible ? <div className={type} /> : <span />
-    )
-  }
-
   render() {
     const { isHorizontalGridVisible, isVerticalGridVisible } = this.state
     return (
       <div className="DevTools">
-        {this.renderGrid(isHorizontalGridVisible, 'DT-horizontal-grid')}
-        {this.renderGrid(isVerticalGridVisible, 'DT-vertical-grid')}
+        {renderGrid(isHorizontalGridVisible, 'DT-horizontal-grid')}
+        {renderGrid(isVerticalGridVisible, 'DT-vertical-grid')}
       </div>
     )
   }

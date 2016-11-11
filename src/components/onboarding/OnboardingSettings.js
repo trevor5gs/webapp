@@ -11,7 +11,6 @@ import BackgroundImage from '../assets/BackgroundImage'
 const OnboardingSettings = (props, context) => {
   const { avatar, isAvatarBlank, saveAvatar } = context
   const { coverImage, isCoverImageBlank, saveCover } = context
-  const { closeAlert, openAlert } = context
   const { isNextDisabled } = props
   return (
     <MainView className="Onboarding OnboardingSettings">
@@ -22,10 +21,8 @@ const OnboardingSettings = (props, context) => {
       <div className="OnboardingCoverPicker">
         <Uploader
           className={classNames('isCoverUploader', { isCoverImageBlank })}
-          closeAlert={closeAlert}
           line1="2560 x 1440"
           line2="Animated Gifs work too"
-          openAlert={openAlert}
           saveAction={saveCover}
           title="Upload Header"
         />
@@ -41,8 +38,6 @@ const OnboardingSettings = (props, context) => {
           title="Upload Avatar"
           line1="360 x 360"
           line2="Animated Gifs work too"
-          openAlert={openAlert}
-          closeAlert={closeAlert}
           saveAction={saveAvatar}
         />
         {isAvatarBlank ? <ElloOutlineMark /> : null}
@@ -72,11 +67,9 @@ OnboardingSettings.propTypes = {
 
 OnboardingSettings.contextTypes = {
   avatar: PropTypes.object,
-  closeAlert: PropTypes.func.isRequired,
   coverImage: PropTypes.object,
   isAvatarBlank: PropTypes.bool,
   isCoverImageBlank: PropTypes.bool,
-  openAlert: PropTypes.func.isRequired,
   saveAvatar: PropTypes.func.isRequired,
   saveCover: PropTypes.func.isRequired,
 }

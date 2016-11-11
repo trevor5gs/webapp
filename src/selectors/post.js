@@ -19,34 +19,34 @@ export const selectPropsRepostAuthorId = (state, props) => get(props, 'post.link
 export const selectIsOwnOriginalPost = createSelector(
   [selectPropsPost, selectPropsRepostAuthorId, selectProfileId],
   (post, repostAuthorId, profileId) =>
-    post && `${repostAuthorId}` === `${profileId}`
+    post && `${repostAuthorId}` === `${profileId}`,
 )
 
 export const selectIsOwnPost = createSelector(
   [selectPropsPost, selectPropsPostAuthorId, selectProfileId], (post, authorId, profileId) =>
-    post && `${authorId}` === `${profileId}`
+    post && `${authorId}` === `${profileId}`,
 )
 
 export const selectPostFromPropsPostId = createSelector(
   [selectJson, selectPropsPostId], (json, postId) =>
-    (postId ? json[MAPPING_TYPES.POSTS][postId] : null)
+    (postId ? json[MAPPING_TYPES.POSTS][postId] : null),
 )
 
 export const selectPostFromToken = createSelector(
   [selectJson, selectParamsToken], (json, token) =>
-    findModel(json, { collection: MAPPING_TYPES.POSTS, findObj: { token } })
+    findModel(json, { collection: MAPPING_TYPES.POSTS, findObj: { token } }),
 )
 
 export const selectAuthorFromPost = createSelector(
   [selectJson, selectPostFromToken], (json, post) =>
-    (post ? json[MAPPING_TYPES.USERS][post.authorId] : null)
+    (post ? json[MAPPING_TYPES.USERS][post.authorId] : null),
 )
 
 export const selectPostBlocks = createSelector(
   [selectPostFromToken], (post) => {
     if (!post) { return null }
     return (post.repostContent || post.content) || post.summary
-  }
+  },
 )
 
 export const selectPostEmbedContent = createSelector(
@@ -54,7 +54,7 @@ export const selectPostEmbedContent = createSelector(
     if (!blocks) { return [] }
     return blocks.filter(block => /embed/.test(block.kind) && block.data && block.data.thumbnailLargeUrl)
       .map(block => block.data.thumbnailLargeUrl)
-  }
+  },
 )
 
 export const selectPostImageContent = createSelector(
@@ -62,12 +62,12 @@ export const selectPostImageContent = createSelector(
     if (!blocks) { return [] }
     return blocks.filter(block => /image/.test(block.kind) && block.data && block.data.url)
       .map(block => block.data.url)
-  }
+  },
 )
 
 export const selectPostImageAndEmbedContent = createSelector(
   [selectPostEmbedContent, selectPostImageContent], (embeds, images) =>
-    images.concat(embeds)
+    images.concat(embeds),
 )
 
 export const selectPostTextContent = createSelector(
@@ -75,19 +75,19 @@ export const selectPostTextContent = createSelector(
     if (!blocks) { return null }
     const text = blocks.map(block => (/text/.test(block.kind) ? block.data : '')).join('')
     return text.length ? trunc(text, 200).text : ''
-  }
+  },
 )
 
 export const selectPostMetaDescription = createSelector(
   [selectPostTextContent], text =>
-    (text && text.length ? text : 'Discover more amazing work like this on Ello.')
+    (text && text.length ? text : 'Discover more amazing work like this on Ello.'),
 )
 
 export const selectPostMetaRobots = createSelector(
   [selectAuthorFromPost], (author) => {
     if (!author) { return null }
     return (author.badForSeo ? 'noindex, follow' : 'index, follow')
-  }
+  },
 )
 
 export const selectPostMetaTitle = createSelector(
@@ -101,14 +101,14 @@ export const selectPostMetaTitle = createSelector(
       }
     }
     return `A post from @${author.username} on Ello.`
-  }
+  },
 )
 
 export const selectPostMetaUrl = createSelector(
   [selectPostFromToken, selectAuthorFromPost], (post, author) => {
     if (!post || !author) { return null }
     return `${ENV.AUTH_DOMAIN}/${author.username}/post/${post.token}`
-  }
+  },
 )
 
 export const selectPostMetaCanonicalUrl = createSelector(
@@ -117,7 +117,7 @@ export const selectPostMetaCanonicalUrl = createSelector(
     return (
       post.repostContent ? `${ENV.AUTH_DOMAIN}${post.repostPath}` : null
     )
-  }
+  },
 )
 
 export const selectPostMetaImages = createSelector(
@@ -125,6 +125,6 @@ export const selectPostMetaImages = createSelector(
     const openGraphImages = images.map(image => ({ property: 'og:image', content: image }))
     const schemaImages = images.map(image => ({ name: 'image', itemprop: 'image', content: image }))
     return { openGraphImages, schemaImages }
-  }
+  },
 )
 

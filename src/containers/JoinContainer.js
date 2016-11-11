@@ -17,6 +17,15 @@ import {
   getPasswordState,
 } from '../components/forms/Validators'
 
+function renderStatus(state) {
+  return () => {
+    if (state.status === STATUS.FAILURE) {
+      return <p className="FormControlStatusMessage">{state.message}</p>
+    }
+    return ''
+  }
+}
+
 function mapStateToProps(state, props) {
   return {
     availability: selectAvailability(state),
@@ -132,7 +141,7 @@ class JoinContainer extends Component {
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(
-      signUpUser(this.emailValue, this.usernameValue, this.passwordValue, this.invitationCodeValue)
+      signUpUser(this.emailValue, this.usernameValue, this.passwordValue, this.invitationCodeValue),
     )
   }
 
@@ -185,15 +194,6 @@ class JoinContainer extends Component {
     }
   }
 
-  renderStatus(state) {
-    return () => {
-      if (state.status === STATUS.FAILURE) {
-        return <p className="FormControlStatusMessage">{state.message}</p>
-      }
-      return ''
-    }
-  }
-
   render() {
     const { emailState, passwordState, showPasswordError,
       showUsernameError, usernameState } = this.state
@@ -206,9 +206,9 @@ class JoinContainer extends Component {
         onChangePasswordControl={this.onChangePasswordControl}
         onChangeUsernameControl={this.onChangeUsernameControl}
         onSubmit={this.onSubmit}
-        passwordRenderStatus={showPasswordError ? this.renderStatus(passwordState) : null}
+        passwordRenderStatus={showPasswordError ? renderStatus(passwordState) : null}
         passwordStatus={passwordState.status}
-        usernameRenderStatus={showUsernameError ? this.renderStatus(usernameState) : null}
+        usernameRenderStatus={showUsernameError ? renderStatus(usernameState) : null}
         usernameStatus={usernameState.status}
         usernameSuggestions={usernameState.suggestions}
       />

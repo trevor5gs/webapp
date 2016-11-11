@@ -21,7 +21,7 @@ if (typeof window !== 'undefined') {
                                          marketingVersion,
                                          buildVersion) => {
     store.dispatch(
-      requestPushSubscription(registrationId, bundleId, marketingVersion, buildVersion)
+      requestPushSubscription(registrationId, bundleId, marketingVersion, buildVersion),
     )
   }
 

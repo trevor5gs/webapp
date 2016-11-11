@@ -40,7 +40,7 @@ class FlagDialog extends Component {
     const dataFlag = e.target.dataset.flag
     const newChoice = dataFlag === activeChoice ? null : dataFlag
     this.setState(
-      { activeChoice: newChoice }
+      { activeChoice: newChoice },
     )
   }
 
@@ -56,7 +56,7 @@ class FlagDialog extends Component {
           onClick={this.onClickChoice}
         >
           {flags[choice]}
-        </button>
+        </button>,
       )
     })
     return buttons

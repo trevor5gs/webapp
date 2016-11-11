@@ -24,7 +24,7 @@ describe('profile reducer', () => {
       expect(result).to.have.property('username', 'username')
       const nextResult = reducer(result, action)
       expect(nextResult).to.have.keys(
-        'buildVersion', 'bundleId', 'marketingVersion', 'registrationId'
+        'buildVersion', 'bundleId', 'marketingVersion', 'registrationId',
       )
       expect(nextResult).not.to.have.property('username')
     })
@@ -118,7 +118,7 @@ describe('profile reducer', () => {
       expect(result).to.have.property('username', 'username')
       const nextResult = reducer(result, action)
       expect(nextResult).to.have.keys(
-        'buildVersion', 'bundleId', 'marketingVersion', 'registrationId'
+        'buildVersion', 'bundleId', 'marketingVersion', 'registrationId',
       )
       expect(nextResult).not.to.have.property('username')
     })
