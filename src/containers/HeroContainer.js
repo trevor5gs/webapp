@@ -13,6 +13,7 @@ import {
   selectLastDiscoverBeaconVersion,
   selectLastFollowingBeaconVersion,
   selectLastStarredBeaconVersion,
+  selectIsMobile,
 } from '../selectors/gui'
 import { selectViewsAdultContent } from '../selectors/profile'
 import {
@@ -92,6 +93,7 @@ function mapStateToProps(state, props) {
     isCategoryPromotion,
     isBackgroundCycle: selectIsBackgroundCycle(state),
     isLoggedIn: selectIsLoggedIn(state),
+    isMobile: selectIsMobile(state),
     isPagePromotion,
     isUserProfile: selectIsUserProfile(state, props),
     json: selectJson(state),
@@ -115,6 +117,7 @@ class HeroContainer extends Component {
     isBackgroundCycle: PropTypes.bool,
     isCategoryPromotion: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
+    isMobile: PropTypes.bool.isRequired,
     isPagePromotion: PropTypes.bool,
     isUserProfile: PropTypes.bool,
     json: PropTypes.object,
@@ -221,7 +224,7 @@ class HeroContainer extends Component {
   }
 
   getHeroPromotionCategory() {
-    const { categoryData, dpi, isLoggedIn, json } = this.props
+    const { categoryData, dpi, isLoggedIn, isMobile, json } = this.props
     const { category } = categoryData
     const { promotion } = this.state
     const name = get(category, 'name', '')
@@ -243,6 +246,7 @@ class HeroContainer extends Component {
       description,
       dpi,
       isLoggedIn,
+      isMobile,
       name,
       sources,
     }
@@ -250,7 +254,7 @@ class HeroContainer extends Component {
   }
 
   getHeroPromotionPage() {
-    const { dpi, isLoggedIn, json } = this.props
+    const { dpi, isLoggedIn, isMobile, json } = this.props
     const { promotion } = this.state
     const header = get(promotion, 'header', '')
     const subheader = get(promotion, 'subheader', '')
@@ -261,7 +265,7 @@ class HeroContainer extends Component {
     const ctaHref = get(promotion, 'ctaHref')
     const sources = get(promotion, 'image', null)
     const props = { creditSources, creditUsername, dpi, header, sources, subheader }
-    const ctaProps = { ctaCaption, ctaHref, isLoggedIn }
+    const ctaProps = { ctaCaption, ctaHref, isLoggedIn, isMobile }
     return <HeroPromotionPage key="HeroPromotionPage" {...props} {...ctaProps} />
   }
 

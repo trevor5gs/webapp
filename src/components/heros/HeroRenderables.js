@@ -73,21 +73,35 @@ HeroPromotionAuth.propTypes = {
 
 export const HeroPromotionCategory = (props) => {
   const { creditLabel, creditSources, creditUsername, description, dpi, name, sources } = props
-  const { ctaCaption, ctaHref, isLoggedIn } = props
+  const { ctaCaption, ctaHref, isLoggedIn, isMobile } = props
   return (
     <div className="HeroPromotion HeroPromotionCategory">
       <BackgroundImage className="hasOverlay3" dpi={dpi} sources={sources} />
       <div className="HeroPromotionCaption isCentered">
         <h1 className="HeroPromotionCategoryHeading"><span>{name}</span></h1>
         <p className="HeroPromotionCategoryCopy">{description}</p>
-        <HeroPromotionCTA caption={ctaCaption} isLoggedIn={isLoggedIn} to={ctaHref} />
+        {!isMobile &&
+          <HeroPromotionCTA caption={ctaCaption} isLoggedIn={isLoggedIn} to={ctaHref} />
+        }
       </div>
-      {creditUsername ?
+      { isMobile &&
+        <div className="HeroPromotionMobileActions">
+          <HeroPromotionCTA caption={ctaCaption} isLoggedIn={isLoggedIn} to={ctaHref} />
+          {creditUsername &&
+            <HeroPromotionCredits
+              label={creditLabel}
+              sources={creditSources}
+              username={creditUsername}
+            />
+          }
+        </div>
+      }
+      {!isMobile && creditUsername &&
         <HeroPromotionCredits
           label={creditLabel}
           sources={creditSources}
           username={creditUsername}
-        /> : null
+        />
       }
     </div>
   )
@@ -102,6 +116,7 @@ HeroPromotionCategory.propTypes = {
   description: PropTypes.string.isRequired,
   dpi: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
+  isMobile: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   sources: PropTypes.object,
 }
@@ -119,8 +134,8 @@ export const HeroPromotionPage = (props) => {
         <h2 className="HeroPromotionSubheading">{subheader}</h2>
         <HeroPromotionCTA caption={ctaCaption} isLoggedIn={isLoggedIn} to={ctaHref} />
       </div>
-      {creditUsername ?
-        <HeroPromotionCredits sources={creditSources} username={creditUsername} /> : null
+      {creditUsername &&
+        <HeroPromotionCredits sources={creditSources} username={creditUsername} />
       }
     </div>
   )

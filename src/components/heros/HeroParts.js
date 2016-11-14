@@ -38,11 +38,11 @@ export const HeroPromotionCTA = ({ caption, isLoggedIn, to }, { onClickTrackCTA 
   if (caption && to) {
     const re = new RegExp(ENV.AUTH_DOMAIN.replace('https://', ''))
     if (re.test(to)) {
-      return <Link className="HeroPromotionCTA" onClick={onClickTrackCTA} to={to}>{caption}</Link>
+      return <Link className="HeroPromotionCTA" onClick={onClickTrackCTA} to={to}><span>{caption}</span></Link>
     }
-    return <a className="HeroPromotionCTA" href={to} onClick={onClickTrackCTA} rel="noopener noreferrer" target="_blank">{caption}</a>
+    return <a className="HeroPromotionCTA" href={to} onClick={onClickTrackCTA} rel="noopener noreferrer" target="_blank"><span>{caption}</span></a>
   }
-  return null
+  return <span className="HeroPromotionCTA" />
 }
 
 HeroPromotionCTA.contextTypes = {

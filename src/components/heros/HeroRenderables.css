@@ -46,6 +46,10 @@
   .isLoggedOut .isDiscoverView ~ .Hero {
     padding-top: 125px !important;
   }
+
+  .HeroPromotionCategory {
+    flex-direction: column;
+  }
 }
 
 @media (--break-2) {
