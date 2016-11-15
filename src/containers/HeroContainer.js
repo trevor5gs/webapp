@@ -174,10 +174,10 @@ class HeroContainer extends Component {
   }
 
   onClickTrackCredits = () => {
-    const { dispatch, categoryData, isPagePromotion } = this.props
+    const { dispatch, categoryData, isCategoryPromotion, isPagePromotion } = this.props
     let label = 'promoByline_clicked_'
-    if (categoryData) {
-      label += categoryData.category.name
+    if (isCategoryPromotion && categoryData) {
+      label += categoryData.category.slug
     } else if (isPagePromotion) {
       label += 'general'
     } else {
