@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { camelize } from 'humps'

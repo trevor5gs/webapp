@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/no-danger */
 
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'

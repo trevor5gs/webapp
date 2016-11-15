@@ -86,7 +86,6 @@
       "jsx-a11y/tabindex-no-positive": 0,
       "no-alert": 2,
       "no-console": 2,
-      "react/no-danger": 0,
       "no-debugger": 2,
       "react/forbid-prop-types": [
         1,
