@@ -17,11 +17,11 @@ window.embetter.stopPlayers = (el = document.body) => {
   window.embetter.utils.disposeDetachedPlayers()
 }
 window.embetter.removePlayers = (el = document.body) => {
-  window.embetter.stopPlayers(el)
-  el.querySelectorAll('.embetter-ready').forEach((ready) => {
+  window.embetter.stopPlayers(el);
+  [].slice.call(el.querySelectorAll('.embetter-ready')).forEach((ready) => {
     ready.classList.remove('embetter-ready')
-  })
-  el.querySelectorAll('.embetter-static').forEach((statix) => {
+  });
+  [].slice.call(el.querySelectorAll('.embetter-static')).forEach((statix) => {
     statix.classList.remove('embetter-static')
   })
 }
