@@ -44,15 +44,15 @@ import {
 
 const selectJson = state => get(state, 'json')
 export const selectIsAuthentication = createSelector(
-  [selectViewNameFromRoute], viewName => viewName === 'authentication'
+  [selectViewNameFromRoute], viewName => viewName === 'authentication',
 )
 
 export const selectIsBackgroundCycle = createSelector(
-  [selectViewNameFromRoute], viewName => viewName === 'join'
+  [selectViewNameFromRoute], viewName => viewName === 'join',
 )
 
 export const selectIsUserProfile = createSelector(
-  [selectViewNameFromRoute], viewName => viewName === 'userDetail'
+  [selectViewNameFromRoute], viewName => viewName === 'userDetail',
 )
 
 export const selectBroadcast = createSelector(

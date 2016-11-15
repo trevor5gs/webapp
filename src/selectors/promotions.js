@@ -19,7 +19,7 @@ export const selectCategoryData = createSelector(
       category: cat,
       promotionals: getLinkArray(cat, 'promotionals', json) || [],
     }
-  }
+  },
 )
 
 export const selectIsPagePromotion = createSelector(
@@ -28,10 +28,10 @@ export const selectIsPagePromotion = createSelector(
     (viewName === 'discover' && pathname === '/') ||
     (viewName === 'discover' && pathname === '/discover') ||
     (viewName === 'discover' && pathname === '/discover/all') ||
-    (viewName === 'discover' && /\/featured\b|\/trending\b|\/recent\b/.test(pathname))
+    (viewName === 'discover' && /\/featured\b|\/trending\b|\/recent\b/.test(pathname)),
 )
 
 export const selectIsCategoryPromotion = createSelector(
   [selectViewNameFromRoute, selectIsPagePromotion], (viewName, isPagePromotion) =>
-    (viewName === 'discover' && !isPagePromotion)
+    (viewName === 'discover' && !isPagePromotion),
 )

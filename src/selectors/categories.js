@@ -127,6 +127,6 @@ export const selectDiscoverMetaData = createSelector(
       }
     }
     return { description, image, title }
-  }
+  },
 )
 
