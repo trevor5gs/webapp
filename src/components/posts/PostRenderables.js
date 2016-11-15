@@ -219,9 +219,9 @@ RepostHeader.propTypes = {
 export const PostBody = (props) => {
   const { assets, author, columnWidth, commentOffset, contentWarning,
     contentWidth, innerHeight, isGridMode, post } = props
-  if (!post) { return null }
+  if (!post || !author) { return null }
   const cells = []
-  const postDetailPath = `/${author.username}/post/${post.token}`
+  const postDetailPath = getPostDetailPath(author, post)
 
   if (contentWarning) {
     cells.push(<ContentWarningButton key={`contentWarning_${post.id}`} post={post} />)

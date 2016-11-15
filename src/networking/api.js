@@ -71,14 +71,6 @@ export function authenticationPromo() {
   }
 }
 
-export function loggedInPromo() {
-  return { path: `${ENV.PROMO_HOST}/loggedIn.json` }
-}
-
-export function loggedOutPromo() {
-  return { path: `${ENV.PROMO_HOST}/loggedOut.json` }
-}
-
 // Current User Profile
 export function profilePath() {
   return {
@@ -145,6 +137,11 @@ export function categoryPosts(type) {
   const typePath = type ? `/${type}` : ''
   return {
     path: getAPIPath(`categories${typePath}/posts/recent`, { per_page: PER_PAGE }),
+  }
+}
+export function pagePromotionals() {
+  return {
+    path: getAPIPath('page_promotionals'),
   }
 }
 // Discover

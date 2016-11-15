@@ -82,20 +82,45 @@ Hero Promotion */
 
 .HeroPromotionCaption {
   position: relative;
-  top: 50%;
-  left: 10px;
-  max-width: calc(100% - 20px);
+  padding: 20px 0;
+  margin: 0 10px;
   font-size: 14px;
-  transform: translateY(-50%);
+}
+
+.HeroPromotionCaption.isCentered {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.HeroPromotionCategoryHeading {
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.HeroPromotionCategorySubheading {
+  font-size: 16px;
+}
+
+.HeroPromotionCategoryHeading span {
+  display: inline-block;
+  border-bottom: 1px solid;
 }
 
 .HeroPromotionHeading {
   font-size: 18px;
 }
 
+.HeroPromotionCategoryCopy {
+  margin-top: 40px;
+}
+
 .HeroPromotionCTA {
   margin-top: 20px;
   line-height: 1.3;
+}
+
+.HeroPromotionCTA span {
   border-bottom: 1px solid;
 }
 
@@ -127,13 +152,68 @@ Hero Promotion */
   border-bottom: 1px solid;
 }
 
+/* This is for mobile promos and the flanking layout */
+@media (--break-2-max) {
+  .HeroPromotionCategory .HeroPromotionCaption {
+    min-height: 200px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .HeroPromotionMobileActions {
+    position: relative;
+    width: 100%;
+    padding: 0 10px 10px;
+    font-size: 14px;
+    align-self: flex-end;
+  }
+
+  .HeroPromotionMobileActions > .HeroPromotionCTA {
+    display: inline-block;
+    width: 40%;
+    padding-right: 5px;
+    margin-top: 0;
+    vertical-align: middle;
+    border: 0;
+  }
+
+  .HeroPromotionMobileActions > .HeroPromotionCredits {
+    position: static;
+    width: 60%;
+    padding-left: 5px;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    align-self: flex-end;
+    vertical-align: middle;
+  }
+
+  .HeroPromotionMobileActions > .HeroPromotionCredits .HeroPromotionCreditsBy,
+  .HeroPromotionMobileActions > .HeroPromotionCredits .HeroPromotionCreditsAuthor {
+    display: inline;
+  }
+}
+
 @media (--break-2) {
   .HeroPromotionCaption {
-    left: 20px;
+    margin: 0 20px;
   }
 
   .HeroPromotionHeading {
     font-size: 48px;
+  }
+
+  .HeroPromotionSubheading {
+    font-size: 28px;
+  }
+
+  .HeroPromotionCategoryHeading {
+    font-size: 24px;
+  }
+
+  .HeroPromotionCategorySubheading {
+    font-size: 18px;
   }
 
   .HeroPromotionCredits {
@@ -144,7 +224,12 @@ Hero Promotion */
 
 @media (--break-4) {
   .HeroPromotionCaption {
-    left: 40px;
+    padding-right: 40px;
+    margin: 0 40px;
+  }
+
+  .HeroPromotionCaption.isCentered {
+    padding-right: 0;
   }
 
   .HeroPromotionCredits {

@@ -13,11 +13,11 @@ export const HeroAppStores = () =>
     <GooglePlayStore />
   </div>
 
-// -----------------
+// -------------------------------------
 
-export const HeroPromotionCredits = ({ sources, username }, { onClickTrackCredits }) =>
+export const HeroPromotionCredits = ({ label, sources, username }, { onClickTrackCredits }) =>
   <Link className="HeroPromotionCredits" onClick={onClickTrackCredits} to={`/${username}`}>
-    <span className="HeroPromotionCreditsBy">Posted by</span>
+    <span className="HeroPromotionCreditsBy">{label}</span>
     <span className="HeroPromotionCreditsAuthor">@{username}</span>
     <Avatar className="inHeroPromotionCredits" sources={sources} username={username} />
   </Link>
@@ -27,19 +27,26 @@ HeroPromotionCredits.contextTypes = {
 }
 
 HeroPromotionCredits.propTypes = {
+  label: PropTypes.string,
   sources: PropTypes.object,
   username: PropTypes.string,
 }
 
-// -----------------
+// -------------------------------------
 
-export const HeroPromotionCTA = ({ caption, isLoggedIn, to }) => {
+export const HeroPromotionCTA = ({ caption, isLoggedIn, to }, { onClickTrackCTA }) => {
   if (caption && to) {
-    return <a className="HeroPromotionCTA" href={to}>{caption}</a>
-  } else if (!isLoggedIn) {
-    return <Link className="HeroPromotionCTA" to="https://ello.co/signup">Sign Up</Link>
+    const re = new RegExp(ENV.AUTH_DOMAIN.replace('https://', ''))
+    if (re.test(to)) {
+      return <Link className="HeroPromotionCTA" onClick={onClickTrackCTA} to={to}><span>{caption}</span></Link>
+    }
+    return <a className="HeroPromotionCTA" href={to} onClick={onClickTrackCTA} rel="noopener noreferrer" target="_blank"><span>{caption}</span></a>
   }
-  return null
+  return <span className="HeroPromotionCTA" />
+}
+
+HeroPromotionCTA.contextTypes = {
+  onClickTrackCredits: PropTypes.func.isRequired,
 }
 
 HeroPromotionCTA.propTypes = {
@@ -48,7 +55,7 @@ HeroPromotionCTA.propTypes = {
   to: PropTypes.string,
 }
 
-// -----------------
+// -------------------------------------
 
 export const HeroScrollToContentButton = (props, { onClickScrollToContent }) =>
   <button className="HeroScrollToContentButton" onClick={onClickScrollToContent}>
@@ -64,7 +71,7 @@ HeroScrollToContentButton.contextTypes = {
   onClickScrollToContent: PropTypes.func.isRequired,
 }
 
-// -----------------
+// -------------------------------------
 
 export const HeroShareUserButton = (props, { onClickShareProfile }) =>
   <button className="HeroShareUserButton" onClick={onClickShareProfile} >

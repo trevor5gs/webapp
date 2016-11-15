@@ -137,7 +137,7 @@ methods.addModels = (state, type, data) => {
   const camelType = camelize(type)
   if (!state[camelType]) { state[camelType] = {} }
   const ids = []
-  if (camelType === MAPPING_TYPES.CATEGORIES) {
+  if (camelType === MAPPING_TYPES.CATEGORIES || camelType === MAPPING_TYPES.PAGE_PROMOTIONALS) {
     const newType = { ...state[camelType] }
     data[camelType].forEach((item) => {
       const id = `${item.id}`
@@ -400,11 +400,10 @@ export default function json(state = {}, action = { type: '' }) {
       const keepers = {}
       if (action.payload.json) {
         Object.keys(action.payload.json).forEach((collection) => {
-          if (/(deleted_|categories)/.test(collection)) {
+          if (/(deleted_)/.test(collection)) {
             keepers[collection] = action.payload.json[collection]
           }
         })
-        keepers.pages = { 'all-categories': action.payload.json.pages['all-categories'] }
       }
       if (action.payload.profile) {
         const curUser = action.payload.profile
@@ -418,7 +417,7 @@ export default function json(state = {}, action = { type: '' }) {
           setWith(keepers, [MAPPING_TYPES.USERS, curUser.id], curUser, Object)
         }
       }
-      // hack to keep around the categories
+      // hack to keep out deleted posts/comments
       newState = { ...newState, ...keepers }
       return newState
     }

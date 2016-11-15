@@ -3,14 +3,10 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import { getCategories } from '../actions/discover'
+import { getCategories, getPagePromotionals } from '../actions/discover'
 import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
-import {
-  fetchAuthenticationPromos,
-  fetchLoggedInPromos,
-  fetchLoggedOutPromos,
-} from '../actions/promotions'
+import { fetchAuthenticationPromos } from '../actions/promotions'
 import DevTools from '../components/devtools/DevTools'
 import { addGlobalDrag, removeGlobalDrag } from '../components/viewport/GlobalDragComponent'
 import { startRefreshTimer } from '../components/viewport/RefreshOnFocus'
@@ -47,9 +43,13 @@ class AppContainer extends Component {
       return Promise.all([
         store.dispatch(loadProfile()),
         store.dispatch(getCategories()),
+        store.dispatch(getPagePromotionals()),
       ])
     }
-    return store.dispatch(getCategories())
+    return Promise.all([
+      store.dispatch(getCategories()),
+      store.dispatch(getPagePromotionals()),
+    ])
   }
 
   static childContextTypes = {
@@ -69,22 +69,19 @@ class AppContainer extends Component {
     if (isLoggedIn) {
       dispatch(loadProfile())
       dispatch(loadNotifications({ category: 'all' }))
-      dispatch(fetchLoggedInPromos())
     } else {
       dispatch(fetchAuthenticationPromos())
-      dispatch(fetchLoggedOutPromos())
     }
     dispatch(getCategories())
+    dispatch(getPagePromotionals())
   }
 
   componentWillReceiveProps(nextProps) {
     const { dispatch } = nextProps
     if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
       dispatch(loadProfile())
-      dispatch(fetchLoggedInPromos())
     } else if (this.props.isLoggedIn && !nextProps.isLoggedIn) {
       dispatch(fetchAuthenticationPromos())
-      dispatch(fetchLoggedOutPromos())
     }
   }
 
