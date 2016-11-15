@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
+import { isIOS } from '../../lib/jello'
 import Avatar from '../assets/Avatar'
 import Emoji from '../assets/Emoji'
 import { MarkerIcon } from '../assets/Icons'
@@ -140,8 +141,13 @@ export default class Completer extends Component {
     let style = {}
 
     if (completions.type === 'location') {
-      const locationPos = document.querySelector('.LocationControl').getBoundingClientRect()
-      style = { top: locationPos.bottom, left: locationPos.left }
+      const control = document.querySelector('.LocationControl')
+      const locationPos = control ? control.getBoundingClientRect() : { top: -200, left: -666 }
+      if (deviceSize === 'mobile') {
+        style = { top: isIOS() ? locationPos.bottom + window.pageYOffset : locationPos.bottom }
+      } else {
+        style = { top: locationPos.bottom, left: locationPos.left }
+      }
     } else {
       const pos = getPositionFromSelection()
       if (!pos) {

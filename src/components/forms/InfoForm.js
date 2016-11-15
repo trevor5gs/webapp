@@ -13,8 +13,10 @@ import {
 } from '../../selectors/profile'
 import { selectIsCompleterActive } from '../../selectors/gui'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
+import { setIsCompleterActive } from '../../actions/editor'
 import { saveProfile } from '../../actions/profile'
 import { MarkerIcon } from '../assets/Icons'
+import { EDITOR } from '../../constants/action_types'
 import BioControl from '../forms/BioControl'
 import NameControl from '../forms/NameControl'
 import LinksControl from '../forms/LinksControl'
@@ -85,6 +87,12 @@ class InfoForm extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState)
+  }
+
+  componentWillUnmount() {
+    const { dispatch } = this.props
+    dispatch(setIsCompleterActive({ isActive: false }))
+    dispatch({ type: EDITOR.CLEAR_AUTO_COMPLETERS })
   }
 
   onChangeControl = (vo, prop) => {
