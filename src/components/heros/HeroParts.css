@@ -152,6 +152,7 @@ Hero Promotion */
   border-bottom: 1px solid;
 }
 
+/* This is for mobile promos and the flanking layout */
 @media (--break-2-max) {
   .HeroPromotionCategory .HeroPromotionCaption {
     min-height: 200px;
@@ -172,6 +173,7 @@ Hero Promotion */
     width: 40%;
     padding-right: 5px;
     margin-top: 0;
+    vertical-align: middle;
     border: 0;
   }
 
@@ -184,6 +186,7 @@ Hero Promotion */
     text-overflow: ellipsis;
     white-space: nowrap;
     align-self: flex-end;
+    vertical-align: middle;
   }
 
   .HeroPromotionMobileActions > .HeroPromotionCredits .HeroPromotionCreditsBy,
