@@ -45,8 +45,7 @@ app.use(Honeybadger.requestHandler);
 app.use(morgan('combined'))
 
 // Send stats to Librato
-librato.configure({ email: process.env.LIBRATO_EMAIL,
-  token: process.env.LIBRATO_TOKEN })
+librato.configure({ email: process.env.LIBRATO_EMAIL, token: process.env.LIBRATO_TOKEN })
 librato.start()
 app.use(librato.middleware())
 
@@ -191,3 +190,4 @@ app.use((req, res) => {
 app.use(Honeybadger.errorHandler);
 
 export default app
+
