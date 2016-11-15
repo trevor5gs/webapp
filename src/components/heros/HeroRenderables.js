@@ -53,7 +53,7 @@ export const HeroPromotionAuth = (props) => {
   const { creditSources, creditUsername, dpi, sources } = props
   return (
     <div className="HeroPromotionAuth fullscreen">
-      <BackgroundImage className="hasOverlay3" dpi={dpi} sources={sources} />
+      <BackgroundImage className="hasOverlay4" dpi={dpi} sources={sources} />
       {creditUsername ?
         <HeroPromotionCredits sources={creditSources} username={creditUsername} /> : null
       }
@@ -76,7 +76,7 @@ export const HeroPromotionCategory = (props) => {
   const { ctaCaption, ctaHref, isLoggedIn, isMobile } = props
   return (
     <div className="HeroPromotion HeroPromotionCategory">
-      <BackgroundImage className="hasOverlay3" dpi={dpi} sources={sources} />
+      <BackgroundImage className="hasOverlay4" dpi={dpi} sources={sources} />
       <div className="HeroPromotionCaption isCentered">
         <h1 className="HeroPromotionCategoryHeading"><span>{name}</span></h1>
         <p className="HeroPromotionCategoryCopy">{description}</p>
@@ -128,7 +128,7 @@ export const HeroPromotionPage = (props) => {
   const { ctaCaption, ctaHref, isLoggedIn } = props
   return (
     <div className="HeroPromotion HeroPromotionPage">
-      <BackgroundImage className="hasOverlay3" dpi={dpi} sources={sources} />
+      <BackgroundImage className="hasOverlay4" dpi={dpi} sources={sources} />
       <div className="HeroPromotionCaption">
         <h1 className="HeroPromotionHeading">{header}</h1>
         <h2 className="HeroPromotionSubheading">{subheader}</h2>
