@@ -184,6 +184,7 @@ class InfoForm extends Component {
           text={name || ''}
         />
         <TextControl
+          autoComplete="off"
           classList={classNames(controlClassModifiers, 'LocationControl', 'text', { hasIcon: !isOnboardingControl })}
           id="location"
           icon={isOnboardingControl ? undefined : <MarkerIcon />}
