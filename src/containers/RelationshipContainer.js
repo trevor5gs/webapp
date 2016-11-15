@@ -11,11 +11,9 @@ import { selectPathname, selectPreviousPath } from '../selectors/routing'
 import { selectUser } from '../selectors/user'
 import { openModal, closeModal } from '../actions/modals'
 import { updateRelationship } from '../actions/relationships'
-import { trackEvent } from '../actions/analytics'
 import { flagUser } from '../actions/user'
 import BlockMuteDialog from '../components/dialogs/BlockMuteDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
-import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import BlockMuteButton from '../components/relationships/BlockMuteButton'
 import RelationshipButton from '../components/relationships/RelationshipButton'
 import StarshipButton from '../components/relationships/StarshipButton'
@@ -74,6 +72,7 @@ export function mapStateToProps(state, props) {
 }
 
 class RelationshipContainer extends Component {
+
   static propTypes = {
     className: PropTypes.string,
     deviceSize: PropTypes.string.isRequired,
@@ -88,6 +87,10 @@ class RelationshipContainer extends Component {
       PropTypes.string,
     ]).isRequired,
     username: PropTypes.string.isRequired,
+  }
+
+  static contextTypes = {
+    onClickOpenRegistrationRequestDialog: PropTypes.func,
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -149,9 +152,8 @@ class RelationshipContainer extends Component {
   }
 
   onOpenSignupModal = () => {
-    const { dispatch } = this.props
-    dispatch(openModal(<RegistrationRequestDialog />, 'isDecapitated'))
-    dispatch(trackEvent('open-registration-request-follow-button'))
+    const { onClickOpenRegistrationRequestDialog } = this.context
+    onClickOpenRegistrationRequestDialog('follow-button')
   }
 
   onRelationshipUpdate = ({ userId, priority, existing }) => {

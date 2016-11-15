@@ -76,10 +76,13 @@ class RegistrationRequestForm extends Component {
     const { emailState, showEmailError } = this.state
     const isValid = isFormValid([emailState])
     return (
-      <div>
+      <div className="RegistrationRequestForm">
         <h1>
-          Join The Creators Network.
+          Create an account today.
         </h1>
+        <h2>
+          Receive the best in art, design, fashion, and more - straight in your inbox.
+        </h2>
         <form
           action={invite().path}
           className="AuthenticationForm"
@@ -101,11 +104,11 @@ class RegistrationRequestForm extends Component {
             <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
             <p className="HoppyStatusMessage"><span /></p>
           }
-          <FormButton className="FormButton isRounded" disabled={!isValid} tabIndex="2">
+          <FormButton className="FormButton isRounded isGreen" disabled={!isValid} tabIndex="2">
             Sign up
           </FormButton>
         </form>
-        <Link className="HaveAccountLink" to="/enter">Have an account?</Link>
+        <Link className="HaveAccountLink" to="/enter">Already have an account?</Link>
       </div>
     )
   }

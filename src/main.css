@@ -29,6 +29,7 @@
 @import "components/dialogs/FlagDialog.css";
 @import "components/dialogs/HelpDialog.css";
 @import "components/dialogs/MessageDialog.css";
+@import "components/dialogs/RegistrationRequestDialog.css";
 @import "components/dialogs/ShareDialog.css";
 
 @import "components/editor/ElloBuyButton.css";

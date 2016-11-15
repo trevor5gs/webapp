@@ -1,0 +1,9 @@
+.RegistrationRequestForm {
+  position: relative;
+  z-index: 1;
+}
+
+.RegistrationRequestBackground {
+  min-height: 440px;
+}
+

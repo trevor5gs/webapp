@@ -26,7 +26,6 @@ import { trackEvent } from '../actions/analytics'
 import { openModal, closeModal } from '../actions/modals'
 import ConfirmDialog from '../components/dialogs/ConfirmDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
-import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import { PostTools } from '../components/posts/PostTools'
 
@@ -93,6 +92,10 @@ class PostToolsContainer extends Component {
     postViewsCountRounded: PropTypes.string,
     post: PropTypes.object.isRequired,
     previousPath: PropTypes.string,
+  }
+
+  static contextTypes = {
+    onClickOpenRegistrationRequestDialog: PropTypes.func,
   }
 
   componentWillMount() {
@@ -245,9 +248,8 @@ class PostToolsContainer extends Component {
   }
 
   onSignUp = () => {
-    const { dispatch } = this.props
-    dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
-    dispatch(trackEvent('open-registration-request-post-tools'))
+    const { onClickOpenRegistrationRequestDialog } = this.context
+    onClickOpenRegistrationRequestDialog('post-tools')
   }
 
   render() {
