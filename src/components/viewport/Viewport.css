@@ -61,4 +61,5 @@
     z-index: 7;
   }
 }
+/* stylelint-enable selector-max-specificity, selector-no-id */
 

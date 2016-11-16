@@ -112,9 +112,11 @@
   }
 
   /* // This is kind of weird */
-  .CommentTools.isMoreToolActive .ShyTool.isSolo + .MoreTool { /* stylelint-disable-line */
+  /* stylelint-disable selector-max-specificity */
+  .CommentTools.isMoreToolActive .ShyTool.isSolo + .MoreTool {
     transform: translate3d(-40px, 0, 0);
   }
+  /* stylelint-enable selector-max-specificity */
 
   /* // also weird */
   .CommentTools .ShyTool.isSolo {

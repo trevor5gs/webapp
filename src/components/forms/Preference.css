@@ -17,9 +17,11 @@
   color: #aaa;
 }
 
-.no-touch .Preference dd a:hover { /* stylelint-disable-line */
+/* stylelint-disable selector-max-compound-selectors */
+.no-touch .Preference dd a:hover {
   color: #666;
 }
+/* stylelint-enable selector-max-compound-selectors */
 
 .Preference .ToggleControl {
   position: absolute;

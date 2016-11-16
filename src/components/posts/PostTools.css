@@ -1,6 +1,6 @@
 @import "../../lib/styles/properties.css";
 
-/* stylelint-disable selector-max-specificity */
+/* stylelint-disable selector-no-qualifying-type, selector-max-specificity, selector-max-compound-selectors */
 
 /* // ------------------------------------- */
 /* // @see PostIcons for icon animations and coloring */
@@ -34,15 +34,15 @@
   transition: color var(--speed) ease;
 }
 
-.PostTool:not([data-count="0"]) > button.hasPostToolDrawer { /* stylelint-disable-line */
+.PostTool:not([data-count="0"]) > button.hasPostToolDrawer {
   padding-right: 5px !important;
 }
 
-.PostTool > button.PostToolDrawerButton { /* stylelint-disable-line */
+.PostTool > button.PostToolDrawerButton {
   padding-left: 0 !important;
 }
 
-.PostTool[data-count="0"] > button.PostToolDrawerButton { /* stylelint-disable-line */
+.PostTool[data-count="0"] > button.PostToolDrawerButton {
   display: none;
 }
 
@@ -86,7 +86,7 @@
   background-color: #ccc;
 }
 
-.no-touch .LoveTool > button.isActive:hover { /* stylelint-disable-line */
+.no-touch .LoveTool > button.isActive:hover {
   color: #aaa;
 }
 
@@ -147,7 +147,7 @@
   transform: scale(0.8);
 }
 
-.WatchTool.isPill > button > .SVGIcon > g { /* stylelint-disable-line */
+.WatchTool.isPill > button > .SVGIcon > g {
   fill: #fff;
   stroke: #fff;
 }
@@ -211,7 +211,7 @@
   opacity: 1;
 }
 
-.no-touch .ShareTool.isPill > button:hover > .Hint { /* stylelint-disable-line */
+.no-touch .ShareTool.isPill > button:hover > .Hint {
   color: #000;
   transition-delay: 0s;
   transition-duration: var(--speed);
@@ -299,4 +299,5 @@
     margin-right: 15px;
   }
 }
+/* stylelint-enable selector-no-qualifying-type, selector-max-specificity, selector-max-compound-selectors */
 

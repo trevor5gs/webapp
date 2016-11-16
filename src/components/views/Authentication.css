@@ -1,6 +1,5 @@
 @import "../../lib/styles/properties.css";
 
-/* stylelint-disable no-unsupported-browser-features */
 .Authentication {
   display: flex;
   min-width: 100vw;
@@ -8,7 +7,6 @@
   color: #fff;
   background-color: transparent;
 }
-/* stylelint-enable no-unsupported-browser-features */
 
 .AuthenticationFormDialog {
   position: relative;
@@ -60,13 +58,11 @@
   display: none;
 }
 
-/* stylelint-disable no-unsupported-browser-features */
 @media (--break-2-max) {
   .isJoinForm {
     margin-top: 120px;
   }
 }
-/* stylelint-enable no-unsupported-browser-features */
 
 /* 350 / 16 = 21.875em */
 @media (min-width: 21.875em) {

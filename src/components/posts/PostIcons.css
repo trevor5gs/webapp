@@ -1,7 +1,6 @@
 @import "../../lib/styles/properties.css";
 
-/* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
-/* stylelint-disable selector-no-qualifying-type */
+/* stylelint-disable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */
 
 .Post .BoltIcon > g {
   stroke-linejoin: bevel;
@@ -96,4 +95,5 @@
 .Post .isCommentsRequesting .BubbleIcon polygon {
   animation: animateCommentsLoading 0.75s infinite var(--ease-in-out-quart);
 }
+/* stylelint-enable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */
 

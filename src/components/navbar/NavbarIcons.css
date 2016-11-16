@@ -132,4 +132,5 @@
     transition-delay: 1.05s;
   }
 }
+/* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
 

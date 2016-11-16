@@ -64,9 +64,11 @@
     background-color: #eaeaea;
   }
 
-  .no-touch .ElloBuyButton:hover > .SVGIcon.MoneyIcon > g { /* stylelint-disable-line */
+  /* stylelint-disable selector-max-specificity, selector-max-compound-selectors */
+  .no-touch .ElloBuyButton:hover > .SVGIcon.MoneyIcon > g {
     fill: #000;
     stroke: transparent;
   }
+  /* stylelint-enable selector-max-specificity, selector-max-compound-selectors */
 }
 
