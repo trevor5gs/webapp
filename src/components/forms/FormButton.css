@@ -35,9 +35,9 @@
 }
 
 .FormButton[disabled] {
-  color: #666;
-  background-color: #000;
-  border: 1px solid #000;
+  color: #fff;
+  background-color: #7ac97a;
+  border: 1px solid #7ac97a;
 }
 
 .FormButton.isOutlined[disabled] {

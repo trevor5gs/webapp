@@ -1,9 +1,32 @@
+.AuthenticationFormDialog.inModal {
+  width: 100%;
+  max-width: 600px;
+  padding: 70px 30px 30px;
+}
+
 .RegistrationRequestForm {
   position: relative;
   z-index: 1;
 }
 
-.RegistrationRequestBackground {
-  min-height: 440px;
+.AuthenticationFormDialog.inModal .AuthenticationForm {
+  max-width: none;
+  margin-bottom: 30px;
+}
+
+.AuthenticationFormDialog.inModal h1 {
+  margin-bottom: 15px;
+}
+
+.AuthenticationFormDialog.inModal h2 {
+  margin-bottom: 70px;
+}
+
+.AuthenticationFormDialog.inModal .HaveAccountLink {
+  color: #aaa;
+}
+
+.AuthenticationFormDialog.inModal .HeroPromotionCredits {
+  right: 30px;
 }
 

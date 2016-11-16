@@ -15,11 +15,6 @@
   margin: 0 auto;
 }
 
-.AuthenticationFormDialog.isSignUp {
-  width: 600px;
-  padding: 30px;
-}
-
 .Authentication h1,
 .AuthenticationFormDialog h1 {
   padding-top: 100px;
