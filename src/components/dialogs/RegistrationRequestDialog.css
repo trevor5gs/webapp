@@ -4,6 +4,12 @@
   padding: 70px 30px 30px;
 }
 
+.XClose {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+}
+
 .RegistrationRequestForm {
   position: relative;
   z-index: 1;

@@ -8,6 +8,7 @@ const RegistrationRequestDialog = ({ promotional }) =>
     <BackgroundImage className="RegistrationRequestBackground hasOverlay6" isBackground sources={promotional.coverImage} />
     <RegistrationRequestForm />
     <HeroPromotionCredits sources={promotional.avatar} label="Posted by" username={promotional.username} />
+    <button className="CloseModal XClose">&times;</button>
   </div>
 
 RegistrationRequestDialog.propTypes = {
