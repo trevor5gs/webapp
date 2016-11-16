@@ -213,7 +213,7 @@ export const UserProfile = ({
     />
     <UserInfoCell
       className="inUserProfile"
-      location={user.location}
+      location={!isMobile && user.location}
       onClickOpenBio={onClickOpenBio}
       truncatedShortBio={truncatedShortBio}
     />
