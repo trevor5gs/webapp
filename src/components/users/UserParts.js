@@ -216,7 +216,9 @@ export const UserLinksCell = ({ className, externalLinksList, isMobile }) => {
   const linkIconHeight = isMobile ?
     (Math.ceil(externalLinksIcon.length / 3) * 32) + 34 + 5 :
     (Math.ceil(externalLinksIcon.length / 4) * 32) + 34 + 5
-  const style = externalLinksIcon.length > 0 ? { height: linkIconHeight } : { height: null }
+  const style = externalLinksIcon.length > 0 && externalLinks.length ?
+    { height: linkIconHeight } :
+    { height: null }
   return (
     <div
       className={classNames('UserCell UserLinksCell', className)}

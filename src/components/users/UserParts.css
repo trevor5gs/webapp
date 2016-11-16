@@ -382,6 +382,7 @@ User Links */
 }
 
 .UserLinksCell[data-num-links="0"] .UserExternalLinksRight {
+  position: static;
   left: 0;
 }
 
