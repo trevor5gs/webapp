@@ -74,6 +74,15 @@
   margin-left: 30px;
 }
 
+/* stylelint-disable selector-max-compound-selectors */
+/* Crunch spacing on logged out for smaller devices: 360 / 16 = 22.5em */
+@media (max-width: 22.5em) {
+  .isLoggedOut .NavbarLinks > .NavbarLink + .NavbarLink {
+    margin-left: 18px;
+  }
+}
+/* stylelint-enable selector-max-compound-selectors */
+
 .NavbarProfile {
   position: absolute;
   top: 10px;
