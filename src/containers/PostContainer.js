@@ -201,17 +201,17 @@ class PostContainer extends Component {
         {postHeader}
         {showEditor ?
           <Editor post={post} /> :
-          <PostBody
-            assets={assets}
-            author={author}
-            columnWidth={columnWidth}
-            commentOffset={commentOffset}
-            contentWarning={contentWarning}
-            contentWidth={contentWidth}
-            innerHeight={innerHeight}
-            isGridMode={isGridMode}
-            post={post}
-          />
+            <PostBody
+              assets={assets}
+              author={author}
+              columnWidth={columnWidth}
+              commentOffset={commentOffset}
+              contentWarning={contentWarning}
+              contentWidth={contentWidth}
+              innerHeight={innerHeight}
+              isGridMode={isGridMode}
+              post={post}
+            />
         }
         <PostFooter
           author={author}
