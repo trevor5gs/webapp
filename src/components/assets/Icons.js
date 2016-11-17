@@ -107,6 +107,14 @@ export const ShareIcon = () =>
     </g>
   </SVGIcon>
 
+export const XIcon = () =>
+  <SVGIcon className="CancelIcon">
+    <g>
+      <line x1="6" x2="14" y1="6" y2="14" />
+      <line x1="14" x2="6" y1="6" y2="14" />
+    </g>
+  </SVGIcon>
+
 // From Footer
 export const PhoneIcon = () =>
   <SVGIcon className="PhoneIcon">

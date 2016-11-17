@@ -28,6 +28,7 @@ describe('gui reducer', () => {
       'currentStream',
       'deviceSize',
       'discoverKeyType',
+      'hasLaunchedSignupModal',
       'history',
       'innerHeight',
       'innerWidth',
@@ -147,6 +148,15 @@ describe('gui reducer', () => {
       expect(reducer(undefined, {})).to.have.property('lastFollowingBeaconVersion', '0')
       const action = { type: GUI.SET_LAST_FOLLOWING_BEACON_VERSION, payload: { version: '666' } }
       expect(reducer(undefined, action)).to.have.property('lastFollowingBeaconVersion', '666')
+    })
+
+    it('GUI.SET_SIGNUP_MODAL_LAUNCHED updates hasLaunchedSignupModal', () => {
+      expect(reducer(undefined, {})).to.have.property('hasLaunchedSignupModal', false)
+      const action = {
+        type: GUI.SET_SIGNUP_MODAL_LAUNCHED,
+        payload: { hasLaunchedSignupModal: true },
+      }
+      expect(reducer(undefined, action)).to.have.property('hasLaunchedSignupModal', true)
     })
 
     it('GUI.LAST_STARRED_BEACON_VERSION updates lastStarredBeaconVersion', () => {

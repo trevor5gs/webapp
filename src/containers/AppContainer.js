@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { trackEvent } from '../actions/analytics'
 import { getCategories, getPagePromotionals } from '../actions/discover'
+import { setSignupModalLaunched } from '../actions/gui'
 import { openModal } from '../actions/modals'
 import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
@@ -112,6 +113,7 @@ class AppContainer extends Component {
     const { authPromo, dispatch } = this.props
     dispatch(openModal(<RegistrationRequestDialog promotional={authPromo} />, 'asDecapitated'))
     dispatch(trackEvent(`open-registration-request-${trackPostfix}`))
+    dispatch(setSignupModalLaunched())
   }
 
   onClickScrollToContent = () => {

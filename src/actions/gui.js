@@ -61,6 +61,15 @@ export function setViewportSizeAttributes(resizeAttributes) {
   }
 }
 
+export function setSignupModalLaunched(launched = true) {
+  return {
+    type: GUI.SET_SIGNUP_MODAL_LAUNCHED,
+    payload: {
+      hasLaunchedSignupModal: launched,
+    },
+  }
+}
+
 export function toggleNotifications({ isActive }) {
   return {
     type: GUI.TOGGLE_NOTIFICATIONS,

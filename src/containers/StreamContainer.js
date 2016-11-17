@@ -7,13 +7,16 @@ import classNames from 'classnames'
 import Session from '../lib/session'
 import { runningFetches } from '../sagas/requester'
 import * as ACTION_TYPES from '../constants/action_types'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import {
   selectColumnCount,
+  selectHasLaunchedSignupModal,
   selectHistory,
   selectInnerHeight,
   selectInnerWidth,
   selectIsGridMode,
 } from '../selectors/gui'
+import { makeSelectStreamProps } from '../selectors/stream'
 import { findModel } from '../helpers/json_helper'
 import { getQueryParamValue } from '../helpers/uri_helper'
 import {
@@ -25,7 +28,6 @@ import {
 import { ElloMark } from '../components/assets/Icons'
 import { Paginator } from '../components/streams/Paginator'
 import { ErrorState4xx } from '../components/errors/Errors'
-import { makeSelectStreamProps } from '../selectors/stream'
 import { reloadPlayers } from '../components/editor/EmbedBlock'
 
 export function makeMapStateToProps() {
@@ -35,9 +37,11 @@ export function makeMapStateToProps() {
     return {
       ...streamProps,
       columnCount: selectColumnCount(state),
+      hasLaunchedSignupModal: selectHasLaunchedSignupModal(state),
       history: selectHistory(state),
       innerHeight: selectInnerHeight(state),
       innerWidth: selectInnerWidth(state),
+      isLoggedIn: selectIsLoggedIn(state),
       json: state.json,
       isGridMode: selectIsGridMode(state),
       omnibar: state.omnibar,
@@ -56,8 +60,10 @@ class StreamContainer extends Component {
     className: PropTypes.string,
     columnCount: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
+    hasLaunchedSignupModal: PropTypes.bool,
     initModel: PropTypes.object,
     isGridMode: PropTypes.bool,
+    isLoggedIn: PropTypes.bool,
     isModalComponent: PropTypes.bool,
     isPostHeaderHidden: PropTypes.bool,
     json: PropTypes.object.isRequired,
@@ -73,6 +79,10 @@ class StreamContainer extends Component {
   static defaultProps = {
     paginatorText: 'Loading',
     isModalComponent: false,
+  }
+
+  static contextTypes = {
+    onClickOpenRegistrationRequestDialog: PropTypes.func,
   }
 
   componentWillMount() {
@@ -169,6 +179,11 @@ class StreamContainer extends Component {
     const path = get(this.state, 'action.payload.endpoint.path')
     if (path && !/lovers|reposters/.test(path)) {
       this.onLoadNextPage()
+      const { hasLaunchedSignupModal, isLoggedIn } = this.props
+      if (!isLoggedIn && !hasLaunchedSignupModal) {
+        const { onClickOpenRegistrationRequestDialog } = this.context
+        onClickOpenRegistrationRequestDialog('scroll')
+      }
     }
   }
 
