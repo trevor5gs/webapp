@@ -1,10 +1,5 @@
 import { stubJSONStore } from '../../support/stubs'
-import {
-  selectPages,
-  selectAllCategories,
-  selectPagesResult,
-  selectPage,
-} from '../../../src/selectors/pages'
+import { selectPages, selectPagesResult, selectPage } from '../../../src/selectors/pages'
 
 describe('pages selectors', () => {
   let json
@@ -26,13 +21,6 @@ describe('pages selectors', () => {
     it('returns the json.pages', () => {
       const state = { json }
       expect(selectPages(state)).to.deep.equal(json.pages)
-    })
-  })
-
-  context('#selectAllCategories', () => {
-    it('returns the json.pages', () => {
-      const state = { json }
-      expect(selectAllCategories(state)).to.deep.equal(json.pages['all-categories'])
     })
   })
 

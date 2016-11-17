@@ -130,7 +130,7 @@ export function relationshipBatchPath() {
 // Categories
 export function categories() {
   return {
-    path: getAPIPath('categories'),
+    path: getAPIPath('categories', { meta: true }),
   }
 }
 export function categoryPosts(type) {

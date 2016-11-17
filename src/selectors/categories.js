@@ -3,7 +3,6 @@ import get from 'lodash/get'
 import trunc from 'trunc-html'
 import { META } from '../constants/locales/en'
 import { selectParamsType } from './params'
-import { selectAllCategories } from './pages'
 import { selectCategoryData, selectPagePromotionals } from './promotions'
 
 export function sortCategories(a, b) {
@@ -18,47 +17,42 @@ export function sortCategories(a, b) {
 // state.json.categories.xxx
 export const selectCategoryCollection = state => get(state, 'json.categories')
 
-// Memoized selectors
-export const selectCategories = createSelector(
-  [selectCategoryCollection, selectAllCategories],
-  (categoryCollection, allCategories) => {
-    const categories = []
-    let primary = []
-    let secondary = []
-    let tertiary = []
-    if (allCategories) {
-      for (const id of allCategories.ids) {
-        const cat = categoryCollection[id]
-        if (cat) {
-          categories.push(cat)
-        }
-      }
-    }
-    for (const category of categories) {
-      switch (category.level) {
-        case 'primary':
-          primary.push(category)
-          break
-        case 'secondary':
-          secondary.push(category)
-          break
-        case 'tertiary':
-          tertiary.push(category)
-          break
-        default:
-          break
-      }
-    }
-    primary = primary.sort(sortCategories)
-    secondary = secondary.sort(sortCategories)
-    tertiary = tertiary.sort(sortCategories)
-    return { primary, secondary, tertiary }
+export const selectAllCategoriesAsArray = createSelector(
+  [selectCategoryCollection], (categories) => {
+    if (!categories) { return [] }
+    return Object.keys(categories || {}).map(key => categories[key])
   }
 )
 
-export const selectCategoriesAsArray = createSelector(
-  [selectCategories], categories =>
-    categories.primary.concat(categories.secondary, categories.tertiary)
+// Memoized selectors
+export const selectCategories = createSelector(
+  [selectAllCategoriesAsArray], (allCats) => {
+    const cats = {}
+    // add cats to the correct arrays
+    allCats.forEach((cat) => {
+      const level = cat.level && cat.level.length ? cat.level : 'other'
+      if (!cats[level]) {
+        cats[level] = []
+      }
+      cats[level].push(cat)
+    })
+    // sort arrays
+    Object.keys(cats).forEach((level) => {
+      cats[level].sort(sortCategories)
+    })
+    return cats
+  }
+)
+
+export const selectOnboardingCategories = createSelector(
+  [selectCategories], (categories) => {
+    let cats = [];
+    ['primary', 'secondary', 'tertiary'].forEach((level) => {
+      const levelArr = categories[level]
+      if (levelArr) { cats = cats.concat(levelArr) }
+    })
+    return cats
+  }
 )
 
 export const selectCategoryPageTitle = createSelector(
@@ -79,42 +73,22 @@ export const selectCategoryPageTitle = createSelector(
 
 export const selectCategoryTabs = createSelector(
   [selectCategories], (categories) => {
-    const { primary, secondary, tertiary } = categories
+    const { meta, primary, secondary, tertiary } = categories
     const tabs = []
-    // add featured/trending/recent by default
-    tabs.push({
-      to: '/discover',
-      children: 'Featured',
-      activePattern: /^\/(?:discover(\/featured|\/recommended)?)?$/,
-    })
-    tabs.push({
-      to: '/discover/trending',
-      children: 'Trending',
-    })
-    tabs.push({
-      to: '/discover/recent',
-      children: 'Recent',
-    })
-    // add line to split categories
-    tabs.push({ kind: 'divider' })
-    for (const category of primary) {
-      tabs.push({
-        to: `/discover/${category.slug}`,
-        children: category.name,
+    if (!primary) { return tabs }
+    [meta, primary, secondary, tertiary].filter(arr => arr).forEach((level, index) => {
+      level.forEach((category) => {
+        const tab = {
+          to: category.slug === 'featured' ? '/discover' : `/discover/${category.slug}`,
+          children: category.name,
+        }
+        if (category.slug === 'featured') {
+          tab.activePattern = /^\/(?:discover(\/featured|\/recommended)?)?$/
+        }
+        tabs.push(tab)
       })
-    }
-    for (const category of secondary) {
-      tabs.push({
-        to: `/discover/${category.slug}`,
-        children: category.name,
-      })
-    }
-    for (const category of tertiary) {
-      tabs.push({
-        to: `/discover/${category.slug}`,
-        children: category.name,
-      })
-    }
+      if (index === 0) { tabs.push({ kind: 'divider' }) }
+    })
     return tabs
   }
 )

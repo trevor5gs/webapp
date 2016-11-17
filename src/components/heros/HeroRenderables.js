@@ -113,7 +113,7 @@ HeroPromotionCategory.propTypes = {
   creditUsername: PropTypes.string,
   ctaCaption: PropTypes.string,
   ctaHref: PropTypes.string,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   dpi: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool.isRequired,

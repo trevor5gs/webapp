@@ -5,7 +5,6 @@ import { emptyPagination } from '../components/streams/Paginator'
 
 // state.json.pages.xxx
 export const selectPages = state => get(state, 'json.pages')
-export const selectAllCategories = state => get(state, 'json.pages.all-categories')
 
 export const selectPagesResult = (state, props) => {
   const meta = get(props, 'action.meta', {})

@@ -1,4 +1,5 @@
 import * as MAPPING_TYPES from '../../constants/mapping_types'
+import { sortCategories } from '../../selectors/categories'
 
 // the export methods need to return an object like:
 // { type: posts, ids: [1, 2, 3] }
@@ -32,6 +33,31 @@ export function postsFromLoves(loves) {
 
 export function notificationsFromActivities(activities) {
   return { type: MAPPING_TYPES.NOTIFICATIONS, ids: activities }
+}
+
+// TODO: move this into a selector?
+export function sortedCategories(allCats) {
+  const result = { type: MAPPING_TYPES.CATEGORIES, ids: [] }
+  const categories = {}
+  // add categories to the correct arrays
+  allCats.forEach((cat) => {
+    const level = cat.level && cat.level.length ? cat.level : 'other'
+    if (!categories[level]) {
+      categories[level] = []
+    }
+    categories[level].push(cat)
+  })
+  // sort arrays
+  Object.keys(categories).forEach((level) => {
+    categories[level].sort(sortCategories)
+  })
+  let cats = [];
+  ['meta', 'primary', 'secondary', 'tertiary'].forEach((level) => {
+    const levelArr = categories[level]
+    if (levelArr) { cats = cats.concat(levelArr.map(c => c.id)) }
+  })
+  result.ids = cats
+  return result
 }
 
 export function userResults(users) {
