@@ -349,8 +349,8 @@
   .NavbarProfileLinks {
     top: -10px;
     left: -10px;
-    width: 100vw; /* stylelint-disable-line */
-    height: 100vh; /* stylelint-disable-line */
+    width: 100vw;
+    height: 100vh;
     padding: 0;
   }
 

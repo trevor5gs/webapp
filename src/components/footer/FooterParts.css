@@ -34,8 +34,9 @@
   color: #000;
 }
 
+/* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
 /* // Only setup for `Get the app` link */
-.no-touch .FooterLink:hover > .SVGIcon + span { /* stylelint-disable-line */
+.no-touch .FooterLink:hover > .SVGIcon + span {
   width: 90px;
 }
 
@@ -64,13 +65,14 @@
   color: #000;
 }
 
-.no-touch .FooterTool.TopTool:hover > span { /* stylelint-disable-line */
+.no-touch .FooterTool.TopTool:hover > span {
   width: 30px;
 }
 
-.no-touch .FooterTool.LayoutTool:hover > span { /* stylelint-disable-line */
+.no-touch .FooterTool.LayoutTool:hover > span {
   width: 66px;
 }
+/* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
 
 @media (--break-2-max) {
   .FooterTool.LayoutTool {

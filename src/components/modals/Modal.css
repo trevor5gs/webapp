@@ -1,12 +1,14 @@
 @import "../../lib/styles/properties.css";
 
-body.isModalActive { /* stylelint-disable-line */
+/* stylelint-disable selector-no-qualifying-type */
+body.isModalActive {
   overflow: hidden;
 }
 
-body.isModalActive .MainView { /* stylelint-disable-line */
+body.isModalActive .MainView {
   pointer-events: none;
 }
+/* stylelint-enable selector-no-qualifying-type */
 
 .Modal {
   position: fixed;
@@ -44,14 +46,14 @@ body.isModalActive .MainView { /* stylelint-disable-line */
 }
 
 .Modal.isFlex {
-  display: flex; /* stylelint-disable-line */
+  display: flex;
   align-items: center;
   padding-top: 0;
 }
 
 @media (--break-2) {
   .Modal {
-    display: flex; /* stylelint-disable-line */
+    display: flex;
     align-items: center;
     padding-top: 0;
   }

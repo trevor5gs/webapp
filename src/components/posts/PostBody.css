@@ -58,7 +58,7 @@
   position: relative;
   transition: background-color var(--speed2), transform 300ms ease, margin-bottom 300ms ease;
   transform-origin: 0 0;
-  will-change: transform, margin-bottom;  /* stylelint-disable-line */
+  will-change: transform, margin-bottom;
 }
 
 .RegionContent.isHot {

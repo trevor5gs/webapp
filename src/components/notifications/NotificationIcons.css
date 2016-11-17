@@ -9,4 +9,5 @@
 .no-touch .IconTab:hover .HeartIcon > g {
   fill: #fff;
 }
+/* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
 

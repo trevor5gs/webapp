@@ -8,9 +8,11 @@
   color: #aaa;
 }
 
-.no-touch .RegionTools button:hover .SVGIcon > g { /* stylelint-disable-line */
+/* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
+.no-touch .RegionTools button:hover .SVGIcon > g {
   stroke: #000;
 }
+/* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
 
 .RegionTools .DragHandler {
   display: none;

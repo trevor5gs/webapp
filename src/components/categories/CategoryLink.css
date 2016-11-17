@@ -1,5 +1,7 @@
 @import "../../lib/styles/properties.css";
 
+/* stylelint-disable selector-no-qualifying-type, selector-max-specificity, selector-max-compound-selectors */
+
 /* TODO: There's some gnar in here */
 .Categories {
   margin-top: 10px;
@@ -31,7 +33,7 @@
   transition: background-color var(--speed);
 }
 
-.no-touch .Categories .CategoryLink:hover::before { /* stylelint-disable-line */
+.no-touch .Categories .CategoryLink:hover::before {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
@@ -46,7 +48,7 @@
   margin-top: 72px;
 }
 
-button.CategoryLink .CategoryLinkName { /* stylelint-disable-line */
+button.CategoryLink .CategoryLinkName {
   margin-top: 10px;
 }
 
@@ -61,7 +63,7 @@ button.CategoryLink .CategoryLinkName { /* stylelint-disable-line */
   transition: width var(--speed) var(--ease);
 }
 
-.no-touch .Categories .CategoryLink:hover .CategoryLinkName::after { /* stylelint-disable-line */
+.no-touch .Categories .CategoryLink:hover .CategoryLinkName::after {
   width: 100%;
 }
 
@@ -91,7 +93,7 @@ button.CategoryLink .CategoryLinkName { /* stylelint-disable-line */
     margin-top: 130px;
   }
 
-  button.CategoryLink .CategoryLinkName { /* stylelint-disable-line */
+  button.CategoryLink .CategoryLinkName {
     margin-top: 20px;
   }
 
@@ -136,4 +138,6 @@ button.CategoryLink .CategoryLinkName { /* stylelint-disable-line */
     width: calc(14.28571% - 40px);
   }
 }
+
+/* stylelint-enable selector-no-qualifying-type, selector-max-specificity, selector-max-compound-selectors */
 

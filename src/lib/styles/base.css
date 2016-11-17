@@ -329,3 +329,6 @@ input[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
+/* stylelint-enable no-unsupported-browser-features, property-no-vendor-prefix */
+/* stylelint-enable selector-list-comma-newline-after, selector-no-qualifying-type */
+
