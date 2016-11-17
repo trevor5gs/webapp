@@ -113,8 +113,8 @@ class ViewportContainer extends Component {
   }
 
   onPageVisibilityVisible() {
-    const { hasLaunchedSignupModal, isLoggedIn } = this.props
-    if (!isLoggedIn && !hasLaunchedSignupModal) {
+    const { hasLaunchedSignupModal, isLoggedIn, modalType } = this.props
+    if (!isLoggedIn && !hasLaunchedSignupModal && !modalType) {
       const { onClickOpenRegistrationRequestDialog } = this.context
       onClickOpenRegistrationRequestDialog('page-visibility')
     } else if (isLoggedIn) {

@@ -1,6 +1,7 @@
 .AuthenticationFormDialog.inModal {
   width: 100%;
   max-width: 600px;
+  min-height: 430px;
   padding: 70px 30px 30px;
 }
 

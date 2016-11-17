@@ -1,6 +1,7 @@
 @import "../../lib/styles/properties.css";
 
 .RegistrationSuccess {
+  position: relative;
   padding-top: 40px;
   margin: auto;
   font-size: 24px;
