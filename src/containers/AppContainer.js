@@ -13,7 +13,6 @@ import { fetchAuthenticationPromos } from '../actions/promotions'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import DevTools from '../components/devtools/DevTools'
 import { addGlobalDrag, removeGlobalDrag } from '../components/viewport/GlobalDragComponent'
-import { startRefreshTimer } from '../components/viewport/RefreshOnFocus'
 import AnalyticsContainer from '../containers/AnalyticsContainer'
 import FooterContainer from '../containers/FooterContainer'
 import HeroContainer from '../containers/HeroContainer'
@@ -80,7 +79,6 @@ class AppContainer extends Component {
 
   componentDidMount() {
     addGlobalDrag()
-    startRefreshTimer()
     const { dispatch, isLoggedIn } = this.props
     if (isLoggedIn) {
       dispatch(loadProfile())
