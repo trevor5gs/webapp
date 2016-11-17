@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import debounce from 'lodash/debounce'
 import { isAndroid } from '../../lib/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
+import { trackEvent } from '../../actions/analytics'
 import { requestInvite } from '../../actions/profile'
 import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
@@ -23,6 +24,7 @@ class RegistrationRequestForm extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    inModal: PropTypes.bool,
   }
 
   componentWillMount() {
@@ -56,12 +58,15 @@ class RegistrationRequestForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault()
-    const { dispatch } = this.props
+    const { dispatch, inModal } = this.props
     const { emailState } = this.state
     const currentStatus = emailState.status
     const newState = getEmailStateFromClient({ value: this.emailValue, currentStatus })
     if (newState.status === STATUS.SUCCESS) {
       dispatch(requestInvite(this.emailValue))
+      if (inModal) {
+        dispatch(trackEvent('modal-registration-request-form-completion'))
+      }
       this.setState({ formStatus: STATUS.SUBMITTED })
     } else if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })

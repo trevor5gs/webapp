@@ -6,6 +6,7 @@ const initialState = {
   component: null,
   isActive: false,
   kind: 'Modal',
+  type: null,
 }
 
 export function modal(state = initialState, action) {

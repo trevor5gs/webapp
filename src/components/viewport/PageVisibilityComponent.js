@@ -9,6 +9,10 @@ function callMethod(method) {
   }
 }
 
+function onBeforeUnload() {
+  callMethod('onBeforeUnload')
+}
+
 function onVisibilityChange() {
   if (document.visibilityState === 'hidden') {
     callMethod('onPageVisibilityHidden')
@@ -18,12 +22,14 @@ function onVisibilityChange() {
 }
 
 function addListeners() {
+  window.addEventListener('beforeunload', onBeforeUnload)
   if (document.visibilityState !== 'undefined') {
     document.addEventListener('visibilitychange', onVisibilityChange)
   }
 }
 
 function removeListeners() {
+  window.removeEventListener('beforeunload', onBeforeUnload)
   document.removeEventListener('visibilitychange', onVisibilityChange)
 }
 

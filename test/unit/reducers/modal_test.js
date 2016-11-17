@@ -12,6 +12,7 @@ describe('modal reducer', () => {
       component: <p>Component</p>,
       isActive: true,
       kind: 'Alert',
+      type: null,
     },
   }
 
@@ -22,6 +23,7 @@ describe('modal reducer', () => {
       component: null,
       isActive: false,
       kind: 'Alert',
+      type: null,
     },
   }
 
@@ -32,6 +34,7 @@ describe('modal reducer', () => {
       component: <p>Component</p>,
       isActive: true,
       kind: 'Modal',
+      type: null,
     },
   }
 
@@ -42,6 +45,7 @@ describe('modal reducer', () => {
       component: null,
       isActive: false,
       kind: 'Modal',
+      type: null,
     },
   }
 
@@ -54,6 +58,7 @@ describe('modal reducer', () => {
         'component',
         'isActive',
         'kind',
+        'type',
       )
     })
   })

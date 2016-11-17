@@ -14,7 +14,9 @@ import {
   selectIsProfileMenuActive,
   selectScrollOffset,
 } from '../selectors/gui'
+import { selectModalType } from '../selectors/modal'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
+import { trackEvent } from '../actions/analytics'
 import { setIsNavbarHidden, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import {
@@ -48,6 +50,7 @@ function mapStateToProps(state, props) {
     isNotificationsActive: selectIsNotificationsActive(state),
     isOnboardingView: selectIsOnboardingView(state),
     isProfileMenuActive: selectIsProfileMenuActive(state),
+    modalType: selectModalType(state),
     scrollOffset: selectScrollOffset(state),
     userDetailPathClassName: selectUserDetailPathClassName(state, props),
   }
@@ -66,6 +69,7 @@ class ViewportContainer extends Component {
     isNotificationsActive: PropTypes.bool,
     isOnboardingView: PropTypes.bool,
     isProfileMenuActive: PropTypes.bool,
+    modalType: PropTypes.string,
     scrollOffset: PropTypes.number,
     userDetailPathClassName: PropTypes.string,
   }
@@ -92,6 +96,13 @@ class ViewportContainer extends Component {
     removePageVisibilityObserver(this)
     removeResizeObject(this)
     removeScrollObject(this)
+  }
+
+  onBeforeUnload() {
+    const { dispatch, modalType } = this.props
+    if (modalType === 'RegistrationRequestDialog') {
+      dispatch(trackEvent('modal-registration-request-abandonment'))
+    }
   }
 
   onPageVisibilityHidden() {

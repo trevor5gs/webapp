@@ -109,7 +109,11 @@ class AppContainer extends Component {
 
   onClickOpenRegistrationRequestDialog = (trackPostfix = 'modal') => {
     const { authPromo, dispatch } = this.props
-    dispatch(openModal(<RegistrationRequestDialog promotional={authPromo} />, 'asDecapitated'))
+    dispatch(openModal(
+      <RegistrationRequestDialog promotional={authPromo} />,
+      'asDecapitated',
+      'RegistrationRequestDialog',
+    ))
     dispatch(trackEvent(`open-registration-request-${trackPostfix}`))
     dispatch(setSignupModalLaunched())
   }
