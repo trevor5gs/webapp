@@ -15,6 +15,31 @@
   margin: 0 auto;
 }
 
+.AuthenticationFormDialog.inModal {
+  width: 100%;
+  max-width: 600px;
+  min-height: 430px;
+  padding: 70px 30px 30px;
+}
+
+.AuthenticationFormDialog.inModal .AuthenticationForm {
+  max-width: none;
+  margin-bottom: 30px;
+}
+
+.AuthenticationFormDialog.inModal h1 {
+  margin-bottom: 15px;
+}
+
+.AuthenticationFormDialog.inModal .HaveAccountLink {
+  margin-bottom: 20px;
+  color: #aaa;
+}
+
+.AuthenticationFormDialog.inModal .HeroPromotionCredits {
+  right: 30px;
+}
+
 .Authentication h1,
 .AuthenticationFormDialog h1 {
   padding-top: 100px;
@@ -84,6 +109,14 @@
   .AuthenticationFormDialog h1 {
     padding-top: 0;
     margin-bottom: 70px;
+  }
+
+  .AuthenticationFormDialog.inModal h2 {
+    margin-bottom: 70px;
+  }
+
+  .AuthenticationFormDialog.inModal .HaveAccountLink {
+    margin-bottom: 0;
   }
 }
 

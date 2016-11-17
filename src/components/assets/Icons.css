@@ -125,3 +125,13 @@
   fill: #aaa !important;
 }
 
+.XClose {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+}
+
+.no-touch .XClose:hover {
+  color: #000;
+}
+
