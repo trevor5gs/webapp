@@ -2,6 +2,7 @@ import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import trunc from 'trunc-html'
 import { META } from '../constants/locales/en'
+import { selectAllCategoriesPage } from './pages'
 import { selectParamsType } from './params'
 import { selectCategoryData, selectPagePromotionals } from './promotions'
 
@@ -18,9 +19,10 @@ export function sortCategories(a, b) {
 export const selectCategoryCollection = state => get(state, 'json.categories')
 
 export const selectAllCategoriesAsArray = createSelector(
-  [selectCategoryCollection], (categories) => {
-    if (!categories) { return [] }
-    return Object.keys(categories || {}).map(key => categories[key])
+  [selectCategoryCollection, selectAllCategoriesPage],
+  (categories, allCategoryPage) => {
+    if (!categories || !allCategoryPage) { return [] }
+    return allCategoryPage.ids.map(key => categories[key])
   }
 )
 
@@ -73,6 +75,7 @@ export const selectCategoryPageTitle = createSelector(
 
 export const selectCategoryTabs = createSelector(
   [selectCategories], (categories) => {
+    console.log('categories', categories)
     const { meta, primary, secondary, tertiary } = categories
     const tabs = []
     if (!primary) { return tabs }
