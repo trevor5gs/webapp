@@ -23,7 +23,7 @@ export const selectAllCategoriesAsArray = createSelector(
   (categories, allCategoryPage) => {
     if (!categories || !allCategoryPage) { return [] }
     return allCategoryPage.ids.map(key => categories[key])
-  }
+  },
 )
 
 // Memoized selectors
@@ -43,7 +43,7 @@ export const selectCategories = createSelector(
       cats[level].sort(sortCategories)
     })
     return cats
-  }
+  },
 )
 
 export const selectOnboardingCategories = createSelector(
@@ -54,7 +54,7 @@ export const selectOnboardingCategories = createSelector(
       if (levelArr) { cats = cats.concat(levelArr) }
     })
     return cats
-  }
+  },
 )
 
 export const selectCategoryPageTitle = createSelector(
