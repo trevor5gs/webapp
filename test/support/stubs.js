@@ -176,19 +176,22 @@ function stubComment(properties) {
 
 export function stubCategories(properties) {
   const categories = [
-    { level: 'primary', name: 'art', order: 1 },
-    { level: 'primary', name: 'architecture', order: 4 },
-    { level: 'primary', name: 'design', order: 2 },
-    { level: 'primary', name: 'photography', order: 3 },
-    { level: 'secondary', name: 'collage', order: 6 },
-    { level: 'secondary', name: 'interviews', order: 5 },
+    { level: 'meta', slug: 'featured', order: 0 },
+    { level: 'meta', slug: 'trending', order: 1 },
+    { level: 'meta', slug: 'recent', order: 1 },
+    { level: 'primary', slug: 'metal', order: 0 },
+    { level: 'primary', slug: 'art', order: 1 },
+    { level: 'secondary', slug: 'collage', order: 0 },
+    { level: 'secondary', slug: 'interviews', order: 1 },
+    { level: 'tertiary', slug: 'music', order: 0 },
+    { level: 'tertiary', slug: 'development', order: 1 },
   ]
   categories.forEach((category, index) => {
     const defaultProps = {
       id: index + 1,
       links: { recent: { related: `/categories/${category.name}/posts/recent` } },
-      name: upperFirst(category.name),
-      slug: category.name,
+      name: upperFirst(category.slug),
+      slug: category.slug,
       tileImage: {
         large: { url: `/tile_image/${index + 1}/large.png`, metadata: 'meta large' },
         optimized: { url: `/tile_image/${index + 1}/optimized.png`, metadata: 'meta optimized' },

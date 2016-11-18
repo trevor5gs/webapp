@@ -1,7 +1,7 @@
 import { stubJSONStore } from '../../support/stubs'
 import {
   selectCategories,
-  selectCategoriesAsArray,
+  selectOnboardingCategories,
   selectCategoryCollection,
   selectCategoryPageTitle,
   selectCategoryTabs,
@@ -38,12 +38,16 @@ describe('categories selectors', () => {
       const props = { params, location }
       const categories = json.categories
       const keys = Object.keys(categories)
+      let meta = []
       let primary = []
       let secondary = []
       let tertiary = []
       keys.forEach((key) => {
         const category = categories[key]
         switch (category.level) {
+          case 'meta':
+            meta.push(category)
+            break
           case 'primary':
             primary.push(category)
             break
@@ -57,21 +61,22 @@ describe('categories selectors', () => {
             break
         }
       })
+      meta = meta.sort(sortCategories)
       primary = primary.sort(sortCategories)
       secondary = secondary.sort(sortCategories)
       tertiary = tertiary.sort(sortCategories)
       const selected = selectCategories(state, props)
-      const compare = { primary, secondary, tertiary }
+      const compare = { meta, primary, secondary, tertiary }
       expect(selected).to.deep.equal(compare)
     })
   })
 
-  context('#selectCategoriesAsArray', () => {
+  context('#selectOnboardingCategories', () => {
     it('the categories as a concatenated array', () => {
       const state = { json }
       const cats = selectCategories(state)
       const categoryArray = cats.primary.concat(cats.secondary, cats.tertiary)
-      expect(selectCategoriesAsArray(state)).to.deep.equal(categoryArray)
+      expect(selectOnboardingCategories(state)).to.deep.equal(categoryArray)
     })
   })
 
@@ -98,25 +103,30 @@ describe('categories selectors', () => {
     it('returns the correct stream action for featured and recommended', () => {
       const categories = json.categories
       const tabs = selectCategoryTabs({ json: { categories, pages: { 'all-categories': { ids: ['1', '2', '3', '4', '5', '6'] } } } })
+      // meta
       expect(tabs[0]).to.have.property('children', 'Featured')
       expect(tabs[0]).to.have.property('to', '/discover')
       expect(tabs[1]).to.have.property('children', 'Trending')
       expect(tabs[1]).to.have.property('to', '/discover/trending')
       expect(tabs[2]).to.have.property('children', 'Recent')
       expect(tabs[2]).to.have.property('to', '/discover/recent')
+      // divider
       expect(tabs[3]).to.have.property('kind', 'divider')
-      expect(tabs[4]).to.have.property('children', 'Art')
-      expect(tabs[4]).to.have.property('to', '/discover/art')
-      expect(tabs[5]).to.have.property('children', 'Design')
-      expect(tabs[5]).to.have.property('to', '/discover/design')
-      expect(tabs[6]).to.have.property('children', 'Photography')
-      expect(tabs[6]).to.have.property('to', '/discover/photography')
-      expect(tabs[7]).to.have.property('children', 'Architecture')
-      expect(tabs[7]).to.have.property('to', '/discover/architecture')
-      expect(tabs[8]).to.have.property('children', 'Interviews')
-      expect(tabs[8]).to.have.property('to', '/discover/interviews')
-      expect(tabs[9]).to.have.property('children', 'Collage')
-      expect(tabs[9]).to.have.property('to', '/discover/collage')
+      // primary
+      expect(tabs[4]).to.have.property('children', 'Metal')
+      expect(tabs[4]).to.have.property('to', '/discover/metal')
+      expect(tabs[5]).to.have.property('children', 'Art')
+      expect(tabs[5]).to.have.property('to', '/discover/art')
+      // secondary
+      expect(tabs[6]).to.have.property('children', 'Collage')
+      expect(tabs[6]).to.have.property('to', '/discover/collage')
+      expect(tabs[7]).to.have.property('children', 'Interviews')
+      expect(tabs[7]).to.have.property('to', '/discover/interviews')
+      // tertiary
+      expect(tabs[8]).to.have.property('children', 'Music')
+      expect(tabs[8]).to.have.property('to', '/discover/music')
+      expect(tabs[9]).to.have.property('children', 'Development')
+      expect(tabs[9]).to.have.property('to', '/discover/development')
     })
   })
 

@@ -14,6 +14,7 @@ export function getCategories() {
         asList: StreamRenderables.categoriesAsGrid,
         asGrid: StreamRenderables.categoriesAsGrid,
       },
+      resultFilter: StreamFilters.sortedCategories,
       resultKey: 'all-categories',
     },
   }
