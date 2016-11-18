@@ -167,7 +167,7 @@ CategoryHeader.propTypes = {
 
 export const RepostHeader = ({ post, repostAuthor, repostedBy, inUserDetail }) => {
   if (!post || !repostedBy) { return null }
-  const postDetailPath = `/${repostedBy.username}/post/${post.token}`
+  const postDetailPath = getPostDetailPath(repostedBy, post)
   return (
     <header className={classNames('RepostHeader', { inUserDetail })} key={`RepostHeader_${post.id}`}>
       <div className="RepostHeaderAuthor">
