@@ -75,7 +75,6 @@ export const selectCategoryPageTitle = createSelector(
 
 export const selectCategoryTabs = createSelector(
   [selectCategories], (categories) => {
-    console.log('categories', categories)
     const { meta, primary, secondary, tertiary } = categories
     const tabs = []
     if (!primary) { return tabs }
