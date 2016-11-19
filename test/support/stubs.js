@@ -207,7 +207,7 @@ export function stubCategories(properties) {
 
 function stubPage(path, properties = {}) {
   const page = {
-    ids: ['1', '2', '3', '4', '5', '6'],
+    ids: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
     next: {
       ids: [],
       pagination: { next: '/next/next', totalCount: 1, totalPages: 3, totalPagesRemaining: 2 },

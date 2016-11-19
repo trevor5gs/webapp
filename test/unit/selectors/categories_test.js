@@ -102,7 +102,7 @@ describe('categories selectors', () => {
   context('#selectCategoryTabs', () => {
     it('returns the correct stream action for featured and recommended', () => {
       const categories = json.categories
-      const tabs = selectCategoryTabs({ json: { categories, pages: { 'all-categories': { ids: ['1', '2', '3', '4', '5', '6'] } } } })
+      const tabs = selectCategoryTabs({ json: { categories, pages: { 'all-categories': { ids: ['1', '2', '3', '4', '5', '6', '7', '8', '9'] } } } })
       // meta
       expect(tabs[0]).to.have.property('children', 'Featured')
       expect(tabs[0]).to.have.property('to', '/discover')
