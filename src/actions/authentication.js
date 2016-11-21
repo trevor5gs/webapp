@@ -22,6 +22,7 @@ export function signIn(email, password) {
   return {
     type: AUTHENTICATION.SIGN_IN,
     payload: {
+      method: 'POST',
       email,
       password,
     },
