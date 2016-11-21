@@ -41,6 +41,7 @@ describe('authentication actions', () => {
 
     it('has the correct payload in the action', () => {
       expect(action.payload).to.deep.equal({
+        method: 'POST',
         email: 'vader@ello.co',
         password: '12345666',
       })
