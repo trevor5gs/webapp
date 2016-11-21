@@ -180,6 +180,7 @@ class InfoForm extends Component {
     return (
       <form
         className={classNames(className, 'InfoForm')}
+        method="POST"
         noValidate="novalidate"
         onSubmit={this.onSubmit}
         role="form"

@@ -24,6 +24,7 @@ const Join = (props) => {
         <form
           className="AuthenticationForm"
           id="RegistrationForm"
+          method="POST"
           noValidate="novalidate"
           onSubmit={onSubmit}
           role="form"

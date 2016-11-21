@@ -161,6 +161,7 @@ class EnterContainer extends Component {
           <form
             className="AuthenticationForm"
             id="NewSessionForm"
+            method="POST"
             noValidate="novalidate"
             onSubmit={this.onSubmit}
             role="form"

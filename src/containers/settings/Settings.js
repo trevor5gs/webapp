@@ -357,6 +357,7 @@ class Settings extends Component {
 
           <form
             className="SettingsForm"
+            method="POST"
             noValidate="novalidate"
             onSubmit={this.onSubmit}
             role="form"

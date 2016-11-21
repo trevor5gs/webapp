@@ -18,6 +18,7 @@ const ForgotPasswordForm = (props) => {
     <form
       className="AuthenticationForm"
       id="ForgotPasswordForm"
+      method="POST"
       noValidate="novalidate"
       onSubmit={onSubmit}
       role="form"

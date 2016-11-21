@@ -80,6 +80,7 @@ class InvitationFormContainer extends Component {
       <div className="InvitationsForm">
         <form
           className="InvitationForm"
+          method="POST"
           noValidate="novalidate"
           onSubmit={this.onSubmit}
           role="form"

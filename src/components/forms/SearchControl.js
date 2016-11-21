@@ -40,6 +40,7 @@ class SearchControl extends Component {
           autoCorrect="off"
           autoComplete="off"
           key={activeType}
+          method="POST"
           ref={(comp) => { this.text = comp }}
           type="text"
         />

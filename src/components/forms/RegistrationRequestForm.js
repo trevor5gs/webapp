@@ -82,6 +82,7 @@ class RegistrationRequestForm extends Component {
         <form
           className="AuthenticationForm"
           id="RegistrationRequestForm"
+          method="POST"
           noValidate="novalidate"
           onSubmit={this.onSubmit}
           role="form"
