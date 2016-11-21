@@ -33,7 +33,7 @@ export function getUserCredentials(email, password, meta) {
   return {
     type: AUTHENTICATION.USER,
     payload: {
-      endpoint: loginToken(email, password),
+      endpoint: loginToken(),
       method: 'POST',
       body: {
         email,

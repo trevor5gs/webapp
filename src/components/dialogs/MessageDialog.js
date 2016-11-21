@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import FormControl from '../forms/FormControl'
 import { SVGIcon } from '../svg/SVGComponents'
+import { hireUser } from '../../networking/api'
 
 export default class MessageDialog extends Component {
   static propTypes = {
@@ -43,8 +44,10 @@ export default class MessageDialog extends Component {
       <div className="Dialog MessageDialog">
         <h2 className="MessageDialogTitle">{`${titlePrefix} ${name}`}</h2>
         <form
+          action={hireUser(null).path}
           className="MessageForm"
           id="MessageForm"
+          method="POST"
           noValidate="novalidate"
           onSubmit={this.onConfirm}
           role="form"

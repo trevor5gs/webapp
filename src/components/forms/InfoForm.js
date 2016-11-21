@@ -22,6 +22,7 @@ import NameControl from '../forms/NameControl'
 import LinksControl from '../forms/LinksControl'
 import TextControl from '../forms/TextControl'
 import { isValidURL } from '../forms/Validators'
+import { profilePath } from '../../networking/api'
 
 function mapStateToProps(state) {
   return {
@@ -179,6 +180,7 @@ class InfoForm extends Component {
     }
     return (
       <form
+        action={profilePath().path}
         className={classNames(className, 'InfoForm')}
         method="POST"
         noValidate="novalidate"

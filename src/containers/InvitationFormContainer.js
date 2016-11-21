@@ -6,6 +6,7 @@ import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
 import BatchEmailControl from '../components/forms/BatchEmailControl'
 import FormButton from '../components/forms/FormButton'
 import { getBatchEmailState } from '../components/forms/Validators'
+import { invite } from '../networking/api'
 import { selectPathname } from '../selectors/routing'
 
 function mapStateToProps(state) {
@@ -79,6 +80,7 @@ class InvitationFormContainer extends Component {
     return (
       <div className="InvitationsForm">
         <form
+          action={invite().path}
           className="InvitationForm"
           method="POST"
           noValidate="novalidate"

@@ -3,6 +3,7 @@ import { MainView } from '../views/MainView'
 import Emoji from '../assets/Emoji'
 import EmailControl from '../forms/EmailControl'
 import FormButton from '../forms/FormButton'
+import { forgotPassword } from '../../networking/api'
 
 const SubmittedState = () =>
   <div>
@@ -16,6 +17,7 @@ const ForgotPasswordForm = (props) => {
   } = props
   return (
     <form
+      action={forgotPassword().path}
       className="AuthenticationForm"
       id="ForgotPasswordForm"
       method="POST"

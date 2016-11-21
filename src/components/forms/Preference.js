@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import { camelize } from 'humps'
 import classNames from 'classnames'
 import ToggleControl from '../forms/ToggleControl'
+import { profilePath } from '../../networking/api'
 
 const Preference = ({ className, definition, id, isChecked, isDisabled, onToggleChange }) =>
-  <form className={classNames(className, 'Preference')}>
+  <form action={profilePath().path} className={classNames(className, 'Preference')} method="POST">
     <dl>
       <dt>{definition.term ? definition.term : ''}</dt>
       <dd dangerouslySetInnerHTML={{ __html: definition.desc ? definition.desc : '' }} />

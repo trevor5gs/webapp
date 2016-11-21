@@ -8,6 +8,7 @@ import { requestInvite } from '../../actions/profile'
 import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 import { isFormValid, getEmailStateFromClient } from '../forms/Validators'
+import { invite } from '../../networking/api'
 
 class RegistrationRequestForm extends Component {
 
@@ -80,6 +81,7 @@ class RegistrationRequestForm extends Component {
           Join The Creators Network.
         </h1>
         <form
+          action={invite().path}
           className="AuthenticationForm"
           id="RegistrationRequestForm"
           method="POST"

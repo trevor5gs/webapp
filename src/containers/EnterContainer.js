@@ -26,6 +26,7 @@ import {
   getPasswordState,
 } from '../components/forms/Validators'
 import { MainView } from '../components/views/MainView'
+import { loginToken } from '../networking/api'
 
 function mapStateToProps(state) {
   const obj = {
@@ -159,6 +160,7 @@ class EnterContainer extends Component {
         <div className="AuthenticationFormDialog">
           <h1>Welcome back.</h1>
           <form
+            action={loginToken().path}
             className="AuthenticationForm"
             id="NewSessionForm"
             method="POST"

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { LinkIcon } from './EditorIcons'
+import { textToolsPath } from '../../networking/api'
 
 function prefixLink(text) {
   const linkPrefix = /((ftp|http|https):\/\/.)|mailto(?=:[-\.\w]+@)/
@@ -150,7 +151,9 @@ export default class TextTools extends Component {
           <LinkIcon />
         </button>
         <form
+          action={textToolsPath().path}
           className="TextToolForm"
+          method="POST"
           noValidate="novalidate"
           onSubmit={this.handleSubmit}
         >

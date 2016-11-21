@@ -3,6 +3,7 @@ import OnboardingNavbar from '../onboarding/OnboardingNavbar'
 import PasswordControl from '../forms/PasswordControl'
 import UsernameControl from '../forms/UsernameControl'
 import { MainView } from '../views/MainView'
+import { signupPath } from '../../networking/api'
 
 const Join = (props) => {
   const {
@@ -22,6 +23,7 @@ const Join = (props) => {
     <MainView className="Authentication isJoinForm">
       <div className="AuthenticationFormDialog">
         <form
+          action={signupPath().path}
           className="AuthenticationForm"
           id="RegistrationForm"
           method="POST"

@@ -29,11 +29,9 @@ export function accessTokens() {
   }
 }
 
-export function loginToken(email, password) {
-  const params = { email, password }
+export function loginToken() {
   return {
     path: `${basePath()}/oauth/login`,
-    params,
   }
 }
 
@@ -57,11 +55,9 @@ export function refreshAuthToken(refreshToken) {
   }
 }
 
-export function signupPath(email, username, password, invitationCode) {
-  const params = { email, username, password, invitationCode }
+export function signupPath() {
   return {
     path: `${basePath()}/v2/signup`,
-    params,
   }
 }
 
@@ -272,6 +268,12 @@ export function loadEmojis() {
   }
   return {
     path: `${ENV.AUTH_DOMAIN}/emojis.json`,
+  }
+}
+// Dummy editor endpoint to use for default action on text tools form
+export function textToolsPath() {
+  return {
+    path: getAPIPath('editor-text-tools'),
   }
 }
 // Comments

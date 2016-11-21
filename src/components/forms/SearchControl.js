@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import FormControl from './FormControl'
 import { TabListButtons } from '../tabs/TabList'
+import { searchPosts, searchUsers } from '../../networking/api'
 
 class SearchControl extends Component {
 
@@ -31,16 +32,20 @@ class SearchControl extends Component {
   }
 
   render() {
-    const { activeType, onChange, onSubmit, tabs } = this.props
+    const { activeType, onChange, onSubmit, tabs, text } = this.props
     return (
-      <form className="SearchBar" onSubmit={onSubmit}>
+      <form
+        action={activeType === 'users' ? searchUsers(text).path : searchPosts(text).path}
+        className="SearchBar"
+        method="POST"
+        onSubmit={onSubmit}
+      >
         <FormControl
           {...this.props}
           autoCapitalize="off"
           autoCorrect="off"
           autoComplete="off"
           key={activeType}
-          method="POST"
           ref={(comp) => { this.text = comp }}
           type="text"
         />

@@ -47,6 +47,7 @@ import StreamContainer from '../../containers/StreamContainer'
 import InfoForm from '../../components/forms/InfoForm'
 import { MainView } from '../../components/views/MainView'
 import { isElloAndroid } from '../../lib/jello'
+import { profilePath } from '../../networking/api'
 
 class Settings extends Component {
 
@@ -356,6 +357,7 @@ class Settings extends Component {
           </header>
 
           <form
+            action={profilePath().path}
             className="SettingsForm"
             method="POST"
             noValidate="novalidate"
