@@ -44,15 +44,15 @@ import {
 
 const selectJson = state => get(state, 'json')
 export const selectIsAuthentication = createSelector(
-  [selectViewNameFromRoute], viewName => viewName === 'authentication'
+  [selectViewNameFromRoute], viewName => viewName === 'authentication',
 )
 
 export const selectIsBackgroundCycle = createSelector(
-  [selectViewNameFromRoute], viewName => viewName === 'join'
+  [selectViewNameFromRoute], viewName => viewName === 'join',
 )
 
 export const selectIsUserProfile = createSelector(
-  [selectViewNameFromRoute], viewName => viewName === 'userDetail'
+  [selectViewNameFromRoute], viewName => viewName === 'userDetail',
 )
 
 export const selectBroadcast = createSelector(
@@ -67,7 +67,7 @@ export const selectBroadcast = createSelector(
       return lastStarredBeaconVersion !== STARRED.BEACON_VERSION ? STARRED.BEACON_TEXT : null
     }
     return null
-  }
+  },
 )
 
 function mapStateToProps(state, props) {
@@ -197,13 +197,10 @@ class HeroContainer extends Component {
     const { dispatch, viewName } = this.props
     if (viewName === 'discover') {
       dispatch(setLastDiscoverBeaconVersion({ version: DISCOVER.BEACON_VERSION }))
-      return
     } else if (viewName === 'following') {
       dispatch(setLastFollowingBeaconVersion({ version: FOLLOWING.BEACON_VERSION }))
-      return
     } else if (viewName === 'starred') {
       dispatch(setLastStarredBeaconVersion({ version: STARRED.BEACON_VERSION }))
-      return
     }
   }
 

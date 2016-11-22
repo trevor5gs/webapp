@@ -24,11 +24,11 @@ export const Footer = ({
       />
       {isAndroid() ?
         null :
-          <FooterLink
-            href="https://ello.co/wtf/resources/mobile-features/"
-            icon={<PhoneIcon />}
-            label="Apps"
-          />
+        <FooterLink
+          href="https://ello.co/wtf/resources/mobile-features/"
+          icon={<PhoneIcon />}
+          label="Apps"
+        />
       }
     </div>
     <div className="FooterTools">

@@ -7,6 +7,18 @@ import { inviteUsers } from '../../actions/invitations'
 import Avatar from '../assets/Avatar'
 import RelationshipContainer from '../../containers/RelationshipContainer'
 
+function renderMailtoUserHeader(invitation) {
+  const { email } = invitation
+  return (
+    <div className="UserInviteeHeader">
+      <a className="UserInviteeUserLink truncate" href={`mailto: ${email}`}>
+        <Avatar />
+        <span className="UserInviteeEmail">{email}</span>
+      </a>
+    </div>
+  )
+}
+
 /* eslint-disable react/prefer-stateless-function */
 class UserInvitee extends Component {
 
@@ -23,22 +35,10 @@ class UserInvitee extends Component {
     dispatch(inviteUsers(emails))
   }
 
-  renderMailtoUserHeader(invitation) {
-    const { email } = invitation
-    return (
-      <div className="UserInviteeHeader">
-        <a className="UserInviteeUserLink truncate" href={`mailto: ${email}`}>
-          <Avatar />
-          <span className="UserInviteeEmail">{email}</span>
-        </a>
-      </div>
-    )
-  }
-
   renderSending(invitation) {
     return (
       <div className={classNames(this.props.className, 'UserInvitee')}>
-        {this.renderMailtoUserHeader(invitation)}
+        {renderMailtoUserHeader(invitation)}
         <span className="UserInviteeStatusLabel">Sending</span>
       </div>
     )
@@ -47,7 +47,7 @@ class UserInvitee extends Component {
   renderReInvite(invitation) {
     return (
       <div className={classNames(this.props.className, 'UserInvitee')}>
-        {this.renderMailtoUserHeader(invitation)}
+        {renderMailtoUserHeader(invitation)}
         <button className="UserInviteeAction" onClick={this.onClickReInvite}>Re-Invite</button>
       </div>
     )

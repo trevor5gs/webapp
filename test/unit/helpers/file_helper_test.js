@@ -12,4 +12,3 @@ describe('file helper', () => {
   })
 })
 
-

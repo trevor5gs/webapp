@@ -210,7 +210,7 @@ describe('relationships experience update', () => {
           {
             id: action.payload.userId,
             relationshipPriority: action.payload.priority,
-          }
+          },
         )).to.be.true
       })
 

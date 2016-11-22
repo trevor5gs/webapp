@@ -484,7 +484,7 @@ describe('editor helper', () => {
       }
       state = subject.methods.appendText(newState, ' That\'s like killing a unicorn!')
       expect(state.collection[0].data).to.equal(
-        '@lana You killed a black astronaut, Cyril! That\'s like killing a unicorn!'
+        '@lana You killed a black astronaut, Cyril! That\'s like killing a unicorn!',
       )
     })
 
@@ -524,7 +524,7 @@ describe('editor helper', () => {
       const usernames = [{ username: 'lana' }, { username: 'cyril' }]
       state = subject.methods.appendUsernames(newState, usernames)
       expect(state.collection[0].data).to.equal(
-        '@lana @cyril '
+        '@lana @cyril ',
       )
     })
 
@@ -547,7 +547,7 @@ describe('editor helper', () => {
       const usernames = [{ username: 'lana' }, { username: 'cyril' }]
       state = subject.methods.appendUsernames(newState, usernames)
       expect(state.collection[0].data).to.equal(
-        '@lana @cyril '
+        '@lana @cyril ',
       )
     })
   })
@@ -760,12 +760,12 @@ describe('editor helper', () => {
         POST.CREATE_REQUEST,
         POST.UPDATE_REQUEST,
       ]
-      for (const type of actionTypes) {
+      actionTypes.forEach((type) => {
         const newState = { isPosting: false }
         action = { type }
         state = subject.methods.getEditorObject(newState, action)
         expect(state.isPosting).to.be.true
-      }
+      })
     })
 
     it('calls #addEmptyTextBlock with success and reset actions', () => {
@@ -777,11 +777,11 @@ describe('editor helper', () => {
         POST.UPDATE_SUCCESS,
       ]
       spy = sinon.stub(subject.methods, 'addEmptyTextBlock')
-      for (const type of actionTypes) {
+      actionTypes.forEach((type) => {
         action = { type }
         state = subject.methods.getEditorObject(subject.initialState, action)
         expect(spy.called).to.be.true
-      }
+      })
       spy.restore()
     })
 
@@ -792,12 +792,12 @@ describe('editor helper', () => {
         POST.CREATE_FAILURE,
         POST.UPDATE_FAILURE,
       ]
-      for (const type of actionTypes) {
+      actionTypes.forEach((type) => {
         const newState = { isPosting: true }
         action = { type }
         state = subject.methods.getEditorObject(newState, action)
         expect(state.isPosting).to.be.false
-      }
+      })
     })
 
     it('calls #appendUsernames with EDITOR.LOAD_REPLY_ALL_SUCCESS', () => {

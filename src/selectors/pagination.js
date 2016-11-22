@@ -38,6 +38,6 @@ export const selectPagination = createSelector(
       }
     }
     return result && result.pagination
-  }
+  },
 )
 

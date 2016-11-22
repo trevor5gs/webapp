@@ -8,5 +8,5 @@ export default connect(
   (stateProps, dispatchProps, ownProps) => ({
     ...ownProps,
     onClick: dispatchProps.closeAlert,
-  })
+  }),
 )(Dialog)

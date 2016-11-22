@@ -36,7 +36,7 @@ export const Paginator = ({
       {
         hasShowMoreButton ?
           <button onClick={loadNextPage}>{message}</button> :
-            <span className="PaginatorMessage">{message}</span>
+          <span className="PaginatorMessage">{message}</span>
       }
     </div>
   )

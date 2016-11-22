@@ -29,7 +29,7 @@ describe('posts experience update', () => {
       expect(subject.updatePostLoves(
         { state: 'yo' },
         json,
-        { payload: {} }
+        { payload: {} },
       )).to.deep.equal({ state: 'yo' })
     })
 

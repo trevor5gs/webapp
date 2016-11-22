@@ -2,11 +2,11 @@ const keyObjects = []
 let hasListeners = false
 
 function callMethod(method, keyProperties) {
-  for (const obj of keyObjects) {
+  keyObjects.forEach((obj) => {
     if (obj[method]) {
       obj[method](keyProperties)
     }
-  }
+  })
 }
 
 function onKeyDown(e) {

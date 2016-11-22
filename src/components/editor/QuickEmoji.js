@@ -28,8 +28,6 @@ QuickEmojiChoiceButton.propTypes = {
   onClick: PropTypes.func,
 }
 
-
-
 class QuickEmoji extends Component {
 
   static propTypes = {
@@ -74,7 +72,7 @@ class QuickEmoji extends Component {
   renderEmojis() {
     const samples = sampleSize(options, 4)
     return samples.map(sample =>
-      <QuickEmojiChoiceButton key={sample} name={sample} onClick={this.emojiWasClicked} />
+      <QuickEmojiChoiceButton key={sample} name={sample} onClick={this.emojiWasClicked} />,
     )
   }
 

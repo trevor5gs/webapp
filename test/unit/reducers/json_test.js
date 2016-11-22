@@ -337,10 +337,10 @@ describe('json reducer', () => {
   describe('#json', () => {
     function methodCalledWithActions(methods, method, actions) {
       const spy = sinon.stub(methods, method)
-      for (const action of actions) {
+      actions.forEach((action) => {
         subject.json(json, { type: action })
         expect(spy.called).to.be.true
-      }
+      })
       spy.restore()
     }
 

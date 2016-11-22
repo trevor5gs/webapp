@@ -1,15 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import Dialog from '../dialogs/Dialog'
 
 class Uploader extends Component {
 
   static propTypes = {
     className: PropTypes.string,
-    closeAlert: PropTypes.func.isRequired,
     line1: PropTypes.string,
     line2: PropTypes.string,
-    openAlert: PropTypes.func.isRequired,
     saveAction: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
   }
@@ -29,16 +26,7 @@ class Uploader extends Component {
 
   onFileBrowse = (e) => {
     const file = e.target.files[0]
-    if (this.isLegitimateFileType(file)) {
-      return this.props.saveAction(file)
-    }
-    return this.props.openAlert(
-      <Dialog
-        title="Invalid file type"
-        body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
-        onClick={this.props.closeAlert}
-      />
-    )
+    return this.props.saveAction(file)
   }
 
   onClickFileBrowser = () => {
@@ -49,17 +37,8 @@ class Uploader extends Component {
     e.preventDefault()
     e.stopPropagation()
     const file = e.dataTransfer.files[0]
-    if (this.isLegitimateFileType(file)) {
-      this.setState({ hasDragOver: false })
-      return this.props.saveAction(file)
-    }
-    return this.props.openAlert(
-      <Dialog
-        title="Invalid file type"
-        body="We support .jpg, .gif, .png, or .bmp files for avatar and cover images."
-        onDismiss={this.onDismissAlert}
-      />
-    )
+    this.setState({ hasDragOver: false })
+    return this.props.saveAction(file)
   }
 
   onDragOver = (e) => {
@@ -70,10 +49,6 @@ class Uploader extends Component {
   onDragLeave = (e) => {
     e.preventDefault()
     this.setState({ hasDragOver: false })
-  }
-
-  isLegitimateFileType(file) {
-    return (file && file.type && file.type.match(/^image\/(jpg|jpeg|gif|png|bmp)/))
   }
 
   render() {

@@ -7,7 +7,8 @@ import { Provider } from 'react-redux'
 import { applyRouterMiddleware, browserHistory, Router } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import useScroll from 'react-router-scroll/lib/useScroll'
-import { persistStore, storages } from 'redux-persist'
+import { persistStore } from 'redux-persist'
+import { asyncLocalStorage } from 'redux-persist/storages'
 
 // import './main.sass'
 import './main.css'
@@ -111,7 +112,7 @@ function isLocalStorageSupported() {
 if (isLocalStorageSupported()) {
   // use localStorage as indexedDB seems to
   // have issues in chrome and firefox private
-  launchApplication(storages.asyncLocalStorage, true)
+  launchApplication(asyncLocalStorage, true)
 } else {
   // localStorage fails, use an in-memory store
   launchApplication(MemoryStore)

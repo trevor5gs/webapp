@@ -7,19 +7,19 @@ let dispatch = null
 let editorId = null
 
 function checkForEmbeds(text) {
-  for (const service of window.embetter.activeServices) {
+  window.embetter.activeServices.forEach((service) => {
     if (text.match(service.regex)) {
       const mediaUrl = service.link(text.match(service.regex)[1])
       dispatch(postPreviews(mediaUrl, editorId, 0))
     }
-  }
+  })
 }
 
 function handlePlainText(text) {
   if (!text.length) return
   if (text.match(/;base64,/)) {
     dispatch(saveAsset(
-      getBlobFromBase64(text.split(',')[1], { type: 'image/png' }), editorId
+      getBlobFromBase64(text.split(',')[1], { type: 'image/png' }), editorId,
     ))
   } else {
     replaceSelectionWithText(text)
@@ -46,7 +46,7 @@ function checkForImages(e) {
     // this works on FF paste of clipboard data
     if (image.src.match(/;base64,/)) {
       dispatch(saveAsset(
-        getBlobFromBase64(image.src.split(',')[1], { type: 'image/png' }), editorId
+        getBlobFromBase64(image.src.split(',')[1], { type: 'image/png' }), editorId,
       ))
     } else if (image.src.indexOf('webkit-fake-url') === 0) {
       // safari adds 'webkit-fake-url://' to image src and throws security

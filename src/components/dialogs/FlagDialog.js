@@ -47,7 +47,7 @@ class FlagDialog extends Component {
   renderFlagChoices() {
     const { activeChoice } = this.state
     const buttons = []
-    for (const choice of Object.keys(flags)) {
+    Object.keys(flags).forEach((choice) => {
       buttons.push(
         <button
           className={classNames({ isActive: activeChoice === choice }, 'FlagDialogChoice')}
@@ -56,9 +56,9 @@ class FlagDialog extends Component {
           onClick={this.onClickChoice}
         >
           {flags[choice]}
-        </button>
+        </button>,
       )
-    }
+    })
     return buttons
   }
 

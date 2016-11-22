@@ -4,10 +4,10 @@ export function updateQueryParams(params) {
   const queryObj = {}
   if (search.length) {
     const searchArr = search.split('&')
-    for (const str of searchArr) {
+    searchArr.forEach((str) => {
       const keyValueArr = str.split('=')
       queryObj[keyValueArr[0]] = keyValueArr[1]
-    }
+    })
   }
   // set/delete params
   Object.keys(params).forEach((param) => {
@@ -36,12 +36,13 @@ export function getQueryParamValue(param, uri) {
   const search = uri.split('?')[1]
   if (search) {
     const searchArr = search.split('&')
-    for (const keyVal of searchArr) {
+    return searchArr.find((keyVal) => {
       const keyValArr = keyVal.split('=')
       if (keyValArr[0] === param) {
         return keyValArr[1]
       }
-    }
+      return false
+    })
   }
   return null
 }
@@ -52,13 +53,13 @@ export function getPagingQueryParams(uri = '?') {
   const obj = {}
   if (search && search.length) {
     const searchArr = search.split('&')
-    for (const keyVal of searchArr) {
+    searchArr.forEach((keyVal) => {
       const keyValArr = keyVal.split('=')
       const key = keyValArr[0]
       if (paramWhitelist.indexOf(key) !== -1) {
         obj[key] = keyValArr[1]
       }
-    }
+    })
   }
   return obj
 }

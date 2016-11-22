@@ -77,9 +77,9 @@ class BlockCollection extends Component {
       dispatch(addBlock({ kind: 'repost', data: repostContent }, editorId))
     }
     if (blocks.length) {
-      for (const block of blocks) {
+      blocks.forEach((block) => {
         dispatch(addBlock(block, editorId, false))
-      }
+      })
     }
   }
 
@@ -291,7 +291,7 @@ class BlockCollection extends Component {
 
   shouldAutofocus() {
     const { pathname, isComment } = this.props
-    const postRegex = /^\/[\w\-]+\/post\/.+/
+    const postRegex = /^\/[\w-]+\/post\/.+/
     return !(isComment && postRegex.test(pathname))
   }
 
@@ -327,7 +327,7 @@ class BlockCollection extends Component {
   serialize() {
     const { collection, order } = this.props
     const results = []
-    for (const uid of order) {
+    order.forEach((uid) => {
       const block = collection[uid]
       switch (block.kind) {
         case 'text':
@@ -349,7 +349,7 @@ class BlockCollection extends Component {
           }
           break
       }
-    }
+    })
     return results
   }
 

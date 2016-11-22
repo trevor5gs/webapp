@@ -4,7 +4,7 @@ import { LinkIcon } from './EditorIcons'
 import { textToolsPath } from '../../networking/api'
 
 function prefixLink(text) {
-  const linkPrefix = /((ftp|http|https):\/\/.)|mailto(?=:[-\.\w]+@)/
+  const linkPrefix = /((ftp|http|https):\/\/.)|mailto(?=:[-.\w]+@)/
   if (!linkPrefix.test(text)) return `http://${text}`
   return text
 }

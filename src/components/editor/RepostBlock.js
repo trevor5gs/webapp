@@ -1,7 +1,29 @@
+/* eslint-disable react/no-danger */
+
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { LockIcon } from './EditorIcons'
 import { RepostIcon } from '../posts/PostIcons'
+
+function getBlockElement(block, uid) {
+  const data = block.data
+  switch (block.kind) {
+    case 'embed':
+      return (
+        <img key={`repostEmbed_${uid}`} src={data.thumbnailLargeUrl} alt={data.service} />
+      )
+    case 'image':
+      return (
+        <img key={`repostImage_${uid}`} src={data.url} alt={data.alt} />
+      )
+    case 'text':
+      return (
+        <div key={`repostText_${uid}`} dangerouslySetInnerHTML={{ __html: data }} />
+      )
+    default:
+      return null
+  }
+}
 
 class RepostBlock extends Component {
 
@@ -14,26 +36,6 @@ class RepostBlock extends Component {
     return false
   }
 
-  getBlockElement(block, uid) {
-    const data = block.data
-    switch (block.kind) {
-      case 'embed':
-        return (
-          <img key={`repostEmbed_${uid}`} src={data.thumbnailLargeUrl} alt={data.service} />
-        )
-      case 'image':
-        return (
-          <img key={`repostImage_${uid}`} src={data.url} alt={data.alt} />
-        )
-      case 'text':
-        return (
-          <div key={`repostText_${uid}`} dangerouslySetInnerHTML={{ __html: data }} />
-        )
-      default:
-        return null
-    }
-  }
-
   render() {
     const { currentUser, data } = this.props
     return (
@@ -42,7 +44,7 @@ class RepostBlock extends Component {
           <RepostIcon />
           {` by @${currentUser.username}`}
         </div>
-        {data.map((block, i) => this.getBlockElement(block, i))}
+        {data.map((block, i) => getBlockElement(block, i))}
         <div className="RegionTools">
           <LockIcon />
         </div>

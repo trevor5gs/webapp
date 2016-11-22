@@ -27,7 +27,7 @@ const createBrowserStore = (history, passedInitialState = {}) => {
     applyMiddleware(
       sagaMiddleware,
       reduxRouterMiddleware,
-      logger
+      logger,
     ),
   )(createStore)(reducer, initialState)
   store.close = () => store.dispatch(END)

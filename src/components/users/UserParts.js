@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
@@ -12,9 +14,9 @@ const UserStatsLink = ({ asDisabled = false, children, to }, { onClickScrollToCo
     <span className="UserStatsLink asDisabled">
       {children}
     </span> :
-      <Link onClick={onClickScrollToContent} className="UserStatsLink" to={to}>
-        {children}
-      </Link>)
+    <Link onClick={onClickScrollToContent} className="UserStatsLink" to={to}>
+      {children}
+    </Link>)
 
 UserStatsLink.propTypes = {
   asDisabled: PropTypes.bool,
@@ -198,13 +200,13 @@ export const UserLinksCell = ({ className, externalLinksList, isMobile }) => {
             <a href={link.url} rel="noopener noreferrer" target="_blank">
               <img alt={link.type} src={link.icon} />
             </a>
-          </span>
+          </span>,
         )
       } else {
         externalLinks.push(
           <span className="UserExternalLinksLabel" key={i}>
             <a href={link.url} rel="noopener noreferrer" target="_blank">{link.text}</a>
-          </span>
+          </span>,
         )
       }
     })

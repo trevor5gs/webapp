@@ -73,7 +73,7 @@ export function* popAlertsForFile({ fileType, isValid }, { type }) {
         <FileTypeDialog
           title="Looks like you uploaded a .gif."
           body="If it’s animated people will only see the animation on your profile page."
-        />
+        />,
       ))
     }
   } else {
@@ -81,7 +81,7 @@ export function* popAlertsForFile({ fileType, isValid }, { type }) {
       <FileTypeDialog
         title="Invalid file type"
         body="We support .jpg, .gif, .png, and .bmp files."
-      />
+      />,
     ))
     throw new Error('Invalid file type')
   }

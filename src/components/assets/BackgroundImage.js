@@ -78,9 +78,9 @@ export default class BackgroundImage extends Component {
       <Link className={classNames(classList, 'isLink')} to={to}>
         <ImageAsset {...imageAssetProps} />
       </Link> :
-        <div className={classList}>
-          <ImageAsset {...imageAssetProps} />
-        </div>
+      <div className={classList}>
+        <ImageAsset {...imageAssetProps} />
+      </div>
   }
 }
 

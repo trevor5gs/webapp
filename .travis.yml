@@ -1,8 +1,12 @@
 language: node_js
+cache:
+  yarn: true
+  directories:
+    - node_modules
 before_install:
 - cp .env.example .env
 script:
-- npm test
+- yarn test
 - rvm install 2.3.1
 - rvm use 2.3.1
 - gem install danger

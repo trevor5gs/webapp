@@ -28,6 +28,15 @@ import {
 import { MainView } from '../components/views/MainView'
 import { loginToken } from '../networking/api'
 
+function renderStatus(state) {
+  return () => {
+    if (state.status === STATUS.FAILURE) {
+      return <p className="HoppyStatusMessage hasContent">{state.message}</p>
+    }
+    return <p className="HoppyStatusMessage"><span /></p>
+  }
+}
+
 function mapStateToProps(state) {
   const obj = {
     currentStream: selectCurrentStream(state),
@@ -141,15 +150,6 @@ class EnterContainer extends Component {
     this.setState({ showPasswordError: true })
   }
 
-  renderStatus(state) {
-    return () => {
-      if (state.status === STATUS.FAILURE) {
-        return <p className="HoppyStatusMessage hasContent">{state.message}</p>
-      }
-      return <p className="HoppyStatusMessage"><span /></p>
-    }
-  }
-
   render() {
     const { userState, showUserError, passwordState, showPasswordError } = this.state
     const isValid = isFormValid([userState, passwordState])
@@ -177,7 +177,7 @@ class EnterContainer extends Component {
               onFocus={droidFocus}
               onChange={this.onChangeUserControl}
               placeholder="Enter your username or email"
-              renderStatus={showUserError ? this.renderStatus(userState) : null}
+              renderStatus={showUserError ? renderStatus(userState) : null}
               tabIndex="1"
               trimWhitespace
             />
@@ -187,7 +187,7 @@ class EnterContainer extends Component {
               onBlur={droidBlur}
               onFocus={droidFocus}
               onChange={this.onChangePasswordControl}
-              renderStatus={showPasswordError ? this.renderStatus(passwordState) : null}
+              renderStatus={showPasswordError ? renderStatus(passwordState) : null}
               tabIndex="2"
             />
             {this.state.failureMessage ? <p>{this.state.failureMessage}</p> : null}

@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+
 import React, { PropTypes } from 'react'
 
 export const TextMarkupDialog = ({ html }) =>

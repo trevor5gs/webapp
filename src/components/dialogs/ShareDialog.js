@@ -31,6 +31,10 @@ SHARE_DIMENSIONS[SHARE_TYPES.REDDIT] = { width: 540, height: 420 }
 SHARE_DIMENSIONS[SHARE_TYPES.TUMBLR] = { width: 450, height: 430 }
 SHARE_DIMENSIONS[SHARE_TYPES.TWITTER] = { width: 520, height: 250 }
 
+function onClickReadOnlyInput(e) {
+  e.target.select()
+}
+
 class ShareDialog extends Component {
 
   static propTypes = {
@@ -62,10 +66,6 @@ class ShareDialog extends Component {
     }
   }
 
-  onClickReadOnlyInput(e) {
-    e.target.select()
-  }
-
   getMountSharePost() {
     const { author, post } = this.props
     this.shareLink = `${window.location.protocol}//${window.location.host}/${author.username}/post/${post.token}`
@@ -74,7 +74,7 @@ class ShareDialog extends Component {
     const emailSubject = `${summary}, via @${author.username}`
     // grab out the image and summary from the post
     this.image = null
-    for (const region of post.summary) {
+    post.summary.forEach((region) => {
       if (/text/.test(region.kind)) {
         const div = document.createElement('div')
         div.innerHTML = region.data
@@ -85,7 +85,7 @@ class ShareDialog extends Component {
           this.image = `http:${this.image}`
         }
       }
-    }
+    })
     // truncate the tweet summary to be <= 140
     let tweetSummary = summary
     if (tweetSummary.length + this.shareLink.length > 139) {
@@ -142,7 +142,7 @@ class ShareDialog extends Component {
           className="ShareControl"
           type="url"
           readOnly
-          onClick={this.onClickReadOnlyInput}
+          onClick={onClickReadOnlyInput}
           value={this.shareLink}
         />
         <div className="ShareLinks">

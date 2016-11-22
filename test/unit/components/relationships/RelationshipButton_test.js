@@ -1,7 +1,6 @@
 import { getRenderedComponent } from '../../../support/test_helpers'
 import { RELATIONSHIP_PRIORITY } from '../../../../src/constants/relationship_types'
-import {
-  default as subject,
+import subject, {
   getNextPriority,
 } from '../../../../src/components/relationships/RelationshipButton'
 import {
