@@ -2,11 +2,11 @@ const observers = []
 let hasListeners = false
 
 function callMethod(method) {
-  for (const observer of observers) {
+  observers.forEach((observer) => {
     if (observer[method]) {
       observer[method]()
     }
-  }
+  })
 }
 
 function onBeforeUnload() {
@@ -53,5 +53,4 @@ export function removePageVisibilityObserver(observer) {
     removeListeners()
   }
 }
-
 

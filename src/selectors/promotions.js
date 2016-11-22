@@ -39,6 +39,6 @@ export const selectIsCategoryPromotion = createSelector(
 
 export const selectRandomAuthPromotion = createSelector(
   [selectAuthPromotionals], authPromos =>
-    sample(authPromos)
+    sample(authPromos),
 )
 
