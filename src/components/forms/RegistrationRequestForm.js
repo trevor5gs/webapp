@@ -10,6 +10,10 @@ import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 import { isFormValid, getEmailStateFromClient } from '../forms/Validators'
 import { invite } from '../../networking/api'
+import {
+  addPageVisibilityObserver,
+  removePageVisibilityObserver,
+} from '../viewport/PageVisibilityComponent'
 
 function renderSubmitted() {
   return (
@@ -37,10 +41,26 @@ class RegistrationRequestForm extends Component {
     this.delayedShowEmailError = debounce(this.delayedShowEmailError, 1000)
   }
 
+  componentDidMount() {
+    addPageVisibilityObserver(this)
+  }
+
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
     if (availability && {}.hasOwnProperty.call(availability, 'email')) {
       this.onValidateEmailResponse(availability)
+    }
+  }
+
+  componentWillUnmount() {
+    removePageVisibilityObserver(this)
+  }
+
+  onBeforeUnload() {
+    const { dispatch } = this.props
+    const { formStatus } = this.state
+    if (formStatus !== STATUS.SUBMITTED) {
+      dispatch(trackEvent('modal-registration-request-abandonment'))
     }
   }
 

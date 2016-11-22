@@ -16,7 +16,6 @@ import {
 } from '../selectors/gui'
 import { selectModalType } from '../selectors/modal'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
-import { trackEvent } from '../actions/analytics'
 import { setIsNavbarHidden, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import {
@@ -96,13 +95,6 @@ class ViewportContainer extends Component {
     removePageVisibilityObserver(this)
     removeResizeObject(this)
     removeScrollObject(this)
-  }
-
-  onBeforeUnload() {
-    const { dispatch, modalType } = this.props
-    if (modalType === 'RegistrationRequestDialog') {
-      dispatch(trackEvent('modal-registration-request-abandonment'))
-    }
   }
 
   onPageVisibilityHidden() {
