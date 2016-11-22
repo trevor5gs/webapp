@@ -127,11 +127,18 @@
 
 .XClose {
   position: absolute;
-  top: 20px;
-  right: 25px;
+  top: 10px;
+  right: 15px;
 }
 
 .no-touch .XClose:hover {
   color: #000;
+}
+
+@media (--break-2) {
+  .XClose {
+    top: 20px;
+    right: 25px;
+  }
 }
 

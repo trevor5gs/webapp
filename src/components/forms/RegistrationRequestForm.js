@@ -130,7 +130,7 @@ class RegistrationRequestForm extends Component {
             <p className="HoppyStatusMessage"><span /></p>
           }
           <FormButton className="FormButton isRounded isGreen" disabled={!isValid} tabIndex="2">
-            Sign up
+            Create account
           </FormButton>
         </form>
         <Link className="HaveAccountLink" to="/enter">Already have an account?</Link>
