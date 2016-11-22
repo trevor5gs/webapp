@@ -15,7 +15,6 @@ import {
   UserProfile,
 } from '../components/users/UserRenderables'
 import MessageDialog from '../components/dialogs/MessageDialog'
-import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import { TextMarkupDialog, FeaturedInDialog } from '../components/dialogs/DialogRenderables'
 import { closeModal, openModal } from '../actions/modals'
@@ -56,6 +55,7 @@ export function mapStateToProps(state, props) {
 
 /* eslint-disable react/no-unused-prop-types */
 class UserContainer extends Component {
+
   static propTypes = {
     categories: PropTypes.array,
     className: PropTypes.string,
@@ -78,6 +78,10 @@ class UserContainer extends Component {
     ]).isRequired,
     useGif: PropTypes.bool,
     user: PropTypes.object,
+  }
+
+  static contextTypes = {
+    onClickOpenRegistrationRequestDialog: PropTypes.func,
   }
 
   static defaultProps = {
@@ -167,9 +171,8 @@ class UserContainer extends Component {
   }
 
   onOpenSignupModal = () => {
-    const { dispatch } = this.props
-    dispatch(openModal(<RegistrationRequestDialog />, 'isDecapitated'))
-    dispatch(trackEvent('open-registration-request-hire-me-button'))
+    const { onClickOpenRegistrationRequestDialog } = this.context
+    onClickOpenRegistrationRequestDialog('hire-me-button')
   }
 
   render() {

@@ -17,8 +17,6 @@ import { selectPostFromPropsPostId } from '../selectors/post'
 import { getLinkObject } from '../helpers/json_helper'
 import { trackEvent } from '../actions/analytics'
 import { watchPost, unwatchPost } from '../actions/posts'
-import { openModal } from '../actions/modals'
-import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import Editor from '../components/editor/Editor'
 import {
   CategoryHeader,
@@ -90,6 +88,7 @@ export function mapStateToProps(state, props) {
 }
 
 class PostContainer extends Component {
+
   static propTypes = {
     assets: PropTypes.object,
     author: PropTypes.object,
@@ -120,6 +119,10 @@ class PostContainer extends Component {
     showReposters: PropTypes.bool,
   }
 
+  static contextTypes = {
+    onClickOpenRegistrationRequestDialog: PropTypes.func,
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState)
   }
@@ -140,9 +143,8 @@ class PostContainer extends Component {
   }
 
   onSignUp = () => {
-    const { dispatch } = this.props
-    dispatch(openModal(<RegistrationRequestDialog />, 'asDecapitated'))
-    dispatch(trackEvent('open-registration-request-post-tools'))
+    const { onClickOpenRegistrationRequestDialog } = this.context
+    onClickOpenRegistrationRequestDialog('post-tools')
   }
 
   render() {

@@ -1,9 +1,15 @@
 @import "../../lib/styles/properties.css";
 
 .RegistrationSuccess {
+  position: relative;
   padding-top: 40px;
   margin: auto;
   font-size: 24px;
+}
+
+.RegistrationRequestForm {
+  position: relative;
+  z-index: 1;
 }
 
 @media (--break-2) {

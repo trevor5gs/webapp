@@ -124,6 +124,28 @@ describe('gui actions', () => {
     })
   })
 
+  context('#setSignupModalLaunched', () => {
+    const action = subject.setSignupModalLaunched(true)
+
+    it('is an FSA compliant action', () => {
+      expect(isFSA(action)).to.be.true
+    })
+
+    it('has similar action.name and action.type', () => {
+      expect(isFSAName(action, subject.setSignupModalLaunched)).to.be.true
+    })
+
+    it('has a payload with the correct keys', () => {
+      expect(action.payload).to.have.keys(
+        'hasLaunchedSignupModal',
+      )
+    })
+
+    it('sets the appropriate payload', () => {
+      expect(action.payload.hasLaunchedSignupModal).to.be.true
+    })
+  })
+
   context('#setViewportSizeAttributes', () => {
     const action = subject.setViewportSizeAttributes({
       columnCount: 4,

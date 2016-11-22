@@ -3,13 +3,16 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { selectIsLoggedIn } from '../selectors/authentication'
+import { trackEvent } from '../actions/analytics'
 import { getCategories, getPagePromotionals } from '../actions/discover'
+import { setSignupModalLaunched } from '../actions/gui'
+import { openModal } from '../actions/modals'
 import { loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
 import { fetchAuthenticationPromos } from '../actions/promotions'
+import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import DevTools from '../components/devtools/DevTools'
 import { addGlobalDrag, removeGlobalDrag } from '../components/viewport/GlobalDragComponent'
-import { startRefreshTimer } from '../components/viewport/RefreshOnFocus'
 import AnalyticsContainer from '../containers/AnalyticsContainer'
 import FooterContainer from '../containers/FooterContainer'
 import HeroContainer from '../containers/HeroContainer'
@@ -20,20 +23,28 @@ import ModalContainer from '../containers/ModalContainer'
 import NavbarContainer from '../containers/NavbarContainer'
 import OmnibarContainer from '../containers/OmnibarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
+import { selectIsCategoryPromotion, selectIsPagePromotion, selectRandomAuthPromotion } from '../selectors/promotions'
 import { scrollTo } from '../lib/jello'
 
 function mapStateToProps(state) {
   return {
+    authPromo: selectRandomAuthPromotion(state),
+    isCategoryPromotion: selectIsCategoryPromotion(state),
     isLoggedIn: selectIsLoggedIn(state),
+    isPagePromotion: selectIsPagePromotion(state),
   }
 }
 
 class AppContainer extends Component {
 
   static propTypes = {
+    authPromo: PropTypes.object,
+    categoryData: PropTypes.object,
     children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
+    isCategoryPromotion: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
+    isPagePromotion: PropTypes.bool,
     params: PropTypes.object.isRequired,
   }
 
@@ -53,18 +64,21 @@ class AppContainer extends Component {
   }
 
   static childContextTypes = {
+    onClickOpenRegistrationRequestDialog: PropTypes.func,
     onClickScrollToContent: PropTypes.func,
+    onClickTrackCredits: PropTypes.func,
   }
 
   getChildContext() {
     return {
+      onClickOpenRegistrationRequestDialog: this.onClickOpenRegistrationRequestDialog,
       onClickScrollToContent: this.onClickScrollToContent,
+      onClickTrackCredits: this.onClickTrackCredits,
     }
   }
 
   componentDidMount() {
     addGlobalDrag()
-    startRefreshTimer()
     const { dispatch, isLoggedIn } = this.props
     if (isLoggedIn) {
       dispatch(loadProfile())
@@ -93,8 +107,32 @@ class AppContainer extends Component {
     removeGlobalDrag()
   }
 
+  onClickOpenRegistrationRequestDialog = (trackPostfix = 'modal') => {
+    const { authPromo, dispatch } = this.props
+    dispatch(openModal(
+      <RegistrationRequestDialog promotional={authPromo} />,
+      'asDecapitated',
+      'RegistrationRequestDialog',
+    ))
+    dispatch(trackEvent(`open-registration-request-${trackPostfix}`))
+    dispatch(setSignupModalLaunched())
+  }
+
   onClickScrollToContent = () => {
     scrollTo(0, document.querySelector('.Hero').offsetHeight)
+  }
+
+  onClickTrackCredits = () => {
+    const { dispatch, categoryData, isCategoryPromotion, isPagePromotion } = this.props
+    let label = 'promoByline_clicked_'
+    if (isCategoryPromotion && categoryData) {
+      label += categoryData.category.slug
+    } else if (isPagePromotion) {
+      label += 'general'
+    } else {
+      label += 'auth'
+    }
+    dispatch(trackEvent(label))
   }
 
   render() {

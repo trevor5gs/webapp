@@ -4,11 +4,16 @@ import { Link } from 'react-router'
 import debounce from 'lodash/debounce'
 import { isAndroid } from '../../lib/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
+import { trackEvent } from '../../actions/analytics'
 import { requestInvite } from '../../actions/profile'
 import FormButton from '../forms/FormButton'
 import EmailControl from '../forms/EmailControl'
 import { isFormValid, getEmailStateFromClient } from '../forms/Validators'
 import { invite } from '../../networking/api'
+import {
+  addPageVisibilityObserver,
+  removePageVisibilityObserver,
+} from '../viewport/PageVisibilityComponent'
 
 function renderSubmitted() {
   return (
@@ -23,6 +28,7 @@ class RegistrationRequestForm extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    inModal: PropTypes.bool,
   }
 
   componentWillMount() {
@@ -35,10 +41,26 @@ class RegistrationRequestForm extends Component {
     this.delayedShowEmailError = debounce(this.delayedShowEmailError, 1000)
   }
 
+  componentDidMount() {
+    addPageVisibilityObserver(this)
+  }
+
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
     if (availability && {}.hasOwnProperty.call(availability, 'email')) {
       this.onValidateEmailResponse(availability)
+    }
+  }
+
+  componentWillUnmount() {
+    removePageVisibilityObserver(this)
+  }
+
+  onBeforeUnload() {
+    const { dispatch } = this.props
+    const { formStatus } = this.state
+    if (formStatus !== STATUS.SUBMITTED) {
+      dispatch(trackEvent('modal-registration-request-abandonment'))
     }
   }
 
@@ -56,12 +78,15 @@ class RegistrationRequestForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault()
-    const { dispatch } = this.props
+    const { dispatch, inModal } = this.props
     const { emailState } = this.state
     const currentStatus = emailState.status
     const newState = getEmailStateFromClient({ value: this.emailValue, currentStatus })
     if (newState.status === STATUS.SUCCESS) {
       dispatch(requestInvite(this.emailValue))
+      if (inModal) {
+        dispatch(trackEvent('modal-registration-request-form-completion'))
+      }
       this.setState({ formStatus: STATUS.SUBMITTED })
     } else if (newState.status !== currentStatus) {
       this.setState({ emailState: newState })
@@ -76,10 +101,13 @@ class RegistrationRequestForm extends Component {
     const { emailState, showEmailError } = this.state
     const isValid = isFormValid([emailState])
     return (
-      <div>
+      <div className="RegistrationRequestForm">
         <h1>
-          Join The Creators Network.
+          Create an account today.
         </h1>
+        <h2>
+          Receive the best in art, design, fashion, and more - straight in your inbox.
+        </h2>
         <form
           action={invite().path}
           className="AuthenticationForm"
@@ -101,11 +129,11 @@ class RegistrationRequestForm extends Component {
             <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
             <p className="HoppyStatusMessage"><span /></p>
           }
-          <FormButton className="FormButton isRounded" disabled={!isValid} tabIndex="2">
-            Sign up
+          <FormButton className="FormButton isRounded isGreen" disabled={!isValid} tabIndex="2">
+            Create account
           </FormButton>
         </form>
-        <Link className="HaveAccountLink" to="/enter">Have an account?</Link>
+        <Link className="HaveAccountLink" to="/enter">Already have an account?</Link>
       </div>
     )
   }

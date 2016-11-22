@@ -10,7 +10,7 @@ export default class SignUpContainer extends Component {
 
   render() {
     return (
-      <MainView className="Authentication isSignUp">
+      <MainView className="Authentication">
         <div className="AuthenticationFormDialog">
           <RegistrationRequestForm />
         </div>

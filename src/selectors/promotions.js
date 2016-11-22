@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
+import sample from 'lodash/sample'
 import { selectPathname, selectViewNameFromRoute } from './routing'
 import { getLinkArray } from '../helpers/json_helper'
 
@@ -35,3 +36,9 @@ export const selectIsCategoryPromotion = createSelector(
   [selectViewNameFromRoute, selectIsPagePromotion], (viewName, isPagePromotion) =>
     (viewName === 'discover' && !isPagePromotion),
 )
+
+export const selectRandomAuthPromotion = createSelector(
+  [selectAuthPromotionals], authPromos =>
+    sample(authPromos),
+)
+
