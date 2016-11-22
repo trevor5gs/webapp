@@ -12,6 +12,7 @@ import {
   UserFiguresCell,
   UserInfoCell,
   UserLinksCell,
+  UserLocationCell,
   UserNamesCell,
   UserNamesCellCard,
   UserProfileButtons,
@@ -211,9 +212,12 @@ export const UserProfile = ({
       postsCount={user.postsCount}
       username={user.username}
     />
+    <UserLocationCell
+      className="inUserProfile"
+      location={user.location}
+    />
     <UserInfoCell
       className="inUserProfile"
-      location={!isMobile && user.location}
       onClickOpenBio={onClickOpenBio}
       truncatedShortBio={truncatedShortBio}
     />

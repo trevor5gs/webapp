@@ -20,7 +20,7 @@ User Cells  */
 }
 
 .UserCell + .UserCell {
-  padding-top: 17px;
+  padding-top: 20px;
   border-top: 1px solid #aaa;
 }
 
@@ -263,7 +263,8 @@ User Stats */
 User Info */
 
 .UserInfoCell {
-  padding-top: 0 !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
   text-align: left;
 }
 
@@ -278,8 +279,12 @@ User Info */
 .UserLocation {
   position: relative;
   padding-left: 25px;
-  margin-bottom: 0;
+  margin: 0;
   color: #aaa;
+}
+
+.UserLocationCell {
+  text-align: left;
 }
 
 .UserLocation > .SVGIcon {
@@ -403,6 +408,7 @@ User Links */
 }
 
 .UserExternalLinksIcon > a {
+  position: relative;
   display: inline-block;
   width: 22px;
   height: 22px;

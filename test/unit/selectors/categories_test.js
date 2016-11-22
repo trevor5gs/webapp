@@ -84,18 +84,14 @@ describe('categories selectors', () => {
     it('returns the page title related to the /discover page with memoization', () => {
       const state = { json }
       const props = { params: { token: 'paramsToken', type: 'arktip-x-ello' }, location }
-      expect(selectCategoryPageTitle(state, props)).to.be.null
+      expect(selectCategoryPageTitle(state, props)).to.equal('Arktip x Ello')
       const nextProps = { ...props, blah: 1 }
-      expect(selectCategoryPageTitle(state, nextProps)).to.be.null
+      expect(selectCategoryPageTitle(state, nextProps)).to.equal('Arktip x Ello')
       expect(selectCategoryPageTitle.recomputations()).to.equal(1)
       const nextNextProps = { ...nextProps, params: { token: 'paramsToken', type: 'all' } }
       expect(selectCategoryPageTitle(state, nextNextProps)).to.be.null
-      const recommendedProps = { ...nextNextProps, params: { token: 'paramsToken', type: 'recommended' } }
-      expect(selectCategoryPageTitle(state, recommendedProps)).to.equal('Featured')
-      const recentProps = { ...nextNextProps, params: { token: 'paramsToken', type: 'recent' } }
-      expect(selectCategoryPageTitle(state, recentProps)).to.equal('Recent')
-      const lastProps = { ...nextNextProps, params: { token: 'paramsToken', type: 'trending' } }
-      expect(selectCategoryPageTitle(state, lastProps)).to.equal('Trending')
+      const lastProps = { ...nextNextProps, params: { token: 'paramsToken', type: 'recommended' } }
+      expect(selectCategoryPageTitle(state, lastProps)).to.equal('Featured')
     })
   })
 

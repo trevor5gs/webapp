@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import { numberToHuman } from '../../lib/number_to_human'
 import { BadgeCheckIcon, MarkerIcon, ShareIcon } from '../assets/Icons'
 import { MiniPillButton } from '../buttons/Buttons'
+import Hint from '../hints/Hint'
 
 // -------------------------------------
 
@@ -161,16 +162,8 @@ UserStatsCell.propTypes = {
 
 // -----------------
 
-export const UserInfoCell = ({ className, location, onClickOpenBio, truncatedShortBio }) =>
-  <div className={classNames('UserCell UserInfoCell', className)}>
-    { truncatedShortBio && truncatedShortBio.length ?
-      <div className="UserShortBio" dangerouslySetInnerHTML={{ __html: truncatedShortBio }} /> : null
-    }
-    { onClickOpenBio ?
-      <button className="MoreBioButton" onClick={onClickOpenBio} >
-        <span className="MoreBioButtonLabel">See More</span>
-      </button> : null
-    }
+export const UserLocationCell = ({ className, location }) =>
+  <div className={classNames('UserCell UserLocationCell', className)}>
     { location ?
       <p className="UserLocation">
         <MarkerIcon />
@@ -180,9 +173,27 @@ export const UserInfoCell = ({ className, location, onClickOpenBio, truncatedSho
     }
   </div>
 
-UserInfoCell.propTypes = {
+UserLocationCell.propTypes = {
   className: PropTypes.string,
   location: PropTypes.string,
+}
+
+// -----------------
+
+export const UserInfoCell = ({ className, onClickOpenBio, truncatedShortBio }) =>
+  <div className={classNames('UserCell UserInfoCell', className)}>
+    { truncatedShortBio && truncatedShortBio.length ?
+      <div className="UserShortBio" dangerouslySetInnerHTML={{ __html: truncatedShortBio }} /> : null
+    }
+    { onClickOpenBio ?
+      <button className="MoreBioButton" onClick={onClickOpenBio} >
+        <span className="MoreBioButtonLabel">See More</span>
+      </button> : null
+    }
+  </div>
+
+UserInfoCell.propTypes = {
+  className: PropTypes.string,
   onClickOpenBio: PropTypes.func,
   truncatedShortBio: PropTypes.string,
 }
@@ -199,6 +210,7 @@ export const UserLinksCell = ({ className, externalLinksList, isMobile }) => {
           <span className="UserExternalLinksIcon" key={i}>
             <a href={link.url} rel="noopener noreferrer" target="_blank">
               <img alt={link.type} src={link.icon} />
+              <Hint>{link.type}</Hint>
             </a>
           </span>,
         )

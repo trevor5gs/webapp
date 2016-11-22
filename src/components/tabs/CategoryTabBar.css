@@ -14,7 +14,7 @@
 
 .CategoryTabBarLinks {
   display: inline-block;
-  max-width: calc(100% - 70px);
+  width: calc(100% - 70px);
   height: 100%;
   padding: 0 10px;
   -webkit-overflow-scrolling: touch;

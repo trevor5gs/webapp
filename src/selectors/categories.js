@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
+import startCase from 'lodash/startCase'
 import trunc from 'trunc-html'
 import { META } from '../constants/locales/en'
 import { selectAllCategoriesPage } from './pages'
@@ -57,22 +58,6 @@ export const selectOnboardingCategories = createSelector(
   },
 )
 
-export const selectCategoryPageTitle = createSelector(
-  [selectParamsType], (paramsType) => {
-    switch (paramsType) {
-      case undefined:
-      case 'recommended':
-        return 'Featured'
-      case 'recent':
-        return 'Recent'
-      case 'trending':
-        return 'Trending'
-      default:
-        return null
-    }
-  },
-)
-
 export const selectCategoryTabs = createSelector(
   [selectCategories], (categories) => {
     const { meta, primary, secondary, tertiary } = categories
@@ -92,6 +77,23 @@ export const selectCategoryTabs = createSelector(
       if (index === 0) { tabs.push({ kind: 'divider' }) }
     })
     return tabs
+  },
+)
+
+export const selectCategoryPageTitle = createSelector(
+  [selectParamsType, selectCategoryCollection], (paramsType, categories) => {
+    switch (paramsType) {
+      case 'all':
+        return null
+      case undefined:
+      case 'recommended':
+        return 'Featured'
+      default: {
+        const key = categories &&
+          Object.keys(categories).find(k => categories[k].slug === paramsType)
+        return key ? categories[key].name : startCase(paramsType).replace(/\sX\s/, ' x ')
+      }
+    }
   },
 )
 
