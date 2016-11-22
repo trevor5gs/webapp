@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import { numberToHuman } from '../../lib/number_to_human'
 import { BadgeCheckIcon, MarkerIcon, ShareIcon } from '../assets/Icons'
 import { MiniPillButton } from '../buttons/Buttons'
+import Hint from '../hints/Hint'
 
 // -------------------------------------
 
@@ -209,6 +210,7 @@ export const UserLinksCell = ({ className, externalLinksList, isMobile }) => {
           <span className="UserExternalLinksIcon" key={i}>
             <a href={link.url} rel="noopener noreferrer" target="_blank">
               <img alt={link.type} src={link.icon} />
+              <Hint>{link.type}</Hint>
             </a>
           </span>,
         )
