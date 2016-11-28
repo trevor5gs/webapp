@@ -103,10 +103,10 @@ class RegistrationRequestForm extends Component {
     return (
       <div className="RegistrationRequestForm">
         <h1>
-          Create an account today.
+          Join The Creators Network.
         </h1>
         <h2>
-          Receive the best in art, design, fashion, and more - straight in your inbox.
+          Be part of whats next in art, design, fashion, web culture & more.
         </h2>
         <form
           action={invite().path}
