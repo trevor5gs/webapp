@@ -24,11 +24,14 @@ import NavbarContainer from '../containers/NavbarContainer'
 import OmnibarContainer from '../containers/OmnibarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
 import { selectIsCategoryPromotion, selectIsPagePromotion, selectRandomAuthPromotion } from '../selectors/promotions'
+import { selectViewNameFromRoute } from '../selectors/routing'
 import { scrollTo } from '../lib/jello'
 
 function mapStateToProps(state) {
+  const viewName = selectViewNameFromRoute(state)
   return {
     authPromo: selectRandomAuthPromotion(state),
+    isAuthenticationLayout: viewName === 'authentication' || viewName === 'join',
     isCategoryPromotion: selectIsCategoryPromotion(state),
     isLoggedIn: selectIsLoggedIn(state),
     isPagePromotion: selectIsPagePromotion(state),
@@ -42,6 +45,7 @@ class AppContainer extends Component {
     categoryData: PropTypes.object,
     children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
+    isAuthenticationLayout: PropTypes.bool,
     isCategoryPromotion: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     isPagePromotion: PropTypes.bool,
@@ -108,7 +112,8 @@ class AppContainer extends Component {
   }
 
   onClickOpenRegistrationRequestDialog = (trackPostfix = 'modal') => {
-    const { authPromo, dispatch } = this.props
+    const { authPromo, dispatch, isAuthenticationLayout } = this.props
+    if (isAuthenticationLayout) { return }
     dispatch(openModal(
       <RegistrationRequestDialog promotional={authPromo} />,
       'asDecapitated',
