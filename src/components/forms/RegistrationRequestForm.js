@@ -106,7 +106,7 @@ class RegistrationRequestForm extends Component {
           Join The Creators Network.
         </h1>
         <h2>
-          Be part of whats next in art, design, fashion, web culture & more.
+          Be part of what&apos;s next in art, design, fashion, web culture & more.
         </h2>
         <form
           action={invite().path}
