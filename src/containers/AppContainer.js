@@ -23,7 +23,12 @@ import ModalContainer from '../containers/ModalContainer'
 import NavbarContainer from '../containers/NavbarContainer'
 import OmnibarContainer from '../containers/OmnibarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
-import { selectIsCategoryPromotion, selectIsPagePromotion, selectRandomAuthPromotion } from '../selectors/promotions'
+import {
+  selectCategoryData,
+  selectIsCategoryPromotion,
+  selectIsPagePromotion,
+  selectRandomAuthPromotion,
+} from '../selectors/promotions'
 import { selectViewNameFromRoute } from '../selectors/routing'
 import { scrollTo } from '../lib/jello'
 
@@ -31,6 +36,7 @@ function mapStateToProps(state) {
   const viewName = selectViewNameFromRoute(state)
   return {
     authPromo: selectRandomAuthPromotion(state),
+    categoryData: selectCategoryData(state),
     isAuthenticationLayout: viewName === 'authentication' || viewName === 'join',
     isCategoryPromotion: selectIsCategoryPromotion(state),
     isLoggedIn: selectIsLoggedIn(state),
