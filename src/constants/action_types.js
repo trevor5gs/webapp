@@ -270,6 +270,7 @@ export const RELATIONSHIPS = {
 
 export const TRACK = {
   EVENT: 'TRACK.EVENT',
+  INITIAL_PAGE: 'TRACK.INITIAL_PAGE',
 }
 
 export const USER = {

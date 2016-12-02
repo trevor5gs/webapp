@@ -11,5 +11,11 @@ export function trackEvent(label, options = {}) {
   }
 }
 
-export default trackEvent
+export function trackInitialPage() {
+  return {
+    type: TRACK.INITIAL_PAGE,
+    meta: {},
+    payload: {},
+  }
+}
 

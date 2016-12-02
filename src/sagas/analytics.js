@@ -5,10 +5,13 @@ import get from 'lodash/get'
 import * as ACTION_TYPES from '../constants/action_types'
 import { selectActiveNotificationsType } from '../selectors/gui'
 
+let shouldCallInitialTrackPage = false
+
 const pageTrackTypes = [
   ACTION_TYPES.GUI.NOTIFICATIONS_TAB,
   ACTION_TYPES.GUI.TOGGLE_NOTIFICATIONS,
   ACTION_TYPES.LOAD_NEXT_CONTENT_REQUEST,
+  ACTION_TYPES.TRACK.INITIAL_PAGE,
   LOCATION_CHANGE,
 ]
 
@@ -19,9 +22,6 @@ function* trackEvent() {
     if (window.analytics) {
       window.analytics.track(label, options)
     }
-    if (window.ga) {
-      window.ga('send', 'event', 'Ello', label)
-    }
   }
 }
 
@@ -29,17 +29,18 @@ function* trackPage(pageTrackChannel) {
   while (true) {
     const action = yield take(pageTrackChannel)
     const pageProps = {}
+    if ((action.type === ACTION_TYPES.LOCATION_CHANGE ||
+      action.type === ACTION_TYPES.TRACK.INITIAL_PAGE) && window.analytics) {
+      shouldCallInitialTrackPage = true
+    }
     if (action.type === ACTION_TYPES.GUI.NOTIFICATIONS_TAB) {
       pageProps.path = `/notifications/${get(action, 'payload.activeTabType', '')}`
     } else if (action.type === ACTION_TYPES.GUI.TOGGLE_NOTIFICATIONS) {
       const lastTabType = yield select(selectActiveNotificationsType)
       pageProps.path = `/notifications/${lastTabType === 'all' ? '' : lastTabType}`
     }
-    if (window.analytics) {
+    if (shouldCallInitialTrackPage) {
       window.analytics.page(pageProps)
-    }
-    if (window.ga) {
-      window.ga('send', 'pageview')
     }
   }
 }

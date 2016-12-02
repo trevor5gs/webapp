@@ -4,7 +4,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import get from 'lodash/get'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import { trackEvent } from '../actions/analytics'
+import { trackEvent, trackInitialPage } from '../actions/analytics'
 import { getCategories, getPagePromotionals } from '../actions/discover'
 import { setSignupModalLaunched } from '../actions/gui'
 import { openModal } from '../actions/modals'
@@ -93,6 +93,7 @@ class AppContainer extends Component {
   componentDidMount() {
     addGlobalDrag()
     const { dispatch, isLoggedIn } = this.props
+    dispatch(trackInitialPage())
     if (isLoggedIn) {
       dispatch(loadProfile())
       dispatch(loadNotifications({ category: 'all' }))
