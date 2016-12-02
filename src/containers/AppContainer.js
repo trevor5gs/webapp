@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
+import get from 'lodash/get'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { trackEvent } from '../actions/analytics'
 import { getCategories, getPagePromotionals } from '../actions/discover'
@@ -77,6 +78,7 @@ class AppContainer extends Component {
     onClickOpenRegistrationRequestDialog: PropTypes.func,
     onClickScrollToContent: PropTypes.func,
     onClickTrackCredits: PropTypes.func,
+    onClickTrackCTA: PropTypes.func,
   }
 
   getChildContext() {
@@ -84,6 +86,7 @@ class AppContainer extends Component {
       onClickOpenRegistrationRequestDialog: this.onClickOpenRegistrationRequestDialog,
       onClickScrollToContent: this.onClickScrollToContent,
       onClickTrackCredits: this.onClickTrackCredits,
+      onClickTrackCTA: this.onClickTrackCTA,
     }
   }
 
@@ -144,6 +147,11 @@ class AppContainer extends Component {
       label += 'auth'
     }
     dispatch(trackEvent(label))
+  }
+
+  onClickTrackCTA = () => {
+    const { dispatch, categoryData } = this.props
+    dispatch(trackEvent(`promoCTA_clicked_${get(categoryData, 'category.slug', 'general')}`))
   }
 
   render() {

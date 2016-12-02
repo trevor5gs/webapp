@@ -131,13 +131,11 @@ class HeroContainer extends Component {
 
   static childContextTypes = {
     onClickShareProfile: PropTypes.func,
-    onClickTrackCTA: PropTypes.func,
   }
 
   getChildContext() {
     return {
       onClickShareProfile: this.onClickShareProfile,
-      onClickTrackCTA: this.onClickTrackCTA,
     }
   }
 
@@ -169,13 +167,6 @@ class HeroContainer extends Component {
     const action = bindActionCreators(trackEvent, dispatch)
     dispatch(openModal(<ShareDialog username={username} trackEvent={action} />))
     dispatch(trackEvent('open-share-dialog-profile'))
-  }
-
-  onClickTrackCTA = () => {
-    const { dispatch, categoryData } = this.props
-    let label = 'promoCTA_clicked_'
-    label += categoryData ? categoryData.category.name : 'general'
-    dispatch(trackEvent(label))
   }
 
   onDismissBroadcast = () => {

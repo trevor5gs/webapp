@@ -46,7 +46,7 @@ export const HeroPromotionCTA = ({ caption, isLoggedIn, to }, { onClickTrackCTA 
 }
 
 HeroPromotionCTA.contextTypes = {
-  onClickTrackCredits: PropTypes.func.isRequired,
+  onClickTrackCTA: PropTypes.func.isRequired,
 }
 
 HeroPromotionCTA.propTypes = {
