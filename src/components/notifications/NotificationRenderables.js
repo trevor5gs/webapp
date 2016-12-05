@@ -1,5 +1,8 @@
 import React, { PropTypes } from 'react'
+import classNames from 'classnames'
 import { Link } from 'react-router'
+import { XIcon } from '../assets/Icons'
+import ImageAsset from '../assets/ImageAsset'
 import { regionItemsForNotifications } from '../regions/RegionRenderables'
 import { Notification } from './Notification'
 
@@ -47,6 +50,38 @@ PostTextLink.propTypes = {
   post: PropTypes.object,
   text: PropTypes.string,
 }
+
+export const PinnedNotification = (props, context) =>
+  <div className={classNames('PinnedNotification', { hasAsset: props.src })}>
+    {props.src &&
+      <ImageAsset
+        alt={props.title}
+        className="PinnedNotificationAsset"
+        src={props.src}
+        width={70}
+        height={70}
+      />
+    }
+    <h2 className="PinnedNotificationTitle">{props.title}</h2>
+    <div className="PinnedNotificationBody">{props.body}</div>
+    {props.ctaTo &&
+      <Link className="PinnedNotificationCTA" to={props.ctaTo} >Learn More</Link>
+    }
+    <button className="PinnedNotificationX" onClick={context.onClosePinnedNotification}>
+      <XIcon />
+    </button>
+  </div>
+
+PinnedNotification.propTypes = {
+  title: PropTypes.string.isRequired,
+  body: PropTypes.string.isRequired,
+  src: PropTypes.string,
+  ctaTo: PropTypes.string,
+}
+PinnedNotification.contextTypes = {
+  onClosePinnedNotification: PropTypes.func.isRequired,
+}
+
 
 // COMMENTS
 export const CommentNotification = (props) => {

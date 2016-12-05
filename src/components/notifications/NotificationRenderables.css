@@ -1,0 +1,42 @@
+@import "../../lib/styles/properties.css";
+
+.PinnedNotification {
+  position: relative;
+  padding: 10px;
+  margin-top: 1px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #000;
+}
+
+.PinnedNotification.hasAsset {
+  min-height: 100px;
+  padding-left: 90px;
+}
+
+.PinnedNotificationAsset {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.PinnedNotificationTitle {
+  @apply --sanserif-bold;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.PinnedNotificationBody {
+  margin-bottom: 15px;
+}
+
+.PinnedNotificationCTA {
+  border-bottom: 1px solid;
+}
+
+.PinnedNotificationX {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+

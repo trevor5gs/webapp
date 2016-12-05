@@ -18,11 +18,24 @@ import {
 } from '../../components/notifications/NotificationIcons'
 import { TabListButtons } from '../../components/tabs/TabList'
 import { Paginator } from '../../components/streams/Paginator'
+import { PinnedNotification } from '../../components/notifications/NotificationRenderables'
 
+// TODO: Pinned notifications:
+// - Determine whether the user has seen the latest pinned notification
+// - Pull the proper `pinnedAttributes` out of the store
+// - Dispatch the action in `onClosePinnedNotification` to last seen pinned notification
+// - Duplicate this logic in the mobile view in: `./src/containers/notifications/Notifications`
 function mapStateToProps(state) {
   const activeTabType = selectActiveNotificationsType(state)
   return {
     activeTabType,
+    // start stubbing in...
+    hasPinnedNotification: true,
+    pinnedBody: 'Pinned Body',
+    pinnedCTATo: '#',
+    pinnedSrc: '/apple-touch-icon.png',
+    pinnedTitle: 'Pinned Title',
+    // end stubbing in...
     streamAction: loadNotifications({ category: activeTabType }),
     streamType: selectStreamType(state),
   }
@@ -35,10 +48,29 @@ class NotificationsContainer extends Component {
     dispatch: PropTypes.func.isRequired,
     streamAction: PropTypes.object,
     streamType: PropTypes.string,
+    hasPinnedNotification: PropTypes.bool,
+    pinnedBody: PropTypes.string,
+    pinnedCTATo: PropTypes.string,
+    pinnedSrc: PropTypes.string,
+    pinnedTitle: PropTypes.string,
   }
 
   static defaultProps = {
     activeTabType: 'all',
+    pinnedBody: '',
+    pinnedCTATo: null,
+    pinnedSrc: null,
+    pinnedTitle: '',
+  }
+
+  static childContextTypes = {
+    onClosePinnedNotification: PropTypes.func.isRequired,
+  }
+
+  getChildContext() {
+    return {
+      onClosePinnedNotification: this.onClosePinnedNotification,
+    }
   }
 
   componentWillMount() {
@@ -116,8 +148,14 @@ class NotificationsContainer extends Component {
     dispatch(toggleNotifications({ isActive: false }))
   }
 
+  onClosePinnedNotification = () => {
+    // TODO: dispatch the action that updates the current pinned notification
+    console.log('dispatch the action that updates the current pinned notification') // eslint-disable-line
+  }
+
   render() {
     const { activeTabType, streamAction } = this.props
+    const { hasPinnedNotification, pinnedBody, pinnedCTATo, pinnedSrc, pinnedTitle } = this.props
     const { isReloading } = this.state
     const tabs = [
       { type: 'all', children: 'All' },
@@ -154,6 +192,14 @@ class NotificationsContainer extends Component {
                 totalPagesRemaining={0}
               /> :
               null
+          }
+          { hasPinnedNotification &&
+            <PinnedNotification
+              body={pinnedBody}
+              ctaTo={pinnedCTATo}
+              src={pinnedSrc}
+              title={pinnedTitle}
+            />
           }
           <StreamContainer
             action={streamAction}
