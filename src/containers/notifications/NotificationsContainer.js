@@ -18,23 +18,40 @@ import {
 } from '../../components/notifications/NotificationIcons'
 import { TabListButtons } from '../../components/tabs/TabList'
 import { Paginator } from '../../components/streams/Paginator'
-import { PinnedNotification } from '../../components/notifications/NotificationRenderables'
+import { AnnouncementNotification } from '../../components/notifications/NotificationRenderables'
 
-// TODO: Pinned notifications:
-// - Determine whether the user has seen the latest pinned notification
-// - Pull the proper `pinnedAttributes` out of the store
-// - Dispatch the action in `onClosePinnedNotification` to last seen pinned notification
+// TODO: Announcement notifications:
+// - Determine whether the user has seen the latest announcement notification
+// - Pull the proper `announcementAttributes` out of the store
+// - Dispatch the action in `onCloseAnnouncementNotification` to last seen announcement notification
 // - Duplicate this logic in the mobile view in: `./src/containers/notifications/Notifications`
+
+// TODO: Stubbed dummy selector till the api is fully baked
+// @see https://github.com/ello/ello/blob/b8898e9cfb948969f162f4a7e60fdac41e5f4bfc/db/schema.rb#L33-L43
+const selectAnnouncement = () => ({
+  body: 'Announcement Body',
+  createdAt: null,
+  ctaCaption: undefined,
+  ctaHref: '#',
+  header: 'Announcement Title',
+  image: '/apple-touch-icon.png', // sounds like these will be similar to Avatars?
+  imageMetaData: {}, // Don't think we'll need it, unless all image sizes are not square?
+  pushNotificationSentAt: null,
+  updatedAt: null,
+})
+
 function mapStateToProps(state) {
   const activeTabType = selectActiveNotificationsType(state)
+  const announcement = selectAnnouncement()
   return {
     activeTabType,
-    // start stubbing in...
-    hasPinnedNotification: true,
-    pinnedBody: 'Pinned Body',
-    pinnedCTATo: '#',
-    pinnedSrc: '/apple-touch-icon.png',
-    pinnedTitle: 'Pinned Title',
+    // start stubbing in pieces we need...
+    announcementBody: announcement.body,
+    announcementCTACaption: announcement.ctaCaption || 'Learn More',
+    announcementCTAHref: announcement.ctaHref,
+    announcementImage: announcement.image,
+    announcementTitle: announcement.header,
+    hasAnnouncementNotification: true, // will need to determine whether to show this thing or not
     // end stubbing in...
     streamAction: loadNotifications({ category: activeTabType }),
     streamType: selectStreamType(state),
@@ -45,31 +62,32 @@ class NotificationsContainer extends Component {
 
   static propTypes = {
     activeTabType: PropTypes.string.isRequired,
+    announcementBody: PropTypes.string,
+    announcementCTAHref: PropTypes.string,
+    announcementCTACaption: PropTypes.string,
+    announcementImage: PropTypes.string,
+    announcementTitle: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
+    hasAnnouncementNotification: PropTypes.bool,
     streamAction: PropTypes.object,
     streamType: PropTypes.string,
-    hasPinnedNotification: PropTypes.bool,
-    pinnedBody: PropTypes.string,
-    pinnedCTATo: PropTypes.string,
-    pinnedSrc: PropTypes.string,
-    pinnedTitle: PropTypes.string,
   }
 
   static defaultProps = {
     activeTabType: 'all',
-    pinnedBody: '',
-    pinnedCTATo: null,
-    pinnedSrc: null,
-    pinnedTitle: '',
+    announcementBody: '',
+    announcementCTAHref: null,
+    announcementImage: null,
+    announcementTitle: '',
   }
 
   static childContextTypes = {
-    onClosePinnedNotification: PropTypes.func.isRequired,
+    onCloseAnnouncementNotification: PropTypes.func.isRequired,
   }
 
   getChildContext() {
     return {
-      onClosePinnedNotification: this.onClosePinnedNotification,
+      onCloseAnnouncementNotification: this.onCloseAnnouncementNotification,
     }
   }
 
@@ -148,14 +166,22 @@ class NotificationsContainer extends Component {
     dispatch(toggleNotifications({ isActive: false }))
   }
 
-  onClosePinnedNotification = () => {
-    // TODO: dispatch the action that updates the current pinned notification
-    console.log('dispatch the action that updates the current pinned notification') // eslint-disable-line
+  onCloseAnnouncementNotification = () => {
+    // TODO: dispatch the action that updates the current announcement notification
+    console.log('dispatch the action that updates the current announcement notification') // eslint-disable-line
   }
 
   render() {
-    const { activeTabType, streamAction } = this.props
-    const { hasPinnedNotification, pinnedBody, pinnedCTATo, pinnedSrc, pinnedTitle } = this.props
+    const {
+      activeTabType,
+      announcementBody,
+      announcementCTACaption,
+      announcementCTAHref,
+      announcementImage,
+      announcementTitle,
+      hasAnnouncementNotification,
+      streamAction,
+    } = this.props
     const { isReloading } = this.state
     const tabs = [
       { type: 'all', children: 'All' },
@@ -193,12 +219,13 @@ class NotificationsContainer extends Component {
               /> :
               null
           }
-          { hasPinnedNotification &&
-            <PinnedNotification
-              body={pinnedBody}
-              ctaTo={pinnedCTATo}
-              src={pinnedSrc}
-              title={pinnedTitle}
+          { hasAnnouncementNotification &&
+            <AnnouncementNotification
+              body={announcementBody}
+              ctaCaption={announcementCTACaption}
+              ctaHref={announcementCTAHref}
+              src={announcementImage}
+              title={announcementTitle}
             />
           }
           <StreamContainer

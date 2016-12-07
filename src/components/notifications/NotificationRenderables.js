@@ -51,35 +51,40 @@ PostTextLink.propTypes = {
   text: PropTypes.string,
 }
 
-export const PinnedNotification = (props, context) =>
-  <div className={classNames('PinnedNotification', { hasAsset: props.src })}>
+export const AnnouncementNotification = (props, context) =>
+  <div className={classNames('AnnouncementNotification', { hasAsset: props.src })}>
     {props.src &&
       <ImageAsset
         alt={props.title}
-        className="PinnedNotificationAsset"
+        className="AnnouncementNotificationAsset"
         src={props.src}
         width={70}
         height={70}
       />
     }
-    <h2 className="PinnedNotificationTitle">{props.title}</h2>
-    <div className="PinnedNotificationBody">{props.body}</div>
-    {props.ctaTo &&
-      <Link className="PinnedNotificationCTA" to={props.ctaTo} >Learn More</Link>
+    {props.title &&
+      <h2 className="AnnouncementNotificationTitle">{props.title}</h2>
     }
-    <button className="PinnedNotificationX" onClick={context.onClosePinnedNotification}>
+    {props.body &&
+      <div className="AnnouncementNotificationBody">{props.body}</div>
+    }
+    {props.ctaHref &&
+      <Link className="AnnouncementNotificationCTA" to={props.ctaHref} >{props.ctaCaption}</Link>
+    }
+    <button className="AnnouncementNotificationX" onClick={context.onCloseAnnouncementNotification}>
       <XIcon />
     </button>
   </div>
 
-PinnedNotification.propTypes = {
-  title: PropTypes.string.isRequired,
-  body: PropTypes.string.isRequired,
+AnnouncementNotification.propTypes = {
+  body: PropTypes.string,
+  ctaCaption: PropTypes.string,
+  ctaHref: PropTypes.string,
   src: PropTypes.string,
-  ctaTo: PropTypes.string,
+  title: PropTypes.string,
 }
-PinnedNotification.contextTypes = {
-  onClosePinnedNotification: PropTypes.func.isRequired,
+AnnouncementNotification.contextTypes = {
+  onCloseAnnouncementNotification: PropTypes.func.isRequired,
 }
 
 
