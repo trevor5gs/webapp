@@ -48,6 +48,7 @@ import InfoForm from '../../components/forms/InfoForm'
 import { MainView } from '../../components/views/MainView'
 import { isElloAndroid } from '../../lib/jello'
 import { profilePath } from '../../networking/api'
+import { trackEvent } from '../../actions/analytics'
 
 function getOriginalAssetUrl(asset) {
   return (
@@ -210,6 +211,7 @@ class Settings extends Component {
     const { dispatch } = this.props
     dispatch(deleteProfile())
     dispatch(logout())
+    dispatch(trackEvent('user-deleted-account'))
   }
 
   onSubmit = (e) => {
