@@ -47,10 +47,9 @@ function toggleTools(input) {
 
 function selectionIsText() {
   let parent = window.getSelection().focusNode
-  // Firefox more often than not reports null for focusNode
-  parent = (!parent && isFirefox() && document.activeElement.tagName === 'INPUT') ?
-    document.activeElement :
-    parent
+  // Firefox often reports null or something else entirely for focusNode
+  parent = (isFirefox() && document.activeElement.tagName === 'INPUT') ?
+    document.activeElement : parent
   while (parent) {
     if (parent.classList && parent.classList.contains('text')) {
       return true
