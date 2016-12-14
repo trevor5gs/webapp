@@ -63,10 +63,15 @@ class AnalyticsContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // TODO: check if user doesn't allow analytics and reload page
-    if (this.hasLoadedTracking) { return }
     const { analyticsId, createdAt, allowsAnalytics } = nextProps
-    if (this.props.analyticsId && analyticsId && allowsAnalytics) {
+    if (!allowsAnalytics && this.props.allowsAnalytics) {
+      window.location.reload(true)
+    } else if (this.hasLoadedTracking) {
+      // identify the user if they didn't previously have an id to identify with
+      if (!this.props.analyticsId && analyticsId) {
+        window.analytics.identify(analyticsId, { createdAt })
+      }
+    } else if (this.props.analyticsId && analyticsId && allowsAnalytics) {
       this.hasLoadedTracking = true
       addSegment(analyticsId, createdAt)
     }
