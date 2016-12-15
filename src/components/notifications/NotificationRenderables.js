@@ -69,9 +69,15 @@ export const AnnouncementNotification = (props, context) =>
       <div className="AnnouncementNotificationBody">{props.body}</div>
     }
     {props.ctaHref &&
-      <Link className="AnnouncementNotificationCTA" to={props.ctaHref} >{props.ctaCaption}</Link>
+      <Link
+        className="AnnouncementNotificationCTA"
+        onClick={context.onClickAnnouncementNotification}
+        to={props.ctaHref}
+      >
+        {props.ctaCaption}
+      </Link>
     }
-    <button className="AnnouncementNotificationX" onClick={context.onCloseAnnouncementNotification}>
+    <button className="AnnouncementNotificationX" onClick={context.onClickAnnouncementNotification}>
       <XIcon />
     </button>
   </div>
@@ -84,7 +90,7 @@ AnnouncementNotification.propTypes = {
   title: PropTypes.string,
 }
 AnnouncementNotification.contextTypes = {
-  onCloseAnnouncementNotification: PropTypes.func.isRequired,
+  onClickAnnouncementNotification: PropTypes.func.isRequired,
 }
 
 

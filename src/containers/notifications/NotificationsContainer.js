@@ -23,7 +23,7 @@ import { AnnouncementNotification } from '../../components/notifications/Notific
 // TODO: Announcement notifications:
 // - Determine whether the user has seen the latest announcement notification
 // - Pull the proper `announcementAttributes` out of the store
-// - Dispatch the action in `onCloseAnnouncementNotification` to last seen announcement notification
+// - Dispatch the action in `onClickAnnouncementNotification` to last seen announcement notification
 // - Duplicate this logic in the mobile view in: `./src/containers/notifications/Notifications`
 
 // TODO: Stubbed dummy selector till the api is fully baked
@@ -82,12 +82,12 @@ class NotificationsContainer extends Component {
   }
 
   static childContextTypes = {
-    onCloseAnnouncementNotification: PropTypes.func.isRequired,
+    onClickAnnouncementNotification: PropTypes.func.isRequired,
   }
 
   getChildContext() {
     return {
-      onCloseAnnouncementNotification: this.onCloseAnnouncementNotification,
+      onClickAnnouncementNotification: this.onClickAnnouncementNotification,
     }
   }
 
@@ -166,7 +166,7 @@ class NotificationsContainer extends Component {
     dispatch(toggleNotifications({ isActive: false }))
   }
 
-  onCloseAnnouncementNotification = () => {
+  onClickAnnouncementNotification = () => {
     // TODO: dispatch the action that updates the current announcement notification
     console.log('dispatch the action that updates the current announcement notification') // eslint-disable-line
   }
