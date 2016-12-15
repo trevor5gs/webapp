@@ -7,6 +7,7 @@ import { scrollTo } from '../../lib/jello'
 import Session from '../../lib/session'
 import { selectActiveNotificationsType } from '../../selectors/gui'
 import { selectStreamType } from '../../selectors/stream'
+import { trackEvent } from '../../actions/analytics'
 import { toggleNotifications } from '../../actions/gui'
 import { loadNotifications } from '../../actions/notifications'
 import StreamContainer from '../../containers/StreamContainer'
@@ -99,6 +100,10 @@ class NotificationsContainer extends Component {
   componentDidMount() {
     document.addEventListener('click', this.onClickDocument)
     document.addEventListener('touchstart', this.onClickDocument)
+    if (this.props.hasAnnouncementNotification) {
+      const { announcementBody, announcementTitle, dispatch } = this.props
+      dispatch(trackEvent('announcement_viewed', { name: announcementTitle || announcementBody }))
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -166,9 +171,13 @@ class NotificationsContainer extends Component {
     dispatch(toggleNotifications({ isActive: false }))
   }
 
-  onClickAnnouncementNotification = () => {
-    // TODO: dispatch the action that updates the current announcement notification
-    console.log('dispatch the action that updates the current announcement notification') // eslint-disable-line
+  onClickAnnouncementNotification = (e) => {
+    const { announcementBody, announcementTitle, dispatch } = this.props
+    const trackType = (e.target.classList.contains('AnnouncementNotificationCTA')) ? 'clicked' : 'closed'
+    const trackAction = trackEvent(`announcement_${trackType}`, { name: announcementTitle || announcementBody })
+    // TODO: dispatch the action that updates last seen (which should dismiss the notification)')
+    // dispatch(setLastAnnouncementNotification(??))
+    dispatch(trackAction)
   }
 
   render() {
