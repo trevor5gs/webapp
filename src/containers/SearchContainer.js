@@ -62,12 +62,6 @@ class SearchContainer extends Component {
     this.state = { type }
   }
 
-  componentDidMount() {
-    const { terms } = this.props
-    const { type } = this.state
-    this.search({ terms, type })
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState)
   }
