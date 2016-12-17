@@ -86,6 +86,8 @@ class SearchContainer extends Component {
   search(valueObject) {
     const { dispatch, isLoggedIn, pathname } = this.props
     const vo = valueObject
+    vo.type = this.state.type
+
     if (typeof vo.terms === 'string' && vo.terms.length < 2) {
       vo.terms = null
     }
