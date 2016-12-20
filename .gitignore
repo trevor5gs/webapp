@@ -8,3 +8,4 @@ coverage
 dist/
 .tern-port
 public/static/emojis.json
+yarn.lock
