@@ -73,7 +73,6 @@ const runningFetchesBlacklist = [
 ]
 
 let unauthorizedActionQueue = []
-let shouldTryRefreshWithSession = false
 const runningFetches = {}
 
 function updateRunningFetches(serverResponse) {
@@ -161,14 +160,8 @@ export function* handleRequestError(error, action) {
         type !== ACTION_TYPES.AUTHENTICATION.USER) {
       unauthorizedActionQueue.push(action)
       if (Object.keys(runningFetches).length === 0) {
-        if (!shouldTryRefreshWithSession) {
-          const refreshToken = yield select(selectRefreshToken)
-          shouldTryRefreshWithSession = true
-          yield put(refreshAuthenticationToken(refreshToken))
-        } else {
-          shouldTryRefreshWithSession = false
-          yield put(refreshAuthenticationToken())
-        }
+        const refreshToken = yield select(selectRefreshToken)
+        yield put(refreshAuthenticationToken(refreshToken))
       }
       return true
     }
