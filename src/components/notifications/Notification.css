@@ -93,6 +93,14 @@
   vertical-align: top;
 }
 
+.NotificationAsset .embetter {
+  pointer-events: none;
+}
+
+.NotificationAsset .EmbedRegionContent {
+  pointer-events: auto;
+}
+
 .NotificationSummaryTexts > .TextRegion img:not(.emoji) {
   display: none;
 }
