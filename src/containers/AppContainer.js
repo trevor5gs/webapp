@@ -139,20 +139,20 @@ class AppContainer extends Component {
 
   onClickTrackCredits = () => {
     const { dispatch, categoryData, isCategoryPromotion, isPagePromotion } = this.props
-    let label = 'promoByline_clicked_'
+    let label = ''
     if (isCategoryPromotion && categoryData) {
-      label += categoryData.category.slug
+      label = categoryData.category.slug
     } else if (isPagePromotion) {
-      label += 'general'
+      label = 'general'
     } else {
-      label += 'auth'
+      label = 'auth'
     }
-    dispatch(trackEvent(label))
+    dispatch(trackEvent('promoByline_clicked', { name: label }))
   }
 
   onClickTrackCTA = () => {
     const { dispatch, categoryData } = this.props
-    dispatch(trackEvent(`promoCTA_clicked_${get(categoryData, 'category.slug', 'general')}`))
+    dispatch(trackEvent('promoCTA_clicked', { name: get(categoryData, 'category.slug', 'general') }))
   }
 
   render() {
