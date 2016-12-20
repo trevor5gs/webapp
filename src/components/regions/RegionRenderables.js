@@ -92,7 +92,13 @@ export function regionItemsForNotifications(content, postDetailPath = null, asse
         )
         break
       case 'embed':
-        imageAssets.push(<EmbedRegion region={region} key={`EmbedRegion_${i}`} />)
+        imageAssets.push(
+          <EmbedRegion
+            key={`EmbedRegion_${i}`}
+            postDetailPath={postDetailPath}
+            region={region}
+          />,
+        )
         break
       case 'rule':
         texts.push(<hr className="NotificationRule" key={`NotificationRule_${i}`} />)
