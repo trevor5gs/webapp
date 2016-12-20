@@ -35,3 +35,11 @@ export function checkForNewNotifications() {
   }
 }
 
+export const loadAnnouncements = () =>
+  ({
+    type: ACTION_TYPES.LOAD_STREAM,
+    payload: {
+      endpoint: api.announcements(),
+    },
+  })
+

@@ -8,7 +8,7 @@ import { trackEvent, trackInitialPage } from '../actions/analytics'
 import { getCategories, getPagePromotionals } from '../actions/discover'
 import { setSignupModalLaunched } from '../actions/gui'
 import { openModal } from '../actions/modals'
-import { loadNotifications } from '../actions/notifications'
+import { loadAnnouncements, loadNotifications } from '../actions/notifications'
 import { loadProfile } from '../actions/profile'
 import { fetchAuthenticationPromos } from '../actions/promotions'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
@@ -97,6 +97,7 @@ class AppContainer extends Component {
     if (isLoggedIn) {
       dispatch(loadProfile())
       dispatch(loadNotifications({ category: 'all' }))
+      dispatch(loadAnnouncements())
     } else {
       dispatch(fetchAuthenticationPromos())
     }

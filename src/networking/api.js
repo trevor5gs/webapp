@@ -15,7 +15,12 @@ function getAPIPath(relPath, queryParams = {}) {
   }
   return path
 }
-
+// Announcements
+export function announcements() {
+  return {
+    path: getAPIPath('most_recent_announcements'),
+  }
+}
 // Assets
 export function s3CredentialsPath() {
   return {
