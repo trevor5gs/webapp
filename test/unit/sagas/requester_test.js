@@ -1,7 +1,7 @@
 import { channel } from 'redux-saga'
 import { selectRefreshToken } from '../../../src/selectors/authentication'
 import { loadDiscoverPosts } from '../../../src/actions/discover'
-import { refreshAuthenticationToken } from '../../../src/actions/authentication'
+import { clearAuthToken, refreshAuthenticationToken } from '../../../src/actions/authentication'
 import {
   handleRequest,
   handleRequestError,
@@ -186,12 +186,11 @@ describe('requester saga', function () {
       const responseError = new Error('Oh-oh')
       responseError.response = fakeResponse
 
-      it('triggers a token refresh with a token and then without (for session auth)', function () {
+      it('clears the auth token and tries to refresh again', function () {
         const refreshTokenHandler = handleRequestError(responseError, pretendAction)
+        expect(refreshTokenHandler).to.put(clearAuthToken())
         expect(refreshTokenHandler).to.select(selectRefreshToken)
         expect(refreshTokenHandler.next('footokenfoo')).to.put(refreshAuthenticationToken('footokenfoo'))
-        const sessionRefreshHandler = handleRequestError(responseError, pretendAction)
-        expect(sessionRefreshHandler.next()).to.put(refreshAuthenticationToken())
       })
     })
   })
