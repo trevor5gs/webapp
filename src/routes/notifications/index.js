@@ -1,6 +1,6 @@
 import Notifications from '../../containers/notifications/Notifications'
 
-const CATEGORIES = [
+const TYPES = [
   'all',
   'comments',
   'loves',
@@ -10,14 +10,14 @@ const CATEGORIES = [
 ]
 
 export default {
-  path: 'notifications(/:category)',
+  path: 'notifications(/:type)',
   getComponents(location, cb) {
     cb(null, Notifications)
   },
   onEnter(nextState, replaceState) {
-    const category = nextState.params.category
-    // redirect back to /notifications if category is unrecognized
-    if (category && CATEGORIES.indexOf(category) === -1) {
+    const type = nextState.params.type
+    // redirect back to /notifications if type is unrecognized
+    if (type && TYPES.indexOf(type) === -1) {
       replaceState(nextState, '/notifications')
     }
   },

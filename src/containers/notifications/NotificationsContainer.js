@@ -6,10 +6,11 @@ import { GUI, LOAD_STREAM_REQUEST, LOAD_STREAM_SUCCESS } from '../../constants/a
 import { scrollTo } from '../../lib/jello'
 import Session from '../../lib/session'
 import { selectActiveNotificationsType } from '../../selectors/gui'
+import { selectAnnouncement } from '../../selectors/notifications'
 import { selectStreamType } from '../../selectors/stream'
 import { trackEvent } from '../../actions/analytics'
 import { toggleNotifications } from '../../actions/gui'
-import { loadNotifications } from '../../actions/notifications'
+import { loadNotifications, markAnnouncementRead } from '../../actions/notifications'
 import StreamContainer from '../../containers/StreamContainer'
 import {
   BubbleIcon,
@@ -21,39 +22,17 @@ import { TabListButtons } from '../../components/tabs/TabList'
 import { Paginator } from '../../components/streams/Paginator'
 import { AnnouncementNotification } from '../../components/notifications/NotificationRenderables'
 
-// TODO: Announcement notifications:
-// - Determine whether the user has seen the latest announcement notification
-// - Pull the proper `announcementAttributes` out of the store
-// - Dispatch the action in `onClickAnnouncementNotification` to last seen announcement notification
-// - Duplicate this logic in the mobile view in: `./src/containers/notifications/Notifications`
-
-// TODO: Stubbed dummy selector till the api is fully baked
-// @see https://github.com/ello/ello/blob/b8898e9cfb948969f162f4a7e60fdac41e5f4bfc/db/schema.rb#L33-L43
-const selectAnnouncement = () => ({
-  body: 'Announcement Body',
-  createdAt: null,
-  ctaCaption: undefined,
-  ctaHref: '#',
-  header: 'Announcement Title',
-  image: '/apple-touch-icon.png', // sounds like these will be similar to Avatars?
-  imageMetaData: {}, // Don't think we'll need it, unless all image sizes are not square?
-  pushNotificationSentAt: null,
-  updatedAt: null,
-})
-
 function mapStateToProps(state) {
   const activeTabType = selectActiveNotificationsType(state)
-  const announcement = selectAnnouncement()
+  const announcement = selectAnnouncement(state)
   return {
     activeTabType,
-    // start stubbing in pieces we need...
-    announcementBody: announcement.body,
-    announcementCTACaption: announcement.ctaCaption || 'Learn More',
-    announcementCTAHref: announcement.ctaHref,
-    announcementImage: announcement.image,
-    announcementTitle: announcement.header,
-    hasAnnouncementNotification: true, // will need to determine whether to show this thing or not
-    // end stubbing in...
+    announcementBody: announcement && announcement.body,
+    announcementCTACaption: announcement && (announcement.ctaCaption || 'Learn More'),
+    announcementCTAHref: announcement && announcement.ctaHref,
+    announcementImage: announcement && announcement.image.hdpi.url,
+    announcementTitle: announcement && announcement.header,
+    hasAnnouncementNotification: !!(announcement),
     streamAction: loadNotifications({ category: activeTabType }),
     streamType: selectStreamType(state),
   }
@@ -175,8 +154,7 @@ class NotificationsContainer extends Component {
     const { announcementBody, announcementTitle, dispatch } = this.props
     const trackType = (e.target.classList.contains('AnnouncementNotificationCTA')) ? 'clicked' : 'closed'
     const trackAction = trackEvent(`announcement_${trackType}`, { name: announcementTitle || announcementBody })
-    // TODO: dispatch the action that updates last seen (which should dismiss the notification)')
-    // dispatch(setLastAnnouncementNotification(??))
+    dispatch(markAnnouncementRead())
     dispatch(trackAction)
   }
 

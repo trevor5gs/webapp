@@ -21,6 +21,11 @@ export function announcements() {
     path: getAPIPath('most_recent_announcements'),
   }
 }
+export function markAnnouncementRead() {
+  return {
+    path: `${announcements().path}/mark_last_read_announcement`,
+  }
+}
 // Assets
 export function s3CredentialsPath() {
   return {

@@ -41,5 +41,17 @@ export const loadAnnouncements = () =>
     payload: {
       endpoint: api.announcements(),
     },
+    meta: {
+      mappingType: MAPPING_TYPES.ANNOUNCEMENTS,
+    },
+  })
+
+export const markAnnouncementRead = () =>
+  ({
+    type: ACTION_TYPES.NOTIFICATIONS.MARK_ANNOUNCEMENT_READ,
+    payload: {
+      endpoint: api.markAnnouncementRead(),
+      method: 'PATCH',
+    },
   })
 

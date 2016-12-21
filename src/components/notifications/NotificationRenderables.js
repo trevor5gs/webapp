@@ -68,7 +68,7 @@ export const AnnouncementNotification = (props, context) =>
     {props.body &&
       <div className="AnnouncementNotificationBody">{props.body}</div>
     }
-    {props.ctaHref &&
+    {props.ctaHref && props.ctaHref[0] === '/' &&
       <Link
         className="AnnouncementNotificationCTA"
         onClick={context.onClickAnnouncementNotification}
@@ -76,6 +76,17 @@ export const AnnouncementNotification = (props, context) =>
       >
         {props.ctaCaption}
       </Link>
+    }
+    {props.ctaHref && props.ctaHref[0] !== '/' &&
+      <a
+        className="AnnouncementNotificationCTA"
+        href={props.ctaHref}
+        onClick={context.onClickAnnouncementNotification}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        {props.ctaCaption}
+      </a>
     }
     <button className="AnnouncementNotificationX" onClick={context.onClickAnnouncementNotification}>
       <XIcon />
