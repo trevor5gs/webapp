@@ -78,6 +78,14 @@ export function refreshAuthenticationToken(refreshToken) {
         refresh_token: refreshToken,
       },
     },
+    meta: {
+      failureAction: () => {
+        localStorage.clear()
+        requestAnimationFrame(() => {
+          window.location.href = '/enter'
+        })
+      },
+    },
   }
 }
 
