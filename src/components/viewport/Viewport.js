@@ -1,18 +1,18 @@
-import React, { PropTypes } from 'react'
+// @flow
+import React from 'react'
 import classNames from 'classnames'
 
-// type Props = {
-//   isAuthenticationView: boolean,
-//   isDiscoverView: boolean,
-//   isNavbarHidden: boolean,
-//   isNotificationsActive: boolean,
-//   isOnboardingView: boolean,
-//   isProfileMenuActive: boolean,
-//   userDetailPathClassName?: string,
-// }
+type Props = {
+  isAuthenticationView: boolean,
+  isDiscoverView: boolean,
+  isNavbarHidden: boolean,
+  isNotificationsActive: boolean,
+  isOnboardingView: boolean,
+  isProfileMenuActive: boolean,
+  userDetailPathClassName?: string,
+}
 
-// export default(props: Props) =>
-export const Viewport = props =>
+export const Viewport = (props: Props) =>
   <div
     className={classNames(
       'Viewport',
@@ -26,16 +26,6 @@ export const Viewport = props =>
     )}
     role="presentation"
   />
-
-Viewport.propTypes = {
-  isAuthenticationView: PropTypes.bool.isRequired,
-  isDiscoverView: PropTypes.bool.isRequired,
-  isNavbarHidden: PropTypes.bool.isRequired,
-  isNotificationsActive: PropTypes.bool.isRequired,
-  isOnboardingView: PropTypes.bool.isRequired,
-  isProfileMenuActive: PropTypes.bool.isRequired,
-  userDetailPathClassName: PropTypes.string,
-}
 
 export default Viewport
 
