@@ -18,6 +18,12 @@ export function clearAuthStore() {
   }
 }
 
+export function clearAuthToken() {
+  return {
+    type: AUTHENTICATION.CLEAR_AUTH_TOKEN,
+  }
+}
+
 export function signIn(email, password) {
   return {
     type: AUTHENTICATION.SIGN_IN,

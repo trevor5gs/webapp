@@ -23,6 +23,8 @@ export function authentication(state = initialState, action) {
       return { ...state, refreshTimeoutId: null }
     case AUTHENTICATION.CLEAR_STORE:
       return initialState
+    case AUTHENTICATION.CLEAR_AUTH_TOKEN:
+      return { ...state, accessToken: null, expirationDate: null, expiresIn: null }
     case AUTHENTICATION.LOGOUT_SUCCESS:
     case AUTHENTICATION.LOGOUT_FAILURE:
       Session.clear()

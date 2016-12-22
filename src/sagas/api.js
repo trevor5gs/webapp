@@ -21,10 +21,19 @@ export function* fetchCredentials() {
   } else if (yield select(selectShouldUseRefreshToken)) {
     const refreshToken = yield select(selectRefreshToken)
     yield put(refreshAuthenticationToken(refreshToken))
-    // Wait for the refresh to resolve one way or another before firing
-    // fetchCredentials again
-    yield take([AUTHENTICATION.REFRESH_SUCCESS, AUTHENTICATION.REFRESH_FAILURE])
-    return yield call(fetchCredentials)
+    // Wait for the refresh to resolve
+    const result = yield take([AUTHENTICATION.REFRESH_SUCCESS, AUTHENTICATION.REFRESH_FAILURE])
+    if (result.type === AUTHENTICATION.REFRESH_SUCCESS) {
+      // If successful, call fetchCredentials again to setup access_token.
+      return yield call(fetchCredentials)
+    } else if (result.type === AUTHENTICATION.REFRESH_FAILURE) {
+      // If it fails (invalid/expired refresh token) force the user to log in
+      // again after removing all locally stored data.
+      localStorage.clear()
+      requestAnimationFrame(() => {
+        window.location.href = '/enter'
+      })
+    }
   }
   return yield call(getClientCredentials)
 }
