@@ -50,7 +50,7 @@ module.exports = {
   },
   postcss(wp) {
     return [
-      postcssImport({ addDependencyTo: wp }),
+      postcssImport({ result: { messages: { dependency: wp } } }),
       postcssUrl(),
       postcssCustomProperties(),
       postcssApply(),
