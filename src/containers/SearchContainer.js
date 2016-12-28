@@ -55,17 +55,15 @@ class SearchContainer extends Component {
   }
 
   componentWillMount() {
-    const { debounceWait = 666, type } = this.props
+    const { debounceWait = 666 } = this.props
     if (debounceWait > 0) {
       this.search = debounce(this.search, debounceWait)
     }
-    this.state = { type }
   }
 
   componentDidMount() {
-    const { terms } = this.props
-    const { type } = this.state
-    this.search({ terms, type })
+    const { terms, type } = this.props
+    this.search({ terms, type }, false)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -89,27 +87,26 @@ class SearchContainer extends Component {
     dispatch(trackEvent('banderole-credits-clicked'))
   }
 
-  search(valueObject) {
-    const { dispatch, isLoggedIn, pathname } = this.props
+  search(valueObject, shouldTrack = true) {
+    const { dispatch, isLoggedIn, pathname, type } = this.props
     const vo = valueObject
+
     if (typeof vo.terms === 'string' && vo.terms.length < 2) {
       vo.terms = null
     }
-    if (typeof vo.type === 'string' && vo.type === 'posts') {
-      vo.type = null
+    if (shouldTrack) {
+      dispatch(replace({ pathname, search: updateQueryParams(vo) }))
     }
-    dispatch(replace({ pathname, search: updateQueryParams(vo) }))
 
     if (vo.terms && vo.terms.length > 1) {
-      const label = vo.type && vo.type === 'users' ? 'people' : 'posts'
+      const label = type && type === 'users' ? 'people' : 'posts'
       const trackStr = `search-logged-${isLoggedIn ? 'in' : 'out'}-${label}`
       dispatch(trackEvent(trackStr))
     }
   }
 
   render() {
-    const { terms } = this.props
-    const { type } = this.state
+    const { terms, type } = this.props
     let inputText = terms
     if (type === 'users' && terms.length === 0) {
       inputText = '@'
@@ -135,4 +132,3 @@ class SearchContainer extends Component {
 }
 
 export default connect(mapStateToProps)(SearchContainer)
-
