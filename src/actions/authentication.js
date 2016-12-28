@@ -6,6 +6,10 @@ import {
   refreshAuthToken,
 } from '../networking/api'
 
+const clientCredentials = {
+  id: ENV.AUTH_CLIENT_ID,
+}
+
 export function cancelAuthRefresh() {
   return {
     type: AUTHENTICATION.CANCEL_REFRESH,
@@ -44,6 +48,8 @@ export function getUserCredentials(email, password, meta) {
       body: {
         email,
         password,
+        grant_type: 'password',
+        client_id: clientCredentials.id,
       },
     },
     meta,
@@ -76,6 +82,8 @@ export function refreshAuthenticationToken(refreshToken) {
       method: 'POST',
       body: {
         refresh_token: refreshToken,
+        grant_type: 'refresh_token',
+        client_id: clientCredentials.id,
       },
     },
     meta: {
