@@ -232,6 +232,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
           ...action.payload.gui,
           ...initialNonPersistedState,
           ...initialScrollState,
+          isGridMode: getIsGridMode(state.modes),
           isLayoutToolHidden: state.isLayoutToolHidden,
           isOnboardingView: state.isOnboardingView,
         }
@@ -240,6 +241,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
         ...state,
         ...initialNonPersistedState,
         ...initialScrollState,
+        isGridMode: getIsGridMode(state.modes),
         isLayoutToolHidden: state.isLayoutToolHidden,
       }
     case SET_LAYOUT_MODE:
