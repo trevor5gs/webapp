@@ -70,6 +70,12 @@ export function logout() {
           window.location.href = '/enter'
         })
       },
+      failureAction: () => {
+        localStorage.clear()
+        requestAnimationFrame(() => {
+          window.location.href = '/enter'
+        })
+      },
     },
   }
 }

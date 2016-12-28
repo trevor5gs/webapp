@@ -231,7 +231,9 @@ export function* performRequest(action) {
 
   let tokenJSON = null
   if (action.type === ACTION_TYPES.AUTHENTICATION.REFRESH) {
-    tokenJSON = yield call(getClientCredentials)
+    // access token not needed for refreshing the existing token.
+    // This shortcuts a request to get a public token.
+    tokenJSON = {token: {access_token: null}}
   } else {
     tokenJSON = yield call(fetchCredentials)
   }
