@@ -64,9 +64,7 @@ class AnalyticsContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { analyticsId, createdAt, allowsAnalytics } = nextProps
-    if (!allowsAnalytics && this.props.allowsAnalytics) {
-      window.location.reload(true)
-    } else if (this.hasLoadedTracking) {
+    if (this.hasLoadedTracking) {
       // identify the user if they didn't previously have an id to identify with
       if (!this.props.analyticsId && analyticsId) {
         window.analytics.identify(analyticsId, { createdAt })
