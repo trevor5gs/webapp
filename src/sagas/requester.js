@@ -216,7 +216,6 @@ export function* performRequest(action) {
 
   const options = {
     method: method || 'GET',
-    credentials: 'include',
   }
 
   if (options.method !== 'GET' && options.method !== 'HEAD') {

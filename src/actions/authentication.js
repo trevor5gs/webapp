@@ -10,6 +10,18 @@ const clientCredentials = {
   id: ENV.AUTH_CLIENT_ID,
 }
 
+function afterLogout() {
+  document.cookie = 'ello_skip_prerender=false'
+  localStorage.clear()
+  requestAnimationFrame(() => {
+    window.location.href = '/enter'
+  })
+}
+
+function afterLogin() {
+  document.cookie = 'ello_skip_prerender=true; expires=Fri, 31 Dec 9999 23:59:59 GMT'
+}
+
 export function cancelAuthRefresh() {
   return {
     type: AUTHENTICATION.CANCEL_REFRESH,
@@ -40,6 +52,7 @@ export function signIn(email, password) {
 }
 
 export function getUserCredentials(email, password, meta) {
+  meta['successAction'] = afterLogin
   return {
     type: AUTHENTICATION.USER,
     payload: {
@@ -64,18 +77,8 @@ export function logout() {
       method: 'DELETE',
     },
     meta: {
-      successAction: () => {
-        localStorage.clear()
-        requestAnimationFrame(() => {
-          window.location.href = '/enter'
-        })
-      },
-      failureAction: () => {
-        localStorage.clear()
-        requestAnimationFrame(() => {
-          window.location.href = '/enter'
-        })
-      },
+      successAction: afterLogout,
+      failureAction: afterLogout,
     },
   }
 }
@@ -93,12 +96,8 @@ export function refreshAuthenticationToken(refreshToken) {
       },
     },
     meta: {
-      failureAction: () => {
-        localStorage.clear()
-        requestAnimationFrame(() => {
-          window.location.href = '/enter'
-        })
-      },
+      successAction: afterLogin,
+      failureAction: afterLogout,
     },
   }
 }
