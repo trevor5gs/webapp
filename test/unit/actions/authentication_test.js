@@ -65,13 +65,15 @@ describe('authentication actions', () => {
     })
 
     it('has the correct api endpoint in the action', () => {
-      expect(action.payload.endpoint.path).to.contain('/api/oauth/login')
+      expect(action.payload.endpoint.path).to.contain('/api/oauth/token')
     })
 
     it('has the correct body in the action', () => {
       expect(action.payload.body).to.deep.equal({
+        client_id: undefined,
         email: 'vader@ello.co',
         password: '12345666',
+        grant_type: 'password',
       })
     })
   })
@@ -113,7 +115,7 @@ describe('authentication actions', () => {
     })
 
     it('has the correct api endpoint in the action', () => {
-      expect(action.payload.endpoint.path).to.contain('/api/oauth/refresh')
+      expect(action.payload.endpoint.path).to.contain('/api/oauth/token')
     })
 
     it('has the refresh token in the body of the action', () => {

@@ -11,7 +11,7 @@ import {
   clearAuthToken,
   refreshAuthenticationToken,
 } from '../actions/authentication'
-import { fetchCredentials, getClientCredentials, sagaFetch } from './api'
+import { fetchCredentials, sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
 import Dialog from '../components/dialogs/Dialog'
 
@@ -232,7 +232,7 @@ export function* performRequest(action) {
   if (action.type === ACTION_TYPES.AUTHENTICATION.REFRESH) {
     // access token not needed for refreshing the existing token.
     // This shortcuts a request to get a public token.
-    tokenJSON = {token: {access_token: null}}
+    tokenJSON = { token: { access_token: null } }
   } else {
     tokenJSON = yield call(fetchCredentials)
   }

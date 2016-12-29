@@ -52,7 +52,6 @@ export function signIn(email, password) {
 }
 
 export function getUserCredentials(email, password, meta) {
-  meta['successAction'] = afterLogin
   return {
     type: AUTHENTICATION.USER,
     payload: {
@@ -65,7 +64,7 @@ export function getUserCredentials(email, password, meta) {
         client_id: clientCredentials.id,
       },
     },
-    meta,
+    meta: { ...meta, successAction: afterLogin },
   }
 }
 
