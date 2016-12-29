@@ -19,13 +19,13 @@ describe('isomorphically rendering on the server', () => {
   describe('#canPrerenderRequest', () => {
     it('returns false with loggedInPaths', () => {
       ['/following', '/invitations', '/settings', '/starred', '/notifications'].forEach((path) => {
-        expect(canPrerenderRequest({ url: path, get: () => 'false' })).to.be.false
+        expect(canPrerenderRequest({ url: path, get: () => 'false', cookies: {} })).to.be.false
       })
     })
 
     it('should return true with loggedOutPaths', () => {
       ['/mk', '/666', '/discover', '/search'].forEach((path) => {
-        expect(canPrerenderRequest({ url: path, get: () => 'false' })).to.be.true
+        expect(canPrerenderRequest({ url: path, get: () => 'false', cookies: {} })).to.be.true
       })
     })
   })
