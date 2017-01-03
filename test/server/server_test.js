@@ -23,9 +23,29 @@ describe('isomorphically rendering on the server', () => {
       })
     })
 
-    it('should return true with loggedOutPaths', () => {
+    it('should return true with loggedOutPaths if not android or skip prerender set', () => {
       ['/mk', '/666', '/discover', '/search'].forEach((path) => {
         expect(canPrerenderRequest({ url: path, get: () => 'false', cookies: {} })).to.be.true
+      })
+    })
+
+    it('should return false with loggedOutPaths if skip prerender set', () => {
+      ['/mk', '/666', '/discover', '/search'].forEach((path) => {
+        expect(canPrerenderRequest({
+          url: path,
+          get: () => 'false',
+          cookies: { ello_skip_prerender: 'true' },
+        })).to.be.false
+      })
+    })
+
+    it('should return false with loggedOutPaths if it is Ello Android App', () => {
+      ['/mk', '/666', '/discover', '/search'].forEach((path) => {
+        expect(canPrerenderRequest({
+          url: path,
+          get: () => 'Ello Android',
+          cookies: {},
+        })).to.be.false
       })
     })
   })
