@@ -1,5 +1,8 @@
 import React, { PropTypes } from 'react'
+import classNames from 'classnames'
 import { Link } from 'react-router'
+import { XIcon } from '../assets/Icons'
+import ImageAsset from '../assets/ImageAsset'
 import { regionItemsForNotifications } from '../regions/RegionRenderables'
 import { Notification } from './Notification'
 
@@ -47,6 +50,60 @@ PostTextLink.propTypes = {
   post: PropTypes.object,
   text: PropTypes.string,
 }
+
+export const AnnouncementNotification = (props, context) =>
+  <div className={classNames('AnnouncementNotification', { hasAsset: props.src })}>
+    {props.src &&
+      <ImageAsset
+        alt={props.title}
+        className="AnnouncementNotificationAsset"
+        src={props.src}
+        width={70}
+        height={70}
+      />
+    }
+    {props.title &&
+      <h2 className="AnnouncementNotificationTitle">{props.title}</h2>
+    }
+    {props.body &&
+      <div className="AnnouncementNotificationBody">{props.body}</div>
+    }
+    {props.ctaHref && props.ctaHref[0] === '/' &&
+      <Link
+        className="AnnouncementNotificationCTA"
+        onClick={context.onClickAnnouncementNotification}
+        to={props.ctaHref}
+      >
+        {props.ctaCaption}
+      </Link>
+    }
+    {props.ctaHref && props.ctaHref[0] !== '/' &&
+      <a
+        className="AnnouncementNotificationCTA"
+        href={props.ctaHref}
+        onClick={context.onClickAnnouncementNotification}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        {props.ctaCaption}
+      </a>
+    }
+    <button className="AnnouncementNotificationX" onClick={context.onClickAnnouncementNotification}>
+      <XIcon />
+    </button>
+  </div>
+
+AnnouncementNotification.propTypes = {
+  body: PropTypes.string,
+  ctaCaption: PropTypes.string,
+  ctaHref: PropTypes.string,
+  src: PropTypes.string,
+  title: PropTypes.string,
+}
+AnnouncementNotification.contextTypes = {
+  onClickAnnouncementNotification: PropTypes.func.isRequired,
+}
+
 
 // COMMENTS
 export const CommentNotification = (props) => {

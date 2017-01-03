@@ -1,5 +1,6 @@
 export const ACTIVITIES = 'activities'
 export const AMAZON_CREDENTIALS = 'credentials'
+export const ANNOUNCEMENTS = 'announcements'
 export const ASSETS = 'assets'
 export const AUTO_COMPLETE_RESULT = 'autocomplete_results'
 export const AVAILABILITY = 'availability'

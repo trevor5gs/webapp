@@ -324,6 +324,12 @@ methods.updatePostDetail = (newState, action) => {
   )
 }
 
+methods.markAnnouncementRead = (state) => {
+  const newState = { ...state }
+  delete newState.announcements
+  return newState
+}
+
 export default function json(state = {}, action = { type: '' }) {
   let newState = { ...state }
   if (!newState.pages) { newState.pages = {} }
@@ -350,6 +356,8 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.USER.DETAIL_SUCCESS:
       // fall through to parse the rest
       break
+    case ACTION_TYPES.NOTIFICATIONS.MARK_ANNOUNCEMENT_READ_REQUEST:
+      return methods.markAnnouncementRead(state, action)
     case ACTION_TYPES.POST.CREATE_FAILURE:
     case ACTION_TYPES.POST.CREATE_SUCCESS:
     case ACTION_TYPES.POST.UPDATE_SUCCESS:

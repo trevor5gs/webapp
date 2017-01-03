@@ -6,9 +6,11 @@ import { GUI, LOAD_STREAM_REQUEST, LOAD_STREAM_SUCCESS } from '../../constants/a
 import { scrollTo } from '../../lib/jello'
 import Session from '../../lib/session'
 import { selectActiveNotificationsType } from '../../selectors/gui'
+import { selectAnnouncement } from '../../selectors/notifications'
 import { selectStreamType } from '../../selectors/stream'
+import { trackEvent } from '../../actions/analytics'
 import { toggleNotifications } from '../../actions/gui'
-import { loadNotifications } from '../../actions/notifications'
+import { loadNotifications, markAnnouncementRead } from '../../actions/notifications'
 import StreamContainer from '../../containers/StreamContainer'
 import {
   BubbleIcon,
@@ -18,11 +20,19 @@ import {
 } from '../../components/notifications/NotificationIcons'
 import { TabListButtons } from '../../components/tabs/TabList'
 import { Paginator } from '../../components/streams/Paginator'
+import { AnnouncementNotification } from '../../components/notifications/NotificationRenderables'
 
 function mapStateToProps(state) {
   const activeTabType = selectActiveNotificationsType(state)
+  const announcement = selectAnnouncement(state)
   return {
     activeTabType,
+    announcementBody: announcement && announcement.body,
+    announcementCTACaption: announcement && (announcement.ctaCaption || 'Learn More'),
+    announcementCTAHref: announcement && announcement.ctaHref,
+    announcementImage: announcement && announcement.image.hdpi.url,
+    announcementTitle: announcement && announcement.header,
+    hasAnnouncementNotification: !!(announcement),
     streamAction: loadNotifications({ category: activeTabType }),
     streamType: selectStreamType(state),
   }
@@ -32,13 +42,33 @@ class NotificationsContainer extends Component {
 
   static propTypes = {
     activeTabType: PropTypes.string.isRequired,
+    announcementBody: PropTypes.string,
+    announcementCTAHref: PropTypes.string,
+    announcementCTACaption: PropTypes.string,
+    announcementImage: PropTypes.string,
+    announcementTitle: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
+    hasAnnouncementNotification: PropTypes.bool,
     streamAction: PropTypes.object,
     streamType: PropTypes.string,
   }
 
   static defaultProps = {
     activeTabType: 'all',
+    announcementBody: '',
+    announcementCTAHref: null,
+    announcementImage: null,
+    announcementTitle: '',
+  }
+
+  static childContextTypes = {
+    onClickAnnouncementNotification: PropTypes.func.isRequired,
+  }
+
+  getChildContext() {
+    return {
+      onClickAnnouncementNotification: this.onClickAnnouncementNotification,
+    }
   }
 
   componentWillMount() {
@@ -49,6 +79,10 @@ class NotificationsContainer extends Component {
   componentDidMount() {
     document.addEventListener('click', this.onClickDocument)
     document.addEventListener('touchstart', this.onClickDocument)
+    if (this.props.hasAnnouncementNotification) {
+      const { announcementBody, announcementTitle, dispatch } = this.props
+      dispatch(trackEvent('announcement_viewed', { name: announcementTitle || announcementBody }))
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -116,8 +150,25 @@ class NotificationsContainer extends Component {
     dispatch(toggleNotifications({ isActive: false }))
   }
 
+  onClickAnnouncementNotification = (e) => {
+    const { announcementBody, announcementTitle, dispatch } = this.props
+    const trackType = (e.target.classList.contains('AnnouncementNotificationCTA')) ? 'clicked' : 'closed'
+    const trackAction = trackEvent(`announcement_${trackType}`, { name: announcementTitle || announcementBody })
+    dispatch(markAnnouncementRead())
+    dispatch(trackAction)
+  }
+
   render() {
-    const { activeTabType, streamAction } = this.props
+    const {
+      activeTabType,
+      announcementBody,
+      announcementCTACaption,
+      announcementCTAHref,
+      announcementImage,
+      announcementTitle,
+      hasAnnouncementNotification,
+      streamAction,
+    } = this.props
     const { isReloading } = this.state
     const tabs = [
       { type: 'all', children: 'All' },
@@ -154,6 +205,15 @@ class NotificationsContainer extends Component {
                 totalPagesRemaining={0}
               /> :
               null
+          }
+          { hasAnnouncementNotification &&
+            <AnnouncementNotification
+              body={announcementBody}
+              ctaCaption={announcementCTACaption}
+              ctaHref={announcementCTAHref}
+              src={announcementImage}
+              title={announcementTitle}
+            />
           }
           <StreamContainer
             action={streamAction}

@@ -35,3 +35,23 @@ export function checkForNewNotifications() {
   }
 }
 
+export const loadAnnouncements = () =>
+  ({
+    type: ACTION_TYPES.LOAD_STREAM,
+    payload: {
+      endpoint: api.announcements(),
+    },
+    meta: {
+      mappingType: MAPPING_TYPES.ANNOUNCEMENTS,
+    },
+  })
+
+export const markAnnouncementRead = () =>
+  ({
+    type: ACTION_TYPES.NOTIFICATIONS.MARK_ANNOUNCEMENT_READ,
+    payload: {
+      endpoint: api.markAnnouncementRead(),
+      method: 'PATCH',
+    },
+  })
+
