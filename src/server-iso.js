@@ -163,7 +163,7 @@ export function canPrerenderRequest(req) {
     return false
   }
   // Don't pre-render for ello android app
-  if (req.get('user-agent').includes('Ello Android')) {
+  if ((req.get('user-agent') || '').includes('Ello Android')) {
     return false
   }
   return values(noPreRenderPaths).every(regex =>
