@@ -48,6 +48,16 @@ describe('isomorphically rendering on the server', () => {
         })).to.be.false
       })
     })
+
+    it('should return true with loggedOutPaths if missing user agent', () => {
+      ['/mk', '/666', '/discover', '/search'].forEach((path) => {
+        expect(canPrerenderRequest({
+          url: path,
+          get: () => undefined,
+          cookies: {},
+        })).to.be.true
+      })
+    })
   })
 
   describe('app', function () {
