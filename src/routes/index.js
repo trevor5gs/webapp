@@ -1,5 +1,4 @@
 import AppContainer from '../containers/AppContainer'
-import { refreshAuthenticationToken } from '../actions/authentication'
 import PostDetailRoute from './post_detail'
 import WTFRoute from './wtf'
 import authenticationRoutes from './authentication'
@@ -25,7 +24,7 @@ function createRedirect(from, to) {
   }
 }
 
-const routes = (store, isServer = false) => {
+const routes = (store) => {
   // Wrap up authenticated routes
   const authenticate = (route) => {
     const oldOnEnter = route.onEnter
@@ -89,12 +88,6 @@ const routes = (store, isServer = false) => {
         ...SearchRoutes,
         UserDetailRoute,
       ],
-      onEnter() {
-        const { authentication: { isLoggedIn } } = store.getState()
-        if (!isLoggedIn && !isServer) {
-          store.dispatch(refreshAuthenticationToken())
-        }
-      },
     },
   ]
 }

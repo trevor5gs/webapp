@@ -6,6 +6,22 @@ import {
   refreshAuthToken,
 } from '../networking/api'
 
+const clientCredentials = {
+  id: ENV.AUTH_CLIENT_ID,
+}
+
+function afterLogout() {
+  document.cookie = 'ello_skip_prerender=false'
+  localStorage.clear()
+  requestAnimationFrame(() => {
+    window.location.href = '/enter'
+  })
+}
+
+function afterLogin() {
+  document.cookie = 'ello_skip_prerender=true; expires=Fri, 31 Dec 9999 23:59:59 GMT'
+}
+
 export function cancelAuthRefresh() {
   return {
     type: AUTHENTICATION.CANCEL_REFRESH,
@@ -44,9 +60,11 @@ export function getUserCredentials(email, password, meta) {
       body: {
         email,
         password,
+        grant_type: 'password',
+        client_id: clientCredentials.id,
       },
     },
-    meta,
+    meta: { ...meta, successAction: afterLogin },
   }
 }
 
@@ -58,12 +76,8 @@ export function logout() {
       method: 'DELETE',
     },
     meta: {
-      successAction: () => {
-        localStorage.clear()
-        requestAnimationFrame(() => {
-          window.location.href = '/enter'
-        })
-      },
+      successAction: afterLogout,
+      failureAction: afterLogout,
     },
   }
 }
@@ -76,7 +90,13 @@ export function refreshAuthenticationToken(refreshToken) {
       method: 'POST',
       body: {
         refresh_token: refreshToken,
+        grant_type: 'refresh_token',
+        client_id: clientCredentials.id,
       },
+    },
+    meta: {
+      successAction: afterLogin,
+      failureAction: afterLogout,
     },
   }
 }

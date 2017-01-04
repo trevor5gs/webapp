@@ -5,6 +5,7 @@ import 'isomorphic-fetch'
 import values from 'lodash/values'
 import Honeybadger from 'honeybadger'
 import express from 'express'
+import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import librato from 'librato-node'
 import path from 'path'
@@ -43,6 +44,9 @@ app.use(Honeybadger.requestHandler);
 
 // Log requests with Morgan
 app.use(morgan('combined'))
+
+// Parse cookies (for determining to pre-render or not)
+app.use(cookieParser())
 
 // Send stats to Librato
 librato.configure({ email: process.env.LIBRATO_EMAIL, token: process.env.LIBRATO_TOKEN })
@@ -154,7 +158,12 @@ const noPreRenderPaths = {
 }
 
 export function canPrerenderRequest(req) {
-  if (req.get('X-Skip-Prerender') === 'true') {
+  // Don't pre-render if user is (assumed to be) logged in
+  if (req.cookies.ello_skip_prerender === 'true') {
+    return false
+  }
+  // Don't pre-render for ello android app
+  if (req.get('user-agent').includes('Ello Android')) {
     return false
   }
   return values(noPreRenderPaths).every(regex =>

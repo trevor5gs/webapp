@@ -41,7 +41,7 @@ export function accessTokens() {
 
 export function loginToken() {
   return {
-    path: `${basePath()}/oauth/login`,
+    path: `${basePath()}/oauth/token`,
   }
 }
 
@@ -60,7 +60,7 @@ export function forgotPassword() {
 export function refreshAuthToken(refreshToken) {
   const params = { refresh_token: refreshToken }
   return {
-    path: `${basePath()}/oauth/refresh`,
+    path: `${basePath()}/oauth/token`,
     params,
   }
 }
