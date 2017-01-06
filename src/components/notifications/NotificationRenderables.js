@@ -58,8 +58,6 @@ export const AnnouncementNotification = (props, context) =>
         alt={props.title}
         className="AnnouncementNotificationAsset"
         src={props.src}
-        width={70}
-        height={70}
       />
     }
     {props.title &&
