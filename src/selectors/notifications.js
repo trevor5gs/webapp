@@ -12,3 +12,7 @@ export const selectAnnouncement = createSelector(
   },
 )
 
+export const selectIsAnnouncementUnread = createSelector(
+  [selectAnnouncementCollection], collection => Boolean(collection && Object.keys(collection)[0]),
+)
+
