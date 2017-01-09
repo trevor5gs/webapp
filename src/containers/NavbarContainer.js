@@ -16,12 +16,13 @@ import {
   selectIsNotificationsUnread,
   selectIsProfileMenuActive,
 } from '../selectors/gui'
+import { selectIsAnnouncementUnread } from '../selectors/notifications'
 import { selectAvatar, selectUsername } from '../selectors/profile'
 import { selectPage } from '../selectors/pages'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
 import { logout } from '../actions/authentication'
 import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
-import { checkForNewNotifications } from '../actions/notifications'
+import { checkForNewNotifications, loadAnnouncements } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
 import { loadFriends, loadNoise } from '../actions/stream'
@@ -36,6 +37,7 @@ function mapStateToProps(state) {
   const hasLoadMoreButton = !!(result && result.morePostIds)
   const viewName = selectViewNameFromRoute(state)
   const categoryTabs = viewName === 'discover' ? selectCategoryTabs(state) : null
+  const isUnread = selectIsNotificationsUnread(state) || selectIsAnnouncementUnread(state)
 
   if (isLoggedIn) {
     return {
@@ -48,7 +50,7 @@ function mapStateToProps(state) {
       isLayoutToolHidden: selectIsLayoutToolHidden(state),
       isLoggedIn,
       isNotificationsActive: selectIsNotificationsActive(state),
-      isNotificationsUnread: selectIsNotificationsUnread(state),
+      isNotificationsUnread: isUnread,
       isProfileMenuActive: selectIsProfileMenuActive(state),
       pathname,
       username: selectUsername(state),
@@ -84,7 +86,7 @@ class NavbarContainer extends Component {
   }
 
   componentWillMount() {
-    this.checkForNotifications()
+    this.checkForNotifications(true)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -204,9 +206,12 @@ class NavbarContainer extends Component {
     )
   }
 
-  checkForNotifications() {
+  checkForNotifications(isMounting = false) {
     const { dispatch, isLoggedIn } = this.props
-    if (isLoggedIn) { dispatch(checkForNewNotifications()) }
+    if (isLoggedIn) {
+      dispatch(checkForNewNotifications())
+      if (!isMounting) { dispatch(loadAnnouncements()) }
+    }
   }
 
   activateProfileMenu() {
