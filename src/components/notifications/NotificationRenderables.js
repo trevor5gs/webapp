@@ -51,45 +51,66 @@ PostTextLink.propTypes = {
   text: PropTypes.string,
 }
 
-export const AnnouncementNotification = (props, context) =>
-  <div className={classNames('AnnouncementNotification', { hasAsset: props.src })}>
-    {props.src &&
-      <ImageAsset
-        alt={props.title}
-        className="AnnouncementNotificationAsset"
-        src={props.src}
-      />
+export const AnnouncementNotification = (props, context) => {
+  const isInternalLink = props.ctaHref && props.ctaHref[0] === '/'
+  const isExternalLink = props.ctaHref && props.ctaHref[0] !== '/'
+  let linkProps = null
+  if (isInternalLink) {
+    linkProps = {
+      onClick: context.onClickAnnouncementNotification,
+      to: props.ctaHref,
     }
-    {props.title &&
-      <h2 className="AnnouncementNotificationTitle">{props.title}</h2>
+  } else if (isExternalLink) {
+    linkProps = {
+      onClick: context.onClickAnnouncementNotification,
+      href: props.ctaHref,
+      rel: 'noopener noreferrer',
+      target: '_blank',
     }
-    {props.body &&
-      <div className="AnnouncementNotificationBody">{props.body}</div>
-    }
-    {props.ctaHref && props.ctaHref[0] === '/' &&
-      <Link
-        className="AnnouncementNotificationCTA"
-        onClick={context.onClickAnnouncementNotification}
-        to={props.ctaHref}
-      >
-        {props.ctaCaption}
-      </Link>
-    }
-    {props.ctaHref && props.ctaHref[0] !== '/' &&
-      <a
-        className="AnnouncementNotificationCTA"
-        href={props.ctaHref}
-        onClick={context.onClickAnnouncementNotification}
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        {props.ctaCaption}
-      </a>
-    }
-    <button className="AnnouncementNotificationX" onClick={context.onClickAnnouncementNotification}>
-      <XIcon />
-    </button>
-  </div>
+  }
+  const image = props.src &&
+    <ImageAsset
+      alt={props.title || props.src}
+      className={!isInternalLink && !isExternalLink ? 'AnnouncementNotificationAsset' : ''}
+      src={props.src}
+    />
+
+  return (
+    <div className={classNames('AnnouncementNotification', { hasAsset: props.src })}>
+      {!isInternalLink && !isExternalLink && image}
+      {isInternalLink && image &&
+        <Link className="AnnouncementNotificationAsset js-ANCTA" {...linkProps} >
+          {image}
+        </Link>
+      }
+      {isExternalLink && image &&
+        <a className="AnnouncementNotificationAsset js-ANCTA" {...linkProps} >
+          {image}
+        </a>
+      }
+
+      {props.title &&
+        <h2 className="AnnouncementNotificationTitle">{props.title}</h2>
+      }
+      {props.body &&
+        <div className="AnnouncementNotificationBody">{props.body}</div>
+      }
+      {isInternalLink &&
+        <Link className="AnnouncementNotificationCTA js-ANCTA" {...linkProps} >
+          {props.ctaCaption}
+        </Link>
+      }
+      {isExternalLink &&
+        <a className="AnnouncementNotificationCTA js-ANCTA" {...linkProps} >
+          {props.ctaCaption}
+        </a>
+      }
+      <button className="AnnouncementNotificationX" onClick={context.onClickAnnouncementNotification}>
+        <XIcon />
+      </button>
+    </div>
+  )
+}
 
 AnnouncementNotification.propTypes = {
   body: PropTypes.string,
@@ -98,6 +119,7 @@ AnnouncementNotification.propTypes = {
   src: PropTypes.string,
   title: PropTypes.string,
 }
+
 AnnouncementNotification.contextTypes = {
   onClickAnnouncementNotification: PropTypes.func.isRequired,
 }

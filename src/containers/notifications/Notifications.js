@@ -100,7 +100,8 @@ class Notifications extends Component {
 
   onClickAnnouncementNotification = (e) => {
     const { announcementBody, announcementTitle, dispatch } = this.props
-    const trackType = (e.target.classList.contains('AnnouncementNotificationCTA')) ? 'clicked' : 'closed'
+    const el = e.target.tagName === 'IMG' ? e.target.parentNode : e.target
+    const trackType = el.classList.contains('js-ANCTA') ? 'clicked' : 'closed'
     const trackAction = trackEvent(`announcement_${trackType}`, { name: announcementTitle || announcementBody })
     if (trackType === 'closed') {
       dispatch(markAnnouncementRead())
