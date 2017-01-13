@@ -7,6 +7,7 @@ const POST_DETAIL_EXPRESSION = /^\/[\w-]+\/post\/.+/
 const AUTHENTICATION_ROUTES = [
   /^\/enter\b/,
   /^\/forgot-password\b/,
+  /^\/join\b/,
   /^\/signup\b/,
 ]
 
@@ -48,9 +49,6 @@ export const selectViewNameFromRoute = createSelector(
     }
     if (POST_DETAIL_EXPRESSION.test(pathname)) {
       return 'postDetail'
-    }
-    if (/^\/join\b/.test(pathname)) {
-      return 'join'
     }
     if (AUTHENTICATION_ROUTES.some(route => route.test(pathname))) {
       return 'authentication'

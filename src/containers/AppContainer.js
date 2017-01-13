@@ -38,7 +38,7 @@ function mapStateToProps(state) {
   return {
     authPromo: selectRandomAuthPromotion(state),
     categoryData: selectCategoryData(state),
-    isAuthenticationLayout: viewName === 'authentication' || viewName === 'join',
+    isAuthenticationLayout: viewName === 'authentication',
     isCategoryPromotion: selectIsCategoryPromotion(state),
     isLoggedIn: selectIsLoggedIn(state),
     isPagePromotion: selectIsPagePromotion(state),
