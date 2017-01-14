@@ -261,3 +261,16 @@ export function unregisterForGCM(regId, bundleId) {
   }
 }
 
+export function verifyEmail(email) {
+  return {
+    type: PROFILE.VERIFY_EMAIL,
+    payload: {
+      endpoint: api.verifyEmail(),
+      method: 'POST',
+      body: {
+        email,
+      },
+    },
+  }
+}
+

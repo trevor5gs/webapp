@@ -398,6 +398,12 @@ export function availability() {
   }
 }
 
+export function verifyEmail() {
+  return {
+    path: getAPIPath('verify-email'),
+  }
+}
+
 // INVITE
 export function invite() {
   return {

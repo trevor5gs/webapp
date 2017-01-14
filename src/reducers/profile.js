@@ -121,6 +121,27 @@ export function profile(state = {}, action) {
         }
       }
       return assetState
+    // TODO: update this for immutable
+    case PROFILE.VERIFY_EMAIL_FAILURE:
+      return {
+        ...state,
+        ...{
+          availability: {
+            email: false,
+            suggestions: { email: null },
+          },
+        },
+      }
+    case PROFILE.VERIFY_EMAIL_SUCCESS:
+      return {
+        ...state,
+        ...{
+          availability: {
+            email: true,
+            suggestions: { email: null },
+          },
+        },
+      }
     case AUTHENTICATION.USER_SUCCESS:
     case AUTHENTICATION.REFRESH_SUCCESS:
     case PROFILE.SIGNUP_SUCCESS:
