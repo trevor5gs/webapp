@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import debounce from 'lodash/debounce'
 import { isAndroid } from '../../lib/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { trackEvent } from '../../actions/analytics'
@@ -36,10 +35,12 @@ class RegistrationRequestForm extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    email: PropTypes.string,
     inModal: PropTypes.bool,
   }
 
   static defaultProps = {
+    email: null,
     inModal: false,
   }
 
@@ -48,10 +49,8 @@ class RegistrationRequestForm extends Component {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
       formStatus: STATUS.INDETERMINATE,
       invitationCodeState: { status: STATUS.INDETERMINATE, message: '' },
-      showEmailError: false,
     }
     this.emailValue = ''
-    this.delayedShowEmailError = debounce(this.delayedShowEmailError, 1000)
   }
 
   componentDidMount() {
@@ -61,7 +60,9 @@ class RegistrationRequestForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
-    this.checkForInviteCode(nextProps)
+    if (nextProps.email !== this.props.email) {
+      this.checkForInviteCode(nextProps)
+    }
     if (!availability) { return }
     // TODO: update this for immutable
     if ({}.hasOwnProperty.call(availability, 'email')) {
@@ -86,21 +87,21 @@ class RegistrationRequestForm extends Component {
 
   onChangeEmailControl = ({ email }) => {
     this.emailValue = email
+    const { emailState } = this.state
+    const currentStatus = emailState.status
+    const clientState = getEmailStateFromClient({ value: this.emailValue, currentStatus })
+    if (currentStatus !== clientState.status) {
+      this.setState({ emailState: clientState })
+    }
   }
 
   onSubmit = (e) => {
     e.preventDefault()
     const { emailState } = this.state
-    const currentStatus = emailState.status
-    const clientState = getEmailStateFromClient({ value: this.emailValue, currentStatus })
-    if (clientState.status === STATUS.SUCCESS) {
-      if (currentStatus !== STATUS.REQUEST) {
-        this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
-      }
+    if (emailState.status === STATUS.SUCCESS) {
+      this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
       this.props.dispatch(verifyEmail(this.emailValue))
-      return
     }
-    this.setState({ emailState: clientState })
   }
 
   checkForInviteCode(props) {
@@ -112,18 +113,14 @@ class RegistrationRequestForm extends Component {
       dispatch(getInviteEmail(invitationCode))
     } else if (email) {
       this.emailValue = email
+      document.body.querySelector('.JoinEmailControl input').value = this.emailValue
       requestAnimationFrame(() => {
         this.setState({ emailState: { status: STATUS.SUCCESS } })
       })
     }
   }
 
-  delayedShowEmailError = () => {
-    this.setState({ showEmailError: true })
-  }
-
   validateEmailResponse(availability) {
-    console.log('validateEmailResponse', availability)
     const { dispatch, inModal } = this.props
     const { emailState } = this.state
     const currentStatus = emailState.status
@@ -148,12 +145,11 @@ class RegistrationRequestForm extends Component {
   }
 
   renderSignupForm() {
-    console.log('join', this.emailValue, this.invitationCodeValue)
     return <JoinForm email={this.emailValue} invitationCode={this.invitationCodeValue} />
   }
 
   renderEmailForm() {
-    const { emailState, showEmailError } = this.state
+    const { emailState } = this.state
     const isValid = isFormValid([emailState])
     return (
       <div className="RegistrationRequestForm">
@@ -173,18 +169,15 @@ class RegistrationRequestForm extends Component {
           role="form"
         >
           <EmailControl
-            classList="isBoxControl"
+            classList="isBoxControl JoinEmailControl"
             label="Email"
             onChange={this.onChangeEmailControl}
             onBlur={isAndroid() ? () => document.body.classList.remove('isCreditsHidden') : null}
             onFocus={isAndroid() ? () => document.body.classList.add('isCreditsHidden') : null}
             tabIndex="1"
-            text={null}
-            value={this.emailValue}
           />
-          {(showEmailError && emailState.status !== STATUS.INDETERMINATE) ?
-            <p className="HoppyStatusMessage hasContent">{emailState.message}</p> :
-            <p className="HoppyStatusMessage"><span /></p>
+          {emailState.status === STATUS.FAILURE &&
+            <p className="HoppyStatusMessage hasContent">{emailState.message}</p>
           }
           <FormButton className="FormButton isRounded isGreen" disabled={!isValid} tabIndex="2">
             Create account
