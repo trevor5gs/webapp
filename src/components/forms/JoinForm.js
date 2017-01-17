@@ -11,7 +11,6 @@ import {
   isFormValid,
   getUsernameStateFromClient,
   getUsernameStateFromServer,
-  getEmailStateFromServer,
   getPasswordState,
 } from './Validators'
 import { selectAvailability } from '../../selectors/profile'
@@ -46,14 +45,14 @@ class JoinForm extends Component {
 
   componentWillMount() {
     this.state = {
-      emailState: { status: STATUS.INDETERMINATE, message: '' },
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
       showPasswordError: false,
       showUsernameError: false,
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
     }
 
-    this.emailValue = this.props.email
+    console.log('JoinForm', this.props)
+
     this.usernameValue = ''
     this.passwordValue = ''
 
@@ -67,9 +66,6 @@ class JoinForm extends Component {
     if (!availability) { return }
     if ({}.hasOwnProperty.call(availability, 'username')) {
       this.validateUsernameResponse(availability)
-    }
-    if ({}.hasOwnProperty.call(availability, 'email')) {
-      this.validateEmailResponse(availability)
     }
   }
 
@@ -113,9 +109,9 @@ class JoinForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault()
-    const { dispatch, invitationCode } = this.props
+    const { email, dispatch, invitationCode } = this.props
     dispatch(
-      signUpUser(this.emailValue, this.usernameValue, this.passwordValue, invitationCode),
+      signUpUser(email, this.usernameValue, this.passwordValue, invitationCode),
     )
   }
 
@@ -138,15 +134,6 @@ class JoinForm extends Component {
     }
   }
 
-  validateEmailResponse(availability) {
-    const { emailState } = this.state
-    const currentStatus = emailState.status
-    const newState = getEmailStateFromServer({ availability, currentStatus })
-    if (newState.status !== currentStatus) {
-      this.setState({ emailState: newState })
-    }
-  }
-
   delayedShowPasswordError = () => {
     if (this.passwordValue.length) {
       this.setState({ showPasswordError: true })
@@ -159,10 +146,8 @@ class JoinForm extends Component {
     }
   }
   render() {
-    const { emailState, passwordState, showPasswordError,
-      showUsernameError, usernameState } = this.state
-    const { email } = this.props
-    const isValid = isFormValid([emailState, usernameState, passwordState])
+    const { passwordState, showPasswordError, showUsernameError, usernameState } = this.state
+    const isValid = isFormValid([usernameState, passwordState])
     const domain = ENV.AUTH_DOMAIN
     return (
       <div className="JoinForm">
@@ -176,7 +161,7 @@ class JoinForm extends Component {
           role="form"
         >
           <UsernameControl
-            autoFocus={email && email.length}
+            autoFocus
             classList="isSimpleWhiteControl"
             label="Username"
             onChange={this.onChangeUsernameControl}
