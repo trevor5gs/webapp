@@ -170,6 +170,7 @@ class MetaContainer extends Component {
             description: META.FORGOT_PAGE_DESCRIPTION,
             title: META.FORGOT_TITLE,
           })
+        case '/join':
         case '/signup':
           return this.getDefaultTags({
             description: META.SIGNUP_PAGE_DESCRIPTION,
