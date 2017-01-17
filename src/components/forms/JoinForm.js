@@ -51,8 +51,6 @@ class JoinForm extends Component {
       usernameState: { status: STATUS.INDETERMINATE, suggestions: null, message: '' },
     }
 
-    console.log('JoinForm', this.props)
-
     this.usernameValue = ''
     this.passwordValue = ''
 
