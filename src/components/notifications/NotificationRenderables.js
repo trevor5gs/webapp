@@ -52,8 +52,9 @@ PostTextLink.propTypes = {
 }
 
 export const AnnouncementNotification = (props, context) => {
-  const isInternalLink = props.ctaHref && props.ctaHref[0] === '/'
-  const isExternalLink = props.ctaHref && props.ctaHref[0] !== '/'
+  const re = new RegExp(ENV.AUTH_DOMAIN.replace('https://', ''))
+  const isInternalLink = props.ctaHref && (props.ctaHref[0] === '/' || re.test(props.ctaHref))
+  const isExternalLink = props.ctaHref && (props.ctaHref[0] !== '/' || !re.test(props.ctaHref))
   let linkProps = null
   if (isInternalLink) {
     linkProps = {
