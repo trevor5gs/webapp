@@ -26,6 +26,8 @@ function mapStateToProps(state, props) {
   const type = get(props, 'params.type', 'all')
   const announcement = selectAnnouncement(state)
   return {
+    // TODO: Update this in Immutable
+    announcementId: announcement && announcement.id,
     announcementBody: announcement && announcement.body,
     announcementCTACaption: announcement && (announcement.ctaCaption || 'Learn More'),
     announcementCTAHref: announcement && announcement.ctaHref,
@@ -42,6 +44,7 @@ function mapStateToProps(state, props) {
 class Notifications extends Component {
 
   static propTypes = {
+    announcementId: PropTypes.string,
     announcementBody: PropTypes.string,
     announcementCTAHref: PropTypes.string,
     announcementCTACaption: PropTypes.string,
@@ -55,6 +58,7 @@ class Notifications extends Component {
   }
 
   static defaultProps = {
+    announcementId: '',
     announcementBody: '',
     announcementCTAHref: null,
     announcementImage: null,
@@ -80,6 +84,15 @@ class Notifications extends Component {
     this.state = { isReloading: false }
   }
 
+  componentDidMount() {
+    if (this.props.hasAnnouncementNotification) {
+      const { announcementBody, announcementTitle, announcementId, dispatch } = this.props
+      const trackName = announcementTitle || announcementBody
+      const trackProps = { name: trackName, announcement: announcementId }
+      dispatch(trackEvent('announcement_viewed', trackProps))
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.streamType === LOAD_STREAM_SUCCESS) {
       this.setState({ isReloading: false })
@@ -99,10 +112,11 @@ class Notifications extends Component {
   }
 
   onClickAnnouncementNotification = (e) => {
-    const { announcementBody, announcementTitle, dispatch } = this.props
+    const { announcementBody, announcementTitle, announcementId, dispatch } = this.props
     const el = e.target.tagName === 'IMG' ? e.target.parentNode : e.target
     const trackType = el.classList.contains('js-ANCTA') ? 'clicked' : 'closed'
-    const trackAction = trackEvent(`announcement_${trackType}`, { name: announcementTitle || announcementBody })
+    const trackProps = { name: announcementTitle || announcementBody, announcement: announcementId }
+    const trackAction = trackEvent(`announcement_${trackType}`, trackProps)
     if (trackType === 'closed') {
       dispatch(markAnnouncementRead())
     }
