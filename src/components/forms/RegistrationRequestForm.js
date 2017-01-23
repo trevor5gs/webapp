@@ -164,7 +164,10 @@ class RegistrationRequestForm extends Component {
 
   renderEmailForm() {
     const { emailState } = this.state
+    const { message, status } = emailState
     const isValid = isFormValid([emailState])
+    const showMessage = (message && message.length) &&
+      (status === STATUS.FAILURE || status === STATUS.SUCCESS)
     return (
       <div className="RegistrationRequestForm">
         <h1>
@@ -190,11 +193,8 @@ class RegistrationRequestForm extends Component {
             onFocus={isAndroid() ? () => document.body.classList.add('isCreditsHidden') : null}
             tabIndex="1"
           />
-          {emailState.status === STATUS.FAILURE && emailState.message && emailState.message.length &&
-            <p className="HoppyStatusMessage hasContent">{emailState.message}</p>
-          }
-          {emailState.status === STATUS.SUCCESS && emailState.message && emailState.message.length &&
-            <p className="HoppyStatusMessage hasContent">{emailState.message}</p>
+          {showMessage &&
+            <p className="HoppyStatusMessage hasContent">{message}</p>
           }
           <FormButton className="FormButton isRounded isGreen" disabled={!isValid} tabIndex="2">
             Create account

@@ -156,10 +156,6 @@ describe('profile actions', () => {
       expect(action.payload.method).to.equal('POST')
     })
 
-    it('has the body as a stringified version of the vo', () => {
-      expect(action.payload.body).to.equal('{"username":"vader"}')
-    })
-
     it('has the correct api endpoint in the action', () => {
       expect(action.payload.endpoint.path).to.contain('/availability')
     })
