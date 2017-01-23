@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import debounce from 'lodash/debounce'
 import { isAndroid } from '../../lib/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { trackEvent } from '../../actions/analytics'
 import { getInviteEmail } from '../../actions/invitations'
-import { verifyEmail } from '../../actions/profile'
+import { checkAvailability } from '../../actions/profile'
 import EmailControl from './EmailControl'
 import FormButton from './FormButton'
 import JoinForm from './JoinForm'
@@ -51,6 +52,7 @@ class RegistrationRequestForm extends Component {
       invitationCodeState: { status: STATUS.INDETERMINATE, message: '' },
     }
     this.emailValue = ''
+    this.checkServerForAvailability = debounce(this.checkServerForAvailability, 666)
   }
 
   componentDidMount() {
@@ -89,7 +91,15 @@ class RegistrationRequestForm extends Component {
     this.emailValue = email
     const { emailState } = this.state
     const currentStatus = emailState.status
-    const clientState = getEmailStateFromClient({ value: this.emailValue, currentStatus })
+    const clientState = getEmailStateFromClient({ value: email, currentStatus })
+    if (clientState.status === STATUS.SUCCESS) {
+      if (currentStatus !== STATUS.REQUEST) {
+        this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
+      }
+      // This will end up landing on `validateEmailResponse` after fetching
+      this.checkServerForAvailability({ email })
+      return
+    }
     if (currentStatus !== clientState.status) {
       this.setState({ emailState: clientState })
     }
@@ -100,7 +110,7 @@ class RegistrationRequestForm extends Component {
     const { emailState } = this.state
     if (emailState.status === STATUS.SUCCESS) {
       this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
-      this.props.dispatch(verifyEmail(this.emailValue))
+      this.checkServerForAvailability({ email: this.emailValue, is_signup: true })
     }
   }
 
@@ -120,17 +130,21 @@ class RegistrationRequestForm extends Component {
     }
   }
 
+  checkServerForAvailability(vo) {
+    this.props.dispatch(checkAvailability(vo))
+  }
+
   validateEmailResponse(availability) {
     const { dispatch, inModal } = this.props
     const { emailState } = this.state
     const currentStatus = emailState.status
     const newState = getEmailStateFromServer({ availability, currentStatus })
-    if (newState.status === STATUS.SUCCESS) {
+    if (newState.status === STATUS.SUCCESS && availability.is_signup) {
       if (inModal) {
         dispatch(trackEvent('modal-registration-request-form-completion'))
       }
       this.setState({ formStatus: STATUS.SUBMITTED })
-    } else if (newState.status !== currentStatus) {
+    } else {
       this.setState({ emailState: newState })
     }
   }
@@ -176,7 +190,10 @@ class RegistrationRequestForm extends Component {
             onFocus={isAndroid() ? () => document.body.classList.add('isCreditsHidden') : null}
             tabIndex="1"
           />
-          {emailState.status === STATUS.FAILURE &&
+          {emailState.status === STATUS.FAILURE && emailState.message && emailState.message.length &&
+            <p className="HoppyStatusMessage hasContent">{emailState.message}</p>
+          }
+          {emailState.status === STATUS.SUCCESS && emailState.message && emailState.message.length &&
             <p className="HoppyStatusMessage hasContent">{emailState.message}</p>
           }
           <FormButton className="FormButton isRounded isGreen" disabled={!isValid} tabIndex="2">

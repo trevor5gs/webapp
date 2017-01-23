@@ -112,14 +112,13 @@ export function availableToggles() {
   }
 }
 
-// TODO: Do we need the meta here?
 export function checkAvailability(vo) {
   return {
     type: PROFILE.AVAILABILITY,
     meta: { original: vo },
     payload: {
       method: 'POST',
-      body: JSON.stringify(vo),
+      body: vo,
       endpoint: api.availability(),
     },
   }
@@ -256,19 +255,6 @@ export function unregisterForGCM(regId, bundleId) {
       method: 'DELETE',
       body: {
         bundle_identifier: bundleId,
-      },
-    },
-  }
-}
-
-export function verifyEmail(email) {
-  return {
-    type: PROFILE.VERIFY_EMAIL,
-    payload: {
-      endpoint: api.verifyEmail(),
-      method: 'POST',
-      body: {
-        email,
       },
     },
   }
