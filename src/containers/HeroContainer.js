@@ -34,7 +34,6 @@ import {
 import { openModal } from '../actions/modals'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import {
-  HeroBackgroundCycle,
   HeroBroadcast,
   HeroProfile,
   HeroPromotionAuth,
@@ -45,10 +44,6 @@ import {
 const selectJson = state => get(state, 'json')
 export const selectIsAuthentication = createSelector(
   [selectViewNameFromRoute], viewName => viewName === 'authentication',
-)
-
-export const selectIsBackgroundCycle = createSelector(
-  [selectViewNameFromRoute], viewName => viewName === 'join',
 )
 
 export const selectIsUserProfile = createSelector(
@@ -91,7 +86,6 @@ function mapStateToProps(state, props) {
     dpi: selectCoverDPI(state),
     isAuthentication,
     isCategoryPromotion,
-    isBackgroundCycle: selectIsBackgroundCycle(state),
     isLoggedIn: selectIsLoggedIn(state),
     isMobile: selectIsMobile(state),
     isPagePromotion,
@@ -114,7 +108,6 @@ class HeroContainer extends Component {
     dispatch: PropTypes.func.isRequired,
     dpi: PropTypes.string.isRequired,
     isAuthentication: PropTypes.bool,
-    isBackgroundCycle: PropTypes.bool,
     isCategoryPromotion: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
@@ -247,7 +240,6 @@ class HeroContainer extends Component {
     const { broadcast } = this.state
     const {
       isAuthentication,
-      isBackgroundCycle,
       isCategoryPromotion,
       isPagePromotion,
       isUserProfile,
@@ -268,8 +260,6 @@ class HeroContainer extends Component {
       children.push(this.getHeroProfile())
     } else if (isAuthentication) {
       children.push(this.getHeroPromotionAuth())
-    } else if (isBackgroundCycle) {
-      children.push(<HeroBackgroundCycle key="HeroBackgroundCycle" />)
     }
     return (
       <div className="Hero">

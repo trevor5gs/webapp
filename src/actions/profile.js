@@ -112,14 +112,13 @@ export function availableToggles() {
   }
 }
 
-// TODO: Do we need the meta here?
 export function checkAvailability(vo) {
   return {
     type: PROFILE.AVAILABILITY,
     meta: { original: vo },
     payload: {
       method: 'POST',
-      body: JSON.stringify(vo),
+      body: vo,
       endpoint: api.availability(),
     },
   }

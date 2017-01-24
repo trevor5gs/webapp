@@ -3,7 +3,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 import { MainView } from '../components/views/MainView'
 import RegistrationRequestForm from '../components/forms/RegistrationRequestForm'
 
-export default class SignUpContainer extends Component {
+export default class SignupContainer extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState)
   }
@@ -12,7 +12,7 @@ export default class SignUpContainer extends Component {
     return (
       <MainView className="Authentication">
         <div className="AuthenticationFormDialog">
-          <RegistrationRequestForm />
+          <RegistrationRequestForm {...this.props} />
         </div>
       </MainView>
     )

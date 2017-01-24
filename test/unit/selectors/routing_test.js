@@ -136,7 +136,7 @@ describe('routing selectors', () => {
       expect(selectViewNameFromRoute(state, props)).not.to.equal('userDetail')
 
       state = { routing: { location: { pathname: '/join', change: true } } }
-      expect(selectViewNameFromRoute(state)).to.equal('join')
+      expect(selectViewNameFromRoute(state)).to.equal('authentication')
 
       state = { routing: { location: { pathname: '/enter', change: true } } }
       expect(selectViewNameFromRoute(state)).to.equal('authentication')

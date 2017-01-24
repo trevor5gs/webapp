@@ -66,7 +66,7 @@ export const NavbarLoggedOut = ({
           className="LabelOnly isSignUp"
           label="Sign up"
           pathname={pathname}
-          to="/signup"
+          to="/join"
         />
       </div>
     </div>

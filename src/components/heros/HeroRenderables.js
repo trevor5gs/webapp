@@ -12,11 +12,6 @@ import UserContainer from '../../containers/UserContainer'
 
 // -------------------------------------
 
-export const HeroBackgroundCycle = () =>
-  <div className="HeroBackgroundCycle fullscreen" />
-
-// -------------------------------------
-
 export const HeroBroadcast = ({ broadcast, onDismiss }) =>
   <ZeroStream onDismiss={onDismiss}>{broadcast}</ZeroStream>
 

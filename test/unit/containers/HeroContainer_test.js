@@ -2,7 +2,6 @@ import { DISCOVER, FOLLOWING, STARRED } from '../../../src/constants/locales/en'
 import {
   selectBroadcast,
   selectIsAuthentication,
-  selectIsBackgroundCycle,
   selectIsUserProfile,
 } from '../../../src/containers/HeroContainer'
 
@@ -16,7 +15,7 @@ describe('HeroContainer', () => {
       expect(selectIsAuthentication(state)).to.equal(true)
       expect(selectIsAuthentication.recomputations()).to.equal(1)
 
-      state = { routing: { location: { pathname: '/signup', change: true } } }
+      state = { routing: { location: { pathname: '/join', change: true } } }
       expect(selectIsAuthentication(state)).to.equal(true)
       expect(selectIsAuthentication.recomputations()).to.equal(1)
 
@@ -24,7 +23,6 @@ describe('HeroContainer', () => {
         '/discover',
         '/discover/stuff',
         '/search',
-        '/join',
         '/following',
         '/settings',
         '/invitations',
@@ -37,33 +35,7 @@ describe('HeroContainer', () => {
         state = { routing: { location: { pathname: route, change: false } } }
         expect(selectIsAuthentication(state)).to.equal(false, `${route} should not have a Promotion.`)
       })
-      expect(selectIsAuthentication.recomputations()).to.equal(10)
-    })
-  })
-
-  context('#selectIsBackgroundCycle', () => {
-    it('selects with memoization whether the current route has a animated background', () => {
-      let state = { routing: { location: { pathname: '/join', change: false } } }
-      expect(selectIsBackgroundCycle(state)).to.equal(true)
-
-      const noPromos = [
-        '/discover',
-        '/enter',
-        '/search',
-        '/signup',
-        '/following',
-        '/settings',
-        '/invitations',
-        '/notifications',
-        '/mk/post/etlb9br06dh6tleztw4g',
-        '/mk',
-        '/mk/loves',
-      ]
-      noPromos.forEach((route) => {
-        state = { routing: { location: { pathname: route, change: false } } }
-        expect(selectIsBackgroundCycle(state)).to.equal(false)
-      })
-      expect(selectIsBackgroundCycle.recomputations()).to.equal(11)
+      expect(selectIsAuthentication.recomputations()).to.equal(9)
     })
   })
 
