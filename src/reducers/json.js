@@ -436,6 +436,10 @@ export default function json(state = {}, action = { type: '' }) {
       return state
   }
   const { response } = action.payload
+  // TODO: Add to immutable branch
+  if (!response && get(action, ['meta', 'mappingType'], null) === MAPPING_TYPES.ANNOUNCEMENTS) {
+    return methods.markAnnouncementRead(state, action)
+  }
   if (!response) { return state }
   // parse the linked part of the response into the state
   methods.parseLinked(response.linked, newState)
