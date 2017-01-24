@@ -139,7 +139,7 @@ class RegistrationRequestForm extends Component {
     const { emailState } = this.state
     const currentStatus = emailState.status
     const newState = getEmailStateFromServer({ availability, currentStatus })
-    if (newState.status === STATUS.SUCCESS && availability.is_signup) {
+    if (newState.status === STATUS.SUCCESS && availability.original.is_signup) {
       if (inModal) {
         dispatch(trackEvent('modal-registration-request-form-completion'))
       }
