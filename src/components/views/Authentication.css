@@ -86,13 +86,8 @@
   transform: translate3d(0, 0, 0);
 }
 
-.isJoinForm ~ .Navbar,
-.isJoinForm ~ .Footer {
-  display: none;
-}
-
 @media (--break-2-max) {
-  .isJoinForm {
+  .JoinForm {
     margin-top: 120px;
   }
 }

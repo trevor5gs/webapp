@@ -16,6 +16,12 @@
   border-bottom: 1px solid;
 }
 
+@media (--break-2-max) {
+  .isOnboardingView ~ .MainView {
+    margin-top: 120px;
+  }
+}
+
 @media (--break-2) {
   .Authentication.MainView {
     padding-top: 0;
