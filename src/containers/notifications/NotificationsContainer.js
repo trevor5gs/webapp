@@ -27,6 +27,8 @@ function mapStateToProps(state) {
   const announcement = selectAnnouncement(state)
   return {
     activeTabType,
+    // TODO: Update this in Immutable
+    announcementId: announcement && announcement.id,
     announcementBody: announcement && announcement.body,
     announcementCTACaption: announcement && (announcement.ctaCaption || 'Learn More'),
     announcementCTAHref: announcement && announcement.ctaHref,
@@ -42,6 +44,7 @@ class NotificationsContainer extends Component {
 
   static propTypes = {
     activeTabType: PropTypes.string.isRequired,
+    announcementId: PropTypes.string,
     announcementBody: PropTypes.string,
     announcementCTAHref: PropTypes.string,
     announcementCTACaption: PropTypes.string,
@@ -55,6 +58,7 @@ class NotificationsContainer extends Component {
 
   static defaultProps = {
     activeTabType: 'all',
+    announcementId: '',
     announcementBody: '',
     announcementCTAHref: null,
     announcementImage: null,
@@ -80,8 +84,10 @@ class NotificationsContainer extends Component {
     document.addEventListener('click', this.onClickDocument)
     document.addEventListener('touchstart', this.onClickDocument)
     if (this.props.hasAnnouncementNotification) {
-      const { announcementBody, announcementTitle, dispatch } = this.props
-      dispatch(trackEvent('announcement_viewed', { name: announcementTitle || announcementBody }))
+      const { announcementBody, announcementTitle, announcementId, dispatch } = this.props
+      const trackTitle = announcementTitle || announcementBody
+      const trackProps = { name: trackTitle, announcement: announcementId }
+      dispatch(trackEvent('announcement_viewed', trackProps))
     }
   }
 
@@ -151,10 +157,12 @@ class NotificationsContainer extends Component {
   }
 
   onClickAnnouncementNotification = (e) => {
-    const { announcementBody, announcementTitle, dispatch } = this.props
+    const { announcementBody, announcementTitle, announcementId, dispatch } = this.props
     const el = e.target.tagName === 'IMG' ? e.target.parentNode : e.target
     const trackType = el.classList.contains('js-ANCTA') ? 'clicked' : 'closed'
-    const trackAction = trackEvent(`announcement_${trackType}`, { name: announcementTitle || announcementBody })
+    const trackTitle = announcementTitle || announcementBody
+    const trackProps = { name: trackTitle, announcement: announcementId }
+    const trackAction = trackEvent(`announcement_${trackType}`, trackProps)
     if (trackType === 'closed') {
       dispatch(markAnnouncementRead())
     }
