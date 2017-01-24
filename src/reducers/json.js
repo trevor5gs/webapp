@@ -437,7 +437,7 @@ export default function json(state = {}, action = { type: '' }) {
   }
   const { response } = action.payload
   // TODO: Add to immutable branch
-  if (!response && action.meta.mappingType === MAPPING_TYPES.ANNOUNCEMENTS) {
+  if (!response && get(action, ['meta', 'mappingType'], null) === MAPPING_TYPES.ANNOUNCEMENTS) {
     return methods.markAnnouncementRead(state, action)
   }
   if (!response) { return state }
