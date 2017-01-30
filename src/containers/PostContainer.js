@@ -17,10 +17,6 @@ import {
   selectIsMobile,
   selectIsGridMode,
 } from '../selectors/gui'
-import {
-  selectIsOwnOriginalPost,
-  selectIsOwnPost,
-} from '../selectors/post'
 import { selectPathname, selectPreviousPath } from '../selectors/routing'
 import { selectJson } from '../selectors/store'
 import {
@@ -104,8 +100,8 @@ export function mapStateToProps(state, props) {
     isLoggedIn,
     isMobile: selectIsMobile(state),
     isOnFeaturedCategory,
-    isOwnOriginalPost: selectIsOwnOriginalPost(state, props),
-    isOwnPost: selectIsOwnPost(state, props),
+    isOwnOriginalPost: post.get('repostAuthorId') === state.profile.get('id'),
+    isOwnPost: post.get('authorId') === state.profile.get('id'),
     isRepost,
     isReposting,
     isWatchingPost: isLoggedIn && post.get('watching'),

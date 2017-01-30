@@ -117,11 +117,10 @@ export default class CommentTools extends PureComponent {
     commentId: PropTypes.string.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isMoreToolActive: PropTypes.bool,
-    isOwnComment: PropTypes.bool,
+    isOwnComment: PropTypes.bool.isRequired,
   }
   static defaultProps = {
     isMoreToolActive: false,
-    isOwnComment: false,
   }
   render() {
     const {

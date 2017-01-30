@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import { selectIsOwnComment } from '../selectors/comment'
 import {
   selectColumnWidth,
   selectCommentOffset,
@@ -14,7 +13,6 @@ import {
   selectIsGridMode,
   selectIsNavbarHidden,
 } from '../selectors/gui'
-import { selectIsOwnPost } from '../selectors/post'
 import Editor, { getEditorId } from '../components/editor/Editor'
 import {
   CommentBody,
@@ -35,8 +33,8 @@ export function mapStateToProps(state, props) {
   const author = state.json.getIn([MAPPING_TYPES.USERS, comment.get('authorId')])
   const post = state.json.getIn([MAPPING_TYPES.POSTS, comment.get('postId')])
 
-  const isOwnComment = selectIsOwnComment(state, props)
-  const isOwnPost = selectIsOwnPost(state, props)
+  const isOwnComment = comment.get('authorId') === state.profile.get('id')
+  const isOwnPost = post.get('authorId') === state.profile.get('id')
   let canDeleteComment = isOwnPost
   if (post.get('repostId')) {
     canDeleteComment = isOwnPost && comment.get('originalPostId') === post.get('id')
@@ -88,6 +86,7 @@ class CommentContainer extends Component {
     isGridMode: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isNavbarHidden: PropTypes.bool.isRequired,
+    isOwnComment: PropTypes.bool.isRequired,
     post: PropTypes.object.isRequired,
   }
 
@@ -203,6 +202,7 @@ class CommentContainer extends Component {
       isEditing,
       isGridMode,
       isLoggedIn,
+      isOwnComment,
     } = this.props
     if (!comment || !comment.get('id') || !author || !author.get('id')) { return null }
     return (
@@ -231,6 +231,7 @@ class CommentContainer extends Component {
           commentId={commentId}
           isLoggedIn={isLoggedIn}
           isMoreToolActive={this.state.isMoreToolActive}
+          isOwnComment={isOwnComment}
           key={`CommentTools_${commentId}`}
         />
       </div>
