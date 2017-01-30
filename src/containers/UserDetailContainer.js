@@ -133,14 +133,16 @@ class UserDetailContainer extends Component {
     const { renderType } = this.state
     const shouldBindHello = hasZeroPosts && !hasSaidHelloTo
 
-    if (renderType === USER.DETAIL_FAILURE) {
-      return (
-        <UserDetailError>
-          <ErrorState4xx />
-        </UserDetailError>
-      )
+    // render failure if we don't have an initial user
+    if (!user || !user.get('id')) {
+      if (renderType === USER.DETAIL_FAILURE) {
+        return (
+          <UserDetailError>
+            <ErrorState4xx />
+          </UserDetailError>
+        )
+      }
     }
-    if (!user || !user.get('id')) { return null }
     const props = {
       activeType: activeUserFollowingType,
       isLoggedIn,

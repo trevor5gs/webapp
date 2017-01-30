@@ -4,13 +4,13 @@ import PostContainer from '../../containers/PostContainer'
 import StreamContainer from '../../containers/StreamContainer'
 import { MainView } from '../views/MainView'
 
-export const PostDetail = ({ author, hasEditor, post, streamAction }) =>
+export const PostDetail = ({ hasEditor, post, streamAction }) =>
   <MainView className="PostDetail">
     <div className="PostDetails Posts asList">
-      <article className="PostList" id={`Post_${post.get('id', '_')}`}>
+      <article className="PostList" id={`Post_${post.get('id')}`}>
         <div className="StreamContainer">
-          {author && post ? <PostContainer isPostDetail postId={post.get('id')} /> : null}
-          {hasEditor && post ? <Editor post={post} isComment isPostDetail /> : null}
+          <PostContainer isPostDetail postId={post.get('id')} />
+          {hasEditor ? <Editor post={post} isComment isPostDetail /> : null}
         </div>
         {streamAction ?
           <StreamContainer action={streamAction} className="CommentStreamContainer" /> :
@@ -20,13 +20,11 @@ export const PostDetail = ({ author, hasEditor, post, streamAction }) =>
     </div>
   </MainView>
 PostDetail.propTypes = {
-  author: PropTypes.object,
   hasEditor: PropTypes.bool.isRequired,
   post: PropTypes.object.isRequired,
   streamAction: PropTypes.object,
 }
 PostDetail.defaultProps = {
-  author: null,
   streamAction: null,
 }
 

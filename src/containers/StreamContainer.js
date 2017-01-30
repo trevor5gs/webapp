@@ -15,9 +15,8 @@ import {
   selectInnerWidth,
   selectIsGridMode,
 } from '../selectors/gui'
-import { selectJson, selectOmnibar, selectStream } from '../selectors/store'
+import { selectOmnibar, selectStream } from '../selectors/store'
 import { makeSelectStreamProps } from '../selectors/stream'
-import { findModel } from '../helpers/json_helper'
 import { getQueryParamValue } from '../helpers/uri_helper'
 import {
   addScrollObject,
@@ -43,7 +42,6 @@ export function makeMapStateToProps() {
       innerHeight: selectInnerHeight(state),
       innerWidth: selectInnerWidth(state),
       isLoggedIn: selectIsLoggedIn(state),
-      json: selectJson(state),
       isGridMode: selectIsGridMode(state),
       omnibar: selectOmnibar(state),
       renderObj,
@@ -64,12 +62,10 @@ class StreamContainer extends Component {
     columnCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
     hasLaunchedSignupModal: PropTypes.bool.isRequired,
-    initModel: PropTypes.object,
     isGridMode: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isModalComponent: PropTypes.bool,
     isPostHeaderHidden: PropTypes.bool,
-    json: PropTypes.object.isRequired,
     omnibar: PropTypes.object.isRequired,
     paginatorText: PropTypes.string,
     renderObj: PropTypes.object.isRequired,
@@ -82,7 +78,6 @@ class StreamContainer extends Component {
   static defaultProps = {
     children: null,
     className: '',
-    initModel: null,
     isModalComponent: false,
     isPostHeaderHidden: false,
     paginatorText: 'Loading',
@@ -288,14 +283,11 @@ class StreamContainer extends Component {
   }
 
   render() {
-    const { className, columnCount, initModel, isGridMode, isPostHeaderHidden, json,
+    const { className, columnCount, isGridMode, isPostHeaderHidden,
       paginatorText, renderObj, result, stream } = this.props
     const { action, hidePaginator, renderType } = this.state
     if (!action) { return null }
-    const model = findModel(json, initModel)
-    if (model) {
-      renderObj.data.push(model)
-    } else if (!renderObj.data.length) {
+    if (!renderObj.data.length) {
       switch (renderType) {
         case ACTION_TYPES.LOAD_STREAM_SUCCESS:
           return this.renderZeroState()

@@ -99,20 +99,22 @@ class PostDetailContainer extends Component {
   render() {
     const { author, paramsToken, post } = this.props
     const { renderType } = this.state
-    if (renderType === POST.DETAIL_REQUEST) {
-      return (
-        <section className="StreamContainer">
-          <Paginator className="isBusy" />
-        </section>
-      )
-    } else if (renderType === POST.DETAIL_FAILURE) {
-      return (
-        <PostDetailError>
-          <ErrorState4xx />
-        </PostDetailError>
-      )
+    // render loading/failure if we don't have an initial post
+    if (!post || !post.get('id')) {
+      if (renderType === POST.DETAIL_REQUEST) {
+        return (
+          <section className="StreamContainer">
+            <Paginator className="isBusy" />
+          </section>
+        )
+      } else if (renderType === POST.DETAIL_FAILURE) {
+        return (
+          <PostDetailError>
+            <ErrorState4xx />
+          </PostDetailError>
+        )
+      }
     }
-    if (!post || !post.get('id')) { return null }
     const props = {
       author,
       hasEditor: author && author.get('hasCommentingEnabled') && !(post.get('isReposting') || post.get('isEditing')),
