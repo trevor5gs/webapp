@@ -87,18 +87,6 @@ describe('StreamContainer', () => {
   })
 
   describe('#mapStateToProps', () => {
-    context('json', () => {
-      it('sets json', () => {
-        state = createStateForStream()
-        props = createPropsForStream()
-        expect(mapStateToProps(state, props).json.getIn(['pages', '/following'])).to.deep.equal(Immutable.fromJS({
-          ids: ['11', '12', '13'],
-          pagination: {},
-          type: MAPPING_TYPES.POSTS,
-        }))
-      })
-    })
-
     // TODO: This should be moved off to the reducer/gui spec
     context('mode', () => {
       it('sets mode', () => {
