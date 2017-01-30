@@ -161,7 +161,7 @@ HeroPromotionPage.propTypes = {
   header: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   sources: PropTypes.object,
-  subheader: PropTypes.string.isRequired,
+  subheader: PropTypes.string,
 }
 HeroPromotionPage.defaultProps = {
   creditSources: null,
@@ -169,5 +169,6 @@ HeroPromotionPage.defaultProps = {
   ctaCaption: null,
   ctaHref: null,
   sources: null,
+  subheader: null,
 }
 

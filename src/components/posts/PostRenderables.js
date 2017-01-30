@@ -11,11 +11,13 @@ import StreamContainer from '../../containers/StreamContainer'
 import { loadComments } from '../../actions/posts'
 import { RegionItems } from '../regions/RegionRenderables'
 
-export const CommentStream = ({ detailPath, post, postCommentsCount }) =>
+// TODO: look at moving this into the PostContainer and refactoring the
+// PostDetailContainer to also use the PostContainer
+export const CommentStream = ({ detailPath, postId, postCommentsCount }) =>
   <div>
     <StreamContainer
       className="CommentStreamContainer isFullWidth"
-      action={loadComments(post)}
+      action={loadComments(postId)}
       ignoresScrollPosition
     >
       {postCommentsCount > 10 &&
@@ -33,8 +35,8 @@ export const CommentStream = ({ detailPath, post, postCommentsCount }) =>
   </div>
 CommentStream.propTypes = {
   detailPath: PropTypes.string.isRequired,
-  post: PropTypes.object.isRequired,
   postCommentsCount: PropTypes.number.isRequired,
+  postId: PropTypes.string.isRequired,
 }
 
 const PostHeaderTimeAgoLink = ({ to, createdAt }) =>
@@ -47,7 +49,6 @@ PostHeaderTimeAgoLink.propTypes = {
 }
 
 export class PostHeader extends PureComponent {
-
   static propTypes = {
     author: PropTypes.object.isRequired,
     detailPath: PropTypes.string.isRequired,
@@ -55,11 +56,9 @@ export class PostHeader extends PureComponent {
     postCreatedAt: PropTypes.string.isRequired,
     postId: PropTypes.string.isRequired,
   }
-
   static defaultProps = {
     isPostDetail: false,
   }
-
   render() {
     const { author, detailPath, isPostDetail, postCreatedAt, postId } = this.props
     return (
@@ -98,7 +97,6 @@ export class PostHeader extends PureComponent {
 }
 
 export class CategoryHeader extends PureComponent {
-
   static propTypes = {
     author: PropTypes.object.isRequired,
     categoryName: PropTypes.string.isRequired,
@@ -107,7 +105,6 @@ export class CategoryHeader extends PureComponent {
     postCreatedAt: PropTypes.string.isRequired,
     postId: PropTypes.string.isRequired,
   }
-
   render() {
     const { author, categoryName, categoryPath, detailPath, postCreatedAt, postId } = this.props
     return (
@@ -145,7 +142,6 @@ export class CategoryHeader extends PureComponent {
 }
 
 export class RepostHeader extends PureComponent {
-
   static propTypes = {
     detailPath: PropTypes.string.isRequired,
     inUserDetail: PropTypes.bool.isRequired,
@@ -154,7 +150,6 @@ export class RepostHeader extends PureComponent {
     repostAuthor: PropTypes.object.isRequired,
     repostedBy: PropTypes.object.isRequired,
   }
-
   render() {
     const { detailPath, inUserDetail, postCreatedAt, postId, repostAuthor, repostedBy } = this.props
     return (
@@ -201,11 +196,33 @@ export class RepostHeader extends PureComponent {
 
 // TODO: convert this to a PureComponent once we get rid of passing assets
 export class PostBody extends Component {
-
-  shouldComponentUpdate(nextProps) {
-    return !Immutable.is(nextProps.content, this.props.content)
+  static propTypes = {
+    assets: PropTypes.object,
+    author: PropTypes.object.isRequired,
+    columnWidth: PropTypes.number.isRequired,
+    commentOffset: PropTypes.number.isRequired,
+    content: PropTypes.object.isRequired,
+    contentWarning: PropTypes.string,
+    contentWidth: PropTypes.number.isRequired,
+    detailPath: PropTypes.string.isRequired,
+    innerHeight: PropTypes.number.isRequired,
+    isGridMode: PropTypes.bool.isRequired,
+    isRepost: PropTypes.bool.isRequired,
+    postId: PropTypes.string.isRequired,
+    repostContent: PropTypes.object,
+    summary: PropTypes.object.isRequired,
   }
-
+  static defaultProps = {
+    assets: null,
+    contentWarning: null,
+    repostContent: null,
+  }
+  shouldComponentUpdate(nextProps) {
+    return !Immutable.is(nextProps.content, this.props.content) ||
+      ['contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      )
+  }
   render() {
     const {
       assets,
@@ -273,26 +290,5 @@ export class PostBody extends Component {
       </div>
     )
   }
-}
-PostBody.propTypes = {
-  assets: PropTypes.object,
-  author: PropTypes.object.isRequired,
-  columnWidth: PropTypes.number.isRequired,
-  commentOffset: PropTypes.number.isRequired,
-  content: PropTypes.object.isRequired,
-  contentWarning: PropTypes.string,
-  contentWidth: PropTypes.number.isRequired,
-  detailPath: PropTypes.string.isRequired,
-  innerHeight: PropTypes.number.isRequired,
-  isGridMode: PropTypes.bool.isRequired,
-  isRepost: PropTypes.bool.isRequired,
-  postId: PropTypes.string.isRequired,
-  repostContent: PropTypes.object,
-  summary: PropTypes.object.isRequired,
-}
-PostBody.defaultProps = {
-  assets: null,
-  contentWarning: null,
-  repostContent: null,
 }
 

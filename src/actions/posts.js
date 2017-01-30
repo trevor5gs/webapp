@@ -47,8 +47,7 @@ export function flagPost(post, kind) {
 
 // commentsAsList needs the "parent post" so that the correct editor is referenced when replying to
 // a comment.
-export function loadComments(post, addUpdateKey = true) {
-  const postId = `${post.get('id')}`
+export function loadComments(postId, addUpdateKey = true) {
   const obj = {
     type: LOAD_STREAM,
     payload: {
@@ -58,8 +57,8 @@ export function loadComments(post, addUpdateKey = true) {
     meta: {
       mappingType: MAPPING_TYPES.COMMENTS,
       renderStream: {
-        asList: StreamRenderables.commentsAsList(post),
-        asGrid: StreamRenderables.commentsAsList(post),
+        asList: StreamRenderables.commentsAsList,
+        asGrid: StreamRenderables.commentsAsList,
       },
       resultKey: `/posts/${postId}/comments`,
     },

@@ -118,7 +118,7 @@ class PostDetailContainer extends Component {
       hasEditor: author && author.get('hasCommentingEnabled') && !(post.get('isReposting') || post.get('isEditing')),
       key: `postDetail_${paramsToken}`,
       post,
-      streamAction: author && author.get('hasCommentingEnabled') ? loadComments(post, false) : null,
+      streamAction: author && author.get('hasCommentingEnabled') ? loadComments(post.get('id'), false) : null,
     }
     return <PostDetail {...props} />
   }

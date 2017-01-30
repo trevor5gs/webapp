@@ -48,7 +48,7 @@ import { PostTools, WatchTool } from '../components/posts/PostTools'
 import { UserDrawer } from '../components/users/UserRenderables'
 import { postLovers, postReposters } from '../networking/api'
 
-function getPostDetailPath(author, post) {
+export function getPostDetailPath(author, post) {
   return `/${author.get('username')}/post/${post.get('token')}`
 }
 
@@ -526,8 +526,8 @@ class PostContainer extends Component {
         {showComments &&
           <CommentStream
             detailPath={detailPath}
-            post={post}
             postCommentsCount={postCommentsCount}
+            postId={postId}
           />
         }
       </div>)

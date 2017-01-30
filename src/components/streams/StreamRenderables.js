@@ -85,18 +85,15 @@ export const postsAsList = (posts, columnCount, isPostHeaderHidden) =>
     )}
   </div>
 
-export const commentsAsList = post =>
-  comments =>
-    <div>
-      {comments.data.map(comment =>
-        <CommentContainer
-          comment={comment}
-          isEditing={comment.get('isEditing')}
-          key={`commentContainer_${comment.get('id')}`}
-          post={post}
-        />,
-      )}
-    </div>
+export const commentsAsList = comments =>
+  <div>
+    {comments.data.map(comment =>
+      <CommentContainer
+        commentId={comment.get('id')}
+        key={`commentContainer_${comment.get('id')}`}
+      />,
+    )}
+  </div>
 
 export const notificationList = notifications =>
   <div className="Notifications">
