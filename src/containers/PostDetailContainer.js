@@ -114,6 +114,7 @@ class PostDetailContainer extends Component {
           </PostDetailError>
         )
       }
+      return null
     }
     const props = {
       author,

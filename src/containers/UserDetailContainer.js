@@ -142,6 +142,7 @@ class UserDetailContainer extends Component {
           </UserDetailError>
         )
       }
+      return null
     }
     const props = {
       activeType: activeUserFollowingType,
