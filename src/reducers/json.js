@@ -161,23 +161,27 @@ methods.findPostFromIdOrToken = (state, postIdOrToken) =>
     }),
   )
 
-methods.addParentPostIdToComments = (state, action) => {
-  // Kludge to abort for some tests
+// This method updates comment postIds to be the id of the post that was
+// requesting the comments. This is due to the fact that a comment can get
+// added to the original post, a repost of it, or a repost of a repost of it.
+// This way the comment will always have a post that we have loaded client
+// side to reference from.
+methods.addParentPostIdToComments = (response, state, action) => {
   const mappingType = get(action, 'meta.mappingType')
-  if (mappingType !== MAPPING_TYPES.COMMENTS) { return null }
-  const { response, postIdOrToken } = action.payload
-
+  if (mappingType !== MAPPING_TYPES.COMMENTS) { return response }
+  const { postIdOrToken } = action.payload
   if (postIdOrToken) {
     const post = methods.findPostFromIdOrToken(state, postIdOrToken)
     if (post) {
-      response[MAPPING_TYPES.COMMENTS].forEach((model) => {
-        if (!state.getIn([MAPPING_TYPES.POSTS, model.postId])) {
-          // need this to determine if a user can
-          // delete comments on their own repost
-          model.originalPostId = model.postId
-          model.postId = post.get('id')
-        }
+      const newResponse = { ...response }
+      newResponse[mappingType] = response[mappingType].map((model) => {
+        // need this to determine if a user can
+        // delete comments on their own repost
+        model.originalPostId = model.postId
+        model.postId = post.get('id')
+        return model
       })
+      return newResponse
     }
   }
   return response
@@ -401,7 +405,7 @@ export default function json(state = initialState, action = { type: '' }) {
     default:
       return state
   }
-  const { response } = action.payload
+  let { response } = action.payload
   // Announcement notifications dismissed from another tab/device/browser send an empty response
   if (!response && get(action, ['meta', 'mappingType'], null) === MAPPING_TYPES.ANNOUNCEMENTS) {
     return methods.markAnnouncementRead(state, action)
@@ -414,11 +418,13 @@ export default function json(state = initialState, action = { type: '' }) {
   // unless updateResult is false which is used for
   // user details when you want the result to be for
   // posts/following/followers/loves
-  if (action && action.meta && action.meta.updateResult === false) {
-    const { mappingType } = action.meta
+  const mappingType = get(action, 'meta.mappingType')
+  if (mappingType && action.meta.updateResult === false) {
     state = methods.addModels(state, mappingType, response).state
   } else {
-    methods.addParentPostIdToComments(state, action)
+    if (mappingType === MAPPING_TYPES.COMMENTS) {
+      response = methods.addParentPostIdToComments(response, state, action)
+    }
     state = methods.updateResult(response, state, action)
   }
   hasLoadedFirstStream = true

@@ -4,7 +4,6 @@ import React, { Component, PropTypes, PureComponent } from 'react'
 import { Link } from 'react-router'
 import { RegionItems } from '../regions/RegionRenderables'
 import Avatar from '../assets/Avatar'
-import CommentToolsContainer from '../../containers/CommentToolsContainer'
 
 export class CommentHeader extends PureComponent {
   static propTypes = {
@@ -89,28 +88,5 @@ export class CommentBody extends Component {
       </div>
     )
   }
-}
-
-export const CommentFooter = ({ author, comment, currentUser, post }) => {
-  return (
-    <CommentToolsContainer
-      author={author}
-      comment={comment}
-      currentUser={currentUser}
-      key={`CommentTools_${comment.get('id')}`}
-      post={post}
-    />
-  )
-}
-
-CommentFooter.propTypes = {
-  author: PropTypes.object.isRequired,
-  comment: PropTypes.object.isRequired,
-  currentUser: PropTypes.object,
-  post: PropTypes.object,
-}
-CommentFooter.defaultProps = {
-  currentUser: null,
-  post: null,
 }
 

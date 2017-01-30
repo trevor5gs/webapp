@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+/* eslint-disable react/no-multi-comp */
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import Hint from '../hints/Hint'
 import {
@@ -9,141 +10,161 @@ import {
   XBoxIcon,
 } from '../posts/PostIcons'
 
-const TimeAgoTool = ({ createdAt }) =>
-  <span className="PostTool TimeAgoTool">
-    <span className="PostToolValue">{new Date(createdAt).timeAgoInWords()}</span>
-  </span>
-
-TimeAgoTool.propTypes = {
-  createdAt: PropTypes.string.isRequired,
-}
-
-const EditTool = ({ onClickEditComment }) =>
-  <span className="PostTool EditTool ShyTool">
-    <button onClick={onClickEditComment}>
-      <PencilIcon />
-      <Hint>Edit</Hint>
-    </button>
-  </span>
-
-EditTool.propTypes = {
-  onClickEditComment: PropTypes.func.isRequired,
-}
-
-const DeleteTool = ({ onClickDeleteComment }) =>
-  <span className="PostTool DeleteTool ShyTool">
-    <button onClick={onClickDeleteComment}>
-      <XBoxIcon />
-      <Hint>Delete</Hint>
-    </button>
-  </span>
-
-DeleteTool.propTypes = {
-  onClickDeleteComment: PropTypes.func.isRequired,
-}
-
-const ReplyTool = ({ onClickReplyToComment }) =>
-  <span className="PostTool ReplyTool">
-    <button onClick={onClickReplyToComment}>
-      <ReplyIcon />
-      <Hint>Reply</Hint>
-    </button>
-  </span>
-
-ReplyTool.propTypes = {
-  onClickReplyToComment: PropTypes.func.isRequired,
-}
-
-const FlagTool = ({ className, onClickFlagComment }) =>
-  <span className={classNames('PostTool FlagTool ShyTool', className)}>
-    <button onClick={onClickFlagComment}>
-      <FlagIcon />
-      <Hint>Flag</Hint>
-    </button>
-  </span>
-
-FlagTool.propTypes = {
-  className: PropTypes.string,
-  onClickFlagComment: PropTypes.func.isRequired,
-}
-FlagTool.defaultProps = {
-  className: null,
-}
-
-const MoreTool = ({ onClickMoreTool }) =>
-  <span className="PostTool MoreTool">
-    <button onClick={onClickMoreTool}>
-      <ChevronIcon />
-      <Hint>More</Hint>
-    </button>
-  </span>
-
-MoreTool.propTypes = {
-  onClickMoreTool: PropTypes.func.isRequired,
-}
-
-export const CommentTools = (props) => {
-  const { canDeleteComment, comment, isLoggedIn, isMoreToolActive, isOwnComment } = props
-  const { onClickEditComment, onClickDeleteComment, onClickReplyToComment,
-          onClickFlagComment, onClickMoreTool } = props
-  const cId = comment.get('id')
-  const cells = []
-  cells.push(<TimeAgoTool key={`TimeAgoTool_${cId}`} createdAt={comment.get('createdAt')} />)
-  if (isLoggedIn) {
-    if (isOwnComment) {
-      cells.push(<EditTool key={`EditTool_${cId}`} onClickEditComment={onClickEditComment} />)
-      cells.push(
-        <DeleteTool key={`DeleteTool_${cId}`} onClickDeleteComment={onClickDeleteComment} />,
-      )
-    } else if (canDeleteComment) {
-      cells.push(
-        <ReplyTool key={`ReplyTool_${cId}`} onClickReplyToComment={onClickReplyToComment} />,
-      )
-      cells.push(
-        <FlagTool key={`FlagTool_${cId}`} onClickFlagComment={onClickFlagComment} />,
-      )
-      cells.push(
-        <DeleteTool key={`DeleteTool_${cId}`} onClickDeleteComment={onClickDeleteComment} />,
-      )
-    } else {
-      cells.push(
-        <ReplyTool key={`ReplyTool_${cId}`} onClickReplyToComment={onClickReplyToComment} />,
-      )
-      cells.push(
-        <FlagTool
-          key={`FlagTool_${cId}`}
-          className="isSolo"
-          onClickFlagComment={onClickFlagComment}
-        />,
-      )
-    }
+class TimeAgoTool extends PureComponent {
+  static propTypes = {
+    createdAt: PropTypes.string.isRequired,
   }
-  cells.push(<MoreTool key={`MoreTool_${cId}`} onClickMoreTool={onClickMoreTool} />)
-  return (
-    <footer className={classNames('PostTools', 'CommentTools', { isMoreToolActive })}>
-      {cells}
-    </footer>
-  )
+  render() {
+    const { createdAt } = this.props
+    return (
+      <span className="PostTool TimeAgoTool">
+        <span className="PostToolValue">{new Date(createdAt).timeAgoInWords()}</span>
+      </span>
+    )
+  }
 }
 
-CommentTools.propTypes = {
-  canDeleteComment: PropTypes.bool,
-  comment: PropTypes.object.isRequired,
-  isLoggedIn: PropTypes.bool,
-  isMoreToolActive: PropTypes.bool,
-  isOwnComment: PropTypes.bool,
-  onClickDeleteComment: PropTypes.func.isRequired,
-  onClickEditComment: PropTypes.func.isRequired,
-  onClickFlagComment: PropTypes.func.isRequired,
-  onClickMoreTool: PropTypes.func.isRequired,
-  onClickReplyToComment: PropTypes.func.isRequired,
-}
-CommentTools.defaultProps = {
-  canDeleteComment: false,
-  isLoggedIn: false,
-  isMoreToolActive: false,
-  isOwnComment: false,
+class EditTool extends PureComponent {
+  static contextTypes = {
+    onClickEditComment: PropTypes.func.isRequired,
+  }
+  render() {
+    return (
+      <span className="PostTool EditTool ShyTool">
+        <button onClick={this.context.onClickEditComment}>
+          <PencilIcon />
+          <Hint>Edit</Hint>
+        </button>
+      </span>
+    )
+  }
 }
 
-export default CommentTools
+class DeleteTool extends PureComponent {
+  static contextTypes = {
+    onClickDeleteComment: PropTypes.func.isRequired,
+  }
+  render() {
+    return (
+      <span className="PostTool DeleteTool ShyTool">
+        <button onClick={this.context.onClickDeleteComment}>
+          <XBoxIcon />
+          <Hint>Delete</Hint>
+        </button>
+      </span>
+    )
+  }
+}
+
+class ReplyTool extends PureComponent {
+  static contextTypes = {
+    onClickReplyToComment: PropTypes.func.isRequired,
+  }
+  render() {
+    return (
+      <span className="PostTool ReplyTool">
+        <button onClick={this.context.onClickReplyToComment}>
+          <ReplyIcon />
+          <Hint>Reply</Hint>
+        </button>
+      </span>
+    )
+  }
+}
+
+class FlagTool extends PureComponent {
+  static propTypes = {
+    className: PropTypes.string,
+  }
+  static defaultProps = {
+    className: null,
+  }
+  static contextTypes = {
+    onClickFlagComment: PropTypes.func.isRequired,
+  }
+  render() {
+    return (
+      <span className={classNames('PostTool FlagTool ShyTool', this.props.className)}>
+        <button onClick={this.context.onClickFlagComment}>
+          <FlagIcon />
+          <Hint>Flag</Hint>
+        </button>
+      </span>
+    )
+  }
+}
+
+class MoreTool extends PureComponent {
+  static contextTypes = {
+    onClickMoreTool: PropTypes.func.isRequired,
+  }
+  render() {
+    return (
+      <span className="PostTool MoreTool">
+        <button onClick={this.context.onClickMoreTool}>
+          <ChevronIcon />
+          <Hint>More</Hint>
+        </button>
+      </span>
+    )
+  }
+}
+
+export default class CommentTools extends PureComponent {
+  static propTypes = {
+    canDeleteComment: PropTypes.bool.isRequired,
+    commentCreatedAt: PropTypes.string.isRequired,
+    commentId: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    isMoreToolActive: PropTypes.bool,
+    isOwnComment: PropTypes.bool,
+  }
+  static defaultProps = {
+    isMoreToolActive: false,
+    isOwnComment: false,
+  }
+  render() {
+    const {
+      canDeleteComment,
+      commentCreatedAt,
+      commentId,
+      isLoggedIn,
+      isMoreToolActive,
+      isOwnComment,
+    } = this.props
+    const cells = []
+    cells.push(<TimeAgoTool key={`TimeAgoTool_${commentId}`} createdAt={commentCreatedAt} />)
+    if (isLoggedIn) {
+      if (isOwnComment) {
+        cells.push(<EditTool key={`EditTool_${commentId}`} />)
+        cells.push(
+          <DeleteTool key={`DeleteTool_${commentId}`} />,
+        )
+      } else if (canDeleteComment) {
+        cells.push(
+          <ReplyTool key={`ReplyTool_${commentId}`} />,
+        )
+        cells.push(
+          <FlagTool key={`FlagTool_${commentId}`} />,
+        )
+        cells.push(
+          <DeleteTool key={`DeleteTool_${commentId}`} />,
+        )
+      } else {
+        cells.push(
+          <ReplyTool key={`ReplyTool_${commentId}`} />,
+        )
+        cells.push(
+          <FlagTool key={`FlagTool_${commentId}`} className="isSolo" />,
+        )
+      }
+    }
+    cells.push(<MoreTool key={`MoreTool_${commentId}`} />)
+    return (
+      <footer className={classNames('PostTools', 'CommentTools', { isMoreToolActive })}>
+        {cells}
+      </footer>
+    )
+  }
+}
 
