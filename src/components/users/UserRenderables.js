@@ -129,6 +129,7 @@ export const UserProfileCard = ({
     }
     <BackgroundImage
       className="hasOverlay6 inUserProfileCard"
+      dpi={'xhdpi'}
       sources={user.get('coverImage')}
       to={`/${user.get('username')}`}
     />

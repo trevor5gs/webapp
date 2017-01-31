@@ -6,7 +6,12 @@ import { XIcon } from '../../components/assets/Icons'
 
 const RegistrationRequestDialog = ({ promotional }) =>
   <div className="AuthenticationFormDialog inModal">
-    <BackgroundImage className="RegistrationRequestBackground hasOverlay6" isBackground sources={promotional.get('coverImage')} />
+    <BackgroundImage
+      className="RegistrationRequestBackground hasOverlay6"
+      dpi={'xhdpi'}
+      isBackground
+      sources={promotional.get('coverImage')}
+    />
     <RegistrationRequestForm inModal />
     <HeroPromotionCredits sources={promotional.get('avatar')} label="Posted by" username={promotional.get('username')} />
     <button className="CloseModal XClose"><XIcon /></button>
