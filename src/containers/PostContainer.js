@@ -5,9 +5,8 @@ import { push, replace } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
 import set from 'lodash/set'
-import * as ACTION_TYPES from '../constants/action_types'
-import * as MAPPING_TYPES from '../constants/mapping_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectAssets } from '../selectors/assets'
 import {
   selectColumnWidth,
   selectCommentOffset,
@@ -17,13 +16,36 @@ import {
   selectIsMobile,
   selectIsGridMode,
 } from '../selectors/gui'
+import {
+  selectPost,
+  selectPostAuthor,
+  selectPostBody,
+  selectPostCategoryName,
+  selectPostCategorySlug,
+  selectPostCommentsCount,
+  selectPostContent,
+  selectPostContentWarning,
+  selectPostCreatedAt,
+  selectPostDetailPath,
+  selectPostIsCommentsRequesting,
+  selectPostIsOwn,
+  selectPostIsOwnOriginal,
+  selectPostIsRepost,
+  selectPostIsReposting,
+  selectPostIsWatching,
+  selectPostLoveCount,
+  selectPostLoved,
+  selectPostRepostContent,
+  selectPostReposted,
+  selectPostRepostsCount,
+  selectPostShowEditor,
+  selectPostShowLovers,
+  selectPostShowReposters,
+  selectPostSummary,
+  selectPostViewsCountRounded,
+} from '../selectors/post'
 import { selectPathname, selectPreviousPath } from '../selectors/routing'
 import { selectJson } from '../selectors/store'
-import {
-  selectStreamType,
-  selectStreamMappingType,
-  selectStreamPostIdOrToken,
-} from '../selectors/stream'
 import { getLinkObject } from '../helpers/json_helper'
 import { trackEvent } from '../actions/analytics'
 import { openModal, closeModal } from '../actions/modals'
@@ -44,90 +66,90 @@ import { PostTools, WatchTool } from '../components/posts/PostTools'
 import { UserDrawer } from '../components/users/UserRenderables'
 import { postLovers, postReposters } from '../networking/api'
 
+// TODO: Search and replace to remove this
 export function getPostDetailPath(author, post) {
   return `/${author.get('username')}/post/${post.get('token')}`
 }
 
 export function mapStateToProps(state, props) {
+  // TODO: Can we infer isPostDetail from the route (viewName) instead?
   const { isPostDetail, postId } = props
-  const isLoggedIn = selectIsLoggedIn(state)
+
+  // TODO: Dump when we update below?
   const json = selectJson(state)
+
+  // TODO: Fold these in to the props below?
+  const post = selectPost(state, props)
+  const author = selectPostAuthor(state, props)
   const pathname = selectPathname(state)
-  const streamType = selectStreamType(state)
-  const streamMappingType = selectStreamMappingType(state)
-  const streamPostIdOrToken = selectStreamPostIdOrToken(state)
+  const postCommentsCount = selectPostCommentsCount(state, props)
+  const postLovesCount = selectPostLoveCount(state, props)
+  const postRepostsCount = selectPostRepostsCount(state, props)
 
-  const post = json.getIn([MAPPING_TYPES.POSTS, postId])
-  const author = json.getIn([MAPPING_TYPES.USERS, post.get('authorId')])
-  const assets = json.get('assets')
-
-  const categories = post.getIn(['links', 'categories'])
-  const category = json.getIn(['categories', categories ? categories.first() : null])
-  const isEditing = post.get('isEditing', false)
-  const isReposting = post.get('isReposting', false)
-  const postBody = post.get('body')
-  const postCommentsCount = post.get('commentsCount')
-  const postLovesCount = post.get('lovesCount')
-  const postRepostsCount = post.get('repostsCount')
-  const postToken = post.get('token')
-
-  const isGridMode = isPostDetail ? false : selectIsGridMode(state)
+  // TODO: Turn into a local selector?
   const isOnFeaturedCategory = /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname)
-  const isRepost = !!(post.get('repostContent') && post.get('repostContent').size)
-  const showEditor = !!((isEditing || isReposting) && postBody)
+
+  // TODO: Need to sort these guys?
+  const isGridMode = isPostDetail ? false : selectIsGridMode(state)
+  const isRepost = selectPostIsRepost(state, props)
+  const showEditor = selectPostShowEditor(state, props)
   const showCommentEditor = !showEditor && !isPostDetail && post.get('showComments')
   const showComments = showCommentEditor && postCommentsCount > 0
 
+  // TODO: Simplify these, maybe local selectors?
+  /* eslint-disable max-len */
+  const showLovers = (!showEditor && !isGridMode && selectPostShowLovers(state, props) && postLovesCount > 0) ||
+                     (!showEditor && !isGridMode && isPostDetail && postLovesCount > 0)
+
+  const showReposters = (!showEditor && !isGridMode && selectPostShowReposters(state, props) && postRepostsCount > 0) ||
+                        (!showEditor && !isGridMode && isPostDetail && postRepostsCount > 0)
+  /* eslint-enable max-len */
+
   const newProps = {
-    assets,
+    assets: selectAssets(state),
     author,
-    categoryName: category ? category.get('name') : null,
-    categoryPath: category ? `/discover/${category.get('slug')}` : null,
+    categoryName: selectPostCategoryName(state, props),
+    categoryPath: selectPostCategorySlug(state, props),
     columnWidth: selectColumnWidth(state),
     commentOffset: selectCommentOffset(state),
-    commentsCount: post.get('commentsCount'),
-    content: post.get('content'),
-    contentWarning: post.get('contentWarning'),
+    content: selectPostContent(state, props),
+    contentWarning: selectPostContentWarning(state, props),
     contentWidth: selectContentWidth(state),
-    detailPath: getPostDetailPath(author, post),
+    detailPath: selectPostDetailPath(state, props),
     deviceSize: selectDeviceSize(state),
     innerHeight: selectInnerHeight(state),
-    isCommentsRequesting: streamType === ACTION_TYPES.LOAD_STREAM_REQUEST &&
-      streamMappingType === MAPPING_TYPES.COMMENTS &&
-      (`${streamPostIdOrToken}` === `${postId}` ||
-      `${streamPostIdOrToken}` === `${postToken}`),
+    isCommentsRequesting: selectPostIsCommentsRequesting(state, props),
     isGridMode,
-    isLoggedIn,
+    isLoggedIn: selectIsLoggedIn(state),
     isMobile: selectIsMobile(state),
     isOnFeaturedCategory,
-    isOwnOriginalPost: post.get('repostAuthorId') === state.profile.get('id'),
-    isOwnPost: post.get('authorId') === state.profile.get('id'),
+    isOwnOriginalPost: selectPostIsOwnOriginal(state, props),
+    isOwnPost: selectPostIsOwn(state, props),
     isRepost,
-    isReposting,
-    isWatchingPost: isLoggedIn && post.get('watching'),
+    isReposting: selectPostIsReposting(state, props),
+    isWatchingPost: selectPostIsWatching(state, props),
     pathname,
     post,
-    postBody,
+    postBody: selectPostBody(state, props),
     postCommentsCount,
-    postCreatedAt: post.get('createdAt'),
+    postCreatedAt: selectPostCreatedAt(state, props),
     postId,
-    postLoved: post.get('loved'),
+    postLoved: selectPostLoved(state, props),
     postLovesCount,
-    postReposted: post.get('reposted'),
-    postRepostsCount: post.get('repostsCount'),
-    postViewsCountRounded: post.get('viewsCountRounded'),
+    postReposted: selectPostReposted(state, props),
+    postRepostsCount: selectPostRepostsCount(state, props),
+    postViewsCountRounded: selectPostViewsCountRounded(state, props),
     previousPath: selectPreviousPath(state),
-    repostContent: post.get('repostContent'),
+    repostContent: selectPostRepostContent(state, props),
     showCommentEditor,
     showComments,
     showEditor,
-    showLovers: (!showEditor && !isGridMode && post.get('showLovers') && postLovesCount > 0) ||
-      (!showEditor && !isGridMode && isPostDetail && postLovesCount > 0),
-    showReposters: (!showEditor && !isGridMode && post.get('showReposters') && postRepostsCount > 0) ||
-      (!showEditor && !isGridMode && isPostDetail && postRepostsCount > 0),
-    summary: post.get('summary'),
+    showLovers,
+    showReposters,
+    summary: selectPostSummary(state, props),
   }
 
+  // TODO: Need to sort this guy too..
   if (isRepost) {
     newProps.repostAuthor = post.get('repostAuthor') || getLinkObject(post, 'repostAuthor', json) || author
   }
