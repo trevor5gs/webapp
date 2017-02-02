@@ -33,7 +33,7 @@ import {
   selectPostIsRepost,
   selectPostIsReposting,
   selectPostIsWatching,
-  selectPostLoveCount,
+  selectPostLovesCount,
   selectPostLoved,
   selectPostRepostContent,
   selectPostReposted,
@@ -83,7 +83,7 @@ export function mapStateToProps(state, props) {
   const author = selectPostAuthor(state, props)
   const pathname = selectPathname(state)
   const postCommentsCount = selectPostCommentsCount(state, props)
-  const postLovesCount = selectPostLoveCount(state, props)
+  const postLovesCount = selectPostLovesCount(state, props)
   const postRepostsCount = selectPostRepostsCount(state, props)
 
   // TODO: Turn into a local selector?
