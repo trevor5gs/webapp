@@ -6,7 +6,7 @@ import {
   selectHasAutoWatchEnabled,
   selectIsOwnPage,
 } from '../../selectors/profile'
-import { selectPostFromPropsPostId, selectIsOwnPost } from '../../selectors/post'
+import { selectPost, selectPostIsOwn } from '../../selectors/post'
 import { openModal, closeModal } from '../../actions/modals'
 import {
   createComment,
@@ -48,9 +48,9 @@ function mapStateToProps(state, props) {
   return {
     allowsAutoWatch: selectHasAutoWatchEnabled(state),
     isLoggedIn: selectIsLoggedIn(state),
-    post: selectPostFromPropsPostId(state, props),
+    post: selectPost(state, props),
     isOwnPage: selectIsOwnPage(state),
-    isOwnPost: selectIsOwnPost(state, props),
+    isOwnPost: selectPostIsOwn(state, props),
   }
 }
 

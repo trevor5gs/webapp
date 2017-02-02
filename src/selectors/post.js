@@ -12,57 +12,28 @@ import { selectUsers } from './user'
 import { selectStreamType, selectStreamMappingType, selectStreamPostIdOrToken } from './stream'
 import { findModel } from '../helpers/json_helper'
 
-// -----------------------------
-// props.post.xxx
-// TODO: Deprecate, search and replace these
-export const selectPropsPost = (state, props) => get(props, 'post', Immutable.Map())
-export const selectPropsPostId = (state, props) => selectPropsPost(state, props).get('id')
-export const selectPropsPostToken = (state, props) => selectPropsPost(state, props).get('token')
-export const selectPropsPostAuthorId = (state, props) => selectPropsPost(state, props).get('authorId')
-export const selectPropsRepostAuthorId = (state, props) => selectPropsPost(state, props).getIn(['links', 'repostAuthor', 'id'])
+export const selectPropsPostId = (state, props) =>
+  get(props, 'postId') || get(props, 'post', Immutable.Map()).get('id')
 
-export const selectIsOwnOriginalPost = createSelector(
-  [selectPropsPost, selectPropsRepostAuthorId, selectProfileId],
-  (post, repostAuthorId, profileId) =>
-    post && `${repostAuthorId}` === `${profileId}`,
-)
+// Memoized selectors
 
-export const selectIsOwnPost = createSelector(
-  [selectPropsPost, selectPropsPostAuthorId, selectProfileId], (post, authorId, profileId) =>
-    post && `${authorId}` === `${profileId}`,
-)
-
-export const selectPostFromPropsPostId = createSelector(
-  [selectJson, selectPropsPostId], (json, postId) =>
-    json.getIn([POSTS, postId], Immutable.Map()),
-)
-
-export const selectPostFromToken = createSelector(
-  [selectJson, selectParamsToken], (json, token) =>
-    findModel(json, { collection: POSTS, findObj: { token } }) || Immutable.Map(),
-)
-
-// -----------------------------
-
-// Requires `postId`, `token` or `post` to be found in props
+// Requires `postId`, `post` or `params.token` to be found in props
 // If `post` is on the props, grab it's id and do a lookup on `json.posts` for the latest
 // TODO:
 // 1. Not sure if we always should be returning an Immutable.Map() if a post isn't found
 // 2. If we do return an Immutable.Map(), we may need to fix some conditionals that are testing:
-// `if (!post) { return null }` --> `if (!post.size) { return null }`
-// 3. Is there anywhere else in the app posts are coming from?
-export const selectPost = (state, props) => {
-  const postId = get(props, 'postId') || get(props, 'post', Immutable.Map()).get('id')
-  const token = get(props, 'token')
-  if (postId) {
-    return state.json.getIn([POSTS, postId], Immutable.Map())
-  } else if (token) {
-    return findModel(state.json, { collection: POSTS, findObj: { token } }) || Immutable.Map()
-  }
-  return null // or Immutable.Map()?
-}
+// `if (!post) { return null }` --> `if (!post && !post.get('id')) { return null }`
+// 3. findModel gets calculated a lot with json being an argument :(
+export const selectPost = createSelector(
+  [selectPropsPostId, selectParamsToken, selectJson], (id, token, json) => {
+    if (id || token) {
+      const findObj = id ? { id } : { token }
+      return findModel(json, { collection: POSTS, findObj }) || Immutable.Map()
+    }
+    return Immutable.Map()
+  },
+)
 
-// Memoized selectors
 // Properties on the post reducer
 export const selectPostAuthorId = createSelector([selectPost], post => post.get('authorId'))
 export const selectPostBody = createSelector([selectPost], post => post.get('body'))
@@ -74,7 +45,7 @@ export const selectPostHref = createSelector([selectPost], post => post.get('hre
 export const selectPostId = createSelector([selectPost], post => post.get('id'))
 export const selectPostIsAdultContent = createSelector([selectPost], post => post.get('isAdultContent'))
 export const selectPostLoved = createSelector([selectPost], post => post.get('loved'))
-export const selectPostLoveCount = createSelector([selectPost], post => post.get('loveCount'))
+export const selectPostLovesCount = createSelector([selectPost], post => post.get('lovesCount'))
 export const selectPostRepostAuthorId = createSelector([selectPost], post => post.get('repostAuthorId'))
 export const selectPostRepostContent = createSelector([selectPost], post => post.get('repostContent'))
 export const selectPostRepostId = createSelector([selectPost], post => post.get('repostId'))
@@ -135,16 +106,16 @@ export const selectPostAuthorUsername = createSelector(
 )
 
 export const selectPostCategories = createSelector(
-  [selectPost], post => post.getIn(['links', 'categories']),
+  [selectPost], post => post.getIn(['links', 'categories'], Immutable.List()),
 )
 
 export const selectPostCategory = createSelector(
   [selectCategoryCollection, selectPostCategories], (collection, categories) =>
-    collection.get(categories ? categories.first() : null),
+    collection && collection.get(categories ? categories.first() : null),
 )
 
 export const selectPostCategoryName = createSelector(
-  [selectPostCategory], category => category.get('name', null),
+  [selectPostCategory], category => category && category.get('name', null),
 )
 
 export const selectPostCategorySlug = createSelector(
@@ -173,6 +144,8 @@ export const selectPostIsOwn = createSelector(
 )
 
 // TODO: Is selectPostRepostAuthorId a thing? or do we need to look at post.link?
+//        export const selectPropsRepostAuthorId = (state, props) =>
+//          post.getIn(['links', 'repostAuthor', 'id'])
 export const selectPostIsOwnOriginal = createSelector(
   [selectPostRepostAuthorId, selectProfileId], (repostAuthorId, profileId) =>
     `${repostAuthorId}` === `${profileId}`,

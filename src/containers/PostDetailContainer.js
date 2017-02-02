@@ -5,7 +5,7 @@ import { POST } from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectParamsToken, selectParamsUsername } from '../selectors/params'
-import { selectPostFromToken } from '../selectors/post'
+import { selectPost } from '../selectors/post'
 import { selectStreamType } from '../selectors/stream'
 import { loadComments, loadPostDetail, toggleLovers, toggleReposters } from '../actions/posts'
 import { ErrorState4xx } from '../components/errors/Errors'
@@ -22,7 +22,7 @@ export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState
 }
 
 export function mapStateToProps(state, props) {
-  const post = selectPostFromToken(state, props)
+  const post = selectPost(state, props, true)
   return {
     author: state.json.getIn([MAPPING_TYPES.USERS, post.get('authorId')], null),
     isLoggedIn: selectIsLoggedIn(state),
