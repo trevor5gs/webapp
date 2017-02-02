@@ -40,9 +40,9 @@ export const selectPostCreatedAt = createSelector([selectPost], post => post.get
 export const selectPostHref = createSelector([selectPost], post => post.get('href'))
 export const selectPostId = createSelector([selectPost], post => post.get('id'))
 export const selectPostIsAdultContent = createSelector([selectPost], post => post.get('isAdultContent'))
+export const selectPostMetaAttributes = createSelector([selectPost], post => post.get('metaAttributes', Immutable.Map()))
 export const selectPostLoved = createSelector([selectPost], post => post.get('loved'))
 export const selectPostLovesCount = createSelector([selectPost], post => post.get('lovesCount'))
-export const selectPostRepostAuthorId = createSelector([selectPost], post => post.get('repostAuthorId'))
 export const selectPostRepostContent = createSelector([selectPost], post => post.get('repostContent'))
 export const selectPostRepostId = createSelector([selectPost], post => post.get('repostId'))
 export const selectPostRepostPath = createSelector([selectPost], post => post.get('repostPath'))
@@ -56,10 +56,7 @@ export const selectPostViewsCount = createSelector([selectPost], post => post.ge
 export const selectPostViewsCountRounded = createSelector([selectPost], post => post.get('viewsCountRounded'))
 export const selectPostWatching = createSelector([selectPost], post => post.get('watching'))
 
-export const selectPostMetaAttributes = createSelector(
-  [selectPost], post => post.get('metaAttributes', Immutable.Map()),
-)
-
+// Nested properties on the post reducer
 export const selectPostMetaDescription = createSelector(
   [selectPostMetaAttributes], metaAttributes => metaAttributes.get('description'),
 )
@@ -89,8 +86,10 @@ export const selectPostMetaUrl = createSelector(
   [selectPostMetaAttributes], metaAttributes => metaAttributes.get('url'),
 )
 
-// TODO: Pull properties out of post.get('links')?
-
+// TODO: Pull other properties out of post.get('links')?
+export const selectPostRepostAuthorId = createSelector([selectPost], post =>
+  post.getIn(['links', 'repostAuthor', 'id']),
+)
 
 // Derived or additive properties
 export const selectPostAuthor = createSelector(
@@ -139,9 +138,6 @@ export const selectPostIsOwn = createSelector(
     `${authorId}` === `${profileId}`,
 )
 
-// TODO: Is selectPostRepostAuthorId a thing? or do we need to look at post.link?
-//        export const selectPropsRepostAuthorId = (state, props) =>
-//          post.getIn(['links', 'repostAuthor', 'id'])
 export const selectPostIsOwnOriginal = createSelector(
   [selectPostRepostAuthorId, selectProfileId], (repostAuthorId, profileId) =>
     `${repostAuthorId}` === `${profileId}`,
