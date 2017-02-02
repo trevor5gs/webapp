@@ -204,7 +204,7 @@ class Editor extends Component {
       } else {
         submitText = 'Comment'
       }
-    } else if (!post) {
+    } else if (!post || !post.get('id')) {
       submitText = 'Post'
     } else if (post.get('isReposting')) {
       submitText = 'Repost'

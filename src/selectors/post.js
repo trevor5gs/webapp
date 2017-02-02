@@ -19,11 +19,7 @@ export const selectPropsPostId = (state, props) =>
 
 // Requires `postId`, `post` or `params.token` to be found in props
 // If `post` is on the props, grab it's id and do a lookup on `json.posts` for the latest
-// TODO:
-// 1. Not sure if we always should be returning an Immutable.Map() if a post isn't found
-// 2. If we do return an Immutable.Map(), we may need to fix some conditionals that are testing:
-// `if (!post) { return null }` --> `if (!post && !post.get('id')) { return null }`
-// 3. findModel gets calculated a lot with json being an argument :(
+// TODO: `findModel` gets calculated a lot with json being an argument :(, is this a concern?
 export const selectPost = createSelector(
   [selectPropsPostId, selectParamsToken, selectJson], (id, token, json) => {
     if (id || token) {
