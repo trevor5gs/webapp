@@ -12,8 +12,8 @@ describe('authentication saga', function () {
         AUTHENTICATION.LOGOUT_FAILURE,
         AUTHENTICATION.REFRESH_FAILURE,
       ])
+      expect(logoutFn.next({ type: AUTHENTICATION.REFRESH_FAILURE })).to.put(push('/enter'))
       expect(document.cookie).to.equal('ello_skip_prerender=false')
-      expect(logoutFn).to.put(push('/enter'))
     })
   })
 })
