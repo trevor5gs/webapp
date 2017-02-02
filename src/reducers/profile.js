@@ -27,6 +27,7 @@ export default (state = initialState, action) => {
       })
     case AUTHENTICATION.LOGOUT_SUCCESS:
     case AUTHENTICATION.LOGOUT_FAILURE:
+    case AUTHENTICATION.REFRESH_FAILURE:
     case PROFILE.DELETE_SUCCESS:
       // keep around the registration data so that android
       // can re-register a user if they logout and then login

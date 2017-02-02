@@ -41,7 +41,7 @@ UserTextLink.defaultProps = {
   user: null,
 }
 
-const PostTextLink = ({ author, post, text = 'post' }) => {
+const PostTextLink = ({ author, post, text }) => {
   if (!post || !author) { return <span>{text}</span> }
   return (
     <Link to={getActivityPath(author, post)}>
@@ -52,11 +52,12 @@ const PostTextLink = ({ author, post, text = 'post' }) => {
 PostTextLink.propTypes = {
   author: PropTypes.object,
   post: PropTypes.object,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
 }
 PostTextLink.defaultProps = {
   author: null,
   post: null,
+  text: 'post',
 }
 
 export const AnnouncementNotification = (props, context) => {
