@@ -65,3 +65,7 @@ export const selectViewNameFromRoute = createSelector(
   },
 )
 
+export const selectIsDiscoverRoot = createSelector(
+  [selectPathname], pathname => /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname),
+)
+

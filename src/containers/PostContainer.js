@@ -44,7 +44,7 @@ import {
   selectPostSummary,
   selectPostViewsCountRounded,
 } from '../selectors/post'
-import { selectPathname, selectPreviousPath } from '../selectors/routing'
+import { selectIsDiscoverRoot, selectPathname, selectPreviousPath } from '../selectors/routing'
 import { selectJson } from '../selectors/store'
 import { getLinkObject } from '../helpers/json_helper'
 import { trackEvent } from '../actions/analytics'
@@ -81,13 +81,9 @@ export function mapStateToProps(state, props) {
   // TODO: Fold these in to the props below?
   const post = selectPost(state, props)
   const author = selectPostAuthor(state, props)
-  const pathname = selectPathname(state)
   const postCommentsCount = selectPostCommentsCount(state, props)
   const postLovesCount = selectPostLovesCount(state, props)
   const postRepostsCount = selectPostRepostsCount(state, props)
-
-  // TODO: Turn into a local selector?
-  const isOnFeaturedCategory = /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname)
 
   // TODO: Need to sort these guys?
   const isGridMode = isPostDetail ? false : selectIsGridMode(state)
@@ -119,16 +115,16 @@ export function mapStateToProps(state, props) {
     deviceSize: selectDeviceSize(state),
     innerHeight: selectInnerHeight(state),
     isCommentsRequesting: selectPostIsCommentsRequesting(state, props),
+    isDiscoverRoot: selectIsDiscoverRoot(state, props),
     isGridMode,
     isLoggedIn: selectIsLoggedIn(state),
     isMobile: selectIsMobile(state),
-    isOnFeaturedCategory,
     isOwnOriginalPost: selectPostIsOwnOriginal(state, props),
     isOwnPost: selectPostIsOwn(state, props),
     isRepost,
     isReposting: selectPostIsReposting(state, props),
     isWatchingPost: selectPostIsWatching(state, props),
-    pathname,
+    pathname: selectPathname(state),
     post,
     postBody: selectPostBody(state, props),
     postCommentsCount,
@@ -174,10 +170,10 @@ class PostContainer extends Component {
     dispatch: PropTypes.func.isRequired,
     innerHeight: PropTypes.number.isRequired,
     isCommentsRequesting: PropTypes.bool.isRequired,
+    isDiscoverRoot: PropTypes.bool.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    isOnFeaturedCategory: PropTypes.bool.isRequired,
     isOwnOriginalPost: PropTypes.bool.isRequired,
     isOwnPost: PropTypes.bool.isRequired,
     isPostDetail: PropTypes.bool,
@@ -407,10 +403,10 @@ class PostContainer extends Component {
       contentWidth,
       innerHeight,
       isCommentsRequesting,
+      isDiscoverRoot,
       isGridMode,
       isLoggedIn,
       isMobile,
-      isOnFeaturedCategory,
       isOwnOriginalPost,
       isOwnPost,
       isPostDetail,
@@ -452,7 +448,7 @@ class PostContainer extends Component {
       )
     } else if (isPostHeaderHidden) {
       postHeader = null
-    } else if (isOnFeaturedCategory && categoryName && categoryPath) {
+    } else if (isDiscoverRoot && categoryName && categoryPath) {
       postHeader = (
         <CategoryHeader
           {...headerProps}
