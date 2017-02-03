@@ -33,7 +33,7 @@ describe('post selectors', () => {
     })
 
     it('returns if the post is not the users own', () => {
-      state = { profile: Immutable.Map({ id: 'statePost' }) }
+      state = { json, profile: Immutable.Map({ id: 'statePost' }) }
       const props = { post: propsPost }
       expect(selector.selectPostIsOwn(state, props)).to.equal(false)
       state.change = 1
