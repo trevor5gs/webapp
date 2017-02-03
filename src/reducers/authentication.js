@@ -18,13 +18,12 @@ export const initialState = Immutable.Map({
 export default (state = initialState, action) => {
   let auth
   switch (action.type) {
-    case AUTHENTICATION.CLEAR_STORE:
-    case PROFILE.DELETE_SUCCESS:
-      return initialState
     case AUTHENTICATION.CLEAR_AUTH_TOKEN:
       return state.delete('accessToken').delete('expirationDate').delete('expiresIn')
     case AUTHENTICATION.LOGOUT_SUCCESS:
     case AUTHENTICATION.LOGOUT_FAILURE:
+    case AUTHENTICATION.REFRESH_FAILURE:
+    case PROFILE.DELETE_SUCCESS:
       Session.clear()
       return initialState
     case AUTHENTICATION.USER_SUCCESS:

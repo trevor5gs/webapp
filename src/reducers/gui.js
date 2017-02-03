@@ -103,6 +103,7 @@ export default (state = initialState, action = { type: '' }) => {
   switch (type) {
     case AUTHENTICATION.LOGOUT_SUCCESS:
     case AUTHENTICATION.LOGOUT_FAILURE:
+    case AUTHENTICATION.REFRESH_FAILURE:
       return state.set('discoverKeyType', null)
     case EDITOR.SET_IS_COMPLETER_ACTIVE:
       return state.set('isCompleterActive', payload.isCompleterActive)

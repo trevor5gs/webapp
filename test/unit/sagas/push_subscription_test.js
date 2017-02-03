@@ -37,6 +37,7 @@ describe('push subscription saga', function () {
       expect(pushHandler).to.take([
         AUTHENTICATION.LOGOUT_SUCCESS,
         AUTHENTICATION.LOGOUT_FAILURE,
+        AUTHENTICATION.REFRESH_FAILURE,
         PROFILE.DELETE_SUCCESS,
       ])
       expect(pushHandler.next(pushAction)).to.select(selectRegistrationId)

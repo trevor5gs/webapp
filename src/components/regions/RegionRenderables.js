@@ -67,8 +67,7 @@ RegionItems.defaultProps = {
   assets: null,
 }
 
-
-export function regionItemsForNotifications(content, postDetailPath = null, assets) {
+export function regionItemsForNotifications(content, detailPath, assets) {
   const imageAssets = []
   const texts = []
   content.forEach((region) => {
@@ -77,37 +76,37 @@ export function regionItemsForNotifications(content, postDetailPath = null, asse
         texts.push(
           <TextRegion
             content={region.get('data')}
+            detailPath={detailPath}
             isGridMode={false}
             key={`TextRegion_${region.get('data')}`}
-            postDetailPath={postDetailPath}
           />,
         )
         break
       case 'image':
         imageAssets.push(
           <ImageRegion
-            buyLinkURL={region.get('linkUrl')}
             assets={assets}
+            buyLinkURL={region.get('linkUrl')}
             content={region.get('data')}
+            detailPath={detailPath}
             isGridMode
             isNotification
             key={`ImageRegion_${JSON.stringify(region.get('data'))}`}
             links={region.get('links')}
-            postDetailPath={postDetailPath}
           />,
         )
         break
       case 'embed':
         imageAssets.push(
           <EmbedRegion
+            detailPath={detailPath}
             key={`EmbedRegion_${JSON.stringify(region.get('data'))}`}
-            postDetailPath={postDetailPath}
             region={region}
           />,
         )
         break
       case 'rule':
-        texts.push(<hr className="NotificationRule" />)
+        texts.push(<hr className="NotificationRule" key={`NotificationRule_${detailPath}`} />)
         break
       default:
         break

@@ -308,6 +308,7 @@ export default function json(state = initialState, action = { type: '' }) {
       return methods.addNewIdsToResult(state)
     case ACTION_TYPES.AUTHENTICATION.LOGOUT_SUCCESS:
     case ACTION_TYPES.AUTHENTICATION.LOGOUT_FAILURE:
+    case ACTION_TYPES.AUTHENTICATION.REFRESH_FAILURE:
     case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
       return initialState
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
