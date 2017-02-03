@@ -100,6 +100,10 @@ export const selectPostAuthorUsername = createSelector(
   [selectPostAuthor], author => author.get('username'),
 )
 
+export const selectPostRepostAuthor = createSelector(
+  [selectUsers, selectPostRepostAuthorId], (users, repostAuthorId) => users.get(repostAuthorId),
+)
+
 export const selectPostCategories = createSelector(
   [selectPost], post => post.getIn(['links', 'categories'], Immutable.List()),
 )

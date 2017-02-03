@@ -35,6 +35,7 @@ import {
   selectPostIsWatching,
   selectPostLovesCount,
   selectPostLoved,
+  selectPostRepostAuthor,
   selectPostRepostContent,
   selectPostReposted,
   selectPostRepostsCount,
@@ -45,8 +46,6 @@ import {
   selectPostViewsCountRounded,
 } from '../selectors/post'
 import { selectIsDiscoverRoot, selectPathname, selectPreviousPath } from '../selectors/routing'
-import { selectJson } from '../selectors/store'
-import { getLinkObject } from '../helpers/json_helper'
 import { trackEvent } from '../actions/analytics'
 import { openModal, closeModal } from '../actions/modals'
 import * as postActions from '../actions/posts'
@@ -66,7 +65,7 @@ import { PostTools, WatchTool } from '../components/posts/PostTools'
 import { UserDrawer } from '../components/users/UserRenderables'
 import { postLovers, postReposters } from '../networking/api'
 
-// TODO: Search and replace to remove this
+// TODO: Search and replace this function with `selectPostDetailPath`
 export function getPostDetailPath(author, post) {
   return `/${author.get('username')}/post/${post.get('token')}`
 }
@@ -75,19 +74,17 @@ export function mapStateToProps(state, props) {
   // TODO: Can we infer isPostDetail from the route (viewName) instead?
   const { isPostDetail, postId } = props
 
-  // TODO: Dump when we update below?
-  const json = selectJson(state)
-
-  // TODO: Fold these in to the props below?
   const post = selectPost(state, props)
   const author = selectPostAuthor(state, props)
+  const isRepost = selectPostIsRepost(state, props)
+
+  // TODO: Fold these in to the props below?
   const postCommentsCount = selectPostCommentsCount(state, props)
   const postLovesCount = selectPostLovesCount(state, props)
   const postRepostsCount = selectPostRepostsCount(state, props)
 
   // TODO: Need to sort these guys?
   const isGridMode = isPostDetail ? false : selectIsGridMode(state)
-  const isRepost = selectPostIsRepost(state, props)
   const showEditor = selectPostShowEditor(state, props)
   const showCommentEditor = !showEditor && !isPostDetail && post.get('showComments')
   const showComments = showCommentEditor && postCommentsCount > 0
@@ -101,7 +98,7 @@ export function mapStateToProps(state, props) {
                         (!showEditor && !isGridMode && isPostDetail && postRepostsCount > 0)
   /* eslint-enable max-len */
 
-  const newProps = {
+  return {
     assets: selectAssets(state),
     author,
     categoryName: selectPostCategoryName(state, props),
@@ -136,6 +133,7 @@ export function mapStateToProps(state, props) {
     postRepostsCount: selectPostRepostsCount(state, props),
     postViewsCountRounded: selectPostViewsCountRounded(state, props),
     previousPath: selectPreviousPath(state),
+    repostAuthor: isRepost ? (selectPostRepostAuthor(state, props) || author) : null,
     repostContent: selectPostRepostContent(state, props),
     showCommentEditor,
     showComments,
@@ -144,13 +142,6 @@ export function mapStateToProps(state, props) {
     showReposters,
     summary: selectPostSummary(state, props),
   }
-
-  // TODO: Need to sort this guy too..
-  if (isRepost) {
-    newProps.repostAuthor = post.get('repostAuthor') || getLinkObject(post, 'repostAuthor', json) || author
-  }
-
-  return newProps
 }
 
 class PostContainer extends Component {
