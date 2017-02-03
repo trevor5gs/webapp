@@ -4,9 +4,11 @@ import get from 'lodash/get'
 import { LOAD_STREAM_REQUEST } from '../constants/action_types'
 import { COMMENTS, POSTS } from '../constants/mapping_types'
 import { selectIsLoggedIn } from './authentication'
+import { selectIsGridMode } from './gui'
 import { selectCategoryCollection } from './categories'
 import { selectParamsToken } from './params'
 import { selectId as selectProfileId } from './profile'
+import { selectIsPostDetail } from './routing'
 import { selectJson } from './store'
 import { selectUsers } from './user'
 import { selectStreamType, selectStreamMappingType, selectStreamPostIdOrToken } from './stream'
@@ -48,8 +50,9 @@ export const selectPostRepostId = createSelector([selectPost], post => post.get(
 export const selectPostRepostPath = createSelector([selectPost], post => post.get('repostPath'))
 export const selectPostReposted = createSelector([selectPost], post => post.get('reposted'))
 export const selectPostRepostsCount = createSelector([selectPost], post => post.get('repostsCount'))
-export const selectPostShowLovers = createSelector([selectPost], post => post.get('showLovers'))
-export const selectPostShowReposters = createSelector([selectPost], post => post.get('showReposters'))
+export const selectPostShowComments = createSelector([selectPost], post => post.get('showComments', false))
+export const selectPostShowLovers = createSelector([selectPost], post => post.get('showLovers', false))
+export const selectPostShowReposters = createSelector([selectPost], post => post.get('showReposters', false))
 export const selectPostSummary = createSelector([selectPost], post => post.get('summary'))
 export const selectPostToken = createSelector([selectPost], post => post.get('token'))
 export const selectPostViewsCount = createSelector([selectPost], post => post.get('viewsCount'))
@@ -137,6 +140,11 @@ export const selectPostIsEditing = createSelector([selectPost], post =>
   post.get('isEditing', false),
 )
 
+export const selectPostIsGridMode = createSelector(
+  [selectIsPostDetail, selectIsGridMode], (isPostDetail, isGridMode) =>
+    (isPostDetail ? false : isGridMode),
+)
+
 export const selectPostIsOwn = createSelector(
   [selectPostAuthorId, selectProfileId], (authorId, profileId) =>
     `${authorId}` === `${profileId}`,
@@ -159,9 +167,44 @@ export const selectPostIsWatching = createSelector(
   [selectIsLoggedIn, selectPostWatching], (isLoggedIn, watching) => isLoggedIn && watching,
 )
 
+export const selectPostRepostAuthorWithFallback = createSelector(
+  [selectPostIsRepost, selectPostRepostAuthor, selectPostAuthor],
+  (isRepost, repostAuthor, author) =>
+    (isRepost ? (repostAuthor || author) : null),
+)
+
+// Editor and drawer states for a given post
 export const selectPostShowEditor = createSelector(
   [selectPostIsEditing, selectPostIsReposting, selectPostBody],
   (isEditing, isReposting, postBody) =>
     !!((isEditing || isReposting) && postBody),
+)
+
+export const selectPostShowCommentEditor = createSelector(
+  [selectPostShowEditor, selectPostShowComments, selectIsPostDetail],
+  (showEditor, showComments, isPostDetail) =>
+    !showEditor && !isPostDetail && showComments,
+)
+
+export const selectPostShowCommentsDrawer = createSelector(
+  [selectPostShowCommentEditor, selectPostCommentsCount],
+  (showCommentEditor, commentsCount) =>
+    showCommentEditor && commentsCount > 0,
+)
+
+export const selectPostShowLoversDrawer = createSelector(
+  [selectPostShowEditor, selectPostIsGridMode, selectPostShowLovers,
+    selectPostLovesCount, selectIsPostDetail],
+  (showEditor, isGridMode, showLovers, lovesCount, isPostDetail) =>
+    (!showEditor && !isGridMode && showLovers && lovesCount > 0) ||
+    (!showEditor && !isGridMode && isPostDetail && lovesCount > 0),
+)
+
+export const selectPostShowRepostersDrawer = createSelector(
+  [selectPostShowEditor, selectPostIsGridMode, selectPostShowReposters,
+    selectPostRepostsCount, selectIsPostDetail],
+  (showEditor, isGridMode, showReposters, repostsCount, isPostDetail) =>
+    (!showEditor && !isGridMode && showReposters && repostsCount > 0) ||
+    (!showEditor && !isGridMode && isPostDetail && repostsCount > 0),
 )
 

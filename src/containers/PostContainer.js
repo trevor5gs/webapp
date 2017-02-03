@@ -14,7 +14,6 @@ import {
   selectDeviceSize,
   selectInnerHeight,
   selectIsMobile,
-  selectIsGridMode,
 } from '../selectors/gui'
 import {
   selectPost,
@@ -28,22 +27,26 @@ import {
   selectPostCreatedAt,
   selectPostDetailPath,
   selectPostIsCommentsRequesting,
+  selectPostIsGridMode,
   selectPostIsOwn,
   selectPostIsOwnOriginal,
   selectPostIsRepost,
   selectPostIsReposting,
   selectPostIsWatching,
-  selectPostLovesCount,
   selectPostLoved,
-  selectPostRepostAuthor,
+  selectPostLovesCount,
+  selectPostRepostAuthorWithFallback,
   selectPostRepostContent,
   selectPostReposted,
   selectPostRepostsCount,
+  selectPostShowCommentEditor,
+  selectPostShowCommentsDrawer,
   selectPostShowEditor,
-  selectPostShowLovers,
-  selectPostShowReposters,
+  selectPostShowLoversDrawer,
+  selectPostShowRepostersDrawer,
   selectPostSummary,
   selectPostViewsCountRounded,
+  selectPropsPostId,
 } from '../selectors/post'
 import { selectIsDiscoverRoot, selectIsPostDetail, selectPathname, selectPreviousPath } from '../selectors/routing'
 import { trackEvent } from '../actions/analytics'
@@ -70,37 +73,14 @@ export function getPostDetailPath(author, post) {
   return `/${author.get('username')}/post/${post.get('token')}`
 }
 
+// TODO: Possibly create an individual mapStateToProps for each container
+// instance. This will allow each component it's own private group of
+// selectors. It would be good to measure this though, based on how these run
+// we may not gain a whole lot from it.
 export function mapStateToProps(state, props) {
-  const { postId } = props
-
-  const post = selectPost(state, props)
-  const author = selectPostAuthor(state, props)
-  const isRepost = selectPostIsRepost(state, props)
-  const isPostDetail = selectIsPostDetail(state, props)
-
-  // TODO: Fold these in to the props below?
-  const postCommentsCount = selectPostCommentsCount(state, props)
-  const postLovesCount = selectPostLovesCount(state, props)
-  const postRepostsCount = selectPostRepostsCount(state, props)
-
-  // TODO: Need to sort these guys?
-  const isGridMode = isPostDetail ? false : selectIsGridMode(state)
-  const showEditor = selectPostShowEditor(state, props)
-  const showCommentEditor = !showEditor && !isPostDetail && post.get('showComments')
-  const showComments = showCommentEditor && postCommentsCount > 0
-
-  // TODO: Simplify these, maybe local selectors?
-  /* eslint-disable max-len */
-  const showLovers = (!showEditor && !isGridMode && selectPostShowLovers(state, props) && postLovesCount > 0) ||
-                     (!showEditor && !isGridMode && isPostDetail && postLovesCount > 0)
-
-  const showReposters = (!showEditor && !isGridMode && selectPostShowReposters(state, props) && postRepostsCount > 0) ||
-                        (!showEditor && !isGridMode && isPostDetail && postRepostsCount > 0)
-  /* eslint-enable max-len */
-
   return {
     assets: selectAssets(state),
-    author,
+    author: selectPostAuthor(state, props),
     categoryName: selectPostCategoryName(state, props),
     categoryPath: selectPostCategorySlug(state, props),
     columnWidth: selectColumnWidth(state),
@@ -113,34 +93,34 @@ export function mapStateToProps(state, props) {
     innerHeight: selectInnerHeight(state),
     isCommentsRequesting: selectPostIsCommentsRequesting(state, props),
     isDiscoverRoot: selectIsDiscoverRoot(state, props),
-    isGridMode,
+    isGridMode: selectPostIsGridMode(state, props),
     isLoggedIn: selectIsLoggedIn(state),
     isMobile: selectIsMobile(state),
     isOwnOriginalPost: selectPostIsOwnOriginal(state, props),
     isOwnPost: selectPostIsOwn(state, props),
-    isPostDetail,
-    isRepost,
+    isPostDetail: selectIsPostDetail(state, props),
+    isRepost: selectPostIsRepost(state, props),
     isReposting: selectPostIsReposting(state, props),
     isWatchingPost: selectPostIsWatching(state, props),
     pathname: selectPathname(state),
-    post,
+    post: selectPost(state, props),
     postBody: selectPostBody(state, props),
-    postCommentsCount,
+    postCommentsCount: selectPostCommentsCount(state, props),
     postCreatedAt: selectPostCreatedAt(state, props),
-    postId,
+    postId: selectPropsPostId(state, props),
     postLoved: selectPostLoved(state, props),
-    postLovesCount,
+    postLovesCount: selectPostLovesCount(state, props),
     postReposted: selectPostReposted(state, props),
     postRepostsCount: selectPostRepostsCount(state, props),
     postViewsCountRounded: selectPostViewsCountRounded(state, props),
     previousPath: selectPreviousPath(state),
-    repostAuthor: isRepost ? (selectPostRepostAuthor(state, props) || author) : null,
+    repostAuthor: selectPostRepostAuthorWithFallback(state, props),
     repostContent: selectPostRepostContent(state, props),
-    showCommentEditor,
-    showComments,
-    showEditor,
-    showLovers,
-    showReposters,
+    showCommentEditor: selectPostShowCommentEditor(state, props),
+    showComments: selectPostShowCommentsDrawer(state, props),
+    showEditor: selectPostShowEditor(state, props),
+    showLovers: selectPostShowLoversDrawer(state, props),
+    showReposters: selectPostShowRepostersDrawer(state, props),
     summary: selectPostSummary(state, props),
   }
 }
@@ -168,11 +148,11 @@ class PostContainer extends Component {
     isMobile: PropTypes.bool.isRequired,
     isOwnOriginalPost: PropTypes.bool.isRequired,
     isOwnPost: PropTypes.bool.isRequired,
-    isPostDetail: PropTypes.bool,
-    isPostHeaderHidden: PropTypes.bool.isRequired,
+    isPostDetail: PropTypes.bool.isRequired,
+    isPostHeaderHidden: PropTypes.bool,
     isRepost: PropTypes.bool.isRequired,
     isReposting: PropTypes.bool.isRequired,
-    isWatchingPost: PropTypes.bool,
+    isWatchingPost: PropTypes.bool.isRequired,
     pathname: PropTypes.string.isRequired,
     post: PropTypes.object.isRequired,
     postBody: PropTypes.object,
@@ -187,11 +167,11 @@ class PostContainer extends Component {
     previousPath: PropTypes.string,
     repostAuthor: PropTypes.object,
     repostContent: PropTypes.object,
-    showCommentEditor: PropTypes.bool,
-    showComments: PropTypes.bool,
-    showEditor: PropTypes.bool,
-    showLovers: PropTypes.bool,
-    showReposters: PropTypes.bool,
+    showCommentEditor: PropTypes.bool.isRequired,
+    showComments: PropTypes.bool.isRequired,
+    showEditor: PropTypes.bool.isRequired,
+    showLovers: PropTypes.bool.isRequired,
+    showReposters: PropTypes.bool.isRequired,
     summary: PropTypes.object.isRequired,
   }
 
@@ -200,18 +180,11 @@ class PostContainer extends Component {
     categoryName: null,
     categoryPath: null,
     contentWarning: null,
-    isPostDetail: false,
     isPostHeaderHidden: false,
-    isWatchingPost: false,
     postBody: null,
     previousPath: null,
     repostAuthor: null,
     repostContent: null,
-    showCommentEditor: false,
-    showComments: false,
-    showEditor: false,
-    showLovers: false,
-    showReposters: false,
   }
 
 
