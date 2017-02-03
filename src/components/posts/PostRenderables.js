@@ -52,12 +52,9 @@ export class PostHeader extends PureComponent {
   static propTypes = {
     author: PropTypes.object.isRequired,
     detailPath: PropTypes.string.isRequired,
-    isPostDetail: PropTypes.bool,
+    isPostDetail: PropTypes.bool.isRequired,
     postCreatedAt: PropTypes.string.isRequired,
     postId: PropTypes.string.isRequired,
-  }
-  static defaultProps = {
-    isPostDetail: false,
   }
   render() {
     const { author, detailPath, isPostDetail, postCreatedAt, postId } = this.props

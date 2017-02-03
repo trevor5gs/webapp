@@ -65,7 +65,6 @@ class Editor extends Component {
     isLoggedIn: PropTypes.bool,
     isOwnPage: PropTypes.bool,
     isOwnPost: PropTypes.bool,
-    isPostDetail: PropTypes.bool,
     onSubmit: PropTypes.func,
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
@@ -80,7 +79,6 @@ class Editor extends Component {
     isLoggedIn: false,
     isOwnPage: false,
     isOwnPost: false,
-    isPostDetail: false,
     onSubmit: null,
     post: null,
     shouldLoadFromState: false,
@@ -185,7 +183,6 @@ class Editor extends Component {
       isComment,
       isLoggedIn,
       isOwnPost,
-      isPostDetail,
       post,
       shouldLoadFromState,
       shouldPersist,
@@ -231,7 +228,6 @@ class Editor extends Component {
         editorId={editorId}
         isComment={isComment}
         isOwnPost={isOwnPost}
-        isPostDetail={isPostDetail}
         key={key}
         post={post}
         repostContent={repostContent}

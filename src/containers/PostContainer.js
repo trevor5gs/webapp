@@ -45,7 +45,7 @@ import {
   selectPostSummary,
   selectPostViewsCountRounded,
 } from '../selectors/post'
-import { selectIsDiscoverRoot, selectPathname, selectPreviousPath } from '../selectors/routing'
+import { selectIsDiscoverRoot, selectIsPostDetail, selectPathname, selectPreviousPath } from '../selectors/routing'
 import { trackEvent } from '../actions/analytics'
 import { openModal, closeModal } from '../actions/modals'
 import * as postActions from '../actions/posts'
@@ -71,12 +71,12 @@ export function getPostDetailPath(author, post) {
 }
 
 export function mapStateToProps(state, props) {
-  // TODO: Can we infer isPostDetail from the route (viewName) instead?
-  const { isPostDetail, postId } = props
+  const { postId } = props
 
   const post = selectPost(state, props)
   const author = selectPostAuthor(state, props)
   const isRepost = selectPostIsRepost(state, props)
+  const isPostDetail = selectIsPostDetail(state, props)
 
   // TODO: Fold these in to the props below?
   const postCommentsCount = selectPostCommentsCount(state, props)
@@ -118,6 +118,7 @@ export function mapStateToProps(state, props) {
     isMobile: selectIsMobile(state),
     isOwnOriginalPost: selectPostIsOwnOriginal(state, props),
     isOwnPost: selectPostIsOwn(state, props),
+    isPostDetail,
     isRepost,
     isReposting: selectPostIsReposting(state, props),
     isWatchingPost: selectPostIsWatching(state, props),
