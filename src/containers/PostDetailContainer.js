@@ -22,7 +22,7 @@ export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState
 }
 
 export function mapStateToProps(state, props) {
-  const post = selectPost(state, props, true)
+  const post = selectPost(state, props)
   return {
     author: state.json.getIn([MAPPING_TYPES.USERS, post.get('authorId')], null),
     isLoggedIn: selectIsLoggedIn(state),
