@@ -4,29 +4,28 @@ import get from 'lodash/get'
 import { LOAD_STREAM_REQUEST } from '../constants/action_types'
 import { COMMENTS, POSTS } from '../constants/mapping_types'
 import { selectIsLoggedIn } from './authentication'
-import { selectIsGridMode } from './gui'
 import { selectCategoryCollection } from './categories'
+import { selectIsGridMode } from './gui'
 import { selectParamsToken } from './params'
 import { selectId as selectProfileId } from './profile'
 import { selectIsPostDetail } from './routing'
-import { selectJson } from './store'
-import { selectUsers } from './user'
 import { selectStreamType, selectStreamMappingType, selectStreamPostIdOrToken } from './stream'
-import { findModel } from '../helpers/json_helper'
+import { selectUsers } from './user'
 
 export const selectPropsPostId = (state, props) =>
   get(props, 'postId') || get(props, 'post', Immutable.Map()).get('id')
 
+export const selectPosts = state => state.json.get(POSTS)
+
 // Memoized selectors
 
 // Requires `postId`, `post` or `params.token` to be found in props
-// If `post` is on the props, grab it's id and do a lookup on `json.posts` for the latest
-// TODO: `findModel` gets calculated a lot with json being an argument :(, is this a concern?
 export const selectPost = createSelector(
-  [selectPropsPostId, selectParamsToken, selectJson], (id, token, json) => {
-    if (id || token) {
-      const findObj = id ? { id } : { token }
-      return findModel(json, { collection: POSTS, findObj }) || Immutable.Map()
+  [selectPropsPostId, selectParamsToken, selectPosts], (id, token, posts) => {
+    if (id && posts) {
+      return posts.get(id, Immutable.Map())
+    } else if (token && posts) {
+      return (posts.find(post => post.get('token') === token)) || Immutable.Map()
     }
     return Immutable.Map()
   },
