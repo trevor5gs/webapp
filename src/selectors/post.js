@@ -88,11 +88,6 @@ export const selectPostMetaUrl = createSelector(
   [selectPostMetaAttributes], metaAttributes => metaAttributes.get('url'),
 )
 
-// TODO: Pull other properties out of post.get('links')?
-export const selectPostRepostAuthorId = createSelector([selectPost], post =>
-  post.getIn(['links', 'repostAuthor', 'id']),
-)
-
 // Derived or additive properties
 export const selectPostAuthor = createSelector(
   [selectUsers, selectPostAuthorId], (users, authorId) => users.get(authorId),
@@ -100,6 +95,11 @@ export const selectPostAuthor = createSelector(
 
 export const selectPostAuthorUsername = createSelector(
   [selectPostAuthor], author => author.get('username'),
+)
+
+// TODO: Pull other properties out of post.get('links')?
+export const selectPostRepostAuthorId = createSelector([selectPost], post =>
+  post.getIn(['links', 'repostAuthor', 'id']),
 )
 
 export const selectPostRepostAuthor = createSelector(
