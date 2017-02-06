@@ -90,7 +90,8 @@ export const selectPostMetaUrl = createSelector(
 
 // Derived or additive properties
 export const selectPostAuthor = createSelector(
-  [selectUsers, selectPostAuthorId], (users, authorId) => users.get(authorId),
+  [selectUsers, selectPostAuthorId], (users, authorId) =>
+    (users && authorId ? users.get(authorId) : null),
 )
 
 export const selectPostAuthorUsername = createSelector(
