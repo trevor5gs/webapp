@@ -1,13 +1,54 @@
 import Immutable from 'immutable'
-import { clearJSON, json, stub } from '../../support/stubs'
+import {
+  clearJSON,
+  json,
+  stub,
+  stubCategories,
+  stubPost,
+  stubTextRegion,
+  stubImageRegion,
+  stubEmbedRegion,
+} from '../../support/stubs'
 import * as selector from '../../../src/selectors/post'
 
 describe('post selectors', () => {
   let propsPost
   let state
   beforeEach(() => {
-    stub('post', { authorId: 'statePost' })
-    propsPost = stub('post', { authorId: 'propPost', id: '666', links: { repostAuthor: { id: '9' } } })
+    stub('post', { authorId: 'statePost', token: 'token1' })
+    stub('post', { id: '100', authorId: '666', repostContent: [stubTextRegion()] })
+    stub('user', { id: '666', username: '666-username' })
+    stub('user', { id: '9', username: 'reposter-username' })
+    stubCategories()
+    propsPost = stub('post', {
+      authorId: '666',
+      body: [stubTextRegion(), stubImageRegion(), stubEmbedRegion()],
+      commentsCount: 12,
+      content: [stubTextRegion(), stubImageRegion(), stubEmbedRegion()],
+      contentWarning: 'Content Warning!',
+      createdAt: 'Today',
+      href: '/post-href',
+      id: '666',
+      links: {
+        repostAuthor: { id: '9' },
+        categories: [1, 4],
+      },
+      loved: true,
+      lovesCount: 10,
+      repostContent: [stubTextRegion()],
+      repostId: '667',
+      repostPath: '/repost-path',
+      reposted: true,
+      repostsCount: 13,
+      showComments: true,
+      showLovers: true,
+      showReposters: true,
+      summary: [stubTextRegion(), stubImageRegion()],
+      token: 'token666',
+      viewsCount: 1666,
+      viewsCountRounded: '1.6k',
+      watching: true,
+    })
     state = { json }
   })
 
@@ -15,101 +56,161 @@ describe('post selectors', () => {
     clearJSON()
   })
 
-  context('#selectPropsPost', () => {
-    it('returns the correct props post', () => {
-      const props = { post: propsPost }
-      expect(selector.selectPropsPost(state, props)).to.equal(propsPost)
-    })
-  })
-
   context('#selectPropsPostId', () => {
-    it('returns the correct props post id', () => {
+    it('returns the correct props post id from a postId', () => {
+      const props = { postId: '666' }
+      expect(selector.selectPropsPostId(state, props)).to.equal('666')
+    })
+
+    it('returns the correct props post id from a post', () => {
       const props = { post: propsPost }
       expect(selector.selectPropsPostId(state, props)).to.equal('666')
     })
   })
 
-  context('#selectPropsPostToken', () => {
-    it('returns the correct props post token', () => {
-      const props = { post: propsPost }
-      expect(selector.selectPropsPostToken(state, props)).to.equal('token')
-    })
-  })
-
-  context('#selectPropsPostAuthorId', () => {
-    it('returns the correct props post author id', () => {
-      const props = { post: propsPost }
-      expect(selector.selectPropsPostAuthorId(state, props)).to.equal('propPost')
-    })
-  })
-
-  context('#selectPropsRepostAuthorId', () => {
-    it('returns the correct props post repost author id', () => {
-      const props = { post: propsPost }
-      expect(selector.selectPropsRepostAuthorId(state, props)).to.equal('9')
-    })
-  })
-
-  context('#selectIsOwnOriginalPost', () => {
-    it('returns if the post is the users own', () => {
-      state = { profile: Immutable.Map({ id: '9' }) }
-      const props = { post: propsPost }
-      expect(selector.selectIsOwnOriginalPost(state, props)).to.equal(true)
-      state.change = 1
-      expect(selector.selectIsOwnOriginalPost(state, props)).to.equal(true)
-      expect(selector.selectIsOwnOriginalPost.recomputations()).to.equal(1)
-    })
-
-    it('returns if the post is not the users own', () => {
-      state = { profile: Immutable.Map({ id: 'statePost' }) }
-      const props = { post: propsPost }
-      expect(selector.selectIsOwnOriginalPost(state, props)).to.equal(false)
-      state.change = 1
-      expect(selector.selectIsOwnOriginalPost(state, props)).to.equal(false)
-      // 2 since the memoization is from the context block
-      expect(selector.selectIsOwnOriginalPost.recomputations()).to.equal(2)
-    })
-  })
-
-  context('#selectIsOwnPost', () => {
-    it('returns if the post is the users own', () => {
-      state = { profile: Immutable.Map({ id: 'propPost' }) }
-      const props = { post: propsPost }
-      expect(selector.selectIsOwnPost(state, props)).to.equal(true)
-      state.change = 1
-      expect(selector.selectIsOwnPost(state, props)).to.equal(true)
-      expect(selector.selectIsOwnPost.recomputations()).to.equal(1)
-    })
-
-    it('returns if the post is not the users own', () => {
-      state = { profile: Immutable.Map({ id: 'statePost' }) }
-      const props = { post: propsPost }
-      expect(selector.selectIsOwnPost(state, props)).to.equal(false)
-      state.change = 1
-      expect(selector.selectIsOwnPost(state, props)).to.equal(false)
-      // 2 since the memoization is from the context block
-      expect(selector.selectIsOwnPost.recomputations()).to.equal(2)
-    })
-  })
-
-  context('#selectPostFromPropsPostId', () => {
-    it('returns the post from json', () => {
-      const pst = stub('post')
+  context('#selectPosts', () => {
+    it('returns posts model out of json', () => {
       state = { json }
-      const props = { post: Immutable.Map({ id: '1' }) }
-      expect(selector.selectPostFromPropsPostId(state, props)).to.deep.equal(pst)
-      state.change = 1
-      expect(selector.selectPostFromPropsPostId(state, props)).to.deep.equal(pst)
-      expect(selector.selectPostFromPropsPostId.recomputations()).to.equal(1)
+      expect(selector.selectPosts(state)).to.deep.equal(state.json.get('posts'))
     })
   })
 
-  context('#selectPostFromToken', () => {
-    it('returns the post from json', () => {
-      const pst = stub('post', { id: '1' })
+  context('#selectPost', () => {
+    it('returns a post from a postId', () => {
       state = { json }
-      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
-      expect(selector.selectPostFromToken(state, props)).to.deep.equal(pst)
+      const props = { postId: '1' }
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(state.json.get('posts').first())
+    })
+
+    it('returns an empty Map if postId is not found', () => {
+      state = { json }
+      const props = { postId: '166666' }
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(Immutable.Map())
+    })
+
+    it('returns a post from a post.postId', () => {
+      state = { json }
+      const props = { post: state.json.get('posts').first() }
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(state.json.get('posts').first())
+    })
+
+    it('returns an empty Map if post.postId is not found', () => {
+      state = { json }
+      const props = { post: stubPost({ id: '99999' }, false) }
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(Immutable.Map())
+    })
+
+    it('returns a post from a token', () => {
+      state = { json }
+      const props = { params: { token: 'token666' } }
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(state.json.getIn(['posts', '666']))
+    })
+
+    it('returns an empty Map if token is not found', () => {
+      state = { json }
+      const props = { params: { token: 'token9999' } }
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(Immutable.Map())
+    })
+
+    it('returns an empty Map if id and token is not found', () => {
+      state = { json }
+      const props = {}
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(Immutable.Map())
+    })
+
+    it('returns an empty Map if post is not found', () => {
+      state = { json }
+      const props = {}
+      const post = selector.selectPost({ json: Immutable.Map() }, props)
+      expect(post).to.deep.equal(Immutable.Map())
+    })
+  })
+
+  context('#selectPostAuthorId', () => {
+    it('returns the post authorId', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostAuthorId(state, props)
+      expect(result).to.deep.equal('666')
+    })
+  })
+
+  context('#selectPostBody', () => {
+    it('returns the post body', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostBody(state, props)
+      expect(result.size).to.equal(3)
+    })
+  })
+
+  context('#selectPostCommentsCount', () => {
+    it('returns the post comments count', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCommentsCount(state, props)
+      expect(result).to.equal(12)
+    })
+  })
+
+  context('#selectPostContent', () => {
+    it('returns the post content', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostBody(state, props)
+      expect(result.size).to.equal(3)
+    })
+  })
+
+  context('#selectPostContentWarning', () => {
+    it('returns the post content warning', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostContentWarning(state, props)
+      expect(result).to.equal('Content Warning!')
+    })
+  })
+
+  context('#selectPostCreatedAt', () => {
+    it('returns the post created at', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCreatedAt(state, props)
+      expect(result).to.equal('Today')
+    })
+  })
+
+  context('#selectPostHref', () => {
+    it('returns the post href', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostHref(state, props)
+      expect(result).to.equal('/post-href')
+    })
+  })
+
+  context('#selectPostId', () => {
+    it('returns the post id', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostId(state, props)
+      expect(result).to.equal('666')
+    })
+  })
+
+  context('#selectPostIsAdultContent', () => {
+    it('returns the post is adult content', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsAdultContent(state, props)
+      expect(result).to.equal(false)
     })
   })
 
@@ -126,6 +227,141 @@ describe('post selectors', () => {
       })
       state = { json }
       expect(selector.selectPostMetaAttributes(state, props)).to.deep.equal(attr)
+    })
+  })
+
+  context('#selectPostLoved', () => {
+    it('returns the post is loved', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostLoved(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostLovesCount', () => {
+    it('returns the post loves count', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostLovesCount(state, props)
+      expect(result).to.equal(10)
+    })
+  })
+
+  context('#selectPostRepostContent', () => {
+    it('returns the post repost content', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostContent(state, props)
+      expect(result.size).to.equal(1)
+    })
+  })
+
+  context('#selectPostRepostId', () => {
+    it('returns the post repost id', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostId(state, props)
+      expect(result).to.equal('667')
+    })
+  })
+
+  context('#selectPostRepostPath', () => {
+    it('returns the post repost path', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostPath(state, props)
+      expect(result).to.equal('/repost-path')
+    })
+  })
+
+  context('#selectPostReposted', () => {
+    it('returns the post is reposted', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostReposted(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostRepostsCount', () => {
+    it('returns the post reposted count', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostsCount(state, props)
+      expect(result).to.equal(13)
+    })
+  })
+
+  context('#selectPostShowComments', () => {
+    it('returns if the post shows comments', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowComments(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowLovers', () => {
+    it('returns if the post shows lovers', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowLovers(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowReposters', () => {
+    it('returns if the post shows reposters', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowReposters(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostSummary', () => {
+    it('returns the post summary', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostSummary(state, props)
+      expect(result.size).to.equal(2)
+    })
+  })
+
+  context('#selectPostToken', () => {
+    it('returns the post token', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostToken(state, props)
+      expect(result).to.equal('token666')
+    })
+  })
+
+  context('#selectPostViewsCount', () => {
+    it('returns the post views count', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostViewsCount(state, props)
+      expect(result).to.equal(1666)
+    })
+  })
+
+  context('#selectPostViewsCountRounded', () => {
+    it('returns the post views count rounded', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostViewsCountRounded(state, props)
+      expect(result).to.equal('1.6k')
+    })
+  })
+
+  context('#selectPostWatching', () => {
+    it('returns the post watching property', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostWatching(state, props)
+      expect(result).to.equal(true)
     })
   })
 
@@ -183,10 +419,319 @@ describe('post selectors', () => {
           { name: 'image', itemprop: 'image', content: 'meta-post-image-1.jpg' },
         ],
       }
-
       const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
       state = { json }
       expect(selector.selectPostMetaImages(state, props)).to.deep.equal(result)
+    })
+  })
+
+  context('#selectPostAuthor', () => {
+    it('returns the post author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostAuthor(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '666']))
+    })
+  })
+
+  context('#selectPostAuthorUsername', () => {
+    it('returns the post author username', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostAuthorUsername(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '666', 'username']))
+    })
+  })
+
+  context('#selectPostRepostAuthorId', () => {
+    it('returns the post repost author id', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthorId(state, props)
+      expect(result).to.equal('9')
+    })
+  })
+
+  context('#selectPostRepostAuthor', () => {
+    it('returns the post repost author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthor(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '9']))
+    })
+  })
+
+  context('#selectPostRepostAuthorWithFallback', () => {
+    it('returns the post repost author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthorWithFallback(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '9']))
+    })
+
+    it('returns the post author as a fallback', () => {
+      state = { json }
+      const props = { postId: '100' }
+      const result = selector.selectPostRepostAuthorWithFallback(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '666']))
+    })
+  })
+
+  context('#selectPostCategories', () => {
+    it('returns the post categories list', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCategories(state, props)
+      expect(result).to.equal(Immutable.List([1, 4]))
+    })
+  })
+
+  context('#selectPostCategory', () => {
+    it('returns the first item in the post categories list', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCategory(state, props)
+      expect(result).to.equal(state.json.getIn(['categories', '1']))
+    })
+  })
+
+  context('#selectPostCategoryName', () => {
+    it('returns the first item name in the post categories list', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCategoryName(state, props)
+      expect(result).to.equal('Featured')
+    })
+  })
+
+  context('#selectPostCategorySlug', () => {
+    it('returns the first item slug in the post categories list', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCategorySlug(state, props)
+      expect(result).to.equal('/discover/featured')
+    })
+  })
+
+  context('#selectPostDetailPath', () => {
+    it('returns the post detail path', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostDetailPath(state, props)
+      expect(result).to.equal('/666-username/post/token666')
+    })
+  })
+
+  context('#selectPostIsCommentsRequesting', () => {
+    it('selects the state around requesting comments for a post')
+  })
+
+  context('#selectPostIsEditing', () => {
+    it('returns the state of isEditing on the post', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsEditing(state, props)
+      expect(result).to.equal(false)
+    })
+  })
+
+  context('#selectPostIsGridMode', () => {
+    it('returns the state of isGridMode on the post on post detail', () => {
+      state = {
+        json,
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/post/token666' },
+        }),
+        gui: Immutable.fromJS({ isGridMode: true }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsGridMode(state, props)
+      expect(result).to.equal(false)
+    })
+
+    it('returns the state of isGridMode on the post from a profile', () => {
+      state = {
+        json,
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/' },
+        }),
+        gui: Immutable.fromJS({ isGridMode: true }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsGridMode(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostIsOwn', () => {
+    it('returns if the post is the users own', () => {
+      state = { json, profile: Immutable.Map({ id: '666' }) }
+      const props = { post: propsPost }
+      expect(selector.selectPostIsOwn(state, props)).to.equal(true)
+      state.change = 1
+      expect(selector.selectPostIsOwn(state, props)).to.equal(true)
+      expect(selector.selectPostIsOwn.recomputations()).to.equal(1)
+    })
+
+    it('returns if the post is not the users own', () => {
+      state = { json, profile: Immutable.Map({ id: 'statePost' }) }
+      const props = { post: propsPost }
+      expect(selector.selectPostIsOwn(state, props)).to.equal(false)
+      state.change = 1
+      expect(selector.selectPostIsOwn(state, props)).to.equal(false)
+      // 2 since the memoization is from the context block
+      expect(selector.selectPostIsOwn.recomputations()).to.equal(2)
+    })
+  })
+
+  context('#selectPostIsOwnOriginal', () => {
+    it('returns the state of isEditing on the post', () => {
+      state = { json, profile: Immutable.Map({ id: '9' }) }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsOwnOriginal(state, props)
+      expect(result).to.equal(true)
+    })
+
+    it('returns the state of isEditing on the post', () => {
+      state = { json, profile: Immutable.Map({ id: '100' }) }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsOwnOriginal(state, props)
+      expect(result).to.equal(false)
+    })
+  })
+
+  context('#selectPostIsRepost', () => {
+    it('returns if the post is a repost', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsRepost(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostIsReposting', () => {
+    it('returns the state of isReposting on the post', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsReposting(state, props)
+      expect(result).to.equal(false)
+    })
+  })
+
+  context('#selectPostIsWatching', () => {
+    it('returns the state of watching on the post', () => {
+      state = { json, authentication: Immutable.Map({ isLoggedIn: true }) }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsWatching(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostRepostAuthor', () => {
+    it('returns the post repost author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthor(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '9']))
+    })
+  })
+
+  context('#selectPostRepostAuthorWithFallback', () => {
+    it('returns the post repost author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthorWithFallback(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '9']))
+    })
+
+    it('returns the post author as a fallback', () => {
+      state = { json }
+      const props = { postId: '100' }
+      const result = selector.selectPostRepostAuthorWithFallback(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '666']))
+    })
+  })
+
+  context('#selectPostShowEditor', () => {
+    it('returns if the post editor should be shown', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowEditor(state, props)
+      expect(result).to.equal(false)
+    })
+
+    it('returns if the post editor should be shown after setting isEditing', () => {
+      state = { json }
+      state = { json: state.json.setIn(['posts', '666', 'isEditing'], true) }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowEditor(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowCommentEditor', () => {
+    it('returns if the post comment editor should be shown', () => {
+      state = {
+        json,
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/post/token666' },
+        }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowCommentEditor(state, props)
+      expect(result).to.equal(false)
+    })
+
+    it('returns if the post comment editor should be shown after setting showEditor', () => {
+      state = { json }
+      state = { json: state.json.setIn(['posts', '666', 'isEditing'], true) }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowEditor(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowCommentsDrawer', () => {
+    it('returns if the post comments drawer should be shown', () => {
+      state = {
+        json,
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/' },
+        }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowCommentsDrawer(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowLoversDrawer', () => {
+    it('returns if the post lovers drawer should be shown', () => {
+      state = {
+        json,
+        gui: Immutable.fromJS({ isGridMode: false }),
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/post/token666' },
+        }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowLoversDrawer(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowRepostersDrawer', () => {
+    it('returns if the post reposters drawer should be shown', () => {
+      state = {
+        json,
+        gui: Immutable.fromJS({ isGridMode: false }),
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/post/token666' },
+        }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowRepostersDrawer(state, props)
+      expect(result).to.equal(true)
     })
   })
 })

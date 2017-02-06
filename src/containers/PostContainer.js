@@ -5,9 +5,8 @@ import { push, replace } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
 import set from 'lodash/set'
-import * as ACTION_TYPES from '../constants/action_types'
-import * as MAPPING_TYPES from '../constants/mapping_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectAssets } from '../selectors/assets'
 import {
   selectColumnWidth,
   selectCommentOffset,
@@ -15,16 +14,41 @@ import {
   selectDeviceSize,
   selectInnerHeight,
   selectIsMobile,
-  selectIsGridMode,
 } from '../selectors/gui'
-import { selectPathname, selectPreviousPath } from '../selectors/routing'
-import { selectJson } from '../selectors/store'
 import {
-  selectStreamType,
-  selectStreamMappingType,
-  selectStreamPostIdOrToken,
-} from '../selectors/stream'
-import { getLinkObject } from '../helpers/json_helper'
+  selectPost,
+  selectPostAuthor,
+  selectPostBody,
+  selectPostCategoryName,
+  selectPostCategorySlug,
+  selectPostCommentsCount,
+  selectPostContent,
+  selectPostContentWarning,
+  selectPostCreatedAt,
+  selectPostDetailPath,
+  selectPostIsCommentsRequesting,
+  selectPostIsGridMode,
+  selectPostIsOwn,
+  selectPostIsOwnOriginal,
+  selectPostIsRepost,
+  selectPostIsReposting,
+  selectPostIsWatching,
+  selectPostLoved,
+  selectPostLovesCount,
+  selectPostRepostAuthorWithFallback,
+  selectPostRepostContent,
+  selectPostReposted,
+  selectPostRepostsCount,
+  selectPostShowCommentEditor,
+  selectPostShowCommentsDrawer,
+  selectPostShowEditor,
+  selectPostShowLoversDrawer,
+  selectPostShowRepostersDrawer,
+  selectPostSummary,
+  selectPostViewsCountRounded,
+  selectPropsPostId,
+} from '../selectors/post'
+import { selectIsDiscoverRoot, selectIsPostDetail, selectPathname, selectPreviousPath } from '../selectors/routing'
 import { trackEvent } from '../actions/analytics'
 import { openModal, closeModal } from '../actions/modals'
 import * as postActions from '../actions/posts'
@@ -44,95 +68,61 @@ import { PostTools, WatchTool } from '../components/posts/PostTools'
 import { UserDrawer } from '../components/users/UserRenderables'
 import { postLovers, postReposters } from '../networking/api'
 
+// TODO: Search and replace this function with `selectPostDetailPath`
 export function getPostDetailPath(author, post) {
   return `/${author.get('username')}/post/${post.get('token')}`
 }
 
+// TODO: Possibly create an individual mapStateToProps for each container
+// instance. This will allow each component it's own private group of
+// selectors. It would be good to measure this though, based on how these run
+// we may not gain a whole lot from it.
 export function mapStateToProps(state, props) {
-  const { isPostDetail, postId } = props
-  const isLoggedIn = selectIsLoggedIn(state)
-  const json = selectJson(state)
-  const pathname = selectPathname(state)
-  const streamType = selectStreamType(state)
-  const streamMappingType = selectStreamMappingType(state)
-  const streamPostIdOrToken = selectStreamPostIdOrToken(state)
-
-  const post = json.getIn([MAPPING_TYPES.POSTS, postId])
-  const author = json.getIn([MAPPING_TYPES.USERS, post.get('authorId')])
-  const assets = json.get('assets')
-
-  const categories = post.getIn(['links', 'categories'])
-  const category = json.getIn(['categories', categories ? categories.first() : null])
-  const isEditing = post.get('isEditing', false)
-  const isReposting = post.get('isReposting', false)
-  const postBody = post.get('body')
-  const postCommentsCount = post.get('commentsCount')
-  const postLovesCount = post.get('lovesCount')
-  const postRepostsCount = post.get('repostsCount')
-  const postToken = post.get('token')
-
-  const isGridMode = isPostDetail ? false : selectIsGridMode(state)
-  const isOnFeaturedCategory = /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname)
-  const isRepost = !!(post.get('repostContent') && post.get('repostContent').size)
-  const showEditor = !!((isEditing || isReposting) && postBody)
-  const showCommentEditor = !showEditor && !isPostDetail && post.get('showComments')
-  const showComments = showCommentEditor && postCommentsCount > 0
-
-  const newProps = {
-    assets,
-    author,
-    categoryName: category ? category.get('name') : null,
-    categoryPath: category ? `/discover/${category.get('slug')}` : null,
+  return {
+    assets: selectAssets(state),
+    author: selectPostAuthor(state, props),
+    categoryName: selectPostCategoryName(state, props),
+    categoryPath: selectPostCategorySlug(state, props),
     columnWidth: selectColumnWidth(state),
     commentOffset: selectCommentOffset(state),
-    commentsCount: post.get('commentsCount'),
-    content: post.get('content'),
-    contentWarning: post.get('contentWarning'),
+    content: selectPostContent(state, props),
+    contentWarning: selectPostContentWarning(state, props),
     contentWidth: selectContentWidth(state),
-    detailPath: getPostDetailPath(author, post),
+    detailPath: selectPostDetailPath(state, props),
     deviceSize: selectDeviceSize(state),
     innerHeight: selectInnerHeight(state),
-    isCommentsRequesting: streamType === ACTION_TYPES.LOAD_STREAM_REQUEST &&
-      streamMappingType === MAPPING_TYPES.COMMENTS &&
-      (`${streamPostIdOrToken}` === `${postId}` ||
-      `${streamPostIdOrToken}` === `${postToken}`),
-    isGridMode,
-    isLoggedIn,
+    isCommentsRequesting: selectPostIsCommentsRequesting(state, props),
+    isDiscoverRoot: selectIsDiscoverRoot(state, props),
+    isGridMode: selectPostIsGridMode(state, props),
+    isLoggedIn: selectIsLoggedIn(state),
     isMobile: selectIsMobile(state),
-    isOnFeaturedCategory,
-    isOwnOriginalPost: post.get('repostAuthorId') === state.profile.get('id'),
-    isOwnPost: post.get('authorId') === state.profile.get('id'),
-    isRepost,
-    isReposting,
-    isWatchingPost: isLoggedIn && post.get('watching'),
-    pathname,
-    post,
-    postBody,
-    postCommentsCount,
-    postCreatedAt: post.get('createdAt'),
-    postId,
-    postLoved: post.get('loved'),
-    postLovesCount,
-    postReposted: post.get('reposted'),
-    postRepostsCount: post.get('repostsCount'),
-    postViewsCountRounded: post.get('viewsCountRounded'),
+    isOwnOriginalPost: selectPostIsOwnOriginal(state, props),
+    isOwnPost: selectPostIsOwn(state, props),
+    isPostDetail: selectIsPostDetail(state, props),
+    isRepost: selectPostIsRepost(state, props),
+    isReposting: selectPostIsReposting(state, props),
+    isWatchingPost: selectPostIsWatching(state, props),
+    pathname: selectPathname(state),
+    post: selectPost(state, props),
+    postBody: selectPostBody(state, props),
+    postCommentsCount: selectPostCommentsCount(state, props),
+    postCreatedAt: selectPostCreatedAt(state, props),
+    postId: selectPropsPostId(state, props),
+    postLoved: selectPostLoved(state, props),
+    postLovesCount: selectPostLovesCount(state, props),
+    postReposted: selectPostReposted(state, props),
+    postRepostsCount: selectPostRepostsCount(state, props),
+    postViewsCountRounded: selectPostViewsCountRounded(state, props),
     previousPath: selectPreviousPath(state),
-    repostContent: post.get('repostContent'),
-    showCommentEditor,
-    showComments,
-    showEditor,
-    showLovers: (!showEditor && !isGridMode && post.get('showLovers') && postLovesCount > 0) ||
-      (!showEditor && !isGridMode && isPostDetail && postLovesCount > 0),
-    showReposters: (!showEditor && !isGridMode && post.get('showReposters') && postRepostsCount > 0) ||
-      (!showEditor && !isGridMode && isPostDetail && postRepostsCount > 0),
-    summary: post.get('summary'),
+    repostAuthor: selectPostRepostAuthorWithFallback(state, props),
+    repostContent: selectPostRepostContent(state, props),
+    showCommentEditor: selectPostShowCommentEditor(state, props),
+    showComments: selectPostShowCommentsDrawer(state, props),
+    showEditor: selectPostShowEditor(state, props),
+    showLovers: selectPostShowLoversDrawer(state, props),
+    showReposters: selectPostShowRepostersDrawer(state, props),
+    summary: selectPostSummary(state, props),
   }
-
-  if (isRepost) {
-    newProps.repostAuthor = post.get('repostAuthor') || getLinkObject(post, 'repostAuthor', json) || author
-  }
-
-  return newProps
 }
 
 class PostContainer extends Component {
@@ -152,17 +142,17 @@ class PostContainer extends Component {
     dispatch: PropTypes.func.isRequired,
     innerHeight: PropTypes.number.isRequired,
     isCommentsRequesting: PropTypes.bool.isRequired,
+    isDiscoverRoot: PropTypes.bool.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    isOnFeaturedCategory: PropTypes.bool.isRequired,
     isOwnOriginalPost: PropTypes.bool.isRequired,
     isOwnPost: PropTypes.bool.isRequired,
-    isPostDetail: PropTypes.bool,
-    isPostHeaderHidden: PropTypes.bool.isRequired,
+    isPostDetail: PropTypes.bool.isRequired,
+    isPostHeaderHidden: PropTypes.bool,
     isRepost: PropTypes.bool.isRequired,
     isReposting: PropTypes.bool.isRequired,
-    isWatchingPost: PropTypes.bool,
+    isWatchingPost: PropTypes.bool.isRequired,
     pathname: PropTypes.string.isRequired,
     post: PropTypes.object.isRequired,
     postBody: PropTypes.object,
@@ -177,11 +167,11 @@ class PostContainer extends Component {
     previousPath: PropTypes.string,
     repostAuthor: PropTypes.object,
     repostContent: PropTypes.object,
-    showCommentEditor: PropTypes.bool,
-    showComments: PropTypes.bool,
-    showEditor: PropTypes.bool,
-    showLovers: PropTypes.bool,
-    showReposters: PropTypes.bool,
+    showCommentEditor: PropTypes.bool.isRequired,
+    showComments: PropTypes.bool.isRequired,
+    showEditor: PropTypes.bool.isRequired,
+    showLovers: PropTypes.bool.isRequired,
+    showReposters: PropTypes.bool.isRequired,
     summary: PropTypes.object.isRequired,
   }
 
@@ -190,18 +180,11 @@ class PostContainer extends Component {
     categoryName: null,
     categoryPath: null,
     contentWarning: null,
-    isPostDetail: false,
     isPostHeaderHidden: false,
-    isWatchingPost: false,
     postBody: null,
     previousPath: null,
     repostAuthor: null,
     repostContent: null,
-    showCommentEditor: false,
-    showComments: false,
-    showEditor: false,
-    showLovers: false,
-    showReposters: false,
   }
 
 
@@ -385,10 +368,10 @@ class PostContainer extends Component {
       contentWidth,
       innerHeight,
       isCommentsRequesting,
+      isDiscoverRoot,
       isGridMode,
       isLoggedIn,
       isMobile,
-      isOnFeaturedCategory,
       isOwnOriginalPost,
       isOwnPost,
       isPostDetail,
@@ -430,7 +413,7 @@ class PostContainer extends Component {
       )
     } else if (isPostHeaderHidden) {
       postHeader = null
-    } else if (isOnFeaturedCategory && categoryName && categoryPath) {
+    } else if (isDiscoverRoot && categoryName && categoryPath) {
       postHeader = (
         <CategoryHeader
           {...headerProps}

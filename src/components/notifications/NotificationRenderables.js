@@ -10,7 +10,7 @@ import { Notification } from './Notification'
 // HELPERS
 function getActivityPath(user, post) {
   if (!user) { return '/' }
-  if (!post) { return `/${user.get('username')}` }
+  if (!post || !post.get('id')) { return `/${user.get('username')}` }
   return `/${user.get('username')}/post/${post.get('token')}`
 }
 
@@ -42,7 +42,7 @@ UserTextLink.defaultProps = {
 }
 
 const PostTextLink = ({ author, post, text }) => {
-  if (!post || !author) { return <span>{text}</span> }
+  if (!post || !post.get('id') || !author) { return <span>{text}</span> }
   return (
     <Link to={getActivityPath(author, post)}>
       {text}

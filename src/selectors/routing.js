@@ -65,3 +65,11 @@ export const selectViewNameFromRoute = createSelector(
   },
 )
 
+export const selectIsPostDetail = createSelector(
+  [selectViewNameFromRoute], viewName => viewName === 'postDetail',
+)
+
+export const selectIsDiscoverRoot = createSelector(
+  [selectPathname], pathname => /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname),
+)
+

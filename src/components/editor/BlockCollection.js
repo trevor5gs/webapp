@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { selectIsMobileGridStream, selectIsNavbarHidden } from '../../selectors/gui'
 import { selectPropsPostId } from '../../selectors/post'
 import { selectAvatar } from '../../selectors/profile'
-import { selectPathname } from '../../selectors/routing'
+import { selectIsPostDetail, selectPathname } from '../../selectors/routing'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
@@ -50,6 +50,7 @@ function mapStateToProps(state, props) {
     hasMedia: editor.get('hasMedia'),
     hasMention: editor.get('hasMention'),
     isLoading: editor.get('isLoading'),
+    isPostDetail: selectIsPostDetail(state, props),
     isPosting: editor.get('isPosting'),
     isMobileGridStream: selectIsMobileGridStream(state),
     isNavbarHidden: selectIsNavbarHidden(state),
@@ -80,7 +81,7 @@ class BlockCollection extends PureComponent {
     isMobileGridStream: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
     isOwnPost: PropTypes.bool,
-    isPostDetail: PropTypes.bool,
+    isPostDetail: PropTypes.bool.isRequired,
     isPosting: PropTypes.bool,
     order: PropTypes.object.isRequired,
     orderLength: PropTypes.number.isRequired,
@@ -105,7 +106,6 @@ class BlockCollection extends PureComponent {
     isMobileGridStream: false,
     isNavbarHidden: false,
     isOwnPost: false,
-    isPostDetail: false,
     isPosting: false,
     postId: null,
     repostContent: Immutable.List(),
