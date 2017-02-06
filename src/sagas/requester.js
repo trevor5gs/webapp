@@ -7,10 +7,7 @@ import * as ACTION_TYPES from '../constants/action_types'
 import { selectRefreshToken } from '../selectors/authentication'
 import { selectLastNotificationCheck } from '../selectors/gui'
 import { selectPathname } from '../selectors/routing'
-import {
-  clearAuthStore,
-  refreshAuthenticationToken,
-} from '../actions/authentication'
+import { clearAuthToken, refreshAuthenticationToken } from '../actions/authentication'
 import { fetchCredentials, sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
 import Dialog from '../components/dialogs/Dialog'
@@ -165,8 +162,7 @@ export function* handleRequestError(error, action) {
         type !== ACTION_TYPES.AUTHENTICATION.USER) {
       unauthorizedActionQueue.push(action)
       if (Object.keys(runningFetches).length === 0) {
-        // if a 401 happens we should rm the access token - it is invalid
-        yield put(clearAuthStore())
+        yield put(clearAuthToken())
         const refreshToken = yield select(selectRefreshToken)
         yield put(refreshAuthenticationToken(refreshToken))
       }

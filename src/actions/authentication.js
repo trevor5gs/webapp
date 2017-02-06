@@ -10,26 +10,9 @@ const clientCredentials = {
   id: ENV.AUTH_CLIENT_ID,
 }
 
-export function cancelAuthRefresh() {
+export function clearAuthToken() {
   return {
-    type: AUTHENTICATION.CANCEL_REFRESH,
-  }
-}
-
-export function clearAuthStore() {
-  return {
-    type: AUTHENTICATION.CLEAR_STORE,
-  }
-}
-
-export function signIn(email, password) {
-  return {
-    type: AUTHENTICATION.SIGN_IN,
-    payload: {
-      method: 'POST',
-      email,
-      password,
-    },
+    type: AUTHENTICATION.CLEAR_AUTH_TOKEN,
   }
 }
 
@@ -75,16 +58,6 @@ export function refreshAuthenticationToken(refreshToken) {
   }
 }
 
-export function scheduleAuthRefresh(refreshToken, timeout) {
-  return {
-    type: AUTHENTICATION.SCHEDULE_REFRESH,
-    payload: {
-      refreshToken,
-      timeout,
-    },
-  }
-}
-
 export function sendForgotPasswordRequest(email) {
   return {
     type: AUTHENTICATION.FORGOT_PASSWORD,
@@ -94,6 +67,17 @@ export function sendForgotPasswordRequest(email) {
       body: {
         email,
       },
+    },
+  }
+}
+
+export function signIn(email, password) {
+  return {
+    type: AUTHENTICATION.SIGN_IN,
+    payload: {
+      method: 'POST',
+      email,
+      password,
     },
   }
 }

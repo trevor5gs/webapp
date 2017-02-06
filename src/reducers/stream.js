@@ -9,6 +9,7 @@ const initialState = Immutable.Map()
 export default (state = initialState, action = { type: '' }) => {
   if (action.type === AUTHENTICATION.LOGOUT_SUCCESS ||
       action.type === AUTHENTICATION.LOGOUT_FAILURE ||
+      action.type === AUTHENTICATION.REFRESH_FAILURE ||
       action.type === PROFILE.DELETE_SUCCESS) {
     return initialState
   } else if (!(action.type === POST.DETAIL_SUCCESS || action.type === USER.DETAIL_SUCCESS ||

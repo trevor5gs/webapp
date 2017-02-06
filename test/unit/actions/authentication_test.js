@@ -2,32 +2,6 @@ import { isFSA, isFSAName } from '../../support/test_helpers'
 import * as subject from '../../../src/actions/authentication'
 
 describe('authentication actions', () => {
-  context('#cancelAuthRefresh', () => {
-    const action = subject.cancelAuthRefresh()
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('has similar action.name and action.type')
-    // it('has similar action.name and action.type', () => {
-    //   expect(isFSAName(action, subject.cancelAuthRefresh)).to.be.true
-    // })
-  })
-
-  context('#clearAuthStore', () => {
-    const action = subject.clearAuthStore()
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('has similar action.name and action.type')
-    // it('has similar action.name and action.type', () => {
-    //   expect(isFSAName(action, subject.clearAuthStore)).to.be.true
-    // })
-  })
-
   context('#signIn', () => {
     const action = subject.signIn('vader@ello.co', '12345666')
 
@@ -120,28 +94,6 @@ describe('authentication actions', () => {
 
     it('has the refresh token in the body of the action', () => {
       expect(action.payload.body.refresh_token).to.equal('22:22')
-    })
-  })
-
-  context('#scheduleAuthRefresh', () => {
-    const noop = () => {}
-    const action = subject.scheduleAuthRefresh('22:22', noop)
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('has similar action.name and action.type')
-    // it('has similar action.name and action.type', () => {
-    //   expect(isFSAName(action, subject.scheduleAuthRefresh)).to.be.true
-    // })
-
-    it('has the refresh token in the action', () => {
-      expect(action.payload.refreshToken).to.equal('22:22')
-    })
-
-    it('has the timeout in the action', () => {
-      expect(action.payload.timeout).to.equal(noop)
     })
   })
 

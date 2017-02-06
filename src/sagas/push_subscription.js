@@ -23,6 +23,7 @@ export function* logoutPushUnsubscribe() {
     yield take([
       AUTHENTICATION.LOGOUT_SUCCESS,
       AUTHENTICATION.LOGOUT_FAILURE,
+      AUTHENTICATION.REFRESH_FAILURE,
       PROFILE.DELETE_SUCCESS,
     ])
     const registrationId = yield select(selectRegistrationId)
