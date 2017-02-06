@@ -214,22 +214,6 @@ describe('post selectors', () => {
     })
   })
 
-  context('#selectPostMetaAttributes', () => {
-    it('returns the post meta attributes', () => {
-      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
-      const attr = Immutable.fromJS({
-        canonicalUrl: null,
-        description: 'meta post description',
-        images: ['meta-post-image-0.jpg', 'meta-post-image-1.jpg'],
-        robots: 'index, follow',
-        title: 'meta post title',
-        url: 'https://ello.co/author/post/meta-url',
-      })
-      state = { json }
-      expect(selector.selectPostMetaAttributes(state, props)).to.deep.equal(attr)
-    })
-  })
-
   context('#selectPostLoved', () => {
     it('returns the post is loved', () => {
       state = { json }
@@ -245,6 +229,23 @@ describe('post selectors', () => {
       const props = { postId: '666' }
       const result = selector.selectPostLovesCount(state, props)
       expect(result).to.equal(10)
+    })
+  })
+
+  context('#selectPostMetaAttributes', () => {
+    it('returns the post meta attributes', () => {
+      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
+      const attr = Immutable.fromJS({
+        canonicalUrl: null,
+        description: 'meta post description',
+        images: ['meta-post-image-0.jpg', 'meta-post-image-1.jpg'],
+        embeds: ['meta-post-embed-0.mp4', 'meta-post-embed-1.mp4'],
+        robots: 'index, follow',
+        title: 'meta post title',
+        url: 'https://ello.co/author/post/meta-url',
+      })
+      state = { json }
+      expect(selector.selectPostMetaAttributes(state, props)).to.deep.equal(attr)
     })
   })
 
@@ -404,6 +405,20 @@ describe('post selectors', () => {
       expect(selector.selectPostMetaCanonicalUrl(state, props)).to.deep.equal(null)
       state = { json: state.json.setIn(['posts', '1', 'metaAttributes', 'canonicalUrl'], 'meta-canonicalUrl') }
       expect(selector.selectPostMetaCanonicalUrl(state, props)).to.deep.equal('meta-canonicalUrl')
+    })
+  })
+
+  context('#selectPostMetaEmbeds', () => {
+    it('returns the meta embeds for a post', () => {
+      const result = {
+        openGraphEmbeds: [
+          { property: 'og:video', content: 'meta-post-embed-0.mp4' },
+          { property: 'og:video', content: 'meta-post-embed-1.mp4' },
+        ],
+      }
+      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
+      state = { json }
+      expect(selector.selectPostMetaEmbeds(state, props)).to.deep.equal(result)
     })
   })
 
