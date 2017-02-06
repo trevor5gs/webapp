@@ -3,6 +3,7 @@ import {
   clearJSON,
   json,
   stub,
+  stubCategories,
   stubPost,
   stubTextRegion,
   stubImageRegion,
@@ -15,8 +16,10 @@ describe('post selectors', () => {
   let state
   beforeEach(() => {
     stub('post', { authorId: 'statePost', token: 'token1' })
+    stub('post', { id: '100', authorId: '666', repostContent: [stubTextRegion()] })
     stub('user', { id: '666', username: '666-username' })
     stub('user', { id: '9', username: 'reposter-username' })
+    stubCategories()
     propsPost = stub('post', {
       authorId: '666',
       body: [stubTextRegion(), stubImageRegion(), stubEmbedRegion()],
@@ -26,7 +29,10 @@ describe('post selectors', () => {
       createdAt: 'Today',
       href: '/post-href',
       id: '666',
-      links: { repostAuthor: { id: '9' } },
+      links: {
+        repostAuthor: { id: '9' },
+        categories: [1, 4],
+      },
       loved: true,
       lovesCount: 10,
       repostContent: [stubTextRegion()],
@@ -446,7 +452,117 @@ describe('post selectors', () => {
     })
   })
 
-// ---------------------------------------------------------------------
+  context('#selectPostRepostAuthor', () => {
+    it('returns the post repost author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthor(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '9']))
+    })
+  })
+
+  context('#selectPostRepostAuthorWithFallback', () => {
+    it('returns the post repost author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthorWithFallback(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '9']))
+    })
+
+    it('returns the post author as a fallback', () => {
+      state = { json }
+      const props = { postId: '100' }
+      const result = selector.selectPostRepostAuthorWithFallback(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '666']))
+    })
+  })
+
+  context('#selectPostCategories', () => {
+    it('returns the post categories list', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCategories(state, props)
+      expect(result).to.equal(Immutable.List([1, 4]))
+    })
+  })
+
+  context('#selectPostCategory', () => {
+    it('returns the first item in the post categories list', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCategory(state, props)
+      expect(result).to.equal(state.json.getIn(['categories', '1']))
+    })
+  })
+
+  context('#selectPostCategoryName', () => {
+    it('returns the first item name in the post categories list', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCategoryName(state, props)
+      expect(result).to.equal('Featured')
+    })
+  })
+
+  context('#selectPostCategorySlug', () => {
+    it('returns the first item slug in the post categories list', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCategorySlug(state, props)
+      expect(result).to.equal('/discover/featured')
+    })
+  })
+
+  context('#selectPostDetailPath', () => {
+    it('returns the post detail path', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostDetailPath(state, props)
+      expect(result).to.equal('/666-username/post/token666')
+    })
+  })
+
+  context('#selectPostIsCommentsRequesting', () => {
+    it('selects the state around requesting comments for a post')
+  })
+
+  context('#selectPostIsEditing', () => {
+    it('returns the state of isEditing on the post', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsEditing(state, props)
+      expect(result).to.equal(false)
+    })
+  })
+
+  context('#selectPostIsGridMode', () => {
+    it('returns the state of isGridMode on the post on post detail', () => {
+      state = {
+        json,
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/post/token666' },
+        }),
+        gui: Immutable.fromJS({ isGridMode: true }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsGridMode(state, props)
+      expect(result).to.equal(false)
+    })
+
+    it('returns the state of isGridMode on the post from a profile', () => {
+      state = {
+        json,
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/' },
+        }),
+        gui: Immutable.fromJS({ isGridMode: true }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsGridMode(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
   context('#selectPostIsOwn', () => {
     it('returns if the post is the users own', () => {
       state = { json, profile: Immutable.Map({ id: '666' }) }
@@ -465,6 +581,157 @@ describe('post selectors', () => {
       expect(selector.selectPostIsOwn(state, props)).to.equal(false)
       // 2 since the memoization is from the context block
       expect(selector.selectPostIsOwn.recomputations()).to.equal(2)
+    })
+  })
+
+  context('#selectPostIsOwnOriginal', () => {
+    it('returns the state of isEditing on the post', () => {
+      state = { json, profile: Immutable.Map({ id: '9' }) }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsOwnOriginal(state, props)
+      expect(result).to.equal(true)
+    })
+
+    it('returns the state of isEditing on the post', () => {
+      state = { json, profile: Immutable.Map({ id: '100' }) }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsOwnOriginal(state, props)
+      expect(result).to.equal(false)
+    })
+  })
+
+  context('#selectPostIsRepost', () => {
+    it('returns if the post is a repost', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsRepost(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostIsReposting', () => {
+    it('returns the state of isReposting on the post', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsReposting(state, props)
+      expect(result).to.equal(false)
+    })
+  })
+
+  context('#selectPostIsWatching', () => {
+    it('returns the state of watching on the post', () => {
+      state = { json, authentication: Immutable.Map({ isLoggedIn: true }) }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsWatching(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostRepostAuthor', () => {
+    it('returns the post repost author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthor(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '9']))
+    })
+  })
+
+  context('#selectPostRepostAuthorWithFallback', () => {
+    it('returns the post repost author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthorWithFallback(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '9']))
+    })
+
+    it('returns the post author as a fallback', () => {
+      state = { json }
+      const props = { postId: '100' }
+      const result = selector.selectPostRepostAuthorWithFallback(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '666']))
+    })
+  })
+
+  context('#selectPostShowEditor', () => {
+    it('returns if the post editor should be shown', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowEditor(state, props)
+      expect(result).to.equal(false)
+    })
+
+    it('returns if the post editor should be shown after setting isEditing', () => {
+      state = { json }
+      state = { json: state.json.setIn(['posts', '666', 'isEditing'], true) }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowEditor(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowCommentEditor', () => {
+    it('returns if the post comment editor should be shown', () => {
+      state = {
+        json,
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/post/token666' },
+        }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowCommentEditor(state, props)
+      expect(result).to.equal(false)
+    })
+
+    it('returns if the post comment editor should be shown after setting showEditor', () => {
+      state = { json }
+      state = { json: state.json.setIn(['posts', '666', 'isEditing'], true) }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowEditor(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowCommentsDrawer', () => {
+    it('returns if the post comments drawer should be shown', () => {
+      state = {
+        json,
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/' },
+        }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowCommentsDrawer(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowLoversDrawer', () => {
+    it('returns if the post lovers drawer should be shown', () => {
+      state = {
+        json,
+        gui: Immutable.fromJS({ isGridMode: false }),
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/post/token666' },
+        }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowLoversDrawer(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowRepostersDrawer', () => {
+    it('returns if the post reposters drawer should be shown', () => {
+      state = {
+        json,
+        gui: Immutable.fromJS({ isGridMode: false }),
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/post/token666' },
+        }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowRepostersDrawer(state, props)
+      expect(result).to.equal(true)
     })
   })
 })

@@ -102,17 +102,13 @@ export const selectPostRepostAuthorId = createSelector([selectPost], post =>
   post.getIn(['links', 'repostAuthor', 'id']),
 )
 
-export const selectPostRepostAuthor = createSelector(
-  [selectUsers, selectPostRepostAuthorId], (users, repostAuthorId) => users.get(repostAuthorId),
-)
-
 export const selectPostCategories = createSelector(
   [selectPost], post => post.getIn(['links', 'categories'], Immutable.List()),
 )
 
 export const selectPostCategory = createSelector(
   [selectCategoryCollection, selectPostCategories], (collection, categories) =>
-    collection && collection.get(categories ? categories.first() : null),
+    (collection && collection.get(categories ? `${categories.first()}` : null)),
 )
 
 export const selectPostCategoryName = createSelector(
@@ -164,6 +160,10 @@ export const selectPostIsReposting = createSelector([selectPost], post =>
 
 export const selectPostIsWatching = createSelector(
   [selectIsLoggedIn, selectPostWatching], (isLoggedIn, watching) => isLoggedIn && watching,
+)
+
+export const selectPostRepostAuthor = createSelector(
+  [selectUsers, selectPostRepostAuthorId], (users, repostAuthorId) => users.get(repostAuthorId),
 )
 
 export const selectPostRepostAuthorWithFallback = createSelector(
