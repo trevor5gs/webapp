@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import { trackEvent } from '../actions/analytics'
 import { saveAvatar, saveCover } from '../actions/profile'
-import { selectDPI } from '../selectors/gui'
+import { selectDPI, selectIsMobile } from '../selectors/gui'
 import {
   selectAvatar,
   selectCoverImage,
@@ -21,6 +21,7 @@ function mapStateToProps(state) {
   const dpi = selectDPI(state)
   const isAvatarBlank = selectIsAvatarBlank(state)
   const isCoverImageBlank = selectIsCoverImageBlank(state)
+  const isMobile = selectIsMobile(state)
   const isInfoFormBlank = selectIsInfoFormBlank(state)
   const isNextDisabled = isAvatarBlank && isCoverImageBlank && isInfoFormBlank
   return {
@@ -29,6 +30,7 @@ function mapStateToProps(state) {
     dpi,
     isAvatarBlank,
     isCoverImageBlank,
+    isMobile,
     isNextDisabled,
   }
 }
@@ -42,6 +44,7 @@ class OnboardingSettingsContainer extends PureComponent {
     dpi: PropTypes.string.isRequired,
     isAvatarBlank: PropTypes.bool.isRequired,
     isCoverImageBlank: PropTypes.bool.isRequired,
+    isMobile: PropTypes.bool.isRequired,
     isNextDisabled: PropTypes.bool.isRequired,
   }
 
@@ -56,6 +59,7 @@ class OnboardingSettingsContainer extends PureComponent {
     dpi: PropTypes.string.isRequired,
     isAvatarBlank: PropTypes.bool,
     isCoverImageBlank: PropTypes.bool,
+    isMobile: PropTypes.bool.isRequired,
     nextLabel: PropTypes.string,
     onDoneClick: PropTypes.func,
     onNextClick: PropTypes.func,
@@ -65,7 +69,7 @@ class OnboardingSettingsContainer extends PureComponent {
 
   getChildContext() {
     const {
-      avatar, dispatch, coverImage, dpi, isAvatarBlank, isCoverImageBlank, isNextDisabled,
+      avatar, dispatch, coverImage, dpi, isAvatarBlank, isCoverImageBlank, isMobile, isNextDisabled,
     } = this.props
     return {
       avatar,
@@ -73,6 +77,7 @@ class OnboardingSettingsContainer extends PureComponent {
       dpi,
       isAvatarBlank,
       isCoverImageBlank,
+      isMobile,
       nextLabel: 'Invite Cool People',
       onDoneClick: isNextDisabled ? null : this.onDoneClick,
       onNextClick: this.onNextClick,
