@@ -217,7 +217,7 @@ class ImageRegion extends Component {
         onLoadSuccess={this.onLoadSuccess}
         role="presentation"
         src={this.attachment.getIn(['optimized', 'url'])}
-        width={dimensions.width}
+        width={isNotification ? null : dimensions.width}
       />
     )
   }
@@ -236,7 +236,7 @@ class ImageRegion extends Component {
         role="presentation"
         srcSet={srcset}
         src={this.attachment.getIn(['hdpi', 'url'])}
-        width={dimensions.width}
+        width={isNotification ? null : dimensions.width}
       />
     )
   }
