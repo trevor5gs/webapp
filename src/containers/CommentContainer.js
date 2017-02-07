@@ -1,9 +1,24 @@
 import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import * as ACTION_TYPES from '../constants/action_types'
-import * as MAPPING_TYPES from '../constants/mapping_types'
+import { EDITOR } from '../constants/action_types'
+import { deleteComment, flagComment, loadEditableComment, toggleEditing } from '../actions/comments'
+import { openModal, closeModal } from '../actions/modals'
 import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectAssets } from '../selectors/assets'
+import {
+  selectComment,
+  selectCommentAuthor,
+  selectCommentBody,
+  selectCommentCanBeDeleted,
+  selectCommentContent,
+  selectCommentCreatedAt,
+  selectCommentIsEditing,
+  selectCommentIsOwn,
+  selectCommentPost,
+  selectCommentPostDetailPath,
+  selectPropsCommentId,
+} from '../selectors/comment'
 import {
   selectColumnWidth,
   selectCommentOffset,
@@ -14,60 +29,45 @@ import {
   selectIsNavbarHidden,
 } from '../selectors/gui'
 import Editor, { getEditorId } from '../components/editor/Editor'
-import {
-  CommentBody,
-  CommentHeader,
-} from '../components/comments/CommentRenderables'
+import { CommentBody, CommentHeader } from '../components/comments/CommentRenderables'
 import CommentTools from '../components/comments/CommentTools'
-import { getPostDetailPath } from './PostContainer'
-import * as commentActions from '../actions/comments'
-import { openModal, closeModal } from '../actions/modals'
 import ConfirmDialog from '../components/dialogs/ConfirmDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import { scrollToLastTextBlock } from '../lib/jello'
 
+// TODO: Possibly create an individual mapStateToProps for each container
+// instance. This will allow each component it's own private group of
+// selectors. It would be good to measure this though, based on how these run
+// we may not gain a whole lot from it.
 export function mapStateToProps(state, props) {
-  const { commentId } = props
-  const assets = state.json.get('assets')
-  const comment = state.json.getIn([MAPPING_TYPES.COMMENTS, commentId])
-  const author = state.json.getIn([MAPPING_TYPES.USERS, comment.get('authorId')])
-  const post = state.json.getIn([MAPPING_TYPES.POSTS, comment.get('postId')])
-
-  const isOwnComment = comment.get('authorId') === state.profile.get('id')
-  const isOwnPost = post.get('authorId') === state.profile.get('id')
-  let canDeleteComment = isOwnPost
-  if (post.get('repostId')) {
-    canDeleteComment = isOwnPost && comment.get('originalPostId') === post.get('id')
-  }
-
   return {
-    assets,
-    author,
-    canDeleteComment,
+    assets: selectAssets(state),
+    author: selectCommentAuthor(state, props),
+    canDeleteComment: selectCommentCanBeDeleted(state, props),
     columnWidth: selectColumnWidth(state),
-    comment,
-    commentCreatedAt: comment.get('createdAt'),
-    commentId,
-    commentBody: comment.get('body'),
+    comment: selectComment(state, props),
+    commentBody: selectCommentBody(state, props),
+    commentCreatedAt: selectCommentCreatedAt(state, props),
+    commentId: selectPropsCommentId(state, props),
     commentOffset: selectCommentOffset(state),
-    content: comment.get('content'),
+    content: selectCommentContent(state, props),
     contentWidth: selectContentWidth(state),
-    detailPath: getPostDetailPath(author, post),
+    detailPath: selectCommentPostDetailPath(state, props),
     deviceSize: selectDeviceSize(state),
     innerHeight: selectInnerHeight(state),
-    isEditing: comment.get('isEditing', false),
+    isEditing: selectCommentIsEditing(state, props),
     isGridMode: selectIsGridMode(state),
     isLoggedIn: selectIsLoggedIn(state),
     isNavbarHidden: selectIsNavbarHidden(state),
-    isOwnComment,
-    post,
+    isOwnComment: selectCommentIsOwn(state, props),
+    post: selectCommentPost(state, props),
   }
 }
 
 class CommentContainer extends Component {
 
   static propTypes = {
-    assets: PropTypes.object.isRequired,
+    assets: PropTypes.object,
     author: PropTypes.object.isRequired,
     canDeleteComment: PropTypes.bool.isRequired,
     columnWidth: PropTypes.number.isRequired,
@@ -91,6 +91,7 @@ class CommentContainer extends Component {
   }
 
   static defaultProps = {
+    assets: null,
     commentBody: null,
   }
 
@@ -138,13 +139,13 @@ class CommentContainer extends Component {
   onConfirmDeleteComment = () => {
     const { comment, dispatch } = this.props
     this.onCloseModal()
-    dispatch(commentActions.deleteComment(comment))
+    dispatch(deleteComment(comment))
   }
 
   onClickEditComment = () => {
     const { comment, dispatch } = this.props
-    dispatch(commentActions.toggleEditing(comment, true))
-    dispatch(commentActions.loadEditableComment(comment))
+    dispatch(toggleEditing(comment, true))
+    dispatch(loadEditableComment(comment))
   }
 
   onClickFlagComment = () => {
@@ -159,7 +160,7 @@ class CommentContainer extends Component {
 
   onCommentWasFlagged = ({ flag }) => {
     const { dispatch, comment } = this.props
-    dispatch(commentActions.flagComment(comment, flag))
+    dispatch(flagComment(comment, flag))
   }
 
   onClickMoreTool = () => {
@@ -170,7 +171,7 @@ class CommentContainer extends Component {
     const { author, dispatch, isNavbarHidden, post } = this.props
     const editorId = getEditorId(post, null, true, false)
     dispatch({
-      type: ACTION_TYPES.EDITOR.APPEND_TEXT,
+      type: EDITOR.APPEND_TEXT,
       payload: {
         editorId,
         text: `@${author.get('username')} `,
