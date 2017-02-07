@@ -9,14 +9,13 @@ import { selectUsers } from './user'
 export const selectPropsCommentId = (state, props) =>
   get(props, 'commentId') || get(props, 'comment', Immutable.Map()).get('id')
 
-export const selectComments = state => state.json.get(COMMENTS)
+export const selectComments = state => state.json.get(COMMENTS, Immutable.Map())
 
 // Memoized selectors
 
 // Requires `commentId` or `comment` to be found in props
 export const selectComment = createSelector(
-  [selectPropsCommentId, selectComments], (id, comments) =>
-    (comments && id ? comments.get(id, Immutable.Map()) : Immutable.Map()),
+  [selectPropsCommentId, selectComments], (id, comments) => comments.get(id, Immutable.Map()),
 )
 
 // Properties on the comments reducer
@@ -31,12 +30,11 @@ export const selectCommentRepostId = createSelector([selectComment], comment => 
 // Derived or additive properties
 export const selectCommentAuthor = createSelector(
   [selectUsers, selectCommentAuthorId], (users, authorId) =>
-    (users && authorId ? users.get(authorId) : null),
+    users.get(authorId, Immutable.Map()),
 )
 
 export const selectCommentPost = createSelector(
-  [selectPosts, selectCommentPostId], (posts, postId) =>
-    (posts && postId ? posts.get(postId) : Immutable.Map()),
+  [selectPosts, selectCommentPostId], (posts, postId) => posts.get(postId, Immutable.Map()),
 )
 
 export const selectCommentPostAuthorId = createSelector(
@@ -45,7 +43,7 @@ export const selectCommentPostAuthorId = createSelector(
 
 export const selectCommentPostAuthor = createSelector(
   [selectUsers, selectCommentPostAuthorId], (users, authorId) =>
-    (users && authorId ? users.get(authorId) : null),
+    users.get(authorId, Immutable.Map()),
 )
 
 export const selectCommentPostDetailPath = createSelector(
