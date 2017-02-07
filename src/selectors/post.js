@@ -15,16 +15,16 @@ import { selectUsers } from './user'
 export const selectPropsPostId = (state, props) =>
   get(props, 'postId') || get(props, 'post', Immutable.Map()).get('id')
 
-export const selectPosts = state => state.json.get(POSTS)
+export const selectPosts = state => state.json.get(POSTS, Immutable.Map())
 
 // Memoized selectors
 
 // Requires `postId`, `post` or `params.token` to be found in props
 export const selectPost = createSelector(
   [selectPropsPostId, selectParamsToken, selectPosts], (id, token, posts) => {
-    if (id && posts) {
+    if (id) {
       return posts.get(id, Immutable.Map())
-    } else if (token && posts) {
+    } else if (token) {
       return (posts.find(post => post.get('token') === token)) || Immutable.Map()
     }
     return Immutable.Map()
@@ -99,7 +99,7 @@ export const selectPostMetaUrl = createSelector(
 // Derived or additive properties
 export const selectPostAuthor = createSelector(
   [selectUsers, selectPostAuthorId], (users, authorId) =>
-    (users && authorId ? users.get(authorId) : null),
+    users.get(authorId, Immutable.Map()),
 )
 
 export const selectPostAuthorUsername = createSelector(
@@ -172,13 +172,14 @@ export const selectPostIsWatching = createSelector(
 )
 
 export const selectPostRepostAuthor = createSelector(
-  [selectUsers, selectPostRepostAuthorId], (users, repostAuthorId) => users.get(repostAuthorId),
+  [selectUsers, selectPostRepostAuthorId], (users, repostAuthorId) =>
+    users.get(repostAuthorId, Immutable.Map()),
 )
 
 export const selectPostRepostAuthorWithFallback = createSelector(
   [selectPostIsRepost, selectPostRepostAuthor, selectPostAuthor],
   (isRepost, repostAuthor, author) =>
-    (isRepost ? (repostAuthor || author) : null),
+    (isRepost ? ((repostAuthor.get('id') && repostAuthor) || author) : null),
 )
 
 // Editor and drawer states for a given post

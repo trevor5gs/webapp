@@ -12,12 +12,12 @@ export const selectPropsUser = (state, props) => get(props, 'user')
 export const selectPropsUserId = (state, props) => get(props, 'userId') || get(props, 'user').get('id')
 
 // state.json.users.xxx
-export const selectUsers = state => state.json.get(USERS)
+export const selectUsers = state => state.json.get(USERS, Immutable.Map())
 
 // Memoized selectors
 export const selectUser = createSelector(
   [selectUsers, selectPropsUserId], (users, userId) =>
-    (users ? users.get(`${userId}`, Immutable.Map()) : Immutable.Map()),
+    users.get(`${userId}`, Immutable.Map()),
 )
 
 export const selectUserFromPropsUserId = createSelector(

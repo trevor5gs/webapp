@@ -9,7 +9,7 @@ import { Notification } from './Notification'
 
 // HELPERS
 function getActivityPath(user, post) {
-  if (!user) { return '/' }
+  if (!user || !user.get('id')) { return '/' }
   if (!post || !post.get('id')) { return `/${user.get('username')}` }
   return `/${user.get('username')}/post/${post.get('token')}`
 }
@@ -27,7 +27,7 @@ function parseSummaryForCommentNotification(post, comment, path, assets) {
 }
 
 const UserTextLink = ({ user }) => {
-  if (!user) { return null }
+  if (!user || !user.get('id')) { return null }
   return (
     <Link to={getActivityPath(user)}>
       {`@${user.get('username')}`}
