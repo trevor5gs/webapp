@@ -68,11 +68,6 @@ import { PostTools, WatchTool } from '../components/posts/PostTools'
 import { UserDrawer } from '../components/users/UserRenderables'
 import { postLovers, postReposters } from '../networking/api'
 
-// TODO: Search and replace this function with `selectPostDetailPath`
-export function getPostDetailPath(author, post) {
-  return `/${author.get('username')}/post/${post.get('token')}`
-}
-
 // TODO: Possibly create an individual mapStateToProps for each container
 // instance. This will allow each component it's own private group of
 // selectors. It would be good to measure this though, based on how these run
@@ -366,6 +361,7 @@ class PostContainer extends Component {
       content,
       contentWarning,
       contentWidth,
+      detailPath,
       innerHeight,
       isCommentsRequesting,
       isDiscoverRoot,
@@ -399,7 +395,6 @@ class PostContainer extends Component {
       summary,
     } = this.props
     if (!post || !post.get('id') || !author || !author.get('id')) { return null }
-    const detailPath = getPostDetailPath(author, post)
     let postHeader
     const headerProps = { detailPath, postCreatedAt, postId }
     if (isRepost) {
