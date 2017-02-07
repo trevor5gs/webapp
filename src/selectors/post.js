@@ -67,6 +67,14 @@ export const selectPostMetaCanonicalUrl = createSelector(
   [selectPostMetaAttributes], metaAttributes => metaAttributes.get('canonicalUrl'),
 )
 
+export const selectPostMetaEmbeds = createSelector(
+  [selectPostMetaAttributes], (metaAttributes) => {
+    const embeds = (metaAttributes.get('embeds') || Immutable.List()).toArray()
+    const openGraphEmbeds = embeds.map(embed => ({ property: 'og:video', content: embed }))
+    return { openGraphEmbeds }
+  },
+)
+
 export const selectPostMetaImages = createSelector(
   [selectPostMetaAttributes], (metaAttributes) => {
     const images = (metaAttributes.get('images') || Immutable.List()).toArray()

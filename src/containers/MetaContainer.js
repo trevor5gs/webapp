@@ -8,6 +8,7 @@ import { selectPagination } from '../selectors/pagination'
 import {
   selectPostMetaCanonicalUrl,
   selectPostMetaDescription,
+  selectPostMetaEmbeds,
   selectPostMetaImages,
   selectPostMetaRobots,
   selectPostMetaTitle,
@@ -45,6 +46,7 @@ function mapStateToProps(state, props) {
     pathname: selectPathname(state),
     postMetaCanonicalUrl: selectPostMetaCanonicalUrl(state, props),
     postMetaDescription: selectPostMetaDescription(state, props),
+    postMetaEmbeds: selectPostMetaEmbeds(state, props),
     postMetaImages: selectPostMetaImages(state, props),
     postMetaRobots: selectPostMetaRobots(state, props),
     postMetaTitle: selectPostMetaTitle(state, props),
@@ -66,6 +68,7 @@ class MetaContainer extends PureComponent {
     pathname: PropTypes.string.isRequired,
     postMetaCanonicalUrl: PropTypes.string,
     postMetaDescription: PropTypes.string,
+    postMetaEmbeds: PropTypes.object,
     postMetaImages: PropTypes.object,
     postMetaRobots: PropTypes.string,
     postMetaTitle: PropTypes.string,
@@ -82,6 +85,7 @@ class MetaContainer extends PureComponent {
     nextPage: null,
     postMetaCanonicalUrl: null,
     postMetaDescription: null,
+    postMetaEmbeds: null,
     postMetaImages: null,
     postMetaRobots: null,
     postMetaTitle: null,
@@ -138,7 +142,13 @@ class MetaContainer extends PureComponent {
 
   getPostDetailTags() {
     const { pathname, postMetaCanonicalUrl, postMetaUrl } = this.props
-    const { postMetaTitle, postMetaDescription, postMetaImages, postMetaRobots } = this.props
+    const {
+      postMetaTitle,
+      postMetaDescription,
+      postMetaEmbeds,
+      postMetaImages,
+      postMetaRobots,
+    } = this.props
     const title = postMetaTitle
     const description = postMetaDescription
     const url = postMetaUrl
@@ -155,6 +165,7 @@ class MetaContainer extends PureComponent {
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       ...postMetaImages.openGraphImages,
+      ...postMetaEmbeds.openGraphEmbeds,
       { name: 'twitter:card', content: twitterCard },
       { name: 'robots', content: postMetaRobots },
     ]

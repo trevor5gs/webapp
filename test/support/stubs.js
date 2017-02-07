@@ -159,6 +159,7 @@ function stubPost(properties, shouldAdd = true) {
       canonicalUrl: null,
       description: 'meta post description',
       images: ['meta-post-image-0.jpg', 'meta-post-image-1.jpg'],
+      embeds: ['meta-post-embed-0.mp4', 'meta-post-embed-1.mp4'],
       robots: 'index, follow',
       title: 'meta post title',
       url: 'https://ello.co/author/post/meta-url',
