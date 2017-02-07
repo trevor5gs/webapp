@@ -51,7 +51,20 @@ import {
 import { selectIsDiscoverRoot, selectIsPostDetail, selectPathname, selectPreviousPath } from '../selectors/routing'
 import { trackEvent } from '../actions/analytics'
 import { openModal, closeModal } from '../actions/modals'
-import * as postActions from '../actions/posts'
+import {
+  deletePost,
+  flagPost,
+  loadEditablePost,
+  lovePost,
+  toggleComments,
+  toggleEditing,
+  toggleLovers,
+  toggleReposters,
+  toggleReposting,
+  unlovePost,
+  unwatchPost,
+  watchPost,
+} from '../actions/posts'
 import ConfirmDialog from '../components/dialogs/ConfirmDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
@@ -245,7 +258,7 @@ class PostContainer extends Component {
   onConfirmDeletePost = () => {
     const { dispatch, pathname, post, previousPath } = this.props
     this.onCloseModal()
-    const action = postActions.deletePost(post)
+    const action = deletePost(post)
     if (pathname.match(post.get('token'))) {
       set(action, 'meta.successAction', replace(previousPath || '/'))
     }
@@ -254,8 +267,8 @@ class PostContainer extends Component {
 
   onClickEditPost = () => {
     const { dispatch, post } = this.props
-    dispatch(postActions.toggleEditing(post, true))
-    dispatch(postActions.loadEditablePost(post.get('id')))
+    dispatch(toggleEditing(post, true))
+    dispatch(loadEditablePost(post.get('id')))
   }
 
   onClickFlagPost = () => {
@@ -270,15 +283,15 @@ class PostContainer extends Component {
 
   onPostWasFlagged = ({ flag }) => {
     const { dispatch, post } = this.props
-    dispatch(postActions.flagPost(post, flag))
+    dispatch(flagPost(post, flag))
   }
 
   onClickLovePost = () => {
     const { dispatch, post, postLoved } = this.props
     if (postLoved) {
-      dispatch(postActions.unlovePost(post))
+      dispatch(unlovePost(post))
     } else {
-      dispatch(postActions.lovePost(post))
+      dispatch(lovePost(post))
       dispatch(trackEvent('web_production.post_actions_love'))
     }
   }
@@ -286,8 +299,8 @@ class PostContainer extends Component {
   onClickRepostPost = () => {
     const { dispatch, post, postReposted } = this.props
     if (!postReposted) {
-      dispatch(postActions.toggleReposting(post, true))
-      dispatch(postActions.loadEditablePost(post.get('id')))
+      dispatch(toggleReposting(post, true))
+      dispatch(loadEditablePost(post.get('id')))
     }
   }
 
@@ -303,7 +316,7 @@ class PostContainer extends Component {
     if (isLoggedIn) {
       const nextShowComments = !showComments
       this.setState({ isCommentsActive: nextShowComments })
-      dispatch(postActions.toggleComments(post, nextShowComments))
+      dispatch(toggleComments(post, nextShowComments))
     } else {
       dispatch(push(detailPath))
     }
@@ -315,7 +328,7 @@ class PostContainer extends Component {
       dispatch(push(detailPath))
     } else {
       const nextShowLovers = !showLovers
-      dispatch(postActions.toggleLovers(post, nextShowLovers))
+      dispatch(toggleLovers(post, nextShowLovers))
     }
   }
 
@@ -325,17 +338,17 @@ class PostContainer extends Component {
       dispatch(push(detailPath))
     } else {
       const nextShowReposters = !showReposters
-      dispatch(postActions.toggleReposters(post, nextShowReposters))
+      dispatch(toggleReposters(post, nextShowReposters))
     }
   }
 
   onClickWatchPost = () => {
     const { dispatch, post, isWatchingPost } = this.props
     if (isWatchingPost) {
-      dispatch(postActions.unwatchPost(post))
+      dispatch(unwatchPost(post))
       dispatch(trackEvent('unwatched-post'))
     } else {
-      dispatch(postActions.watchPost(post))
+      dispatch(watchPost(post))
       dispatch(trackEvent('watched-post'))
     }
   }
