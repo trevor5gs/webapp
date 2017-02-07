@@ -41,6 +41,7 @@ export function RegionItems(props) {
       case 'embed':
         cells.push(
           <EmbedRegion
+            detailPath={detailPath}
             key={`EmbedRegion_${JSON.stringify(region.get('data'))}`}
             region={region}
           />,
