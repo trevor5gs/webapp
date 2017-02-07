@@ -2,12 +2,10 @@
 import { fork, put, take } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
-
 import {
   AUTHENTICATION,
   PROFILE,
 } from '../constants/action_types'
-
 import { getUserCredentials, refreshAuthenticationToken } from '../actions/authentication'
 
 const toMilliseconds = seconds => seconds * 1000

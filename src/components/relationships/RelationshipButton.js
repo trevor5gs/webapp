@@ -33,15 +33,13 @@ class RelationshipButton extends PureComponent {
       RELATIONSHIP_PRIORITY.NONE,
       null,
     ]),
-    userId: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string,
-    ]).isRequired,
+    userId: PropTypes.string,
   }
 
   static defaultProps = {
     className: '',
     priority: null,
+    userId: null,
   }
 
   componentWillMount() {

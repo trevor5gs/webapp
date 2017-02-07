@@ -142,7 +142,7 @@ class PostContainer extends Component {
     categoryPath: PropTypes.string,
     columnWidth: PropTypes.number.isRequired,
     commentOffset: PropTypes.number.isRequired,
-    content: PropTypes.object.isRequired,
+    content: PropTypes.object,
     contentWarning: PropTypes.string,
     contentWidth: PropTypes.number.isRequired,
     detailPath: PropTypes.string.isRequired,
@@ -164,14 +164,14 @@ class PostContainer extends Component {
     pathname: PropTypes.string.isRequired,
     post: PropTypes.object.isRequired,
     postBody: PropTypes.object,
-    postCommentsCount: PropTypes.number.isRequired,
-    postCreatedAt: PropTypes.string.isRequired,
+    postCommentsCount: PropTypes.number,
+    postCreatedAt: PropTypes.string,
     postId: PropTypes.string.isRequired,
-    postLoved: PropTypes.bool.isRequired,
-    postLovesCount: PropTypes.number.isRequired,
-    postReposted: PropTypes.bool.isRequired,
-    postRepostsCount: PropTypes.number.isRequired,
-    postViewsCountRounded: PropTypes.string.isRequired,
+    postLoved: PropTypes.bool,
+    postLovesCount: PropTypes.number,
+    postReposted: PropTypes.bool,
+    postRepostsCount: PropTypes.number,
+    postViewsCountRounded: PropTypes.string,
     previousPath: PropTypes.string,
     repostAuthor: PropTypes.object,
     repostContent: PropTypes.object,
@@ -180,19 +180,28 @@ class PostContainer extends Component {
     showEditor: PropTypes.bool.isRequired,
     showLovers: PropTypes.bool.isRequired,
     showReposters: PropTypes.bool.isRequired,
-    summary: PropTypes.object.isRequired,
+    summary: PropTypes.object,
   }
 
   static defaultProps = {
     assets: null,
     categoryName: null,
     categoryPath: null,
+    content: null,
     contentWarning: null,
     isPostHeaderHidden: false,
     postBody: null,
+    postCommentsCount: null,
+    postCreatedAt: null,
+    postLoved: false,
+    postLovesCount: null,
+    postReposted: false,
+    postRepostsCount: null,
+    postViewsCountRounded: null,
     previousPath: null,
     repostAuthor: null,
     repostContent: null,
+    summary: null,
   }
 
 
@@ -239,6 +248,7 @@ class PostContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    if (!nextProps.post || nextProps.post.isEmpty()) { return false }
     return !Immutable.is(nextProps.post, this.props.post) ||
       ['columnWidth', 'contentWidth', 'innerHeight', 'isGridMode', 'isLoggedIn', 'isMobile'].some(prop =>
         nextProps[prop] !== this.props[prop],

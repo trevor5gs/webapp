@@ -82,11 +82,8 @@ class RelationshipContainer extends Component {
     previousPath: PropTypes.string,
     relationshipPriority: PropTypes.string,
     shouldRenderBlockMute: PropTypes.bool,
-    userId: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string,
-    ]).isRequired,
-    username: PropTypes.string.isRequired,
+    userId: PropTypes.string,
+    username: PropTypes.string,
   }
 
   static defaultProps = {
@@ -94,6 +91,8 @@ class RelationshipContainer extends Component {
     previousPath: null,
     relationshipPriority: null,
     shouldRenderBlockMute: false,
+    userId: null,
+    username: null,
   }
 
   static contextTypes = {
@@ -182,29 +181,29 @@ class RelationshipContainer extends Component {
         className={classNames('RelationshipContainer', className)}
         data-priority={relationshipPriority}
       >
-        {shouldRenderBlockMute ?
+        {shouldRenderBlockMute &&
           <BlockMuteButton
             className={className}
             onClick={this.onOpenBlockMuteModal}
             priority={relationshipPriority}
             userId={userId}
-          /> : null
+          />
         }
-        {!shouldRenderBlockMute ?
+        {!shouldRenderBlockMute &&
           <RelationshipButton
             className={className}
             onClick={this[onClickCallback]}
             priority={relationshipPriority}
             userId={userId}
-          /> : null
+          />
         }
-        {!shouldRenderBlockMute ?
+        {!shouldRenderBlockMute &&
           <StarshipButton
             className={className}
             onClick={this[onClickCallback]}
             priority={relationshipPriority}
             userId={userId}
-          /> : null
+          />
         }
       </div>
     )
