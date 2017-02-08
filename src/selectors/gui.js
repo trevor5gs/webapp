@@ -1,44 +1,42 @@
 import { createSelector } from 'reselect'
-import get from 'lodash/get'
 import { selectParamsUsername } from './params'
+import { selectPathname, selectPropsQueryType } from './routing'
 
 // state.gui.xxx
-export const selectActiveUserFollowingType = state => get(state, 'gui.activeUserFollowingType')
-export const selectActiveNotificationsType = state => get(state, 'gui.activeNotificationsType')
-export const selectColumnCount = state => get(state, 'gui.columnCount')
-export const selectColumnWidth = state => get(state, 'gui.columnWidth')
-export const selectContentWidth = state => get(state, 'gui.contentWidth')
-export const selectCoverDPI = state => get(state, 'gui.coverDPI')
-export const selectCurrentStream = state => get(state, 'gui.currentStream')
-export const selectDeviceSize = state => get(state, 'gui.deviceSize')
-export const selectDiscoverKeyType = state => get(state, 'gui.discoverKeyType')
-export const selectHasLaunchedSignupModal = state => get(state, 'gui.hasLaunchedSignupModal')
-export const selectHistory = state => get(state, 'gui.history')
-export const selectInnerHeight = state => get(state, 'gui.innerHeight')
-export const selectInnerWidth = state => get(state, 'gui.innerWidth')
-export const selectIsAuthenticationView = state => get(state, 'gui.isAuthenticationView')
-export const selectIsCompleterActive = state => get(state, 'gui.isCompleterActive')
-export const selectIsGridMode = state => get(state, 'gui.isGridMode')
-export const selectIsLayoutToolHidden = state => get(state, 'gui.isLayoutToolHidden')
-export const selectIsNavbarHidden = state => get(state, 'gui.isNavbarHidden')
-export const selectIsNotificationsActive = state => get(state, 'gui.isNotificationsActive')
-export const selectIsNotificationsUnread = state => get(state, 'gui.isNotificationsUnread')
-export const selectIsOmnibarActive = state => get(state, 'gui.isOmnibarActive')
-export const selectIsOnboardingView = state => get(state, 'gui.isOnboardingView')
-export const selectIsProfileMenuActive = state => get(state, 'gui.isProfileMenuActive')
-export const selectIsTextToolsActive = state => get(state, 'gui.isTextToolsActive')
-export const selectLastNotificationCheck = state => get(state, 'gui.lastNotificationCheck')
-export const selectLastDiscoverBeaconVersion = state => get(state, 'gui.lastDiscoverBeaconVersion') // eslint-disable-line
-export const selectLastFollowingBeaconVersion = state => get(state, 'gui.lastFollowingBeaconVersion') // eslint-disable-line
-export const selectLastStarredBeaconVersion = state => get(state, 'gui.lastStarredBeaconVersion')
-export const selectSaidHelloTo = state => get(state, 'gui.saidHelloTo')
-export const selectTextToolsCoordinates = state => get(state, 'gui.textToolsCoordinates')
-export const selectTextToolsStates = state => get(state, 'gui.textToolsStates')
+export const selectActiveUserFollowingType = state => state.gui.get('activeUserFollowingType')
+export const selectActiveNotificationsType = state => state.gui.get('activeNotificationsType')
+export const selectColumnCount = state => state.gui.get('columnCount')
+export const selectDiscoverKeyType = state => state.gui.get('discoverKeyType')
+export const selectHasLaunchedSignupModal = state => state.gui.get('hasLaunchedSignupModal')
+export const selectHomeStream = state => state.gui.get('homeStream')
+export const selectInnerHeight = state => state.gui.get('innerHeight')
+export const selectInnerWidth = state => state.gui.get('innerWidth')
+export const selectIsCompleterActive = state => state.gui.get('isCompleterActive')
+export const selectIsGridMode = state => state.gui.get('isGridMode')
+export const selectIsNavbarHidden = state => state.gui.get('isNavbarHidden')
+export const selectIsNotificationsActive = state => state.gui.get('isNotificationsActive')
+export const selectIsNotificationsUnread = state => state.gui.get('isNotificationsUnread')
+export const selectIsProfileMenuActive = state => state.gui.get('isProfileMenuActive')
+export const selectIsTextToolsActive = state => state.gui.get('isTextToolsActive')
+export const selectLastNotificationCheck = state => state.gui.get('lastNotificationCheck')
+export const selectLastDiscoverBeaconVersion = state => state.gui.get('lastDiscoverBeaconVersion') // eslint-disable-line
+export const selectLastFollowingBeaconVersion = state => state.gui.get('lastFollowingBeaconVersion') // eslint-disable-line
+export const selectLastStarredBeaconVersion = state => state.gui.get('lastStarredBeaconVersion')
+export const selectSaidHelloTo = state => state.gui.get('saidHelloTo')
+export const selectTextToolsCoordinates = state => state.gui.get('textToolsCoordinates')
+export const selectTextToolsStates = state => state.gui.get('textToolsStates')
 
 // Memoized selectors
-export const selectCommentOffset = createSelector(
-  [selectDeviceSize], deviceSize =>
-    (deviceSize === 'mobile' ? 40 : 60),
+export const selectDeviceSize = createSelector(
+  [selectColumnCount, selectInnerWidth], (columnCount, innerWidth) => {
+    // deviceSize could be anything: baby, momma, poppa bear would work too.
+    if (columnCount >= 4) {
+      return 'desktop'
+    } else if (columnCount >= 2 && innerWidth >= 640) {
+      return 'tablet'
+    }
+    return 'mobile'
+  },
 )
 
 export const selectIsMobile = createSelector(
@@ -51,12 +49,64 @@ export const selectIsMobileGridStream = createSelector(
     deviceSize === 'mobile' && isGridMode,
 )
 
+export const selectPaddingOffset = createSelector(
+  [selectDeviceSize, selectColumnCount], (deviceSize, columnCount) => {
+    if (deviceSize === 'mobile') { return 10 }
+    return columnCount >= 4 ? 40 : 20
+  },
+)
+
+export const selectCommentOffset = createSelector(
+  [selectDeviceSize], deviceSize =>
+    (deviceSize === 'mobile' ? 40 : 60),
+)
+
+export const selectColumnWidth = createSelector(
+  [selectColumnCount, selectInnerWidth, selectPaddingOffset], (columnCount, innerWidth, padding) =>
+    Math.round((innerWidth - ((columnCount + 1) * padding)) / columnCount),
+)
+
+export const selectContentWidth = createSelector(
+  [selectInnerWidth, selectPaddingOffset], (innerWidth, padding) =>
+    Math.round(innerWidth - (padding * 2)),
+)
+
+// This is very rudimentary. needs things like 1x, 2x calculating the set
+// Primarily used for background images in Heros
+export const selectDPI = createSelector(
+  [selectInnerWidth], (innerWidth) => {
+    if (innerWidth < 750) {
+      return 'hdpi'
+    } else if (innerWidth >= 750 && innerWidth < 1920) {
+      return 'xhdpi'
+    }
+    return 'optimized'
+  },
+)
+
 export const selectHasSaidHelloTo = createSelector(
   [selectSaidHelloTo, selectParamsUsername], (saidHelloTo, username) =>
-    saidHelloTo.indexOf(username) !== -1,
+    saidHelloTo.includes(username),
 )
 
 export const selectScrollOffset = createSelector(
   [selectInnerHeight], innerHeight => Math.round(innerHeight - 80),
+)
+
+const NO_LAYOUT_TOOLS = [
+  /^\/[\w-]+\/post\/.+/,
+  /^\/discover\/all\b/,
+  /^\/notifications\b/,
+  /^\/settings\b/,
+  /^\/onboarding\b/,
+  /^\/[\w-]+\/following\b/,
+  /^\/[\w-]+\/followers\b/,
+]
+
+export const selectIsLayoutToolHidden = createSelector(
+  [selectPathname, selectPropsQueryType], (pathname, queryType) => {
+    const isUserSearch = queryType === 'users' && /^\/search\b/.test(pathname)
+    return isUserSearch || NO_LAYOUT_TOOLS.some(pagex => pagex.test(pathname))
+  },
 )
 

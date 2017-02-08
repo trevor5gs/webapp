@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import debounce from 'lodash/debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { checkAvailability, signUpUser } from '../../actions/profile'
@@ -31,11 +30,11 @@ function mapStateToProps(state) {
   }
 }
 
-class JoinForm extends Component {
+class JoinForm extends PureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    email: PropTypes.string.isRequired,
+    email: PropTypes.string,
     invitationCode: PropTypes.string,
   }
 
@@ -62,13 +61,9 @@ class JoinForm extends Component {
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
     if (!availability) { return }
-    if ({}.hasOwnProperty.call(availability, 'username')) {
+    if (availability.has('username')) {
       this.validateUsernameResponse(availability)
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onChangeUsernameControl = ({ username }) => {

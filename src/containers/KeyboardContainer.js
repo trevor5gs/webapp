@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import { push } from 'react-router-redux'
 import Mousetrap from 'mousetrap'
 import { SET_LAYOUT_MODE } from '../constants/action_types'
@@ -20,17 +19,18 @@ function mapStateToProps(state) {
   }
 }
 
-class KeyboardContainer extends Component {
+class KeyboardContainer extends PureComponent {
   static propTypes = {
     discoverKeyType: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    isModalActive: PropTypes.bool,
+    isModalActive: PropTypes.bool.isRequired,
     shortcuts: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
+    discoverKeyType: null,
     shortcuts: {
       [SHORTCUT_KEYS.SEARCH]: '/search',
       [SHORTCUT_KEYS.DISCOVER]: '/discover',
@@ -47,10 +47,6 @@ class KeyboardContainer extends Component {
       const newMode = isGridMode ? 'list' : 'grid'
       dispatch({ type: SET_LAYOUT_MODE, payload: { mode: newMode } })
     })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate() {

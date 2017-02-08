@@ -1,15 +1,15 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
-import get from 'lodash/get'
 import sample from 'lodash/sample'
-import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { DISCOVER, FOLLOWING, STARRED } from '../constants/locales/en'
+import { USER } from '../constants/action_types'
 import { getLinkObject } from '../helpers/json_helper'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
-  selectCoverDPI,
+  selectDPI,
   selectLastDiscoverBeaconVersion,
   selectLastFollowingBeaconVersion,
   selectLastStarredBeaconVersion,
@@ -24,6 +24,8 @@ import {
   selectPagePromotionals,
 } from '../selectors/promotions'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
+import { selectJson } from '../selectors/store'
+import { selectStreamType } from '../selectors/stream'
 import { selectUserFromUsername } from '../selectors/user'
 import { trackEvent } from '../actions/analytics'
 import {
@@ -41,7 +43,6 @@ import {
   HeroPromotionPage,
 } from '../components/heros/HeroRenderables'
 
-const selectJson = state => get(state, 'json')
 export const selectIsAuthentication = createSelector(
   [selectViewNameFromRoute], viewName => viewName === 'authentication',
 )
@@ -80,10 +81,9 @@ function mapStateToProps(state, props) {
     promotions = categoryData.promotionals
   }
   return {
-    authPromotionals: selectAuthPromotionals(state),
     broadcast: selectBroadcast(state),
     categoryData,
-    dpi: selectCoverDPI(state),
+    dpi: selectDPI(state),
     isAuthentication,
     isCategoryPromotion,
     isLoggedIn: selectIsLoggedIn(state),
@@ -93,10 +93,11 @@ function mapStateToProps(state, props) {
     json: selectJson(state),
     pathname: selectPathname(state),
     promotions,
-    useGif: user && (selectViewsAdultContent(state) || !user.postsAdultContent),
-    userCoverImage: user && user.coverImage,
-    userId: user && `${user.id}`,
-    username: user && user.username,
+    streamType: selectStreamType(state),
+    useGif: user && (selectViewsAdultContent(state) || !user.get('postsAdultContent')),
+    userCoverImage: user && user.get('coverImage'),
+    userId: user && `${user.get('id')}`,
+    username: user && user.get('username'),
     viewName: selectViewNameFromRoute(state, props),
   }
 }
@@ -104,22 +105,30 @@ function mapStateToProps(state, props) {
 class HeroContainer extends Component {
   static propTypes = {
     broadcast: PropTypes.string,
-    categoryData: PropTypes.object,
+    categoryData: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     dpi: PropTypes.string.isRequired,
-    isAuthentication: PropTypes.bool,
-    isCategoryPromotion: PropTypes.bool,
+    isAuthentication: PropTypes.bool.isRequired,
+    isCategoryPromotion: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    isPagePromotion: PropTypes.bool,
-    isUserProfile: PropTypes.bool,
+    isPagePromotion: PropTypes.bool.isRequired,
+    isUserProfile: PropTypes.bool.isRequired,
     json: PropTypes.object,
     pathname: PropTypes.string.isRequired,
-    useGif: PropTypes.bool,
+    useGif: PropTypes.bool.isRequired,
     userCoverImage: PropTypes.object,
     userId: PropTypes.string,
     username: PropTypes.string,
     viewName: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    broadcast: null,
+    json: null,
+    userCoverImage: null,
+    userId: null,
+    username: null,
   }
 
   static childContextTypes = {
@@ -133,26 +142,40 @@ class HeroContainer extends Component {
   }
 
   componentWillMount() {
-    this.state = { promotion: null, broadcast: this.props.broadcast }
+    this.state = { promotion: null, broadcast: this.props.broadcast, renderType: null }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { broadcast, isPagePromotion, pathname } = nextProps
+    const { broadcast, pathname, promotions } = nextProps
     const hasPathChanged = this.props.pathname !== pathname
-
-    if ((hasPathChanged && isPagePromotion) || !this.state.promotion) {
-      this.setState({ promotion: sample(nextProps.promotions) })
-    } else if (hasPathChanged || !this.state.promotion) {
-      this.setState({ promotion: sample(nextProps.promotions) })
+    if (promotions && (hasPathChanged || !this.state.promotion)) {
+      const keyArr = []
+      promotions.keySeq().forEach((key) => {
+        keyArr.push(key)
+      })
+      const randomKey = sample(keyArr)
+      this.setState({ promotion: promotions.get(randomKey) })
     }
-
     if (broadcast !== this.state.broadcast) {
       this.setState({ broadcast })
+    }
+    switch (nextProps.streamType) {
+      case USER.DETAIL_FAILURE:
+      case USER.DETAIL_REQUEST:
+      case USER.DETAIL_SUCCESS:
+        this.setState({ renderType: nextProps.streamType })
+        break
+      default:
+        break
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+    return !Immutable.is(nextState.promotion, this.state.promotion) ||
+      ['dpi', 'isLoggedIn', 'isMobile', 'pathname', 'viewName'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      ) ||
+      ['broadcast', 'renderType'].some(prop => nextState[prop] !== this.state[prop])
   }
 
   onClickShareProfile = () => {
@@ -181,10 +204,10 @@ class HeroContainer extends Component {
 
   getHeroPromotionAuth() {
     const { dpi } = this.props
-    const { promotion } = this.state
-    const creditSources = get(promotion, 'avatar', null)
-    const creditUsername = get(promotion, 'username', null)
-    const sources = get(promotion, 'coverImage', null)
+    const promotion = this.state.promotion || Immutable.Map()
+    const creditSources = promotion.get('avatar', null)
+    const creditUsername = promotion.get('username', null)
+    const sources = promotion.get('coverImage', null)
     const props = { creditSources, creditUsername, dpi, sources }
     return <HeroPromotionAuth key="HeroPromotionAuth" {...props} />
   }
@@ -192,16 +215,16 @@ class HeroContainer extends Component {
   getHeroPromotionCategory() {
     const { categoryData, dpi, isLoggedIn, isMobile, json } = this.props
     const { category } = categoryData
-    const { promotion } = this.state
-    const name = get(category, 'name', '')
-    const description = get(category, 'description', '')
-    const isSponsored = get(category, 'isSponsored', '')
-    const ctaCaption = get(category, 'ctaCaption')
-    const ctaHref = get(category, 'ctaHref')
-    const sources = get(promotion, 'image')
-    const user = getLinkObject(promotion, 'user', json)
-    const creditSources = get(user, 'avatar', null)
-    const creditUsername = get(user, 'username', null)
+    const name = category.get('name', '')
+    const description = category.get('description', '')
+    const isSponsored = category.get('isSponsored', '')
+    const ctaCaption = category.get('ctaCaption')
+    const ctaHref = category.get('ctaHref')
+    const promotion = this.state.promotion || Immutable.Map()
+    const sources = promotion.get('image')
+    const user = getLinkObject(promotion, 'user', json) || Immutable.Map()
+    const creditSources = user.get('avatar', null)
+    const creditUsername = user.get('username', null)
     const creditLabel = isSponsored ? 'Sponsored by' : 'Posted by'
     const props = {
       creditLabel,
@@ -221,15 +244,15 @@ class HeroContainer extends Component {
 
   getHeroPromotionPage() {
     const { dpi, isLoggedIn, isMobile, json } = this.props
-    const { promotion } = this.state
-    const header = get(promotion, 'header', '')
-    const subheader = get(promotion, 'subheader', '')
-    const user = getLinkObject(promotion, 'user', json)
-    const creditSources = get(user, 'avatar', null)
-    const creditUsername = get(user, 'username', null)
-    const ctaCaption = get(promotion, 'ctaCaption')
-    const ctaHref = get(promotion, 'ctaHref')
-    const sources = get(promotion, 'image', null)
+    const promotion = this.state.promotion || Immutable.Map()
+    const header = promotion.get('header', '')
+    const subheader = promotion.get('subheader', '')
+    const user = getLinkObject(promotion, 'user', json) || Immutable.Map()
+    const creditSources = user.get('avatar', null)
+    const creditUsername = user.get('username', null)
+    const ctaCaption = promotion.get('ctaCaption')
+    const ctaHref = promotion.get('ctaHref')
+    const sources = promotion.get('image', null)
     const props = { creditSources, creditUsername, dpi, header, sources, subheader }
     const ctaProps = { ctaCaption, ctaHref, isLoggedIn, isMobile }
     return <HeroPromotionPage key="HeroPromotionPage" {...props} {...ctaProps} />
@@ -237,7 +260,7 @@ class HeroContainer extends Component {
 
   render() {
     const children = []
-    const { broadcast } = this.state
+    const { broadcast, renderType } = this.state
     const {
       isAuthentication,
       isCategoryPromotion,
@@ -256,7 +279,7 @@ class HeroContainer extends Component {
       children.push(this.getHeroPromotionCategory())
     } else if (isPagePromotion) {
       children.push(this.getHeroPromotionPage())
-    } else if (isUserProfile && userId) {
+    } else if (isUserProfile && userId && renderType !== USER.DETAIL_FAILURE) {
       children.push(this.getHeroProfile())
     } else if (isAuthentication) {
       children.push(this.getHeroPromotionAuth())

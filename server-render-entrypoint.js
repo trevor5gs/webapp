@@ -1,8 +1,8 @@
 import 'babel-polyfill'
 import 'isomorphic-fetch'
+import Immutable from 'immutable'
 import path from 'path'
 import fs from 'fs'
-import get from 'lodash/get'
 import { renderToString } from 'react-dom/server'
 import React from 'react'
 import Helmet from 'react-helmet'
@@ -26,6 +26,19 @@ function preRender(renderProps, store, sagaTask) {
   })
 }
 
+const createSelectLocationState = () => {
+  let prevRoutingState
+  let prevRoutingStateJS
+  return (state) => {
+    const routingState = state.routing
+    if (typeof prevRoutingState === 'undefined' || prevRoutingState !== routingState) {
+      prevRoutingState = routingState
+      prevRoutingStateJS = routingState.toJS()
+    }
+    return prevRoutingStateJS
+  }
+}
+
 function handlePrerender(context) {
   const { access_token, originalUrl, url } = context
 
@@ -33,14 +46,16 @@ function handlePrerender(context) {
 
   const memoryHistory = createMemoryHistory(originalUrl)
   const store = createElloStore(memoryHistory, {
-    authentication: {
+    authentication: Immutable.Map({
       accessToken: access_token,
       isLoggedIn: false,
-    },
+    }),
   })
   const isServer = true
   const routes = createRoutes(store, isServer)
-  const history = syncHistoryWithStore(memoryHistory, store)
+  const history = syncHistoryWithStore(memoryHistory, store, {
+    selectLocationState: createSelectLocationState(),
+  })
   const sagaTask = store.runSaga(serverRoot)
 
   match({ history, routes, location: url }, (error, redirectLocation, renderProps) => {
@@ -68,16 +83,19 @@ function handlePrerender(context) {
       const componentHTML = renderToString(InitialComponent)
       const head = Helmet.rewind()
       const state = store.getState()
-      if (get(state, 'stream.should404') === true) {
+      if (state.stream.get('should404') === true) {
         process.send({ type: '404' }, null, {}, () => {
           process.exit(1)
         })
       } else {
+        Object.keys(state).forEach((key) => {
+          state[key] = state[key].toJS()
+        })
         const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
         // Add helmet's stuff after the last statically rendered meta tag
         const html = indexStr.replace(
           'rel="copyright">',
-          `rel="copyright">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()}`
+          `rel="copyright">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()}`,
         ).replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
         process.send({ type: 'render', body: html }, null, {}, () => {
           process.exit(0)

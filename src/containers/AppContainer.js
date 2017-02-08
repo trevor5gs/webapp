@@ -1,8 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
-import get from 'lodash/get'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { trackEvent, trackInitialPage } from '../actions/analytics'
 import { getCategories, getPagePromotionals } from '../actions/discover'
@@ -45,23 +43,27 @@ function mapStateToProps(state) {
   }
 }
 
-class AppContainer extends Component {
+class AppContainer extends PureComponent {
 
   static propTypes = {
     authPromo: PropTypes.object,
-    categoryData: PropTypes.object,
+    categoryData: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
-    isAuthenticationLayout: PropTypes.bool,
-    isCategoryPromotion: PropTypes.bool,
+    isAuthenticationLayout: PropTypes.bool.isRequired,
+    isCategoryPromotion: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    isPagePromotion: PropTypes.bool,
+    isPagePromotion: PropTypes.bool.isRequired,
     params: PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    authPromo: null,
   }
 
   static preRender = (store) => {
     const state = store.getState()
-    if (state.authentication && state.authentication.isLoggedIn) {
+    if (state.authentication.get('isLoggedIn')) {
       return Promise.all([
         store.dispatch(loadProfile()),
         store.dispatch(getCategories()),
@@ -109,13 +111,14 @@ class AppContainer extends Component {
     const { dispatch } = nextProps
     if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
       dispatch(loadProfile())
+      dispatch(getCategories())
+      dispatch(getPagePromotionals())
+      dispatch(loadAnnouncements())
     } else if (this.props.isLoggedIn && !nextProps.isLoggedIn) {
       dispatch(fetchAuthenticationPromos())
+      dispatch(getCategories())
+      dispatch(getPagePromotionals())
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {
@@ -142,7 +145,7 @@ class AppContainer extends Component {
     const { dispatch, categoryData, isCategoryPromotion, isPagePromotion } = this.props
     let label = ''
     if (isCategoryPromotion && categoryData) {
-      label = categoryData.category.slug
+      label = categoryData.category.get('slug')
     } else if (isPagePromotion) {
       label = 'general'
     } else {
@@ -153,7 +156,7 @@ class AppContainer extends Component {
 
   onClickTrackCTA = () => {
     const { dispatch, categoryData } = this.props
-    dispatch(trackEvent('promoCTA_clicked', { name: get(categoryData, 'category.slug', 'general') }))
+    dispatch(trackEvent('promoCTA_clicked', { name: categoryData.category.get('slug', 'general') }))
   }
 
   render() {
@@ -171,7 +174,7 @@ class AppContainer extends Component {
         <HeroContainer params={params} />
         {children}
         <NavbarContainer params={params} />
-        <FooterContainer />
+        <FooterContainer params={params} />
         {isLoggedIn ? <InputContainer /> : null}
         <ModalContainer />
         <DevTools />

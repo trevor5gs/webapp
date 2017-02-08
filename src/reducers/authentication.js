@@ -1,55 +1,57 @@
+/* eslint-disable no-param-reassign */
+import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
+import { LOCATION_CHANGE } from 'react-router-redux'
 import { AUTHENTICATION, PROFILE } from '../constants/action_types'
 import Session from '../lib/session'
 
-export const initialState = {
+export const initialState = Immutable.Map({
   accessToken: null,
   createdAt: null,
   expirationDate: null,
   expiresIn: null,
   isLoggedIn: false,
-  refreshTimeoutId: null,
   refreshToken: null,
   tokenType: null,
-}
+})
 
-export function authentication(state = initialState, action) {
+export default (state = initialState, action) => {
   let auth
-  let response
   switch (action.type) {
-    case AUTHENTICATION.SCHEDULE_REFRESH:
-      return { ...state, refreshTimeoutId: action.payload.refreshTimeoutId }
-    case AUTHENTICATION.CANCEL_REFRESH:
-      return { ...state, refreshTimeoutId: null }
-    case AUTHENTICATION.CLEAR_STORE:
-      return initialState
     case AUTHENTICATION.CLEAR_AUTH_TOKEN:
-      return { ...state, accessToken: null, expirationDate: null, expiresIn: null }
+      return state.delete('accessToken').delete('expirationDate').delete('expiresIn')
     case AUTHENTICATION.LOGOUT_SUCCESS:
     case AUTHENTICATION.LOGOUT_FAILURE:
-      Session.clear()
-      return { ...initialState }
+    case AUTHENTICATION.REFRESH_FAILURE:
     case PROFILE.DELETE_SUCCESS:
-      return { ...initialState }
+      Session.clear()
+      return initialState
     case AUTHENTICATION.USER_SUCCESS:
     case AUTHENTICATION.REFRESH_SUCCESS:
     case PROFILE.SIGNUP_SUCCESS:
-      response = action.payload.response
-      return {
-        ...state,
-        ...response,
-        expirationDate: new Date((response.createdAt + response.expiresIn) * 1000),
+      auth = action.payload.response
+      return state.merge({
+        ...auth,
+        expirationDate: new Date((auth.createdAt + auth.expiresIn) * 1000),
         isLoggedIn: true,
+      })
+    case LOCATION_CHANGE:
+      if (typeof window !== 'undefined' && window.nonImmutableState && window.nonImmutableState.authentication) {
+        state = Immutable.fromJS(JSON.parse(window.nonImmutableState.authentication))
+        delete window.nonImmutableState.authentication
+        return state
       }
+      return state
     case REHYDRATE:
       auth = action.payload.authentication
-      // Don't take the timeout ID from localstorage
+      if (typeof window !== 'undefined' && window.nonImmutableState && window.nonImmutableState.authentication) {
+        auth = Immutable.fromJS(JSON.parse(window.nonImmutableState.authentication))
+        delete window.nonImmutableState.authentication
+      }
       if (auth) {
-        return {
-          ...auth,
-          refreshTimeoutId: state.refreshTimeoutId,
-          expirationDate: new Date((auth.createdAt + auth.expiresIn) * 1000),
-        }
+        return auth.set(
+          'expirationDate', new Date((auth.get('createdAt') + auth.get('expiresIn')) * 1000),
+        )
       }
       return state
     default:

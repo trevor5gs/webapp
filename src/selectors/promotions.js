@@ -1,24 +1,21 @@
+import Immutable from 'immutable'
 import { createSelector } from 'reselect'
-import get from 'lodash/get'
 import sample from 'lodash/sample'
 import { selectPathname, selectViewNameFromRoute } from './routing'
+import { selectJson } from './store'
 import { getLinkArray } from '../helpers/json_helper'
 
-const selectJson = state => get(state, 'json')
-const selectCats = state => get(state, 'json.categories', {})
-export const selectAuthPromotionals = state => get(state, 'promotions.authentication')
-export const selectPagePromotionals = state => get(state, 'json.pagePromotionals', {})
+const selectCats = state => state.json.get('categories', Immutable.Map())
+export const selectAuthPromotionals = state => state.promotions.get('authentication')
+export const selectPagePromotionals = state => state.json.get('pagePromotionals', Immutable.Map())
 
 export const selectCategoryData = createSelector(
   [selectPathname, selectJson, selectCats], (pathname, json, categories) => {
     const slug = pathname.replace('/discover/', '')
-    let cat = {}
-    Object.keys(categories).map(key => categories[key]).forEach((category) => {
-      if (category.slug === slug) { cat = category }
-    })
+    const cat = categories.valueSeq().find(category => category.get('slug') === slug) || Immutable.Map()
     return {
       category: cat,
-      promotionals: getLinkArray(cat, 'promotionals', json) || [],
+      promotionals: getLinkArray(cat, 'promotionals', json) || Immutable.List(),
     }
   },
 )
@@ -38,7 +35,13 @@ export const selectIsCategoryPromotion = createSelector(
 )
 
 export const selectRandomAuthPromotion = createSelector(
-  [selectAuthPromotionals], authPromos =>
-    sample(authPromos),
+  [selectAuthPromotionals], (authPromos) => {
+    const keyArr = []
+    authPromos.keySeq().forEach((key) => {
+      keyArr.push(key)
+    })
+    const randomKey = sample(keyArr)
+    return authPromos.get(randomKey)
+  },
 )
 

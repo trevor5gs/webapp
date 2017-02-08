@@ -23,17 +23,16 @@ import { MainView } from '../../components/views/MainView'
 import { AnnouncementNotification } from '../../components/notifications/NotificationRenderables'
 
 function mapStateToProps(state, props) {
-  const type = get(props, 'params.type', 'all')
   const announcement = selectAnnouncement(state)
+  const type = get(props, 'params.type', 'all')
   return {
-    // TODO: Update this in Immutable
-    announcementId: announcement && announcement.id,
-    announcementBody: announcement && announcement.body,
-    announcementCTACaption: announcement && (announcement.ctaCaption || 'Learn More'),
-    announcementCTAHref: announcement && announcement.ctaHref,
-    announcementImage: announcement && announcement.image.hdpi.url,
-    announcementTitle: announcement && announcement.header,
-    hasAnnouncementNotification: !!(announcement),
+    announcementId: announcement.get('id'),
+    announcementBody: announcement.get('body'),
+    announcementCTACaption: announcement.get('ctaCaption', 'Learn More'),
+    announcementCTAHref: announcement.get('ctaHref'),
+    announcementImage: announcement.getIn(['image', 'hdpi', 'url']),
+    announcementTitle: announcement.get('header'),
+    hasAnnouncementNotification: !!(announcement.size),
     pathname: selectPropsPathname(state, props),
     streamAction: loadNotifications({ category: type }),
     streamType: selectStreamType(state),
@@ -51,7 +50,7 @@ class Notifications extends Component {
     announcementImage: PropTypes.string,
     announcementTitle: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    hasAnnouncementNotification: PropTypes.bool,
+    hasAnnouncementNotification: PropTypes.bool.isRequired,
     pathname: PropTypes.string,
     streamAction: PropTypes.object,
     type: PropTypes.string,
@@ -60,9 +59,12 @@ class Notifications extends Component {
   static defaultProps = {
     announcementId: '',
     announcementBody: '',
+    announcementCTACaption: null,
     announcementCTAHref: null,
     announcementImage: null,
     announcementTitle: '',
+    pathname: null,
+    streamAction: null,
     type: 'all',
   }
 
@@ -167,8 +169,6 @@ class Notifications extends Component {
             <Paginator
               className="NotificationReload"
               isHidden={false}
-              totalPages={0}
-              totalPagesRemaining={0}
             /> :
             null
         }

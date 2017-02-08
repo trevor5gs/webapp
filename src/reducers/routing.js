@@ -1,28 +1,27 @@
+import Immutable from 'immutable'
 import get from 'lodash/get'
-import { LOCATION_CHANGE, routerReducer } from 'react-router-redux'
+import { LOCATION_CHANGE } from 'react-router-redux'
 
 const previousPath = typeof document === 'undefined' ? '/' : document.location.pathname
 
 // Merge our initial state with routerReducer's initial state
-const initialState = {
-  ...routerReducer(undefined, { type: null, payload: null }),
+const initialState = Immutable.fromJS({
+  locationBeforeTransitions: undefined,
   previousPath,
-}
+})
 
-export function routeReducer(state = initialState, { type, payload: location }) {
-  const newState = routerReducer(state, { type, payload: location })
-  if (type !== LOCATION_CHANGE) {
-    return newState
+export default (state = initialState, { type, payload }) => {
+  if (type === LOCATION_CHANGE) {
+    return state.merge({
+      location: {
+        pathname: get(payload, 'locationBeforeTransitions.pathname', get(payload, 'pathname')),
+        state: get(payload, 'locationBeforeTransitions.state', get(payload, 'state')),
+        terms: get(payload, 'locationBeforeTransitions.query.terms', get(payload, 'query.terms', undefined)),
+      },
+      locationBeforeTransitions: payload.locationBeforeTransitions || payload,
+      previousPath: state.getIn(['location', 'pathname']),
+    })
   }
-  return {
-    ...newState,
-    location: {
-      pathname: get(newState, 'locationBeforeTransitions.pathname'),
-      state: get(newState, 'locationBeforeTransitions.state'),
-    },
-    previousPath: get(state, 'locationBeforeTransitions.pathname'),
-  }
+  return state
 }
-
-export default routeReducer
 

@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import get from 'lodash/get'
 import OnboardingNavbar from './OnboardingNavbar'
 import { MainView } from '../views/MainView'
 import { CheckIcon } from '../editor/EditorIcons'
@@ -8,7 +7,7 @@ import { CheckIcon } from '../editor/EditorIcons'
 class CategoryButton extends Component {
 
   static propTypes = {
-    category: PropTypes.object,
+    category: PropTypes.object.isRequired,
     onCategoryClick: PropTypes.func.isRequired,
   }
 
@@ -19,7 +18,7 @@ class CategoryButton extends Component {
   onClick = () => {
     const { category, onCategoryClick } = this.props
     this.setState({ isActive: !this.state.isActive })
-    onCategoryClick(category.id)
+    onCategoryClick(category.get('id'))
   }
 
   render() {
@@ -29,11 +28,11 @@ class CategoryButton extends Component {
       <button
         onClick={this.onClick}
         className={classNames('CategoryLink', { isActive })}
-        style={{ backgroundImage: `url("${get(category, 'tileImage.large.url')}")` }}
+        style={{ backgroundImage: `url("${category.getIn(['tileImage', 'large', 'url'])}")` }}
       >
         <span className="CategoryLinkName">
           {isActive ? <CheckIcon /> : null}
-          {category.name}
+          {category.get('name')}
         </span>
       </button>
     )
@@ -44,28 +43,33 @@ const OnboardingCategories = ({
   categories,
   isNextDisabled,
   onCategoryClick,
-}) =>
-  <MainView className="Onboarding OnboardingCategories">
-    <h1 className="OnboardingHeading">
-      <span>{'Pick what you\'re into.'}</span>
-      <span>Slow down & check out some cool ass shit.</span>
-    </h1>
-    <section className="StreamContainer">
-      <div className="Categories asGrid">
-        {categories.map((category, index) =>
-          <CategoryButton
-            category={category}
-            key={`CategoryLink_${category.slug}_${index}`}
-            onCategoryClick={onCategoryClick}
-          />,
-        )}
-      </div>
-    </section>
-    <OnboardingNavbar isNextDisabled={isNextDisabled} />
-  </MainView>
+}) => {
+  const btns = []
+  categories.map(category =>
+    btns.push(
+      <CategoryButton
+        category={category}
+        key={`CategoryLink_${category.get('slug')}`}
+        onCategoryClick={onCategoryClick}
+      />,
+    ),
+  )
+  return (
+    <MainView className="Onboarding OnboardingCategories">
+      <h1 className="OnboardingHeading">
+        <span>{'Pick what you\'re into.'}</span>
+        <span> Slow down & check out some cool ass shit.</span>
+      </h1>
+      <section className="StreamContainer">
+        <div className="Categories asGrid">{btns}</div>
+      </section>
+      <OnboardingNavbar isNextDisabled={isNextDisabled} />
+    </MainView>
+  )
+}
 
 OnboardingCategories.propTypes = {
-  categories: PropTypes.array,
+  categories: PropTypes.array.isRequired,
   isNextDisabled: PropTypes.bool.isRequired,
   onCategoryClick: PropTypes.func.isRequired,
 }

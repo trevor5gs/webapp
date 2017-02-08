@@ -1,469 +1,752 @@
-import { stub, stubEmbedRegion, stubImageRegion, stubTextRegion } from '../../support/stubs'
+import Immutable from 'immutable'
+import {
+  clearJSON,
+  json,
+  stub,
+  stubCategories,
+  stubPost,
+  stubTextRegion,
+  stubImageRegion,
+  stubEmbedRegion,
+} from '../../support/stubs'
 import * as selector from '../../../src/selectors/post'
 
 describe('post selectors', () => {
-  let statePost
   let propsPost
+  let state
   beforeEach(() => {
-    statePost = stub('post', { authorId: 'statePost' })
-    propsPost = stub('post', { authorId: 'propPost', id: '666', links: { repostAuthor: { id: '9' } } })
+    stub('post', { authorId: 'statePost', token: 'token1' })
+    stub('post', { id: '100', authorId: '666', repostContent: [stubTextRegion()] })
+    stub('user', { id: '666', username: '666-username' })
+    stub('user', { id: '9', username: 'reposter-username' })
+    stubCategories()
+    propsPost = stub('post', {
+      authorId: '666',
+      body: [stubTextRegion(), stubImageRegion(), stubEmbedRegion()],
+      commentsCount: 12,
+      content: [stubTextRegion(), stubImageRegion(), stubEmbedRegion()],
+      contentWarning: 'Content Warning!',
+      createdAt: 'Today',
+      href: '/post-href',
+      id: '666',
+      links: {
+        repostAuthor: { id: '9' },
+        categories: [1, 4],
+      },
+      loved: true,
+      lovesCount: 10,
+      repostContent: [stubTextRegion()],
+      repostId: '667',
+      repostPath: '/repost-path',
+      reposted: true,
+      repostsCount: 13,
+      showComments: true,
+      showLovers: true,
+      showReposters: true,
+      summary: [stubTextRegion(), stubImageRegion()],
+      token: 'token666',
+      viewsCount: 1666,
+      viewsCountRounded: '1.6k',
+      watching: true,
+    })
+    state = { json }
   })
 
   afterEach(() => {
-    statePost = {}
-    propsPost = {}
-  })
-
-  context('#selectPropsPost', () => {
-    it('returns the correct props post', () => {
-      const state = { json: { posts: statePost } }
-      const props = { post: propsPost }
-      expect(selector.selectPropsPost(state, props)).to.deep.equal(propsPost)
-    })
+    clearJSON()
   })
 
   context('#selectPropsPostId', () => {
-    it('returns the correct props post id', () => {
-      const state = { json: { posts: statePost } }
+    it('returns the correct props post id from a postId', () => {
+      const props = { postId: '666' }
+      expect(selector.selectPropsPostId(state, props)).to.equal('666')
+    })
+
+    it('returns the correct props post id from a post', () => {
       const props = { post: propsPost }
       expect(selector.selectPropsPostId(state, props)).to.equal('666')
     })
   })
 
-  context('#selectPropsPostToken', () => {
-    it('returns the correct props post token', () => {
-      const state = { json: { posts: statePost } }
-      const props = { post: propsPost }
-      expect(selector.selectPropsPostToken(state, props)).to.equal('token')
+  context('#selectPosts', () => {
+    it('returns posts model out of json', () => {
+      state = { json }
+      expect(selector.selectPosts(state)).to.deep.equal(state.json.get('posts'))
     })
   })
 
-  context('#selectPropsPostAuthorId', () => {
-    it('returns the correct props post author id', () => {
-      const state = { json: { posts: statePost } }
-      const props = { post: propsPost }
-      expect(selector.selectPropsPostAuthorId(state, props)).to.equal('propPost')
+  context('#selectPost', () => {
+    it('returns a post from a postId', () => {
+      state = { json }
+      const props = { postId: '1' }
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(state.json.get('posts').first())
+    })
+
+    it('returns an empty Map if postId is not found', () => {
+      state = { json }
+      const props = { postId: '166666' }
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(Immutable.Map())
+    })
+
+    it('returns a post from a post.postId', () => {
+      state = { json }
+      const props = { post: state.json.get('posts').first() }
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(state.json.get('posts').first())
+    })
+
+    it('returns an empty Map if post.postId is not found', () => {
+      state = { json }
+      const props = { post: stubPost({ id: '99999' }, false) }
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(Immutable.Map())
+    })
+
+    it('returns a post from a token', () => {
+      state = { json }
+      const props = { params: { token: 'token666' } }
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(state.json.getIn(['posts', '666']))
+    })
+
+    it('returns an empty Map if token is not found', () => {
+      state = { json }
+      const props = { params: { token: 'token9999' } }
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(Immutable.Map())
+    })
+
+    it('returns an empty Map if id and token is not found', () => {
+      state = { json }
+      const props = {}
+      const post = selector.selectPost(state, props)
+      expect(post).to.deep.equal(Immutable.Map())
+    })
+
+    it('returns an empty Map if post is not found', () => {
+      state = { json }
+      const props = {}
+      const post = selector.selectPost({ json: Immutable.Map() }, props)
+      expect(post).to.deep.equal(Immutable.Map())
     })
   })
 
-  context('#selectPropsRepostAuthorId', () => {
-    it('returns the correct props post repost author id', () => {
-      const state = { json: { posts: statePost } }
-      const props = { post: propsPost }
-      expect(selector.selectPropsRepostAuthorId(state, props)).to.equal('9')
+  context('#selectPostAuthorId', () => {
+    it('returns the post authorId', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostAuthorId(state, props)
+      expect(result).to.deep.equal('666')
     })
   })
 
-  context('#selectIsOwnOriginalPost', () => {
-    it('returns if the post is the users own', () => {
-      const state = { json: { posts: statePost }, profile: { id: '9' } }
-      const props = { post: propsPost }
-      expect(selector.selectIsOwnOriginalPost(state, props)).to.equal(true)
-      const nextState = { ...state, change: 1 }
-      expect(selector.selectIsOwnOriginalPost(nextState, props)).to.equal(true)
-      expect(selector.selectIsOwnOriginalPost.recomputations()).to.equal(1)
-    })
-
-    it('returns if the post is not the users own', () => {
-      const state = { json: { posts: statePost }, profile: { id: 'statePost' } }
-      const props = { post: propsPost }
-      expect(selector.selectIsOwnOriginalPost(state, props)).to.equal(false)
-      const nextState = { ...state, change: 1 }
-      expect(selector.selectIsOwnOriginalPost(nextState, props)).to.equal(false)
-      // 2 since the memoization is from the context block
-      expect(selector.selectIsOwnOriginalPost.recomputations()).to.equal(2)
+  context('#selectPostBody', () => {
+    it('returns the post body', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostBody(state, props)
+      expect(result.size).to.equal(3)
     })
   })
 
-  context('#selectIsOwnPost', () => {
-    it('returns if the post is the users own', () => {
-      const state = { json: { posts: statePost }, profile: { id: 'propPost' } }
-      const props = { post: propsPost }
-      expect(selector.selectIsOwnPost(state, props)).to.equal(true)
-      const nextState = { ...state, change: 1 }
-      expect(selector.selectIsOwnPost(nextState, props)).to.equal(true)
-      expect(selector.selectIsOwnPost.recomputations()).to.equal(1)
-    })
-
-    it('returns if the post is not the users own', () => {
-      const state = { json: { posts: statePost }, profile: { id: 'statePost' } }
-      const props = { post: propsPost }
-      expect(selector.selectIsOwnPost(state, props)).to.equal(false)
-      const nextState = { ...state, change: 1 }
-      expect(selector.selectIsOwnPost(nextState, props)).to.equal(false)
-      // 2 since the memoization is from the context block
-      expect(selector.selectIsOwnPost.recomputations()).to.equal(2)
+  context('#selectPostCommentsCount', () => {
+    it('returns the post comments count', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCommentsCount(state, props)
+      expect(result).to.equal(12)
     })
   })
 
-  context('#selectPostFromPropsPostId', () => {
-    it('returns the post from json', () => {
-      const pst = stub('post')
-      const state = { json: { posts: { 1: { ...pst } } } }
-      const props = { post: { id: '1' } }
-      expect(selector.selectPostFromPropsPostId(state, props)).to.deep.equal(pst)
-      const nextState = { ...state, change: 1 }
-      expect(selector.selectPostFromPropsPostId(nextState, props)).to.deep.equal(pst)
-      expect(selector.selectPostFromPropsPostId.recomputations()).to.equal(1)
+  context('#selectPostContent', () => {
+    it('returns the post content', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostBody(state, props)
+      expect(result.size).to.equal(3)
     })
   })
 
-  context('#selectPostFromToken', () => {
-    it('returns the post from json', () => {
-      const pst = stub('post')
-      const state = { json: { posts: { 1: { ...pst } } } }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
-      expect(selector.selectPostFromToken(state, props)).to.deep.equal(pst)
+  context('#selectPostContentWarning', () => {
+    it('returns the post content warning', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostContentWarning(state, props)
+      expect(result).to.equal('Content Warning!')
     })
   })
 
-  context('#selectAuthorFromPost', () => {
-    it('returns the author from the post', () => {
-      const post = stub('post', { authorId: '1' })
-      const user = stub('user')
-      let state = {
-        json: {
-          posts: { 1: { ...post } },
-          users: { 1: { ...user } },
-        },
-      }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
-      expect(selector.selectAuthorFromPost(state, props)).to.deep.equal(user)
-      state = { ...state, change: 1 }
-      expect(selector.selectAuthorFromPost(state, props)).to.deep.equal(user)
-      expect(selector.selectAuthorFromPost.recomputations()).to.equal(1)
+  context('#selectPostCreatedAt', () => {
+    it('returns the post created at', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCreatedAt(state, props)
+      expect(result).to.equal('Today')
     })
   })
 
-  context('#selectPostBlocks', () => {
-    it('returns one of the post blocks', () => {
-      const regions = [
-        stubTextRegion({ data: 'Text Region 1 ' }),
-        stubTextRegion({ data: 'Text Region 2 ' }),
-        stubTextRegion({ data: 'Text Region 3 ' }),
-        stubTextRegion({ data: 'Text Region 4' }),
-      ]
-      const post = stub('post', {
-        content: [regions[0], regions[1], regions[2]],
-        repostContent: regions,
-        summary: [regions[0], regions[1]],
+  context('#selectPostHref', () => {
+    it('returns the post href', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostHref(state, props)
+      expect(result).to.equal('/post-href')
+    })
+  })
+
+  context('#selectPostId', () => {
+    it('returns the post id', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostId(state, props)
+      expect(result).to.equal('666')
+    })
+  })
+
+  context('#selectPostIsAdultContent', () => {
+    it('returns the post is adult content', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsAdultContent(state, props)
+      expect(result).to.equal(false)
+    })
+  })
+
+  context('#selectPostLoved', () => {
+    it('returns the post is loved', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostLoved(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostLovesCount', () => {
+    it('returns the post loves count', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostLovesCount(state, props)
+      expect(result).to.equal(10)
+    })
+  })
+
+  context('#selectPostMetaAttributes', () => {
+    it('returns the post meta attributes', () => {
+      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
+      const attr = Immutable.fromJS({
+        canonicalUrl: null,
+        description: 'meta post description',
+        images: ['meta-post-image-0.jpg', 'meta-post-image-1.jpg'],
+        embeds: ['meta-post-embed-0.mp4', 'meta-post-embed-1.mp4'],
+        robots: 'index, follow',
+        title: 'meta post title',
+        url: 'https://ello.co/author/post/meta-url',
       })
-      let state = { json: { posts: { 1: { ...post } } } }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
-      expect(selector.selectPostBlocks(state, props)).to.deep.equal(regions)
-      state = { ...state, change: 1 }
-      expect(selector.selectPostBlocks(state, props)).to.deep.equal(regions)
-      expect(selector.selectPostBlocks.recomputations()).to.equal(1)
-
-      state = { json: { posts: { 1: { ...post, repostContent: null } } } }
-      expect(selector.selectPostBlocks(state, props)).to.deep.equal(post.content)
-      expect(selector.selectPostBlocks.recomputations()).to.equal(2)
-
-      state = { json: { posts: { 1: { ...post, repostContent: null, content: null } } } }
-      expect(selector.selectPostBlocks(state, props)).to.deep.equal(post.summary)
-      expect(selector.selectPostBlocks.recomputations()).to.equal(3)
+      state = { json }
+      expect(selector.selectPostMetaAttributes(state, props)).to.deep.equal(attr)
     })
   })
 
-  context('#selectPostEmbedContent', () => {
-    it('returns the content for only embed blocks', () => {
-      const i0 = stubImageRegion({ data: { alt: 'image-alt-0', url: 'image-url-0' } })
-      const e0 = stubEmbedRegion({ data: { thumbnailLargeUrl: 'embed-thumbnailLargeUrl-0' } })
-      const t1 = stubTextRegion({ data: 'Text Region 1 ' })
-      const i1 = stubImageRegion({ data: { alt: 'image-alt-1', url: 'image-url-1' } })
-      const e1 = stubEmbedRegion({ data: { thumbnailLargeUrl: 'embed-thumbnailLargeUrl-1' } })
-      const t2 = stubTextRegion({ data: 'Text Region 2 ' })
-      const i2 = stubImageRegion({ data: { alt: 'image-alt-2', url: 'image-url-2' } })
-
-      const regions = [i0, e0, t1, i1, e1, t2, i2]
-      let result = ['embed-thumbnailLargeUrl-0', 'embed-thumbnailLargeUrl-1']
-      const post = stub('post', { content: regions, summary: [regions[0], regions[1]] })
-      let state = { json: { posts: { 1: { ...post } } } }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
-
-      expect(selector.selectPostEmbedContent(state, props)).to.deep.equal(result)
-
-      state = { ...state, change: 1 }
-      expect(selector.selectPostEmbedContent(state, props)).to.deep.equal(result)
-      expect(selector.selectPostEmbedContent.recomputations()).to.equal(1)
-
-      result = ['embed-thumbnailLargeUrl-0']
-      state = { json: { posts: { 1: { ...post, content: null } } } }
-      expect(selector.selectPostEmbedContent(state, props)).to.deep.equal(result)
-      expect(selector.selectPostEmbedContent.recomputations()).to.equal(2)
+  context('#selectPostRepostContent', () => {
+    it('returns the post repost content', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostContent(state, props)
+      expect(result.size).to.equal(1)
     })
   })
 
-  context('#selectPostImageContent', () => {
-    it('returns the content for only image blocks', () => {
-      const i0 = stubImageRegion({ data: { alt: 'image-alt-0', url: 'image-url-0' } })
-      const t1 = stubTextRegion({ data: 'Text Region 1 ' })
-      const i1 = stubImageRegion({ data: { alt: 'image-alt-1', url: 'image-url-1' } })
-      const t2 = stubTextRegion({ data: 'Text Region 2 ' })
-      const i2 = stubImageRegion({ data: { alt: 'image-alt-2', url: 'image-url-2' } })
-
-      const regions = [i0, t1, i1, t2, i2]
-      let result = ['image-url-0', 'image-url-1', 'image-url-2']
-      const post = stub('post', { content: regions, summary: [regions[0], regions[1]] })
-      let state = { json: { posts: { 1: { ...post } } } }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
-
-      expect(selector.selectPostImageContent(state, props)).to.deep.equal(result)
-
-      state = { ...state, change: 1 }
-      expect(selector.selectPostImageContent(state, props)).to.deep.equal(result)
-      expect(selector.selectPostImageContent.recomputations()).to.equal(1)
-
-      result = ['image-url-0']
-      state = { json: { posts: { 1: { ...post, content: null } } } }
-      expect(selector.selectPostImageContent(state, props)).to.deep.equal(result)
-      expect(selector.selectPostImageContent.recomputations()).to.equal(2)
+  context('#selectPostRepostId', () => {
+    it('returns the post repost id', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostId(state, props)
+      expect(result).to.equal('667')
     })
   })
 
-  context('#selectPostImageAndEmbedContent', () => {
-    it('returns the content for image and embed blocks', () => {
-      const i0 = stubImageRegion({ data: { alt: 'image-alt-0', url: 'image-url-0' } })
-      const e0 = stubEmbedRegion({ data: { thumbnailLargeUrl: 'embed-thumb-0' } })
-      const t1 = stubTextRegion({ data: 'Text Region 1 ' })
-      const i1 = stubImageRegion({ data: { alt: 'image-alt-1', url: 'image-url-1' } })
-      const e1 = stubEmbedRegion({ data: { thumbnailLargeUrl: 'embed-thumb-1' } })
-      const t2 = stubTextRegion({ data: 'Text Region 2 ' })
-      const i2 = stubImageRegion({ data: { alt: 'image-alt-2', url: 'image-url-2' } })
-
-      const regions = [i0, e0, t1, i1, e1, t2, i2]
-      let result = ['image-url-0', 'image-url-1', 'image-url-2', 'embed-thumb-0', 'embed-thumb-1']
-      const post = stub('post', { content: regions, summary: [i0, i1] })
-      let state = { json: { posts: { 1: { ...post } } } }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
-
-      expect(selector.selectPostImageAndEmbedContent(state, props)).to.deep.equal(result)
-
-      state = { ...state, change: 1 }
-      expect(selector.selectPostImageAndEmbedContent(state, props)).to.deep.equal(result)
-      expect(selector.selectPostImageAndEmbedContent.recomputations()).to.equal(1)
-
-      result = ['image-url-0', 'image-url-1']
-      state = { json: { posts: { 1: { ...post, content: null } } } }
-      expect(selector.selectPostImageAndEmbedContent(state, props)).to.deep.equal(result)
-      expect(selector.selectPostImageAndEmbedContent.recomputations()).to.equal(2)
+  context('#selectPostRepostPath', () => {
+    it('returns the post repost path', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostPath(state, props)
+      expect(result).to.equal('/repost-path')
     })
   })
 
-  context('#selectPostTextContent', () => {
-    it('returns the content for only text blocks', () => {
-      const regions = [
-        stubTextRegion({ data: 'Text Region 1 ' }),
-        stubTextRegion({ data: 'Text Region 2 ' }),
-        stubImageRegion({ data: { alt: 'image-alt-0', url: 'image-url-0' } }),
-        stubTextRegion({ data: 'Text Region 3 ' }),
-        stubTextRegion({ data: 'Text Region 4' }),
-      ]
-      let result = 'Text Region 1 Text Region 2 Text Region 3 Text Region 4'
-      const post = stub('post', { content: regions, summary: [regions[0], regions[1]] })
-      let state = { json: { posts: { 1: { ...post } } } }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
-      expect(selector.selectPostTextContent(state, props)).to.deep.equal(result)
-      state = { ...state, change: 1 }
-      expect(selector.selectPostTextContent(state, props)).to.deep.equal(result)
-      expect(selector.selectPostTextContent.recomputations()).to.equal(1)
+  context('#selectPostReposted', () => {
+    it('returns the post is reposted', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostReposted(state, props)
+      expect(result).to.equal(true)
+    })
+  })
 
-      result = 'Text Region 1 Text Region 2 '
-      state = { json: { posts: { 1: { ...post, content: null } } } }
-      expect(selector.selectPostTextContent(state, props)).to.deep.equal(result)
-      expect(selector.selectPostTextContent.recomputations()).to.equal(2)
+  context('#selectPostRepostsCount', () => {
+    it('returns the post reposted count', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostsCount(state, props)
+      expect(result).to.equal(13)
+    })
+  })
+
+  context('#selectPostShowComments', () => {
+    it('returns if the post shows comments', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowComments(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowLovers', () => {
+    it('returns if the post shows lovers', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowLovers(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowReposters', () => {
+    it('returns if the post shows reposters', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowReposters(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostSummary', () => {
+    it('returns the post summary', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostSummary(state, props)
+      expect(result.size).to.equal(2)
+    })
+  })
+
+  context('#selectPostToken', () => {
+    it('returns the post token', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostToken(state, props)
+      expect(result).to.equal('token666')
+    })
+  })
+
+  context('#selectPostViewsCount', () => {
+    it('returns the post views count', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostViewsCount(state, props)
+      expect(result).to.equal(1666)
+    })
+  })
+
+  context('#selectPostViewsCountRounded', () => {
+    it('returns the post views count rounded', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostViewsCountRounded(state, props)
+      expect(result).to.equal('1.6k')
+    })
+  })
+
+  context('#selectPostWatching', () => {
+    it('returns the post watching property', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostWatching(state, props)
+      expect(result).to.equal(true)
     })
   })
 
   context('#selectPostMetaDescription', () => {
     it('returns the post meta description', () => {
-      const regions = [
-        stubTextRegion({ data: 'Text Region 1 ' }),
-        stubTextRegion({ data: 'Text Region 2 ' }),
-        stubImageRegion({ data: { alt: 'image-alt-0', url: 'image-url-0' } }),
-        stubTextRegion({ data: 'Text Region 3 ' }),
-        stubTextRegion({ data: 'Text Region 4' }),
-      ]
-      let result = 'Text Region 1 Text Region 2 Text Region 3 Text Region 4'
-      const post = stub('post', { content: regions, summary: [regions[0], regions[1]] })
-      let state = { json: { posts: { 1: { ...post } } } }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
-      expect(selector.selectPostMetaDescription(state, props)).to.deep.equal(result)
-      state = { ...state, change: 1 }
-      expect(selector.selectPostMetaDescription(state, props)).to.deep.equal(result)
-      expect(selector.selectPostMetaDescription.recomputations()).to.equal(1)
-
-      result = 'Text Region 1 Text Region 2 '
-      state = { json: { posts: { 1: { ...post, content: null } } } }
-      expect(selector.selectPostMetaDescription(state, props)).to.deep.equal(result)
-      expect(selector.selectPostMetaDescription.recomputations()).to.equal(2)
-
-      result = 'Discover more amazing work like this on Ello.'
-      const newRegions = [stubImageRegion()]
-      const newPost = stub('post', { content: newRegions, summary: newRegions })
-      state = { json: { posts: { 1: { ...newPost } } } }
-      expect(selector.selectPostMetaDescription(state, props)).to.deep.equal(result)
-      expect(selector.selectPostMetaDescription.recomputations()).to.equal(3)
+      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
+      state = { json }
+      expect(selector.selectPostMetaDescription(state, props)).to.equal('meta post description')
     })
   })
 
   context('#selectPostMetaRobots', () => {
     it('returns the post meta robot instructions', () => {
-      const post = stub('post', { authorId: '1' })
-      const user = stub('user')
-      let state = {
-        json: {
-          posts: { 1: { ...post } },
-          users: { 1: { ...user } },
-        },
-      }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
+      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
+      state = { json }
       expect(selector.selectPostMetaRobots(state, props)).to.deep.equal('index, follow')
-      state = { ...state, change: 1 }
-      expect(selector.selectPostMetaRobots(state, props)).to.deep.equal('index, follow')
-      expect(selector.selectPostMetaRobots.recomputations()).to.equal(1)
-
-      const newState = {
-        json: {
-          posts: { 1: { ...post } },
-          users: { 1: { ...user, badForSeo: true } },
-        },
-      }
-      expect(selector.selectPostMetaRobots(newState, props)).to.deep.equal('noindex, follow')
-      expect(selector.selectPostMetaRobots.recomputations()).to.equal(2)
     })
   })
 
   context('#selectPostMetaTitle', () => {
     it('returns the post meta title', () => {
-      const regions = [stubTextRegion({ data: 'Text Region. 1 \n Next paragraph' })]
-      const post = stub('post', { authorId: '1', content: regions, summary: regions })
-      const user = stub('user')
-      let state = {
-        json: {
-          posts: { 1: { ...post } },
-          users: { 1: { ...user } },
-        },
-      }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
-      let result = 'Text Region - from @username on Ello.'
-      expect(selector.selectPostMetaTitle(state, props)).to.deep.equal(result)
-      state = { ...state, change: 1 }
-      expect(selector.selectPostMetaTitle(state, props)).to.deep.equal(result)
-      expect(selector.selectPostMetaTitle.recomputations()).to.equal(1)
-
-      result = 'A post from @username on Ello.'
-      const newRegions = [stubImageRegion()]
-      const newPost = stub('post', { authorId: '1', content: newRegions, summary: newRegions })
-      const newState = {
-        json: {
-          posts: { 1: { ...newPost } },
-          users: { 1: { ...user } },
-        },
-      }
-      expect(selector.selectPostMetaTitle(newState, props)).to.deep.equal(result)
-      expect(selector.selectPostMetaTitle.recomputations()).to.equal(2)
+      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
+      state = { json }
+      expect(selector.selectPostMetaTitle(state, props)).to.equal('meta post title')
     })
   })
 
   context('#selectPostMetaUrl', () => {
     it('returns the post meta url', () => {
-      const post = stub('post', { authorId: '1' })
-      const user = stub('user')
-      let state = {
-        json: {
-          posts: { 1: { ...post } },
-          users: { 1: { ...user } },
-        },
-      }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
-      const result = `${ENV.AUTH_DOMAIN}/username/post/token`
-      expect(selector.selectPostMetaUrl(state, props)).to.deep.equal(result)
-      state = { ...state, change: 1 }
-      expect(selector.selectPostMetaUrl(state, props)).to.deep.equal(result)
-      expect(selector.selectPostMetaUrl.recomputations()).to.equal(1)
+      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
+      state = { json }
+      expect(selector.selectPostMetaUrl(state, props)).to.equal('https://ello.co/author/post/meta-url')
     })
   })
 
   context('#selectPostMetaCanonicalUrl', () => {
     it('returns the post canonical url', () => {
-      const post = stub('post', { authorId: '1' })
-      const user = stub('user')
-      let state = {
-        json: {
-          posts: { 1: { ...post } },
-          users: { 1: { ...user } },
-        },
-      }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
+      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
+      state = { json }
       expect(selector.selectPostMetaCanonicalUrl(state, props)).to.deep.equal(null)
-      state = { ...state, change: 1 }
-      expect(selector.selectPostMetaCanonicalUrl(state, props)).to.deep.equal(null)
-      expect(selector.selectPostMetaCanonicalUrl.recomputations()).to.equal(1)
+      state = { json: state.json.setIn(['posts', '1', 'metaAttributes', 'canonicalUrl'], 'meta-canonicalUrl') }
+      expect(selector.selectPostMetaCanonicalUrl(state, props)).to.deep.equal('meta-canonicalUrl')
+    })
+  })
 
-      const result = `${ENV.AUTH_DOMAIN}/username/post/token`
-      const newState = {
-        json: {
-          posts: { 1: { ...post, repostContent: 's', repostPath: '/username/post/token' } },
-          users: { 1: { ...user } },
-        },
+  context('#selectPostMetaEmbeds', () => {
+    it('returns the meta embeds for a post', () => {
+      const result = {
+        openGraphEmbeds: [
+          { property: 'og:video', content: 'meta-post-embed-0.mp4' },
+          { property: 'og:video', content: 'meta-post-embed-1.mp4' },
+        ],
       }
-      expect(selector.selectPostMetaCanonicalUrl(newState, props)).to.deep.equal(result)
-      expect(selector.selectPostMetaCanonicalUrl.recomputations()).to.equal(2)
+      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
+      state = { json }
+      expect(selector.selectPostMetaEmbeds(state, props)).to.deep.equal(result)
     })
   })
 
   context('#selectPostMetaImages', () => {
     it('returns the meta images (image/embed) for a post', () => {
-      const i0 = stubImageRegion({ data: { alt: 'image-alt-0', url: 'image-url-0' } })
-      const e0 = stubEmbedRegion({ data: { thumbnailLargeUrl: 'embed-thumb-0' } })
-      const t1 = stubTextRegion({ data: 'Text Region 1 ' })
-      const i1 = stubImageRegion({ data: { alt: 'image-alt-1', url: 'image-url-1' } })
-      const e1 = stubEmbedRegion({ data: { thumbnailLargeUrl: 'embed-thumb-1' } })
-      const t2 = stubTextRegion({ data: 'Text Region 2 ' })
-      const i2 = stubImageRegion({ data: { alt: 'image-alt-2', url: 'image-url-2' } })
-
-      const regions = [i0, e0, t1, i1, e1, t2, i2]
-      let result = {
+      const result = {
         openGraphImages: [
-          { property: 'og:image', content: 'image-url-0' },
-          { property: 'og:image', content: 'image-url-1' },
-          { property: 'og:image', content: 'image-url-2' },
-          { property: 'og:image', content: 'embed-thumb-0' },
-          { property: 'og:image', content: 'embed-thumb-1' },
+          { property: 'og:image', content: 'meta-post-image-0.jpg' },
+          { property: 'og:image', content: 'meta-post-image-1.jpg' },
         ],
         schemaImages: [
-          { name: 'image', itemprop: 'image', content: 'image-url-0' },
-          { name: 'image', itemprop: 'image', content: 'image-url-1' },
-          { name: 'image', itemprop: 'image', content: 'image-url-2' },
-          { name: 'image', itemprop: 'image', content: 'embed-thumb-0' },
-          { name: 'image', itemprop: 'image', content: 'embed-thumb-1' },
+          { name: 'image', itemprop: 'image', content: 'meta-post-image-0.jpg' },
+          { name: 'image', itemprop: 'image', content: 'meta-post-image-1.jpg' },
         ],
       }
-
-      const post = stub('post', { content: regions, summary: [i0, i1] })
-      let state = { json: { posts: { 1: { ...post } } } }
-      const props = { post: { id: '1' }, params: { token: 'token' } }
-
+      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
+      state = { json }
       expect(selector.selectPostMetaImages(state, props)).to.deep.equal(result)
+    })
+  })
 
-      state = { ...state, change: 1 }
-      expect(selector.selectPostMetaImages(state, props)).to.deep.equal(result)
-      expect(selector.selectPostMetaImages.recomputations()).to.equal(1)
+  context('#selectPostAuthor', () => {
+    it('returns the post author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostAuthor(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '666']))
+    })
+  })
 
-      result = {
-        openGraphImages: [
-          { property: 'og:image', content: 'image-url-0' },
-          { property: 'og:image', content: 'image-url-1' },
-        ],
-        schemaImages: [
-          { name: 'image', itemprop: 'image', content: 'image-url-0' },
-          { name: 'image', itemprop: 'image', content: 'image-url-1' },
-        ],
+  context('#selectPostAuthorUsername', () => {
+    it('returns the post author username', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostAuthorUsername(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '666', 'username']))
+    })
+  })
+
+  context('#selectPostRepostAuthorId', () => {
+    it('returns the post repost author id', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthorId(state, props)
+      expect(result).to.equal('9')
+    })
+  })
+
+  context('#selectPostRepostAuthor', () => {
+    it('returns the post repost author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthor(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '9']))
+    })
+  })
+
+  context('#selectPostRepostAuthorWithFallback', () => {
+    it('returns the post repost author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthorWithFallback(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '9']))
+    })
+
+    it('returns the post author as a fallback', () => {
+      state = { json }
+      const props = { postId: '100' }
+      const result = selector.selectPostRepostAuthorWithFallback(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '666']))
+    })
+  })
+
+  context('#selectPostCategories', () => {
+    it('returns the post categories list', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCategories(state, props)
+      expect(result).to.equal(Immutable.List([1, 4]))
+    })
+  })
+
+  context('#selectPostCategory', () => {
+    it('returns the first item in the post categories list', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCategory(state, props)
+      expect(result).to.equal(state.json.getIn(['categories', '1']))
+    })
+  })
+
+  context('#selectPostCategoryName', () => {
+    it('returns the first item name in the post categories list', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCategoryName(state, props)
+      expect(result).to.equal('Featured')
+    })
+  })
+
+  context('#selectPostCategorySlug', () => {
+    it('returns the first item slug in the post categories list', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostCategorySlug(state, props)
+      expect(result).to.equal('/discover/featured')
+    })
+  })
+
+  context('#selectPostDetailPath', () => {
+    it('returns the post detail path', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostDetailPath(state, props)
+      expect(result).to.equal('/666-username/post/token666')
+    })
+  })
+
+  context('#selectPostIsCommentsRequesting', () => {
+    it('selects the state around requesting comments for a post')
+  })
+
+  context('#selectPostIsEditing', () => {
+    it('returns the state of isEditing on the post', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsEditing(state, props)
+      expect(result).to.equal(false)
+    })
+  })
+
+  context('#selectPostIsGridMode', () => {
+    it('returns the state of isGridMode on the post on post detail', () => {
+      state = {
+        json,
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/post/token666' },
+        }),
+        gui: Immutable.fromJS({ isGridMode: true }),
       }
-      state = { json: { posts: { 1: { ...post, content: null } } } }
-      expect(selector.selectPostMetaImages(state, props)).to.deep.equal(result)
-      expect(selector.selectPostMetaImages.recomputations()).to.equal(2)
+      const props = { postId: '666' }
+      const result = selector.selectPostIsGridMode(state, props)
+      expect(result).to.equal(false)
+    })
+
+    it('returns the state of isGridMode on the post from a profile', () => {
+      state = {
+        json,
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/' },
+        }),
+        gui: Immutable.fromJS({ isGridMode: true }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsGridMode(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostIsOwn', () => {
+    it('returns if the post is the users own', () => {
+      state = { json, profile: Immutable.Map({ id: '666' }) }
+      const props = { post: propsPost }
+      expect(selector.selectPostIsOwn(state, props)).to.equal(true)
+      state.change = 1
+      expect(selector.selectPostIsOwn(state, props)).to.equal(true)
+      expect(selector.selectPostIsOwn.recomputations()).to.equal(1)
+    })
+
+    it('returns if the post is not the users own', () => {
+      state = { json, profile: Immutable.Map({ id: 'statePost' }) }
+      const props = { post: propsPost }
+      expect(selector.selectPostIsOwn(state, props)).to.equal(false)
+      state.change = 1
+      expect(selector.selectPostIsOwn(state, props)).to.equal(false)
+      // 2 since the memoization is from the context block
+      expect(selector.selectPostIsOwn.recomputations()).to.equal(2)
+    })
+  })
+
+  context('#selectPostIsOwnOriginal', () => {
+    it('returns the state of isEditing on the post', () => {
+      state = { json, profile: Immutable.Map({ id: '9' }) }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsOwnOriginal(state, props)
+      expect(result).to.equal(true)
+    })
+
+    it('returns the state of isEditing on the post', () => {
+      state = { json, profile: Immutable.Map({ id: '100' }) }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsOwnOriginal(state, props)
+      expect(result).to.equal(false)
+    })
+  })
+
+  context('#selectPostIsRepost', () => {
+    it('returns if the post is a repost', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsRepost(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostIsReposting', () => {
+    it('returns the state of isReposting on the post', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsReposting(state, props)
+      expect(result).to.equal(false)
+    })
+  })
+
+  context('#selectPostIsWatching', () => {
+    it('returns the state of watching on the post', () => {
+      state = { json, authentication: Immutable.Map({ isLoggedIn: true }) }
+      const props = { postId: '666' }
+      const result = selector.selectPostIsWatching(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostRepostAuthor', () => {
+    it('returns the post repost author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthor(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '9']))
+    })
+  })
+
+  context('#selectPostRepostAuthorWithFallback', () => {
+    it('returns the post repost author', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostAuthorWithFallback(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '9']))
+    })
+
+    it('returns the post author as a fallback', () => {
+      state = { json }
+      const props = { postId: '100' }
+      const result = selector.selectPostRepostAuthorWithFallback(state, props)
+      expect(result).to.equal(state.json.getIn(['users', '666']))
+    })
+  })
+
+  context('#selectPostShowEditor', () => {
+    it('returns if the post editor should be shown', () => {
+      state = { json }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowEditor(state, props)
+      expect(result).to.equal(false)
+    })
+
+    it('returns if the post editor should be shown after setting isEditing', () => {
+      state = { json }
+      state = { json: state.json.setIn(['posts', '666', 'isEditing'], true) }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowEditor(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowCommentEditor', () => {
+    it('returns if the post comment editor should be shown', () => {
+      state = {
+        json,
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/post/token666' },
+        }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowCommentEditor(state, props)
+      expect(result).to.equal(false)
+    })
+
+    it('returns if the post comment editor should be shown after setting showEditor', () => {
+      state = { json }
+      state = { json: state.json.setIn(['posts', '666', 'isEditing'], true) }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowEditor(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowCommentsDrawer', () => {
+    it('returns if the post comments drawer should be shown', () => {
+      state = {
+        json,
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/' },
+        }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowCommentsDrawer(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowLoversDrawer', () => {
+    it('returns if the post lovers drawer should be shown', () => {
+      state = {
+        json,
+        gui: Immutable.fromJS({ isGridMode: false }),
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/post/token666' },
+        }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowLoversDrawer(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
+  context('#selectPostShowRepostersDrawer', () => {
+    it('returns if the post reposters drawer should be shown', () => {
+      state = {
+        json,
+        gui: Immutable.fromJS({ isGridMode: false }),
+        routing: Immutable.fromJS({
+          location: { pathname: '/666-username/post/token666' },
+        }),
+      }
+      const props = { postId: '666' }
+      const result = selector.selectPostShowRepostersDrawer(state, props)
+      expect(result).to.equal(true)
     })
   })
 })

@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import Mousetrap from 'mousetrap'
-import shallowCompare from 'react-addons-shallow-compare'
 import { SHORTCUT_KEYS } from '../../constants/application_types'
 
 function toggleContainerColors() {
@@ -14,7 +13,7 @@ function renderGrid(isVisible, type) {
   )
 }
 
-class DevTools extends Component {
+class DevTools extends PureComponent {
 
   componentWillMount() {
     this.state = {
@@ -35,10 +34,6 @@ class DevTools extends Component {
     Mousetrap.bind(SHORTCUT_KEYS.DT_CONTAINER_TOGGLE, () => {
       toggleContainerColors()
     })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {

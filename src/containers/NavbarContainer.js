@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import { isIOS, scrollTo } from '../lib/jello'
 import Session from '../lib/session'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
@@ -8,7 +7,7 @@ import { SESSION_KEYS } from '../constants/application_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectCategoryTabs } from '../selectors/categories'
 import {
-  selectCurrentStream,
+  selectHomeStream,
   selectDeviceSize,
   selectIsGridMode,
   selectIsLayoutToolHidden,
@@ -29,25 +28,26 @@ import { loadFriends, loadNoise } from '../actions/stream'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/NavbarRenderables'
 import { getDiscoverAction } from '../containers/DiscoverContainer'
 
-function mapStateToProps(state) {
-  const currentStream = selectCurrentStream(state)
+function mapStateToProps(state, props) {
+  const homeStream = selectHomeStream(state)
   const isLoggedIn = selectIsLoggedIn(state)
   const pathname = selectPathname(state)
-  const result = selectPage(state)
-  const hasLoadMoreButton = !!(result && result.morePostIds)
+  const pageResult = selectPage(state)
+  const hasLoadMoreButton = !!(pageResult && pageResult.get('morePostIds'))
   const viewName = selectViewNameFromRoute(state)
   const categoryTabs = viewName === 'discover' ? selectCategoryTabs(state) : null
   const isUnread = selectIsNotificationsUnread(state) || selectIsAnnouncementUnread(state)
+  const isGridMode = selectIsGridMode(state)
 
   if (isLoggedIn) {
     return {
       avatar: selectAvatar(state),
       categoryTabs,
       deviceSize: selectDeviceSize(state),
-      currentStream,
       hasLoadMoreButton,
-      isGridMode: selectIsGridMode(state),
-      isLayoutToolHidden: selectIsLayoutToolHidden(state),
+      homeStream,
+      isGridMode,
+      isLayoutToolHidden: selectIsLayoutToolHidden(state, props),
       isLoggedIn,
       isNotificationsActive: selectIsNotificationsActive(state),
       isNotificationsUnread: isUnread,
@@ -59,26 +59,32 @@ function mapStateToProps(state) {
   }
   return {
     categoryTabs,
-    currentStream,
     hasLoadMoreButton,
+    homeStream,
+    isGridMode,
     isLoggedIn,
     pathname,
     viewName,
   }
 }
 
-class NavbarContainer extends Component {
+class NavbarContainer extends PureComponent {
 
   static propTypes = {
-    currentStream: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    isGridMode: PropTypes.bool,
-    isProfileMenuActive: PropTypes.bool,
+    homeStream: PropTypes.string.isRequired,
+    isGridMode: PropTypes.bool.isRequired,
+    isProfileMenuActive: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    isNotificationsActive: PropTypes.bool,
+    isNotificationsActive: PropTypes.bool.isRequired,
     pathname: PropTypes.string.isRequired,
     params: PropTypes.object.isRequired,
     viewName: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    isProfileMenuActive: false,
+    isNotificationsActive: false,
   }
 
   static contextTypes = {
@@ -87,10 +93,6 @@ class NavbarContainer extends Component {
 
   componentWillMount() {
     this.checkForNotifications(true)
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {
@@ -134,8 +136,8 @@ class NavbarContainer extends Component {
   }
 
   onClickNavbarMark = () => {
-    const { currentStream, dispatch, pathname, params, viewName } = this.props
-    if (currentStream === pathname) {
+    const { homeStream, dispatch, pathname, params, viewName } = this.props
+    if (homeStream === pathname) {
       if (viewName === 'discover') {
         if (params.type) {
           dispatch(getDiscoverAction(params.type))

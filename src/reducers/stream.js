@@ -1,11 +1,17 @@
+import Immutable from 'immutable'
 import get from 'lodash/get'
 import { AUTHENTICATION, LOAD_STREAM_FAILURE, POST, PROFILE, USER } from '../constants/action_types'
 
 let should404 = false
 
-export function stream(state = {}, action = { type: '' }) {
-  if (action.type === AUTHENTICATION.LOGOUT || action.type === PROFILE.DELETE_SUCCESS) {
-    return {}
+const initialState = Immutable.Map()
+
+export default (state = initialState, action = { type: '' }) => {
+  if (action.type === AUTHENTICATION.LOGOUT_SUCCESS ||
+      action.type === AUTHENTICATION.LOGOUT_FAILURE ||
+      action.type === AUTHENTICATION.REFRESH_FAILURE ||
+      action.type === PROFILE.DELETE_SUCCESS) {
+    return initialState
   } else if (!(action.type === POST.DETAIL_SUCCESS || action.type === USER.DETAIL_SUCCESS ||
                action.type === POST.DETAIL_FAILURE || action.type === USER.DETAIL_FAILURE) &&
              !(action.type.indexOf('COMMENT.') === 0 && action.type.indexOf('SUCCESS') > -1) &&
@@ -15,6 +21,8 @@ export function stream(state = {}, action = { type: '' }) {
              action.type === USER.DETAIL_SUCCESS ||
              action.type === POST.DETAIL_FAILURE ||
              action.type === USER.DETAIL_FAILURE ||
+             action.type === POST.DETAIL_REQUEST ||
+             action.type === USER.DETAIL_REQUEST ||
              action.type.indexOf('LOAD_STREAM_') === 0 ||
              action.type.indexOf('LOAD_NEXT_CONTENT_') === 0 ||
              (action.type.indexOf('COMMENT.') === 0 && action.type.indexOf('SUCCESS') > -1) ||
@@ -38,17 +46,8 @@ export function stream(state = {}, action = { type: '' }) {
       default:
         break
     }
-    return {
-      ...state,
-      error: action.error,
-      meta: action.meta,
-      payload: action.payload,
-      should404,
-      type: action.type,
-    }
+    return state.merge(action).set('should404', should404)
   }
   return state
 }
-
-export default stream
 

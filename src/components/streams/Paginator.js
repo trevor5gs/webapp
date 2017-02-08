@@ -2,13 +2,6 @@ import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 import { ElloMark } from '../assets/Icons'
 
-export function emptyPagination() {
-  return {
-    totalPages: 0,
-    totalPagesRemaining: 0,
-  }
-}
-
 function getMessage({ hasShowMoreButton, messageText, totalPages, totalPagesRemaining }) {
   if (totalPagesRemaining === 0) {
     return ''
@@ -21,11 +14,11 @@ function getMessage({ hasShowMoreButton, messageText, totalPages, totalPagesRema
 }
 
 export const Paginator = ({
-    className = null,
-    hasShowMoreButton = false,
-    isHidden = true,
+    className,
+    hasShowMoreButton,
+    isHidden,
     loadNextPage,
-    messageText = '',
+    messageText,
     totalPages,
     totalPagesRemaining,
   }) => {
@@ -41,14 +34,24 @@ export const Paginator = ({
     </div>
   )
 }
-
 Paginator.propTypes = {
   className: PropTypes.string,
   hasShowMoreButton: PropTypes.bool,
   isHidden: PropTypes.bool,
   loadNextPage: PropTypes.func,
   messageText: PropTypes.string,
-  totalPages: PropTypes.number.isRequired,
-  totalPagesRemaining: PropTypes.number.isRequired,
+  totalPages: PropTypes.number,
+  totalPagesRemaining: PropTypes.number,
 }
+Paginator.defaultProps = {
+  className: null,
+  hasShowMoreButton: false,
+  isHidden: true,
+  loadNextPage: null,
+  messageText: '',
+  totalPages: 0,
+  totalPagesRemaining: 0,
+}
+
+export default Paginator
 

@@ -1,32 +1,27 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsGridMode, selectIsLayoutToolHidden } from '../selectors/gui'
 import { selectStreamType } from '../selectors/stream'
 import { scrollTo } from '../lib/jello'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { Footer } from '../components/footer/FooterRenderables'
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   const streamType = selectStreamType(state)
   return {
     isGridMode: selectIsGridMode(state),
-    isLayoutToolHidden: selectIsLayoutToolHidden(state),
+    isLayoutToolHidden: selectIsLayoutToolHidden(state, props),
     isPaginatoring: streamType === LOAD_NEXT_CONTENT_REQUEST,
   }
 }
 
-class FooterContainer extends Component {
+class FooterContainer extends PureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isLayoutToolHidden: PropTypes.bool.isRequired,
-    isPaginatoring: PropTypes.bool,
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+    isPaginatoring: PropTypes.bool.isRequired,
   }
 
   onClickScrollToTop = () => {

@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { StarIcon } from '../relationships/RelationshipIcons'
@@ -13,10 +12,11 @@ export function getNextPriority(currentPriority) {
   }
 }
 
-class StarshipButton extends Component {
+class StarshipButton extends PureComponent {
+
   static propTypes = {
     className: PropTypes.string,
-    onClick: PropTypes.func,
+    onClick: PropTypes.func.isRequired,
     priority: PropTypes.oneOf([
       RELATIONSHIP_PRIORITY.INACTIVE,
       RELATIONSHIP_PRIORITY.FRIEND,
@@ -27,10 +27,13 @@ class StarshipButton extends Component {
       RELATIONSHIP_PRIORITY.NONE,
       null,
     ]),
-    userId: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string,
-    ]),
+    userId: PropTypes.string,
+  }
+
+  static defaultProps = {
+    className: '',
+    priority: null,
+    userId: null,
   }
 
   componentWillMount() {
@@ -39,10 +42,6 @@ class StarshipButton extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({ nextPriority: getNextPriority(nextProps.priority) })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onClickUpdatePriority = () => {

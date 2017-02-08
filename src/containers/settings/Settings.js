@@ -1,14 +1,14 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import debounce from 'lodash/debounce'
-import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
 import { PREFERENCES, SETTINGS } from '../../constants/locales/en'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
+import { selectDPI, selectIsMobile } from '../../selectors/gui'
 import { selectAvailability, selectBlockedCount, selectMutedCount } from '../../selectors/profile'
 import { openModal, closeModal } from '../../actions/modals'
 import { logout } from '../../actions/authentication'
@@ -18,6 +18,7 @@ import {
   checkAvailability,
   deleteProfile,
   exportData,
+  loadProfile,
   mutedUsers,
   saveAvatar,
   saveCover,
@@ -71,17 +72,30 @@ function renderStatus(message) {
   return null
 }
 
+function mapStateToProps(state) {
+  return {
+    availability: selectAvailability(state),
+    blockedCount: selectBlockedCount(state) || 0,
+    dpi: selectDPI(state),
+    isMobile: selectIsMobile(state),
+    mutedCount: selectMutedCount(state) || 0,
+    profile: state.profile,
+  }
+}
+
 class Settings extends Component {
 
   static propTypes = {
     blockedCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
+    dpi: PropTypes.string.isRequired,
+    isMobile: PropTypes.bool.isRequired,
     mutedCount: PropTypes.number.isRequired,
     profile: PropTypes.object,
   }
 
   componentWillMount() {
-    const { profile } = this.props
+    const { dispatch, profile } = this.props
     this.state = {
       currentPasswordState: { status: STATUS.INDETERMINATE, message: '' },
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
@@ -90,22 +104,23 @@ class Settings extends Component {
     }
     this.passwordValue = ''
     this.passwordCurrentValue = ''
-    this.emailValue = profile.email
-    this.usernameValue = profile.username
+    this.emailValue = profile.get('email')
+    this.usernameValue = profile.get('username')
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 666)
+    dispatch(loadProfile())
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.profile.errors && nextProps.profile.errors) {
-      const attrs = get(nextProps, 'profile.errors.attrs')
+    if (!this.props.profile.get('errors') && nextProps.profile.get('errors')) {
+      const attrs = nextProps.profile.getIn(['errors', 'attrs'])
       if (attrs) {
         const obj = {}
-        Object.keys(attrs).forEach((attr) => {
-          obj[`${attr}State`] = { status: STATUS.FAILURE, message: attrs[attr] }
+        attrs.keySeq().forEach((attr) => {
+          obj[`${attr}State`] = { status: STATUS.FAILURE, message: attrs.get(attr) }
         })
         this.setState(obj)
       }
-    } else if (this.props.profile.errors && !nextProps.profile.errors) {
+    } else if (this.props.profile.get('errors') && !nextProps.profile.get('errors')) {
       const obj = {};
       ['currentPassword', 'email', 'password', 'username'].forEach((attr) => {
         obj[`${attr}State`] = { status: STATUS.INDETERMINATE, message: '', suggestions: [] }
@@ -114,12 +129,12 @@ class Settings extends Component {
     }
     const { availability } = nextProps
     if (!availability) { return }
-    const prevUsername = get(availability, 'original.username', this.usernameValue)
-    const prevEmail = get(availability, 'original.email', this.emailValue)
-    if ({}.hasOwnProperty.call(availability, 'username') && prevUsername === this.usernameValue) {
+    const prevUsername = availability.getIn(['original', 'username'], this.usernameValue)
+    const prevEmail = availability.getIn(['original', 'email'], this.emailValue)
+    if (availability.has('username') && prevUsername === this.usernameValue) {
       this.validateUsernameResponse(availability)
     }
-    if ({}.hasOwnProperty.call(availability, 'email') && prevEmail === this.emailValue) {
+    if (availability.has('email') && prevEmail === this.emailValue) {
       this.validateEmailResponse(availability)
     }
   }
@@ -132,7 +147,7 @@ class Settings extends Component {
   onChangeUsernameControl = ({ username }) => {
     this.usernameValue = username
     const { profile } = this.props
-    if (username === profile.username) {
+    if (username === profile.get('username')) {
       this.setState({
         usernameState: {
           status: STATUS.INDETERMINATE,
@@ -159,7 +174,7 @@ class Settings extends Component {
   onChangeEmailControl = ({ email }) => {
     this.emailValue = email
     const { profile } = this.props
-    if (email === profile.email) {
+    if (email === profile.get('email')) {
       this.setState({ emailState: { status: STATUS.INDETERMINATE, message: '' } })
       return
     }
@@ -197,10 +212,9 @@ class Settings extends Component {
   }
 
   onClickDeleteAccountModal = () => {
-    const { dispatch, profile } = this.props
+    const { dispatch } = this.props
     dispatch(openModal(
       <DeleteAccountDialog
-        user={profile}
         onConfirm={this.onConfirmAccountWasDeleted}
         onDismiss={this.closeModal}
       />
@@ -210,7 +224,6 @@ class Settings extends Component {
   onConfirmAccountWasDeleted = () => {
     const { dispatch } = this.props
     dispatch(deleteProfile())
-    dispatch(logout())
     dispatch(trackEvent('user-deleted-account'))
   }
 
@@ -247,11 +260,11 @@ class Settings extends Component {
   getExternalLinkListAsText() {
     const { profile } = this.props
     return (
-      profile.externalLinksList.map((link, i) =>
+      profile.get('externalLinksList').toJS().map((link, i) =>
         <a
           href={link.url}
           target="_blank"
-          key={`settingslinks_${i}`}
+          key={`settingslinks_${link.text}_${i + 1}`}
           rel="noopener noreferrer"
           style={{ marginRight: `${5 / 16}rem` }}
         >
@@ -298,16 +311,12 @@ class Settings extends Component {
   }
 
   render() {
-    const {
-      blockedCount, dispatch, mutedCount, profile,
-    } = this.props
+    const { blockedCount, dispatch, dpi, isMobile, mutedCount, profile } = this.props
     const { currentPasswordState, emailState, passwordState, usernameState } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
     const allowNSFWToggle = !isElloAndroid()
 
-    if (!profile) {
-      return null
-    }
+    if (!profile) { return null }
 
     const mdash = <span>&mdash;</span>
     const boxControlClassNames = 'isBoxControl onWhite'
@@ -319,12 +328,14 @@ class Settings extends Component {
             className="isCoverUploader"
             line1="2560 x 1440"
             line2="Animated Gifs work too"
+            line3={isMobile ? null : 'Drag & Drop'}
             saveAction={bindActionCreators(saveCover, dispatch)}
             title="Upload Header"
           />
           <BackgroundImage
             className="hasOverlay6 inSettings"
-            sources={profile.coverImage}
+            dpi={dpi}
+            sources={profile.get('coverImage')}
             useGif
           />
         </div>
@@ -336,12 +347,13 @@ class Settings extends Component {
               title="Upload Avatar"
               line1="360 x 360"
               line2="Animated Gifs work too"
+              line3={isMobile ? null : 'Drag & Drop'}
               saveAction={bindActionCreators(saveAvatar, dispatch)}
             />
             <Avatar
               className="isLarge"
               size="large"
-              sources={profile.avatar}
+              sources={profile.get('avatar')}
               useGif
             />
           </div>
@@ -370,7 +382,7 @@ class Settings extends Component {
               status={usernameState.status}
               suggestions={usernameState.suggestions}
               tabIndex="1"
-              text={profile.username}
+              text={profile.get('username')}
             />
             <EmailControl
               classList={boxControlClassNames}
@@ -379,7 +391,7 @@ class Settings extends Component {
               renderStatus={renderStatus(emailState.message)}
               status={emailState.status}
               tabIndex="2"
-              text={profile.email}
+              text={profile.get('email')}
             />
             <PasswordControl
               classList={boxControlClassNames}
@@ -417,7 +429,7 @@ class Settings extends Component {
           />
 
           <p className="SettingsLinks">
-            <Link className="MiniPillButton isLink" to={`/${profile.username}`}>View profile</Link>
+            <Link className="MiniPillButton isLink" to={`/${profile.get('username')}`}>View profile</Link>
             <Link className="MiniPillButton isLink" to="/invitations">Invite people</Link>
           </p>
 
@@ -434,13 +446,13 @@ class Settings extends Component {
                   <Preference
                     definition={PREFERENCES.NSFW_VIEW}
                     id="viewsAdultContent"
-                    isChecked={profile.viewsAdultContent}
+                    isChecked={profile.get('viewsAdultContent')}
                     onToggleChange={preferenceToggleChanged}
                   />
                   <Preference
                     definition={PREFERENCES.NSFW_POST}
                     id="postsAdultContent"
-                    isChecked={profile.postsAdultContent}
+                    isChecked={profile.get('postsAdultContent')}
                     onToggleChange={this.onTogglePostsAdultContent}
                   />
                   <p><em>{SETTINGS.NSFW_DISCLAIMER}</em></p>
@@ -483,21 +495,21 @@ class Settings extends Component {
               <p className="SettingsDataDescription">{SETTINGS.YOUR_DATA_DESC}</p>
               <dl className="SettingsDefinitionValues">
                 <dt>Username:</dt>
-                <dd>{`@${profile.username}`}</dd>
+                <dd>{`@${profile.get('username')}`}</dd>
                 <dt>Name:</dt>
-                <dd>{profile.name || mdash}</dd>
+                <dd>{profile.get('name') || mdash}</dd>
                 <dt>Short Bio:</dt>
-                <dd>{profile.shortBio || mdash}</dd>
+                <dd>{profile.get('shortBio') || mdash}</dd>
                 <dt>Links:</dt>
                 <dd>
-                  {!isEmpty(profile.externalLinksList) ?
+                  {!profile.get('externalLinksList', Immutable.List()).isEmpty() ?
                     this.getExternalLinkListAsText() :
                     mdash}
                 </dd>
                 <dt>Avatar:</dt>
-                <dd>{getOriginalAssetUrl(profile.avatar)}</dd>
+                <dd>{getOriginalAssetUrl(profile.get('avatar'))}</dd>
                 <dt>Header:</dt>
-                <dd>{getOriginalAssetUrl(profile.coverImage)}</dd>
+                <dd>{getOriginalAssetUrl(profile.get('coverImage'))}</dd>
               </dl>
               <div className="SettingsCell">
                 <dl className="SettingsDefinition">
@@ -507,10 +519,10 @@ class Settings extends Component {
                     We will email you a link to download your data.
                   </dd>
                 </dl>
-                {profile.dataExport ?
+                {profile.get('dataExport') ?
                   <a
                     className="SettingsButton"
-                    href={profile.dataExport}
+                    href={profile.get('dataExport')}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
@@ -553,15 +565,6 @@ class Settings extends Component {
         </div>
       </MainView>
     )
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-    availability: selectAvailability(state),
-    blockedCount: selectBlockedCount(state) || 0,
-    mutedCount: selectMutedCount(state) || 0,
-    profile: state.profile,
   }
 }
 

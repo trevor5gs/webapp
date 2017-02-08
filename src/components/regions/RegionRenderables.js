@@ -5,19 +5,19 @@ import TextRegion from '../regions/TextRegion'
 
 export function RegionItems(props) {
   const { assets, columnWidth, commentOffset, content, contentWidth,
-    innerHeight, isGridMode = true, postDetailPath = null } = props
+    detailPath, innerHeight, isGridMode } = props
   // sometimes the content is null/undefined for some reason
   if (!content) { return null }
   const cells = []
-  content.forEach((region, i) => {
-    switch (region.kind) {
+  content.forEach((region) => {
+    switch (region.get('kind')) {
       case 'text':
         cells.push(
           <TextRegion
-            content={region.data}
+            content={region.get('data')}
+            detailPath={detailPath}
             isGridMode={isGridMode}
-            key={`TextRegion_${i}`}
-            postDetailPath={postDetailPath}
+            key={`TextRegion_${region.get('data')}`}
           />,
         )
         break
@@ -25,21 +25,27 @@ export function RegionItems(props) {
         cells.push(
           <ImageRegion
             assets={assets}
-            buyLinkURL={region.linkUrl}
+            buyLinkURL={region.get('linkUrl')}
             columnWidth={columnWidth}
             commentOffset={commentOffset}
-            content={region.data}
+            content={region.get('data')}
             contentWidth={contentWidth}
+            detailPath={detailPath}
             innerHeight={innerHeight}
             isGridMode={isGridMode}
-            key={`ImageRegion_${i}_${JSON.stringify(region.data)}`}
-            links={region.links}
-            postDetailPath={postDetailPath}
+            key={`ImageRegion_${JSON.stringify(region.get('data'))}`}
+            links={region.get('links')}
           />,
         )
         break
       case 'embed':
-        cells.push(<EmbedRegion region={region} key={`EmbedRegion_${i}`} />)
+        cells.push(
+          <EmbedRegion
+            detailPath={detailPath}
+            key={`EmbedRegion_${JSON.stringify(region.get('data'))}`}
+            region={region}
+          />,
+        )
         break
       default:
         break
@@ -48,60 +54,60 @@ export function RegionItems(props) {
   // loop through cells to grab out image/text
   return <div>{cells}</div>
 }
-
 RegionItems.propTypes = {
   assets: PropTypes.object,
-  columnWidth: PropTypes.number,
-  commentOffset: PropTypes.number,
-  content: PropTypes.array,
-  contentWidth: PropTypes.number,
-  innerHeight: PropTypes.number,
-  isGridMode: PropTypes.bool,
-  postDetailPath: PropTypes.string,
+  columnWidth: PropTypes.number.isRequired,
+  commentOffset: PropTypes.number.isRequired,
+  content: PropTypes.object.isRequired,
+  contentWidth: PropTypes.number.isRequired,
+  detailPath: PropTypes.string.isRequired,
+  innerHeight: PropTypes.number.isRequired,
+  isGridMode: PropTypes.bool.isRequired,
+}
+RegionItems.defaultProps = {
+  assets: null,
 }
 
-
-export function regionItemsForNotifications(content, postDetailPath = null, assets) {
+export function regionItemsForNotifications(content, detailPath, assets) {
   const imageAssets = []
   const texts = []
-
-  content.forEach((region, i) => {
-    switch (region.kind) {
+  content.forEach((region) => {
+    switch (region.get('kind')) {
       case 'text':
         texts.push(
           <TextRegion
-            content={region.data}
+            content={region.get('data')}
+            detailPath={detailPath}
             isGridMode={false}
-            key={`TextRegion_${i}`}
-            postDetailPath={postDetailPath}
+            key={`TextRegion_${region.get('data')}`}
           />,
         )
         break
       case 'image':
         imageAssets.push(
           <ImageRegion
-            buyLinkURL={region.linkUrl}
             assets={assets}
-            content={region.data}
+            buyLinkURL={region.get('linkUrl')}
+            content={region.get('data')}
+            detailPath={detailPath}
             isGridMode
             isNotification
-            key={`ImageRegion_${i}_${JSON.stringify(region.data)}`}
-            links={region.links}
-            postDetailPath={postDetailPath}
+            key={`ImageRegion_${JSON.stringify(region.get('data'))}`}
+            links={region.get('links')}
           />,
         )
         break
       case 'embed':
         imageAssets.push(
           <EmbedRegion
-            key={`EmbedRegion_${i}`}
-            postDetailPath={postDetailPath}
+            detailPath={detailPath}
+            key={`EmbedRegion_${JSON.stringify(region.get('data'))}`}
             region={region}
           />,
         )
         break
       case 'rule':
-        texts.push(<hr className="NotificationRule" key={`NotificationRule_${i}`} />)
+        texts.push(<hr className="NotificationRule" key={`NotificationRule_${detailPath}`} />)
         break
       default:
         break

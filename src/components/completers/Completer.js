@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { isIOS } from '../../lib/jello'
@@ -20,6 +21,11 @@ export default class Completer extends Component {
     deviceSize: PropTypes.string,
     onCancel: PropTypes.func.isRequired,
     onCompletion: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    className: null,
+    deviceSize: null,
   }
 
   componentWillMount() {
@@ -63,7 +69,7 @@ export default class Completer extends Component {
     const { completions } = this.props
     let { selectedIndex } = this.state
     selectedIndex += 1
-    if (selectedIndex > completions.data.length - 1) selectedIndex = 0
+    if (selectedIndex > completions.get('data').size - 1) { selectedIndex = 0 }
     this.setState({ selectedIndex })
   }
 
@@ -71,7 +77,7 @@ export default class Completer extends Component {
     const { completions } = this.props
     let { selectedIndex } = this.state
     selectedIndex -= 1
-    if (selectedIndex < 0) selectedIndex = completions.data.length - 1
+    if (selectedIndex < 0) selectedIndex = completions.get('data').size - 1
     this.setState({ selectedIndex })
   }
 
@@ -85,12 +91,12 @@ export default class Completer extends Component {
     const { completions, onCompletion } = this.props
     const { selectedIndex } = this.state
     return (
-      completions.data.map((completion, i) =>
+      completions.get('data').map((completion, i) =>
         <Completion
           className={i === selectedIndex ? 'isActive UserCompletion' : 'UserCompletion'}
-          key={`completion_${i}`}
-          asset={<Avatar className="isTiny" sources={{ tmp: { url: completion.imageUrl } }} />}
-          label={`@${completion.name}`}
+          key={`completion_${completion.get('name')}`}
+          asset={<Avatar className="isTiny" sources={Immutable.fromJS({ tmp: { url: completion.get('imageUrl') } })} />}
+          label={`@${completion.get('name')}`}
           ref={(comp) => { this[`completion_${i}`] = comp }}
           onClick={onCompletion}
         />,
@@ -102,12 +108,12 @@ export default class Completer extends Component {
     const { completions, onCompletion } = this.props
     const { selectedIndex } = this.state
     return (
-      completions.data.map((completion, i) =>
+      completions.get('data').map((completion, i) =>
         <Completion
           className={i === selectedIndex ? 'isActive EmojiCompletion' : 'EmojiCompletion'}
-          key={`completion_${i}`}
-          asset={<Emoji key={completion.name} src={completion.imageUrl} />}
-          label={`:${completion.name}:`}
+          key={`completion_${completion.get('name')}`}
+          asset={<Emoji key={completion.get('name')} src={completion.get('imageUrl')} />}
+          label={`:${completion.get('name')}:`}
           ref={(comp) => { this[`completion_${i}`] = comp }}
           onClick={onCompletion}
         />,
@@ -119,12 +125,12 @@ export default class Completer extends Component {
     const { completions, onCompletion } = this.props
     const { selectedIndex } = this.state
     return (
-      completions.data.map((completion, i) =>
+      completions.get('data').map((completion, i) =>
         <Completion
           className={i === selectedIndex ? 'isActive LocationCompletion' : 'LocationCompletion'}
-          key={`completion_${i}`}
+          key={`completion_${completion.get('location')}`}
           asset={<MarkerIcon />}
-          label={`${completion.location}`}
+          label={`${completion.get('location')}`}
           ref={(comp) => { this[`completion_${i}`] = comp }}
           onClick={onCompletion}
         />,
@@ -134,13 +140,13 @@ export default class Completer extends Component {
 
   render() {
     const { className, completions, deviceSize } = this.props
-    if (!completions || !completions.data || !completions.data.length) {
+    if (!completions || !completions.get('data', Immutable.List()).size) {
       return null
     }
 
     let style = {}
-
-    if (completions.type === 'location') {
+    const type = completions.get('type')
+    if (type === 'location') {
       const control = document.querySelector('.LocationControl')
       const locationPos = control ? control.getBoundingClientRect() : { top: -200, left: -666 }
       if (deviceSize === 'mobile') {
@@ -159,7 +165,7 @@ export default class Completer extends Component {
       }
     }
     let completed = null
-    switch (completions.type) {
+    switch (type) {
       case 'user':
         completed = this.renderUsers()
         break

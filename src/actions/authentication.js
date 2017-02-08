@@ -10,44 +10,9 @@ const clientCredentials = {
   id: ENV.AUTH_CLIENT_ID,
 }
 
-function afterLogout() {
-  document.cookie = 'ello_skip_prerender=false'
-  localStorage.clear()
-  requestAnimationFrame(() => {
-    window.location.href = '/enter'
-  })
-}
-
-function afterLogin() {
-  document.cookie = 'ello_skip_prerender=true; expires=Fri, 31 Dec 9999 23:59:59 GMT'
-}
-
-export function cancelAuthRefresh() {
-  return {
-    type: AUTHENTICATION.CANCEL_REFRESH,
-  }
-}
-
-export function clearAuthStore() {
-  return {
-    type: AUTHENTICATION.CLEAR_STORE,
-  }
-}
-
 export function clearAuthToken() {
   return {
     type: AUTHENTICATION.CLEAR_AUTH_TOKEN,
-  }
-}
-
-export function signIn(email, password) {
-  return {
-    type: AUTHENTICATION.SIGN_IN,
-    payload: {
-      method: 'POST',
-      email,
-      password,
-    },
   }
 }
 
@@ -64,7 +29,7 @@ export function getUserCredentials(email, password, meta) {
         client_id: clientCredentials.id,
       },
     },
-    meta: { ...meta, successAction: afterLogin },
+    meta,
   }
 }
 
@@ -74,10 +39,6 @@ export function logout() {
     payload: {
       endpoint: logoutEndpoint(),
       method: 'DELETE',
-    },
-    meta: {
-      successAction: afterLogout,
-      failureAction: afterLogout,
     },
   }
 }
@@ -94,20 +55,6 @@ export function refreshAuthenticationToken(refreshToken) {
         client_id: clientCredentials.id,
       },
     },
-    meta: {
-      successAction: afterLogin,
-      failureAction: afterLogout,
-    },
-  }
-}
-
-export function scheduleAuthRefresh(refreshToken, timeout) {
-  return {
-    type: AUTHENTICATION.SCHEDULE_REFRESH,
-    payload: {
-      refreshToken,
-      timeout,
-    },
   }
 }
 
@@ -120,6 +67,17 @@ export function sendForgotPasswordRequest(email) {
       body: {
         email,
       },
+    },
+  }
+}
+
+export function signIn(email, password) {
+  return {
+    type: AUTHENTICATION.SIGN_IN,
+    payload: {
+      method: 'POST',
+      email,
+      password,
     },
   }
 }

@@ -1,324 +1,285 @@
-import cloneDeep from 'lodash/cloneDeep'
+/* eslint-disable no-param-reassign */
+import Immutable from 'immutable'
 import get from 'lodash/get'
 import reduce from 'lodash/reduce'
-import values from 'lodash/values'
 import { suggestEmoji } from '../components/completers/EmojiSuggester'
 import { userRegex } from '../components/completers/Completer'
 import { COMMENT, EDITOR, POST } from '../constants/action_types'
 
 const methods = {}
-const initialState = {
-  collection: {},
+const initialState = Immutable.Map({
+  collection: Immutable.Map(),
   hasContent: false,
   hasMedia: false,
   hasMention: false,
   isLoading: false,
   isPosting: false,
-  order: [],
+  order: Immutable.List(),
   postBuyLink: null,
   shouldPersist: false,
   uid: 0,
-}
+})
 
-methods.addCompletions = (state, action) => {
-  const newState = cloneDeep(state)
+methods.getCompletions = (action) => {
   const { payload } = action
   if (payload && payload.response) {
     const { type = 'user', word } = payload
     if (type === 'user' || type === 'location') {
-      newState.completions = { data: payload.response.autocompleteResults, type }
       if (type === 'location' && !document.activeElement.classList.contains('LocationControl')) {
-        newState.completions = null
+        return null
       }
+      return Immutable.fromJS({ data: payload.response.autocompleteResults, type })
     } else if (type === 'emoji') {
-      newState.completions = { data: suggestEmoji(word, payload.response.emojis), type }
+      return Immutable.fromJS({ data: suggestEmoji(word, payload.response.emojis), type })
     }
-  } else {
-    newState.completions = null
   }
-  return newState
+  return Immutable.Map()
 }
 
-
-methods.rehydrateEditors = (persistedEditors = {}) => {
-  const editors = {}
-  Object.keys(persistedEditors).forEach((item) => {
-    const pe = persistedEditors[item]
-    if (pe && pe.shouldPersist) {
+methods.rehydrateEditors = (persistedEditors = Immutable.Map()) => {
+  let editors = Immutable.Map()
+  persistedEditors.keySeq().forEach((key) => {
+    const pe = persistedEditors.get(key)
+    if (pe && pe.get('shouldPersist')) {
       // clear out the blobs
-      Object.keys(pe.collection).forEach((uid) => {
-        const block = pe.collection[uid]
-        if (/image/.test(block.kind)) {
-          delete block.blob
-          pe.collection[uid] = block
+      const collection = pe.get('collection')
+      collection.keySeq().forEach((uid) => {
+        const block = collection.get(uid)
+        if (/image/.test(block.get('kind'))) {
+          block.delete('blob')
+          pe.setIn(['collection', uid], block)
         }
       })
-      pe.isLoading = false
-      pe.isPosting = false
-      editors[item] = pe
+      pe.set('isLoading', false)
+      pe.set('isPosting', false)
+      editors = editors.set(key, pe)
     }
   })
   return editors
 }
 
-methods.addHasContent = (state) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  const firstBlock = collection[order[0]]
-  if (!firstBlock) { return state }
-  const hasContent = Boolean(
-    order.length > 1 ||
-    (firstBlock &&
-    firstBlock.data.length &&
-    firstBlock.data !== '<br>'),
+methods.hasContent = (state) => {
+  const order = state.get('order')
+  const firstBlock = state.getIn(['collection', `${order.first()}`])
+  if (!firstBlock) { return false }
+  const data = firstBlock.get('data')
+  return !!(order.size > 1 || (data && data.length && data !== '<br>'))
+}
+
+methods.hasMedia = (state) => {
+  const collection = state.get('collection')
+  const order = state.get('order')
+  return order.some(uid => /embed|image/.test(collection.getIn([`${uid}`, 'kind'])))
+}
+
+methods.hasMention = (state) => {
+  const collection = state.get('collection')
+  const order = state.get('order')
+  return order.some((uid) => {
+    const block = collection.get(`${uid}`)
+    return block && /text/.test(block.get('kind')) && userRegex.test(block.get('data'))
+  })
+}
+
+methods.isLoading = (state) => {
+  const collection = state.get('collection')
+  let isLoading = collection.valueSeq().some(block =>
+    /image/.test(block.get('kind')) && block.get('isLoading'),
   )
-  newState.hasContent = hasContent
-  return newState
-}
-
-methods.addHasMedia = (state) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  newState.hasMedia = order.some(uid => /embed|image/.test(collection[uid].kind))
-  return newState
-}
-
-methods.addHasMention = (state) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  newState.hasMention = order.some(uid => /text/.test(collection[uid].kind) && userRegex.test(collection[uid].data))
-  return newState
-}
-
-methods.addIsLoading = (state) => {
-  const newState = cloneDeep(state)
-  const { collection } = newState
-  let isLoading = values(collection).some(block =>
-    /image/.test(block.kind) && block.isLoading,
-  )
-  if (!isLoading && newState.dragBlock) { isLoading = newState.dragBlock.isLoading }
-  newState.isLoading = isLoading
-  return newState
+  const dragBlock = state.get('dragBlock')
+  if (!isLoading && dragBlock) { isLoading = dragBlock.get('isLoading') }
+  return isLoading
 }
 
 methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  const newBlock = { ...block, uid: newState.uid }
-  if (newState.postBuyLink) {
-    newBlock.linkUrl = newState.postBuyLink
+  const uid = state.get('uid')
+  const newBlock = { ...block, uid }
+  const postBuyLink = state.get('postBuyLink')
+  if (postBuyLink) {
+    newBlock.linkUrl = postBuyLink
   }
-  collection[newState.uid] = newBlock
-  order.push(newState.uid)
-  newState.uid += 1
-  if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(newState) }
-  return newState
+  const order = state.get('order', Immutable.List())
+  const updatedState = state.setIn(['collection', `${uid}`], Immutable.fromJS(newBlock))
+    .set('order', order.push(uid))
+    .set('uid', uid + 1)
+  if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(updatedState) }
+  return updatedState
 }
 
 methods.addEmptyTextBlock = (state, shouldCheckForEmpty = false) => {
-  let newState = cloneDeep(state)
-  const { collection, order } = newState
-  if (order.length > 1) {
-    const last = collection[order[order.length - 1]]
-    const secondToLast = collection[order[order.length - 2]]
-    if (/text/.test(secondToLast.kind) && /text/.test(last.kind) && !last.data.length) {
-      return methods.remove({ shouldCheckForEmpty, state: newState, uid: last.uid })
+  const order = state.get('order', Immutable.List())
+  const last = state.getIn(['collection', `${order.last()}`])
+  if (order.size > 1) {
+    const secondToLast = state.getIn(['collection', `${order.get(-2)}`])
+    if (/text/.test(secondToLast.get('kind')) && /text/.test(last.get('kind')) && !last.get('data').length) {
+      return methods.remove({ shouldCheckForEmpty, state, uid: last.get('uid') })
     }
   }
-  if (!order.length || !/text/.test(collection[order[order.length - 1]].kind)) {
-    newState = methods.add({ block: { data: '', kind: 'text' }, state: newState })
+  if (!order.size || !/text/.test(last.get('kind'))) {
+    return methods.add({ block: { data: '', kind: 'text' }, state })
   }
-  return newState
+  return state
 }
 
 methods.remove = ({ shouldCheckForEmpty = true, state, uid }) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  delete collection[uid]
-  order.splice(order.indexOf(uid), 1)
-  if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(newState) }
-  return newState
+  const order = state.get('order')
+  const updatedState = state.deleteIn(['collection', `${uid}`])
+    .deleteIn(['order', `${order.indexOf(uid)}`])
+  if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(updatedState) }
+  return updatedState
 }
 
 methods.removeEmptyTextBlock = (state) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  if (order.length > 0) {
-    const last = collection[order[order.length - 1]]
-    if (last && /text/.test(last.kind) && !last.data.length) {
-      delete collection[last.uid]
-      order.splice(order.indexOf(last.uid), 1)
+  const order = state.get('order')
+  if (order.size > 0) {
+    const last = state.getIn(['collection', `${order.last()}`])
+    if (last && /text/.test(last.get('kind')) && !last.get('data').length) {
+      return state.deleteIn(['collection', `${last.get('uid')}`])
+        .deleteIn(['order', `${order.indexOf(last.get('uid'))}`])
     }
   }
-  return newState
+  return state
 }
 
 methods.updateBlock = (state, action) => {
-  const newState = cloneDeep(state)
   const { block, uid } = action.payload
-  newState.collection[uid] = block
-  return newState
+  return state.setIn(['collection', `${uid}`], Immutable.fromJS(block))
 }
 
 methods.reorderBlocks = (state, action) => {
-  const newState = cloneDeep(state)
-  const { order } = newState
+  const order = state.get('order')
   const { delta, uid } = action.payload
   const index = order.indexOf(uid)
-  // remove from old spot
-  order.splice(index, 1)
-  // add to new spot
-  order.splice(index + delta, 0, uid)
-  return newState
+  // remove from old spot and add to new spot
+  return state.set('order', order.splice(index, 1).splice(index + delta, 0, uid))
 }
 
 methods.appendText = (state, text) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  const textBlocks = order.filter(orderUid => /text/.test(collection[orderUid].kind))
-  const lastTextBlock = collection[textBlocks[textBlocks.length - 1]]
+  const order = state.get('order')
+  const textBlocks = order.filter(uid => /text/.test(state.getIn(['collection', `${uid}`, 'kind'])))
+  const lastTextBlock = state.getIn(['collection', `${textBlocks.last()}`])
   if (lastTextBlock) {
-    lastTextBlock.data += text
-    collection[lastTextBlock.uid] = lastTextBlock
+    return state.setIn(['collection', `${lastTextBlock.get('uid')}`, 'data'], lastTextBlock.get('data') + text)
   }
-  return newState
+  return state
 }
 
 methods.appendUsernames = (state, usernames) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  const textBlocks = order.filter(orderUid => /text/.test(collection[orderUid].kind))
-  const lastTextBlock = collection[textBlocks[textBlocks.length - 1]]
+  const order = state.get('order')
+  const textBlocks = order.filter(uid => /text/.test(state.getIn(['collection', `${uid}`, 'kind'])))
+  const lastTextBlock = state.getIn(['collection', `${textBlocks.last()}`])
   const text = reduce(usernames, (memo, { username }) => `${memo}@${username} `, '')
-  if (lastTextBlock && !lastTextBlock.data.includes(text)) {
-    lastTextBlock.data += text
-    collection[lastTextBlock.uid] = lastTextBlock
+  if (lastTextBlock && !lastTextBlock.get('data').includes(text)) {
+    return state.setIn(['collection', `${lastTextBlock.get('uid')}`, 'data'], lastTextBlock.get('data') + text)
   }
-  return newState
+  return state
 }
 
 methods.replaceText = (state, action) => {
-  const newState = cloneDeep(state)
-  const { collection } = newState
   const { editorId, uid } = action.payload
-  if (/text/.test(collection[uid].kind)) {
+  const kind = state.getIn(['collection', `${uid}`, 'kind'])
+  if (/text/.test(kind)) {
     const selector = `[data-editor-id="${editorId}"][data-collection-id="${uid}"]`
     const elem = document.querySelector(selector)
     if (elem && elem.firstChild) {
-      collection[uid].data = elem.firstChild.innerHTML
+      return state.setIn(['collection', `${uid}`, 'data'], elem.firstChild.innerHTML)
     }
   }
-  return newState
+  return state
 }
 
 methods.updateBuyLink = (state, action) => {
-  const newState = cloneDeep(state)
   const { payload: { link } } = action
   // once individual blocks can get their own links
   // we can rip out this overall property on editor
-  newState.postBuyLink = link
-  newState.order.forEach((uid) => {
-    const block = newState.collection[uid]
+  const order = state.get('order')
+  state.set('postBuyLink', link)
+  let updatedState = state
+  order.forEach((uid) => {
     if (link && link.length) {
-      block.linkUrl = link
+      updatedState = updatedState.setIn(['collection', `${uid}`, 'linkUrl'], link)
     } else {
-      delete block.linkUrl
+      updatedState = updatedState.deleteIn(['collection', `${uid}`, 'linkUrl'])
     }
   })
-  return newState
+  return updatedState
 }
 
 methods.getEditorObject = (state = initialState, action) => {
-  let newState = cloneDeep(state)
   switch (action.type) {
     case EDITOR.ADD_BLOCK:
       return methods.add({
         block: action.payload.block,
-        state: newState,
+        state,
         shouldCheckForEmpty: action.payload.shouldCheckForEmpty,
       })
     case EDITOR.ADD_DRAG_BLOCK:
-      newState.dragBlock = action.payload.block
-      return newState
+      return state.set('dragBlock', action.payload.block)
     case EDITOR.ADD_EMPTY_TEXT_BLOCK:
-      return methods.addEmptyTextBlock(newState)
+      return methods.addEmptyTextBlock(state)
     case EDITOR.APPEND_TEXT:
-      return methods.appendText(newState, action.payload.text)
+      return methods.appendText(state, action.payload.text)
     case EDITOR.INITIALIZE:
-      if (state.shouldPersist) {
+      if (state.get('shouldPersist')) {
         return state
       }
       return initialState
     case EDITOR.POST_PREVIEW_SUCCESS:
-      newState = methods.removeEmptyTextBlock(newState)
-      newState = methods.add({
+      state = methods.removeEmptyTextBlock(state)
+      state = methods.add({
         block: { ...action.payload.response.postPreviews.body[0] },
-        state: newState,
+        state,
       })
-      return newState
+      return state
     case EDITOR.REMOVE_BLOCK:
-      return methods.remove({ state: newState, uid: action.payload.uid })
+      return methods.remove({ state, uid: action.payload.uid })
     case EDITOR.REMOVE_DRAG_BLOCK:
-      delete newState.dragBlock
-      return newState
+      return state.delete('dragBlock')
     case EDITOR.REORDER_BLOCKS:
-      return methods.reorderBlocks(newState, action)
+      return methods.reorderBlocks(state, action)
     case EDITOR.REPLACE_TEXT:
-      return methods.replaceText(newState, action)
+      return methods.replaceText(state, action)
     case COMMENT.CREATE_REQUEST:
     case COMMENT.UPDATE_REQUEST:
     case POST.CREATE_REQUEST:
     case POST.UPDATE_REQUEST:
-      newState.isPosting = true
-      return newState
+      return state.set('isPosting', true)
     case COMMENT.CREATE_SUCCESS:
     case COMMENT.UPDATE_SUCCESS:
     case EDITOR.RESET:
     case POST.CREATE_SUCCESS:
     case POST.UPDATE_SUCCESS:
-      return methods.addEmptyTextBlock({ ...initialState, uid: newState.uid })
+      return methods.addEmptyTextBlock(initialState.set('uid', state.get('uid')))
     case COMMENT.CREATE_FAILURE:
     case COMMENT.UPDATE_FAILURE:
     case POST.CREATE_FAILURE:
     case POST.UPDATE_FAILURE:
-      newState.isPosting = false
-      return newState
+      return state.set('isPosting', false)
     case EDITOR.LOAD_REPLY_ALL_SUCCESS:
-      return methods.appendUsernames(newState, get(action, 'payload.response.usernames', []))
+      return methods.appendUsernames(state, get(action, 'payload.response.usernames', []))
     case EDITOR.SAVE_ASSET_SUCCESS:
-      if (newState.dragBlock && newState.dragBlock.uid === action.payload.uid) {
-        newState.dragBlock = {
-          ...newState.dragBlock,
-          data: { url: action.payload.response.url },
-          isLoading: false,
-        }
+      if (state.getIn(['dragBlock', 'uid']) === action.payload.uid) {
+        state = state.setIn(['dragBlock', 'data', 'url'], action.payload.response.url)
+          .setIn(['dragBlock', 'isLoading'], false)
       } else {
-        newState.collection[action.payload.uid] = {
-          ...newState.collection[action.payload.uid],
-          data: { url: action.payload.response.url },
-          isLoading: false,
-        }
+        state = state.setIn(['collection', `${action.payload.uid}`, 'data', 'url'], action.payload.response.url)
+          .setIn(['collection', `${action.payload.uid}`, 'isLoading'], false)
       }
-      newState.isPosting = false
-      return newState
+      return state.set('isPosting', false)
     case EDITOR.TMP_IMAGE_CREATED:
-      newState = methods.removeEmptyTextBlock(newState)
-      newState = methods.add({
+      return methods.add({
         block: {
           blob: action.payload.url,
           kind: 'image',
           data: {},
           isLoading: true,
         },
-        state: newState,
+        state: methods.removeEmptyTextBlock(state),
       })
-      return newState
     case EDITOR.UPDATE_BUY_LINK:
-      return methods.updateBuyLink(newState, action)
+      return methods.updateBuyLink(state, action)
     case EDITOR.UPDATE_BLOCK:
-      newState = methods.updateBlock(newState, action)
-      newState.isPosting = false
-      return newState
+      return methods.updateBlock(state, action).set('isPosting', false)
     default:
       return state
   }

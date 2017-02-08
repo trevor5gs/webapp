@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import debounce from 'lodash/debounce'
 import { EDITOR } from '../constants/action_types'
 import { selectCompletions } from '../selectors/editor'
@@ -38,17 +37,22 @@ function mapStateToProps(state) {
   }
 }
 
-class InputContainer extends Component {
+class InputContainer extends PureComponent {
 
   static propTypes = {
-    deviceSize: PropTypes.string,
+    deviceSize: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     completions: PropTypes.object,
-    emojis: PropTypes.array,
+    emojis: PropTypes.object,
     isCompleterActive: PropTypes.bool.isRequired,
     isTextToolsActive: PropTypes.bool.isRequired,
-    textToolsCoordinates: PropTypes.object,
-    textToolsStates: PropTypes.object,
+    textToolsCoordinates: PropTypes.object.isRequired,
+    textToolsStates: PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    completions: null,
+    emojis: null,
   }
 
   componentWillMount() {
@@ -58,10 +62,6 @@ class InputContainer extends Component {
 
   componentDidMount() {
     addInputObject(this)
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {
@@ -164,7 +164,7 @@ class InputContainer extends Component {
   render() {
     const { completions, deviceSize, isCompleterActive } = this.props
     const { isTextToolsActive, textToolsStates, textToolsCoordinates } = this.props
-    const onCompletion = completions && completions.type === 'location' ?
+    const onCompletion = completions && completions.get('type') === 'location' ?
       this.onLocationCompletion : this.onCompletion
     return (
       <div className="InputContainer">

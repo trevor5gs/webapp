@@ -27,14 +27,13 @@ function mapStateToProps(state) {
   const announcement = selectAnnouncement(state)
   return {
     activeTabType,
-    // TODO: Update this in Immutable
-    announcementId: announcement && announcement.id,
-    announcementBody: announcement && announcement.body,
-    announcementCTACaption: announcement && (announcement.ctaCaption || 'Learn More'),
-    announcementCTAHref: announcement && announcement.ctaHref,
-    announcementImage: announcement && announcement.image.hdpi.url,
-    announcementTitle: announcement && announcement.header,
-    hasAnnouncementNotification: !!(announcement),
+    announcementId: announcement.get('id'),
+    announcementBody: announcement.get('body'),
+    announcementCTACaption: announcement.get('ctaCaption', 'Learn More'),
+    announcementCTAHref: announcement.get('ctaHref'),
+    announcementImage: announcement.getIn(['image', 'hdpi', 'url']),
+    announcementTitle: announcement.get('header'),
+    hasAnnouncementNotification: !!(announcement.size),
     streamAction: loadNotifications({ category: activeTabType }),
     streamType: selectStreamType(state),
   }
@@ -51,7 +50,7 @@ class NotificationsContainer extends Component {
     announcementImage: PropTypes.string,
     announcementTitle: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    hasAnnouncementNotification: PropTypes.bool,
+    hasAnnouncementNotification: PropTypes.bool.isRequired,
     streamAction: PropTypes.object,
     streamType: PropTypes.string,
   }
@@ -60,9 +59,12 @@ class NotificationsContainer extends Component {
     activeTabType: 'all',
     announcementId: '',
     announcementBody: '',
+    announcementCTACaption: null,
     announcementCTAHref: null,
     announcementImage: null,
     announcementTitle: '',
+    streamAction: null,
+    streamType: null,
   }
 
   static childContextTypes = {
@@ -212,8 +214,6 @@ class NotificationsContainer extends Component {
               <Paginator
                 className="NotificationReload"
                 isHidden={false}
-                totalPages={0}
-                totalPagesRemaining={0}
               /> :
               null
           }

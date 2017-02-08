@@ -5,12 +5,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { applyRouterMiddleware, browserHistory, Router } from 'react-router'
-import { syncHistoryWithStore } from 'react-router-redux'
 import useScroll from 'react-router-scroll/lib/useScroll'
 import { persistStore } from 'redux-persist'
 import { asyncLocalStorage } from 'redux-persist/storages'
+import immutableTransform from 'redux-persist-transform-immutable'
+import { syncHistoryWithStore } from 'react-router-redux'
 
-// import './main.sass'
 import './main.css'
 import { addFeatureDetection, isIOS } from './lib/jello'
 import MemoryStore from './lib/memory_store'
@@ -52,9 +52,24 @@ Honeybadger.configure({
 
 updateTimeAgoStrings({ about: '' })
 
-const APP_VERSION = '3.0.21'
+const APP_VERSION = '4.0.0'
 
-const history = syncHistoryWithStore(browserHistory, store)
+const createSelectLocationState = () => {
+  let prevRoutingState
+  let prevRoutingStateJS
+  return (state) => {
+    const routingState = state.routing
+    if (typeof prevRoutingState === 'undefined' || prevRoutingState !== routingState) {
+      prevRoutingState = routingState
+      prevRoutingStateJS = routingState.toJS()
+    }
+    return prevRoutingStateJS
+  }
+}
+
+const history = syncHistoryWithStore(browserHistory, store, {
+  selectLocationState: createSelectLocationState(),
+})
 const routes = createRoutes(store)
 const element = (
   <Provider store={store}>
@@ -68,9 +83,18 @@ const element = (
 
 const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
 
+// capture auth/gui so we can migrate to immutable
+// TODO: should probably be removed by 6/6/17
+const authState = localStorage.getItem('reduxPersist:authentication')
+const guiState = localStorage.getItem('reduxPersist:gui')
+
 const launchApplication = (storage, hasLocalStorage = false) => {
   addFeatureDetection()
-  const persistor = persistStore(store, { storage, whitelist }, () => {
+  const persistor = persistStore(store, {
+    storage,
+    transforms: [immutableTransform()],
+    whitelist,
+  }, () => {
     const root = document.getElementById('root')
     ReactDOM.render(element, root)
   })
@@ -79,15 +103,19 @@ const launchApplication = (storage, hasLocalStorage = false) => {
   // due to the async nature of the default storage we need to check against the
   // real localStorage to determine if we should purge to avoid a weird race condition
   if (hasLocalStorage) {
-    if (localStorage.getItem('APP_VERSION') !== APP_VERSION) {
-      persistor.purge(['json'])
+    const lastVersion = localStorage.getItem('APP_VERSION')
+    if (lastVersion !== APP_VERSION) {
+      if (Number(lastVersion ? lastVersion.split('.')[0] : 0) < 4) {
+        window.nonImmutableState = { authentication: authState, gui: guiState }
+      }
+      persistor.purge(['editor', 'json', 'profile'])
       Session.clear()
       storage.setItem('APP_VERSION', APP_VERSION, () => {})
     }
   } else {
     storage.getItem('APP_VERSION', (error, result) => {
       if (result && result !== APP_VERSION) {
-        persistor.purge(['json'])
+        persistor.purge(['editor', 'json', 'profile'])
         Session.clear()
         storage.setItem('APP_VERSION', APP_VERSION, () => {})
       }

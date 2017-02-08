@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import { createSelector } from 'reselect'
-import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
@@ -44,9 +44,9 @@ export function getNextBlockMutePriority(currentPriority, requestedPriority) {
       return RELATIONSHIP_PRIORITY.INACTIVE
     default:
       switch (requestedPriority) {
-        case 'block':
+        case RELATIONSHIP_PRIORITY.BLOCK:
           return RELATIONSHIP_PRIORITY.BLOCK
-        case 'mute':
+        case RELATIONSHIP_PRIORITY.MUTE:
           return RELATIONSHIP_PRIORITY.MUTE
         default:
           return RELATIONSHIP_PRIORITY.INACTIVE
@@ -64,10 +64,10 @@ export function mapStateToProps(state, props) {
     onClickCallback,
     pathname: selectPathname(state),
     previousPath: selectPreviousPath(state),
-    relationshipPriority: user.relationshipPriority,
+    relationshipPriority: user.get('relationshipPriority'),
     shouldRenderBlockMute,
-    userId: user.id,
-    username: user.username,
+    userId: user.get('id'),
+    username: user.get('username'),
   }
 }
 
@@ -82,11 +82,17 @@ class RelationshipContainer extends Component {
     previousPath: PropTypes.string,
     relationshipPriority: PropTypes.string,
     shouldRenderBlockMute: PropTypes.bool,
-    userId: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string,
-    ]).isRequired,
-    username: PropTypes.string.isRequired,
+    userId: PropTypes.string,
+    username: PropTypes.string,
+  }
+
+  static defaultProps = {
+    className: null,
+    previousPath: null,
+    relationshipPriority: null,
+    shouldRenderBlockMute: false,
+    userId: null,
+    username: null,
   }
 
   static contextTypes = {
@@ -107,7 +113,7 @@ class RelationshipContainer extends Component {
     const { dispatch, previousPath, relationshipPriority, userId } = this.props
     this.onRelationshipUpdate({
       userId,
-      priority: getNextBlockMutePriority(relationshipPriority, 'block'),
+      priority: getNextBlockMutePriority(relationshipPriority, RELATIONSHIP_PRIORITY.BLOCK),
       existing: relationshipPriority,
     })
     this.onCloseModal()
@@ -131,7 +137,7 @@ class RelationshipContainer extends Component {
     const { relationshipPriority, userId } = this.props
     this.onRelationshipUpdate({
       userId,
-      priority: getNextBlockMutePriority(relationshipPriority, 'mute'),
+      priority: getNextBlockMutePriority(relationshipPriority, RELATIONSHIP_PRIORITY.MUTE),
       existing: relationshipPriority,
     })
     this.onCloseModal()
@@ -175,29 +181,29 @@ class RelationshipContainer extends Component {
         className={classNames('RelationshipContainer', className)}
         data-priority={relationshipPriority}
       >
-        {shouldRenderBlockMute ?
+        {shouldRenderBlockMute &&
           <BlockMuteButton
             className={className}
             onClick={this.onOpenBlockMuteModal}
             priority={relationshipPriority}
             userId={userId}
-          /> : null
+          />
         }
-        {!shouldRenderBlockMute ?
+        {!shouldRenderBlockMute &&
           <RelationshipButton
             className={className}
             onClick={this[onClickCallback]}
             priority={relationshipPriority}
             userId={userId}
-          /> : null
+          />
         }
-        {!shouldRenderBlockMute ?
+        {!shouldRenderBlockMute &&
           <StarshipButton
             className={className}
             onClick={this[onClickCallback]}
             priority={relationshipPriority}
             userId={userId}
-          /> : null
+          />
         }
       </div>
     )

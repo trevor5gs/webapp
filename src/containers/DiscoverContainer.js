@@ -1,7 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
-import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectParamsType } from '../selectors/params'
 import { selectPropsPathname } from '../selectors/routing'
 import {
@@ -37,18 +35,15 @@ export function getStreamAction(type) {
 }
 
 function mapStateToProps(state, props) {
-  const isLoggedIn = selectIsLoggedIn(state)
   return {
-    isLoggedIn,
     paramsType: selectParamsType(state, props),
     pathname: selectPropsPathname(state, props),
   }
 }
 
-class DiscoverContainer extends Component {
+class DiscoverContainer extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
     paramsType: PropTypes.string.isRequired,
     pathname: PropTypes.string.isRequired,
   }
@@ -65,10 +60,6 @@ class DiscoverContainer extends Component {
     dispatch(bindDiscoverKey(paramsType))
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
-  }
-
   componentDidUpdate(prevProps) {
     const { dispatch, paramsType, pathname } = this.props
     if (prevProps.pathname !== pathname) {
@@ -77,13 +68,8 @@ class DiscoverContainer extends Component {
   }
 
   render() {
-    const { isLoggedIn, paramsType, pathname } = this.props
-    const props = {
-      isLoggedIn,
-      pathname,
-      streamAction: getStreamAction(paramsType),
-    }
-    return <Discover key={`discover_${paramsType}`} {...props} />
+    const { paramsType } = this.props
+    return <Discover key={`discover_${paramsType}`} streamAction={getStreamAction(paramsType)} />
   }
 }
 

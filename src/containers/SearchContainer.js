@@ -1,7 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
 import { selectIsLoggedIn } from '../selectors/authentication'
@@ -37,7 +36,7 @@ export function mapStateToProps(state, props) {
   }
 }
 
-class SearchContainer extends Component {
+class SearchContainer extends PureComponent {
   static propTypes = {
     debounceWait: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
@@ -45,6 +44,10 @@ class SearchContainer extends Component {
     pathname: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     terms: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    debounceWait: 666,
   }
 
   static preRender = (store, routerState) => {
@@ -55,7 +58,7 @@ class SearchContainer extends Component {
   }
 
   componentWillMount() {
-    const { debounceWait = 666 } = this.props
+    const { debounceWait } = this.props
     if (debounceWait > 0) {
       this.search = debounce(this.search, debounceWait)
     }
@@ -64,10 +67,6 @@ class SearchContainer extends Component {
   componentDidMount() {
     const { terms, type } = this.props
     this.search({ terms, type }, false)
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onChangeControl = (vo) => {

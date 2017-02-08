@@ -1,13 +1,11 @@
-import React, { Component, PropTypes } from 'react'
+import Immutable from 'immutable'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
-import get from 'lodash/get'
-import isEqual from 'lodash/isEqual'
 import { selectIsMobileGridStream, selectIsNavbarHidden } from '../../selectors/gui'
 import { selectPropsPostId } from '../../selectors/post'
 import { selectAvatar } from '../../selectors/profile'
-import { selectPathname } from '../../selectors/routing'
+import { selectIsPostDetail, selectPathname } from '../../selectors/routing'
 import Avatar from '../assets/Avatar'
 import Block from './Block'
 import EmbedBlock from './EmbedBlock'
@@ -33,52 +31,96 @@ import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addInputObject, removeInputObject } from './InputComponent'
 
-class BlockCollection extends Component {
+function mapStateToProps(state, props) {
+  const editor = state.editor.get(props.editorId, Immutable.Map())
+  const collection = editor.get('collection')
+  const order = editor.get('order')
+  let buyLink
+  const firstBlock = collection && order ? collection.get(`${order.first()}`) : null
+  if (firstBlock) {
+    buyLink = firstBlock.get('linkUrl')
+  }
+  return {
+    buyLink,
+    avatar: selectAvatar(state),
+    collection,
+    dragBlock: editor.get('dragBlock'),
+    firstBlock,
+    hasContent: editor.get('hasContent'),
+    hasMedia: editor.get('hasMedia'),
+    hasMention: editor.get('hasMention'),
+    isLoading: editor.get('isLoading'),
+    isPostDetail: selectIsPostDetail(state, props),
+    isPosting: editor.get('isPosting'),
+    isMobileGridStream: selectIsMobileGridStream(state),
+    isNavbarHidden: selectIsNavbarHidden(state),
+    order,
+    orderLength: order ? order.size : 0,
+    pathname: selectPathname(state),
+    postId: selectPropsPostId(state, props),
+  }
+}
+
+class BlockCollection extends PureComponent {
 
   static propTypes = {
-    buyLink: PropTypes.string,
     avatar: PropTypes.object,
-    blocks: PropTypes.array,
+    blocks: PropTypes.object,
+    buyLink: PropTypes.string,
     cancelAction: PropTypes.func.isRequired,
-    collection: PropTypes.object,
+    collection: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     dragBlock: PropTypes.object,
     editorId: PropTypes.string.isRequired,
+    firstBlock: PropTypes.object,
     hasContent: PropTypes.bool,
     hasMedia: PropTypes.bool,
     hasMention: PropTypes.bool,
     isComment: PropTypes.bool,
     isLoading: PropTypes.bool,
-    isPostDetail: PropTypes.bool,
-    isPosting: PropTypes.bool,
     isMobileGridStream: PropTypes.bool,
-    isOwnPost: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
-    order: PropTypes.array,
+    isOwnPost: PropTypes.bool,
+    isPostDetail: PropTypes.bool.isRequired,
+    isPosting: PropTypes.bool,
+    order: PropTypes.object.isRequired,
+    orderLength: PropTypes.number.isRequired,
     pathname: PropTypes.string.isRequired,
     postId: PropTypes.string,
-    repostContent: PropTypes.array,
+    repostContent: PropTypes.object,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
   }
 
   static defaultProps = {
-    blocks: [],
+    avatar: null,
+    buyLink: null,
+    blocks: Immutable.List(),
+    dragBlock: null,
+    firstBlock: null,
+    hasContent: false,
+    hasMedia: false,
+    hasMention: false,
     isComment: false,
-    isPostDetail: false,
-    repostContent: [],
+    isLoading: false,
+    isMobileGridStream: false,
+    isNavbarHidden: false,
+    isOwnPost: false,
+    isPosting: false,
+    postId: null,
+    repostContent: Immutable.List(),
     submitText: 'Post',
   }
 
   componentWillMount() {
     const { blocks, dispatch, editorId, repostContent } = this.props
     this.state = { hasDragOver: false }
-    if (repostContent.length) {
+    if (repostContent.size) {
       dispatch(addBlock({ kind: 'repost', data: repostContent }, editorId))
     }
-    if (blocks.length) {
+    if (blocks.size) {
       blocks.forEach((block) => {
-        dispatch(addBlock(block, editorId, false))
+        dispatch(addBlock(block.toJS(), editorId, false))
       })
     }
   }
@@ -91,15 +133,11 @@ class BlockCollection extends Component {
     addInputObject(this)
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!nextProps.collection || !nextProps.order) { return false }
-    return shallowCompare(this, nextProps, nextState)
-  }
-
   componentDidUpdate(prevProps) {
     const { editorId, isNavbarHidden, isPostDetail, order } = this.props
     const isDragging = document.body.classList.contains('isDragging')
-    if (!isPostDetail && !isDragging && prevProps.order.length !== order.length) {
+    if (!isPostDetail && !isDragging && prevProps.order &&
+        order && prevProps.order.size !== order.size) {
       scrollToLastTextBlock(editorId, isNavbarHidden)
     }
   }
@@ -126,7 +164,7 @@ class BlockCollection extends Component {
     this.prevBlock = this.blockNode.previousSibling
     this.nextBlock = this.blockNode.nextSibling
     const dragUid = this.blockNode.dataset.collectionId
-    dispatch(addDragBlock(collection[dragUid], editorId))
+    dispatch(addDragBlock(collection.get(`${dragUid}`), editorId))
     // swap the dragging block for a
     // normal block and set the height/width
     const block = {
@@ -135,7 +173,7 @@ class BlockCollection extends Component {
         height: this.blockNode.offsetHeight,
       },
       kind: 'block',
-      uid: collection[dragUid].uid,
+      uid: collection.getIn([`${dragUid}`, 'uid']),
     }
     dispatch(updateBlock(block, dragUid, editorId, true))
     this.onDragMove(props)
@@ -173,7 +211,7 @@ class BlockCollection extends Component {
   onMoveBlock(delta) {
     if (!this.blockPlaceholder) return
     const { dispatch, dragBlock, editorId } = this.props
-    dispatch(reorderBlocks(dragBlock.uid, delta, editorId))
+    dispatch(reorderBlocks(dragBlock.get('uid'), delta, editorId))
     const placeholder = this.blockPlaceholder.editorBlock
     this.prevBlock = placeholder.previousSibling
     this.nextBlock = placeholder.nextSibling
@@ -183,7 +221,7 @@ class BlockCollection extends Component {
     const { dispatch, dragBlock, editorId } = this.props
     // swap the normal block out for
     // the one that was removed initially
-    const dragUid = dragBlock.uid
+    const dragUid = dragBlock.get('uid')
     dispatch(updateBlock(dragBlock, dragUid, editorId))
     dispatch(removeDragBlock(editorId))
     document.body.classList.remove('isDragging')
@@ -233,7 +271,7 @@ class BlockCollection extends Component {
   onSubmitPost() {
     const { collection, editorId, hasContent } = this.props
     if (document.activeElement.parentNode.dataset.editorId === editorId &&
-        !Object.values(collection).some(block => block.isLoading) && hasContent) {
+        collection.every(block => !block.get('isLoading')) && hasContent) {
       this.submit()
     }
   }
@@ -245,23 +283,23 @@ class BlockCollection extends Component {
   getBlockElement(block) {
     const { editorId } = this.props
     const blockProps = {
-      data: block.data,
+      data: block.get('data'),
       editorId,
-      key: block.uid,
-      kind: block.kind,
-      linkURL: block.linkUrl,
+      key: block.get('uid'),
+      kind: block.get('kind'),
+      linkURL: block.get('linkUrl'),
       onRemoveBlock: this.remove,
-      uid: block.uid,
+      uid: block.get('uid'),
     }
-    switch (block.kind) {
+    switch (block.get('kind')) {
       case 'block':
         return (
           <Block
             {...blockProps}
-            className={classNames('BlockPlaceholder', { isUploading: block.isLoading })}
+            className={classNames('BlockPlaceholder', { isUploading: block.get('isLoading') })}
             ref={(comp) => { this.blockPlaceholder = comp }}
           >
-            <div style={{ width: block.data.width, height: block.data.height }} />
+            <div style={{ width: block.getIn(['data', 'width']), height: block.getIn(['data', 'height']) }} />
           </Block>
         )
       case 'embed':
@@ -270,7 +308,7 @@ class BlockCollection extends Component {
         )
       case 'image':
         return (
-          <ImageBlock blob={block.blob} {...blockProps} isUploading={block.isLoading} />
+          <ImageBlock blob={block.get('blob')} {...blockProps} isUploading={block.get('isLoading')} />
         )
       case 'repost':
         return (
@@ -308,7 +346,7 @@ class BlockCollection extends Component {
 
   handleTextBlockInput = (vo) => {
     const { dragBlock, collection, dispatch, editorId } = this.props
-    if (!dragBlock && !isEqual(collection[vo.uid], vo)) {
+    if (!dragBlock && collection.getIn([`${vo.uid}`, 'data']) !== vo.data) {
       dispatch(updateBlock(vo, vo.uid, editorId))
     }
   }
@@ -328,24 +366,27 @@ class BlockCollection extends Component {
     const { collection, order } = this.props
     const results = []
     order.forEach((uid) => {
-      const block = collection[uid]
-      switch (block.kind) {
+      const block = collection.get(`${uid}`)
+      const kind = block.get('kind')
+      const data = block.get('data')
+      const linkUrl = block.get('linkUrl')
+      switch (kind) {
         case 'text':
-          if (block.data.length) {
-            if (block.linkUrl && block.linkUrl.length) {
-              results.push({ kind: block.kind, data: block.data, link_url: block.linkUrl })
+          if (data && data.length) {
+            if (linkUrl && linkUrl.length) {
+              results.push({ kind, data, link_url: linkUrl })
             } else {
-              results.push({ kind: block.kind, data: block.data })
+              results.push({ kind, data })
             }
           }
           break
         case 'repost':
           break
         default:
-          if (block.linkUrl && block.linkUrl.length) {
-            results.push({ kind: block.kind, data: block.data, link_url: block.linkUrl })
+          if (linkUrl && linkUrl.length) {
+            results.push({ kind, data, link_url: linkUrl })
           } else {
-            results.push({ kind: block.kind, data: block.data })
+            results.push({ kind, data })
           }
           break
       }
@@ -368,11 +409,12 @@ class BlockCollection extends Component {
 
   render() {
     const {
-      buyLink, avatar, cancelAction, collection, dragBlock, editorId, hasContent, hasMedia,
-      hasMention, isComment, isLoading, isMobileGridStream, isOwnPost, isPosting, order, submitText,
+      buyLink, avatar, cancelAction, collection, dragBlock, editorId, firstBlock,
+      hasContent, hasMedia, hasMention, isComment, isLoading, isMobileGridStream,
+      isOwnPost, isPosting, order, orderLength, submitText,
     } = this.props
     const { dragBlockTop, hasDragOver } = this.state
-    const firstBlockIsText = collection[order[0]] ? /text/.test(collection[order[0]].kind) : true
+    const firstBlockIsText = firstBlock ? /text/.test(firstBlock.get('kind')) : true
     const showQuickEmoji = isComment && firstBlockIsText
     const editorClassNames = classNames('editor', {
       withQuickEmoji: showQuickEmoji,
@@ -395,9 +437,9 @@ class BlockCollection extends Component {
         {isComment ? <Avatar sources={avatar} /> : null}
         <div
           className="editor-region"
-          data-num-blocks={order.length}
+          data-num-blocks={orderLength}
         >
-          {order.map(uid => this.getBlockElement(collection[uid]))}
+          {order ? order.map(uid => this.getBlockElement(collection.get(`${uid}`))) : null}
           {dragBlock ?
             <div className="DragBlock" style={{ top: dragBlockTop }}>
               {this.getBlockElement(dragBlock)}
@@ -419,32 +461,6 @@ class BlockCollection extends Component {
         />
       </div>
     )
-  }
-}
-
-function mapStateToProps(state, props) {
-  const editor = get(state, ['editor', props.editorId], {})
-  const { collection, order } = editor
-  let buyLink
-  if (collection && order && collection[order[0]]) {
-    buyLink = collection[order[0]].linkUrl
-  }
-  return {
-    buyLink,
-    avatar: selectAvatar(state),
-    collection: editor.collection,
-    dragBlock: editor.dragBlock,
-    hasContent: editor.hasContent,
-    hasMedia: editor.hasMedia,
-    hasMention: editor.hasMention,
-    isLoading: editor.isLoading,
-    isPosting: editor.isPosting,
-    isMobileGridStream: selectIsMobileGridStream(state),
-    isNavbarHidden: selectIsNavbarHidden(state),
-    order: editor.order,
-    orderLength: get(editor, 'order.length'),
-    pathname: selectPathname(state),
-    postId: selectPropsPostId(state, props),
   }
 }
 

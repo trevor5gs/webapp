@@ -1,21 +1,23 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 
-export default class ImageAsset extends Component {
+export default class ImageAsset extends PureComponent {
 
   static propTypes = {
     onLoadSuccess: PropTypes.func,
     onLoadFailure: PropTypes.func,
-    src: PropTypes.string.isRequired,
+    src: PropTypes.string,
     srcSet: PropTypes.string,
+  }
+
+  static defaultProps = {
+    onLoadSuccess: null,
+    onLoadFailure: null,
+    src: null,
+    srcSet: null,
   }
 
   componentDidMount() {
     this.createLoader()
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {

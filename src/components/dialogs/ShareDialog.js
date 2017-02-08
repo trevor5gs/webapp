@@ -41,7 +41,13 @@ class ShareDialog extends Component {
     author: PropTypes.object,
     post: PropTypes.object,
     username: PropTypes.string,
-    trackEvent: PropTypes.func,
+    trackEvent: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    author: null,
+    post: null,
+    username: null,
   }
 
   componentWillMount() {
@@ -68,19 +74,19 @@ class ShareDialog extends Component {
 
   getMountSharePost() {
     const { author, post } = this.props
-    this.shareLink = `${window.location.protocol}//${window.location.host}/${author.username}/post/${post.token}`
+    this.shareLink = `${window.location.protocol}//${window.location.host}/${author.get('username')}/post/${post.get('token')}`
     let summary = 'Check out this post on Ello'
     // email string, since we can fit more text content
-    const emailSubject = `${summary}, via @${author.username}`
+    const emailSubject = `${summary}, via @${author.get('username')}`
     // grab out the image and summary from the post
     this.image = null
-    post.summary.forEach((region) => {
-      if (/text/.test(region.kind)) {
+    post.get('summary').forEach((region) => {
+      if (/text/.test(region.get('kind'))) {
         const div = document.createElement('div')
-        div.innerHTML = region.data
+        div.innerHTML = region.get('data')
         summary = div.textContent
-      } else if (!this.image && /image/.test(region.kind)) {
-        this.image = region.data.url
+      } else if (!this.image && /image/.test(region.get('kind'))) {
+        this.image = region.getIn(['data', 'url'])
         if (this.image.indexOf('//') === 0) {
           this.image = `http:${this.image}`
         }

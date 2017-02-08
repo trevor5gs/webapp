@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import { trackEvent } from '../actions/analytics'
 import { saveAvatar, saveCover } from '../actions/profile'
+import { selectDPI, selectIsMobile } from '../selectors/gui'
 import {
   selectAvatar,
   selectCoverImage,
@@ -18,35 +18,48 @@ import OnboardingSettings from '../components/onboarding/OnboardingSettings'
 function mapStateToProps(state) {
   const avatar = selectAvatar(state)
   const coverImage = selectCoverImage(state)
+  const dpi = selectDPI(state)
   const isAvatarBlank = selectIsAvatarBlank(state)
   const isCoverImageBlank = selectIsCoverImageBlank(state)
+  const isMobile = selectIsMobile(state)
   const isInfoFormBlank = selectIsInfoFormBlank(state)
   const isNextDisabled = isAvatarBlank && isCoverImageBlank && isInfoFormBlank
   return {
     avatar,
     coverImage,
+    dpi,
     isAvatarBlank,
     isCoverImageBlank,
+    isMobile,
     isNextDisabled,
   }
 }
 
-class OnboardingSettingsContainer extends Component {
+class OnboardingSettingsContainer extends PureComponent {
 
   static propTypes = {
     avatar: PropTypes.object,
     coverImage: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
+    dpi: PropTypes.string.isRequired,
     isAvatarBlank: PropTypes.bool.isRequired,
     isCoverImageBlank: PropTypes.bool.isRequired,
+    isMobile: PropTypes.bool.isRequired,
     isNextDisabled: PropTypes.bool.isRequired,
+  }
+
+  static defaultProps = {
+    avatar: null,
+    coverImage: null,
   }
 
   static childContextTypes = {
     avatar: PropTypes.object,
     coverImage: PropTypes.object,
+    dpi: PropTypes.string.isRequired,
     isAvatarBlank: PropTypes.bool,
     isCoverImageBlank: PropTypes.bool,
+    isMobile: PropTypes.bool.isRequired,
     nextLabel: PropTypes.string,
     onDoneClick: PropTypes.func,
     onNextClick: PropTypes.func,
@@ -56,23 +69,21 @@ class OnboardingSettingsContainer extends Component {
 
   getChildContext() {
     const {
-      avatar, dispatch, coverImage, isAvatarBlank, isCoverImageBlank, isNextDisabled,
+      avatar, dispatch, coverImage, dpi, isAvatarBlank, isCoverImageBlank, isMobile, isNextDisabled,
     } = this.props
     return {
       avatar,
       coverImage,
+      dpi,
       isAvatarBlank,
       isCoverImageBlank,
+      isMobile,
       nextLabel: 'Invite Cool People',
       onDoneClick: isNextDisabled ? null : this.onDoneClick,
       onNextClick: this.onNextClick,
       saveAvatar: bindActionCreators(saveAvatar, dispatch),
       saveCover: bindActionCreators(saveCover, dispatch),
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onDoneClick = () => {

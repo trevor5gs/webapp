@@ -1,307 +1,291 @@
-import React, { PropTypes } from 'react'
+/* eslint-disable react/no-multi-comp */
+import Immutable from 'immutable'
+import React, { Component, PropTypes, PureComponent } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
-import { UserDrawer } from '../users/UserRenderables'
 import ContentWarningButton from '../posts/ContentWarningButton'
-import PostToolsContainer from '../../containers/PostToolsContainer'
-import { HeartIcon, RepostIcon } from '../posts/PostIcons'
+import { RepostIcon } from '../posts/PostIcons'
 import RelationshipContainer from '../../containers/RelationshipContainer'
-import { postLovers, postReposters } from '../../networking/api'
 import StreamContainer from '../../containers/StreamContainer'
 import { loadComments } from '../../actions/posts'
 import { RegionItems } from '../regions/RegionRenderables'
 
-function getPostDetailPath(author, post) {
-  return `/${author.username}/post/${post.token}`
-}
-
-export const PostLoversDrawer = ({ post }) =>
-  <UserDrawer
-    endpoint={postLovers(post.id)}
-    icon={<HeartIcon />}
-    key={`userAvatarsLovers_${post.id}${post.lovesCount}`}
-    post={post}
-    resultType="love"
-  />
-
-PostLoversDrawer.propTypes = {
-  post: PropTypes.object,
-}
-
-export const PostRepostersDrawer = ({ post }) =>
-  <UserDrawer
-    endpoint={postReposters(post.id)}
-    icon={<RepostIcon />}
-    key={`userAvatarsReposters_${post.id}${post.repostsCount}`}
-    post={post}
-    resultType="repost"
-  />
-
-PostRepostersDrawer.propTypes = {
-  post: PropTypes.object,
-}
-
-export const CommentStream = ({ post, author }) =>
+// TODO: look at moving this into the PostContainer and refactoring the
+// PostDetailContainer to also use the PostContainer
+export const CommentStream = ({ detailPath, postId, postCommentsCount }) =>
   <div>
     <StreamContainer
       className="CommentStreamContainer isFullWidth"
-      action={loadComments(post)}
+      action={loadComments(postId)}
       ignoresScrollPosition
     >
-      {post.commentsCount > 10 ?
+      {postCommentsCount > 10 &&
         <Link
           to={{
-            pathname: `/${author.username}/post/${post.token}`,
+            pathname: detailPath,
             state: { didComeFromSeeMoreCommentsLink: true },
           }}
           className="CommentsLink"
         >
           See More
         </Link>
-        : null
       }
     </StreamContainer>
   </div>
-
 CommentStream.propTypes = {
-  author: PropTypes.object,
-  post: PropTypes.object,
+  detailPath: PropTypes.string.isRequired,
+  postCommentsCount: PropTypes.number.isRequired,
+  postId: PropTypes.string.isRequired,
 }
 
 const PostHeaderTimeAgoLink = ({ to, createdAt }) =>
   <Link className="PostHeaderTimeAgoLink" to={to}>
     <span>{new Date(createdAt).timeAgoInWords()}</span>
   </Link>
-
 PostHeaderTimeAgoLink.propTypes = {
-  createdAt: PropTypes.string,
-  to: PropTypes.string,
+  createdAt: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
 }
 
-export const PostHeader = ({ post, author, isPostDetail = false }) => {
-  if (!post || !author) { return null }
-  const postDetailPath = getPostDetailPath(author, post)
-  return (
-    <header className="PostHeader" key={`PostHeader_${post.id}`}>
-      <div className="PostHeaderAuthor">
-        <Link className="PostHeaderLink" to={`/${author.username}`}>
-          <Avatar
-            priority={author.relationshipPriority}
-            sources={author.avatar}
-            userId={`${author.id}`}
-            username={author.username}
-          />
-          <span
-            className="DraggableUsername"
-            data-priority={author.relationshipPriority || 'inactive'}
-            data-userid={author.id}
-            data-username={author.username}
-            draggable
-          >
-            {isPostDetail && author.name ?
-              <span>
-                <span className="PostHeaderAuthorName">{author.name}</span>
-                <span className="PostHeaderAuthorUsername">@{author.username}</span>
-              </span>
-              :
-              `@${author.username}`
-            }
-          </span>
-        </Link>
-      </div>
-      <RelationshipContainer className="isInHeader" user={author} />
-      <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.createdAt} />
-    </header>
-  )
-}
-
-PostHeader.propTypes = {
-  author: PropTypes.object,
-  isPostDetail: PropTypes.bool,
-  post: PropTypes.object,
-}
-
-export const CategoryHeader = ({ post, author, categoryName, categoryPath }) => {
-  if (!post || !author) { return null }
-  const postDetailPath = getPostDetailPath(author, post)
-  return (
-    <header className="CategoryHeader" key={`CategoryHeader_${post.id}`}>
-      <div className="CategoryHeaderAuthor">
-        <Link className="PostHeaderLink" to={`/${author.username}`}>
-          <Avatar
-            priority={author.relationshipPriority}
-            sources={author.avatar}
-            userId={`${author.id}`}
-            username={author.username}
-          />
-          <span
-            className="DraggableUsername"
-            data-priority={author.relationshipPriority || 'inactive'}
-            data-userid={author.id}
-            data-username={author.username}
-            draggable
-          >
-            {`@${author.username}`}
-          </span>
-        </Link>
-      </div>
-      <RelationshipContainer className="isInHeader" user={author} />
-      <div className="CategoryHeaderCategory">
-        <Link className="PostHeaderLink" to={categoryPath}>
-          <span>in </span>
-          <span className="CategoryHeaderCategoryName">{categoryName}</span>
-        </Link>
-      </div>
-      <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.createdAt} />
-    </header>
-  )
-}
-
-CategoryHeader.propTypes = {
-  author: PropTypes.object,
-  categoryName: PropTypes.string,
-  categoryPath: PropTypes.string,
-  post: PropTypes.object,
-}
-
-export const RepostHeader = ({ post, repostAuthor, repostedBy, inUserDetail }) => {
-  if (!post || !repostedBy) { return null }
-  const postDetailPath = getPostDetailPath(repostedBy, post)
-  return (
-    <header className={classNames('RepostHeader', { inUserDetail })} key={`RepostHeader_${post.id}`}>
-      <div className="RepostHeaderAuthor">
-        <Link className="PostHeaderLink" to={`/${repostAuthor.username}`}>
-          <Avatar
-            priority={repostAuthor.relationshipPriority}
-            sources={repostAuthor.avatar}
-            userId={`${repostAuthor.id}`}
-            username={repostAuthor.username}
-          />
-          <span
-            className="DraggableUsername"
-            data-priority={repostAuthor.relationshipPriority || 'inactive'}
-            data-userid={repostAuthor.id}
-            data-username={repostAuthor.username}
-            draggable
-          >
-            {`@${repostAuthor.username}`}
-          </span>
-        </Link>
-      </div>
-      <RelationshipContainer className="isInHeader" user={repostAuthor} />
-      <div className="RepostHeaderReposter">
-        <Link className="PostHeaderLink" to={`/${repostedBy.username}`}>
-          <RepostIcon />
-          <span
-            className="DraggableUsername"
-            data-priority={repostedBy.relationshipPriority || 'inactive'}
-            data-userid={repostedBy.id}
-            data-username={repostedBy.username}
-            draggable
-          >
-            {` by @${repostedBy.username}`}
-          </span>
-        </Link>
-      </div>
-      <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.createdAt} />
-    </header>
-  )
-}
-
-RepostHeader.propTypes = {
-  inUserDetail: PropTypes.bool,
-  post: PropTypes.object,
-  repostAuthor: PropTypes.object,
-  repostedBy: PropTypes.object,
-}
-
-export const PostBody = (props) => {
-  const { assets, author, columnWidth, commentOffset, contentWarning,
-    contentWidth, innerHeight, isGridMode, post } = props
-  if (!post || !author) { return null }
-  const cells = []
-  const postDetailPath = getPostDetailPath(author, post)
-
-  if (contentWarning) {
-    cells.push(<ContentWarningButton key={`contentWarning_${post.id}`} post={post} />)
+export class PostHeader extends PureComponent {
+  static propTypes = {
+    author: PropTypes.object.isRequired,
+    detailPath: PropTypes.string.isRequired,
+    isPostDetail: PropTypes.bool.isRequired,
+    postCreatedAt: PropTypes.string.isRequired,
+    postId: PropTypes.string.isRequired,
   }
-
-  const regionProps = {
-    assets,
-    columnWidth,
-    commentOffset,
-    contentWidth,
-    innerHeight,
-    isGridMode,
-    postDetailPath,
-  }
-  if (post.repostContent && post.repostContent.length) {
-    // this is weird, but the post summary is
-    // actually the repost summary on reposts
-    if (isGridMode) {
-      regionProps.content = post.summary
-      cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.id}`} />)
-    } else {
-      regionProps.content = post.repostContent
-      cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.id}`} />)
-      if (post.content && post.content.length) {
-        regionProps.content = post.content
-        cells.push(
-          <div className="PostBody RepostedBody" key={`RepostedBody_${post.id}`}>
+  render() {
+    const { author, detailPath, isPostDetail, postCreatedAt, postId } = this.props
+    return (
+      <header className="PostHeader" key={`PostHeader_${postId}`}>
+        <div className="PostHeaderAuthor">
+          <Link className="PostHeaderLink" to={`/${author.get('username')}`}>
             <Avatar
-              priority={author.relationshipPriority}
-              sources={author.avatar}
-              to={`/${author.username}`}
-              userId={`${author.id}`}
-              username={author.username}
+              priority={author.get('relationshipPriority')}
+              sources={author.get('avatar')}
+              userId={`${author.get('id')}`}
+              username={author.get('username')}
             />
-            <RegionItems {...regionProps} />
-          </div>,
-        )
-      }
-    }
-  } else {
-    const content = isGridMode ? post.summary : post.content
-    regionProps.content = content
-    cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.id}`} />)
+            <span
+              className="DraggableUsername"
+              data-priority={author.get('relationshipPriority') || 'inactive'}
+              data-userid={author.get('id')}
+              data-username={author.get('username')}
+              draggable
+            >
+              {isPostDetail && author.get('name') ?
+                <span>
+                  <span className="PostHeaderAuthorName">{author.get('name')}</span>
+                  <span className="PostHeaderAuthorUsername">@{author.get('username')}</span>
+                </span>
+                :
+                `@${author.get('username')}`
+              }
+            </span>
+          </Link>
+        </div>
+        <RelationshipContainer className="isInHeader" user={author} />
+        <PostHeaderTimeAgoLink to={detailPath} createdAt={postCreatedAt} />
+      </header>
+    )
   }
-  return (
-    <div className="PostBody" key={`PostBody_${post.id}`}>
-      {cells}
-    </div>
-  )
 }
 
-PostBody.propTypes = {
-  assets: PropTypes.object,
-  author: PropTypes.object,
-  columnWidth: PropTypes.number,
-  commentOffset: PropTypes.number,
-  contentWarning: PropTypes.string,
-  contentWidth: PropTypes.number,
-  innerHeight: PropTypes.number,
-  isGridMode: PropTypes.bool,
-  post: PropTypes.object,
+export class CategoryHeader extends PureComponent {
+  static propTypes = {
+    author: PropTypes.object.isRequired,
+    categoryName: PropTypes.string.isRequired,
+    categoryPath: PropTypes.string.isRequired,
+    detailPath: PropTypes.string.isRequired,
+    postCreatedAt: PropTypes.string.isRequired,
+    postId: PropTypes.string.isRequired,
+  }
+  render() {
+    const { author, categoryName, categoryPath, detailPath, postCreatedAt, postId } = this.props
+    return (
+      <header className="CategoryHeader" key={`CategoryHeader_${postId}`}>
+        <div className="CategoryHeaderAuthor">
+          <Link className="PostHeaderLink" to={`/${author.get('username')}`}>
+            <Avatar
+              priority={author.get('relationshipPriority')}
+              sources={author.get('avatar')}
+              userId={`${author.get('id')}`}
+              username={author.get('username')}
+            />
+            <span
+              className="DraggableUsername"
+              data-priority={author.get('relationshipPriority') || 'inactive'}
+              data-userid={author.get('id')}
+              data-username={author.get('username')}
+              draggable
+            >
+              {`@${author.get('username')}`}
+            </span>
+          </Link>
+        </div>
+        <RelationshipContainer className="isInHeader" user={author} />
+        <div className="CategoryHeaderCategory">
+          <Link className="PostHeaderLink" to={categoryPath}>
+            <span>in </span>
+            <span className="CategoryHeaderCategoryName">{categoryName}</span>
+          </Link>
+        </div>
+        <PostHeaderTimeAgoLink to={detailPath} createdAt={postCreatedAt} />
+      </header>
+    )
+  }
 }
 
-export const PostFooter = ({ post, author, isGridMode, isRepostAnimating }) => {
-  if (!author) { return null }
-  return (
-    <PostToolsContainer
-      author={author}
-      post={post}
-      isGridMode={isGridMode}
-      isRepostAnimating={isRepostAnimating}
-      key={`PostTools_${post.id}`}
-    />
-  )
+export class RepostHeader extends PureComponent {
+  static propTypes = {
+    detailPath: PropTypes.string.isRequired,
+    inUserDetail: PropTypes.bool.isRequired,
+    postCreatedAt: PropTypes.string.isRequired,
+    postId: PropTypes.string.isRequired,
+    repostAuthor: PropTypes.object.isRequired,
+    repostedBy: PropTypes.object.isRequired,
+  }
+  render() {
+    const { detailPath, inUserDetail, postCreatedAt, postId, repostAuthor, repostedBy } = this.props
+    return (
+      <header className={classNames('RepostHeader', { inUserDetail })} key={`RepostHeader_${postId}`}>
+        <div className="RepostHeaderAuthor">
+          <Link className="PostHeaderLink" to={`/${repostAuthor.get('username')}`}>
+            <Avatar
+              priority={repostAuthor.get('relationshipPriority')}
+              sources={repostAuthor.get('avatar')}
+              userId={`${repostAuthor.get('id')}`}
+              username={repostAuthor.get('username')}
+            />
+            <span
+              className="DraggableUsername"
+              data-priority={repostAuthor.get('relationshipPriority') || 'inactive'}
+              data-userid={repostAuthor.get('id')}
+              data-username={repostAuthor.get('username')}
+              draggable
+            >
+              {`@${repostAuthor.get('username')}`}
+            </span>
+          </Link>
+        </div>
+        <RelationshipContainer className="isInHeader" user={repostAuthor} />
+        <div className="RepostHeaderReposter">
+          <Link className="PostHeaderLink" to={`/${repostedBy.get('username')}`}>
+            <RepostIcon />
+            <span
+              className="DraggableUsername"
+              data-priority={repostedBy.get('relationshipPriority') || 'inactive'}
+              data-userid={repostedBy.get('id')}
+              data-username={repostedBy.get('username')}
+              draggable
+            >
+              {` by @${repostedBy.get('username')}`}
+            </span>
+          </Link>
+        </div>
+        <PostHeaderTimeAgoLink to={detailPath} createdAt={postCreatedAt} />
+      </header>
+    )
+  }
 }
 
-PostFooter.propTypes = {
-  author: PropTypes.object,
-  isGridMode: PropTypes.bool,
-  isRepostAnimating: PropTypes.bool,
-  post: PropTypes.object,
+// TODO: convert this to a PureComponent once we get rid of passing assets
+export class PostBody extends Component {
+  static propTypes = {
+    assets: PropTypes.object,
+    author: PropTypes.object.isRequired,
+    columnWidth: PropTypes.number.isRequired,
+    commentOffset: PropTypes.number.isRequired,
+    content: PropTypes.object.isRequired,
+    contentWarning: PropTypes.string,
+    contentWidth: PropTypes.number.isRequired,
+    detailPath: PropTypes.string.isRequired,
+    innerHeight: PropTypes.number.isRequired,
+    isGridMode: PropTypes.bool.isRequired,
+    isRepost: PropTypes.bool.isRequired,
+    postId: PropTypes.string.isRequired,
+    repostContent: PropTypes.object,
+    summary: PropTypes.object.isRequired,
+  }
+  static defaultProps = {
+    assets: null,
+    contentWarning: null,
+    repostContent: null,
+  }
+  shouldComponentUpdate(nextProps) {
+    return !Immutable.is(nextProps.content, this.props.content) ||
+      ['contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      )
+  }
+  render() {
+    const {
+      assets,
+      author,
+      columnWidth,
+      commentOffset,
+      content,
+      contentWarning,
+      contentWidth,
+      detailPath,
+      innerHeight,
+      isGridMode,
+      isRepost,
+      postId,
+      repostContent,
+      summary,
+    } = this.props
+    const cells = []
+
+    if (contentWarning) {
+      cells.push(<ContentWarningButton contentWarning={contentWarning} key={`contentWarning_${postId}`} />)
+    }
+
+    const regionProps = {
+      assets,
+      columnWidth,
+      commentOffset,
+      contentWidth,
+      detailPath,
+      innerHeight,
+      isGridMode,
+    }
+    if (isRepost) {
+      // this is weird, but the post summary is
+      // actually the repost summary on reposts
+      if (isGridMode) {
+        regionProps.content = summary
+        cells.push(<RegionItems {...regionProps} key={`RegionItems_${postId}`} />)
+      } else {
+        regionProps.content = repostContent
+        cells.push(<RegionItems {...regionProps} key={`RegionItems_${postId}`} />)
+        if (content && content.size) {
+          regionProps.content = content
+          cells.push(
+            <div className="PostBody RepostedBody" key={`RepostedBody_${postId}`}>
+              <Avatar
+                priority={author.get('relationshipPriority')}
+                sources={author.get('avatar')}
+                to={`/${author.get('username')}`}
+                userId={`${author.get('id')}`}
+                username={author.get('username')}
+              />
+              <RegionItems {...regionProps} />
+            </div>,
+          )
+        }
+      }
+    } else {
+      regionProps.content = isGridMode ? summary : content
+      cells.push(<RegionItems {...regionProps} key={`RegionItems_${postId}`} />)
+    }
+    return (
+      <div className="PostBody" key={`PostBody_${postId}`}>
+        {cells}
+      </div>
+    )
+  }
 }
 

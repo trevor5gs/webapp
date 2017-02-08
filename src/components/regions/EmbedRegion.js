@@ -2,28 +2,30 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import { ElloBuyButton } from '../editor/ElloBuyButton'
 
-const EmbedRegion = ({ postDetailPath, region }) => {
+const EmbedRegion = ({ detailPath, region }) => {
   const data = {}
-  data[`data-${region.data.service}-id`] = region.data.id
+  data[`data-${region.getIn(['data', 'service'])}-id`] = region.getIn(['data', 'id'])
   return (
     <div className="EmbedRegion">
       <div className="embetter" {...data}>
-        <Link className="EmbedRegionContent" to={postDetailPath || region.data.url}>
-          <img src={region.data.thumbnailLargeUrl} alt={region.data.service} />
+        <Link className="EmbedRegionContent" to={detailPath || region.getIn(['data', 'url'])}>
+          <img src={region.getIn(['data', 'thumbnailLargeUrl'])} alt={region.getIn(['data', 'service'])} />
         </Link>
         {
-          region.linkUrl && region.linkUrl.length ?
-            <ElloBuyButton to={region.linkUrl} /> :
+          region.get('linkUrl') && region.get('linkUrl').size ?
+            <ElloBuyButton to={region.get('linkUrl')} /> :
             null
         }
       </div>
     </div>
   )
 }
-
 EmbedRegion.propTypes = {
-  postDetailPath: PropTypes.string,
-  region: PropTypes.object,
+  detailPath: PropTypes.string,
+  region: PropTypes.object.isRequired,
+}
+EmbedRegion.defaultProps = {
+  detailPath: null,
 }
 
 export default EmbedRegion

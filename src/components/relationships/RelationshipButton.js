@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
@@ -19,10 +18,11 @@ export function getNextPriority(currentPriority) {
   }
 }
 
-class RelationshipButton extends Component {
+class RelationshipButton extends PureComponent {
+
   static propTypes = {
     className: PropTypes.string,
-    onClick: PropTypes.func,
+    onClick: PropTypes.func.isRequired,
     priority: PropTypes.oneOf([
       RELATIONSHIP_PRIORITY.INACTIVE,
       RELATIONSHIP_PRIORITY.FRIEND,
@@ -33,10 +33,13 @@ class RelationshipButton extends Component {
       RELATIONSHIP_PRIORITY.NONE,
       null,
     ]),
-    userId: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string,
-    ]),
+    userId: PropTypes.string,
+  }
+
+  static defaultProps = {
+    className: '',
+    priority: null,
+    userId: null,
   }
 
   componentWillMount() {
@@ -45,10 +48,6 @@ class RelationshipButton extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({ nextPriority: getNextPriority(nextProps.priority) })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onClickUpdatePriority = () => {

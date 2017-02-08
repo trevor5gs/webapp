@@ -1,7 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router'
-import get from 'lodash/get'
-import uniqBy from 'lodash/uniqBy'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import PostContainer from '../../containers/PostContainer'
 import CommentContainer from '../../containers/CommentContainer'
@@ -13,61 +11,49 @@ import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
 import { isElloAndroid } from '../../lib/jello'
 
-export function categoriesAsGrid(categories) {
-  return (
-    <div className="Categories asGrid">
-      {categories.data.map((category, index) =>
-        <Link
-          className="CategoryLink"
-          to={`/discover/${category.slug}`}
-          key={`CategoryLink_${category.slug}_${index}`}
-          style={{ backgroundImage: `url("${get(category, 'tileImage.large.url')}")` }}
-        >
-          <span className="CategoryLinkName">{category.name}</span>
-        </Link>,
-      )}
-    </div>
-  )
-}
+export const categoriesAsGrid = categories =>
+  <div className="Categories asGrid">
+    {categories.data.map(category =>
+      <Link
+        className="CategoryLink"
+        to={`/discover/${category.get('slug')}`}
+        key={`CategoryLink_${category.get('slug')}`}
+        style={{ backgroundImage: `url("${category.getIn(['tileImage', 'large', 'url'])}")` }}
+      >
+        <span className="CategoryLinkName">{category.get('name')}</span>
+      </Link>,
+    )}
+  </div>
 
-export function usersAsGrid(users) {
-  return (
-    <div className="Users asGrid">
-      {users.data.map(user =>
-        <UserContainer user={user} key={`userGrid_${user.id}`} type="grid" />,
-      )}
-    </div>
-  )
-}
+export const usersAsGrid = users =>
+  <div className="Users asGrid">
+    {users.data.map(user =>
+      <UserContainer user={user} key={`userGrid_${user.get('id')}`} type="grid" />,
+    )}
+  </div>
 
-export function usersAsInviteeList(invitations) {
-  return (
-    <div className="Users asInviteeList">
-      {invitations.data.map(invitation =>
-        <UserInvitee
-          invitation={invitation}
-          key={`userInviteeList_${invitation.id}`}
-        />,
-      )}
-    </div>
-  )
-}
+export const usersAsInviteeList = invitations =>
+  <div className="Users asInviteeList">
+    {invitations.data.map(invitation =>
+      <UserInvitee
+        invitation={invitation}
+        key={`userInviteeList_${invitation.get('id')}`}
+      />,
+    )}
+  </div>
 
-export function usersAsInviteeGrid(invitations) {
-  return (
-    <div className="Users asInviteeGrid">
-      {invitations.data.map(invitation =>
-        <UserInvitee
-          className="UserInviteeGrid"
-          invitation={invitation}
-          key={`userInviteeGrid_${invitation.id}`}
-        />,
-      )}
-    </div>
-  )
-}
+export const usersAsInviteeGrid = invitations =>
+  <div className="Users asInviteeGrid">
+    {invitations.data.map(invitation =>
+      <UserInvitee
+        className="UserInviteeGrid"
+        invitation={invitation}
+        key={`userInviteeList_${invitation.get('id')}`}
+      />,
+    )}
+  </div>
 
-export function postsAsGrid(posts, columnCount, isPostHeaderHidden = false) {
+export const postsAsGrid = (posts, columnCount, isPostHeaderHidden) => {
   const columns = []
   for (let i = 0; i < columnCount; i += 1) {
     columns.push([])
@@ -77,11 +63,11 @@ export function postsAsGrid(posts, columnCount, isPostHeaderHidden = false) {
   })
   return (
     <div className="Posts asGrid">
-      {columns.map((columnPosts, index) =>
-        <div className="Column" key={`column_${index}`}>
+      {columns.map((columnPosts, i) =>
+        <div className="Column" key={`column_${i + 1}`}>
           {columnPosts.map(post =>
-            <article className="PostGrid" key={`postsAsGrid_${post.id}`}>
-              <PostContainer post={post} isPostHeaderHidden={isPostHeaderHidden} />
+            <article className="PostGrid" key={`postsAsGrid_${post.get('id')}`}>
+              <PostContainer postId={post.get('id')} isPostHeaderHidden={isPostHeaderHidden} />
             </article>,
           )}
         </div>,
@@ -90,84 +76,61 @@ export function postsAsGrid(posts, columnCount, isPostHeaderHidden = false) {
   )
 }
 
-export function postsAsList(posts, columnCount, isPostHeaderHidden = false) {
-  return (
-    <div className="Posts asList">
-      {posts.data.map(post =>
-        <article className="PostList" key={`postsAsList_${post.id}`}>
-          <PostContainer post={post} isPostHeaderHidden={isPostHeaderHidden} />
-        </article>,
-      )}
-    </div>
-  )
-}
+export const postsAsList = (posts, columnCount, isPostHeaderHidden) =>
+  <div className="Posts asList">
+    {posts.data.map(post =>
+      <article className="PostList" key={`postsAsList_${post.get('id')}`}>
+        <PostContainer postId={post.get('id')} isPostHeaderHidden={isPostHeaderHidden} />
+      </article>,
+    )}
+  </div>
 
-export function commentsAsList(post) {
-  return comments => (
-    <div>
-      {comments.data.map(comment =>
-        <CommentContainer
-          comment={comment}
-          isEditing={comment.isEditing}
-          key={`commentContainer_${comment.id}`}
-          post={post}
-        />,
-      )}
-    </div>
-  )
-}
+export const commentsAsList = comments =>
+  <div>
+    {comments.data.map(comment =>
+      <CommentContainer
+        commentId={comment.get('id')}
+        key={`commentContainer_${comment.get('id')}`}
+      />,
+    )}
+  </div>
 
-export function notificationList(notifications) {
-  return (
-    <div className="Notifications">
-      {notifications.data.map((notification, index) =>
-        <NotificationContainer
-          key={`notificationParser${index}_${notification ? notification.createdAt : Date.now()}`}
-          notification={notification}
-        />,
-      )}
-    </div>
-  )
-}
+export const notificationList = notifications =>
+  <div className="Notifications">
+    {notifications.data.map((notification, i) =>
+      <NotificationContainer
+        key={`notificationParser_${notification.get('createdAt', Date.now())}_${i + 1}`}
+        notification={notification}
+      />,
+    )}
+  </div>
 
-export function userAvatars(users) {
-  const uniqUsers = uniqBy(users.data, user => user.id)
-  return (
-    uniqUsers.map(user =>
-      <UserContainer user={user} key={`userAvatar_${user.id}`} type="avatar" />,
+export const userAvatars = users =>
+  users.data.map(user =>
+    <UserContainer user={user} key={`userAvatar_${user.get('id')}`} type="avatar" />,
+  )
+
+export const profileToggles = settings =>
+  settings.data.map((setting, index) => {
+    if (!isElloAndroid() && setting.get('label').toLowerCase().indexOf('push') === 0) { return null }
+    const arr = [<TreeButton key={`settingLabel_${setting.get('label')}`}>{setting.get('label')}</TreeButton>]
+    arr.push(
+      <TreePanel key={`settingItems_${setting.get('label', index)}`}>
+        {setting.get('items').map(item =>
+          <Preference
+            definition={{ term: item.get('label'), desc: item.get('info') }}
+            id={item.get('key')}
+            key={`preference_${item.get('key')}`}
+            onToggleChange={preferenceToggleChanged}
+          />,
+        )}
+      </TreePanel>,
     )
-  )
-}
+    return arr
+  })
 
-export function profileToggles(settings) {
-  return (
-    settings.data.map((setting, index) => {
-      if (!isElloAndroid() && setting.label.toLowerCase().indexOf('push') === 0) { return null }
-      const arr = [<TreeButton key={`settingLabel${index}`}>{setting.label}</TreeButton>]
-      arr.push(
-        <TreePanel key={`settingItems${index}`}>
-          {
-            setting.items.map(item =>
-              <Preference
-                definition={{ term: item.label, desc: item.info }}
-                id={item.key}
-                key={`preference_${item.key}`}
-                onToggleChange={preferenceToggleChanged}
-              />,
-            )
-          }
-        </TreePanel>,
-      )
-      return arr
-    })
+export const blockedMutedUserList = users =>
+  users.data.map(user =>
+    <UserContainer user={user} key={`userCompact_${user.get('id')}`} type="compact" />,
   )
-}
-
-export function blockedMutedUserList(users) {
-  return (
-    users.data.map(user =>
-      <UserContainer user={user} key={`userCompact_${user.id}`} type="compact" />,
-    )
-  )
-}
 

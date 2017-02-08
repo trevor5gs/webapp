@@ -1,16 +1,13 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import { createSelector } from 'reselect'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
   selectHasLaunchedSignupModal,
   selectInnerHeight,
   selectInnerWidth,
-  selectIsAuthenticationView,
   selectIsNavbarHidden,
   selectIsNotificationsActive,
-  selectIsOnboardingView,
   selectIsProfileMenuActive,
   selectScrollOffset,
 } from '../selectors/gui'
@@ -25,7 +22,13 @@ import {
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
 
-const REFRESH_PERIOD = 30 * 60 * 1000 // 30 minutes in microseconds
+const selectIsAuthenticationView = createSelector(
+  [selectViewNameFromRoute], viewName => viewName === 'authentication' || viewName === 'join',
+)
+
+const selectIsOnboardingView = createSelector(
+  [selectViewNameFromRoute], viewName => viewName === 'onboarding',
+)
 
 export const selectUserDetailPathClassName = createSelector(
   [selectViewNameFromRoute, selectPathname], (viewName, pathname) => {
@@ -55,22 +58,27 @@ function mapStateToProps(state, props) {
   }
 }
 
-class ViewportContainer extends Component {
+class ViewportContainer extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    hasLaunchedSignupModal: PropTypes.bool,
-    innerHeight: PropTypes.number,
-    innerWidth: PropTypes.number,
-    isAuthenticationView: PropTypes.bool,
-    isDiscoverView: PropTypes.bool,
-    isLoggedIn: PropTypes.bool,
-    isNavbarHidden: PropTypes.bool,
-    isNotificationsActive: PropTypes.bool,
-    isOnboardingView: PropTypes.bool,
-    isProfileMenuActive: PropTypes.bool,
+    hasLaunchedSignupModal: PropTypes.bool.isRequired,
+    innerHeight: PropTypes.number.isRequired,
+    innerWidth: PropTypes.number.isRequired,
+    isAuthenticationView: PropTypes.bool.isRequired,
+    isDiscoverView: PropTypes.bool.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    isNavbarHidden: PropTypes.bool.isRequired,
+    isNotificationsActive: PropTypes.bool.isRequired,
+    isOnboardingView: PropTypes.bool.isRequired,
+    isProfileMenuActive: PropTypes.bool.isRequired,
     modalType: PropTypes.string,
-    scrollOffset: PropTypes.number,
+    scrollOffset: PropTypes.number.isRequired,
     userDetailPathClassName: PropTypes.string,
+  }
+
+  static defaultProps = {
+    modalType: null,
+    userDetailPathClassName: null,
   }
 
   static contextTypes = {
@@ -87,21 +95,10 @@ class ViewportContainer extends Component {
     addScrollObject(this)
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
-  }
-
   componentWillUnmount() {
     removePageVisibilityObserver(this)
     removeResizeObject(this)
     removeScrollObject(this)
-  }
-
-  onPageVisibilityHidden() {
-    const { isLoggedIn } = this.props
-    if (isLoggedIn && ENV.ENABLE_REFRESH_ON_FOCUS) {
-      this.hiddenAt = new Date()
-    }
   }
 
   onPageVisibilityVisible() {
@@ -109,11 +106,6 @@ class ViewportContainer extends Component {
     if (!isLoggedIn && !hasLaunchedSignupModal && !modalType) {
       const { onClickOpenRegistrationRequestDialog } = this.context
       onClickOpenRegistrationRequestDialog('page-visibility')
-    } else if (isLoggedIn) {
-      const drift = new Date() - this.hiddenAt
-      if (this.hiddenAt && drift >= REFRESH_PERIOD) {
-        document.location.reload()
-      }
     }
   }
 

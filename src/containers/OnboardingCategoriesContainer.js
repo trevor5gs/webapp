@@ -1,7 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import OnboardingCategories from '../components/onboarding/OnboardingCategories'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { trackEvent } from '../actions/analytics'
@@ -13,7 +12,7 @@ const CATEGORIES_NEEDED = 3
 
 function mapStateToProps(state) {
   let categories = selectOnboardingCategories(state)
-  categories = categories.filter(cat => cat.allowInOnboarding)
+  categories = categories.filter(cat => cat.get('allowInOnboarding'))
   return {
     categories,
   }
@@ -23,10 +22,10 @@ function hasSelectedCategoriesNeeded(state) {
   return state.categoryIds.length < CATEGORIES_NEEDED
 }
 
-class OnboardingCategoriesContainer extends Component {
+class OnboardingCategoriesContainer extends PureComponent {
 
   static propTypes = {
-    categories: PropTypes.array,
+    categories: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired,
   }
 
@@ -53,10 +52,6 @@ class OnboardingCategoriesContainer extends Component {
     const { dispatch } = this.props
     dispatch(getCategories())
     this.state = { categoryIds: [] }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onCategoryClick = (id) => {

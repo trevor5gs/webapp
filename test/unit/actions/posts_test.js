@@ -76,7 +76,7 @@ describe('posts.js', () => {
 
   context('#loadComments', () => {
     const post = stub('post')
-    const action = subject.loadComments(post)
+    const action = subject.loadComments(post.get('id'))
 
     it('is an FSA compliant action', () => {
       expect(isFSA(action)).to.be.true

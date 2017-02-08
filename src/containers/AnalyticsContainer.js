@@ -1,5 +1,4 @@
-import { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectAllowsAnalytics, selectAnalyticsId, selectCreatedAt } from '../selectors/profile'
@@ -8,13 +7,14 @@ export function addSegment(uid, createdAt) {
   if (typeof window !== 'undefined') {
     /* eslint-disable */
     !function(){const analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){const e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(let t=0;t<analytics.methods.length;t++){const e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){const e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";const n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};
-    /* eslint-enable */
+      /* eslint-enable */
       analytics.SNIPPET_VERSION = '3.1.0'
       analytics.load(ENV.SEGMENT_WRITE_KEY)
       if (uid) {
         analytics.identify(uid, { createdAt })
       }
-    } }();
+    }
+    }();
   }
 }
 
@@ -37,13 +37,19 @@ function mapStateToProps(state) {
   }
 }
 
-class AnalyticsContainer extends Component {
+class AnalyticsContainer extends PureComponent {
 
   static propTypes = {
     allowsAnalytics: PropTypes.bool,
     analyticsId: PropTypes.string,
     createdAt: PropTypes.string,
     isLoggedIn: PropTypes.bool.isRequired,
+  }
+
+  static defaultProps = {
+    allowsAnalytics: null,
+    analyticsId: null,
+    createdAt: null,
   }
 
   componentWillMount() {
@@ -63,7 +69,7 @@ class AnalyticsContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { analyticsId, createdAt, allowsAnalytics } = nextProps
+    const { allowsAnalytics, analyticsId, createdAt } = nextProps
     if (this.hasLoadedTracking) {
       // identify the user if they didn't previously have an id to identify with
       if (!this.props.analyticsId && analyticsId) {
@@ -73,10 +79,6 @@ class AnalyticsContainer extends Component {
       this.hasLoadedTracking = true
       addSegment(analyticsId, createdAt)
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   render() {

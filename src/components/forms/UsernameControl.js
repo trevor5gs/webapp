@@ -4,7 +4,7 @@ import FormControl from './FormControl'
 class UsernameControl extends Component {
 
   static propTypes = {
-    suggestions: PropTypes.array,
+    suggestions: PropTypes.object,
   }
 
   static defaultProps = {
@@ -26,12 +26,12 @@ class UsernameControl extends Component {
 
   renderSuggestions = () => {
     const { suggestions } = this.props
-    if (suggestions && suggestions.length) {
+    if (suggestions && suggestions.size) {
       return (
         <ul className="FormControlSuggestionList hasSuggestions">
           <p>Here are some available usernames &mdash;</p>
-          {suggestions.map((suggestion, i) =>
-            <li key={`suggestion_${i}`}>
+          {suggestions.map(suggestion =>
+            <li key={`suggestion_${suggestion}`}>
               <button
                 className="FormControlSuggestionButton"
                 title={suggestion}

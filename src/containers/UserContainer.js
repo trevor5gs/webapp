@@ -1,12 +1,13 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
-import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize } from '../selectors/gui'
 import { selectViewsAdultContent } from '../selectors/profile'
+import { selectJson } from '../selectors/store'
 import { selectTruncatedShortBio, selectUserFromPropsUserId } from '../selectors/user'
 import {
   UserAvatar,
@@ -23,53 +24,45 @@ import { collabWithUser, hireUser } from '../actions/user'
 import { getElloPlatform } from '../lib/jello'
 import { getLinkArray } from '../helpers/json_helper'
 
-const selectJson = state => state.json || {}
-
 const selectUserCategories = createSelector(
   [selectUserFromPropsUserId, selectJson], (user, json) =>
-    getLinkArray(user, 'categories', json) || [],
+    getLinkArray(user, 'categories', json) || Immutable.List(),
 )
 
 export function mapStateToProps(state, props) {
-  const user = selectUserFromPropsUserId(state, props)
+  const user = selectUserFromPropsUserId(state, props) || Immutable.Map()
   const categories = selectUserCategories(state, props)
   const truncatedShortBio = selectTruncatedShortBio(state, props)
   const deviceSize = selectDeviceSize(state)
   return {
     categories,
-    followersCount: user.followersCount,
-    followingCount: user.followingCount,
-    isFeatured: !!(categories && categories.length),
+    followersCount: user.get('followersCount', 0),
+    followingCount: user.get('followingCount', 0),
+    isFeatured: !!(categories.size),
     isLoggedIn: selectIsLoggedIn(state),
     isShortBioTruncated: truncatedShortBio.text.length >= 150,
     isMobile: deviceSize === 'mobile',
-    lovesCount: user.lovesCount,
-    postsCount: user.postsCount,
-    relationshipPriority: user.relationshipPriority,
+    lovesCount: user.get('lovesCount', 0),
+    postsCount: user.get('postsCount', 0),
+    relationshipPriority: user.get('relationshipPriority'),
     truncatedShortBio: truncatedShortBio.html,
-    useGif: selectViewsAdultContent(state) || !user.postsAdultContent,
+    useGif: selectViewsAdultContent(state) || !user.get('postsAdultContent'),
     user,
-    username: user.username,
+    username: user.get('username'),
   }
 }
 
-/* eslint-disable react/no-unused-prop-types */
 class UserContainer extends Component {
 
   static propTypes = {
-    categories: PropTypes.array,
+    categories: PropTypes.object,
     className: PropTypes.string,
-    dispatch: PropTypes.func,
-    followingCount: PropTypes.number,
-    followersCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    isFeatured: PropTypes.bool,
-    isLoggedIn: PropTypes.bool,
-    isShortBioTruncated: PropTypes.bool,
-    isMobile: PropTypes.bool,
-    lovesCount: PropTypes.number,
-    postsCount: PropTypes.number,
-    relationshipPriority: PropTypes.string,
-    truncatedShortBio: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
+    isFeatured: PropTypes.bool.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    isShortBioTruncated: PropTypes.bool.isRequired,
+    isMobile: PropTypes.bool.isRequired,
+    truncatedShortBio: PropTypes.string.isRequired,
     type: PropTypes.oneOf([
       'avatar',
       'compact',
@@ -77,7 +70,8 @@ class UserContainer extends Component {
       'profile',
     ]).isRequired,
     useGif: PropTypes.bool,
-    user: PropTypes.object,
+    user: PropTypes.object.isRequired,
+    username: PropTypes.string,
   }
 
   static contextTypes = {
@@ -85,33 +79,37 @@ class UserContainer extends Component {
   }
 
   static defaultProps = {
+    categories: null,
     className: '',
+    relationshipPriority: null,
     showBlockMuteButton: false,
     useGif: false,
+    username: null,
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate(nextProps) {
+    return !Immutable.is(nextProps.user, this.props.user) ||
+      ['isLoggedIn', 'isMobile'].some(prop => nextProps[prop] !== this.props[prop])
   }
 
   onClickOpenBio = () => {
     const { dispatch, isMobile, user } = this.props
     dispatch(openModal(
-      <TextMarkupDialog html={user.formattedShortBio} />,
+      <TextMarkupDialog html={user.get('formattedShortBio', '')} />,
       isMobile ? 'isFlex hasOverlay9' : 'hasOverlay9',
     ))
   }
 
   onClickShareProfile = () => {
-    const { dispatch, user } = this.props
+    const { dispatch, username } = this.props
     const action = bindActionCreators(trackEvent, dispatch)
-    dispatch(openModal(<ShareDialog username={user.username} trackEvent={action} />))
+    dispatch(openModal(<ShareDialog username={username} trackEvent={action} />))
     dispatch(trackEvent('open-share-dialog-profile'))
   }
 
   onClickOpenFeaturedModal = () => {
     const { categories, dispatch, isMobile } = this.props
-    const len = categories.length
+    const len = categories.size
     const links = categories.map((category, index) => {
       let postfix = ''
       if (index < len - 2) {
@@ -119,19 +117,19 @@ class UserContainer extends Component {
       } else if (index < len - 1) {
         postfix = ', & '
       }
-      return [<Link to={`/discover/${category.slug}`}>{category.name}</Link>, postfix]
+      return [<Link to={`/discover/${category.get('slug')}`}>{category.get('name')}</Link>, postfix]
     })
     dispatch(openModal(
-      <FeaturedInDialog>{['Featured in '].concat(links)}</FeaturedInDialog>,
+      <FeaturedInDialog>{['Featured in '].concat(links.toArray())}</FeaturedInDialog>,
       isMobile ? 'isFlex' : null,
     ))
   }
 
   onOpenCollabModal = () => {
-    const { dispatch, user } = this.props
+    const { dispatch, user, username } = this.props
     dispatch(openModal(
       <MessageDialog
-        name={`${user.name ? user.name : user.username}`}
+        name={`${user.get('name', username)}`}
         onConfirm={this.onConfirmCollab}
         onDismiss={this.onDismissModal}
         titlePrefix="Collaborate with"
@@ -142,15 +140,15 @@ class UserContainer extends Component {
 
   onConfirmCollab = ({ message }) => {
     const { dispatch, user } = this.props
-    dispatch(collabWithUser(user.id, message))
+    dispatch(collabWithUser(user.get('id'), message))
     dispatch(trackEvent('send-collab-dialog-profile', { platform: getElloPlatform() }))
   }
 
   onOpenHireMeModal = () => {
-    const { dispatch, user } = this.props
+    const { dispatch, user, username } = this.props
     dispatch(openModal(
       <MessageDialog
-        name={`${user.name ? user.name : user.username}`}
+        name={`${user.get('name', username)}`}
         onConfirm={this.onConfirmHireMe}
         onDismiss={this.onDismissModal}
         titlePrefix="Hire"
@@ -161,7 +159,7 @@ class UserContainer extends Component {
 
   onConfirmHireMe = ({ message }) => {
     const { dispatch, user } = this.props
-    dispatch(hireUser(user.id, message))
+    dispatch(hireUser(user.get('id'), message))
     dispatch(trackEvent('send-hire-dialog-profile', { platform: getElloPlatform() }))
   }
 
@@ -191,6 +189,7 @@ class UserContainer extends Component {
     const onCollabFunc = isLoggedIn ? this.onOpenCollabModal : this.onOpenSignupModal
     const onClickOpenBio = isShortBioTruncated ? this.onClickOpenBio : null
     const onClickOpenFeaturedModal = isFeatured ? this.onClickOpenFeaturedModal : null
+    if (!user || !user.get('id')) { return null }
     switch (type) {
       case 'avatar':
         return <UserAvatar user={user} />
@@ -227,7 +226,6 @@ class UserContainer extends Component {
     }
   }
 }
-/* eslint-enable react/no-unused-prop-types */
 
 export default connect(mapStateToProps)(UserContainer)
 

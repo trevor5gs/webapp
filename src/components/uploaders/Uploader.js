@@ -7,6 +7,7 @@ class Uploader extends Component {
     className: PropTypes.string,
     line1: PropTypes.string,
     line2: PropTypes.string,
+    line3: PropTypes.string,
     saveAction: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
   }
@@ -15,6 +16,7 @@ class Uploader extends Component {
     className: '',
     line1: null,
     line2: null,
+    line3: null,
     title: '',
   }
 
@@ -52,7 +54,7 @@ class Uploader extends Component {
   }
 
   render() {
-    const { className, title, line1, line2 } = this.props
+    const { className, title, line1, line2, line3 } = this.props
     const classList = classNames(
       'Uploader',
       className,
@@ -71,8 +73,9 @@ class Uploader extends Component {
           {title}
         </span>
         <div className="UploaderMessages">
-          {line1 ? <p>{line1}</p> : null}
-          {line2 ? <p>{line2}</p> : null}
+          {line1 && <p>{line1}</p>}
+          {line2 && <p>{line2}</p>}
+          {line3 && <p>{line3}</p>}
         </div>
         <input
           className="hidden"

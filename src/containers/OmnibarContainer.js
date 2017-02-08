@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../constants/application_types'
 import { selectAvatar } from '../selectors/profile'
@@ -10,16 +9,22 @@ import { Omnibar } from '../components/omnibar/Omnibar'
 export function mapStateToProps(state) {
   return {
     avatar: selectAvatar(state),
-    ...state.omnibar,
+    classList: state.omnibar.get('classList'),
+    isActive: state.omnibar.get('isActive'),
   }
 }
 
-class OmnibarContainer extends Component {
+class OmnibarContainer extends PureComponent {
   static propTypes = {
     avatar: PropTypes.object,
     classList: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isActive: PropTypes.bool.isRequired,
+  }
+
+  static defaultProps = {
+    avatar: null,
+    classList: null,
   }
 
   componentWillMount() {
@@ -30,13 +35,6 @@ class OmnibarContainer extends Component {
 
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.FULLSCREEN, () => { this.onToggleFullScreen() })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.isFullScreen !== nextState.isFullScreen) {
-      return true
-    }
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate() {

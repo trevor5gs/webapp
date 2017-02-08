@@ -1,73 +1,92 @@
-import React, { PropTypes } from 'react'
+/* eslint-disable react/no-multi-comp */
+import Immutable from 'immutable'
+import React, { Component, PropTypes, PureComponent } from 'react'
 import { Link } from 'react-router'
 import { RegionItems } from '../regions/RegionRenderables'
 import Avatar from '../assets/Avatar'
-import CommentToolsContainer from '../../containers/CommentToolsContainer'
 
-export const CommentHeader = ({ comment, author }) => {
-  if (!comment || !author) { return null }
-  return (
-    <header className="CommentHeader" key={`CommentHeader_${comment.id}`}>
-      <div className="CommentHeaderAuthor">
-        <Link className="CommentHeaderLink" to={`/${author.username}`}>
-          <Avatar
-            priority={author.relationshipPriority}
-            sources={author.avatar}
-            userId={`${author.id}`}
-            username={author.username}
-          />
-          <span
-            className="CommentUsername DraggableUsername"
-            data-priority={author.relationshipPriority || 'inactive'}
-            data-userid={author.id}
-            data-username={author.username}
-            draggable
-          >
-            {`@${author.username}`}
-          </span>
-        </Link>
+export class CommentHeader extends PureComponent {
+  static propTypes = {
+    author: PropTypes.object.isRequired,
+    commentId: PropTypes.string.isRequired,
+  }
+  render() {
+    const { author, commentId } = this.props
+    return (
+      <header className="CommentHeader" key={`CommentHeader_${commentId}`}>
+        <div className="CommentHeaderAuthor">
+          <Link className="CommentHeaderLink" to={`/${author.get('username')}`}>
+            <Avatar
+              priority={author.get('relationshipPriority')}
+              sources={author.get('avatar')}
+              userId={`${author.get('id')}`}
+              username={author.get('username')}
+            />
+            <span
+              className="CommentUsername DraggableUsername"
+              data-priority={author.get('relationshipPriority', 'inactive')}
+              data-userid={author.get('id')}
+              data-username={author.get('username')}
+              draggable
+            >
+              {`@${author.get('username')}`}
+            </span>
+          </Link>
+        </div>
+      </header>
+    )
+  }
+}
+
+// TODO: convert this to a PureComponent once we get rid of passing assets
+export class CommentBody extends Component {
+  static propTypes = {
+    assets: PropTypes.object,
+    columnWidth: PropTypes.number.isRequired,
+    commentId: PropTypes.string.isRequired,
+    commentOffset: PropTypes.number.isRequired,
+    content: PropTypes.object.isRequired,
+    contentWidth: PropTypes.number.isRequired,
+    detailPath: PropTypes.string.isRequired,
+    innerHeight: PropTypes.number.isRequired,
+    isGridMode: PropTypes.bool.isRequired,
+  }
+  static defaultProps = {
+    assets: null,
+  }
+  shouldComponentUpdate(nextProps) {
+    return !Immutable.is(nextProps.content, this.props.content) ||
+      ['contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      )
+  }
+  render() {
+    const {
+      assets,
+      columnWidth,
+      commentId,
+      commentOffset,
+      content,
+      contentWidth,
+      detailPath,
+      innerHeight,
+      isGridMode,
+    } = this.props
+    return (
+      <div className="CommentBody" key={`CommentBody${commentId}`} >
+        <RegionItems
+          assets={assets}
+          columnWidth={columnWidth}
+          commentId={commentId}
+          commentOffset={commentOffset}
+          content={content}
+          contentWidth={contentWidth}
+          detailPath={detailPath}
+          innerHeight={innerHeight}
+          isGridMode={isGridMode}
+        />
       </div>
-    </header>
-  )
-}
-
-CommentHeader.propTypes = {
-  author: PropTypes.object,
-  comment: PropTypes.object,
-}
-
-export const CommentBody = ({ assets, comment, isGridMode = true }) =>
-  <div className="CommentBody" key={`CommentBody${comment.id}`} >
-    <RegionItems
-      assets={assets}
-      content={comment.content}
-      isGridMode={isGridMode}
-    />
-  </div>
-
-CommentBody.propTypes = {
-  assets: PropTypes.object,
-  comment: PropTypes.object,
-  isGridMode: PropTypes.bool,
-}
-
-export const CommentFooter = ({ author, comment, currentUser, post }) => {
-  if (!author) { return null }
-  return (
-    <CommentToolsContainer
-      author={author}
-      comment={comment}
-      currentUser={currentUser}
-      key={`CommentTools_${comment.id}`}
-      post={post}
-    />
-  )
-}
-
-CommentFooter.propTypes = {
-  author: PropTypes.object,
-  comment: PropTypes.object,
-  currentUser: PropTypes.object,
-  post: PropTypes.object,
+    )
+  }
 }
 

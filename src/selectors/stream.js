@@ -1,27 +1,27 @@
+import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import { selectPathname } from './routing'
+import { selectJson } from './store'
 import * as MAPPING_TYPES from '../constants/mapping_types'
-import { emptyPagination } from '../components/streams/Paginator'
-
-const selectJson = state => state.json
+import { emptyPagination } from '../reducers/json'
 
 // props.xxx
 const selectMeta = (state, props) => get(props, 'action.meta', {})
 
 // state.stream.xxx
-export const selectStreamType = state => get(state, 'stream.type')
+export const selectStreamType = state => state.stream.get('type')
 
 // state.stream.meta.xxx
-export const selectStreamMappingType = state => get(state, 'stream.meta.mappingType')
+export const selectStreamMappingType = state => state.stream.getIn(['meta', 'mappingType'])
 
 // state.stream.payload.xxx
-export const selectStreamPostIdOrToken = state => get(state, 'stream.payload.postIdOrToken')
+export const selectStreamPostIdOrToken = state => state.stream.getIn(['payload', 'postIdOrToken'])
 
 const selectStreamResult = (state, props) => {
   const meta = selectMeta(state, props)
   const resultPath = meta.resultKey || selectPathname(state)
-  return get(state, ['json', 'pages', resultPath], { ids: [], pagination: emptyPagination() })
+  return state.json.getIn(['pages', resultPath], Immutable.Map({ ids: Immutable.List(), pagination: emptyPagination() }))
 }
 
 const selectStreamResultPath = (state, props) => {
@@ -32,9 +32,9 @@ const selectStreamResultPath = (state, props) => {
 const selectStreamDeletions = (state, props) => {
   const meta = selectMeta(state, props)
   const resultPath = meta.resultKey || selectPathname(state)
-  const result = get(state.json, ['pages', resultPath], { ids: [] })
-  return (result && result.type === meta.mappingType) ||
-    (meta.resultFilter && result.type !== meta.mappingType)
+  const result = state.json.getIn(['pages', resultPath], Immutable.Map({ ids: [] }))
+  return (result && result.get('type') === meta.mappingType) ||
+    (meta.resultFilter && result.get('type') !== meta.mappingType)
 }
 
 const selectPagingPath = (state, props) => get(props, 'action.payload.endpoint.pagingPath')
@@ -60,28 +60,35 @@ export const makeSelectStreamProps = () =>
       pagingPath,
     ) => {
       const renderObj = { data: [], nestedData: [] }
-      if (result && result.type === MAPPING_TYPES.NOTIFICATIONS) {
-        renderObj.data = renderObj.data.concat(result.ids)
-        if (result.next) {
-          renderObj.data = renderObj.data.concat(result.next.ids)
+      if (result.get('type') === MAPPING_TYPES.NOTIFICATIONS) {
+        result.get('ids').forEach((model) => {
+          renderObj.data.push(model)
+        })
+        if (result.get('next')) {
+          result.getIn(['next', 'ids']).forEach((model) => {
+            renderObj.data.push(model)
+          })
         }
       } else if (shouldRemoveDeletions) {
-        const delTypes = json[`deleted_${result.type}`]
+        const delTypes = json.get(`deleted_${result.get('type')}`)
         // don't filter out blocked ids if we are in settings
         // since you can unblock/unmute them from here
-        result.ids.forEach((id) => {
-          const model = get(json, [result.type, id])
-          if (model && (path === '/settings' || (!delTypes || delTypes.indexOf(id) === -1))) {
+        // TODO: should only be using ids in the renderObj.data
+        // so that the model containers can do their own lookups
+        // on the json object which should have the absolute latest
+        result.get('ids').forEach((id) => {
+          const model = json.getIn([result.get('type'), id])
+          if (model && (path === '/settings' || (!delTypes || !delTypes.includes(id)))) {
             renderObj.data.push(model)
           }
         })
-        if (result.next) {
-          const nDelTypes = json[`deleted_${result.next.type}`]
+        if (result.get('next')) {
+          const nDelTypes = json.get(`deleted_${result.getIn('next', 'type')}`)
           const dataProp = pagingPath ? 'nestedData' : 'data'
-          result.next.ids.forEach((nextId) => {
-            const model = get(json, [result.next.type, nextId])
+          result.getIn(['next', 'ids']).forEach((nextId) => {
+            const model = json.getIn([result.getIn(['next', 'type']), nextId])
             if (model && (path === '/settings' ||
-                (!nDelTypes || nDelTypes.indexOf(nextId) === -1))) {
+                (!nDelTypes || !nDelTypes.includes(nextId)))) {
               renderObj[dataProp].push(model)
             }
           })
@@ -90,3 +97,4 @@ export const makeSelectStreamProps = () =>
       return { renderObj, result, resultPath }
     },
   )
+

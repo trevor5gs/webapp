@@ -4,13 +4,13 @@ import PostContainer from '../../containers/PostContainer'
 import StreamContainer from '../../containers/StreamContainer'
 import { MainView } from '../views/MainView'
 
-export const PostDetail = ({ author, hasEditor, post, streamAction }) =>
+export const PostDetail = ({ hasEditor, post, streamAction }) =>
   <MainView className="PostDetail">
     <div className="PostDetails Posts asList">
-      <article className="PostList" id={`Post_${post ? post.id : '_'}`}>
+      <article className="PostList" id={`Post_${post.get('id')}`}>
         <div className="StreamContainer">
-          {author && post ? <PostContainer isPostDetail post={post} /> : null}
-          {hasEditor && post ? <Editor post={post} isComment isPostDetail /> : null}
+          <PostContainer postId={post.get('id')} />
+          {hasEditor ? <Editor post={post} isComment /> : null}
         </div>
         {streamAction ?
           <StreamContainer action={streamAction} className="CommentStreamContainer" /> :
@@ -19,12 +19,13 @@ export const PostDetail = ({ author, hasEditor, post, streamAction }) =>
       </article>
     </div>
   </MainView>
-
 PostDetail.propTypes = {
-  author: PropTypes.object,
-  hasEditor: PropTypes.bool,
-  post: PropTypes.object,
+  hasEditor: PropTypes.bool.isRequired,
+  post: PropTypes.object.isRequired,
   streamAction: PropTypes.object,
+}
+PostDetail.defaultProps = {
+  streamAction: null,
 }
 
 export const PostDetailError = ({ children }) =>
@@ -33,7 +34,6 @@ export const PostDetailError = ({ children }) =>
       {children}
     </section>
   </MainView>
-
 PostDetailError.propTypes = {
   children: PropTypes.node.isRequired,
 }

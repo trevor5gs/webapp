@@ -1,9 +1,8 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
+import { getSource } from './BackgroundImage'
 import ImageAsset from './ImageAsset'
-import { isGif } from '../../helpers/file_helper'
 
 const STATUS = {
   PENDING: 'isPending',
@@ -12,53 +11,43 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
-export function getSource(props) {
-  const { sources, size, useGif } = props
-  if (!sources) {
-    return ''
-  } else if (sources.tmp && sources.tmp.url) {
-    return sources.tmp.url
-  } else if (useGif && isGif(sources.original.url)) {
-    return sources.original.url
-  }
-  return sources[size] ? sources[size].url : null
-}
-
-export default class Avatar extends Component {
+export default class Avatar extends PureComponent {
   static propTypes = {
     alt: PropTypes.string,
     className: PropTypes.string,
     onClick: PropTypes.func,
     priority: PropTypes.string,
+    size: PropTypes.string,
     to: PropTypes.string,
     userId: PropTypes.string,
     username: PropTypes.string,
   }
 
   static defaultProps = {
+    alt: null,
     className: '',
+    onClick: null,
+    priority: null,
     size: 'regular',
-    useGif: false,
+    to: null,
+    userId: null,
+    username: null,
   }
 
   componentWillMount() {
     this.state = {
-      status: getSource(this.props) ? STATUS.REQUEST : STATUS.PENDING,
+      status: getSource({ ...this.props, dpi: this.props.size }) ? STATUS.REQUEST : STATUS.PENDING,
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const thisSource = getSource(this.props)
-    const nextSource = getSource(nextProps)
+    const thisSource = getSource({ ...this.props, dpi: this.props.size })
+    const nextSource = getSource({ ...nextProps, dpi: nextProps.size })
     if (thisSource !== nextSource) {
       this.setState({
         status: nextSource ? STATUS.REQUEST : STATUS.PENDING,
       })
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onLoadSuccess = () => {
@@ -82,7 +71,7 @@ export default class Avatar extends Component {
     const imageProps = {
       alt: alt || username,
       className: 'AvatarImage',
-      src: getSource(this.props),
+      src: getSource({ ...this.props, dpi: this.props.size }),
       onLoadFailure: this.onLoadFailure,
       onLoadSuccess: this.onLoadSuccess,
     }

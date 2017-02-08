@@ -1,39 +1,38 @@
+/* eslint-disable no-param-reassign */
+import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
-import cloneDeep from 'lodash/cloneDeep'
 import get from 'lodash/get'
 import { AUTHENTICATION, EDITOR, PROFILE } from '../constants/action_types'
 import editorMethods from '../helpers/editor_helper'
 
-const initialState = {
-  completions: {},
-}
+export const initialState = Immutable.Map({ completions: Immutable.Map() })
 
-export function editor(state = initialState, action) {
-  const newState = cloneDeep(state)
+export default (state = initialState, action) => {
   const editorId = get(action, 'payload.editorId')
+  let editor
   if (editorId) {
-    newState[editorId] = editorMethods.getEditorObject(newState[editorId], action)
+    editor = editorMethods.getEditorObject(state.get(`${editorId}`), action)
+    state = state.set(`${editorId}`, editor)
     if (action.type === EDITOR.INITIALIZE) {
-      newState[editorId].shouldPersist = get(action, 'payload.shouldPersist', false)
-    } else if (newState[editorId]) {
-      newState[editorId] = editorMethods.addHasContent(newState[editorId])
-      newState[editorId] = editorMethods.addHasMedia(newState[editorId])
-      newState[editorId] = editorMethods.addHasMention(newState[editorId])
-      newState[editorId] = editorMethods.addIsLoading(newState[editorId])
+      return state.setIn([`${editorId}`, 'shouldPersist'], get(action, 'payload.shouldPersist', false))
     }
-    return newState
+    return state.setIn([`${editorId}`, 'hasContent'], editorMethods.hasContent(editor))
+      .setIn([`${editorId}`, 'hasMedia'], editorMethods.hasMedia(editor))
+      .setIn([`${editorId}`, 'hasMention'], editorMethods.hasMention(editor))
+      .setIn([`${editorId}`, 'isLoading'], editorMethods.isLoading(editor))
   }
   switch (action.type) {
-    case AUTHENTICATION.LOGOUT:
+    case AUTHENTICATION.LOGOUT_SUCCESS:
+    case AUTHENTICATION.LOGOUT_FAILURE:
+    case AUTHENTICATION.REFRESH_FAILURE:
     case PROFILE.DELETE_SUCCESS:
-      return { ...initialState }
+      return initialState
     case EDITOR.CLEAR_AUTO_COMPLETERS:
-      delete newState.completions
-      return newState
+      return state.set('completions', null)
     case EDITOR.EMOJI_COMPLETER_SUCCESS:
     case EDITOR.USER_COMPLETER_SUCCESS:
     case PROFILE.LOCATION_AUTOCOMPLETE_SUCCESS:
-      return editorMethods.addCompletions(newState, action)
+      return state.set('completions', editorMethods.getCompletions(action))
     case REHYDRATE:
       if (action.payload.editor) {
         return editorMethods.rehydrateEditors(action.payload.editor)
@@ -44,5 +43,5 @@ export function editor(state = initialState, action) {
   }
 }
 
-export { editorMethods, initialState }
+export { editorMethods }
 

@@ -1,9 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
 import { Link } from 'react-router'
-import get from 'lodash/get'
 import classNames from 'classnames'
 import ImageAsset from '../assets/ImageAsset'
 import { ElloBuyButton } from '../editor/ElloBuyButton'
@@ -24,28 +22,43 @@ class ImageRegion extends Component {
     commentOffset: PropTypes.number,
     content: PropTypes.object.isRequired,
     contentWidth: PropTypes.number,
+    detailPath: PropTypes.string.isRequired,
     innerHeight: PropTypes.number,
     isComment: PropTypes.bool,
     isGridMode: PropTypes.bool.isRequired,
     isNotification: PropTypes.bool,
     links: PropTypes.object,
-    postDetailPath: PropTypes.string,
   }
 
   static defaultProps = {
+    assets: null,
+    buyLinkURL: null,
+    columnWidth: 0,
+    commentOffset: 0,
+    contentWidth: 0,
+    innerHeight: 0,
     isComment: false,
-    isGridMode: false,
     isNotification: false,
+    links: null,
   }
 
   componentWillMount() {
-    const { assets, content, innerHeight } = this.props
+    const { assets, content, innerHeight, links } = this.props
+    let asset
+    let assetId
     let scale = null
-    const assetMatch = content.url && content.url.match(/asset\/attachment\/(\d+)\//)
-    if (assetMatch && assets) {
-      const assetId = assetMatch[1]
-      const asset = this.props.assets[assetId] || this.props.assets[parseInt(assetId, 10)]
-      const imageHeight = parseInt(get(asset, 'attachment.original.metadata.height'), 10)
+    if (links && assets) {
+      assetId = links.get('assets', -1)
+      asset = assets.get(assetId) || assets.get(Number(assetId))
+    } else {
+      const assetMatch = content.get('url') && content.get('url').match(/asset\/attachment\/(\d+)\//)
+      if (assetMatch && assets) {
+        assetId = assetMatch[1]
+        asset = assets.get(assetId) || assets.get(Number(assetId))
+      }
+    }
+    if (asset) {
+      const imageHeight = Number(asset.getIn(['attachment', 'original', 'metadata', 'height']))
       scale = innerHeight / imageHeight
     }
 
@@ -64,7 +77,12 @@ class ImageRegion extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+    return !Immutable.is(nextProps.content, this.props.content) ||
+      !Immutable.is(nextProps.links, this.props.links) ||
+      ['buyLinkURL', 'columnWidth', 'contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      ) ||
+      ['marginBottom', 'scale', 'status'].some(prop => nextState[prop] !== this.state[prop])
   }
 
   onClickStaticImageRegion = () => {
@@ -91,20 +109,22 @@ class ImageRegion extends Component {
 
   getAttachmentMetadata() {
     if (!this.attachment || this.isBasicAttachment()) { return null }
-    const { optimized, xhdpi, hdpi } = this.attachment
+    const optimized = this.attachment.get('optimized')
+    const xhdpi = this.attachment.get('xhdpi')
+    const hdpi = this.attachment.get('hdpi')
     let width = null
     let height = null
 
     // Todo: Not sure if we need to calculate hdpi or if xhdpi will work
-    if (optimized && optimized.metadata && optimized.metadata.width) {
-      width = parseInt(optimized.metadata.width, 10)
-      height = parseInt(optimized.metadata.height, 10)
-    } else if (xhdpi && xhdpi.metadata && xhdpi.metadata.width) {
-      width = parseInt(xhdpi.metadata.width, 10)
-      height = parseInt(xhdpi.metadata.height, 10)
-    } else if (hdpi && hdpi.metadata && hdpi.metadata.width) {
-      width = parseInt(hdpi.metadata.width, 10)
-      height = parseInt(hdpi.metadata.height, 10)
+    if (optimized.getIn(['metadata', 'width'])) {
+      width = Number(optimized.getIn(['metadata', 'width']))
+      height = Number(optimized.getIn(['metadata', 'height']))
+    } else if (xhdpi.getIn(['metadata', 'width'])) {
+      width = Number(xhdpi.getIn(['metadata', 'width']))
+      height = Number(xhdpi.getIn(['metadata', 'height']))
+    } else if (hdpi.getIn(['metadata', 'width'])) {
+      width = Number(hdpi.getIn(['metadata', 'width']))
+      height = Number(hdpi.getIn(['metadata', 'height']))
     }
     return {
       width,
@@ -144,13 +164,13 @@ class ImageRegion extends Component {
     const images = []
     if (!this.isBasicAttachment()) {
       if (isGridMode) {
-        images.push(`${this.attachment.mdpi.url} 375w`)
-        images.push(`${this.attachment.hdpi.url} 1920w`)
+        images.push(`${this.attachment.getIn(['mdpi', 'url'])} 375w`)
+        images.push(`${this.attachment.getIn(['hdpi', 'url'])} 1920w`)
       } else {
-        images.push(`${this.attachment.mdpi.url} 180w`)
-        images.push(`${this.attachment.hdpi.url} 750w`)
-        images.push(`${this.attachment.xhdpi.url} 1500w`)
-        images.push(`${this.attachment.optimized.url} 1920w`)
+        images.push(`${this.attachment.getIn(['mdpi', 'url'])} 180w`)
+        images.push(`${this.attachment.getIn(['hdpi', 'url'])} 750w`)
+        images.push(`${this.attachment.getIn(['xhdpi', 'url'])} 1500w`)
+        images.push(`${this.attachment.getIn(['optimized', 'url'])} 1920w`)
       }
     }
     return images.join(', ')
@@ -177,16 +197,12 @@ class ImageRegion extends Component {
     // notifications don't supply the linked assets in a response
     // so we need to see if the asset actually exists here so we
     // can fall back to using just the url
-    if (!assets || (assets && links && links.assets && !assets[links.assets])) { return true }
-    return !(links && links.assets && assets[links.assets] && assets[links.assets].attachment)
+    if (!assets || (assets && links && links.get('assets') && !assets.get(links.get('assets')))) { return true }
+    return !(links && links.get('assets') && assets.get(links.get('assets')) && assets.getIn([links.get('assets'), 'attachment']))
   }
 
   isGif() {
-    const optimized = this.attachment.optimized
-    if (optimized && optimized.metadata) {
-      return optimized.metadata.type === 'image/gif'
-    }
-    return false
+    return this.attachment.getIn(['optimized', 'metadata', 'type']) === 'image/gif'
   }
 
   renderGifAttachment() {
@@ -194,14 +210,14 @@ class ImageRegion extends Component {
     const dimensions = this.getImageDimensions()
     return (
       <ImageAsset
-        alt={content.alt ? content.alt.replace('.gif', '') : null}
+        alt={content.get('alt') ? content.get('alt').replace('.gif', '') : null}
         className="ImageAttachment"
         height={isNotification ? 'auto' : dimensions.height}
         onLoadFailure={this.onLoadFailure}
         onLoadSuccess={this.onLoadSuccess}
         role="presentation"
-        src={this.attachment.optimized.url}
-        width={dimensions.width}
+        src={this.attachment.getIn(['optimized', 'url'])}
+        width={isNotification ? null : dimensions.width}
       />
     )
   }
@@ -212,22 +228,22 @@ class ImageRegion extends Component {
     const dimensions = this.getImageDimensions()
     return (
       <ImageAsset
-        alt={content.alt ? content.alt.replace('.jpg', '') : null}
+        alt={content.get('alt') ? content.get('alt').replace('.jpg', '') : null}
         className="ImageAttachment"
         height={isNotification ? 'auto' : dimensions.height}
         onLoadFailure={this.onLoadFailure}
         onLoadSuccess={this.onLoadSuccess}
         role="presentation"
         srcSet={srcset}
-        src={this.attachment.hdpi.url}
-        width={dimensions.width}
+        src={this.attachment.getIn(['hdpi', 'url'])}
+        width={isNotification ? null : dimensions.width}
       />
     )
   }
 
   renderLegacyImageAttachment() {
     const { content, isNotification } = this.props
-    const attrs = { src: content.url }
+    const attrs = { src: content.get('url') }
     const { width, height } = this.state
     const stateDimensions = width ? { width, height } : {}
     if (isNotification) {
@@ -235,7 +251,7 @@ class ImageRegion extends Component {
     }
     return (
       <ImageAsset
-        alt={content.alt ? content.alt.replace('.jpg', '') : null}
+        alt={content.get('alt') ? content.get('alt').replace('.jpg', '') : null}
         className="ImageAttachment"
         onLoadFailure={this.onLoadFailure}
         onLoadSuccess={this.onLoadSuccess}
@@ -249,17 +265,17 @@ class ImageRegion extends Component {
   renderAttachment() {
     const { assets, links } = this.props
     if (!this.isBasicAttachment()) {
-      this.attachment = assets[links.assets].attachment
+      this.attachment = assets.getIn([links.get('assets'), 'attachment'])
       return this.isGif() ? this.renderGifAttachment() : this.renderImageAttachment()
     }
     return this.renderLegacyImageAttachment()
   }
 
   renderRegionAsLink() {
-    const { buyLinkURL, postDetailPath } = this.props
+    const { buyLinkURL, detailPath } = this.props
     return (
       <div className="RegionContent">
-        <Link to={postDetailPath}>
+        <Link to={detailPath}>
           {this.renderAttachment()}
         </Link>
         {
@@ -291,9 +307,9 @@ class ImageRegion extends Component {
   }
 
   render() {
-    const { isGridMode, postDetailPath } = this.props
+    const { isGridMode, detailPath } = this.props
     const { status } = this.state
-    const asLink = isGridMode && postDetailPath
+    const asLink = isGridMode && detailPath
     return (
       <div className={classNames('ImageRegion', status)} >
         {asLink ? this.renderRegionAsLink() : this.renderRegionAsStatic()}

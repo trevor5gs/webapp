@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
 import Helmet from 'react-helmet'
@@ -9,12 +8,13 @@ import { selectPagination } from '../selectors/pagination'
 import {
   selectPostMetaCanonicalUrl,
   selectPostMetaDescription,
+  selectPostMetaEmbeds,
   selectPostMetaImages,
   selectPostMetaRobots,
   selectPostMetaTitle,
   selectPostMetaUrl,
 } from '../selectors/post'
-import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
+import { selectPathname, selectQueryTerms, selectViewNameFromRoute } from '../selectors/routing'
 import {
   selectUserMetaDescription,
   selectUserMetaImage,
@@ -27,15 +27,26 @@ const selectMetaPageType = createSelector(
     (viewName === 'postDetail' || viewName === 'userDetail' ? `${viewName}Tags` : 'defaultTags'),
 )
 
+const selectDefaultMetaRobots = createSelector(
+  [selectViewNameFromRoute, selectQueryTerms], (viewName, terms) => {
+    if (viewName === 'search' && terms && terms.length) {
+      return terms.charAt(0) === '#' ? 'index, follow' : 'noindex, follow'
+    }
+    return null
+  },
+)
+
 function mapStateToProps(state, props) {
   const pagination = selectPagination(state, props)
   return {
+    defaultMetaRobots: selectDefaultMetaRobots(state, props),
     discoverMetaData: selectDiscoverMetaData(state, props),
     metaPageType: selectMetaPageType(state, props),
-    nextPage: pagination ? pagination.next : null,
+    nextPage: pagination ? pagination.get('next') : null,
     pathname: selectPathname(state),
     postMetaCanonicalUrl: selectPostMetaCanonicalUrl(state, props),
     postMetaDescription: selectPostMetaDescription(state, props),
+    postMetaEmbeds: selectPostMetaEmbeds(state, props),
     postMetaImages: selectPostMetaImages(state, props),
     postMetaRobots: selectPostMetaRobots(state, props),
     postMetaTitle: selectPostMetaTitle(state, props),
@@ -48,14 +59,16 @@ function mapStateToProps(state, props) {
   }
 }
 
-class MetaContainer extends Component {
+class MetaContainer extends PureComponent {
   static propTypes = {
-    discoverMetaData: PropTypes.object,
-    metaPageType: PropTypes.string,
+    defaultMetaRobots: PropTypes.string,
+    discoverMetaData: PropTypes.object.isRequired,
+    metaPageType: PropTypes.string.isRequired,
     nextPage: PropTypes.string,
-    pathname: PropTypes.string,
+    pathname: PropTypes.string.isRequired,
     postMetaCanonicalUrl: PropTypes.string,
     postMetaDescription: PropTypes.string,
+    postMetaEmbeds: PropTypes.object,
     postMetaImages: PropTypes.object,
     postMetaRobots: PropTypes.string,
     postMetaTitle: PropTypes.string,
@@ -64,14 +77,31 @@ class MetaContainer extends Component {
     userMetaImage: PropTypes.string,
     userMetaRobots: PropTypes.string,
     userMetaTitle: PropTypes.string,
-    viewName: PropTypes.string,
+    viewName: PropTypes.string.isRequired,
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  static defaultProps = {
+    defaultMetaRobots: null,
+    nextPage: null,
+    postMetaCanonicalUrl: null,
+    postMetaDescription: null,
+    postMetaEmbeds: null,
+    postMetaImages: null,
+    postMetaRobots: null,
+    postMetaTitle: null,
+    postMetaUrl: null,
+    userMetaDescription: null,
+    userMetaImage: null,
+    userMetaRobots: null,
+    userMetaTitle: null,
   }
 
-  getDefaultTags({ description = META.DESCRIPTION, image = META.IMAGE, title = META.TITLE } = {}) {
+  getDefaultTags({
+    description = META.DESCRIPTION,
+    image = META.IMAGE,
+    title = META.TITLE,
+    robots = null,
+  } = {}) {
     const { nextPage, pathname } = this.props
     const url = `${ENV.AUTH_DOMAIN}${pathname}`
     const meta = [
@@ -86,6 +116,9 @@ class MetaContainer extends Component {
       { property: 'og:image', content: image },
       { name: 'twitter:card', content: 'summary_large_image' },
     ]
+    if (robots) {
+      meta.push({ name: 'robots', content: robots })
+    }
     const link = [
       nextPage ? { href: `${pathname}?${nextPage.split('?')[1]}`, rel: 'next' } : {},
     ]
@@ -109,7 +142,13 @@ class MetaContainer extends Component {
 
   getPostDetailTags() {
     const { pathname, postMetaCanonicalUrl, postMetaUrl } = this.props
-    const { postMetaTitle, postMetaDescription, postMetaImages, postMetaRobots } = this.props
+    const {
+      postMetaTitle,
+      postMetaDescription,
+      postMetaEmbeds,
+      postMetaImages,
+      postMetaRobots,
+    } = this.props
     const title = postMetaTitle
     const description = postMetaDescription
     const url = postMetaUrl
@@ -126,6 +165,7 @@ class MetaContainer extends Component {
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       ...postMetaImages.openGraphImages,
+      ...postMetaEmbeds.openGraphEmbeds,
       { name: 'twitter:card', content: twitterCard },
       { name: 'robots', content: postMetaRobots },
     ]
@@ -135,6 +175,7 @@ class MetaContainer extends Component {
 
   getTags() {
     const {
+      defaultMetaRobots,
       discoverMetaData,
       metaPageType,
       pathname,
@@ -157,6 +198,7 @@ class MetaContainer extends Component {
         description: META.SEARCH_PAGE_DESCRIPTION,
         image: discoverMetaData.image,
         title: META.SEARCH_TITLE,
+        robots: defaultMetaRobots,
       })
     } else if (viewName === 'authentication') {
       switch (pathname) {

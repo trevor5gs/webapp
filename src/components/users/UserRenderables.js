@@ -22,18 +22,17 @@ import {
 // -------------------------------------
 
 export const UserAvatar = ({ user }) =>
-  <Link className="UserAvatar" to={`/${user.username}`}>
+  <Link className="UserAvatar" to={`/${user.get('username')}`}>
     <Avatar
-      priority={user.relationshipPriority}
-      sources={user.avatar}
-      userId={`${user.id}`}
-      username={user.username}
+      priority={user.get('relationshipPriority')}
+      sources={user.get('avatar')}
+      userId={`${user.get('id')}`}
+      username={user.get('username')}
     />
-    <Hint>{`@${user.username}`}</Hint>
+    <Hint>{`@${user.get('username')}`}</Hint>
   </Link>
-
 UserAvatar.propTypes = {
-  user: PropTypes.object,
+  user: PropTypes.object.isRequired,
 }
 
 // -----------------
@@ -41,42 +40,40 @@ UserAvatar.propTypes = {
 export const UserCompact = ({ user }) =>
   <div className="UserCompact">
     <div className="UserCompactHeader">
-      <Link className="UserCompactUserLink truncate" to={`/${user.username}`}>
+      <Link className="UserCompactUserLink truncate" to={`/${user.get('username')}`}>
         <Avatar
-          priority={user.relationshipPriority}
-          sources={user.avatar}
-          userId={`${user.id}`}
-          username={user.username}
+          priority={user.get('relationshipPriority')}
+          sources={user.get('avatar')}
+          userId={`${user.get('id')}`}
+          username={user.get('username')}
         />
-        <span className="UserCompactUsername">{`@${user.username}`}</span>
+        <span className="UserCompactUsername">{`@${user.get('username')}`}</span>
       </Link>
     </div>
     <RelationshipContainer
-      relationshipPriority={user.relationshipPriority}
+      relationshipPriority={user.get('relationshipPriority')}
       user={user}
     />
   </div>
-
 UserCompact.propTypes = {
-  user: PropTypes.object,
+  user: PropTypes.object.isRequired,
 }
 
 // -----------------
 
-export const UserDrawer = ({ endpoint, icon, post, resultType }) =>
+export const UserDrawer = ({ endpoint, icon, postId, resultType }) =>
   <section className="UserDrawer">
     {icon}
     <StreamContainer
-      action={loadUserDrawer(endpoint, post, resultType)}
+      action={loadUserDrawer(endpoint, postId, resultType)}
       paginatorText="+more"
       ignoresScrollPosition
     />
   </section>
-
 UserDrawer.propTypes = {
   endpoint: PropTypes.object.isRequired,
   icon: PropTypes.element.isRequired,
-  post: PropTypes.object.isRequired,
+  postId: PropTypes.string.isRequired,
   resultType: PropTypes.string.isRequired,
 }
 
@@ -93,36 +90,36 @@ export const UserProfileCard = ({
   <div className="UserProfileCard" >
     <Avatar
       className="inUserProfileCard"
-      priority={user.relationshipPriority}
+      priority={user.get('relationshipPriority')}
       size={isMobile ? 'regular' : 'large'}
-      sources={user.avatar}
-      to={`/${user.username}`}
-      userId={`${user.id}`}
-      username={user.username}
+      sources={user.get('avatar')}
+      to={`/${user.get('username')}`}
+      userId={`${user.get('id')}`}
+      username={user.get('username')}
     />
     <UserProfileButtons
       className="inUserProfileCard"
-      onClickCollab={user.isCollaborateable ? onClickCollab : null}
-      onClickHireMe={user.isHireable ? onClickHireMe : null}
+      onClickCollab={user.get('isCollaborateable') ? onClickCollab : null}
+      onClickHireMe={user.get('isHireable') ? onClickHireMe : null}
     >
       <RelationshipContainer
         className="isPill inUserProfileCard"
-        relationshipPriority={user.relationshipPriority}
+        relationshipPriority={user.get('relationshipPriority')}
         user={user}
       />
     </UserProfileButtons>
     <UserNamesCellCard
       className="inUserProfileCard"
-      name={user.name}
-      username={user.username}
+      name={user.get('name')}
+      username={user.get('username')}
     />
     <UserStatsCell
       className="inUserProfileCard"
-      followingCount={user.followingCount}
-      followersCount={user.followersCount}
-      lovesCount={user.lovesCount}
-      postsCount={user.postsCount}
-      username={user.username}
+      followingCount={user.get('followingCount')}
+      followersCount={user.get('followersCount')}
+      lovesCount={user.get('lovesCount')}
+      postsCount={user.get('postsCount')}
+      username={user.get('username')}
     />
     { !isMobile ?
       <UserInfoCell
@@ -132,22 +129,25 @@ export const UserProfileCard = ({
     }
     <BackgroundImage
       className="hasOverlay6 inUserProfileCard"
-      sources={user.coverImage}
-      to={`/${user.username}`}
+      dpi={'xhdpi'}
+      sources={user.get('coverImage')}
+      to={`/${user.get('username')}`}
     />
     { onClickOpenFeaturedModal ?
       <UserFeaturedButton className="inUserProfileCard" onClick={onClickOpenFeaturedModal} />
       : null
     }
   </div>
-
 UserProfileCard.propTypes = {
-  isMobile: PropTypes.bool,
-  onClickCollab: PropTypes.func,
-  onClickHireMe: PropTypes.func,
+  isMobile: PropTypes.bool.isRequired,
+  onClickCollab: PropTypes.func.isRequired,
+  onClickHireMe: PropTypes.func.isRequired,
   onClickOpenFeaturedModal: PropTypes.func,
-  truncatedShortBio: PropTypes.string,
-  user: PropTypes.object,
+  truncatedShortBio: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
+}
+UserProfileCard.defaultProps = {
+  onClickOpenFeaturedModal: null,
 }
 
 // -----------------
@@ -166,39 +166,39 @@ export const UserProfile = ({
 }) =>
   <div className="UserProfile">
     <Avatar
-      alt={user.name ? user.name : user.username}
+      alt={user.get('name') ? user.get('name') : user.get('username')}
       className="inUserProfile"
-      priority={user.relationshipPriority}
+      priority={user.get('relationshipPriority')}
       size="large"
-      sources={user.avatar}
+      sources={user.get('avatar')}
       useGif={useGif}
-      userId={`${user.id}`}
-      username={user.username}
+      userId={`${user.get('id')}`}
+      username={user.get('username')}
     />
     <UserNamesCell
       className="inUserProfile"
-      name={user.name}
-      username={user.username}
+      name={user.get('name')}
+      username={user.get('username')}
     >
-      {onClickOpenFeaturedModal && !user.totalPostViewsCount ?
+      {onClickOpenFeaturedModal && !user.get('totalPostViewsCount') ?
         <UserFeaturedButton className="inUserProfile withoutTotalViewCount" onClick={onClickOpenFeaturedModal} />
         : null
       }
-      {isLoggedIn && user.relationshipPriority !== 'self' ?
+      {isLoggedIn && user.get('relationshipPriority') !== 'self' ?
         <RelationshipContainer
           hasBlockMuteButton
           className="inUserProfile"
-          relationshipPriority={user.relationshipPriority}
+          relationshipPriority={user.get('relationshipPriority')}
           user={user}
         /> : null
       }
     </UserNamesCell>
-    {user.totalPostViewsCount && parseInt(user.totalPostViewsCount, 10) > 0 ?
+    {Number(user.get('totalPostViewsCount', 0)) > 0 ?
       <UserFiguresCell
         className="inUserProfile"
         onClickOpenFeaturedModal={onClickOpenFeaturedModal}
         onClickShareProfile={onClickShareProfile}
-        totalPostViewsCount={user.totalPostViewsCount}
+        totalPostViewsCount={user.get('totalPostViewsCount')}
       /> :
       <button className="UserFiguresShareButton withoutTotalViewCount" onClick={onClickShareProfile} >
         <ShareIcon />
@@ -206,15 +206,15 @@ export const UserProfile = ({
     }
     <UserStatsCell
       className="inUserProfile"
-      followersCount={user.followersCount}
-      followingCount={user.followingCount}
-      lovesCount={user.lovesCount}
-      postsCount={user.postsCount}
-      username={user.username}
+      followersCount={user.get('followersCount')}
+      followingCount={user.get('followingCount')}
+      lovesCount={user.get('lovesCount')}
+      postsCount={user.get('postsCount')}
+      username={user.get('username')}
     />
     <UserLocationCell
       className="inUserProfile"
-      location={user.location}
+      location={user.get('location')}
     />
     <UserInfoCell
       className="inUserProfile"
@@ -223,32 +223,35 @@ export const UserProfile = ({
     />
     <UserLinksCell
       className="inUserProfile"
-      externalLinksList={user.externalLinksList}
+      externalLinksList={user.get('externalLinksList')}
       isMobile={isMobile}
     />
     <UserProfileButtons
       className="inUserProfile"
-      onClickCollab={user.isCollaborateable ? onClickCollab : null}
-      onClickHireMe={user.isHireable ? onClickHireMe : null}
+      onClickCollab={user.get('isCollaborateable') ? onClickCollab : null}
+      onClickHireMe={user.get('isHireable') ? onClickHireMe : null}
     >
       <RelationshipContainer
         className="isPill inUserProfile"
-        relationshipPriority={user.relationshipPriority}
+        relationshipPriority={user.get('relationshipPriority')}
         user={user}
       />
     </UserProfileButtons>
   </div>
-
 UserProfile.propTypes = {
-  isLoggedIn: PropTypes.bool,
-  isMobile: PropTypes.bool,
-  onClickCollab: PropTypes.func,
-  onClickHireMe: PropTypes.func,
+  isLoggedIn: PropTypes.bool.isRequired,
+  isMobile: PropTypes.bool.isRequired,
+  onClickCollab: PropTypes.func.isRequired,
+  onClickHireMe: PropTypes.func.isRequired,
   onClickOpenBio: PropTypes.func,
   onClickOpenFeaturedModal: PropTypes.func,
-  onClickShareProfile: PropTypes.func,
-  truncatedShortBio: PropTypes.string,
-  useGif: PropTypes.bool,
-  user: PropTypes.object,
+  onClickShareProfile: PropTypes.func.isRequired,
+  truncatedShortBio: PropTypes.string.isRequired,
+  useGif: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
+}
+UserProfile.defaultProps = {
+  onClickOpenBio: null,
+  onClickOpenFeaturedModal: null,
 }
 

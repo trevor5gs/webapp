@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import debounce from 'lodash/debounce'
 import { hideSoftKeyboard } from '../../lib/jello'
@@ -40,22 +39,26 @@ function onSubmit(e) {
   hideSoftKeyboard()
 }
 
-class InfoForm extends Component {
+class InfoForm extends PureComponent {
 
   static propTypes = {
-    className: PropTypes.string,
-    controlClassModifiers: PropTypes.string,
+    className: PropTypes.string.isRequired,
+    controlClassModifiers: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     isOnboardingControl: PropTypes.bool,
-    linksText: PropTypes.string,
+    linksText: PropTypes.string.isRequired,
     location: PropTypes.string,
-    name: PropTypes.string,
+    name: PropTypes.string.isRequired,
     shortBio: PropTypes.string,
     tabIndexStart: PropTypes.number,
-    username: PropTypes.string,
+    username: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
+    location: null,
+    isOnboardingControl: false,
+    name: null,
+    shortBio: null,
     tabIndexStart: 0,
   }
 
@@ -89,10 +92,6 @@ class InfoForm extends Component {
       locationStatus: this.locationText.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
       nameStatus: this.nameText.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
     })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {
@@ -212,7 +211,7 @@ class InfoForm extends Component {
           onChange={this.onChangeBioControl}
           status={bioStatus}
           tabIndex={`${tabIndexStart + 2}`}
-          text={shortBio || ''}
+          text={shortBio}
         />
         <LinksControl
           classList={controlClassModifiers}

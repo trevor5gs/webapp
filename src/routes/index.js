@@ -32,7 +32,7 @@ const routes = (store) => {
       return {
         ...route,
         onEnter(nextState, replace) {
-          const { authentication: { isLoggedIn } } = store.getState()
+          const isLoggedIn = store.getState().authentication.get('isLoggedIn')
           if (!isLoggedIn) {
             replace({ pathname: '/enter', state: nextState })
           }
@@ -43,7 +43,7 @@ const routes = (store) => {
     return {
       ...route,
       onEnter(nextState, replace) {
-        const { authentication: { isLoggedIn } } = store.getState()
+        const isLoggedIn = store.getState().authentication.get('isLoggedIn')
         if (!isLoggedIn) {
           replace({ pathname: '/enter', state: nextState })
         } else {
@@ -56,13 +56,11 @@ const routes = (store) => {
   const indexRoute = {
     getComponents: getDiscoverComponents,
     onEnter(nextState, replace) {
-      const {
-        authentication: { isLoggedIn },
-        gui: { currentStream },
-      } = store.getState()
+      const isLoggedIn = store.getState().authentication.get('isLoggedIn')
+      const homeStream = store.getState().gui.get('homeStream')
 
       if (isLoggedIn) {
-        replace({ pathname: currentStream, state: nextState })
+        replace({ pathname: homeStream, state: nextState })
       }
     },
   }

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
+import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
 import classNames from 'classnames'
@@ -11,13 +11,12 @@ import { selectIsLoggedIn } from '../selectors/authentication'
 import {
   selectColumnCount,
   selectHasLaunchedSignupModal,
-  selectHistory,
   selectInnerHeight,
   selectInnerWidth,
   selectIsGridMode,
 } from '../selectors/gui'
+import { selectOmnibar, selectStream } from '../selectors/store'
 import { makeSelectStreamProps } from '../selectors/stream'
-import { findModel } from '../helpers/json_helper'
 import { getQueryParamValue } from '../helpers/uri_helper'
 import {
   addScrollObject,
@@ -30,23 +29,25 @@ import { Paginator } from '../components/streams/Paginator'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { reloadPlayers } from '../components/editor/EmbedBlock'
 
+const selectActionPath = props =>
+  get(props, ['action', 'payload', 'endpoint', 'path'])
+
 export function makeMapStateToProps() {
   const getStreamProps = makeSelectStreamProps()
   const mapStateToProps = (state, props) => {
-    const streamProps = getStreamProps(state, props)
+    const { renderObj, result, resultPath } = getStreamProps(state, props)
     return {
-      ...streamProps,
       columnCount: selectColumnCount(state),
       hasLaunchedSignupModal: selectHasLaunchedSignupModal(state),
-      history: selectHistory(state),
       innerHeight: selectInnerHeight(state),
       innerWidth: selectInnerWidth(state),
       isLoggedIn: selectIsLoggedIn(state),
-      json: state.json,
       isGridMode: selectIsGridMode(state),
-      omnibar: state.omnibar,
-      routerState: state.routing.location.state || {},
-      stream: state.stream,
+      omnibar: selectOmnibar(state),
+      renderObj,
+      result,
+      resultPath,
+      stream: selectStream(state),
     }
   }
   return mapStateToProps
@@ -55,30 +56,32 @@ export function makeMapStateToProps() {
 class StreamContainer extends Component {
 
   static propTypes = {
-    action: PropTypes.object,
+    action: PropTypes.object.isRequired,
     children: PropTypes.node,
     className: PropTypes.string,
-    columnCount: PropTypes.number,
+    columnCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
-    hasLaunchedSignupModal: PropTypes.bool,
-    initModel: PropTypes.object,
-    isGridMode: PropTypes.bool,
-    isLoggedIn: PropTypes.bool,
+    hasLaunchedSignupModal: PropTypes.bool.isRequired,
+    isGridMode: PropTypes.bool.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     isModalComponent: PropTypes.bool,
     isPostHeaderHidden: PropTypes.bool,
-    json: PropTypes.object.isRequired,
-    omnibar: PropTypes.object,
+    omnibar: PropTypes.object.isRequired,
     paginatorText: PropTypes.string,
     renderObj: PropTypes.object.isRequired,
     result: PropTypes.object.isRequired,
-    resultPath: PropTypes.string,
+    resultPath: PropTypes.string.isRequired,
     scrollContainer: PropTypes.object,
     stream: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
-    paginatorText: 'Loading',
+    children: null,
+    className: '',
     isModalComponent: false,
+    isPostHeaderHidden: false,
+    paginatorText: 'Loading',
+    scrollContainer: null,
   }
 
   static contextTypes = {
@@ -91,7 +94,7 @@ class StreamContainer extends Component {
       dispatch(action)
     }
 
-    this.state = { action }
+    this.state = { action, renderType: ACTION_TYPES.LOAD_STREAM_REQUEST }
     this.wasOmnibarActive = omnibar.isActive
     this.setScroll = debounce(this.setScroll, 333)
   }
@@ -117,23 +120,23 @@ class StreamContainer extends Component {
       addScrollTarget(this.scrollObject)
     }
     if (!action) { return }
-    if (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
+    if (stream.get('type') === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.setState({ hidePaginator: true })
+    }
+    if (selectActionPath(this.props) === nextProps.stream.getIn(['payload', 'endpoint', 'path'])) {
+      this.setState({ renderType: stream.get('type') })
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     const { stream } = nextProps
     const { action } = nextState
-    const updateKey = get(action, 'meta.updateKey')
-    const streamPath = get(stream, 'payload.endpoint.path', '')
-    // this prevents nested stream components from clobbering parents
-    if (updateKey && !streamPath.match(updateKey)) {
-      return false
-      // when hitting the back button the result can update and
-      // try to feed wrong results to the actions render method
-      // thus causing errors when trying to render wrong results
-    } else if (nextProps.resultPath !== this.props.resultPath) {
+    const streamPath = stream.getIn(['payload', 'endpoint', 'path'], '')
+    const streamType = stream.get('type')
+    // when hitting the back button the result can update and
+    // try to feed wrong results to the actions render method
+    // thus causing errors when trying to render wrong results
+    if (nextProps.resultPath !== this.props.resultPath) {
       return false
     } else if (nextProps.isGridMode !== this.props.isGridMode) {
       return true
@@ -142,8 +145,8 @@ class StreamContainer extends Component {
       // allow page loads to fall through and also allow stream
       // load requests to fall through to show the loader
       // on an initial page load when endpoints don't match
-    } else if (!/LOAD_NEXT_CONTENT|POST\.|COMMENT\./.test(stream.type) &&
-              stream.type !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
+    } else if (!/LOAD_NEXT_CONTENT|POST\.|COMMENT\./.test(streamType) &&
+              streamType !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
               streamPath !== get(action, 'payload.endpoint.path')) {
       return false
     }
@@ -156,7 +159,7 @@ class StreamContainer extends Component {
       window.embetter.reloadPlayers()
     }
     const { omnibar } = this.props
-    this.wasOmnibarActive = omnibar.isActive
+    this.wasOmnibarActive = omnibar.get('isActive')
   }
 
   componentWillUnmount() {
@@ -195,11 +198,6 @@ class StreamContainer extends Component {
     this.loadPage('next')
   }
 
-  setAction(action) {
-    this.setState({ action })
-    this.props.dispatch(action)
-  }
-
   setScroll() {
     const path = get(this.state, 'action.payload.endpoint.path')
     if (!path) { return }
@@ -219,18 +217,18 @@ class StreamContainer extends Component {
     const { action } = this.state
     if (!action) { return }
     const { meta } = action
-    const { pagination } = result
-    if (!action.payload.endpoint || !pagination[rel] ||
-        parseInt(pagination.totalPagesRemaining, 10) === 0 || !action ||
-        (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS &&
-         get(stream, 'payload.serverStatus', 0) === 204)) { return }
+    const pagination = result.get('pagination')
+    if (!action.payload.endpoint || !pagination.get(rel) ||
+        Number(pagination.get('totalPagesRemaining')) === 0 || !action ||
+        (stream.get('type') === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS &&
+         stream.getIn(['payload', 'serverStatus']) === 204)) { return }
     if (runningFetches[pagination[rel]]) { return }
     this.setState({ hidePaginator: false })
     const infiniteAction = {
       ...action,
       type: ACTION_TYPES.LOAD_NEXT_CONTENT,
       payload: {
-        endpoint: { path: pagination[rel] },
+        endpoint: { path: pagination.get(rel) },
       },
       meta: {
         mappingType: action.payload.endpoint.pagingPath || meta.mappingType,
@@ -285,15 +283,12 @@ class StreamContainer extends Component {
   }
 
   render() {
-    const { className, columnCount, initModel, isGridMode, isPostHeaderHidden, json,
+    const { className, columnCount, isGridMode, isPostHeaderHidden,
       paginatorText, renderObj, result, stream } = this.props
-    const { action, hidePaginator } = this.state
+    const { action, hidePaginator, renderType } = this.state
     if (!action) { return null }
-    const model = findModel(json, initModel)
-    if (model) {
-      renderObj.data.push(model)
-    } else if (!renderObj.data.length) {
-      switch (stream.type) {
+    if (!renderObj.data.length) {
+      switch (renderType) {
         case ACTION_TYPES.LOAD_STREAM_SUCCESS:
           return this.renderZeroState()
         case ACTION_TYPES.LOAD_STREAM_REQUEST:
@@ -309,7 +304,7 @@ class StreamContainer extends Component {
     }
     const { meta } = action
     const renderMethod = isGridMode ? 'asGrid' : 'asList'
-    const pagination = result.pagination
+    const pagination = result.get('pagination')
     return (
       <section className={classNames('StreamContainer', className)}>
         {meta.renderStream[renderMethod](renderObj, columnCount, isPostHeaderHidden)}
@@ -321,8 +316,8 @@ class StreamContainer extends Component {
           isHidden={hidePaginator}
           loadNextPage={this.onLoadNextPage}
           messageText={paginatorText}
-          totalPages={parseInt(pagination.totalPages, 10)}
-          totalPagesRemaining={parseInt(pagination.totalPagesRemaining, 10)}
+          totalPages={Number(pagination.get('totalPages'))}
+          totalPagesRemaining={Number(pagination.get('totalPagesRemaining'))}
         />
       </section>
     )

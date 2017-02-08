@@ -17,11 +17,12 @@ export const selectPropsQueryTerms = (state, props) => get(props, 'location.quer
 export const selectPropsQueryType = (state, props) => get(props, 'location.query.type')
 
 // state.routing.xxx
-export const selectLocation = state => get(state, 'routing.location')
-export const selectPreviousPath = state => get(state, 'routing.previousPath')
+export const selectLocation = state => state.routing.get('location')
+export const selectPreviousPath = state => state.routing.get('previousPath')
 
 // state.routing.location.xxx
-export const selectPathname = state => get(state, 'routing.location.pathname')
+export const selectPathname = state => state.routing.getIn(['location', 'pathname'])
+export const selectQueryTerms = state => state.routing.getIn(['location', 'terms'])
 
 // Memoized selectors
 export const selectViewNameFromRoute = createSelector(
@@ -47,6 +48,9 @@ export const selectViewNameFromRoute = createSelector(
     if (/^\/notifications\b/.test(pathname)) {
       return 'notifications'
     }
+    if (/^\/onboarding\b/.test(pathname)) {
+      return 'onboarding'
+    }
     if (POST_DETAIL_EXPRESSION.test(pathname)) {
       return 'postDetail'
     }
@@ -59,5 +63,13 @@ export const selectViewNameFromRoute = createSelector(
     }
     return 'unknown'
   },
+)
+
+export const selectIsPostDetail = createSelector(
+  [selectViewNameFromRoute], viewName => viewName === 'postDetail',
+)
+
+export const selectIsDiscoverRoot = createSelector(
+  [selectPathname], pathname => /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname),
 )
 

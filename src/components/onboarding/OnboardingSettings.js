@@ -10,7 +10,7 @@ import BackgroundImage from '../assets/BackgroundImage'
 
 const OnboardingSettings = (props, context) => {
   const { avatar, isAvatarBlank, saveAvatar } = context
-  const { coverImage, isCoverImageBlank, saveCover } = context
+  const { coverImage, dpi, isCoverImageBlank, isMobile, saveCover } = context
   const { isNextDisabled } = props
   return (
     <MainView className="Onboarding OnboardingSettings">
@@ -23,12 +23,14 @@ const OnboardingSettings = (props, context) => {
           className={classNames('isCoverUploader', { isCoverImageBlank })}
           line1="2560 x 1440"
           line2="Animated Gifs work too"
+          line3={isMobile ? null : 'Drag & Drop'}
           saveAction={saveCover}
           title="Upload Header"
         />
         <BackgroundImage
           className="hasOverlay6 inOnboarding"
           sources={coverImage}
+          dpi={dpi}
           useGif
         />
       </div>
@@ -38,6 +40,7 @@ const OnboardingSettings = (props, context) => {
           title="Upload Avatar"
           line1="360 x 360"
           line2="Animated Gifs work too"
+          line3={isMobile ? null : 'Drag & Drop'}
           saveAction={saveAvatar}
         />
         {isAvatarBlank ? <ElloOutlineMark /> : null}
@@ -64,11 +67,15 @@ const OnboardingSettings = (props, context) => {
 OnboardingSettings.propTypes = {
   isNextDisabled: PropTypes.bool,
 }
-
+OnboardingSettings.defaultProps = {
+  isNextDisabled: false,
+}
 OnboardingSettings.contextTypes = {
   avatar: PropTypes.object,
+  dpi: PropTypes.string.isRequired,
   coverImage: PropTypes.object,
   isAvatarBlank: PropTypes.bool,
+  isMobile: PropTypes.bool.isRequired,
   isCoverImageBlank: PropTypes.bool,
   saveAvatar: PropTypes.func.isRequired,
   saveCover: PropTypes.func.isRequired,

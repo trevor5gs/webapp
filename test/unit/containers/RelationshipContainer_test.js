@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import { stubJSONStore, stubUser } from '../../support/stubs'
 import { RELATIONSHIP_PRIORITY as PRIORITY } from '../../../src/constants/relationship_types'
 import {
@@ -5,7 +6,7 @@ import {
   mapStateToProps,
 } from '../../../src/containers/RelationshipContainer'
 
-describe('RelationshipButton', () => {
+describe('RelationshipContainer', () => {
   context('#getNextBlockMutePriority', () => {
     it('returns a INACTIVE priority if it is BLOCK', () => {
       expect(getNextBlockMutePriority(PRIORITY.BLOCK)).to.equal(PRIORITY.INACTIVE)
@@ -36,10 +37,10 @@ describe('RelationshipButton', () => {
       hasBlockMuteButton: true,
     }
     const state = {
-      authentication: { isLoggedIn: true },
-      gui: { deviceSize: 'mobile' },
+      authentication: Immutable.Map({ isLoggedIn: true }),
+      gui: Immutable.Map({ deviceSize: 'mobile' }),
       json,
-      routing: { location: { pathname: '/discover' }, previousPath: '/onboarding' },
+      routing: Immutable.fromJS({ location: { pathname: '/discover' }, previousPath: '/onboarding' }),
     }
 
     const expected = {

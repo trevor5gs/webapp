@@ -1,4 +1,5 @@
-import { stub } from '../../support/stubs'
+import Immutable from 'immutable'
+import { json, stub } from '../../support/stubs'
 import { getStreamAction, mapStateToProps } from '../../../src/containers/UserDetailContainer'
 
 describe('UserDetailContainer', () => {
@@ -29,21 +30,21 @@ describe('UserDetailContainer', () => {
   })
 
   context('#mapStateToProps (new user)', () => {
-    const user = stub('user', {
+    stub('user', {
+      id: '1',
       followersCount: 0,
       postsCount: 0,
       relationshipPriority: 'friend',
       username: 'damian',
     })
     const state = {
-      authentication: { isLoggedIn: true },
-      gui: {
+      authentication: Immutable.Map({ isLoggedIn: true }),
+      gui: Immutable.fromJS({
         activeUserFollowingType: 'friend',
-        isOmnibarActive: false,
         saidHelloTo: ['phillip', 'damian'],
-      },
-      json: { users: { 1: { ...user } } },
-      stream: { type: 'USER.DETAIL_SUCCESS', error: {} },
+      }),
+      json,
+      stream: Immutable.fromJS({ type: 'USER.DETAIL_SUCCESS', error: {} }),
     }
     const props = { params: { type: 'posts', username: 'damian' } }
     const action = getStreamAction({ username: 'damian' })
@@ -74,29 +75,29 @@ describe('UserDetailContainer', () => {
     })
 
     it('sets tabs to null', () => {
-      expect(nextProps.tabs).to.be.null
+      expect(nextProps.tabs.length).to.equal(0)
     })
   })
 
   context('#mapStateToProps (self)', () => {
-    const user = stub('user', {
+    stub('user', {
+      id: '1',
       followersCount: 666,
       postsCount: 1,
       relationshipPriority: 'self',
       username: 'nikki',
     })
     const state = {
-      authentication: { isLoggedIn: true },
-      gui: {
+      authentication: Immutable.Map({ isLoggedIn: true }),
+      gui: Immutable.fromJS({
         activeUserFollowingType: 'friend',
-        isOmnibarActive: true,
         saidHelloTo: ['phillip', 'damian'],
-      },
-      json: { users: { 1: { ...user } } },
-      stream: { type: 'USER.DETAIL_SUCCESS', error: {} },
+      }),
+      json,
+      stream: Immutable.fromJS({ type: 'USER.DETAIL_SUCCESS', error: {} }),
     }
     const props = { params: { type: 'following', username: 'nikki' } }
-    const action = getStreamAction({ username: 'nikki', type: 'following' })
+    const action = getStreamAction({ activeUserFollowingType: 'friend', username: 'nikki', type: 'following' })
     const nextProps = mapStateToProps(state, props)
     const tabs = [
       { type: 'friend', children: 'Following' },

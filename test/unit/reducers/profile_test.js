@@ -1,5 +1,6 @@
+import Immutable from 'immutable'
 import { stubAvatar, stubCoverImage, stubUser } from '../../support/stubs'
-import { profile as reducer } from '../../../src/reducers/profile'
+import reducer from '../../../src/reducers/profile'
 import { AUTHENTICATION, INVITATIONS, PROFILE } from '../../../src/constants/action_types'
 
 
@@ -11,8 +12,8 @@ describe('profile reducer', () => {
   })
 
   context('AUTHENTICATION', () => {
-    it('AUTHENTICATION.LOGOUT blows away the reducer except for some android data', () => {
-      const action = { type: AUTHENTICATION.LOGOUT, payload: {} }
+    it('AUTHENTICATION.LOGOUT_SUCCESS blows away the reducer except for some android data', () => {
+      const action = { type: AUTHENTICATION.LOGOUT_SUCCESS, payload: {} }
       const state = stubUser({
         buildVersion: 'buildVersion',
         bundleId: 'bundleId',
@@ -38,9 +39,9 @@ describe('profile reducer', () => {
         payload: { response: { invitations: { email: 'timmy@aol.com' } } },
       }
       const initial = reducer(user, {})
-      expect(initial).to.have.property('email', 'user@aol.com')
+      expect(initial.get('email')).to.equal('user@aol.com')
       const reduced = reducer(initial, action)
-      expect(reduced).to.have.property('email', 'timmy@aol.com')
+      expect(reduced.get('email')).to.equal('timmy@aol.com')
     })
   })
 
@@ -74,9 +75,9 @@ describe('profile reducer', () => {
       }
       const reduced = reducer(state, action)
       expect(reduced).have.property('availability')
-      expect(reduced.availability).have.property('username', false)
-      expect(reduced.availability).have.property('original', 'OG')
-      expect(reduced.availability).have.property('suggestions')
+      expect(reduced.getIn(['availability', 'username'])).to.be.false
+      expect(reduced.getIn(['availability', 'original'])).to.equal('OG')
+      expect(reduced.getIn(['availability', 'suggestions'])).to.exist
     })
 
     it('PROFILE.EXPORT_SUCCESS adds the dataExport url on a 200', () => {
@@ -107,13 +108,13 @@ describe('profile reducer', () => {
 
     it('PROFILE.DELETE_SUCCESS blows away the reducer except for some android data', () => {
       const action = { type: PROFILE.DELETE_SUCCESS, payload: {} }
-      const state = {
+      const state = Immutable.fromJS({
         buildVersion: 'buildVersion',
         bundleId: 'bundleId',
         marketingVersion: 'marketingVersion',
         registrationId: 'registrationId',
         username: 'username',
-      }
+      })
       const result = reducer(state, {})
       expect(result).to.have.property('username', 'username')
       const nextResult = reducer(result, action)
@@ -125,18 +126,17 @@ describe('profile reducer', () => {
 
     it('PROFILE.LOAD_SUCCESS adds the id and user properties', () => {
       const user = stubUser({ id: '666' })
-      const state = {}
       const action = {
         type: PROFILE.LOAD_SUCCESS,
-        payload: { response: { users: { ...user } } },
+        payload: { response: { users: user.toJS() } },
       }
-      const reduced = reducer(state, action)
-      expect(reduced).to.have.property('id', '666')
+      const reduced = reducer(undefined, action)
+      expect(reduced.get('id')).to.equal('666')
       expect(reduced).to.deep.equal(user)
     })
 
     it('PROFILE.REQUEST_PUSH_SUBSCRIPTION', () => {
-      const state = stubUser
+      const state = stubUser()
       const action = {
         type: PROFILE.REQUEST_PUSH_SUBSCRIPTION,
         payload: {
@@ -196,7 +196,7 @@ describe('profile reducer', () => {
       const initial = reducer(user, {})
       const reduced = reducer(initial, action)
       expect(reduced).to.have.property('avatar')
-      expect(reduced.avatar.tmp).to.have.property('url', 'data:image/png;base64,objectURL...')
+      expect(reduced.getIn(['avatar', 'tmp', 'url'])).to.equal('data:image/png;base64,objectURL...')
     })
 
     it('PROFILE.TMP_COVER_CREATED adds a tmp asset on user.coverImage', () => {
@@ -208,12 +208,12 @@ describe('profile reducer', () => {
       const initial = reducer(user, {})
       const reduced = reducer(initial, action)
       expect(reduced).to.have.property('coverImage')
-      expect(reduced.coverImage.tmp).to.have.property('url', 'data:image/png;base64,objectURL...')
+      expect(reduced.getIn(['coverImage', 'tmp', 'url'])).to.equal('data:image/png;base64,objectURL...')
     })
 
     it('PROFILE.SAVE_AVATAR_SUCCESS updates the user.avatar', () => {
       const user = stubUser({ id: 'mansfield' })
-      const result = { ...user, avatar: stubAvatar('newAvatar.jpg') }
+      const result = { ...user.toJS(), avatar: stubAvatar('newAvatar.jpg').toJS() }
       const tmpAction = {
         type: PROFILE.TMP_AVATAR_CREATED,
         payload: { tmp: { url: 'data:image/png;base64,objectURL...' } },
@@ -222,18 +222,17 @@ describe('profile reducer', () => {
         type: PROFILE.SAVE_AVATAR_SUCCESS,
         payload: { response: { users: { ...result } } },
       }
-
       const initial = reducer(user, {})
       const tmpReduced = reducer(initial, tmpAction)
-      expect(tmpReduced.avatar.tmp).to.have.property('url', 'data:image/png;base64,objectURL...')
+      expect(tmpReduced.getIn(['avatar', 'tmp', 'url'])).to.equal('data:image/png;base64,objectURL...')
       const reduced = reducer(tmpReduced, saveAction)
       expect(reduced).to.have.property('avatar')
-      expect(reduced.avatar).to.deep.equal({ ...stubAvatar('newAvatar.jpg'), ...tmpAction.payload })
+      expect(reduced.get('avatar')).to.deep.equal(Immutable.fromJS({ ...stubAvatar('newAvatar.jpg').toJS(), ...tmpAction.payload }))
     })
 
     it('PROFILE.SAVE_COVER_SUCCESS updates the user.avatar', () => {
       const user = stubUser({ id: 'mansfield' })
-      const result = { ...user, avatar: stubCoverImage('newCover.jpg') }
+      const result = { ...user.toJS(), coverImage: stubCoverImage('newCover.jpg').toJS() }
       const tmpAction = {
         type: PROFILE.TMP_COVER_CREATED,
         payload: { tmp: { url: 'data:image/png;base64,...' } },
@@ -245,13 +244,13 @@ describe('profile reducer', () => {
 
       const initial = reducer(user, {})
       const tmpReduced = reducer(initial, tmpAction)
-      expect(tmpReduced.coverImage.tmp).to.have.property('url', 'data:image/png;base64,...')
+      expect(tmpReduced.getIn(['coverImage', 'tmp', 'url'])).to.equal('data:image/png;base64,...')
       const reduced = reducer(tmpReduced, saveAction)
       expect(reduced).to.have.property('coverImage')
-      expect(reduced.coverImage).to.deep.equal({
-        ...stubCoverImage('newCover.jpg'),
+      expect(reduced.get('coverImage')).to.deep.equal(Immutable.fromJS({
+        ...stubCoverImage('newCover.jpg').toJS(),
         ...tmpAction.payload,
-      })
+      }))
     })
   })
 })

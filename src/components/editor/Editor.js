@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { selectIsLoggedIn } from '../../selectors/authentication'
@@ -5,7 +6,7 @@ import {
   selectHasAutoWatchEnabled,
   selectIsOwnPage,
 } from '../../selectors/profile'
-import { selectPostFromPropsPostId, selectIsOwnPost } from '../../selectors/post'
+import { selectPost, selectPostIsOwn } from '../../selectors/post'
 import { openModal, closeModal } from '../../actions/modals'
 import {
   createComment,
@@ -27,10 +28,10 @@ const editorUniqueIdentifiers = {}
 export function getEditorId(post, comment, isComment, isZero) {
   const prefix = isComment ? 'commentEditor' : 'postEditor'
   let modelId = ''
-  if (post) {
-    modelId = post.id
-  } else if (comment) {
-    modelId = `${comment.postId}_${comment.id}`
+  if (post && post.size) {
+    modelId = post.get('id')
+  } else if (comment && comment.size) {
+    modelId = `${comment.get('postId')}_${comment.get('id')}`
   } else if (isZero) {
     modelId = 'Zero'
   } else {
@@ -47,9 +48,9 @@ function mapStateToProps(state, props) {
   return {
     allowsAutoWatch: selectHasAutoWatchEnabled(state),
     isLoggedIn: selectIsLoggedIn(state),
-    post: selectPostFromPropsPostId(state, props),
+    post: selectPost(state, props),
     isOwnPage: selectIsOwnPage(state),
-    isOwnPost: selectIsOwnPost(state, props),
+    isOwnPost: selectPostIsOwn(state, props),
   }
 }
 
@@ -64,7 +65,6 @@ class Editor extends Component {
     isLoggedIn: PropTypes.bool,
     isOwnPage: PropTypes.bool,
     isOwnPost: PropTypes.bool,
-    isPostDetail: PropTypes.bool,
     onSubmit: PropTypes.func,
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
@@ -72,10 +72,15 @@ class Editor extends Component {
   }
 
   static defaultProps = {
+    allowsAutoWatch: false,
     autoPopulate: null,
+    comment: null,
     isComment: false,
+    isLoggedIn: false,
     isOwnPage: false,
-    isPostDetail: false,
+    isOwnPost: false,
+    onSubmit: null,
+    post: null,
     shouldLoadFromState: false,
     shouldPersist: false,
   }
@@ -97,22 +102,22 @@ class Editor extends Component {
   submit = (data) => {
     const { allowsAutoWatch, comment, dispatch, isComment, isOwnPage, onSubmit, post } = this.props
     if (isComment) {
-      if (comment && comment.isEditing) {
+      if (comment && comment.get('isEditing')) {
         dispatch(toggleCommentEditing(comment, false))
         dispatch(updateComment(comment, data, this.getEditorIdentifier()))
       } else {
-        dispatch(createComment(allowsAutoWatch, data, this.getEditorIdentifier(), post.id))
+        dispatch(createComment(allowsAutoWatch, data, this.getEditorIdentifier(), post.get('id')))
       }
-    } else if (!post) {
+    } else if (!post || !post.get('id')) {
       dispatch(closeOmnibar())
       dispatch(createPost(data, this.getEditorIdentifier()))
-    } else if (post.isEditing) {
+    } else if (post.get('isEditing')) {
       dispatch(toggleEditing(post, false))
       dispatch(updatePost(post, data, this.getEditorIdentifier()))
-    } else if (post.isReposting) {
+    } else if (post.get('isReposting')) {
       dispatch(toggleReposting(post, false))
-      const repostId = post.repostId || post.id
-      const repostedFromId = post.repostId ? post.id : null
+      const repostId = post.get('repostId') || post.get('id')
+      const repostedFromId = post.get('repostId') ? post.get('id') : null
       dispatch(createPost(data, this.getEditorIdentifier(),
         repostId, repostedFromId),
       )
@@ -128,16 +133,16 @@ class Editor extends Component {
   cancel = () => {
     const { comment, isComment, post } = this.props
     if (isComment) {
-      if (comment && comment.isEditing) {
+      if (comment.get('isEditing')) {
         this.launchCancelConfirm('edit')
       } else {
         this.launchCancelConfirm('comment')
       }
-    } else if (!post) {
+    } else if (!post || !post.get('id')) {
       this.launchCancelConfirm('post')
-    } else if (post.isEditing) {
+    } else if (post.get('isEditing')) {
       this.launchCancelConfirm('edit')
-    } else if (post.isReposting) {
+    } else if (post.get('isReposting')) {
       this.launchCancelConfirm('repost')
     }
   }
@@ -178,45 +183,44 @@ class Editor extends Component {
       isComment,
       isLoggedIn,
       isOwnPost,
-      isPostDetail,
       post,
       shouldLoadFromState,
       shouldPersist,
     } = this.props
     if (!isLoggedIn) { return null }
-    let blocks = []
-    let repostContent = []
+    let blocks
+    let repostContent
     let submitText
     if (autoPopulate && !shouldPersist) {
-      blocks = [{ kind: 'text', data: autoPopulate }]
+      blocks = Immutable.fromJS([{ kind: 'text', data: autoPopulate }])
       submitText = 'Post'
     } else if (isComment) {
-      if (comment && comment.isEditing) {
+      if (comment && comment.get('isEditing')) {
         submitText = 'Update'
-        blocks = comment.body
+        blocks = comment.get('body')
       } else {
         submitText = 'Comment'
       }
-    } else if (!post) {
+    } else if (!post || !post.get('id')) {
       submitText = 'Post'
-    } else if (post.isReposting) {
+    } else if (post.get('isReposting')) {
       submitText = 'Repost'
-      if (post.repostId) {
-        repostContent = post.repostContent
+      if (post.get('repostId')) {
+        repostContent = post.get('repostContent')
       } else {
-        repostContent = post.content
+        repostContent = post.get('content')
       }
-    } else if (post.isEditing) {
+    } else if (post.get('isEditing')) {
       submitText = 'Update'
-      if (post.repostContent && post.repostContent.length) {
-        repostContent = post.repostContent
+      if (post.get('repostContent') && post.get('repostContent').size) {
+        repostContent = post.get('repostContent')
       }
-      if (post.body) {
-        blocks = post.body
+      if (post.get('body')) {
+        blocks = post.get('body')
       }
     }
     const editorId = this.getEditorIdentifier()
-    const key = `${editorId}_${blocks.length + repostContent.length}`
+    const key = `${editorId}_${(blocks ? blocks.size : '') + (repostContent ? repostContent.size : '')}`
     return (
       <BlockCollection
         blocks={blocks}
@@ -224,7 +228,6 @@ class Editor extends Component {
         editorId={editorId}
         isComment={isComment}
         isOwnPost={isOwnPost}
-        isPostDetail={isPostDetail}
         key={key}
         post={post}
         repostContent={repostContent}

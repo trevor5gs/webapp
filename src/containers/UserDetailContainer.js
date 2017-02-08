@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
-import shallowCompare from 'react-addons-shallow-compare'
 import { USER } from '../constants/action_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectActiveUserFollowingType, selectHasSaidHelloTo } from '../selectors/gui'
@@ -23,7 +23,7 @@ const followingTabs = [
   { type: 'noise', children: 'Starred' },
 ]
 
-export function getStreamAction({ activeUserFollowingType = 'friend', type = 'posts', username }) {
+export function getStreamAction({ activeUserFollowingType, type = 'posts', username }) {
   switch (type) {
     case 'following':
       return loadUserFollowing(`~${username}`, activeUserFollowingType)
@@ -50,7 +50,7 @@ export function mapStateToProps(state, props) {
   const activeUserFollowingType = selectActiveUserFollowingType(state)
   const isLoggedIn = selectIsLoggedIn(state)
   const isPostHeaderHidden = type !== 'loves'
-  const isSelf = isLoggedIn && user ? user.relationshipPriority === 'self' : false
+  const isSelf = isLoggedIn && user.get('relationshipPriority') === 'self'
   const hasSaidHelloTo = user ? !isSelf && selectHasSaidHelloTo(state, props) : false
   const keyPostfix = isSelf && activeUserFollowingType ? `/${activeUserFollowingType}` : ''
   const streamAction = selectUserDetailStreamAction(state, props)
@@ -60,13 +60,13 @@ export function mapStateToProps(state, props) {
     isLoggedIn,
     isPostHeaderHidden,
     isSelf,
-    hasZeroFollowers: user ? user.followersCount < 1 : false,
-    hasZeroPosts: user ? user.postsCount < 1 : false,
+    hasZeroFollowers: Number(user.get('followersCount')) < 1 || false,
+    hasZeroPosts: Number(user.get('postsCount')) < 1 || false,
     hasSaidHelloTo,
     paramsUsername: username,
     streamAction,
     streamType: selectStreamType(state),
-    tabs: isSelf && type === 'following' ? followingTabs : null,
+    tabs: isSelf && type === 'following' ? followingTabs : [],
     user,
     viewKey: `userDetail/${username}/${type}${keyPostfix}`,
   }
@@ -74,19 +74,19 @@ export function mapStateToProps(state, props) {
 
 class UserDetailContainer extends Component {
   static propTypes = {
-    activeUserFollowingType: PropTypes.string,
+    activeUserFollowingType: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    isPostHeaderHidden: PropTypes.bool,
+    isPostHeaderHidden: PropTypes.bool.isRequired,
     isSelf: PropTypes.bool.isRequired,
     hasSaidHelloTo: PropTypes.bool.isRequired,
     hasZeroFollowers: PropTypes.bool.isRequired,
     hasZeroPosts: PropTypes.bool.isRequired,
     paramsUsername: PropTypes.string.isRequired,
-    streamAction: PropTypes.object,
-    tabs: PropTypes.array,
-    user: PropTypes.object,
-    viewKey: PropTypes.string,
+    streamAction: PropTypes.object.isRequired,
+    tabs: PropTypes.array.isRequired,
+    user: PropTypes.object.isRequired,
+    viewKey: PropTypes.string.isRequired,
   }
 
   static preRender = (store, routerState) => {
@@ -101,8 +101,8 @@ class UserDetailContainer extends Component {
 
   componentWillMount() {
     const { dispatch, paramsUsername } = this.props
+    this.state = { renderType: USER.DETAIL_REQUEST }
     dispatch(loadUserDetail(`~${paramsUsername}`))
-    this.state = { isStreamFailing: false }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -110,19 +110,19 @@ class UserDetailContainer extends Component {
     if (paramsUsername !== nextProps.paramsUsername) {
       dispatch(loadUserDetail(`~${nextProps.paramsUsername}`))
     }
-    if (nextProps.streamType === USER.DETAIL_SUCCESS) {
-      this.setState({ isStreamFailing: false })
-    } else if (nextProps.streamType === USER.DETAIL_FAILURE) {
-      this.setState({ isStreamFailing: true })
+    switch (nextProps.streamType) {
+      case USER.DETAIL_FAILURE:
+      case USER.DETAIL_REQUEST:
+      case USER.DETAIL_SUCCESS:
+        this.setState({ renderType: nextProps.streamType })
+        break
+      default:
+        break
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.isStreamFailing !== nextState.isStreamFailing) {
-      return true
-    } else if (!nextProps.user) {
-      return false
-    }
+    if (!nextProps.user) { return false }
     return shallowCompare(this, nextProps, nextState)
   }
 
@@ -130,17 +130,20 @@ class UserDetailContainer extends Component {
     const { activeUserFollowingType, dispatch, streamAction, tabs, user, viewKey } = this.props
     const { isLoggedIn, isPostHeaderHidden, isSelf } = this.props
     const { hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = this.props
-    const { isStreamFailing } = this.state
+    const { renderType } = this.state
     const shouldBindHello = hasZeroPosts && !hasSaidHelloTo
 
-    if (isStreamFailing) {
-      return (
-        <UserDetailError>
-          <ErrorState4xx />
-        </UserDetailError>
-      )
+    // render failure if we don't have an initial user
+    if (!user || !user.get('id')) {
+      if (renderType === USER.DETAIL_FAILURE) {
+        return (
+          <UserDetailError>
+            <ErrorState4xx />
+          </UserDetailError>
+        )
+      }
+      return null
     }
-    if (!user) { return null }
     const props = {
       activeType: activeUserFollowingType,
       isLoggedIn,
