@@ -259,7 +259,7 @@ describe('json reducer', () => {
             ({
               newState: state,
               result: Immutable.fromJS({
-                ids: ['6', '5', '3'],
+                ids: ['6', '5', '3', '8'],
                 pagination: 'sweet',
               }),
             }),
@@ -274,21 +274,17 @@ describe('json reducer', () => {
           expect(state.getIn(['pages', 'sweetness', 'pagination'])).to.equal('sweet')
         })
 
-        // this should happen once we have loaded at least 3 pages of content
-        // 1st page is in the result
-        // 2nd page is in the result.next
-        // 3rd page gets added to result.next
-        it('updates the result ids if the existingResult had a next', () => {
-          state = state.setIn(['pages', 'sweetness', 'next'], Immutable.fromJS({ ids: ['10', '8'] }))
+        it('updates the result ids and filters out duplicates', () => {
+          state = state.setIn(['pages', 'sweetness'], Immutable.fromJS({ ids: ['10', '8'] }))
           state = subject.methods.updateResult({}, state, action)
-          expect(state.getIn(['pages', 'sweetness', 'next', 'ids'])).to.deep.equal(Immutable.List(['10', '8', '6', '5', '3']))
+          expect(state.getIn(['pages', 'sweetness', 'ids'])).to.deep.equal(Immutable.List(['10', '8', '6', '5', '3']))
         })
 
         // add this result to the next param for subsequent page loads
-        it('sets the result on next', () => {
-          expect(state.getIn(['pages', 'sweetness', 'next'])).to.be.undefined
+        it('sets the pagination', () => {
+          expect(state.getIn(['pages', 'sweetness'])).to.be.empty
           state = subject.methods.updateResult({}, state, action)
-          expect(state.getIn(['pages', 'sweetness', 'next', 'pagination'])).to.equal('sweet')
+          expect(state.getIn(['pages', 'sweetness', 'pagination'])).to.equal('sweet')
         })
       })
 
