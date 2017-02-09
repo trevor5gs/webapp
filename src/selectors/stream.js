@@ -37,8 +37,6 @@ const selectStreamDeletions = (state, props) => {
     (meta.resultFilter && result.get('type') !== meta.mappingType)
 }
 
-const selectPagingPath = (state, props) => get(props, 'action.payload.endpoint.pagingPath')
-
 // Memoized selectors
 // TODO: We need to test this :(
 export const makeSelectStreamProps = () =>
@@ -49,7 +47,6 @@ export const makeSelectStreamProps = () =>
       selectStreamDeletions,
       selectJson,
       selectPathname,
-      selectPagingPath,
     ],
     (
       result,
@@ -57,18 +54,12 @@ export const makeSelectStreamProps = () =>
       shouldRemoveDeletions,
       json,
       path,
-      pagingPath,
     ) => {
       const renderObj = { data: [], nestedData: [] }
       if (result.get('type') === MAPPING_TYPES.NOTIFICATIONS) {
         result.get('ids').forEach((model) => {
           renderObj.data.push(model)
         })
-        if (result.get('next')) {
-          result.getIn(['next', 'ids']).forEach((model) => {
-            renderObj.data.push(model)
-          })
-        }
       } else if (shouldRemoveDeletions) {
         const delTypes = json.get(`deleted_${result.get('type')}`)
         // don't filter out blocked ids if we are in settings
@@ -82,17 +73,6 @@ export const makeSelectStreamProps = () =>
             renderObj.data.push(model)
           }
         })
-        if (result.get('next')) {
-          const nDelTypes = json.get(`deleted_${result.getIn('next', 'type')}`)
-          const dataProp = pagingPath ? 'nestedData' : 'data'
-          result.getIn(['next', 'ids']).forEach((nextId) => {
-            const model = json.getIn([result.getIn(['next', 'type']), nextId])
-            if (model && (path === '/settings' ||
-                (!nDelTypes || !nDelTypes.includes(nextId)))) {
-              renderObj[dataProp].push(model)
-            }
-          })
-        }
       }
       return { renderObj, result, resultPath }
     },

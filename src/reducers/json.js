@@ -19,6 +19,7 @@ import relationshipMethods from './experience_updates/relationships'
 const methods = {}
 let path = '/'
 let hasLoadedFirstStream = false
+let dupArr = []
 
 const initialState = Immutable.Map({
   pages: Immutable.Map(),
@@ -196,6 +197,14 @@ methods.setLayoutMode = (action, state) => {
 methods.pagesKey = action =>
   get(action, 'meta.resultKey', get(action, 'payload.pathname', path))
 
+function removeDuplicates(value) {
+  if (dupArr.includes(value)) {
+    return false
+  }
+  dupArr.push(value)
+  return true
+}
+
 // look at json_test to see more documentation for what happens in here
 methods.updateResult = (response, state, action) => {
   let { newState, result } = methods.getResult(response, state, action) // eslint-disable-line
@@ -205,20 +214,18 @@ methods.updateResult = (response, state, action) => {
   const existingResult = state.getIn(['pages', resultPath])
   if (existingResult) {
     if (action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
-      state = state.setIn(['pages', resultPath, 'pagination'], result.get('pagination'))
-      if (existingResult.get('next')) {
-        result = result.set('ids', existingResult.getIn(['next', 'ids']).concat(result.get('ids')))
-      }
-      return state.setIn(['pages', resultPath, 'next'], result)
+      dupArr = []
+      return state.setIn(['pages', resultPath], result.set('ids', existingResult.get('ids', Immutable.List()).concat(result.get('ids')).filter(removeDuplicates)))
     } else if (typeof existingResult.getIn(['ids', 0]) === 'string') {
       if ((!existingResult.get('ids').includes(result.get('ids').last()) && existingResult.get('morePostIds', Immutable.List()).isEmpty()) ||
           (!existingResult.get('morePostIds', Immutable.List()).isEmpty() && !existingResult.get('morePostIds').includes(result.get('ids').last()))) {
         return state.setIn(['pages', resultPath], result)
       } else if (hasLoadedFirstStream && !resultKey) {
         if (!existingResult.get('morePostIds', Immutable.List()).isEmpty()) {
+          dupArr = []
           return state.setIn(
             ['pages', resultPath, 'morePostIds'],
-            Immutable.List(union(result.get('ids').toArray(), existingResult.get('morePostIds').toArray())),
+            Immutable.List(union(result.get('ids').toArray(), existingResult.get('morePostIds').toArray())).filter(removeDuplicates),
           )
         } else if (existingResult.get('ids').first() !== result.get('ids').first()) {
           return state.setIn(['pages', resultPath, 'morePostIds'], result.get('ids'))
