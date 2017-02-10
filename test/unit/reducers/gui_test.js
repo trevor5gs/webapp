@@ -25,7 +25,6 @@ describe('gui reducer', () => {
         reducer(undefined, {}),
       ).to.have.keys(
         'activeNotificationsType',
-        'activeUserFollowingType',
         'columnCount',
         'discoverKeyType',
         'hasLaunchedSignupModal',
@@ -120,12 +119,6 @@ describe('gui reducer', () => {
       expect(initialState).to.have.property('activeNotificationsType', 'all')
       const action = { type: GUI.NOTIFICATIONS_TAB, payload: { activeTabType: 'comments' } }
       expect(reducer(initialState, action)).to.have.property('activeNotificationsType', 'comments')
-    })
-
-    it('GUI.SET_ACTIVE_USER_FOLLOWING_TYPE updates activeUserFollowingType', () => {
-      expect(initialState).to.have.property('activeUserFollowingType', 'friend')
-      const action = { type: GUI.SET_ACTIVE_USER_FOLLOWING_TYPE, payload: { tab: 'noise' } }
-      expect(reducer(initialState, action)).to.have.property('activeUserFollowingType', 'noise')
     })
 
     it('GUI.SET_IS_PROFILE_MENU_ACTIVE updates isProfileMenuActive', () => {
@@ -324,7 +317,6 @@ describe('gui reducer', () => {
       },
       textToolsStates: {},
       activeNotificationsType: 'all',
-      activeUserFollowingType: 'friend',
       currentStream: '/discover',
       discoverKeyType: 'featured',
       history: {},

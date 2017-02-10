@@ -56,7 +56,6 @@ const initialNonPersistedState = Immutable.Map({
 
 const initialPersistedState = Immutable.Map({
   activeNotificationsType: 'all',
-  activeUserFollowingType: 'friend',
   columnCount: 2,
   discoverKeyType: null,
   homeStream: '/discover',
@@ -118,8 +117,6 @@ export default (state = initialState, action = { type: '' }) => {
       return state.set('discoverKeyType', payload.type)
     case GUI.NOTIFICATIONS_TAB:
       return state.set('activeNotificationsType', payload.activeTabType)
-    case GUI.SET_ACTIVE_USER_FOLLOWING_TYPE:
-      return state.set('activeUserFollowingType', payload.tab)
     case GUI.SET_IS_NAVBAR_HIDDEN:
       return state.set('isNavbarHidden', get(payload, 'isNavbarHidden', state.isNavbarHidden))
     case GUI.SET_IS_PROFILE_MENU_ACTIVE:

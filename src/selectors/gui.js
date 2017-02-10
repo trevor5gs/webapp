@@ -3,7 +3,6 @@ import { selectParamsUsername } from './params'
 import { selectPathname, selectPropsQueryType } from './routing'
 
 // state.gui.xxx
-export const selectActiveUserFollowingType = state => state.gui.get('activeUserFollowingType')
 export const selectActiveNotificationsType = state => state.gui.get('activeNotificationsType')
 export const selectColumnCount = state => state.gui.get('columnCount')
 export const selectDiscoverKeyType = state => state.gui.get('discoverKeyType')

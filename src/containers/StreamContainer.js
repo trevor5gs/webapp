@@ -51,7 +51,7 @@ export function makeMapStateToProps() {
 class StreamContainer extends Component {
 
   static propTypes = {
-    action: PropTypes.object.isRequired,
+    action: PropTypes.object,
     children: PropTypes.node,
     className: PropTypes.string,
     columnCount: PropTypes.number.isRequired,
@@ -70,6 +70,7 @@ class StreamContainer extends Component {
   }
 
   static defaultProps = {
+    action: null,
     children: null,
     className: '',
     isModalComponent: false,

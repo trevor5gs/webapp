@@ -5,7 +5,7 @@ import { getStreamAction, mapStateToProps } from '../../../src/containers/UserDe
 describe('UserDetailContainer', () => {
   context('#getStreamAction', () => {
     it('returns the correct stream action for following', () => {
-      const vo = { activeUserFollowingType: 'noise', type: 'following', username: 'archer' }
+      const vo = { type: 'following', username: 'archer' }
       const action = getStreamAction(vo)
       expect(action.payload.endpoint.path).to.contain('/~archer/following')
     })
@@ -40,7 +40,6 @@ describe('UserDetailContainer', () => {
     const state = {
       authentication: Immutable.Map({ isLoggedIn: true }),
       gui: Immutable.fromJS({
-        activeUserFollowingType: 'friend',
         saidHelloTo: ['phillip', 'damian'],
       }),
       json,
@@ -73,10 +72,6 @@ describe('UserDetailContainer', () => {
     it('sets the correct stream action', () => {
       expect(nextProps.streamAction).to.deep.equal(action)
     })
-
-    it('sets tabs to null', () => {
-      expect(nextProps.tabs.length).to.equal(0)
-    })
   })
 
   context('#mapStateToProps (self)', () => {
@@ -90,19 +85,14 @@ describe('UserDetailContainer', () => {
     const state = {
       authentication: Immutable.Map({ isLoggedIn: true }),
       gui: Immutable.fromJS({
-        activeUserFollowingType: 'friend',
         saidHelloTo: ['phillip', 'damian'],
       }),
       json,
       stream: Immutable.fromJS({ type: 'USER.DETAIL_SUCCESS', error: {} }),
     }
     const props = { params: { type: 'following', username: 'nikki' } }
-    const action = getStreamAction({ activeUserFollowingType: 'friend', username: 'nikki', type: 'following' })
+    const action = getStreamAction({ username: 'nikki', type: 'following' })
     const nextProps = mapStateToProps(state, props)
-    const tabs = [
-      { type: 'friend', children: 'Following' },
-      { type: 'noise', children: 'Starred' },
-    ]
 
     it('sets hasSaidHelloTo to false', () => {
       expect(nextProps.hasSaidHelloTo).to.be.false
@@ -121,15 +111,11 @@ describe('UserDetailContainer', () => {
     })
 
     it('sets a nice looking key', () => {
-      expect(nextProps.viewKey).to.equal('userDetail/nikki/following/friend')
+      expect(nextProps.viewKey).to.equal('userDetail/nikki/following')
     })
 
     it('sets the correct stream action', () => {
       expect(nextProps.streamAction).to.deep.equal(action)
-    })
-
-    it('sets tabs to the expected group', () => {
-      expect(nextProps.tabs).to.deep.equal(tabs)
     })
   })
 })

@@ -1,12 +1,5 @@
 import { GUI } from '../constants/action_types'
 
-export function setActiveUserFollowingType(type) {
-  return {
-    type: GUI.SET_ACTIVE_USER_FOLLOWING_TYPE,
-    payload: { tab: type },
-  }
-}
-
 export function setIsNavbarHidden({ isHidden }) {
   return {
     type: GUI.SET_IS_NAVBAR_HIDDEN,
