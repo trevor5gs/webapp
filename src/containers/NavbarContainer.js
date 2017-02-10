@@ -184,9 +184,8 @@ class NavbarContainer extends PureComponent {
     e.target.classList.remove('hasDragOver')
     if (e.dataTransfer.types.indexOf('application/json') > -1) {
       const data = JSON.parse(e.dataTransfer.getData('application/json'))
-      if (data.userId && data.priority) {
-        const newPriority = e.target.getAttribute('href') === '/starred' ? 'noise' : 'friend'
-        this.props.dispatch(updateRelationship(data.userId, newPriority, data.priority))
+      if (data.userId && data.priority && e.target.getAttribute('href') === '/following') {
+        this.props.dispatch(updateRelationship(data.userId, 'friend', data.priority))
       }
     }
   }
