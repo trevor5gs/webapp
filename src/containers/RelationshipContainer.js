@@ -15,7 +15,6 @@ import BlockMuteDialog from '../components/dialogs/BlockMuteDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import BlockMuteButton from '../components/relationships/BlockMuteButton'
 import FollowButton from '../components/relationships/FollowButton'
-import StarshipButton from '../components/relationships/StarshipButton'
 
 const selectRelationshipPriority = (state, props) => props.relationshipPriority
 const selectHasBlockMuteButton = (state, props) => props.hasBlockMuteButton
@@ -184,14 +183,6 @@ class RelationshipContainer extends PureComponent {
         }
         {!shouldRenderBlockMute &&
           <FollowButton
-            className={className}
-            onClick={this[onClickCallback]}
-            priority={relationshipPriority}
-            userId={id}
-          />
-        }
-        {!shouldRenderBlockMute &&
-          <StarshipButton
             className={className}
             onClick={this[onClickCallback]}
             priority={relationshipPriority}
