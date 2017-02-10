@@ -173,10 +173,10 @@ export function discoverPosts(type) {
   }
 }
 // Streams
-export function friendStream() {
+export function followingStream() {
   const params = { per_page: PER_PAGE }
   return {
-    path: getAPIPath('streams/friend', params),
+    path: getAPIPath('following/posts/recent', params),
     params,
   }
 }

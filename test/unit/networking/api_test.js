@@ -51,9 +51,9 @@ describe('api.js', () => {
   })
 
   context('streams', () => {
-    it('#friendStream', () => {
-      expect(api.friendStream().path).to.match(/\/streams\/friend\?/)
-      expect(api.friendStream().pagingPath).to.be.undefined
+    it('#followingStream', () => {
+      expect(api.followingStream().path).to.match(/\/following\/posts\/recent\?/)
+      expect(api.followingStream().pagingPath).to.be.undefined
     })
   })
 

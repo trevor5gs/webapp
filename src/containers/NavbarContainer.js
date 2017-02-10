@@ -23,7 +23,7 @@ import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
 import { checkForNewNotifications, loadAnnouncements } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
-import { loadFriends } from '../actions/stream'
+import { loadFollowing } from '../actions/stream'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/NavbarRenderables'
 import { getDiscoverAction } from '../containers/DiscoverContainer'
 
@@ -144,7 +144,7 @@ class NavbarContainer extends PureComponent {
           dispatch(getDiscoverAction(params.type))
         }
       } else if (viewName === 'following') {
-        dispatch(loadFriends())
+        dispatch(loadFollowing())
       }
       scrollToPosition(0, 0)
     }

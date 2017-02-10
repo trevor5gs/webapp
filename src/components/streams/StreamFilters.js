@@ -12,16 +12,6 @@ export function mostRecentPostsFromUsers(users) {
   return result
 }
 
-export function postsFromActivities(activities) {
-  const result = { type: MAPPING_TYPES.POSTS, ids: [] }
-  activities.forEach((activity) => {
-    if (activity.links.subject.type === MAPPING_TYPES.POSTS) {
-      result.ids.push(`${activity.links.subject.id}`)
-    }
-  })
-  return result
-}
-
 export function postsFromLoves(loves) {
   const result = { type: MAPPING_TYPES.POSTS, ids: [] }
   loves.forEach((love) => {
