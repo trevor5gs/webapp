@@ -26,7 +26,6 @@ describe('ViewportContainer', () => {
       const noPathnames = [
         '/',
         '/following',
-        '/starred',
         '/settings',
         '/invitations',
         '/notifications',

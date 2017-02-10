@@ -112,9 +112,7 @@
 
 /* Stream button has an acceptable Avatar being dragged - turn background yellow */
 [data-dragging-priority="noise"] .NavbarLink[href="/following"],
-[data-dragging-priority="friend"] .NavbarLink[href="/starred"],
 [data-dragging-priority="inactive"] .NavbarLink[href="/following"],
-[data-dragging-priority="inactive"] .NavbarLink[href="/starred"] {
   padding-right: 10px;
   padding-left: 10px;
   background-color: #ffc;
@@ -122,9 +120,7 @@
 
 /* Stream button has an acceptable Avatar being dragged over it - turn background green */
 [data-dragging-priority="noise"] .NavbarLink.hasDragOver[href="/following"],
-[data-dragging-priority="friend"] .NavbarLink.hasDragOver[href="/starred"],
 [data-dragging-priority="inactive"] .NavbarLink.hasDragOver[href="/following"],
-[data-dragging-priority="inactive"] .NavbarLink.hasDragOver[href="/starred"] {
   background-color: #cfc;
 }
 

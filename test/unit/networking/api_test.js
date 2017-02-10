@@ -55,11 +55,6 @@ describe('api.js', () => {
       expect(api.friendStream().path).to.match(/\/streams\/friend\?/)
       expect(api.friendStream().pagingPath).to.be.undefined
     })
-
-    it('#noiseStream', () => {
-      expect(api.noiseStream().path).to.match(/\/streams\/noise\?/)
-      expect(api.noiseStream().pagingPath).to.be.undefined
-    })
   })
 
   context('posts', () => {

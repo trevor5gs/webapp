@@ -8,7 +8,6 @@ const HelpDialog = () =>
     <p><span className="ShortcutLabel monospace">{SHORTCUT_KEYS.DISCOVER}</span> Navigate to discover</p>
     <p><span className="ShortcutLabel monospace">{SHORTCUT_KEYS.SEARCH}</span> Navigate to search</p>
     <p><span className="ShortcutLabel monospace">{SHORTCUT_KEYS.FOLLOWING}</span> Navigate to following</p>
-    <p><span className="ShortcutLabel monospace">{SHORTCUT_KEYS.STARRED}</span> Navigate to starred</p>
     <p><span className="ShortcutLabel monospace">{SHORTCUT_KEYS.NOTIFICATIONS}</span> View notifications</p>
     <p><span className="ShortcutLabel monospace">{SHORTCUT_KEYS.TOGGLE_LAYOUT}</span> Toggle grid mode for main content</p>
     <p><span className="ShortcutLabel monospace">{SHORTCUT_KEYS.OMNIBAR}</span> Focus post editor</p>

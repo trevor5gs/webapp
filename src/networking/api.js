@@ -180,13 +180,6 @@ export function friendStream() {
     params,
   }
 }
-export function noiseStream() {
-  const params = { per_page: PER_PAGE }
-  return {
-    path: getAPIPath('streams/noise', params),
-    params,
-  }
-}
 // Posts
 export function postDetail(idOrToken, userIdOrToken) {
   const params = { comment_count: false, user_id: userIdOrToken }

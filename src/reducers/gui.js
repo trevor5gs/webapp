@@ -22,7 +22,6 @@ oldDate.setFullYear(oldDate.getFullYear() - 2)
 const HOME_STREAMS_WHITELIST = [
   /^\/discover/,
   /^\/following$/,
-  /^\/starred$/,
 ]
 
 // this is used for testing in StreamContainer_test
@@ -78,7 +77,6 @@ const initialPersistedState = Immutable.Map({
     Immutable.Map({ label: 'notifications', mode: 'list', regex: '/notifications' }),
     Immutable.Map({ label: 'search', mode: 'grid', regex: '/search|/find' }),
     Immutable.Map({ label: 'settings', mode: 'list', regex: '/settings' }),
-    Immutable.Map({ label: 'starred', mode: 'list', regex: '/starred' }),
     Immutable.Map({ label: 'staff', mode: 'list', regex: '/staff' }),
     Immutable.Map({ label: 'posts', mode: 'list', regex: '/[\\w\\-]+/post/.+' }),
     Immutable.Map({ label: 'users/following', mode: 'grid', regex: '/[\\w\\-]+/following' }),

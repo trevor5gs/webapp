@@ -244,9 +244,6 @@ describe('gui reducer', () => {
     it('LOCATION_CHANGE updates the current grid mode', () => {
       const action1 = { type: LOCATION_CHANGE, payload: { pathname: '/following' } }
       expect(reducer(undefined, action1)).to.have.property('isGridMode', true)
-
-      const action2 = { type: LOCATION_CHANGE, payload: { pathname: '/starred' } }
-      expect(reducer(undefined, action2)).to.have.property('isGridMode', false)
     })
   })
 
@@ -363,11 +360,6 @@ describe('gui reducer', () => {
           regex: '/settings',
         },
         {
-          label: 'starred',
-          mode: 'list',
-          regex: '/starred',
-        },
-        {
           label: 'staff',
           mode: 'list',
           regex: '/staff',
@@ -445,11 +437,6 @@ describe('gui reducer', () => {
             label: 'settings',
             mode: 'list',
             regex: '/settings',
-          },
-          {
-            label: 'starred',
-            mode: 'list',
-            regex: '/starred',
           },
           {
             label: 'staff',

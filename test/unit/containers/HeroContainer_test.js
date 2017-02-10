@@ -65,7 +65,6 @@ describe('HeroContainer', () => {
       const noCovers = [
         '/',
         '/following',
-        '/starred',
         '/settings',
         '/invitations',
         '/notifications',
@@ -75,7 +74,7 @@ describe('HeroContainer', () => {
         state = { routing: Immutable.fromJS({ location: { pathname: route, change: false } }) }
         expect(selectIsUserProfile(state)).to.equal(false, `${route} should not have a UserProfile.`)
       })
-      expect(selectIsUserProfile.recomputations()).to.equal(8)
+      expect(selectIsUserProfile.recomputations()).to.equal(7)
     })
   })
 

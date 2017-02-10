@@ -4,7 +4,7 @@ import * as MAPPING_TYPES from '../constants/mapping_types'
 import * as api from '../networking/api'
 import * as StreamFilters from '../components/streams/StreamFilters'
 import * as StreamRenderables from '../components/streams/StreamRenderables'
-import { ZeroFollowingStream, ZeroStarredStream } from '../components/zeros/Zeros'
+import { ZeroFollowingStream } from '../components/zeros/Zeros'
 
 export function loadFriends() {
   return {
@@ -22,19 +22,5 @@ export function loadFriends() {
   }
 }
 
-export function loadNoise() {
-  return {
-    type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.noiseStream() },
-    meta: {
-      mappingType: MAPPING_TYPES.ACTIVITIES,
-      renderStream: {
-        asList: StreamRenderables.postsAsList,
-        asGrid: StreamRenderables.postsAsGrid,
-        asZero: <ZeroStarredStream />,
-      },
-      resultFilter: StreamFilters.postsFromActivities,
-    },
-  }
-}
+export default loadFriends
 

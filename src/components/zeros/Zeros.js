@@ -31,11 +31,6 @@ export const ZeroFollowingStream = () =>
   </ZeroStream>
 
 
-export const ZeroStarredStream = () =>
-  <ZeroStream emoji="star">
-    Star creators and communities to curate a second stream.
-  </ZeroStream>
-
 // -------------------------------------
 
 export const ZeroState = ({ children = 'Sorry, no results found.' }) =>

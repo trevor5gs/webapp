@@ -23,7 +23,7 @@ import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
 import { checkForNewNotifications, loadAnnouncements } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
-import { loadFriends, loadNoise } from '../actions/stream'
+import { loadFriends } from '../actions/stream'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/NavbarRenderables'
 import { getDiscoverAction } from '../containers/DiscoverContainer'
 
@@ -145,8 +145,6 @@ class NavbarContainer extends PureComponent {
         }
       } else if (viewName === 'following') {
         dispatch(loadFriends())
-      } else if (viewName === 'starred') {
-        dispatch(loadNoise())
       }
       scrollToPosition(0, 0)
     }

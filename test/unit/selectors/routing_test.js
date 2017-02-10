@@ -97,9 +97,6 @@ describe('routing selectors', () => {
       expect(selectViewNameFromRoute(state)).to.equal('following')
       expect(selectViewNameFromRoute.recomputations()).to.equal(1)
 
-      state = { routing: state.routing.setIn(['location', 'pathname'], '/starred') }
-      expect(selectViewNameFromRoute(state)).to.equal('starred')
-
       state = { routing: state.routing.setIn(['location', 'pathname'], '/search') }
       expect(selectViewNameFromRoute(state)).to.equal('search')
 
@@ -157,7 +154,7 @@ describe('routing selectors', () => {
       state = { routing: state.routing.setIn(['location', 'pathname'], '/signup') }
       expect(selectViewNameFromRoute(state)).to.equal('authentication')
 
-      expect(selectViewNameFromRoute.recomputations()).to.equal(21)
+      expect(selectViewNameFromRoute.recomputations()).to.equal(20)
       selectViewNameFromRoute.resetRecomputations()
     })
   })
