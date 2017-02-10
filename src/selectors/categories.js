@@ -63,18 +63,18 @@ export const selectCategoryTabs = createSelector(
     const { meta, primary, secondary, tertiary } = categories
     const tabs = []
     if (!primary) { return tabs }
-    [meta, primary, secondary, tertiary].filter(arr => arr).forEach((level, index) => {
+    [meta, primary, secondary, tertiary].filter(arr => arr).forEach((level) => {
       level.forEach((category) => {
         const tab = {
+          label: category.get('name'),
+          source: category.getIn(['tileImage', 'small', 'url']),
           to: category.get('slug') === 'featured' ? '/discover' : `/discover/${category.get('slug')}`,
-          children: category.get('name'),
         }
         if (category.get('slug') === 'featured') {
           tab.activePattern = /^\/(?:discover(\/featured|\/recommended)?)?$/
         }
         tabs.push(tab)
       })
-      if (index === 0) { tabs.push({ kind: 'divider' }) }
     })
     return tabs
   },
