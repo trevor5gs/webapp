@@ -79,8 +79,3 @@ export const SETTINGS = {
   },
 }
 
-export const STARRED = {
-  BEACON_VERSION: '1',
-  BEACON_TEXT: 'Star creators and communities to curate a second stream.',
-}
-

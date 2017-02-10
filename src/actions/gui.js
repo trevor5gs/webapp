@@ -45,15 +45,6 @@ export function setLastFollowingBeaconVersion({ version }) {
   }
 }
 
-export function setLastStarredBeaconVersion({ version }) {
-  return {
-    type: GUI.SET_LAST_STARRED_BEACON_VERSION,
-    payload: {
-      version,
-    },
-  }
-}
-
 export function setNotificationScrollY(category, scrollY) {
   return {
     payload: {

@@ -104,26 +104,6 @@ describe('gui actions', () => {
     })
   })
 
-  context('#setLastStarredBeaconVersion', () => {
-    const action = subject.setLastStarredBeaconVersion({ version: '668' })
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('has similar action.name and action.type', () => {
-      expect(isFSAName(action, subject.setLastStarredBeaconVersion)).to.be.true
-    })
-
-    it('has a payload with the correct keys', () => {
-      expect(action.payload).to.have.keys('version')
-    })
-
-    it('sets the appropriate payload', () => {
-      expect(action.payload.version).to.equal('668')
-    })
-  })
-
   context('#setNotificationScrollY', () => {
     const action = subject.setNotificationScrollY('all', 666)
 

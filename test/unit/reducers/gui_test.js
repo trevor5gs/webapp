@@ -42,7 +42,6 @@ describe('gui reducer', () => {
         'lastDiscoverBeaconVersion',
         'lastFollowingBeaconVersion',
         'lastNotificationCheck',
-        'lastStarredBeaconVersion',
         'notificationScrollPositions',
         'modes',
         'saidHelloTo',
@@ -159,12 +158,6 @@ describe('gui reducer', () => {
         payload: { hasLaunchedSignupModal: true },
       }
       expect(reducer(undefined, action)).to.have.property('hasLaunchedSignupModal', true)
-    })
-
-    it('GUI.LAST_STARRED_BEACON_VERSION updates lastStarredBeaconVersion', () => {
-      expect(initialState).to.have.property('lastStarredBeaconVersion', '0')
-      const action = { type: GUI.SET_LAST_STARRED_BEACON_VERSION, payload: { version: '667' } }
-      expect(reducer(initialState, action)).to.have.property('lastStarredBeaconVersion', '667')
     })
 
     it('GUI.SET_IS_NAVBAR_HIDDEN updates properties from the initialScrollState', () => {
@@ -328,7 +321,6 @@ describe('gui reducer', () => {
       lastDiscoverBeaconVersion: '0',
       lastFollowingBeaconVersion: '0',
       lastNotificationCheck: 'Mon, 29 Dec 2014 21:28:58 GMT',
-      lastStarredBeaconVersion: '0',
       modes: [
         {
           label: 'root',
@@ -413,7 +405,6 @@ describe('gui reducer', () => {
         lastDiscoverBeaconVersion: '0',
         lastFollowingBeaconVersion: '0',
         lastNotificationCheck: 'Mon, 29 Dec 2014 21:28:58 GMT',
-        lastStarredBeaconVersion: '0',
         modes: [
           {
             label: 'root',

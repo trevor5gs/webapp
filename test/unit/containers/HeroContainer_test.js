@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import { DISCOVER, FOLLOWING, STARRED } from '../../../src/constants/locales/en'
+import { DISCOVER, FOLLOWING } from '../../../src/constants/locales/en'
 import {
   selectBroadcast,
   selectIsAuthentication,
@@ -117,20 +117,6 @@ describe('HeroContainer', () => {
       }
       expect(selectBroadcast(state)).to.equal(null)
 
-      state = {
-        authentication: Immutable.fromJS({ isLoggedIn: true }),
-        gui: Immutable.fromJS({ lastStarredBeaconVersion: null }),
-        routing: Immutable.fromJS({ location: { pathname: '/starred', change: true } }),
-      }
-      expect(selectBroadcast(state)).to.equal(STARRED.BEACON_TEXT)
-
-      state = {
-        authentication: Immutable.fromJS({ isLoggedIn: true }),
-        gui: Immutable.fromJS({ lastStarredBeaconVersion: '1' }),
-        routing: Immutable.fromJS({ location: { pathname: '/starred', change: true } }),
-      }
-      expect(selectBroadcast(state)).to.equal(null)
-
       const noBroadcasts = [
         '/settings',
         '/invitations',
@@ -149,7 +135,7 @@ describe('HeroContainer', () => {
         }
         expect(selectBroadcast(state)).to.equal(null, `${route} should not have a Broadcast.`)
       })
-      expect(selectBroadcast.recomputations()).to.equal(11)
+      expect(selectBroadcast.recomputations()).to.equal(9)
     })
   })
 })

@@ -68,7 +68,6 @@ const initialPersistedState = Immutable.Map({
   lastDiscoverBeaconVersion: '0',
   lastFollowingBeaconVersion: '0',
   lastNotificationCheck: oldDate.toUTCString(),
-  lastStarredBeaconVersion: '0',
   // order matters for matching routes
   modes: Immutable.List([
     Immutable.Map({ label: 'root', mode: 'grid', regex: '^/$' }),
@@ -95,7 +94,6 @@ export const convertStateToImmutable = objectState =>
   initialState.set('lastDiscoverBeaconVersion', objectState.lastDiscoverBeaconVersion || '0')
     .set('lastFollowingBeaconVersion', objectState.lastFollowingBeaconVersion || '0')
     .set('lastNotificationCheck', objectState.lastNotificationCheck || oldDate.toUTCString())
-    .set('lastStarredBeaconVersion', objectState.lastStarredBeaconVersion || '0')
     .set('homeStream', objectState.homeStream || '/discover')
     .set('modes', objectState.modes ? Immutable.fromJS(objectState.modes) : initialState.get('modes'))
 
@@ -127,8 +125,6 @@ export default (state = initialState, action = { type: '' }) => {
       return state.set('lastDiscoverBeaconVersion', payload.version)
     case GUI.SET_LAST_FOLLOWING_BEACON_VERSION:
       return state.set('lastFollowingBeaconVersion', payload.version)
-    case GUI.SET_LAST_STARRED_BEACON_VERSION:
-      return state.set('lastStarredBeaconVersion', payload.version)
     case GUI.SET_NOTIFICATION_SCROLL_Y:
       return state.setIn(['notificationScrollPositions', payload.category], payload.scrollY)
     case GUI.SET_SIGNUP_MODAL_LAUNCHED:
