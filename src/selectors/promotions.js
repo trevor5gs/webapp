@@ -7,7 +7,7 @@ import { getLinkArray } from '../helpers/json_helper'
 
 const selectCats = state => state.json.get('categories', Immutable.Map())
 export const selectAuthPromotionals = state => state.promotions.get('authentication')
-export const selectPagePromotionals = state => state.json.get('pagePromotionals', Immutable.Map())
+const selectPagePromotionals = state => state.json.get('pagePromotionals', Immutable.Map())
 
 export const selectCategoryData = createSelector(
   [selectPathname, selectJson, selectCats], (pathname, json, categories) => {
@@ -32,6 +32,16 @@ export const selectIsPagePromotion = createSelector(
 export const selectIsCategoryPromotion = createSelector(
   [selectViewNameFromRoute, selectIsPagePromotion], (viewName, isPagePromotion) =>
     (viewName === 'discover' && !isPagePromotion),
+)
+
+export const selectLoggedInPagePromotions = createSelector(
+  [selectPagePromotionals], promos =>
+    promos.filter(value => value.get('isLoggedIn')),
+)
+
+export const selectLoggedOutPagePromotions = createSelector(
+  [selectPagePromotionals], promos =>
+    promos.filterNot(value => value.get('isLoggedIn')),
 )
 
 export const selectRandomAuthPromotion = createSelector(

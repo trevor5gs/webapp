@@ -21,7 +21,8 @@ import {
   selectCategoryData,
   selectIsCategoryPromotion,
   selectIsPagePromotion,
-  selectPagePromotionals,
+  selectLoggedInPagePromotions,
+  selectLoggedOutPagePromotions,
 } from '../selectors/promotions'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
 import { selectJson } from '../selectors/store'
@@ -72,11 +73,16 @@ function mapStateToProps(state, props) {
   const isAuthentication = selectIsAuthentication(state)
   const isPagePromotion = selectIsPagePromotion(state)
   const isCategoryPromotion = selectIsCategoryPromotion(state)
+  const isLoggedIn = selectIsLoggedIn(state)
   let promotions
   if (isAuthentication) {
     promotions = selectAuthPromotionals(state)
   } else if (isPagePromotion) {
-    promotions = selectPagePromotionals(state)
+    if (isLoggedIn) {
+      promotions = selectLoggedInPagePromotions(state)
+    } else {
+      promotions = selectLoggedOutPagePromotions(state)
+    }
   } else if (isCategoryPromotion) {
     promotions = categoryData.promotionals
   }
