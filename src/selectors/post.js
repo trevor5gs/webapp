@@ -46,7 +46,6 @@ export const selectPostLoved = createSelector([selectPost], post => post.get('lo
 export const selectPostLovesCount = createSelector([selectPost], post => post.get('lovesCount'))
 export const selectPostRepostContent = createSelector([selectPost], post => post.get('repostContent'))
 export const selectPostRepostId = createSelector([selectPost], post => post.get('repostId'))
-export const selectPostRepostPath = createSelector([selectPost], post => post.get('repostPath'))
 export const selectPostReposted = createSelector([selectPost], post => post.get('reposted'))
 export const selectPostRepostsCount = createSelector([selectPost], post => post.get('repostsCount'))
 export const selectPostShowComments = createSelector([selectPost], post => post.get('showComments', false))

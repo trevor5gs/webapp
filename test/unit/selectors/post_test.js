@@ -267,15 +267,6 @@ describe('post selectors', () => {
     })
   })
 
-  context('#selectPostRepostPath', () => {
-    it('returns the post repost path', () => {
-      state = { json }
-      const props = { postId: '666' }
-      const result = selector.selectPostRepostPath(state, props)
-      expect(result).to.equal('/repost-path')
-    })
-  })
-
   context('#selectPostReposted', () => {
     it('returns the post is reposted', () => {
       state = { json }
