@@ -63,13 +63,13 @@ describe('user selectors', () => {
       expect(user).to.deep.equal(Immutable.Map())
     })
 
-    it('returns a post from a post.postId', () => {
+    it('returns a user from a user.id', () => {
       const props = { user: userSixes }
       const user = selector.selectUser(state, props)
       expect(user).to.deep.equal(state.json.get('users').first())
     })
 
-    it('returns an empty Map if post.postId is not found', () => {
+    it('returns an empty Map if user.id is not found', () => {
       const props = { user: stubUser({ id: '99999' }, false) }
       const user = selector.selectUser(state, props)
       expect(user).to.deep.equal(Immutable.Map())
