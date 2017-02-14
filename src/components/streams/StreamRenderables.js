@@ -5,7 +5,6 @@ import PostContainer from '../../containers/PostContainer'
 import CommentContainer from '../../containers/CommentContainer'
 import NotificationContainer from '../../containers/NotificationContainer'
 import UserContainer from '../../containers/UserContainer'
-import UserInvitee from '../users/UserInvitee'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
@@ -39,9 +38,11 @@ export const usersAsGrid = users =>
 export const usersAsInviteeList = invitations =>
   <div className="Users asInviteeList">
     {invitations.data.map(invitation =>
-      <UserInvitee
-        invitation={invitation}
+      <UserContainer
+        invitationId={invitation.get('id')}
         key={`userInviteeList_${invitation.get('id')}`}
+        type="invitee"
+        userId={invitation.getIn(['links', 'acceptedBy', 'id'])}
       />,
     )}
   </div>
@@ -49,10 +50,12 @@ export const usersAsInviteeList = invitations =>
 export const usersAsInviteeGrid = invitations =>
   <div className="Users asInviteeGrid">
     {invitations.data.map(invitation =>
-      <UserInvitee
+      <UserContainer
         className="UserInviteeGrid"
-        invitation={invitation}
-        key={`userInviteeList_${invitation.get('id')}`}
+        invitationId={invitation.get('id')}
+        key={`userInviteeGrid_${invitation.get('id')}`}
+        type="invitee"
+        userId={invitation.getIn(['links', 'acceptedBy', 'id'])}
       />,
     )}
   </div>

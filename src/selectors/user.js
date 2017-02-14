@@ -7,6 +7,7 @@ import { selectJson } from './store'
 import { USERS } from '../constants/mapping_types'
 import { getLinkArray } from '../helpers/json_helper'
 
+
 export const selectPropsUserId = (state, props) =>
   get(props, 'userId') || get(props, 'user', Immutable.Map()).get('id')
 
@@ -43,9 +44,9 @@ export const selectUserHasRepostingEnabled = createSelector([selectUser], user =
 export const selectUserHasSharingEnabled = createSelector([selectUser], user => user.get('hasSharingEnabled'))
 export const selectUserHref = createSelector([selectUser], user => user.get('href'))
 export const selectUserId = createSelector([selectUser], user => user.get('id'))
-export const selectUserIsCollaborateable = createSelector([selectUser], user => user.get('isCollaborateable'))
+export const selectUserIsCollaborateable = createSelector([selectUser], user => user.get('isCollaborateable', false))
 export const selectUserIsEmpty = createSelector([selectUser], user => user.isEmpty())
-export const selectUserIsHireable = createSelector([selectUser], user => user.get('isHireable'))
+export const selectUserIsHireable = createSelector([selectUser], user => user.get('isHireable', false))
 // TODO: Pull properties out of user.get('links')? - i.e. links.categories
 export const selectUserLocation = createSelector([selectUser], user => user.get('location'))
 export const selectUserLovesCount = createSelector([selectUser], user => user.get('lovesCount', 0))

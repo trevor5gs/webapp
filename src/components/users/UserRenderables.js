@@ -1,6 +1,7 @@
 /* eslint-disable react/no-multi-comp */
 import React, { PropTypes, PureComponent } from 'react'
 import { Link } from 'react-router'
+import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
 import BackgroundImage from '../assets/BackgroundImage'
 import { ShareIcon } from '../assets/Icons'
@@ -45,8 +46,11 @@ export class UserAvatar extends PureComponent {
   static propTypes = {
     avatar: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
-    relationshipPriority: PropTypes.string.isRequired,
+    relationshipPriority: PropTypes.string,
     username: PropTypes.string.isRequired,
+  }
+  static defaultProps = {
+    relationshipPriority: null,
   }
   render() {
     const { avatar, id, relationshipPriority, username } = this.props
@@ -70,8 +74,11 @@ export class UserCompact extends PureComponent {
   static propTypes = {
     avatar: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
-    relationshipPriority: PropTypes.string.isRequired,
+    relationshipPriority: PropTypes.string,
     username: PropTypes.string.isRequired,
+  }
+  static defaultProps = {
+    relationshipPriority: null,
   }
   render() {
     const { avatar, id, relationshipPriority, username } = this.props
@@ -96,6 +103,76 @@ export class UserCompact extends PureComponent {
 
 // -----------------
 
+// TODO: Move to InvitationRenderable?
+export class UserInvitee extends PureComponent {
+  static contextTypes = {
+    onClickReInvite: PropTypes.func.isRequired,
+  }
+  static propTypes = {
+    avatar: PropTypes.object,
+    className: PropTypes.string,
+    id: PropTypes.string,
+    invitationAcceptedAt: PropTypes.string,
+    invitationEmail: PropTypes.string,
+    relationshipPriority: PropTypes.string,
+    username: PropTypes.string,
+  }
+  static defaultProps = {
+    avatar: null,
+    className: null,
+    id: null,
+    invitationAcceptedAt: null,
+    invitationEmail: null,
+    relationshipPriority: null,
+    username: null,
+  }
+  render() {
+    const {
+      avatar,
+      id,
+      invitationAcceptedAt,
+      invitationEmail,
+      relationshipPriority,
+      username,
+    } = this.props
+    if (invitationAcceptedAt) {
+      return (
+        <div className={classNames(this.props.className, 'UserInvitee')}>
+          <div className="UserInviteeHeader">
+            <Link className="UserInviteeUserLink truncate" to={`/${username}`}>
+              <Avatar
+                priority={relationshipPriority}
+                sources={avatar}
+                userId={id}
+                username={username}
+              />
+              <span className="UserInviteeUsername">{`@${username}`}</span>
+            </Link>
+          </div>
+          <RelationshipContainer userId={id} />
+        </div>
+      )
+    } else if (invitationEmail) {
+      return (
+        <div className={classNames(this.props.className, 'UserInvitee')}>
+          <div className="UserInviteeHeader">
+            <a className="UserInviteeUserLink truncate" href={`mailto: ${invitationEmail}`}>
+              <Avatar />
+              <span className="UserInviteeEmail">{invitationEmail}</span>
+            </a>
+          </div>
+          <button className="UserInviteeAction" onClick={this.context.onClickReInvite}>
+            <span>Re-Invite</span>
+          </button>
+        </div>
+      )
+    }
+    return null
+  }
+}
+
+// -----------------
+
 export class UserProfileCard extends PureComponent {
   static contextTypes = {
     onClickCollab: PropTypes.func,
@@ -112,12 +189,13 @@ export class UserProfileCard extends PureComponent {
     lovesCount: PropTypes.number.isRequired,
     name: PropTypes.string,
     postsCount: PropTypes.number.isRequired,
-    relationshipPriority: PropTypes.string.isRequired,
+    relationshipPriority: PropTypes.string,
     truncatedShortBio: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
   }
   static defaultProps = {
     name: null,
+    relationshipPriority: null,
   }
   render() {
     const { onClickCollab, onClickHireMe, onClickOpenFeaturedModal } = this.context
@@ -217,7 +295,7 @@ export class UserProfile extends PureComponent {
     lovesCount: PropTypes.number.isRequired,
     name: PropTypes.string,
     postsCount: PropTypes.number.isRequired,
-    relationshipPriority: PropTypes.string.isRequired,
+    relationshipPriority: PropTypes.string,
     totalPostViewsCount: PropTypes.string,
     truncatedShortBio: PropTypes.string.isRequired,
     useGif: PropTypes.bool.isRequired,
@@ -228,6 +306,7 @@ export class UserProfile extends PureComponent {
     externalLinksList: null,
     location: null,
     name: null,
+    relationshipPriority: null,
     totalPostViewsCount: null,
   }
 

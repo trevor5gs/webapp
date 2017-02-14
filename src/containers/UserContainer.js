@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectIsMobile } from '../selectors/gui'
+import { selectInvitationAcceptedAt, selectInvitationEmail } from '../selectors/invitations'
 import { selectViewsAdultContent } from '../selectors/profile'
 import {
   selectUser,
@@ -33,6 +34,7 @@ import {
 import {
   UserAvatar,
   UserCompact,
+  UserInvitee,
   UserProfileCard,
   UserProfile,
 } from '../components/users/UserRenderables'
@@ -41,6 +43,7 @@ import ShareDialog from '../components/dialogs/ShareDialog'
 import { TextMarkupDialog, FeaturedInDialog } from '../components/dialogs/DialogRenderables'
 import { closeModal, openModal } from '../actions/modals'
 import { trackEvent } from '../actions/analytics'
+import { inviteUsers } from '../actions/invitations'
 import { collabWithUser, hireUser } from '../actions/user'
 import { getElloPlatform } from '../lib/jello'
 
@@ -55,6 +58,8 @@ export function mapStateToProps(state, props) {
     followingCount: selectUserFollowingCount(state, props),
     formattedShortBio: selectUserFormattedShortBio(state, props),
     id: selectUserId(state, props),
+    invitationAcceptedAt: selectInvitationAcceptedAt(state, props),
+    invitationEmail: selectInvitationEmail(state, props),
     isCollaborateable: selectUserIsCollaborateable(state, props),
     isFeatured: selectUserIsFeatured(state, props),
     isHireable: selectUserIsHireable(state, props),
@@ -87,7 +92,9 @@ class UserContainer extends Component {
     followersCount: PropTypes.number.isRequired,
     followingCount: PropTypes.number.isRequired,
     formattedShortBio: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    invitationAcceptedAt: PropTypes.string,
+    invitationEmail: PropTypes.string,
+    id: PropTypes.string,
     isCollaborateable: PropTypes.bool.isRequired,
     isFeatured: PropTypes.bool.isRequired,
     isHireable: PropTypes.bool.isRequired,
@@ -105,6 +112,7 @@ class UserContainer extends Component {
     type: PropTypes.oneOf([
       'avatar',
       'compact',
+      'invitee',
       'grid',
       'profile',
     ]).isRequired,
@@ -117,8 +125,11 @@ class UserContainer extends Component {
     avatar: null,
     coverImage: null,
     categories: null,
-    className: '',
+    className: null,
     externalLinksList: null,
+    id: null,
+    invitationAcceptedAt: null,
+    invitationEmail: null,
     name: null,
     relationshipPriority: null,
     showBlockMuteButton: false,
@@ -136,6 +147,7 @@ class UserContainer extends Component {
     onClickHireMe: PropTypes.func,
     onClickOpenBio: PropTypes.func,
     onClickOpenFeaturedModal: PropTypes.func,
+    onClickReInvite: PropTypes.func,
     onClickShareProfile: PropTypes.func.isRequired,
   }
 
@@ -154,6 +166,7 @@ class UserContainer extends Component {
       onClickHireMe: isHireable ? hiremeFunc : null,
       onClickOpenBio: isShortBioTruncated ? this.onClickOpenBio : null,
       onClickOpenFeaturedModal: isFeatured ? this.onClickOpenFeaturedModal : null,
+      onClickReInvite: this.onClickReInvite,
       onClickShareProfile: this.onClickShareProfile,
     }
   }
@@ -244,6 +257,11 @@ class UserContainer extends Component {
     onClickOpenRegistrationRequestDialog('hire-me-button')
   }
 
+  onClickReInvite = () => {
+    const { dispatch, invitationEmail } = this.props
+    dispatch(inviteUsers([invitationEmail]))
+  }
+
   render() {
     const {
       avatar,
@@ -253,6 +271,8 @@ class UserContainer extends Component {
       followersCount,
       followingCount,
       id,
+      invitationAcceptedAt,
+      invitationEmail,
       isCollaborateable,
       isHireable,
       isLoggedIn,
@@ -269,7 +289,7 @@ class UserContainer extends Component {
       useGif,
       username,
     } = this.props
-    if (isUserEmpty) { return null }
+    if (isUserEmpty && !invitationEmail) { return null }
     switch (type) {
       case 'avatar':
         return (
@@ -277,7 +297,22 @@ class UserContainer extends Component {
         )
       case 'compact':
         return (
-          <UserCompact className={className} {...{ avatar, id, relationshipPriority, username }} />
+          <UserCompact {...{ avatar, id, relationshipPriority, username }} />
+        )
+        // TODO: Move to InvitationContainer?
+      case 'invitee':
+        return (
+          <UserInvitee
+            {...{
+              avatar,
+              className,
+              id,
+              invitationAcceptedAt,
+              invitationEmail,
+              relationshipPriority,
+              username,
+            }}
+          />
         )
       case 'grid':
         return (
