@@ -45,7 +45,6 @@ export const selectUserHasSharingEnabled = createSelector([selectUser], user => 
 export const selectUserHref = createSelector([selectUser], user => user.get('href'))
 export const selectUserId = createSelector([selectUser], user => user.get('id'))
 export const selectUserIsCollaborateable = createSelector([selectUser], user => user.get('isCollaborateable', false))
-export const selectUserIsEmpty = createSelector([selectUser], user => user.isEmpty())
 export const selectUserIsHireable = createSelector([selectUser], user => user.get('isHireable', false))
 // TODO: Pull properties out of user.get('links')? - i.e. links.categories
 export const selectUserLocation = createSelector([selectUser], user => user.get('location'))
@@ -82,11 +81,15 @@ export const selectUserCategories = createSelector(
     getLinkArray(user, 'categories', json) || Immutable.List(),
 )
 
+export const selectUserIsEmpty = createSelector(
+  [selectUser], user => user.isEmpty(),
+)
+
 export const selectUserIsFeatured = createSelector(
   [selectUserCategories], categories => !categories.isEmpty(),
 )
 
-// TODO: Evaluate against profile.id and user.id instead
+// TODO: Evaluate against profile.id and user.id instead?
 export const selectUserIsSelf = createSelector(
   [selectUserRelationshipPriority], relationshipPriority => relationshipPriority === 'self',
 )

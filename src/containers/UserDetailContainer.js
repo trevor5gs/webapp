@@ -60,8 +60,8 @@ export function mapStateToProps(state, props) {
   return {
     activeUserFollowingType,
     hasSaidHelloTo,
-    hasZeroFollowers: selectUserFollowersCount(state, props) < 1 || false,
-    hasZeroPosts: selectUserPostsCount(state, props) < 1 || false,
+    hasZeroFollowers: !(selectUserFollowersCount(state, props)),
+    hasZeroPosts: !(selectUserPostsCount(state, props)),
     id: selectUserId(state, props),
     isLoggedIn: selectIsLoggedIn(state),
     isPostHeaderHidden: type !== 'loves',
