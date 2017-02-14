@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
@@ -14,7 +13,6 @@ import {
   selectUserIsEmpty,
   selectUserIsSelf,
   selectUserPostsCount,
-  selectUserUsername,
 } from '../selectors/user'
 import { setActiveUserFollowingType } from '../actions/gui'
 import { sayHello } from '../actions/zeros'
@@ -25,6 +23,7 @@ import { ErrorState4xx } from '../components/errors/Errors'
 import { UserDetail, UserDetailError } from '../components/views/UserDetail'
 
 
+const emptyTabs = []
 const followingTabs = [
   { type: 'friend', children: 'Following' },
   { type: 'noise', children: 'Starred' },
@@ -55,15 +54,14 @@ export function mapStateToProps(state, props) {
   const type = selectParamsType(state, props) || 'posts'
   const isSelf = selectUserIsSelf(state, props)
   const isUserEmpty = selectUserIsEmpty(state, props)
-  const username = selectUserUsername(state, props)
+  const username = selectParamsUsername(state, props)
   const hasSaidHelloTo = !isUserEmpty ? !isSelf && selectHasSaidHelloTo(state, props) : false
   const keyPostfix = isSelf && activeUserFollowingType ? `/${activeUserFollowingType}` : ''
-
   return {
     activeUserFollowingType,
     hasSaidHelloTo,
-    hasZeroFollowers: !!(selectUserFollowersCount(state, props)),
-    hasZeroPosts: !!(selectUserPostsCount(state, props)),
+    hasZeroFollowers: selectUserFollowersCount(state, props) < 1 || false,
+    hasZeroPosts: selectUserPostsCount(state, props) < 1 || false,
     id: selectUserId(state, props),
     isLoggedIn: selectIsLoggedIn(state),
     isPostHeaderHidden: type !== 'loves',
@@ -71,7 +69,7 @@ export function mapStateToProps(state, props) {
     isUserEmpty,
     streamAction: selectUserDetailStreamAction(state, props),
     streamType: selectStreamType(state),
-    tabs: isSelf && type === 'following' ? followingTabs : [],
+    tabs: isSelf && type === 'following' ? followingTabs : emptyTabs,
     username,
     viewKey: `userDetail/${username}/${type}${keyPostfix}`,
   }
@@ -84,7 +82,7 @@ class UserDetailContainer extends Component {
     hasSaidHelloTo: PropTypes.bool.isRequired,
     hasZeroFollowers: PropTypes.bool.isRequired,
     hasZeroPosts: PropTypes.bool.isRequired,
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     isLoggedIn: PropTypes.bool.isRequired,
     isPostHeaderHidden: PropTypes.bool.isRequired,
     isSelf: PropTypes.bool.isRequired,
@@ -93,6 +91,10 @@ class UserDetailContainer extends Component {
     tabs: PropTypes.array.isRequired,
     username: PropTypes.string.isRequired,
     viewKey: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    id: null,
   }
 
   static preRender = (store, routerState) => {
@@ -128,8 +130,22 @@ class UserDetailContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (!nextProps.isUserEmpty) { return false }
-    return shallowCompare(this, nextProps, nextState)
+    if (nextState.renderType !== this.state.renderType) { return true }
+    return [
+      'activeUserFollowingType',
+      'hasSaidHelloTo',
+      'hasZeroFollowers',
+      'hasZeroPosts',
+      'id',
+      'isLoggedIn',
+      'isPostHeaderHidden',
+      'isSelf',
+      'isUserEmpty',
+      'streamAction',
+      'tabs',
+      'username',
+      'viewKey',
+    ].some(prop => nextProps[prop] !== this.props[prop])
   }
 
   render() {
@@ -150,7 +166,6 @@ class UserDetailContainer extends Component {
       viewKey,
     } = this.props
     const { renderType } = this.state
-
     const shouldBindHello = hasZeroPosts && !hasSaidHelloTo
 
     // render failure if we don't have an initial user

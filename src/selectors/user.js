@@ -15,7 +15,6 @@ export const selectUsers = state => state.json.get(USERS, Immutable.Map())
 // Memoized selectors
 
 // Requires `userId`, `user` or `params.username` to be found in props
-// TODO: Investigate how RelationshipContainer is passed a user (props)
 export const selectUser = createSelector(
   [selectPropsUserId, selectParamsUsername, selectUsers], (id, username, users) => {
     if (id) {
@@ -28,7 +27,6 @@ export const selectUser = createSelector(
 )
 
 // Properties on the user reducer
-// TODO: Need to make sure we have the entire user properties here (visit a user page)
 // TODO: Supply defaults where applicable
 export const selectUserAvatar = createSelector([selectUser], user => user.get('avatar'))
 export const selectUserBadForSeo = createSelector([selectUser], user => user.get('badForSeo'))
