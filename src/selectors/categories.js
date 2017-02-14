@@ -1,7 +1,9 @@
 import Immutable from 'immutable'
 import { createSelector } from 'reselect'
+import get from 'lodash/get'
 import startCase from 'lodash/startCase'
 import trunc from 'trunc-html'
+import { CATEGORIES } from '../constants/mapping_types'
 import { META } from '../constants/locales/en'
 import { selectAllCategoriesPage } from './pages'
 import { selectParamsType } from './params'
@@ -16,8 +18,21 @@ export function sortCategories(a, b) {
   return 0
 }
 
+export const selectPropsCategoryId = (state, props) =>
+  get(props, 'categoryId')
+
 // state.json.categories.xxx
-export const selectCategoryCollection = state => state.json.get('categories')
+export const selectCategoryCollection = state => state.json.get(CATEGORIES)
+
+// Requires `categoryId` to be found in props
+export const selectCategory = createSelector(
+  [selectPropsCategoryId, selectCategoryCollection], (id, categories) =>
+    categories.get(id, Immutable.Map()),
+)
+
+export const selectCategoryName = createSelector([selectCategory], category => category.get('name'))
+export const selectCategorySlug = createSelector([selectCategory], category => category.get('slug'))
+export const selectCategoryTileImageUrl = createSelector([selectCategory], category => category.getIn(['tileImage', 'large', 'url']))
 
 export const selectAllCategoriesAsArray = createSelector(
   [selectCategoryCollection, selectAllCategoriesPage],
