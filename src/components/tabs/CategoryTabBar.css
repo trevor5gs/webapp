@@ -10,7 +10,7 @@
   font-size: 12px;
   color: #fff;
   white-space: nowrap;
-  background-color: #fff;
+  background-color: #000;
   border-bottom: 1px solid #fff;
 }
 
@@ -82,7 +82,7 @@
 }
 
 .CategoryTab + .CategoryTab {
-  margin-left: 1px;
+  border-left: 1px solid #fff;
 }
 
 .CategoryTabLabel {
