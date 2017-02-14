@@ -8,7 +8,14 @@ import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectActiveUserFollowingType, selectHasSaidHelloTo } from '../selectors/gui'
 import { selectParamsType, selectParamsUsername } from '../selectors/params'
 import { selectStreamType } from '../selectors/stream'
-import { selectUserFromUsername } from '../selectors/user'
+import {
+  selectUserFollowersCount,
+  selectUserId,
+  selectUserIsEmpty,
+  selectUserIsSelf,
+  selectUserPostsCount,
+  selectUserUsername,
+} from '../selectors/user'
 import { setActiveUserFollowingType } from '../actions/gui'
 import { sayHello } from '../actions/zeros'
 import {
@@ -44,30 +51,28 @@ const selectUserDetailStreamAction = createSelector(
 )
 
 export function mapStateToProps(state, props) {
-  const type = selectParamsType(state, props) || 'posts'
-  const username = selectParamsUsername(state, props)
-  const user = selectUserFromUsername(state, props)
   const activeUserFollowingType = selectActiveUserFollowingType(state)
-  const isLoggedIn = selectIsLoggedIn(state)
-  const isPostHeaderHidden = type !== 'loves'
-  const isSelf = isLoggedIn && user.get('relationshipPriority') === 'self'
-  const hasSaidHelloTo = user ? !isSelf && selectHasSaidHelloTo(state, props) : false
+  const type = selectParamsType(state, props) || 'posts'
+  const isSelf = selectUserIsSelf(state, props)
+  const isUserEmpty = selectUserIsEmpty(state, props)
+  const username = selectUserUsername(state, props)
+  const hasSaidHelloTo = !isUserEmpty ? !isSelf && selectHasSaidHelloTo(state, props) : false
   const keyPostfix = isSelf && activeUserFollowingType ? `/${activeUserFollowingType}` : ''
-  const streamAction = selectUserDetailStreamAction(state, props)
 
   return {
     activeUserFollowingType,
-    isLoggedIn,
-    isPostHeaderHidden,
-    isSelf,
-    hasZeroFollowers: Number(user.get('followersCount')) < 1 || false,
-    hasZeroPosts: Number(user.get('postsCount')) < 1 || false,
     hasSaidHelloTo,
-    paramsUsername: username,
-    streamAction,
+    hasZeroFollowers: !!(selectUserFollowersCount(state, props)),
+    hasZeroPosts: !!(selectUserPostsCount(state, props)),
+    id: selectUserId(state, props),
+    isLoggedIn: selectIsLoggedIn(state),
+    isPostHeaderHidden: type !== 'loves',
+    isSelf,
+    isUserEmpty,
+    streamAction: selectUserDetailStreamAction(state, props),
     streamType: selectStreamType(state),
     tabs: isSelf && type === 'following' ? followingTabs : [],
-    user,
+    username,
     viewKey: `userDetail/${username}/${type}${keyPostfix}`,
   }
 }
@@ -76,16 +81,17 @@ class UserDetailContainer extends Component {
   static propTypes = {
     activeUserFollowingType: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
-    isPostHeaderHidden: PropTypes.bool.isRequired,
-    isSelf: PropTypes.bool.isRequired,
     hasSaidHelloTo: PropTypes.bool.isRequired,
     hasZeroFollowers: PropTypes.bool.isRequired,
     hasZeroPosts: PropTypes.bool.isRequired,
-    paramsUsername: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    isPostHeaderHidden: PropTypes.bool.isRequired,
+    isSelf: PropTypes.bool.isRequired,
+    isUserEmpty: PropTypes.bool.isRequired,
     streamAction: PropTypes.object.isRequired,
     tabs: PropTypes.array.isRequired,
-    user: PropTypes.object.isRequired,
+    username: PropTypes.string.isRequired,
     viewKey: PropTypes.string.isRequired,
   }
 
@@ -100,15 +106,15 @@ class UserDetailContainer extends Component {
   }
 
   componentWillMount() {
-    const { dispatch, paramsUsername } = this.props
+    const { dispatch, username } = this.props
     this.state = { renderType: USER.DETAIL_REQUEST }
-    dispatch(loadUserDetail(`~${paramsUsername}`))
+    dispatch(loadUserDetail(`~${username}`))
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch, paramsUsername } = this.props
-    if (paramsUsername !== nextProps.paramsUsername) {
-      dispatch(loadUserDetail(`~${nextProps.paramsUsername}`))
+    const { dispatch, username } = this.props
+    if (username !== nextProps.username) {
+      dispatch(loadUserDetail(`~${nextProps.username}`))
     }
     switch (nextProps.streamType) {
       case USER.DETAIL_FAILURE:
@@ -122,19 +128,33 @@ class UserDetailContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (!nextProps.user) { return false }
+    if (!nextProps.isUserEmpty) { return false }
     return shallowCompare(this, nextProps, nextState)
   }
 
   render() {
-    const { activeUserFollowingType, dispatch, streamAction, tabs, user, viewKey } = this.props
-    const { isLoggedIn, isPostHeaderHidden, isSelf } = this.props
-    const { hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = this.props
+    const {
+      activeUserFollowingType,
+      dispatch,
+      hasSaidHelloTo,
+      hasZeroFollowers,
+      hasZeroPosts,
+      id,
+      isLoggedIn,
+      isPostHeaderHidden,
+      isSelf,
+      isUserEmpty,
+      streamAction,
+      tabs,
+      username,
+      viewKey,
+    } = this.props
     const { renderType } = this.state
+
     const shouldBindHello = hasZeroPosts && !hasSaidHelloTo
 
     // render failure if we don't have an initial user
-    if (!user || !user.get('id')) {
+    if (isUserEmpty) {
       if (renderType === USER.DETAIL_FAILURE) {
         return (
           <UserDetailError>
@@ -144,19 +164,21 @@ class UserDetailContainer extends Component {
       }
       return null
     }
+    // TODO: Move functions out of props and into context
     const props = {
       activeType: activeUserFollowingType,
-      isLoggedIn,
-      isPostHeaderHidden,
-      isSelf,
       hasSaidHelloTo,
       hasZeroFollowers,
       hasZeroPosts,
+      isLoggedIn,
+      isPostHeaderHidden,
+      isSelf,
       onSubmitHello: shouldBindHello ? bindActionCreators(sayHello, dispatch) : null,
       onTabClick: isSelf && tabs ? bindActionCreators(setActiveUserFollowingType, dispatch) : null,
       streamAction,
       tabs,
-      user,
+      userId: id,
+      username,
     }
     return <UserDetail {...props} key={viewKey} />
   }
