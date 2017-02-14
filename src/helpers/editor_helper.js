@@ -94,8 +94,11 @@ methods.isLoading = (state) => {
 methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
   const uid = state.get('uid')
   const newBlock = { ...block, uid }
-  const postBuyLink = state.get('postBuyLink')
-  if (postBuyLink) {
+  let postBuyLink = state.get('postBuyLink')
+  if (!postBuyLink && block.linkUrl) {
+    postBuyLink = block.linkUrl
+    state = state.set('postBuyLink', postBuyLink)
+  } else if (postBuyLink) {
     newBlock.linkUrl = postBuyLink
   }
   const order = state.get('order', Immutable.List())

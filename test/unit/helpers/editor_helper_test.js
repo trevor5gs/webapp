@@ -296,6 +296,16 @@ describe('editor helper', () => {
       expect(state.getIn(['collection', '0'])).to.have.property('uid', 0)
     })
 
+    it('sets the postBuyLink if a passed in block has a linkUrl', () => {
+      state = subject.initialState
+      expect(state.get('postBuyLink')).to.be.null
+      state = subject.methods.add({
+        block: { kind: 'text', linkUrl: 'blah' },
+        state,
+      })
+      expect(state.get('postBuyLink')).to.equal('blah')
+    })
+
     it('adds the linkUrl when buy link is present', () => {
       state = subject.methods.add({
         block: { kind: 'text' },
