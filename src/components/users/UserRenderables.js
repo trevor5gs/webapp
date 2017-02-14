@@ -213,6 +213,7 @@ export class UserProfile extends PureComponent {
     isLoggedIn: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     isSelf: PropTypes.bool.isRequired,
+    location: PropTypes.string,
     lovesCount: PropTypes.number.isRequired,
     name: PropTypes.string,
     postsCount: PropTypes.number.isRequired,
@@ -225,6 +226,7 @@ export class UserProfile extends PureComponent {
 
   static defaultProps = {
     externalLinksList: null,
+    location: null,
     name: null,
     totalPostViewsCount: null,
   }
@@ -248,6 +250,7 @@ export class UserProfile extends PureComponent {
       isLoggedIn,
       isMobile,
       isSelf,
+      location,
       lovesCount,
       name,
       postsCount,
