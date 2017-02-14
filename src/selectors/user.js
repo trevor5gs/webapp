@@ -5,46 +5,60 @@ import trunc from 'trunc-html'
 import { selectParamsUsername } from './params'
 import { selectJson } from './store'
 import { USERS } from '../constants/mapping_types'
-import { findModel } from '../helpers/json_helper'
+import { getLinkArray } from '../helpers/json_helper'
 
-// props.user.xxx
-export const selectPropsUser = (state, props) => get(props, 'user')
-export const selectPropsUserId = (state, props) => get(props, 'userId') || get(props, 'user').get('id')
 
-// state.json.users.xxx
+export const selectPropsUserId = (state, props) =>
+  get(props, 'userId') || get(props, 'user', Immutable.Map()).get('id')
+
 export const selectUsers = state => state.json.get(USERS, Immutable.Map())
 
 // Memoized selectors
+
+// Requires `userId`, `user` or `params.username` to be found in props
 export const selectUser = createSelector(
-  [selectUsers, selectPropsUserId], (users, userId) =>
-    users.get(`${userId}`, Immutable.Map()),
+  [selectPropsUserId, selectParamsUsername, selectUsers], (id, username, users) => {
+    if (id) {
+      return users.get(id, Immutable.Map())
+    } else if (username) {
+      return (users.find(user => user.get('username') === username)) || Immutable.Map()
+    }
+    return Immutable.Map()
+  },
 )
 
-export const selectUserFromPropsUserId = createSelector(
-  [selectJson, selectPropsUserId], (json, userId) =>
-    json.getIn([USERS, userId], null),
-)
+// Properties on the user reducer
+// TODO: Supply defaults where applicable
+export const selectUserAvatar = createSelector([selectUser], user => user.get('avatar'))
+export const selectUserBadForSeo = createSelector([selectUser], user => user.get('badForSeo'))
+export const selectUserCoverImage = createSelector([selectUser], user => user.get('coverImage'))
+export const selectUserExperimentalFeatures = createSelector([selectUser], user => user.get('experimentalFeatures'))
+export const selectUserExternalLinksList = createSelector([selectUser], user => user.get('externalLinksList'))
+export const selectUserFollowersCount = createSelector([selectUser], user => user.get('followersCount', 0))
+export const selectUserFollowingCount = createSelector([selectUser], user => user.get('followingCount', 0))
+export const selectUserFormattedShortBio = createSelector([selectUser], user => user.get('formattedShortBio', ''))
+export const selectUserHasAutoWatchEnabled = createSelector([selectUser], user => user.get('hasAutoWatchEnabled'))
+export const selectUserHasCommentingEnabled = createSelector([selectUser], user => user.get('hasCommentingEnabled'))
+export const selectUserHasLovesEnabled = createSelector([selectUser], user => user.get('hasLovesEnabled'))
+export const selectUserHasRepostingEnabled = createSelector([selectUser], user => user.get('hasRepostingEnabled'))
+export const selectUserHasSharingEnabled = createSelector([selectUser], user => user.get('hasSharingEnabled'))
+export const selectUserHref = createSelector([selectUser], user => user.get('href'))
+export const selectUserId = createSelector([selectUser], user => user.get('id'))
+export const selectUserIsCollaborateable = createSelector([selectUser], user => user.get('isCollaborateable', false))
+export const selectUserIsHireable = createSelector([selectUser], user => user.get('isHireable', false))
+// TODO: Pull properties out of user.get('links')? - i.e. links.categories
+export const selectUserLocation = createSelector([selectUser], user => user.get('location'))
+export const selectUserLovesCount = createSelector([selectUser], user => user.get('lovesCount', 0))
+export const selectUserMetaAttributes = createSelector([selectUser], user => user.get('metaAttributes', Immutable.Map()))
+export const selectUserName = createSelector([selectUser], user => user.get('name'))
+export const selectUserPostsAdultContent = createSelector([selectUser], user => user.get('postsAdultContent'))
+export const selectUserPostsCount = createSelector([selectUser], user => user.get('postsCount', 0))
+export const selectUserRelationshipPriority = createSelector([selectUser], user => user.get('relationshipPriority'))
+export const selectUserTotalPostViewsCount = createSelector([selectUser], user => user.get('totalPostViewsCount'))
+export const selectUserUsername = createSelector([selectUser], user => user.get('username'))
+export const selectUserViewsAdultContent = createSelector([selectUser], user => user.get('viewsAdultContent'))
 
-export const selectUserFromUsername = createSelector(
-  [selectJson, selectParamsUsername], (json, username) =>
-    findModel(json, { collection: USERS, findObj: { username } }) || Immutable.Map(),
-)
-
-export const selectRelationshipPriority = createSelector(
-  [selectUser], user => user.get('relationshipPriority'),
-)
-
-export const selectTruncatedShortBio = createSelector(
-  [selectUserFromPropsUserId], user =>
-    trunc(user ? user.get('formattedShortBio') || '' : '', 160, { sanitizer:
-      { allowedAttributes: { img: ['align', 'alt', 'class', 'height', 'src', 'width'] } },
-    }),
-)
-
-export const selectUserMetaAttributes = createSelector(
-  [selectUserFromUsername], user => user.get('metaAttributes', Immutable.Map()),
-)
-
+// Nested properties on the post reducer
 export const selectUserMetaDescription = createSelector(
   [selectUserMetaAttributes], metaAttributes => metaAttributes.get('description'),
 )
@@ -59,5 +73,33 @@ export const selectUserMetaRobots = createSelector(
 
 export const selectUserMetaTitle = createSelector(
   [selectUserMetaAttributes], metaAttributes => metaAttributes.get('title'),
+)
+
+// Derived or additive properties
+export const selectUserCategories = createSelector(
+  [selectUser, selectJson], (user, json) =>
+    getLinkArray(user, 'categories', json) || Immutable.List(),
+)
+
+export const selectUserIsEmpty = createSelector(
+  [selectUser], user => user.isEmpty(),
+)
+
+export const selectUserIsFeatured = createSelector(
+  [selectUserCategories], categories => !categories.isEmpty(),
+)
+
+// TODO: Evaluate against profile.id and user.id instead?
+export const selectUserIsSelf = createSelector(
+  [selectUserRelationshipPriority], relationshipPriority => relationshipPriority === 'self',
+)
+
+export const selectUserTruncatedShortBio = createSelector(
+  [selectUser], user =>
+    trunc(
+      user.get('formattedShortBio', ''),
+      160,
+      { sanitizer: { allowedAttributes: { img: ['align', 'alt', 'class', 'height', 'src', 'width'] } } },
+    ),
 )
 

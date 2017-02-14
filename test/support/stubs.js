@@ -88,10 +88,15 @@ function stubUser(properties, shouldAdd = true) {
     followersCount: 0,
     followingCount: 0,
     formattedShortBio: '<p>Formatted Short Bio</p>',
+    hasAutoWatchEnabled: true,
     hasCommentingEnabled: true,
     hasLovesEnabled: true,
     hasRepostingEnabled: true,
     hasSharingEnabled: true,
+    href: '/href',
+    isCollaborateable: false,
+    isHireable: true,
+    location: 'Planet Earth, 90210',
     lovesCount: 0,
     metaAttributes: {
       description: 'meta user description',
@@ -217,6 +222,31 @@ export function stubCategories(properties) {
     addToJSON('categories', model)
   })
   return json.get('categories')
+}
+
+export function stubInvitation(properties, isAccepted = true, shouldAdd = true) {
+  const defaultProps = {
+    acceptedAt: null,
+    code: 'invitationCode',
+    createdAt: 'invitationCreatedAt',
+    email: 'email@example.com',
+    id: '1',
+  }
+
+  const acceptedProps = {
+    acceptedAt: 'invitationAcceptedAt',
+    links: {
+      acceptedBy: {
+        href: '/api/v2/users/100',
+        id: '100',
+        type: 'users',
+      },
+    },
+  }
+  const props = isAccepted ? { ...defaultProps, ...acceptedProps } : defaultProps
+  const model = Immutable.fromJS({ ...props, ...properties })
+  if (shouldAdd) { addToJSON(MAPPING_TYPES.INVITATIONS, model) }
+  return model
 }
 
 function stubPage(path, properties = {}) {

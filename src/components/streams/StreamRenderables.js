@@ -5,7 +5,6 @@ import CommentContainer from '../../containers/CommentContainer'
 import NotificationContainer from '../../containers/NotificationContainer'
 import PostContainer from '../../containers/PostContainer'
 import UserContainer from '../../containers/UserContainer'
-import UserInvitee from '../users/UserInvitee'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
@@ -24,16 +23,22 @@ export const categoriesAsGrid = categories =>
 export const usersAsGrid = users =>
   <div className="Users asGrid">
     {users.data.map(user =>
-      <UserContainer user={user} key={`userGrid_${user.get('id')}`} type="grid" />,
+      <UserContainer
+        key={`userGrid_${user.get('id')}`}
+        type="grid"
+        userId={user.get('id')}
+      />,
     )}
   </div>
 
 export const usersAsInviteeList = invitations =>
   <div className="Users asInviteeList">
     {invitations.data.map(invitation =>
-      <UserInvitee
-        invitation={invitation}
+      <UserContainer
+        invitationId={invitation.get('id')}
         key={`userInviteeList_${invitation.get('id')}`}
+        type="invitee"
+        userId={invitation.getIn(['links', 'acceptedBy', 'id'])}
       />,
     )}
   </div>
@@ -41,10 +46,12 @@ export const usersAsInviteeList = invitations =>
 export const usersAsInviteeGrid = invitations =>
   <div className="Users asInviteeGrid">
     {invitations.data.map(invitation =>
-      <UserInvitee
+      <UserContainer
         className="UserInviteeGrid"
-        invitation={invitation}
-        key={`userInviteeList_${invitation.get('id')}`}
+        invitationId={invitation.get('id')}
+        key={`userInviteeGrid_${invitation.get('id')}`}
+        type="invitee"
+        userId={invitation.getIn(['links', 'acceptedBy', 'id'])}
       />,
     )}
   </div>
@@ -103,7 +110,11 @@ export const notificationList = notifications =>
 
 export const userAvatars = users =>
   users.data.map(user =>
-    <UserContainer user={user} key={`userAvatar_${user.get('id')}`} type="avatar" />,
+    <UserContainer
+      key={`userAvatar_${user.get('id')}`}
+      type="avatar"
+      userId={user.get('id')}
+    />,
   )
 
 export const profileToggles = settings =>
@@ -127,6 +138,10 @@ export const profileToggles = settings =>
 
 export const blockedMutedUserList = users =>
   users.data.map(user =>
-    <UserContainer user={user} key={`userCompact_${user.get('id')}`} type="compact" />,
+    <UserContainer
+      key={`userCompact_${user.get('id')}`}
+      type="compact"
+      userId={user.get('id')}
+    />,
   )
 

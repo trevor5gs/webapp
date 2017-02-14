@@ -50,7 +50,7 @@ describe('RelationshipContainer', () => {
       previousPath: '/onboarding',
       relationshipPriority: null,
       shouldRenderBlockMute: true,
-      userId: '1',
+      id: '1',
       username: 'archer',
     }
 

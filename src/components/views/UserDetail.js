@@ -5,17 +5,26 @@ import { TabListButtons } from '../tabs/TabList'
 import { ZeroStateCreateRelationship, ZeroStateFirstPost, ZeroStateSayHello } from '../zeros/Zeros'
 
 const ZeroStates = ({
-  isLoggedIn, isSelf, hasSaidHelloTo, hasZeroFollowers, hasZeroPosts, onSubmitHello, user,
+  isLoggedIn,
+  isSelf,
+  hasSaidHelloTo,
+  hasZeroFollowers,
+  hasZeroPosts,
+  onSubmitHello,
+  userId,
+  username,
   }) =>
     <div className="ZeroStates">
-      {isSelf && hasZeroPosts ? <ZeroStateFirstPost /> : null}
-      {!isSelf && hasZeroFollowers ? <ZeroStateCreateRelationship user={user} /> : null}
-      {isLoggedIn && !isSelf && hasZeroPosts ?
+      {isSelf && hasZeroPosts && <ZeroStateFirstPost />}
+      {!isSelf && hasZeroFollowers &&
+        <ZeroStateCreateRelationship {...{ userId, username }} />
+      }
+      {isLoggedIn && !isSelf && hasZeroPosts &&
         <ZeroStateSayHello
-          onSubmit={() => onSubmitHello({ username: user.username })}
+          onSubmit={() => onSubmitHello({ username })}
           hasPosted={hasSaidHelloTo}
-          user={user}
-        /> : null
+          username={username}
+        />
       }
     </div>
 ZeroStates.propTypes = {
@@ -25,7 +34,8 @@ ZeroStates.propTypes = {
   hasZeroFollowers: PropTypes.bool.isRequired,
   hasZeroPosts: PropTypes.bool.isRequired,
   onSubmitHello: PropTypes.func,
-  user: PropTypes.object.isRequired,
+  userId: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
 }
 ZeroStates.defaultProps = {
   onSubmitHello: null,
@@ -33,39 +43,59 @@ ZeroStates.defaultProps = {
 
 export const UserDetail = (props) => {
   // deconstruct props
-  const { isLoggedIn, isPostHeaderHidden, isSelf } = props
-  const { hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = props
-  const { activeType, onSubmitHello, onTabClick, streamAction, tabs, user } = props
+  const {
+    activeType,
+    hasSaidHelloTo,
+    hasZeroFollowers,
+    hasZeroPosts,
+    isLoggedIn,
+    isPostHeaderHidden,
+    isSelf,
+    onSubmitHello,
+    onTabClick,
+    streamAction,
+    tabs,
+    userId,
+    username,
+  } = props
 
   // construct component props
   const tabProps = { activeType, className: 'LabelTabList', tabClasses: 'LabelTab', tabs }
   const streamProps = { action: streamAction, isPostHeaderHidden }
   const zeroProps = {
-    isLoggedIn, isSelf, hasSaidHelloTo, hasZeroFollowers, hasZeroPosts, onSubmitHello, user,
+    isLoggedIn,
+    isSelf,
+    hasSaidHelloTo,
+    hasZeroFollowers,
+    hasZeroPosts,
+    onSubmitHello,
+    userId,
+    username,
   }
   return (
     <MainView className="UserDetail">
       <div className="UserDetails">
-        {tabs ? <TabListButtons {...tabProps} onTabClick={({ type }) => onTabClick(type)} /> : null}
-        {hasZeroPosts || hasZeroFollowers ? <ZeroStates {...zeroProps} /> : null}
-        {streamAction ? <StreamContainer {...streamProps} /> : null}
+        {tabs && <TabListButtons {...tabProps} onTabClick={({ type }) => onTabClick(type)} />}
+        {(hasZeroPosts || hasZeroFollowers) && <ZeroStates {...zeroProps} />}
+        {streamAction && <StreamContainer {...streamProps} />}
       </div>
     </MainView>
   )
 }
 UserDetail.propTypes = {
   activeType: PropTypes.string.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  isPostHeaderHidden: PropTypes.bool.isRequired,
-  isSelf: PropTypes.bool.isRequired,
   hasSaidHelloTo: PropTypes.bool.isRequired,
   hasZeroFollowers: PropTypes.bool.isRequired,
   hasZeroPosts: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  isPostHeaderHidden: PropTypes.bool.isRequired,
+  isSelf: PropTypes.bool.isRequired,
   onSubmitHello: PropTypes.func,
   onTabClick: PropTypes.func,
   streamAction: PropTypes.object.isRequired,
   tabs: PropTypes.array.isRequired,
-  user: PropTypes.object.isRequired,
+  userId: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
 }
 UserDetail.defaultProps = {
   onSubmitHello: null,

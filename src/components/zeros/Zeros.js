@@ -48,37 +48,40 @@ ZeroState.propTypes = {
 }
 
 
-export const ZeroStateCreateRelationship = ({ user }) =>
+export const ZeroStateCreateRelationship = ({ userId, username }) =>
   <ZeroState>
     <h2 className="ZeroStateTitle">
-      <span className="ZeroStateUsername">{`@${user.get('username')}`}</span>
+      <span className="ZeroStateUsername">{`@${username}`}</span>
       <span>{' doesn\'t have any followers yet, why don\'t you be their first?'}</span>
     </h2>
-    <RelationshipContainer user={user} />
+    <RelationshipContainer
+      userId={userId}
+    />
   </ZeroState>
 
 ZeroStateCreateRelationship.propTypes = {
-  user: PropTypes.object.isRequired,
+  userId: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
 }
 
 
-export const ZeroStateSayHello = ({ hasPosted = false, onSubmit, user }) =>
+export const ZeroStateSayHello = ({ hasPosted = false, onSubmit, username }) =>
   <ZeroState>
     <h2 className="ZeroStateTitle">
       <span>{'It doesn\'t look like '}</span>
-      <span className="ZeroStateUsername">{`@${user.get('username')}`}</span>
+      <span className="ZeroStateUsername">{`@${username}`}</span>
       <span>{' has posted yet, why don\'t you say hi?'}</span>
     </h2>
     {hasPosted ?
-      <p>{`Notification to @${user.get('username')} has been sent.`}</p> :
-      <Editor autoPopulate={`Hi @${user.get('username')} :wave:`} onSubmit={onSubmit} />
+      <p>{`Notification to @${username} has been sent.`}</p> :
+      <Editor autoPopulate={`Hi @${username} :wave:`} onSubmit={onSubmit} />
     }
   </ZeroState>
 
 ZeroStateSayHello.propTypes = {
   hasPosted: PropTypes.bool,
   onSubmit: PropTypes.func,
-  user: PropTypes.object.isRequired,
+  username: PropTypes.string.isRequired,
 }
 
 
