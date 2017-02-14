@@ -249,30 +249,6 @@ export function stubInvitation(properties, isAccepted = true, shouldAdd = true) 
   return model
 }
 
-
-// 26: Object
-
-// acceptedAt: "2014-10-13T18:28:39.189Z"
-
-// code: "mine-neither-will-0b157f"
-
-// createdAt: "2014-10-01T23:23:06.137Z"
-
-// email: "lucian@ello.co"
-
-// id: "26"
-
-// links: Object
-
-// acceptedBy: Object
-
-// href: "/api/v2/users/10"
-
-// id: "10"
-
-// type: "users"
-
-
 function stubPage(path, properties = {}) {
   const page = Immutable.fromJS({
     ids: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
