@@ -28,7 +28,11 @@ export const categoriesAsGrid = categories =>
 export const usersAsGrid = users =>
   <div className="Users asGrid">
     {users.data.map(user =>
-      <UserContainer user={user} key={`userGrid_${user.get('id')}`} type="grid" />,
+      <UserContainer
+        key={`userGrid_${user.get('id')}`}
+        type="grid"
+        userId={user.get('id')}
+      />,
     )}
   </div>
 
@@ -107,7 +111,11 @@ export const notificationList = notifications =>
 
 export const userAvatars = users =>
   users.data.map(user =>
-    <UserContainer user={user} key={`userAvatar_${user.get('id')}`} type="avatar" />,
+    <UserContainer
+      key={`userAvatar_${user.get('id')}`}
+      type="avatar"
+      userId={user.get('id')}
+    />,
   )
 
 export const profileToggles = settings =>
@@ -131,6 +139,10 @@ export const profileToggles = settings =>
 
 export const blockedMutedUserList = users =>
   users.data.map(user =>
-    <UserContainer user={user} key={`userCompact_${user.get('id')}`} type="compact" />,
+    <UserContainer
+      key={`userCompact_${user.get('id')}`}
+      type="compact"
+      userId={user.get('id')}
+    />,
   )
 

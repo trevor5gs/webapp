@@ -27,7 +27,12 @@ import {
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
 import { selectJson } from '../selectors/store'
 import { selectStreamType } from '../selectors/stream'
-import { selectUserFromUsername } from '../selectors/user'
+import {
+  selectUserCoverImage,
+  selectUserId,
+  selectUserPostsAdultContent,
+  selectUserUsername,
+} from '../selectors/user'
 import { trackEvent } from '../actions/analytics'
 import {
   setLastDiscoverBeaconVersion,
@@ -69,7 +74,6 @@ export const selectBroadcast = createSelector(
 
 function mapStateToProps(state, props) {
   const categoryData = selectCategoryData(state)
-  const user = selectUserFromUsername(state, props)
   const isAuthentication = selectIsAuthentication(state)
   const isPagePromotion = selectIsPagePromotion(state)
   const isCategoryPromotion = selectIsCategoryPromotion(state)
@@ -100,10 +104,10 @@ function mapStateToProps(state, props) {
     pathname: selectPathname(state),
     promotions,
     streamType: selectStreamType(state),
-    useGif: user && (selectViewsAdultContent(state) || !user.get('postsAdultContent')),
-    userCoverImage: user && user.get('coverImage'),
-    userId: user && `${user.get('id')}`,
-    username: user && user.get('username'),
+    useGif: selectViewsAdultContent(state) || selectUserPostsAdultContent(state, props),
+    userCoverImage: selectUserCoverImage(state, props),
+    userId: selectUserId(state, props),
+    username: selectUserUsername(state, props),
     viewName: selectViewNameFromRoute(state, props),
   }
 }

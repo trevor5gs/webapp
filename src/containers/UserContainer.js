@@ -3,12 +3,33 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
-import { createSelector } from 'reselect'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import { selectDeviceSize } from '../selectors/gui'
+import { selectIsMobile } from '../selectors/gui'
 import { selectViewsAdultContent } from '../selectors/profile'
-import { selectJson } from '../selectors/store'
-import { selectTruncatedShortBio, selectUserFromPropsUserId } from '../selectors/user'
+import {
+  selectUser,
+  selectUserAvatar,
+  selectUserCategories,
+  selectUserCoverImage,
+  selectUserExternalLinksList,
+  selectUserFollowersCount,
+  selectUserFollowingCount,
+  selectUserFormattedShortBio,
+  selectUserId,
+  selectUserIsCollaborateable,
+  selectUserIsEmpty,
+  selectUserIsFeatured,
+  selectUserIsHireable,
+  selectUserIsSelf,
+  selectUserLovesCount,
+  selectUserName,
+  selectUserPostsAdultContent,
+  selectUserPostsCount,
+  selectUserRelationshipPriority,
+  selectUserTotalPostViewsCount,
+  selectUserTruncatedShortBio,
+  selectUserUsername,
+} from '../selectors/user'
 import {
   UserAvatar,
   UserCompact,
@@ -22,46 +43,64 @@ import { closeModal, openModal } from '../actions/modals'
 import { trackEvent } from '../actions/analytics'
 import { collabWithUser, hireUser } from '../actions/user'
 import { getElloPlatform } from '../lib/jello'
-import { getLinkArray } from '../helpers/json_helper'
-
-const selectUserCategories = createSelector(
-  [selectUserFromPropsUserId, selectJson], (user, json) =>
-    getLinkArray(user, 'categories', json) || Immutable.List(),
-)
 
 export function mapStateToProps(state, props) {
-  const user = selectUserFromPropsUserId(state, props) || Immutable.Map()
-  const categories = selectUserCategories(state, props)
-  const truncatedShortBio = selectTruncatedShortBio(state, props)
-  const deviceSize = selectDeviceSize(state)
+  const truncatedShortBio = selectUserTruncatedShortBio(state, props)
   return {
-    categories,
-    followersCount: user.get('followersCount', 0),
-    followingCount: user.get('followingCount', 0),
-    isFeatured: !!(categories.size),
+    avatar: selectUserAvatar(state, props),
+    coverImage: selectUserCoverImage(state, props),
+    categories: selectUserCategories(state, props),
+    externalLinksList: selectUserExternalLinksList(state, props),
+    followersCount: selectUserFollowersCount(state, props),
+    followingCount: selectUserFollowingCount(state, props),
+    formattedShortBio: selectUserFormattedShortBio(state, props),
+    id: selectUserId(state, props),
+    isCollaborateable: selectUserIsCollaborateable(state, props),
+    isFeatured: selectUserIsFeatured(state, props),
+    isHireable: selectUserIsHireable(state, props),
     isLoggedIn: selectIsLoggedIn(state),
+    isSelf: selectUserIsSelf(state, props),
     isShortBioTruncated: truncatedShortBio.text.length >= 150,
-    isMobile: deviceSize === 'mobile',
-    lovesCount: user.get('lovesCount', 0),
-    postsCount: user.get('postsCount', 0),
-    relationshipPriority: user.get('relationshipPriority'),
+    isMobile: selectIsMobile(state),
+    isUserEmpty: selectUserIsEmpty(state, props),
+    lovesCount: selectUserLovesCount(state, props),
+    name: selectUserName(state, props),
+    postsCount: selectUserPostsCount(state, props),
+    relationshipPriority: selectUserRelationshipPriority(state, props),
+    totalPostViewsCount: selectUserTotalPostViewsCount(state, props),
     truncatedShortBio: truncatedShortBio.html,
-    useGif: selectViewsAdultContent(state) || !user.get('postsAdultContent'),
-    user,
-    username: user.get('username'),
+    useGif: selectViewsAdultContent(state) || !selectUserPostsAdultContent(state, props),
+    user: selectUser(state, props),
+    username: selectUserUsername(state, props),
   }
 }
 
 class UserContainer extends Component {
 
   static propTypes = {
+    avatar: PropTypes.object,
     categories: PropTypes.object,
     className: PropTypes.string,
+    coverImage: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
+    externalLinksList: PropTypes.object,
+    followersCount: PropTypes.number.isRequired,
+    followingCount: PropTypes.number.isRequired,
+    formattedShortBio: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    isCollaborateable: PropTypes.bool.isRequired,
     isFeatured: PropTypes.bool.isRequired,
+    isHireable: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    isShortBioTruncated: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
+    isSelf: PropTypes.bool.isRequired,
+    isShortBioTruncated: PropTypes.bool.isRequired,
+    isUserEmpty: PropTypes.bool.isRequired,
+    lovesCount: PropTypes.number.isRequired,
+    name: PropTypes.string,
+    postsCount: PropTypes.number.isRequired,
+    relationshipPriority: PropTypes.string,
+    totalPostViewsCount: PropTypes.string,
     truncatedShortBio: PropTypes.string.isRequired,
     type: PropTypes.oneOf([
       'avatar',
@@ -74,17 +113,49 @@ class UserContainer extends Component {
     username: PropTypes.string,
   }
 
+  static defaultProps = {
+    avatar: null,
+    coverImage: null,
+    categories: null,
+    className: '',
+    externalLinksList: null,
+    name: null,
+    relationshipPriority: null,
+    showBlockMuteButton: false,
+    totalPostViewsCount: null,
+    useGif: false,
+    username: null,
+  }
+
   static contextTypes = {
     onClickOpenRegistrationRequestDialog: PropTypes.func,
   }
 
-  static defaultProps = {
-    categories: null,
-    className: '',
-    relationshipPriority: null,
-    showBlockMuteButton: false,
-    useGif: false,
-    username: null,
+  static childContextTypes = {
+    onClickCollab: PropTypes.func,
+    onClickHireMe: PropTypes.func,
+    onClickOpenBio: PropTypes.func,
+    onClickOpenFeaturedModal: PropTypes.func,
+    onClickShareProfile: PropTypes.func.isRequired,
+  }
+
+  getChildContext() {
+    const {
+      isCollaborateable,
+      isHireable,
+      isFeatured,
+      isLoggedIn,
+      isShortBioTruncated,
+    } = this.props
+    const collabFunc = isLoggedIn ? this.onOpenCollabModal : this.onOpenSignupModal
+    const hiremeFunc = isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal
+    return {
+      onClickCollab: isCollaborateable ? collabFunc : null,
+      onClickHireMe: isHireable ? hiremeFunc : null,
+      onClickOpenBio: isShortBioTruncated ? this.onClickOpenBio : null,
+      onClickOpenFeaturedModal: isFeatured ? this.onClickOpenFeaturedModal : null,
+      onClickShareProfile: this.onClickShareProfile,
+    }
   }
 
   shouldComponentUpdate(nextProps) {
@@ -93,9 +164,9 @@ class UserContainer extends Component {
   }
 
   onClickOpenBio = () => {
-    const { dispatch, isMobile, user } = this.props
+    const { dispatch, formattedShortBio, isMobile } = this.props
     dispatch(openModal(
-      <TextMarkupDialog html={user.get('formattedShortBio', '')} />,
+      <TextMarkupDialog html={formattedShortBio} />,
       isMobile ? 'isFlex hasOverlay9' : 'hasOverlay9',
     ))
   }
@@ -126,10 +197,10 @@ class UserContainer extends Component {
   }
 
   onOpenCollabModal = () => {
-    const { dispatch, user, username } = this.props
+    const { dispatch, name, username } = this.props
     dispatch(openModal(
       <MessageDialog
-        name={`${user.get('name', username)}`}
+        name={name || username}
         onConfirm={this.onConfirmCollab}
         onDismiss={this.onDismissModal}
         titlePrefix="Collaborate with"
@@ -139,16 +210,16 @@ class UserContainer extends Component {
   }
 
   onConfirmCollab = ({ message }) => {
-    const { dispatch, user } = this.props
-    dispatch(collabWithUser(user.get('id'), message))
+    const { dispatch, id } = this.props
+    dispatch(collabWithUser(id, message))
     dispatch(trackEvent('send-collab-dialog-profile', { platform: getElloPlatform() }))
   }
 
   onOpenHireMeModal = () => {
-    const { dispatch, user, username } = this.props
+    const { dispatch, name, username } = this.props
     dispatch(openModal(
       <MessageDialog
-        name={`${user.get('name', username)}`}
+        name={name || username}
         onConfirm={this.onConfirmHireMe}
         onDismiss={this.onDismissModal}
         titlePrefix="Hire"
@@ -158,8 +229,8 @@ class UserContainer extends Component {
   }
 
   onConfirmHireMe = ({ message }) => {
-    const { dispatch, user } = this.props
-    dispatch(hireUser(user.get('id'), message))
+    const { dispatch, id } = this.props
+    dispatch(hireUser(id, message))
     dispatch(trackEvent('send-hire-dialog-profile', { platform: getElloPlatform() }))
   }
 
@@ -175,50 +246,81 @@ class UserContainer extends Component {
 
   render() {
     const {
+      avatar,
       className,
-      isFeatured,
+      coverImage,
+      externalLinksList,
+      followersCount,
+      followingCount,
+      id,
+      isCollaborateable,
+      isHireable,
       isLoggedIn,
       isMobile,
-      isShortBioTruncated,
+      isSelf,
+      isUserEmpty,
+      lovesCount,
+      name,
+      postsCount,
+      relationshipPriority,
+      totalPostViewsCount,
       truncatedShortBio,
       type,
       useGif,
-      user,
+      username,
     } = this.props
-    const onHireMeFunc = isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal
-    const onCollabFunc = isLoggedIn ? this.onOpenCollabModal : this.onOpenSignupModal
-    const onClickOpenBio = isShortBioTruncated ? this.onClickOpenBio : null
-    const onClickOpenFeaturedModal = isFeatured ? this.onClickOpenFeaturedModal : null
-    if (!user || !user.get('id')) { return null }
+    if (isUserEmpty) { return null }
     switch (type) {
       case 'avatar':
-        return <UserAvatar user={user} />
+        return (
+          <UserAvatar {...{ avatar, id, relationshipPriority, username }} />
+        )
       case 'compact':
-        return <UserCompact className={className} user={user} />
+        return (
+          <UserCompact className={className} {...{ avatar, id, relationshipPriority, username }} />
+        )
       case 'grid':
         return (
           <UserProfileCard
-            isMobile={isMobile}
-            onClickCollab={onCollabFunc}
-            onClickHireMe={onHireMeFunc}
-            onClickOpenFeaturedModal={onClickOpenFeaturedModal}
-            truncatedShortBio={truncatedShortBio}
-            user={user}
+            {...{
+              avatar,
+              coverImage,
+              followersCount,
+              followingCount,
+              id,
+              isMobile,
+              lovesCount,
+              name,
+              postsCount,
+              relationshipPriority,
+              truncatedShortBio,
+              username,
+            }}
           />
         )
       case 'profile':
         return (
           <UserProfile
-            isLoggedIn={isLoggedIn}
-            isMobile={isMobile}
-            onClickCollab={onCollabFunc}
-            onClickHireMe={onHireMeFunc}
-            onClickOpenBio={onClickOpenBio}
-            onClickOpenFeaturedModal={onClickOpenFeaturedModal}
-            onClickShareProfile={this.onClickShareProfile}
-            truncatedShortBio={truncatedShortBio}
-            useGif={useGif}
-            user={user}
+            {...{
+              avatar,
+              externalLinksList,
+              followersCount,
+              followingCount,
+              id,
+              isCollaborateable,
+              isHireable,
+              isLoggedIn,
+              isMobile,
+              isSelf,
+              lovesCount,
+              name,
+              postsCount,
+              relationshipPriority,
+              totalPostViewsCount,
+              truncatedShortBio,
+              useGif,
+              username,
+            }}
           />
         )
       default:
