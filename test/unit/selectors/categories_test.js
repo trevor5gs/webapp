@@ -1,9 +1,14 @@
 import { clearJSON, json, stubJSONStore } from '../../support/stubs'
 import {
   selectCategories,
-  selectOnboardingCategories,
+  selectCategory,
+  selectCategoryName,
   selectCategoryPageTitle,
+  selectCategorySlug,
   selectCategoryTabs,
+  selectCategoryTileImageUrl,
+  selectOnboardingCategories,
+  selectPropsCategoryId,
   sortCategories,
 } from '../../../src/selectors/categories'
 
@@ -22,6 +27,49 @@ describe('categories selectors', () => {
     clearJSON()
     params = {}
     location = {}
+  })
+
+  context('#selectPropsCategoryId', () => {
+    it('returns the correct props category id from a categoryId', () => {
+      const props = { categoryId: '666' }
+      expect(selectPropsCategoryId(state, props)).to.equal('666')
+    })
+  })
+
+  context('#selectCategory', () => {
+    it('returns a post from a postId', () => {
+      state = { json }
+      const props = { categoryId: '1' }
+      const category = selectCategory(state, props)
+      expect(category).to.deep.equal(state.json.get('categories').first())
+    })
+  })
+
+  context('#selectCategoryName', () => {
+    it('returns category name', () => {
+      state = { json }
+      const props = { categoryId: '1' }
+      const categoryName = selectCategoryName(state, props)
+      expect(categoryName).to.equal('Featured')
+    })
+  })
+
+  context('#selectCategorySlug', () => {
+    it('returns category slug', () => {
+      state = { json }
+      const props = { categoryId: '1' }
+      const categorySlug = selectCategorySlug(state, props)
+      expect(categorySlug).to.equal('featured')
+    })
+  })
+
+  context('#selectCategoryTileImageUrl', () => {
+    it('returns category slug', () => {
+      state = { json }
+      const props = { categoryId: '1' }
+      const categoryTileImageUrl = selectCategoryTileImageUrl(state, props)
+      expect(categoryTileImageUrl).to.equal('/tile_image/1/large.png')
+    })
   })
 
   context('#selectCategories', () => {

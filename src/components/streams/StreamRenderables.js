@@ -1,9 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
-import PostContainer from '../../containers/PostContainer'
+import CategoryContainer from '../../containers/CategoryContainer'
 import CommentContainer from '../../containers/CommentContainer'
 import NotificationContainer from '../../containers/NotificationContainer'
+import PostContainer from '../../containers/PostContainer'
 import UserContainer from '../../containers/UserContainer'
 import UserInvitee from '../users/UserInvitee'
 import Preference from '../../components/forms/Preference'
@@ -14,14 +14,10 @@ import { isElloAndroid } from '../../lib/jello'
 export const categoriesAsGrid = categories =>
   <div className="Categories asGrid">
     {categories.data.map(category =>
-      <Link
-        className="CategoryLink"
-        to={`/discover/${category.get('slug')}`}
-        key={`CategoryLink_${category.get('slug')}`}
-        style={{ backgroundImage: `url("${category.getIn(['tileImage', 'large', 'url'])}")` }}
-      >
-        <span className="CategoryLinkName">{category.get('name')}</span>
-      </Link>,
+      <CategoryContainer
+        categoryId={category.get('id')}
+        key={`categoryGrid_${category.get('id')}`}
+      />,
     )}
   </div>
 
