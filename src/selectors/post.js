@@ -143,6 +143,10 @@ export const selectPostIsEditing = createSelector([selectPost], post =>
   post.get('isEditing', false),
 )
 
+export const selectPostIsEmpty = createSelector(
+  [selectPost], post => post.isEmpty(),
+)
+
 export const selectPostIsGridMode = createSelector(
   [selectIsPostDetail, selectIsGridMode], (isPostDetail, isGridMode) =>
     (isPostDetail ? false : isGridMode),

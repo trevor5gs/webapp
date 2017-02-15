@@ -541,6 +541,20 @@ describe('post selectors', () => {
     })
   })
 
+  context('#selectPostIsEmpty', () => {
+    it('returns whether the user is emtpy (false)', () => {
+      const props = { postId: '666' }
+      const result = selector.selectPostIsEmpty(state, props)
+      expect(result).to.equal(false)
+    })
+
+    it('returns whether the user is emtpy (true)', () => {
+      const props = { postId: '1000' }
+      const result = selector.selectPostIsEmpty(state, props)
+      expect(result).to.equal(true)
+    })
+  })
+
   context('#selectPostIsGridMode', () => {
     it('returns the state of isGridMode on the post on post detail', () => {
       state = {

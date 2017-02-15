@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { POST } from '../constants/action_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectParamsToken, selectParamsUsername } from '../selectors/params'
-import { selectPost, selectPostAuthor } from '../selectors/post'
+import { selectPost, selectPostAuthor, selectPostIsEmpty } from '../selectors/post'
 import { selectStreamType } from '../selectors/stream'
 import { loadComments, loadPostDetail, toggleLovers, toggleReposters } from '../actions/posts'
 import { ErrorState4xx } from '../components/errors/Errors'
@@ -24,6 +24,7 @@ export function mapStateToProps(state, props) {
   return {
     author: selectPostAuthor(state, props),
     isLoggedIn: selectIsLoggedIn(state),
+    isPostEmpty: selectPostIsEmpty(state, props),
     paramsToken: selectParamsToken(state, props),
     paramsUsername: selectParamsUsername(state, props),
     post: selectPost(state, props),
@@ -37,6 +38,7 @@ class PostDetailContainer extends Component {
     author: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    isPostEmpty: PropTypes.bool.isRequired,
     post: PropTypes.object,
     paramsToken: PropTypes.string.isRequired,
     paramsUsername: PropTypes.string.isRequired,
@@ -53,8 +55,8 @@ class PostDetailContainer extends Component {
   }
 
   componentWillMount() {
-    const { dispatch, paramsToken, paramsUsername, post } = this.props
-    if (post) {
+    const { dispatch, paramsToken, paramsUsername, post, isPostEmpty } = this.props
+    if (!isPostEmpty) {
       this.lovesWasOpen = post.get('showLovers')
       this.repostsWasOpen = post.get('showReposters')
     }
@@ -95,10 +97,10 @@ class PostDetailContainer extends Component {
   }
 
   render() {
-    const { author, paramsToken, post } = this.props
+    const { author, isPostEmpty, paramsToken, post } = this.props
     const { renderType } = this.state
     // render loading/failure if we don't have an initial post
-    if (!post || !post.get('id')) {
+    if (isPostEmpty) {
       if (renderType === POST.DETAIL_REQUEST) {
         return (
           <section className="StreamContainer">
