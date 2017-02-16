@@ -2,6 +2,7 @@ import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import trunc from 'trunc-html'
+import { selectInvitationUserId } from './invitations'
 import { selectParamsUsername } from './params'
 import { selectJson } from './store'
 import { USERS } from '../constants/mapping_types'
@@ -17,9 +18,11 @@ export const selectUsers = state => state.json.get(USERS, Immutable.Map())
 
 // Requires `userId`, `user` or `params.username` to be found in props
 export const selectUser = createSelector(
-  [selectPropsUserId, selectParamsUsername, selectUsers], (id, username, users) => {
-    if (id) {
-      return users.get(id, Immutable.Map())
+  [selectPropsUserId, selectInvitationUserId, selectParamsUsername, selectUsers],
+  (id, invitationUserId, username, users) => {
+    const userId = id || invitationUserId
+    if (userId) {
+      return users.get(userId, Immutable.Map())
     } else if (username) {
       return (users.find(user => user.get('username') === username)) || Immutable.Map()
     }

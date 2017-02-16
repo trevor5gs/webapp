@@ -3,7 +3,6 @@ import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import { selectPathname } from './routing'
 import { selectJson } from './store'
-import * as MAPPING_TYPES from '../constants/mapping_types'
 import { emptyPagination } from '../reducers/json'
 
 // props.xxx
@@ -33,7 +32,7 @@ const selectStreamDeletions = (state, props) => {
   const meta = selectMeta(state, props)
   const resultPath = meta.resultKey || selectPathname(state)
   const result = state.json.getIn(['pages', resultPath], Immutable.Map({ ids: [] }))
-  return (result && result.get('type') === meta.mappingType) ||
+  return (result.get('type') === meta.mappingType) ||
     (meta.resultFilter && result.get('type') !== meta.mappingType)
 }
 
@@ -55,26 +54,16 @@ export const makeSelectStreamProps = () =>
       json,
       path,
     ) => {
-      const renderObj = { data: [], nestedData: [] }
-      if (result.get('type') === MAPPING_TYPES.NOTIFICATIONS) {
-        result.get('ids').forEach((model) => {
-          renderObj.data.push(model)
-        })
-      } else if (shouldRemoveDeletions) {
-        const delTypes = json.get(`deleted_${result.get('type')}`)
+      let ids = result.get('ids')
+      if (shouldRemoveDeletions) {
         // don't filter out blocked ids if we are in settings
         // since you can unblock/unmute them from here
-        // TODO: should only be using ids in the renderObj.data
-        // so that the model containers can do their own lookups
-        // on the json object which should have the absolute latest
-        result.get('ids').forEach((id) => {
-          const model = json.getIn([result.get('type'), id])
-          if (model && (path === '/settings' || (!delTypes || !delTypes.includes(id)))) {
-            renderObj.data.push(model)
-          }
-        })
+        const delTypes = json.get(`deleted_${result.get('type')}`)
+        ids = result.get('ids').filter((value, key) =>
+          path === '/settings' || !delTypes || !delTypes.includes(key),
+        )
       }
-      return { renderObj, result, resultPath }
+      return { result: result.set('ids', ids), resultPath }
     },
   )
 

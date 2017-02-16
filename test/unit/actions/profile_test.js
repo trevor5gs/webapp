@@ -2,7 +2,7 @@ import { isFSA, isFSAName } from '../../support/test_helpers'
 import * as subject from '../../../src/actions/profile'
 import { userResults } from '../../../src/components/streams/StreamFilters'
 import {
-  blockedMutedUserList, profileToggles,
+  usersAsCompact, profileToggles,
 } from '../../../src/components/streams/StreamRenderables'
 
 describe('profile actions', () => {
@@ -121,7 +121,7 @@ describe('profile actions', () => {
     })
 
     it('has the correct resultKey in the action', () => {
-      expect(action.meta.resultKey).to.equal('/profile/settings')
+      expect(action.meta.resultKey).to.equal('/settings')
     })
 
     it('has asList, asGrid and asError properties on renderStreams in the action', () => {
@@ -261,8 +261,8 @@ describe('profile actions', () => {
     })
 
     it('has asList and asGrid properties on renderStreams in the action', () => {
-      expect(action.meta.renderStream.asList).to.equal(blockedMutedUserList)
-      expect(action.meta.renderStream.asGrid).to.equal(blockedMutedUserList)
+      expect(action.meta.renderStream.asList).to.equal(usersAsCompact)
+      expect(action.meta.renderStream.asGrid).to.equal(usersAsCompact)
     })
 
     it('has the correct resultFilter in the action', () => {
@@ -302,8 +302,8 @@ describe('profile actions', () => {
     })
 
     it('has asList and asGrid properties on renderStreams in the action', () => {
-      expect(action.meta.renderStream.asList).to.equal(blockedMutedUserList)
-      expect(action.meta.renderStream.asGrid).to.equal(blockedMutedUserList)
+      expect(action.meta.renderStream.asList).to.equal(usersAsCompact)
+      expect(action.meta.renderStream.asGrid).to.equal(usersAsCompact)
     })
 
     it('has the correct resultFilter in the action', () => {

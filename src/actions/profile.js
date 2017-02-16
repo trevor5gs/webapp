@@ -94,12 +94,14 @@ export function availableToggles() {
     type: LOAD_STREAM,
     meta: {
       mappingType: MAPPING_TYPES.SETTINGS,
-      resultKey: '/profile/settings',
       renderStream: {
         asList: StreamRenderables.profileToggles,
         asGrid: StreamRenderables.profileToggles,
         asError: <ErrorState />,
       },
+      resultFilter: StreamFilters.settingsToggles,
+      resultKey: '/settings',
+      updateKey: '/settings',
     },
     payload: {
       endpoint: api.profileAvailableToggles(),
@@ -174,8 +176,8 @@ export function blockedUsers() {
       defaultMode: 'list',
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
-        asList: StreamRenderables.blockedMutedUserList,
-        asGrid: StreamRenderables.blockedMutedUserList,
+        asList: StreamRenderables.usersAsCompact,
+        asGrid: StreamRenderables.usersAsCompact,
       },
       resultFilter: StreamFilters.userResults,
       resultKey: '/settings/blocked',
@@ -194,8 +196,8 @@ export function mutedUsers() {
       defaultMode: 'list',
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
-        asList: StreamRenderables.blockedMutedUserList,
-        asGrid: StreamRenderables.blockedMutedUserList,
+        asList: StreamRenderables.usersAsCompact,
+        asGrid: StreamRenderables.usersAsCompact,
       },
       resultFilter: StreamFilters.userResults,
       resultKey: '/settings/muted',

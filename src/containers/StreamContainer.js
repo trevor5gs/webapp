@@ -35,7 +35,7 @@ const selectActionPath = props =>
 export function makeMapStateToProps() {
   const getStreamProps = makeSelectStreamProps()
   const mapStateToProps = (state, props) => {
-    const { renderObj, result, resultPath } = getStreamProps(state, props)
+    const { result, resultPath } = getStreamProps(state, props)
     return {
       columnCount: selectColumnCount(state),
       hasLaunchedSignupModal: selectHasLaunchedSignupModal(state),
@@ -44,7 +44,6 @@ export function makeMapStateToProps() {
       isLoggedIn: selectIsLoggedIn(state),
       isGridMode: selectIsGridMode(state),
       omnibar: selectOmnibar(state),
-      renderObj,
       result,
       resultPath,
       stream: selectStream(state),
@@ -68,7 +67,6 @@ class StreamContainer extends Component {
     isPostHeaderHidden: PropTypes.bool,
     omnibar: PropTypes.object.isRequired,
     paginatorText: PropTypes.string,
-    renderObj: PropTypes.object.isRequired,
     result: PropTypes.object.isRequired,
     resultPath: PropTypes.string.isRequired,
     scrollContainer: PropTypes.object,
@@ -284,10 +282,10 @@ class StreamContainer extends Component {
 
   render() {
     const { className, columnCount, isGridMode, isPostHeaderHidden,
-      paginatorText, renderObj, result, stream } = this.props
+      paginatorText, result, stream } = this.props
     const { action, hidePaginator, renderType } = this.state
     if (!action) { return null }
-    if (!renderObj.data.length) {
+    if (!result.get('ids').size) {
       switch (renderType) {
         case ACTION_TYPES.LOAD_STREAM_SUCCESS:
           return this.renderZeroState()
@@ -307,7 +305,7 @@ class StreamContainer extends Component {
     const pagination = result.get('pagination')
     return (
       <section className={classNames('StreamContainer', className)}>
-        {meta.renderStream[renderMethod](renderObj, columnCount, isPostHeaderHidden)}
+        {meta.renderStream[renderMethod](result.get('ids'), columnCount, isPostHeaderHidden)}
         {this.props.children}
         <Paginator
           hasShowMoreButton={

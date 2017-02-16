@@ -34,6 +34,10 @@ export function notificationsFromActivities(activities) {
   return { type: MAPPING_TYPES.NOTIFICATIONS, ids: activities }
 }
 
+export function settingsToggles(settings) {
+  return { type: MAPPING_TYPES.SETTINGS, ids: settings }
+}
+
 function sortCategories(a, b) {
   if (a.order < b.order) {
     return -1
