@@ -106,7 +106,12 @@
           ]
         }
       ],
-      "react/prefer-stateless-function": [2, { "ignorePureComponents": true }],
+      "react/prefer-stateless-function": [
+        2,
+        {
+          "ignorePureComponents": true
+        }
+      ],
       "semi": 0
     }
   },
@@ -154,6 +159,7 @@
     "express": "4.14.1",
     "extract-text-webpack-plugin": "1.0.1",
     "fetch-pretender": "1.5.0",
+    "helmet": "^3.4.0",
     "honeybadger": "1.2.0",
     "honeybadger-js": "0.4.3",
     "html-webpack-plugin": "2.28.0",
