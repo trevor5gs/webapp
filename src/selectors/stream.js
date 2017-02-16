@@ -2,6 +2,7 @@ import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import { selectPathname } from './routing'
+import { selectPages } from './pages'
 import { selectJson } from './store'
 import { emptyPagination } from '../reducers/json'
 
@@ -17,53 +18,26 @@ export const selectStreamMappingType = state => state.stream.getIn(['meta', 'map
 // state.stream.payload.xxx
 export const selectStreamPostIdOrToken = state => state.stream.getIn(['payload', 'postIdOrToken'])
 
-const selectStreamResult = (state, props) => {
-  const meta = selectMeta(state, props)
-  const resultPath = meta.resultKey || selectPathname(state)
-  return state.json.getIn(['pages', resultPath], Immutable.Map({ ids: Immutable.List(), pagination: emptyPagination() }))
-}
+export const selectStreamResultPath = createSelector(
+  [selectMeta, selectPathname], (meta, pathname) =>
+    meta.resultKey || pathname,
+)
 
-const selectStreamResultPath = (state, props) => {
-  const meta = selectMeta(state, props)
-  return meta.resultKey || selectPathname(state)
-}
-
-const selectStreamDeletions = (state, props) => {
-  const meta = selectMeta(state, props)
-  const resultPath = meta.resultKey || selectPathname(state)
-  const result = state.json.getIn(['pages', resultPath], Immutable.Map({ ids: [] }))
-  return (result.get('type') === meta.mappingType) ||
-    (meta.resultFilter && result.get('type') !== meta.mappingType)
-}
+export const selectStreamUnfilteredResult = createSelector(
+  [selectPages, selectStreamResultPath], (pages, resultPath) =>
+    pages.get(resultPath, Immutable.Map({ ids: Immutable.List(), pagination: emptyPagination() })),
+)
 
 // Memoized selectors
-// TODO: We need to test this :(
-export const makeSelectStreamProps = () =>
-  createSelector(
-    [
-      selectStreamResult,
-      selectStreamResultPath,
-      selectStreamDeletions,
-      selectJson,
-      selectPathname,
-    ],
-    (
-      result,
-      resultPath,
-      shouldRemoveDeletions,
-      json,
-      path,
-    ) => {
-      let ids = result.get('ids')
-      if (shouldRemoveDeletions) {
-        // don't filter out blocked ids if we are in settings
-        // since you can unblock/unmute them from here
-        const delTypes = json.get(`deleted_${result.get('type')}`)
-        ids = result.get('ids').filter((value, key) =>
-          path === '/settings' || !delTypes || !delTypes.includes(key),
-        )
-      }
-      return { result: result.set('ids', ids), resultPath }
-    },
-  )
+export const selectStreamFilteredResult = createSelector(
+  [selectStreamUnfilteredResult, selectJson, selectPathname],
+  (unfilteredResult, json, pathname) => {
+    // don't filter out blocked ids if we are in settings
+    // since you can unblock/unmute them from there
+    const delTypes = json.get(`deleted_${unfilteredResult.get('type')}`, Immutable.List())
+    return unfilteredResult.set('ids', unfilteredResult.get('ids').filter(value =>
+      pathname === '/settings' || !delTypes.includes(value),
+    ))
+  },
+)
 

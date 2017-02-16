@@ -16,7 +16,7 @@ import {
   selectIsGridMode,
 } from '../selectors/gui'
 import { selectOmnibar, selectStream } from '../selectors/store'
-import { makeSelectStreamProps } from '../selectors/stream'
+import { selectStreamFilteredResult, selectStreamResultPath } from '../selectors/stream'
 import { getQueryParamValue } from '../helpers/uri_helper'
 import {
   addScrollObject,
@@ -33,10 +33,8 @@ const selectActionPath = props =>
   get(props, ['action', 'payload', 'endpoint', 'path'])
 
 export function makeMapStateToProps() {
-  const getStreamProps = makeSelectStreamProps()
-  const mapStateToProps = (state, props) => {
-    const { result, resultPath } = getStreamProps(state, props)
-    return {
+  const mapStateToProps = (state, props) =>
+    ({
       columnCount: selectColumnCount(state),
       hasLaunchedSignupModal: selectHasLaunchedSignupModal(state),
       innerHeight: selectInnerHeight(state),
@@ -44,11 +42,10 @@ export function makeMapStateToProps() {
       isLoggedIn: selectIsLoggedIn(state),
       isGridMode: selectIsGridMode(state),
       omnibar: selectOmnibar(state),
-      result,
-      resultPath,
+      result: selectStreamFilteredResult(state, props),
+      resultPath: selectStreamResultPath(state, props),
       stream: selectStream(state),
-    }
-  }
+    })
   return mapStateToProps
 }
 
