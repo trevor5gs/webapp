@@ -112,5 +112,13 @@ describe('user selectors', () => {
       expect(result).to.equal('99')
     })
   })
+
+  context('#selectInvitationUserId', () => {
+    it('returns the invitation.links.acceptedBy.id property', () => {
+      const props = { invitationId: '1' }
+      const result = selector.selectInvitationUserId(state, props)
+      expect(result).to.equal('100')
+    })
+  })
 })
 

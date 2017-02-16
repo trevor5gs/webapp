@@ -1,6 +1,6 @@
 import Immutable from 'immutable'
 import pad from 'lodash/pad'
-import { clearJSON, json, stub, stubUser, stubCategories } from '../../support/stubs'
+import { clearJSON, json, stub, stubUser, stubCategories, stubInvitation } from '../../support/stubs'
 import * as selector from '../../../src/selectors/user'
 
 describe('user selectors', () => {
@@ -22,6 +22,7 @@ describe('user selectors', () => {
     })
     userManny = stub('user', { id: '100', username: 'manny' })
     stub('user', { id: '4', relationshipPriority: 'self' })
+    stubInvitation()
     stubCategories()
     state = { json }
   })
@@ -71,6 +72,18 @@ describe('user selectors', () => {
 
     it('returns an empty Map if user.id is not found', () => {
       const props = { user: stubUser({ id: '99999' }, false) }
+      const user = selector.selectUser(state, props)
+      expect(user).to.deep.equal(Immutable.Map())
+    })
+
+    it('returns a user from a invitationId', () => {
+      const props = { invitationId: '1' }
+      const user = selector.selectUser(state, props)
+      expect(user).to.deep.equal(userManny)
+    })
+
+    it('returns an empty Map if invitationId is not found', () => {
+      const props = { invitationId: '166666' }
       const user = selector.selectUser(state, props)
       expect(user).to.deep.equal(Immutable.Map())
     })
