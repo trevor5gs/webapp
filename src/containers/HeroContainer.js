@@ -179,10 +179,9 @@ class HeroContainer extends Component {
         break
     }
   }
-
   shouldComponentUpdate(nextProps, nextState) {
     return !Immutable.is(nextState.promotion, this.state.promotion) ||
-      ['dpi', 'isLoggedIn', 'isMobile', 'pathname', 'viewName'].some(prop =>
+      ['dpi', 'isLoggedIn', 'isMobile', 'pathname', 'viewName', 'userId'].some(prop =>
         nextProps[prop] !== this.props[prop],
       ) ||
       ['broadcast', 'renderType'].some(prop => nextState[prop] !== this.state[prop])
