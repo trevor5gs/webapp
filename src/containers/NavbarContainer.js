@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { isIOS, scrollTo } from '../lib/jello'
+import { scrollTo } from '../lib/jello'
 import Session from '../lib/session'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
@@ -221,9 +221,6 @@ class NavbarContainer extends PureComponent {
     if (isProfileMenuActive) { return }
     dispatch(setIsProfileMenuActive({ isActive: true }))
     document.addEventListener('click', this.onClickDocument)
-    if (isIOS()) {
-      document.addEventListener('touchstart', this.onClickDocument)
-    }
   }
 
   deactivateProfileMenu() {
@@ -231,9 +228,6 @@ class NavbarContainer extends PureComponent {
     if (!isProfileMenuActive) { return }
     dispatch(setIsProfileMenuActive({ isActive: false }))
     document.removeEventListener('click', this.onClickDocument)
-    if (isIOS()) {
-      document.removeEventListener('touchstart', this.onClickDocument)
-    }
   }
 
   render() {
