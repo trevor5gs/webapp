@@ -106,12 +106,6 @@ methods.addModels = (state, type, data) => {
       )
       ids = ids.push(id)
     })
-  } else if (camelType === MAPPING_TYPES.SETTINGS) {
-    data[camelType].forEach((item, index) => {
-      const id = index + 1
-      state = state.setIn([camelType, id], Immutable.fromJS(item))
-      ids = ids.push(id)
-    })
   } else if (data[camelType] && data[camelType].length) {
     // add arrays of models to state['modelType']['id']
     data[camelType].forEach((model) => {

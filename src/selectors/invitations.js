@@ -37,3 +37,6 @@ export const selectInvitationId = createSelector([selectInvitation], invitation 
   invitation.get('id'),
 )
 
+export const selectInvitationUserId = createSelector([selectInvitation], invitation =>
+  invitation.getIn(['links', 'acceptedBy', 'id']),
+)

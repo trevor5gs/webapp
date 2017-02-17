@@ -1,5 +1,4 @@
 import React from 'react'
-import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import CategoryContainer from '../../containers/CategoryContainer'
 import CommentContainer from '../../containers/CommentContainer'
 import NotificationContainer from '../../containers/NotificationContainer'
@@ -8,69 +7,47 @@ import UserContainer from '../../containers/UserContainer'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
+import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import { isElloAndroid } from '../../lib/jello'
 
-export const categoriesAsGrid = categories =>
+// categories/comments/posts/users all get passed an Immutable.List
+// which contains ids required for their respective containers to
+// do their own lookup in the store to ensure they are up to date
+// CATEGORIES
+export const categoriesAsGrid = categoryIds =>
   <div className="Categories asGrid">
-    {categories.data.map(category =>
+    {categoryIds.map(id =>
       <CategoryContainer
-        categoryId={category.get('id')}
-        key={`categoryGrid_${category.get('id')}`}
+        categoryId={id}
+        key={`categoryGrid_${id}`}
       />,
     )}
   </div>
 
-export const usersAsGrid = users =>
-  <div className="Users asGrid">
-    {users.data.map(user =>
-      <UserContainer
-        key={`userGrid_${user.get('id')}`}
-        type="grid"
-        userId={user.get('id')}
+// COMMENTS
+export const commentsAsList = commentIds =>
+  <div>
+    {commentIds.map(id =>
+      <CommentContainer
+        commentId={id}
+        key={`commentContainer_${id}`}
       />,
     )}
   </div>
 
-export const usersAsInviteeList = invitations =>
-  <div className="Users asInviteeList">
-    {invitations.data.map(invitation =>
-      <UserContainer
-        invitationId={invitation.get('id')}
-        key={`userInviteeList_${invitation.get('id')}`}
-        type="invitee"
-        userId={invitation.getIn(['links', 'acceptedBy', 'id'])}
-      />,
-    )}
-  </div>
 
-export const usersAsInviteeGrid = invitations =>
-  <div className="Users asInviteeGrid">
-    {invitations.data.map(invitation =>
-      <UserContainer
-        className="UserInviteeGrid"
-        invitationId={invitation.get('id')}
-        key={`userInviteeGrid_${invitation.get('id')}`}
-        type="invitee"
-        userId={invitation.getIn(['links', 'acceptedBy', 'id'])}
-      />,
-    )}
-  </div>
-
-export const postsAsGrid = (posts, columnCount, isPostHeaderHidden) => {
+// POSTS
+export const postsAsGrid = (postIds, columnCount, isPostHeaderHidden) => {
   const columns = []
-  for (let i = 0; i < columnCount; i += 1) {
-    columns.push([])
-  }
-  Object.keys(posts.data).forEach((index) => {
-    columns[index % columnCount].push(posts.data[index])
-  })
+  for (let i = 0; i < columnCount; i += 1) { columns.push([]) }
+  postIds.forEach((value, index) => columns[index % columnCount].push(postIds.get(index)))
   return (
     <div className="Posts asGrid">
-      {columns.map((columnPosts, i) =>
+      {columns.map((columnPostIds, i) =>
         <div className="Column" key={`column_${i + 1}`}>
-          {columnPosts.map(post =>
-            <article className="PostGrid" key={`postsAsGrid_${post.get('id')}`}>
-              <PostContainer postId={post.get('id')} isPostHeaderHidden={isPostHeaderHidden} />
+          {columnPostIds.map(id =>
+            <article className="PostGrid" key={`postsAsGrid_${id}`}>
+              <PostContainer postId={id} isPostHeaderHidden={isPostHeaderHidden} />
             </article>,
           )}
         </div>,
@@ -79,28 +56,76 @@ export const postsAsGrid = (posts, columnCount, isPostHeaderHidden) => {
   )
 }
 
-export const postsAsList = (posts, columnCount, isPostHeaderHidden) =>
+export const postsAsList = (postIds, columnCount, isPostHeaderHidden) =>
   <div className="Posts asList">
-    {posts.data.map(post =>
-      <article className="PostList" key={`postsAsList_${post.get('id')}`}>
-        <PostContainer postId={post.get('id')} isPostHeaderHidden={isPostHeaderHidden} />
+    {postIds.map(id =>
+      <article className="PostList" key={`postsAsList_${id}`}>
+        <PostContainer postId={id} isPostHeaderHidden={isPostHeaderHidden} />
       </article>,
     )}
   </div>
 
-export const commentsAsList = comments =>
-  <div>
-    {comments.data.map(comment =>
-      <CommentContainer
-        commentId={comment.get('id')}
-        key={`commentContainer_${comment.get('id')}`}
+// USERS
+export const userAvatars = userIds =>
+  userIds.map(id =>
+    <UserContainer
+      key={`userAvatar_${id}`}
+      type="avatar"
+      userId={id}
+    />,
+  )
+
+export const usersAsCompact = userIds =>
+  userIds.map(id =>
+    <UserContainer
+      key={`userCompact_${id}`}
+      type="compact"
+      userId={id}
+    />,
+  )
+
+export const usersAsGrid = userIds =>
+  <div className="Users asGrid">
+    {userIds.map(id =>
+      <UserContainer
+        key={`userGrid_${id}`}
+        type="grid"
+        userId={id}
       />,
     )}
   </div>
 
+export const usersAsInviteeList = invitationIds =>
+  <div className="Users asInviteeList">
+    {invitationIds.map(id =>
+      <UserContainer
+        invitationId={id}
+        key={`userInviteeList_${id}`}
+        type="invitee"
+      />,
+    )}
+  </div>
+
+export const usersAsInviteeGrid = invitationIds =>
+  <div className="Users asInviteeGrid">
+    {invitationIds.map(id =>
+      <UserContainer
+        className="UserInviteeGrid"
+        invitationId={id}
+        key={`userInviteeGrid_${id}`}
+        type="invitee"
+      />,
+    )}
+  </div>
+
+
+// notifications and settings don't have an id so they are
+// preserved in the order received by using a stream filter
+// and the models are passed directly to these methods
+// NOTIFICATIONS
 export const notificationList = notifications =>
   <div className="Notifications">
-    {notifications.data.map((notification, i) =>
+    {notifications.map((notification, i) =>
       <NotificationContainer
         key={`notificationParser_${notification.get('createdAt', Date.now())}_${i + 1}`}
         notification={notification}
@@ -108,17 +133,9 @@ export const notificationList = notifications =>
     )}
   </div>
 
-export const userAvatars = users =>
-  users.data.map(user =>
-    <UserContainer
-      key={`userAvatar_${user.get('id')}`}
-      type="avatar"
-      userId={user.get('id')}
-    />,
-  )
-
+// SETTINGS
 export const profileToggles = settings =>
-  settings.data.map((setting, index) => {
+  settings.map((setting, index) => {
     if (!isElloAndroid() && setting.get('label').toLowerCase().indexOf('push') === 0) { return null }
     const arr = [<TreeButton key={`settingLabel_${setting.get('label')}`}>{setting.get('label')}</TreeButton>]
     arr.push(
@@ -135,13 +152,4 @@ export const profileToggles = settings =>
     )
     return arr
   })
-
-export const blockedMutedUserList = users =>
-  users.data.map(user =>
-    <UserContainer
-      key={`userCompact_${user.get('id')}`}
-      type="compact"
-      userId={user.get('id')}
-    />,
-  )
 
