@@ -27,6 +27,7 @@ import {
   selectPostCreatedAt,
   selectPostDetailPath,
   selectPostIsCommentsRequesting,
+  selectPostIsEmpty,
   selectPostIsGridMode,
   selectPostIsOwn,
   selectPostIsOwnOriginal,
@@ -107,6 +108,7 @@ export function mapStateToProps(state, props) {
     isOwnOriginalPost: selectPostIsOwnOriginal(state, props),
     isOwnPost: selectPostIsOwn(state, props),
     isPostDetail: selectIsPostDetail(state, props),
+    isPostEmpty: selectPostIsEmpty(state, props),
     isRepost: selectPostIsRepost(state, props),
     isReposting: selectPostIsReposting(state, props),
     isWatchingPost: selectPostIsWatching(state, props),
@@ -157,6 +159,7 @@ class PostContainer extends Component {
     isOwnOriginalPost: PropTypes.bool.isRequired,
     isOwnPost: PropTypes.bool.isRequired,
     isPostDetail: PropTypes.bool.isRequired,
+    isPostEmpty: PropTypes.bool.isRequired,
     isPostHeaderHidden: PropTypes.bool,
     isRepost: PropTypes.bool.isRequired,
     isReposting: PropTypes.bool.isRequired,
@@ -248,7 +251,7 @@ class PostContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (!nextProps.post || nextProps.post.isEmpty()) { return false }
+    if (nextProps.isPostEmpty) { return false }
     return !Immutable.is(nextProps.post, this.props.post) ||
       ['columnWidth', 'contentWidth', 'innerHeight', 'isGridMode', 'isLoggedIn', 'isMobile'].some(prop =>
         nextProps[prop] !== this.props[prop],
@@ -394,6 +397,7 @@ class PostContainer extends Component {
       isOwnOriginalPost,
       isOwnPost,
       isPostDetail,
+      isPostEmpty,
       isPostHeaderHidden,
       isRepost,
       isReposting,
@@ -417,7 +421,7 @@ class PostContainer extends Component {
       showReposters,
       summary,
     } = this.props
-    if (!post || !post.get('id') || !author || !author.get('id')) { return null }
+    if (isPostEmpty || !author || !author.get('id')) { return null }
     let postHeader
     const headerProps = { detailPath, postCreatedAt, postId }
     if (isRepost) {

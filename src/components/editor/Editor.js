@@ -6,7 +6,7 @@ import {
   selectHasAutoWatchEnabled,
   selectIsOwnPage,
 } from '../../selectors/profile'
-import { selectPost, selectPostIsOwn } from '../../selectors/post'
+import { selectPost, selectPostIsEmpty, selectPostIsOwn } from '../../selectors/post'
 import { openModal, closeModal } from '../../actions/modals'
 import {
   createComment,
@@ -48,6 +48,7 @@ function mapStateToProps(state, props) {
   return {
     allowsAutoWatch: selectHasAutoWatchEnabled(state),
     isLoggedIn: selectIsLoggedIn(state),
+    isPostEmpty: selectPostIsEmpty(state, props),
     post: selectPost(state, props),
     isOwnPage: selectIsOwnPage(state),
     isOwnPost: selectPostIsOwn(state, props),
@@ -65,6 +66,7 @@ class Editor extends Component {
     isLoggedIn: PropTypes.bool,
     isOwnPage: PropTypes.bool,
     isOwnPost: PropTypes.bool,
+    isPostEmpty: PropTypes.bool.isRequired,
     onSubmit: PropTypes.func,
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
@@ -100,7 +102,16 @@ class Editor extends Component {
   }
 
   submit = (data) => {
-    const { allowsAutoWatch, comment, dispatch, isComment, isOwnPage, onSubmit, post } = this.props
+    const {
+      allowsAutoWatch,
+      comment,
+      dispatch,
+      isComment,
+      isOwnPage,
+      isPostEmpty,
+      onSubmit,
+      post,
+    } = this.props
     if (isComment) {
       if (comment && comment.get('isEditing')) {
         dispatch(toggleCommentEditing(comment, false))
@@ -108,7 +119,7 @@ class Editor extends Component {
       } else {
         dispatch(createComment(allowsAutoWatch, data, this.getEditorIdentifier(), post.get('id')))
       }
-    } else if (!post || !post.get('id')) {
+    } else if (isPostEmpty) {
       dispatch(closeOmnibar())
       dispatch(createPost(data, this.getEditorIdentifier()))
     } else if (post.get('isEditing')) {
@@ -131,14 +142,14 @@ class Editor extends Component {
   }
 
   cancel = () => {
-    const { comment, isComment, post } = this.props
+    const { comment, isComment, isPostEmpty, post } = this.props
     if (isComment) {
       if (comment.get('isEditing')) {
         this.launchCancelConfirm('edit')
       } else {
         this.launchCancelConfirm('comment')
       }
-    } else if (!post || !post.get('id')) {
+    } else if (isPostEmpty) {
       this.launchCancelConfirm('post')
     } else if (post.get('isEditing')) {
       this.launchCancelConfirm('edit')
@@ -163,11 +174,11 @@ class Editor extends Component {
   }
 
   cancelConfirmed = () => {
-    const { comment, dispatch, post } = this.props
+    const { comment, dispatch, isPostEmpty, post } = this.props
     this.closeModal()
     dispatch(resetEditor(this.getEditorIdentifier()))
     dispatch(closeOmnibar())
-    if (post) {
+    if (!isPostEmpty) {
       dispatch(toggleEditing(post, false))
       dispatch(toggleReposting(post, false))
     }
@@ -183,6 +194,7 @@ class Editor extends Component {
       isComment,
       isLoggedIn,
       isOwnPost,
+      isPostEmpty,
       post,
       shouldLoadFromState,
       shouldPersist,
@@ -201,7 +213,7 @@ class Editor extends Component {
       } else {
         submitText = 'Comment'
       }
-    } else if (!post || !post.get('id')) {
+    } else if (isPostEmpty) {
       submitText = 'Post'
     } else if (post.get('isReposting')) {
       submitText = 'Repost'
