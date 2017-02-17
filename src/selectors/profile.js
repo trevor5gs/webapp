@@ -19,6 +19,8 @@ export const selectHasAvatarPresent = state => state.profile.get('hasAvatarPrese
 export const selectHasCoverImagePresent = state => state.profile.get('hasCoverImagePresent', false)
 export const selectId = state => state.profile.get('id')
 export const selectIsPublic = state => state.profile.get('isPublic')
+export const selectProfileIsCollaborateable = state => state.profile.get('isCollaborateable', false)
+export const selectProfileIsHireable = state => state.profile.get('isHireable', false)
 export const selectLocation = state => state.profile.get('location', '')
 export const selectMarketingVersion = state => state.profile.get('marketingVersion')
 export const selectMutedCount = state => state.profile.get('mutedCount')
