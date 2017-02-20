@@ -28,7 +28,9 @@ export function* logoutPushUnsubscribe() {
     ])
     const registrationId = yield select(selectRegistrationId)
     const bundleId = yield select(selectBundleId)
-    yield put(unregisterForGCM(registrationId, bundleId))
+    if (registrationId && bundleId) {
+      yield put(unregisterForGCM(registrationId, bundleId))
+    }
   }
 }
 
