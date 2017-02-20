@@ -19,6 +19,8 @@ import {
   selectIsCoverImageBlank,
   selectIsInfoFormBlank,
   selectIsPublic,
+  selectProfileIsCollaborateable,
+  selectProfileIsHireable,
   selectLinksAsText,
   selectMarketingVersion,
   selectMutedCount,
@@ -42,6 +44,8 @@ describe('profile selectors', () => {
       hasAvatarPresent: true,
       hasCoverImagePresent: true,
       isPublic: true,
+      isCollaborateable: false,
+      isHireable: true,
       marketingVersion: '1',
       mutedCount: 10,
       registrationId: '1234',
@@ -141,6 +145,18 @@ describe('profile selectors', () => {
   context('#selectIsPublic', () => {
     it('returns the profile.isPublic', () => {
       expect(selectIsPublic(state)).to.deep.equal(state.profile.get('isPublic'))
+    })
+  })
+
+  context('#selectProfileIsCollaborateable', () => {
+    it('returns the profile.isCollaborateable property', () => {
+      expect(selectProfileIsCollaborateable(state)).to.equal(false)
+    })
+  })
+
+  context('#selectProfileIsHireable', () => {
+    it('returns the profile.isHireable property', () => {
+      expect(selectProfileIsHireable(state)).to.equal(true)
     })
   })
 

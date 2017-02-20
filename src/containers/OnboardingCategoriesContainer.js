@@ -8,7 +8,7 @@ import { getCategories } from '../actions/discover'
 import { followCategories, saveProfile } from '../actions/profile'
 import { selectOnboardingCategories } from '../selectors/categories'
 
-const CATEGORIES_NEEDED = 3
+const CATEGORIES_NEEDED = 1
 
 function mapStateToProps(state) {
   let categories = selectOnboardingCategories(state)

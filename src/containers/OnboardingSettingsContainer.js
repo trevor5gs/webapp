@@ -78,7 +78,7 @@ class OnboardingSettingsContainer extends PureComponent {
       isAvatarBlank,
       isCoverImageBlank,
       isMobile,
-      nextLabel: 'Invite Cool People',
+      nextLabel: 'Get Hired & Collaborate',
       onDoneClick: isNextDisabled ? null : this.onDoneClick,
       onNextClick: this.onNextClick,
       saveAvatar: bindActionCreators(saveAvatar, dispatch),
@@ -96,7 +96,7 @@ class OnboardingSettingsContainer extends PureComponent {
   onNextClick = () => {
     const { dispatch } = this.props
     this.trackOnboardingEvents()
-    dispatch(push('/onboarding/invitations'))
+    dispatch(push('/onboarding/collaborate'))
   }
 
   trackOnboardingEvents = () => {

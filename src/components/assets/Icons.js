@@ -121,6 +121,11 @@ export const XIcon = () =>
     </g>
   </SVGIcon>
 
+export const CheckIcon = () =>
+  <SVGIcon className="CheckIcon">
+    <CheckShape />
+  </SVGIcon>
+
 // From Footer
 export const PhoneIcon = () =>
   <SVGIcon className="PhoneIcon">
