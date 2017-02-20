@@ -39,3 +39,16 @@
   border-color: #aaa;
 }
 
+.ToggleControlIcon {
+  margin-right: 5px;
+  margin-left: -25px;
+}
+
+.ToggleControlIcon .CancelIcon {
+  margin-top: -2px;
+}
+
+.ToggleControlIcon .CheckIcon {
+  margin-top: -4px;
+}
+

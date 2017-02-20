@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
+import { CheckIcon, XIcon } from '../assets/Icons'
 
 class ToggleControl extends Component {
 
@@ -8,12 +9,14 @@ class ToggleControl extends Component {
     id: PropTypes.string.isRequired,
     isChecked: PropTypes.bool,
     isDisabled: PropTypes.bool,
+    hasIcon: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
     isChecked: false,
     isDisabled: false,
+    hasIcon: false,
   }
 
   componentWillMount() {
@@ -50,7 +53,7 @@ class ToggleControl extends Component {
   }
 
   render() {
-    const { id, isDisabled } = this.props
+    const { id, isDisabled, hasIcon } = this.props
     const { checked } = this.state
     return (
       <label
@@ -65,6 +68,11 @@ class ToggleControl extends Component {
           onChange={this.onChangeControl}
           type="checkbox"
         />
+        {hasIcon &&
+          <span className="ToggleControlIcon">
+            {checked ? <CheckIcon /> : <XIcon />}
+          </span>
+        }
         <span>{checked ? 'Yes' : 'No'}</span>
       </label>
     )
