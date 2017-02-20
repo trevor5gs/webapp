@@ -96,7 +96,7 @@ class Notifications extends Component {
 
   componentDidMount() {
     const { announcementId, announcementIsEmpty, dispatch } = this.props
-    if (announcementIsEmpty) {
+    if (!announcementIsEmpty) {
       const { announcementBody, announcementTitle } = this.props
       const trackName = announcementTitle || announcementBody
       const trackProps = { name: trackName, announcement: announcementId }
@@ -184,7 +184,7 @@ class Notifications extends Component {
             /> :
             null
         }
-        { announcementIsEmpty &&
+        { !announcementIsEmpty &&
           <AnnouncementNotification
             body={announcementBody}
             ctaCaption={announcementCTACaption}

@@ -93,7 +93,7 @@ class NotificationsContainer extends Component {
     document.addEventListener('click', this.onClickDocument)
     document.addEventListener('touchstart', this.onClickDocument)
     const { announcementId, announcementIsEmpty, dispatch } = this.props
-    if (announcementIsEmpty) {
+    if (!announcementIsEmpty) {
       const { announcementBody, announcementTitle } = this.props
       const trackTitle = announcementTitle || announcementBody
       const trackProps = { name: trackTitle, announcement: announcementId }
@@ -228,7 +228,7 @@ class NotificationsContainer extends Component {
               /> :
               null
           }
-          { announcementIsEmpty &&
+          { !announcementIsEmpty &&
             <AnnouncementNotification
               body={announcementBody}
               ctaCaption={announcementCTACaption}
