@@ -17,14 +17,17 @@ type Props = {
 
 const OnboardingCollaborate = (props: Props) =>
   <MainView className="Onboarding OnboardingCollaborate">
-    {props.prefs.map(pref =>
-      <Preference
-        definition={{ term: pref.term, desc: pref.desc }}
-        id={pref.id}
-        key={`preference_${pref.id}`}
-        onToggleChange={props.onToggleChange}
-      />,
-    )}
+    <div className="OnboardingPreferences">
+      {props.prefs.map(pref =>
+        <Preference
+          className="OnboardingPreference"
+          definition={{ term: pref.term, desc: pref.desc }}
+          id={pref.id}
+          key={`preference_${pref.id}`}
+          onToggleChange={props.onToggleChange}
+        />,
+      )}
+    </div>
     <OnboardingNavbar />
   </MainView>
 

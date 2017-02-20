@@ -9,12 +9,12 @@ import OnboardingCollaborate from '../components/onboarding/OnboardingCollaborat
 const prefs = [
   {
     id: 'isHireable',
-    term: 'Get Hired yo.',
+    term: 'Get Hired',
     desc: 'Enable brands, publications, and people that want to pay you for your work to email you.',
   },
   {
     id: 'isCollaborateable',
-    term: 'Collaborate with stuff.',
+    term: 'Collaborate',
     desc: 'Enable fellow creators that want to collaborate to email you.',
   },
 ]
