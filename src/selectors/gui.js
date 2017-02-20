@@ -18,9 +18,10 @@ export const selectIsNotificationsActive = state => state.gui.get('isNotificatio
 export const selectIsNotificationsUnread = state => state.gui.get('isNotificationsUnread')
 export const selectIsProfileMenuActive = state => state.gui.get('isProfileMenuActive')
 export const selectIsTextToolsActive = state => state.gui.get('isTextToolsActive')
-export const selectLastNotificationCheck = state => state.gui.get('lastNotificationCheck')
+export const selectLastAnnouncementSeen = state => state.gui.get('lastAnnouncementSeen')
 export const selectLastDiscoverBeaconVersion = state => state.gui.get('lastDiscoverBeaconVersion') // eslint-disable-line
 export const selectLastFollowingBeaconVersion = state => state.gui.get('lastFollowingBeaconVersion') // eslint-disable-line
+export const selectLastNotificationCheck = state => state.gui.get('lastNotificationCheck')
 export const selectLastStarredBeaconVersion = state => state.gui.get('lastStarredBeaconVersion')
 export const selectSaidHelloTo = state => state.gui.get('saidHelloTo')
 export const selectTextToolsCoordinates = state => state.gui.get('textToolsCoordinates')

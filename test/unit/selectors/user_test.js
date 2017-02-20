@@ -51,7 +51,7 @@ describe('user selectors', () => {
     })
   })
 
-  context('#selectPost', () => {
+  context('#selectUser', () => {
     it('returns a user from a userId', () => {
       const props = { userId: '666' }
       const user = selector.selectUser(state, props)

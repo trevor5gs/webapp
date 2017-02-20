@@ -6,10 +6,18 @@ import { GUI, LOAD_STREAM_REQUEST, LOAD_STREAM_SUCCESS } from '../../constants/a
 import { scrollTo } from '../../lib/jello'
 import Session from '../../lib/session'
 import { selectActiveNotificationsType } from '../../selectors/gui'
-import { selectAnnouncement } from '../../selectors/notifications'
+import {
+    selectAnnouncementBody,
+    selectAnnouncementCTACaption,
+    selectAnnouncementCTAHref,
+    selectAnnouncementId,
+    selectAnnouncementImage,
+    selectAnnouncementIsEmpty,
+    selectAnnouncementTitle,
+} from '../../selectors/notifications'
 import { selectStreamType } from '../../selectors/stream'
 import { trackEvent } from '../../actions/analytics'
-import { toggleNotifications } from '../../actions/gui'
+import { setLastAnnouncementSeen, toggleNotifications } from '../../actions/gui'
 import { loadNotifications, markAnnouncementRead } from '../../actions/notifications'
 import StreamContainer from '../../containers/StreamContainer'
 import {
@@ -24,16 +32,15 @@ import { AnnouncementNotification } from '../../components/notifications/Notific
 
 function mapStateToProps(state) {
   const activeTabType = selectActiveNotificationsType(state)
-  const announcement = selectAnnouncement(state)
   return {
     activeTabType,
-    announcementId: announcement.get('id'),
-    announcementBody: announcement.get('body'),
-    announcementCTACaption: announcement.get('ctaCaption', 'Learn More'),
-    announcementCTAHref: announcement.get('ctaHref'),
-    announcementImage: announcement.getIn(['image', 'hdpi', 'url']),
-    announcementTitle: announcement.get('header'),
-    hasAnnouncementNotification: !!(announcement.size),
+    announcementBody: selectAnnouncementBody(state),
+    announcementCTACaption: selectAnnouncementCTACaption(state),
+    announcementCTAHref: selectAnnouncementCTAHref(state),
+    announcementId: selectAnnouncementId(state),
+    announcementImage: selectAnnouncementImage(state),
+    announcementIsEmpty: selectAnnouncementIsEmpty(state),
+    announcementTitle: selectAnnouncementTitle(state),
     streamAction: loadNotifications({ category: activeTabType }),
     streamType: selectStreamType(state),
   }
@@ -43,14 +50,14 @@ class NotificationsContainer extends Component {
 
   static propTypes = {
     activeTabType: PropTypes.string.isRequired,
-    announcementId: PropTypes.string,
     announcementBody: PropTypes.string,
     announcementCTAHref: PropTypes.string,
     announcementCTACaption: PropTypes.string,
+    announcementId: PropTypes.string,
     announcementImage: PropTypes.string,
+    announcementIsEmpty: PropTypes.bool.isRequired,
     announcementTitle: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    hasAnnouncementNotification: PropTypes.bool.isRequired,
     streamAction: PropTypes.object,
     streamType: PropTypes.string,
   }
@@ -85,11 +92,15 @@ class NotificationsContainer extends Component {
   componentDidMount() {
     document.addEventListener('click', this.onClickDocument)
     document.addEventListener('touchstart', this.onClickDocument)
-    if (this.props.hasAnnouncementNotification) {
-      const { announcementBody, announcementTitle, announcementId, dispatch } = this.props
+    const { announcementId, announcementIsEmpty, dispatch } = this.props
+    if (!announcementIsEmpty) {
+      const { announcementBody, announcementTitle } = this.props
       const trackTitle = announcementTitle || announcementBody
       const trackProps = { name: trackTitle, announcement: announcementId }
       dispatch(trackEvent('announcement_viewed', trackProps))
+    }
+    if (announcementId && announcementId.length) {
+      dispatch(setLastAnnouncementSeen({ id: announcementId }))
     }
   }
 
@@ -178,8 +189,8 @@ class NotificationsContainer extends Component {
       announcementCTACaption,
       announcementCTAHref,
       announcementImage,
+      announcementIsEmpty,
       announcementTitle,
-      hasAnnouncementNotification,
       streamAction,
     } = this.props
     const { isReloading } = this.state
@@ -217,7 +228,7 @@ class NotificationsContainer extends Component {
               /> :
               null
           }
-          { hasAnnouncementNotification &&
+          { !announcementIsEmpty &&
             <AnnouncementNotification
               body={announcementBody}
               ctaCaption={announcementCTACaption}

@@ -39,6 +39,7 @@ describe('gui reducer', () => {
       'isNotificationsUnread',
       'isProfileMenuActive',
       'isTextToolsActive',
+      'lastAnnouncementSeen',
       'lastDiscoverBeaconVersion',
       'lastFollowingBeaconVersion',
       'lastNotificationCheck',
@@ -131,6 +132,12 @@ describe('gui reducer', () => {
       const isProfileMenuActive = true
       const action = { type: GUI.SET_IS_PROFILE_MENU_ACTIVE, payload: { isProfileMenuActive } }
       expect(reducer(initialState, action)).to.have.property('isProfileMenuActive', true)
+    })
+
+    it('GUI.SET_LAST_ANNOUNCEMENT_SEEN updates the lastAnnouncementSeen', () => {
+      expect(initialState).to.have.property('lastAnnouncementSeen', '0')
+      const action = { type: GUI.SET_LAST_ANNOUNCEMENT_SEEN, payload: { id: '1' } }
+      expect(reducer(initialState, action)).to.have.property('lastAnnouncementSeen', '1')
     })
 
     it('GUI.SET_LAST_DISCOVER_BEACON_VERSION updates the lastDiscoverBeaconVersion', () => {

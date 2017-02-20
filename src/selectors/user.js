@@ -8,7 +8,6 @@ import { selectJson } from './store'
 import { USERS } from '../constants/mapping_types'
 import { getLinkArray } from '../helpers/json_helper'
 
-
 export const selectPropsUserId = (state, props) =>
   get(props, 'userId') || get(props, 'user', Immutable.Map()).get('id')
 

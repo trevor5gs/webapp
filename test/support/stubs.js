@@ -72,6 +72,25 @@ function stubAuthPromotion(username = '666') {
   })
 }
 
+export function stubAnnouncementNotification(properties = {}, shouldAdd = true) {
+  const defaultProps = {
+    body: 'Announcement body',
+    ctaCaption: 'Announcement CTA Caption',
+    ctaHref: 'https://example.com',
+    header: 'Announcement header',
+    id: '8',
+    image: {
+      hdpi: { url: 'announcement-hdpi.jpg' },
+      xhdpi: { url: 'announcement-xhdpi.jpg' },
+      optimized: { url: 'announcement-optimized.jpg' },
+      original: { url: 'announcement-original.jpg' },
+    },
+  }
+  const model = Immutable.fromJS({ ...defaultProps, ...properties })
+  if (shouldAdd) { addToJSON(MAPPING_TYPES.ANNOUNCEMENTS, model) }
+  return model
+}
+
 function stubUser(properties, shouldAdd = true) {
   const defaultProps = {
     avatar: stubAvatar(),
