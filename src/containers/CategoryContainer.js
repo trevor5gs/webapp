@@ -31,7 +31,7 @@ class CategoryContainer extends PureComponent {
         to={`/discover/${slug}`}
         style={{ backgroundImage: `url("${tileImageUrl}")` }}
       >
-        <span className="CategoryLinkName">{name}</span>
+        <span className="CategoryLinkName truncate">{name}</span>
       </Link>
     )
   }
