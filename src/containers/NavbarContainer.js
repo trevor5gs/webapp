@@ -15,7 +15,7 @@ import {
   selectIsNotificationsUnread,
   selectIsProfileMenuActive,
 } from '../selectors/gui'
-import { selectIsAnnouncementUnread } from '../selectors/notifications'
+import { selectAnnouncementIsUnread } from '../selectors/notifications'
 import { selectAvatar, selectUsername } from '../selectors/profile'
 import { selectPage } from '../selectors/pages'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
@@ -36,7 +36,7 @@ function mapStateToProps(state, props) {
   const hasLoadMoreButton = !!(pageResult && pageResult.get('morePostIds'))
   const viewName = selectViewNameFromRoute(state)
   const categoryTabs = viewName === 'discover' ? selectCategoryTabs(state) : null
-  const isUnread = selectIsNotificationsUnread(state) || selectIsAnnouncementUnread(state)
+  const isUnread = selectIsNotificationsUnread(state) || selectAnnouncementIsUnread(state)
   const isGridMode = selectIsGridMode(state)
 
   if (isLoggedIn) {

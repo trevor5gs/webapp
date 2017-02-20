@@ -4,7 +4,15 @@ import get from 'lodash/get'
 import { scrollTo } from '../../lib/jello'
 import Session from '../../lib/session'
 import { selectPropsPathname } from '../../selectors/routing'
-import { selectAnnouncement } from '../../selectors/notifications'
+import {
+    selectAnnouncementBody,
+    selectAnnouncementCTACaption,
+    selectAnnouncementCTAHref,
+    selectAnnouncementId,
+    selectAnnouncementImage,
+    selectAnnouncementIsEmpty,
+    selectAnnouncementTitle,
+} from '../../selectors/notifications'
 import { selectStreamType } from '../../selectors/stream'
 import { trackEvent } from '../../actions/analytics'
 import { loadNotifications, markAnnouncementRead } from '../../actions/notifications'
@@ -23,16 +31,15 @@ import { MainView } from '../../components/views/MainView'
 import { AnnouncementNotification } from '../../components/notifications/NotificationRenderables'
 
 function mapStateToProps(state, props) {
-  const announcement = selectAnnouncement(state)
   const type = get(props, 'params.type', 'all')
   return {
-    announcementId: announcement.get('id'),
-    announcementBody: announcement.get('body'),
-    announcementCTACaption: announcement.get('ctaCaption', 'Learn More'),
-    announcementCTAHref: announcement.get('ctaHref'),
-    announcementImage: announcement.getIn(['image', 'hdpi', 'url']),
-    announcementTitle: announcement.get('header'),
-    hasAnnouncementNotification: !!(announcement.size),
+    announcementBody: selectAnnouncementBody(state),
+    announcementCTACaption: selectAnnouncementCTACaption(state),
+    announcementCTAHref: selectAnnouncementCTAHref(state),
+    announcementId: selectAnnouncementId(state),
+    announcementImage: selectAnnouncementImage(state),
+    announcementIsEmpty: selectAnnouncementIsEmpty(state),
+    announcementTitle: selectAnnouncementTitle(state),
     pathname: selectPropsPathname(state, props),
     streamAction: loadNotifications({ category: type }),
     streamType: selectStreamType(state),
@@ -43,14 +50,14 @@ function mapStateToProps(state, props) {
 class Notifications extends Component {
 
   static propTypes = {
-    announcementId: PropTypes.string,
     announcementBody: PropTypes.string,
     announcementCTAHref: PropTypes.string,
     announcementCTACaption: PropTypes.string,
+    announcementId: PropTypes.string,
     announcementImage: PropTypes.string,
+    announcementIsEmpty: PropTypes.bool.isRequired,
     announcementTitle: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    hasAnnouncementNotification: PropTypes.bool.isRequired,
     pathname: PropTypes.string,
     streamAction: PropTypes.object,
     type: PropTypes.string,
@@ -87,7 +94,7 @@ class Notifications extends Component {
   }
 
   componentDidMount() {
-    if (this.props.hasAnnouncementNotification) {
+    if (this.props.announcementIsEmpty) {
       const { announcementBody, announcementTitle, announcementId, dispatch } = this.props
       const trackName = announcementTitle || announcementBody
       const trackProps = { name: trackName, announcement: announcementId }
@@ -140,8 +147,8 @@ class Notifications extends Component {
       announcementCTACaption,
       announcementCTAHref,
       announcementImage,
+      announcementIsEmpty,
       announcementTitle,
-      hasAnnouncementNotification,
       pathname,
       streamAction,
       type,
@@ -172,7 +179,7 @@ class Notifications extends Component {
             /> :
             null
         }
-        { hasAnnouncementNotification &&
+        { announcementIsEmpty &&
           <AnnouncementNotification
             body={announcementBody}
             ctaCaption={announcementCTACaption}
