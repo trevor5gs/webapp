@@ -3,6 +3,7 @@ import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import { LOAD_STREAM_REQUEST } from '../constants/action_types'
 import { COMMENTS, POSTS } from '../constants/mapping_types'
+import { numberToHuman } from '../lib/number_to_human'
 import { selectIsLoggedIn } from './authentication'
 import { selectCategoryCollection } from './categories'
 import { selectIsGridMode } from './gui'
@@ -54,7 +55,7 @@ export const selectPostShowReposters = createSelector([selectPost], post => post
 export const selectPostSummary = createSelector([selectPost], post => post.get('summary'))
 export const selectPostToken = createSelector([selectPost], post => post.get('token'))
 export const selectPostViewsCount = createSelector([selectPost], post => post.get('viewsCount'))
-export const selectPostViewsCountRounded = createSelector([selectPost], post => post.get('viewsCountRounded'))
+export const selectPostViewsCountRounded = createSelector([selectPostViewsCount], count => numberToHuman(count, false))
 export const selectPostWatching = createSelector([selectPost], post => post.get('watching'))
 
 // Nested properties on the post reducer
