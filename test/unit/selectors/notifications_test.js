@@ -3,11 +3,12 @@ import { clearJSON, json, stubAnnouncementNotification } from '../../support/stu
 import * as selector from '../../../src/selectors/notifications'
 
 describe('announcement selectors', () => {
+  const gui = Immutable.Map({ lastAnnouncementSeen: '333' })
   let announcement
   let state
   beforeEach(() => {
     announcement = stubAnnouncementNotification()
-    state = { json }
+    state = { gui, json }
   })
 
   afterEach(() => {
@@ -91,6 +92,28 @@ describe('announcement selectors', () => {
 
     it('returns if the announcements is empty (false)', () => {
       expect(selector.selectAnnouncementIsUnread({ json: Immutable.Map() })).to.equal(false)
+    })
+  })
+
+  context('#selectAnnouncementHasBeenViewed', () => {
+    it('returns if the announcements has been viewed (false)', () => {
+      const result = selector.selectAnnouncementHasBeenViewed(state)
+      expect(result).to.equal(false)
+    })
+
+    it('returns if the announcements has been viewed after opening the notifications', () => {
+      state = { gui: state.gui.set('lastAnnouncementSeen', '8'), json }
+      const result = selector.selectAnnouncementHasBeenViewed(state)
+      expect(result).to.equal(true)
+    })
+
+    it('returns if the announcements has been viewed after marking read', () => {
+      state = {
+        gui: state.gui.set('lastAnnouncementSeen', '8'),
+        json: state.json.delete('announcements'),
+      }
+      const result = selector.selectAnnouncementHasBeenViewed(state)
+      expect(result).to.equal(true)
     })
   })
 })

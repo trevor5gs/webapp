@@ -25,6 +25,15 @@ export function setIsProfileMenuActive({ isActive }) {
   }
 }
 
+export function setLastAnnouncementSeen({ id }) {
+  return {
+    type: GUI.SET_LAST_ANNOUNCEMENT_SEEN,
+    payload: {
+      id,
+    },
+  }
+}
+
 export function setLastDiscoverBeaconVersion({ version }) {
   return {
     type: GUI.SET_LAST_DISCOVER_BEACON_VERSION,

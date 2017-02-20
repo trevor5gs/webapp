@@ -1,14 +1,17 @@
 import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import { ANNOUNCEMENTS } from '../constants/mapping_types'
+import { selectLastAnnouncementSeen } from './gui'
 
 export const selectAnnouncements = state => state.json.get(ANNOUNCEMENTS, Immutable.Map())
 
+// Memoized selectors
 export const selectAnnouncement = createSelector(
   [selectAnnouncements], announcements =>
     (announcements.size && announcements.first()) || Immutable.Map(),
 )
 
+// Properties on the announcement
 export const selectAnnouncementBody = createSelector(
   [selectAnnouncement], announcement => announcement.get('body'),
 )
@@ -33,11 +36,18 @@ export const selectAnnouncementTitle = createSelector(
   [selectAnnouncement], announcement => announcement.get('header'),
 )
 
+// Derived or additive properties
 export const selectAnnouncementIsEmpty = createSelector(
   [selectAnnouncement], announcement => announcement.isEmpty(),
 )
 
 export const selectAnnouncementIsUnread = createSelector(
   [selectAnnouncements], announcements => !!(announcements && announcements.size),
+)
+
+export const selectAnnouncementHasBeenViewed = createSelector(
+  [selectAnnouncementId, selectAnnouncementIsUnread, selectLastAnnouncementSeen],
+  (announcementId, isUnread, lastAnnouncementSeen) =>
+    !isUnread || announcementId === lastAnnouncementSeen,
 )
 

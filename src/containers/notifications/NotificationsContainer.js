@@ -17,7 +17,7 @@ import {
 } from '../../selectors/notifications'
 import { selectStreamType } from '../../selectors/stream'
 import { trackEvent } from '../../actions/analytics'
-import { toggleNotifications } from '../../actions/gui'
+import { setLastAnnouncementSeen, toggleNotifications } from '../../actions/gui'
 import { loadNotifications, markAnnouncementRead } from '../../actions/notifications'
 import StreamContainer from '../../containers/StreamContainer'
 import {
@@ -92,11 +92,15 @@ class NotificationsContainer extends Component {
   componentDidMount() {
     document.addEventListener('click', this.onClickDocument)
     document.addEventListener('touchstart', this.onClickDocument)
-    if (this.props.announcementIsEmpty) {
-      const { announcementBody, announcementTitle, announcementId, dispatch } = this.props
+    const { announcementId, announcementIsEmpty, dispatch } = this.props
+    if (announcementIsEmpty) {
+      const { announcementBody, announcementTitle } = this.props
       const trackTitle = announcementTitle || announcementBody
       const trackProps = { name: trackTitle, announcement: announcementId }
       dispatch(trackEvent('announcement_viewed', trackProps))
+    }
+    if (announcementId && announcementId.length) {
+      dispatch(setLastAnnouncementSeen({ id: announcementId }))
     }
   }
 

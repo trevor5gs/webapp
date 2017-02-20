@@ -64,6 +64,7 @@ const initialPersistedState = Immutable.Map({
   isGridMode: true,
   isNavbarHidden: false,
   isNotificationsUnread: false,
+  lastAnnouncementSeen: '0',
   lastDiscoverBeaconVersion: '0',
   lastFollowingBeaconVersion: '0',
   lastNotificationCheck: oldDate.toUTCString(),
@@ -122,6 +123,8 @@ export default (state = initialState, action = { type: '' }) => {
       return state.set('isNavbarHidden', get(payload, 'isNavbarHidden', state.isNavbarHidden))
     case GUI.SET_IS_PROFILE_MENU_ACTIVE:
       return state.set('isProfileMenuActive', payload.isProfileMenuActive)
+    case GUI.SET_LAST_ANNOUNCEMENT_SEEN:
+      return state.set('lastAnnouncementSeen', payload.id)
     case GUI.SET_LAST_DISCOVER_BEACON_VERSION:
       return state.set('lastDiscoverBeaconVersion', payload.version)
     case GUI.SET_LAST_FOLLOWING_BEACON_VERSION:
