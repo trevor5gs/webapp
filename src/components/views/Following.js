@@ -4,7 +4,7 @@ import { MainView } from '../views/MainView'
 
 export const Following = ({ streamAction }) =>
   <MainView className="Following">
-    <StreamContainer action={streamAction} scrollSessionKey="/following" />
+    <StreamContainer action={streamAction} />
   </MainView>
 
 Following.propTypes = {

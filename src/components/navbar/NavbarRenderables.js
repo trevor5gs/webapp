@@ -20,8 +20,7 @@ import {
   StarIcon,
 } from './NavbarIcons'
 import { CategoryTabBar } from '../tabs/CategoryTabBar'
-// yuck..
-import NotificationsContainer from '../../containers/notifications/NotificationsContainer'
+import NotificationsContainer from '../../containers/NotificationsContainer'
 
 export const NavbarLoggedOut = ({
   categoryTabs,
@@ -183,7 +182,7 @@ export const NavbarLoggedIn = ({
         /> : null
       }
       {deviceSize !== 'mobile' && isNotificationsActive ?
-        <NotificationsContainer /> : null
+        <NotificationsContainer isModal /> : null
       }
     </div>
     {categoryTabs ? <CategoryTabBar pathname={pathname} tabs={categoryTabs} /> : null}

@@ -2,6 +2,21 @@ import Immutable from 'immutable'
 import * as selector from '../../../src/selectors/gui'
 
 describe('gui selectors', () => {
+  context('#selectActiveNotificationScrollPosition', () => {
+    it('selects with memoization the device size string', () => {
+      let state = { gui: Immutable.fromJS({
+        notificationScrollPositions: { all: 666, comments: 420 },
+        activeNotificationsType: 'all',
+      }) }
+      selector.selectActiveNotificationScrollPosition.resetRecomputations()
+      expect(selector.selectActiveNotificationScrollPosition(state)).to.equal(666)
+
+      state = { gui: state.gui.set('activeNotificationsType', 'comments') }
+      expect(selector.selectActiveNotificationScrollPosition(state)).to.equal(420)
+      expect(selector.selectActiveNotificationScrollPosition.recomputations()).to.equal(2)
+    })
+  })
+
   context('#selectDeviceSize', () => {
     it('selects with memoization the device size string', () => {
       let state = { gui: Immutable.fromJS({ columnCount: 2, innerWidth: 375, change: false }) }

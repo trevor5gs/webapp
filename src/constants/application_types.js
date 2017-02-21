@@ -16,8 +16,3 @@ export const SHORTCUT_KEYS = {
   TOGGLE_LAYOUT: '=',
 }
 
-export const SESSION_KEYS = {
-  NOTIFICATIONS_FILTER: 'KEYS.NOTIFICATIONS_FILTER',
-  scrollLocationKey: key => `scrollLocations.${key}`,
-}
-

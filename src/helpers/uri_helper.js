@@ -36,13 +36,11 @@ export function getQueryParamValue(param, uri) {
   const search = uri.split('?')[1]
   if (search) {
     const searchArr = search.split('&')
-    return searchArr.find((keyVal) => {
+    const found = searchArr.find((keyVal) => {
       const keyValArr = keyVal.split('=')
-      if (keyValArr[0] === param) {
-        return keyValArr[1]
-      }
-      return false
+      return keyValArr[0] === param
     })
+    if (found && found.length) { return found.split('=')[1] }
   }
   return null
 }

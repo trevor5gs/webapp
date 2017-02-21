@@ -54,8 +54,11 @@ export const UserNamesCell = ({ className, name, username, children }) =>
 UserNamesCell.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   username: PropTypes.string.isRequired,
+}
+UserNamesCell.defaultProps = {
+  name: null,
 }
 
 // -----------------

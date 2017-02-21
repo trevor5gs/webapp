@@ -48,6 +48,7 @@ const initialNonPersistedState = Immutable.Map({
   isNotificationsActive: false,
   isProfileMenuActive: false,
   isTextToolsActive: false,
+  notificationScrollPositions: Immutable.Map(),
   saidHelloTo: Immutable.List(),
   textToolsCoordinates: Immutable.Map({ top: -200, left: -666 }),
   textToolsStates: Immutable.Map(),
@@ -131,6 +132,8 @@ export default (state = initialState, action = { type: '' }) => {
       return state.set('lastFollowingBeaconVersion', payload.version)
     case GUI.SET_LAST_STARRED_BEACON_VERSION:
       return state.set('lastStarredBeaconVersion', payload.version)
+    case GUI.SET_NOTIFICATION_SCROLL_Y:
+      return state.setIn(['notificationScrollPositions', payload.category], payload.scrollY)
     case GUI.SET_SIGNUP_MODAL_LAUNCHED:
       return state.set('hasLaunchedSignupModal', payload.hasLaunchedSignupModal)
     case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
