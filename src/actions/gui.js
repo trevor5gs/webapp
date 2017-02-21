@@ -61,6 +61,16 @@ export function setLastStarredBeaconVersion({ version }) {
   }
 }
 
+export function setNotificationScrollY(category, scrollY) {
+  return {
+    payload: {
+      category,
+      scrollY,
+    },
+    type: GUI.SET_NOTIFICATION_SCROLL_Y,
+  }
+}
+
 export function setViewportSizeAttributes(resizeAttributes) {
   return {
     type: GUI.SET_VIEWPORT_SIZE_ATTRIBUTES,

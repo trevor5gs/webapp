@@ -24,30 +24,31 @@ describe('gui reducer', () => {
       expect(
         reducer(undefined, {}),
       ).to.have.keys(
-      'activeNotificationsType',
-      'activeUserFollowingType',
-      'columnCount',
-      'discoverKeyType',
-      'hasLaunchedSignupModal',
-      'homeStream',
-      'innerHeight',
-      'innerWidth',
-      'isCompleterActive',
-      'isGridMode',
-      'isNavbarHidden',
-      'isNotificationsActive',
-      'isNotificationsUnread',
-      'isProfileMenuActive',
-      'isTextToolsActive',
-      'lastAnnouncementSeen',
-      'lastDiscoverBeaconVersion',
-      'lastFollowingBeaconVersion',
-      'lastNotificationCheck',
-      'lastStarredBeaconVersion',
-      'modes',
-      'saidHelloTo',
-      'textToolsCoordinates',
-      'textToolsStates',
+        'activeNotificationsType',
+        'activeUserFollowingType',
+        'columnCount',
+        'discoverKeyType',
+        'hasLaunchedSignupModal',
+        'homeStream',
+        'innerHeight',
+        'innerWidth',
+        'isCompleterActive',
+        'isGridMode',
+        'isNavbarHidden',
+        'isNotificationsActive',
+        'isNotificationsUnread',
+        'isProfileMenuActive',
+        'isTextToolsActive',
+        'lastAnnouncementSeen',
+        'lastDiscoverBeaconVersion',
+        'lastFollowingBeaconVersion',
+        'lastNotificationCheck',
+        'lastStarredBeaconVersion',
+        'notificationScrollPositions',
+        'modes',
+        'saidHelloTo',
+        'textToolsCoordinates',
+        'textToolsStates',
       )
     })
   })
@@ -150,6 +151,12 @@ describe('gui reducer', () => {
       expect(initialState).to.have.property('lastFollowingBeaconVersion', '0')
       const action = { type: GUI.SET_LAST_FOLLOWING_BEACON_VERSION, payload: { version: '666' } }
       expect(reducer(initialState, action)).to.have.property('lastFollowingBeaconVersion', '666')
+    })
+
+    it('GUI.SET_NOTIFICATION_SCROLL_Y updates notificationScrollPositions', () => {
+      expect(initialState).to.have.property('notificationScrollPositions', Immutable.Map())
+      const action = { type: GUI.SET_NOTIFICATION_SCROLL_Y, payload: { category: 'all', scrollY: 666 } }
+      expect(reducer(initialState, action).getIn(['notificationScrollPositions', 'all'])).to.equal(666)
     })
 
     it('GUI.SET_SIGNUP_MODAL_LAUNCHED updates hasLaunchedSignupModal', () => {

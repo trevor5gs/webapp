@@ -1,12 +1,11 @@
 import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { scrollTo } from '../lib/jello'
-import Session from '../lib/session'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
-import { SESSION_KEYS } from '../constants/application_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectCategoryTabs } from '../selectors/categories'
 import {
+  selectActiveNotificationsType,
   selectHomeStream,
   selectDeviceSize,
   selectIsGridMode,
@@ -41,6 +40,7 @@ function mapStateToProps(state, props) {
 
   if (isLoggedIn) {
     return {
+      activeTabType: selectActiveNotificationsType(state),
       avatar: selectAvatar(state),
       categoryTabs,
       deviceSize: selectDeviceSize(state),
@@ -71,6 +71,7 @@ function mapStateToProps(state, props) {
 class NavbarContainer extends PureComponent {
 
   static propTypes = {
+    activeTabType: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     homeStream: PropTypes.string.isRequired,
     isGridMode: PropTypes.bool.isRequired,
@@ -200,12 +201,8 @@ class NavbarContainer extends PureComponent {
   // on any other page, we have the notifications link go back to whatever
   // category you were viewing last.
   getNotificationCategory() {
-    const { viewName } = this.props
-    if (viewName === 'notifications') { return '' }
-    return (
-      Session.getItem(SESSION_KEYS.NOTIFICATIONS_FILTER) ?
-        `/${Session.getItem(SESSION_KEYS.NOTIFICATIONS_FILTER)}` : ''
-    )
+    const { activeTabType, viewName } = this.props
+    return viewName === 'notifications' ? '' : `/notifications/${activeTabType}`
   }
 
   checkForNotifications(isMounting = false) {

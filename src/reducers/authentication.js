@@ -3,7 +3,6 @@ import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { AUTHENTICATION, PROFILE } from '../constants/action_types'
-import Session from '../lib/session'
 
 export const initialState = Immutable.Map({
   accessToken: null,
@@ -24,7 +23,6 @@ export default (state = initialState, action) => {
     case AUTHENTICATION.LOGOUT_FAILURE:
     case AUTHENTICATION.REFRESH_FAILURE:
     case PROFILE.DELETE_SUCCESS:
-      Session.clear()
       return initialState
     case AUTHENTICATION.USER_SUCCESS:
     case AUTHENTICATION.REFRESH_SUCCESS:

@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
 import classNames from 'classnames'
-import Session from '../lib/session'
 import { runningFetches } from '../sagas/requester'
 import * as ACTION_TYPES from '../constants/action_types'
+import { setNotificationScrollY } from '../actions/gui'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
   selectColumnCount,
@@ -198,11 +198,9 @@ class StreamContainer extends Component {
     if (!path) { return }
     if (/\/notifications/.test(path)) {
       const category = getQueryParamValue('category', path) || 'all'
-      const { isModalComponent, scrollContainer } = this.props
+      const { dispatch, isModalComponent, scrollContainer } = this.props
       if (isModalComponent && scrollContainer) {
-        Session.setItem(`/notifications/${category}/scrollY`, scrollContainer.scrollTop)
-      } else {
-        Session.setItem(`/notifications/${category}/scrollY`, window.scrollY)
+        dispatch(setNotificationScrollY(category, scrollContainer.scrollTop))
       }
     }
   }

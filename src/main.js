@@ -14,7 +14,6 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import './main.css'
 import { addFeatureDetection, isIOS } from './lib/jello'
 import MemoryStore from './lib/memory_store'
-import Session from './lib/session'
 import { updateStrings as updateTimeAgoStrings } from './lib/time_ago_in_words'
 import store from './store'
 import createRoutes from './routes'
@@ -29,11 +28,7 @@ if (isIOS()) {
 }
 /* eslint-enable global-require */
 
-function shouldScroll(prevRouterProps, { location }) {
-  const notificationScrollY = Session.getItem(`${location.pathname}/scrollY`)
-  if (/\/notifications\b/.test(location.pathname) && notificationScrollY) {
-    return [0, notificationScrollY]
-  }
+function shouldScroll() {
   return location.action !== 'REPLACE'
 }
 
@@ -109,14 +104,12 @@ const launchApplication = (storage, hasLocalStorage = false) => {
         window.nonImmutableState = { authentication: authState, gui: guiState }
       }
       persistor.purge(['editor', 'json', 'profile'])
-      Session.clear()
       storage.setItem('APP_VERSION', APP_VERSION, () => {})
     }
   } else {
     storage.getItem('APP_VERSION', (error, result) => {
       if (result && result !== APP_VERSION) {
         persistor.purge(['editor', 'json', 'profile'])
-        Session.clear()
         storage.setItem('APP_VERSION', APP_VERSION, () => {})
       }
     })

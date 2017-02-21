@@ -144,6 +144,27 @@ describe('gui actions', () => {
     })
   })
 
+  context('#setNotificationScrollY', () => {
+    const action = subject.setNotificationScrollY('all', 666)
+
+    it('is an FSA compliant action', () => {
+      expect(isFSA(action)).to.be.true
+    })
+
+    it('has similar action.name and action.type', () => {
+      expect(isFSAName(action, subject.setNotificationScrollY)).to.be.true
+    })
+
+    it('has a payload with the correct keys', () => {
+      expect(action.payload).to.have.keys(['category', 'scrollY'])
+    })
+
+    it('sets the appropriate payload', () => {
+      expect(action.payload.category).to.equal('all')
+      expect(action.payload.scrollY).to.equal(666)
+    })
+  })
+
   context('#setSignupModalLaunched', () => {
     const action = subject.setSignupModalLaunched(true)
 

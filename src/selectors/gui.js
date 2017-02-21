@@ -23,11 +23,17 @@ export const selectLastDiscoverBeaconVersion = state => state.gui.get('lastDisco
 export const selectLastFollowingBeaconVersion = state => state.gui.get('lastFollowingBeaconVersion') // eslint-disable-line
 export const selectLastNotificationCheck = state => state.gui.get('lastNotificationCheck')
 export const selectLastStarredBeaconVersion = state => state.gui.get('lastStarredBeaconVersion')
+export const selectNotificationScrollPositions = state => state.gui.get('notificationScrollPositions')
 export const selectSaidHelloTo = state => state.gui.get('saidHelloTo')
 export const selectTextToolsCoordinates = state => state.gui.get('textToolsCoordinates')
 export const selectTextToolsStates = state => state.gui.get('textToolsStates')
 
 // Memoized selectors
+export const selectActiveNotificationScrollPosition = createSelector(
+  [selectActiveNotificationsType, selectNotificationScrollPositions], (type, positions) =>
+    positions.get(type, 0),
+)
+
 export const selectDeviceSize = createSelector(
   [selectColumnCount, selectInnerWidth], (columnCount, innerWidth) => {
     // deviceSize could be anything: baby, momma, poppa bear would work too.
