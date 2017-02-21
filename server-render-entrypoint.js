@@ -8,6 +8,9 @@ import { renderStaticOptimized } from 'glamor-server'
 import React from 'react'
 import Helmet from 'react-helmet'
 import Honeybadger from 'honeybadger'
+import kue from 'kue'
+import cluster from 'cluster'
+import os from 'os'
 import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
@@ -40,10 +43,10 @@ const createSelectLocationState = () => {
   }
 }
 
-function handlePrerender(context) {
+function handlePrerender(context, done) {
   const { access_token, originalUrl, url } = context
 
-  console.log(`Spun up child process ${process.pid} to render ${url} isomorphically`)
+  console.log(`Rendering ${url} isomorphically`)
 
   const memoryHistory = createMemoryHistory(originalUrl)
   const store = createElloStore(memoryHistory, {
@@ -65,12 +68,10 @@ function handlePrerender(context) {
       console.log('ELLO MATCH ERROR', error)
     } else if (redirectLocation) {
       console.log('ELLO HANDLE REDIRECT', redirectLocation)
-      process.send({ type: 'redirect', location: redirectLocation.pathname }, null, {}, () => {
-        process.exit(0)
-      })
+      done(null, { type: 'redirect', location: redirectLocation.pathname })
     } else if (!renderProps) {
       console.log('NO RENDER PROPS')
-      process.exit(1)
+      done(null)
       return
     }
 
@@ -86,9 +87,7 @@ function handlePrerender(context) {
       const { css, ids } = renderStaticOptimized(() => componentHTML)
       const state = store.getState()
       if (state.stream.get('should404') === true) {
-        process.send({ type: '404' }, null, {}, () => {
-          process.exit(1)
-        })
+        done(null, { type: '404' })
       } else {
         Object.keys(state).forEach((key) => {
           state[key] = state[key].toJS()
@@ -100,23 +99,43 @@ function handlePrerender(context) {
           'rel="copyright">',
           `rel="copyright">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()} <style>${css}</style>`,
         ).replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag} ${initialGlamTag}`)
-        process.send({ type: 'render', body: html }, null, {}, () => {
-          process.exit(0)
-        })
+        done(null, { type: 'render', body: html })
       }
     }).catch((err) => {
       // this will give you a js error like:
       // `window is not defined`
       console.log('ELLO CATCH ERROR', err)
       Honeybadger.notify(err);
-      process.send({ type: 'error' }, null, {}, () => {
-        process.exit(1)
-      })
+      done(null, { type: 'error' })
     })
     renderToString(InitialComponent)
   })
 }
 
-process.on('message', handlePrerender)
+// Fire up queue worker
+const queue = kue.createQueue(redis: process.env[process.env.REDIS_PROVIDER])
+const clusterWorkerSize = os.cpus().length
+
+queue.on( 'error', function( err ) {
+  console.log('An error occurred in Kue: ', err)
+});
+
+if (cluster.isMaster) {
+  console.log(`Forking off ${clusterWorkerSize} worker processes`)
+  for (var i = 0; i < clusterWorkerSize; i++) {
+    cluster.fork()
+  }
+} else {
+  queue.process('render', 1, (job, done) => {
+    handlePrerender(job.data, done)
+  })
+}
+
+process.once('SIGTERM', (sig) => {
+  queue.shutdown(5000, (err) => {
+    console.log('Kue shutting down: ', err)
+    process.exit(0)
+  })
+})
 
 export default handlePrerender
