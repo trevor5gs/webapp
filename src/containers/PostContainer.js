@@ -81,56 +81,53 @@ import { PostTools, WatchTool } from '../components/posts/PostTools'
 import { UserDrawer } from '../components/users/UserRenderables'
 import { postLovers, postReposters } from '../networking/api'
 
-// TODO: Possibly create an individual mapStateToProps for each container
-// instance. This will allow each component it's own private group of
-// selectors. It would be good to measure this though, based on how these run
-// we may not gain a whole lot from it.
-export function mapStateToProps(state, props) {
-  return {
-    assets: selectAssets(state),
-    author: selectPostAuthor(state, props),
-    categoryName: selectPostCategoryName(state, props),
-    categoryPath: selectPostCategorySlug(state, props),
-    columnWidth: selectColumnWidth(state),
-    commentOffset: selectCommentOffset(state),
-    content: selectPostContent(state, props),
-    contentWarning: selectPostContentWarning(state, props),
-    contentWidth: selectContentWidth(state),
-    detailPath: selectPostDetailPath(state, props),
-    deviceSize: selectDeviceSize(state),
-    innerHeight: selectInnerHeight(state),
-    isCommentsRequesting: selectPostIsCommentsRequesting(state, props),
-    isDiscoverRoot: selectIsDiscoverRoot(state, props),
-    isGridMode: selectPostIsGridMode(state, props),
-    isLoggedIn: selectIsLoggedIn(state),
-    isMobile: selectIsMobile(state),
-    isOwnOriginalPost: selectPostIsOwnOriginal(state, props),
-    isOwnPost: selectPostIsOwn(state, props),
-    isPostDetail: selectIsPostDetail(state, props),
-    isPostEmpty: selectPostIsEmpty(state, props),
-    isRepost: selectPostIsRepost(state, props),
-    isReposting: selectPostIsReposting(state, props),
-    isWatchingPost: selectPostIsWatching(state, props),
-    pathname: selectPathname(state),
-    post: selectPost(state, props),
-    postBody: selectPostBody(state, props),
-    postCommentsCount: selectPostCommentsCount(state, props),
-    postCreatedAt: selectPostCreatedAt(state, props),
-    postId: selectPropsPostId(state, props),
-    postLoved: selectPostLoved(state, props),
-    postLovesCount: selectPostLovesCount(state, props),
-    postReposted: selectPostReposted(state, props),
-    postRepostsCount: selectPostRepostsCount(state, props),
-    postViewsCountRounded: selectPostViewsCountRounded(state, props),
-    previousPath: selectPreviousPath(state),
-    repostAuthor: selectPostRepostAuthorWithFallback(state, props),
-    repostContent: selectPostRepostContent(state, props),
-    showCommentEditor: selectPostShowCommentEditor(state, props),
-    showEditor: selectPostShowEditor(state, props),
-    showLovers: selectPostShowLoversDrawer(state, props),
-    showReposters: selectPostShowRepostersDrawer(state, props),
-    summary: selectPostSummary(state, props),
-  }
+export function makeMapStateToProps() {
+  return (state, props) =>
+    ({
+      assets: selectAssets(state),
+      author: selectPostAuthor(state, props),
+      categoryName: selectPostCategoryName(state, props),
+      categoryPath: selectPostCategorySlug(state, props),
+      columnWidth: selectColumnWidth(state),
+      commentOffset: selectCommentOffset(state),
+      content: selectPostContent(state, props),
+      contentWarning: selectPostContentWarning(state, props),
+      contentWidth: selectContentWidth(state),
+      detailPath: selectPostDetailPath(state, props),
+      deviceSize: selectDeviceSize(state),
+      innerHeight: selectInnerHeight(state),
+      isCommentsRequesting: selectPostIsCommentsRequesting(state, props),
+      isDiscoverRoot: selectIsDiscoverRoot(state, props),
+      isGridMode: selectPostIsGridMode(state, props),
+      isLoggedIn: selectIsLoggedIn(state),
+      isMobile: selectIsMobile(state),
+      isOwnOriginalPost: selectPostIsOwnOriginal(state, props),
+      isOwnPost: selectPostIsOwn(state, props),
+      isPostDetail: selectIsPostDetail(state, props),
+      isPostEmpty: selectPostIsEmpty(state, props),
+      isRepost: selectPostIsRepost(state, props),
+      isReposting: selectPostIsReposting(state, props),
+      isWatchingPost: selectPostIsWatching(state, props),
+      pathname: selectPathname(state),
+      post: selectPost(state, props),
+      postBody: selectPostBody(state, props),
+      postCommentsCount: selectPostCommentsCount(state, props),
+      postCreatedAt: selectPostCreatedAt(state, props),
+      postId: selectPropsPostId(state, props),
+      postLoved: selectPostLoved(state, props),
+      postLovesCount: selectPostLovesCount(state, props),
+      postReposted: selectPostReposted(state, props),
+      postRepostsCount: selectPostRepostsCount(state, props),
+      postViewsCountRounded: selectPostViewsCountRounded(state, props),
+      previousPath: selectPreviousPath(state),
+      repostAuthor: selectPostRepostAuthorWithFallback(state, props),
+      repostContent: selectPostRepostContent(state, props),
+      showCommentEditor: selectPostShowCommentEditor(state, props),
+      showEditor: selectPostShowEditor(state, props),
+      showLovers: selectPostShowLoversDrawer(state, props),
+      showReposters: selectPostShowRepostersDrawer(state, props),
+      summary: selectPostSummary(state, props),
+    })
 }
 
 class PostContainer extends Component {
@@ -528,5 +525,5 @@ class PostContainer extends Component {
   }
 }
 
-export default connect(mapStateToProps)(PostContainer)
+export default connect(makeMapStateToProps)(PostContainer)
 

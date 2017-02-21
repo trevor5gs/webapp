@@ -33,7 +33,7 @@ const selectActionPath = props =>
   get(props, ['action', 'payload', 'endpoint', 'path'])
 
 export function makeMapStateToProps() {
-  const mapStateToProps = (state, props) =>
+  return (state, props) =>
     ({
       columnCount: selectColumnCount(state),
       hasLaunchedSignupModal: selectHasLaunchedSignupModal(state),
@@ -46,7 +46,6 @@ export function makeMapStateToProps() {
       resultPath: selectStreamResultPath(state, props),
       stream: selectStream(state),
     })
-  return mapStateToProps
 }
 
 class StreamContainer extends Component {
