@@ -1,6 +1,5 @@
 import kue from 'kue'
 import cluster from 'cluster'
-import os from 'os'
 import librato from 'librato-node'
 import { updateStrings as updateTimeAgoStrings } from './src/lib/time_ago_in_words'
 import handlePrerender from './src/prerender'
@@ -9,7 +8,8 @@ updateTimeAgoStrings({ about: '' })
 
 // Fire up queue worker
 const queue = kue.createQueue({ redis: process.env[process.env.REDIS_PROVIDER] })
-const clusterWorkerSize = os.cpus().length
+const clusterWorkerSize = parseInt(process.env.CLUSTER_WORKERS, 10) || 1
+const simultaneousWorkerRenders = parseInt(process.env.SIMULTANEOUS_RENDERS, 10) || 1
 
 // Periodically clear stuck jobs
 queue.watchStuckJobs()
@@ -54,7 +54,7 @@ if (cluster.isMaster) {
     cluster.fork()
   }
 } else {
-  queue.process('render', 1, (job, done) => {
+  queue.process('render', simultaneousWorkerRenders, (job, done) => {
     handlePrerender(job.data, done)
   })
 }
