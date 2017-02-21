@@ -1,4 +1,4 @@
-import React, { PropTypes, PureComponent } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import Mousetrap from 'mousetrap'
@@ -19,7 +19,7 @@ function mapStateToProps(state) {
   }
 }
 
-class KeyboardContainer extends PureComponent {
+class KeyboardContainer extends Component {
   static propTypes = {
     discoverKeyType: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
@@ -47,6 +47,10 @@ class KeyboardContainer extends PureComponent {
       const newMode = isGridMode ? 'list' : 'grid'
       dispatch({ type: SET_LAYOUT_MODE, payload: { mode: newMode } })
     })
+  }
+
+  shouldComponentUpdate() {
+    return false
   }
 
   componentDidUpdate() {
