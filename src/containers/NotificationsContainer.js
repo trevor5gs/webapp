@@ -200,6 +200,26 @@ class NotificationsContainer extends Component {
       { to: '/notifications/reposts', type: 'reposts', children: <RepostIcon /> },
       { to: '/notifications/relationships', type: 'relationships', children: <RelationshipIcon /> },
     ]
+    const shared = []
+    if (isReloading) {
+      shared.push(
+        <Paginator
+          className="NotificationReload"
+          isHidden={false}
+        />,
+      )
+    }
+    if (!announcementIsEmpty) {
+      shared.push(
+        <AnnouncementNotification
+          body={announcementBody}
+          ctaCaption={announcementCTACaption}
+          ctaHref={announcementCTAHref}
+          src={announcementImage}
+          title={announcementTitle}
+        />,
+      )
+    }
     return isModal ?
       (
         <div
@@ -218,23 +238,7 @@ class NotificationsContainer extends Component {
             className="Scrollable"
             ref={(comp) => { this.scrollContainer = comp }}
           >
-            {
-              isReloading ?
-                <Paginator
-                  className="NotificationReload"
-                  isHidden={false}
-                /> :
-                null
-            }
-            { !announcementIsEmpty &&
-              <AnnouncementNotification
-                body={announcementBody}
-                ctaCaption={announcementCTACaption}
-                ctaHref={announcementCTAHref}
-                src={announcementImage}
-                title={announcementTitle}
-              />
-            }
+            {shared}
             <StreamContainer
               action={streamAction}
               className="isFullWidth"
@@ -254,28 +258,11 @@ class NotificationsContainer extends Component {
             tabClasses="IconTab"
             tabs={tabs}
           />
-          {
-            isReloading ?
-              <Paginator
-                className="NotificationReload"
-                isHidden={false}
-              /> :
-              null
-          }
-          { !announcementIsEmpty &&
-            <AnnouncementNotification
-              body={announcementBody}
-              ctaCaption={announcementCTACaption}
-              ctaHref={announcementCTAHref}
-              src={announcementImage}
-              title={announcementTitle}
-            />
-          }
+          {shared}
           <StreamContainer
             action={streamAction}
             className="isFullWidth"
-            key={`notificationView_${activeTabType}`}
-            scrollSessionKey={`notifications_${activeTabType}`}
+            key={`notificationView_${activeTabType}_${isReloading}`}
           />
         </MainView>
       )
