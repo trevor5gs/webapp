@@ -38,9 +38,12 @@ const selectDefaultMetaRobots = createSelector(
 
 function mapStateToProps(state, props) {
   const pagination = selectPagination(state, props)
+  const discoverMetaData = selectDiscoverMetaData(state, props)
   return {
     defaultMetaRobots: selectDefaultMetaRobots(state, props),
-    discoverMetaData: selectDiscoverMetaData(state, props),
+    discoverMetaDataDescription: discoverMetaData.description,
+    discoverMetaDataImage: discoverMetaData.image,
+    discoverMetaDataTitle: discoverMetaData.title,
     metaPageType: selectMetaPageType(state, props),
     nextPage: pagination ? pagination.get('next') : null,
     pathname: selectPathname(state),
@@ -62,7 +65,9 @@ function mapStateToProps(state, props) {
 class MetaContainer extends PureComponent {
   static propTypes = {
     defaultMetaRobots: PropTypes.string,
-    discoverMetaData: PropTypes.object.isRequired,
+    discoverMetaDataDescription: PropTypes.string.isRequired,
+    discoverMetaDataImage: PropTypes.string.isRequired,
+    discoverMetaDataTitle: PropTypes.string.isRequired,
     metaPageType: PropTypes.string.isRequired,
     nextPage: PropTypes.string,
     pathname: PropTypes.string.isRequired,
@@ -176,7 +181,9 @@ class MetaContainer extends PureComponent {
   getTags() {
     const {
       defaultMetaRobots,
-      discoverMetaData,
+      discoverMetaDataDescription,
+      discoverMetaDataImage,
+      discoverMetaDataTitle,
       metaPageType,
       pathname,
       postMetaTitle,
@@ -189,14 +196,14 @@ class MetaContainer extends PureComponent {
       return this.getUserDetailTags()
     } else if (viewName === 'discover') {
       return this.getDefaultTags({
-        description: discoverMetaData.description,
-        image: discoverMetaData.image,
-        title: discoverMetaData.title,
+        description: discoverMetaDataDescription,
+        image: discoverMetaDataImage,
+        title: discoverMetaDataTitle,
       })
     } else if (viewName === 'search') {
       return this.getDefaultTags({
         description: META.SEARCH_PAGE_DESCRIPTION,
-        image: discoverMetaData.image,
+        image: discoverMetaDataImage,
         title: META.SEARCH_TITLE,
         robots: defaultMetaRobots,
       })
