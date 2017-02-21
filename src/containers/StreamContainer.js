@@ -1,5 +1,5 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
@@ -132,21 +132,24 @@ class StreamContainer extends Component {
     // thus causing errors when trying to render wrong results
     if (nextProps.resultPath !== this.props.resultPath) {
       return false
-    } else if (nextProps.isGridMode !== this.props.isGridMode) {
-      return true
     } else if (this.props.columnCount !== nextProps.columnCount && nextProps.isGridMode) {
       return true
       // allow page loads to fall through and also allow stream
       // load requests to fall through to show the loader
       // on an initial page load when endpoints don't match
-    } else if (!/LOAD_NEXT_CONTENT|POST\.|COMMENT\./.test(streamType) &&
+    } else if (!/LOAD_NEXT_CONTENT/.test(streamType) &&
               streamType !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
               streamPath !== get(action, 'payload.endpoint.path')) {
       return false
     }
-    return shallowCompare(this, nextProps, nextState)
+    return !Immutable.is(nextProps.result, this.props.result) ||
+      ['isGridMode', 'isLoggedIn'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      ) ||
+      ['hidePaginator', 'renderType'].some(prop =>
+        nextState[prop] !== this.state[prop],
+      )
   }
-
 
   componentDidUpdate() {
     if (window.embetter) {

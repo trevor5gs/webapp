@@ -17,16 +17,10 @@ export default (state = initialState, action = { type: '' }) => {
              !(action.type.indexOf('COMMENT.') === 0 && action.type.indexOf('SUCCESS') > -1) &&
              action && action.meta && action.meta.updateResult === false) {
     return state
-  } else if (action.type === POST.DETAIL_SUCCESS ||
-             action.type === USER.DETAIL_SUCCESS ||
-             action.type === POST.DETAIL_FAILURE ||
-             action.type === USER.DETAIL_FAILURE ||
-             action.type === POST.DETAIL_REQUEST ||
-             action.type === USER.DETAIL_REQUEST ||
-             action.type.indexOf('LOAD_STREAM_') === 0 ||
-             action.type.indexOf('LOAD_NEXT_CONTENT_') === 0 ||
-             (action.type.indexOf('COMMENT.') === 0 && action.type.indexOf('SUCCESS') > -1) ||
-             (action.type.indexOf('POST.') === 0 && action.type.indexOf('SUCCESS') > -1)) {
+  } else if (action.type.includes('POST.DETAIL_') ||
+             action.type.includes('USER.DETAIL_') ||
+             action.type.includes('LOAD_STREAM_') ||
+             action.type.includes('LOAD_NEXT_CONTENT_')) {
     switch (action.type) {
       case POST.DETAIL_FAILURE:
       case USER.DETAIL_FAILURE:
