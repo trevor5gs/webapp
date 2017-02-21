@@ -1,4 +1,4 @@
-import React, { PropTypes, PureComponent } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { selectIsLoggedIn } from '../selectors/authentication'
@@ -43,7 +43,7 @@ function mapStateToProps(state) {
   }
 }
 
-class AppContainer extends PureComponent {
+class AppContainer extends Component {
 
   static propTypes = {
     authPromo: PropTypes.object,
@@ -119,6 +119,12 @@ class AppContainer extends PureComponent {
       dispatch(getCategories())
       dispatch(getPagePromotionals())
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return ['isLoggedIn', 'params', 'children'].some(prop =>
+      nextProps[prop] !== this.props[prop],
+    )
   }
 
   componentWillUnmount() {

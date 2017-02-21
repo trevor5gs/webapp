@@ -1,4 +1,4 @@
-import { PropTypes, PureComponent } from 'react'
+import { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectAllowsAnalytics, selectAnalyticsId, selectCreatedAt } from '../selectors/profile'
@@ -37,7 +37,7 @@ function mapStateToProps(state) {
   }
 }
 
-class AnalyticsContainer extends PureComponent {
+class AnalyticsContainer extends Component {
 
   static propTypes = {
     allowsAnalytics: PropTypes.bool,
@@ -79,6 +79,10 @@ class AnalyticsContainer extends PureComponent {
       this.hasLoadedTracking = true
       addSegment(analyticsId, createdAt)
     }
+  }
+
+  shouldComponentUpdate() {
+    return false
   }
 
   render() {

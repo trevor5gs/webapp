@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { replace } from 'react-router-redux'
@@ -51,7 +51,7 @@ function mapStateToProps(state) {
   return obj
 }
 
-class EnterContainer extends Component {
+class EnterContainer extends PureComponent {
 
   static propTypes = {
     buildVersion: PropTypes.string,
