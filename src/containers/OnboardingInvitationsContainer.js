@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import OnboardingInvitations from '../components/onboarding/OnboardingInvitations'
 
-class OnboardingInvitationsContainer extends Component {
+class OnboardingInvitationsContainer extends PureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
