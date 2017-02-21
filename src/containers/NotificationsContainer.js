@@ -47,7 +47,6 @@ function mapStateToProps(state, props) {
   }
 }
 
-
 class NotificationsContainer extends Component {
   static propTypes = {
     activeTabType: PropTypes.string.isRequired,
@@ -116,6 +115,12 @@ class NotificationsContainer extends Component {
     if (nextProps.streamType === LOAD_STREAM_SUCCESS) {
       this.setState({ isReloading: false })
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return ['activeTabType', 'announcementIsEmpty', 'pathname'].some(prop =>
+      nextProps[prop] !== this.props[prop],
+    )
   }
 
   componentDidUpdate(prevProps) {

@@ -202,7 +202,7 @@ class NavbarContainer extends PureComponent {
   // category you were viewing last.
   getNotificationCategory() {
     const { activeTabType, viewName } = this.props
-    return viewName === 'notifications' ? '' : `/notifications/${activeTabType}`
+    return viewName === 'notifications' ? '' : `/${activeTabType}`
   }
 
   checkForNotifications(isMounting = false) {
