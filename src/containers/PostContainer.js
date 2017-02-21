@@ -41,7 +41,6 @@ import {
   selectPostReposted,
   selectPostRepostsCount,
   selectPostShowCommentEditor,
-  selectPostShowCommentsDrawer,
   selectPostShowEditor,
   selectPostShowLoversDrawer,
   selectPostShowRepostersDrawer,
@@ -127,7 +126,6 @@ export function mapStateToProps(state, props) {
     repostAuthor: selectPostRepostAuthorWithFallback(state, props),
     repostContent: selectPostRepostContent(state, props),
     showCommentEditor: selectPostShowCommentEditor(state, props),
-    showComments: selectPostShowCommentsDrawer(state, props),
     showEditor: selectPostShowEditor(state, props),
     showLovers: selectPostShowLoversDrawer(state, props),
     showReposters: selectPostShowRepostersDrawer(state, props),
@@ -179,7 +177,6 @@ class PostContainer extends Component {
     repostAuthor: PropTypes.object,
     repostContent: PropTypes.object,
     showCommentEditor: PropTypes.bool.isRequired,
-    showComments: PropTypes.bool.isRequired,
     showEditor: PropTypes.bool.isRequired,
     showLovers: PropTypes.bool.isRequired,
     showReposters: PropTypes.bool.isRequired,
@@ -244,9 +241,6 @@ class PostContainer extends Component {
   componentWillMount() {
     this.state = {
       isCommentsActive: false,
-      showComments: false,
-      showLovers: false,
-      showReposters: false,
     }
   }
 
@@ -325,9 +319,9 @@ class PostContainer extends Component {
   }
 
   onClickToggleComments = () => {
-    const { detailPath, dispatch, isLoggedIn, post, showComments } = this.props
+    const { detailPath, dispatch, isLoggedIn, post, showCommentEditor } = this.props
     if (isLoggedIn) {
-      const nextShowComments = !showComments
+      const nextShowComments = !showCommentEditor
       this.setState({ isCommentsActive: nextShowComments })
       dispatch(toggleComments(post, nextShowComments))
     } else {
@@ -415,7 +409,6 @@ class PostContainer extends Component {
       repostAuthor,
       repostContent,
       showCommentEditor,
-      showComments,
       showEditor,
       showLovers,
       showReposters,
@@ -524,7 +517,7 @@ class PostContainer extends Component {
           />
         }
         {showCommentEditor && <Editor post={post} isComment />}
-        {showComments &&
+        {showCommentEditor &&
           <CommentStream
             detailPath={detailPath}
             postCommentsCount={postCommentsCount}

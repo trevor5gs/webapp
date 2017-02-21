@@ -711,20 +711,6 @@ describe('post selectors', () => {
     })
   })
 
-  context('#selectPostShowCommentsDrawer', () => {
-    it('returns if the post comments drawer should be shown', () => {
-      state = {
-        json,
-        routing: Immutable.fromJS({
-          location: { pathname: '/666-username/' },
-        }),
-      }
-      const props = { postId: '666' }
-      const result = selector.selectPostShowCommentsDrawer(state, props)
-      expect(result).to.equal(true)
-    })
-  })
-
   context('#selectPostShowLoversDrawer', () => {
     it('returns if the post lovers drawer should be shown', () => {
       state = {

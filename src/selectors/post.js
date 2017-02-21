@@ -198,12 +198,6 @@ export const selectPostShowCommentEditor = createSelector(
     !showEditor && !isPostDetail && showComments,
 )
 
-export const selectPostShowCommentsDrawer = createSelector(
-  [selectPostShowCommentEditor, selectPostCommentsCount],
-  (showCommentEditor, commentsCount) =>
-    showCommentEditor && commentsCount > 0,
-)
-
 export const selectPostShowLoversDrawer = createSelector(
   [selectPostShowEditor, selectPostIsGridMode, selectPostShowLovers,
     selectPostLovesCount, selectIsPostDetail],

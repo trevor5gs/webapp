@@ -144,7 +144,7 @@ class Editor extends Component {
   cancel = () => {
     const { comment, isComment, isPostEmpty, post } = this.props
     if (isComment) {
-      if (comment.get('isEditing')) {
+      if (comment && comment.get('isEditing')) {
         this.launchCancelConfirm('edit')
       } else {
         this.launchCancelConfirm('comment')
