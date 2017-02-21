@@ -81,7 +81,7 @@ const createElloStore = (history, initialState = {}) => {
   return createServerStore(history, initialState)
 }
 
-export { createElloStore }
+export { createElloStore, createServerStore }
 
 export default createElloStore()
 

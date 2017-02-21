@@ -37,9 +37,7 @@ const app = express()
 const preRenderTimeout = (parseInt(process.env.PRERENDER_TIMEOUT, 10) || 15) * 1000
 const memcacheDefaultTTL = (parseInt(process.env.MEMCACHE_DEFAULT_TTL, 10) || 300)
 const memcacheClient = memjs.Client.create(null, { expires: memcacheDefaultTTL })
-const redisProvider = process.env.REDIS_PROVIDER
-const redisUrl = process.env[redisProvider]
-const queue = kue.createQueue({ redis: redisUrl })
+const queue = kue.createQueue({ redis: process.env[process.env.REDIS_PROVIDER] })
 
 // Honeybadger "before everything" middleware
 app.use(Honeybadger.requestHandler);
@@ -126,7 +124,10 @@ function renderFromServer(req, res, cacheKey) {
           res.status(404).end()
           break
         default:
-          // No-op
+          console.log('-- Received unrecognized response')
+          console.log(JSON.stringify(result))
+          // Fall through
+          res.status(500).end()
       }
       clearTimeout(renderTimeout)
     })
