@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import { createSelector } from 'reselect'
@@ -70,7 +69,7 @@ export function mapStateToProps(state, props) {
   }
 }
 
-class RelationshipContainer extends Component {
+class RelationshipContainer extends PureComponent {
 
   static propTypes = {
     className: PropTypes.string,
@@ -96,11 +95,6 @@ class RelationshipContainer extends Component {
 
   static contextTypes = {
     onClickOpenRegistrationRequestDialog: PropTypes.func,
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!this.props.id) { return false }
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onCloseModal = () => {

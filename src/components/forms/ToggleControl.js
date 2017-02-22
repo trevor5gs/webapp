@@ -1,9 +1,8 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import { CheckIcon, XIcon } from '../assets/Icons'
 
-class ToggleControl extends Component {
+class ToggleControl extends PureComponent {
 
   static propTypes = {
     id: PropTypes.string.isRequired,
@@ -34,12 +33,6 @@ class ToggleControl extends Component {
         checked: isChecked,
       })
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const { isChecked } = nextProps
-    if (typeof isChecked === 'undefined') { return false }
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onChangeControl = () => {

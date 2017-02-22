@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { trackEvent } from '../actions/analytics'
 import { inviteUsers } from '../actions/invitations'
@@ -15,7 +15,7 @@ function mapStateToProps(state) {
   }
 }
 
-class InvitationFormContainer extends Component {
+class InvitationFormContainer extends PureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
