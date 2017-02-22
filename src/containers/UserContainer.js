@@ -47,36 +47,38 @@ import { inviteUsers } from '../actions/invitations'
 import { collabWithUser, hireUser } from '../actions/user'
 import { getElloPlatform } from '../lib/jello'
 
-export function mapStateToProps(state, props) {
-  const truncatedShortBio = selectUserTruncatedShortBio(state, props)
-  return {
-    avatar: selectUserAvatar(state, props),
-    coverImage: selectUserCoverImage(state, props),
-    categories: selectUserCategories(state, props),
-    externalLinksList: selectUserExternalLinksList(state, props),
-    followersCount: selectUserFollowersCount(state, props),
-    followingCount: selectUserFollowingCount(state, props),
-    formattedShortBio: selectUserFormattedShortBio(state, props),
-    id: selectUserId(state, props),
-    invitationAcceptedAt: selectInvitationAcceptedAt(state, props),
-    invitationEmail: selectInvitationEmail(state, props),
-    isCollaborateable: selectUserIsCollaborateable(state, props),
-    isFeatured: selectUserIsFeatured(state, props),
-    isHireable: selectUserIsHireable(state, props),
-    isLoggedIn: selectIsLoggedIn(state),
-    isSelf: selectUserIsSelf(state, props),
-    isShortBioTruncated: truncatedShortBio.text.length >= 150,
-    isMobile: selectIsMobile(state),
-    isUserEmpty: selectUserIsEmpty(state, props),
-    lovesCount: selectUserLovesCount(state, props),
-    name: selectUserName(state, props),
-    postsCount: selectUserPostsCount(state, props),
-    relationshipPriority: selectUserRelationshipPriority(state, props),
-    totalPostViewsCount: selectUserTotalPostViewsCount(state, props),
-    truncatedShortBio: truncatedShortBio.html,
-    useGif: selectViewsAdultContent(state) || !selectUserPostsAdultContent(state, props),
-    user: selectUser(state, props),
-    username: selectUserUsername(state, props),
+export function makeMapStateToProps() {
+  return (state, props) => {
+    const truncatedShortBio = selectUserTruncatedShortBio(state, props)
+    return {
+      avatar: selectUserAvatar(state, props),
+      coverImage: selectUserCoverImage(state, props),
+      categories: selectUserCategories(state, props),
+      externalLinksList: selectUserExternalLinksList(state, props),
+      followersCount: selectUserFollowersCount(state, props),
+      followingCount: selectUserFollowingCount(state, props),
+      formattedShortBio: selectUserFormattedShortBio(state, props),
+      id: selectUserId(state, props),
+      invitationAcceptedAt: selectInvitationAcceptedAt(state, props),
+      invitationEmail: selectInvitationEmail(state, props),
+      isCollaborateable: selectUserIsCollaborateable(state, props),
+      isFeatured: selectUserIsFeatured(state, props),
+      isHireable: selectUserIsHireable(state, props),
+      isLoggedIn: selectIsLoggedIn(state),
+      isSelf: selectUserIsSelf(state, props),
+      isShortBioTruncated: truncatedShortBio.text.length >= 150,
+      isMobile: selectIsMobile(state),
+      isUserEmpty: selectUserIsEmpty(state, props),
+      lovesCount: selectUserLovesCount(state, props),
+      name: selectUserName(state, props),
+      postsCount: selectUserPostsCount(state, props),
+      relationshipPriority: selectUserRelationshipPriority(state, props),
+      totalPostViewsCount: selectUserTotalPostViewsCount(state, props),
+      truncatedShortBio: truncatedShortBio.html,
+      useGif: selectViewsAdultContent(state) || !selectUserPostsAdultContent(state, props),
+      user: selectUser(state, props),
+      username: selectUserUsername(state, props),
+    }
   }
 }
 
@@ -365,5 +367,5 @@ class UserContainer extends Component {
   }
 }
 
-export default connect(mapStateToProps)(UserContainer)
+export default connect(makeMapStateToProps)(UserContainer)
 
