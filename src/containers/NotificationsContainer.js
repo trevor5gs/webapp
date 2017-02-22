@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import get from 'lodash/get'
 import { connect } from 'react-redux'
-import { GUI, LOAD_STREAM_REQUEST, LOAD_STREAM_SUCCESS } from '../constants/action_types'
+import { GUI, LOAD_STREAM_SUCCESS } from '../constants/action_types'
 import { trackEvent } from '../actions/analytics'
 import { setLastAnnouncementSeen, toggleNotifications } from '../actions/gui'
 import { loadNotifications, markAnnouncementRead } from '../actions/notifications'
@@ -62,7 +62,6 @@ class NotificationsContainer extends Component {
     notificationScrollPosition: PropTypes.number.isRequired,
     pathname: PropTypes.string,
     streamAction: PropTypes.object,
-    streamType: PropTypes.string,
   }
 
   static defaultProps = {
@@ -76,7 +75,6 @@ class NotificationsContainer extends Component {
     isModal: false,
     pathname: null,
     streamAction: null,
-    streamType: null,
     type: 'all',
   }
 
@@ -91,7 +89,7 @@ class NotificationsContainer extends Component {
   }
 
   componentWillMount() {
-    this.state = { isReloading: false }
+    this.state = { isReloading: false, scrollContainer: null }
   }
 
   componentDidMount() {
@@ -117,17 +115,17 @@ class NotificationsContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     return ['activeTabType', 'announcementIsEmpty', 'pathname'].some(prop =>
       nextProps[prop] !== this.props[prop],
-    )
+    ) || ['scrollContainer'].some(prop => nextState[prop] !== this.state[prop])
   }
 
   componentDidUpdate(prevProps) {
-    const { activeTabType, notificationScrollPosition, streamType } = this.props
-    if (this.scrollContainer && prevProps.activeTabType === activeTabType &&
-        (streamType === LOAD_STREAM_SUCCESS || streamType === LOAD_STREAM_REQUEST)) {
-      this.scrollContainer.scrollTop = notificationScrollPosition
+    const { notificationScrollPosition } = this.props
+    const { scrollContainer } = this.state
+    if (prevProps.notificationScrollPosition !== this.props.notificationScrollPosition) {
+      scrollContainer.scrollTop = notificationScrollPosition
     }
   }
 
@@ -191,7 +189,7 @@ class NotificationsContainer extends Component {
       pathname,
       streamAction,
     } = this.props
-    const { isReloading } = this.state
+    const { isReloading, scrollContainer } = this.state
     const tabs = [
       { to: '/notifications', type: 'all', children: 'All' },
       { to: '/notifications/comments', type: 'comments', children: <BubbleIcon /> },
@@ -236,7 +234,7 @@ class NotificationsContainer extends Component {
           />
           <div
             className="Scrollable"
-            ref={(comp) => { this.scrollContainer = comp }}
+            ref={(comp) => { this.setState({ scrollContainer: comp }) }}
           >
             {shared}
             <StreamContainer
@@ -244,7 +242,7 @@ class NotificationsContainer extends Component {
               className="isFullWidth"
               isModalComponent
               key={`notificationView_${activeTabType}_${isReloading}`}
-              scrollContainer={this.scrollContainer}
+              scrollContainer={scrollContainer}
             />
           </div>
         </div>
