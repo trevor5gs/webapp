@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react'
+import Immutable from 'immutable'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../constants/application_types'
@@ -14,7 +15,7 @@ export function mapStateToProps(state) {
   }
 }
 
-class OmnibarContainer extends PureComponent {
+class OmnibarContainer extends Component {
   static propTypes = {
     avatar: PropTypes.object,
     classList: PropTypes.string,
@@ -35,6 +36,16 @@ class OmnibarContainer extends PureComponent {
 
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.FULLSCREEN, () => { this.onToggleFullScreen() })
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !Immutable.is(nextProps.avatar, this.props.avatar) ||
+      ['classList', 'isActive'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      ) ||
+      ['isFullScreen'].some(prop =>
+        nextState[prop] !== this.state[prop],
+      )
   }
 
   componentDidUpdate() {
