@@ -73,6 +73,11 @@ export const selectOnboardingCategories = createSelector(
   },
 )
 
+export const selectOnboardingCategoriesFiltered = createSelector(
+  [selectOnboardingCategories], categories =>
+    categories.filter(category => category.get('allowInOnboarding')),
+)
+
 export const selectCategoryTabs = createSelector(
   [selectCategories], (categories) => {
     const { meta, primary, secondary, tertiary } = categories

@@ -6,15 +6,13 @@ import { ONBOARDING_VERSION } from '../constants/application_types'
 import { trackEvent } from '../actions/analytics'
 import { getCategories } from '../actions/discover'
 import { followCategories, saveProfile } from '../actions/profile'
-import { selectOnboardingCategories } from '../selectors/categories'
+import { selectOnboardingCategoriesFiltered } from '../selectors/categories'
 
 const CATEGORIES_NEEDED = 1
 
 function mapStateToProps(state) {
-  let categories = selectOnboardingCategories(state)
-  categories = categories.filter(cat => cat.get('allowInOnboarding'))
   return {
-    categories,
+    categories: selectOnboardingCategoriesFiltered(state),
   }
 }
 
