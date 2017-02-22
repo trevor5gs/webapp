@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
@@ -83,7 +83,7 @@ function mapStateToProps(state) {
   }
 }
 
-class Settings extends Component {
+class Settings extends PureComponent {
 
   static propTypes = {
     blockedCount: PropTypes.number.isRequired,

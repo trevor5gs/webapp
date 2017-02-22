@@ -8,6 +8,7 @@ import {
   selectCategoryTabs,
   selectCategoryTileImageUrl,
   selectOnboardingCategories,
+  selectOnboardingCategoriesFiltered,
   selectPropsCategoryId,
   sortCategories,
 } from '../../../src/selectors/categories'
@@ -114,6 +115,14 @@ describe('categories selectors', () => {
       const cats = selectCategories(state)
       const categoryArray = cats.primary.concat(cats.secondary, cats.tertiary)
       expect(selectOnboardingCategories(state)).to.deep.equal(categoryArray)
+    })
+  })
+
+  context('#selectOnboardingCategoriesFiltered', () => {
+    it('the allowInOnboarding categories as a concatenated array', () => {
+      const cats = selectCategories(state)
+      expect(selectOnboardingCategoriesFiltered(state)).to.deep.equal(cats.primary)
+      expect(selectOnboardingCategoriesFiltered(state)).not.to.contain(cats.secondary[0])
     })
   })
 
