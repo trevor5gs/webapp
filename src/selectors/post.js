@@ -55,7 +55,9 @@ export const selectPostShowReposters = createSelector([selectPost], post => post
 export const selectPostSummary = createSelector([selectPost], post => post.get('summary'))
 export const selectPostToken = createSelector([selectPost], post => post.get('token'))
 export const selectPostViewsCount = createSelector([selectPost], post => post.get('viewsCount'))
-export const selectPostViewsCountRounded = createSelector([selectPostViewsCount], count => numberToHuman(count, false))
+export const selectPostViewsCountRounded = createSelector(
+  [selectPostViewsCount], count => numberToHuman(count, false),
+)
 export const selectPostWatching = createSelector([selectPost], post => post.get('watching'))
 
 // Nested properties on the post reducer
