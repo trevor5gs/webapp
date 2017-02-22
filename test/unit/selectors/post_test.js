@@ -46,7 +46,6 @@ describe('post selectors', () => {
       summary: [stubTextRegion(), stubImageRegion()],
       token: 'token666',
       viewsCount: 1666,
-      viewsCountRounded: '1.6k',
       watching: true,
     })
     state = { json }
@@ -344,7 +343,7 @@ describe('post selectors', () => {
       state = { json }
       const props = { postId: '666' }
       const result = selector.selectPostViewsCountRounded(state, props)
-      expect(result).to.equal('1.6k')
+      expect(result).to.equal('1.7K')
     })
   })
 
