@@ -1,4 +1,4 @@
-import React, { PropTypes, PureComponent } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import { selectProfileIsCollaborateable, selectProfileIsHireable } from '../selectors/profile'
@@ -26,7 +26,7 @@ function mapStateToProps(state) {
   }
 }
 
-class OnboardingCollaborateContainer extends PureComponent {
+class OnboardingCollaborateContainer extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     isCollaborateable: PropTypes.bool.isRequired,
@@ -45,6 +45,10 @@ class OnboardingCollaborateContainer extends PureComponent {
       onDoneClick: this.onDoneClick,
       onNextClick: this.onNextClick,
     }
+  }
+
+  shouldComponentUpdate() {
+    return false
   }
 
   onDoneClick = () => {
