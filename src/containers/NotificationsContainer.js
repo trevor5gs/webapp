@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import get from 'lodash/get'
 import { connect } from 'react-redux'
-import { GUI, LOAD_STREAM_SUCCESS } from '../constants/action_types'
+import { ADD_NEW_IDS_TO_RESULT, GUI, LOAD_STREAM_SUCCESS } from '../constants/action_types'
 import { trackEvent } from '../actions/analytics'
 import { setLastAnnouncementSeen, toggleNotifications } from '../actions/gui'
 import { loadNotifications, markAnnouncementRead } from '../actions/notifications'
@@ -28,6 +28,7 @@ import { Paginator } from '../components/streams/Paginator'
 import { TabListButtons, TabListLinks } from '../components/tabs/TabList'
 import { MainView } from '../components/views/MainView'
 import StreamContainer from '../containers/StreamContainer'
+import { scrollToPosition } from '../lib/jello'
 
 function mapStateToProps(state, props) {
   const activeTabType = props.isModal ? selectActiveNotificationsType(state) : get(props, 'params.type', 'all')
@@ -118,7 +119,7 @@ class NotificationsContainer extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return ['activeTabType', 'announcementIsEmpty', 'pathname'].some(prop =>
       nextProps[prop] !== this.props[prop],
-    ) || ['scrollContainer'].some(prop => nextState[prop] !== this.state[prop])
+    ) || ['isReloading', 'scrollContainer'].some(prop => nextState[prop] !== this.state[prop])
   }
 
   componentDidUpdate(prevProps) {
@@ -156,9 +157,12 @@ class NotificationsContainer extends Component {
   }
 
   onClickTab = ({ type }) => {
-    const { activeTabType, dispatch } = this.props
+    const { activeTabType, dispatch, streamAction } = this.props
+    const { scrollContainer } = this.state
     if (activeTabType === type) {
-      scrollTo(0, 0, { el: this.scrollContainer })
+      scrollToPosition(0, 0, { el: scrollContainer })
+      dispatch({ type: ADD_NEW_IDS_TO_RESULT, payload: { resultKey: streamAction.meta.resultKey } })
+      dispatch(streamAction)
       this.setState({ isReloading: true })
     } else {
       dispatch({
@@ -204,6 +208,7 @@ class NotificationsContainer extends Component {
         <Paginator
           className="NotificationReload"
           isHidden={false}
+          key="notificationReloadingPaginator"
         />,
       )
     }
@@ -213,6 +218,7 @@ class NotificationsContainer extends Component {
           body={announcementBody}
           ctaCaption={announcementCTACaption}
           ctaHref={announcementCTAHref}
+          key="announcementNotification"
           src={announcementImage}
           title={announcementTitle}
         />,
@@ -241,7 +247,7 @@ class NotificationsContainer extends Component {
               action={streamAction}
               className="isFullWidth"
               isModalComponent
-              key={`notificationView_${activeTabType}_${isReloading}`}
+              key={`notificationView_${activeTabType}`}
               scrollContainer={scrollContainer}
             />
           </div>
@@ -260,7 +266,7 @@ class NotificationsContainer extends Component {
           <StreamContainer
             action={streamAction}
             className="isFullWidth"
-            key={`notificationView_${activeTabType}_${isReloading}`}
+            key={`notificationView_${activeTabType}`}
           />
         </MainView>
       )

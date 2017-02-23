@@ -32,15 +32,16 @@ export function emptyPagination() {
   })
 }
 
-methods.addNewIdsToResult = (state) => {
-  let result = state.getIn(['pages', path])
+methods.addNewIdsToResult = (state, action) => {
+  const resultKey = get(action, 'payload.resultKey', path)
+  let result = state.getIn(['pages', resultKey])
   if (!result || !result.get('morePostIds')) { return state }
   // if you have created a post it gets prepended to the result ids
   // when we come back with additional ids we want them to be unique
   // and in descending order, which fills in the gaps and is what union does
   // unfortunately it is not very performant to use the `toArray`
   result = result.set('ids', Immutable.List(union(result.get('morePostIds').toArray(), result.get('ids').toArray()))).delete('morePostIds')
-  return state.setIn(['pages', path], result)
+  return state.setIn(['pages', resultKey], result)
 }
 
 methods.updateUserCount = (state, userId, prop, delta) => {
@@ -203,27 +204,28 @@ function removeDuplicates(value) {
 methods.updateResult = (response, state, action) => {
   let { newState, result } = methods.getResult(response, state, action) // eslint-disable-line
   state = newState
-  const { resultKey } = action.meta || {}
   const resultPath = methods.pagesKey(action)
   const existingResult = state.getIn(['pages', resultPath])
   if (existingResult) {
     if (action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       dupArr = []
       return state.setIn(['pages', resultPath], result.set('ids', existingResult.get('ids', Immutable.List()).concat(result.get('ids')).filter(removeDuplicates)))
-    } else if (typeof existingResult.getIn(['ids', 0]) === 'string') {
-      if ((!existingResult.get('ids').includes(result.get('ids').last()) && existingResult.get('morePostIds', Immutable.List()).isEmpty()) ||
-          (!existingResult.get('morePostIds', Immutable.List()).isEmpty() && !existingResult.get('morePostIds').includes(result.get('ids').last()))) {
-        return state.setIn(['pages', resultPath], result)
-      } else if (hasLoadedFirstStream && !resultKey) {
-        if (!existingResult.get('morePostIds', Immutable.List()).isEmpty()) {
-          dupArr = []
-          return state.setIn(
-            ['pages', resultPath, 'morePostIds'],
-            Immutable.List(union(result.get('ids').toArray(), existingResult.get('morePostIds').toArray())).filter(removeDuplicates),
-          )
-        } else if (existingResult.get('ids').first() !== result.get('ids').first()) {
-          return state.setIn(['pages', resultPath, 'morePostIds'], result.get('ids'))
-        }
+    } else if (existingResult.get('ids').isSuperset(result.get('ids'))) {
+      // TODO: add tests for this
+      // we already have the results that were just fetched
+      return state
+    } else if ((!existingResult.get('ids').includes(result.get('ids').last()) && existingResult.get('morePostIds', Immutable.List()).isEmpty()) ||
+              (!existingResult.get('morePostIds', Immutable.List()).isEmpty() && !existingResult.get('morePostIds').includes(result.get('ids').last()))) {
+      return state.setIn(['pages', resultPath], result)
+    } else if (hasLoadedFirstStream) {
+      if (!existingResult.get('morePostIds', Immutable.List()).isEmpty()) {
+        dupArr = []
+        return state.setIn(
+          ['pages', resultPath, 'morePostIds'],
+          Immutable.List(union(result.get('ids').toArray(), existingResult.get('morePostIds').toArray())).filter(removeDuplicates),
+        )
+      } else if (existingResult.get('ids').first() !== result.get('ids').first()) {
+        return state.setIn(['pages', resultPath, 'morePostIds'], result.get('ids'))
       }
     }
   }
@@ -306,7 +308,7 @@ export default function json(state = initialState, action = { type: '' }) {
   // whitelist actions
   switch (action.type) {
     case ACTION_TYPES.ADD_NEW_IDS_TO_RESULT:
-      return methods.addNewIdsToResult(state)
+      return methods.addNewIdsToResult(state, action)
     case ACTION_TYPES.AUTHENTICATION.LOGOUT_SUCCESS:
     case ACTION_TYPES.AUTHENTICATION.LOGOUT_FAILURE:
     case ACTION_TYPES.AUTHENTICATION.REFRESH_FAILURE:
