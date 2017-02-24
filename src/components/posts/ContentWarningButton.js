@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 
-export default class ContentWarningButton extends Component {
+export default class ContentWarningButton extends PureComponent {
 
   static propTypes = {
     contentWarning: PropTypes.string.isRequired,

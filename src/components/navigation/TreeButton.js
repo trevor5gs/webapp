@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import { SVGIcon } from '../svg/SVGComponents'
 
@@ -13,7 +13,7 @@ const TreeIcon = () =>
   </SVGIcon>
 
 
-class TreeButton extends Component {
+class TreeButton extends PureComponent {
 
   static propTypes = {
     children: PropTypes.string.isRequired,
