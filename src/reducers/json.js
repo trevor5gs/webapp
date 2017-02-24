@@ -202,7 +202,7 @@ function removeDuplicates(value) {
 
 // look at json_test to see more documentation for what happens in here
 methods.updateResult = (response, state, action) => {
-  let { newState, result } = methods.getResult(response, state, action) // eslint-disable-line
+  const { newState, result } = methods.getResult(response, state, action)
   state = newState
   const resultPath = methods.pagesKey(action)
   const existingResult = state.getIn(['pages', resultPath])
@@ -211,8 +211,6 @@ methods.updateResult = (response, state, action) => {
       dupArr = []
       return state.setIn(['pages', resultPath], result.set('ids', existingResult.get('ids', Immutable.List()).concat(result.get('ids')).filter(removeDuplicates)))
     } else if (existingResult.get('ids').isSuperset(result.get('ids'))) {
-      // TODO: add tests for this
-      // we already have the results that were just fetched
       return state
     } else if ((!existingResult.get('ids').includes(result.get('ids').last()) && existingResult.get('morePostIds', Immutable.List()).isEmpty()) ||
               (!existingResult.get('morePostIds', Immutable.List()).isEmpty() && !existingResult.get('morePostIds').includes(result.get('ids').last()))) {

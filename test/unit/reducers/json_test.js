@@ -23,12 +23,23 @@ describe('json reducer', () => {
       expect(subject.methods.addNewIdsToResult(state)).to.equal(state)
     })
 
-    it('concats the existing result ids to the morePostIds and deletes the old morePostIds', () => {
-      state = state.set('pages', Immutable.fromJS({ sweetpath: { morePostIds: ['184068', '184067', '184066', '184065'], ids: ['184067', '184066', '184065', '184064'] } }))
-      subject.setPath('sweetpath')
-      state = subject.methods.addNewIdsToResult(state)
-      expect(state.getIn(['pages', 'sweetpath', 'morePostIds'])).to.be.undefined
-      expect(state.getIn(['pages', 'sweetpath', 'ids'])).to.deep.equal(Immutable.List(['184068', '184067', '184066', '184065', '184064']))
+    context('without a resultKey uses path', () => {
+      it('concats the existing result ids to the morePostIds and deletes the old morePostIds', () => {
+        state = state.set('pages', Immutable.fromJS({ sweetpath: { morePostIds: ['184068', '184067', '184066', '184065'], ids: ['184067', '184066', '184065', '184064'] } }))
+        subject.setPath('sweetpath')
+        state = subject.methods.addNewIdsToResult(state)
+        expect(state.getIn(['pages', 'sweetpath', 'morePostIds'])).to.be.undefined
+        expect(state.getIn(['pages', 'sweetpath', 'ids'])).to.deep.equal(Immutable.List(['184068', '184067', '184066', '184065', '184064']))
+      })
+    })
+
+    context('with a resultKey', () => {
+      it('concats the existing result ids to the morePostIds and deletes the old morePostIds', () => {
+        state = state.set('pages', Immutable.fromJS({ notifications_all: { morePostIds: ['184068', '184067', '184066', '184065'], ids: ['184067', '184066', '184065', '184064'] } }))
+        state = subject.methods.addNewIdsToResult(state, { payload: { resultKey: 'notifications_all' } })
+        expect(state.getIn(['pages', 'notifications_all', 'morePostIds'])).to.be.undefined
+        expect(state.getIn(['pages', 'notifications_all', 'ids'])).to.deep.equal(Immutable.List(['184068', '184067', '184066', '184065', '184064']))
+      })
     })
   })
 
@@ -288,10 +299,25 @@ describe('json reducer', () => {
         })
       })
 
-      // update existing result if we aren't a notification update
-      // need to check agianst the typeof the result ids since we hack this for
-      // notifications and `ids` is actually an array of notificaitons not model ids
-      context('and the result is not for notifications', () => {
+      // we already have the new result ids in our existing result
+      context('and we already have the results available', () => {
+        it('returns the existing state', () => {
+          state = state.setIn(['pages', 'sweetness'], Immutable.fromJS({ ids: ['10', '9', '8', '7', '6'] }))
+          sinon.stub(subject.methods, 'getResult', () =>
+            ({
+              newState: state,
+              result: Immutable.fromJS({
+                ids: ['10', '9', '8'],
+                pagination: 'sweet',
+              }),
+            }),
+          )
+          state = subject.methods.updateResult({}, state, action)
+          expect(state.getIn(['pages', 'sweetness', 'ids'])).to.deep.equal(Immutable.List(['10', '9', '8', '7', '6']))
+        })
+      })
+
+      context('overlapping results', () => {
         beforeEach(() => {
           state = state.setIn(['pages', 'sweetness'], Immutable.Map())
           action = {
@@ -327,7 +353,7 @@ describe('json reducer', () => {
 
         // update the more posts button data if this is a stream that infinite scrolls
         // and not a nested stream like lovers/reposters or a non infinite scroll like all-categories
-        context('and the page infinite scrolls', () => {
+        context('and the first stream has loaded', () => {
           // add the result to the more posts of the existing result since they overlap
           // this should only happen if you had the more posts button show up left the page
           // and then came back to it and more results got loaded, so more posts should update
