@@ -33,12 +33,14 @@ function mapStateToProps(state) {
 class JoinForm extends PureComponent {
 
   static propTypes = {
+    availability: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     email: PropTypes.string,
     invitationCode: PropTypes.string,
   }
 
   static defaultProps = {
+    availability: null,
     invitationCode: null,
   }
 

@@ -88,6 +88,7 @@ class UserDetailContainer extends Component {
     isSelf: PropTypes.bool.isRequired,
     isUserEmpty: PropTypes.bool.isRequired,
     streamAction: PropTypes.object.isRequired,
+    streamType: PropTypes.string, // eslint-disable-line
     tabs: PropTypes.array.isRequired,
     username: PropTypes.string.isRequired,
     viewKey: PropTypes.string.isRequired,
@@ -95,6 +96,7 @@ class UserDetailContainer extends Component {
 
   static defaultProps = {
     id: null,
+    streamType: null,
   }
 
   static preRender = (store, routerState) => {

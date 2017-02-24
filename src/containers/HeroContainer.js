@@ -126,6 +126,8 @@ class HeroContainer extends Component {
     isUserProfile: PropTypes.bool.isRequired,
     json: PropTypes.object,
     pathname: PropTypes.string.isRequired,
+    promotions: PropTypes.object,
+    streamType: PropTypes.string, // eslint-disable-line
     useGif: PropTypes.bool.isRequired,
     userCoverImage: PropTypes.object,
     userId: PropTypes.string,
@@ -136,6 +138,8 @@ class HeroContainer extends Component {
   static defaultProps = {
     broadcast: null,
     json: null,
+    promotions: null,
+    streamType: null,
     userCoverImage: null,
     userId: null,
     username: null,

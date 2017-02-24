@@ -86,12 +86,17 @@ function mapStateToProps(state) {
 class Settings extends PureComponent {
 
   static propTypes = {
+    availability: PropTypes.object,
     blockedCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
     dpi: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
     mutedCount: PropTypes.number.isRequired,
     profile: PropTypes.object,
+  }
+
+  static defaultProps = {
+    availability: null,
   }
 
   componentWillMount() {
