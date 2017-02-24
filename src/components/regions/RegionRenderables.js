@@ -4,7 +4,7 @@ import ImageRegion from '../regions/ImageRegion'
 import TextRegion from '../regions/TextRegion'
 
 export function RegionItems(props) {
-  const { assets, columnWidth, commentOffset, content, contentWidth,
+  const { columnWidth, commentOffset, content, contentWidth,
     detailPath, innerHeight, isGridMode } = props
   // sometimes the content is null/undefined for some reason
   if (!content) { return null }
@@ -24,7 +24,7 @@ export function RegionItems(props) {
       case 'image':
         cells.push(
           <ImageRegion
-            assets={assets}
+            asset={region.get('asset')}
             buyLinkURL={region.get('linkUrl')}
             columnWidth={columnWidth}
             commentOffset={commentOffset}
@@ -34,7 +34,6 @@ export function RegionItems(props) {
             innerHeight={innerHeight}
             isGridMode={isGridMode}
             key={`ImageRegion_${JSON.stringify(region.get('data'))}`}
-            links={region.get('links')}
           />,
         )
         break
@@ -55,7 +54,6 @@ export function RegionItems(props) {
   return <div>{cells}</div>
 }
 RegionItems.propTypes = {
-  assets: PropTypes.object,
   columnWidth: PropTypes.number.isRequired,
   commentOffset: PropTypes.number.isRequired,
   content: PropTypes.object.isRequired,
@@ -64,11 +62,8 @@ RegionItems.propTypes = {
   innerHeight: PropTypes.number.isRequired,
   isGridMode: PropTypes.bool.isRequired,
 }
-RegionItems.defaultProps = {
-  assets: null,
-}
 
-export function regionItemsForNotifications(content, detailPath, assets) {
+export function regionItemsForNotifications(content, detailPath) {
   const imageAssets = []
   const texts = []
   content.forEach((region) => {
@@ -86,7 +81,7 @@ export function regionItemsForNotifications(content, detailPath, assets) {
       case 'image':
         imageAssets.push(
           <ImageRegion
-            assets={assets}
+            asset={region.get('asset')}
             buyLinkURL={region.get('linkUrl')}
             content={region.get('data')}
             detailPath={detailPath}

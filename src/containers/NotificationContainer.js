@@ -108,7 +108,6 @@ function mapStateToProps(state, ownProps) {
   // need to add any additional properties
 
   return {
-    assets: json.get('assets'),
     createdAt: notification.get('createdAt'),
     kind: notification.get('kind'),
     parentPost,
@@ -127,7 +126,6 @@ function mapStateToProps(state, ownProps) {
 
 class NotificationParser extends Component {
   static propTypes = {
-    assets: PropTypes.object,
     createdAt: PropTypes.string.isRequired,
     kind: PropTypes.string.isRequired,
     parentPost: PropTypes.object,
@@ -144,7 +142,6 @@ class NotificationParser extends Component {
   }
 
   static defaultProps = {
-    assets: null,
     parentPost: null,
     parentPostAuthor: null,
     postActionAuthor: null,
@@ -158,13 +155,11 @@ class NotificationParser extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return !Immutable.is(nextProps.assets, this.props.assets) ||
-      !Immutable.is(nextProps.subject, this.props.subject)
+    return !Immutable.is(nextProps.subject, this.props.subject)
   }
 
   render() {
     const {
-      assets,
       createdAt,
       kind,
       parentPost,
@@ -184,7 +179,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.COMMENT:
         return (
           <CommentNotification
-            assets={assets}
             author={postAuthor}
             comment={subject}
             createdAt={createdAt}
@@ -195,7 +189,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.COMMENT_MENTION:
         return (
           <CommentMentionNotification
-            assets={assets}
             author={postAuthor}
             comment={subject}
             createdAt={createdAt}
@@ -206,7 +199,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.COMMENT_ORIGINAL:
         return (
           <CommentOnOriginalPostNotification
-            assets={assets}
             author={postAuthor}
             comment={subject}
             createdAt={createdAt}
@@ -219,7 +211,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.COMMENT_REPOST:
         return (
           <CommentOnRepostNotification
-            assets={assets}
             author={postAuthor}
             comment={subject}
             createdAt={createdAt}
@@ -232,7 +223,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.LOVE:
         return (
           <LoveNotification
-            assets={assets}
             author={postActionAuthor}
             createdAt={createdAt}
             post={postActionPost}
@@ -242,7 +232,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.LOVE_ORIGINAL:
         return (
           <LoveOnOriginalPostNotification
-            assets={assets}
             createdAt={createdAt}
             repost={repost}
             repostAuthor={repostAuthor}
@@ -254,7 +243,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.LOVE_REPOST:
         return (
           <LoveOnRepostNotification
-            assets={assets}
             createdAt={createdAt}
             repost={repost}
             repostAuthor={repostAuthor}
@@ -268,7 +256,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.POST_MENTION:
         return (
           <PostMentionNotification
-            assets={assets}
             author={postAuthor}
             createdAt={createdAt}
             post={subject}
@@ -277,7 +264,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.REPOST:
         return (
           <RepostNotification
-            assets={assets}
             author={postAuthor}
             createdAt={createdAt}
             post={subject}
@@ -286,7 +272,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.WATCH:
         return (
           <WatchNotification
-            assets={assets}
             author={postActionAuthor}
             createdAt={createdAt}
             post={postActionPost}
@@ -296,7 +281,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.WATCH_COMMENT:
         return (
           <WatchCommentNotification
-            assets={assets}
             author={postAuthor}
             comment={subject}
             createdAt={createdAt}
@@ -307,7 +291,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.WATCH_ORIGINAL:
         return (
           <WatchOnOriginalPostNotification
-            assets={assets}
             createdAt={createdAt}
             repost={repost}
             repostAuthor={repostAuthor}
@@ -319,7 +302,6 @@ class NotificationParser extends Component {
       case NOTIFICATION_KIND.WATCH_REPOST:
         return (
           <WatchOnRepostNotification
-            assets={assets}
             createdAt={createdAt}
             repost={repost}
             repostAuthor={repostAuthor}

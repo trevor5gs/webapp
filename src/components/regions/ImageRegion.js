@@ -16,8 +16,8 @@ const STATUS = {
 class ImageRegion extends Component {
 
   static propTypes = {
+    asset: PropTypes.object,
     buyLinkURL: PropTypes.string,
-    assets: PropTypes.object,
     columnWidth: PropTypes.number,
     commentOffset: PropTypes.number,
     content: PropTypes.object.isRequired,
@@ -27,11 +27,10 @@ class ImageRegion extends Component {
     isComment: PropTypes.bool,
     isGridMode: PropTypes.bool.isRequired,
     isNotification: PropTypes.bool,
-    links: PropTypes.object,
   }
 
   static defaultProps = {
-    assets: null,
+    asset: null,
     buyLinkURL: null,
     columnWidth: 0,
     commentOffset: 0,
@@ -39,24 +38,11 @@ class ImageRegion extends Component {
     innerHeight: 0,
     isComment: false,
     isNotification: false,
-    links: null,
   }
 
   componentWillMount() {
-    const { assets, content, innerHeight, links } = this.props
-    let asset
-    let assetId
+    const { asset, innerHeight } = this.props
     let scale = null
-    if (links && assets) {
-      assetId = links.get('assets', -1)
-      asset = assets.get(assetId) || assets.get(Number(assetId))
-    } else {
-      const assetMatch = content.get('url') && content.get('url').match(/asset\/attachment\/(\d+)\//)
-      if (assetMatch && assets) {
-        assetId = assetMatch[1]
-        asset = assets.get(assetId) || assets.get(Number(assetId))
-      }
-    }
     if (asset) {
       const imageHeight = Number(asset.getIn(['attachment', 'original', 'metadata', 'height']))
       scale = innerHeight / imageHeight
@@ -78,7 +64,7 @@ class ImageRegion extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return !Immutable.is(nextProps.content, this.props.content) ||
-      !Immutable.is(nextProps.links, this.props.links) ||
+      !Immutable.is(nextProps.asset, this.props.asset) ||
       ['buyLinkURL', 'columnWidth', 'contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
         nextProps[prop] !== this.props[prop],
       ) ||
@@ -193,12 +179,8 @@ class ImageRegion extends Component {
   }
 
   isBasicAttachment() {
-    const { assets, links } = this.props
-    // notifications don't supply the linked assets in a response
-    // so we need to see if the asset actually exists here so we
-    // can fall back to using just the url
-    if (!assets || (assets && links && links.get('assets') && !assets.get(links.get('assets')))) { return true }
-    return !(links && links.get('assets') && assets.get(links.get('assets')) && assets.getIn([links.get('assets'), 'attachment']))
+    const { asset } = this.props
+    return !asset || !asset.get('attachment')
   }
 
   isGif() {
@@ -263,9 +245,9 @@ class ImageRegion extends Component {
   }
 
   renderAttachment() {
-    const { assets, links } = this.props
+    const { asset } = this.props
     if (!this.isBasicAttachment()) {
-      this.attachment = assets.getIn([links.get('assets'), 'attachment'])
+      this.attachment = asset.get('attachment')
       return this.isGif() ? this.renderGifAttachment() : this.renderImageAttachment()
     }
     return this.renderLegacyImageAttachment()

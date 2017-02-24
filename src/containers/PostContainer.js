@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
 import set from 'lodash/set'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import { selectAssets } from '../selectors/assets'
 import {
   selectColumnWidth,
   selectCommentOffset,
@@ -84,7 +83,6 @@ import { postLovers, postReposters } from '../networking/api'
 export function makeMapStateToProps() {
   return (state, props) =>
     ({
-      assets: selectAssets(state),
       author: selectPostAuthor(state, props),
       categoryName: selectPostCategoryName(state, props),
       categoryPath: selectPostCategorySlug(state, props),
@@ -133,7 +131,6 @@ export function makeMapStateToProps() {
 class PostContainer extends Component {
 
   static propTypes = {
-    assets: PropTypes.object,
     author: PropTypes.object.isRequired,
     categoryName: PropTypes.string,
     categoryPath: PropTypes.string,
@@ -181,7 +178,6 @@ class PostContainer extends Component {
   }
 
   static defaultProps = {
-    assets: null,
     categoryName: null,
     categoryPath: null,
     content: null,
@@ -369,7 +365,6 @@ class PostContainer extends Component {
 
   render() {
     const {
-      assets,
       author,
       categoryName,
       categoryPath,
@@ -451,7 +446,6 @@ class PostContainer extends Component {
         {showEditor ?
           <Editor post={post} /> :
           <PostBody
-            assets={assets}
             author={author}
             columnWidth={columnWidth}
             commentOffset={commentOffset}

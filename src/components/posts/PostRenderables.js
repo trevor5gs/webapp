@@ -1,6 +1,5 @@
 /* eslint-disable react/no-multi-comp */
-import Immutable from 'immutable'
-import React, { Component, PropTypes, PureComponent } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
@@ -191,10 +190,8 @@ export class RepostHeader extends PureComponent {
   }
 }
 
-// TODO: convert this to a PureComponent once we get rid of passing assets
-export class PostBody extends Component {
+export class PostBody extends PureComponent {
   static propTypes = {
-    assets: PropTypes.object,
     author: PropTypes.object.isRequired,
     columnWidth: PropTypes.number.isRequired,
     commentOffset: PropTypes.number.isRequired,
@@ -210,19 +207,11 @@ export class PostBody extends Component {
     summary: PropTypes.object.isRequired,
   }
   static defaultProps = {
-    assets: null,
     contentWarning: null,
     repostContent: null,
   }
-  shouldComponentUpdate(nextProps) {
-    return !Immutable.is(nextProps.content, this.props.content) ||
-      ['contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
-        nextProps[prop] !== this.props[prop],
-      )
-  }
   render() {
     const {
-      assets,
       author,
       columnWidth,
       commentOffset,
@@ -244,7 +233,6 @@ export class PostBody extends Component {
     }
 
     const regionProps = {
-      assets,
       columnWidth,
       commentOffset,
       contentWidth,
