@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 
-class DeleteAccountDialog extends Component {
+class DeleteAccountDialog extends PureComponent {
 
   static propTypes = {
     onConfirm: PropTypes.func.isRequired,

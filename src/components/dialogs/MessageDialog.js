@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import FormControl from '../forms/FormControl'
 import { SVGIcon } from '../svg/SVGComponents'
 import { hireUser } from '../../networking/api'
 
-export default class MessageDialog extends Component {
+export default class MessageDialog extends PureComponent {
   static propTypes = {
     name: PropTypes.string.isRequired,
     onConfirm: PropTypes.func.isRequired,
