@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 
-class Uploader extends Component {
+class Uploader extends PureComponent {
 
   static propTypes = {
     className: PropTypes.string,

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/no-danger */
 
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import classNames from 'classnames'
@@ -13,7 +13,7 @@ const isLink = (target) => {
 }
 
 /* eslint-disable react/prefer-stateless-function */
-class TextRegion extends Component {
+class TextRegion extends PureComponent {
 
   static propTypes = {
     content: PropTypes.string.isRequired,

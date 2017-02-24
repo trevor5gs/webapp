@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import { isIOS } from '../../lib/jello'
 import Avatar from '../assets/Avatar'
@@ -13,7 +13,7 @@ import { addScrollObject, removeScrollObject } from '../viewport/ScrollComponent
 export const emojiRegex = /\s?:{1}(\w+|\+|-):{0}$/
 export const userRegex = /(\s|^)@{1}\w+/
 
-export default class Completer extends Component {
+export default class Completer extends PureComponent {
 
   static propTypes = {
     className: PropTypes.string,

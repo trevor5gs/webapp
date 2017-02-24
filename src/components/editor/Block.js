@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import RegionTools from './RegionTools'
 import { ElloBuyButton } from './ElloBuyButton'
 
-class Block extends Component {
+class Block extends PureComponent {
 
   static propTypes = {
     children: PropTypes.element.isRequired,

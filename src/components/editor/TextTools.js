@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import { LinkIcon } from './EditorIcons'
 import { textToolsPath } from '../../networking/api'
@@ -9,7 +9,7 @@ function prefixLink(text) {
   return text
 }
 
-export default class TextTools extends Component {
+export default class TextTools extends PureComponent {
 
   static propTypes = {
     activeTools: PropTypes.object,
