@@ -87,7 +87,7 @@ export function hideSoftKeyboard() {
   }
 }
 
-export function scrollTo(x, y, options = {}) {
+export function scrollToPosition(x, y, options = {}) {
   const el = options.el
   let animate = () => {
     requestAnimationFrame(animate)

@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { scrollTo } from '../lib/jello'
+import { scrollToPosition } from '../lib/jello'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectCategoryTabs } from '../selectors/categories'
@@ -125,14 +125,14 @@ class NavbarContainer extends PureComponent {
   }
 
   onClickLoadMorePosts = () => {
-    const { dispatch, params } = this.props
-    dispatch({ type: ADD_NEW_IDS_TO_RESULT })
+    const { dispatch, params, pathname } = this.props
+    dispatch({ type: ADD_NEW_IDS_TO_RESULT, payload: { resultKey: pathname } })
     // if on user page and more content scroll to top of content
     if (params.username && !params.token) {
       const { onClickScrollToContent } = this.context
       onClickScrollToContent()
     } else {
-      scrollTo(0, 0)
+      scrollToPosition(0, 0)
     }
   }
 
@@ -148,14 +148,14 @@ class NavbarContainer extends PureComponent {
       } else if (viewName === 'starred') {
         dispatch(loadNoise())
       }
-      scrollTo(0, 0)
+      scrollToPosition(0, 0)
     }
   }
 
   onClickOmniButton = () => {
     const { dispatch } = this.props
     dispatch(openOmnibar())
-    scrollTo(0, 0)
+    scrollToPosition(0, 0)
   }
 
   onClickToggleLayoutMode = () => {

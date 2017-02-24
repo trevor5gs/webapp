@@ -29,7 +29,7 @@ import {
   selectRandomAuthPromotion,
 } from '../selectors/promotions'
 import { selectViewNameFromRoute } from '../selectors/routing'
-import { scrollTo } from '../lib/jello'
+import { scrollToPosition } from '../lib/jello'
 
 function mapStateToProps(state) {
   const viewName = selectViewNameFromRoute(state)
@@ -144,7 +144,7 @@ class AppContainer extends Component {
   }
 
   onClickScrollToContent = () => {
-    scrollTo(0, document.querySelector('.Hero').offsetHeight)
+    scrollToPosition(0, document.querySelector('.Hero').offsetHeight)
   }
 
   onClickTrackCredits = () => {
