@@ -63,6 +63,7 @@ class NotificationsContainer extends Component {
     notificationScrollPosition: PropTypes.number.isRequired,
     pathname: PropTypes.string,
     streamAction: PropTypes.object,
+    streamType: PropTypes.string, // eslint-disable-line
   }
 
   static defaultProps = {
@@ -76,6 +77,7 @@ class NotificationsContainer extends Component {
     isModal: false,
     pathname: null,
     streamAction: null,
+    streamType: null,
     type: 'all',
   }
 

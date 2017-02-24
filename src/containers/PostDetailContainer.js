@@ -42,11 +42,13 @@ class PostDetailContainer extends Component {
     post: PropTypes.object,
     paramsToken: PropTypes.string.isRequired,
     paramsUsername: PropTypes.string.isRequired,
+    streamType: PropTypes.string, // eslint-disable-line
   }
 
   static defaultProps = {
     author: null,
     post: null,
+    streamType: null,
   }
 
   static preRender = (store, routerState) => {

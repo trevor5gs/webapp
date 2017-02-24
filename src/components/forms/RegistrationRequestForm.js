@@ -35,12 +35,14 @@ function mapStateToProps(state, props) {
 class RegistrationRequestForm extends Component {
 
   static propTypes = {
+    availability: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     email: PropTypes.string,
     inModal: PropTypes.bool,
   }
 
   static defaultProps = {
+    availability: null,
     email: null,
     inModal: false,
   }
