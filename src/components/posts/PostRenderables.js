@@ -1,6 +1,5 @@
 /* eslint-disable react/no-multi-comp */
-import Immutable from 'immutable'
-import React, { Component, PropTypes, PureComponent } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
@@ -191,7 +190,7 @@ export class RepostHeader extends PureComponent {
   }
 }
 
-export class PostBody extends Component {
+export class PostBody extends PureComponent {
   static propTypes = {
     author: PropTypes.object.isRequired,
     columnWidth: PropTypes.number.isRequired,
@@ -211,12 +210,6 @@ export class PostBody extends Component {
     contentWarning: null,
     repostContent: null,
   }
-  shouldComponentUpdate(nextProps) {
-    return !Immutable.is(nextProps.content, this.props.content) ||
-      ['contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
-        nextProps[prop] !== this.props[prop],
-      )
-  }
   render() {
     const {
       author,
@@ -233,7 +226,6 @@ export class PostBody extends Component {
       repostContent,
       summary,
     } = this.props
-    console.log('render post body')
     const cells = []
 
     if (contentWarning) {
