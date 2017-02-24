@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import FormControl from './FormControl'
 
-/* eslint-disable react/prefer-stateless-function */
-class TextControl extends Component {
-
+class TextControl extends PureComponent {
   static defaultProps = {
     className: 'TextControl',
     id: 'textControl',

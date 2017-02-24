@@ -6,7 +6,6 @@ export function isFormValid(states) {
   return states.every(state => state.status === STATUS.SUCCESS)
 }
 
-
 export function containsSpace(value) {
   return (/\s/).test(value)
 }

@@ -1,8 +1,7 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import FormControl from './FormControl'
 
-class UsernameControl extends Component {
-
+class UsernameControl extends PureComponent {
   static propTypes = {
     suggestions: PropTypes.object,
   }
