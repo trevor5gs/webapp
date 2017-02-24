@@ -122,10 +122,11 @@ class NotificationsContainer extends Component {
     ) || ['isReloading', 'scrollContainer'].some(prop => nextState[prop] !== this.state[prop])
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const { notificationScrollPosition } = this.props
     const { scrollContainer } = this.state
-    if (prevProps.notificationScrollPosition !== this.props.notificationScrollPosition) {
+    if ((!prevState.scrollContainer && scrollContainer) ||
+        prevProps.notificationScrollPosition !== notificationScrollPosition) {
       scrollContainer.scrollTop = notificationScrollPosition
     }
   }
