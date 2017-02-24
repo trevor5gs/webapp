@@ -14,16 +14,16 @@ function getActivityPath(user, post) {
   return `/${user.get('username')}/post/${post.get('token')}`
 }
 
-function parseSummary(post, path, assets) {
-  return regionItemsForNotifications(post.get('summary'), path, assets)
+function parseSummary(post, path) {
+  return regionItemsForNotifications(post.get('summary'), path)
 }
 
-function parseSummaryForCommentNotification(post, comment, path, assets) {
+function parseSummaryForCommentNotification(post, comment, path) {
   const postContent = post.get('summary', Immutable.List())
   const commentContent = comment.get('summary', Immutable.List())
   const divider = Immutable.fromJS([{ kind: 'rule' }])
   const combined = postContent.concat(divider, commentContent)
-  return regionItemsForNotifications(combined, path, assets)
+  return regionItemsForNotifications(combined, path)
 }
 
 const UserTextLink = ({ user }) => {
@@ -143,9 +143,9 @@ AnnouncementNotification.contextTypes = {
 
 // COMMENTS
 export const CommentNotification = (props) => {
-  const { assets, author, comment, createdAt, parentPost, parentPostAuthor } = props
+  const { author, comment, createdAt, parentPost, parentPostAuthor } = props
   const activityPath = getActivityPath(parentPostAuthor, parentPost)
-  const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath, assets)
+  const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -164,7 +164,6 @@ export const CommentNotification = (props) => {
   )
 }
 CommentNotification.propTypes = {
-  assets: PropTypes.object,
   author: PropTypes.object,
   comment: PropTypes.object,
   createdAt: PropTypes.string,
@@ -172,7 +171,6 @@ CommentNotification.propTypes = {
   parentPostAuthor: PropTypes.object,
 }
 CommentNotification.defaultProps = {
-  assets: null,
   author: null,
   comment: null,
   createdAt: null,
@@ -181,9 +179,9 @@ CommentNotification.defaultProps = {
 }
 
 export const CommentMentionNotification = (props) => {
-  const { assets, author, comment, createdAt, parentPost, parentPostAuthor } = props
+  const { author, comment, createdAt, parentPost, parentPostAuthor } = props
   const activityPath = getActivityPath(parentPostAuthor, parentPost)
-  const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath, assets)
+  const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -202,7 +200,6 @@ export const CommentMentionNotification = (props) => {
   )
 }
 CommentMentionNotification.propTypes = {
-  assets: PropTypes.object,
   author: PropTypes.object,
   comment: PropTypes.object,
   createdAt: PropTypes.string,
@@ -210,7 +207,6 @@ CommentMentionNotification.propTypes = {
   parentPostAuthor: PropTypes.object,
 }
 CommentMentionNotification.defaultProps = {
-  assets: null,
   author: null,
   comment: null,
   createdAt: null,
@@ -219,10 +215,10 @@ CommentMentionNotification.defaultProps = {
 }
 
 export const CommentOnOriginalPostNotification = (props) => {
-  const { assets, author, comment, createdAt, repost, repostAuthor,
+  const { author, comment, createdAt, repost, repostAuthor,
     repostedSource, repostedSourceAuthor } = props
   const activityPath = getActivityPath(repostAuthor, repost)
-  const summary = parseSummaryForCommentNotification(repostedSource, comment, activityPath, assets)
+  const summary = parseSummaryForCommentNotification(repostedSource, comment, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -245,7 +241,6 @@ export const CommentOnOriginalPostNotification = (props) => {
   )
 }
 CommentOnOriginalPostNotification.propTypes = {
-  assets: PropTypes.object,
   author: PropTypes.object,
   comment: PropTypes.object,
   createdAt: PropTypes.string,
@@ -255,7 +250,6 @@ CommentOnOriginalPostNotification.propTypes = {
   repostedSourceAuthor: PropTypes.object,
 }
 CommentOnOriginalPostNotification.defaultProps = {
-  assets: null,
   author: null,
   comment: null,
   createdAt: null,
@@ -266,9 +260,9 @@ CommentOnOriginalPostNotification.defaultProps = {
 }
 
 export const CommentOnRepostNotification = (props) => {
-  const { assets, author, comment, createdAt, repost, repostAuthor } = props
+  const { author, comment, createdAt, repost, repostAuthor } = props
   const activityPath = getActivityPath(repostAuthor, repost)
-  const summary = parseSummaryForCommentNotification(repost, comment, activityPath, assets)
+  const summary = parseSummaryForCommentNotification(repost, comment, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -287,7 +281,6 @@ export const CommentOnRepostNotification = (props) => {
   )
 }
 CommentOnRepostNotification.propTypes = {
-  assets: PropTypes.object,
   author: PropTypes.object,
   comment: PropTypes.object,
   createdAt: PropTypes.string,
@@ -295,7 +288,6 @@ CommentOnRepostNotification.propTypes = {
   repostAuthor: PropTypes.object,
 }
 CommentOnRepostNotification.defaultProps = {
-  assets: null,
   author: null,
   comment: null,
   createdAt: null,
@@ -326,9 +318,9 @@ InvitationAcceptedNotification.defaultProps = {
 }
 
 // LOVES
-export const LoveNotification = ({ assets, author, createdAt, post, user }) => {
+export const LoveNotification = ({ author, createdAt, post, user }) => {
   const activityPath = getActivityPath(author, post)
-  const summary = parseSummary(post, activityPath, assets)
+  const summary = parseSummary(post, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -347,14 +339,12 @@ export const LoveNotification = ({ assets, author, createdAt, post, user }) => {
   )
 }
 LoveNotification.propTypes = {
-  assets: PropTypes.object,
   author: PropTypes.object,
   createdAt: PropTypes.string,
   post: PropTypes.object,
   user: PropTypes.object,
 }
 LoveNotification.defaultProps = {
-  assets: null,
   author: null,
   createdAt: null,
   post: null,
@@ -362,10 +352,9 @@ LoveNotification.defaultProps = {
 }
 
 export const LoveOnOriginalPostNotification = (props) => {
-  const { assets, createdAt, repost, repostAuthor,
-    repostedSource, repostedSourceAuthor, user } = props
+  const { createdAt, repost, repostAuthor, repostedSource, repostedSourceAuthor, user } = props
   const activityPath = getActivityPath(repostAuthor, repost)
-  const summary = parseSummary(repost, activityPath, assets)
+  const summary = parseSummary(repost, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -388,7 +377,6 @@ export const LoveOnOriginalPostNotification = (props) => {
   )
 }
 LoveOnOriginalPostNotification.propTypes = {
-  assets: PropTypes.object,
   createdAt: PropTypes.string,
   repost: PropTypes.object,
   repostAuthor: PropTypes.object,
@@ -397,7 +385,6 @@ LoveOnOriginalPostNotification.propTypes = {
   user: PropTypes.object,
 }
 LoveOnOriginalPostNotification.defaultProps = {
-  assets: null,
   createdAt: null,
   repost: null,
   repostAuthor: null,
@@ -406,9 +393,9 @@ LoveOnOriginalPostNotification.defaultProps = {
   user: null,
 }
 
-export const LoveOnRepostNotification = ({ assets, createdAt, repost, repostAuthor, user }) => {
+export const LoveOnRepostNotification = ({ createdAt, repost, repostAuthor, user }) => {
   const activityPath = getActivityPath(repostAuthor, repost)
-  const summary = parseSummary(repost, activityPath, assets)
+  const summary = parseSummary(repost, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -427,14 +414,12 @@ export const LoveOnRepostNotification = ({ assets, createdAt, repost, repostAuth
   )
 }
 LoveOnRepostNotification.propTypes = {
-  assets: PropTypes.object,
   createdAt: PropTypes.string,
   repost: PropTypes.object,
   repostAuthor: PropTypes.object,
   user: PropTypes.object,
 }
 LoveOnRepostNotification.defaultProps = {
-  assets: null,
   createdAt: null,
   repost: null,
   repostAuthor: null,
@@ -486,9 +471,9 @@ NewFollowedUserPost.defaultProps = {
 }
 
 // MENTIONS
-export const PostMentionNotification = ({ assets, author, createdAt, post }) => {
+export const PostMentionNotification = ({ author, createdAt, post }) => {
   const activityPath = getActivityPath(author, post)
-  const summary = parseSummary(post, activityPath, assets)
+  const summary = parseSummary(post, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -507,22 +492,20 @@ export const PostMentionNotification = ({ assets, author, createdAt, post }) => 
   )
 }
 PostMentionNotification.propTypes = {
-  assets: PropTypes.object,
   author: PropTypes.object,
   createdAt: PropTypes.string,
   post: PropTypes.object,
 }
 PostMentionNotification.defaultProps = {
-  assets: null,
   author: null,
   createdAt: null,
   post: null,
 }
 
 // REPOSTS
-export const RepostNotification = ({ assets, author, createdAt, post }) => {
+export const RepostNotification = ({ author, createdAt, post }) => {
   const activityPath = getActivityPath(author, post)
-  const summary = parseSummary(post, activityPath, assets)
+  const summary = parseSummary(post, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -541,13 +524,11 @@ export const RepostNotification = ({ assets, author, createdAt, post }) => {
   )
 }
 RepostNotification.propTypes = {
-  assets: PropTypes.object,
   author: PropTypes.object,
   createdAt: PropTypes.string,
   post: PropTypes.object,
 }
 RepostNotification.defaultProps = {
-  assets: null,
   author: null,
   createdAt: null,
   post: null,
@@ -555,9 +536,9 @@ RepostNotification.defaultProps = {
 
 // WATCHES
 export const WatchCommentNotification = (props) => {
-  const { assets, author, comment, createdAt, parentPost, parentPostAuthor } = props
+  const { author, comment, createdAt, parentPost, parentPostAuthor } = props
   const activityPath = getActivityPath(parentPostAuthor, parentPost)
-  const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath, assets)
+  const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -576,7 +557,6 @@ export const WatchCommentNotification = (props) => {
   )
 }
 WatchCommentNotification.propTypes = {
-  assets: PropTypes.object,
   author: PropTypes.object,
   comment: PropTypes.object,
   createdAt: PropTypes.string,
@@ -584,7 +564,6 @@ WatchCommentNotification.propTypes = {
   parentPostAuthor: PropTypes.object,
 }
 WatchCommentNotification.defaultProps = {
-  assets: null,
   author: null,
   comment: null,
   createdAt: null,
@@ -592,9 +571,9 @@ WatchCommentNotification.defaultProps = {
   parentPostAuthor: null,
 }
 
-export const WatchNotification = ({ assets, author, createdAt, post, user }) => {
+export const WatchNotification = ({ author, createdAt, post, user }) => {
   const activityPath = getActivityPath(author, post)
-  const summary = parseSummary(post, activityPath, assets)
+  const summary = parseSummary(post, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -613,14 +592,12 @@ export const WatchNotification = ({ assets, author, createdAt, post, user }) => 
   )
 }
 WatchNotification.propTypes = {
-  assets: PropTypes.object,
   author: PropTypes.object,
   createdAt: PropTypes.string,
   post: PropTypes.object,
   user: PropTypes.object,
 }
 WatchNotification.defaultProps = {
-  assets: null,
   author: null,
   createdAt: null,
   post: null,
@@ -628,10 +605,10 @@ WatchNotification.defaultProps = {
 }
 
 export const WatchOnOriginalPostNotification = (props) => {
-  const { assets, createdAt, repost, repostAuthor,
+  const { createdAt, repost, repostAuthor,
     repostedSource, repostedSourceAuthor, user } = props
   const activityPath = getActivityPath(repostAuthor, repost)
-  const summary = parseSummary(repost, activityPath, assets)
+  const summary = parseSummary(repost, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -654,7 +631,6 @@ export const WatchOnOriginalPostNotification = (props) => {
   )
 }
 WatchOnOriginalPostNotification.propTypes = {
-  assets: PropTypes.object,
   createdAt: PropTypes.string,
   repost: PropTypes.object,
   repostAuthor: PropTypes.object,
@@ -663,7 +639,6 @@ WatchOnOriginalPostNotification.propTypes = {
   user: PropTypes.object,
 }
 WatchOnOriginalPostNotification.defaultProps = {
-  assets: null,
   createdAt: null,
   repost: null,
   repostAuthor: null,
@@ -672,9 +647,9 @@ WatchOnOriginalPostNotification.defaultProps = {
   user: null,
 }
 
-export const WatchOnRepostNotification = ({ assets, createdAt, repost, repostAuthor, user }) => {
+export const WatchOnRepostNotification = ({ createdAt, repost, repostAuthor, user }) => {
   const activityPath = getActivityPath(repostAuthor, repost)
-  const summary = parseSummary(repost, activityPath, assets)
+  const summary = parseSummary(repost, activityPath)
   return (
     <Notification
       activityPath={activityPath}
@@ -693,14 +668,12 @@ export const WatchOnRepostNotification = ({ assets, createdAt, repost, repostAut
   )
 }
 WatchOnRepostNotification.propTypes = {
-  assets: PropTypes.object,
   createdAt: PropTypes.string,
   repost: PropTypes.object,
   repostAuthor: PropTypes.object,
   user: PropTypes.object,
 }
 WatchOnRepostNotification.defaultProps = {
-  assets: null,
   createdAt: null,
   repost: null,
   repostAuthor: null,

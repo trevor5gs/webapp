@@ -191,10 +191,8 @@ export class RepostHeader extends PureComponent {
   }
 }
 
-// TODO: convert this to a PureComponent once we get rid of passing assets
 export class PostBody extends Component {
   static propTypes = {
-    assets: PropTypes.object,
     author: PropTypes.object.isRequired,
     columnWidth: PropTypes.number.isRequired,
     commentOffset: PropTypes.number.isRequired,
@@ -210,7 +208,6 @@ export class PostBody extends Component {
     summary: PropTypes.object.isRequired,
   }
   static defaultProps = {
-    assets: null,
     contentWarning: null,
     repostContent: null,
   }
@@ -222,7 +219,6 @@ export class PostBody extends Component {
   }
   render() {
     const {
-      assets,
       author,
       columnWidth,
       commentOffset,
@@ -237,6 +233,7 @@ export class PostBody extends Component {
       repostContent,
       summary,
     } = this.props
+    console.log('render post body')
     const cells = []
 
     if (contentWarning) {
@@ -244,7 +241,6 @@ export class PostBody extends Component {
     }
 
     const regionProps = {
-      assets,
       columnWidth,
       commentOffset,
       contentWidth,
