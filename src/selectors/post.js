@@ -33,12 +33,10 @@ export const selectPost = createSelector(
   },
 )
 
-const addAssetToRegion = (region, assets) => {
+export const addAssetToRegion = (region, assets) => {
   if (region.get('kind') === 'image') {
-    let assetId = -1
-    if (region.getIn) {
-      assetId = region.getIn(['links', 'assets'], -1)
-    } else {
+    let assetId = region.getIn(['links', 'assets'], -1)
+    if (assetId < 0) {
       const assetMatch = region.getIn(['content', 'url'], '').match(/asset\/attachment\/(\d+)\//)
       if (assetMatch) {
         assetId = `${assetMatch[1]}`
