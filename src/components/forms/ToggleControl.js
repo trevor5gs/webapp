@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import { CheckIcon, XIcon } from '../assets/Icons'
 
 class ToggleControl extends PureComponent {
-
   static propTypes = {
     id: PropTypes.string.isRequired,
     isChecked: PropTypes.bool,
@@ -70,7 +69,6 @@ class ToggleControl extends PureComponent {
       </label>
     )
   }
-
 }
 
 export default ToggleControl

@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import FormControl from './FormControl'
 
-/* eslint-disable react/prefer-stateless-function */
-class BatchEmailControl extends Component {
-
+class BatchEmailControl extends PureComponent {
   static defaultProps = {
     className: 'BatchEmailControl',
     id: 'emails',

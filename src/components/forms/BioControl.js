@@ -1,9 +1,8 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import FormControl from './FormControl'
 
-class BioControl extends Component {
-
+class BioControl extends PureComponent {
   static propTypes = {
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,

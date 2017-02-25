@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import TextControl from '../forms/TextControl'
 import { isValidURL } from '../forms/Validators'
 
-class BuyLinkDialog extends Component {
+class BuyLinkDialog extends PureComponent {
 
   componentWillMount() {
     this.value = this.props.text

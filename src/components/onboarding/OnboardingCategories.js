@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import OnboardingNavbar from './OnboardingNavbar'
 import { MainView } from '../views/MainView'
 import { CheckIcon } from '../editor/EditorIcons'
 
-class CategoryButton extends Component {
+class CategoryButton extends PureComponent {
 
   static propTypes = {
     category: PropTypes.object.isRequired,

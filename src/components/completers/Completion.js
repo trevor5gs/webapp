@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import { getSelectionContainerElement } from '../editor/SelectionUtil'
 
-export default class Completion extends Component {
+export default class Completion extends PureComponent {
 
   static propTypes = {
     asset: PropTypes.element.isRequired,

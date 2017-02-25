@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import FormControl from './FormControl'
 
-/* eslint-disable react/prefer-stateless-function */
-class LinksControl extends Component {
-
+class LinksControl extends PureComponent {
   static defaultProps = {
     className: 'LinksControl',
     id: 'external_links',

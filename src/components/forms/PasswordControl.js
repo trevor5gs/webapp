@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import FormControl from './FormControl'
 
-/* eslint-disable react/prefer-stateless-function */
-class PasswordControl extends Component {
-
+class PasswordControl extends PureComponent {
   static defaultProps = {
     className: 'PasswordControl',
     id: 'password',

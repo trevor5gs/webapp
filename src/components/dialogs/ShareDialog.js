@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import {
   FacebookIcon,
   GooglePlusIcon,
@@ -35,7 +35,7 @@ function onClickReadOnlyInput(e) {
   e.target.select()
 }
 
-class ShareDialog extends Component {
+class ShareDialog extends PureComponent {
 
   static propTypes = {
     author: PropTypes.object,
