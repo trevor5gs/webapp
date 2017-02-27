@@ -123,27 +123,14 @@ class StreamContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { stream } = nextProps
-    const { action } = nextState
-    const streamPath = stream.getIn(['payload', 'endpoint', 'path'], '')
-    const streamType = stream.get('type')
     // when hitting the back button the result can update and
     // try to feed wrong results to the actions render method
     // thus causing errors when trying to render wrong results
     if (nextProps.resultPath !== this.props.resultPath) {
       return false
-    } else if (this.props.columnCount !== nextProps.columnCount && nextProps.isGridMode) {
-      return true
-      // allow page loads to fall through and also allow stream
-      // load requests to fall through to show the loader
-      // on an initial page load when endpoints don't match
-    } else if (!/LOAD_NEXT_CONTENT/.test(streamType) &&
-              streamType !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
-              streamPath !== get(action, 'payload.endpoint.path')) {
-      return false
     }
     return !Immutable.is(nextProps.result, this.props.result) ||
-      ['isGridMode', 'isLoggedIn'].some(prop =>
+      ['columnCount', 'isGridMode', 'isLoggedIn'].some(prop =>
         nextProps[prop] !== this.props[prop],
       ) ||
       ['hidePaginator', 'renderType'].some(prop =>
