@@ -12,7 +12,7 @@
   padding: 0 10px;
   line-height: 54px;
   color: #aaa;
-  background-color: #f2f2f2;
+  background-color: #e5e5e5;
   transition: transform 150ms ease;
 }
 
@@ -66,7 +66,7 @@
   z-index: 2;
   width: 20px;
   content: "";
-  background: linear-gradient(to right, rgba(242, 242, 242, 0) 0%, rgba(242, 242, 242, 1) 90%);
+  background: linear-gradient(to right, rgba(229, 229, 229, 0) 0%, rgba(229, 229, 229, 1) 90%);
 }
 
 .FooterTools > .LayoutTool {

@@ -74,9 +74,12 @@ class FooterContainer extends PureComponent {
 
   onChangeEmailControl = ({ email }) => {
     emailValue = email
-    const { emailStatus, isFormDisabled } = this.state
+    const { emailStatus, isFormDisabled, formStatus } = this.state
     const currentStatus = emailStatus
     const clientState = getEmailStateFromClient({ value: email, currentStatus })
+    if (formStatus !== STATUS.INDETERMINATE) {
+      this.setState({ formStatus: STATUS.INDETERMINATE, formMessage: '' })
+    }
     if (clientState.status === STATUS.SUCCESS && isFormDisabled) {
       this.setState({ emailStatus: STATUS.SUCCESS, isFormDisabled: false })
       return
@@ -104,10 +107,21 @@ class FooterContainer extends PureComponent {
     e.preventDefault()
     // TODO: Use the correct action here...
     dispatch(checkAvailability({ email: emailValue, is_signup: true }))
-    // this.setState({
-    //   formMessage: RESPONSE
-    //   formStatus: STATUS.FAILURE | STATUS.SUCCESS
-    // })
+  }
+
+  validateEmailResponse(availability) {
+    const { formStatus } = this.state
+    const newState = getEmailStateFromServer({ availability, currentStatus: formStatus })
+    if (newState.status === STATUS.SUCCESS) {
+      this.setState({ formStatus: STATUS.SUCCESS, formMessage: 'Subscribed. See you tomorrow' })
+      setTimeout(() => {
+        // $FlowFixMe
+        document.querySelector('.EmailControl input').value = ''
+        this.setState({ formStatus: STATUS.INDETERMINATE, formMessage: '' })
+      }, 1666)
+    } else {
+      this.setState({ formStatus: newState.status, formMessage: newState.message })
+    }
   }
 
   render() {
