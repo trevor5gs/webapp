@@ -77,9 +77,9 @@ function getScrollProperties() {
 }
 
 function scrolled() {
+  const scrollProperties = getScrollProperties()
+  const scrollAction = getScrollAction(scrollProperties)
   scrollObjects.forEach((obj) => {
-    const scrollProperties = getScrollProperties()
-    const scrollAction = getScrollAction(scrollProperties)
     callMethod(obj, 'onScroll', scrollProperties)
     if (scrollAction) {
       callMethod(obj, scrollAction, scrollProperties)
