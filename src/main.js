@@ -10,7 +10,6 @@ import { persistStore } from 'redux-persist'
 import { asyncLocalStorage } from 'redux-persist/storages'
 import immutableTransform from 'redux-persist-transform-immutable'
 import { syncHistoryWithStore } from 'react-router-redux'
-import { rehydrate } from 'glamor'
 
 import './main.css'
 import { addFeatureDetection, isIOS } from './lib/jello'
@@ -92,10 +91,6 @@ const launchApplication = (storage, hasLocalStorage = false) => {
     whitelist,
   }, () => {
     const root = document.getElementById('root')
-    if (typeof window !== 'undefined') {
-      console.log('window.glam', window._glam)
-      window._glam && rehydrate(window._glam)
-    }
     ReactDOM.render(element, root)
   })
 

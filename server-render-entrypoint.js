@@ -93,12 +93,13 @@ function handlePrerender(context) {
         Object.keys(state).forEach((key) => {
           state[key] = state[key].toJS()
         })
-        const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)} window._glam = ${JSON.stringify(ids)}</script>`
+        const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
+        const initialGlamTag = `<script id="glam-state">window._glam = ${JSON.stringify(ids)}</script>`
         // Add helmet's stuff after the last statically rendered meta tag
         const html = indexStr.replace(
           'rel="copyright">',
           `rel="copyright">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()} <style>${css}</style>`,
-        ).replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
+        ).replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag} ${initialGlamTag}`)
         process.send({ type: 'render', body: html }, null, {}, () => {
           process.exit(0)
         })

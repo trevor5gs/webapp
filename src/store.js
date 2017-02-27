@@ -7,6 +7,7 @@ import { compose, combineReducers, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
 import createSagaMiddleware, { END } from 'redux-saga'
 import { fromJSON } from 'transit-immutable-js'
+import { rehydrate } from 'glamor'
 import * as reducers from './reducers'
 import rootSaga from './sagas'
 
@@ -45,6 +46,8 @@ const createBrowserStore = (history, passedInitialState = {}) => {
   // query params from server-side rendering, so we just kill it
   // and let the browser reconstruct the router state
   initialState.routing = Immutable.Map()
+
+  if (window._glam) { rehydrate(window._glam) }
 
   const store = compose(
     autoRehydrate(),
