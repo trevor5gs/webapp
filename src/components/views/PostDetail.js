@@ -1,8 +1,15 @@
 import React, { PropTypes } from 'react'
+import { style } from 'glamor'
 import Editor from '../editor/Editor'
 import PostContainer from '../../containers/PostContainer'
 import StreamContainer from '../../containers/StreamContainer'
 import { MainView } from '../views/MainView'
+
+const textStyles = style({
+  color: 'magenta',
+  fontSize: 24,
+  transition: 'color 1s',
+})
 
 export const PostDetail = ({ hasEditor, post, streamAction }) =>
   <MainView className="PostDetail">
@@ -18,6 +25,7 @@ export const PostDetail = ({ hasEditor, post, streamAction }) =>
         }
       </article>
     </div>
+    <span {...textStyles}>Glamor Text</span>
   </MainView>
 PostDetail.propTypes = {
   hasEditor: PropTypes.bool.isRequired,

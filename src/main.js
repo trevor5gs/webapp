@@ -10,6 +10,7 @@ import { persistStore } from 'redux-persist'
 import { asyncLocalStorage } from 'redux-persist/storages'
 import immutableTransform from 'redux-persist-transform-immutable'
 import { syncHistoryWithStore } from 'react-router-redux'
+import { rehydrate } from 'glamor'
 
 import './main.css'
 import { addFeatureDetection, isIOS } from './lib/jello'
@@ -20,7 +21,6 @@ import createRoutes from './routes'
 import Honeybadger from './vendor/honeybadger'
 import './vendor/embetter'
 import './vendor/embetter_initializer'
-
 /* eslint-disable global-require */
 // only use fastclick if we are on iOS
 if (isIOS()) {
@@ -66,6 +66,7 @@ const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: createSelectLocationState(),
 })
 const routes = createRoutes(store)
+
 const element = (
   <Provider store={store}>
     <Router
@@ -91,6 +92,10 @@ const launchApplication = (storage, hasLocalStorage = false) => {
     whitelist,
   }, () => {
     const root = document.getElementById('root')
+    if (typeof window !== 'undefined') {
+      console.log('window.glam', window._glam)
+      window._glam && rehydrate(window._glam)
+    }
     ReactDOM.render(element, root)
   })
 

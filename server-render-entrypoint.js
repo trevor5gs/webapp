@@ -4,6 +4,7 @@ import Immutable from 'immutable'
 import path from 'path'
 import fs from 'fs'
 import { renderToString } from 'react-dom/server'
+import { renderStaticOptimized } from 'glamor-server'
 import React from 'react'
 import Helmet from 'react-helmet'
 import Honeybadger from 'honeybadger'
@@ -82,6 +83,7 @@ function handlePrerender(context) {
     preRender(renderProps, store, sagaTask).then(() => {
       const componentHTML = renderToString(InitialComponent)
       const head = Helmet.rewind()
+      const { css, ids } = renderStaticOptimized(() => componentHTML)
       const state = store.getState()
       if (state.stream.get('should404') === true) {
         process.send({ type: '404' }, null, {}, () => {
@@ -91,11 +93,11 @@ function handlePrerender(context) {
         Object.keys(state).forEach((key) => {
           state[key] = state[key].toJS()
         })
-        const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
+        const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)} window._glam = ${JSON.stringify(ids)}</script>`
         // Add helmet's stuff after the last statically rendered meta tag
         const html = indexStr.replace(
           'rel="copyright">',
-          `rel="copyright">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()}`,
+          `rel="copyright">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()} <style>${css}</style>`,
         ).replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
         process.send({ type: 'render', body: html }, null, {}, () => {
           process.exit(0)
