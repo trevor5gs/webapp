@@ -65,6 +65,15 @@ export const postsAsList = (postIds, columnCount, isPostHeaderHidden) =>
     )}
   </div>
 
+export const postsAsRelated = (postIds, columnCount, isPostHeaderHidden) =>
+  <div className="Posts asGrid">
+    {postIds.map(id =>
+      <article className="PostGrid" key={`postsAsGrid_${id}`}>
+        <PostContainer postId={id} isPostHeaderHidden={isPostHeaderHidden} />
+      </article>,
+    )}
+  </div>
+
 // USERS
 export const userAvatars = userIds =>
   userIds.map(id =>

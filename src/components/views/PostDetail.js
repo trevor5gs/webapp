@@ -3,6 +3,7 @@ import Editor from '../editor/Editor'
 import PostContainer from '../../containers/PostContainer'
 import StreamContainer from '../../containers/StreamContainer'
 import { MainView } from '../views/MainView'
+import { loadRelatedPosts } from '../../actions/posts'
 
 export const PostDetail = ({ hasEditor, post, streamAction }) =>
   <MainView className="PostDetail">
@@ -16,6 +17,7 @@ export const PostDetail = ({ hasEditor, post, streamAction }) =>
           <StreamContainer action={streamAction} className="CommentStreamContainer" /> :
           null
         }
+        <StreamContainer action={loadRelatedPosts()} /> :
       </article>
     </div>
   </MainView>

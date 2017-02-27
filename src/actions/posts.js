@@ -94,6 +94,24 @@ export function loadPostDetail(idOrToken, userIdOrToken) {
   }
 }
 
+export function loadRelatedPosts(postId) {
+  return {
+    type: LOAD_STREAM,
+    payload: {
+      endpoint: api.categoryPosts(),
+      postIdOrToken: postId,
+    },
+    meta: {
+      mappingType: MAPPING_TYPES.POSTS,
+      renderStream: {
+        asList: StreamRenderables.postsAsRelated,
+        asGrid: StreamRenderables.postsAsRelated,
+      },
+      resultKey: `/posts/${postId}/related_posts`,
+    },
+  }
+}
+
 export function lovePost(post) {
   const postId = post.get('id')
   return {
