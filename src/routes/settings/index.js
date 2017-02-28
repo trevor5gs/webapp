@@ -1,10 +1,10 @@
-import Settings from '../../containers/settings/Settings'
+import SettingsContainer from '../../containers/SettingsContainer'
 
 export default [
   {
     path: 'settings',
     getComponents(location, cb) {
-      cb(null, Settings)
+      cb(null, SettingsContainer)
     },
   },
 ]
