@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import Dialog from '../../components/dialogs/Dialog'
-import { closeAlert } from '../../actions/modals'
+import Dialog from '../components/dialogs/Dialog'
+import { closeAlert } from '../actions/modals'
 
 export default connect(
   null,
