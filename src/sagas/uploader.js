@@ -1,5 +1,6 @@
 /* eslint-disable no-constant-condition */
 import React from 'react'
+import get from 'lodash/get'
 import { camelizeKeys } from 'humps'
 import {
   actionChannel,
@@ -10,12 +11,12 @@ import {
   take,
 } from 'redux-saga/effects'
 
-import { PROFILE, EDITOR } from '../constants/action_types'
+import { AUTHENTICATION, EDITOR, PROFILE } from '../constants/action_types'
 
+import { fetchCredentials, getHeaders, sagaFetch } from './api'
 import { s3CredentialsPath } from '../networking/api'
 import FileTypeDialog from '../containers/dialogs/FileTypeDialog'
 
-import { selectAccessToken } from '../selectors/authentication'
 import { openAlert } from '../actions/modals'
 import { temporaryEditorAssetCreated } from '../actions/editor'
 import { temporaryAssetCreated } from '../actions/profile'
@@ -26,45 +27,21 @@ import {
   SUPPORTED_IMAGE_TYPES,
 } from '../helpers/file_helper'
 
-function getCredentialsHeader(accessToken) {
-  return {
-    Authorization: `Bearer ${accessToken}`,
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  }
-}
-
 const uploadTypes = [
   PROFILE.SAVE_AVATAR,
   PROFILE.SAVE_COVER,
   EDITOR.SAVE_ASSET,
 ]
 
-export function checkStatus(response) {
-  if (response.ok) {
-    return response
-  }
-  const error = new Error(response.statusText)
-  error.response = response
-  throw error
-}
-
-export function parseJSON(response) {
-  return (response.status === 200) ? response.json() : response
-}
-
-export function* fetchCredentials(accessToken) {
-  const response = yield call(fetch, s3CredentialsPath().path, {
+export function* fetchS3Credentials(accessToken) {
+  const response = yield call(sagaFetch, s3CredentialsPath().path, {
     method: 'GET',
-    headers: getCredentialsHeader(accessToken),
+    headers: getHeaders(accessToken),
   })
-
-  yield call(checkStatus, response)
-  return yield call(parseJSON, response)
+  return response.json
 }
 
-// TODO: can remove this export once the exif branch is merged
-export function* popAlertsForFile({ fileType, isValid }, { type }) {
+function* popAlertsForFile({ fileType, isValid }, { type }) {
   if (isValid) {
     if (fileType === SUPPORTED_IMAGE_TYPES.GIF &&
         (type === PROFILE.SAVE_AVATAR ||
@@ -118,7 +95,15 @@ function* performUpload(action) {
   const REQUEST = `${type}_REQUEST`
   const SUCCESS = `${type}_SUCCESS`
   const FAILURE = `${type}_FAILURE`
-  const accessToken = yield select(selectAccessToken)
+  let tokenJSON = null
+  if (action.type === AUTHENTICATION.REFRESH) {
+    // access token not needed for refreshing the existing token.
+    // This shortcuts a request to get a public token.
+    tokenJSON = { token: { access_token: null } }
+  } else {
+    tokenJSON = yield call(fetchCredentials)
+  }
+  const accessToken = get(tokenJSON, 'token.access_token')
   let assetUrl
   let uid
 
@@ -128,13 +113,12 @@ function* performUpload(action) {
     const key = getFileKey(prefix, filename)
     assetUrl = getAssetUrl(assetEndpoint, key)
 
-    const fetchCall = call(fetch, assetEndpoint, {
+    const response = yield call(sagaFetch, assetEndpoint, {
       method: 'POST',
       body: getUploadData(key, credentials, file, fileData),
     })
-    const response = yield fetchCall
-    yield call(checkStatus, response)
-    return response
+    const { serverResponse } = response
+    return serverResponse
   }
 
 
@@ -157,7 +141,7 @@ function* performUpload(action) {
       } else if (type === PROFILE.SAVE_COVER) {
         yield put(temporaryAssetCreated(PROFILE.TMP_COVER_CREATED, objectURL))
       }
-      const { credentials } = yield call(fetchCredentials, accessToken)
+      const { credentials } = yield call(fetchS3Credentials, accessToken)
       yield call(postAsset, credentials)
     } else {
       const imageData = yield call(processImage, { ...fileData, file: objectURL })
@@ -175,7 +159,7 @@ function* performUpload(action) {
       } else if (type === PROFILE.SAVE_COVER) {
         yield put(temporaryAssetCreated(PROFILE.TMP_COVER_CREATED, imageData.objectURL))
       }
-      const { credentials } = yield call(fetchCredentials, accessToken)
+      const { credentials } = yield call(fetchS3Credentials, accessToken)
       yield call(postAsset, credentials, imageData.blob)
     }
 
@@ -195,13 +179,12 @@ function* performUpload(action) {
       const vo = (type === PROFILE.SAVE_AVATAR) ?
             { remote_avatar_url: assetUrl } :
             { remote_cover_image_url: assetUrl }
-      const response = yield call(fetch, endpoint.path, {
+      const response = yield call(sagaFetch, endpoint.path, {
         method: 'PATCH',
-        headers: getCredentialsHeader(accessToken),
+        headers: getHeaders(accessToken),
         body: JSON.stringify(vo),
       })
-      yield call(checkStatus, response)
-      return yield call(parseJSON, response)
+      return response.json
     }
     const response = yield call(saveLocationToApi)
     payload.response = camelizeKeys(response)

@@ -8,7 +8,7 @@ import { selectRefreshToken } from '../selectors/authentication'
 import { selectLastNotificationCheck } from '../selectors/gui'
 import { selectPathname } from '../selectors/routing'
 import { clearAuthToken, refreshAuthenticationToken } from '../actions/authentication'
-import { fetchCredentials, sagaFetch } from './api'
+import { extractJSON, fetchCredentials, getHeaders, getHeadHeader, sagaFetch } from './api'
 import { openAlert } from '../actions/modals'
 import Dialog from '../components/dialogs/Dialog'
 
@@ -112,33 +112,6 @@ function parseLink(linksHeader) {
     }
   })
   return result
-}
-
-const defaultHeaders = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json',
-}
-
-function getAuthToken(accessToken) {
-  return {
-    ...defaultHeaders,
-    Authorization: `Bearer ${accessToken}`,
-  }
-}
-
-function getHeaders(accessToken) {
-  return getAuthToken(accessToken)
-}
-
-function getHeadHeader(accessToken, lastCheck) {
-  return {
-    ...getAuthToken(accessToken),
-    'If-Modified-Since': lastCheck,
-  }
-}
-
-export function extractJSON(serverResponse) {
-  return serverResponse ? serverResponse.json() : serverResponse
 }
 
 export function* handleRequestError(error, action) {

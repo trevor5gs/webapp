@@ -11,6 +11,21 @@ import {
 } from '../selectors/authentication'
 import { refreshAuthenticationToken } from '../actions/authentication'
 
+export function getHeaders(accessToken) {
+  return {
+    Accept: 'application/json',
+    Authorization: `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  }
+}
+
+export function getHeadHeader(accessToken, lastCheck) {
+  return {
+    ...getHeaders(accessToken),
+    'If-Modified-Since': lastCheck,
+  }
+}
+
 export function* fetchCredentials() {
   const accessToken = yield select(selectAccessToken)
   if (yield select(selectShouldUseAccessToken)) {
