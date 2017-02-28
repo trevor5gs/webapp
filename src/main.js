@@ -20,6 +20,7 @@ import createRoutes from './routes'
 import Honeybadger from './vendor/honeybadger'
 import './vendor/embetter'
 import './vendor/embetter_initializer'
+
 /* eslint-disable global-require */
 // only use fastclick if we are on iOS
 if (isIOS()) {
@@ -65,7 +66,6 @@ const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: createSelectLocationState(),
 })
 const routes = createRoutes(store)
-
 const element = (
   <Provider store={store}>
     <Router

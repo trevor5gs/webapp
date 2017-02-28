@@ -47,7 +47,7 @@ const createBrowserStore = (history, passedInitialState = {}) => {
   // and let the browser reconstruct the router state
   initialState.routing = Immutable.Map()
 
-  if (window._glam) { rehydrate(window._glam) }
+  if (window.__GLAM__) { rehydrate(window.__GLAM__) }
 
   const store = compose(
     autoRehydrate(),
@@ -84,3 +84,4 @@ const createElloStore = (history, initialState = {}) => {
 export { createElloStore }
 
 export default createElloStore()
+

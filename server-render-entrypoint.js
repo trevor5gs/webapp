@@ -94,7 +94,7 @@ function handlePrerender(context) {
           state[key] = state[key].toJS()
         })
         const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
-        const initialGlamTag = `<script id="glam-state">window._glam = ${JSON.stringify(ids)}</script>`
+        const initialGlamTag = `<script id="glam-state">window.__GLAM__ = ${JSON.stringify(ids)}</script>`
         // Add helmet's stuff after the last statically rendered meta tag
         const html = indexStr.replace(
           'rel="copyright">',
