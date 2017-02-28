@@ -5,13 +5,13 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import debounce from 'lodash/debounce'
-import { PREFERENCES, SETTINGS } from '../../constants/locales/en'
-import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
-import { preferenceToggleChanged } from '../../helpers/junk_drawer'
-import { selectDPI, selectIsMobile } from '../../selectors/gui'
-import { selectAvailability, selectBlockedCount, selectMutedCount } from '../../selectors/profile'
-import { openModal, closeModal } from '../../actions/modals'
-import { logout } from '../../actions/authentication'
+import { PREFERENCES, SETTINGS } from '../constants/locales/en'
+import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
+import { preferenceToggleChanged } from '../helpers/junk_drawer'
+import { selectDPI, selectIsMobile } from '../selectors/gui'
+import { selectAvailability, selectBlockedCount, selectMutedCount } from '../selectors/profile'
+import { openModal, closeModal } from '../actions/modals'
+import { logout } from '../actions/authentication'
 import {
   availableToggles,
   blockedUsers,
@@ -23,33 +23,33 @@ import {
   saveAvatar,
   saveCover,
   saveProfile,
-} from '../../actions/profile'
-import Emoji from '../../components/assets/Emoji'
-import AdultPostsDialog from '../../components/dialogs/AdultPostsDialog'
-import DeleteAccountDialog from '../../components/dialogs/DeleteAccountDialog'
-import EmailControl from '../../components/forms/EmailControl'
-import FormButton from '../../components/forms/FormButton'
-import PasswordControl from '../../components/forms/PasswordControl'
-import UsernameControl from '../../components/forms/UsernameControl'
-import Preference from '../../components/forms/Preference'
+} from '../actions/profile'
+import Emoji from '../components/assets/Emoji'
+import AdultPostsDialog from '../components/dialogs/AdultPostsDialog'
+import DeleteAccountDialog from '../components/dialogs/DeleteAccountDialog'
+import EmailControl from '../components/forms/EmailControl'
+import FormButton from '../components/forms/FormButton'
+import PasswordControl from '../components/forms/PasswordControl'
+import UsernameControl from '../components/forms/UsernameControl'
+import Preference from '../components/forms/Preference'
 import {
   getUsernameStateFromClient,
   getUsernameStateFromServer,
   getEmailStateFromClient,
   getEmailStateFromServer,
   getPasswordState,
-} from '../../components/forms/Validators'
-import Uploader from '../../components/uploaders/Uploader'
-import Avatar from '../../components/assets/Avatar'
-import BackgroundImage from '../../components/assets/BackgroundImage'
-import TreeButton from '../../components/navigation/TreeButton'
-import TreePanel from '../../components/navigation/TreePanel'
-import StreamContainer from '../../containers/StreamContainer'
-import InfoForm from '../../components/forms/InfoForm'
-import { MainView } from '../../components/views/MainView'
-import { isElloAndroid } from '../../lib/jello'
-import { profilePath } from '../../networking/api'
-import { trackEvent } from '../../actions/analytics'
+} from '../components/forms/Validators'
+import Uploader from '../components/uploaders/Uploader'
+import Avatar from '../components/assets/Avatar'
+import BackgroundImage from '../components/assets/BackgroundImage'
+import TreeButton from '../components/navigation/TreeButton'
+import TreePanel from '../components/navigation/TreePanel'
+import StreamContainer from '../containers/StreamContainer'
+import InfoForm from '../components/forms/InfoForm'
+import { MainView } from '../components/views/MainView'
+import { isElloAndroid } from '../lib/jello'
+import { profilePath } from '../networking/api'
+import { trackEvent } from '../actions/analytics'
 
 function getOriginalAssetUrl(asset) {
   return (
@@ -83,7 +83,7 @@ function mapStateToProps(state) {
   }
 }
 
-class Settings extends PureComponent {
+class SettingsContainer extends PureComponent {
 
   static propTypes = {
     availability: PropTypes.object,
@@ -573,5 +573,5 @@ class Settings extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps)(Settings)
+export default connect(mapStateToProps)(SettingsContainer)
 
