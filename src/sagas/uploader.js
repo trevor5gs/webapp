@@ -15,7 +15,7 @@ import { AUTHENTICATION, EDITOR, PROFILE } from '../constants/action_types'
 
 import { fetchCredentials, getHeaders, sagaFetch } from './api'
 import { s3CredentialsPath } from '../networking/api'
-import FileTypeDialog from '../containers/dialogs/FileTypeDialog'
+import DialogContainer from '../containers/DialogContainer'
 
 import { openAlert } from '../actions/modals'
 import { temporaryEditorAssetCreated } from '../actions/editor'
@@ -47,7 +47,7 @@ function* popAlertsForFile({ fileType, isValid }, { type }) {
         (type === PROFILE.SAVE_AVATAR ||
          type === PROFILE.SAVE_COVER)) {
       yield put(openAlert(
-        <FileTypeDialog
+        <DialogContainer
           title="Looks like you uploaded a .gif."
           body="If it’s animated people will only see the animation on your profile page."
         />,
@@ -55,7 +55,7 @@ function* popAlertsForFile({ fileType, isValid }, { type }) {
     }
   } else {
     yield put(openAlert(
-      <FileTypeDialog
+      <DialogContainer
         title="Invalid file type"
         body="We support .jpg, .gif, .png, and .bmp files."
       />,
