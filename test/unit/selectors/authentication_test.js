@@ -52,12 +52,8 @@ describe('authentication selectors', () => {
       state = { authentication: state.authentication.set('expirationDate', future).set('change', false) }
       expect(selectShouldUseAccessToken(state)).to.equal(true)
 
-      state = { authentication: state.authentication.set('change', true) }
-      expect(selectShouldUseAccessToken.recomputations()).to.equal(1)
-
       state = { authentication: state.authentication.set('expirationDate', past).set('change', true) }
       expect(selectShouldUseAccessToken(state)).to.equal(false)
-      expect(selectShouldUseAccessToken.recomputations()).to.equal(2)
     })
   })
 
@@ -70,12 +66,8 @@ describe('authentication selectors', () => {
       state = { authentication: state.authentication.set('expirationDate', future).set('change', false) }
       expect(selectShouldUseRefreshToken(state)).to.equal(false)
 
-      state = { authentication: state.authentication.set('change', true) }
-      expect(selectShouldUseRefreshToken.recomputations()).to.equal(1)
-
       state = { authentication: state.authentication.set('expirationDate', past).set('change', true) }
       expect(selectShouldUseRefreshToken(state)).to.equal(true)
-      expect(selectShouldUseRefreshToken.recomputations()).to.equal(2)
     })
   })
 })
