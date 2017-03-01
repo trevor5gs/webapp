@@ -1,21 +1,25 @@
 // @flow
 import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { scrollToPosition } from '../lib/jello'
+import { isIOS, scrollToPosition } from '../lib/jello'
 import { FOOTER_LINKS as links } from '../constants/locales/en'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectIsGridMode, selectIsLayoutToolHidden, selectIsMobile } from '../selectors/gui'
+import { selectAvailability } from '../selectors/profile'
 import { selectStreamType } from '../selectors/stream'
 import { checkAvailability } from '../actions/profile'
-import { getEmailStateFromClient } from '../components/forms/Validators'
+import { getEmailStateFromClient, getEmailStateFromServer } from '../components/forms/Validators'
 import { Footer } from '../components/footer/FooterRenderables'
+import type { Availability } from '../types/flowtypes'
 
 let emailValue = ''
 
 type Props = {
+  availability: Availability,
   dispatch: () => void,
+  formActionPath: string,
   isGridMode: boolean,
   isLayoutToolHidden: boolean,
   isLoggedIn: boolean,
@@ -28,11 +32,14 @@ type State = {
   formMessage: string,
   formStatus: string,
   isFormDisabled: boolean,
+  isFormFocused: boolean,
 }
 
 function mapStateToProps(state, props) {
   const streamType = selectStreamType(state)
   return {
+    availability: selectAvailability(state),
+    formActionPath: checkAvailability().payload.endpoint.path,
     isGridMode: selectIsGridMode(state),
     isLayoutToolHidden: selectIsLayoutToolHidden(state, props),
     isLoggedIn: selectIsLoggedIn(state),
@@ -45,7 +52,9 @@ class FooterContainer extends PureComponent {
   static childContextTypes = {
     onClickScrollToTop: PropTypes.func.isRequired,
     onClickToggleLayoutMode: PropTypes.func.isRequired,
-    onChangeEmailControl: PropTypes.func,
+    onBlur: PropTypes.func,
+    onChange: PropTypes.func,
+    onFocus: PropTypes.func,
     onSubmit: PropTypes.func,
   }
 
@@ -57,7 +66,9 @@ class FooterContainer extends PureComponent {
     return {
       onClickScrollToTop: this.onClickScrollToTop,
       onClickToggleLayoutMode: this.onClickToggleLayoutMode,
-      onChangeEmailControl: !isLoggedIn ? this.onChangeEmailControl : null,
+      onBlur: !isLoggedIn ? this.onBlur : null,
+      onChange: !isLoggedIn ? this.onChange : null,
+      onFocus: !isLoggedIn ? this.onFocus : null,
       onSubmit: !isLoggedIn ? this.onSubmit : null,
     }
   }
@@ -68,11 +79,20 @@ class FooterContainer extends PureComponent {
       formMessage: '',
       formStatus: STATUS.INDETERMINATE,
       isFormDisabled: true,
+      isFormFocused: false,
     }
     emailValue = ''
   }
 
-  onChangeEmailControl = ({ email }) => {
+  componentWillReceiveProps(nextProps) {
+    const { availability } = nextProps
+    if (!availability) { return }
+    if (availability.has('email')) {
+      this.validateEmailResponse(availability)
+    }
+  }
+
+  onChange = ({ email }) => {
     emailValue = email
     const { emailStatus, isFormDisabled, formStatus } = this.state
     const currentStatus = emailStatus
@@ -92,6 +112,22 @@ class FooterContainer extends PureComponent {
     }
   }
 
+  // Only happens on iOS
+  onBlur = () => {
+    this.setState({ isFormFocused: false })
+    if (isIOS() && document && document.body) {
+      document.body.classList.remove('isModalActive')
+    }
+  }
+
+  // Only happens on iOS
+  onFocus = () => {
+    if (isIOS() && document && document.body) {
+      document.body.classList.add('isModalActive')
+    }
+    this.setState({ isFormFocused: true })
+  }
+
   onClickScrollToTop = () => {
     scrollToPosition(0, 0)
   }
@@ -105,7 +141,6 @@ class FooterContainer extends PureComponent {
   onSubmit = (e: Event) => {
     const { dispatch } = this.props
     e.preventDefault()
-    // TODO: Use the correct action here...
     dispatch(checkAvailability({ email: emailValue, is_signup: true }))
   }
 
@@ -126,11 +161,11 @@ class FooterContainer extends PureComponent {
 
   render() {
     const props = {
-      // TODO: Need to define the actual action path..
-      formActionPath: '/daily-email-signup',
+      formActionPath: this.props.formActionPath,
       formMessage: this.state.formMessage,
       formStatus: this.state.formStatus,
       isFormDisabled: this.state.isFormDisabled,
+      isFormFocused: this.state.isFormFocused,
       isGridMode: this.props.isGridMode,
       isLayoutToolHidden: this.props.isLayoutToolHidden,
       isLoggedIn: this.props.isLoggedIn,
@@ -143,4 +178,3 @@ class FooterContainer extends PureComponent {
 }
 
 export default connect(mapStateToProps)(FooterContainer)
-
