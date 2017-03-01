@@ -187,6 +187,10 @@ class ImageRegion extends Component {
     return this.attachment.getIn(['optimized', 'metadata', 'type']) === 'image/gif'
   }
 
+  isVideo() {
+    return this.attachment.getIn(['video'])
+  }
+
   renderGifAttachment() {
     const { content, isNotification } = this.props
     const dimensions = this.getImageDimensions()
@@ -244,11 +248,29 @@ class ImageRegion extends Component {
     )
   }
 
+  renderVideoAttachment() {
+    const { height, width } = this.getImageDimensions()
+    return (
+      <video
+        autoPlay
+        height={height}
+        loop
+        src={this.attachment.getIn(['video', 'url'])}
+        width={width}
+      />
+    )
+  }
+
   renderAttachment() {
     const { asset } = this.props
     if (!this.isBasicAttachment()) {
       this.attachment = asset.get('attachment')
-      return this.isGif() ? this.renderGifAttachment() : this.renderImageAttachment()
+      if (this.isVideo()) {
+        return this.renderVideoAttachment()
+      } else if (this.isGif()) {
+        return this.renderGifAttachment()
+      }
+      return this.renderImageAttachment()
     }
     return this.renderLegacyImageAttachment()
   }
