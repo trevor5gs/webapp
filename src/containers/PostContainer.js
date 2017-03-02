@@ -485,7 +485,7 @@ class PostContainer extends Component {
     return (
       <div className={classNames('Post', { isPostHeaderHidden: isPostHeaderHidden && !isRepost })}>
         {postHeader}
-        {showEditor && !isRelatedPost ?
+        {showEditor ?
           <Editor post={post} /> :
           <PostBody
             author={author}
@@ -524,7 +524,7 @@ class PostContainer extends Component {
           postRepostsCount={postRepostsCount}
           postViewsCountRounded={postViewsCountRounded}
         />
-        {showLovers && !isRelatedPost &&
+        {showLovers &&
           <UserDrawer
             endpoint={postLovers(postId)}
             icon={<HeartIcon />}
@@ -533,7 +533,7 @@ class PostContainer extends Component {
             resultType="love"
           />
         }
-        {showReposters && !isRelatedPost &&
+        {showReposters &&
           <UserDrawer
             endpoint={postReposters(postId)}
             icon={<RepostIcon />}
@@ -549,8 +549,8 @@ class PostContainer extends Component {
             onClickWatchPost={this.onClickWatchPost}
           />
         }
-        {showCommentEditor && !isRelatedPost && <Editor post={post} isComment />}
-        {showCommentEditor && !isRelatedPost &&
+        {showCommentEditor && <Editor post={post} isComment />}
+        {showCommentEditor &&
           <CommentStream
             detailPath={detailPath}
             postCommentsCount={postCommentsCount}

@@ -19,6 +19,8 @@ const countProtector = count => (count < 0 ? 0 : count)
 export const selectPropsPostId = (state, props) =>
   get(props, 'postId') || get(props, 'post', Immutable.Map()).get('id')
 
+export const selectPropsPostIsRelated = (state, props) => get(props, 'isRelatedPost', false)
+
 export const selectPosts = state => state.json.get(POSTS, Immutable.Map())
 
 // Memoized selectors
@@ -180,8 +182,9 @@ export const selectPostIsEmpty = createSelector(
 )
 
 export const selectPostIsGridMode = createSelector(
-  [selectIsPostDetail, selectIsGridMode], (isPostDetail, isGridMode) =>
-    (isPostDetail ? false : isGridMode),
+  [selectIsPostDetail, selectIsGridMode, selectPropsPostIsRelated],
+  (isPostDetail, isGridMode, isRelated) =>
+    (isPostDetail ? isRelated : isGridMode),
 )
 
 export const selectPostIsOwn = createSelector(
@@ -219,30 +222,30 @@ export const selectPostRepostAuthorWithFallback = createSelector(
 
 // Editor and drawer states for a given post
 export const selectPostShowEditor = createSelector(
-  [selectPostIsEditing, selectPostIsReposting, selectPostBody],
-  (isEditing, isReposting, postBody) =>
-    !!((isEditing || isReposting) && postBody),
+  [selectPostIsEditing, selectPostIsReposting, selectPostBody, selectPropsPostIsRelated],
+  (isEditing, isReposting, postBody, isRelated) =>
+    !!((isEditing || isReposting) && postBody) && !isRelated,
 )
 
 export const selectPostShowCommentEditor = createSelector(
-  [selectPostShowEditor, selectPostShowComments, selectIsPostDetail],
-  (showEditor, showComments, isPostDetail) =>
-    !showEditor && !isPostDetail && showComments,
+  [selectPostShowEditor, selectPostShowComments, selectIsPostDetail, selectPropsPostIsRelated],
+  (showEditor, showComments, isPostDetail, isRelated) =>
+    !showEditor && !isPostDetail && showComments && !isRelated,
 )
 
 export const selectPostShowLoversDrawer = createSelector(
   [selectPostShowEditor, selectPostIsGridMode, selectPostShowLovers,
-    selectPostLovesCount, selectIsPostDetail],
-  (showEditor, isGridMode, showLovers, lovesCount, isPostDetail) =>
-    (!showEditor && !isGridMode && showLovers && lovesCount > 0) ||
-    (!showEditor && !isGridMode && isPostDetail && lovesCount > 0),
+    selectPostLovesCount, selectIsPostDetail, selectPropsPostIsRelated],
+  (showEditor, isGridMode, showLovers, lovesCount, isPostDetail, isRelated) =>
+    ((!showEditor && !isGridMode && showLovers && lovesCount > 0) ||
+    (!showEditor && !isGridMode && isPostDetail && lovesCount > 0)) && !isRelated,
 )
 
 export const selectPostShowRepostersDrawer = createSelector(
   [selectPostShowEditor, selectPostIsGridMode, selectPostShowReposters,
-    selectPostRepostsCount, selectIsPostDetail],
-  (showEditor, isGridMode, showReposters, repostsCount, isPostDetail) =>
-    (!showEditor && !isGridMode && showReposters && repostsCount > 0) ||
-    (!showEditor && !isGridMode && isPostDetail && repostsCount > 0),
+    selectPostRepostsCount, selectIsPostDetail, selectPropsPostIsRelated],
+  (showEditor, isGridMode, showReposters, repostsCount, isPostDetail, isRelated) =>
+    ((!showEditor && !isGridMode && showReposters && repostsCount > 0) ||
+    (!showEditor && !isGridMode && isPostDetail && repostsCount > 0)) && !isRelated,
 )
 

@@ -17,7 +17,6 @@ export const CommentStream = ({ detailPath, postId, postCommentsCount }) =>
     <StreamContainer
       className="CommentStreamContainer isFullWidth"
       action={loadComments(postId)}
-      ignoresScrollPosition
     >
       {postCommentsCount > 10 &&
         <Link

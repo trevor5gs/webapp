@@ -67,6 +67,19 @@ describe('post selectors', () => {
     })
   })
 
+  context('#selectPropsPostIsRelated', () => {
+    it('returns the correct props isRelatedPost', () => {
+      const props = { isRelatedPost: true }
+      expect(selector.selectPropsPostIsRelated(state, props)).to.equal(true)
+    })
+
+    it('returns the correct props post id from a post', () => {
+      const props = {}
+      expect(selector.selectPropsPostIsRelated(state, props)).to.equal(false)
+    })
+  })
+
+
   context('#selectPosts', () => {
     it('returns posts model out of json', () => {
       state = { json }
@@ -753,6 +766,14 @@ describe('post selectors', () => {
       const result = selector.selectPostShowEditor(state, props)
       expect(result).to.equal(true)
     })
+
+    it('returns false if the post is related', () => {
+      state = { json }
+      state = { json: state.json.setIn(['posts', '666', 'isEditing'], true) }
+      const props = { postId: '666', isRelatedPost: true }
+      const result = selector.selectPostShowEditor(state, props)
+      expect(result).to.equal(false)
+    })
   })
 
   context('#selectPostShowCommentEditor', () => {
@@ -775,10 +796,18 @@ describe('post selectors', () => {
       const result = selector.selectPostShowEditor(state, props)
       expect(result).to.equal(true)
     })
+
+    it('returns false if the post is related', () => {
+      state = { json }
+      state = { json: state.json.setIn(['posts', '666', 'isEditing'], true) }
+      const props = { postId: '666', isRelatedPost: true }
+      const result = selector.selectPostShowEditor(state, props)
+      expect(result).to.equal(false)
+    })
   })
 
   context('#selectPostShowLoversDrawer', () => {
-    it('returns if the post lovers drawer should be shown', () => {
+    beforeEach(() => {
       state = {
         json,
         gui: Immutable.fromJS({ isGridMode: false }),
@@ -786,14 +815,23 @@ describe('post selectors', () => {
           location: { pathname: '/666-username/post/token666' },
         }),
       }
+    })
+
+    it('returns if the post lovers drawer should be shown', () => {
       const props = { postId: '666' }
       const result = selector.selectPostShowLoversDrawer(state, props)
       expect(result).to.equal(true)
     })
+
+    it('returns false if the post is related', () => {
+      const props = { postId: '666', isRelatedPost: true }
+      const result = selector.selectPostShowLoversDrawer(state, props)
+      expect(result).to.equal(false)
+    })
   })
 
   context('#selectPostShowRepostersDrawer', () => {
-    it('returns if the post reposters drawer should be shown', () => {
+    beforeEach(() => {
       state = {
         json,
         gui: Immutable.fromJS({ isGridMode: false }),
@@ -801,9 +839,18 @@ describe('post selectors', () => {
           location: { pathname: '/666-username/post/token666' },
         }),
       }
+    })
+
+    it('returns if the post reposters drawer should be shown', () => {
       const props = { postId: '666' }
       const result = selector.selectPostShowRepostersDrawer(state, props)
       expect(result).to.equal(true)
+    })
+
+    it('returns false if the post is related', () => {
+      const props = { postId: '666', isRelatedPost: true }
+      const result = selector.selectPostShowRepostersDrawer(state, props)
+      expect(result).to.equal(false)
     })
   })
 })

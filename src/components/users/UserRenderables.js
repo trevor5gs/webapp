@@ -30,7 +30,7 @@ export const UserDrawer = ({ endpoint, icon, postId, resultType }) =>
     <StreamContainer
       action={loadUserDrawer(endpoint, postId, resultType)}
       paginatorText="+more"
-      ignoresScrollPosition
+      shouldInfiniteScroll={false}
     />
   </section>
 UserDrawer.propTypes = {

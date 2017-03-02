@@ -66,6 +66,7 @@ class StreamContainer extends Component {
     result: PropTypes.object.isRequired,
     resultPath: PropTypes.string.isRequired,
     scrollContainer: PropTypes.object,
+    shouldInfiniteScroll: PropTypes.bool,
     stream: PropTypes.object.isRequired,
   }
 
@@ -77,6 +78,7 @@ class StreamContainer extends Component {
     isPostHeaderHidden: false,
     paginatorText: 'Loading',
     scrollContainer: null,
+    shouldInfiniteScroll: true,
   }
 
   static contextTypes = {
@@ -156,26 +158,27 @@ class StreamContainer extends Component {
   }
 
   onScroll() {
+    if (!this.props.shouldInfiniteScroll) { return }
     this.setScroll()
   }
 
   onScrollTarget() {
+    if (!this.props.shouldInfiniteScroll) { return }
     this.setScroll()
   }
 
   onScrollBottom() {
-    const path = get(this.state, 'action.payload.endpoint.path')
-    if (path && !/lovers|reposters/.test(path)) {
-      this.onLoadNextPage()
-      const { hasLaunchedSignupModal, isLoggedIn } = this.props
-      if (!isLoggedIn && !hasLaunchedSignupModal) {
-        const { onClickOpenRegistrationRequestDialog } = this.context
-        onClickOpenRegistrationRequestDialog('scroll')
-      }
+    if (!this.props.shouldInfiniteScroll) { return }
+    this.onLoadNextPage()
+    const { hasLaunchedSignupModal, isLoggedIn } = this.props
+    if (!isLoggedIn && !hasLaunchedSignupModal) {
+      const { onClickOpenRegistrationRequestDialog } = this.context
+      onClickOpenRegistrationRequestDialog('scroll')
     }
   }
 
   onScrollBottomTarget() {
+    if (!this.props.shouldInfiniteScroll) { return }
     this.onLoadNextPage()
   }
 

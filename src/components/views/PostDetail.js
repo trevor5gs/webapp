@@ -13,11 +13,18 @@ export const PostDetail = ({ hasEditor, post, streamAction }) =>
           <PostContainer postId={post.get('id')} />
           {hasEditor ? <Editor post={post} isComment /> : null}
         </div>
-        {streamAction ?
-          <StreamContainer action={streamAction} className="CommentStreamContainer" /> :
-          null
+        {streamAction &&
+          <StreamContainer
+            action={streamAction}
+            className="CommentStreamContainer"
+            paginatorText="Load More"
+            shouldInfiniteScroll={false}
+          />
         }
-        <StreamContainer action={loadRelatedPosts()} /> :
+        <StreamContainer
+          action={loadRelatedPosts()}
+          shouldInfiniteScroll={false}
+        />
       </article>
     </div>
   </MainView>
