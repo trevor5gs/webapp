@@ -193,6 +193,11 @@ export function editPostDetail(idOrToken) {
     path: getAPIPath(`posts/${idOrToken}`, params),
   }
 }
+export function relatedPosts() {
+  return {
+    path: getAPIPath('categories/posts/recent', { per_page: 5 }),
+  }
+}
 // Loves
 export function lovePost(idOrToken) {
   return {

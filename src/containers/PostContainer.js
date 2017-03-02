@@ -154,6 +154,7 @@ class PostContainer extends Component {
     isPostDetail: PropTypes.bool.isRequired,
     isPostEmpty: PropTypes.bool.isRequired,
     isPostHeaderHidden: PropTypes.bool,
+    isRelatedPost: PropTypes.bool,
     isRepost: PropTypes.bool.isRequired,
     isReposting: PropTypes.bool.isRequired,
     isWatchingPost: PropTypes.bool.isRequired,
@@ -184,6 +185,7 @@ class PostContainer extends Component {
     content: null,
     contentWarning: null,
     isPostHeaderHidden: false,
+    isRelatedPost: false,
     postBody: null,
     postCommentsCount: null,
     postCreatedAt: null,
@@ -424,6 +426,7 @@ class PostContainer extends Component {
       isPostDetail,
       isPostEmpty,
       isPostHeaderHidden,
+      isRelatedPost,
       isRepost,
       isReposting,
       isWatchingPost,
@@ -482,7 +485,7 @@ class PostContainer extends Component {
     return (
       <div className={classNames('Post', { isPostHeaderHidden: isPostHeaderHidden && !isRepost })}>
         {postHeader}
-        {showEditor ?
+        {showEditor && !isRelatedPost ?
           <Editor post={post} /> :
           <PostBody
             author={author}
@@ -521,7 +524,7 @@ class PostContainer extends Component {
           postRepostsCount={postRepostsCount}
           postViewsCountRounded={postViewsCountRounded}
         />
-        {showLovers &&
+        {showLovers && !isRelatedPost &&
           <UserDrawer
             endpoint={postLovers(postId)}
             icon={<HeartIcon />}
@@ -530,7 +533,7 @@ class PostContainer extends Component {
             resultType="love"
           />
         }
-        {showReposters &&
+        {showReposters && !isRelatedPost &&
           <UserDrawer
             endpoint={postReposters(postId)}
             icon={<RepostIcon />}
@@ -539,15 +542,15 @@ class PostContainer extends Component {
             resultType="repost"
           />
         }
-        {isMobile &&
+        {isMobile && !isRelatedPost &&
           <WatchTool
             isMobile
             isWatchingPost={isWatchingPost}
             onClickWatchPost={this.onClickWatchPost}
           />
         }
-        {showCommentEditor && <Editor post={post} isComment />}
-        {showCommentEditor &&
+        {showCommentEditor && !isRelatedPost && <Editor post={post} isComment />}
+        {showCommentEditor && !isRelatedPost &&
           <CommentStream
             detailPath={detailPath}
             postCommentsCount={postCommentsCount}

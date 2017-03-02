@@ -69,7 +69,7 @@ export const postsAsRelated = (postIds, columnCount, isPostHeaderHidden) =>
   <div className="Posts asGrid">
     {postIds.map(id =>
       <article className="PostGrid" key={`postsAsGrid_${id}`}>
-        <PostContainer postId={id} isPostHeaderHidden={isPostHeaderHidden} />
+        <PostContainer postId={id} isPostHeaderHidden={isPostHeaderHidden} isRelatedPost />
       </article>,
     )}
   </div>
