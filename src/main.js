@@ -11,6 +11,7 @@ import { asyncLocalStorage } from 'redux-persist/storages'
 import immutableTransform from 'redux-persist-transform-immutable'
 import { syncHistoryWithStore } from 'react-router-redux'
 
+import './vendor/glamor-pxtorem'
 import './main.css'
 import { addFeatureDetection, isIOS } from './lib/jello'
 import MemoryStore from './lib/memory_store'
