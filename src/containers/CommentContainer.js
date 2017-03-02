@@ -119,11 +119,12 @@ class CommentContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     return !Immutable.is(nextProps.assets, this.props.assets) ||
       !Immutable.is(nextProps.comment, this.props.comment) ||
       !Immutable.is(nextProps.post, this.props.post) ||
-      ['isGridMode'].some(prop => nextProps[prop] !== this.props[prop])
+      ['isGridMode'].some(prop => nextProps[prop] !== this.props[prop]) ||
+      ['isMoreToolActive'].some(prop => nextState[prop] !== this.state[prop])
   }
 
   onClickDeleteComment = () => {
