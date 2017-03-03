@@ -93,7 +93,10 @@ class UserContainer extends Component {
     coverImage: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     externalLinksList: PropTypes.object,
-    followersCount: PropTypes.number.isRequired,
+    followersCount: React.PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]).isRequired,
     followingCount: PropTypes.number.isRequired,
     formattedShortBio: PropTypes.string,
     invitationAcceptedAt: PropTypes.string,

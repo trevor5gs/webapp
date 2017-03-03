@@ -182,7 +182,10 @@ export class UserProfileCard extends PureComponent {
   static propTypes = {
     avatar: PropTypes.object.isRequired,
     coverImage: PropTypes.object.isRequired,
-    followersCount: PropTypes.number.isRequired,
+    followersCount: React.PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]).isRequired,
     followingCount: PropTypes.number.isRequired,
     id: PropTypes.string.isRequired,
     isMobile: PropTypes.bool.isRequired,
@@ -283,7 +286,10 @@ export class UserProfile extends PureComponent {
   static propTypes = {
     avatar: PropTypes.object.isRequired,
     externalLinksList: PropTypes.object,
-    followersCount: PropTypes.number.isRequired,
+    followersCount: React.PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]).isRequired,
     followingCount: PropTypes.number.isRequired,
     id: PropTypes.string.isRequired,
     isCollaborateable: PropTypes.bool.isRequired,
