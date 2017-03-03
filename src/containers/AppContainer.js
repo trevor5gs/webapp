@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
+import { css } from 'glamor'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { trackEvent, trackInitialPage } from '../actions/analytics'
 import { getCategories, getPagePromotionals } from '../actions/discover'
@@ -30,6 +31,9 @@ import {
 } from '../selectors/promotions'
 import { selectViewNameFromRoute } from '../selectors/routing'
 import { scrollToPosition } from '../lib/jello'
+import { baseStyles } from '../styles/css'
+
+css.insert(baseStyles)
 
 function mapStateToProps(state) {
   const viewName = selectViewNameFromRoute(state)

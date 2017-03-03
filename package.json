@@ -159,6 +159,8 @@
     "express": "4.14.1",
     "extract-text-webpack-plugin": "1.0.1",
     "fetch-pretender": "1.5.0",
+    "glamor": "3.0.0-1",
+    "glamor-server": "3.0.0-1",
     "helmet": "^3.4.0",
     "honeybadger": "1.2.1",
     "honeybadger-js": "0.4.5",
