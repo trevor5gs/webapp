@@ -18,6 +18,8 @@ type FormPropTypes = {
 }
 
 export class FooterForm extends PureComponent {
+  props: FormPropTypes
+
   static contextTypes = {
     onSubmit: PropTypes.func.isRequired,
   }
@@ -34,7 +36,6 @@ export class FooterForm extends PureComponent {
     }
   }
 
-  props: FormPropTypes
   render() {
     const { formActionPath, formMessage, isDisabled, isMobile } = this.props
     const { onSubmit } = this.context
@@ -76,11 +77,12 @@ type LinkPropTypes = {
 }
 
 export class FooterLink extends PureComponent {
+  props: LinkPropTypes
+
   static defaultProps = {
     className: '',
   }
 
-  props: LinkPropTypes
   render() {
     const { className, href, label } = this.props
     return (
@@ -106,6 +108,8 @@ type ToolPropTypes = {
 }
 
 export class FooterTool extends Component {
+  props: ToolPropTypes
+
   static defaultProps = {
     className: '',
   }
@@ -114,7 +118,6 @@ export class FooterTool extends Component {
     return nextProps.label !== this.props.label || nextProps.className !== this.props.className
   }
 
-  props: ToolPropTypes
   render() {
     const { className, icon, label, onClick } = this.props
     return (
