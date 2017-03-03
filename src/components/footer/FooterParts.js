@@ -51,6 +51,7 @@ export class FooterForm extends PureComponent {
           classList="inFooter"
           label="Email"
           placeholder={isMobile ? 'Subscribe' : 'Enter email for daily inspiration'}
+          id="FooterEmailInput"
         />
         <FormButton
           className="FormButton inFooter"

@@ -150,8 +150,9 @@ class FooterContainer extends PureComponent {
     if (newState.status === STATUS.SUCCESS) {
       this.setState({ formStatus: STATUS.SUCCESS, formMessage: 'Subscribed. See you tomorrow' })
       setTimeout(() => {
+        const el = document.getElementById('FooterEmailInput')
         // $FlowFixMe
-        document.querySelector('.EmailControl input').value = ''
+        if (el) { el.value = '' }
         this.setState({ formStatus: STATUS.INDETERMINATE, formMessage: '' })
       }, 1666)
     } else {
