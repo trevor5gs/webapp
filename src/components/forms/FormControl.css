@@ -16,6 +16,24 @@
   margin-bottom: 25px;
 }
 
+.FormControl.inFooter {
+  display: inline-block;
+  width: 130px;
+  vertical-align: middle;
+}
+
+@media (--break-2) {
+  .FormControl.inFooter {
+    width: 200px;
+  }
+}
+
+@media (--break-3) {
+  .FormControl.inFooter {
+    width: 270px;
+  }
+}
+
 /* ------------------------------------- */
 
 .FormIcon {
@@ -78,6 +96,15 @@
   .FormControlInput.isOnboardingControl {
     font-size: 24px;
   }
+}
+
+.FormControlInput.inFooter {
+  height: 30px;
+  min-height: 30px;
+  padding-left: 10px;
+  line-height: 30px;
+  background-color: #fff;
+  border-bottom: 0;
 }
 
 .FormControlInput.isBoxControl {
@@ -233,6 +260,7 @@ textarea.FormControlInput.isOnboardingControl {
   text-align: right;
 }
 
+.FormControlLabel.inFooter,
 .FormControlLabel.isOnboardingControl {
   display: none;
 }
@@ -349,5 +377,43 @@ textarea.FormControlInput.isOnboardingControl {
   margin: 10px 0;
   opacity: 1;
   transition-delay: 1s, 1s, 1s;
+}
+
+.FormControlStatusBubble {
+  display: inline-block;
+  height: 30px;
+  padding: 0 15px;
+  line-height: 30px;
+  color: #fff;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: #000;
+  border: 1px solid #000;
+  border-radius: 20px;
+  transition: opacity var(--speed);
+}
+
+.isSucceeding > .FormControlStatusBubble {
+  background-color: #00d100;
+  border-color: #00d100;
+}
+
+.isFailing > .FormControlStatusBubble {
+  background-color: #f00;
+  border-color: #f00;
+}
+
+.FormControlStatusBubble.inFooter {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  z-index: 2;
+}
+
+@media (--break-2) {
+  .FormControlStatusBubble.inFooter {
+    right: auto;
+    left: 0;
+  }
 }
 

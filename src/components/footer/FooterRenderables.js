@@ -1,58 +1,93 @@
+// @flow
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
-import { isAndroid } from '../../lib/jello'
-import { PhoneIcon, ChevronIcon, ListIcon, GridIcon } from '../assets/Icons'
-import { FooterLabel, FooterLink, FooterTool } from '../footer/FooterParts'
+import { ChevronIcon, ListIcon, GridIcon } from '../assets/Icons'
+import { FooterForm, FooterLink, FooterTool } from '../footer/FooterParts'
+
+type LinkType = {
+  label: string,
+  to: string,
+}
+
+type FooterPropTypes = {
+  formActionPath: string,
+  formMessage: string,
+  formStatus: string,
+  isFormDisabled: boolean,
+  isGridMode: boolean,
+  isLayoutToolHidden: boolean,
+  isLoggedIn: boolean,
+  isMobile: boolean,
+  isPaginatoring: boolean,
+  links: Array<LinkType>,
+}
+
+type FooterContextTypes = {
+  onClickScrollToTop: () => void,
+  onClickToggleLayoutMode: () => void,
+}
 
 export const Footer = ({
+  formActionPath,
+  formMessage,
+  formStatus,
   isGridMode,
   isLayoutToolHidden,
+  isLoggedIn,
+  isMobile,
+  isFormDisabled,
   isPaginatoring,
+  links,
+}: FooterPropTypes, {
   onClickScrollToTop,
   onClickToggleLayoutMode,
-}) =>
+}: FooterContextTypes) =>
   <footer
     className={classNames('Footer', { isPaginatoring })}
     role="contentinfo"
   >
     <div className="FooterLinks">
-      <FooterLabel label="Beta" />
-      <FooterLink
-        className="asLabel"
-        href={`${ENV.AUTH_DOMAIN}/wtf`}
-        label="Help"
-      />
-      {isAndroid() ?
-        null :
+      { links.map(link =>
         <FooterLink
-          href="https://ello.co/wtf/resources/mobile-features/"
-          icon={<PhoneIcon />}
-          label="Apps"
-        />
-      }
+          className="asLabel"
+          href={link.to}
+          label={link.label}
+          key={`FooterLink_${link.label}`}
+        />,
+      )}
     </div>
     <div className="FooterTools">
-      <FooterTool
-        className="TopTool"
-        icon={<ChevronIcon />}
-        label="Top"
-        onClick={onClickScrollToTop}
-      />
-      {!isLayoutToolHidden ?
+      { !isLoggedIn &&
+        <FooterForm
+          {...{
+            formActionPath,
+            formMessage,
+            formStatus,
+            isDisabled: isFormDisabled,
+            isMobile,
+          }}
+        />
+      }
+      { (isLoggedIn || (!isLoggedIn && !isMobile)) && // TODO: move to FooterContainer
+        <FooterTool
+          className="TopTool"
+          icon={<ChevronIcon />}
+          label="Top"
+          onClick={onClickScrollToTop}
+        />
+      }
+      {!isLayoutToolHidden && (isLoggedIn || (!isLoggedIn && !isMobile)) &&
         <FooterTool
           className="LayoutTool"
           icon={isGridMode ? <ListIcon /> : <GridIcon />}
           label={isGridMode ? 'List View' : 'Grid View'}
           onClick={onClickToggleLayoutMode}
-        /> : null
+        />
       }
     </div>
   </footer>
 
-Footer.propTypes = {
-  isGridMode: PropTypes.bool.isRequired,
-  isLayoutToolHidden: PropTypes.bool.isRequired,
-  isPaginatoring: PropTypes.bool.isRequired,
+Footer.contextTypes = {
   onClickScrollToTop: PropTypes.func.isRequired,
   onClickToggleLayoutMode: PropTypes.func.isRequired,
 }

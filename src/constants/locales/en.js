@@ -31,6 +31,16 @@ export const FOLLOWING = {
   BEACON_TEXT: 'Follow the creators and communities that inspire you.',
 }
 
+export const FOOTER_LINKS = [
+  { label: 'About', to: `${ENV.AUTH_DOMAIN}/wtf/about/what-is-ello/` },
+  { label: 'Help', to: `${ENV.AUTH_DOMAIN}/wtf` },
+  { label: 'Blog', to: `${ENV.AUTH_DOMAIN}/elloblog` },
+  { label: 'Shop', to: `${ENV.AUTH_DOMAIN}/discover/shop` },
+  { label: 'Apps', to: `${ENV.AUTH_DOMAIN}/wtf/resources/mobile-features/` },
+  { label: 'Terms', to: `${ENV.AUTH_DOMAIN}/wtf/policies/terms-of-use/` },
+  { label: 'Privacy', to: `${ENV.AUTH_DOMAIN}/wtf/policies/privacy-policy/` },
+]
+
 export const META = {
   ALL_PAGE_DESCRIPTION: 'Discover work on Ello in Art, Fashion, Photography, Design, Architecture, Illustration, GIFs, 3D, Writing, Music, Textile, Skate and Cycling.',
   DESCRIPTION: 'Welcome to the Creators Network. Ello is a community to discover, discuss, publish, share and promote the things you are passionate about.',
