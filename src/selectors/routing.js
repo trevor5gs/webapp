@@ -65,6 +65,10 @@ export const selectViewNameFromRoute = createSelector(
   },
 )
 
+export const selectIsAuthenticationView = createSelector(
+  [selectViewNameFromRoute], viewName => viewName === 'authentication',
+)
+
 export const selectIsOnboardingView = createSelector(
   [selectViewNameFromRoute], viewName => viewName === 'onboarding',
 )

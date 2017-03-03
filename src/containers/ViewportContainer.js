@@ -12,7 +12,12 @@ import {
   selectScrollOffset,
 } from '../selectors/gui'
 import { selectModalType } from '../selectors/modal'
-import { selectIsOnboardingView, selectPathname, selectViewNameFromRoute } from '../selectors/routing'
+import {
+  selectIsAuthenticationView,
+  selectIsOnboardingView,
+  selectPathname,
+  selectViewNameFromRoute,
+} from '../selectors/routing'
 import { setIsNavbarHidden, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import {
@@ -21,10 +26,6 @@ import {
 } from '../components/viewport/PageVisibilityComponent'
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
-
-const selectIsAuthenticationView = createSelector(
-  [selectViewNameFromRoute], viewName => viewName === 'authentication' || viewName === 'join',
-)
 
 export const selectUserDetailPathClassName = createSelector(
   [selectViewNameFromRoute, selectPathname], (viewName, pathname) => {

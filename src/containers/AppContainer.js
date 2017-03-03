@@ -29,18 +29,17 @@ import {
   selectIsPagePromotion,
   selectRandomAuthPromotion,
 } from '../selectors/promotions'
-import { selectViewNameFromRoute } from '../selectors/routing'
+import { selectIsAuthenticationView } from '../selectors/routing'
 import { scrollToPosition } from '../lib/jello'
 import { baseStyles } from '../styles/css'
 
 css.insert(baseStyles)
 
 function mapStateToProps(state) {
-  const viewName = selectViewNameFromRoute(state)
   return {
     authPromo: selectRandomAuthPromotion(state),
     categoryData: selectCategoryData(state),
-    isAuthenticationLayout: viewName === 'authentication',
+    isAuthenticationView: selectIsAuthenticationView(state),
     isCategoryPromotion: selectIsCategoryPromotion(state),
     isLoggedIn: selectIsLoggedIn(state),
     isPagePromotion: selectIsPagePromotion(state),
@@ -54,7 +53,7 @@ class AppContainer extends Component {
     categoryData: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
-    isAuthenticationLayout: PropTypes.bool.isRequired,
+    isAuthenticationView: PropTypes.bool.isRequired,
     isCategoryPromotion: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isPagePromotion: PropTypes.bool.isRequired,
@@ -126,7 +125,7 @@ class AppContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return ['isLoggedIn', 'params', 'children'].some(prop =>
+    return ['isAuthenticationView', 'isLoggedIn', 'params', 'children'].some(prop =>
       nextProps[prop] !== this.props[prop],
     )
   }
@@ -136,8 +135,8 @@ class AppContainer extends Component {
   }
 
   onClickOpenRegistrationRequestDialog = (trackPostfix = 'modal') => {
-    const { authPromo, dispatch, isAuthenticationLayout } = this.props
-    if (isAuthenticationLayout) { return }
+    const { authPromo, dispatch, isAuthenticationView } = this.props
+    if (isAuthenticationView) { return }
     dispatch(openModal(
       <RegistrationRequestDialog promotional={authPromo} />,
       'asDecapitated',
@@ -170,7 +169,7 @@ class AppContainer extends Component {
   }
 
   render() {
-    const { children, isLoggedIn, params } = this.props
+    const { children, isAuthenticationView, isLoggedIn, params } = this.props
     const appClasses = classNames(
       'AppContainer',
       { isLoggedIn },
@@ -184,7 +183,7 @@ class AppContainer extends Component {
         <HeroContainer params={params} />
         {children}
         <NavbarContainer params={params} />
-        <FooterContainer params={params} />
+        {!isAuthenticationView && <FooterContainer params={params} />}
         {isLoggedIn ? <InputContainer /> : null}
         <ModalContainer />
         <DevTools />

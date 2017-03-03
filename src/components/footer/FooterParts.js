@@ -19,7 +19,6 @@ type FormPropTypes = {
 
 export class FooterForm extends PureComponent {
   static contextTypes = {
-    onChangeEmailControl: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
   }
 
@@ -38,7 +37,7 @@ export class FooterForm extends PureComponent {
   props: FormPropTypes
   render() {
     const { formActionPath, formMessage, isDisabled, isMobile } = this.props
-    const { onChangeEmailControl, onSubmit } = this.context
+    const { onSubmit } = this.context
     return (
       <form
         action={formActionPath}
@@ -51,7 +50,6 @@ export class FooterForm extends PureComponent {
         <EmailControl
           classList="inFooter"
           label="Email"
-          onChange={onChangeEmailControl}
           placeholder={isMobile ? 'Subscribe' : 'Enter email for daily inspiration'}
         />
         <FormButton
