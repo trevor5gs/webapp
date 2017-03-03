@@ -44,3 +44,13 @@
   }
 }
 
+@keyframes animateIsBusyButton {
+  from {
+    transform: rotate(0deg) scale(0.5);
+  }
+
+  to {
+    transform: rotate(720deg) scale(0.5);
+  }
+}
+

@@ -2,9 +2,10 @@ import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { POST } from '../constants/action_types'
+import { scrollToSelector } from '../lib/jello'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectParamsToken, selectParamsUsername } from '../selectors/params'
-import { selectPost, selectPostAuthor, selectPostIsEmpty } from '../selectors/post'
+import { selectPost, selectPostAuthor, selectPostIsEmpty, selectPropsLocationStateFrom } from '../selectors/post'
 import { selectStreamType } from '../selectors/stream'
 import { loadComments, loadPostDetail, toggleLovers, toggleReposters } from '../actions/posts'
 import { ErrorState4xx } from '../components/errors/Errors'
@@ -25,6 +26,7 @@ export function mapStateToProps(state, props) {
     author: selectPostAuthor(state, props),
     isLoggedIn: selectIsLoggedIn(state),
     isPostEmpty: selectPostIsEmpty(state, props),
+    locationStateFrom: selectPropsLocationStateFrom(state, props),
     paramsToken: selectParamsToken(state, props),
     paramsUsername: selectParamsUsername(state, props),
     post: selectPost(state, props),
@@ -39,6 +41,7 @@ class PostDetailContainer extends Component {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isPostEmpty: PropTypes.bool.isRequired,
+    locationStateFrom: PropTypes.string,
     post: PropTypes.object,
     paramsToken: PropTypes.string.isRequired,
     paramsUsername: PropTypes.string.isRequired,
@@ -47,6 +50,7 @@ class PostDetailContainer extends Component {
 
   static defaultProps = {
     author: null,
+    locationStateFrom: null,
     post: null,
     streamType: null,
   }
@@ -64,6 +68,14 @@ class PostDetailContainer extends Component {
     }
     this.state = { renderType: POST.DETAIL_REQUEST }
     dispatch(loadPostDetail(`~${paramsToken}`, `~${paramsUsername}`))
+  }
+
+  componentDidMount() {
+    if (this.props.locationStateFrom === 'PaginatorLink') {
+      requestAnimationFrame(() => {
+        scrollToSelector('.CommentStreamContainer')
+      })
+    }
   }
 
   componentWillReceiveProps(nextProps) {

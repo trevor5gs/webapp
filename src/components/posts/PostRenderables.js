@@ -6,36 +6,7 @@ import Avatar from '../assets/Avatar'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationshipContainer from '../../containers/RelationshipContainer'
-import StreamContainer from '../../containers/StreamContainer'
-import { loadComments } from '../../actions/posts'
 import { RegionItems } from '../regions/RegionRenderables'
-
-// TODO: look at moving this into the PostContainer and refactoring the
-// PostDetailContainer to also use the PostContainer
-export const CommentStream = ({ detailPath, postId, postCommentsCount }) =>
-  <div>
-    <StreamContainer
-      className="CommentStreamContainer isFullWidth"
-      action={loadComments(postId)}
-    >
-      {postCommentsCount > 10 &&
-        <Link
-          to={{
-            pathname: detailPath,
-            state: { didComeFromSeeMoreCommentsLink: true },
-          }}
-          className="CommentsLink"
-        >
-          See More
-        </Link>
-      }
-    </StreamContainer>
-  </div>
-CommentStream.propTypes = {
-  detailPath: PropTypes.string.isRequired,
-  postCommentsCount: PropTypes.number.isRequired,
-  postId: PropTypes.string.isRequired,
-}
 
 const PostHeaderTimeAgoLink = ({ to, createdAt }) =>
   <Link className="PostHeaderTimeAgoLink" to={to}>

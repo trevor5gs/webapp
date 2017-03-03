@@ -53,6 +53,7 @@ import { openModal, closeModal } from '../actions/modals'
 import {
   deletePost,
   flagPost,
+  loadComments,
   loadEditablePost,
   lovePost,
   toggleComments,
@@ -64,6 +65,7 @@ import {
   unwatchPost,
   watchPost,
 } from '../actions/posts'
+import StreamContainer from '../containers/StreamContainer'
 import ConfirmDialog from '../components/dialogs/ConfirmDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
@@ -71,7 +73,6 @@ import Editor from '../components/editor/Editor'
 import { HeartIcon, RepostIcon } from '../components/posts/PostIcons'
 import {
   CategoryHeader,
-  CommentStream,
   PostBody,
   PostHeader,
   RepostHeader,
@@ -551,10 +552,12 @@ class PostContainer extends Component {
         }
         {showCommentEditor && <Editor post={post} isComment />}
         {showCommentEditor &&
-          <CommentStream
-            detailPath={detailPath}
+          <StreamContainer
+            action={loadComments(postId)}
+            className="CommentStreamContainer isFullWidth"
+            paginatorText="See More"
+            paginatorTo={detailPath}
             postCommentsCount={postCommentsCount}
-            postId={postId}
           />
         }
       </div>)

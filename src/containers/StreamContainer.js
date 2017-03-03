@@ -63,6 +63,7 @@ class StreamContainer extends Component {
     isPostHeaderHidden: PropTypes.bool,
     omnibar: PropTypes.object.isRequired,
     paginatorText: PropTypes.string,
+    paginatorTo: PropTypes.string,
     result: PropTypes.object.isRequired,
     resultPath: PropTypes.string.isRequired,
     scrollContainer: PropTypes.object,
@@ -77,6 +78,7 @@ class StreamContainer extends Component {
     isModalComponent: false,
     isPostHeaderHidden: false,
     paginatorText: 'Loading',
+    paginatorTo: null,
     scrollContainer: null,
     shouldInfiniteScroll: true,
   }
@@ -270,7 +272,7 @@ class StreamContainer extends Component {
 
   render() {
     const { className, columnCount, isGridMode, isPostHeaderHidden,
-      paginatorText, result, stream } = this.props
+      paginatorText, paginatorTo, result, stream } = this.props
     const { action, hidePaginator, renderType } = this.state
     if (!action) { return null }
     if (!result.get('ids').size) {
@@ -294,7 +296,6 @@ class StreamContainer extends Component {
     return (
       <section className={classNames('StreamContainer', className)}>
         {meta.renderStream[renderMethod](result.get('ids'), columnCount, isPostHeaderHidden)}
-        {this.props.children}
         <Paginator
           hasShowMoreButton={
             typeof meta.resultKey !== 'undefined' && typeof meta.updateKey !== 'undefined'
@@ -302,6 +303,7 @@ class StreamContainer extends Component {
           isHidden={hidePaginator}
           loadNextPage={this.onLoadNextPage}
           messageText={paginatorText}
+          to={paginatorTo}
           totalPages={Number(pagination.get('totalPages'))}
           totalPagesRemaining={Number(pagination.get('totalPagesRemaining'))}
         />

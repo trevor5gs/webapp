@@ -36,43 +36,43 @@
   margin-left: 10px;
 }
 
-/* // Position to the right for Lovers/Reposter drawers */
-.UserDrawer .Paginator {
+/* // Position to the bottom for post detail */
+.BlockedUsers .Paginator,
+.CommentStreamContainer .Paginator,
+.MutedUsers .Paginator {
   position: static;
-  display: inline-block;
-  width: auto;
-  height: auto;
-  line-height: 30px;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  color: #fff;
   vertical-align: middle;
+  background-color: #aaa;
+  border-radius: 5px;
   transform: none;
-}
-
-.UserDrawer .Paginator:not(.isBusy) .ElloMark {
-  display: none;
-}
-
-@media (--break-2) {
-  .UserDrawer .Paginator {
-    line-height: 40px;
-  }
-}
-
-/* // Position bottom left for see more on settings */
-.BlockedUsers,
-.MutedUsers {
-  margin-bottom: 80px;
 }
 
 .BlockedUsers .Paginator,
 .MutedUsers .Paginator {
-  right: auto;
-  bottom: -60px;
-  height: auto;
-  transform: translate3d(0, 0, 0);
+  margin-bottom: 30px;
+}
+
+.CommentStreamContainer .Paginator {
+  max-width: 580px;
+}
+
+.CommentStreamContainer .Paginator button {
+  width: calc(100% - 40px);
 }
 
 .BlockedUsers .Paginator:not(.isBusy) .ElloMark,
+.CommentStreamContainer .Paginator:not(.isBusy) .ElloMark,
 .MutedUsers .Paginator:not(.isBusy) .ElloMark {
   display: none;
+}
+
+@media (--break-2) {
+  .CommentStreamContainer .Paginator {
+    margin-left: 60px;
+  }
 }
 

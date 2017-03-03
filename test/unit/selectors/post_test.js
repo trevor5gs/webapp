@@ -79,6 +79,18 @@ describe('post selectors', () => {
     })
   })
 
+  context('#selectPropsLocationStateFrom', () => {
+    it('returns the correct props isRelatedPost', () => {
+      const props = { location: { state: { from: 'PaginatorLink' } } }
+      expect(selector.selectPropsLocationStateFrom(state, props)).to.equal('PaginatorLink')
+    })
+
+    it('returns the correct props post id from a post', () => {
+      const props = {}
+      expect(selector.selectPropsLocationStateFrom(state, props)).to.be.null
+    })
+  })
+
 
   context('#selectPosts', () => {
     it('returns posts model out of json', () => {

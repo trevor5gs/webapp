@@ -131,15 +131,22 @@ function isElementInViewport(el, topOffset = 0) {
   )
 }
 
+export function scrollToSelector(selector) {
+  const el = document.querySelector(selector)
+  if (!el) { return }
+  const rect = el.getBoundingClientRect()
+  scrollToPosition(0, (rect.bottom - window.innerHeight) + 200)
+}
+
 export function scrollToLastTextBlock(editorId, isNavbarHidden) {
   const textBlocks = document.querySelectorAll(`[data-editor-id='${editorId}'] div.text`)
   const lastTextBlock = textBlocks[textBlocks.length - 1]
   if (lastTextBlock && !isElementInViewport(lastTextBlock, isNavbarHidden ? 80 : 160)) {
     const pos = lastTextBlock.getBoundingClientRect()
     if (pos.top > window.innerHeight) {
-      scrollTo(0, window.scrollY + ((pos.top - window.innerHeight) + 140))
+      scrollToPosition(0, window.scrollY + ((pos.top - window.innerHeight) + 140))
     } else {
-      scrollTo(0, window.scrollY + (pos.top - 200))
+      scrollToPosition(0, window.scrollY + (pos.top - 200))
     }
   }
 }

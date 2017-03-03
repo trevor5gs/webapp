@@ -61,6 +61,7 @@ export function loadComments(postId, addUpdateKey = true) {
         asGrid: StreamRenderables.commentsAsList,
       },
       resultKey: `/posts/${postId}/comments`,
+      updateKey: `/posts/${postId}`,
     },
   }
   if (addUpdateKey) {

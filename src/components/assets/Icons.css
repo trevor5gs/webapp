@@ -125,6 +125,18 @@
   fill: #aaa !important;
 }
 
+.BlockedUsers .ElloMark.isSpinner,
+.CommentStreamContainer .ElloMark.isSpinner,
+.MutedUsers .ElloMark.isSpinner {
+  animation: animateIsBusyButton 1.03333s infinite var(--ease-in-out-cubic);
+}
+
+.BlockedUsers .ElloMark.isSpinner > .SmileShape,
+.CommentStreamContainer .ElloMark.isSpinner > .SmileShape,
+.MutedUsers .ElloMark.isSpinner > .SmileShape {
+  fill: #fff !important;
+}
+
 .XClose {
   position: absolute;
   top: 10px;

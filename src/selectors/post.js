@@ -20,7 +20,7 @@ export const selectPropsPostId = (state, props) =>
   get(props, 'postId') || get(props, 'post', Immutable.Map()).get('id')
 
 export const selectPropsPostIsRelated = (state, props) => get(props, 'isRelatedPost', false)
-
+export const selectPropsLocationStateFrom = (state, props) => get(props, ['location', 'state', 'from'], null)
 export const selectPosts = state => state.json.get(POSTS, Immutable.Map())
 
 // Memoized selectors
