@@ -38,7 +38,11 @@
 }
 
 .LabelTab + .LabelTab {
-  margin-left: 20px;
+  margin-left: 15px;
+}
+
+.PostDetail .LabelTab {
+  font-size: 16px;
 }
 
 @media (--break-2) {

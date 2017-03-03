@@ -38,7 +38,7 @@
 
 /* // Position to the bottom for post detail */
 .BlockedUsers .Paginator,
-.CommentStreamContainer .Paginator,
+.TabListStreamContainer .Paginator,
 .MutedUsers .Paginator {
   position: static;
   width: 100%;
@@ -56,22 +56,22 @@
   margin-bottom: 30px;
 }
 
-.CommentStreamContainer .Paginator {
+.TabListStreamContainer .Paginator {
   max-width: 580px;
 }
 
-.CommentStreamContainer .Paginator button {
+.TabListStreamContainer .Paginator button {
   width: calc(100% - 40px);
 }
 
 .BlockedUsers .Paginator:not(.isBusy) .ElloMark,
-.CommentStreamContainer .Paginator:not(.isBusy) .ElloMark,
+.TabListStreamContainer .Paginator:not(.isBusy) .ElloMark,
 .MutedUsers .Paginator:not(.isBusy) .ElloMark {
   display: none;
 }
 
 @media (--break-2) {
-  .CommentStreamContainer .Paginator {
+  .Posts:not(.asGrid) .TabListStreamContainer .Paginator {
     margin-left: 60px;
   }
 }

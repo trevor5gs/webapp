@@ -7,7 +7,8 @@ import { numberToHuman } from '../lib/number_to_human'
 import { selectAssets } from './assets'
 import { selectIsLoggedIn } from './authentication'
 import { selectCategoryCollection } from './categories'
-import { selectIsGridMode } from './gui'
+import { selectIsGridMode, selectIsMobile } from './gui'
+import { selectPages } from './pages'
 import { selectParamsToken } from './params'
 import { selectId as selectProfileId } from './profile'
 import { selectIsPostDetail } from './routing'
@@ -24,7 +25,6 @@ export const selectPropsLocationStateFrom = (state, props) => get(props, ['locat
 export const selectPosts = state => state.json.get(POSTS, Immutable.Map())
 
 // Memoized selectors
-
 // Requires `postId`, `post` or `params.token` to be found in props
 export const selectPost = createSelector(
   [selectPropsPostId, selectParamsToken, selectPosts], (id, token, posts) => {
@@ -137,6 +137,11 @@ export const selectPostAuthor = createSelector(
 
 export const selectPostAuthorUsername = createSelector(
   [selectPostAuthor], author => author.get('username'),
+)
+
+export const selectPostHasRelatedButton = createSelector(
+  [selectPostId, selectPages, selectIsMobile], (postId, pages, isMobile) =>
+    !pages.getIn([`/posts/${postId}/related_posts`, 'ids'], Immutable.List()).isEmpty() && !isMobile,
 )
 
 // TODO: Pull other properties out of post.get('links')?

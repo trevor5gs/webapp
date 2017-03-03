@@ -5,10 +5,7 @@ import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
 import BackgroundImage from '../assets/BackgroundImage'
 import { ShareIcon } from '../assets/Icons'
-import Hint from '../hints/Hint'
-import { loadUserDrawer } from '../../actions/user'
 import RelationshipContainer from '../../containers/RelationshipContainer'
-import StreamContainer from '../../containers/StreamContainer'
 import {
   UserFeaturedButton,
   UserFiguresCell,
@@ -20,53 +17,6 @@ import {
   UserProfileButtons,
   UserStatsCell,
 } from './UserParts'
-
-// -------------------------------------
-
-// TODO: Does this belong here? It's rendered by PostContainer and not UserContainer
-export const UserDrawer = ({ endpoint, icon, postId, resultType }) =>
-  <section className="UserDrawer">
-    {icon}
-    <StreamContainer
-      action={loadUserDrawer(endpoint, postId, resultType)}
-      paginatorText="+more"
-      shouldInfiniteScroll={false}
-    />
-  </section>
-UserDrawer.propTypes = {
-  endpoint: PropTypes.object.isRequired,
-  icon: PropTypes.element.isRequired,
-  postId: PropTypes.string.isRequired,
-  resultType: PropTypes.string.isRequired,
-}
-
-// -----------------
-
-export class UserAvatar extends PureComponent {
-  static propTypes = {
-    avatar: PropTypes.object.isRequired,
-    id: PropTypes.string.isRequired,
-    relationshipPriority: PropTypes.string,
-    username: PropTypes.string.isRequired,
-  }
-  static defaultProps = {
-    relationshipPriority: null,
-  }
-  render() {
-    const { avatar, id, relationshipPriority, username } = this.props
-    return (
-      <Link className="UserAvatar" to={`/${username}`}>
-        <Avatar
-          priority={relationshipPriority}
-          sources={avatar}
-          userId={id}
-          username={username}
-        />
-        <Hint>{`@${username}`}</Hint>
-      </Link>
-    )
-  }
-}
 
 // -----------------
 

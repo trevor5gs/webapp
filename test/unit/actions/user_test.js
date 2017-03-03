@@ -1,9 +1,7 @@
 import Immutable from 'immutable'
 import { isFSA, isFSAName } from '../../support/test_helpers'
 import * as subject from '../../../src/actions/user'
-import {
-  postsAsGrid, postsAsList, userAvatars, usersAsGrid,
-} from '../../../src/components/streams/StreamRenderables'
+import { postsAsGrid, postsAsList, usersAsGrid } from '../../../src/components/streams/StreamRenderables'
 import { postsFromLoves } from '../../../src/components/streams/StreamFilters'
 import { postLovers } from '../../../src/networking/api'
 
@@ -182,8 +180,8 @@ describe('user actions', () => {
     })
 
     it('has asList, asGrid and asError properties on renderStreams in the action', () => {
-      expect(action.meta.renderStream.asList).to.equal(userAvatars)
-      expect(action.meta.renderStream.asGrid).to.equal(userAvatars)
+      expect(action.meta.renderStream.asList).to.equal(usersAsGrid)
+      expect(action.meta.renderStream.asGrid).to.equal(usersAsGrid)
       expect(action.meta.renderStream.asError).to.exist
     })
 

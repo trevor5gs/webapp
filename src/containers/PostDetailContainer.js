@@ -5,25 +5,28 @@ import { POST } from '../constants/action_types'
 import { scrollToSelector } from '../lib/jello'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectParamsToken, selectParamsUsername } from '../selectors/params'
-import { selectPost, selectPostAuthor, selectPostIsEmpty, selectPropsLocationStateFrom } from '../selectors/post'
+import { selectPost, selectPostAuthor, selectPostHasRelatedButton, selectPostIsEmpty, selectPropsLocationStateFrom } from '../selectors/post'
 import { selectStreamType } from '../selectors/stream'
 import { loadComments, loadPostDetail, toggleLovers, toggleReposters } from '../actions/posts'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { Paginator } from '../components/streams/Paginator'
 import { PostDetail, PostDetailError } from '../components/views/PostDetail'
+import { postLovers, postReposters } from '../networking/api'
+import { loadUserDrawer } from '../actions/user'
 
 export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
   if (!nextProps.author || !nextProps.post) { return false }
   return !Immutable.is(nextProps.post, thisProps.post) ||
-    ['isLoggedIn', 'paramsToken', 'paramsUsername'].some(prop =>
+    ['hasRelatedPostsButton', 'isLoggedIn', 'paramsToken', 'paramsUsername'].some(prop =>
       nextProps[prop] !== thisProps[prop],
     ) ||
-    ['renderType'].some(prop => nextState[prop] !== thisState[prop])
+    ['activeType', 'renderType'].some(prop => nextState[prop] !== thisState[prop])
 }
 
 export function mapStateToProps(state, props) {
   return {
     author: selectPostAuthor(state, props),
+    hasRelatedPostsButton: selectPostHasRelatedButton(state, props),
     isLoggedIn: selectIsLoggedIn(state),
     isPostEmpty: selectPostIsEmpty(state, props),
     locationStateFrom: selectPropsLocationStateFrom(state, props),
@@ -39,6 +42,7 @@ class PostDetailContainer extends Component {
   static propTypes = {
     author: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
+    hasRelatedPostsButton: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isPostEmpty: PropTypes.bool.isRequired,
     locationStateFrom: PropTypes.string,
@@ -55,9 +59,21 @@ class PostDetailContainer extends Component {
     streamType: null,
   }
 
+  static childContextTypes = {
+    onClickDetailTab: PropTypes.func.isRequired,
+    onClickScrollToRelatedPosts: PropTypes.func.isRequired,
+  }
+
   static preRender = (store, routerState) => {
     const params = routerState.params
     return store.dispatch(loadPostDetail(`~${params.token}`, `~${params.username}`))
+  }
+
+  getChildContext() {
+    return {
+      onClickDetailTab: this.onClickDetailTab,
+      onClickScrollToRelatedPosts: this.onClickScrollToRelatedPosts,
+    }
   }
 
   componentWillMount() {
@@ -66,14 +82,14 @@ class PostDetailContainer extends Component {
       this.lovesWasOpen = post.get('showLovers')
       this.repostsWasOpen = post.get('showReposters')
     }
-    this.state = { renderType: POST.DETAIL_REQUEST }
+    this.state = { activeType: 'comments', renderType: POST.DETAIL_REQUEST }
     dispatch(loadPostDetail(`~${paramsToken}`, `~${paramsUsername}`))
   }
 
   componentDidMount() {
     if (this.props.locationStateFrom === 'PaginatorLink') {
       requestAnimationFrame(() => {
-        scrollToSelector('.CommentStreamContainer')
+        scrollToSelector('.TabListStreamContainer', { boundary: 'bottom', offset: 200 })
       })
     }
   }
@@ -110,9 +126,19 @@ class PostDetailContainer extends Component {
     }
   }
 
+  onClickDetailTab = (vo) => {
+    if (vo.type) {
+      this.setState({ activeType: vo.type })
+    }
+  }
+
+  onClickScrollToRelatedPosts = () => {
+    scrollToSelector('.RelatedPostsStreamContainer .Post', { boundary: 'bottom', offset: 60 })
+  }
+
   render() {
-    const { author, isPostEmpty, paramsToken, post } = this.props
-    const { renderType } = this.state
+    const { author, hasRelatedPostsButton, isPostEmpty, paramsToken, post } = this.props
+    const { activeType, renderType } = this.state
     // render loading/failure if we don't have an initial post
     if (isPostEmpty) {
       if (renderType === POST.DETAIL_REQUEST) {
@@ -130,12 +156,27 @@ class PostDetailContainer extends Component {
       }
       return null
     }
+    const postId = post.get('id')
+    let streamAction
+    switch (activeType) {
+      case 'loves':
+        streamAction = loadUserDrawer(postLovers(postId), postId, activeType)
+        break
+      case 'reposts':
+        streamAction = loadUserDrawer(postReposters(postId), postId, activeType)
+        break
+      default:
+        streamAction = author && author.get('hasCommentingEnabled') ? loadComments(post.get('id'), false) : null
+        break
+    }
     const props = {
+      activeType,
       author,
       hasEditor: author && author.get('hasCommentingEnabled') && !(post.get('isReposting') || post.get('isEditing')),
+      hasRelatedPostsButton,
       key: `postDetail_${paramsToken}`,
       post,
-      streamAction: author && author.get('hasCommentingEnabled') ? loadComments(post.get('id'), false) : null,
+      streamAction,
     }
     return <PostDetail {...props} />
   }

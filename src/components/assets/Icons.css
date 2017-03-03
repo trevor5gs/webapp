@@ -126,13 +126,13 @@
 }
 
 .BlockedUsers .ElloMark.isSpinner,
-.CommentStreamContainer .ElloMark.isSpinner,
+.TabListStreamContainer .ElloMark.isSpinner,
 .MutedUsers .ElloMark.isSpinner {
   animation: animateIsBusyButton 1.03333s infinite var(--ease-in-out-cubic);
 }
 
 .BlockedUsers .ElloMark.isSpinner > .SmileShape,
-.CommentStreamContainer .ElloMark.isSpinner > .SmileShape,
+.TabListStreamContainer .ElloMark.isSpinner > .SmileShape,
 .MutedUsers .ElloMark.isSpinner > .SmileShape {
   fill: #fff !important;
 }

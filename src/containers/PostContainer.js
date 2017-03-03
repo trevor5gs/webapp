@@ -70,7 +70,6 @@ import ConfirmDialog from '../components/dialogs/ConfirmDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import Editor from '../components/editor/Editor'
-import { HeartIcon, RepostIcon } from '../components/posts/PostIcons'
 import {
   CategoryHeader,
   PostBody,
@@ -78,8 +77,6 @@ import {
   RepostHeader,
 } from '../components/posts/PostRenderables'
 import { PostTools, WatchTool } from '../components/posts/PostTools'
-import { UserDrawer } from '../components/users/UserRenderables'
-import { postLovers, postReposters } from '../networking/api'
 import { isLink } from '../lib/jello'
 
 export function makeMapStateToProps() {
@@ -445,8 +442,6 @@ class PostContainer extends Component {
       repostContent,
       showCommentEditor,
       showEditor,
-      showLovers,
-      showReposters,
       summary,
     } = this.props
     if (isPostEmpty || !author || !author.get('id')) { return null }
@@ -525,24 +520,6 @@ class PostContainer extends Component {
           postRepostsCount={postRepostsCount}
           postViewsCountRounded={postViewsCountRounded}
         />
-        {showLovers &&
-          <UserDrawer
-            endpoint={postLovers(postId)}
-            icon={<HeartIcon />}
-            key={`userAvatarsLovers_${postId}`}
-            postId={postId}
-            resultType="love"
-          />
-        }
-        {showReposters &&
-          <UserDrawer
-            endpoint={postReposters(postId)}
-            icon={<RepostIcon />}
-            key={`userAvatarsReposters_${postId}`}
-            postId={postId}
-            resultType="repost"
-          />
-        }
         {isMobile && !isRelatedPost &&
           <WatchTool
             isMobile
@@ -554,7 +531,7 @@ class PostContainer extends Component {
         {showCommentEditor &&
           <StreamContainer
             action={loadComments(postId)}
-            className="CommentStreamContainer isFullWidth"
+            className="TabListStreamContainer isFullWidth"
             paginatorText="See More"
             paginatorTo={detailPath}
             postCommentsCount={postCommentsCount}

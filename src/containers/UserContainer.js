@@ -33,7 +33,6 @@ import {
   selectUserUsername,
 } from '../selectors/user'
 import {
-  UserAvatar,
   UserCompact,
   UserInvitee,
   UserProfileCard,
@@ -118,7 +117,6 @@ class UserContainer extends Component {
     totalPostViewsCount: PropTypes.string,
     truncatedShortBio: PropTypes.string.isRequired,
     type: PropTypes.oneOf([
-      'avatar',
       'compact',
       'invitee',
       'grid',
@@ -302,10 +300,6 @@ class UserContainer extends Component {
     } = this.props
     if (isUserEmpty && !invitationEmail) { return null }
     switch (type) {
-      case 'avatar':
-        return (
-          <UserAvatar {...{ avatar, id, relationshipPriority, username }} />
-        )
       case 'compact':
         return (
           <UserCompact {...{ avatar, id, relationshipPriority, username }} />

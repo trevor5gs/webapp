@@ -1,5 +1,6 @@
 /* eslint-disable react/no-multi-comp */
 import React, { PropTypes, PureComponent } from 'react'
+import { css } from 'glamor'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
@@ -245,5 +246,24 @@ export class PostBody extends PureComponent {
       </div>
     )
   }
+}
+
+const relatedPostButtonStyles = css({
+  position: 'absolute',
+  right: 0,
+  top: 0,
+  fontSize: 18,
+  color: '#aaa',
+})
+
+export const RelatedPostsButton = (props, { onClickScrollToRelatedPosts }) =>
+  <button
+    onClick={onClickScrollToRelatedPosts}
+    {...relatedPostButtonStyles}
+  >
+    Related Posts
+  </button>
+RelatedPostsButton.contextTypes = {
+  onClickScrollToRelatedPosts: PropTypes.func.isRequired,
 }
 

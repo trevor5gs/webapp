@@ -131,11 +131,11 @@ function isElementInViewport(el, topOffset = 0) {
   )
 }
 
-export function scrollToSelector(selector) {
+export function scrollToSelector(selector, options = {}) {
   const el = document.querySelector(selector)
   if (!el) { return }
   const rect = el.getBoundingClientRect()
-  scrollToPosition(0, (rect.bottom - window.innerHeight) + 200)
+  scrollToPosition(0, window.scrollY + (rect[options.boundary || 'top'] - window.innerHeight) + (options.offset || 0))
 }
 
 export function scrollToLastTextBlock(editorId, isNavbarHidden) {

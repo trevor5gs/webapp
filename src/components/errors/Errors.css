@@ -13,11 +13,6 @@
   margin: 0 auto 75px;
 }
 
-.UserDrawer .ErrorState {
-  position: relative;
-  top: 10px;
-}
-
 @media (--break-2) {
   .ErrorState {
     padding-right: 0;

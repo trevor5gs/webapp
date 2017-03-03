@@ -86,15 +86,6 @@ export const postsAsRelated = (postIds, columnCount, isPostHeaderHidden) => {
 }
 
 // USERS
-export const userAvatars = userIds =>
-  userIds.map(id =>
-    <UserContainer
-      key={`userAvatar_${id}`}
-      type="avatar"
-      userId={id}
-    />,
-  )
-
 export const usersAsCompact = userIds =>
   userIds.map(id =>
     <UserContainer
