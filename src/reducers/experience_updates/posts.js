@@ -173,19 +173,9 @@ methods.toggleEditing = (state, action) => {
   return state.setIn([MAPPING_TYPES.POSTS, model.get('id'), 'isEditing'], isEditing)
 }
 
-methods.toggleLovers = (state, action) => {
-  const { model, showLovers } = action.payload
-  return state.setIn([MAPPING_TYPES.POSTS, model.get('id'), 'showLovers'], showLovers)
-}
-
 methods.toggleReposting = (state, action) => {
   const { model, isReposting } = action.payload
   return state.setIn([MAPPING_TYPES.POSTS, model.get('id'), 'isReposting'], isReposting)
-}
-
-methods.toggleReposters = (state, action) => {
-  const { model, showReposters } = action.payload
-  return state.setIn([MAPPING_TYPES.POSTS, model.get('id'), 'showReposters'], showReposters)
 }
 
 export default methods

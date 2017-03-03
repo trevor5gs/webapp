@@ -129,15 +129,7 @@ describe('posts experience update', () => {
     it('should be tested')
   })
 
-  describe('#toggleLovers', () => {
-    it('should be tested')
-  })
-
   describe('#toggleReposting', () => {
-    it('should be tested')
-  })
-
-  describe('#toggleReposters', () => {
     it('should be tested')
   })
 })

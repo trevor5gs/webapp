@@ -41,8 +41,6 @@ import {
   selectPostRepostsCount,
   selectPostShowCommentEditor,
   selectPostShowEditor,
-  selectPostShowLoversDrawer,
-  selectPostShowRepostersDrawer,
   selectPostSummary,
   selectPostViewsCountRounded,
   selectPropsPostId,
@@ -58,8 +56,6 @@ import {
   lovePost,
   toggleComments,
   toggleEditing,
-  toggleLovers,
-  toggleReposters,
   toggleReposting,
   unlovePost,
   unwatchPost,
@@ -121,8 +117,6 @@ export function makeMapStateToProps() {
       repostContent: selectPostRepostContent(state, props),
       showCommentEditor: selectPostShowCommentEditor(state, props),
       showEditor: selectPostShowEditor(state, props),
-      showLovers: selectPostShowLoversDrawer(state, props),
-      showReposters: selectPostShowRepostersDrawer(state, props),
       summary: selectPostSummary(state, props),
     })
 }
@@ -172,8 +166,6 @@ class PostContainer extends Component {
     repostContent: PropTypes.object,
     showCommentEditor: PropTypes.bool.isRequired,
     showEditor: PropTypes.bool.isRequired,
-    showLovers: PropTypes.bool.isRequired,
-    showReposters: PropTypes.bool.isRequired,
     summary: PropTypes.object,
   }
 
@@ -207,8 +199,6 @@ class PostContainer extends Component {
     onClickRepostPost: PropTypes.func.isRequired,
     onClickSharePost: PropTypes.func.isRequired,
     onClickToggleComments: PropTypes.func.isRequired,
-    onClickToggleLovers: PropTypes.func.isRequired,
-    onClickToggleReposters: PropTypes.func.isRequired,
     onClickWatchPost: PropTypes.func.isRequired,
   }
 
@@ -227,8 +217,6 @@ class PostContainer extends Component {
       onClickRepostPost: isLoggedIn ? this.onClickRepostPost : this.onOpenSignupModal,
       onClickSharePost: this.onClickSharePost,
       onClickToggleComments: this.onClickToggleComments,
-      onClickToggleLovers: isLoggedIn ? this.onClickToggleLovers : this.onOpenSignupModal,
-      onClickToggleReposters: isLoggedIn ? this.onClickToggleReposters : this.onOpenSignupModal,
       onClickWatchPost: isLoggedIn ? this.onClickWatchPost : this.onOpenSignupModal,
     }
   }
@@ -321,26 +309,6 @@ class PostContainer extends Component {
       dispatch(toggleComments(post, nextShowComments))
     } else {
       dispatch(push(detailPath))
-    }
-  }
-
-  onClickToggleLovers = () => {
-    const { detailPath, dispatch, isGridMode, pathname, post, showLovers } = this.props
-    if (isGridMode && pathname !== detailPath) {
-      dispatch(push(detailPath))
-    } else {
-      const nextShowLovers = !showLovers
-      dispatch(toggleLovers(post, nextShowLovers))
-    }
-  }
-
-  onClickToggleReposters = () => {
-    const { detailPath, dispatch, isGridMode, pathname, post, showReposters } = this.props
-    if (isGridMode && pathname !== detailPath) {
-      dispatch(push(detailPath))
-    } else {
-      const nextShowReposters = !showReposters
-      dispatch(toggleReposters(post, nextShowReposters))
     }
   }
 

@@ -78,8 +78,6 @@ export const selectPostRepostId = createSelector([selectPost], post => post.get(
 export const selectPostReposted = createSelector([selectPost], post => post.get('reposted'))
 export const selectPostRepostsCount = createSelector([selectPost], post => countProtector(post.get('repostsCount')))
 export const selectPostShowComments = createSelector([selectPost], post => post.get('showComments', false))
-export const selectPostShowLovers = createSelector([selectPost], post => post.get('showLovers', false))
-export const selectPostShowReposters = createSelector([selectPost], post => post.get('showReposters', false))
 export const selectPostSummary = createSelector(
   [selectPost, selectAssets], (post, assets) =>
     post.get('summary', Immutable.Map()).map(region => addAssetToRegion(region, assets)),
@@ -236,21 +234,5 @@ export const selectPostShowCommentEditor = createSelector(
   [selectPostShowEditor, selectPostShowComments, selectIsPostDetail, selectPropsPostIsRelated],
   (showEditor, showComments, isPostDetail, isRelated) =>
     !showEditor && !isPostDetail && showComments && !isRelated,
-)
-
-export const selectPostShowLoversDrawer = createSelector(
-  [selectPostShowEditor, selectPostIsGridMode, selectPostShowLovers,
-    selectPostLovesCount, selectIsPostDetail, selectPropsPostIsRelated],
-  (showEditor, isGridMode, showLovers, lovesCount, isPostDetail, isRelated) =>
-    ((!showEditor && !isGridMode && showLovers && lovesCount > 0) ||
-    (!showEditor && !isGridMode && isPostDetail && lovesCount > 0)) && !isRelated,
-)
-
-export const selectPostShowRepostersDrawer = createSelector(
-  [selectPostShowEditor, selectPostIsGridMode, selectPostShowReposters,
-    selectPostRepostsCount, selectIsPostDetail, selectPropsPostIsRelated],
-  (showEditor, isGridMode, showReposters, repostsCount, isPostDetail, isRelated) =>
-    ((!showEditor && !isGridMode && showReposters && repostsCount > 0) ||
-    (!showEditor && !isGridMode && isPostDetail && repostsCount > 0)) && !isRelated,
 )
 

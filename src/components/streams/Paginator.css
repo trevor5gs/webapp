@@ -43,6 +43,7 @@
   position: static;
   width: 100%;
   height: 40px;
+  margin-top: 30px;
   line-height: 40px;
   color: #fff;
   vertical-align: middle;
@@ -73,6 +74,12 @@
 @media (--break-2) {
   .Posts:not(.asGrid) .TabListStreamContainer .Paginator {
     margin-left: 60px;
+  }
+
+  .BlockedUsers .Paginator,
+  .TabListStreamContainer .Paginator,
+  .MutedUsers .Paginator {
+    margin-top: 60px;
   }
 }
 

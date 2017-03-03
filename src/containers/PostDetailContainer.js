@@ -3,11 +3,10 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { POST } from '../constants/action_types'
 import { scrollToSelector } from '../lib/jello'
-import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectParamsToken, selectParamsUsername } from '../selectors/params'
 import { selectPost, selectPostAuthor, selectPostHasRelatedButton, selectPostIsEmpty, selectPropsLocationStateFrom } from '../selectors/post'
 import { selectStreamType } from '../selectors/stream'
-import { loadComments, loadPostDetail, toggleLovers, toggleReposters } from '../actions/posts'
+import { loadComments, loadPostDetail } from '../actions/posts'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { Paginator } from '../components/streams/Paginator'
 import { PostDetail, PostDetailError } from '../components/views/PostDetail'
@@ -18,7 +17,6 @@ function mapStateToProps(state, props) {
   return {
     author: selectPostAuthor(state, props),
     hasRelatedPostsButton: selectPostHasRelatedButton(state, props),
-    isLoggedIn: selectIsLoggedIn(state),
     isPostEmpty: selectPostIsEmpty(state, props),
     locationStateFrom: selectPropsLocationStateFrom(state, props),
     paramsToken: selectParamsToken(state, props),
@@ -34,7 +32,6 @@ class PostDetailContainer extends Component {
     author: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     hasRelatedPostsButton: PropTypes.bool.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
     isPostEmpty: PropTypes.bool.isRequired,
     locationStateFrom: PropTypes.string,
     post: PropTypes.object,
@@ -104,22 +101,10 @@ class PostDetailContainer extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (!nextProps.author || !nextProps.post) { return false }
     return !Immutable.is(nextProps.post, this.props.post) ||
-      ['hasRelatedPostsButton', 'isLoggedIn', 'paramsToken', 'paramsUsername'].some(prop =>
+      ['hasRelatedPostsButton', 'paramsToken', 'paramsUsername'].some(prop =>
         nextProps[prop] !== this.props[prop],
       ) ||
       ['activeType', 'renderType'].some(prop => nextState[prop] !== this.state[prop])
-  }
-
-  componentWillUnmount() {
-    const { dispatch, isLoggedIn, post } = this.props
-    // this prevents the lover/reposters from firing since logout clears the json store
-    if (!isLoggedIn) { return }
-    if (!this.lovesWasOpen) {
-      dispatch(toggleLovers(post, false))
-    }
-    if (!this.repostsWasOpen) {
-      dispatch(toggleReposters(post, false))
-    }
   }
 
   onClickDetailTab = (vo) => {

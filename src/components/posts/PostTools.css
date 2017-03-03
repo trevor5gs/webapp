@@ -226,10 +226,6 @@
   display: none;
 }
 
-.Posts.asGrid .RepostedByHint {
-  left: -30px;
-}
-
 /* // MAX WIDTH for hiding MOBILE in a GRID. 449 / 16 = 28.0625em */
 @media (max-width: 28.0625em) {
   .Posts.asGrid .ShareTool {

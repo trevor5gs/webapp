@@ -93,13 +93,9 @@ class LoveTool extends PureComponent {
     postLoved: PropTypes.bool.isRequired,
     postLovesCount: PropTypes.number.isRequired,
   }
-  static contextTypes = {
-    onClickLovePost: PropTypes.func.isRequired,
-    onClickToggleLovers: PropTypes.func.isRequired,
-  }
   render() {
     const { postLoved, postLovesCount } = this.props
-    const { onClickLovePost, onClickToggleLovers } = this.context
+    const { onClickLovePost } = this.context
     return (
       <span className="PostTool LoveTool" data-count={postLovesCount}>
         <button
@@ -111,12 +107,11 @@ class LoveTool extends PureComponent {
         </button>
         <button
           className={classNames({ isActive: postLoved }, 'PostToolDrawerButton')}
-          onClick={onClickToggleLovers}
+          style={{ pointerEvents: 'none' }}
         >
           <span className="PostToolValue" >
             {numberToHuman(postLovesCount, false)}
           </span>
-          <Hint>Loved by</Hint>
         </button>
       </span>
     )
@@ -132,11 +127,10 @@ class RepostTool extends PureComponent {
   }
   static contextTypes = {
     onClickRepostPost: PropTypes.func.isRequired,
-    onClickToggleReposters: PropTypes.func.isRequired,
   }
   render() {
     const { isOwnPost, isRepostAnimating, postReposted, postRepostsCount } = this.props
-    const { onClickRepostPost, onClickToggleReposters } = this.context
+    const { onClickRepostPost } = this.context
     return (
       <span className="PostTool RepostTool" data-count={postRepostsCount}>
         <button
@@ -147,11 +141,13 @@ class RepostTool extends PureComponent {
           <RepostIcon className={classNames({ isRepostAnimating })} />
           <Hint>Repost</Hint>
         </button>
-        <button className="PostToolDrawerButton" onClick={onClickToggleReposters}>
+        <button
+          className="PostToolDrawerButton"
+          style={{ pointerEvents: 'none' }}
+        >
           <span className="PostToolValue" >
             {numberToHuman(postRepostsCount, false)}
           </span>
-          <Hint className="RepostedByHint">Reposted by</Hint>
         </button>
       </span>
     )

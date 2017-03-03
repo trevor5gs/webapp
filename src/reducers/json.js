@@ -358,10 +358,6 @@ export default function json(state = initialState, action = { type: '' }) {
       return postMethods.toggleComments(state, action)
     case ACTION_TYPES.POST.TOGGLE_EDITING:
       return postMethods.toggleEditing(state, action)
-    case ACTION_TYPES.POST.TOGGLE_LOVERS:
-      return postMethods.toggleLovers(state, action)
-    case ACTION_TYPES.POST.TOGGLE_REPOSTERS:
-      return postMethods.toggleReposters(state, action)
     case ACTION_TYPES.POST.TOGGLE_REPOSTING:
       return postMethods.toggleReposting(state, action)
     case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
