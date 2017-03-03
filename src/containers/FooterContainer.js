@@ -49,6 +49,9 @@ function mapStateToProps(state, props) {
 }
 
 class FooterContainer extends PureComponent {
+  props: Props
+  state: State
+
   static childContextTypes = {
     onClickScrollToTop: PropTypes.func.isRequired,
     onClickToggleLayoutMode: PropTypes.func.isRequired,
@@ -57,9 +60,6 @@ class FooterContainer extends PureComponent {
     onFocus: PropTypes.func,
     onSubmit: PropTypes.func,
   }
-
-  props: Props // eslint-disable-line
-  state: State
 
   getChildContext() {
     const { isLoggedIn } = this.props
