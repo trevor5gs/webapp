@@ -79,6 +79,7 @@ import {
 import { PostTools, WatchTool } from '../components/posts/PostTools'
 import { UserDrawer } from '../components/users/UserRenderables'
 import { postLovers, postReposters } from '../networking/api'
+import { isLink } from '../lib/jello'
 
 export function makeMapStateToProps() {
   return (state, props) =>
@@ -197,12 +198,12 @@ class PostContainer extends Component {
     summary: null,
   }
 
-
   static childContextTypes = {
     onClickDeletePost: PropTypes.func.isRequired,
     onClickEditPost: PropTypes.func.isRequired,
     onClickFlagPost: PropTypes.func.isRequired,
     onClickLovePost: PropTypes.func.isRequired,
+    onClickRegion: PropTypes.func.isRequired,
     onClickRepostPost: PropTypes.func.isRequired,
     onClickSharePost: PropTypes.func.isRequired,
     onClickToggleComments: PropTypes.func.isRequired,
@@ -222,6 +223,7 @@ class PostContainer extends Component {
       onClickEditPost: this.onClickEditPost,
       onClickFlagPost: this.onClickFlagPost,
       onClickLovePost: isLoggedIn ? this.onClickLovePost : this.onOpenSignupModal,
+      onClickRegion: this.onClickRegion,
       onClickRepostPost: isLoggedIn ? this.onClickRepostPost : this.onOpenSignupModal,
       onClickSharePost: this.onClickSharePost,
       onClickToggleComments: this.onClickToggleComments,
@@ -351,6 +353,43 @@ class PostContainer extends Component {
       dispatch(watchPost(post))
       dispatch(trackEvent('watched-post'))
     }
+  }
+
+  onClickRegion = (e) => {
+    const { dispatch, isGridMode, detailPath } = this.props
+    const { classList, dataset } = e.target
+    // Get the raw value instead of the property value which is always absolute
+    const href = e.target.getAttribute('href')
+
+    // Relative links get sent to push (usernames, raw links, hashtags)
+    if (href && href[0] === '/') {
+      e.preventDefault()
+      dispatch(push(href))
+
+    // TODO: We have a special `span` based fake link at the moment we have to test
+    // for. Once we change this back to an `<a> element we can rip this out.
+    } else if (classList.contains('hashtag-link')) {
+      e.preventDefault()
+      dispatch(push(dataset.href))
+
+    // Treat non links within grid layouts as a push to it's detail path
+    } else if (isGridMode && detailPath && !isLink(e.target)) {
+      e.preventDefault()
+
+      // if it's a command / control click or middle mouse fake a link and
+      // click it... I'm serious.
+      if (e.metaKey || e.ctrlKey || e.which === 2) {
+        const a = document.createElement('a')
+        a.href = detailPath
+        a.target = '_blank'
+        a.click()
+        return
+      }
+      // ..otherwise just push it through..
+      dispatch(push(detailPath))
+    }
+    // The alternative is it's either in list and we ignore it or it's an
+    // absolute link and we allow it's default behavior.
   }
 
   onCloseModal = () => {
