@@ -1,10 +1,5 @@
-import Immutable from 'immutable'
-import { stubJSONStore, stubUser } from '../../support/stubs'
 import { RELATIONSHIP_PRIORITY as PRIORITY } from '../../../src/constants/relationship_types'
-import {
-  getNextBlockMutePriority,
-  mapStateToProps,
-} from '../../../src/containers/RelationshipContainer'
+import { getNextBlockMutePriority } from '../../../src/containers/RelationshipContainer'
 
 describe('RelationshipContainer', () => {
   context('#getNextBlockMutePriority', () => {
@@ -26,38 +21,6 @@ describe('RelationshipContainer', () => {
 
     it('returns a INACTIVE priority if it is NOISE and it hits the inner default', () => {
       expect(getNextBlockMutePriority(PRIORITY.NOISE)).to.equal(PRIORITY.INACTIVE)
-    })
-  })
-
-  context('#mapStateToProps', () => {
-    const json = stubJSONStore()
-    const user = stubUser({ id: '1', username: 'archer' })
-    const props = {
-      user,
-      hasBlockMuteButton: true,
-    }
-    const state = {
-      authentication: Immutable.Map({ isLoggedIn: true }),
-      gui: Immutable.Map({ deviceSize: 'mobile' }),
-      json,
-      routing: Immutable.fromJS({ location: { pathname: '/discover' }, previousPath: '/onboarding' }),
-    }
-
-    const expected = {
-      deviceSize: 'mobile',
-      onClickCallback: 'onRelationshipUpdate',
-      pathname: '/discover',
-      previousPath: '/onboarding',
-      relationshipPriority: null,
-      shouldRenderBlockMute: true,
-      id: '1',
-      username: 'archer',
-    }
-
-    const mapped = mapStateToProps(state, props)
-
-    it('should deep equal the expected properties', () => {
-      expect(mapped).to.deep.equal(expected)
     })
   })
 })

@@ -20,6 +20,7 @@ const TABS = [
   { type: 'users', children: 'People' },
 ]
 
+// TODO: turn this into a selector and test that
 export function getStreamAction(terms, type) {
   if (terms && terms.length > 1) {
     return type === 'users' ? searchForUsers(terms) : searchForPosts(terms)
@@ -27,7 +28,7 @@ export function getStreamAction(terms, type) {
   return null
 }
 
-export function mapStateToProps(state, props) {
+function mapStateToProps(state, props) {
   return {
     isLoggedIn: selectIsLoggedIn(state),
     pathname: selectPropsPathname(state, props),

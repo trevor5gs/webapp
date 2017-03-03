@@ -32,7 +32,7 @@ import { reloadPlayers } from '../components/editor/EmbedBlock'
 const selectActionPath = props =>
   get(props, ['action', 'payload', 'endpoint', 'path'])
 
-export function makeMapStateToProps() {
+function makeMapStateToProps() {
   return (state, props) =>
     ({
       columnCount: selectColumnCount(state),

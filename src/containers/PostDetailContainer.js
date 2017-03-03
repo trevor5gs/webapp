@@ -14,16 +14,7 @@ import { PostDetail, PostDetailError } from '../components/views/PostDetail'
 import { postLovers, postReposters } from '../networking/api'
 import { loadUserDrawer } from '../actions/user'
 
-export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
-  if (!nextProps.author || !nextProps.post) { return false }
-  return !Immutable.is(nextProps.post, thisProps.post) ||
-    ['hasRelatedPostsButton', 'isLoggedIn', 'paramsToken', 'paramsUsername'].some(prop =>
-      nextProps[prop] !== thisProps[prop],
-    ) ||
-    ['activeType', 'renderType'].some(prop => nextState[prop] !== thisState[prop])
-}
-
-export function mapStateToProps(state, props) {
+function mapStateToProps(state, props) {
   return {
     author: selectPostAuthor(state, props),
     hasRelatedPostsButton: selectPostHasRelatedButton(state, props),
@@ -111,7 +102,12 @@ class PostDetailContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
+    if (!nextProps.author || !nextProps.post) { return false }
+    return !Immutable.is(nextProps.post, this.props.post) ||
+      ['hasRelatedPostsButton', 'isLoggedIn', 'paramsToken', 'paramsUsername'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      ) ||
+      ['activeType', 'renderType'].some(prop => nextState[prop] !== this.state[prop])
   }
 
   componentWillUnmount() {
