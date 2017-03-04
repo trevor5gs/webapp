@@ -66,6 +66,9 @@ const routes = (store) => {
     },
   }
 
+  const allowStyleguide = route =>
+    (ENV.HAS_GUIDE ? route : null)
+
   return [
     {
       path: '/',
@@ -85,9 +88,9 @@ const routes = (store) => {
         createRedirect('onboarding', '/onboarding/categories'),
         ...OnboardingRoutes.map(route => authenticate(route)),
         ...SearchRoutes,
-        ...StyleGuideRoutes,
+        ...StyleGuideRoutes.map(route => allowStyleguide(route)),
         UserDetailRoute,
-      ],
+      ].filter(value => value !== null),
     },
   ]
 }
