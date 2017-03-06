@@ -1,5 +1,6 @@
 // TODO: move all of these into a STREAM object
 export const ADD_NEW_IDS_TO_RESULT = 'ADD_NEW_IDS_TO_RESULT'
+export const CLEAR_PAGE_RESULT = 'CLEAR_PAGE_RESULT'
 export const HEAD = 'HEAD'
 export const HEAD_REQUEST = 'HEAD_REQUEST'
 export const HEAD_SUCCESS = 'HEAD_SUCCESS'

@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import get from 'lodash/get'
 import { connect } from 'react-redux'
-import { ADD_NEW_IDS_TO_RESULT, GUI, LOAD_STREAM_SUCCESS } from '../constants/action_types'
+import { ADD_NEW_IDS_TO_RESULT, CLEAR_PAGE_RESULT, GUI, LOAD_STREAM_SUCCESS } from '../constants/action_types'
 import { trackEvent } from '../actions/analytics'
-import { setLastAnnouncementSeen, toggleNotifications } from '../actions/gui'
+import { setLastAnnouncementSeen, setNotificationScrollY, toggleNotifications } from '../actions/gui'
 import { loadNotifications, markAnnouncementRead } from '../actions/notifications'
 import {
   selectActiveNotificationScrollPosition,
@@ -74,6 +74,7 @@ class NotificationsContainer extends Component {
     announcementTitle: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isModal: PropTypes.bool,
+    isNotificationsUnread: PropTypes.bool,
     notificationScrollPosition: PropTypes.number.isRequired,
     pathname: PropTypes.string,
     streamAction: PropTypes.object,
@@ -89,6 +90,7 @@ class NotificationsContainer extends Component {
     announcementImage: null,
     announcementTitle: '',
     isModal: false,
+    isNotificationsUnread: false,
     pathname: null,
     streamAction: null,
     streamType: null,
@@ -107,7 +109,6 @@ class NotificationsContainer extends Component {
 
   componentWillMount() {
     this.state = { isReloading: false, scrollContainer: null }
-    console.log('isNotificationsUnread', this.props.isNotificationsUnread)
   }
 
   componentDidMount() {
@@ -143,13 +144,21 @@ class NotificationsContainer extends Component {
     const { dispatch, isNotificationsUnread, notificationScrollPosition } = this.props
     const { scrollContainer } = this.state
     if (isNotificationsUnread) {
-      // reset all notification scroll positions
       // reset active tab type to all
-      // add new ids to result for all notification tabs
+      dispatch({
+        type: GUI.NOTIFICATIONS_TAB,
+        payload: { activeTabType: 'all' },
+      })
+      // scroll back to the top
       scrollToPosition(0, 0, { el: scrollContainer })
-      dispatch(setNotificationScrollY(category, 0))
-      dispatch({ type: ADD_NEW_IDS_TO_RESULT, payload: { resultKey: streamAction.meta.resultKey } })
-      dispatch(streamAction)
+      // clear page results for notifications
+      // reset all notification scroll positions
+      TABS.forEach((tab) => {
+        dispatch({ type: CLEAR_PAGE_RESULT, payload: { resultKey: tab.to } })
+        dispatch(setNotificationScrollY(tab.type, 0))
+      })
+      // load all again
+      dispatch(loadNotifications({ category: 'all' }))
     } else if ((!prevState.scrollContainer && scrollContainer) ||
         prevProps.notificationScrollPosition !== notificationScrollPosition) {
       scrollContainer.scrollTop = notificationScrollPosition
