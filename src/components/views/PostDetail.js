@@ -7,7 +7,6 @@ import { MainView } from '../views/MainView'
 import { loadRelatedPosts } from '../../actions/posts'
 import { RelatedPostsButton } from '../posts/PostRenderables'
 import { TabListButtons } from '../tabs/TabList'
-import { numberToHuman } from '../../lib/number_to_human'
 
 const minBreak2 = '@media(min-width: 40em)'
 
@@ -19,28 +18,8 @@ const navStyles = css({
   },
 })
 
-const postDetailTabs = [
-  { label: 'Comments', prop: 'commentsCount' },
-  { label: 'Loves', prop: 'lovesCount' },
-  { label: 'Reposts', prop: 'repostsCount' },
-]
-const generateTabs = (post) => {
-  const tabs = []
-  postDetailTabs.forEach((obj) => {
-    const count = post.get(obj.prop)
-    if (Number(count) > 0 || obj.label === 'Comments') {
-      const label = count > 0 ? `${numberToHuman(count)} ${obj.label}` : obj.label
-      tabs.push({
-        type: obj.label.toLowerCase(),
-        children: label,
-      })
-    }
-  })
-  return tabs
-}
-
 export const PostDetail = (
-  { activeType, hasEditor, hasRelatedPostsButton, post, streamAction },
+  { activeType, hasEditor, hasRelatedPostsButton, post, streamAction, tabs },
   { onClickDetailTab }) =>
     <MainView className="PostDetail">
       <div className="PostDetails Posts asList">
@@ -54,7 +33,7 @@ export const PostDetail = (
                 key={`TabListButtons_${activeType}`}
                 onTabClick={onClickDetailTab}
                 tabClasses="LabelTab SearchLabelTab"
-                tabs={generateTabs(post)}
+                tabs={tabs}
               />
               {hasRelatedPostsButton && <RelatedPostsButton />}
             </nav>
@@ -83,6 +62,7 @@ PostDetail.propTypes = {
   hasRelatedPostsButton: PropTypes.bool.isRequired,
   post: PropTypes.object.isRequired,
   streamAction: PropTypes.object,
+  tabs: PropTypes.array.isRequired,
 }
 PostDetail.defaultProps = {
   streamAction: null,

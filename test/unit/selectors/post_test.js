@@ -16,6 +16,7 @@ describe('post selectors', () => {
   let state
   beforeEach(() => {
     stub('post', { authorId: 'statePost', token: 'token1' })
+    stub('post', { id: '303' })
     stub('post', { id: '100', authorId: '666', repostContent: [stubTextRegion()] })
     stub('user', { id: '666', username: '666-username' })
     stub('user', { id: '9', username: 'reposter-username' })
@@ -798,6 +799,102 @@ describe('post selectors', () => {
       const result = selector.selectPostShowEditor(state, props)
       expect(result).to.equal(false)
     })
+  })
+
+  context('#selectPostDetailTabs', () => {
+    it('returns PostDetail tabs when there is 0 comments, 0 loves and 0 reposts', () => {
+      const props = { postId: '303' }
+      const result = selector.selectPostDetailTabs(state, props)
+      const expected = [
+        { type: 'comments', children: 'Comments' },
+      ]
+      expect(result).to.deep.equal(expected)
+    })
+  })
+
+  it('returns PostDetail tabs when there is 1 comment, 0 loves and 0 reposts', () => {
+    state = { json: state.json.setIn(['posts', '303', 'commentsCount'], 1) }
+    const props = { postId: '303' }
+    const result = selector.selectPostDetailTabs(state, props)
+    const expected = [
+      { type: 'comments', children: '1 Comment' },
+    ]
+    expect(result).to.deep.equal(expected)
+  })
+
+  it('returns PostDetail tabs when there is 2 comments, 0 loves and 0 reposts', () => {
+    state = { json: state.json.setIn(['posts', '303', 'commentsCount'], 2) }
+    const props = { postId: '303' }
+    const result = selector.selectPostDetailTabs(state, props)
+    const expected = [
+      { type: 'comments', children: '2 Comments' },
+    ]
+    expect(result).to.deep.equal(expected)
+  })
+
+  it('returns PostDetail tabs when there is 2 comments, 1 love and 0 reposts', () => {
+    state = { json: state.json.setIn(['posts', '303', 'commentsCount'], 2) }
+    state = { json: state.json.setIn(['posts', '303', 'lovesCount'], 1) }
+    const props = { postId: '303' }
+    const result = selector.selectPostDetailTabs(state, props)
+    const expected = [
+      { type: 'comments', children: '2 Comments' },
+      { type: 'loves', children: '1 Love' },
+    ]
+    expect(result).to.deep.equal(expected)
+  })
+
+  it('returns PostDetail tabs when there is 2 comments, 2 loves and 0 reposts', () => {
+    state = { json: state.json.setIn(['posts', '303', 'commentsCount'], 2) }
+    state = { json: state.json.setIn(['posts', '303', 'lovesCount'], 2) }
+    const props = { postId: '303' }
+    const result = selector.selectPostDetailTabs(state, props)
+    const expected = [
+      { type: 'comments', children: '2 Comments' },
+      { type: 'loves', children: '2 Loves' },
+    ]
+    expect(result).to.deep.equal(expected)
+  })
+
+  it('returns PostDetail tabs when there is 2 comments, 2 loves and 1 repost', () => {
+    state = { json: state.json.setIn(['posts', '303', 'commentsCount'], 2) }
+    state = { json: state.json.setIn(['posts', '303', 'lovesCount'], 2) }
+    state = { json: state.json.setIn(['posts', '303', 'repostsCount'], 1) }
+    const props = { postId: '303' }
+    const result = selector.selectPostDetailTabs(state, props)
+    const expected = [
+      { type: 'comments', children: '2 Comments' },
+      { type: 'loves', children: '2 Loves' },
+      { type: 'reposts', children: '1 Repost' },
+    ]
+    expect(result).to.deep.equal(expected)
+  })
+
+  it('returns PostDetail tabs when there is 2 comments, 2 loves and 2 reposts', () => {
+    state = { json: state.json.setIn(['posts', '303', 'commentsCount'], 2) }
+    state = { json: state.json.setIn(['posts', '303', 'lovesCount'], 2) }
+    state = { json: state.json.setIn(['posts', '303', 'repostsCount'], 2) }
+    const props = { postId: '303' }
+    const result = selector.selectPostDetailTabs(state, props)
+    const expected = [
+      { type: 'comments', children: '2 Comments' },
+      { type: 'loves', children: '2 Loves' },
+      { type: 'reposts', children: '2 Reposts' },
+    ]
+    expect(result).to.deep.equal(expected)
+  })
+
+  it('returns PostDetail tabs when there is 0 comments, 2 loves and 1 repost', () => {
+    state = { json: state.json.setIn(['posts', '303', 'lovesCount'], 2) }
+    state = { json: state.json.setIn(['posts', '303', 'repostsCount'], 1) }
+    const props = { postId: '303' }
+    const result = selector.selectPostDetailTabs(state, props)
+    const expected = [
+      { type: 'comments', children: 'Comments' },
+      { type: 'loves', children: '2 Loves' },
+      { type: 'reposts', children: '1 Repost' },
+    ]
+    expect(result).to.deep.equal(expected)
   })
 })
 

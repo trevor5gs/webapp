@@ -236,3 +236,30 @@ export const selectPostShowCommentEditor = createSelector(
     !showEditor && !isPostDetail && showComments && !isRelated,
 )
 
+const selectPostDetailCommentLabel = createSelector(
+  [selectPostCommentsCount], commentsCount =>
+    (Number(commentsCount) > 0 ?
+      `${numberToHuman(commentsCount)} Comment${commentsCount === 1 ? '' : 's'}` : 'Comments'),
+)
+
+const selectPostDetailLovesLabel = createSelector(
+  [selectPostLovesCount], lovesCount =>
+    (Number(lovesCount) > 0 ?
+      `${numberToHuman(lovesCount)} Love${lovesCount === 1 ? '' : 's'}` : null),
+)
+
+const selectPostDetailRepostsLabel = createSelector(
+  [selectPostRepostsCount], repostsCount =>
+    (Number(repostsCount) > 0 ?
+      `${numberToHuman(repostsCount)} Repost${repostsCount === 1 ? '' : 's'}` : null),
+)
+
+export const selectPostDetailTabs = createSelector(
+  [selectPostDetailCommentLabel, selectPostDetailLovesLabel, selectPostDetailRepostsLabel],
+  (commentsLabel, lovesLabel, repostsLabel) => [
+    { type: 'comments', children: commentsLabel },
+    lovesLabel && { type: 'loves', children: lovesLabel },
+    repostsLabel && { type: 'reposts', children: repostsLabel },
+  ].filter(tab => tab),
+)
+

@@ -4,7 +4,14 @@ import { connect } from 'react-redux'
 import { POST } from '../constants/action_types'
 import { scrollToSelector } from '../lib/jello'
 import { selectParamsToken, selectParamsUsername } from '../selectors/params'
-import { selectPost, selectPostAuthor, selectPostHasRelatedButton, selectPostIsEmpty, selectPropsLocationStateFrom } from '../selectors/post'
+import {
+  selectPost,
+  selectPostAuthor,
+  selectPostDetailTabs,
+  selectPostHasRelatedButton,
+  selectPostIsEmpty,
+  selectPropsLocationStateFrom,
+} from '../selectors/post'
 import { selectStreamType } from '../selectors/stream'
 import { loadComments, loadPostDetail } from '../actions/posts'
 import { ErrorState4xx } from '../components/errors/Errors'
@@ -22,6 +29,7 @@ function mapStateToProps(state, props) {
     paramsToken: selectParamsToken(state, props),
     paramsUsername: selectParamsUsername(state, props),
     post: selectPost(state, props),
+    tabs: selectPostDetailTabs(state, props),
     streamType: selectStreamType(state),
   }
 }
@@ -38,6 +46,7 @@ class PostDetailContainer extends Component {
     paramsToken: PropTypes.string.isRequired,
     paramsUsername: PropTypes.string.isRequired,
     streamType: PropTypes.string, // eslint-disable-line
+    tabs: PropTypes.array.isRequired,
   }
 
   static defaultProps = {
@@ -118,7 +127,7 @@ class PostDetailContainer extends Component {
   }
 
   render() {
-    const { author, hasRelatedPostsButton, isPostEmpty, paramsToken, post } = this.props
+    const { author, hasRelatedPostsButton, isPostEmpty, paramsToken, post, tabs } = this.props
     const { activeType, renderType } = this.state
     // render loading/failure if we don't have an initial post
     if (isPostEmpty) {
@@ -158,6 +167,7 @@ class PostDetailContainer extends Component {
       key: `postDetail_${paramsToken}`,
       post,
       streamAction,
+      tabs,
     }
     return <PostDetail {...props} />
   }
