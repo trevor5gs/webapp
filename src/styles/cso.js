@@ -46,6 +46,16 @@ export const wrapperPaddingX = css({
 // Flex
 
 export const flex = css(jso.flex)
+export const inlineFlex = css(jso.inlineFlex)
+export const flexColumn = css(jso.flexColumn)
+export const flexRow = css(jso.flexRow)
+export const flexWrap = css(jso.flexWrap)
+export const flexNoWrap = css(jso.flexNoWrap)
+export const justifyStart = css(jso.justifyStart)
+export const justifyEnd = css(jso.justifyEnd)
+export const justifyCenter = css(jso.justifyCenter)
+export const justifySpaceBetween = css(jso.justifySpaceBetween)
+export const justifySpaceAround = css(jso.justifySpaceAround)
 
 // -------------------------------------
 // Colors
