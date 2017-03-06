@@ -5,7 +5,11 @@ import { ADD_NEW_IDS_TO_RESULT, GUI, LOAD_STREAM_SUCCESS } from '../constants/ac
 import { trackEvent } from '../actions/analytics'
 import { setLastAnnouncementSeen, toggleNotifications } from '../actions/gui'
 import { loadNotifications, markAnnouncementRead } from '../actions/notifications'
-import { selectActiveNotificationScrollPosition, selectActiveNotificationsType } from '../selectors/gui'
+import {
+  selectActiveNotificationScrollPosition,
+  selectActiveNotificationsType,
+  selectIsNotificationsUnread,
+} from '../selectors/gui'
 import {
     selectAnnouncementBody,
     selectAnnouncementCTACaption,
@@ -30,6 +34,15 @@ import { MainView } from '../components/views/MainView'
 import StreamContainer from '../containers/StreamContainer'
 import { scrollToPosition } from '../lib/jello'
 
+const TABS = [
+  { to: '/notifications', type: 'all', children: 'All' },
+  { to: '/notifications/comments', type: 'comments', children: <BubbleIcon /> },
+  { to: '/notifications/mentions', type: 'mentions', children: '@' },
+  { to: '/notifications/loves', type: 'loves', children: <HeartIcon /> },
+  { to: '/notifications/reposts', type: 'reposts', children: <RepostIcon /> },
+  { to: '/notifications/relationships', type: 'relationships', children: <RelationshipIcon /> },
+]
+
 function mapStateToProps(state, props) {
   const activeTabType = props.isModal ? selectActiveNotificationsType(state) : get(props, 'params.type', 'all')
   return {
@@ -41,6 +54,7 @@ function mapStateToProps(state, props) {
     announcementImage: selectAnnouncementImage(state),
     announcementIsEmpty: selectAnnouncementIsEmpty(state),
     announcementTitle: selectAnnouncementTitle(state),
+    isNotificationsUnread: selectIsNotificationsUnread(state),
     notificationScrollPosition: selectActiveNotificationScrollPosition(state),
     pathname: selectPropsPathname(state, props),
     streamAction: loadNotifications({ category: activeTabType }),
@@ -93,6 +107,7 @@ class NotificationsContainer extends Component {
 
   componentWillMount() {
     this.state = { isReloading: false, scrollContainer: null }
+    console.log('isNotificationsUnread', this.props.isNotificationsUnread)
   }
 
   componentDidMount() {
@@ -125,9 +140,17 @@ class NotificationsContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { notificationScrollPosition } = this.props
+    const { dispatch, isNotificationsUnread, notificationScrollPosition } = this.props
     const { scrollContainer } = this.state
-    if ((!prevState.scrollContainer && scrollContainer) ||
+    if (isNotificationsUnread) {
+      // reset all notification scroll positions
+      // reset active tab type to all
+      // add new ids to result for all notification tabs
+      scrollToPosition(0, 0, { el: scrollContainer })
+      dispatch(setNotificationScrollY(category, 0))
+      dispatch({ type: ADD_NEW_IDS_TO_RESULT, payload: { resultKey: streamAction.meta.resultKey } })
+      dispatch(streamAction)
+    } else if ((!prevState.scrollContainer && scrollContainer) ||
         prevProps.notificationScrollPosition !== notificationScrollPosition) {
       scrollContainer.scrollTop = notificationScrollPosition
     }
@@ -197,14 +220,6 @@ class NotificationsContainer extends Component {
       streamAction,
     } = this.props
     const { isReloading, scrollContainer } = this.state
-    const tabs = [
-      { to: '/notifications', type: 'all', children: 'All' },
-      { to: '/notifications/comments', type: 'comments', children: <BubbleIcon /> },
-      { to: '/notifications/mentions', type: 'mentions', children: '@' },
-      { to: '/notifications/loves', type: 'loves', children: <HeartIcon /> },
-      { to: '/notifications/reposts', type: 'reposts', children: <RepostIcon /> },
-      { to: '/notifications/relationships', type: 'relationships', children: <RelationshipIcon /> },
-    ]
     const shared = []
     if (isReloading) {
       shared.push(
@@ -239,7 +254,7 @@ class NotificationsContainer extends Component {
             className="IconTabList NotificationsContainerTabs"
             onTabClick={this.onClickTab}
             tabClasses="IconTab"
-            tabs={tabs}
+            tabs={TABS}
           />
           <div
             className="Scrollable"
@@ -263,7 +278,7 @@ class NotificationsContainer extends Component {
             className="IconTabList NotificationsContainerTabs"
             onTabClick={this.onClickTab}
             tabClasses="IconTab"
-            tabs={tabs}
+            tabs={TABS}
           />
           {shared}
           <StreamContainer
