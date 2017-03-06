@@ -137,6 +137,10 @@ export const selectPostAuthorUsername = createSelector(
   [selectPostAuthor], author => author.get('username'),
 )
 
+export const selectPostAuthorHasCommentingEnabled = createSelector(
+  [selectPostAuthor], author => author.get('hasCommentingEnabled'),
+)
+
 export const selectPostHasRelatedButton = createSelector(
   [selectPostId, selectPages, selectIsMobile], (postId, pages, isMobile) =>
     !pages.getIn([`/posts/${postId}/related_posts`, 'ids'], Immutable.List()).isEmpty() && !isMobile,
@@ -237,9 +241,12 @@ export const selectPostShowCommentEditor = createSelector(
 )
 
 const selectPostDetailCommentLabel = createSelector(
-  [selectPostCommentsCount], commentsCount =>
-    (Number(commentsCount) > 0 ?
-      `${numberToHuman(commentsCount)} Comment${commentsCount === 1 ? '' : 's'}` : 'Comments'),
+  [selectPostCommentsCount, selectPostAuthorHasCommentingEnabled],
+  (commentsCount, hasCommentingEnabled) => {
+    if (!hasCommentingEnabled) { return null }
+    return (Number(commentsCount) > 0 ?
+      `${numberToHuman(commentsCount)} Comment${commentsCount === 1 ? '' : 's'}` : 'Comments')
+  },
 )
 
 const selectPostDetailLovesLabel = createSelector(
@@ -257,7 +264,7 @@ const selectPostDetailRepostsLabel = createSelector(
 export const selectPostDetailTabs = createSelector(
   [selectPostDetailCommentLabel, selectPostDetailLovesLabel, selectPostDetailRepostsLabel],
   (commentsLabel, lovesLabel, repostsLabel) => [
-    { type: 'comments', children: commentsLabel },
+    commentsLabel && { type: 'comments', children: commentsLabel },
     lovesLabel && { type: 'loves', children: lovesLabel },
     repostsLabel && { type: 'reposts', children: repostsLabel },
   ].filter(tab => tab),
