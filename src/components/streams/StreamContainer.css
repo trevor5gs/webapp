@@ -42,6 +42,14 @@
   top: 20px;
 }
 
+.RelatedPostsStreamContainer {
+  transition: opacity 250ms;
+}
+
+.TabListStreamContainer.isBusy + .RelatedPostsStreamContainer {
+  opacity: 0;
+  transition: none;
+}
 /* ------------------------------------- */
 
 .MainView > .StreamContainer.isError,
