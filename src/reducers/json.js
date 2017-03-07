@@ -312,6 +312,8 @@ export default function json(state = initialState, action = { type: '' }) {
     case ACTION_TYPES.AUTHENTICATION.REFRESH_FAILURE:
     case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
       return initialState
+    case ACTION_TYPES.CLEAR_PAGE_RESULT:
+      return state.deleteIn(['pages', action.payload.resultKey])
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
     case ACTION_TYPES.COMMENT.CREATE_REQUEST:
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:

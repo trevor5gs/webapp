@@ -1,11 +1,15 @@
 import React, { Component, PropTypes } from 'react'
 import get from 'lodash/get'
 import { connect } from 'react-redux'
-import { ADD_NEW_IDS_TO_RESULT, GUI, LOAD_STREAM_SUCCESS } from '../constants/action_types'
+import { ADD_NEW_IDS_TO_RESULT, CLEAR_PAGE_RESULT, GUI, LOAD_STREAM_SUCCESS } from '../constants/action_types'
 import { trackEvent } from '../actions/analytics'
-import { setLastAnnouncementSeen, toggleNotifications } from '../actions/gui'
+import { setLastAnnouncementSeen, setNotificationScrollY, toggleNotifications } from '../actions/gui'
 import { loadNotifications, markAnnouncementRead } from '../actions/notifications'
-import { selectActiveNotificationScrollPosition, selectActiveNotificationsType } from '../selectors/gui'
+import {
+  selectActiveNotificationScrollPosition,
+  selectActiveNotificationsType,
+  selectIsNotificationsUnread,
+} from '../selectors/gui'
 import {
     selectAnnouncementBody,
     selectAnnouncementCTACaption,
@@ -30,6 +34,15 @@ import { MainView } from '../components/views/MainView'
 import StreamContainer from '../containers/StreamContainer'
 import { scrollToPosition } from '../lib/jello'
 
+const TABS = [
+  { to: '/notifications', type: 'all', children: 'All' },
+  { to: '/notifications/comments', type: 'comments', children: <BubbleIcon /> },
+  { to: '/notifications/mentions', type: 'mentions', children: '@' },
+  { to: '/notifications/loves', type: 'loves', children: <HeartIcon /> },
+  { to: '/notifications/reposts', type: 'reposts', children: <RepostIcon /> },
+  { to: '/notifications/relationships', type: 'relationships', children: <RelationshipIcon /> },
+]
+
 function mapStateToProps(state, props) {
   const activeTabType = props.isModal ? selectActiveNotificationsType(state) : get(props, 'params.type', 'all')
   return {
@@ -41,6 +54,7 @@ function mapStateToProps(state, props) {
     announcementImage: selectAnnouncementImage(state),
     announcementIsEmpty: selectAnnouncementIsEmpty(state),
     announcementTitle: selectAnnouncementTitle(state),
+    isNotificationsUnread: selectIsNotificationsUnread(state),
     notificationScrollPosition: selectActiveNotificationScrollPosition(state),
     pathname: selectPropsPathname(state, props),
     streamAction: loadNotifications({ category: activeTabType }),
@@ -60,6 +74,7 @@ class NotificationsContainer extends Component {
     announcementTitle: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isModal: PropTypes.bool,
+    isNotificationsUnread: PropTypes.bool,
     notificationScrollPosition: PropTypes.number.isRequired,
     pathname: PropTypes.string,
     streamAction: PropTypes.object,
@@ -75,6 +90,7 @@ class NotificationsContainer extends Component {
     announcementImage: null,
     announcementTitle: '',
     isModal: false,
+    isNotificationsUnread: false,
     pathname: null,
     streamAction: null,
     streamType: null,
@@ -125,9 +141,25 @@ class NotificationsContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { notificationScrollPosition } = this.props
+    const { dispatch, isNotificationsUnread, notificationScrollPosition } = this.props
     const { scrollContainer } = this.state
-    if ((!prevState.scrollContainer && scrollContainer) ||
+    if (isNotificationsUnread) {
+      // reset active tab type to all
+      dispatch({
+        type: GUI.NOTIFICATIONS_TAB,
+        payload: { activeTabType: 'all' },
+      })
+      // scroll back to the top
+      scrollToPosition(0, 0, { el: scrollContainer })
+      // clear page results for notifications
+      // reset all notification scroll positions
+      TABS.forEach((tab) => {
+        dispatch({ type: CLEAR_PAGE_RESULT, payload: { resultKey: tab.to } })
+        dispatch(setNotificationScrollY(tab.type, 0))
+      })
+      // load all again
+      dispatch(loadNotifications({ category: 'all' }))
+    } else if ((!prevState.scrollContainer && scrollContainer) ||
         prevProps.notificationScrollPosition !== notificationScrollPosition) {
       scrollContainer.scrollTop = notificationScrollPosition
     }
@@ -197,14 +229,6 @@ class NotificationsContainer extends Component {
       streamAction,
     } = this.props
     const { isReloading, scrollContainer } = this.state
-    const tabs = [
-      { to: '/notifications', type: 'all', children: 'All' },
-      { to: '/notifications/comments', type: 'comments', children: <BubbleIcon /> },
-      { to: '/notifications/mentions', type: 'mentions', children: '@' },
-      { to: '/notifications/loves', type: 'loves', children: <HeartIcon /> },
-      { to: '/notifications/reposts', type: 'reposts', children: <RepostIcon /> },
-      { to: '/notifications/relationships', type: 'relationships', children: <RelationshipIcon /> },
-    ]
     const shared = []
     if (isReloading) {
       shared.push(
@@ -239,7 +263,7 @@ class NotificationsContainer extends Component {
             className="IconTabList NotificationsContainerTabs"
             onTabClick={this.onClickTab}
             tabClasses="IconTab"
-            tabs={tabs}
+            tabs={TABS}
           />
           <div
             className="Scrollable"
@@ -263,7 +287,7 @@ class NotificationsContainer extends Component {
             className="IconTabList NotificationsContainerTabs"
             onTabClick={this.onClickTab}
             tabClasses="IconTab"
-            tabs={tabs}
+            tabs={TABS}
           />
           {shared}
           <StreamContainer
