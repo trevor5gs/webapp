@@ -26,7 +26,7 @@ export const categoriesAsGrid = categoryIds =>
 
 // COMMENTS
 export const commentsAsList = commentIds =>
-  <div>
+  <div className="Comments">
     {commentIds.map(id =>
       <CommentContainer
         commentId={id}

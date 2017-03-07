@@ -132,12 +132,9 @@
   display: inline-block;
 }
 
-.PostDetail .WatchTool.isPill {
-  display: inline-block;
-}
-
 .isLoggedIn .PostDetail .WatchTool.isPill {
   position: static;
+  display: inline-block;
   margin-top: 0;
   margin-left: -7px;
 }

@@ -4,6 +4,10 @@
   position: relative;
 }
 
+.isLoggedOut .PostDetail .Comments {
+  margin-top: 5px;
+}
+
 .Comment {
   position: relative;
   max-width: 650px;

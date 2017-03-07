@@ -57,6 +57,12 @@
   transform: none;
 }
 
+.no-touch .BlockedUsers .Paginator:hover,
+.no-touch .TabListStreamContainer .Paginator:hover,
+.no-touch .MutedUsers .Paginator:hover {
+  background-color: #666;
+}
+
 .BlockedUsers .Paginator,
 .MutedUsers .Paginator {
   margin-bottom: 30px;
