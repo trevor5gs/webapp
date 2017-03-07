@@ -184,7 +184,6 @@
 /* // Don't show the relationship buttons in these specific conditions */
 /* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
 .Following.MainView .PostHeader .RelationshipContainer,
-.Starred.MainView .PostHeader .RelationshipContainer,
 .UserDetail.MainView .PostHeader .RelationshipContainer[data-priority="friend"],
 .UserDetail.MainView .PostHeader .RelationshipContainer[data-priority="noise"],
 .UserDetail.MainView .PostHeader .RelationshipContainer[data-priority="self"] {

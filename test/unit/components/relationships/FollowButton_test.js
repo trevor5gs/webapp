@@ -61,11 +61,11 @@ describe('FollowButton', () => {
       expect(span.props.children).to.equal('Following')
     })
 
-    it('renders noise', () => {
+    it('renders noise as following', () => {
       const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.NOISE })
       const [icon, span] = button.props.children
       expect(icon.type).to.equal(MiniCheckIcon)
-      expect(span.props.children).to.equal('Starred')
+      expect(span.props.children).to.equal('Following')
     })
 
     it('renders mute', () => {

@@ -26,8 +26,7 @@
 }
 
 /* // Deal with the rare case of double zero streams. */
-.Following.MainView .ZeroStream + .StreamContainer > .ZeroStream,
-.Starred.MainView .ZeroStream + .StreamContainer > .ZeroStream {
+.Following.MainView .ZeroStream + .StreamContainer > .ZeroStream {
   display: none;
 }
 

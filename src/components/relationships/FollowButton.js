@@ -114,7 +114,7 @@ class FollowButton extends PureComponent {
 
   renderAsNoise() {
     const icon = this.props.className === 'isInHeader' ? <HeaderPlusIcon /> : <MiniCheckIcon />
-    const label = this.props.className === 'isInHeader' ? 'Follow' : 'Starred'
+    const label = this.props.className === 'isInHeader' ? 'Follow' : 'Following'
     return this.renderAsToggleButton(label, icon)
   }
 
