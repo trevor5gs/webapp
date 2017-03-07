@@ -35,33 +35,31 @@ import ConfirmDialog from '../components/dialogs/ConfirmDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import { scrollToLastTextBlock } from '../lib/jello'
 
-// TODO: Possibly create an individual mapStateToProps for each container
-// instance. This will allow each component it's own private group of
-// selectors. It would be good to measure this though, based on how these run
-// we may not gain a whole lot from it.
-export function mapStateToProps(state, props) {
-  const isPostDetail = selectIsPostDetail(state, props)
-  const isGridMode = selectIsGridMode(state)
-  return {
-    author: selectCommentAuthor(state, props),
-    canDeleteComment: selectCommentCanBeDeleted(state, props),
-    columnWidth: selectColumnWidth(state),
-    comment: selectComment(state, props),
-    commentBody: selectCommentBody(state, props),
-    commentCreatedAt: selectCommentCreatedAt(state, props),
-    commentId: selectPropsCommentId(state, props),
-    commentOffset: selectCommentOffset(state),
-    content: selectCommentContent(state, props),
-    contentWidth: isPostDetail || !isGridMode ? 650 : selectContentWidth(state),
-    detailPath: selectCommentPostDetailPath(state, props),
-    deviceSize: selectDeviceSize(state),
-    innerHeight: selectInnerHeight(state),
-    isEditing: selectCommentIsEditing(state, props),
-    isGridMode: isPostDetail ? false : isGridMode,
-    isLoggedIn: selectIsLoggedIn(state),
-    isNavbarHidden: selectIsNavbarHidden(state),
-    isOwnComment: selectCommentIsOwn(state, props),
-    post: selectCommentPost(state, props),
+export function makeMapStateToProps() {
+  return (state, props) => {
+    const isPostDetail = selectIsPostDetail(state, props)
+    const isGridMode = selectIsGridMode(state)
+    return {
+      author: selectCommentAuthor(state, props),
+      canDeleteComment: selectCommentCanBeDeleted(state, props),
+      columnWidth: selectColumnWidth(state),
+      comment: selectComment(state, props),
+      commentBody: selectCommentBody(state, props),
+      commentCreatedAt: selectCommentCreatedAt(state, props),
+      commentId: selectPropsCommentId(state, props),
+      commentOffset: selectCommentOffset(state),
+      content: selectCommentContent(state, props),
+      contentWidth: isPostDetail || !isGridMode ? 650 : selectContentWidth(state),
+      detailPath: selectCommentPostDetailPath(state, props),
+      deviceSize: selectDeviceSize(state),
+      innerHeight: selectInnerHeight(state),
+      isEditing: selectCommentIsEditing(state, props),
+      isGridMode: isPostDetail ? false : isGridMode,
+      isLoggedIn: selectIsLoggedIn(state),
+      isNavbarHidden: selectIsNavbarHidden(state),
+      isOwnComment: selectCommentIsOwn(state, props),
+      post: selectCommentPost(state, props),
+    }
   }
 }
 
@@ -237,5 +235,5 @@ class CommentContainer extends Component {
   }
 }
 
-export default connect(mapStateToProps)(CommentContainer)
+export default connect(makeMapStateToProps)(CommentContainer)
 
