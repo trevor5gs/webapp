@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
 import sample from 'lodash/sample'
 import { connect } from 'react-redux'
-import { DISCOVER, FOLLOWING, STARRED } from '../constants/locales/en'
+import { DISCOVER, FOLLOWING } from '../constants/locales/en'
 import { USER } from '../constants/action_types'
 import { getLinkObject } from '../helpers/json_helper'
 import { selectIsLoggedIn } from '../selectors/authentication'
@@ -12,7 +12,6 @@ import {
   selectDPI,
   selectLastDiscoverBeaconVersion,
   selectLastFollowingBeaconVersion,
-  selectLastStarredBeaconVersion,
   selectIsMobile,
 } from '../selectors/gui'
 import { selectViewsAdultContent } from '../selectors/profile'
@@ -37,7 +36,6 @@ import { trackEvent } from '../actions/analytics'
 import {
   setLastDiscoverBeaconVersion,
   setLastFollowingBeaconVersion,
-  setLastStarredBeaconVersion,
 } from '../actions/gui'
 import { openModal } from '../actions/modals'
 import ShareDialog from '../components/dialogs/ShareDialog'
@@ -58,15 +56,13 @@ export const selectIsUserProfile = createSelector(
 )
 
 export const selectBroadcast = createSelector(
-  [selectIsLoggedIn, selectViewNameFromRoute, selectLastDiscoverBeaconVersion, selectLastFollowingBeaconVersion, selectLastStarredBeaconVersion], // eslint-disable-line
-  (isLoggedIn, viewName, lastDiscoverBeaconVersion, lastFollowingBeaconVersion, lastStarredBeaconVersion) => { // eslint-disable-line
+  [selectIsLoggedIn, selectViewNameFromRoute, selectLastDiscoverBeaconVersion, selectLastFollowingBeaconVersion], // eslint-disable-line
+  (isLoggedIn, viewName, lastDiscoverBeaconVersion, lastFollowingBeaconVersion) => {
     if (!isLoggedIn) { return null }
     if (viewName === 'discover') {
       return lastDiscoverBeaconVersion !== DISCOVER.BEACON_VERSION ? DISCOVER.BEACON_TEXT : null
     } else if (viewName === 'following') {
       return lastFollowingBeaconVersion !== FOLLOWING.BEACON_VERSION ? FOLLOWING.BEACON_TEXT : null
-    } else if (viewName === 'starred') {
-      return lastStarredBeaconVersion !== STARRED.BEACON_VERSION ? STARRED.BEACON_TEXT : null
     }
     return null
   },
@@ -204,8 +200,6 @@ class HeroContainer extends Component {
       dispatch(setLastDiscoverBeaconVersion({ version: DISCOVER.BEACON_VERSION }))
     } else if (viewName === 'following') {
       dispatch(setLastFollowingBeaconVersion({ version: FOLLOWING.BEACON_VERSION }))
-    } else if (viewName === 'starred') {
-      dispatch(setLastStarredBeaconVersion({ version: STARRED.BEACON_VERSION }))
     }
   }
 

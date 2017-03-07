@@ -35,7 +35,6 @@ class KeyboardContainer extends Component {
       [SHORTCUT_KEYS.SEARCH]: '/search',
       [SHORTCUT_KEYS.DISCOVER]: '/discover',
       [SHORTCUT_KEYS.FOLLOWING]: '/following',
-      [SHORTCUT_KEYS.STARRED]: '/starred',
       [SHORTCUT_KEYS.NOTIFICATIONS]: '/notifications',
     },
   }

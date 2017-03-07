@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
 import { USER } from '../constants/action_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import { selectActiveUserFollowingType, selectHasSaidHelloTo } from '../selectors/gui'
+import { selectHasSaidHelloTo } from '../selectors/gui'
 import { selectParamsType, selectParamsUsername } from '../selectors/params'
 import { selectStreamType } from '../selectors/stream'
 import {
@@ -14,7 +14,6 @@ import {
   selectUserIsSelf,
   selectUserPostsCount,
 } from '../selectors/user'
-import { setActiveUserFollowingType } from '../actions/gui'
 import { sayHello } from '../actions/zeros'
 import {
   loadUserDetail, loadUserLoves, loadUserPosts, loadUserUsers, loadUserFollowing,
@@ -23,16 +22,10 @@ import { ErrorState4xx } from '../components/errors/Errors'
 import { UserDetail, UserDetailError } from '../components/views/UserDetail'
 
 
-const emptyTabs = []
-const followingTabs = [
-  { type: 'friend', children: 'Following' },
-  { type: 'noise', children: 'Starred' },
-]
-
-export function getStreamAction({ activeUserFollowingType, type = 'posts', username }) {
+export function getStreamAction({ type = 'posts', username }) {
   switch (type) {
     case 'following':
-      return loadUserFollowing(`~${username}`, activeUserFollowingType)
+      return loadUserFollowing(`~${username}`)
     case 'followers':
       return loadUserUsers(`~${username}`, type)
     case 'loves':
@@ -44,22 +37,17 @@ export function getStreamAction({ activeUserFollowingType, type = 'posts', usern
 }
 
 const selectUserDetailStreamAction = createSelector(
-  [selectActiveUserFollowingType, selectParamsType, selectParamsUsername],
-  (activeUserFollowingType, type, username) =>
-    getStreamAction({ activeUserFollowingType, type, username }),
+  [selectParamsType, selectParamsUsername],
+  (type, username) => getStreamAction({ type, username }),
 )
 
 export function mapStateToProps(state, props) {
-  const activeUserFollowingType = selectActiveUserFollowingType(state)
   const type = selectParamsType(state, props) || 'posts'
   const isSelf = selectUserIsSelf(state, props)
   const isUserEmpty = selectUserIsEmpty(state, props)
   const username = selectParamsUsername(state, props)
-  const hasSaidHelloTo = !isUserEmpty ? !isSelf && selectHasSaidHelloTo(state, props) : false
-  const keyPostfix = isSelf && activeUserFollowingType ? `/${activeUserFollowingType}` : ''
   return {
-    activeUserFollowingType,
-    hasSaidHelloTo,
+    hasSaidHelloTo: !isUserEmpty ? !isSelf && selectHasSaidHelloTo(state, props) : false,
     hasZeroFollowers: !(selectUserFollowersCount(state, props)),
     hasZeroPosts: !(selectUserPostsCount(state, props)),
     id: selectUserId(state, props),
@@ -69,15 +57,13 @@ export function mapStateToProps(state, props) {
     isUserEmpty,
     streamAction: selectUserDetailStreamAction(state, props),
     streamType: selectStreamType(state),
-    tabs: isSelf && type === 'following' ? followingTabs : emptyTabs,
     username,
-    viewKey: `userDetail/${username}/${type}${keyPostfix}`,
+    viewKey: `userDetail/${username}/${type}`,
   }
 }
 
 class UserDetailContainer extends Component {
   static propTypes = {
-    activeUserFollowingType: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     hasSaidHelloTo: PropTypes.bool.isRequired,
     hasZeroFollowers: PropTypes.bool.isRequired,
@@ -89,7 +75,6 @@ class UserDetailContainer extends Component {
     isUserEmpty: PropTypes.bool.isRequired,
     streamAction: PropTypes.object.isRequired,
     streamType: PropTypes.string, // eslint-disable-line
-    tabs: PropTypes.array.isRequired,
     username: PropTypes.string.isRequired,
     viewKey: PropTypes.string.isRequired,
   }
@@ -134,7 +119,6 @@ class UserDetailContainer extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (nextState.renderType !== this.state.renderType) { return true }
     return [
-      'activeUserFollowingType',
       'hasSaidHelloTo',
       'hasZeroFollowers',
       'hasZeroPosts',
@@ -152,7 +136,6 @@ class UserDetailContainer extends Component {
 
   render() {
     const {
-      activeUserFollowingType,
       dispatch,
       hasSaidHelloTo,
       hasZeroFollowers,
@@ -163,7 +146,6 @@ class UserDetailContainer extends Component {
       isSelf,
       isUserEmpty,
       streamAction,
-      tabs,
       username,
       viewKey,
     } = this.props
@@ -183,7 +165,6 @@ class UserDetailContainer extends Component {
     }
     // TODO: Move functions out of props and into context
     const props = {
-      activeType: activeUserFollowingType,
       hasSaidHelloTo,
       hasZeroFollowers,
       hasZeroPosts,
@@ -191,9 +172,7 @@ class UserDetailContainer extends Component {
       isPostHeaderHidden,
       isSelf,
       onSubmitHello: shouldBindHello ? bindActionCreators(sayHello, dispatch) : null,
-      onTabClick: isSelf && tabs ? bindActionCreators(setActiveUserFollowingType, dispatch) : null,
       streamAction,
-      tabs,
       userId: id,
       username,
     }

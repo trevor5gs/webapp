@@ -245,7 +245,6 @@ describe('gui selectors', () => {
       const hasLayoutTools = [
         '/',
         '/following',
-        '/starred',
         '/invitiations',
         '/mk',
         '/mk/loves',

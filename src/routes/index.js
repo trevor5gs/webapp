@@ -77,6 +77,7 @@ const routes = (store) => {
         ...authenticationRoutes(store),
         discoverRoute(store),
         exploreRoute(store),
+        createRedirect('starred', '/following'),
         ...StreamsRoutes.map(route => authenticate(route)),
         authenticate(NotificationsRoute),
         ...InvitationsRoutes.map(route => authenticate(route)),

@@ -1,6 +1,0 @@
-@import "../../lib/styles/properties.css";
-
-.StarshipButton .StarIcon > g {
-  stroke-linejoin: round;
-}
-

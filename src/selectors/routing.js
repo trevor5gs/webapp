@@ -30,9 +30,6 @@ export const selectViewNameFromRoute = createSelector(
     if (/^\/following\b/.test(pathname)) {
       return 'following'
     }
-    if (/^\/starred\b/.test(pathname)) {
-      return 'starred'
-    }
     if (/^\/find\b|^\/search\b/.test(pathname)) {
       return 'search'
     }

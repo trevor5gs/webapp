@@ -22,7 +22,6 @@ oldDate.setFullYear(oldDate.getFullYear() - 2)
 const HOME_STREAMS_WHITELIST = [
   /^\/discover/,
   /^\/following$/,
-  /^\/starred$/,
 ]
 
 // this is used for testing in StreamContainer_test
@@ -56,7 +55,6 @@ const initialNonPersistedState = Immutable.Map({
 
 const initialPersistedState = Immutable.Map({
   activeNotificationsType: 'all',
-  activeUserFollowingType: 'friend',
   columnCount: 2,
   discoverKeyType: null,
   homeStream: '/discover',
@@ -69,7 +67,6 @@ const initialPersistedState = Immutable.Map({
   lastDiscoverBeaconVersion: '0',
   lastFollowingBeaconVersion: '0',
   lastNotificationCheck: oldDate.toUTCString(),
-  lastStarredBeaconVersion: '0',
   // order matters for matching routes
   modes: Immutable.List([
     Immutable.Map({ label: 'root', mode: 'grid', regex: '^/$' }),
@@ -80,7 +77,6 @@ const initialPersistedState = Immutable.Map({
     Immutable.Map({ label: 'notifications', mode: 'list', regex: '/notifications' }),
     Immutable.Map({ label: 'search', mode: 'grid', regex: '/search|/find' }),
     Immutable.Map({ label: 'settings', mode: 'list', regex: '/settings' }),
-    Immutable.Map({ label: 'starred', mode: 'list', regex: '/starred' }),
     Immutable.Map({ label: 'staff', mode: 'list', regex: '/staff' }),
     Immutable.Map({ label: 'posts', mode: 'list', regex: '/[\\w\\-]+/post/.+' }),
     Immutable.Map({ label: 'users/following', mode: 'grid', regex: '/[\\w\\-]+/following' }),
@@ -96,7 +92,6 @@ export const convertStateToImmutable = objectState =>
   initialState.set('lastDiscoverBeaconVersion', objectState.lastDiscoverBeaconVersion || '0')
     .set('lastFollowingBeaconVersion', objectState.lastFollowingBeaconVersion || '0')
     .set('lastNotificationCheck', objectState.lastNotificationCheck || oldDate.toUTCString())
-    .set('lastStarredBeaconVersion', objectState.lastStarredBeaconVersion || '0')
     .set('homeStream', objectState.homeStream || '/discover')
     .set('modes', objectState.modes ? Immutable.fromJS(objectState.modes) : initialState.get('modes'))
 
@@ -118,8 +113,6 @@ export default (state = initialState, action = { type: '' }) => {
       return state.set('discoverKeyType', payload.type)
     case GUI.NOTIFICATIONS_TAB:
       return state.set('activeNotificationsType', payload.activeTabType)
-    case GUI.SET_ACTIVE_USER_FOLLOWING_TYPE:
-      return state.set('activeUserFollowingType', payload.tab)
     case GUI.SET_IS_NAVBAR_HIDDEN:
       return state.set('isNavbarHidden', get(payload, 'isNavbarHidden', state.isNavbarHidden))
     case GUI.SET_IS_PROFILE_MENU_ACTIVE:
@@ -130,8 +123,6 @@ export default (state = initialState, action = { type: '' }) => {
       return state.set('lastDiscoverBeaconVersion', payload.version)
     case GUI.SET_LAST_FOLLOWING_BEACON_VERSION:
       return state.set('lastFollowingBeaconVersion', payload.version)
-    case GUI.SET_LAST_STARRED_BEACON_VERSION:
-      return state.set('lastStarredBeaconVersion', payload.version)
     case GUI.SET_NOTIFICATION_SCROLL_Y:
       return state.setIn(['notificationScrollPositions', payload.category], payload.scrollY)
     case GUI.SET_SIGNUP_MODAL_LAUNCHED:

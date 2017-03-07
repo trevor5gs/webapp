@@ -157,7 +157,6 @@ const noPreRenderPaths = {
   join: /^\/join/,
   settings: /^\/settings/,
   signup: /^\/signup/,
-  starred: /^\/starred/,
   notifications: /^\/notifications/,
 }
 

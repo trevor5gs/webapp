@@ -2,26 +2,6 @@ import { isFSA, isFSAName } from '../../support/test_helpers'
 import * as subject from '../../../src/actions/gui'
 
 describe('gui actions', () => {
-  context('#setActiveUserFollowingType', () => {
-    const action = subject.setActiveUserFollowingType('noise')
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('has similar action.name and action.type', () => {
-      expect(isFSAName(action, subject.setActiveUserFollowingType)).to.be.true
-    })
-
-    it('has a payload with the correct keys', () => {
-      expect(action.payload).to.have.keys('tab')
-    })
-
-    it('sets the appropriate payload', () => {
-      expect(action.payload.tab).to.equal('noise')
-    })
-  })
-
   context('#setIsNavbarHidden', () => {
     const action = subject.setIsNavbarHidden({ isHidden: false })
 
@@ -121,26 +101,6 @@ describe('gui actions', () => {
 
     it('sets the appropriate payload', () => {
       expect(action.payload.version).to.equal('667')
-    })
-  })
-
-  context('#setLastStarredBeaconVersion', () => {
-    const action = subject.setLastStarredBeaconVersion({ version: '668' })
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('has similar action.name and action.type', () => {
-      expect(isFSAName(action, subject.setLastStarredBeaconVersion)).to.be.true
-    })
-
-    it('has a payload with the correct keys', () => {
-      expect(action.payload).to.have.keys('version')
-    })
-
-    it('sets the appropriate payload', () => {
-      expect(action.payload.version).to.equal('668')
     })
   })
 

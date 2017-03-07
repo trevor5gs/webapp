@@ -2,13 +2,13 @@ import { getRenderedComponent } from '../../../support/test_helpers'
 import { RELATIONSHIP_PRIORITY } from '../../../../src/constants/relationship_types'
 import subject, {
   getNextPriority,
-} from '../../../../src/components/relationships/RelationshipButton'
+} from '../../../../src/components/relationships/FollowButton'
 import {
   MiniCheckIcon,
   MiniPlusIcon,
 } from '../../../../src/components/relationships/RelationshipIcons'
 
-describe('RelationshipButton', () => {
+describe('FollowButton', () => {
   context('::RELATIONSHIP_PRIORITY', () => {
     it('INACTIVE', () => {
       expect(RELATIONSHIP_PRIORITY.INACTIVE).to.equal('inactive')

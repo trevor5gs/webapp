@@ -17,7 +17,6 @@ import {
   ListIcon,
   SearchIcon,
   SparklesIcon,
-  StarIcon,
 } from './NavbarIcons'
 import { CategoryTabBar } from '../tabs/CategoryTabBar'
 import NotificationsContainer from '../../containers/NotificationsContainer'
@@ -141,16 +140,6 @@ export const NavbarLoggedIn = ({
           onDrop={onDropStreamLink}
           pathname={pathname}
           to="/following"
-        />
-        <NavbarLink
-          className=""
-          icon={<StarIcon />}
-          label="Starred"
-          onDragLeave={onDragLeaveStreamLink}
-          onDragOver={onDragOverStreamLink}
-          onDrop={onDropStreamLink}
-          pathname={pathname}
-          to="/starred"
         />
         <NavbarLink
           className={classNames('IconOnly', { isNotificationsUnread })}

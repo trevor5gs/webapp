@@ -6,8 +6,7 @@
   stroke-linejoin: bevel;
 }
 
-.Navbar .SearchIcon > g,
-.Navbar .StarIcon > g {
+.Navbar .SearchIcon > g {
   stroke-linejoin: round;
 }
 
@@ -49,14 +48,6 @@
 .isNotificationsActive ~ .Navbar .NavbarLink[href^="/notifications"] > .SVGIcon > g {
   fill: #000;
   stroke: #000;
-}
-
-/* Show the icon and label when we have enough room for Starred:  375 / 16 = 23.4375em */
-@media (min-width: 23.4375em) {
-  .NavbarLink > .StarIcon {
-    width: 20px;
-    opacity: 1;
-  }
 }
 
 /* // Animations once we have room */
@@ -106,17 +97,6 @@
 
   .no-touch .NavbarLink:hover > .CircleIcon > g {
     transition-delay: 0.7s;
-  }
-
-  /* // Star animation */
-  .no-touch .NavbarLink > .StarIcon {
-    transition-duration: var(--speed), var(--speed), var(--speed2);
-    transform-origin: center center;
-  }
-
-  .no-touch .NavbarLink:hover > .StarIcon {
-    transition-delay: 0.5s, 0.5s, 0.7s;
-    transform: rotate(360deg);
   }
 
   /* // Sparkles animation */

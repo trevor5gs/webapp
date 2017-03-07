@@ -1,13 +1,9 @@
-import React, { PureComponent } from 'react'
-import { loadFriends } from '../actions/stream'
+import React from 'react'
+import { loadFollowing } from '../actions/stream'
 import { Following } from '../components/views/Following'
 
-export default class FollowingContainer extends PureComponent {
-  static preRender = store =>
-    store.dispatch(loadFriends())
+const FollowingContainer = () =>
+  <Following streamAction={loadFollowing()} />
 
-  render() {
-    return <Following streamAction={loadFriends()} />
-  }
-}
+export default FollowingContainer
 

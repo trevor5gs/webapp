@@ -83,10 +83,7 @@
 @import "components/posts/PostTools.css";
 
 @import "components/relationships/BlockMuteButton.css";
-@import "components/relationships/RelationshipButton.css";
-@import "components/relationships/RelationshipIcons.css";
-@import "components/relationships/RelationshipImageButton.css";
-@import "components/relationships/StarshipButton.css";
+@import "components/relationships/FollowButton.css";
 
 @import "components/streams/Paginator.css";
 @import "components/streams/StreamContainer.css";

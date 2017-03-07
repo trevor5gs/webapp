@@ -18,7 +18,7 @@ export function getNextPriority(currentPriority) {
   }
 }
 
-class RelationshipButton extends PureComponent {
+class FollowButton extends PureComponent {
 
   static propTypes = {
     className: PropTypes.string,
@@ -62,12 +62,12 @@ class RelationshipButton extends PureComponent {
     const { className, priority } = this.props
     return (
       <button
-        className={classNames('RelationshipButton', className)}
+        className={classNames('FollowButton', className)}
         data-priority={priority}
         onClick={this.onClickUpdatePriority}
       >
         {icon}
-        <span className="RelationshipButtonLabel">{label}</span>
+        <span className="FollowButtonLabel">{label}</span>
       </button>
     )
   }
@@ -76,7 +76,7 @@ class RelationshipButton extends PureComponent {
     const { className, onClick, priority } = this.props
     return (
       <button
-        className={classNames('RelationshipButton', className)}
+        className={classNames('FollowButton', className)}
         data-priority={priority}
         onClick={onClick}
       >
@@ -89,7 +89,7 @@ class RelationshipButton extends PureComponent {
     const { className, priority } = this.props
     return (
       <Link
-        className={classNames('RelationshipButton', className)}
+        className={classNames('FollowButton', className)}
         data-priority={priority}
         to="/settings"
       >
@@ -135,5 +135,5 @@ class RelationshipButton extends PureComponent {
   }
 }
 
-export default RelationshipButton
+export default FollowButton
 

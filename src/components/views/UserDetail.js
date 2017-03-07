@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import StreamContainer from '../../containers/StreamContainer'
 import { MainView } from '../views/MainView'
-import { TabListButtons } from '../tabs/TabList'
 import { ZeroStateCreateRelationship, ZeroStateFirstPost, ZeroStateSayHello } from '../zeros/Zeros'
 
 const ZeroStates = ({
@@ -44,7 +43,6 @@ ZeroStates.defaultProps = {
 export const UserDetail = (props) => {
   // deconstruct props
   const {
-    activeType,
     hasSaidHelloTo,
     hasZeroFollowers,
     hasZeroPosts,
@@ -52,15 +50,12 @@ export const UserDetail = (props) => {
     isPostHeaderHidden,
     isSelf,
     onSubmitHello,
-    onTabClick,
     streamAction,
-    tabs,
     userId,
     username,
   } = props
 
   // construct component props
-  const tabProps = { activeType, className: 'LabelTabList', tabClasses: 'LabelTab', tabs }
   const streamProps = { action: streamAction, isPostHeaderHidden }
   const zeroProps = {
     isLoggedIn,
@@ -75,7 +70,6 @@ export const UserDetail = (props) => {
   return (
     <MainView className="UserDetail">
       <div className="UserDetails">
-        {tabs && <TabListButtons {...tabProps} onTabClick={({ type }) => onTabClick(type)} />}
         {(hasZeroPosts || hasZeroFollowers) && <ZeroStates {...zeroProps} />}
         {streamAction && <StreamContainer {...streamProps} />}
       </div>
@@ -83,7 +77,6 @@ export const UserDetail = (props) => {
   )
 }
 UserDetail.propTypes = {
-  activeType: PropTypes.string.isRequired,
   hasSaidHelloTo: PropTypes.bool.isRequired,
   hasZeroFollowers: PropTypes.bool.isRequired,
   hasZeroPosts: PropTypes.bool.isRequired,
@@ -91,9 +84,7 @@ UserDetail.propTypes = {
   isPostHeaderHidden: PropTypes.bool.isRequired,
   isSelf: PropTypes.bool.isRequired,
   onSubmitHello: PropTypes.func,
-  onTabClick: PropTypes.func,
   streamAction: PropTypes.object.isRequired,
-  tabs: PropTypes.array.isRequired,
   userId: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
 }

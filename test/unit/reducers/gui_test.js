@@ -25,7 +25,6 @@ describe('gui reducer', () => {
         reducer(undefined, {}),
       ).to.have.keys(
         'activeNotificationsType',
-        'activeUserFollowingType',
         'columnCount',
         'discoverKeyType',
         'hasLaunchedSignupModal',
@@ -43,7 +42,6 @@ describe('gui reducer', () => {
         'lastDiscoverBeaconVersion',
         'lastFollowingBeaconVersion',
         'lastNotificationCheck',
-        'lastStarredBeaconVersion',
         'notificationScrollPositions',
         'modes',
         'saidHelloTo',
@@ -122,12 +120,6 @@ describe('gui reducer', () => {
       expect(reducer(initialState, action)).to.have.property('activeNotificationsType', 'comments')
     })
 
-    it('GUI.SET_ACTIVE_USER_FOLLOWING_TYPE updates activeUserFollowingType', () => {
-      expect(initialState).to.have.property('activeUserFollowingType', 'friend')
-      const action = { type: GUI.SET_ACTIVE_USER_FOLLOWING_TYPE, payload: { tab: 'noise' } }
-      expect(reducer(initialState, action)).to.have.property('activeUserFollowingType', 'noise')
-    })
-
     it('GUI.SET_IS_PROFILE_MENU_ACTIVE updates isProfileMenuActive', () => {
       expect(initialState).to.have.property('isProfileMenuActive', false)
       const isProfileMenuActive = true
@@ -166,12 +158,6 @@ describe('gui reducer', () => {
         payload: { hasLaunchedSignupModal: true },
       }
       expect(reducer(undefined, action)).to.have.property('hasLaunchedSignupModal', true)
-    })
-
-    it('GUI.LAST_STARRED_BEACON_VERSION updates lastStarredBeaconVersion', () => {
-      expect(initialState).to.have.property('lastStarredBeaconVersion', '0')
-      const action = { type: GUI.SET_LAST_STARRED_BEACON_VERSION, payload: { version: '667' } }
-      expect(reducer(initialState, action)).to.have.property('lastStarredBeaconVersion', '667')
     })
 
     it('GUI.SET_IS_NAVBAR_HIDDEN updates properties from the initialScrollState', () => {
@@ -258,9 +244,6 @@ describe('gui reducer', () => {
     it('LOCATION_CHANGE updates the current grid mode', () => {
       const action1 = { type: LOCATION_CHANGE, payload: { pathname: '/following' } }
       expect(reducer(undefined, action1)).to.have.property('isGridMode', true)
-
-      const action2 = { type: LOCATION_CHANGE, payload: { pathname: '/starred' } }
-      expect(reducer(undefined, action2)).to.have.property('isGridMode', false)
     })
   })
 
@@ -324,7 +307,6 @@ describe('gui reducer', () => {
       },
       textToolsStates: {},
       activeNotificationsType: 'all',
-      activeUserFollowingType: 'friend',
       currentStream: '/discover',
       discoverKeyType: 'featured',
       history: {},
@@ -336,7 +318,6 @@ describe('gui reducer', () => {
       lastDiscoverBeaconVersion: '0',
       lastFollowingBeaconVersion: '0',
       lastNotificationCheck: 'Mon, 29 Dec 2014 21:28:58 GMT',
-      lastStarredBeaconVersion: '0',
       modes: [
         {
           label: 'root',
@@ -379,11 +360,6 @@ describe('gui reducer', () => {
           regex: '/settings',
         },
         {
-          label: 'starred',
-          mode: 'list',
-          regex: '/starred',
-        },
-        {
           label: 'staff',
           mode: 'list',
           regex: '/staff',
@@ -421,7 +397,6 @@ describe('gui reducer', () => {
         lastDiscoverBeaconVersion: '0',
         lastFollowingBeaconVersion: '0',
         lastNotificationCheck: 'Mon, 29 Dec 2014 21:28:58 GMT',
-        lastStarredBeaconVersion: '0',
         modes: [
           {
             label: 'root',
@@ -462,11 +437,6 @@ describe('gui reducer', () => {
             label: 'settings',
             mode: 'list',
             regex: '/settings',
-          },
-          {
-            label: 'starred',
-            mode: 'list',
-            regex: '/starred',
           },
           {
             label: 'staff',

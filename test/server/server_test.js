@@ -18,7 +18,7 @@ describe('isomorphically rendering on the server', () => {
 
   describe('#canPrerenderRequest', () => {
     it('returns false with loggedInPaths', () => {
-      ['/following', '/invitations', '/settings', '/starred', '/notifications'].forEach((path) => {
+      ['/following', '/invitations', '/settings', '/notifications'].forEach((path) => {
         expect(canPrerenderRequest({ url: path, get: () => 'false', cookies: {} })).to.be.false
       })
     })

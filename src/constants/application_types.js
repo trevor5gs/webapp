@@ -12,7 +12,6 @@ export const SHORTCUT_KEYS = {
   NOTIFICATIONS: 'r',
   OMNIBAR: '2',
   SEARCH: 's',
-  STARRED: 'n',
   TOGGLE_LAYOUT: '=',
 }
 

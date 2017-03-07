@@ -23,7 +23,7 @@ import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
 import { checkForNewNotifications, loadAnnouncements } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
-import { loadFriends, loadNoise } from '../actions/stream'
+import { loadFollowing } from '../actions/stream'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/NavbarRenderables'
 import { getDiscoverAction } from '../containers/DiscoverContainer'
 
@@ -144,9 +144,7 @@ class NavbarContainer extends PureComponent {
           dispatch(getDiscoverAction(params.type))
         }
       } else if (viewName === 'following') {
-        dispatch(loadFriends())
-      } else if (viewName === 'starred') {
-        dispatch(loadNoise())
+        dispatch(loadFollowing())
       }
       scrollToPosition(0, 0)
     }
@@ -184,9 +182,8 @@ class NavbarContainer extends PureComponent {
     e.target.classList.remove('hasDragOver')
     if (e.dataTransfer.types.indexOf('application/json') > -1) {
       const data = JSON.parse(e.dataTransfer.getData('application/json'))
-      if (data.userId && data.priority) {
-        const newPriority = e.target.getAttribute('href') === '/starred' ? 'noise' : 'friend'
-        this.props.dispatch(updateRelationship(data.userId, newPriority, data.priority))
+      if (data.userId && data.priority && e.target.getAttribute('href') === '/following') {
+        this.props.dispatch(updateRelationship(data.userId, 'friend', data.priority))
       }
     }
   }

@@ -16,13 +16,6 @@ export const MiniCheckIcon = () =>
     </g>
   </SVGIcon>
 
-export const StarIcon = () =>
-  <SVGIcon className="StarIcon">
-    <g>
-      <polygon points="10,14 13.7,16 13,11.7 16,8.6 11.9,8 10,4 8.1,8 4,8.6 7,11.7 6.3,16 " />
-    </g>
-  </SVGIcon>
-
 export const DotsIcon = ({ onClick }) =>
   <SVGIcon className="DotsIcon" onClick={onClick}>
     <g>
