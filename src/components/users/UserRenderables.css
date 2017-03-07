@@ -232,7 +232,7 @@ User Cards  */
 
 .UserProfileCard {
   position: relative;
-  height: 250px;
+  height: 260px;
   padding: 20px;
   margin-top: 10px;
   overflow: hidden;
@@ -246,10 +246,13 @@ User Cards  */
   .UserProfileCard {
     display: inline-block;
     width: calc(50% - 20px);
-    height: 540px;
     margin-top: 20px;
     margin-left: 20px;
     vertical-align: top;
+  }
+
+  .UserProfileCard:not(.isMiniProfileCard) {
+    height: 540px;
   }
 }
 

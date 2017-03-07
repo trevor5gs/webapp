@@ -24,6 +24,10 @@ User Cells  */
   border-top: 1px solid #aaa;
 }
 
+.UserCell.isMiniProfileCard + .UserCell.isMiniProfileCard {
+  border: 0;
+}
+
 @media (--break-2-max) {
   .UserCell.inUserProfileCard + .UserCell.inUserProfileCard {
     border: 0;
@@ -36,7 +40,7 @@ User Cells  */
     text-align: left;
   }
 
-  .UserCell.inUserProfileCard {
+  .UserCell.inUserProfileCard:not(.isMiniProfileCard) {
     text-align: left;
   }
 }
@@ -79,7 +83,7 @@ User Buttons */
     max-width: 260px;
   }
 
-  .UserProfileButtons.inUserProfileCard {
+  .UserProfileButtons.inUserProfileCard:not(.isMiniProfileCard) {
     margin-bottom: 35px;
   }
 }
@@ -241,6 +245,10 @@ User Stats */
 /* Temporary disable a few of these buttons */
 .UserStatsLink.asDisabled {
   pointer-events: none !important;
+}
+
+.UserStatsCell.inUserProfileCard.isMiniProfileCard {
+  margin-top: -20px;
 }
 
 @media (--break-2-max) {

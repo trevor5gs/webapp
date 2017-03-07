@@ -138,6 +138,7 @@ export class UserProfileCard extends PureComponent {
     ]).isRequired,
     followingCount: PropTypes.number.isRequired,
     id: PropTypes.string.isRequired,
+    isMiniProfileCard: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     lovesCount: PropTypes.number.isRequired,
     name: PropTypes.string,
@@ -158,6 +159,7 @@ export class UserProfileCard extends PureComponent {
       followersCount,
       followingCount,
       id,
+      isMiniProfileCard,
       isMobile,
       lovesCount,
       name,
@@ -167,18 +169,18 @@ export class UserProfileCard extends PureComponent {
       username,
     } = this.props
     return (
-      <div className="UserProfileCard" >
+      <div className={classNames('UserProfileCard', { isMiniProfileCard })}>
         <Avatar
-          className="inUserProfileCard"
+          className={classNames('inUserProfileCard', { isMiniProfileCard })}
           priority={relationshipPriority}
-          size={isMobile ? 'regular' : 'large'}
+          size={isMobile || isMiniProfileCard ? 'regular' : 'large'}
           sources={avatar}
           to={`/${username}`}
           userId={id}
           username={username}
         />
         <UserProfileButtons
-          className="inUserProfileCard"
+          className={classNames('inUserProfileCard', { isMiniProfileCard })}
           onClickCollab={onClickCollab}
           onClickHireMe={onClickHireMe}
         >
@@ -189,33 +191,33 @@ export class UserProfileCard extends PureComponent {
           />
         </UserProfileButtons>
         <UserNamesCellCard
-          className="inUserProfileCard"
+          className={classNames('inUserProfileCard', { isMiniProfileCard })}
           name={name}
           username={username}
         />
         <UserStatsCell
-          className="inUserProfileCard"
+          className={classNames('inUserProfileCard', { isMiniProfileCard })}
           followingCount={followingCount}
           followersCount={followersCount}
           lovesCount={lovesCount}
           postsCount={postsCount}
           username={username}
         />
-        { !isMobile &&
+        { (!isMobile && !isMiniProfileCard) &&
           <UserInfoCell
             className="inUserProfileCard"
             truncatedShortBio={truncatedShortBio}
           />
         }
         <BackgroundImage
-          className="hasOverlay6 inUserProfileCard"
+          className={classNames('inUserProfileCard hasOverlay6', { isMiniProfileCard })}
           dpi={'xhdpi'}
           sources={coverImage}
           to={`/${username}`}
         />
         { onClickOpenFeaturedModal &&
           <UserFeaturedButton
-            className="inUserProfileCard"
+            className={classNames('inUserProfileCard', { isMiniProfileCard })}
             onClick={onClickOpenFeaturedModal}
           />
         }

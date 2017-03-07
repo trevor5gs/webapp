@@ -45,6 +45,7 @@ export const PostDetail = (
               className="TabListStreamContainer"
               key={`TabListStreamContainer_${activeType}`}
               paginatorText="Load More"
+              paginatorCentered={activeType === 'loves' || activeType === 'reposts'}
               shouldInfiniteScroll={false}
             />
           }

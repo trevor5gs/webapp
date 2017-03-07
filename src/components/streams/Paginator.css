@@ -15,6 +15,11 @@
   transform: translate3d(0, 100%, 0);
 }
 
+.Paginator.isCentered {
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
 .Paginator.isBusy.NotificationReload {
   position: relative;
   bottom: auto;

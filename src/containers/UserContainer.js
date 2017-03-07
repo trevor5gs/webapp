@@ -7,6 +7,7 @@ import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectIsMobile } from '../selectors/gui'
 import { selectInvitationAcceptedAt, selectInvitationEmail } from '../selectors/invitations'
 import { selectViewsAdultContent } from '../selectors/profile'
+import { selectIsPostDetail } from '../selectors/routing'
 import {
   selectUser,
   selectUserAvatar,
@@ -67,6 +68,7 @@ export function makeMapStateToProps() {
       isLoggedIn: selectIsLoggedIn(state),
       isSelf: selectUserIsSelf(state, props),
       isShortBioTruncated: truncatedShortBio.text.length >= 150,
+      isMiniProfileCard: selectIsPostDetail(state, props),
       isMobile: selectIsMobile(state),
       isUserEmpty: selectUserIsEmpty(state, props),
       location: selectUserLocation(state, props),
@@ -105,6 +107,7 @@ class UserContainer extends Component {
     isFeatured: PropTypes.bool.isRequired,
     isHireable: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    isMiniProfileCard: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     isSelf: PropTypes.bool.isRequired,
     isShortBioTruncated: PropTypes.bool.isRequired,
@@ -181,7 +184,9 @@ class UserContainer extends Component {
 
   shouldComponentUpdate(nextProps) {
     return !Immutable.is(nextProps.user, this.props.user) ||
-      ['isLoggedIn', 'isMobile'].some(prop => nextProps[prop] !== this.props[prop])
+      ['isLoggedIn', 'isMiniProfileCard', 'isMobile'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      )
   }
 
   onClickOpenBio = () => {
@@ -284,6 +289,7 @@ class UserContainer extends Component {
       isCollaborateable,
       isHireable,
       isLoggedIn,
+      isMiniProfileCard,
       isMobile,
       isSelf,
       isUserEmpty,
@@ -328,6 +334,7 @@ class UserContainer extends Component {
               followersCount,
               followingCount,
               id,
+              isMiniProfileCard,
               isMobile,
               lovesCount,
               name,

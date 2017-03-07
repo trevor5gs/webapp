@@ -51,6 +51,7 @@ PaginatorLoader.propTypes = {
 export const Paginator = ({
     className,
     hasShowMoreButton,
+    isCentered,
     isHidden,
     loadNextPage,
     messageText,
@@ -69,7 +70,7 @@ export const Paginator = ({
     el = <PaginatorLoader message={message} />
   }
   return (
-    <div className={classNames('Paginator', { isBusy: !isHidden }, className)}>
+    <div className={classNames('Paginator', { isBusy: !isHidden }, { isCentered }, className)}>
       {el}
     </div>
   )
@@ -77,6 +78,7 @@ export const Paginator = ({
 Paginator.propTypes = {
   className: PropTypes.string,
   hasShowMoreButton: PropTypes.bool,
+  isCentered: PropTypes.bool,
   isHidden: PropTypes.bool,
   loadNextPage: PropTypes.func,
   messageText: PropTypes.string,
@@ -87,6 +89,7 @@ Paginator.propTypes = {
 Paginator.defaultProps = {
   className: null,
   hasShowMoreButton: false,
+  isCentered: false,
   isHidden: true,
   loadNextPage: null,
   messageText: '',

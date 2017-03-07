@@ -62,6 +62,7 @@ class StreamContainer extends Component {
     isModalComponent: PropTypes.bool,
     isPostHeaderHidden: PropTypes.bool,
     omnibar: PropTypes.object.isRequired,
+    paginatorCentered: PropTypes.bool,
     paginatorText: PropTypes.string,
     paginatorTo: PropTypes.string,
     result: PropTypes.object.isRequired,
@@ -77,6 +78,7 @@ class StreamContainer extends Component {
     className: '',
     isModalComponent: false,
     isPostHeaderHidden: false,
+    paginatorCentered: false,
     paginatorText: 'Loading',
     paginatorTo: null,
     scrollContainer: null,
@@ -272,7 +274,7 @@ class StreamContainer extends Component {
 
   render() {
     const { className, columnCount, isGridMode, isPostHeaderHidden,
-      paginatorText, paginatorTo, result, stream } = this.props
+      paginatorCentered, paginatorText, paginatorTo, result, stream } = this.props
     const { action, hidePaginator, renderType } = this.state
     if (!action) { return null }
     if (!result.get('ids').size) {
@@ -300,6 +302,7 @@ class StreamContainer extends Component {
           hasShowMoreButton={
             typeof meta.resultKey !== 'undefined' && typeof meta.updateKey !== 'undefined'
           }
+          isCentered={paginatorCentered}
           isHidden={hidePaginator}
           loadNextPage={this.onLoadNextPage}
           messageText={paginatorText}
