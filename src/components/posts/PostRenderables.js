@@ -4,6 +4,7 @@ import { css } from 'glamor'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
+import { ArrowEastIcon } from '../assets/Icons'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationshipContainer from '../../containers/RelationshipContainer'
@@ -254,6 +255,14 @@ const relatedPostButtonStyles = css({
   top: 0,
   fontSize: 18,
   color: '#aaa',
+  transition: 'color 250ms',
+  '.no-touch &:hover': {
+    color: 'black',
+  },
+  '> .ArrowEastIcon': {
+    transform: 'rotate(90deg)',
+    marginLeft: 15,
+  },
 })
 
 export const RelatedPostsButton = (props, { onClickScrollToRelatedPosts }) =>
@@ -261,7 +270,8 @@ export const RelatedPostsButton = (props, { onClickScrollToRelatedPosts }) =>
     onClick={onClickScrollToRelatedPosts}
     {...relatedPostButtonStyles}
   >
-    Related Posts
+    <span>Related Posts</span>
+    <ArrowEastIcon />
   </button>
 RelatedPostsButton.contextTypes = {
   onClickScrollToRelatedPosts: PropTypes.func.isRequired,
