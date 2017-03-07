@@ -60,7 +60,7 @@
 .no-touch .BlockedUsers .Paginator:hover,
 .no-touch .TabListStreamContainer .Paginator:hover,
 .no-touch .MutedUsers .Paginator:hover {
-  background-color: #666;
+  background-color: #000;
 }
 
 .BlockedUsers .Paginator,
