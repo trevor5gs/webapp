@@ -93,6 +93,9 @@ class LoveTool extends PureComponent {
     postLoved: PropTypes.bool.isRequired,
     postLovesCount: PropTypes.number.isRequired,
   }
+  static contextTypes = {
+    onClickLovePost: PropTypes.func.isRequired,
+  }
   render() {
     const { postLoved, postLovesCount } = this.props
     const { onClickLovePost } = this.context
