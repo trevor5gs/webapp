@@ -21,6 +21,9 @@ export class FooterForm extends PureComponent {
   props: FormPropTypes
 
   static contextTypes = {
+    onBlur: PropTypes.func.isRequired,
+    onFocus: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
   }
 
@@ -38,7 +41,7 @@ export class FooterForm extends PureComponent {
 
   render() {
     const { formActionPath, formMessage, isDisabled, isMobile } = this.props
-    const { onSubmit } = this.context
+    const { onBlur, onChange, onFocus, onSubmit } = this.context
     return (
       <form
         action={formActionPath}
@@ -53,6 +56,9 @@ export class FooterForm extends PureComponent {
           label="Email"
           placeholder={isMobile ? 'Subscribe' : 'Enter email for daily inspiration'}
           id="FooterEmailInput"
+          onBlur={onBlur}
+          onChange={onChange}
+          onFocus={onFocus}
         />
         <FormButton
           className="FormButton inFooter"

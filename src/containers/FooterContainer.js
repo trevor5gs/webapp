@@ -92,7 +92,7 @@ class FooterContainer extends PureComponent {
     }
   }
 
-  onChange = ({ email }) => {
+  onChange = ({ FooterEmailInput: email }) => {
     emailValue = email
     const { emailStatus, isFormDisabled, formStatus } = this.state
     const currentStatus = emailStatus
