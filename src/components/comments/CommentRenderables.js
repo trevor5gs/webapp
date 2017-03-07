@@ -1,6 +1,5 @@
 /* eslint-disable react/no-multi-comp */
-import Immutable from 'immutable'
-import React, { Component, PropTypes, PureComponent } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { Link } from 'react-router'
 import { RegionItems } from '../regions/RegionRenderables'
 import Avatar from '../assets/Avatar'
@@ -38,10 +37,8 @@ export class CommentHeader extends PureComponent {
   }
 }
 
-// TODO: convert this to a PureComponent once we get rid of passing assets
-export class CommentBody extends Component {
+export class CommentBody extends PureComponent {
   static propTypes = {
-    assets: PropTypes.object,
     columnWidth: PropTypes.number.isRequired,
     commentId: PropTypes.string.isRequired,
     commentOffset: PropTypes.number.isRequired,
@@ -51,18 +48,8 @@ export class CommentBody extends Component {
     innerHeight: PropTypes.number.isRequired,
     isGridMode: PropTypes.bool.isRequired,
   }
-  static defaultProps = {
-    assets: null,
-  }
-  shouldComponentUpdate(nextProps) {
-    return !Immutable.is(nextProps.content, this.props.content) ||
-      ['contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
-        nextProps[prop] !== this.props[prop],
-      )
-  }
   render() {
     const {
-      assets,
       columnWidth,
       commentId,
       commentOffset,
@@ -75,7 +62,6 @@ export class CommentBody extends Component {
     return (
       <div className="CommentBody" key={`CommentBody${commentId}`} >
         <RegionItems
-          assets={assets}
           columnWidth={columnWidth}
           commentId={commentId}
           commentOffset={commentOffset}
@@ -83,6 +69,7 @@ export class CommentBody extends Component {
           contentWidth={contentWidth}
           detailPath={detailPath}
           innerHeight={innerHeight}
+          isComment
           isGridMode={isGridMode}
         />
       </div>
