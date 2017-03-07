@@ -99,7 +99,7 @@ export function loadRelatedPosts(postId) {
   return {
     type: LOAD_STREAM,
     payload: {
-      endpoint: api.relatedPosts(),
+      endpoint: api.relatedPosts(postId),
       postIdOrToken: postId,
     },
     meta: {
