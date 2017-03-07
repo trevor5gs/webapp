@@ -208,7 +208,7 @@ class CommentContainer extends Component {
     } = this.props
     if (!comment || !comment.get('id') || !author || !author.get('id')) { return null }
     return (
-      <div>
+      <div className="Comment">
         {!isEditing ?
           <CommentHeader author={author} commentId={commentId} /> :
           null
