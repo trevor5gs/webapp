@@ -24,7 +24,7 @@ export const PostDetail = (
     <MainView className="PostDetail">
       <div className="PostDetails Posts asList">
         <article className="PostList" id={`Post_${post.get('id')}`}>
-          <div className="StreamContainer">
+          <div className="StreamContainer PostDetailStreamContainer">
             <PostContainer postId={post.get('id')} />
             <nav {...navStyles}>
               <TabListButtons
