@@ -2,6 +2,7 @@
 
 .Comments {
   position: relative;
+  max-width: 640px;
 }
 
 .isLoggedOut .PostDetail .Comments {
@@ -10,7 +11,6 @@
 
 .Comment {
   position: relative;
-  max-width: 650px;
   padding-top: 10px;
 }
 
