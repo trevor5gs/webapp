@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { scrollToPosition } from '../lib/jello'
+import { isElloAndroid, scrollToPosition } from '../lib/jello'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectCategoryTabs } from '../selectors/categories'
@@ -153,8 +153,13 @@ class NavbarContainer extends PureComponent {
 
   onClickOmniButton = () => {
     const { dispatch } = this.props
-    dispatch(openOmnibar())
-    scrollToPosition(0, 0)
+
+    if (isElloAndroid()) {
+      AndroidInterface.launchEditor()
+    } else {
+      dispatch(openOmnibar())
+      scrollToPosition(0, 0)
+    }
   }
 
   onClickToggleLayoutMode = () => {
