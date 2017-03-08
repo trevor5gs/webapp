@@ -31,8 +31,12 @@ import {
 } from '../selectors/promotions'
 import { selectIsAuthenticationView } from '../selectors/routing'
 import { scrollToPosition } from '../lib/jello'
-import { baseStyles } from '../styles/css'
+import { baseStyles, atlasGroteskRegular, atlasGroteskBold, atlasGroteskTypewriter } from '../styles/css'
 
+// Inline fonts and global CSS
+css.insert(atlasGroteskRegular)
+css.insert(atlasGroteskBold)
+css.insert(atlasGroteskTypewriter)
 css.insert(baseStyles)
 
 function mapStateToProps(state) {

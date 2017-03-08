@@ -13,6 +13,7 @@ const pxRegExp = /"[^"]+"|'[^']+'|url\([^)]+\)|(\d*\.?\d+)px/ig
 // Order is based on most likely used...
 const blacklist = [
   'lineHeight',
+  'fontWeight',
   'opacity',
   'zIndex',
   'flex',

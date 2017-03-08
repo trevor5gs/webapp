@@ -14,6 +14,7 @@ import InvitationsRoutes from './invitations'
 import SettingsRoutes from './settings'
 import OnboardingRoutes from './onboarding'
 import UserDetailRoute from './user_detail'
+import StyleGuideRoutes from './styleguide'
 
 function createRedirect(from, to) {
   return {
@@ -65,6 +66,9 @@ const routes = (store) => {
     },
   }
 
+  const allowStyleguide = route =>
+    (ENV.HAS_GUIDE ? route : null)
+
   return [
     {
       path: '/',
@@ -85,8 +89,9 @@ const routes = (store) => {
         createRedirect('onboarding', '/onboarding/categories'),
         ...OnboardingRoutes.map(route => authenticate(route)),
         ...SearchRoutes,
+        ...StyleGuideRoutes.map(route => allowStyleguide(route)),
         UserDetailRoute,
-      ],
+      ].filter(value => value !== null),
     },
   ]
 }

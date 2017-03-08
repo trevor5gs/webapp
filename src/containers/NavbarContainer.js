@@ -71,7 +71,7 @@ function mapStateToProps(state, props) {
 class NavbarContainer extends PureComponent {
 
   static propTypes = {
-    activeTabType: PropTypes.string.isRequired,
+    activeTabType: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     homeStream: PropTypes.string.isRequired,
     isGridMode: PropTypes.bool.isRequired,
@@ -84,6 +84,7 @@ class NavbarContainer extends PureComponent {
   }
 
   static defaultProps = {
+    activeTabType: '',
     isProfileMenuActive: false,
     isNotificationsActive: false,
   }
