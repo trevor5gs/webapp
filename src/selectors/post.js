@@ -14,6 +14,8 @@ import { selectIsPostDetail } from './routing'
 import { selectStreamType, selectStreamMappingType, selectStreamPostIdOrToken } from './stream'
 import { selectUsers } from './user'
 
+const countProtector = count => (count < 0 ? 0 : count)
+
 export const selectPropsPostId = (state, props) =>
   get(props, 'postId') || get(props, 'post', Immutable.Map()).get('id')
 
@@ -53,7 +55,7 @@ export const addAssetToRegion = (region, assets) => {
 // Properties on the post reducer
 export const selectPostAuthorId = createSelector([selectPost], post => post.get('authorId'))
 export const selectPostBody = createSelector([selectPost], post => post.get('body'))
-export const selectPostCommentsCount = createSelector([selectPost], post => post.get('commentsCount'))
+export const selectPostCommentsCount = createSelector([selectPost], post => countProtector(post.get('commentsCount')))
 export const selectPostContent = createSelector(
   [selectPost, selectAssets], (post, assets) =>
     post.get('content', Immutable.Map()).map(region => addAssetToRegion(region, assets)),
@@ -65,14 +67,14 @@ export const selectPostId = createSelector([selectPost], post => post.get('id'))
 export const selectPostIsAdultContent = createSelector([selectPost], post => post.get('isAdultContent'))
 export const selectPostMetaAttributes = createSelector([selectPost], post => post.get('metaAttributes', Immutable.Map()))
 export const selectPostLoved = createSelector([selectPost], post => post.get('loved'))
-export const selectPostLovesCount = createSelector([selectPost], post => post.get('lovesCount'))
+export const selectPostLovesCount = createSelector([selectPost], post => countProtector(post.get('lovesCount')))
 export const selectPostRepostContent = createSelector(
   [selectPost, selectAssets], (post, assets) =>
     post.get('repostContent', Immutable.Map()).map(region => addAssetToRegion(region, assets)),
 )
 export const selectPostRepostId = createSelector([selectPost], post => post.get('repostId'))
 export const selectPostReposted = createSelector([selectPost], post => post.get('reposted'))
-export const selectPostRepostsCount = createSelector([selectPost], post => post.get('repostsCount'))
+export const selectPostRepostsCount = createSelector([selectPost], post => countProtector(post.get('repostsCount')))
 export const selectPostShowComments = createSelector([selectPost], post => post.get('showComments', false))
 export const selectPostShowLovers = createSelector([selectPost], post => post.get('showLovers', false))
 export const selectPostShowReposters = createSelector([selectPost], post => post.get('showReposters', false))
@@ -81,7 +83,7 @@ export const selectPostSummary = createSelector(
     post.get('summary', Immutable.Map()).map(region => addAssetToRegion(region, assets)),
 )
 export const selectPostToken = createSelector([selectPost], post => post.get('token'))
-export const selectPostViewsCount = createSelector([selectPost], post => post.get('viewsCount'))
+export const selectPostViewsCount = createSelector([selectPost], post => countProtector(post.get('viewsCount')))
 export const selectPostViewsCountRounded = createSelector(
   [selectPostViewsCount], count => numberToHuman(count, false),
 )
