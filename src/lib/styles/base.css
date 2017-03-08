@@ -1,7 +1,81 @@
-
+@import "./properties.css";
 
 /* stylelint-disable no-unsupported-browser-features, property-no-vendor-prefix */
 /* stylelint-disable selector-list-comma-newline-after, selector-no-qualifying-type */
+
+/* Fonts
+------------------------------------- */
+@font-face {
+  font-family: AtlasGroteskRegular;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src:
+    local("AtlasGrotesk-Regular"),
+    url("//fonts.ello.co/AtlasGrotesk-Regular-Web.eot?#iefix") format("embedded-opentype"),
+    url("//fonts.ello.co/AtlasGrotesk-Regular-Web.woff") format("woff"),
+    url("//fonts.ello.co/AtlasGrotesk-Regular-Web.ttf") format("truetype"),
+    url("//fonts.ello.co/AtlasGrotesk-Regular-Web.svg#AtlasGroteskRegular") format("svg");
+}
+
+@font-face {
+  font-family: AtlasGroteskBold;
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+  src:
+    local("AtlasGrotesk-Bold"),
+    url("//fonts.ello.co/AtlasGrotesk-Bold-Web.eot?#iefix") format("embedded-opentype"),
+    url("//fonts.ello.co/AtlasGrotesk-Bold-Web.woff") format("woff"),
+    url("//fonts.ello.co/AtlasGrotesk-Bold-Web.ttf") format("truetype"),
+    url("//fonts.ello.co/AtlasGrotesk-Bold-Web.svg#AtlasGroteskBold") format("svg");
+}
+
+@font-face {
+  font-family: AtlasTypewriterRegular;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src:
+    local("AtlasTypewriter-Regular"),
+    url("//fonts.ello.co/AtlasTypewriter-Regular-Web.eot?#iefix") format("embedded-opentype"),
+    url("//fonts.ello.co/AtlasTypewriter-Regular-Web.woff") format("woff"),
+    url("//fonts.ello.co/AtlasTypewriter-Regular-Web.ttf") format("truetype"),
+    url("//fonts.ello.co/AtlasTypewriter-Regular-Web.svg#AtlasTypewriterRegular") format("svg");
+}
+
+/* Scaffold
+------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  font: normal 400 100% / 1.5 var(--fontstack-sanserif-regular);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  overflow-x: hidden;
+  background-color: #fff;
+}
+
+::selection {
+  color: #fff;
+  text-shadow: none;
+  background: #000;
+}
+
+[hidden] {
+  display: none;
+}
 
 /* Typography
 ------------------------------------- */
