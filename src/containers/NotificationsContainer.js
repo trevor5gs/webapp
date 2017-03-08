@@ -170,6 +170,7 @@ class NotificationsContainer extends Component {
       document.removeEventListener('click', this.onClickDocument)
       document.removeEventListener('touchstart', this.onClickDocument)
     }
+    this.onMouseOut()
   }
 
   onClickAnnouncementNotification = (e) => {
@@ -189,6 +190,7 @@ class NotificationsContainer extends Component {
     if (typeof e.target.closest === 'function' && e.target.closest('.NotificationsContainer')) { return }
     const { dispatch } = this.props
     dispatch(toggleNotifications({ isActive: false }))
+    this.onMouseOut()
   }
 
   onClickTab = ({ type }) => {
@@ -255,8 +257,8 @@ class NotificationsContainer extends Component {
       (
         <div
           className="NotificationsContainer"
-          onMouseOver={this.onMouseOver}
-          onMouseOut={this.onMouseOut}
+          onMouseEnter={this.onMouseOver}
+          onMouseLeave={this.onMouseOut}
         >
           <TabListButtons
             activeType={activeTabType}
