@@ -8,7 +8,7 @@ export const selectParamsToken = (state, props) => {
   return token ? token.toLowerCase() : null
 }
 export const selectParamsType = (state, props) => get(props, 'params.type')
-export const selectParamsUsername = (state, props) => get(props, 'params.username')
+export const selectParamsUsername = (state, props) => get(props, 'params.username', '').toLowerCase()
 
 // Memoized selectors
 
