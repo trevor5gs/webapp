@@ -21,8 +21,6 @@ import {
 import { ErrorState4xx } from '../components/errors/Errors'
 import { UserDetail, UserDetailError } from '../components/views/UserDetail'
 
-const emptyTabs = []
-
 // TODO: move this to a selector and test it
 export function getStreamAction({ type = 'posts', username }) {
   switch (type) {
