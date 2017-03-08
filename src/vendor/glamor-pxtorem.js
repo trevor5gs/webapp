@@ -12,10 +12,10 @@ const pxRegExp = /"[^"]+"|'[^']+'|url\([^)]+\)|(\d*\.?\d+)px/ig
 // https://developer.mozilla.org/en-US/docs/Web/CSS/Reference
 // Order is based on most likely used...
 const blacklist = [
+  'zIndex',
+  'opacity',
   'lineHeight',
   'fontWeight',
-  'opacity',
-  'zIndex',
   'flex',
   'flexGrow',
   'flexShrink',
@@ -25,7 +25,7 @@ const blacklist = [
   'counterReset',
 ]
 
-const isPropertyBlacklisted = prop =>
+const isNumberPropBlacklisted = prop =>
   blacklist.some(property => property === prop)
 
 const isValueInRange = value =>
@@ -37,7 +37,7 @@ const toFixed = (number, precision) => {
   return (Math.round(wholeNumber / 10) * 10) / multiplier
 }
 
-const rem = (value) => {
+const toRem = (value) => {
   const fixed = toFixed((Number(value) / rootValue), unitPrecision)
   return fixed === 0 ? '0' : `${fixed}rem`
 }
@@ -45,7 +45,7 @@ const rem = (value) => {
 const pixelReplace = () => ((pxValue, numValue) => {
   if (!numValue) return pxValue
   if (!isValueInRange(numValue)) return pxValue
-  return rem(numValue)
+  return toRem(numValue)
 })
 
 export default function pxtorem({ selector, style }) {
@@ -53,8 +53,8 @@ export default function pxtorem({ selector, style }) {
   const pxReplace = pixelReplace()
   Object.keys(newStyle).forEach((prop) => {
     const value = newStyle[prop]
-    if (typeof value === 'number' && isValueInRange(value) && !isPropertyBlacklisted(prop)) {
-      newStyle[prop] = rem(value)
+    if (typeof value === 'number' && isValueInRange(value) && !isNumberPropBlacklisted(prop)) {
+      newStyle[prop] = toRem(value)
     } else if (typeof value === 'string' && value.includes('px')) {
       newStyle[prop] = value.replace(pxRegExp, pxReplace)
     }
