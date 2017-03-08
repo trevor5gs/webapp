@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { css } from 'glamor'
+import { minBreak2 } from '../../styles/cso'
 import Editor from '../editor/Editor'
 import PostContainer from '../../containers/PostContainer'
 import StreamContainer from '../../containers/StreamContainer'
@@ -7,8 +8,6 @@ import { MainView } from '../views/MainView'
 import { loadRelatedPosts } from '../../actions/posts'
 import { RelatedPostsButton } from '../posts/PostRenderables'
 import { TabListButtons } from '../tabs/TabList'
-
-const minBreak2 = '@media(min-width: 40em)'
 
 const navStyles = css({
   position: 'relative',
