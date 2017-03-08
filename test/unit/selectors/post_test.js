@@ -196,6 +196,13 @@ describe('post selectors', () => {
       const result = selector.selectPostCommentsCount(state, props)
       expect(result).to.equal(12)
     })
+
+    it('ensures the comment count does not fall below 0', () => {
+      state = { json: state.json.setIn(['posts', '666', 'commentsCount'], -1) }
+      const props = { postId: '666' }
+      const result = selector.selectPostCommentsCount(state, props)
+      expect(result).to.equal(0)
+    })
   })
 
   context('#selectPostContent', () => {
@@ -268,6 +275,13 @@ describe('post selectors', () => {
       const result = selector.selectPostLovesCount(state, props)
       expect(result).to.equal(10)
     })
+
+    it('ensures the loves count does not fall below 0', () => {
+      state = { json: state.json.setIn(['posts', '666', 'lovesCount'], -5) }
+      const props = { postId: '666' }
+      const result = selector.selectPostLovesCount(state, props)
+      expect(result).to.equal(0)
+    })
   })
 
   context('#selectPostMetaAttributes', () => {
@@ -320,6 +334,13 @@ describe('post selectors', () => {
       const props = { postId: '666' }
       const result = selector.selectPostRepostsCount(state, props)
       expect(result).to.equal(13)
+    })
+
+    it('ensures the reposts count does not fall below 0', () => {
+      state = { json: state.json.setIn(['posts', '666', 'repostsCount'], -2) }
+      const props = { postId: '666' }
+      const result = selector.selectPostRepostsCount(state, props)
+      expect(result).to.equal(0)
     })
   })
 
@@ -374,6 +395,13 @@ describe('post selectors', () => {
       const props = { postId: '666' }
       const result = selector.selectPostViewsCount(state, props)
       expect(result).to.equal(1666)
+    })
+
+    it('ensures the posts views count does not fall below 0', () => {
+      state = { json: state.json.setIn(['posts', '666', 'viewsCount'], -6) }
+      const props = { postId: '666' }
+      const result = selector.selectPostViewsCount(state, props)
+      expect(result).to.equal(0)
     })
   })
 
