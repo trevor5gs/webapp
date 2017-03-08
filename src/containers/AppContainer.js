@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import { css } from 'glamor'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { trackEvent, trackInitialPage } from '../actions/analytics'
 import { getCategories, getPagePromotionals } from '../actions/discover'
@@ -31,13 +30,6 @@ import {
 } from '../selectors/promotions'
 import { selectIsAuthenticationView } from '../selectors/routing'
 import { scrollToPosition } from '../lib/jello'
-import { baseStyles, atlasGroteskRegular, atlasGroteskBold, atlasGroteskTypewriter } from '../styles/css'
-
-// Inline fonts and global CSS
-css.insert(atlasGroteskRegular)
-css.insert(atlasGroteskBold)
-css.insert(atlasGroteskTypewriter)
-css.insert(baseStyles)
 
 function mapStateToProps(state) {
   return {
