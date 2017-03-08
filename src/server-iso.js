@@ -1,5 +1,5 @@
 /* eslint-disable max-len, no-console */
-import 'newrelic'
+import newrelic from 'newrelic'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
 import values from 'lodash/values'
@@ -79,7 +79,7 @@ function saveResponseToCache(cacheKey, body) {
   })
 }
 
-function renderFromServer(req, res, cacheKey) {
+function renderFromServer(req, res, cacheKey, timingHeader) {
   currentToken().then((token) => {
     console.log('- Enqueueing render')
     const renderTimeout = setTimeout(() => {
@@ -92,7 +92,9 @@ function renderFromServer(req, res, cacheKey) {
     const renderOpts = {
       access_token: token.token.access_token,
       originalUrl: req.originalUrl,
-      url: req.url }
+      url: req.url,
+      timingHeader,
+    }
     const job = queue
       .create('render', renderOpts)
       .ttl(2 * preRenderTimeout) // So we don't lose the job mid-timeout
@@ -173,6 +175,10 @@ function cacheKeyForRequest(req, salt = '') {
 app.use((req, res) => {
   res.setHeader('Cache-Control', 'public, max-age=60');
   res.setHeader('Expires', new Date(Date.now() + (1000 * 60)).toUTCString());
+
+  // This needs to be generated in the request, not a callback
+  const timingHeader = newrelic.getBrowserTimingHeader()
+
   if (canPrerenderRequest(req)) {
     const cacheKey = cacheKeyForRequest(req)
     console.log('Serving pre-rendered markup for path', req.url, cacheKey)
@@ -181,7 +187,7 @@ app.use((req, res) => {
         console.log('Cache hit!', req.url)
         res.send(value.toString())
       } else {
-        renderFromServer(req, res, cacheKey)
+        renderFromServer(req, res, cacheKey, timingHeader)
       }
     })
   } else {

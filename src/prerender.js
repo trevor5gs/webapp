@@ -41,7 +41,7 @@ const createSelectLocationState = () => {
 }
 
 function handlePrerender(context, done) {
-  const { access_token, originalUrl, url } = context
+  const { access_token, originalUrl, url, timingHeader } = context
 
   console.log(`Rendering ${url} isomorphically`)
 
@@ -97,7 +97,7 @@ function handlePrerender(context, done) {
         // Add helmet's stuff after the last statically rendered meta tag
         const html = indexStr.replace(
           'rel="copyright">',
-          `rel="copyright">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()} <style>${css}</style>`,
+          `rel="copyright">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()} ${timingHeader} <style>${css}</style>`,
         ).replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag} ${initialGlamTag}`)
         console.log('Render result: 200')
         done(null, { type: 'render', body: html })
