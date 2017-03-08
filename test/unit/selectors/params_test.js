@@ -43,12 +43,17 @@ describe('params selectors', () => {
     const state = { json }
     const props = { params, location }
 
-    it('returns the params username as undefined', () => {
-      expect(selectParamsUsername(state, props)).to.be.undefined
+    it('returns the params username as empty string', () => {
+      expect(selectParamsUsername(state, props)).to.equal('')
     })
 
     it('returns the correct params username', () => {
       const nextProps = { params: { ...params, username: 'username' }, location }
+      expect(selectParamsUsername(state, nextProps)).to.equal('username')
+    })
+
+    it('returns the correct params username when username is uppercase', () => {
+      const nextProps = { params: { ...params, username: 'USERNAME' }, location }
       expect(selectParamsUsername(state, nextProps)).to.equal('username')
     })
   })
