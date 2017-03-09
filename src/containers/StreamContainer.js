@@ -207,7 +207,7 @@ class StreamContainer extends Component {
     const { meta } = action
     const pagination = result.get('pagination')
     if (!action.payload.endpoint || !pagination.get(rel) ||
-        Number(pagination.get('totalPagesRemaining')) === 0 || !action ||
+        Number(pagination.get('totalPagesRemaining')) === 0 ||
         (stream.get('type') === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS &&
          stream.getIn(['payload', 'serverStatus']) === 204)) { return }
     if (runningFetches[pagination[rel]]) { return }
@@ -219,7 +219,7 @@ class StreamContainer extends Component {
         endpoint: { path: pagination.get(rel) },
       },
       meta: {
-        mappingType: action.payload.endpoint.pagingPath || meta.mappingType,
+        mappingType: meta.mappingType,
         resultFilter: meta.resultFilter,
         resultKey: meta.resultKey,
       },
