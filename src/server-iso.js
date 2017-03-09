@@ -81,7 +81,6 @@ function saveResponseToCache(cacheKey, body) {
 
 function renderFromServer(req, res, cacheKey, timingHeader) {
   currentToken().then((token) => {
-
     // Kick off the render
     console.log('- Enqueueing render')
     const renderOpts = {
