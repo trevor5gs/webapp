@@ -93,11 +93,13 @@ Within post and repost headers...  */
   display: none;
 }
 
+.FollowButton.isInHeader[data-priority="noise"],
 .FollowButton.isInHeader[data-priority="friend"] {
   color: #fff;
 }
 
 /* stylelint-disable selector-max-specificity */
+.FollowButton.isInHeader[data-priority="noise"] > .SVGIcon > g:first-child,
 .FollowButton.isInHeader[data-priority="friend"] > .SVGIcon > g:first-child {
   fill: #aaa;
   stroke: #aaa;
