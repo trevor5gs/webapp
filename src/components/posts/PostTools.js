@@ -258,6 +258,7 @@ export class PostTools extends PureComponent {
     isMobile: PropTypes.bool.isRequired,
     isOwnOriginalPost: PropTypes.bool.isRequired,
     isOwnPost: PropTypes.bool.isRequired,
+    isRelatedPost: PropTypes.bool.isRequired,
     isRepostAnimating: PropTypes.bool.isRequired,
     isWatchingPost: PropTypes.bool.isRequired,
     postCommentsCount: PropTypes.number.isRequired,
@@ -281,6 +282,7 @@ export class PostTools extends PureComponent {
       isMobile,
       isOwnOriginalPost,
       isOwnPost,
+      isRelatedPost,
       isRepostAnimating,
       isWatchingPost,
       postCommentsCount,
@@ -301,13 +303,15 @@ export class PostTools extends PureComponent {
         postViewsCountRounded={postViewsCountRounded}
       />,
     )
-    cells.push(
-      <TimeAgoTool
-        detailPath={detailPath}
-        key={`TimeAgoTool_${postId}`}
-        postCreatedAt={postCreatedAt}
-      />,
-    )
+    if (!isRelatedPost) {
+      cells.push(
+        <TimeAgoTool
+          detailPath={detailPath}
+          key={`TimeAgoTool_${postId}`}
+          postCreatedAt={postCreatedAt}
+        />,
+      )
+    }
     if (author.get('hasCommentingEnabled')) {
       cells.push(
         <CommentTool

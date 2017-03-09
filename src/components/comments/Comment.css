@@ -66,11 +66,12 @@
 
 .CommentTools .ShyTool {
   position: absolute;
+  right: -40px;
   z-index: 3;
 }
 
 .CommentTools .ShyTool + .ShyTool {
-  margin-left: 30px;
+  right: -70px;
 }
 
 /* // Override the hiding of this thing from bad the PostTools */
