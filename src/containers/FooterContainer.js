@@ -8,7 +8,9 @@ import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectIsGridMode, selectIsLayoutToolHidden, selectIsMobile } from '../selectors/gui'
 import { selectAvailability } from '../selectors/profile'
+import { selectPathname } from '../selectors/routing'
 import { selectStreamType } from '../selectors/stream'
+import { trackEvent } from '../actions/analytics'
 import { checkAvailability } from '../actions/profile'
 import { getEmailStateFromClient, getEmailStateFromServer } from '../components/forms/Validators'
 import { Footer } from '../components/footer/FooterRenderables'
@@ -25,6 +27,7 @@ type Props = {
   isLoggedIn: boolean,
   isMobile: boolean,
   isPaginatoring: boolean,
+  pathname: string,
 }
 
 type State = {
@@ -45,6 +48,7 @@ function mapStateToProps(state, props) {
     isLoggedIn: selectIsLoggedIn(state),
     isMobile: selectIsMobile(state),
     isPaginatoring: streamType === LOAD_NEXT_CONTENT_REQUEST,
+    pathname: selectPathname(state),
   }
 }
 
@@ -145,9 +149,11 @@ class FooterContainer extends PureComponent {
   }
 
   validateEmailResponse(availability) {
+    const { dispatch, pathname } = this.props
     const { formStatus } = this.state
     const newState = getEmailStateFromServer({ availability, currentStatus: formStatus })
     if (newState.status === STATUS.SUCCESS) {
+      dispatch(trackEvent('Newsletter_signup_footer', { pathname }))
       this.setState({ formStatus: STATUS.SUCCESS, formMessage: 'Subscribed. See you tomorrow' })
       setTimeout(() => {
         const el = document.getElementById('FooterEmailInput')
@@ -179,3 +185,4 @@ class FooterContainer extends PureComponent {
 }
 
 export default connect(mapStateToProps)(FooterContainer)
+
