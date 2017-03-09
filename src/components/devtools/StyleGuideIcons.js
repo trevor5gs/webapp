@@ -16,12 +16,15 @@ import {
   CheckIconMini,
   ChevronIcon,
   DotsIcon,
+  FailureIcon,
   GridIcon,
   ListIcon,
   MarkerIcon,
   PlusIconHeader,
   PlusIconMini,
+  RequestIcon,
   ShareIcon,
+  SuccessIcon,
   XIcon,
   // Social icons
   FacebookIcon,
@@ -40,11 +43,6 @@ import {
   wrapperPaddingX,
 } from '../../styles/cso'
 
-const h2Style = css({
-  marginBottom: 10,
-  fontSize: 16,
-})
-
 const sectionStyle = {
   ...flex,
   ...flexColumn,
@@ -52,8 +50,14 @@ const sectionStyle = {
   ...wrapperPaddingX,
   ...css({
     marginTop: 40,
+    marginBottom: 40,
   }),
 }
+
+const h2Style = css({
+  marginBottom: 10,
+  fontSize: 16,
+})
 
 const groupStyle = {
   ...flex,
@@ -82,76 +86,85 @@ export default() =>
     </div>
     <h2 {...h2Style}>Badge icons</h2>
     <div {...groupStyle} >
-      <button {...badgeStyle} >
+      <button {...badgeStyle} title="BadgeCheckIcon">
         <BadgeCheckIcon />
       </button>
     </div>
     <h2 {...h2Style}>Icons</h2>
     <div {...groupStyle} >
-      <button>
+      <button title="ArrowEastIcon">
         <ArrowEastIcon />
       </button>
-      <button>
+      <button title="CheckIcon">
         <CheckIcon />
       </button>
-      <button>
+      <button title="CheckIconHeader">
         <CheckIconHeader />
       </button>
-      <button>
+      <button title="CheckIconMini">
         <CheckIconMini />
       </button>
-      <button>
+      <button title="ChevronIcon">
         <ChevronIcon />
       </button>
-      <button>
+      <button title="DotsIcon">
         <DotsIcon />
       </button>
-      <button>
+      <button title="FailureIcon">
+        <FailureIcon />
+      </button>
+      <button title="GridIcon">
         <GridIcon />
       </button>
-      <button>
+      <button title="ListIcon">
         <ListIcon />
       </button>
-      <button>
+      <button title="MarkerIcon">
         <MarkerIcon />
       </button>
-      <button>
+      <button title="PlusIconHeader">
         <PlusIconHeader />
       </button>
-      <button>
+      <button title="PlusIconMini">
         <PlusIconMini />
       </button>
-      <button>
+      <button title="RequestIcon">
+        <RequestIcon />
+      </button>
+      <button title="ShareIcon">
         <ShareIcon />
       </button>
-      <button>
+      <button title="SuccessIcon">
+        <SuccessIcon />
+      </button>
+      <button title="XIcon">
         <XIcon />
       </button>
     </div>
     <h2 {...h2Style}>Social icons</h2>
     <div {...groupStyle} >
-      <button>
+      <button title="MailIcon">
         <MailIcon />
       </button>
-      <button>
+      <button title="FacebookIcon">
         <FacebookIcon />
       </button>
-      <button>
+      <button title="TwitterIcon">
         <TwitterIcon />
       </button>
-      <button>
+      <button title="PinterestIcon">
         <PinterestIcon />
       </button>
-      <button>
+      <button title="GooglePlusIcon">
         <GooglePlusIcon />
       </button>
-      <button>
+      <button title="TumblrIcon">
         <TumblrIcon />
       </button>
-      <button>
+      <button title="RedditIcon">
         <RedditIcon />
       </button>
-      <button>
+      <button title="LinkedInIcon">
         <LinkedInIcon />
       </button>
     </div>

@@ -5,14 +5,6 @@ import { MainView } from '../views/MainView'
 import StyleGuideIcons from './StyleGuideIcons'
 import { flex, minBreak2, wrapperPaddingX } from '../../styles/cso'
 
-const h1Style = css({ fontSize: 24 })
-const buttonStyle = {
-  ...css({
-    fontSize: 18,
-    marginRight: 10,
-  }),
-}
-
 const headerStyle = {
   ...wrapperPaddingX,
   ...css({
@@ -22,12 +14,18 @@ const headerStyle = {
     },
   }),
 }
-
+const h1Style = css({ fontSize: 24 })
 const navStyle = {
   ...flex,
   ...css({
     paddingTop: 20,
     paddingBottom: 20,
+  }),
+}
+const buttonStyle = {
+  ...css({
+    fontSize: 18,
+    marginRight: 10,
   }),
 }
 
