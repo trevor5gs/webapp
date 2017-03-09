@@ -96,7 +96,6 @@ function renderFromServer(req, res, cacheKey, timingHeader) {
       url: req.url,
       timingHeader,
     }
-    console.log(`Rendering with options: ${JSON.stringify(renderOpts)}`)
     const job = queue
       .create('render', renderOpts)
       .ttl(4 * preRenderTimeout) // So we don't lose the job mid-timeout
