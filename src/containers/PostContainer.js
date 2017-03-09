@@ -503,6 +503,7 @@ class PostContainer extends Component {
             paginatorText="See More"
             paginatorTo={detailPath}
             postCommentsCount={postCommentsCount}
+            shouldInfiniteScroll={false}
           />
         }
       </div>)
