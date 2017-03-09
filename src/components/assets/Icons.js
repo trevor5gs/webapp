@@ -112,10 +112,40 @@ export const CheckIcon = () =>
     <CheckShape />
   </SVGIcon>
 
+export const CheckIconHeader = () =>
+  <SVGIcon className="CheckIconMini">
+    <g>
+      <circle cx="10.5" cy="10.5" r="7" />
+    </g>
+    <g>
+      <polyline points="7.5,10 10,13 13.5,7" />
+    </g>
+  </SVGIcon>
+
+export const CheckIconMini = () =>
+  <SVGIcon className="CheckIconMini">
+    <g>
+      <polyline points="7,10.4 9.5,13.5 13,7.5" />
+    </g>
+  </SVGIcon>
+
 export const ChevronIcon = () =>
   <SVGIcon className="ChevronIcon">
     <g>
       <polyline points="5,12.2 10.2,7 15.5,12.2" />
+    </g>
+  </SVGIcon>
+
+export const DotsIcon = () =>
+  <SVGIcon className="DotsIcon">
+    <g>
+      <circle cx="3" cy="10" r="2.5" />
+    </g>
+    <g>
+      <circle cx="10" cy="10" r="2.5" />
+    </g>
+    <g>
+      <circle cx="17" cy="10" r="2.5" />
     </g>
   </SVGIcon>
 
@@ -142,15 +172,22 @@ export const MarkerIcon = () =>
     <path className="svg-fill" d="M10,2C6.7,2,4,4.7,4,8c0,3.7,4.3,9.4,5.6,11.1c0.2,0.3,0.6,0.3,0.8,0C11.7,17.4,16,11.8,16,8 C16,4.7,13.3,2,10,2z M10,9.9C9,9.9,8.1,9,8.1,8C8.1,7,9,6.1,10,6.1S11.9,7,11.9,8C11.9,9,11,9.9,10,9.9z" />
   </SVGIcon>
 
-export const PhoneIcon = () =>
-  <SVGIcon className="PhoneIcon">
+export const PlusIconHeader = () =>
+  <SVGIcon className="PlusIconMini">
     <g>
-      <line x1="5" y1="14.1" x2="14.7" y2="14.1" />
-      <line x1="5" y1="5.9" x2="14.7" y2="5.9" />
-      <circle cx="9.9" cy="16.3" r="0.6" />
-      <circle cx="8.2" cy="3.7" r="0.6" />
-      <path d="M14.7,16.8c0,1-0.8,1.8-1.8,1.8H6.8c-1,0-1.8-0.8-1.8-1.8V3.2c0-1,0.8-1.8,1.8-1.8H13 c1,0,1.8,0.8,1.8,1.8V16.8z" />
-      <path d="M10.4,4.2C10,4.2,9.8,4,9.8,3.7s0.3-0.6,0.6-0.6h1.1c0.3,0,0.6,0.3,0.6,0.6s-0.3,0.6-0.6,0.6 H10.4z" />
+      <circle cx="10.5" cy="10.5" r="7" />
+    </g>
+    <g>
+      <line x1="10.5" x2="10.5" y1="7.5" y2="13.5" />
+      <line x1="13.5" x2="7.5" y1="10.5" y2="10.5" />
+    </g>
+  </SVGIcon>
+
+export const PlusIconMini = () =>
+  <SVGIcon className="PlusIconMini">
+    <g>
+      <line x1="10.5" x2="10.5" y1="6.5" y2="12.5" />
+      <line x1="13.5" x2="7.5" y1="9.5" y2="9.5" />
     </g>
   </SVGIcon>
 

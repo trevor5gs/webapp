@@ -49,11 +49,11 @@
   border-color: var(--color-danger);
 }
 
-.FollowButton:not(.isInHeader) > .MiniPlusIcon {
+.FollowButton:not(.isInHeader) > .PlusIconMini {
   margin-top: -2px;
 }
 
-.FollowButton:not(.isInHeader) > .MiniCheckIcon {
+.FollowButton:not(.isInHeader) > .CheckIconMini {
   margin-top: -4px;
 }
 

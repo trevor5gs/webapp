@@ -1,12 +1,7 @@
 import { getRenderedComponent } from '../../../support/test_helpers'
 import { RELATIONSHIP_PRIORITY } from '../../../../src/constants/relationship_types'
-import subject, {
-  getNextPriority,
-} from '../../../../src/components/relationships/FollowButton'
-import {
-  MiniCheckIcon,
-  MiniPlusIcon,
-} from '../../../../src/components/relationships/RelationshipIcons'
+import subject, { getNextPriority } from '../../../../src/components/relationships/FollowButton'
+import { PlusIconMini, CheckIconMini } from '../../../../src/components/assets/Icons'
 
 describe('FollowButton', () => {
   context('::RELATIONSHIP_PRIORITY', () => {
@@ -43,28 +38,28 @@ describe('FollowButton', () => {
     it('renders inactive', () => {
       const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.INACTIVE })
       const [icon, span] = button.props.children
-      expect(icon.type).to.equal(MiniPlusIcon)
+      expect(icon.type).to.equal(PlusIconMini)
       expect(span.props.children).to.equal('Follow')
     })
 
     it('renders none', () => {
       const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.NONE })
       const [icon, span] = button.props.children
-      expect(icon.type).to.equal(MiniPlusIcon)
+      expect(icon.type).to.equal(PlusIconMini)
       expect(span.props.children).to.equal('Follow')
     })
 
     it('renders friend', () => {
       const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.FRIEND })
       const [icon, span] = button.props.children
-      expect(icon.type).to.equal(MiniCheckIcon)
+      expect(icon.type).to.equal(CheckIconMini)
       expect(span.props.children).to.equal('Following')
     })
 
     it('renders noise as following', () => {
       const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.NOISE })
       const [icon, span] = button.props.children
-      expect(icon.type).to.equal(MiniCheckIcon)
+      expect(icon.type).to.equal(CheckIconMini)
       expect(span.props.children).to.equal('Following')
     })
 

@@ -12,11 +12,15 @@ import {
   // Icons
   ArrowEastIcon,
   CheckIcon,
+  CheckIconHeader,
+  CheckIconMini,
   ChevronIcon,
+  DotsIcon,
   GridIcon,
   ListIcon,
   MarkerIcon,
-  PhoneIcon,
+  PlusIconHeader,
+  PlusIconMini,
   ShareIcon,
   XIcon,
   // Social icons
@@ -76,31 +80,80 @@ export default() =>
       <ElloRainbowMark />
       <ElloDonutMark />
     </div>
+    <h2 {...h2Style}>Badge icons</h2>
+    <div {...groupStyle} >
+      <button {...badgeStyle} >
+        <BadgeCheckIcon />
+      </button>
+    </div>
     <h2 {...h2Style}>Icons</h2>
     <div {...groupStyle} >
-      <span {...badgeStyle} >
-        <BadgeCheckIcon />
-      </span>
-      <ShareIcon />
-      <XIcon />
-      <CheckIcon />
-      <ArrowEastIcon />
-      <PhoneIcon />
-      <ChevronIcon />
-      <ListIcon />
-      <GridIcon />
-      <MarkerIcon />
+      <button>
+        <ArrowEastIcon />
+      </button>
+      <button>
+        <CheckIcon />
+      </button>
+      <button>
+        <CheckIconHeader />
+      </button>
+      <button>
+        <CheckIconMini />
+      </button>
+      <button>
+        <ChevronIcon />
+      </button>
+      <button>
+        <DotsIcon />
+      </button>
+      <button>
+        <GridIcon />
+      </button>
+      <button>
+        <ListIcon />
+      </button>
+      <button>
+        <MarkerIcon />
+      </button>
+      <button>
+        <PlusIconHeader />
+      </button>
+      <button>
+        <PlusIconMini />
+      </button>
+      <button>
+        <ShareIcon />
+      </button>
+      <button>
+        <XIcon />
+      </button>
     </div>
     <h2 {...h2Style}>Social icons</h2>
     <div {...groupStyle} >
-      <MailIcon />
-      <FacebookIcon />
-      <TwitterIcon />
-      <PinterestIcon />
-      <GooglePlusIcon />
-      <TumblrIcon />
-      <RedditIcon />
-      <LinkedInIcon />
+      <button>
+        <MailIcon />
+      </button>
+      <button>
+        <FacebookIcon />
+      </button>
+      <button>
+        <TwitterIcon />
+      </button>
+      <button>
+        <PinterestIcon />
+      </button>
+      <button>
+        <GooglePlusIcon />
+      </button>
+      <button>
+        <TumblrIcon />
+      </button>
+      <button>
+        <RedditIcon />
+      </button>
+      <button>
+        <LinkedInIcon />
+      </button>
     </div>
   </section>
 
