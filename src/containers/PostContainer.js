@@ -287,10 +287,12 @@ class PostContainer extends Component {
   }
 
   onClickRepostPost = () => {
-    const { dispatch, post, postReposted } = this.props
-    if (!postReposted) {
+    const { detailPath, dispatch, isRelatedPost, post, postReposted } = this.props
+    if (!postReposted && !isRelatedPost) {
       dispatch(toggleReposting(post, true))
       dispatch(loadEditablePost(post.get('id')))
+    } else {
+      dispatch(push(detailPath))
     }
   }
 
@@ -302,8 +304,8 @@ class PostContainer extends Component {
   }
 
   onClickToggleComments = () => {
-    const { detailPath, dispatch, isLoggedIn, post, showCommentEditor } = this.props
-    if (isLoggedIn) {
+    const { detailPath, dispatch, isLoggedIn, isRelatedPost, post, showCommentEditor } = this.props
+    if (isLoggedIn && !isRelatedPost) {
       const nextShowComments = !showCommentEditor
       this.setState({ isCommentsActive: nextShowComments })
       dispatch(toggleComments(post, nextShowComments))
@@ -477,6 +479,7 @@ class PostContainer extends Component {
           isMobile={isMobile}
           isOwnOriginalPost={isOwnOriginalPost}
           isOwnPost={isOwnPost}
+          isRelatedPost={isRelatedPost}
           isRepostAnimating={isRepostAnimating}
           isWatchingPost={isWatchingPost}
           postCreatedAt={postCreatedAt}

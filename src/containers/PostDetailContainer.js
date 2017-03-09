@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { POST } from '../constants/action_types'
 import { scrollToSelector } from '../lib/jello'
+import { selectColumnCount } from '../selectors/gui'
 import { selectParamsToken, selectParamsUsername } from '../selectors/params'
 import {
   selectPost,
@@ -23,6 +24,7 @@ import { loadUserDrawer } from '../actions/user'
 function mapStateToProps(state, props) {
   return {
     author: selectPostAuthor(state, props),
+    columnCount: selectColumnCount(state, props),
     hasRelatedPostsButton: selectPostHasRelatedButton(state, props),
     isPostEmpty: selectPostIsEmpty(state, props),
     locationStateFrom: selectPropsLocationStateFrom(state, props),
@@ -38,6 +40,7 @@ class PostDetailContainer extends Component {
 
   static propTypes = {
     author: PropTypes.object,
+    columnCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
     hasRelatedPostsButton: PropTypes.bool.isRequired,
     isPostEmpty: PropTypes.bool.isRequired,
@@ -127,7 +130,15 @@ class PostDetailContainer extends Component {
   }
 
   render() {
-    const { author, hasRelatedPostsButton, isPostEmpty, paramsToken, post, tabs } = this.props
+    const {
+      author,
+      columnCount,
+      hasRelatedPostsButton,
+      isPostEmpty,
+      paramsToken,
+      post,
+      tabs,
+    } = this.props
     const { activeType, renderType } = this.state
     // render loading/failure if we don't have an initial post
     if (isPostEmpty) {
@@ -162,6 +173,7 @@ class PostDetailContainer extends Component {
     const props = {
       activeType,
       author,
+      columnCount,
       hasEditor: author && author.get('hasCommentingEnabled') && !(post.get('isReposting') || post.get('isEditing')),
       hasRelatedPostsButton,
       key: `postDetail_${paramsToken}`,

@@ -18,7 +18,7 @@ const navStyles = css({
 })
 
 export const PostDetail = (
-  { activeType, hasEditor, hasRelatedPostsButton, post, streamAction, tabs },
+  { activeType, columnCount, hasEditor, hasRelatedPostsButton, post, streamAction, tabs },
   { onClickDetailTab }) =>
     <MainView className="PostDetail">
       <div className="PostDetails Posts asList">
@@ -49,7 +49,7 @@ export const PostDetail = (
             />
           }
           <StreamContainer
-            action={loadRelatedPosts(post.get('id'))}
+            action={loadRelatedPosts(post.get('id'), columnCount)}
             className="RelatedPostsStreamContainer"
             shouldInfiniteScroll={false}
           />
@@ -58,6 +58,7 @@ export const PostDetail = (
     </MainView>
 PostDetail.propTypes = {
   activeType: PropTypes.string.isRequired,
+  columnCount: PropTypes.number.isRequired,
   hasEditor: PropTypes.bool.isRequired,
   hasRelatedPostsButton: PropTypes.bool.isRequired,
   post: PropTypes.object.isRequired,

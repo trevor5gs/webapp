@@ -95,11 +95,11 @@ export function loadPostDetail(idOrToken, userIdOrToken) {
   }
 }
 
-export function loadRelatedPosts(postId) {
+export function loadRelatedPosts(postId, perPage) {
   return {
     type: LOAD_STREAM,
     payload: {
-      endpoint: api.relatedPosts(postId),
+      endpoint: api.relatedPosts(postId, perPage),
       postIdOrToken: postId,
     },
     meta: {

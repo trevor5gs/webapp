@@ -193,9 +193,9 @@ export function editPostDetail(idOrToken) {
     path: getAPIPath(`posts/${idOrToken}`, params),
   }
 }
-export function relatedPosts(idOrToken) {
+export function relatedPosts(idOrToken, perPage) {
   return {
-    path: getAPIPath(`posts/${idOrToken}/related`, { per_page: 3 }),
+    path: getAPIPath(`posts/${idOrToken}/related`, { per_page: perPage }),
   }
 }
 // Loves
