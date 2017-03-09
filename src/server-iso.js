@@ -104,7 +104,7 @@ function renderFromServer(req, res, cacheKey, timingHeader) {
       .save()
     job.on('complete', (result) => {
       console.log('Received render result')
-      const { type, location, body } = result
+      const { type, location, body } = (result || {})
       switch (type) {
         case 'redirect':
           console.log(`-- Redirecting to ${location}`)
