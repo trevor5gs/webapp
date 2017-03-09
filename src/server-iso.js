@@ -1,5 +1,5 @@
 /* eslint-disable max-len, no-console */
-import 'newrelic'
+import newrelic from 'newrelic'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
 import values from 'lodash/values'
@@ -11,9 +11,8 @@ import morgan from 'morgan'
 import librato from 'librato-node'
 import path from 'path'
 import fs from 'fs'
-import semaphore from 'semaphore'
-import cp from 'child_process'
 import memjs from 'memjs'
+import kue from 'kue'
 import crypto from 'crypto'
 import { updateStrings as updateTimeAgoStrings } from './lib/time_ago_in_words'
 import { addOauthRoute, currentToken } from '../oauth'
@@ -37,8 +36,8 @@ updateTimeAgoStrings({ about: '' })
 const app = express()
 const preRenderTimeout = (parseInt(process.env.PRERENDER_TIMEOUT, 10) || 15) * 1000
 const memcacheDefaultTTL = (parseInt(process.env.MEMCACHE_DEFAULT_TTL, 10) || 300)
-const renderSemaphore = semaphore(parseInt(process.env.MAX_SIMULTANEOUS_RENDERS, 10) || 5)
 const memcacheClient = memjs.Client.create(null, { expires: memcacheDefaultTTL })
+const queue = kue.createQueue({ redis: process.env[process.env.REDIS_PROVIDER] })
 
 // Honeybadger "before everything" middleware
 app.use(Honeybadger.requestHandler);
@@ -80,71 +79,67 @@ function saveResponseToCache(cacheKey, body) {
   })
 }
 
-function renderFromServer(req, res, cacheKey) {
+function renderFromServer(req, res, cacheKey, timingHeader) {
   currentToken().then((token) => {
-    console.log(`- Attempting render, ${renderSemaphore.current} current semaphore locks`)
-    let child = null
+    console.log('- Enqueueing render')
     const renderTimeout = setTimeout(() => {
-      console.log('- Render timed out; killing child process and returning boilerplate.')
+      console.log('- Render timed out; falling back to client-side rendering')
       librato.increment('webapp-server-render-timeout')
-      if (child) {
-        child.kill('SIGKILL')
-      }
       res.send(indexStr)
     }, preRenderTimeout)
-    renderSemaphore.take(() => {
-      child = cp.fork('./dist/server-render-entrypoint')
-      // Don't let processes run away on us
-      // Handle the return on renders
-      child.once('message', (msg) => {
-        const { type, location, body } = msg
-        switch (type) {
-          case 'redirect':
-            console.log(`-- Redirecting to ${location}`)
-            librato.increment('webapp-server-render-redirect')
-            res.redirect(location)
-            break
-          case 'render':
-            console.log('-- Rendering ISO response')
-            librato.increment('webapp-server-render-success')
-            res.send(body)
-            saveResponseToCache(cacheKey, body)
-            break
-          case 'error':
-            console.log('-- Rendering error response')
-            librato.increment('webapp-server-render-error')
-            res.status(500).end()
-            break
-          case '404':
-            console.log('-- Rendering 404 response')
-            librato.increment('webapp-server-render-404')
-            res.status(404).end()
-            break
-          default:
-            // No-op
-        }
-        clearTimeout(renderTimeout)
-      })
-      // Clean up any lingering renderer processes at shutdown
-      const exitHandler = () => {
-        console.log(`- Killing child render process ${child.pid}`)
-        child.kill('SIGKILL')
-      }
-      process.on('exit', exitHandler);
 
-      // Handle assorted child process errors
-      child.once('exit', (code, signal) => {
-        clearTimeout(renderTimeout)
-        process.removeListener('exit', exitHandler);
-        renderSemaphore.leave()
-        // Abnormal exit, may be in a dirty state
-        if (code !== 0) {
-          console.log(`- Render process exited with ${code} due to ${signal}`)
+    // Kick off the render
+    const renderOpts = {
+      accessToken: token.token.access_token,
+      expiresAt: token.token.expires_at,
+      originalUrl: req.originalUrl,
+      url: req.url,
+      timingHeader,
+    }
+    const job = queue
+      .create('render', renderOpts)
+      .ttl(4 * preRenderTimeout) // So we don't lose the job mid-timeout
+      .removeOnComplete(true)
+      .save()
+    job.on('complete', (result) => {
+      console.log('Received render result')
+      const { type, location, body } = (result || {})
+      switch (type) {
+        case 'redirect':
+          console.log(`-- Redirecting to ${location}`)
+          librato.increment('webapp-server-render-redirect')
+          res.redirect(location)
+          break
+        case 'render':
+          console.log('-- Rendering ISO response')
+          librato.increment('webapp-server-render-success')
+          res.send(body)
+          saveResponseToCache(cacheKey, body)
+          break
+        case 'error':
+          console.log('-- Rendering error response')
+          librato.increment('webapp-server-render-error')
           res.status(500).end()
-        }
-      })
-      // Kick off the render
-      child.send({ access_token: token.token.access_token, originalUrl: req.originalUrl, url: req.url })
+          break
+        case '404':
+          console.log('-- Rendering 404 response')
+          librato.increment('webapp-server-render-404')
+          res.status(404).end()
+          break
+        default:
+          console.log('-- Received unrecognized response')
+          console.log(JSON.stringify(result))
+          // Fall through
+          res.status(500).end()
+      }
+      clearTimeout(renderTimeout)
+    })
+
+    job.on('failed', (errorMessage) => {
+      console.log('- Render job failed!');
+      console.log(JSON.stringify(errorMessage))
+      res.send(indexStr)
+      librato.increment('webapp-server-render-timeout')
     })
   })
 }
@@ -181,6 +176,10 @@ function cacheKeyForRequest(req, salt = '') {
 app.use((req, res) => {
   res.setHeader('Cache-Control', 'public, max-age=60');
   res.setHeader('Expires', new Date(Date.now() + (1000 * 60)).toUTCString());
+
+  // This needs to be generated in the request, not a callback
+  const timingHeader = newrelic.getBrowserTimingHeader()
+
   if (canPrerenderRequest(req)) {
     const cacheKey = cacheKeyForRequest(req)
     console.log('Serving pre-rendered markup for path', req.url, cacheKey)
@@ -189,7 +188,7 @@ app.use((req, res) => {
         console.log('Cache hit!', req.url)
         res.send(value.toString())
       } else {
-        renderFromServer(req, res, cacheKey)
+        renderFromServer(req, res, cacheKey, timingHeader)
       }
     })
   } else {

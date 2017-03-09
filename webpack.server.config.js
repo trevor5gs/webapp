@@ -1,5 +1,5 @@
-var webpack = require("webpack");
-var path = require("path");
+var webpack = require('webpack');
+var path = require('path');
 var fs = require('fs');
 
 // load env vars first
@@ -23,7 +23,8 @@ module.exports = {
   devtool: "source-map",
   entry:   {
     "server-iso-entrypoint" : "./server-iso-entrypoint",
-    "server-render-entrypoint" : "./server-render-entrypoint"
+    "server-render-entrypoint" : "./server-render-entrypoint",
+    "server-queue-entrypoint" : "./server-queue-entrypoint"
   },
   output:  {
     path:          path.join(__dirname, "./dist"),

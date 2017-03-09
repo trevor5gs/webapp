@@ -66,7 +66,7 @@ const createBrowserStore = (history, passedInitialState = {}) => {
 const createServerStore = (history, initialState = {}) => {
   const reduxRouterMiddleware = routerMiddleware(history)
   const sagaMiddleware = createSagaMiddleware()
-  const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
+  const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG, colors: false })
   const store = compose(
     applyMiddleware(sagaMiddleware, reduxRouterMiddleware, logger),
   )(createStore)(reducer, initialState)
@@ -81,7 +81,7 @@ const createElloStore = (history, initialState = {}) => {
   return createServerStore(history, initialState)
 }
 
-export { createElloStore }
+export { createElloStore, createServerStore }
 
 export default createElloStore()
 
