@@ -29,7 +29,7 @@ export function getHeadHeader(accessToken, lastCheck) {
 export function* fetchCredentials() {
   const accessToken = yield select(selectAccessToken)
   if (yield select(selectShouldUseAccessToken)) {
-    return {
+    return yield {
       token: {
         access_token: accessToken,
       },

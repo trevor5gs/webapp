@@ -90,7 +90,8 @@ function renderFromServer(req, res, cacheKey, timingHeader) {
 
     // Kick off the render
     const renderOpts = {
-      access_token: token.token.access_token,
+      accessToken: token.token.access_token,
+      expiresAt: token.token.expires_at,
       originalUrl: req.originalUrl,
       url: req.url,
       timingHeader,

@@ -42,14 +42,15 @@ const createSelectLocationState = () => {
 }
 
 function prerender(context, done) {
-  const { access_token, originalUrl, url, timingHeader } = context
+  const { accessToken, expiresAt, originalUrl, url, timingHeader } = context
 
   console.log(`Rendering ${url} isomorphically`)
 
   const memoryHistory = createMemoryHistory(originalUrl)
   const store = createServerStore(memoryHistory, {
     authentication: Immutable.Map({
-      accessToken: access_token,
+      accessToken,
+      expirationDate: new Date(expiresAt),
       isLoggedIn: false,
     }),
   })

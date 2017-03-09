@@ -8,8 +8,7 @@ export const selectRefreshToken = state => state.authentication.get('refreshToke
 export const selectShouldUseAccessToken = (state) => {
   const accessToken = selectAccessToken(state)
   const expDate = selectExpirationDate(state)
-  const isLoggedIn = selectIsLoggedIn(state)
-  return isLoggedIn && accessToken && expDate > new Date()
+  return accessToken && expDate > new Date()
 }
 
 export const selectShouldUseRefreshToken = (state) => {
