@@ -144,8 +144,8 @@ function renderFromServer(req, res, cacheKey, timingHeader) {
       console.log('- Render timed out; falling back to client-side rendering')
       librato.increment('webapp-server-render-timeout')
       res.send(indexStr)
-      job.off('complete', jobCompleteCallback)
-      job.off('failed', jobFailedCallback)
+      job.removeListener('complete', jobCompleteCallback)
+      job.removeListener('failed', jobFailedCallback)
     }, preRenderTimeout)
 
     job.on('complete', jobCompleteCallback)
