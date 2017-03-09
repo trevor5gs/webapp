@@ -6,7 +6,10 @@ export function mostRecentPostsFromUsers(users) {
   const result = { type: MAPPING_TYPES.POSTS, ids: [] }
   users.forEach((user) => {
     if (user.links.mostRecentPost) {
-      result.ids.push(`${user.links.mostRecentPost.id}`)
+      const mostRecentPostId = `${user.links.mostRecentPost.id}`
+      if (!result.ids.includes(mostRecentPostId)) {
+        result.ids.push(mostRecentPostId)
+      }
     }
   })
   return result
