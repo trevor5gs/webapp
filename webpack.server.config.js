@@ -23,7 +23,8 @@ module.exports = {
   devtool: "source-map",
   entry:   {
     "server-iso-entrypoint" : "./server-iso-entrypoint",
-    "server-render-entrypoint" : "./server-render-entrypoint"
+    "server-render-entrypoint" : "./server-render-entrypoint",
+    "server-queue-entrypoint" : "./server-queue-entrypoint"
   },
   output:  {
     path:          path.join(__dirname, "./dist"),

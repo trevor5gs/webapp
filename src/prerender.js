@@ -19,9 +19,10 @@ import { serverRoot } from './sagas'
 const indexStr = fs.readFileSync(path.join(__dirname, '../public/index.html'), 'utf-8')
 
 // Return promises for initial loads
-function preRender(renderProps, store, sagaTask) {
+function preRenderComponents(renderProps, store, sagaTask) {
   const promises = renderProps.components.map(component => ((component && component.preRender) ? component.preRender(store, renderProps) : null)).filter(component => !!component)
   return Promise.all(promises).then(() => {
+    console.log('Prerender promises resolved, closing store')
     store.close()
     return sagaTask.done
   })
@@ -40,7 +41,7 @@ const createSelectLocationState = () => {
   }
 }
 
-function handlePrerender(context, done) {
+function prerender(context, done) {
   const { access_token, originalUrl, url, timingHeader } = context
 
   console.log(`Rendering ${url} isomorphically`)
@@ -66,11 +67,11 @@ function handlePrerender(context, done) {
       // TODO: Should we abort here?
     } else if (redirectLocation) {
       console.log('ELLO HANDLE REDIRECT', redirectLocation)
-      done(null, { type: 'redirect', location: redirectLocation.pathname })
+      done(false, { type: 'redirect', location: redirectLocation.pathname })
       return
     } else if (!renderProps) {
       console.log('NO RENDER PROPS')
-      done(null)
+      done(true)
       return
     }
 
@@ -80,14 +81,15 @@ function handlePrerender(context, done) {
       </Provider>
     )
 
-    preRender(renderProps, store, sagaTask).then(() => {
+    preRenderComponents(renderProps, store, sagaTask).then(() => {
+      console.log('Saga Task completed, finishing render')
       const componentHTML = renderToString(InitialComponent)
       const head = Helmet.rewind()
       const { css, ids } = renderStaticOptimized(() => componentHTML)
       const state = store.getState()
       if (state.stream.get('should404') === true) {
         console.log('Render result: 404')
-        done(null, { type: '404' })
+        done(false, { type: '404' })
       } else {
         Object.keys(state).forEach((key) => {
           state[key] = state[key].toJS()
@@ -100,18 +102,16 @@ function handlePrerender(context, done) {
           `rel="copyright">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()} ${timingHeader} <style>${css}</style>`,
         ).replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag} ${initialGlamTag}`)
         console.log('Render result: 200')
-        done(null, { type: 'render', body: html })
+        done(false, { type: 'render', body: html })
       }
     }).catch((err) => {
-      // this will give you a js error like:
-      // `window is not defined`
       console.log('ELLO CATCH ERROR', err)
       Honeybadger.notify(err);
       console.log('Render result: error')
-      done(null, { type: 'error' })
+      done(false, { type: 'error' })
     })
     renderToString(InitialComponent)
   })
 }
 
-export default handlePrerender
+export default prerender

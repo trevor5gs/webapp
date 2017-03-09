@@ -238,6 +238,7 @@ export function* performRequest(action) {
     response = yield call(sagaFetch, endpoint.path, options)
   } catch (error) {
     updateRunningFetches(error.response)
+
     yield fork(handleRequestError, error, action)
     return false
   }

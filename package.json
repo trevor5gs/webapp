@@ -14,7 +14,7 @@
     "lint:js": "eslint src test",
     "lint:js:fix": "eslint src test --fix",
     "start": "NODE_ENV=production node dist/server-iso-entrypoint.js",
-    "start:queue": "NODE_ENV=production node dist/server-render-entrypoint.js",
+    "start:queue": "NODE_ENV=production node dist/server-queue-entrypoint.js",
     "start:debug": "DEBUG=express:* NODE_ENV=production node dist/server-iso-entrypoint.js",
     "postinstall": "yarn run build",
     "pretest": "yarn run lint",
