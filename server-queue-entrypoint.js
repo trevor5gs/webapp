@@ -1,6 +1,7 @@
 import kue from 'kue'
 import cluster from 'cluster'
 import librato from 'librato-node'
+import Honeybadger from 'honeybadger'
 import { updateStrings as updateTimeAgoStrings } from './src/lib/time_ago_in_words'
 import cp from 'child_process'
 
