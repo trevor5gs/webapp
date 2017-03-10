@@ -19,7 +19,8 @@ queue.watchStuckJobs()
 librato.configure({ email: process.env.LIBRATO_EMAIL, token: process.env.LIBRATO_TOKEN })
 librato.start()
 librato.on('error', (err) => {
-  console.error(err);
+  Honeybadger.notify(err)
+  console.error(err)
 })
 
 const libratoReporter = setInterval(() => {
@@ -46,6 +47,7 @@ const libratoReporter = setInterval(() => {
 }, 30 * 1000);
 
 queue.on('error', (err) => {
+  Honeybadger.notify(err)
   console.log('An error occurred in Kue: ', err)
 })
 
@@ -111,6 +113,7 @@ process.once('SIGTERM', () => {
   })
 })
 process.once('uncaughtException', (err) => {
+  Honeybadger.notify(err)
   console.error('Something bad happened: ', err)
   queue.shutdown(1000, (err2) => {
     console.error('Kue shutdown result: ', err2 || 'OK')

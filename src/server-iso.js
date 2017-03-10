@@ -81,65 +81,79 @@ function saveResponseToCache(cacheKey, body) {
 
 function renderFromServer(req, res, cacheKey, timingHeader) {
   currentToken().then((token) => {
-    console.log('- Enqueueing render')
-    const renderTimeout = setTimeout(() => {
-      console.log('- Render timed out; falling back to client-side rendering')
-      librato.increment('webapp-server-render-timeout')
-      res.send(indexStr)
-    }, preRenderTimeout)
-
-    // Kick off the render
-    const renderOpts = {
-      accessToken: token.token.access_token,
-      expiresAt: token.token.expires_at,
-      originalUrl: req.originalUrl,
-      url: req.url,
-      timingHeader,
-    }
-    const job = queue
-      .create('render', renderOpts)
-      .ttl(4 * preRenderTimeout) // So we don't lose the job mid-timeout
-      .removeOnComplete(true)
-      .save()
-    job.on('complete', (result) => {
-      console.log('Received render result')
-      const { type, location, body } = (result || {})
-      switch (type) {
-        case 'redirect':
-          console.log(`-- Redirecting to ${location}`)
-          librato.increment('webapp-server-render-redirect')
-          res.redirect(location)
-          break
-        case 'render':
-          console.log('-- Rendering ISO response')
-          librato.increment('webapp-server-render-success')
-          res.send(body)
-          saveResponseToCache(cacheKey, body)
-          break
-        case 'error':
-          console.log('-- Rendering error response')
-          librato.increment('webapp-server-render-error')
-          res.status(500).end()
-          break
-        case '404':
-          console.log('-- Rendering 404 response')
-          librato.increment('webapp-server-render-404')
-          res.status(404).end()
-          break
-        default:
-          console.log('-- Received unrecognized response')
-          console.log(JSON.stringify(result))
-          // Fall through
-          res.status(500).end()
+    librato.timing('iso.render_time', (libratoDone) => {
+      // Kick off the render
+      console.log('- Enqueueing render')
+      const renderOpts = {
+        accessToken: token.token.access_token,
+        expiresAt: token.token.expires_at,
+        originalUrl: req.originalUrl,
+        url: req.url,
+        timingHeader,
       }
-      clearTimeout(renderTimeout)
-    })
 
-    job.on('failed', (errorMessage) => {
-      console.log('- Render job failed!');
-      console.log(JSON.stringify(errorMessage))
-      res.send(indexStr)
-      librato.increment('webapp-server-render-timeout')
+      const job = queue
+        .create('render', renderOpts)
+        .ttl(2 * preRenderTimeout) // So we don't lose the job mid-timeout
+        .removeOnComplete(true)
+        .save()
+
+      // Set up our completion/failure/timeout callbacks
+      let renderTimeout
+      const jobCompleteCallback = (result) => {
+        libratoDone()
+        const { type, location, body } = (result || {})
+        switch (type) {
+          case 'redirect':
+            console.log(`-- Redirecting to ${location}`)
+            librato.increment('webapp-server-render-redirect')
+            res.redirect(location)
+            break
+          case 'render':
+            console.log('-- Rendering ISO response')
+            librato.increment('webapp-server-render-success')
+            res.send(body)
+            saveResponseToCache(cacheKey, body)
+            break
+          case 'error':
+            console.log('-- Rendering error response')
+            librato.increment('webapp-server-render-error')
+            res.status(500).end()
+            break
+          case '404':
+            console.log('-- Rendering 404 response')
+            librato.increment('webapp-server-render-404')
+            res.status(404).end()
+            break
+          default:
+            console.log('-- Received unrecognized response')
+            console.log(JSON.stringify(result))
+            librato.increment('webapp-server-render-error')
+            // Fall through
+            res.status(500).end()
+        }
+        clearTimeout(renderTimeout)
+      }
+      const jobFailedCallback = (errorMessage) => {
+        libratoDone()
+        console.log('- Render job failed!');
+        console.log(JSON.stringify(errorMessage))
+        res.send(indexStr)
+        librato.increment('webapp-server-render-timeout')
+        clearTimeout(renderTimeout)
+      }
+
+      renderTimeout = setTimeout(() => {
+        libratoDone()
+        console.log('- Render timed out; falling back to client-side rendering')
+        librato.increment('webapp-server-render-timeout')
+        res.send(indexStr)
+        job.removeListener('complete', jobCompleteCallback)
+        job.removeListener('failed', jobFailedCallback)
+      }, preRenderTimeout)
+
+      job.on('complete', jobCompleteCallback)
+      job.on('failed', jobFailedCallback)
     })
   })
 }
