@@ -108,7 +108,7 @@ if (cluster.isMaster) {
 process.once('SIGTERM', () => {
   clearInterval(libratoReporter)
   librato.stop()
-  queue.shutdown(5000, (err) => {
+  queue.shutdown(15000, (err) => {
     console.log('Kue shutting down: ', err || 'OK')
     process.exit(0)
   })
@@ -116,7 +116,7 @@ process.once('SIGTERM', () => {
 process.once('uncaughtException', (err) => {
   Honeybadger.notify(err)
   console.error('Something bad happened: ', err)
-  queue.shutdown(1000, (err2) => {
+  queue.shutdown(15000, (err2) => {
     console.error('Kue shutdown result: ', err2 || 'OK')
     process.exit(1)
   })
