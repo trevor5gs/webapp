@@ -82,6 +82,8 @@ class BlockCollection extends PureComponent {
     isNavbarHidden: PropTypes.bool,
     isOwnPost: PropTypes.bool,
     isPostDetail: PropTypes.bool.isRequired,
+    isPostEditing: PropTypes.bool.isRequired,
+    isPostReposting: PropTypes.bool.isRequired,
     isPosting: PropTypes.bool,
     order: PropTypes.object.isRequired,
     orderLength: PropTypes.number.isRequired,
@@ -134,10 +136,11 @@ class BlockCollection extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { editorId, isNavbarHidden, isPostDetail, order } = this.props
+    const { editorId, isNavbarHidden, isPostDetail,
+      isPostEditing, isPostReposting, order } = this.props
     const isDragging = document.body.classList.contains('isDragging')
-    if (!isPostDetail && !isDragging && prevProps.order &&
-        order && prevProps.order.size !== order.size) {
+    if ((isPostEditing || isPostReposting) || (!isPostDetail && !isDragging && prevProps.order &&
+        order && prevProps.order.size !== order.size)) {
       scrollToLastTextBlock(editorId, isNavbarHidden)
     }
   }

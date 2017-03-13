@@ -6,7 +6,13 @@ import {
   selectHasAutoWatchEnabled,
   selectIsOwnPage,
 } from '../../selectors/profile'
-import { selectPost, selectPostIsEmpty, selectPostIsOwn } from '../../selectors/post'
+import {
+  selectPost,
+  selectPostIsEditing,
+  selectPostIsEmpty,
+  selectPostIsOwn,
+  selectPostIsReposting,
+} from '../../selectors/post'
 import { openModal, closeModal } from '../../actions/modals'
 import {
   createComment,
@@ -48,7 +54,9 @@ function mapStateToProps(state, props) {
   return {
     allowsAutoWatch: selectHasAutoWatchEnabled(state),
     isLoggedIn: selectIsLoggedIn(state),
+    isPostEditing: selectPostIsEditing(state, props),
     isPostEmpty: selectPostIsEmpty(state, props),
+    isPostReposting: selectPostIsReposting(state, props),
     post: selectPost(state, props),
     isOwnPage: selectIsOwnPage(state),
     isOwnPost: selectPostIsOwn(state, props),
@@ -66,7 +74,9 @@ class Editor extends Component {
     isLoggedIn: PropTypes.bool,
     isOwnPage: PropTypes.bool,
     isOwnPost: PropTypes.bool,
+    isPostEditing: PropTypes.bool.isRequired,
     isPostEmpty: PropTypes.bool.isRequired,
+    isPostReposting: PropTypes.bool.isRequired,
     onSubmit: PropTypes.func,
     post: PropTypes.object,
     shouldLoadFromState: PropTypes.bool,
@@ -194,7 +204,9 @@ class Editor extends Component {
       isComment,
       isLoggedIn,
       isOwnPost,
+      isPostEditing,
       isPostEmpty,
+      isPostReposting,
       post,
       shouldLoadFromState,
       shouldPersist,
@@ -240,6 +252,8 @@ class Editor extends Component {
         editorId={editorId}
         isComment={isComment}
         isOwnPost={isOwnPost}
+        isPostEditing={isPostEditing}
+        isPostReposting={isPostReposting}
         key={key}
         post={post}
         repostContent={repostContent}
