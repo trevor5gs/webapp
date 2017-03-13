@@ -2,8 +2,8 @@ import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { POST } from '../constants/action_types'
-import { scrollToSelector } from '../lib/jello'
-import { selectColumnCount } from '../selectors/gui'
+import { scrollToPosition, scrollToSelector } from '../lib/jello'
+import { selectColumnCount, selectInnerHeight } from '../selectors/gui'
 import { selectParamsToken, selectParamsUsername } from '../selectors/params'
 import {
   selectPost,
@@ -26,6 +26,7 @@ function mapStateToProps(state, props) {
     author: selectPostAuthor(state, props),
     columnCount: selectColumnCount(state, props),
     hasRelatedPostsButton: selectPostHasRelatedButton(state, props),
+    innerHeight: selectInnerHeight(state, props),
     isPostEmpty: selectPostIsEmpty(state, props),
     locationStateFrom: selectPropsLocationStateFrom(state, props),
     paramsToken: selectParamsToken(state, props),
@@ -43,6 +44,7 @@ class PostDetailContainer extends Component {
     columnCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
     hasRelatedPostsButton: PropTypes.bool.isRequired,
+    innerHeight: PropTypes.number.isRequired,
     isPostEmpty: PropTypes.bool.isRequired,
     locationStateFrom: PropTypes.string,
     post: PropTypes.object,
@@ -126,7 +128,12 @@ class PostDetailContainer extends Component {
   }
 
   onClickScrollToRelatedPosts = () => {
-    scrollToSelector('.RelatedPostsStreamContainer .Post', { boundary: 'bottom', offset: 60 })
+    const { innerHeight } = this.props
+    const el = document.querySelector('.RelatedPostsStreamContainer')
+    if (!el) { return }
+    const rect = el.getBoundingClientRect()
+    const dy = innerHeight < rect.height ? rect.height + (innerHeight - rect.height) : rect.height
+    scrollToPosition(0, window.scrollY + dy + (rect.top - innerHeight))
   }
 
   render() {
