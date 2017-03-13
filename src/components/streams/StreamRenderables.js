@@ -26,7 +26,7 @@ export const categoriesAsGrid = categoryIds =>
 
 // COMMENTS
 export const commentsAsList = commentIds =>
-  <div>
+  <div className="Comments">
     {commentIds.map(id =>
       <CommentContainer
         commentId={id}
@@ -65,16 +65,27 @@ export const postsAsList = (postIds, columnCount, isPostHeaderHidden) =>
     )}
   </div>
 
-// USERS
-export const userAvatars = userIds =>
-  userIds.map(id =>
-    <UserContainer
-      key={`userAvatar_${id}`}
-      type="avatar"
-      userId={id}
-    />,
+export const postsAsRelated = (postIds, columnCount, isPostHeaderHidden) => {
+  const columns = []
+  for (let i = 0; i < columnCount; i += 1) { columns.push([]) }
+  postIds.forEach((value, index) => columns[index % columnCount].push(postIds.get(index)))
+  return (
+    <div className="Posts asGrid">
+      {postIds.size && <h2 className="RelatedPostsTitle">Related Posts</h2>}
+      {columns.map((columnPostIds, i) =>
+        <div className="Column" key={`column_${i + 1}`}>
+          {columnPostIds.map(id =>
+            <article className="PostGrid" key={`postsAsGrid_${id}`}>
+              <PostContainer postId={id} isPostHeaderHidden={isPostHeaderHidden} isRelatedPost />
+            </article>,
+          )}
+        </div>,
+      )}
+    </div>
   )
+}
 
+// USERS
 export const usersAsCompact = userIds =>
   userIds.map(id =>
     <UserContainer

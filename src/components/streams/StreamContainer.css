@@ -14,7 +14,7 @@
     padding: 20px;
   }
 
-  .PostList .CommentStreamContainer {
+  .PostList .TabListStreamContainer {
     padding-top: 0;
   }
 }
@@ -33,7 +33,7 @@
   text-align: center;
 }
 
-.PostList .CommentStreamContainer.isBusy {
+.PostList .TabListStreamContainer.isBusy {
   max-width: 720px;
 }
 
@@ -42,6 +42,14 @@
   top: 20px;
 }
 
+.RelatedPostsStreamContainer {
+  transition: opacity 250ms;
+}
+
+.TabListStreamContainer.isBusy + .RelatedPostsStreamContainer {
+  opacity: 0;
+  transition: none;
+}
 /* ------------------------------------- */
 
 .MainView > .StreamContainer.isError,

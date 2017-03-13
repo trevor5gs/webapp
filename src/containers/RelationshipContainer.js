@@ -35,6 +35,7 @@ const selectShouldRenderBlockMuteButton = createSelector(
     isLoggedIn && hasBlockMuteButton && relationshipPriority !== RELATIONSHIP_PRIORITY.SELF,
 )
 
+// TODO: move this to a selector and test it
 export function getNextBlockMutePriority(currentPriority, requestedPriority) {
   switch (currentPriority) {
     case RELATIONSHIP_PRIORITY.BLOCK:
@@ -53,7 +54,7 @@ export function getNextBlockMutePriority(currentPriority, requestedPriority) {
 }
 
 // TODO: Try and get rid of deviceSize
-export function mapStateToProps(state, props) {
+function mapStateToProps(state, props) {
   const onClickCallback = selectOnClickCallback(state, props)
   const shouldRenderBlockMute = selectShouldRenderBlockMuteButton(state, props)
   return {

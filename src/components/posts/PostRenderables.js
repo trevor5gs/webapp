@@ -1,42 +1,14 @@
 /* eslint-disable react/no-multi-comp */
 import React, { PropTypes, PureComponent } from 'react'
+import { css } from 'glamor'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
+import { ArrowEastIcon } from '../assets/Icons'
 import ContentWarningButton from '../posts/ContentWarningButton'
 import { RepostIcon } from '../posts/PostIcons'
 import RelationshipContainer from '../../containers/RelationshipContainer'
-import StreamContainer from '../../containers/StreamContainer'
-import { loadComments } from '../../actions/posts'
 import { RegionItems } from '../regions/RegionRenderables'
-
-// TODO: look at moving this into the PostContainer and refactoring the
-// PostDetailContainer to also use the PostContainer
-export const CommentStream = ({ detailPath, postId, postCommentsCount }) =>
-  <div>
-    <StreamContainer
-      className="CommentStreamContainer isFullWidth"
-      action={loadComments(postId)}
-      ignoresScrollPosition
-    >
-      {postCommentsCount > 10 &&
-        <Link
-          to={{
-            pathname: detailPath,
-            state: { didComeFromSeeMoreCommentsLink: true },
-          }}
-          className="CommentsLink"
-        >
-          See More
-        </Link>
-      }
-    </StreamContainer>
-  </div>
-CommentStream.propTypes = {
-  detailPath: PropTypes.string.isRequired,
-  postCommentsCount: PropTypes.number.isRequired,
-  postId: PropTypes.string.isRequired,
-}
 
 const PostHeaderTimeAgoLink = ({ to, createdAt }) =>
   <Link className="PostHeaderTimeAgoLink" to={to}>
@@ -275,5 +247,33 @@ export class PostBody extends PureComponent {
       </div>
     )
   }
+}
+
+const relatedPostButtonStyles = css({
+  position: 'absolute',
+  right: 0,
+  top: 0,
+  fontSize: 18,
+  color: '#aaa',
+  transition: 'color 250ms',
+  '.no-touch &:hover': {
+    color: 'black',
+  },
+  '> .ArrowEastIcon': {
+    transform: 'rotate(90deg)',
+    marginLeft: 15,
+  },
+})
+
+export const RelatedPostsButton = (props, { onClickScrollToRelatedPosts }) =>
+  <button
+    onClick={onClickScrollToRelatedPosts}
+    {...relatedPostButtonStyles}
+  >
+    <span>Related Posts</span>
+    <ArrowEastIcon />
+  </button>
+RelatedPostsButton.contextTypes = {
+  onClickScrollToRelatedPosts: PropTypes.func.isRequired,
 }
 

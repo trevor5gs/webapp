@@ -8,12 +8,10 @@
   padding-bottom: 30px;
 }
 
-.DiscoverPageTitle {
-  display: inline-block;
-  margin: 18px 0 0 10px;
+.RelatedPostsTitle {
+  margin: 15px 0 10px 20px;
   font-size: 18px;
-  color: #000;
-  border-bottom: 1px solid;
+  color: #aaa;
 }
 
 @media (--break-2-max) {
@@ -27,9 +25,12 @@
     padding-top: 0;
   }
 
-  .DiscoverPageTitle {
-    margin: 35px 0 0 20px;
-    font-size: 24px;
+  .RelatedPostsTitle {
+    margin: 20px 0 20px 20px;
+  }
+
+  .TabListStreamContainer + .RelatedPostsStreamContainer .RelatedPostsTitle {
+    margin-top: 45px;
   }
 }
 
@@ -40,7 +41,7 @@
 }
 
 @media (--break-4) {
-  .DiscoverPageTitle {
+  .RelatedPostsTitle {
     margin-left: 40px;
   }
 }

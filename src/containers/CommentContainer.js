@@ -5,7 +5,6 @@ import { EDITOR } from '../constants/action_types'
 import { deleteComment, flagComment, loadEditableComment, toggleEditing } from '../actions/comments'
 import { openModal, closeModal } from '../actions/modals'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import { selectAssets } from '../selectors/assets'
 import {
   selectComment,
   selectCommentAuthor,
@@ -28,6 +27,7 @@ import {
   selectIsGridMode,
   selectIsNavbarHidden,
 } from '../selectors/gui'
+import { selectIsPostDetail } from '../selectors/routing'
 import Editor, { getEditorId } from '../components/editor/Editor'
 import { CommentBody, CommentHeader } from '../components/comments/CommentRenderables'
 import CommentTools from '../components/comments/CommentTools'
@@ -35,39 +35,37 @@ import ConfirmDialog from '../components/dialogs/ConfirmDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import { scrollToLastTextBlock } from '../lib/jello'
 
-// TODO: Possibly create an individual mapStateToProps for each container
-// instance. This will allow each component it's own private group of
-// selectors. It would be good to measure this though, based on how these run
-// we may not gain a whole lot from it.
-export function mapStateToProps(state, props) {
-  return {
-    assets: selectAssets(state),
-    author: selectCommentAuthor(state, props),
-    canDeleteComment: selectCommentCanBeDeleted(state, props),
-    columnWidth: selectColumnWidth(state),
-    comment: selectComment(state, props),
-    commentBody: selectCommentBody(state, props),
-    commentCreatedAt: selectCommentCreatedAt(state, props),
-    commentId: selectPropsCommentId(state, props),
-    commentOffset: selectCommentOffset(state),
-    content: selectCommentContent(state, props),
-    contentWidth: selectContentWidth(state),
-    detailPath: selectCommentPostDetailPath(state, props),
-    deviceSize: selectDeviceSize(state),
-    innerHeight: selectInnerHeight(state),
-    isEditing: selectCommentIsEditing(state, props),
-    isGridMode: selectIsGridMode(state),
-    isLoggedIn: selectIsLoggedIn(state),
-    isNavbarHidden: selectIsNavbarHidden(state),
-    isOwnComment: selectCommentIsOwn(state, props),
-    post: selectCommentPost(state, props),
+export function makeMapStateToProps() {
+  return (state, props) => {
+    const isPostDetail = selectIsPostDetail(state, props)
+    const isGridMode = selectIsGridMode(state)
+    return {
+      author: selectCommentAuthor(state, props),
+      canDeleteComment: selectCommentCanBeDeleted(state, props),
+      columnWidth: selectColumnWidth(state),
+      comment: selectComment(state, props),
+      commentBody: selectCommentBody(state, props),
+      commentCreatedAt: selectCommentCreatedAt(state, props),
+      commentId: selectPropsCommentId(state, props),
+      commentOffset: selectCommentOffset(state),
+      content: selectCommentContent(state, props),
+      contentWidth: isPostDetail || !isGridMode ? 650 : selectContentWidth(state),
+      detailPath: selectCommentPostDetailPath(state, props),
+      deviceSize: selectDeviceSize(state),
+      innerHeight: selectInnerHeight(state),
+      isEditing: selectCommentIsEditing(state, props),
+      isGridMode: isPostDetail ? false : isGridMode,
+      isLoggedIn: selectIsLoggedIn(state),
+      isNavbarHidden: selectIsNavbarHidden(state),
+      isOwnComment: selectCommentIsOwn(state, props),
+      post: selectCommentPost(state, props),
+    }
   }
 }
 
 class CommentContainer extends Component {
 
   static propTypes = {
-    assets: PropTypes.object,
     author: PropTypes.object.isRequired,
     canDeleteComment: PropTypes.bool.isRequired,
     columnWidth: PropTypes.number.isRequired,
@@ -91,7 +89,6 @@ class CommentContainer extends Component {
   }
 
   static defaultProps = {
-    assets: null,
     commentBody: null,
   }
 
@@ -120,8 +117,7 @@ class CommentContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return !Immutable.is(nextProps.assets, this.props.assets) ||
-      !Immutable.is(nextProps.comment, this.props.comment) ||
+    return !Immutable.is(nextProps.comment, this.props.comment) ||
       !Immutable.is(nextProps.post, this.props.post) ||
       ['isGridMode'].some(prop => nextProps[prop] !== this.props[prop]) ||
       ['isMoreToolActive'].some(prop => nextState[prop] !== this.state[prop])
@@ -188,7 +184,6 @@ class CommentContainer extends Component {
 
   render() {
     const {
-      assets,
       author,
       canDeleteComment,
       columnWidth,
@@ -208,7 +203,7 @@ class CommentContainer extends Component {
     } = this.props
     if (!comment || !comment.get('id') || !author || !author.get('id')) { return null }
     return (
-      <div>
+      <div className="Comment">
         {!isEditing ?
           <CommentHeader author={author} commentId={commentId} /> :
           null
@@ -216,7 +211,6 @@ class CommentContainer extends Component {
         {isEditing && commentBody ?
           <Editor isComment comment={comment} /> :
           <CommentBody
-            assets={assets}
             columnWidth={columnWidth}
             commentId={commentId}
             commentOffset={commentOffset}
@@ -241,5 +235,5 @@ class CommentContainer extends Component {
   }
 }
 
-export default connect(mapStateToProps)(CommentContainer)
+export default connect(makeMapStateToProps)(CommentContainer)
 

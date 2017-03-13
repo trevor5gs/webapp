@@ -7,7 +7,8 @@ import { numberToHuman } from '../lib/number_to_human'
 import { selectAssets } from './assets'
 import { selectIsLoggedIn } from './authentication'
 import { selectCategoryCollection } from './categories'
-import { selectIsGridMode } from './gui'
+import { selectIsGridMode, selectIsMobile } from './gui'
+import { selectPages } from './pages'
 import { selectParamsToken } from './params'
 import { selectId as selectProfileId } from './profile'
 import { selectIsPostDetail } from './routing'
@@ -19,10 +20,11 @@ const countProtector = count => (count < 0 ? 0 : count)
 export const selectPropsPostId = (state, props) =>
   get(props, 'postId') || get(props, 'post', Immutable.Map()).get('id')
 
+export const selectPropsPostIsRelated = (state, props) => get(props, 'isRelatedPost', false)
+export const selectPropsLocationStateFrom = (state, props) => get(props, ['location', 'state', 'from'], null)
 export const selectPosts = state => state.json.get(POSTS, Immutable.Map())
 
 // Memoized selectors
-
 // Requires `postId`, `post` or `params.token` to be found in props
 export const selectPost = createSelector(
   [selectPropsPostId, selectParamsToken, selectPosts], (id, token, posts) => {
@@ -76,8 +78,6 @@ export const selectPostRepostId = createSelector([selectPost], post => post.get(
 export const selectPostReposted = createSelector([selectPost], post => post.get('reposted'))
 export const selectPostRepostsCount = createSelector([selectPost], post => countProtector(post.get('repostsCount')))
 export const selectPostShowComments = createSelector([selectPost], post => post.get('showComments', false))
-export const selectPostShowLovers = createSelector([selectPost], post => post.get('showLovers', false))
-export const selectPostShowReposters = createSelector([selectPost], post => post.get('showReposters', false))
 export const selectPostSummary = createSelector(
   [selectPost, selectAssets], (post, assets) =>
     post.get('summary', Immutable.Map()).map(region => addAssetToRegion(region, assets)),
@@ -137,6 +137,15 @@ export const selectPostAuthorUsername = createSelector(
   [selectPostAuthor], author => author.get('username'),
 )
 
+export const selectPostAuthorHasCommentingEnabled = createSelector(
+  [selectPostAuthor], author => author.get('hasCommentingEnabled'),
+)
+
+export const selectPostHasRelatedButton = createSelector(
+  [selectPostId, selectPages, selectIsMobile], (postId, pages, isMobile) =>
+    !pages.getIn([`/posts/${postId}/related_posts`, 'ids'], Immutable.List()).isEmpty() && !isMobile,
+)
+
 // TODO: Pull other properties out of post.get('links')?
 export const selectPostRepostAuthorId = createSelector([selectPost], post =>
   post.getIn(['links', 'repostAuthor', 'id']),
@@ -180,8 +189,9 @@ export const selectPostIsEmpty = createSelector(
 )
 
 export const selectPostIsGridMode = createSelector(
-  [selectIsPostDetail, selectIsGridMode], (isPostDetail, isGridMode) =>
-    (isPostDetail ? false : isGridMode),
+  [selectIsPostDetail, selectIsGridMode, selectPropsPostIsRelated],
+  (isPostDetail, isGridMode, isRelated) =>
+    (isPostDetail ? isRelated : isGridMode),
 )
 
 export const selectPostIsOwn = createSelector(
@@ -219,30 +229,44 @@ export const selectPostRepostAuthorWithFallback = createSelector(
 
 // Editor and drawer states for a given post
 export const selectPostShowEditor = createSelector(
-  [selectPostIsEditing, selectPostIsReposting, selectPostBody],
-  (isEditing, isReposting, postBody) =>
-    !!((isEditing || isReposting) && postBody),
+  [selectPostIsEditing, selectPostIsReposting, selectPostBody, selectPropsPostIsRelated],
+  (isEditing, isReposting, postBody, isRelated) =>
+    !!((isEditing || isReposting) && postBody) && !isRelated,
 )
 
 export const selectPostShowCommentEditor = createSelector(
-  [selectPostShowEditor, selectPostShowComments, selectIsPostDetail],
-  (showEditor, showComments, isPostDetail) =>
-    !showEditor && !isPostDetail && showComments,
+  [selectPostShowEditor, selectPostShowComments, selectIsPostDetail, selectPropsPostIsRelated],
+  (showEditor, showComments, isPostDetail, isRelated) =>
+    !showEditor && !isPostDetail && showComments && !isRelated,
 )
 
-export const selectPostShowLoversDrawer = createSelector(
-  [selectPostShowEditor, selectPostIsGridMode, selectPostShowLovers,
-    selectPostLovesCount, selectIsPostDetail],
-  (showEditor, isGridMode, showLovers, lovesCount, isPostDetail) =>
-    (!showEditor && !isGridMode && showLovers && lovesCount > 0) ||
-    (!showEditor && !isGridMode && isPostDetail && lovesCount > 0),
+const selectPostDetailCommentLabel = createSelector(
+  [selectPostCommentsCount, selectPostAuthorHasCommentingEnabled, selectIsLoggedIn],
+  (commentsCount, hasCommentingEnabled, isLoggedIn) => {
+    if (!hasCommentingEnabled || (!isLoggedIn && Number(commentsCount) < 1)) { return null }
+    return (Number(commentsCount) > 0 ?
+      `${numberToHuman(commentsCount)} Comment${commentsCount === 1 ? '' : 's'}` : 'Comments')
+  },
 )
 
-export const selectPostShowRepostersDrawer = createSelector(
-  [selectPostShowEditor, selectPostIsGridMode, selectPostShowReposters,
-    selectPostRepostsCount, selectIsPostDetail],
-  (showEditor, isGridMode, showReposters, repostsCount, isPostDetail) =>
-    (!showEditor && !isGridMode && showReposters && repostsCount > 0) ||
-    (!showEditor && !isGridMode && isPostDetail && repostsCount > 0),
+const selectPostDetailLovesLabel = createSelector(
+  [selectPostLovesCount], lovesCount =>
+    (Number(lovesCount) > 0 ?
+      `${numberToHuman(lovesCount)} Love${lovesCount === 1 ? '' : 's'}` : null),
+)
+
+const selectPostDetailRepostsLabel = createSelector(
+  [selectPostRepostsCount], repostsCount =>
+    (Number(repostsCount) > 0 ?
+      `${numberToHuman(repostsCount)} Repost${repostsCount === 1 ? '' : 's'}` : null),
+)
+
+export const selectPostDetailTabs = createSelector(
+  [selectPostDetailCommentLabel, selectPostDetailLovesLabel, selectPostDetailRepostsLabel],
+  (commentsLabel, lovesLabel, repostsLabel) => [
+    commentsLabel && { type: 'comments', children: commentsLabel },
+    lovesLabel && { type: 'loves', children: lovesLabel },
+    repostsLabel && { type: 'reposts', children: repostsLabel },
+  ].filter(tab => tab),
 )
 

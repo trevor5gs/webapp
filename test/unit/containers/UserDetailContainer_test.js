@@ -1,6 +1,4 @@
-import Immutable from 'immutable'
-import { json, stub } from '../../support/stubs'
-import { getStreamAction, mapStateToProps } from '../../../src/containers/UserDetailContainer'
+import { getStreamAction } from '../../../src/containers/UserDetailContainer'
 
 describe('UserDetailContainer', () => {
   context('#getStreamAction', () => {
@@ -26,96 +24,6 @@ describe('UserDetailContainer', () => {
       const vo = { username: 'archer' }
       const action = getStreamAction(vo)
       expect(action.payload.endpoint.path).to.contain('/~archer/posts')
-    })
-  })
-
-  context('#mapStateToProps (new user)', () => {
-    stub('user', {
-      id: '1',
-      followersCount: 0,
-      postsCount: 0,
-      relationshipPriority: 'friend',
-      username: 'damian',
-    })
-    const state = {
-      authentication: Immutable.Map({ isLoggedIn: true }),
-      gui: Immutable.fromJS({
-        saidHelloTo: ['phillip', 'damian'],
-      }),
-      json,
-      stream: Immutable.fromJS({ type: 'USER.DETAIL_SUCCESS', error: {} }),
-    }
-    const props = { params: { type: 'posts', username: 'damian' } }
-    const action = getStreamAction({ username: 'damian' })
-    const nextProps = mapStateToProps(state, props)
-
-    it('sets hasSaidHelloTo to true', () => {
-      expect(nextProps.hasSaidHelloTo).to.be.true
-    })
-
-    it('sets hasZeroFollowers to true', () => {
-      expect(nextProps.hasZeroFollowers).to.be.true
-    })
-
-    it('sets hasZeroPosts to true', () => {
-      expect(nextProps.hasZeroPosts).to.be.true
-    })
-
-    it('sets isSelf to false', () => {
-      expect(nextProps.isSelf).to.be.false
-    })
-
-    it('sets a nice looking key', () => {
-      expect(nextProps.viewKey).to.equal('userDetail/damian/posts')
-    })
-
-    it('sets the correct stream action', () => {
-      expect(nextProps.streamAction).to.deep.equal(action)
-    })
-  })
-
-  context('#mapStateToProps (self)', () => {
-    stub('user', {
-      id: '1',
-      followersCount: 666,
-      postsCount: 1,
-      relationshipPriority: 'self',
-      username: 'nikki',
-    })
-    const state = {
-      authentication: Immutable.Map({ isLoggedIn: true }),
-      gui: Immutable.fromJS({
-        saidHelloTo: ['phillip', 'damian'],
-      }),
-      json,
-      stream: Immutable.fromJS({ type: 'USER.DETAIL_SUCCESS', error: {} }),
-    }
-    const props = { params: { type: 'following', username: 'nikki' } }
-    const action = getStreamAction({ username: 'nikki', type: 'following' })
-    const nextProps = mapStateToProps(state, props)
-
-    it('sets hasSaidHelloTo to false', () => {
-      expect(nextProps.hasSaidHelloTo).to.be.false
-    })
-
-    it('sets hasZeroFollowers to false', () => {
-      expect(nextProps.hasZeroFollowers).to.be.false
-    })
-
-    it('sets hasZeroPosts to false', () => {
-      expect(nextProps.hasZeroPosts).to.be.false
-    })
-
-    it('sets isSelf to true', () => {
-      expect(nextProps.isSelf).to.be.true
-    })
-
-    it('sets a nice looking key', () => {
-      expect(nextProps.viewKey).to.equal('userDetail/nikki/following')
-    })
-
-    it('sets the correct stream action', () => {
-      expect(nextProps.streamAction).to.deep.equal(action)
     })
   })
 })

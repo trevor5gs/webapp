@@ -21,7 +21,7 @@ import {
 import { ErrorState4xx } from '../components/errors/Errors'
 import { UserDetail, UserDetailError } from '../components/views/UserDetail'
 
-
+// TODO: move this to a selector and test it
 export function getStreamAction({ type = 'posts', username }) {
   switch (type) {
     case 'following':
@@ -41,7 +41,8 @@ const selectUserDetailStreamAction = createSelector(
   (type, username) => getStreamAction({ type, username }),
 )
 
-export function mapStateToProps(state, props) {
+// TODO: move other properties to selectors and test them
+function mapStateToProps(state, props) {
   const type = selectParamsType(state, props) || 'posts'
   const isSelf = selectUserIsSelf(state, props)
   const isUserEmpty = selectUserIsEmpty(state, props)

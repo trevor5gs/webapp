@@ -132,7 +132,7 @@
     margin-bottom: 0;
   }
 
-  .Avatar.inUserProfileCard {
+  .Avatar.inUserProfileCard:not(.isMiniProfileCard) {
     width: 200px;
     height: 200px;
   }

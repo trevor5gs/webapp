@@ -7,6 +7,7 @@ import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectIsMobile } from '../selectors/gui'
 import { selectInvitationAcceptedAt, selectInvitationEmail } from '../selectors/invitations'
 import { selectViewsAdultContent } from '../selectors/profile'
+import { selectIsPostDetail } from '../selectors/routing'
 import {
   selectUser,
   selectUserAvatar,
@@ -33,7 +34,6 @@ import {
   selectUserUsername,
 } from '../selectors/user'
 import {
-  UserAvatar,
   UserCompact,
   UserInvitee,
   UserProfileCard,
@@ -68,6 +68,7 @@ export function makeMapStateToProps() {
       isLoggedIn: selectIsLoggedIn(state),
       isSelf: selectUserIsSelf(state, props),
       isShortBioTruncated: truncatedShortBio.text.length >= 150,
+      isMiniProfileCard: selectIsPostDetail(state, props),
       isMobile: selectIsMobile(state),
       isUserEmpty: selectUserIsEmpty(state, props),
       location: selectUserLocation(state, props),
@@ -93,7 +94,10 @@ class UserContainer extends Component {
     coverImage: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     externalLinksList: PropTypes.object,
-    followersCount: PropTypes.number.isRequired,
+    followersCount: React.PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]).isRequired,
     followingCount: PropTypes.number.isRequired,
     formattedShortBio: PropTypes.string,
     invitationAcceptedAt: PropTypes.string,
@@ -103,6 +107,7 @@ class UserContainer extends Component {
     isFeatured: PropTypes.bool.isRequired,
     isHireable: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    isMiniProfileCard: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     isSelf: PropTypes.bool.isRequired,
     isShortBioTruncated: PropTypes.bool.isRequired,
@@ -115,7 +120,6 @@ class UserContainer extends Component {
     totalPostViewsCount: PropTypes.string,
     truncatedShortBio: PropTypes.string.isRequired,
     type: PropTypes.oneOf([
-      'avatar',
       'compact',
       'invitee',
       'grid',
@@ -180,7 +184,9 @@ class UserContainer extends Component {
 
   shouldComponentUpdate(nextProps) {
     return !Immutable.is(nextProps.user, this.props.user) ||
-      ['isLoggedIn', 'isMobile'].some(prop => nextProps[prop] !== this.props[prop])
+      ['isLoggedIn', 'isMiniProfileCard', 'isMobile'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      )
   }
 
   onClickOpenBio = () => {
@@ -283,6 +289,7 @@ class UserContainer extends Component {
       isCollaborateable,
       isHireable,
       isLoggedIn,
+      isMiniProfileCard,
       isMobile,
       isSelf,
       isUserEmpty,
@@ -299,10 +306,6 @@ class UserContainer extends Component {
     } = this.props
     if (isUserEmpty && !invitationEmail) { return null }
     switch (type) {
-      case 'avatar':
-        return (
-          <UserAvatar {...{ avatar, id, relationshipPriority, username }} />
-        )
       case 'compact':
         return (
           <UserCompact {...{ avatar, id, relationshipPriority, username }} />
@@ -331,6 +334,7 @@ class UserContainer extends Component {
               followersCount,
               followingCount,
               id,
+              isMiniProfileCard,
               isMobile,
               lovesCount,
               name,

@@ -5,7 +5,7 @@ import TextRegion from '../regions/TextRegion'
 
 export function RegionItems(props) {
   const { columnWidth, commentOffset, content, contentWidth,
-    detailPath, innerHeight, isGridMode } = props
+    detailPath, innerHeight, isComment, isGridMode } = props
   // sometimes the content is null/undefined for some reason
   if (!content) { return null }
   const cells = []
@@ -16,6 +16,7 @@ export function RegionItems(props) {
           <TextRegion
             content={region.get('data')}
             detailPath={detailPath}
+            isComment={isComment}
             isGridMode={isGridMode}
             key={`TextRegion_${region.get('data')}`}
           />,
@@ -32,6 +33,7 @@ export function RegionItems(props) {
             contentWidth={contentWidth}
             detailPath={detailPath}
             innerHeight={innerHeight}
+            isComment={isComment}
             isGridMode={isGridMode}
             key={`ImageRegion_${JSON.stringify(region.get('data'))}`}
           />,
@@ -41,6 +43,7 @@ export function RegionItems(props) {
         cells.push(
           <EmbedRegion
             detailPath={detailPath}
+            isComment={isComment}
             key={`EmbedRegion_${JSON.stringify(region.get('data'))}`}
             region={region}
           />,
@@ -60,7 +63,11 @@ RegionItems.propTypes = {
   contentWidth: PropTypes.number.isRequired,
   detailPath: PropTypes.string.isRequired,
   innerHeight: PropTypes.number.isRequired,
+  isComment: PropTypes.bool,
   isGridMode: PropTypes.bool.isRequired,
+}
+RegionItems.defaultProps = {
+  isComment: false,
 }
 
 export function regionItemsForNotifications(content, detailPath) {

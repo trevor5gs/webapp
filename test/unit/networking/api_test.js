@@ -5,38 +5,32 @@ describe('api.js', () => {
   context('assets', () => {
     it('#s3CredentialsPath', () => {
       expect(api.s3CredentialsPath().path).to.match(/\/assets\/credentials$/)
-      expect(api.s3CredentialsPath().pagingPath).to.be.undefined
     })
   })
 
   context('authentication', () => {
     it('#accessTokens', () => {
       expect(api.accessTokens().path).to.match(/\/oauth\/token/)
-      expect(api.accessTokens().pagingPath).to.be.undefined
     })
 
     it('#forgotPassword', () => {
       expect(api.forgotPassword().path).to.match(/\/forgot-password$/)
-      expect(api.forgotPassword().pagingPath).to.be.undefined
     })
   })
 
   context('profile', () => {
     it('#profilePath', () => {
       expect(api.profilePath().path).to.match(/\/profile$/)
-      expect(api.profilePath().pagingPath).to.be.undefined
     })
   })
 
   context('onboarding', () => {
     it('#awesomePeoplePath', () => {
       expect(api.awesomePeoplePath().path).to.match(/\/discover\/users\/onboarding\?/)
-      expect(api.awesomePeoplePath().pagingPath).to.be.undefined
     })
 
     it('#communitiesPath', () => {
       expect(api.communitiesPath().path).to.match(/\/interest_categories\/members\?/)
-      expect(api.communitiesPath().pagingPath).to.be.undefined
     })
 
     it('#relationshipBatchPath', () => {
@@ -53,7 +47,6 @@ describe('api.js', () => {
   context('streams', () => {
     it('#followingStream', () => {
       expect(api.followingStream().path).to.match(/\/following\/posts\/recent\?/)
-      expect(api.followingStream().pagingPath).to.be.undefined
     })
   })
 
@@ -94,7 +87,6 @@ describe('api.js', () => {
   context('comments', () => {
     it('#commentsForPost', () => {
       expect(api.commentsForPost('what').path).to.match(/\/posts\/what\/comments\?/)
-      expect(api.commentsForPost('what').pagingPath).to.be.undefined
     })
 
     it('#deleteComment', () => {
@@ -129,12 +121,10 @@ describe('api.js', () => {
   context('search', () => {
     it('#searchPosts', () => {
       expect(api.searchPosts({ terms: 'blah' }).path).to.match(/\/posts\?terms=blah/)
-      expect(api.searchPosts({ terms: 'blah' }).pagingPath).to.be.undefined
     })
 
     it('#searchUsers', () => {
       expect(api.searchUsers({ terms: 'blah' }).path).to.match(/\/users\?terms=blah/)
-      expect(api.searchUsers({ terms: 'blah' }).pagingPath).to.be.undefined
     })
   })
 

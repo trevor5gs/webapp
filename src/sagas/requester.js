@@ -250,27 +250,13 @@ export function* performRequest(action) {
   payload.serverStatus = serverResponse.status
   if (serverResponse.status === 200 || serverResponse.status === 201) {
     payload.response = camelizeKeys(json)
-
-    if (endpoint.pagingPath && payload.response[meta.mappingType].id) {
-      payload.pagination = get(
-        payload,
-        [
-          'serverResponse',
-          meta.mappingType,
-          'links',
-          endpoint.pagingPath,
-          'pagination',
-        ],
-      )
-    } else {
-      const linkPagination = parseLink(serverResponse.headers.get('Link'))
-      linkPagination.totalCount = parseInt(serverResponse.headers.get('X-TotalCount'), 10)
-      linkPagination.totalPages = parseInt(serverResponse.headers.get('X-Total-Pages'), 10)
-      linkPagination.totalPagesRemaining = parseInt(
-        serverResponse.headers.get('X-Total-Pages-Remaining'), 10,
-      )
-      payload.pagination = linkPagination
-    }
+    const linkPagination = parseLink(serverResponse.headers.get('Link'))
+    linkPagination.totalCount = Number(serverResponse.headers.get('X-TotalCount'))
+    linkPagination.totalPages = Number(serverResponse.headers.get('X-Total-Pages'))
+    linkPagination.totalPagesRemaining = Number(
+      serverResponse.headers.get('X-Total-Pages-Remaining'),
+    )
+    payload.pagination = linkPagination
   }
   yield put({ meta, payload, type: SUCCESS })
   yield call(fireSuccessAction)

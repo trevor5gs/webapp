@@ -567,18 +567,6 @@ describe('json reducer', () => {
         ])
       })
 
-      it('calls #postMethods.toggleLovers', () => {
-        methodCalledWithActions(subject.postMethods, 'toggleLovers', [
-          ACTION_TYPES.POST.TOGGLE_LOVERS,
-        ])
-      })
-
-      it('calls #postMethods.toggleReposters', () => {
-        methodCalledWithActions(subject.postMethods, 'toggleReposters', [
-          ACTION_TYPES.POST.TOGGLE_REPOSTERS,
-        ])
-      })
-
       it('calls #postMethods.toggleReposting', () => {
         methodCalledWithActions(subject.postMethods, 'toggleReposting', [
           ACTION_TYPES.POST.TOGGLE_REPOSTING,

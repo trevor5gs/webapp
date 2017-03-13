@@ -131,36 +131,27 @@ export default class CommentTools extends PureComponent {
       isMoreToolActive,
       isOwnComment,
     } = this.props
+    const isShyToolSolo = isLoggedIn && !(isOwnComment || canDeleteComment)
     const cells = []
+
+    if (isLoggedIn && !isOwnComment) {
+      cells.push(<ReplyTool key={`ReplyTool_${commentId}`} />)
+    }
     cells.push(<TimeAgoTool key={`TimeAgoTool_${commentId}`} createdAt={commentCreatedAt} />)
     if (isLoggedIn) {
+      cells.push(<MoreTool key={`MoreTool_${commentId}`} />)
+      if (!isOwnComment) {
+        cells.push(<FlagTool key={`FlagTool_${commentId}`} />)
+      }
       if (isOwnComment) {
         cells.push(<EditTool key={`EditTool_${commentId}`} />)
-        cells.push(
-          <DeleteTool key={`DeleteTool_${commentId}`} />,
-        )
-      } else if (canDeleteComment) {
-        cells.push(
-          <ReplyTool key={`ReplyTool_${commentId}`} />,
-        )
-        cells.push(
-          <FlagTool key={`FlagTool_${commentId}`} />,
-        )
-        cells.push(
-          <DeleteTool key={`DeleteTool_${commentId}`} />,
-        )
-      } else {
-        cells.push(
-          <ReplyTool key={`ReplyTool_${commentId}`} />,
-        )
-        cells.push(
-          <FlagTool key={`FlagTool_${commentId}`} className="isSolo" />,
-        )
+      }
+      if (isOwnComment || canDeleteComment) {
+        cells.push(<DeleteTool key={`DeleteTool_${commentId}`} />)
       }
     }
-    cells.push(<MoreTool key={`MoreTool_${commentId}`} />)
     return (
-      <footer className={classNames('PostTools', 'CommentTools', { isMoreToolActive })}>
+      <footer className={classNames('PostTools CommentTools', { isMoreToolActive }, { isShyToolSolo })}>
         {cells}
       </footer>
     )

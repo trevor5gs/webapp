@@ -441,7 +441,6 @@ class SettingsContainer extends PureComponent {
           <div className="SettingsPreferences">
             <StreamContainer
               action={availableToggles()}
-              ignoresScrollPosition
             />
 
             {allowNSFWToggle ?
@@ -472,9 +471,8 @@ class SettingsContainer extends PureComponent {
                   <StreamContainer
                     action={blockedUsers()}
                     className="BlockedUsers"
-                    hasShowMoreButton
-                    paginatorText="See more"
-                    ignoresScrollPosition
+                    paginatorText="Load More"
+                    shouldInfiniteScroll={false}
                   />
                 </TreePanel>
               </div> :
@@ -487,9 +485,8 @@ class SettingsContainer extends PureComponent {
                   <StreamContainer
                     action={mutedUsers()}
                     className="MutedUsers"
-                    hasShowMoreButton
-                    paginatorText="See more"
-                    ignoresScrollPosition
+                    paginatorText="Load More"
+                    shouldInfiniteScroll={false}
                   />
                 </TreePanel>
               </div> :

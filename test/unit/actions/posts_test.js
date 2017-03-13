@@ -198,42 +198,6 @@ describe('posts.js', () => {
     })
   })
 
-  context('#toggleLovers', () => {
-    const post = stub('post')
-    const action = subject.toggleLovers(post, false)
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('has similar action.name and action.type', () => {
-      expect(isFSAName(action, subject.toggleLovers)).to.be.true
-    })
-
-    it('sets the appropriate payload', () => {
-      expect(action.payload.showLovers).to.be.false
-      expect(action.payload.model).to.deep.equal(post)
-    })
-  })
-
-  context('#toggleReposters', () => {
-    const post = stub('post')
-    const action = subject.toggleReposters(post, true)
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('has similar action.name and action.type', () => {
-      expect(isFSAName(action, subject.toggleReposters)).to.be.true
-    })
-
-    it('sets the appropriate payload', () => {
-      expect(action.payload.showReposters).to.be.true
-      expect(action.payload.model).to.deep.equal(post)
-    })
-  })
-
   context('#toggleReposting', () => {
     const post = stub('post')
     const action = subject.toggleReposting(post, true)

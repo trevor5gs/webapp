@@ -61,6 +61,7 @@ export function loadComments(postId, addUpdateKey = true) {
         asGrid: StreamRenderables.commentsAsList,
       },
       resultKey: `/posts/${postId}/comments`,
+      updateKey: `/posts/${postId}`,
     },
   }
   if (addUpdateKey) {
@@ -90,6 +91,24 @@ export function loadPostDetail(idOrToken, userIdOrToken) {
     meta: {
       mappingType: MAPPING_TYPES.POSTS,
       updateResult: false,
+    },
+  }
+}
+
+export function loadRelatedPosts(postId, perPage) {
+  return {
+    type: LOAD_STREAM,
+    payload: {
+      endpoint: api.relatedPosts(postId, perPage),
+      postIdOrToken: postId,
+    },
+    meta: {
+      mappingType: MAPPING_TYPES.POSTS,
+      renderStream: {
+        asList: StreamRenderables.postsAsRelated,
+        asGrid: StreamRenderables.postsAsRelated,
+      },
+      resultKey: `/posts/${postId}/related_posts`,
     },
   }
 }
@@ -144,26 +163,6 @@ export function toggleEditing(post, isEditing) {
     payload: {
       model: post,
       isEditing,
-    },
-  }
-}
-
-export function toggleLovers(post, showLovers) {
-  return {
-    type: POST.TOGGLE_LOVERS,
-    payload: {
-      model: post,
-      showLovers,
-    },
-  }
-}
-
-export function toggleReposters(post, showReposters) {
-  return {
-    type: POST.TOGGLE_REPOSTERS,
-    payload: {
-      model: post,
-      showReposters,
     },
   }
 }

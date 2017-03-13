@@ -41,8 +41,6 @@ import {
   selectPostRepostsCount,
   selectPostShowCommentEditor,
   selectPostShowEditor,
-  selectPostShowLoversDrawer,
-  selectPostShowRepostersDrawer,
   selectPostSummary,
   selectPostViewsCountRounded,
   selectPropsPostId,
@@ -53,32 +51,28 @@ import { openModal, closeModal } from '../actions/modals'
 import {
   deletePost,
   flagPost,
+  loadComments,
   loadEditablePost,
   lovePost,
   toggleComments,
   toggleEditing,
-  toggleLovers,
-  toggleReposters,
   toggleReposting,
   unlovePost,
   unwatchPost,
   watchPost,
 } from '../actions/posts'
+import StreamContainer from '../containers/StreamContainer'
 import ConfirmDialog from '../components/dialogs/ConfirmDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import Editor from '../components/editor/Editor'
-import { HeartIcon, RepostIcon } from '../components/posts/PostIcons'
 import {
   CategoryHeader,
-  CommentStream,
   PostBody,
   PostHeader,
   RepostHeader,
 } from '../components/posts/PostRenderables'
 import { PostTools, WatchTool } from '../components/posts/PostTools'
-import { UserDrawer } from '../components/users/UserRenderables'
-import { postLovers, postReposters } from '../networking/api'
 import { isLink } from '../lib/jello'
 
 export function makeMapStateToProps() {
@@ -123,8 +117,6 @@ export function makeMapStateToProps() {
       repostContent: selectPostRepostContent(state, props),
       showCommentEditor: selectPostShowCommentEditor(state, props),
       showEditor: selectPostShowEditor(state, props),
-      showLovers: selectPostShowLoversDrawer(state, props),
-      showReposters: selectPostShowRepostersDrawer(state, props),
       summary: selectPostSummary(state, props),
     })
 }
@@ -154,6 +146,7 @@ class PostContainer extends Component {
     isPostDetail: PropTypes.bool.isRequired,
     isPostEmpty: PropTypes.bool.isRequired,
     isPostHeaderHidden: PropTypes.bool,
+    isRelatedPost: PropTypes.bool,
     isRepost: PropTypes.bool.isRequired,
     isReposting: PropTypes.bool.isRequired,
     isWatchingPost: PropTypes.bool.isRequired,
@@ -173,8 +166,6 @@ class PostContainer extends Component {
     repostContent: PropTypes.object,
     showCommentEditor: PropTypes.bool.isRequired,
     showEditor: PropTypes.bool.isRequired,
-    showLovers: PropTypes.bool.isRequired,
-    showReposters: PropTypes.bool.isRequired,
     summary: PropTypes.object,
   }
 
@@ -184,6 +175,7 @@ class PostContainer extends Component {
     content: null,
     contentWarning: null,
     isPostHeaderHidden: false,
+    isRelatedPost: false,
     postBody: null,
     postCommentsCount: null,
     postCreatedAt: null,
@@ -207,8 +199,6 @@ class PostContainer extends Component {
     onClickRepostPost: PropTypes.func.isRequired,
     onClickSharePost: PropTypes.func.isRequired,
     onClickToggleComments: PropTypes.func.isRequired,
-    onClickToggleLovers: PropTypes.func.isRequired,
-    onClickToggleReposters: PropTypes.func.isRequired,
     onClickWatchPost: PropTypes.func.isRequired,
   }
 
@@ -227,8 +217,6 @@ class PostContainer extends Component {
       onClickRepostPost: isLoggedIn ? this.onClickRepostPost : this.onOpenSignupModal,
       onClickSharePost: this.onClickSharePost,
       onClickToggleComments: this.onClickToggleComments,
-      onClickToggleLovers: isLoggedIn ? this.onClickToggleLovers : this.onOpenSignupModal,
-      onClickToggleReposters: isLoggedIn ? this.onClickToggleReposters : this.onOpenSignupModal,
       onClickWatchPost: isLoggedIn ? this.onClickWatchPost : this.onOpenSignupModal,
     }
   }
@@ -299,10 +287,12 @@ class PostContainer extends Component {
   }
 
   onClickRepostPost = () => {
-    const { dispatch, post, postReposted } = this.props
-    if (!postReposted) {
+    const { detailPath, dispatch, isRelatedPost, post, postReposted } = this.props
+    if (!postReposted && !isRelatedPost) {
       dispatch(toggleReposting(post, true))
       dispatch(loadEditablePost(post.get('id')))
+    } else {
+      dispatch(push(detailPath))
     }
   }
 
@@ -314,33 +304,13 @@ class PostContainer extends Component {
   }
 
   onClickToggleComments = () => {
-    const { detailPath, dispatch, isLoggedIn, post, showCommentEditor } = this.props
-    if (isLoggedIn) {
+    const { detailPath, dispatch, isLoggedIn, isRelatedPost, post, showCommentEditor } = this.props
+    if (isLoggedIn && !isRelatedPost) {
       const nextShowComments = !showCommentEditor
       this.setState({ isCommentsActive: nextShowComments })
       dispatch(toggleComments(post, nextShowComments))
     } else {
       dispatch(push(detailPath))
-    }
-  }
-
-  onClickToggleLovers = () => {
-    const { detailPath, dispatch, isGridMode, pathname, post, showLovers } = this.props
-    if (isGridMode && pathname !== detailPath) {
-      dispatch(push(detailPath))
-    } else {
-      const nextShowLovers = !showLovers
-      dispatch(toggleLovers(post, nextShowLovers))
-    }
-  }
-
-  onClickToggleReposters = () => {
-    const { detailPath, dispatch, isGridMode, pathname, post, showReposters } = this.props
-    if (isGridMode && pathname !== detailPath) {
-      dispatch(push(detailPath))
-    } else {
-      const nextShowReposters = !showReposters
-      dispatch(toggleReposters(post, nextShowReposters))
     }
   }
 
@@ -424,6 +394,7 @@ class PostContainer extends Component {
       isPostDetail,
       isPostEmpty,
       isPostHeaderHidden,
+      isRelatedPost,
       isRepost,
       isReposting,
       isWatchingPost,
@@ -441,8 +412,6 @@ class PostContainer extends Component {
       repostContent,
       showCommentEditor,
       showEditor,
-      showLovers,
-      showReposters,
       summary,
     } = this.props
     if (isPostEmpty || !author || !author.get('id')) { return null }
@@ -510,6 +479,7 @@ class PostContainer extends Component {
           isMobile={isMobile}
           isOwnOriginalPost={isOwnOriginalPost}
           isOwnPost={isOwnPost}
+          isRelatedPost={isRelatedPost}
           isRepostAnimating={isRepostAnimating}
           isWatchingPost={isWatchingPost}
           postCreatedAt={postCreatedAt}
@@ -521,25 +491,7 @@ class PostContainer extends Component {
           postRepostsCount={postRepostsCount}
           postViewsCountRounded={postViewsCountRounded}
         />
-        {showLovers &&
-          <UserDrawer
-            endpoint={postLovers(postId)}
-            icon={<HeartIcon />}
-            key={`userAvatarsLovers_${postId}`}
-            postId={postId}
-            resultType="love"
-          />
-        }
-        {showReposters &&
-          <UserDrawer
-            endpoint={postReposters(postId)}
-            icon={<RepostIcon />}
-            key={`userAvatarsReposters_${postId}`}
-            postId={postId}
-            resultType="repost"
-          />
-        }
-        {isMobile &&
+        {isMobile && !isRelatedPost &&
           <WatchTool
             isMobile
             isWatchingPost={isWatchingPost}
@@ -548,10 +500,13 @@ class PostContainer extends Component {
         }
         {showCommentEditor && <Editor post={post} isComment />}
         {showCommentEditor &&
-          <CommentStream
-            detailPath={detailPath}
+          <StreamContainer
+            action={loadComments(postId)}
+            className="TabListStreamContainer isFullWidth"
+            paginatorText="See More"
+            paginatorTo={detailPath}
             postCommentsCount={postCommentsCount}
-            postId={postId}
+            shouldInfiniteScroll={false}
           />
         }
       </div>)

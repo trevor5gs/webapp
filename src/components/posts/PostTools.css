@@ -42,6 +42,8 @@
   padding-left: 0 !important;
 }
 
+.PostDetailStreamContainer .CommentTool,
+.PostDetailStreamContainer .PostToolDrawerButton,
 .PostTool[data-count="0"] > button.PostToolDrawerButton {
   display: none;
 }
@@ -132,12 +134,11 @@
   display: inline-block;
 }
 
-.PostDetail .WatchTool.isPill {
-  display: inline-block;
-}
-
 .isLoggedIn .PostDetail .WatchTool.isPill {
-  margin-top: 25px;
+  position: static;
+  display: inline-block;
+  margin-top: 0;
+  margin-left: -7px;
 }
 
 .WatchTool.isPill > button > .SVGIcon {
@@ -224,10 +225,6 @@
 
 .Posts .TimeAgoTool {
   display: none;
-}
-
-.Posts.asGrid .RepostedByHint {
-  left: -30px;
 }
 
 /* // MAX WIDTH for hiding MOBILE in a GRID. 449 / 16 = 28.0625em */

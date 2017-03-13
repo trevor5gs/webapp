@@ -32,7 +32,7 @@ import { reloadPlayers } from '../components/editor/EmbedBlock'
 const selectActionPath = props =>
   get(props, ['action', 'payload', 'endpoint', 'path'])
 
-export function makeMapStateToProps() {
+function makeMapStateToProps() {
   return (state, props) =>
     ({
       columnCount: selectColumnCount(state),
@@ -52,7 +52,6 @@ class StreamContainer extends Component {
 
   static propTypes = {
     action: PropTypes.object,
-    children: PropTypes.node,
     className: PropTypes.string,
     columnCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -62,21 +61,26 @@ class StreamContainer extends Component {
     isModalComponent: PropTypes.bool,
     isPostHeaderHidden: PropTypes.bool,
     omnibar: PropTypes.object.isRequired,
+    paginatorCentered: PropTypes.bool,
     paginatorText: PropTypes.string,
+    paginatorTo: PropTypes.string,
     result: PropTypes.object.isRequired,
     resultPath: PropTypes.string.isRequired,
     scrollContainer: PropTypes.object,
+    shouldInfiniteScroll: PropTypes.bool,
     stream: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
     action: null,
-    children: null,
     className: '',
     isModalComponent: false,
     isPostHeaderHidden: false,
+    paginatorCentered: false,
     paginatorText: 'Loading',
+    paginatorTo: null,
     scrollContainer: null,
+    shouldInfiniteScroll: true,
   }
 
   static contextTypes = {
@@ -156,26 +160,27 @@ class StreamContainer extends Component {
   }
 
   onScroll() {
+    if (!this.props.shouldInfiniteScroll) { return }
     this.setScroll()
   }
 
   onScrollTarget() {
+    if (!this.props.shouldInfiniteScroll) { return }
     this.setScroll()
   }
 
   onScrollBottom() {
-    const path = get(this.state, 'action.payload.endpoint.path')
-    if (path && !/lovers|reposters/.test(path)) {
-      this.onLoadNextPage()
-      const { hasLaunchedSignupModal, isLoggedIn } = this.props
-      if (!isLoggedIn && !hasLaunchedSignupModal) {
-        const { onClickOpenRegistrationRequestDialog } = this.context
-        onClickOpenRegistrationRequestDialog('scroll')
-      }
+    if (!this.props.shouldInfiniteScroll) { return }
+    this.onLoadNextPage()
+    const { hasLaunchedSignupModal, isLoggedIn } = this.props
+    if (!isLoggedIn && !hasLaunchedSignupModal) {
+      const { onClickOpenRegistrationRequestDialog } = this.context
+      onClickOpenRegistrationRequestDialog('scroll')
     }
   }
 
   onScrollBottomTarget() {
+    if (!this.props.shouldInfiniteScroll) { return }
     this.onLoadNextPage()
   }
 
@@ -202,7 +207,7 @@ class StreamContainer extends Component {
     const { meta } = action
     const pagination = result.get('pagination')
     if (!action.payload.endpoint || !pagination.get(rel) ||
-        Number(pagination.get('totalPagesRemaining')) === 0 || !action ||
+        Number(pagination.get('totalPagesRemaining')) === 0 ||
         (stream.get('type') === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS &&
          stream.getIn(['payload', 'serverStatus']) === 204)) { return }
     if (runningFetches[pagination[rel]]) { return }
@@ -214,7 +219,7 @@ class StreamContainer extends Component {
         endpoint: { path: pagination.get(rel) },
       },
       meta: {
-        mappingType: action.payload.endpoint.pagingPath || meta.mappingType,
+        mappingType: meta.mappingType,
         resultFilter: meta.resultFilter,
         resultKey: meta.resultKey,
       },
@@ -267,7 +272,7 @@ class StreamContainer extends Component {
 
   render() {
     const { className, columnCount, isGridMode, isPostHeaderHidden,
-      paginatorText, result, stream } = this.props
+      paginatorCentered, paginatorText, paginatorTo, result, stream } = this.props
     const { action, hidePaginator, renderType } = this.state
     if (!action) { return null }
     if (!result.get('ids').size) {
@@ -291,14 +296,15 @@ class StreamContainer extends Component {
     return (
       <section className={classNames('StreamContainer', className)}>
         {meta.renderStream[renderMethod](result.get('ids'), columnCount, isPostHeaderHidden)}
-        {this.props.children}
         <Paginator
           hasShowMoreButton={
             typeof meta.resultKey !== 'undefined' && typeof meta.updateKey !== 'undefined'
           }
+          isCentered={paginatorCentered}
           isHidden={hidePaginator}
           loadNextPage={this.onLoadNextPage}
           messageText={paginatorText}
+          to={paginatorTo}
           totalPages={Number(pagination.get('totalPages'))}
           totalPagesRemaining={Number(pagination.get('totalPagesRemaining'))}
         />

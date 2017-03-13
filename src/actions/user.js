@@ -93,8 +93,8 @@ export function loadUserDrawer(endpoint, postId, resultType) {
     meta: {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
-        asList: StreamRenderables.userAvatars,
-        asGrid: StreamRenderables.userAvatars,
+        asList: StreamRenderables.usersAsGrid,
+        asGrid: StreamRenderables.usersAsGrid,
         asError: <ErrorState />,
       },
       resultKey: `/posts/${postId}/${resultType}`,

@@ -71,18 +71,18 @@
 }
 /* stylelint-enable selector-max-specificity */
 
+.BackgroundImage.inUserProfileCard {
+  height: 260px;
+}
+
 @media (--break-2-max) {
   .BackgroundImage.inHeroProfile {
     height: 220px;
   }
-
-  .BackgroundImage.inUserProfileCard {
-    height: 250px;
-  }
 }
 
 @media (--break-2) {
-  .BackgroundImage.inUserProfileCard {
+  .BackgroundImage.inUserProfileCard:not(.isMiniProfileCard) {
     min-height: 540px;
   }
 }

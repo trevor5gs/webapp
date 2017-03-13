@@ -34,8 +34,7 @@
 /* // PostTools */
 
 .WatchTool > button.isActive > .BoltIcon > g,
-.Post .isCommentsActive .BubbleIcon > g,
-.PostDetails .Post .BubbleIcon > g {
+.Post .isCommentsActive .BubbleIcon > g {
   fill: #000;
   stroke: #000;
 }

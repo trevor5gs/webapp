@@ -5,10 +5,7 @@ import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
 import BackgroundImage from '../assets/BackgroundImage'
 import { ShareIcon } from '../assets/Icons'
-import Hint from '../hints/Hint'
-import { loadUserDrawer } from '../../actions/user'
 import RelationshipContainer from '../../containers/RelationshipContainer'
-import StreamContainer from '../../containers/StreamContainer'
 import {
   UserFeaturedButton,
   UserFiguresCell,
@@ -20,53 +17,6 @@ import {
   UserProfileButtons,
   UserStatsCell,
 } from './UserParts'
-
-// -------------------------------------
-
-// TODO: Does this belong here? It's rendered by PostContainer and not UserContainer
-export const UserDrawer = ({ endpoint, icon, postId, resultType }) =>
-  <section className="UserDrawer">
-    {icon}
-    <StreamContainer
-      action={loadUserDrawer(endpoint, postId, resultType)}
-      paginatorText="+more"
-      ignoresScrollPosition
-    />
-  </section>
-UserDrawer.propTypes = {
-  endpoint: PropTypes.object.isRequired,
-  icon: PropTypes.element.isRequired,
-  postId: PropTypes.string.isRequired,
-  resultType: PropTypes.string.isRequired,
-}
-
-// -----------------
-
-export class UserAvatar extends PureComponent {
-  static propTypes = {
-    avatar: PropTypes.object.isRequired,
-    id: PropTypes.string.isRequired,
-    relationshipPriority: PropTypes.string,
-    username: PropTypes.string.isRequired,
-  }
-  static defaultProps = {
-    relationshipPriority: null,
-  }
-  render() {
-    const { avatar, id, relationshipPriority, username } = this.props
-    return (
-      <Link className="UserAvatar" to={`/${username}`}>
-        <Avatar
-          priority={relationshipPriority}
-          sources={avatar}
-          userId={id}
-          username={username}
-        />
-        <Hint>{`@${username}`}</Hint>
-      </Link>
-    )
-  }
-}
 
 // -----------------
 
@@ -182,9 +132,13 @@ export class UserProfileCard extends PureComponent {
   static propTypes = {
     avatar: PropTypes.object.isRequired,
     coverImage: PropTypes.object.isRequired,
-    followersCount: PropTypes.number.isRequired,
+    followersCount: React.PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]).isRequired,
     followingCount: PropTypes.number.isRequired,
     id: PropTypes.string.isRequired,
+    isMiniProfileCard: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     lovesCount: PropTypes.number.isRequired,
     name: PropTypes.string,
@@ -205,6 +159,7 @@ export class UserProfileCard extends PureComponent {
       followersCount,
       followingCount,
       id,
+      isMiniProfileCard,
       isMobile,
       lovesCount,
       name,
@@ -214,18 +169,18 @@ export class UserProfileCard extends PureComponent {
       username,
     } = this.props
     return (
-      <div className="UserProfileCard" >
+      <div className={classNames('UserProfileCard', { isMiniProfileCard })}>
         <Avatar
-          className="inUserProfileCard"
+          className={classNames('inUserProfileCard', { isMiniProfileCard })}
           priority={relationshipPriority}
-          size={isMobile ? 'regular' : 'large'}
+          size={isMobile || isMiniProfileCard ? 'regular' : 'large'}
           sources={avatar}
           to={`/${username}`}
           userId={id}
           username={username}
         />
         <UserProfileButtons
-          className="inUserProfileCard"
+          className={classNames('inUserProfileCard', { isMiniProfileCard })}
           onClickCollab={onClickCollab}
           onClickHireMe={onClickHireMe}
         >
@@ -236,33 +191,33 @@ export class UserProfileCard extends PureComponent {
           />
         </UserProfileButtons>
         <UserNamesCellCard
-          className="inUserProfileCard"
+          className={classNames('inUserProfileCard', { isMiniProfileCard })}
           name={name}
           username={username}
         />
         <UserStatsCell
-          className="inUserProfileCard"
+          className={classNames('inUserProfileCard', { isMiniProfileCard })}
           followingCount={followingCount}
           followersCount={followersCount}
           lovesCount={lovesCount}
           postsCount={postsCount}
           username={username}
         />
-        { !isMobile &&
+        { (!isMobile && !isMiniProfileCard) &&
           <UserInfoCell
             className="inUserProfileCard"
             truncatedShortBio={truncatedShortBio}
           />
         }
         <BackgroundImage
-          className="hasOverlay6 inUserProfileCard"
+          className={classNames('inUserProfileCard hasOverlay6', { isMiniProfileCard })}
           dpi={'xhdpi'}
           sources={coverImage}
           to={`/${username}`}
         />
         { onClickOpenFeaturedModal &&
           <UserFeaturedButton
-            className="inUserProfileCard"
+            className={classNames('inUserProfileCard', { isMiniProfileCard })}
             onClick={onClickOpenFeaturedModal}
           />
         }
@@ -283,7 +238,10 @@ export class UserProfile extends PureComponent {
   static propTypes = {
     avatar: PropTypes.object.isRequired,
     externalLinksList: PropTypes.object,
-    followersCount: PropTypes.number.isRequired,
+    followersCount: React.PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]).isRequired,
     followingCount: PropTypes.number.isRequired,
     id: PropTypes.string.isRequired,
     isCollaborateable: PropTypes.bool.isRequired,

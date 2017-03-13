@@ -48,14 +48,6 @@
   background-color: lightgreen;
 }
 
-.highlightContainers .UserDrawer {
-  background-color: lightslategrey;
-}
-
-.highlightContainers .UserDrawer + .UserDrawer {
-  background-color: lightsalmon;
-}
-
 .highlightContainers .Comments {
   background-color: lightgrey;
 }

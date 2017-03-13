@@ -15,6 +15,11 @@
   transform: translate3d(0, 100%, 0);
 }
 
+.Paginator.isCentered {
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
 .Paginator.isBusy.NotificationReload {
   position: relative;
   bottom: auto;
@@ -36,43 +41,56 @@
   margin-left: 10px;
 }
 
-/* // Position to the right for Lovers/Reposter drawers */
-.UserDrawer .Paginator {
+/* // Position to the bottom for post detail */
+.BlockedUsers .Paginator,
+.TabListStreamContainer .Paginator,
+.MutedUsers .Paginator {
   position: static;
-  display: inline-block;
-  width: auto;
-  height: auto;
-  line-height: 30px;
+  width: 100%;
+  height: 40px;
+  margin-top: 30px;
+  line-height: 40px;
+  color: #fff;
   vertical-align: middle;
+  background-color: #aaa;
+  border-radius: 5px;
   transform: none;
 }
 
-.UserDrawer .Paginator:not(.isBusy) .ElloMark {
-  display: none;
-}
-
-@media (--break-2) {
-  .UserDrawer .Paginator {
-    line-height: 40px;
-  }
-}
-
-/* // Position bottom left for see more on settings */
-.BlockedUsers,
-.MutedUsers {
-  margin-bottom: 80px;
+.no-touch .BlockedUsers .Paginator:hover,
+.no-touch .TabListStreamContainer .Paginator:hover,
+.no-touch .MutedUsers .Paginator:hover {
+  background-color: #000;
 }
 
 .BlockedUsers .Paginator,
 .MutedUsers .Paginator {
-  right: auto;
-  bottom: -60px;
-  height: auto;
-  transform: translate3d(0, 0, 0);
+  margin-bottom: 30px;
+}
+
+.TabListStreamContainer .Paginator {
+  max-width: 580px;
+}
+
+.TabListStreamContainer .Paginator button {
+  width: calc(100% - 40px);
 }
 
 .BlockedUsers .Paginator:not(.isBusy) .ElloMark,
+.TabListStreamContainer .Paginator:not(.isBusy) .ElloMark,
 .MutedUsers .Paginator:not(.isBusy) .ElloMark {
   display: none;
+}
+
+@media (--break-2) {
+  .Posts:not(.asGrid) .TabListStreamContainer .Paginator {
+    margin-left: 60px;
+  }
+
+  .BlockedUsers .Paginator,
+  .TabListStreamContainer .Paginator,
+  .MutedUsers .Paginator {
+    margin-top: 60px;
+  }
 }
 
