@@ -25,20 +25,22 @@ export const PostDetail = (
         <article className="PostList" id={`Post_${post.get('id')}`}>
           <div className="StreamContainer PostDetailStreamContainer">
             <PostContainer postId={post.get('id')} />
-            <nav {...navStyles}>
-              <TabListButtons
-                activeType={activeType}
-                className="SearchTabList"
-                key={`TabListButtons_${activeType}`}
-                onTabClick={onClickDetailTab}
-                tabClasses="LabelTab SearchLabelTab"
-                tabs={tabs}
-              />
-              {hasRelatedPostsButton && <RelatedPostsButton />}
-            </nav>
+            {tabs && tabs.length > 0 &&
+              <nav {...navStyles}>
+                <TabListButtons
+                  activeType={activeType}
+                  className="SearchTabList"
+                  key={`TabListButtons_${activeType}`}
+                  onTabClick={onClickDetailTab}
+                  tabClasses="LabelTab SearchLabelTab"
+                  tabs={tabs}
+                />
+                {hasRelatedPostsButton && <RelatedPostsButton />}
+              </nav>
+            }
             {hasEditor && activeType === 'comments' && <Editor post={post} isComment />}
           </div>
-          {streamAction &&
+          {streamAction && tabs && tabs.length > 0 &&
             <StreamContainer
               action={streamAction}
               className="TabListStreamContainer"

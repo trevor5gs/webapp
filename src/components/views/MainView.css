@@ -26,7 +26,11 @@
   }
 
   .RelatedPostsTitle {
-    margin: 45px 0 20px 20px;
+    margin: 20px 0 20px 20px;
+  }
+
+  .TabListStreamContainer + .RelatedPostsStreamContainer .RelatedPostsTitle {
+    margin-top: 45px;
   }
 }
 
