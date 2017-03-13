@@ -11,7 +11,7 @@
 
 .Comment {
   position: relative;
-  padding-top: 10px;
+  padding-top: 20px;
 }
 
 .CommentHeader {
@@ -24,7 +24,7 @@
 
 .CommentHeader .Avatar {
   position: absolute;
-  top: 5px;
+  top: 3px;
   left: 0;
 }
 
@@ -50,7 +50,7 @@
 }
 
 .CommentBody {
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   margin-left: 40px;
   border-bottom: 1px solid #e5e5e5;
 }
@@ -58,7 +58,7 @@
 /* // TODO: Need to really separate CommentTools from PostTools. */
 .CommentTools.PostTools {
   position: absolute;
-  top: 15px;
+  top: 20px;
   right: 0;
   display: flex;
   padding-top: 0;
