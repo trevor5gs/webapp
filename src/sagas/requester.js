@@ -251,11 +251,12 @@ export function* performRequest(action) {
   if (serverResponse.status === 200 || serverResponse.status === 201) {
     payload.response = camelizeKeys(json)
     const linkPagination = parseLink(serverResponse.headers.get('Link'))
-    linkPagination.totalCount = Number(serverResponse.headers.get('X-TotalCount'))
-    linkPagination.totalPages = Number(serverResponse.headers.get('X-Total-Pages'))
-    linkPagination.totalPagesRemaining = Number(
-      serverResponse.headers.get('X-Total-Pages-Remaining'),
-    )
+    // for now these need to remain parseInt instead of Number cast
+    // due to StreamContainer casting them as number and checking for 0
+    // when you do Number(null) it equals 0, thanks javascript!
+    linkPagination.totalCount = parseInt(serverResponse.headers.get('X-TotalCount'), 10)
+    linkPagination.totalPages = parseInt(serverResponse.headers.get('X-Total-Pages'), 10)
+    linkPagination.totalPagesRemaining = parseInt(serverResponse.headers.get('X-Total-Pages-Remaining'), 10)
     payload.pagination = linkPagination
   }
   yield put({ meta, payload, type: SUCCESS })
