@@ -81,7 +81,22 @@ const createElloStore = (history, initialState = {}) => {
   return createServerStore(history, initialState)
 }
 
-export { createElloStore, createServerStore }
+const createNativeAppStore = (initialState = {}) => {
+  const sagaMiddleware = createSagaMiddleware()
+
+  const store = compose(
+    autoRehydrate(),
+    applyMiddleware(
+      sagaMiddleware,
+    ),
+  )(createStore)(reducer, initialState)
+  store.close = () => store.dispatch(END)
+
+  store.sagaTask = sagaMiddleware.run(rootSaga)
+  return store
+}
+
+export { createElloStore, createNativeAppStore, createServerStore }
 
 export default createElloStore()
 

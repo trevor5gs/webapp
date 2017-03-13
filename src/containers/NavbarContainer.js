@@ -26,6 +26,7 @@ import { updateRelationship } from '../actions/relationships'
 import { loadFollowing } from '../actions/stream'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/NavbarRenderables'
 import { getDiscoverAction } from '../containers/DiscoverContainer'
+import store from '../store'
 
 function mapStateToProps(state, props) {
   const homeStream = selectHomeStream(state)
@@ -152,14 +153,18 @@ class NavbarContainer extends PureComponent {
   }
 
   onClickOmniButton = () => {
-    const { dispatch } = this.props
-
-    if (isElloAndroid()) {
-      AndroidInterface.launchEditor()
-    } else {
-      dispatch(openOmnibar())
-      scrollToPosition(0, 0)
-    }
+    // const { dispatch } = this.props
+    const state = store.getState()
+    Object.keys(state).forEach((key) => {
+      window.postMessage(JSON.stringify({ [key]: state[key].toJS() }))
+    })
+    console.log('onClickOmniButton !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    // if (isElloAndroid()) {
+    //   AndroidInterface.launchEditor()
+    // } else {
+    //   dispatch(openOmnibar())
+    //   scrollToPosition(0, 0)
+    // }
   }
 
   onClickToggleLayoutMode = () => {
