@@ -243,7 +243,7 @@ export const selectPostShowCommentEditor = createSelector(
 const selectPostDetailCommentLabel = createSelector(
   [selectPostCommentsCount, selectPostAuthorHasCommentingEnabled, selectIsLoggedIn],
   (commentsCount, hasCommentingEnabled, isLoggedIn) => {
-    if (!hasCommentingEnabled || !isLoggedIn) { return null }
+    if (!hasCommentingEnabled || (!isLoggedIn && Number(commentsCount) < 1)) { return null }
     return (Number(commentsCount) > 0 ?
       `${numberToHuman(commentsCount)} Comment${commentsCount === 1 ? '' : 's'}` : 'Comments')
   },

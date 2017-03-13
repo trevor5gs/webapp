@@ -773,6 +773,17 @@ describe('post selectors', () => {
       expect(result).to.deep.equal(expected)
     })
 
+    it('returns the cooment tab PostDetail tabs when there is > 0 comments and we are logged out', () => {
+      const props = { postId: '303' }
+      state.json = state.json.setIn(['posts', '303', 'commentsCount'], 1)
+      state.authentication = state.authentication.set('isLoggedIn', false)
+      const result = selector.selectPostDetailTabs(state, props)
+      const expected = [
+        { type: 'comments', children: '1 Comment' },
+      ]
+      expect(result).to.deep.equal(expected)
+    })
+
     it('returns PostDetail tabs when there is 1 comment, 0 loves and 0 reposts', () => {
       state.json = state.json.setIn(['posts', '303', 'commentsCount'], 1)
       const props = { postId: '303' }
