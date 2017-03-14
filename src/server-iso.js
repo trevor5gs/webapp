@@ -67,7 +67,7 @@ addOauthRoute(app)
 
 // Assets
 app.use(express.static('public', { index: false, redirect: false }))
-app.use('/static', express.static('public/static', { maxAge: '1y', index: false, redirect: false }))
+app.use('/static', express.static('public/static', { maxAge: '1y', index: false, redirect: false, fallthrough: false }))
 
 function saveResponseToCache(cacheKey, body) {
   memcacheClient.set(cacheKey, body, (err) => {
