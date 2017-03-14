@@ -20,6 +20,14 @@ describe('user selectors', () => {
       postsCount: 555,
       relationshipPriority: 'friend',
     })
+    stub('user', {
+      id: '667',
+      totalViewsCount: null,
+    })
+    stub('user', {
+      id: '668',
+      totalViewsCount: 100000,
+    })
     userManny = stub('user', { id: '100', username: 'manny' })
     stub('user', { id: '4', relationshipPriority: 'self' })
     stubInvitation()
@@ -311,12 +319,23 @@ describe('user selectors', () => {
     })
   })
 
-  // TODO: undefined until it's available in the api
-  context('#selectUserTotalPostViewsCount', () => {
-    it('returns the user.totalPostViewsCount property', () => {
+  context('#selectUserTotalViewsCount', () => {
+    it('returns undefined when the user.totalViewsCount property is null', () => {
       const props = { userId: '666' }
-      const result = selector.selectUserTotalPostViewsCount(state, props)
+      const result = selector.selectUserTotalViewsCount(state, props)
       expect(result).to.equal(undefined)
+    })
+
+    it('returns undefined when the user.totalViewsCount property is not present', () => {
+      const props = { userId: '667' }
+      const result = selector.selectUserTotalViewsCount(state, props)
+      expect(result).to.equal(undefined)
+    })
+
+    it('returns the humanized user.totalViewsCount property when provided real data', () => {
+      const props = { userId: '668' }
+      const result = selector.selectUserTotalViewsCount(state, props)
+      expect(result).to.equal('100K')
     })
   })
 
@@ -392,7 +411,7 @@ describe('user selectors', () => {
       expect(result).to.equal(false)
     })
 
-    it('returns whether the user is emtpy (true)', () => {
+    it('returns whether the user is empty (true)', () => {
       const props = { userId: '1000' }
       const result = selector.selectUserIsEmpty(state, props)
       expect(result).to.equal(true)

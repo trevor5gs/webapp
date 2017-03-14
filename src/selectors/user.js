@@ -2,6 +2,7 @@ import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import trunc from 'trunc-html'
+import { numberToHuman } from '../lib/number_to_human'
 import { selectInvitationUserId } from './invitations'
 import { selectParamsUsername } from './params'
 import { selectJson } from './store'
@@ -56,7 +57,10 @@ export const selectUserName = createSelector([selectUser], user => user.get('nam
 export const selectUserPostsAdultContent = createSelector([selectUser], user => user.get('postsAdultContent'))
 export const selectUserPostsCount = createSelector([selectUser], user => user.get('postsCount', 0))
 export const selectUserRelationshipPriority = createSelector([selectUser], user => user.get('relationshipPriority'))
-export const selectUserTotalPostViewsCount = createSelector([selectUser], user => user.get('totalPostViewsCount'))
+export const selectUserTotalViewsCount = createSelector([selectUser], (user) => {
+  const count = user.get('totalViewsCount')
+  return count ? numberToHuman(count, false) : undefined
+})
 export const selectUserUsername = createSelector([selectUser], user => user.get('username'))
 export const selectUserViewsAdultContent = createSelector([selectUser], user => user.get('viewsAdultContent'))
 

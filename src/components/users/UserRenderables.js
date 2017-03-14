@@ -254,7 +254,7 @@ export class UserProfile extends PureComponent {
     name: PropTypes.string,
     postsCount: PropTypes.number.isRequired,
     relationshipPriority: PropTypes.string,
-    totalPostViewsCount: PropTypes.string,
+    totalViewsCount: PropTypes.string,
     truncatedShortBio: PropTypes.string.isRequired,
     useGif: PropTypes.bool.isRequired,
     username: PropTypes.string.isRequired,
@@ -265,7 +265,7 @@ export class UserProfile extends PureComponent {
     location: null,
     name: null,
     relationshipPriority: null,
-    totalPostViewsCount: null,
+    totalViewsCount: null,
   }
 
   render() {
@@ -292,7 +292,7 @@ export class UserProfile extends PureComponent {
       name,
       postsCount,
       relationshipPriority,
-      totalPostViewsCount,
+      totalViewsCount,
       truncatedShortBio,
       useGif,
       username,
@@ -314,7 +314,7 @@ export class UserProfile extends PureComponent {
           name={name}
           username={username}
         >
-          {onClickOpenFeaturedModal && !totalPostViewsCount &&
+          {onClickOpenFeaturedModal && !totalViewsCount &&
             <UserFeaturedButton
               className="inUserProfile withoutTotalViewCount"
               onClick={onClickOpenFeaturedModal}
@@ -329,12 +329,12 @@ export class UserProfile extends PureComponent {
             /> : null
           }
         </UserNamesCell>
-        {totalPostViewsCount ?
+        {totalViewsCount ?
           <UserFiguresCell
             className="inUserProfile"
             onClickOpenFeaturedModal={onClickOpenFeaturedModal}
             onClickShareProfile={onClickShareProfile}
-            totalPostViewsCount={totalPostViewsCount}
+            totalViewsCount={totalViewsCount}
           /> :
           <button className="UserFiguresShareButton withoutTotalViewCount" onClick={onClickShareProfile} >
             <ShareIcon />

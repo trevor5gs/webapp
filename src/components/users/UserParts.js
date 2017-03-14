@@ -86,11 +86,11 @@ export const UserFiguresCell = ({
   className,
   onClickOpenFeaturedModal,
   onClickShareProfile,
-  totalPostViewsCount,
+  totalViewsCount,
 }) =>
   <div className={classNames('UserCell UserFiguresCell', className)}>
-    { totalPostViewsCount ? <span className="UserFiguresCount uppercase">{totalPostViewsCount} </span> : null }
-    { totalPostViewsCount ? <span className="UserFiguresLabel">Total Views</span> : null }
+    { totalViewsCount ? <span className="UserFiguresCount uppercase">{totalViewsCount} </span> : null }
+    { totalViewsCount ? <span className="UserFiguresLabel">Total Views</span> : null }
     { onClickOpenFeaturedModal || onClickShareProfile ?
       <div className="UserFiguresButtons">
         { onClickOpenFeaturedModal ?
@@ -109,11 +109,11 @@ UserFiguresCell.propTypes = {
   className: PropTypes.string.isRequired,
   onClickOpenFeaturedModal: PropTypes.func,
   onClickShareProfile: PropTypes.func.isRequired,
-  totalPostViewsCount: PropTypes.string,
+  totalViewsCount: PropTypes.string,
 }
 UserFiguresCell.defaultProps = {
   onClickOpenFeaturedModal: null,
-  totalPostViewsCount: null,
+  totalViewsCount: null,
 }
 
 // -----------------
