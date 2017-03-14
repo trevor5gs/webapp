@@ -1,6 +1,6 @@
 import TWEEN from 'tween.js'
 
-// -------------------------------------
+// --------------------------------------
 
 export const isLink = (target) => {
   if (target.nodeName.toLowerCase() === 'a') { return true }
@@ -8,7 +8,7 @@ export const isLink = (target) => {
   return parent && parent.nodeName.toLowerCase() === 'a'
 }
 
-// -------------------------------------
+// --------------------------------------
 let memoizedIsAndroid
 let memoizedIsChrome
 let memoizedIsElloAndroid
