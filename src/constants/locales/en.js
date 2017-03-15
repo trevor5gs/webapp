@@ -35,6 +35,7 @@ export const FOOTER_LINKS = [
   { label: 'About', to: `${ENV.AUTH_DOMAIN}/wtf/about/what-is-ello/` },
   { label: 'Help', to: `${ENV.AUTH_DOMAIN}/wtf` },
   { label: 'Blog', to: `${ENV.AUTH_DOMAIN}/elloblog` },
+  { label: 'Magazine', to: `https://notforprint.co/` },
   { label: 'Shop', to: `${ENV.AUTH_DOMAIN}/discover/shop` },
   { label: 'Apps', to: `${ENV.AUTH_DOMAIN}/wtf/resources/mobile-features/` },
   { label: 'Terms', to: `${ENV.AUTH_DOMAIN}/wtf/policies/terms-of-use/` },
