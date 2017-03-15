@@ -139,8 +139,10 @@ class BlockCollection extends PureComponent {
     const { editorId, isNavbarHidden, isPostDetail,
       isPostEditing, isPostReposting, order } = this.props
     const isDragging = document.body.classList.contains('isDragging')
-    if ((isPostEditing || isPostReposting) || (!isPostDetail && !isDragging && prevProps.order &&
-        order && prevProps.order.size !== order.size)) {
+    const switchedToEditing = prevProps.isPostEditing !== isPostEditing ||
+      prevProps.isPostReposting !== isPostReposting
+    const orderWasModified = prevProps.order && order && prevProps.order.size !== order.size
+    if (switchedToEditing || (!isPostDetail && !isDragging && orderWasModified)) {
       scrollToLastTextBlock(editorId, isNavbarHidden)
     }
   }
