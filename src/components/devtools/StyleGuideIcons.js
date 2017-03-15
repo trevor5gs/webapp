@@ -11,12 +11,16 @@ import {
   BadgeCheckIcon,
   // Icons
   ArrowEastIcon,
+  BoltIcon,
+  BubbleIcon,
   CheckIcon,
   CheckIconHeader,
   CheckIconMini,
   ChevronIcon,
   DotsIcon,
+  EyeIcon,
   FailureIcon,
+  FlagIcon,
   GridIcon,
   ListIcon,
   MarkerIcon,
@@ -69,6 +73,7 @@ const groupStyle = {
   }),
 }
 
+// Fix this
 const badgeStyle = css({
   '& .CheckShape': {
     stroke: 'white',
@@ -95,6 +100,12 @@ export default() =>
       <button title="ArrowEastIcon">
         <ArrowEastIcon />
       </button>
+      <button title="BoltIcon">
+        <BoltIcon />
+      </button>
+      <button title="BubbleIcon">
+        <BubbleIcon />
+      </button>
       <button title="CheckIcon">
         <CheckIcon />
       </button>
@@ -110,8 +121,14 @@ export default() =>
       <button title="DotsIcon">
         <DotsIcon />
       </button>
+      <button title="EyeIcon">
+        <EyeIcon />
+      </button>
       <button title="FailureIcon">
         <FailureIcon />
+      </button>
+      <button title="FlagIcon">
+        <FlagIcon />
       </button>
       <button title="GridIcon">
         <GridIcon />

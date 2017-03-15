@@ -5,6 +5,11 @@ import Hint from '../hints/Hint'
 import {
   ChevronIcon,
   FlagIcon,
+  // PencilIcon,
+  // ReplyIcon,
+  // XBoxIcon,
+} from '../assets/Icons'
+import {
   PencilIcon,
   ReplyIcon,
   XBoxIcon,

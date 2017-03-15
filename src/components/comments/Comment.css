@@ -116,6 +116,15 @@
   .CommentTools:not(.isMoreToolActive) > .ShyTool {
     display: none;
   }
+
+  .CommentTools .MoreTool .SVGIcon {
+    transform: rotate(-90deg);
+  }
+
+  .CommentTools.isMoreToolActive .MoreTool .SVGIcon {
+    color: #000;
+    transform: rotate(90deg);
+  }
 }
 
 /* // MIN WIDTH! */

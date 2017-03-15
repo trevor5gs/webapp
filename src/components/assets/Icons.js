@@ -107,6 +107,24 @@ export const ArrowEastIcon = () =>
     </g>
   </SVGIcon>
 
+export const BoltIcon = () =>
+  <SVGIcon className="BoltIcon">
+    <g className="svg-stroke-bevel">
+      <polygon points="14.2,8 9.6,8 9.6,2 5,12 9.6,12 9.6,18" />
+    </g>
+  </SVGIcon>
+
+export const BubbleIcon = () =>
+  <SVGIcon className="BubbleIcon">
+    <g className="svg-stroke-round">
+      <path d="M6.6,12.6l-3.1,3.1 l0-10.3c0-0.7,0.5-1.2,1.2-1.2h10.6c0.7,0,1.2,0.5,1.2,1.2v6c0,0.7-0.5,1.2-1.2,1.2H6.6z" />
+    </g>
+    <g className="svg-stroke-round">
+      <path d="M3.5,11.4v-6c0-0.7,0.5-1.2,1.2-1.2 h10.6c0.7,0,1.2,0.5,1.2,1.2v6c0,0.7-0.5,1.2-1.2,1.2H4.7C4,12.6,3.5,12.1,3.5,11.4z" />
+      <polygon points=" 6.6,12.6 3.5,15.8 3.5,11.6 " />
+    </g>
+  </SVGIcon>
+
 export const CheckIcon = () =>
   <SVGIcon className="CheckIcon">
     <CheckShape />
@@ -149,11 +167,30 @@ export const DotsIcon = () =>
     </g>
   </SVGIcon>
 
+export const EyeIcon = () =>
+  <SVGIcon className="EyeIcon">
+    <g>
+      <path d="M19,9.9c0,0-4,4.9-9,4.9S1,9.9,1,9.9S5,5,10,5 S19,9.9,19,9.9z" />
+      <circle cx="10" cy="10" r="5" />
+    </g>
+    <circle cx="10" cy="10" r="2" />
+  </SVGIcon>
+
 export const FailureIcon = () =>
   <SVGIcon className="FailureIcon">
     <g>
       <line x1="17" y1="5" x2="5" y2="17" />
       <line x1="17" y1="17" x2="5" y2="5" />
+    </g>
+  </SVGIcon>
+
+export const FlagIcon = () =>
+  <SVGIcon className="FlagIcon">
+    <g className="svg-stroke-round">
+      <line x1="5" y1="3.7" x2="5" y2="16.8" />
+    </g>
+    <g className="svg-stroke-round">
+      <path d="M15,10.2 c0,0-2.9,1.1-5,0s-5,0-5,0V3.7c0,0,2.9-1.1,5,0s5,0,5,0V10.2z" />
     </g>
   </SVGIcon>
 

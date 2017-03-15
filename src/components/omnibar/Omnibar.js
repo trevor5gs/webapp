@@ -2,15 +2,7 @@ import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
 import Editor from '../editor/Editor'
-import { SVGIcon } from '../svg/SVGComponents'
-
-const ChevronIcon = () =>
-  <SVGIcon className="ChevronIcon">
-    <g>
-      <polyline points="6,16 12,10 6,4" />
-    </g>
-  </SVGIcon>
-
+import { ChevronIcon } from '../assets/Icons'
 
 export const Omnibar = ({ avatar, classList, isActive, isFullScreen, onClickCloseOmnibar }) => {
   if (!isActive) {
@@ -33,7 +25,13 @@ Omnibar.propTypes = {
   classList: PropTypes.string,
   isActive: PropTypes.bool.isRequired,
   isFullScreen: PropTypes.bool,
-  onClickCloseOmnibar: PropTypes.func,
+  onClickCloseOmnibar: PropTypes.func.isRequired,
+}
+
+Omnibar.defaultProps = {
+  avatar: null,
+  classList: null,
+  isFullScreen: false,
 }
 
 export default Omnibar

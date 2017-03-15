@@ -2,22 +2,9 @@
 
 /* stylelint-disable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */
 
-.Post .BoltIcon > g {
-  stroke-linejoin: bevel;
-}
-
-.Post .BubbleIcon > g,
-.Post .FlagIcon > g,
 .Post .RepostIcon > g,
 .Post .ShareIcon > polyline {
   stroke-linejoin: round;
-}
-
-/* // The bubble loading state has some extra parts. */
-.Post .BubbleIcon > g:nth-child(2) {
-  display: none;
-  fill: #000;
-  stroke: #000;
 }
 
 .Post .PencilIcon > g,
@@ -33,13 +20,6 @@
 /* // ------------------------------------- */
 /* // PostTools */
 
-.WatchTool > button.isActive > .BoltIcon > g,
-.Post .isCommentsActive .BubbleIcon > g {
-  fill: #000;
-  stroke: #000;
-}
-
-.no-touch .CommentTool > button:hover > .BubbleIcon > g,
 .no-touch .LoveTool > button:hover > .HeartIcon > g {
   fill: #000;
 }
@@ -54,25 +34,6 @@
   stroke: #f99;
 }
 
-.ViewsTool .EyeIcon > circle {
-  fill: currentColor;
-  stroke: transparent;
-  transition: fill var(--speed) ease, stroke var(--speed) ease;
-}
-
-.no-touch .ViewsTool > a:hover > .EyeIcon > circle {
-  stroke: #000;
-  transition-delay: var(--speed), 0s;
-}
-
-.no-touch .ViewsTool > a:hover > .EyeIcon > g {
-  stroke: #000;
-}
-
-.no-touch .FlagTool > button:hover > .FlagIcon > g:nth-of-type(2) {
-  fill: #000;
-}
-
 .no-touch .ShareTool > button:hover > .ShareIcon > g:nth-of-type(2) {
   transform: translate3d(0, -1px, 0);
 }
@@ -83,16 +44,5 @@
 
 /* // ------------------------------------- */
 
-.Post .isCommentsRequesting .BubbleIcon > g:nth-child(1) {
-  display: none;
-}
-
-.Post .isCommentsRequesting .BubbleIcon > g:nth-child(2) {
-  display: inline;
-}
-
-.Post .isCommentsRequesting .BubbleIcon polygon {
-  animation: animateCommentsLoading 0.75s infinite var(--ease-in-out-quart);
-}
 /* stylelint-enable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */
 
