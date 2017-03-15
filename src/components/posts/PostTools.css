@@ -3,7 +3,6 @@
 /* stylelint-disable selector-no-qualifying-type, selector-max-specificity, selector-max-compound-selectors */
 
 /* // ------------------------------------- */
-/* // @see PostIcons for icon animations and coloring */
 
 .PostTools {
   position: relative;
@@ -92,23 +91,6 @@
   color: #aaa;
 }
 
-.PostTool .HeartIcon {
-  margin-top: -2px;
-}
-
-.PostTool .ShareIcon {
-  margin-top: -2px;
-}
-
-.PostTool .RepostIcon,
-.PostTool .PencilIcon {
-  margin-top: -4px;
-}
-
-.PostTool .XBoxIcon {
-  padding-left: 1px;
-}
-
 .PostTool .SVGIcon + .PostToolValue {
   margin-left: 5px;
 }
@@ -192,10 +174,6 @@
 
 .no-touch .ShareTool.isPill > button:hover {
   background-color: #ccc;
-}
-
-.ShareTool.isPill .ShareIcon {
-  display: none;
 }
 
 .ShareTool.isPill > button > .Hint {

@@ -66,11 +66,6 @@ Hero share user button */
   border-radius: 20px;
 }
 
-.HeroShareUserButton .ShareIcon {
-  margin-top: -6px;
-  color: #fff;
-}
-
 @media (--break-2) {
   .HeroShareUserButton {
     display: block;

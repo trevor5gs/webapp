@@ -135,10 +135,14 @@
 
 /* ------------------------------------- */
 
+.HeroShareUserButton .ShareIcon {
+  margin-top: -6px;
+  color: #fff;
+}
+
 /* stylelint-disable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */
 .WatchTool > button.isActive > .BoltIcon > g,
 .Post .isCommentsActive .BubbleIcon > g,
-.PostDetails .Post .BubbleIcon > g,
 .Post .BubbleIcon > g:nth-child(2) {
   fill: #000;
   stroke: #000;
@@ -163,9 +167,30 @@
   animation: animateCommentsLoading 0.75s infinite var(--ease-in-out-quart);
 }
 
+.PostTool .ShareIcon,
+.PostTool .HeartIcon,
 .PostTool .EyeIcon,
 .PostTool .BubbleIcon {
   margin-top: -2px;
+}
+
+.PostTool .PencilIcon,
+.PostTool .RepostIcon {
+  margin-top: -4px;
+}
+
+.PostTool .XBoxIcon {
+  padding-left: 1px;
+}
+
+.Post .PencilIcon > g,
+.Post .XBoxIcon > g {
+  stroke-linecap: square;
+  transition-delay: 0.1s, 0s, 0s;
+}
+
+.RepostHeader .RepostIcon > g {
+  stroke: #535353;
 }
 
 /* Animations ?? */
@@ -182,6 +207,32 @@
 
 .no-touch .ViewsTool > a:hover > .EyeIcon > g {
   stroke: #000;
+}
+
+.no-touch .LoveTool > button:hover > .HeartIcon > g {
+  fill: #000;
+}
+
+.LoveTool > button.isActive > .HeartIcon > g {
+  fill: #f00;
+  stroke: #f00;
+}
+
+.no-touch .LoveTool > button.isActive:hover > .HeartIcon > g {
+  fill: #f99;
+  stroke: #f99;
+}
+
+.no-touch .ShareTool > button:hover > .ShareIcon > g:nth-of-type(2) {
+  transform: translate3d(0, -1px, 0);
+}
+
+.no-touch .DeleteTool > button:hover > .XBoxIcon > g:nth-of-type(2) {
+  transform: rotate(90deg);
+}
+
+.ShareTool.isPill .ShareIcon {
+  display: none;
 }
 
 /* stylelint-enable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */

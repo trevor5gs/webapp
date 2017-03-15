@@ -2,18 +2,7 @@
 import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import Hint from '../hints/Hint'
-import {
-  ChevronIcon,
-  FlagIcon,
-  // PencilIcon,
-  // ReplyIcon,
-  // XBoxIcon,
-} from '../assets/Icons'
-import {
-  PencilIcon,
-  ReplyIcon,
-  XBoxIcon,
-} from '../posts/PostIcons'
+import { ChevronIcon, FlagIcon, PencilIcon, ReplyIcon, XBoxIcon } from '../assets/Icons'
 
 class TimeAgoTool extends PureComponent {
   static propTypes = {

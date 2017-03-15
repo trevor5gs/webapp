@@ -9,19 +9,12 @@ import {
   BubbleIcon,
   EyeIcon,
   FlagIcon,
-  // HeartIcon,
-  // PencilIcon,
-  // RepostIcon,
-  // ShareIcon,
-  // XBoxIcon,
-} from '../assets/Icons'
-import {
   HeartIcon,
   PencilIcon,
   RepostIcon,
   ShareIcon,
   XBoxIcon,
-} from '../posts/PostIcons'
+} from '../assets/Icons'
 
 class ViewsTool extends PureComponent {
   static propTypes = {

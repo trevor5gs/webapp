@@ -22,13 +22,18 @@ import {
   FailureIcon,
   FlagIcon,
   GridIcon,
+  HeartIcon,
   ListIcon,
   MarkerIcon,
+  PencilIcon,
   PlusIconHeader,
   PlusIconMini,
+  ReplyIcon,
+  RepostIcon,
   RequestIcon,
   ShareIcon,
   SuccessIcon,
+  XBoxIcon,
   XIcon,
   // Social icons
   FacebookIcon,
@@ -133,17 +138,29 @@ export default() =>
       <button title="GridIcon">
         <GridIcon />
       </button>
+      <button title="HeartIcon">
+        <HeartIcon />
+      </button>
       <button title="ListIcon">
         <ListIcon />
       </button>
       <button title="MarkerIcon">
         <MarkerIcon />
       </button>
+      <button title="PencilIcon">
+        <PencilIcon />
+      </button>
       <button title="PlusIconHeader">
         <PlusIconHeader />
       </button>
       <button title="PlusIconMini">
         <PlusIconMini />
+      </button>
+      <button title="ReplyIcon">
+        <ReplyIcon />
+      </button>
+      <button title="RepostIcon">
+        <RepostIcon />
       </button>
       <button title="RequestIcon">
         <RequestIcon />
@@ -153,6 +170,9 @@ export default() =>
       </button>
       <button title="SuccessIcon">
         <SuccessIcon />
+      </button>
+      <button title="XBoxIcon">
+        <XBoxIcon />
       </button>
       <button title="XIcon">
         <XIcon />
