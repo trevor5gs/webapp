@@ -38,10 +38,6 @@
   transition: width var(--speed) var(--ease), color var(--speed);
 }
 
-.FooterTool.LayoutTool > .SVGIcon {
-  margin-top: -2px;
-}
-
 .no-touch .FooterTool:hover {
   color: #000;
 }

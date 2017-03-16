@@ -37,10 +37,6 @@
   border-radius: 5px;
 }
 
-.NavbarLink > .SVGIcon {
-  margin-top: -5px;
-}
-
 .NavbarLinkLabel {
   position: relative;
   display: inline-block;
@@ -235,10 +231,6 @@
   background-color: #000;
   border-radius: 15px;
   transition: background-color var(--speed) ease;
-}
-
-.NavbarOmniButton .SVGIcon {
-  margin-right: 5px;
 }
 
 .no-touch .NavbarOmniButton:hover {

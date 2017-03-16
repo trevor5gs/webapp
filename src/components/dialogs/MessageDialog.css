@@ -22,12 +22,6 @@
   transform: scale(0.6);
 }
 
-/* stylelint-disable selector-max-compound-selectors */
-.MessageDialog .CheckIconLG .SVGIcon > g {
-  stroke: #00d100;
-}
-/* stylelint-enable selector-max-compound-selectors */
-
 .MessageDialogButton {
   height: 50px;
   padding: 0 20px;

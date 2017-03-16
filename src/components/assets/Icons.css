@@ -141,7 +141,24 @@
 }
 /* stylelint-disable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */
 
-/* NavbarLink
+/* Following
+------------------------------------- */
+.FollowButton.isInHeader > .SVGIcon {
+  vertical-align: top;
+}
+
+.FollowButton.isInHeader[data-priority="noise"] > .SVGIcon > g:first-child,
+.FollowButton.isInHeader[data-priority="friend"] > .SVGIcon > g:first-child {
+  fill: #aaa;
+  stroke: #aaa;
+}
+
+.FollowButton.isInHeader:hover > .SVGIcon > g:first-of-type {
+  fill: #535353;
+  stroke: #535353;
+}
+
+/* Navbar
 ------------------------------------- */
 
 .NavbarLink.isActive > .SVGIcon > g,
@@ -179,6 +196,14 @@
 .NavbarMorePostsButton > .ArrowIcon {
   margin-top: -2px;
   transform: rotate(270deg);
+}
+
+.NavbarLink > .SVGIcon {
+  margin-top: -5px;
+}
+
+.NavbarOmniButton .SVGIcon {
+  margin-right: 5px;
 }
 
 /* // Nabar Animations once we have room */
@@ -244,7 +269,8 @@
   }
 }
 
-/* // Posts and comments and notifications */
+/* Posts and comments and notifications
+------------------------------------- */
 .WatchTool > button.isActive > .BoltIcon > g,
 .Post .isCommentsActive .BubbleIcon > g,
 .Post .BubbleIcon > g:nth-child(2) {
@@ -352,7 +378,33 @@
   display: none;
 }
 
-/* Editor Icons */
+.CommentTools .ReplyTool .SVGIcon {
+  margin-top: -2px;
+}
+
+.CommentTools .MoreTool .SVGIcon {
+  transform: rotate(180deg);
+}
+
+.CommentTools.isMoreToolActive .MoreTool .SVGIcon {
+  color: #000;
+  transform: none;
+}
+
+/* // MAX WIDTH! */
+@media (--break-2-max) {
+  .CommentTools .MoreTool .SVGIcon {
+    transform: rotate(180deg);
+  }
+
+  .CommentTools.isMoreToolActive .MoreTool .SVGIcon {
+    color: #000;
+    transform: none;
+  }
+}
+
+/* Editor Icons
+------------------------------------- */
 .no-touch .RegionTools button:hover .SVGIcon > g {
   stroke: #000;
 }
@@ -376,7 +428,25 @@
   fill: #000;
 }
 
+.PostActionButton > .SVGIcon {
+  margin-top: -2px;
+  margin-left: -5px;
+}
+
+.PostActionButton > .SVGIcon > g {
+  stroke: #aaa;
+}
+
+.TextToolButton.forLink > .SVGIcon {
+  margin-top: -2px;
+  margin-left: -1px;
+}
+
 @media (--break-2) {
+  .no-touch .PostActionButton:hover > .SVGIcon > g {
+    stroke: #fff;
+  }
+
   .no-touch .PostActionButton:hover > .BrowseIcon > g {
     fill: #000;
   }
@@ -413,6 +483,12 @@
   }
 }
 
+/* ??
+------------------------------------- */
+.MessageDialog .CheckIconLG .SVGIcon > g {
+  stroke: #00d100;
+}
+
 .HeroScrollToContentButton .ChevronCircleIcon {
   margin-top: -2px;
   transition: transform var(--speed) var(--ease);
@@ -424,13 +500,41 @@
   stroke: #fff;
 }
 
+.FooterTool.LayoutTool > .SVGIcon {
+  margin-top: -2px;
+}
+
 .FooterTools .ChevronIcon {
   margin-top: -2px;
   transition: transform var(--speed) var(--ease);
   transform: rotate(-90deg);
 }
 
-/* ?? */
+.OnboardingInfoForm .SVGIcon {
+  transform: scale(0.6);
+}
+
+.FormControlStatus > .SVGIcon > g {
+  stroke-width: 2;
+}
+
+/* Request */
+.FormControlStatus > .CircleIconLG > g {
+  fill: #aaa;
+  stroke: transparent;
+}
+
+/* Success */
+.FormControlStatus > .CheckIconLG > g {
+  stroke: var(--color-success);
+  stroke-linejoin: bevel;
+}
+
+/* Failure */
+.FormControlStatus > .XIconLG > g {
+  stroke: var(--color-danger);
+}
+
 .MarkerIcon {
   color: #ababab;
 }

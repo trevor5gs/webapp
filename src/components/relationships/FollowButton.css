@@ -80,10 +80,6 @@ Within post and repost headers...  */
   border-radius: 0;
 }
 
-.FollowButton.isInHeader > .SVGIcon {
-  vertical-align: top;
-}
-
 .no-touch .FollowButton.isInHeader:hover {
   color: #fff;
   background-color: transparent;
@@ -99,17 +95,6 @@ Within post and repost headers...  */
 }
 
 /* stylelint-disable selector-max-specificity */
-.FollowButton.isInHeader[data-priority="noise"] > .SVGIcon > g:first-child,
-.FollowButton.isInHeader[data-priority="friend"] > .SVGIcon > g:first-child {
-  fill: #aaa;
-  stroke: #aaa;
-}
-
-.FollowButton.isInHeader:hover > .SVGIcon > g:first-of-type {
-  fill: #535353;
-  stroke: #535353;
-}
-
 @media (--break-2) {
   /* // Hints */
   .no-touch .FollowButton.isInHeader {
