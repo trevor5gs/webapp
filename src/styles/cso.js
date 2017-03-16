@@ -55,8 +55,8 @@ export const fit = css(jso.fit)
 export const overflowXHidden = css(jso.overflowVisible)
 export const overflowHidden = css(jso.overflowHidden)
 export const overflowScroll = css({
-  '-webkit-overflow-scrolling': 'touch',
-  'overflow-y': 'auto',
+  WebkitOverflowScrolling: 'touch',
+  overflowY: 'auto',
 })
 
 // -------------------------------------
