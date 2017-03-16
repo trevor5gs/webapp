@@ -3,7 +3,7 @@
 import React, { Component, PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
-import { ArrowEastIcon } from '../assets/Icons'
+import { ArrowIcon } from '../assets/Icons'
 import EmailControl from '../forms/EmailControl'
 import FormButton from '../forms/FormButton'
 
@@ -64,7 +64,7 @@ export class FooterForm extends PureComponent {
           className="FormButton inFooter"
           disabled={isDisabled}
         >
-          { isMobile ? <ArrowEastIcon /> : 'Subscribe' }
+          { isMobile ? <ArrowIcon /> : 'Subscribe' }
         </FormButton>
         { formMessage && formMessage.length &&
           <span className="FormControlStatusBubble inFooter">{formMessage}</span>

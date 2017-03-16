@@ -97,8 +97,8 @@ export const BadgeCheckIcon = () =>
 // -------------------------------------
 // SVG icons 20 x 20
 
-export const ArrowEastIcon = () =>
-  <SVGIcon className="ArrowEastIcon">
+export const ArrowIcon = () =>
+  <SVGIcon className="ArrowIcon">
     <g>
       <line x1="14.5" x2="4.5" y1="10" y2="10" />
     </g>
@@ -110,7 +110,7 @@ export const ArrowEastIcon = () =>
 export const BoltIcon = () =>
   <SVGIcon className="BoltIcon">
     <g className="svg-stroke-bevel">
-      <polygon points="14.2,8 9.6,8 9.6,2 5,12 9.6,12 9.6,18" />
+      <polygon points="14,7.4 9,7.4 9,1 4,11.6 9,11.6 9,18" />
     </g>
   </SVGIcon>
 
@@ -151,6 +151,13 @@ export const ChevronIcon = () =>
   <SVGIcon className="ChevronIcon">
     <g>
       <polyline points="5,12.2 10.2,7 15.5,12.2" />
+    </g>
+  </SVGIcon>
+
+export const CircleIcon = () =>
+  <SVGIcon className="CircleIcon">
+    <g>
+      <circle cx="11" cy="11" r="5" />
     </g>
   </SVGIcon>
 
@@ -290,6 +297,16 @@ export const RequestIcon = () =>
     </g>
   </SVGIcon>
 
+export const SearchIcon = () =>
+  <SVGIcon className="SearchIcon">
+    <g className="svg-stroke-round">
+      <circle cx="8.5" cy="8.5" r="5.5" />
+    </g>
+    <g className="svg-stroke-round">
+      <path d="M12.5 12.5l4.5 4.5" />
+    </g>
+  </SVGIcon>
+
 export const ShareIcon = () =>
   <SVGIcon className="ShareIcon">
     <g>
@@ -298,6 +315,19 @@ export const ShareIcon = () =>
     <g>
       <line x1="10" y1="2" x2="10" y2="12" />
       <polyline className="svg-stroke-round" points="7.2,4.7 10,2 12.8,4.8" />
+    </g>
+  </SVGIcon>
+
+export const SparklesIcon = () =>
+  <SVGIcon className="SparklesIcon">
+    <g>
+      <path d="M10,7c-2.8,0-5,2.2-5,5c0-2.8-2.2-5-5-5c2.8,0,5-2.2,5-5 C5,4.8,7.2,7,10,7z" />
+    </g>
+    <g>
+      <path d="M15,14.5c-1.9,0-3.5,1.6-3.5,3.5c0-1.9-1.6-3.5-3.5-3.5 c1.9,0,3.5-1.6,3.5-3.5C11.5,12.9,13.1,14.5,15,14.5z" />
+    </g>
+    <g>
+      <path d="M19,4.5c-1.9,0-3.5,1.6-3.5,3.5c0-1.9-1.6-3.5-3.5-3.5 c1.9,0,3.5-1.6,3.5-3.5C15.5,2.9,17.1,4.5,19,4.5z" />
     </g>
   </SVGIcon>
 
@@ -324,6 +354,14 @@ export const XIcon = () =>
     <g>
       <line x1="6" x2="14" y1="6" y2="14" />
       <line x1="14" x2="6" y1="6" y2="14" />
+    </g>
+  </SVGIcon>
+
+export const XIconLG = () =>
+  <SVGIcon className="ArrowIcon">
+    <g>
+      <line x1="17" y1="5" x2="5" y2="17" />
+      <line x1="17" y1="17" x2="5" y2="5" />
     </g>
   </SVGIcon>
 

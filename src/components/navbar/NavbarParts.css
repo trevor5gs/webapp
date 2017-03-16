@@ -63,7 +63,7 @@
 }
 
 /* Active and hover states
- * @see NavbarIcons for icon animations and coloring
+ * @see Icons for icon animations and coloring
 ------------------------------------- */
 
 .NavbarLink.isActive > .NavbarLinkLabel,
@@ -167,11 +167,6 @@
 
 .isLoggedOut .NavbarMorePostsButton {
   left: 50px;
-}
-
-.NavbarMorePostsButton > .ArrowIcon {
-  margin-top: -2px;
-  transform: rotate(270deg);
 }
 
 .NavbarMorePostsButton span {

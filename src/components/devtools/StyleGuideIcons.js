@@ -10,13 +10,14 @@ import {
   // Badge icons
   BadgeCheckIcon,
   // Icons
-  ArrowEastIcon,
+  ArrowIcon,
   BoltIcon,
   BubbleIcon,
   CheckIcon,
   CheckIconHeader,
   CheckIconMini,
   ChevronIcon,
+  CircleIcon,
   DotsIcon,
   EyeIcon,
   FailureIcon,
@@ -32,10 +33,13 @@ import {
   ReplyIcon,
   RepostIcon,
   RequestIcon,
+  SearchIcon,
   ShareIcon,
+  SparklesIcon,
   SuccessIcon,
   XBoxIcon,
   XIcon,
+  XIconLG,
   // Social icons
   FacebookIcon,
   GooglePlusIcon,
@@ -105,13 +109,14 @@ export default() =>
     <h2 className={h2Style}>Icons</h2>
     <div className={groupStyle}>
       { [
-        ArrowEastIcon,
+        ArrowIcon,
         BoltIcon,
         BubbleIcon,
         CheckIcon,
         CheckIconHeader,
         CheckIconMini,
         ChevronIcon,
+        CircleIcon,
         DotsIcon,
         EyeIcon,
         FailureIcon,
@@ -127,10 +132,13 @@ export default() =>
         ReplyIcon,
         RepostIcon,
         RequestIcon,
+        SearchIcon,
         ShareIcon,
+        SparklesIcon,
         SuccessIcon,
         XBoxIcon,
         XIcon,
+        XIconLG,
       ].map(icon => <button key={icon.name} title={icon.name}>{icon()}</button>) }
     </div>
     <h2 className={h2Style}>Social icons</h2>
