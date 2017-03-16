@@ -153,9 +153,22 @@
   fill: #000;
 }
 
-.Post .isCommentsRequesting .BubbleIcon > g:nth-child(1),
+.IconTab.isActive .BubbleIcon > g,
+.IconTab.isActive .HeartIcon > g,
+.no-touch .IconTab:hover .BubbleIcon > g,
+.no-touch .IconTab:hover .HeartIcon > g {
+  fill: #fff;
+}
+
+/* Hide the tail */
+.NotificationsContainerTabs  .BubbleIcon > g:nth-child(2),
 .Post .BubbleIcon > g:nth-child(2),
 .StyleGuide .BubbleIcon > g:nth-child(2) {
+  display: none;
+}
+
+/* Animating */
+.Post .isCommentsRequesting .BubbleIcon > g:nth-child(1) {
   display: none;
 }
 
