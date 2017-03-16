@@ -2,7 +2,7 @@
 import React from 'react'
 import { css } from 'glamor'
 import { MainView } from '../views/MainView'
-import StyleGuideIcons from './StyleGuideIcons'
+// import StyleGuideIcons from './StyleGuideIcons'
 import { combine, flex, minBreak2, wrapperPaddingX } from '../../styles/cso'
 
 const headerStyle = combine(
@@ -35,6 +35,6 @@ export default() =>
         <button className={buttonStyle}>Icons</button>
       </nav>
     </header>
-    <StyleGuideIcons />
   </MainView>
 
+    // <StyleGuideIcons />
