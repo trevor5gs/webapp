@@ -8,12 +8,6 @@
   color: #aaa;
 }
 
-/* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
-.no-touch .RegionTools button:hover .SVGIcon > g {
-  stroke: #000;
-}
-/* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
-
 .RegionTools .DragHandler {
   display: none;
   cursor: move;
@@ -34,17 +28,5 @@
 
 .editor:not(.hasContent) .BlockRemove {
   display: none;
-}
-
-@media (--break-2) {
-  .no-touch .BlockRemove > .DeleteIcon {
-    transition-duration: var(--speed), var(--speed), var(--speed2);
-    transform-origin: center center;
-  }
-
-  .no-touch .BlockRemove:hover > .DeleteIcon {
-    transition-delay: 0.5s, 0.5s, 0.7s;
-    transform: rotate(360deg);
-  }
 }
 

@@ -41,11 +41,6 @@
   font-style: italic;
 }
 
-.TextToolButton.forLink > .SVGIcon {
-  margin-top: -2px;
-  margin-left: -1px;
-}
-
 .TextTools.asShowLinkForm .TextToolButton.forBold,
 .TextTools.asShowLinkForm .TextToolButton.forItalic {
   width: 0;

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
+import { DotsIcon } from '../assets/Icons'
 import Hint from '../hints/Hint'
-import { DotsIcon } from '../relationships/RelationshipIcons'
 
 const BlockMuteButton = ({ className, onClick }) =>
   <button

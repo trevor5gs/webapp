@@ -15,7 +15,7 @@
   color: #aaa;
 }
 
-.TreeIcon {
+.TreeButton .ChevronCircleIcon {
   position: absolute;
   top: 10px;
   left: 0;
@@ -23,11 +23,11 @@
   transform: rotate(90deg);
 }
 
-.TreeButton.isCollapsed .TreeIcon {
+.TreeButton.isCollapsed .ChevronCircleIcon {
   transform: none;
 }
 
-.TreeButton.isCollapsed .TreeIcon > g {
+.TreeButton.isCollapsed .ChevronCircleIcon > g {
   stroke: #aaa;
 }
 
@@ -42,7 +42,7 @@
     padding-left: 0;
   }
 
-  .TreeIcon {
+  .TreeButton .ChevronCircleIcon {
     left: -30px;
   }
 }

@@ -2,8 +2,7 @@
 
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { LockIcon } from './EditorIcons'
-import { RepostIcon } from '../posts/PostIcons'
+import { LockIcon, RepostIcon } from '../assets/Icons'
 
 function mapStateToProps({ profile: currentUser }) {
   return { currentUser }

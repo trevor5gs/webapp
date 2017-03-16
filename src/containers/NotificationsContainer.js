@@ -26,7 +26,7 @@ import {
   HeartIcon,
   RepostIcon,
   RelationshipIcon,
-} from '../components/notifications/NotificationIcons'
+} from '../components/assets/Icons'
 import { AnnouncementNotification } from '../components/notifications/NotificationRenderables'
 import { Paginator } from '../components/streams/Paginator'
 import { TabListButtons, TabListLinks } from '../components/tabs/TabList'

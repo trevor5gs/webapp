@@ -15,16 +15,11 @@
   font-size: 18px;
 }
 
-.MessageDialogSuccessIcon {
+.MessageDialog .CheckIconLG {
   position: absolute;
   top: 7px;
   left: -40px;
   transform: scale(0.6);
-}
-
-.MessageDialogSuccessIcon.SVGIcon > g {
-  stroke-linejoin: bevel;
-  stroke: #00d100;
 }
 
 .MessageDialogButton {

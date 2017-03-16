@@ -1,29 +1,27 @@
-/* eslint-disable max-len */
-import React, { PropTypes } from 'react'
+// @flow
+import React from 'react'
 import classNames from 'classnames'
-import { SVGBox, SVGIcon } from '../svg/SVGComponents'
+import { SVGBox, SVGIcon } from './SVGComponents'
 
 // -------------------------------------
 // Shapes for building icons
 
-const FillShapeForty = ({ className = 'svg-fill' }) =>
-  <path className={className} d="M0 0h40v40h-40z" />
-
-FillShapeForty.propTypes = {
-  className: PropTypes.string,
+type Props = {
+  className?: string,
 }
+
+const FillShapeForty = (props: Props) =>
+  <path className={props.className} d="M0 0h40v40h-40z" />
+
 FillShapeForty.defaultProps = {
-  className: null,
+  className: 'svg-fill',
 }
 
-const FillShapeSixty = ({ className = 'svg-fill' }) =>
-  <path className={className} d="M0 0h60v60h-60z" />
+const FillShapeSixty = (props: Props) =>
+  <path className={props.className} d="M0 0h60v60h-60z" />
 
-FillShapeSixty.propTypes = {
-  className: PropTypes.string,
-}
 FillShapeSixty.defaultProps = {
-  className: null,
+  className: 'svg-fill',
 }
 
 const SmileShapeForty = () =>
@@ -40,17 +38,14 @@ const CheckShape = () =>
   </g>
 
 // -------------------------------------
-// Ello icons
+// Ello icons 40 x 40
 
-export const ElloMark = ({ className }) =>
-  <SVGBox className={classNames('ElloMark', className)}>
+export const ElloMark = (props: Props) =>
+  <SVGBox className={classNames('ElloMark', props.className)}>
     <FillShapeForty className="SVGBoxBG" />
     <SmileShapeForty />
   </SVGBox>
 
-ElloMark.propTypes = {
-  className: PropTypes.string,
-}
 
 export const ElloBoxMark = () =>
   <SVGBox className="ElloBoxMark">
@@ -90,8 +85,16 @@ export const ElloNinjaSuit = () =>
     <path d="M5.6,6.2C3.8,8,2.4,10.2,1.4,12.7h44.2l-3.1-3.2l3.1-3.2H5.6z" />
   </svg>
 
+export const ElloQuickEmoji = () =>
+  <SVGIcon className="ElloQuickEmoji">
+    <g fill="none">
+      <circle cx="9" cy="9" r="6" />
+      <path d="M12.5 9c0 1.9-1.6 3.5-3.5 3.5s-3.5-1.6-3.5-3.5" />
+    </g>
+  </SVGIcon>
+
 // -------------------------------------
-// Badge icons
+// Badge icons 24 x 24
 
 export const BadgeCheckIcon = () =>
   <SVGBox className="BadgeCheckIcon" size="24">
@@ -100,34 +103,10 @@ export const BadgeCheckIcon = () =>
   </SVGBox>
 
 // -------------------------------------
-// SVG icons
+// SVG icons 20 x 20
 
-export const ShareIcon = () =>
-  <SVGIcon className="ShareIcon">
-    <g>
-      <polyline points="7.8,7.3 5,7.3 5,17.3 15,17.3 15,7.3 12.2,7.3" />
-    </g>
-    <g>
-      <line x1="10" y1="2" x2="10" y2="12" />
-      <polyline points="7.2,4.7 10,2 12.8,4.8" />
-    </g>
-  </SVGIcon>
-
-export const XIcon = () =>
-  <SVGIcon className="CancelIcon">
-    <g>
-      <line x1="6" x2="14" y1="6" y2="14" />
-      <line x1="14" x2="6" y1="6" y2="14" />
-    </g>
-  </SVGIcon>
-
-export const CheckIcon = () =>
-  <SVGIcon className="CheckIcon">
-    <CheckShape />
-  </SVGIcon>
-
-export const ArrowEastIcon = () =>
-  <SVGIcon className="ArrowEastIcon">
+export const ArrowIcon = () =>
+  <SVGIcon className="ArrowIcon">
     <g>
       <line x1="14.5" x2="4.5" y1="10" y2="10" />
     </g>
@@ -136,37 +115,147 @@ export const ArrowEastIcon = () =>
     </g>
   </SVGIcon>
 
-// From Footer
-export const PhoneIcon = () =>
-  <SVGIcon className="PhoneIcon">
-    <g>
-      <line x1="5" y1="14.1" x2="14.7" y2="14.1" />
-      <line x1="5" y1="5.9" x2="14.7" y2="5.9" />
-      <circle cx="9.9" cy="16.3" r="0.6" />
-      <circle cx="8.2" cy="3.7" r="0.6" />
-      <path d="M14.7,16.8c0,1-0.8,1.8-1.8,1.8H6.8c-1,0-1.8-0.8-1.8-1.8V3.2c0-1,0.8-1.8,1.8-1.8H13 c1,0,1.8,0.8,1.8,1.8V16.8z" />
-      <path d="M10.4,4.2C10,4.2,9.8,4,9.8,3.7s0.3-0.6,0.6-0.6h1.1c0.3,0,0.6,0.3,0.6,0.6s-0.3,0.6-0.6,0.6 H10.4z" />
+export const BoltIcon = () =>
+  <SVGIcon className="BoltIcon">
+    <g className="svg-stroke-bevel">
+      <polygon points="14,7.4 9,7.4 9,1 4,11.6 9,11.6 9,18" />
     </g>
   </SVGIcon>
 
-// From Footer
+export const BrowseIcon = () =>
+  <SVGIcon className="BrowseIcon">
+    <g>
+      <rect height="8" width="8" x="4.5" y="4.5" />
+    </g>
+    <g>
+      <rect height="8" width="8" x="7.5" y="7.5" />
+    </g>
+  </SVGIcon>
+
+export const BubbleIcon = () =>
+  <SVGIcon className="BubbleIcon">
+    <g className="svg-stroke-round">
+      <path d="M6.6,12.6l-3.1,3.1 l0-10.3c0-0.7,0.5-1.2,1.2-1.2h10.6c0.7,0,1.2,0.5,1.2,1.2v6c0,0.7-0.5,1.2-1.2,1.2H6.6z" />
+    </g>
+    <g className="svg-stroke-round">
+      <path d="M3.5,11.4v-6c0-0.7,0.5-1.2,1.2-1.2 h10.6c0.7,0,1.2,0.5,1.2,1.2v6c0,0.7-0.5,1.2-1.2,1.2H4.7C4,12.6,3.5,12.1,3.5,11.4z" />
+      <polygon points=" 6.6,12.6 3.5,15.8 3.5,11.6 " />
+    </g>
+  </SVGIcon>
+
+export const CameraIcon = () =>
+  <SVGIcon className="CameraIcon">
+    <g>
+      <rect height="12" width="16" x="2.5" y="4.5" />
+    </g>
+    <g>
+      <circle cx="10.5" cy="10.5" r="3" />
+    </g>
+  </SVGIcon>
+
+export const CheckCircleIcon = () =>
+  <SVGIcon className="CheckCircleIcon">
+    <g>
+      <circle cx="10.5" cy="10.5" r="7" />
+    </g>
+    <g className="svg-stroke-bevel">
+      <polyline points="7.5,10 10,13 13.5,7" />
+    </g>
+  </SVGIcon>
+
+export const CheckIcon = () =>
+  <SVGIcon className="CheckIcon">
+    <CheckShape />
+  </SVGIcon>
+
+export const CheckIconLG = () =>
+  <SVGIcon className="CheckIconLG CheckMark">
+    <g className="svg-stroke-bevel">
+      <polyline points="4.8,10.8 9.9,17 17.2,5" />
+    </g>
+  </SVGIcon>
+
+export const CheckIconSM = () =>
+  <SVGIcon className="CheckIconSM">
+    <g className="svg-stroke-bevel">
+      <polyline points="7,10.4 9.5,13.5 13,7.5" />
+    </g>
+  </SVGIcon>
+
+export const ChevronCircleIcon = () =>
+  <SVGIcon className="ChevronCircleIcon">
+    <g>
+      <circle cx="10" cy="10" r="7" />
+    </g>
+    <g>
+      <polyline points="8.2,6.5 11.8,10 8.2,13.5" />
+    </g>
+  </SVGIcon>
+
 export const ChevronIcon = () =>
   <SVGIcon className="ChevronIcon">
     <g>
-      <polyline points="5,12.2 10.2,7 15.5,12.2" />
+      <polyline points="6,16 12,10 6,4" />
     </g>
   </SVGIcon>
 
-// From Footer
-export const ListIcon = () =>
-  <SVGIcon className="ListIcon">
+export const CircleIcon = () =>
+  <SVGIcon className="CircleIcon">
     <g>
-      <path d="M6.2,8.8c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5h7.5c1.4,0,2.5,1.1,2.5,2.5s-1.1,2.5-2.5,2.5H6.2z" />
-      <path d="M6.2,16.2c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5h7.5c1.4,0,2.5,1.1,2.5,2.5s-1.1,2.5-2.5,2.5H6.2z" />
+      <circle cx="11" cy="11" r="5" />
     </g>
   </SVGIcon>
 
-// From Footer
+export const CircleIconLG = () =>
+  <SVGIcon className="CircleIconLG">
+    <g>
+      <circle cx="12" cy="12" r="6" />
+    </g>
+  </SVGIcon>
+
+export const DotsIcon = () =>
+  <SVGIcon className="DotsIcon">
+    <g>
+      <circle cx="3" cy="10" r="2.5" />
+    </g>
+    <g>
+      <circle cx="10" cy="10" r="2.5" />
+    </g>
+    <g>
+      <circle cx="17" cy="10" r="2.5" />
+    </g>
+  </SVGIcon>
+
+export const DragIcon = () =>
+  <SVGIcon className="DragIcon">
+    <g>
+      <line x1="15" x2="5" y1="10" y2="10" />
+    </g>
+    <g>
+      <polyline points="7.4,13 5,10 7.4,7" />
+      <polyline points="12.6,7 15,10 12.6,13" />
+    </g>
+  </SVGIcon>
+
+export const EyeIcon = () =>
+  <SVGIcon className="EyeIcon">
+    <g>
+      <path d="M19,9.9c0,0-4,4.9-9,4.9S1,9.9,1,9.9S5,5,10,5 S19,9.9,19,9.9z" />
+      <circle cx="10" cy="10" r="5" />
+    </g>
+    <circle cx="10" cy="10" r="2" />
+  </SVGIcon>
+
+export const FlagIcon = () =>
+  <SVGIcon className="FlagIcon">
+    <g className="svg-stroke-round">
+      <line x1="5" y1="3.7" x2="5" y2="16.8" />
+    </g>
+    <g className="svg-stroke-round">
+      <path d="M15,10.2 c0,0-2.9,1.1-5,0s-5,0-5,0V3.7c0,0,2.9-1.1,5,0s5,0,5,0V10.2z" />
+    </g>
+  </SVGIcon>
+
 export const GridIcon = () =>
   <SVGIcon className="GridIcon">
     <g>
@@ -177,14 +266,186 @@ export const GridIcon = () =>
     </g>
   </SVGIcon>
 
+export const HeartIcon = () =>
+  <SVGIcon className="HeartIcon">
+    <g>
+      <path d="M10,7.4c0-1.8,1.5-3.2,3.3-3.2s3.3,1.4,3.3,3.2c0,4.5-6.5,8.4-6.5,8.4S3.5,12,3.5,7.4c0-1.8,1.5-3.2,3.3-3.2S10,5.6,10,7.4z" />
+    </g>
+  </SVGIcon>
+
+export const LockIcon = () =>
+  <SVGIcon className="LockIcon">
+    <g>
+      <rect x="6.5" y="8.8" width="7" height="6.6" />
+    </g>
+    <g>
+      <path d="M12,8.8V7c0-1.1-0.9-2-2-2S8,5.9,8,7v1.8" />
+    </g>
+  </SVGIcon>
+
+export const LinkIcon = () =>
+  <SVGIcon className="LinkIcon">
+    <g>
+      <path d="M9.4,10.6l-0.5-0.5c-0.6-0.6-0.6-1.5,0-2.1 L11,5.9c0.6-0.6,1.5-0.6,2.1,0l1,1c0.6,0.6,0.6,1.5,0,2.1L13,10.1" />
+      <path d="M10.6,9.4l0.5,0.5c0.6,0.6,0.6,1.5,0,2.1L9,14.1 c-0.6,0.6-1.5,0.6-2.1,0l-1-1c-0.6-0.6-0.6-1.5,0-2.1L7,9.9" />
+    </g>
+  </SVGIcon>
+
+export const ListIcon = () =>
+  <SVGIcon className="ListIcon">
+    <g>
+      <path d="M6.2,8.8c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5h7.5c1.4,0,2.5,1.1,2.5,2.5s-1.1,2.5-2.5,2.5H6.2z" />
+      <path d="M6.2,16.2c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5h7.5c1.4,0,2.5,1.1,2.5,2.5s-1.1,2.5-2.5,2.5H6.2z" />
+    </g>
+  </SVGIcon>
 
 export const MarkerIcon = () =>
   <SVGIcon className="MarkerIcon">
     <path className="svg-fill" d="M10,2C6.7,2,4,4.7,4,8c0,3.7,4.3,9.4,5.6,11.1c0.2,0.3,0.6,0.3,0.8,0C11.7,17.4,16,11.8,16,8 C16,4.7,13.3,2,10,2z M10,9.9C9,9.9,8.1,9,8.1,8C8.1,7,9,6.1,10,6.1S11.9,7,11.9,8C11.9,9,11,9.9,10,9.9z" />
   </SVGIcon>
 
+export const MoneyIcon = () =>
+  <SVGIcon className="MoneyIcon">
+    <g>
+      <path d="M9.6,16.6v-1.5c-2.1-0.1-3.2-1.4-3.3-3.1h1.2 c0.2,1,0.7,1.8,2.1,2v-3.8l-0.3,0C7.6,9.8,6.6,8.9,6.6,7.3c0-1.5,1.2-2.6,2.9-2.7V3.4h0.9v1.1c1.9,0.2,3,1.3,3,2.9h-1.2 c-0.1-0.9-0.6-1.7-1.8-1.9v3.7l0.4,0.1c2.1,0.4,2.8,1.3,2.8,2.8c0,1.8-1.1,2.9-3.2,3v1.5H9.6z M9.6,5.5C8.5,5.7,7.8,6.4,7.8,7.3 c0,1.1,0.7,1.6,1.6,1.7l0.1,0V5.5z M10.6,14c1.4-0.2,1.9-0.9,1.9-1.8c0-0.9-0.5-1.5-1.8-1.8l-0.2,0L10.6,14L10.6,14z" />
+    </g>
+  </SVGIcon>
+
+export const PencilIcon = () =>
+  <SVGIcon className="PencilIcon">
+    <g>
+      <polygon points="12.6,4 16,7.3 7.4,15.9 4,15.9 4,12.5" />
+    </g>
+    <g>
+      <line x1="10.2" y1="6.4" x2="13.6" y2="9.7" />
+    </g>
+  </SVGIcon>
+
+export const PlusCircleIcon = () =>
+  <SVGIcon className="PlusCircleIcon">
+    <g>
+      <circle cx="10.5" cy="10.5" r="7" />
+    </g>
+    <g>
+      <line x1="10.5" x2="10.5" y1="7.5" y2="13.5" />
+      <line x1="13.5" x2="7.5" y1="10.5" y2="10.5" />
+    </g>
+  </SVGIcon>
+
+export const PlusIconSM = () =>
+  <SVGIcon className="PlusIconSM">
+    <g>
+      <line x1="10.5" x2="10.5" y1="6.5" y2="12.5" />
+      <line x1="13.5" x2="7.5" y1="9.5" y2="9.5" />
+    </g>
+  </SVGIcon>
+
+export const RelationshipIcon = () =>
+  <SVGIcon className="RelationshipIcon">
+    <g>
+      <circle cx="7.5" cy="4.8" r="1.8" />
+      <path d="M7.5 8.6c-1.9 0-3.5 1.6-3.5 3.5v2.9h7v-2.9M12.7 6.1v5M15.2 8.6h-5" />
+    </g>
+  </SVGIcon>
+
+export const ReplyIcon = () =>
+  <SVGIcon className="ReplyIcon">
+    <g>
+      <path d="M17,14.2c0-2.3-1.9-4.2-4.2-4.2H3" />
+    </g>
+    <g>
+      <polyline points="7,14 3,10 7,6 " />
+    </g>
+  </SVGIcon>
+
+export const ReplyAllIcon = () =>
+  <SVGIcon className="ReplyAllIcon">
+    <g>
+      <path d="M17.3,14.2c0-2.3-1.9-4.2-4.2-4.2H7.2" />
+    </g>
+    <g>
+      <polyline points="11.2,14 7.2,10 11.2,6" />
+    </g>
+    <g>
+      <polyline points="7,14 3,10 7,6" />
+    </g>
+  </SVGIcon>
+
+export const RepostIcon = () =>
+  <SVGIcon className="RepostIcon">
+    <g className="svg-stroke-round">
+      <path d="M15.2,6.7H5 c-0.5,0-1,0.4-1,1V10" />
+      <path d="M4.8,14.4H15 c0.6,0,1-0.4,1-1v-2.3" />
+    </g>
+    <g className="svg-stroke-round">
+      <polyline points="13.3,4 16,6.7 13.2,9.5" />
+      <polyline points="6.7,17.1 4,14.4 6.8,11.7" />
+    </g>
+  </SVGIcon>
+
+export const SearchIcon = () =>
+  <SVGIcon className="SearchIcon">
+    <g className="svg-stroke-round">
+      <circle cx="8.5" cy="8.5" r="5.5" />
+    </g>
+    <g className="svg-stroke-round">
+      <path d="M12.5 12.5l4.5 4.5" />
+    </g>
+  </SVGIcon>
+
+export const ShareIcon = () =>
+  <SVGIcon className="ShareIcon">
+    <g>
+      <polyline points="7.8,7.3 5,7.3 5,17.3 15,17.3 15,7.3 12.2,7.3" />
+    </g>
+    <g>
+      <line x1="10" y1="2" x2="10" y2="12" />
+      <polyline className="svg-stroke-round" points="7.2,4.7 10,2 12.8,4.8" />
+    </g>
+  </SVGIcon>
+
+export const SparklesIcon = () =>
+  <SVGIcon className="SparklesIcon">
+    <g>
+      <path d="M10,7c-2.8,0-5,2.2-5,5c0-2.8-2.2-5-5-5c2.8,0,5-2.2,5-5 C5,4.8,7.2,7,10,7z" />
+    </g>
+    <g>
+      <path d="M15,14.5c-1.9,0-3.5,1.6-3.5,3.5c0-1.9-1.6-3.5-3.5-3.5 c1.9,0,3.5-1.6,3.5-3.5C11.5,12.9,13.1,14.5,15,14.5z" />
+    </g>
+    <g>
+      <path d="M19,4.5c-1.9,0-3.5,1.6-3.5,3.5c0-1.9-1.6-3.5-3.5-3.5 c1.9,0,3.5-1.6,3.5-3.5C15.5,2.9,17.1,4.5,19,4.5z" />
+    </g>
+  </SVGIcon>
+
+export const XBoxIcon = () =>
+  <SVGIcon className="XBoxIcon">
+    <g>
+      <rect x="3.5" y="3.5" width="12" height="12" />
+    </g>
+    <g>
+      <line x1="12" y1="7" x2="7" y2="12" />
+      <line x1="12" y1="12" x2="7" y2="7" />
+    </g>
+  </SVGIcon>
+
+export const XIcon = () =>
+  <SVGIcon className="XIcon">
+    <g>
+      <line x1="6" x2="14" y1="6" y2="14" />
+      <line x1="14" x2="6" y1="6" y2="14" />
+    </g>
+  </SVGIcon>
+
+export const XIconLG = () =>
+  <SVGIcon className="XIconLG">
+    <g>
+      <line x1="17" y1="5" x2="5" y2="17" />
+      <line x1="17" y1="17" x2="5" y2="5" />
+    </g>
+  </SVGIcon>
+
 // -------------------------------------
-// SVG social icons
+// Social icons 60 x 60
 
 export const FacebookIcon = () =>
   <SVGBox className="FacebookIcon" size="60">

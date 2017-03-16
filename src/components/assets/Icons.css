@@ -77,10 +77,6 @@
   transition-delay: var(--speed2), var(--speed), var(--speed);
 }
 
-.MarkerIcon {
-  color: #ababab;
-}
-
 /* ------------------------------------- */
 
 .ElloMark,
@@ -137,6 +133,412 @@
   fill: #fff !important;
 }
 
+/* ------------------------------------- */
+
+.HeroShareUserButton .ShareIcon {
+  margin-top: -6px;
+  color: #fff;
+}
+/* stylelint-disable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */
+
+/* Following
+------------------------------------- */
+.FollowButton.isInHeader > .SVGIcon {
+  vertical-align: top;
+}
+
+.FollowButton.isInHeader[data-priority="noise"] > .SVGIcon > g:first-child,
+.FollowButton.isInHeader[data-priority="friend"] > .SVGIcon > g:first-child {
+  fill: #aaa;
+  stroke: #aaa;
+}
+
+.FollowButton.isInHeader:hover > .SVGIcon > g:first-of-type {
+  fill: #535353;
+  stroke: #535353;
+}
+
+/* Navbar
+------------------------------------- */
+
+.NavbarLink.isActive > .SVGIcon > g,
+.NavbarLink:active > .SVGIcon > g,
+.no-touch .NavbarLink:hover > .SVGIcon > g {
+  stroke: #000;
+}
+
+.NavbarLink.isActive > .SVGIcon:not(.SearchIcon) g,
+.NavbarLink:active > .SVGIcon:not(.SearchIcon) g,
+.no-touch .NavbarLink:hover > .SVGIcon:not(.SearchIcon) g {
+  fill: #000;
+}
+
+/* // Label only (icon is hidden) */
+.NavbarLink.LabelOnly > .SVGIcon {
+  width: 0;
+  opacity: 0;
+  transition:
+    width var(--speed) var(--ease),
+    opacity var(--speed) ease,
+    transform var(--speed) var(--ease);
+}
+
+/* // Icon only (label is hidden) */
+.NavbarLink.IconOnly {
+  width: 20px;
+}
+
+.isNotificationsActive ~ .Navbar .NavbarLink[href^="/notifications"] > .SVGIcon > g {
+  fill: #000;
+  stroke: #000;
+}
+
+.NavbarMorePostsButton > .ArrowIcon {
+  margin-top: -2px;
+  transform: rotate(270deg);
+}
+
+.NavbarLink > .SVGIcon {
+  margin-top: -5px;
+}
+
+.NavbarOmniButton .SVGIcon {
+  margin-right: 5px;
+}
+
+/* // Nabar Animations once we have room */
+@media (--break-2) {
+  /* // Show the icon on rollover for desktop */
+  .no-touch .NavbarLink.LabelOnly:hover > .SVGIcon {
+    width: 20px;
+    opacity: 1;
+    transition-delay: 0.5s;
+  }
+
+  /* // Show the label on rollover for desktop */
+  .no-touch .NavbarLink.IconOnly {
+    transition-delay: 0.5s;
+  }
+
+  .no-touch .NavbarLink.IconOnly:hover > .NavbarLinkLabel::after {
+    transition-delay: 0.6s;
+  }
+
+  /* // Specific widths for the labels */
+  /* // TODO: will need to figure out how to do this for i18n */
+  .no-touch .NavbarLink[href^="/notifications"]:hover {
+    width: 110px;
+  }
+
+  .no-touch .NavbarLink[href^="/find"]:hover,
+  .no-touch .NavbarLink[href^="/search"]:hover {
+    width: 72px;
+  }
+
+  /* // Circle animation */
+  .no-touch .NavbarLink > .CircleIcon {
+    transition-delay: var(--speed), var(--speed), 0s;
+    transform: scale(0.5);
+    transform-origin: 0.71875rem; /* 11.5 / 16 */
+  }
+
+  .no-touch .NavbarLink:hover > .CircleIcon {
+    transition-delay: 0.5s, 0.5s, 0.7s;
+    transform: none;
+  }
+
+  .no-touch .NavbarLink > .CircleIcon > g {
+    transition-delay: 0s;
+  }
+
+  .no-touch .NavbarLink:hover > .CircleIcon > g {
+    transition-delay: 0.7s;
+  }
+
+  /* // Sparkles animation */
+  .no-touch .NavbarLink:hover > .SparklesIcon > g {
+    transition-delay: 0.6s;
+  }
+
+  .no-touch .NavbarLink:hover > .SparklesIcon > g:nth-of-type(2) {
+    transition-delay: 0.7s;
+  }
+
+  .no-touch .NavbarLink:hover > .SparklesIcon > g:nth-of-type(3) {
+    transition-delay: 1.05s;
+  }
+}
+
+/* Posts and comments and notifications
+------------------------------------- */
+.WatchTool > button.isActive > .BoltIcon > g,
+.Post .isCommentsActive .BubbleIcon > g,
+.Post .BubbleIcon > g:nth-child(2) {
+  fill: #000;
+  stroke: #000;
+}
+
+.no-touch .CommentTool > button:hover > .BubbleIcon > g,
+.no-touch .FlagTool > button:hover > .FlagIcon > g:nth-of-type(2) {
+  fill: #000;
+}
+
+.IconTab.isActive .BubbleIcon > g,
+.IconTab.isActive .HeartIcon > g,
+.no-touch .IconTab:hover .BubbleIcon > g,
+.no-touch .IconTab:hover .HeartIcon > g {
+  fill: #fff;
+}
+
+/* Hide the tail */
+.NotificationsContainerTabs  .BubbleIcon > g:nth-child(2),
+.Post .BubbleIcon > g:nth-child(2),
+.StyleGuide .BubbleIcon > g:nth-child(2) {
+  display: none;
+}
+
+/* Animating */
+.Post .isCommentsRequesting .BubbleIcon > g:nth-child(1) {
+  display: none;
+}
+
+.Post .isCommentsRequesting .BubbleIcon > g:nth-child(2) {
+  display: inline;
+}
+
+.Post .isCommentsRequesting .BubbleIcon polygon {
+  animation: animateCommentsLoading 0.75s infinite var(--ease-in-out-quart);
+}
+
+.PostTool .ShareIcon,
+.PostTool .HeartIcon,
+.PostTool .EyeIcon,
+.PostTool .BubbleIcon {
+  margin-top: -2px;
+}
+
+.PostTool .PencilIcon,
+.PostTool .RepostIcon {
+  margin-top: -4px;
+}
+
+.PostTool .XBoxIcon {
+  padding-left: 1px;
+}
+
+.PencilIcon > g,
+.Post .XBoxIcon > g {
+  stroke-linecap: square;
+  transition-delay: 0.1s, 0s, 0s;
+}
+
+.RepostHeader .RepostIcon > g {
+  stroke: #535353;
+}
+
+/* Animations ?? */
+.ViewsTool .EyeIcon > circle {
+  fill: currentColor;
+  stroke: transparent;
+  transition: fill var(--speed) ease, stroke var(--speed) ease;
+}
+
+.no-touch .ViewsTool > a:hover > .EyeIcon > circle {
+  stroke: #000;
+  transition-delay: var(--speed), 0s;
+}
+
+.no-touch .ViewsTool > a:hover > .EyeIcon > g {
+  stroke: #000;
+}
+
+.no-touch .LoveTool > button:hover > .HeartIcon > g {
+  fill: #000;
+}
+
+.LoveTool > button.isActive > .HeartIcon > g {
+  fill: #f00;
+  stroke: #f00;
+}
+
+.no-touch .LoveTool > button.isActive:hover > .HeartIcon > g {
+  fill: #f99;
+  stroke: #f99;
+}
+
+.no-touch .ShareTool > button:hover > .ShareIcon > g:nth-of-type(2) {
+  transform: translate3d(0, -1px, 0);
+}
+
+.no-touch .DeleteTool > button:hover > .XBoxIcon > g:nth-of-type(2) {
+  transform: rotate(90deg);
+}
+
+.ShareTool.isPill .ShareIcon {
+  display: none;
+}
+
+.CommentTools .ReplyTool .SVGIcon {
+  margin-top: -2px;
+}
+
+.CommentTools .MoreTool .SVGIcon {
+  transform: rotate(180deg);
+}
+
+.CommentTools.isMoreToolActive .MoreTool .SVGIcon {
+  color: #000;
+  transform: none;
+}
+
+/* // MAX WIDTH! */
+@media (--break-2-max) {
+  .CommentTools .MoreTool .SVGIcon {
+    transform: rotate(180deg);
+  }
+
+  .CommentTools.isMoreToolActive .MoreTool .SVGIcon {
+    color: #000;
+    transform: none;
+  }
+}
+
+/* Editor Icons
+------------------------------------- */
+.no-touch .RegionTools button:hover .SVGIcon > g {
+  stroke: #000;
+}
+
+.BrowseIcon > g {
+  fill: #fff;
+}
+
+.ElloBuyButton > .SVGIcon.MoneyIcon > g {
+  fill: #fff;
+  stroke: #fff;
+  stroke-width: 0.5;
+}
+
+.PostActionButton.forMoney > .SVGIcon.MoneyIcon > g {
+  fill: #aaa;
+  stroke: none;
+}
+
+.PostActionButton.isBuyLinked > .SVGIcon.MoneyIcon > g {
+  fill: #000;
+}
+
+.PostActionButton > .SVGIcon {
+  margin-top: -2px;
+  margin-left: -5px;
+}
+
+.PostActionButton > .SVGIcon > g {
+  stroke: #aaa;
+}
+
+.TextToolButton.forLink > .SVGIcon {
+  margin-top: -2px;
+  margin-left: -1px;
+}
+
+@media (--break-2) {
+  .no-touch .PostActionButton:hover > .SVGIcon > g {
+    stroke: #fff;
+  }
+
+  .no-touch .PostActionButton:hover > .BrowseIcon > g {
+    fill: #000;
+  }
+
+  .no-touch .BlockRemove > .XIcon {
+    transition-duration: var(--speed), var(--speed), var(--speed2);
+    transform-origin: center center;
+  }
+
+  .no-touch .BlockRemove:hover > .XIcon {
+    transition-delay: 0.5s, 0.5s, 0.7s;
+    transform: rotate(360deg);
+  }
+
+  /* Cancel animation */
+  .no-touch .PostActionButton > .XIcon {
+    transition-duration: var(--speed), var(--speed), var(--speed2);
+    transform-origin: center center;
+  }
+
+  .no-touch .PostActionButton:hover > .XIcon {
+    transition-delay: 0.5s, 0.5s, 0.7s;
+    transform: rotate(360deg);
+  }
+
+  .no-touch .ElloBuyButton:hover > .SVGIcon.MoneyIcon > g {
+    fill: #000;
+    stroke: transparent;
+  }
+
+  .no-touch .PostActionButton.forMoney:hover > .SVGIcon.MoneyIcon > g {
+    fill: #fff;
+    stroke: none;
+  }
+}
+
+/* ??
+------------------------------------- */
+.MessageDialog .CheckIconLG .SVGIcon > g {
+  stroke: #00d100;
+}
+
+.HeroScrollToContentButton .ChevronCircleIcon {
+  margin-top: -2px;
+  transition: transform var(--speed) var(--ease);
+  transform: rotate(90deg);
+}
+
+.HeroScrollToContentButton .ChevronCircleIcon g {
+  fill: none;
+  stroke: #fff;
+}
+
+.FooterTool.LayoutTool > .SVGIcon {
+  margin-top: -2px;
+}
+
+.FooterTools .ChevronIcon {
+  margin-top: -2px;
+  transition: transform var(--speed) var(--ease);
+  transform: rotate(-90deg);
+}
+
+.OnboardingInfoForm .SVGIcon {
+  transform: scale(0.6);
+}
+
+.FormControlStatus > .SVGIcon > g {
+  stroke-width: 2;
+}
+
+/* Request */
+.FormControlStatus > .CircleIconLG > g {
+  fill: #aaa;
+  stroke: transparent;
+}
+
+/* Success */
+.FormControlStatus > .CheckIconLG > g {
+  stroke: var(--color-success);
+  stroke-linejoin: bevel;
+}
+
+/* Failure */
+.FormControlStatus > .XIconLG > g {
+  stroke: var(--color-danger);
+}
+
+.MarkerIcon {
+  color: #ababab;
+}
+
 .XClose {
   position: absolute;
   top: 10px;
@@ -154,3 +556,4 @@
   }
 }
 
+/* stylelint-enable selector-max-compound-selectors, selector-max-specificity */

@@ -1,7 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react'
 import sampleSize from 'lodash/sampleSize'
 import Emoji from '../assets/Emoji'
-import { SVGIcon } from '../svg/SVGComponents'
+import { ElloQuickEmoji } from '../assets/Icons'
 
 const options = [
   '+1', 'sparkles', 'metal', 'ok_hand', 'v', 'snowman', 'heart', 'panda_face',
@@ -9,22 +9,14 @@ const options = [
   'muscle', 'fire', 'fist', 'ello', 'bread',
 ]
 
-const MiniElloEmoji = () =>
-  <SVGIcon className="MiniElloEmoji">
-    <g fill="none">
-      <circle cx="9" cy="9" r="6" />
-      <path d="M12.5 9c0 1.9-1.6 3.5-3.5 3.5s-3.5-1.6-3.5-3.5" />
-    </g>
-  </SVGIcon>
-
 const QuickEmojiChoiceButton = ({ name, onClick }) =>
   <button className="QuickEmojiChoiceButton" name={name} onClick={onClick}>
     <Emoji name={name} />
   </button>
 
 QuickEmojiChoiceButton.propTypes = {
-  name: PropTypes.string,
-  onClick: PropTypes.func,
+  name: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 class QuickEmoji extends PureComponent {
@@ -85,7 +77,7 @@ class QuickEmoji extends PureComponent {
     return (
       <div className="QuickEmoji">
         <button className="QuickEmojiButton" onClick={this.show}>
-          <MiniElloEmoji />
+          <ElloQuickEmoji />
         </button>
         <div className="QuickEmojiList" />
       </div>

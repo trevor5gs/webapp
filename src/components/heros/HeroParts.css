@@ -37,15 +37,6 @@ Hero scroll to content button (hidden on mobile) */
   border-radius: 20px;
 }
 
-.HeroScrollToContentButton .ScrollToContentIcon {
-  margin-top: -2px;
-}
-
-.HeroScrollToContentButton .ScrollToContentIcon g {
-  fill: none;
-  stroke: #fff;
-}
-
 @media (--break-2-max) {
   .HeroScrollToContentButton {
     display: none;
@@ -64,11 +55,6 @@ Hero share user button */
   height: 40px;
   background-color: #000;
   border-radius: 20px;
-}
-
-.HeroShareUserButton .ShareIcon {
-  margin-top: -6px;
-  color: #fff;
 }
 
 @media (--break-2) {

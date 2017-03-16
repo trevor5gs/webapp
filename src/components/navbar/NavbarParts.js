@@ -2,8 +2,15 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
-import { ElloMark, ElloRainbowMark, ElloDonutMark, ElloNinjaSuit } from '../assets/Icons'
-import { ArrowIcon, ExIcon, PencilIcon } from './NavbarIcons'
+import {
+  ArrowIcon,
+  ElloMark,
+  ElloRainbowMark,
+  ElloDonutMark,
+  ElloNinjaSuit,
+  PencilIcon,
+  XIconLG,
+} from '../assets/Icons'
 
 // -------------------------------------
 
@@ -187,7 +194,7 @@ export const NavbarProfile = ({
           </a>
           <button className="NavbarProfileLink truncate" onClick={onLogOut}>Logout</button>
           <button className="NavbarProfileCloseButton">
-            <ExIcon />
+            <XIconLG />
           </button>
         </nav>
       </span>

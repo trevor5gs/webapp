@@ -338,24 +338,6 @@ textarea.FormControlInput.isOnboardingControl {
   right: 20px;
 }
 
-.FormControlStatus > .SVGIcon > g {
-  stroke-width: 2;
-}
-
-.FormControlStatus > .RequestIcon > g {
-  fill: #aaa;
-  stroke: transparent;
-}
-
-.FormControlStatus > .SuccessIcon > g {
-  stroke: var(--color-success);
-  stroke-linejoin: bevel;
-}
-
-.FormControlStatus > .FailureIcon > g {
-  stroke: var(--color-danger);
-}
-
 .FormControlStatus.isSimpleWhiteControl {
   top: 5px;
 }

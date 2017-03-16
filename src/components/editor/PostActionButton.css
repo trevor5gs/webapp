@@ -22,19 +22,6 @@
   margin-right: -10px;
 }
 
-.PostActionButton > .SVGIcon {
-  margin-top: -2px;
-  margin-left: -5px;
-}
-
-.PostActionButton > .SVGIcon > g {
-  stroke: #aaa;
-}
-
-.PostActionButton > .BrowseIcon > g {
-  fill: #fff;
-}
-
 .PostActionButtonLabel {
   position: absolute;
   left: 20px;
@@ -63,15 +50,6 @@
 }
 
 /* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
-.PostActionButton.forMoney > .SVGIcon.MoneyIcon > g {
-  fill: #aaa;
-  stroke: none;
-}
-
-.PostActionButton.isBuyLinked > .SVGIcon.MoneyIcon > g {
-  fill: #000;
-}
-
 @media (--break-2) {
   .no-touch .PostActionButton:hover {
     width: 105px;
@@ -79,18 +57,6 @@
     background-color: #000;
   }
 
-  .no-touch .PostActionButton:hover > .SVGIcon > g {
-    stroke: #fff;
-  }
-
-  .no-touch .PostActionButton:hover > .BrowseIcon > g {
-    fill: #000;
-  }
-
-  .no-touch .PostActionButton.forMoney:hover > .SVGIcon.MoneyIcon > g {
-    fill: #fff;
-    stroke: none;
-  }
   /* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
 
   .no-touch .PostActionButton.forUpload:hover {
@@ -116,15 +82,5 @@
     color: transparent;
   }
 
-  /* Cancel animation */
-  .no-touch .PostActionButton > .CancelIcon {
-    transition-duration: var(--speed), var(--speed), var(--speed2);
-    transform-origin: center center;
-  }
-
-  .no-touch .PostActionButton:hover > .CancelIcon {
-    transition-delay: 0.5s, 0.5s, 0.7s;
-    transform: rotate(360deg);
-  }
 }
 

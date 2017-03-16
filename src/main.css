@@ -59,7 +59,6 @@
 
 @import "components/modals/Modal.css";
 
-@import "components/navbar/NavbarIcons.css";
 @import "components/navbar/NavbarParts.css";
 @import "components/navbar/NavbarRenderables.css";
 
@@ -67,7 +66,6 @@
 @import "components/navigation/TreePanel.css";
 
 @import "components/notifications/Notification.css";
-@import "components/notifications/NotificationIcons.css";
 @import "components/notifications/NotificationRenderables.css";
 
 @import "components/omnibar/Omnibar.css";
@@ -79,7 +77,6 @@
 @import "components/posts/Post.css";
 @import "components/posts/PostBody.css";
 @import "components/posts/PostHeader.css";
-@import "components/posts/PostIcons.css";
 @import "components/posts/PostTools.css";
 
 @import "components/relationships/BlockMuteButton.css";

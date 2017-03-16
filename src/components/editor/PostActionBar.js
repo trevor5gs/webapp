@@ -3,8 +3,14 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { selectDeviceSize } from '../../selectors/gui'
 import {
-  BrowseIcon, CheckIcon, CameraIcon, CancelIcon, PostIcon, ReplyAllIcon, MoneyIcon,
-} from './EditorIcons'
+  ArrowIcon,
+  BrowseIcon,
+  CameraIcon,
+  CheckIconLG,
+  MoneyIcon,
+  ReplyAllIcon,
+  XIcon,
+} from '../assets/Icons'
 import { openModal, closeModal } from '../../actions/modals'
 import { updateBuyLink } from '../../actions/editor'
 import BuyLinkDialog from '../dialogs/BuyLinkDialog'
@@ -90,7 +96,7 @@ class PostActionBar extends Component {
         >
           <span className="PostActionButtonLabel">Sell</span>
           <MoneyIcon />
-          <CheckIcon />
+          <CheckIconLG />
         </button>
 
         <button
@@ -104,7 +110,7 @@ class PostActionBar extends Component {
 
         <button className="PostActionButton forCancel" onClick={this.cancel}>
           <span className="PostActionButtonLabel">Cancel</span>
-          <CancelIcon />
+          <XIcon />
         </button>
 
         {
@@ -123,7 +129,7 @@ class PostActionBar extends Component {
           onClick={this.submitted}
         >
           <span className="PostActionButtonLabel">{submitText}</span>
-          <PostIcon />
+          <ArrowIcon />
         </button>
 
         <input

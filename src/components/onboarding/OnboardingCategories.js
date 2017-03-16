@@ -2,7 +2,7 @@ import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import OnboardingNavbar from './OnboardingNavbar'
 import { MainView } from '../views/MainView'
-import { CheckIcon } from '../editor/EditorIcons'
+import { CheckIconLG } from '../assets/Icons'
 
 class CategoryButton extends PureComponent {
 
@@ -31,7 +31,7 @@ class CategoryButton extends PureComponent {
         style={{ backgroundImage: `url("${category.getIn(['tileImage', 'large', 'url'])}")` }}
       >
         <span className="CategoryLinkName">
-          {isActive ? <CheckIcon /> : null}
+          {isActive ? <CheckIconLG /> : null}
           {category.get('name')}
         </span>
       </button>

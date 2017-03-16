@@ -14,7 +14,7 @@ import {
   RepostIcon,
   ShareIcon,
   XBoxIcon,
-} from '../posts/PostIcons'
+} from '../assets/Icons'
 
 class ViewsTool extends PureComponent {
   static propTypes = {

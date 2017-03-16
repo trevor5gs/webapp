@@ -81,21 +81,8 @@
   cursor: default;
 }
 
-.CommentTools .ReplyTool .SVGIcon {
-  margin-top: -2px;
-}
-
 .CommentTools .MoreTool > button {
   padding-right: 0;
-}
-
-.CommentTools .MoreTool .SVGIcon {
-  transform: rotate(180deg);
-}
-
-.CommentTools.isMoreToolActive .MoreTool .SVGIcon {
-  color: #000;
-  transform: none;
 }
 
 /* // MAX WIDTH! */
