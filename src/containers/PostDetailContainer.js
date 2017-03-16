@@ -14,7 +14,7 @@ import {
   selectPropsLocationStateFrom,
 } from '../selectors/post'
 import { selectStreamType } from '../selectors/stream'
-import { loadComments, loadPostDetail } from '../actions/posts'
+import { loadComments, loadPostDetail, loadRelatedPosts } from '../actions/posts'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { Paginator } from '../components/streams/Paginator'
 import { PostDetail, PostDetailError } from '../components/views/PostDetail'
@@ -68,7 +68,11 @@ class PostDetailContainer extends Component {
 
   static preRender = (store, routerState) => {
     const params = routerState.params
-    return store.dispatch(loadPostDetail(`~${params.token}`, `~${params.username}`))
+    const token = `~${params.token}`
+    return Promise.all([
+      store.dispatch(loadPostDetail(token, `~${params.username}`)),
+      store.dispatch(loadRelatedPosts(token, 2)),
+    ])
   }
 
   getChildContext() {
