@@ -5,6 +5,11 @@ import { css } from 'glamor'
 import * as jso from './jso'
 
 // -------------------------------------
+// Helpers (Web specific)
+
+export const combine = (...styles: Array<string>) => styles.join(' ')
+
+// -------------------------------------
 // Configuration (Web specific)
 
 export const minBreak2 = '@media(min-width: 40em)'    // 2: 640  / 16 = 40em
