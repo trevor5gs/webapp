@@ -376,7 +376,7 @@ describe('json reducer', () => {
             expect(state.getIn(['pages', '/sweetness', 'ids'])).to.deep.equal(Immutable.List(['10', '9', '8']))
           })
 
-          it('merges the results if the action.mata.mergeResults is true', () => {
+          it('merges the results if action.meta.mergeResults is true', () => {
             action = {
               meta: { mergeResults: true },
               payload: { pathname: '/sweetness' },
