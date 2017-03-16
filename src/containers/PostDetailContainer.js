@@ -13,6 +13,7 @@ import {
   selectPostIsEmpty,
   selectPropsLocationStateFrom,
 } from '../selectors/post'
+import { selectPropsLocationKey } from '../selectors/routing'
 import { selectStreamType } from '../selectors/stream'
 import { loadComments, loadPostDetail, loadRelatedPosts } from '../actions/posts'
 import { ErrorState4xx } from '../components/errors/Errors'
@@ -28,6 +29,7 @@ function mapStateToProps(state, props) {
     hasRelatedPostsButton: selectPostHasRelatedButton(state, props),
     innerHeight: selectInnerHeight(state, props),
     isPostEmpty: selectPostIsEmpty(state, props),
+    locationKey: selectPropsLocationKey(state, props),
     locationStateFrom: selectPropsLocationStateFrom(state, props),
     paramsToken: selectParamsToken(state, props),
     paramsUsername: selectParamsUsername(state, props),
@@ -46,6 +48,7 @@ class PostDetailContainer extends Component {
     hasRelatedPostsButton: PropTypes.bool.isRequired,
     innerHeight: PropTypes.number.isRequired,
     isPostEmpty: PropTypes.bool.isRequired,
+    locationKey: PropTypes.string.isRequired,
     locationStateFrom: PropTypes.string,
     post: PropTypes.object,
     paramsToken: PropTypes.string.isRequired,
@@ -101,9 +104,15 @@ class PostDetailContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch, paramsToken, paramsUsername } = this.props
-    if (paramsToken !== nextProps.paramsToken || paramsUsername !== nextProps.paramsUsername) {
+    const { dispatch, locationKey, paramsToken, paramsUsername } = this.props
+    // a click on the notification post link when we are already on the post
+    // should trigger the loading of additional content if it exists
+    if ((paramsToken !== nextProps.paramsToken || paramsUsername !== nextProps.paramsUsername) ||
+        (paramsToken === nextProps.paramsToken && locationKey !== nextProps.locationKey)) {
+      // load the new detail or trigger a reload of the current
       dispatch(loadPostDetail(`~${nextProps.paramsToken}`, `~${nextProps.paramsUsername}`))
+      const action = this.getStreamAction()
+      if (action) { dispatch(action) }
     }
     switch (nextProps.streamType) {
       case POST.DETAIL_FAILURE:
@@ -140,6 +149,20 @@ class PostDetailContainer extends Component {
     scrollToPosition(0, window.scrollY + dy + (rect.top - innerHeight))
   }
 
+  getStreamAction() {
+    const { author, post } = this.props
+    const { activeType } = this.state
+    const postId = post.get('id')
+    switch (activeType) {
+      case 'loves':
+        return loadUserDrawer(postLovers(postId), postId, activeType)
+      case 'reposts':
+        return loadUserDrawer(postReposters(postId), postId, activeType)
+      default:
+        return author && author.get('hasCommentingEnabled') ? loadComments(post.get('id'), false) : null
+    }
+  }
+
   render() {
     const {
       author,
@@ -168,19 +191,6 @@ class PostDetailContainer extends Component {
       }
       return null
     }
-    const postId = post.get('id')
-    let streamAction
-    switch (activeType) {
-      case 'loves':
-        streamAction = loadUserDrawer(postLovers(postId), postId, activeType)
-        break
-      case 'reposts':
-        streamAction = loadUserDrawer(postReposters(postId), postId, activeType)
-        break
-      default:
-        streamAction = author && author.get('hasCommentingEnabled') ? loadComments(post.get('id'), false) : null
-        break
-    }
     const props = {
       activeType,
       author,
@@ -189,7 +199,7 @@ class PostDetailContainer extends Component {
       hasRelatedPostsButton,
       key: `postDetail_${paramsToken}`,
       post,
-      streamAction,
+      streamAction: this.getStreamAction(),
       tabs,
     }
     return <PostDetail {...props} />

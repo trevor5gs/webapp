@@ -319,7 +319,7 @@ describe('json reducer', () => {
 
       context('overlapping results', () => {
         beforeEach(() => {
-          state = state.setIn(['pages', 'sweetness'], Immutable.Map())
+          state = state.setIn(['pages', '/sweetness'], Immutable.Map())
           action = {
             payload: { pathname: '/sweetness' },
           }
@@ -374,6 +374,16 @@ describe('json reducer', () => {
             state = state.setIn(['pages', '/sweetness'], Immutable.fromJS({ ids: ['10', '9', '8'] }))
             state = subject.methods.updateResult({}, state, action)
             expect(state.getIn(['pages', '/sweetness', 'ids'])).to.deep.equal(Immutable.List(['10', '9', '8']))
+          })
+
+          it('merges the results if action.meta.mergeResults is true', () => {
+            action = {
+              meta: { mergeResults: true },
+              payload: { pathname: '/sweetness' },
+            }
+            state = state.setIn(['pages', '/sweetness', 'ids'], Immutable.List(['9', '8', '7', '6']))
+            state = subject.methods.updateResult({}, state, action)
+            expect(state.getIn(['pages', '/sweetness', 'ids'])).to.deep.equal(Immutable.List(['10', '9', '8', '7', '6']))
           })
         })
       })

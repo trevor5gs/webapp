@@ -12,6 +12,7 @@ const AUTHENTICATION_ROUTES = [
 ]
 
 // props.routing.xxx
+export const selectPropsLocationKey = (state, props) => get(props, 'location.key')
 export const selectPropsPathname = (state, props) => get(props, 'location.pathname')
 export const selectPropsQueryTerms = (state, props) => get(props, 'location.query.terms')
 export const selectPropsQueryType = (state, props) => get(props, 'location.query.type')

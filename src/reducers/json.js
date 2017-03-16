@@ -215,7 +215,7 @@ methods.updateResult = (response, state, action) => {
     } else if ((!existingResult.get('ids').includes(result.get('ids').last()) && existingResult.get('morePostIds', Immutable.List()).isEmpty()) ||
               (!existingResult.get('morePostIds', Immutable.List()).isEmpty() && !existingResult.get('morePostIds').includes(result.get('ids').last()))) {
       return state.setIn(['pages', resultPath], result)
-    } else if (hasLoadedFirstStream) {
+    } else if (hasLoadedFirstStream && !get(action, 'meta.mergeResults')) {
       if (!existingResult.get('morePostIds', Immutable.List()).isEmpty()) {
         dupArr = []
         return state.setIn(
@@ -225,6 +225,11 @@ methods.updateResult = (response, state, action) => {
       } else if (existingResult.get('ids').first() !== result.get('ids').first()) {
         return state.setIn(['pages', resultPath, 'morePostIds'], result.get('ids'))
       }
+    } else {
+      return state.setIn(
+        ['pages', resultPath],
+        existingResult.set('ids', Immutable.List(union(result.get('ids').toArray(), existingResult.get('ids').toArray()))).delete('morePostIds'),
+      )
     }
   }
   return state.setIn(['pages', resultPath], result)

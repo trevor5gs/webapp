@@ -92,6 +92,7 @@ export function loadUserDrawer(endpoint, postId, resultType) {
     payload: { endpoint },
     meta: {
       mappingType: MAPPING_TYPES.USERS,
+      mergeResults: true,
       renderStream: {
         asList: StreamRenderables.usersAsGrid,
         asGrid: StreamRenderables.usersAsGrid,

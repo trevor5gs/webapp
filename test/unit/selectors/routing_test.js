@@ -1,5 +1,6 @@
 import Immutable from 'immutable'
 import {
+  selectPropsLocationKey,
   selectPropsPathname,
   selectPropsQueryTerms,
   selectPropsQueryType,
@@ -27,6 +28,7 @@ describe('routing selectors', () => {
     state = { routing }
     propsLocation = {
       location: {
+        key: 'a1b2c3',
         pathname: '/props',
         query: { terms: 'props.query.terms', type: 'props.query.type' },
       },
@@ -36,6 +38,13 @@ describe('routing selectors', () => {
   afterEach(() => {
     routing = {}
     propsLocation = {}
+  })
+
+  context('#selectPropsLocationKey', () => {
+    it('returns the props.location.key', () => {
+      const props = { ...propsLocation }
+      expect(selectPropsLocationKey(state, props)).to.equal('a1b2c3')
+    })
   })
 
   context('#selectPropsPathname', () => {

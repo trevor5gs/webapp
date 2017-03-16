@@ -56,6 +56,7 @@ export function loadComments(postId, addUpdateKey = true) {
     },
     meta: {
       mappingType: MAPPING_TYPES.COMMENTS,
+      mergeResults: true,
       renderStream: {
         asList: StreamRenderables.commentsAsList,
         asGrid: StreamRenderables.commentsAsList,
