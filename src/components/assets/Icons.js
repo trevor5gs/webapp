@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import classNames from 'classnames'
-import { SVGBox, SVGIcon } from '../svg/SVGComponents'
+import { SVGBox, SVGIcon } from './SVGComponents'
 
 // -------------------------------------
 // Shapes for building icons
