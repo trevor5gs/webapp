@@ -85,6 +85,14 @@ export const ElloNinjaSuit = () =>
     <path d="M5.6,6.2C3.8,8,2.4,10.2,1.4,12.7h44.2l-3.1-3.2l3.1-3.2H5.6z" />
   </svg>
 
+export const ElloQuickEmoji = () =>
+  <SVGIcon className="ElloQuickEmoji">
+    <g fill="none">
+      <circle cx="9" cy="9" r="6" />
+      <path d="M12.5 9c0 1.9-1.6 3.5-3.5 3.5s-3.5-1.6-3.5-3.5" />
+    </g>
+  </SVGIcon>
+
 // -------------------------------------
 // Badge icons 24 x 24
 
@@ -150,7 +158,7 @@ export const CheckCircleIcon = () =>
     <g>
       <circle cx="10.5" cy="10.5" r="7" />
     </g>
-    <g>
+    <g className="svg-stroke-bevel">
       <polyline points="7.5,10 10,13 13.5,7" />
     </g>
   </SVGIcon>
@@ -162,22 +170,32 @@ export const CheckIcon = () =>
 
 export const CheckIconLG = () =>
   <SVGIcon className="CheckIconLG CheckMark">
-    <g>
+    <g className="svg-stroke-bevel">
       <polyline points="4.8,10.8 9.9,17 17.2,5" />
     </g>
   </SVGIcon>
 
 export const CheckIconSM = () =>
   <SVGIcon className="CheckIconSM">
-    <g>
+    <g className="svg-stroke-bevel">
       <polyline points="7,10.4 9.5,13.5 13,7.5" />
+    </g>
+  </SVGIcon>
+
+export const ChevronCircleIcon = () =>
+  <SVGIcon className="ChevronCircleIcon">
+    <g>
+      <circle cx="10" cy="10" r="7" />
+    </g>
+    <g>
+      <polyline points="8.2,6.5 11.8,10 8.2,13.5" />
     </g>
   </SVGIcon>
 
 export const ChevronIcon = () =>
   <SVGIcon className="ChevronIcon">
     <g>
-      <polyline points="5,12.2 10.2,7 15.5,12.2" />
+      <polyline points="6,16 12,10 6,4" />
     </g>
   </SVGIcon>
 

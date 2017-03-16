@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react'
 import FormControl from '../forms/FormControl'
-import { SVGIcon } from '../svg/SVGComponents'
+import { CheckIconLG } from '../assets/Icons'
 import { hireUser } from '../../networking/api'
 
 export default class MessageDialog extends PureComponent {
@@ -85,11 +85,7 @@ export default class MessageDialog extends PureComponent {
     return (
       <div className="Dialog MessageDialog">
         <h2 className="MessageDialogTitle">
-          <SVGIcon className="MessageDialogSuccessIcon">
-            <g>
-              <polyline points="4.8,10.8 9.9,17 17.2,5" />
-            </g>
-          </SVGIcon>
+          <CheckIconLG />
           <span>{`Email sent to ${name}`}</span>
         </h2>
         <button

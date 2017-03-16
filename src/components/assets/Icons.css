@@ -413,6 +413,23 @@
   }
 }
 
+.HeroScrollToContentButton .ChevronCircleIcon {
+  margin-top: -2px;
+  transition: transform var(--speed) var(--ease);
+  transform: rotate(90deg);
+}
+
+.HeroScrollToContentButton .ChevronCircleIcon g {
+  fill: none;
+  stroke: #fff;
+}
+
+.FooterTools .ChevronIcon {
+  margin-top: -2px;
+  transition: transform var(--speed) var(--ease);
+  transform: rotate(-90deg);
+}
+
 /* ?? */
 .MarkerIcon {
   color: #ababab;

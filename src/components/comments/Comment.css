@@ -118,12 +118,12 @@
   }
 
   .CommentTools .MoreTool .SVGIcon {
-    transform: rotate(-90deg);
+    transform: rotate(180deg);
   }
 
   .CommentTools.isMoreToolActive .MoreTool .SVGIcon {
     color: #000;
-    transform: rotate(90deg);
+    transform: none;
   }
 }
 

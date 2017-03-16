@@ -1,9 +1,8 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
-import { ShareIcon } from '../assets/Icons'
+import { ChevronCircleIcon, ShareIcon } from '../assets/Icons'
 import { AppleStore, GooglePlayStore } from '../assets/Sprites'
-import { SVGIcon } from '../svg/SVGComponents'
 
 // -------------------------------------
 
@@ -59,12 +58,7 @@ HeroPromotionCTA.propTypes = {
 
 export const HeroScrollToContentButton = (props, { onClickScrollToContent }) =>
   <button className="HeroScrollToContentButton" onClick={onClickScrollToContent}>
-    <SVGIcon className="ScrollToContentIcon">
-      <g>
-        <polyline points="13.5,8 10,12 6.5,8" />
-        <circle cx="10" cy="10" r="7" />
-      </g>
-    </SVGIcon>
+    <ChevronCircleIcon />
   </button>
 
 HeroScrollToContentButton.contextTypes = {

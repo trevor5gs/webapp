@@ -1,16 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
-import { SVGIcon } from '../svg/SVGComponents'
-
-const TreeIcon = () =>
-  <SVGIcon className="TreeIcon">
-    <g>
-      <circle cx="10" cy="10" r="7" />
-    </g>
-    <g>
-      <polyline points="8.2,6.5 11.8,10 8.2,13.5" />
-    </g>
-  </SVGIcon>
+import { ChevronCircleIcon } from '../assets/Icons'
 
 
 class TreeButton extends PureComponent {
@@ -23,7 +13,9 @@ class TreeButton extends PureComponent {
   }
 
   static defaultProps = {
+    className: '',
     isCollapsed: true,
+    onClick: null,
   }
 
   componentWillMount() {
@@ -51,7 +43,7 @@ class TreeButton extends PureComponent {
         className={classNames(className, 'TreeButton', { isCollapsed: collapsed })}
         onClick={this.onClickTreeButton}
       >
-        <TreeIcon />
+        <ChevronCircleIcon />
         {children}
       </button>
     )

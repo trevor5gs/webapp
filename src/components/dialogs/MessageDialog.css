@@ -15,17 +15,18 @@
   font-size: 18px;
 }
 
-.MessageDialogSuccessIcon {
+.MessageDialog .CheckIconLG {
   position: absolute;
   top: 7px;
   left: -40px;
   transform: scale(0.6);
 }
 
-.MessageDialogSuccessIcon.SVGIcon > g {
-  stroke-linejoin: bevel;
+/* stylelint-disable selector-max-compound-selectors */
+.MessageDialog .CheckIconLG .SVGIcon > g {
   stroke: #00d100;
 }
+/* stylelint-enable selector-max-compound-selectors */
 
 .MessageDialogButton {
   height: 50px;
