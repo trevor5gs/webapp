@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import trim from 'lodash/trim'
 import classNames from 'classnames'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
-import { FailureIcon, RequestIcon, SuccessIcon } from '../assets/Icons'
+import { CheckIconLG, CircleIconLG, XIconLG } from '../assets/Icons'
 
 class FormControl extends Component {
 
@@ -154,11 +154,11 @@ class FormControl extends Component {
     const { status } = this.props
     switch (status) {
       case STATUS.REQUEST:
-        return <RequestIcon />
+        return <CircleIconLG />
       case STATUS.FAILURE:
-        return <FailureIcon />
+        return <XIconLG />
       case STATUS.SUCCESS:
-        return <SuccessIcon />
+        return <CheckIconLG />
       case STATUS.INDETERMINATE:
       default:
         return null

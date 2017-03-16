@@ -2,7 +2,7 @@ import React, { PropTypes, PureComponent } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
-import { CheckIconHeader, CheckIconMini, PlusIconHeader, PlusIconMini } from '../assets/Icons'
+import { CheckCircleIcon, CheckIconSM, PlusCircleIcon, PlusIconSM } from '../assets/Icons'
 
 export function getNextPriority(currentPriority) {
   switch (currentPriority) {
@@ -97,7 +97,7 @@ class FollowButton extends PureComponent {
   }
 
   renderAsInactive() {
-    const icon = this.props.className === 'isInHeader' ? <PlusIconHeader /> : <PlusIconMini />
+    const icon = this.props.className === 'isInHeader' ? <PlusCircleIcon /> : <PlusIconSM />
     return this.renderAsToggleButton('Follow', icon)
   }
 
@@ -106,7 +106,7 @@ class FollowButton extends PureComponent {
   }
 
   renderAsFriend() {
-    const icon = this.props.className === 'isInHeader' ? <CheckIconHeader /> : <CheckIconMini />
+    const icon = this.props.className === 'isInHeader' ? <CheckCircleIcon /> : <CheckIconSM />
     return this.renderAsToggleButton('Following', icon)
   }
 

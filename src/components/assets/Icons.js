@@ -145,13 +145,8 @@ export const CameraIcon = () =>
     </g>
   </SVGIcon>
 
-export const CheckIcon = () =>
-  <SVGIcon className="CheckIcon">
-    <CheckShape />
-  </SVGIcon>
-
-export const CheckIconHeader = () =>
-  <SVGIcon className="CheckIconMini">
+export const CheckCircleIcon = () =>
+  <SVGIcon className="CheckCircleIcon">
     <g>
       <circle cx="10.5" cy="10.5" r="7" />
     </g>
@@ -160,17 +155,22 @@ export const CheckIconHeader = () =>
     </g>
   </SVGIcon>
 
-export const CheckIconMini = () =>
-  <SVGIcon className="CheckIconMini">
-    <g>
-      <polyline points="7,10.4 9.5,13.5 13,7.5" />
-    </g>
+export const CheckIcon = () =>
+  <SVGIcon className="CheckIcon">
+    <CheckShape />
   </SVGIcon>
 
 export const CheckIconLG = () =>
   <SVGIcon className="CheckIconLG CheckMark">
     <g>
       <polyline points="4.8,10.8 9.9,17 17.2,5" />
+    </g>
+  </SVGIcon>
+
+export const CheckIconSM = () =>
+  <SVGIcon className="CheckIconSM">
+    <g>
+      <polyline points="7,10.4 9.5,13.5 13,7.5" />
     </g>
   </SVGIcon>
 
@@ -185,6 +185,13 @@ export const CircleIcon = () =>
   <SVGIcon className="CircleIcon">
     <g>
       <circle cx="11" cy="11" r="5" />
+    </g>
+  </SVGIcon>
+
+export const CircleIconLG = () =>
+  <SVGIcon className="CircleIconLG">
+    <g>
+      <circle cx="12" cy="12" r="6" />
     </g>
   </SVGIcon>
 
@@ -219,14 +226,6 @@ export const EyeIcon = () =>
       <circle cx="10" cy="10" r="5" />
     </g>
     <circle cx="10" cy="10" r="2" />
-  </SVGIcon>
-
-export const FailureIcon = () =>
-  <SVGIcon className="FailureIcon">
-    <g>
-      <line x1="17" y1="5" x2="5" y2="17" />
-      <line x1="17" y1="17" x2="5" y2="5" />
-    </g>
   </SVGIcon>
 
 export const FlagIcon = () =>
@@ -304,8 +303,8 @@ export const PencilIcon = () =>
     </g>
   </SVGIcon>
 
-export const PlusIconHeader = () =>
-  <SVGIcon className="PlusIconMini">
+export const PlusCircleIcon = () =>
+  <SVGIcon className="PlusCircleIcon">
     <g>
       <circle cx="10.5" cy="10.5" r="7" />
     </g>
@@ -315,8 +314,8 @@ export const PlusIconHeader = () =>
     </g>
   </SVGIcon>
 
-export const PlusIconMini = () =>
-  <SVGIcon className="PlusIconMini">
+export const PlusIconSM = () =>
+  <SVGIcon className="PlusIconSM">
     <g>
       <line x1="10.5" x2="10.5" y1="6.5" y2="12.5" />
       <line x1="13.5" x2="7.5" y1="9.5" y2="9.5" />
@@ -366,13 +365,6 @@ export const RepostIcon = () =>
     </g>
   </SVGIcon>
 
-export const RequestIcon = () =>
-  <SVGIcon className="RequestIcon">
-    <g>
-      <circle cx="12" cy="12" r="6" />
-    </g>
-  </SVGIcon>
-
 export const SearchIcon = () =>
   <SVGIcon className="SearchIcon">
     <g className="svg-stroke-round">
@@ -404,13 +396,6 @@ export const SparklesIcon = () =>
     </g>
     <g>
       <path d="M19,4.5c-1.9,0-3.5,1.6-3.5,3.5c0-1.9-1.6-3.5-3.5-3.5 c1.9,0,3.5-1.6,3.5-3.5C15.5,2.9,17.1,4.5,19,4.5z" />
-    </g>
-  </SVGIcon>
-
-export const SuccessIcon = () =>
-  <SVGIcon className="SuccessIcon">
-    <g>
-      <polyline points="4.8,10.8 9.9,17 17.2,5" />
     </g>
   </SVGIcon>
 

@@ -342,17 +342,20 @@ textarea.FormControlInput.isOnboardingControl {
   stroke-width: 2;
 }
 
-.FormControlStatus > .RequestIcon > g {
+/* Request */
+.FormControlStatus > .CircleIconLG > g {
   fill: #aaa;
   stroke: transparent;
 }
 
-.FormControlStatus > .SuccessIcon > g {
+/* Success */
+.FormControlStatus > .CheckIconLG > g {
   stroke: var(--color-success);
   stroke-linejoin: bevel;
 }
 
-.FormControlStatus > .FailureIcon > g {
+/* Failure */
+.FormControlStatus > .XIconLG > g {
   stroke: var(--color-danger);
 }
 

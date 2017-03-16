@@ -1,7 +1,7 @@
 import { getRenderedComponent } from '../../../support/test_helpers'
 import { RELATIONSHIP_PRIORITY } from '../../../../src/constants/relationship_types'
 import subject, { getNextPriority } from '../../../../src/components/relationships/FollowButton'
-import { PlusIconMini, CheckIconMini } from '../../../../src/components/assets/Icons'
+import { CheckIconSM, PlusIconSM } from '../../../../src/components/assets/Icons'
 
 describe('FollowButton', () => {
   context('::RELATIONSHIP_PRIORITY', () => {
@@ -38,28 +38,28 @@ describe('FollowButton', () => {
     it('renders inactive', () => {
       const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.INACTIVE })
       const [icon, span] = button.props.children
-      expect(icon.type).to.equal(PlusIconMini)
+      expect(icon.type).to.equal(PlusIconSM)
       expect(span.props.children).to.equal('Follow')
     })
 
     it('renders none', () => {
       const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.NONE })
       const [icon, span] = button.props.children
-      expect(icon.type).to.equal(PlusIconMini)
+      expect(icon.type).to.equal(PlusIconSM)
       expect(span.props.children).to.equal('Follow')
     })
 
     it('renders friend', () => {
       const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.FRIEND })
       const [icon, span] = button.props.children
-      expect(icon.type).to.equal(CheckIconMini)
+      expect(icon.type).to.equal(CheckIconSM)
       expect(span.props.children).to.equal('Following')
     })
 
     it('renders noise as following', () => {
       const button = getRenderedComponent(subject, { priority: RELATIONSHIP_PRIORITY.NOISE })
       const [icon, span] = button.props.children
-      expect(icon.type).to.equal(CheckIconMini)
+      expect(icon.type).to.equal(CheckIconSM)
       expect(span.props.children).to.equal('Following')
     })
 
