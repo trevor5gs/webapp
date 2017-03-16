@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
-import { LinkIcon } from './EditorIcons'
+import { LinkIcon } from '../assets/Icons'
 import { textToolsPath } from '../../networking/api'
 
 function prefixLink(text) {

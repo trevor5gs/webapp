@@ -352,8 +352,68 @@
   display: none;
 }
 
-/* stylelint-enable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */
+/* Editor Icons */
+.no-touch .RegionTools button:hover .SVGIcon > g {
+  stroke: #000;
+}
 
+.BrowseIcon > g {
+  fill: #fff;
+}
+
+.ElloBuyButton > .SVGIcon.MoneyIcon > g {
+  fill: #fff;
+  stroke: #fff;
+  stroke-width: 0.5;
+}
+
+.PostActionButton.forMoney > .SVGIcon.MoneyIcon > g {
+  fill: #aaa;
+  stroke: none;
+}
+
+.PostActionButton.isBuyLinked > .SVGIcon.MoneyIcon > g {
+  fill: #000;
+}
+
+@media (--break-2) {
+  .no-touch .PostActionButton:hover > .BrowseIcon > g {
+    fill: #000;
+  }
+
+  .no-touch .BlockRemove > .XIcon {
+    transition-duration: var(--speed), var(--speed), var(--speed2);
+    transform-origin: center center;
+  }
+
+  .no-touch .BlockRemove:hover > .XIcon {
+    transition-delay: 0.5s, 0.5s, 0.7s;
+    transform: rotate(360deg);
+  }
+
+  /* Cancel animation */
+  .no-touch .PostActionButton > .XIcon {
+    transition-duration: var(--speed), var(--speed), var(--speed2);
+    transform-origin: center center;
+  }
+
+  .no-touch .PostActionButton:hover > .XIcon {
+    transition-delay: 0.5s, 0.5s, 0.7s;
+    transform: rotate(360deg);
+  }
+
+  .no-touch .ElloBuyButton:hover > .SVGIcon.MoneyIcon > g {
+    fill: #000;
+    stroke: transparent;
+  }
+
+  .no-touch .PostActionButton.forMoney:hover > .SVGIcon.MoneyIcon > g {
+    fill: #fff;
+    stroke: none;
+  }
+}
+
+/* ?? */
 .MarkerIcon {
   color: #ababab;
 }
@@ -375,3 +435,4 @@
   }
 }
 
+/* stylelint-enable selector-max-compound-selectors, selector-max-specificity */

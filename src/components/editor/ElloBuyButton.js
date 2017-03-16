@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { MoneyIcon } from './EditorIcons'
+import { MoneyIcon } from '../assets/Icons'
 import { dispatchTrackEvent } from '../../helpers/junk_drawer'
 
 function onElloBuyButtonClick(e) {

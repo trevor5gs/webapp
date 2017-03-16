@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { openModal, closeModal } from '../../actions/modals'
+import { DragIcon, XIcon } from '../assets/Icons'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
-import { DragIcon, DeleteIcon } from './EditorIcons'
 
 /* eslint-disable react/prefer-stateless-function */
 class RegionTools extends Component {
@@ -42,7 +42,7 @@ class RegionTools extends Component {
           className="BlockRemove"
           onClick={this.handleDeleteBlock}
         >
-          <DeleteIcon />
+          <XIcon />
         </button>
         <button
           className="DragHandler"

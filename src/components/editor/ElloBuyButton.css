@@ -22,12 +22,6 @@
   @apply --hitarea;
 }
 
-.ElloBuyButton > .SVGIcon.MoneyIcon > g {
-  fill: #fff;
-  stroke: #fff;
-  stroke-width: 0.5;
-}
-
 .editable[contenteditable] + .ElloBuyButton {
   display: none;
 }
@@ -65,10 +59,6 @@
   }
 
   /* stylelint-disable selector-max-specificity, selector-max-compound-selectors */
-  .no-touch .ElloBuyButton:hover > .SVGIcon.MoneyIcon > g {
-    fill: #000;
-    stroke: transparent;
-  }
   /* stylelint-enable selector-max-specificity, selector-max-compound-selectors */
 }
 
